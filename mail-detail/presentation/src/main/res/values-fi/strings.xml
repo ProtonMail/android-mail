@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">Yhteystietojen lataus epäonnistui</string>
+  <string name="detail_error_loading_conversation">Keskustelun lataus epäonnistui</string>
+  <string name="detail_error_loading_messages">Viestien lataus epäonnistui</string>
+  <string name="error_mark_unread_failed">Merkintä lukemattomaksi epäonnistui. Yritä uudelleen.</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d viesti</item>
+    <item quantity="other">%d viestiä</item>
+  </plurals>
+  <string name="quick_reply_button_content_description">Vastaa</string>
+  <string name="quick_reply_all_button_content_description">Vastaa kaikille</string>
+  <string name="more_button_content_description">Lisää</string>
+  <string name="subject">Aihe:</string>
+  <string name="from">Lähettäjä:</string>
+  <string name="to">Vastaanottaja:</string>
+  <string name="cc">Kopio:</string>
+  <string name="bcc">Piilokopio:</string>
+  <string name="date">Päiväys:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d liite</item>
+    <item quantity="other">%d liitettä</item>
+  </plurals>
+  <string name="hide_details">Piilota tiedot</string>
+  <string name="undisclosed_recipients">Piilotetut vastaanottajat</string>
+  <string name="error_mark_as_unread_failed">Merkintä lukemattomaksi epäonnistui. Yritä uudelleen.</string>
+  <string name="error_star_operation_failed">Merkintä tähdellä epäonnistui. Yritä uudelleen.</string>
+  <string name="error_unstar_operation_failed">Tähtimerkinnän poisto epäonnistui. Yritä uudelleen.</string>
+  <string name="error_move_to_trash_failed">Siirto roskakoriin epäonnistui. Yritä uudelleen.</string>
+  <string name="message_moved_to_trash">Viesti siirrettiin roskakoriin</string>
+  <string name="message_moved_to_archive">Viesti siirrettiin arkistoon</string>
+  <string name="error_move_to_archive_failed">Siirto arkistoon epäonnistui. Yritä uudelleen.</string>
+  <string name="message_moved_to_spam">Viesti siirretiin roskapostiin</string>
+  <string name="error_move_to_spam_failed">Siirto roskapostiin epäonnistui. Yritä uudelleen.</string>
+  <string name="message_moved_to_selected_destination">Viesti siirrettiin kohteeseen %1$s</string>
+  <string name="error_move_message_failed">Viestin siirto epäonnistui. Yritä uudelleen.</string>
+  <string name="conversation_moved_to_trash">Keskustelu siirrettiin roskakoriin</string>
+  <string name="conversation_moved_to_selected_destination">Keskustelu siirrettiin kohteeseen %1$s</string>
+  <string name="conversation_moved_to_archive">Keskustelu siirrettiin arkistoon</string>
+  <string name="conversation_moved_to_spam">Keskustelu siirrettiin roskapostiin</string>
+  <string name="error_move_conversation_failed">Keskustelun siirto epäonnistui. Yritä uudelleen.</string>
+  <string name="error_loading_message">Jotain meni pieleen. Yritä uudelleen.</string>
+  <string name="error_offline_loading_message">Ei yhteyttä. Viestin sisällön näyttäminen vaatii Internet-yhteyden.</string>
+  <string name="error_get_attachment_failed">Liitteen nouto epäonnistui.</string>
+  <string name="error_attachment_download_in_progress">Nykyisen latauksen on valmistuttava ennen uuden aloitusta.</string>
+  <string name="error_get_attachment_not_enough_memory">Liitetiedostoa ei voitu ladata riittämättömän tallennustilan vuoksi</string>
+  <string name="reload">Lataa uudelleen</string>
+  <string name="error_relabel_message_failed">Viestin tunnistemuutos ei onnistunut. Yritä uudelleen</string>
+  <string name="error_relabel_conversation_failed">Keskustelun tunnistemuutos ei onnistunut. Yritä uudelleen</string>
+  <string name="please_go_back_online_to_load_messages">Ei yhteyttä. Palauta yhteys viestien lataamiseksi.</string>
+  <string name="decryption_error">Viestin salauksen purku epäonnistui.</string>
+  <string name="detail_error_retrieving_message_body">Viestin nouto epäonnistui</string>
+  <string name="message_body_error_no_webview">Viestin sisällön esitys edellyttää, että WebView on asennettu laitteeseen.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Upotettujen kuvien automaattinen lataus ei ole käytössä. Voit muuttaa tätä asetuksista.</string>
+  <string name="message_body_remote_content_banner_text">Ulkoisen sisällön automaattinen lataus ei ole käytössä. Voit muuttaa tätä asetuksista.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Upotettujen kuvien ja ulkoisen sisällön automaattinen lataus ei ole käytössä. Voit muuttaa tätä asetuksista.</string>
+  <string name="message_phishing_banner_text">Järjestelmämme on merkinnyt viestin tietojenkalasteluyritykseksi. Tarkista sen aitous.</string>
+  <string name="message_expiration_banner_text">Viesti on asetettu tuhoutumaan kun on kulunut %1$s</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Olet poistumassa sovelluksesta avaamassa kohdetta:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Älä kysy uudelleen</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Peru</string>
+  <string name="external_link_confirmation_dialog_continue_button">Jatka</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Varoitus: epäilty huijaussivusto</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Tämä linkki johtaa sivustolle, joka saattaa pyrkiä varastamaan salasanojesi ja maksukorttiesi numeroiden kaltaisia tietoja.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Oman turvallisuutesi vuoksi, älä jatka.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Palaa takaisin (suositus)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ohita varoitus ja jatka</string>
+  <string name="message_delete_dialog_title">Poista viesti</string>
+  <string name="message_delete_dialog_message">Haluatko varmasti poistaa viestin pysyvästi?</string>
+  <string name="message_deleted">Viesti poistettiin</string>
+  <string name="message_moved">Viesti siirrettiin</string>
+  <string name="message_moved_to">Viesti siirrettiin kohteeseen %s</string>
+  <string name="error_delete_message_failed">Viestin poisto epäonnistui</string>
+  <string name="error_delete_message_failed_wrong_folder">Viesti ei ole sijainnissa, josta se voidaan poistaa</string>
+  <string name="error_delete_conversation_failed">Keskustelun poisto epäonnistui</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Keskustelu ei ole sijainnissa, josta se voidaan poistaa</string>
+  <string name="conversation_delete_dialog_title">Poista keskustelu</string>
+  <string name="conversation_delete_dialog_message">Haluatko varmasti poistaa keskustelun pysyvästi?</string>
+  <string name="conversation_deleted">Keskustelu poistettiin</string>
+  <string name="message_body_load_remote_content_button_text">Lataa ulkoinen sisältö</string>
+  <string name="message_body_load_embedded_images_button_text">Lataa upotetut kuvat</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Lataa ulkoinen ja upotettu sisältö</string>
+  <string name="message_report_phishing_dialog_title_offline">Huomio</string>
+  <string name="message_report_phishing_dialog_message_offline">Ominaisuus vaatii Internet-yhteyden.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Vahvista tietojenkalasteluilmoitus</string>
+  <string name="message_report_phishing_dialog_message">Viestin raportointi tietokalasteluyritykseksi lähettää sen meille, jotta voimme analysoida sen ja parantaa suodattimiamme. Huomioi, että näemme lähettämäsi viestin sisällön.</string>
+  <string name="message_report_phishing_dialog_confim_button">Vahvista</string>
+  <string name="message_report_phishing_dialog_cancel_button">Peru</string>
+  <string name="open_on_protoncalendar_banner_title">Avaa Proton Calendarissa</string>
+  <string name="open_on_protoncalendar_banner_description">Turvallinen salattu kalenteri</string>
+  <string name="error_print_failed">Viestin tulostus epäonnistui</string>
+  <string name="trashed_messages_banner">Keskustelu sisältää roskakorissa olevia viestejä.</string>
+  <string name="non_trashed_messages_banner">Keskustelu sisältää viestejä, jotka eivät ole roskakorissa.</string>
+  <string name="show">Näytä</string>
+  <string name="hide">Piilota</string>
+  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
+  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_cta">Customize</string>
+</resources>

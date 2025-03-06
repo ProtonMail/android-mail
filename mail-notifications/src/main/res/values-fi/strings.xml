@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="notification_summary_text_new_messages">Uusia viestejä</string>
+  <string name="notification_summary_text_new_login_alerts">Uusia kirjautumishälytyksiä</string>
+  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+  <string name="notification_title_text_new_message_fallback">Uusi viesti</string>
+  <string name="notification_actions_archive_description">Arkistoi</string>
+  <string name="notification_actions_trash_description">Poista</string>
+  <string name="notification_actions_mark_as_read_description">Merkitse luetuksi</string>
+  <string name="notification_permission_dialog_title">Älä missaa viestejä</string>
+  <string name="notification_permission_dialog_message">Ilmoituksilla pysyt saapuneista viesteistäsi ajan tasalla sovellusta avaamatta.</string>
+  <string name="notification_permission_dialog_post_send_title">Haluatko pysyä ajan tasalla?</string>
+  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_button_enable">Ota push-ilmoitukset käyttöön</string>
+  <string name="notification_permission_dialog_button_dismiss">Hylkää</string>
+</resources>

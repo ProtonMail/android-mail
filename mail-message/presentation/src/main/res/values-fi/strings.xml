@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d tiedosto</item>
+    <item quantity="other">%d tiedostoa</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d lisää</string>
+  <string name="attachment_permission_dialog_title">Käyttöoikeus tarvitaan</string>
+  <string name="attachment_permission_dialog_message">Proton Mail tarvitsee liitetiedostojen tallentamiseksi tallennustilan käyttöoikeuden.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Asetukset</string>
+  <string name="attachment_type_description">Tiedostotyyppi: %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Pakattu</string>
+  <string name="attachment_type_image">Kuva</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Ääni</string>
+  <string name="attachment_type_unknown">Tuntematon</string>
+  <string name="attachment_type_pdf">PDF-dokumentti</string>
+  <string name="attachment_type_text">Teksti</string>
+  <string name="attachment_type_document">Dokumentti</string>
+  <string name="attachment_type_spreadsheet">Laskentataulukko</string>
+  <string name="attachment_type_presentation">Esitys</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Siirrä kohteeseen...</string>
+  <string name="bottom_sheet_done_action">Valmis</string>
+  <string name="bottom_sheet_archive_action">Arkistoidaanko samalla?</string>
+  <string name="bottom_sheet_label_as_title">Merkitse tunnisteella...</string>
+  <string name="bottom_sheet_more_header_message_from">Viesti lähettäjältä %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Kopioi linkki</string>
+  <string name="message_link_long_click_copy_description">Proton Mailista kopioitiin tekstiä</string>
+  <string name="message_link_long_click_share">Jaa linkki</string>
+  <string name="message_link_long_click_share_via">Jaa linkki osoitteella</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Kopioi osoite</string>
+  <string name="contact_actions_copy_address_description">Kopioi yhteystiedon osoite</string>
+  <string name="contact_actions_copy_address_performed">Osoite kopioitiin leikepöydälle</string>
+  <string name="contact_actions_copy_name">Kopioi nimi</string>
+  <string name="contact_actions_copy_name_description">Kopioi yhteystiedon nimi</string>
+  <string name="contact_actions_copy_name_performed">Nimi kopioitiin leikepöydälle</string>
+  <string name="contact_actions_new_message">Uusi viesti</string>
+  <string name="contact_actions_new_message_description">Kirjoita yhteystiedolle uusi viesti</string>
+  <string name="contact_actions_add_contact">Lisää yhteystieto</string>
+  <string name="contact_actions_add_contact_description">Tallenna vastaanottaja yhteystiedoksi</string>
+  <string name="contact_actions_view_contact_details">Näytä yhteystieto</string>
+  <string name="contact_actions_view_contact_details_description">Näytä yhteystiedon tiedot</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Käyttöoikeus tarvitaan</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail tarvitsee vastaanottajien ehdottamiseksi oikeuden lukea yhteystietojasi.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Pyydä oikeutta</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Estä</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">View entire message</string>
+</resources>

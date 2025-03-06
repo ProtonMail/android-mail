@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">Saapuneet</string>
+  <string name="label_title_drafts">Luonnokset</string>
+  <string name="label_title_sent">Lähetetyt</string>
+  <string name="label_title_starred">Tähdelliset</string>
+  <string name="label_title_archive">Arkisto</string>
+  <string name="label_title_spam">Roskaposti</string>
+  <string name="label_title_trash">Roskakori</string>
+  <string name="label_title_outbox">Lähtevät</string>
+  <string name="label_title_all_mail">Kaikki viestit</string>
+  <string name="label_title_all_drafts">Kaikki luonnokset</string>
+  <string name="label_title_all_sent">Kaikki lähetetyt</string>
+  <string name="label_title_all_scheduled">Kaikki ajoitetut</string>
+  <string name="label_title_snoozed">Torkutettu</string>
+  <string name="label_title_folders">Kansiot</string>
+  <string name="label_title_parent_folder">Yläkansio</string>
+  <string name="label_title_labels">Tunnisteet</string>
+  <string name="label_title_create_folder">Luo kansio</string>
+  <string name="label_title_create_label">Luo tunniste</string>
+  <string name="label_title_label_list">Tunnistelista</string>
+  <string name="label_title_folder_list">Kansiolista</string>
+  <string name="label_list_no_labels_found">Tunnisteita ei löytynyt.</string>
+  <string name="label_list_create_label_placeholder_description">Paranna sähköpostikokemustasi luomalla tunniste.</string>
+  <string name="create_label_content_description">Luo tunniste</string>
+  <string name="label_form_create_label">Luo tunniste</string>
+  <string name="folder_form_create_folder">Luo kansio</string>
+  <string name="label_form_edit_label">Muokkaa tunnistetta</string>
+  <string name="folder_form_edit_folder">Muokkaa kansiota</string>
+  <string name="label_form_save">Tallenna</string>
+  <string name="label_form_delete">Poista tunniste</string>
+  <string name="folder_form_delete">Poista kansio</string>
+  <string name="label_name_title">Nimi</string>
+  <string name="add_a_label_name_hint">Nimeä tunniste</string>
+  <string name="add_a_folder_name_hint">Nimeä kansio</string>
+  <string name="input_field_max_characters_count">%1d/%2d merkkiä</string>
+  <string name="color_picker_title">Väri</string>
+  <string name="save_label_error">Virhe tallennettaessa tunnistetta. Yritä myöhemmin uudelleen.</string>
+  <string name="save_folder_error">Virhe tallennettaessa kansiota. Yritä myöhemmin uudelleen.</string>
+  <string name="label_already_exists">Tämän niminen tunniste tai kansio on jo olemassa</string>
+  <string name="label_limit_reached_error">Tarvitset maksullisen Proton Mail -tilauksen luodaksesi lisää tunnisteita</string>
+  <string name="folder_limit_reached_error">Tarvitset maksullisen Proton Mail -tilauksen luodaksesi lisää kansioita</string>
+  <string name="delete_label_error">Virhe poistettaessa tunnistetta</string>
+  <string name="input_field_clear_content_description">Tyhjennä teksti</string>
+  <string name="label_list_item_content_description">Merkitse kohde tunnisteella</string>
+  <string name="folder_list_item_content_description">Kohde kansiolistalla</string>
+  <string name="folder_list_no_folders_found">Kansioita ei löytynyt.</string>
+  <string name="folder_list_create_folder_placeholder_description">Paranna sähköpostikokemustasi luomalla kansio.</string>
+  <string name="create_folder_content_description">Lisää kansio</string>
+  <string name="folder_settings_content_description">Kansioasetukset</string>
+  <string name="folder_settings_title">Asetukset</string>
+  <string name="folder_settings_done_button">Valmis</string>
+  <string name="folder_settings_folder_colors">Käytä värillisiä kansioita</string>
+  <string name="folder_settings_parent_color">Peri yläkansion väri</string>
+  <string name="folder_list_loading_error">Virhe ladattaessa kansioita. Yritä myöhemmin uudelleen.</string>
+  <string name="folder_loading_error">Virhe ladattaessa kansiota. Yritä myöhemmin uudelleen.</string>
+  <string name="switch_on">Käytössä</string>
+  <string name="switch_off">Ei käytössä</string>
+  <string name="folder_form_parent">Yläkansio</string>
+  <string name="folder_form_no_parent">Ei mitään</string>
+  <string name="folder_form_notifications">Ilmoitukset</string>
+  <string name="folder_saved">Kansio tallennettiin</string>
+  <string name="folder_deleted">Kansio poistettiin</string>
+  <string name="parent_folder_none">Ei mitään</string>
+  <string name="delete_label">Poistetaanko tunniste?</string>
+  <string name="delete_folder">Poistetaanko kansio?</string>
+  <string name="delete_label_message">Tätä toimintoa ei voi kumota. Tällä tunnisteella merkittyjä sähköposteja ei poisteta, ja ne löytyvät \"Kaikki viestit\" -kansiosta.</string>
+  <string name="delete_folder_message">Tätä toimintoa ei voi kumota. Tässä kansiossa olevia viestejä ei poisteta ja ne löytyvät \"Kaikki viestit\" -kansiosta.</string>
+</resources>

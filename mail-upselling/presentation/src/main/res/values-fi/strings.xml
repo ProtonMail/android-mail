@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Päivitä-painike</string>
+  <string name="upselling_close_button_content_description">Sulje-painike</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">Avataksesi lisää tallennustilaa ja premium-ominaisuuksia</string>
+  <string name="upselling_mailbox_plus_title">Päivitä Mail Plussaan</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Lähetä ryhmäviestejä helposti ja nauti muista premium-ominaisuuksista Mail Plussalla.</string>
+  <string name="upselling_contact_groups_plus_title">Ryhmittele yhteystietojasi</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Hanki ne ja muut premium-ominaisuudet päivittämällä Mail Plussaan.</string>
+  <string name="upselling_labels_plus_title">Tarvitsetko enemmän tunnisteita tai kansioita?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Hanki ne ja muut premium-ominaisuudet päivittämällä Mail Plussaan.</string>
+  <string name="upselling_folders_plus_title">Tarvitsetko enemmän tunnisteita tai kansioita?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Käytä omaa mobiiliallekirjoitustasi ja nauti muista premium-ominaisuuksista Mail Plussalla.</string>
+  <string name="upselling_mobile_signature_plus_title">Muokkaa allekirjoitustasi</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Nauti siistimmästä postilaatikosta ja hyödynnä muita premium-ominaisuuksia Mail Plussalla.</string>
+  <string name="upselling_auto_delete_plus_title">Siivoa roskakori ja roskapostit</string>
+  <!-- Mail Plus -->
+  <string name="upselling_plus_feature_storage">15 Gt tallennustilaa</string>
+  <string name="upselling_plus_feature_email_addresses">10 sähköpostiosoitetta</string>
+  <string name="upselling_plus_feature_custom_domain">Tuki omille sähköpostiverkkotunnuksille</string>
+  <string name="upselling_plus_feature_desktop_app">Uusi Proton Mail -työpöytäsovellus</string>
+  <string name="upselling_plus_feature_folders_labels">Rajattomasti kansioita, tunnisteita ja suodattimia</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premium-ominaisuutta</string>
+  <!-- Unlimited -->
+  <string name="upselling_unlimited_description_override">Kaiken kattava premium-tilauksesi</string>
+  <string name="upselling_unlimited_feature_storage">500 Gt tallennustilaa kuvien varmuuskopioinnilla</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Kaikki maksulliset Mail- ja Calendar-ominaisuudet</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ maata)</string>
+  <string name="upselling_unlimited_feature_drive">Suojattu pilvitallennustila</string>
+  <string name="upselling_unlimited_feature_pass">Salattu salasanahallinta</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium-arvo sisältyy</string>
+  <string name="upselling_onboarding_feature_e2e">Päästä päähän -salaus</string>
+  <string name="upselling_onboarding_feature_folders_labels">Rajattomasti kansioita ja tunnisteita</string>
+  <string name="upselling_onboarding_free_feature_storage">1 Gt tallennustilaa ja yksi sähköpostiosoite</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 Gt tallennustilaa</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 lisäosoitetta sinulle</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Tuki yhdelle omalle sähköpostiverkkotunnukselle</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 Hide-my-email-aliasta</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Ensisijainen asiakastuki</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 Gt tallennustilaa</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 lisäosoitetta sinulle</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Tuki kolmelle omalle sähköpostiverkkotunnukselle</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Rajattomasti Hide-my-email-aliaksia</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Oma asiakaspalvelu</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Huippunopea ja yksityinen VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Salattu salasanahallinta</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Salattu pilvitallennustila kuville ja dokumenteille</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Edistynyt tilin suojaus</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Tallennustila</string>
+  <string name="upselling_comparison_table_email_addresses">Sähköpostiosoitteet</string>
+  <string name="upselling_comparison_table_custom_email_domain">Omat verkkotunnukset</string>
+  <string name="upselling_comparison_table_desktop_app">Työpöytäsovellus</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Rajattomasti kansioita ja tunnisteita</string>
+  <string name="upselling_comparison_table_priority_support">Ensisijainen asiakaspalvelu</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Valitse tilauksesi</string>
+  <string name="upselling_select_plan_year">1 vuosi</string>
+  <string name="upselling_select_plan_month">1 kuukausi</string>
+  <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Uudistuu automaattisesti samaan hintaan ja samoilla ehdoilla, ellei tilausta peruta.</string>
+  <string name="upselling_discount_tag">SÄÄSTÄ %s %%</string>
+  <string name="upselling_month">/kuukausi</string>
+  <string name="upselling_year">/vuosi</string>
+  <string name="upselling_get_button">Hanki %s</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d kuukausi</item>
+    <item quantity="other">%d kuukautta</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Päivitysvaihtoehtojen nouto ei onnistu.</string>
+  <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Tilausten nouto ei onnistu.</string>
+  <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Tilauspäivitys on käynnissä…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Virhe päivitettässä tilaustasi.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Tapahtui virhe. Yritä uudelleen.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Valitse tilaus</string>
+  <string name="upselling_onboarding_switcher_monthly">Kuukautinen</string>
+  <string name="upselling_onboarding_switcher_annual">Vuotuinen</string>
+  <string name="upselling_onboarding_best_value">Paras arvo</string>
+  <string name="upselling_onboarding_month">/kuukausi</string>
+  <string name="upselling_onboarding_year">/vuosi</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d lisäominaisuus</item>
+    <item quantity="other">%d lisäominaisuutta</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Laskutetaan %s %s kerran kuussa</string>
+  <string name="upselling_onboarding_billing_annual">Laskutetaan %s %s kerran vuodessa</string>
+  <string name="upselling_onboarding_get_plan">Hanki %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Jatka Proton Freellä</string>
+  <string name="upselling_onboarding_save_label">Säästä %s %%</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Sulje</string>
+  <string name="post_subscription_continue_button">Jatka</string>
+  <string name="post_subscription_got_it_button">Selvä</string>
+  <string name="post_subscription_welcome_page_title">Tervetuloa Mail Plussaan</string>
+  <string name="post_subscription_welcome_page_message">Kiitos kun tuet tavoitettamme pitää Internet turvallisena ja yksityisenä kaikille.</string>
+  <string name="post_subscription_welcome_page_unlocked">Olet avannut</string>
+  <string name="post_subscription_plus_feature_storage">15 Gt tallennustilaa</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 lisäsähköpostiosoitetta</string>
+  <string name="post_subscription_plus_feature_email_domains">Tuen yhdelle omalle sähköpostiverkkotunnukselle</string>
+  <string name="post_subscription_plus_feature_folders_labels">Rajattomasti kansioita ja tunnisteita</string>
+  <string name="post_subscription_plus_feature_aliases">10 Hide-my-email-aliasta</string>
+  <string name="post_subscription_plus_feature_desktop_app">Uuden Proton Mail -työpöytäsovelluksen</string>
+  <string name="post_subscription_plus_feature_customer_support">Ensisijaisen asiakastuen</string>
+  <string name="post_subscription_discover_apps_page_title">Tutustu kaikkiin sovelluksiin</string>
+  <string name="post_subscription_proton_calendar">Proton Calendar</string>
+  <string name="post_subscription_proton_calendar_message">Avasit kalenterijaon ja 8-kertaisen määrän kalentereita.</string>
+  <string name="post_subscription_proton_drive">Proton Drive</string>
+  <string name="post_subscription_proton_drive_message">Uusi tilauksesi nosti tallennustilasi 15 gigatavuun.</string>
+  <string name="post_subscription_proton_vpn">Proton VPN</string>
+  <string name="post_subscription_proton_vpn_message">Parhaan VPN:n nopeudelle ja turvallisuudelle.</string>
+  <string name="post_subscription_proton_pass">Proton Pass</string>
+  <string name="post_subscription_proton_pass_message">Turvallinen salasanojen säilytys ja helppo kirjautuminen tileillesi.</string>
+  <string name="post_subscription_button_installed">Asennettu</string>
+  <string name="post_subscription_button_get_the_app">Hanki sovellus</string>
+</resources>

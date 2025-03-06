@@ -47,8 +47,8 @@
   <string name="composer_attachment_size_exceeded_dialog_message">O limite de tamanho para anexos é de %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">A recriptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
   <string name="composer_attachment_not_found">Anexo não encontrado.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
-  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_attachment_error_draft_loading">Não foi possível carregar a mensagem original do rascunho.</string>
+  <string name="composer_attachment_error_saving_attachment">Não foi possível armazenar o anexo. Tente novamente.</string>
   <string name="composer_warning_local_data_shown">A versão mais recente deste rascunho não foi carregada. Qualquer alteração substituirá seu conteúdo.</string>
   <string name="composer_button_add_password">Adicionar senha</string>
   <string name="composer_button_set_expiration">Definir a data de expiração</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Aviso de envio</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">O envio de mensagens do @pm.me é um recurso pago. A sua mensagem será enviada do seu endereço padrão.</string>
   <string name="composer_sender_changed_original_address_disabled">O endereço de remetente selecionado está desativado. Sua mensagem será enviada do seu endereço padrão.</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">O endereço do remetente original não pôde ser obtido. Sua mensagem será enviada do seu endereço padrão.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Escrever</string>
@@ -80,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o endereço entrado pelo seguinte motivo:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves confiáveis: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Endereço não existe: %s</string>
   <string name="set_message_password_title">Criptografar mensagem</string>

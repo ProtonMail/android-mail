@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="retry">Yritä uudelleen</string>
+  <string name="toolbar_back_content_description">Palaa edelliselle ruudulle</string>
+  <string name="x_error_not_logged_in">Ei kirjautuneena</string>
+  <string name="action_reply">Vastaa</string>
+  <string name="action_reply_all">Vastaa kaikille</string>
+  <string name="action_forward">Välitä</string>
+  <string name="action_reply_description">Vastaa</string>
+  <string name="action_reply_all_description">Vastaa kaikille</string>
+  <string name="action_forward_description">Välitä</string>
+  <string name="action_mark_read_description">Merkitse luetuksi</string>
+  <string name="action_mark_unread_description">Merkitse lukemattomaksi</string>
+  <string name="action_star_description">Merkitse tähdellä</string>
+  <string name="action_unstar_description">Poista tähti</string>
+  <string name="action_label_description">Merkitse tunnisteella…</string>
+  <string name="action_move_description">Siirrä kohteeseen…</string>
+  <string name="action_trash_description">Siirrä roskakoriin</string>
+  <string name="action_delete_description">Poista</string>
+  <string name="action_archive_description">Arkistoi</string>
+  <string name="action_spam_description">Siirrä roskapostiin</string>
+  <string name="action_view_in_light_mode_description">Näytä viesti vaaleassa tilassa</string>
+  <string name="action_view_in_dark_mode_description">Näytä viesti tummassa tilassa</string>
+  <string name="action_print_description">Tulosta</string>
+  <string name="action_view_headers_description">Näytä otsakkeet</string>
+  <string name="action_view_html_description">Näytä HTML</string>
+  <string name="action_report_phishing_description">Ilmoita tietojenkalastelusta</string>
+  <string name="action_remind_description">Muistuta minua</string>
+  <string name="action_save_pdf_description">Tallenna PDF-tiedostona</string>
+  <string name="action_sender_emails_description">Aseta tämän lähettäjän viesteille jatkossa suoritettava toiminto</string>
+  <string name="action_save_attachments_description">Tallenna liitteet</string>
+  <string name="action_more_description">Lisää</string>
+  <string name="action_reply_content_description">Vastaa</string>
+  <string name="action_reply_all_content_description">Vastaa kaikille</string>
+  <string name="action_forward_content_description">Välitä</string>
+  <string name="action_mark_read_content_description">Merkitse luetuksi</string>
+  <string name="action_mark_unread_content_description">Merkitse lukemattomaksi</string>
+  <string name="action_star_content_description">Lisää tähti</string>
+  <string name="action_unstar_content_description">Poista tähti</string>
+  <string name="action_label_content_description">Merkitse tunnisteella…</string>
+  <string name="action_move_content_description">Siirrä kohteeseen…</string>
+  <string name="action_trash_content_description">Roskakori</string>
+  <string name="action_delete_content_description">Poista</string>
+  <string name="action_archive_content_description">Arkisto</string>
+  <string name="action_spam_content_description">Roskaposti</string>
+  <string name="action_view_in_light_mode_content_description">Näytä viesti vaaleassa tilassa</string>
+  <string name="action_view_in_dark_mode_content_description">Näytä viesti tummassa tilassa</string>
+  <string name="action_print_content_description">Tulosta</string>
+  <string name="action_view_headers_content_description">Näytä otsakkeet</string>
+  <string name="action_view_html_content_description">Näytä HTML</string>
+  <string name="action_report_phishing_content_description">Ilmoita tietojenkalastelusta</string>
+  <string name="action_remind_content_description">Muistuta minua</string>
+  <string name="action_save_pdf_content_description">Tallenna PDF-tiedostona</string>
+  <string name="action_sender_emails_content_description">Aseta tämän lähettäjän viesteille jatkossa suoritettava toiminto</string>
+  <string name="action_save_attachments_content_description">Tallenna liitteet</string>
+  <string name="action_more_content_description">Lisää</string>
+  <string name="common_error_loading_actions">Toimintojen lataus epäonnistui</string>
+  <string name="yesterday">Eilen</string>
+  <string name="action_open_customize_toolbar">Customize toolbar</string>
+  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
+  <string name="auto_delete_banner_text_activate_trash">Poista roskakorissa yli 30 päivää olleet viestit automaattisesti.</string>
+  <string name="auto_delete_banner_text_activate_spam">Poista roskapostissa yli 30 päivää olleet viestit automaattisesti.</string>
+  <string name="auto_delete_banner_text_upgrade">Päivitä tilauksesi käyttääksesi roskakorissa ja roskapostissa yli 30 päivää olleiden viestien automaattista poistoa.</string>
+  <string name="auto_delete_banner_text_enabled_info">Roskakorissa ja roskapostissa yli 30 päivää olleet viestit poistetaan automaattisesti.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Ota käyttöön</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Ei kiitos</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Lue lisää</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Tuhoutunut</string>
+  <string name="expiration_days_arg">%d pv</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Tämä viesti poistetaan automaattisesti vajaan tunnin kuluttua</string>
+  <string name="expiration_auto_delete_day">Tämä viesti poistetaan automaattisesti vajaan vuorokauden kuluttua</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tämä viesti poistetaan automaattisesti %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minuutti</item>
+    <item quantity="other">%d minuuttia</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d tunti</item>
+    <item quantity="other">%d tuntia</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d vuorokausi</item>
+    <item quantity="other">%d vuorokautta</item>
+  </plurals>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Liitteet</string>
+  <string name="attachment_download_notification_channel_description">Ilmoitukset liitetiedostojen latauksista</string>
+  <string name="email_notification_channel_name">Viestit</string>
+  <string name="login_notification_channel_name">Kirjautumishälytykset</string>
+  <string name="email_notification_channel_description">Ilmoitukset saapuneista viesteistä</string>
+  <string name="login_notification_channel_description">Ilmoitukset uusista kirjautumisista</string>
+  <string name="auth_badge_official">Virallinen</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Toiminnon suorittamiseen sopivaa sovellusta ei löytynyt</string>
+  <string name="action_copied_to_clipboard">Kopioitiin leikepöydälle</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Peruuta</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Poista</string>
+  <string name="picker_dialog_cancel">Peruuta</string>
+  <string name="color_purple">Violetti</string>
+  <string name="color_enzian">Enzian</string>
+  <string name="color_pink">Pinkki</string>
+  <string name="color_plum">Luumu</string>
+  <string name="color_strawberry">Mansikka</string>
+  <string name="color_cerise">Kirsikka</string>
+  <string name="color_carrot">Porkkana</string>
+  <string name="color_copper">Kupari</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Multa</string>
+  <string name="color_slate_blue">Liuskeensininen</string>
+  <string name="color_cobalt">Koboltti</string>
+  <string name="color_pacific">Tyynimeri</string>
+  <string name="color_ocean">Valtameri</string>
+  <string name="color_reef">Riutta</string>
+  <string name="color_pine">Mänty</string>
+  <string name="color_fern">Saniainen</string>
+  <string name="color_forest">Metsä</string>
+  <string name="color_olive">Oliivi</string>
+  <string name="color_pickle">Suolakurkku</string>
+  <string name="undo_button_label">Kumoa</string>
+  <string name="undo_success_message">Toiminto peruttiin</string>
+  <string name="undo_failure_message">Toiminnon peruminen epäonnistui</string>
+</resources>

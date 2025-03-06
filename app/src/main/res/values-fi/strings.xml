@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="dialog_sign_out_account_title">Kirjaudu ulos</string>
+  <string name="dialog_sign_out_account_description">Haluatko varmasti kirjautua ulos?</string>
+  <string name="dialog_sign_out_account_confirm">Kyllä</string>
+  <string name="dialog_sign_out_account_cancel">En</string>
+  <string name="dialog_remove_account_title">Poista tili</string>
+  <string name="dialog_remove_account_description">Kirjaudut ulos ja kaikki tiliin liittyvät tiedot poistetaan.</string>
+  <string name="dialog_remove_account_confirm">Poista</string>
+  <string name="dialog_remove_account_cancel">Peru</string>
+  <string name="user_select_other_account_content_description">Valitse toinen tili</string>
+  <string name="you_are_offline">Ei yhteyttä</string>
+  <string name="feature_coming_soon">Ominaisuus on tulossa pian…</string>
+  <string name="mailbox_draft_saved">Luonnos tallennettiin</string>
+  <string name="mailbox_draft_discard">Hylkää</string>
+  <string name="mailbox_message_sending">Lähetetään viestiä…</string>
+  <string name="mailbox_message_sending_offline">Ei yhteyttä. Viesti merkittiin lähetettäväksi myöhemmin.</string>
+  <string name="mailbox_message_sending_success">Viesti lähetettiin</string>
+  <string name="mailbox_message_sending_error">Virhe lähetettäessä viestiä</string>
+  <string name="mailbox_message_sending_error_action">Avaa luonnokset</string>
+  <string name="mailbox_attachment_uploading_error">Virhe lisättäessä liitettä</string>
+  <string name="notification_switched_account">Vaihdettiin tiliin %s</string>
+  <string name="label_saved">Tunniste tallennettiin</string>
+  <string name="label_deleted">Tunniste poistettiin</string>
+  <string name="label_list_loading_error">Virhe ladattaessa tunnistetta. Yritä myöhemmin uudelleen.</string>
+  <string name="app_locked">Sovellus on lukittu</string>
+  <string name="use_pin_instead">Käytä sen sijaan PIN-koodia</string>
+</resources>

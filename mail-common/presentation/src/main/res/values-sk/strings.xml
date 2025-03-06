@@ -73,8 +73,8 @@
   <string name="action_more_content_description">Viac</string>
   <string name="common_error_loading_actions">Načítanie akcií zlyhalo</string>
   <string name="yesterday">Včera</string>
-  <string name="action_open_customize_toolbar">Customize toolbar</string>
-  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
+  <string name="action_open_customize_toolbar">Prispôsobiť panel nástrojov</string>
+  <string name="action_open_customize_toolbar_description">Prispôsobiť panel nástrojov</string>
   <string name="auto_delete_banner_text_activate_trash">Automaticky vymazať správy, ktoré boli v koši viac ako 30 dní.</string>
   <string name="auto_delete_banner_text_activate_spam">Automaticky vymazať správy, ktoré boli v spame viac ako 30 dní.</string>
   <string name="auto_delete_banner_text_upgrade">Upgradujte svoj plán a automaticky mažte správy, ktoré boli v koši a spame viac ako 30 dní.</string>

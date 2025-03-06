@@ -42,7 +42,7 @@
   <string name="mailbox_is_empty_spam_description">垃圾郵件資料夾是空的</string>
   <string name="mailbox_is_empty_trash_description">垃圾桶是空的</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="other">%d對話內容已移至垃圾桶</item>
+    <item quantity="other">%d 則對話內容已移至垃圾桶</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="other">%d 則訊息已移至垃圾桶</item>
@@ -70,7 +70,7 @@
   <string name="mailbox_action_failed_retrieving_colors">無法取得顏色設定值</string>
   <string name="mailbox_action_move_messages_failed">無法進行移動操作</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">無法擷取資料夾</string>
-  <string name="mailbox_action_move_conversation">對話已移至 %s</string>
+  <string name="mailbox_action_move_conversation">對話內容已移至 %s</string>
   <string name="mailbox_action_move_message">訊息已移至 %s</string>
   <string name="mailbox_search_placeholder_text">搜尋訊息</string>
   <string name="mailbox_search_no_results_title">未找到任何結果</string>

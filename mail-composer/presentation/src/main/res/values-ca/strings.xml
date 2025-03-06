@@ -47,8 +47,8 @@
   <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida per als adjunts és de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_attachment_not_found">No s\'ha trobat l\'adjunt.</string>
-  <string name="composer_attachment_error_draft_loading">No es pot carregar l\'esborrany original del missatge.</string>
-  <string name="composer_attachment_error_saving_attachment">No es pot emmagatzemar l\'adjunt. Torneu-ho a provar.</string>
+  <string name="composer_attachment_error_draft_loading">No s\'ha pogut carregar l\'esborrany original del missatge.</string>
+  <string name="composer_attachment_error_saving_attachment">No s\'ha pogut emmagatzemar l\'adjunt. Torneu-ho a provar.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
   <string name="composer_button_set_expiration">Establiu el temps de caducitat</string>

@@ -73,8 +73,8 @@
   <string name="action_more_content_description">Altro</string>
   <string name="common_error_loading_actions">Caricamento delle azioni non riuscito</string>
   <string name="yesterday">Ieri</string>
-  <string name="action_open_customize_toolbar">Personalizza la barra degli strumenti</string>
-  <string name="action_open_customize_toolbar_description">Personalizza la barra degli strumenti</string>
+  <string name="action_open_customize_toolbar">Barra degli strumenti</string>
+  <string name="action_open_customize_toolbar_description">Barra degli strumenti</string>
   <string name="auto_delete_banner_text_activate_trash">Elimina automaticamente i messaggi che sono rimasti nel cestino per oltre 30 giorni</string>
   <string name="auto_delete_banner_text_activate_spam">Elimina automaticamente i messaggi che sono rimasti nella cartella spam per oltre 30 giorni</string>
   <string name="auto_delete_banner_text_upgrade">Effettua l\'upgrade per eliminare automaticamente i messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni</string>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">Lähettäjä:</string>
+  <string name="to_prefix">Vastaanottaja:</string>
+  <string name="cc_prefix">Kopio:</string>
+  <string name="bcc_prefix">Piilokopio:</string>
+  <string name="subject_placeholder">Aihe</string>
+  <string name="compose_message_placeholder">Kirjoita viesti</string>
+  <string name="close_composer_content_description">Sulje viestin kirjoitus</string>
+  <string name="send_message_content_description">Lähetä viesti</string>
+  <string name="composer_expand_recipients_button">Näytä muut vastaanottajat</string>
+  <string name="composer_error_invalid_email">Sähköpostiosoite on virheellinen</string>
+  <string name="composer_error_invalid_sender">Lähettäjän osoite on virheellinen</string>
+  <string name="change_sender_button_content_description">Vaihda lähettäjä</string>
+  <string name="composer_change_sender_paid_feature">Tarvitset maksullisen Proton Mail -tilauksen muuttaaksesi lähettäjän osoitetta</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Lähettäjää ei voida vaihtaa, koska käyttäjän tilaustietojen nouto epäonnistui. Yritä uudelleen.</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_duplicate_recipient">Vastaanottajien kaksoiskappaleet poistettiin</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_recipients">Luonnoksen vastaanottajien tallennus epäonnistui</string>
+  <string name="composer_error_loading_draft">Luonnoksen sisältö ei ole tällä hetkellä käytettävissä ja sen muokkaus korvaa kaiken olemassa olevan sisällön.</string>
+  <string name="composer_add_attachments_content_description">Lisää liitteitä</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Tuo lähteestä…</string>
+  <string name="composer_error_loading_parent_message">Viestin tietoja ei voitu ladata</string>
+  <string name="composer_original_message_quote">Alkuperäinen viesti</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; kirjoitti:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Liiterajoitus on saavutettu</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Liitteiden enimmäiskoko on %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Liitteen uudelleensalaus epäonnistui ja kaikki liitteet poistettiin tietoturvasyistä.</string>
+  <string name="composer_attachment_not_found">Attachment not found.</string>
+  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
+  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_warning_local_data_shown">Tämän luonnoksen uusimman version lataus epäonnistui. Kaikki muutokset korvaavat sen sisällön.</string>
+  <string name="composer_button_add_password">Lisää salasana</string>
+  <string name="composer_button_set_expiration">Aseta tuhoutumisaika</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Viestin tuhoutuminen</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Aseta</string>
+  <string name="composer_bottom_bar_expiration_time_none">Ei määritetty</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">Yksi tunti</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">Yksi päivä</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">Kolme päivää</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">Yksi viikko</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Mukautettu</string>
+  <string name="composer_error_setting_expiration_time">Tuhoutumisajan asettaminen epäonnistui</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Tuhoutumista ei tueta</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Seuraaville vastaanottajille on sen sijaan suositeltavaa asettaa salasana:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Peruuta</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Lähetä silti</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Lähetysilmoitus</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Viestien lähetys @pm.me-osoitteesta on maksullinen ominaisuus. Viestisi lähetetään oletusosoitteestasi.</string>
+  <string name="composer_sender_changed_original_address_disabled">Valittu lähetysosoite on poistettu käytöstä. Viestisi lähetetään oletusosoitteestasi.</string>
+  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Kirjoita</string>
+  <string name="composer_send_without_subject_dialog_text">Lähetetäänkö viesti ilman aihetta?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Kyllä</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Ei</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Lähetysvirhe</string>
+  <string name="message_sending_error_dialog_button_dismiss">Sulje</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Luotettuja avaimia ei ole: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Osoitetta ei ole olemassa: %s</string>
+  <string name="set_message_password_title">Salaa viesti</string>
+  <string name="set_message_password_info_message">Salaa viesti Proton Mailin ulkopuolisille käyttäjille asettamalla sille salasana.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Lue lisää</a></string>
+  <string name="set_message_password_label">Viestin salasana</string>
+  <string name="set_message_password_label_repeat">Toista salasana</string>
+  <string name="set_message_password_label_hint">Salasanavihje (valinnainen)</string>
+  <string name="set_message_password_supporting_text">4–21 merkkiä</string>
+  <string name="set_message_password_supporting_error_text">Salasanan on oltava 4–21 merkkiä</string>
+  <string name="set_message_password_supporting_text_repeat">Salasanojen on täsmättävä</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_button_show">Näytä salasana</string>
+  <string name="set_message_password_button_hide">Piilota salasana</string>
+  <string name="set_message_password_button_apply">Aseta salasana</string>
+  <string name="set_message_password_button_save_changes">Tallenna muutokset</string>
+  <string name="set_message_password_button_remove_password">Poista salasana</string>
+  <string name="respondInline">Vastaa rivihuomautuksella</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d jäsen</item>
+    <item quantity="other">%d jäsentä</item>
+  </plurals>
+</resources>

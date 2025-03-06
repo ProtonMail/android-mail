@@ -23,8 +23,8 @@
   <string name="dialog_sign_out_account_cancel">取消</string>
   <string name="dialog_remove_account_title">注销账号</string>
   <string name="dialog_remove_account_description">您即将退出该账户，并删除此设备上与该账户相关的所有数据。</string>
-  <string name="dialog_remove_account_confirm">注销</string>
-  <string name="dialog_remove_account_cancel">关闭</string>
+  <string name="dialog_remove_account_confirm">移除</string>
+  <string name="dialog_remove_account_cancel">取消</string>
   <string name="user_select_other_account_content_description">选择其他账户</string>
   <string name="you_are_offline">您处于离线状态</string>
   <string name="feature_coming_soon">功能即将推出…</string>

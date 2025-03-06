@@ -48,7 +48,7 @@
   <string name="mail_settings_customize_toolbar">Προσαρμογή γραμμής εργαλείων</string>
   <string name="mail_settings_app_information">Πληροφορίες Εφαρμογής</string>
   <string name="mail_settings_app_version">Έκδοση εφαρμογής</string>
-  <string name="mail_settings_app_logs">Αρχεία καταγραφών εφαρμογής</string>
+  <string name="mail_settings_app_logs">Αρχεία καταγραφής εφαρμογής</string>
   <string name="mail_settings_account">Λογαριασμός</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Συνδρομή</string>

@@ -27,7 +27,7 @@
   <string name="mail_settings_auto_lock">自动锁定</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
   <string name="mail_settings_app_language">界面语言</string>
-  <string name="mail_settings_combined_contacts">共用通讯录</string>
+  <string name="mail_settings_combined_contacts">合并联系人</string>
   <string name="mail_settings_local_cache">本地缓存</string>
   <string name="mail_settings_local_cache_hint">已使用空间: %s</string>
   <string name="mail_settings_local_cache_clear_button">清除数据</string>

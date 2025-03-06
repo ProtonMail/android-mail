@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Consentito</string>
   <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
-  <string name="mail_settings_customize_toolbar">Personalizza la barra degli strumenti</string>
+  <string name="mail_settings_customize_toolbar">Barra degli strumenti</string>
   <string name="mail_settings_app_information">Informazioni sull\'applicazione</string>
   <string name="mail_settings_app_version">Versione</string>
   <string name="mail_settings_app_logs">Registro degli eventi</string>
@@ -107,18 +107,18 @@
   <string name="mail_settings_privacy_error_loading">Caricamento delle impostazioni non riuscito</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Azioni di scorrimento</string>
-  <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per accedere alle azioni più usate.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per compiere facilmente le azioni più frequenti.</string>
   <string name="mail_settings_swipe_right_name">Sinistra-destra</string>
   <string name="mail_settings_swipe_left_name">Destra-sinistra</string>
-  <string name="mail_settings_swipe_action_none_title">Non impostato</string>
+  <string name="mail_settings_swipe_action_none_title">Niente</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
   <string name="mail_settings_swipe_action_read_title">Letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Importante</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
-  <string name="mail_settings_swipe_action_label_as_title">Etichetta come…</string>
-  <string name="mail_settings_swipe_action_move_to_title">Sposta in…</string>
-  <string name="mail_settings_swipe_action_none_description">Nessuna</string>
+  <string name="mail_settings_swipe_action_label_as_title">Etichetta</string>
+  <string name="mail_settings_swipe_action_move_to_title">Sposta</string>
+  <string name="mail_settings_swipe_action_none_description">Nessuna azione</string>
   <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
   <string name="mail_settings_swipe_action_read_description">Letto/non letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
@@ -196,7 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Reimposta</string>
   <string name="customize_toolbar_actions_section">Azioni (seleziona fino a 5)</string>
   <string name="customize_toolbar_available_actions_section">Azioni disponibili</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Sei sicuro di voler reimpostare la barra degli strumenti?</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Sei sicuro di voler reimpostare la barra degli strumenti?</string>
   <string name="customize_toolbar_reset_default_confirmation_desc">Le azioni nella barra degli strumenti verranno ripristinate ai valori predefiniti.</string>
   <string name="customize_toolbar_reset_default_confirm">Reimposta</string>
 </resources>

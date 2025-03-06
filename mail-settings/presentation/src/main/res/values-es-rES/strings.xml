@@ -193,7 +193,7 @@
   <string name="customize_toolbar_mailbox">Buzón</string>
   <string name="customize_toolbar_done_action">Terminado</string>
   <string name="customize_toolbar_reset_to_default">Restablecer los valores por defecto</string>
-  <string name="customize_toolbar_reset_to_default_btn">Restablecer valores por defecto</string>
+  <string name="customize_toolbar_reset_to_default_btn">Restablecer los valores por defecto</string>
   <string name="customize_toolbar_actions_section">Acciones de la barra de herramientas (seleccionar hasta 5)</string>
   <string name="customize_toolbar_available_actions_section">Acciones disponibles</string>
   <string name="customize_toolbar_reset_default_confirmation_title">¿Restablecer los valores por defecto?</string>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Yhteystiedot</string>
+  <string name="contact_list_loading_error">Virhe ladattaessa yhteystietoja. Yritä myöhemmin uudelleen.</string>
+  <string name="no_contacts">Yhteystietoja ei löytynyt</string>
+  <string name="no_contact_groups">Yhteystietoryhmiä ei löytynyt</string>
+  <string name="no_contacts_description">Paranna sähköpostikokemustasi luomalla uusi yhteystieto tai tuomalla olemassa olevia yhteystietoja.</string>
+  <string name="no_contact_groups_description">Paranna sähköpostikokemustasi luomalla uusi yhteystietoryhmä.</string>
+  <string name="add_contact">Lisää yhteystieto</string>
+  <string name="add_contact_group">Lisää yhteystietoryhmä</string>
+  <string name="add_contact_content_description">Lisää yhteystieto</string>
+  <string name="all_title">Kaikki</string>
+  <string name="groups_title">Ryhmät</string>
+  <string name="group_member_count">%1$s jäsen</string>
+  <string name="group_members_count">%1$s jäsentä</string>
+  <string name="new_contact">Uusi yhteystieto</string>
+  <string name="new_group">Uusi ryhmä</string>
+  <string name="import_contact">Kopioi laitteen yhteystiedot</string>
+  <string name="no_contact_email">Sähköpostiosoitteita ei ole</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <string name="contact_details_loading_error">Virhe ladattaessa yhteystietoa. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_details_delete_success">Yhteystieto poistettiin</string>
+  <string name="edit_contact_content_description">Muokkaa yhteystietoa</string>
+  <string name="delete_contact_content_description">Poista yhteystieto</string>
+  <string name="contact_avatar_image_content_description">Yhteystiedon kuvake</string>
+  <string name="contact_groups_content_description">Yhteystietoryhmät</string>
+  <string name="contact_type_email">Sähköpostiosoite</string>
+  <string name="contact_type_phone">Puhelinnumero</string>
+  <string name="contact_type_home">Koti</string>
+  <string name="contact_type_work">Työ</string>
+  <string name="contact_type_other">Muu</string>
+  <string name="contact_type_mobile">Matkapuhelin</string>
+  <string name="contact_type_main">Ensisijainen</string>
+  <string name="contact_type_fax">Faksi</string>
+  <string name="contact_type_pager">Hakulaite</string>
+  <string name="contact_type_address">Osoite</string>
+  <string name="contact_property_birthday">Syntymäpäivä</string>
+  <string name="contact_property_note">Muistiinpano</string>
+  <string name="contact_property_photo">Kuva</string>
+  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_geo">Paikkatieto</string>
+  <string name="contact_property_organization">Organisaatio</string>
+  <string name="contact_property_anniversary">Merkkipäivä</string>
+  <string name="contact_property_title">Nimike</string>
+  <string name="contact_property_role">Tehtävä</string>
+  <string name="contact_property_member">Jäsen</string>
+  <string name="contact_property_url">URL-osoite</string>
+  <string name="contact_property_gender">Sukupuoli</string>
+  <string name="contact_property_language">Kieli</string>
+  <string name="contact_property_time_zone">Aikavyöhyke</string>
+  <string name="contact_form_loading_error">Virhe ladattaessa yhteystietoa. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_form_save_success">Yhteystieto tallennettiin</string>
+  <string name="contact_form_create_success">Yhteystieto luotiin</string>
+  <string name="contact_form_update_success">Yhteystieto päivitettiin</string>
+  <string name="save_contact_content_description">Tallenna yhteystieto</string>
+  <string name="contact_form_save">Tallenna</string>
+  <string name="add_new">Lisää uusi</string>
+  <string name="email_section">Sähköpostiosoite</string>
+  <string name="phone_section">Puhelinnumero</string>
+  <string name="address_section">Katuosoite</string>
+  <string name="note_section">Muistiinpano</string>
+  <string name="birthday_section">Syntymäpäivä</string>
+  <string name="other_section">Muut tiedot</string>
+  <string name="display_name">Näyttönimi</string>
+  <string name="first_name">Etunimi</string>
+  <string name="last_name">Sukunimi</string>
+  <string name="email_address">Sähköpostiosoite</string>
+  <string name="phone_number">Puhelinnumero</string>
+  <string name="additional_info">Muut tiedot</string>
+  <string name="remove_contact_property">Poista yhteystiedon tietue</string>
+  <string name="property_type">Tietueen tyyppi</string>
+  <string name="property_label">Tunniste</string>
+  <string name="address_street">Katu</string>
+  <string name="address_postal_code">Postinumero</string>
+  <string name="address_city">Kaupunki</string>
+  <string name="address_region">Alue</string>
+  <string name="address_country">Maa</string>
+  <string name="contact_details_delete_dialog_title">Poista yhteystieto</string>
+  <string name="contact_details_delete_dialog_text">Haluatko varmasti poistaa yhteystiedon?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Peruuta</string>
+  <string name="contact_details_delete_dialog_confirm_button">OK</string>
+  <string name="contact_form_save_error">Virhe tallennettaessa yhteystietoa. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_form_save_error_limit_reached">Yhteystietojen enimmäismäärä on saavutettu</string>
+  <string name="all_contacts_tab">Yhteystiedot</string>
+  <string name="contact_groups_tab">Ryhmät</string>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d jäsen</item>
+    <item quantity="other">%1$d jäsentä</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Jäsen (%1$d)</item>
+    <item quantity="other">Jäsenet (%1$d)</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Virhe tallennettaessa yhteystietoa. Se sisältää virheellisen sähköpostiosoitteen.</string>
+  <string name="contact_group_details_loading_error">Virhe ladattaessa yhteystietoryhmää. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_group_details_deletion_success">Yhteystietoryhmä poistettiin</string>
+  <string name="contact_group_details_deletion_error">Virhe poistettaessa yhteystietoryhmää</string>
+  <string name="contact_group_delete_dialog_title">Poistetaanko yhteystietoryhmä %s?</string>
+  <string name="contact_group_delete_dialog_message">Ryhmitys puretaan, mutta siihen määritetyt yhteystiedot säilyvät ennallaan.</string>
+  <string name="contact_group_delete_dialog_confirm">Poista</string>
+  <string name="contact_group_delete_dialog_dismiss">Säilytä se</string>
+  <string name="contact_group_delete_button_text">Poista ryhmä</string>
+  <string name="contact_group_form_loading_error">Virhe ladattaessa yhteystietoryhmää. Yritä myöhemmin uudelleen.</string>
+  <string name="edit_contact_group_content_description">Muokkaa yhteystietoryhmää</string>
+  <string name="delete_contact_group_content_description">Poista yhteystietoryhmä</string>
+  <string name="send_group_message">Lähetä ryhmäviesti</string>
+  <string name="contact_group_form_save">Tallenna</string>
+  <string name="contact_group_form_name_hint">Näyttönimi</string>
+  <string name="remove_member_content_description">Poista jäsen</string>
+  <string name="add_members">Lisää jäseniä</string>
+  <string name="change_color">Muuta väriä</string>
+  <string name="contact_group_form_create_success">Yhteystietoryhmä luotiin</string>
+  <string name="contact_group_form_update_success">Yhteystietoryhmä päivitettiin</string>
+  <string name="contact_group_form_save_error">Virhe tallennettaessa yhteystietoryhmää. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_group_form_save_error_already_exists">Tämän niminen ryhmä on jo olemassa</string>
+  <string name="contact_group_form_subscription_error">Tarvitset maksullisen Proton Mail -tilauksen luodaksesi yhteystietoryhmiä</string>
+  <string name="members_loading_error">Virhe ladattaessa jäseniä. Yritä myöhemmin uudelleen.</string>
+  <string name="members_done">Valmis</string>
+  <string name="add_members_error">Virhe lisättäessä jäseniä. Yritä myöhemmin uudelleen.</string>
+  <string name="manage_members_title">Hallitse jäseniä</string>
+  <string name="search_contact">Etsi yhteystietoa</string>
+  <string name="search_contacts_description">Etsi yhteystiedoista</string>
+  <string name="member_update_error">Virhe päivitettäessä jäsentä. Yritä myöhemmin uudelleen.</string>
+  <string name="contact_group_color">Yhteystietoryhmän väri</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d jäsen</item>
+    <item quantity="other">%d jäsentä</item>
+  </plurals>
+  <string name="contact_search_placeholder">Etsi yhteystietoa tai ryhmää</string>
+  <string name="contact_search_content_description">Etsi yhteystietoa tai ryhmää</string>
+  <string name="contact_search_arrow_back_content_description">Palaa yhteystietoihin</string>
+  <string name="contact_search_no_results">Tuloksia ei löytynyt.</string>
+</resources>
