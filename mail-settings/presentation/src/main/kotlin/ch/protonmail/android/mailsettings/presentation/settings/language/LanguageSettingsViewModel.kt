@@ -40,7 +40,7 @@ class LanguageSettingsViewModel @Inject constructor(
     val state: Flow<LanguageSettingsState> = languageRepository
         .observe()
         .mapLatest { selectedLang ->
-            val languages = getAppLanguageUiModels(selectedLang).sortedBy { it.name }
+            val languages = getAppLanguageUiModels(selectedLang)
             val isSystemDefault = selectedLang == null
             LanguageSettingsState.Data(isSystemDefault, languages)
         }
