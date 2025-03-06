@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
-import ch.protonmail.android.mailsettings.domain.model.AppLanguage.BRAZILIAN
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage.PORTUGUESE_BRAZILIAN
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage.CHINESE_TRADITIONAL
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage.FRENCH
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
@@ -99,9 +99,9 @@ class AppLanguageRepositoryImplTest {
             // Given (initial state is null, no preference saved)
             assertNull(awaitItem())
             // When
-            languageRepository.save(BRAZILIAN)
+            languageRepository.save(PORTUGUESE_BRAZILIAN)
             // Then
-            assertEquals(BRAZILIAN, awaitItem())
+            assertEquals(PORTUGUESE_BRAZILIAN, awaitItem())
             verify { appLocaleRepository.refresh() }
         }
     }

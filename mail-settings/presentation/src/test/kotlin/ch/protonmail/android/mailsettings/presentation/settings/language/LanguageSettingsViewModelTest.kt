@@ -109,39 +109,45 @@ class LanguageSettingsViewModelTest {
         verify { languageRepository.clear() }
     }
 
-    private fun allAppLanguagesWithSelected(selectedLang: AppLanguage?) =
-        appLanguagesSortedByLangNameAlphabetically().map { language ->
-            LanguageUiModel(
-                language = language,
-                isSelected = language == selectedLang,
-                name = language.langName
-            )
-        }
+    private fun allAppLanguagesWithSelected(selectedLang: AppLanguage?) = appLanguages().map { language ->
+        LanguageUiModel(
+            language = language,
+            isSelected = language == selectedLang,
+            name = language.langName
+        )
+    }
 
-    private fun appLanguagesSortedByLangNameAlphabetically() = listOf(
-        AppLanguage.INDONESIAN,
-        AppLanguage.CATALAN,
-        AppLanguage.DANISH,
-        AppLanguage.GERMAN,
+    private fun appLanguages() = listOf(
         AppLanguage.ENGLISH,
-        AppLanguage.SPANISH,
+        AppLanguage.GERMAN,
         AppLanguage.FRENCH,
-        AppLanguage.CROATIAN,
-        AppLanguage.ITALIAN,
-        AppLanguage.HUNGARIAN,
         AppLanguage.DUTCH,
+        AppLanguage.SPANISH,
+        AppLanguage.SPANISH_LATIN_AMERICA,
+        AppLanguage.ITALIAN,
         AppLanguage.POLISH,
-        AppLanguage.BRAZILIAN,
+        AppLanguage.PORTUGUESE_BRAZILIAN,
+        AppLanguage.RUSSIAN,
+        AppLanguage.TURKIYE,
+        AppLanguage.CATALAN,
+        AppLanguage.CZECH,
+        AppLanguage.DANISH,
+        AppLanguage.FINNISH,
+        AppLanguage.CROATIAN,
+        AppLanguage.HUNGARIAN,
+        AppLanguage.INDONESIAN,
+        AppLanguage.KABYLE,
+        AppLanguage.NORWEGIAN_BOKMAL,
         AppLanguage.PORTUGUESE,
         AppLanguage.ROMANIAN,
+        AppLanguage.SLOVAK,
+        AppLanguage.SLOVENIAN,
         AppLanguage.SWEDISH,
-        AppLanguage.KABYLIAN,
-        AppLanguage.TURKISH,
-        AppLanguage.ICELANDIC,
-        AppLanguage.CZECH,
         AppLanguage.GREEK,
-        AppLanguage.RUSSIAN,
+        AppLanguage.BELARUSIAN,
         AppLanguage.UKRAINIAN,
+        AppLanguage.GEORGIAN,
+        AppLanguage.KOREAN,
         AppLanguage.JAPANESE,
         AppLanguage.CHINESE_SIMPLIFIED,
         AppLanguage.CHINESE_TRADITIONAL

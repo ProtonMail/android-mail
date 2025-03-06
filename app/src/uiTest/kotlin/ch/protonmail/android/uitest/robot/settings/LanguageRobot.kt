@@ -40,10 +40,10 @@ internal class LanguageRobot : ComposeRobot() {
     fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule
             .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
-            .performScrollToNode(hasText(AppLanguage.BRAZILIAN.langName))
+            .performScrollToNode(hasText(AppLanguage.PORTUGUESE_BRAZILIAN.langName))
 
         composeTestRule
-            .onNodeWithText(AppLanguage.BRAZILIAN.langName)
+            .onNodeWithText(AppLanguage.PORTUGUESE_BRAZILIAN.langName)
             .performClick()
 
         composeTestRule.waitForIdle()
@@ -88,7 +88,7 @@ internal class LanguageRobot : ComposeRobot() {
         }
 
         fun brazilianPortugueseLanguageIsSelected() {
-            verifyLanguageIsSelected(AppLanguage.BRAZILIAN.langName)
+            verifyLanguageIsSelected(AppLanguage.PORTUGUESE_BRAZILIAN.langName)
         }
 
         fun spanishLanguageIsSelected() {
@@ -103,7 +103,7 @@ internal class LanguageRobot : ComposeRobot() {
                 .assertIsDisplayed()
                 .assertIsSelected()
 
-            val languages = listOf("Català", "Dansk", "Deutsch", "English", "Français")
+            val languages = listOf("English", "Deutsch", "Français", "Nederlands", "Español (España)")
             assertLanguagesAreShownButUnselected(languages)
         }
 
