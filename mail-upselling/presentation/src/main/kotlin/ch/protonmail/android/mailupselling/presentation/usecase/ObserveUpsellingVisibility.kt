@@ -19,63 +19,40 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
-import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
-import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import me.proton.core.payment.domain.PurchaseManager
-import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import javax.inject.Inject
 
 class ObserveUpsellingVisibility @Inject constructor(
     private val observePrimaryUser: ObservePrimaryUser,
     private val purchaseManager: PurchaseManager,
-    private val canUpgradeFromMobile: CanUpgradeFromMobile,
-    private val userHasAvailablePlans: UserHasAvailablePlans,
-    private val userHasPendingPurchases: UserHasPendingPurchases,
-    @UpsellingMobileSignatureEnabled private val isUpsellingMobileSignatureEnabled: Boolean,
-    private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
-    private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
-    private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
-    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
-    @UpsellingAutodeleteEnabled private val isUpsellingAutoDeleteEnabled: Boolean
+    private val cache: UpsellingVisibilityCache,
+    private val resolveUpsellingVisibility: ResolveUpsellingVisibility
 ) {
 
     operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases()
     ) { user, purchases ->
-        if (user == null) return@combine false
-
-        if (isFeatureFlagOff(upsellingEntryPoint)) return@combine false
-
-        if (!canUpgradeFromMobile(user.userId)) return@combine false
-        if (userHasPendingPurchases(purchases, user.userId)) return@combine false
-
-        userHasAvailablePlans(user.userId)
-    }
-
-    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint.Feature): Boolean {
-        return !when (upsellingEntryPoint) {
-            UpsellingEntryPoint.Feature.ContactGroups -> isUpsellingContactGroupsEnabled()
-            UpsellingEntryPoint.Feature.Folders -> isUpsellingFoldersEnabled()
-            UpsellingEntryPoint.Feature.Labels -> isUpsellingLabelsEnabled()
-            UpsellingEntryPoint.Feature.Mailbox,
-            UpsellingEntryPoint.Feature.Navbar -> {
-                observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
+        user to purchases
+    }.flatMapLatest { (user, purchases) ->
+        if (user == null) return@flatMapLatest flowOf(false)
+        flow {
+            val cached = cache.retrieve(upsellingEntryPoint)
+            if (cached != null) {
+                emit(cached)
+            } else {
+                emit(false)
+                val resolved = resolveUpsellingVisibility(user, purchases, upsellingEntryPoint)
+                cache.store(upsellingEntryPoint, resolved)
+                emit(resolved)
             }
-
-            UpsellingEntryPoint.Feature.MobileSignature -> isUpsellingMobileSignatureEnabled
-            UpsellingEntryPoint.Feature.AutoDelete -> isUpsellingAutoDeleteEnabled
-        }
+        }.distinctUntilChanged()
     }
 }
