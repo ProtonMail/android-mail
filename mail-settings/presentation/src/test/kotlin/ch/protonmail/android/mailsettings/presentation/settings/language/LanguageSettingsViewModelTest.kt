@@ -147,6 +147,7 @@ class LanguageSettingsViewModelTest {
         AppLanguage.BELARUSIAN,
         AppLanguage.UKRAINIAN,
         AppLanguage.GEORGIAN,
+        AppLanguage.HINDI,
         AppLanguage.KOREAN,
         AppLanguage.JAPANESE,
         AppLanguage.CHINESE_SIMPLIFIED,
