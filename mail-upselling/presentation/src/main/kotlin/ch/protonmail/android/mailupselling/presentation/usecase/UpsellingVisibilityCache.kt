@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 
 import java.time.Duration
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -38,7 +39,7 @@ class UpsellingVisibilityCache @Inject constructor(
     @AppScope appScope: CoroutineScope
 ) {
 
-    private var cachedResponse: MutableMap<UpsellingEntryPoint.Feature, CachedValue>? = null
+    private val cachedResponse: ConcurrentHashMap<UpsellingEntryPoint.Feature, CachedValue> = ConcurrentHashMap()
 
     init {
         appScope.launch {
@@ -46,21 +47,18 @@ class UpsellingVisibilityCache @Inject constructor(
                 observePrimaryUser().distinctUntilChanged(),
                 purchaseManager.observePurchases()
             ) { _, _ ->
-                cachedResponse = mutableMapOf()
+                cachedResponse.clear()
             }.collect {}
         }
     }
 
     fun retrieve(upsellingEntryPoint: UpsellingEntryPoint.Feature): Boolean? {
-        val cached = cachedResponse?.get(upsellingEntryPoint)
+        val cached = cachedResponse[upsellingEntryPoint]
         return cached?.takeIf { !it.isExpired() }?.value
     }
 
     fun store(upsellingEntryPoint: UpsellingEntryPoint.Feature, value: Boolean) {
-        cachedResponse?.put(
-            upsellingEntryPoint,
-            CachedValue(Instant.now().toEpochMilli() + EXPIRY_DURATION_MS, value)
-        )
+        cachedResponse[upsellingEntryPoint] = CachedValue(Instant.now().toEpochMilli() + EXPIRY_DURATION_MS, value)
     }
 }
 

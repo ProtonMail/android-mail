@@ -44,7 +44,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -138,8 +138,8 @@ class FolderFormViewModelTest {
         every { this@mockk.isUserPendingUpgrade } returns false
     }
 
-    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
-        every { this@mockk.invoke(any()) } returns flowOf(false)
+    private val getUpsellingVisibility = mockk<GetUpsellingVisibility> {
+        coEvery { this@mockk.invoke(any()) } returns false
     }
 
     private val reducer = FolderFormReducer()
@@ -157,7 +157,7 @@ class FolderFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
-            observeUpsellingVisibility,
+            getUpsellingVisibility,
             userUpgradeState,
             observeFolderColorSettings,
             reducer,
@@ -546,7 +546,7 @@ class FolderFormViewModelTest {
             val loadedState = loadedCreateState
             every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
             coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns true.right()
-            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.Feature.Folders) } returns flowOf(true)
+            coEvery { getUpsellingVisibility.invoke(UpsellingEntryPoint.Feature.Folders) } returns true
 
             folderFormViewModel.state.test {
                 // Initial loaded state

@@ -42,7 +42,7 @@ import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -104,8 +104,8 @@ class LabelFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
-    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
-        every { this@mockk.invoke(any()) } returns flowOf(false)
+    private val getUpsellingVisibility = mockk<GetUpsellingVisibility> {
+        coEvery { this@mockk.invoke(any()) } returns false
     }
 
     private val userUpgradeState = mockk<UserUpgradeState> {
@@ -127,7 +127,7 @@ class LabelFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
-            observeUpsellingVisibility,
+            getUpsellingVisibility,
             userUpgradeState,
             reducer,
             colorMapper,
@@ -428,7 +428,7 @@ class LabelFormViewModelTest {
             val loadedState = loadedCreateState
             every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
             coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
-            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.Feature.Labels) } returns flowOf(true)
+            coEvery { getUpsellingVisibility.invoke(UpsellingEntryPoint.Feature.Labels) } returns true
 
             labelFormViewModel.state.test {
                 // Initial loaded state
