@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 mesec</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">PRIHRANITE %s%%</string>
   <string name="upselling_month">/mesec</string>
   <string name="upselling_year">/leto</string>
@@ -115,8 +117,6 @@
     <item quantity="few">%d več funkcij</item>
     <item quantity="other">%d več funkcij</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Zaračunano %s %s mesečno</string>
-  <string name="upselling_onboarding_billing_annual">Zaračunano %s %s vsakih 12 mesecev</string>
   <string name="upselling_onboarding_get_plan">Pridobite %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Nadaljujte s Proton Free</string>
   <string name="upselling_onboarding_save_label">Prihranite %s %%</string>

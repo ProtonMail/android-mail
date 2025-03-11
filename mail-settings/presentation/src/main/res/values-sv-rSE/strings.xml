@@ -56,7 +56,7 @@
   <string name="mail_settings_recovery_email">E-post för återställning</string>
   <string name="mail_settings_mailbox_size">Brevlådestorlek</string>
   <string name="mail_settings_addresses">Adresser</string>
-  <string name="mail_settings_default_email_address">Förvald e-postadress</string>
+  <string name="mail_settings_default_email_address">Standard e-postadress</string>
   <string name="mail_settings_display_name_and_signature">Visningsnamn och signatur</string>
   <string name="mail_settings_mailbox">Brevlåda</string>
   <string name="mail_settings_privacy">Integritet</string>

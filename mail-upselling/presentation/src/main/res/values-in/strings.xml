@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 bulan</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Diperbarui secara otomatis pada harga dan ketentuan yang sama kecuali dibatalkan.</string>
+  <string name="upselling_auto_renew_text_promo">Penawaran selamat datang. Akan diperbarui secara otomatis pada %s %s%s kecuali dibatalkan.</string>
+  <string name="upselling_auto_renew_text_standard">Diperbarui secara otomatis pada %s %s%s kecuali dibatalkan.</string>
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>
   <string name="upselling_year">/tahun</string>
@@ -109,8 +111,6 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d fitur lainnya</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Tertagih dengan harga %s %s per bulan</string>
-  <string name="upselling_onboarding_billing_annual">Tertagih dengan harga %s %s per 12 bulan</string>
   <string name="upselling_onboarding_get_plan">Dapatkan %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Lanjut dengan Proton Free</string>
   <string name="upselling_onboarding_save_label">Hemat %s%%</string>

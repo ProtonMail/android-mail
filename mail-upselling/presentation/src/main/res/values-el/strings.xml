@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 μήνας</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί.</string>
+  <string name="upselling_auto_renew_text_promo">Προσφορά καλωσορίσματος. Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
+  <string name="upselling_auto_renew_text_standard">Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
   <string name="upselling_discount_tag">ΕΞΟΙΚΟΝΟΜΗΣΤΕ %s%%</string>
   <string name="upselling_month">/μήνα</string>
   <string name="upselling_year">/έτος</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d επιπλέον χαρακτηριστικό</item>
     <item quantity="other">%d περισσότερα χαρακτηριστικά</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Χρεώνεται σε %s %s κάθε μήνα</string>
-  <string name="upselling_onboarding_billing_annual">Χρεώνεται σε %s %s κάθε 12 μήνες</string>
   <string name="upselling_onboarding_get_plan">Αποκτήστε %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Συνέχεια με Proton Free</string>
   <string name="upselling_onboarding_save_label">Εξοικονομήστε %s%%</string>

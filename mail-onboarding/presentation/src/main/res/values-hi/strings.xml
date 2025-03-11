@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">सभी के लिए निजता</string>
+  <string name="onboarding_privacy_for_all_description">दूसरों को प्रोटॉन मेल पर आमंत्रित करें ताकि आप सभी एंड-टू-एंड एन्क्रिप्शन का लाभ उठा सकें।</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">आसानी से अप-टू-डेट</string>
+  <string name="onboarding_easily_up_to_date_description">बातचीत मोड में थ्रेडेड संदेशों के माध्यम से हवा।</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">साफ-सुथरा</string>
+  <string name="onboarding_neat_and_tidy_description">अपना कस्टम इनबॉक्स सबसे बेहतरीन बनाने के लिए संदेशों को फाइल, लेबल, और रंग कोड करें।</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">अगला</string>
+  <string name="onboarding_get_started">शुरू करें</string>
+  <string name="onboarding_illustration_content_description">ऑनबोर्ड करने की फोटो</string>
+  <string name="onboarding_close_content_description">बंद करें</string>
+</resources>

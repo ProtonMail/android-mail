@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Engedélyezett</string>
   <string name="mail_settings_denied">Tiltott</string>
   <string name="mail_settings_auto_detect">Automatikus-észlelés</string>
-  <string name="mail_settings_customize_toolbar">Customize toolbar</string>
+  <string name="mail_settings_customize_toolbar">Eszköztár testreszabása</string>
   <string name="mail_settings_app_information">Alkalmazás információk</string>
   <string name="mail_settings_app_version">Alkalmazás verzió</string>
   <string name="mail_settings_app_logs">Alkalmazás naplók</string>
@@ -183,20 +183,20 @@
   <string name="biometric_error_hw_not_available">Nem érhető el biometrikus hardver.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Ez az eszköztár akkor látható, amikor egy üzenetet olvas.</string>
-  <string name="customize_toolbar_disclaimer_conversation">This toolbar is visible when reading a conversation.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Az eszköztár beszélgetés olvasásakor látható</string>
   <string name="customize_toolbar_disclaimer_inbox">Az eszköztár akkor jelenik meg, ha több üzenetet jelöl ki a postafiókjában.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">This toolbar appears when selecting multiple conversations in your mailbox.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Ez az eszköztár akkor látható, amikor több üzenet lett kiválasztva</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Ez az eszköztár akkor látható, amikor több beszélgetés lett kiválasztva.</string>
   <string name="customize_toolbar_message">Üzenet</string>
   <string name="customize_toolbar_conversation">Beszélgetés</string>
   <string name="customize_toolbar_inbox">Bejövő</string>
-  <string name="customize_toolbar_mailbox">Mailbox</string>
+  <string name="customize_toolbar_mailbox">Postafiók</string>
   <string name="customize_toolbar_done_action">Kész</string>
   <string name="customize_toolbar_reset_to_default">Visszaállítás alapértelmezettre</string>
-  <string name="customize_toolbar_reset_to_default_btn">Reset to default</string>
+  <string name="customize_toolbar_reset_to_default_btn">Visszaállítás alapértelmezettre</string>
   <string name="customize_toolbar_actions_section">Eszköztári műveletek (legfeljebb 5-öt válasszon ki)</string>
   <string name="customize_toolbar_available_actions_section">Elérhető műveletek</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Reset to default?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
-  <string name="customize_toolbar_reset_default_confirm">Confirm</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Visszaállítás alapértelmezettre?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Az eszköztáron beállított műveletek vissza lesznek állítva alapértelmezettre.</string>
+  <string name="customize_toolbar_reset_default_confirm">Jóváhagyás</string>
 </resources>

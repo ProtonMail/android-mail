@@ -27,7 +27,7 @@
   <string name="notification_permission_dialog_title">Nie przegap wiadomości</string>
   <string name="notification_permission_dialog_message">Powiadomienia pomagają być na bieżąco ze skrzynką odbiorczą bez konieczności sprawdzania aplikacji.</string>
   <string name="notification_permission_dialog_post_send_title">Chcesz być na bieżąco?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_post_send_message">Włącz powiadomienia, aby wiedzieć, kiedy otrzymasz odpowiedź na swoją wiadomość.</string>
   <string name="notification_permission_dialog_button_enable">Włącz powiadomienia</string>
   <string name="notification_permission_dialog_button_dismiss">Odrzuć</string>
 </resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">इनबॉक्स</string>
+  <string name="label_title_drafts">ड्राफ्ट</string>
+  <string name="label_title_sent">भेजे गए</string>
+  <string name="label_title_starred">तारे लगें</string>
+  <string name="label_title_archive">संग्रह</string>
+  <string name="label_title_spam">स्पैम</string>
+  <string name="label_title_trash">कचरा</string>
+  <string name="label_title_outbox">आउटबॉक्स</string>
+  <string name="label_title_all_mail">सारे मेल</string>
+  <string name="label_title_all_drafts">सारे ड्राफ्ट</string>
+  <string name="label_title_all_sent">सारे भेजे गए</string>
+  <string name="label_title_all_scheduled">सभी अनुसूचित</string>
+  <string name="label_title_snoozed">स्नूज़ किया हुआ</string>
+  <string name="label_title_folders">फोल्डर</string>
+  <string name="label_title_parent_folder">मुख्य फोल्डर</string>
+  <string name="label_title_labels">लेबल</string>
+  <string name="label_title_create_folder">फोल्डर बनाएं</string>
+  <string name="label_title_create_label">लेबल बनाएं</string>
+  <string name="label_title_label_list">लेबल सूची</string>
+  <string name="label_title_folder_list">फ़ोल्डर सूची</string>
+  <string name="label_list_no_labels_found">कोई लेबल नहीं मिला |</string>
+  <string name="label_list_create_label_placeholder_description">अपने ईमेल के अनुभव को बेहतर बनाने के लिए एक लेबल बनाएं।</string>
+  <string name="create_label_content_description">लेबल बनाएं</string>
+  <string name="label_form_create_label">लेबल बनाएं</string>
+  <string name="folder_form_create_folder">फोल्डर बनाएं</string>
+  <string name="label_form_edit_label">लेबल में बदलाव करें</string>
+  <string name="folder_form_edit_folder">फोल्डर बदलाव करें</string>
+  <string name="label_form_save">सहेजें</string>
+  <string name="label_form_delete">लेबल मिटाएं</string>
+  <string name="folder_form_delete">फोल्डर मिटाएं</string>
+  <string name="label_name_title">नाम</string>
+  <string name="add_a_label_name_hint">लेबल नाम जोड़ें</string>
+  <string name="add_a_folder_name_hint">फोल्डर का नाम जोड़ें</string>
+  <string name="input_field_max_characters_count">%1d / %2d अक्षर</string>
+  <string name="color_picker_title">रंग</string>
+  <string name="save_label_error">लेबल सहेजने में त्रुटि, कृपया बाद में प्रयास करें</string>
+  <string name="save_folder_error">फोल्डर सहेजने में त्रुटि, कृपया बाद में प्रयास करें</string>
+  <string name="label_already_exists">इस नाम का एक लेबल या फ़ोल्डर पहले से मौजूद है</string>
+  <string name="label_limit_reached_error">आपको और लेबल बनाने के लिए एक पेड Proton Mail सदस्यता की आवश्यकता है</string>
+  <string name="folder_limit_reached_error">आपको और फोल्डर बनाने के लिए एक पेड Proton Mail सदस्यता की आवश्यकता है</string>
+  <string name="delete_label_error">लेबल मिटाने में त्रुटि</string>
+  <string name="input_field_clear_content_description">पाठ हटाएं</string>
+  <string name="label_list_item_content_description">लेबल सूची आइटम</string>
+  <string name="folder_list_item_content_description">फोल्डर सूची आइटम</string>
+  <string name="folder_list_no_folders_found">कोई फोल्डर नहीं मिला।</string>
+  <string name="folder_list_create_folder_placeholder_description">अपने ईमेल के अनुभव को बेहतर बनाने के लिए एक फोल्डर बनाएं।</string>
+  <string name="create_folder_content_description">फोल्डर जोड़ें</string>
+  <string name="folder_settings_content_description">फोल्डर सेटिंग</string>
+  <string name="folder_settings_title">सेटिंग</string>
+  <string name="folder_settings_done_button">हो गया</string>
+  <string name="folder_settings_folder_colors">फ़ोल्डर रंगों का प्रयोग करें</string>
+  <string name="folder_settings_parent_color">पहला फ़ोल्डर का रंग अपनाएं</string>
+  <string name="folder_list_loading_error">फोल्डर लोड करने में त्रुटि, कृपया बाद में प्रयास करें</string>
+  <string name="folder_loading_error">फोल्डर लोड करने में त्रुटि, कृपया बाद में प्रयास करें</string>
+  <string name="switch_on">ऑन</string>
+  <string name="switch_off">ऑफ</string>
+  <string name="folder_form_parent">मुख्य फोल्डर</string>
+  <string name="folder_form_no_parent">कुछ नहीं</string>
+  <string name="folder_form_notifications">सूचनाएं</string>
+  <string name="folder_saved">फोल्डर सहेजा गया</string>
+  <string name="folder_deleted">फोल्डर मिटाया गया</string>
+  <string name="parent_folder_none">कुछ नहीं</string>
+  <string name="delete_label">लेबल मिटाएं?</string>
+  <string name="delete_folder">फोल्डर हटा दें?</string>
+  <string name="delete_label_message">इस एक्शन को वापस नहीं किया जा सकता। इस लेबल से टैग किए गए ईमेल मिटाए नहीं जाएंगे और इन्हें \'सारे मेल\' फ़ोल्डर में पाया जा सकता है।</string>
+  <string name="delete_folder_message">इस एक्शन को वापस नहीं किया जा सकता। इस फ़ोल्डर में संग्रहीत ईमेल मिटाए नहीं जाएंगे और इन्हें \'सारे मेल\' फ़ोल्डर में पाया जा सकता है।</string>
+</resources>

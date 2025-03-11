@@ -19,9 +19,9 @@
 <resources>
   <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">确定登出？</string>
-  <string name="dialog_sign_out_account_confirm">确认</string>
-  <string name="dialog_sign_out_account_cancel">取消</string>
-  <string name="dialog_remove_account_title">注销账号</string>
+  <string name="dialog_sign_out_account_confirm">是</string>
+  <string name="dialog_sign_out_account_cancel">否</string>
+  <string name="dialog_remove_account_title">移除账号</string>
   <string name="dialog_remove_account_description">您即将退出该账户，并删除此设备上与该账户相关的所有数据。</string>
   <string name="dialog_remove_account_confirm">移除</string>
   <string name="dialog_remove_account_cancel">取消</string>
@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">发送信息时出错</string>
   <string name="mailbox_message_sending_error_action">转至草稿箱</string>
   <string name="mailbox_attachment_uploading_error">上传附件时出错</string>
-  <string name="notification_switched_account">已转至 %s</string>
+  <string name="notification_switched_account">已切换至账户：%s</string>
   <string name="label_saved">标签已保存</string>
   <string name="label_deleted">标签已删除</string>
   <string name="label_list_loading_error">加载标签出错。请稍后再试。</string>

@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 ヶ月</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">キャンセルするまで同じ金額、同じ期間で自動更新</string>
+  <string name="upselling_auto_renew_text_promo">ウェルカムオファー。キャンセルしない限り、 %s %s%s で自動更新します。</string>
+  <string name="upselling_auto_renew_text_standard">キャンセルしない限り、 %s %s%s で自動更新します。</string>
   <string name="upselling_discount_tag">%s%%節約</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/ 年間</string>
@@ -109,8 +111,6 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d 個の追加機能</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">毎月%s%sで請求されます</string>
-  <string name="upselling_onboarding_billing_annual">12 ヶ月毎%s%sで請求されます</string>
   <string name="upselling_onboarding_get_plan">%sを入手</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free で続行</string>
   <string name="upselling_onboarding_save_label">%s%%節約</string>

@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 month</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">節省 %s%%</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/year</string>
@@ -109,8 +111,6 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d 個額外功能</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">取得 %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">繼續使用 Proton Free</string>
   <string name="upselling_onboarding_save_label">Save %s%%</string>

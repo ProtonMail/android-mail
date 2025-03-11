@@ -36,8 +36,8 @@
     <item quantity="many">%s непрачытаных</item>
     <item quantity="other">%s непрачытаных</item>
   </plurals>
-  <string name="mailbox_default_recipient">(Няма атрымальніка)</string>
-  <string name="mailbox_default_sender">(Няма адпраўніка)</string>
+  <string name="mailbox_default_recipient">(Без атрымальніка)</string>
+  <string name="mailbox_default_sender">(Без адпраўніка)</string>
   <string name="mailbox_error_message_offline">Немагчыма атрымаць элементы, бо вы па-за сеткай</string>
   <string name="mailbox_error_message_generic">Збой загрузкі паштовай скрыні</string>
   <string name="mailbox_error_message_unexpected">Нешта пайшло не так</string>

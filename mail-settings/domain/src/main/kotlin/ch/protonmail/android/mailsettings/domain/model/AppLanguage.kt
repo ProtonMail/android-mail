@@ -49,6 +49,7 @@ enum class AppLanguage(val langName: String, val langTag: String) {
     BELARUSIAN("Беларуская", "be"),
     UKRAINIAN("Українська", "uk"),
     GEORGIAN("Ქართული", "ka"),
+    HINDI("हिन्दी (भारत)", "hi"),
     KOREAN("한국어", "ko"),
     JAPANESE("日本語", "ja"),
     CHINESE_SIMPLIFIED("简体中文", "zh-CN"),

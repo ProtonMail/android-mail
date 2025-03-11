@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 mes</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Se renueva automáticamente al mismo precio y términos a menos que se cancele.</string>
+  <string name="upselling_auto_renew_text_promo">Oferta de bienvenida. Se renueva automáticamente para %s %s%s a menos que se cancele.</string>
+  <string name="upselling_auto_renew_text_standard">Se renueva automáticamente para %s %s%s a menos que se cancele.</string>
   <string name="upselling_discount_tag">AHORRE UN %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_year">/año</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d función más</item>
     <item quantity="other">%d funciones más</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Al precio de %s%s cada mes</string>
-  <string name="upselling_onboarding_billing_annual">Al precio de %s%s cada 12 meses</string>
   <string name="upselling_onboarding_get_plan">Obtenga %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continúe con Proton Free</string>
   <string name="upselling_onboarding_save_label">Ahorre un %s%%</string>

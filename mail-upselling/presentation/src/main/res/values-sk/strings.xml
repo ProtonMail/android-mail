@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 mesiac</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Automatické obnovenie za rovnakú cenu a za rovnakých podmienok až pokým nedôjde k zrušeniu.</string>
+  <string name="upselling_auto_renew_text_promo">Uvítacia ponuka. Automatická obnova za %s %s%s až do zrušenia.</string>
+  <string name="upselling_auto_renew_text_standard">Automatická obnova za %s %s%s až do zrušenia.</string>
   <string name="upselling_discount_tag">UŠETRÍTE %s%%</string>
   <string name="upselling_month">/mesiac</string>
   <string name="upselling_year">/rok</string>
@@ -115,8 +117,6 @@
     <item quantity="many">%d ďalších funkcií</item>
     <item quantity="other">%d ďalších funkcií</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Účtované %s %s každý mesiac</string>
-  <string name="upselling_onboarding_billing_annual">Účtované %s %s každých 12 mesiacov</string>
   <string name="upselling_onboarding_get_plan">Získajte %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Pokračovať s Proton Free</string>
   <string name="upselling_onboarding_save_label">Ušetrite %s%%</string>
@@ -138,11 +138,11 @@
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">Odomkli ste zdieľanie kalendára a 8x viac kalendárov.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Vaše nové predplatné zväčšilo úložisko na 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Vaše nové predplatné navýšilo úložisko na 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">Najlepšia VPN z hľadiska rýchlosti a bezpečnosti.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
   <string name="post_subscription_proton_pass_message">Bezpečné úložisko hesiel a jednoduché prihlasovanie do účtov.</string>
   <string name="post_subscription_button_installed">Nainštalované</string>
-  <string name="post_subscription_button_get_the_app">Získajte aplikáciu</string>
+  <string name="post_subscription_button_get_the_app">Získať aplikáciu</string>
 </resources>

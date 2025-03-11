@@ -73,8 +73,8 @@
   <string name="action_more_content_description">Več</string>
   <string name="common_error_loading_actions">Neuspešno nalaganje dejanj</string>
   <string name="yesterday">Včeraj</string>
-  <string name="action_open_customize_toolbar">Customize toolbar</string>
-  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
+  <string name="action_open_customize_toolbar">Prilagajanje orodne vrstice</string>
+  <string name="action_open_customize_toolbar_description">Prilagajanje orodne vrstice</string>
   <string name="auto_delete_banner_text_activate_trash">Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.</string>
   <string name="auto_delete_banner_text_activate_spam">Samodejno izbriši sporočila, ki so med neželeno pošto več kot 30 dni.</string>
   <string name="auto_delete_banner_text_upgrade">Nadgradite paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.</string>
@@ -89,7 +89,7 @@
   <string name="expiration_minutes_arg">%d min</string>
   <string name="expiration_auto_delete_hour">To sporočilo bo samodejno izbrisano čez manj kot eno uro</string>
   <string name="expiration_auto_delete_day">To sporočilo bo samodejno izbrisano čez manj kot en dan</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Sporočilo se bo samodejno izbrisalo v %s</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d minuta</item>
     <item quantity="two">%d minuti</item>

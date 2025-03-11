@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">से:</string>
+  <string name="to_prefix">को:</string>
+  <string name="cc_prefix">सीसी:</string>
+  <string name="bcc_prefix">बीसीसी:</string>
+  <string name="subject_placeholder">विषय</string>
+  <string name="compose_message_placeholder">ईमेल लिखें</string>
+  <string name="close_composer_content_description">रचनास्तान बंद करें</string>
+  <string name="send_message_content_description">संदेश भेजें</string>
+  <string name="composer_expand_recipients_button">अन्य प्राप्तकर्ताओं को दिखाएँ</string>
+  <string name="composer_error_invalid_email">ईमेल पता अमान्य है</string>
+  <string name="composer_error_invalid_sender">ईमेल पता अमान्य है</string>
+  <string name="change_sender_button_content_description">भेजने वाले बदलें</string>
+  <string name="composer_change_sender_paid_feature">आपको भेजने वाले का पता बदलने के लिए एक पेड Proton Mail सदस्यता की आवश्यकता है</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">भेजने वाले को बदला नहीं जा सकता क्योंकि उपयोगकर्ता की सदस्यता प्राप्त करने में विफल रहा। पुनः प्रयास करें।</string>
+  <string name="composer_error_store_draft_sender_address">भेजने वाले का पता सहेजा नहीं गया</string>
+  <string name="composer_error_store_draft_body">ड्राफ्ट ईमेल की सामग्री सहेजी नहीं गई</string>
+  <string name="composer_error_duplicate_recipient">डुप्लिकेट प्राप्तकर्ता(ओं) को हटा दिया गया</string>
+  <string name="composer_error_store_draft_subject">विषय पंक्ति सहेजी नहीं गई</string>
+  <string name="composer_error_store_draft_recipients">इस ड्राफ्ट के प्राप्तकर्ताओं को सहेजना विफल रहा</string>
+  <string name="composer_error_loading_draft">इस ड्राफ्ट की सामग्री इस समय उपलब्ध नहीं है। संपादन करने से किसी भी पूर्व-मौजूद सामग्री को अधिलेखित कर दिया जाएगा।</string>
+  <string name="composer_add_attachments_content_description">अटैचमेंट जोड़ें</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">लाया गया…</string>
+  <string name="composer_error_loading_parent_message">संदेश की जानकारी लोड नहीं की जा सकी</string>
+  <string name="composer_original_message_quote">पुराने संदेश</string>
+  <string name="composer_sender_quote">%s को, %s &lt;%s&gt; ने लिखा था:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">ठीक है</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">अटैचमेंट की सीमा पार हो गई</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">अनुलग्नकों की आकार सीमा %1$s है।</string>
+  <string name="composer_attachment_reencryption_failed_message">अटैचमेंट का रीएन्क्रिप्शन विफल रहा। सुरक्षा कारणों से सभी अटैचमेंट्स को हटाया गया।</string>
+  <string name="composer_attachment_not_found">अटैचमेंट नहीं मिला।</string>
+  <string name="composer_attachment_error_draft_loading">मूल ड्राफ्ट संदेश लोड करने में असमर्थ।</string>
+  <string name="composer_attachment_error_saving_attachment">अटैचमेंट को सहेजने में असमर्थ। कृपया पुनः प्रयास करें।</string>
+  <string name="composer_warning_local_data_shown">इस ड्राफ्ट का नवीनतम संस्करण लोड नहीं हो सका। किसी भी परिवर्तन से इसकी सामग्री अधिलेखित हो जाएगी।</string>
+  <string name="composer_button_add_password">पासवर्ड जोड़ें</string>
+  <string name="composer_button_set_expiration">समाप्ति समय निर्धारित करें</string>
+  <string name="composer_expiration_time_bottom_sheet_title">संदेश एक्सपायरेशन</string>
+  <string name="composer_expiration_time_bottom_sheet_done">सेट करें</string>
+  <string name="composer_bottom_bar_expiration_time_none">कुछ नहीं</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 घंटा</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 दिन</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 दिन</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 हफ्ता</string>
+  <string name="composer_bottom_bar_expiration_time_custom">अनुकूलित</string>
+  <string name="composer_error_setting_expiration_time">समाप्ति समय निर्धारित करने में विफल रहा</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">समाप्ति समर्थित नहीं</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">हम इसके बजाय निम्नलिखित प्राप्तकर्ताओं के लिए पासवर्ड सेट करने की अनुशंसा करते हैं:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">रद्द करें</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">फिर भी भेजें</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">नोटिस भेजना</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">\@pm.me से संदेश भेजना एक पेड खासियत है। आपका संदेश आपके डिफॉल्ट पते से भेजा जाएगा।</string>
+  <string name="composer_sender_changed_original_address_disabled">चुना हुआ भेजने वाले का पता अक्षम है। आपका संदेश आपके डिफॉल्ट पते से भेजा जाएगा।</string>
+  <string name="composer_sender_changed_original_address_generic_error">मूल भेजने वाले का पता प्राप्त नहीं किया जा सका। आपका संदेश आपके डिफॉल्ट पते से भेजा जाएगा।</string>
+  <string name="composer_sender_changed_dialog_confirm_button">ठीक</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">लिखें</string>
+  <string name="composer_send_without_subject_dialog_text">बिना विषय के संदेश भेजें?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">हाँ</string>
+  <string name="composer_send_without_subject_dialog_reject_button">नहीं</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">भेजने में त्रुटि</string>
+  <string name="message_sending_error_dialog_button_dismiss">बंद करें</string>
+  <string name="message_sending_error_dialog_text_error">दर्ज किए गए पते पर निम्नलिखित कारण से आपका ईमेल नहीं भेजा जा सकता:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">विश्वसनीय चाबियाँ नहीं हैं: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">पता मौजूद नहीं है: %s</string>
+  <string name="set_message_password_title">संदेश एन्क्रिप्ट करें</string>
+  <string name="set_message_password_info_message">गैर-Proton Mail उपयोगकर्ताओं के लिए इस संदेश को एन्क्रिप्ट करने के लिए एक पासवर्ड सेट करें |</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">और जानें</a></string>
+  <string name="set_message_password_label">संदेश पासवर्ड</string>
+  <string name="set_message_password_label_repeat">पासवर्ड दोहराएं</string>
+  <string name="set_message_password_label_hint">पासवर्ड संकेत (वैकल्पिक)</string>
+  <string name="set_message_password_supporting_text">4 से 21 अक्षर लंबा</string>
+  <string name="set_message_password_supporting_error_text">पासवर्ड 4 और 21 वर्णों के बीच लंबा होना चाहिए</string>
+  <string name="set_message_password_supporting_text_repeat">पासवर्ड मेल खाने चाहिए</string>
+  <string name="set_message_password_supporting_error_text_repeat">पासवर्ड मेल नहीं खा रहे</string>
+  <string name="set_message_password_button_show">पासवर्ड दिखाएँ</string>
+  <string name="set_message_password_button_hide">पासवर्ड छिपाएं</string>
+  <string name="set_message_password_button_apply">पासवर्ड लागू करें</string>
+  <string name="set_message_password_button_save_changes">परिवर्तन सहेजें</string>
+  <string name="set_message_password_button_remove_password">पासवर्ड हटाएं</string>
+  <string name="respondInline">इनलाइन जवाब दें</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d सदस्य</item>
+    <item quantity="other">%d सदस्य</item>
+  </plurals>
+</resources>

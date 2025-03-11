@@ -55,8 +55,8 @@
   <string name="save_label_error">Napaka pri shranjevanju oznake, poskusite znova pozneje</string>
   <string name="save_folder_error">Napaka pri shranjevanju mape, poskusite znova pozneje</string>
   <string name="label_already_exists">Oznaka ali mapa s tem imenom že obstaja</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Za ustvarjanje več oznak potrebujete plačljivo naročnino na Proton Mail</string>
+  <string name="folder_limit_reached_error">Za ustvarjanje več map potrebujete plačljivo naročnino na Proton Mail</string>
   <string name="delete_label_error">Napaka pri brisanju oznake</string>
   <string name="input_field_clear_content_description">Izbriši besedilo</string>
   <string name="label_list_item_content_description">Dodaj oznako predmetu na seznamu</string>

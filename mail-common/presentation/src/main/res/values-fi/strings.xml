@@ -73,7 +73,7 @@
   <string name="action_more_content_description">Lisää</string>
   <string name="common_error_loading_actions">Toimintojen lataus epäonnistui</string>
   <string name="yesterday">Eilen</string>
-  <string name="action_open_customize_toolbar">Customize toolbar</string>
+  <string name="action_open_customize_toolbar">Mukauta työkalupalkkia</string>
   <string name="action_open_customize_toolbar_description">Customize toolbar</string>
   <string name="auto_delete_banner_text_activate_trash">Poista roskakorissa yli 30 päivää olleet viestit automaattisesti.</string>
   <string name="auto_delete_banner_text_activate_spam">Poista roskapostissa yli 30 päivää olleet viestit automaattisesti.</string>

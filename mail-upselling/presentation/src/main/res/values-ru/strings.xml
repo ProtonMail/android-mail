@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 месяц</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Автоматически продляется по той же цене, пока не будет отменено.</string>
+  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">Сэкономьте %s%%</string>
   <string name="upselling_month">/месяц</string>
   <string name="upselling_year">/год</string>
@@ -115,8 +117,6 @@
     <item quantity="many">%d еще функций</item>
     <item quantity="other">%d еще функций</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Счет на %s %s выставляется каждый месяц</string>
-  <string name="upselling_onboarding_billing_annual">Оплата %s %s каждые 12 месяцев.</string>
   <string name="upselling_onboarding_get_plan">Получить %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Продолжить с Proton Free</string>
   <string name="upselling_onboarding_save_label">Сэкономьте %s%%</string>

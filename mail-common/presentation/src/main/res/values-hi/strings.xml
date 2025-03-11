@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="retry">वापस कोशिश करें</string>
+  <string name="toolbar_back_content_description">पिछले स्क्रीन पे जाएं</string>
+  <string name="x_error_not_logged_in">साइन इन नहीं हैं</string>
+  <string name="action_reply">जवाब दें</string>
+  <string name="action_reply_all">सभी को जवाब दें</string>
+  <string name="action_forward">फ़ॉरवर्ड करें</string>
+  <string name="action_reply_description">जवाब दें</string>
+  <string name="action_reply_all_description">सभी का जवाब दें</string>
+  <string name="action_forward_description">फ़ॉरवर्ड करें</string>
+  <string name="action_mark_read_description">पढ़ा मार्क करें</string>
+  <string name="action_mark_unread_description">नहीं पढ़ा मार्क करें</string>
+  <string name="action_star_description">तारा लगाएं</string>
+  <string name="action_unstar_description">तारा हटाएं</string>
+  <string name="action_label_description">लेबल करें…</string>
+  <string name="action_move_description">ले जाएं…</string>
+  <string name="action_trash_description">कूड़ेदान में ले जाएँ</string>
+  <string name="action_delete_description">मिटाएं</string>
+  <string name="action_archive_description">संग्रह</string>
+  <string name="action_spam_description">स्पैम में ले जाएं</string>
+  <string name="action_view_in_light_mode_description">संदेश को रोशनी मोड में देखें</string>
+  <string name="action_view_in_dark_mode_description">संदेश को अंधेरे मोड में देखें</string>
+  <string name="action_print_description">प्रिंट करें</string>
+  <string name="action_view_headers_description">हैडर देखें</string>
+  <string name="action_view_html_description">HTML देखें</string>
+  <string name="action_report_phishing_description">फिशिंग रिपोर्ट करें</string>
+  <string name="action_remind_description">मुझे याद दिलाना</string>
+  <string name="action_save_pdf_description">PDF में सेव करें</string>
+  <string name="action_sender_emails_description">इस इंसान से भविष्य में जो ईमेल मिलें उसके लिएं एक्शन सेट करें</string>
+  <string name="action_save_attachments_description">अटैचमेंट सेव करें</string>
+  <string name="action_more_description">और</string>
+  <string name="action_reply_content_description">जवाब दें</string>
+  <string name="action_reply_all_content_description">सभी को जवाब दें</string>
+  <string name="action_forward_content_description">फॉरवर्ड करें</string>
+  <string name="action_mark_read_content_description">पढ़ा मार्क करें</string>
+  <string name="action_mark_unread_content_description">नहीं पढ़ा मार्क करें</string>
+  <string name="action_star_content_description">तारा लगाएं</string>
+  <string name="action_unstar_content_description">तारा हटाएं</string>
+  <string name="action_label_content_description">लेबल करें…</string>
+  <string name="action_move_content_description">ले जाएं…</string>
+  <string name="action_trash_content_description">कचरा</string>
+  <string name="action_delete_content_description">मिटाएं</string>
+  <string name="action_archive_content_description">संग्रह</string>
+  <string name="action_spam_content_description">स्पैम</string>
+  <string name="action_view_in_light_mode_content_description">संदेश को रोशनी मोड में देखें</string>
+  <string name="action_view_in_dark_mode_content_description">संदेश को अंधेरे मोड में देखें</string>
+  <string name="action_print_content_description">प्रिंट करें</string>
+  <string name="action_view_headers_content_description">हैडर देखें</string>
+  <string name="action_view_html_content_description">HTML देखें</string>
+  <string name="action_report_phishing_content_description">फिशिंग रिपोर्ट करें</string>
+  <string name="action_remind_content_description">मुझे याद दिलाना</string>
+  <string name="action_save_pdf_content_description">पीडीएफ के रूप में सहेजें</string>
+  <string name="action_sender_emails_content_description">इस इंसान से भविष्य में जो ईमेल मिलें उसके लिएं एक्शन सेट करें</string>
+  <string name="action_save_attachments_content_description">अटैचमेंट सेव करें</string>
+  <string name="action_more_content_description">ज़्यादा</string>
+  <string name="common_error_loading_actions">एक्शन लोड करने में असफल</string>
+  <string name="yesterday">कल</string>
+  <string name="action_open_customize_toolbar">टूलबार को अनुकूलित करें</string>
+  <string name="action_open_customize_toolbar_description">टूलबार को अनुकूलित करें</string>
+  <string name="auto_delete_banner_text_activate_trash">संदेश जो कचरे में 30 दिन से ज़्यादा से है को अपनेआप मिटाएं।</string>
+  <string name="auto_delete_banner_text_activate_spam">संदेश जो स्पैम में 30 दिन से ज़्यादा से है को अपनेआप मिटाएं।</string>
+  <string name="auto_delete_banner_text_upgrade">30 दिनों से अधिक समय से ट्रैश या स्पैम में पड़े संदेशों को स्वचालित रूप से हटाने के लिए अपग्रेड करें।</string>
+  <string name="auto_delete_banner_text_enabled_info">संदेश जो कचरे और स्पैम में 30 दिन से ज़्यादा समय से हैं, उन्हें अपने आप मिटा दिया जाएगा।</string>
+  <string name="auto_delete_banner_button_activate_confirm">एनेबल</string>
+  <string name="auto_delete_banner_button_activate_dismiss">नहीं, शुक्रिया</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">और जानें</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">एक्सपायर हो गया</string>
+  <string name="expiration_days_arg">%dदिन</string>
+  <string name="expiration_hours_arg">%dघंटे</string>
+  <string name="expiration_minutes_arg">%dमिनट</string>
+  <string name="expiration_auto_delete_hour">ये संदेश एक घंटे से कम समय में अपनेआप मिट जाएगा</string>
+  <string name="expiration_auto_delete_day">ये संदेश एक दिन से कम समय में अपनेआप मिट जाएगा</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">ये संदेश %s को अपनेआप मिट जाएगा</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d मिनट</item>
+    <item quantity="other">%d मिनट</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d घंटा</item>
+    <item quantity="other">%d घंटे</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d दिन</item>
+    <item quantity="other">%d दिन</item>
+  </plurals>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">अनुलग्नक</string>
+  <string name="attachment_download_notification_channel_description">अनुलग्नक डाउनलोड के सूचनाएं</string>
+  <string name="email_notification_channel_name">ईमेल</string>
+  <string name="login_notification_channel_name">लॉगइन अलर्ट</string>
+  <string name="email_notification_channel_description">आने वाले ईमेल की सूचनाएं</string>
+  <string name="login_notification_channel_description">नए लॉगइन सूचनाएं</string>
+  <string name="auth_badge_official">आधिकारिक</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">ये एक्शन करने के लिए कोई ऐप नहीं मिला</string>
+  <string name="action_copied_to_clipboard">क्लिपबोर्ड पे कॉपी किया</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">रद्द करें</string>
+  <string name="mailbox_action_delete_dialog_button_delete">मिटाएं</string>
+  <string name="picker_dialog_cancel">रद्द करें</string>
+  <string name="color_purple">बैंगनी</string>
+  <string name="color_enzian">एनज़िअन</string>
+  <string name="color_pink">गुलाबी</string>
+  <string name="color_plum">बेर</string>
+  <string name="color_strawberry">स्ट्रॉबेरी</string>
+  <string name="color_cerise">गुलाबी लाल</string>
+  <string name="color_carrot">गाजर</string>
+  <string name="color_copper">तांबा</string>
+  <string name="color_sahara">सहारा</string>
+  <string name="color_soil">मिट्टी</string>
+  <string name="color_slate_blue">स्लेट नीला</string>
+  <string name="color_cobalt">कोबाल्ट</string>
+  <string name="color_pacific">प्रशांत</string>
+  <string name="color_ocean">महासागर</string>
+  <string name="color_reef">रीफ़</string>
+  <string name="color_pine">चीड़</string>
+  <string name="color_fern">फर्न</string>
+  <string name="color_forest">जंगल</string>
+  <string name="color_olive">जैतुन</string>
+  <string name="color_pickle">आचार</string>
+  <string name="undo_button_label">पूर्ववत् करें</string>
+  <string name="undo_success_message">कार्रवाई वापस की गई</string>
+  <string name="undo_failure_message">कार्रवाई वापस करना असफल</string>
+</resources>

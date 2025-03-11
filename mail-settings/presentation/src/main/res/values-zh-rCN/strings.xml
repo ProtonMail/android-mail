@@ -26,7 +26,7 @@
   <string name="mail_settings_push_notifications">推送通知</string>
   <string name="mail_settings_auto_lock">自动锁定</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
-  <string name="mail_settings_app_language">界面语言</string>
+  <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_combined_contacts">合并联系人</string>
   <string name="mail_settings_local_cache">本地缓存</string>
   <string name="mail_settings_local_cache_hint">已使用空间: %s</string>
@@ -36,14 +36,14 @@
   <string name="mail_settings_alternative_routing_hint">当 Proton 网站遭到封禁时，此设置允许该应用程序改用其他网络路由连接 Proton，这能有助于绕过防火墙或解决网络问题：推荐开启此设置，以提高可靠性。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">跟随系统</string>
-  <string name="mail_settings_theme_light">浅色主题</string>
-  <string name="mail_settings_theme_dark">深色主题</string>
+  <string name="mail_settings_theme_light">浅色</string>
+  <string name="mail_settings_theme_dark">深色</string>
   <!-- Settings item states -->
-  <string name="mail_settings_no_information_available">无信息</string>
-  <string name="mail_settings_enabled">开启</string>
-  <string name="mail_settings_disabled">关闭</string>
-  <string name="mail_settings_allowed">允许</string>
-  <string name="mail_settings_denied">不允许</string>
+  <string name="mail_settings_no_information_available">无可用信息</string>
+  <string name="mail_settings_enabled">已启用</string>
+  <string name="mail_settings_disabled">已禁用</string>
+  <string name="mail_settings_allowed">已允许</string>
+  <string name="mail_settings_denied">已拒绝</string>
   <string name="mail_settings_auto_detect">自动检测</string>
   <string name="mail_settings_customize_toolbar">自定义工具栏</string>
   <string name="mail_settings_app_information">程序信息</string>
@@ -51,11 +51,11 @@
   <string name="mail_settings_app_logs">应用程序日志</string>
   <string name="mail_settings_account">账户</string>
   <!-- Account Settings items -->
-  <string name="mail_settings_subscription">账户等级</string>
+  <string name="mail_settings_subscription">订阅授权</string>
   <string name="mail_settings_password_management">更改密码</string>
   <string name="mail_settings_recovery_email">密保邮箱</string>
   <string name="mail_settings_mailbox_size">邮箱容量</string>
-  <string name="mail_settings_addresses">地址</string>
+  <string name="mail_settings_addresses">邮箱地址</string>
   <string name="mail_settings_default_email_address">首选邮箱地址</string>
   <string name="mail_settings_display_name_and_signature">称呼与落款</string>
   <string name="mail_settings_mailbox">邮箱</string>
@@ -87,7 +87,7 @@
   <string name="mail_settings_identity_title">称呼与落款</string>
   <string name="mail_settings_identity_save_button">保存</string>
   <string name="mail_settings_identity_display_name">显示名称</string>
-  <string name="mail_settings_identity_display_name_hint">称呼</string>
+  <string name="mail_settings_identity_display_name_hint">显示名称</string>
   <string name="mail_settings_identity_signature">落款</string>
   <string name="mail_settings_identity_signature_hint">落款</string>
   <string name="mail_settings_identity_mobile_footer">移动签名</string>
@@ -110,7 +110,7 @@
   <string name="mail_settings_swipe_actions_subtitle">设置滑动手势来执行常用操作。</string>
   <string name="mail_settings_swipe_right_name">从左向右</string>
   <string name="mail_settings_swipe_left_name">从右向左</string>
-  <string name="mail_settings_swipe_action_none_title">尚未设置</string>
+  <string name="mail_settings_swipe_action_none_title">未设置</string>
   <string name="mail_settings_swipe_action_archive_title">存档</string>
   <string name="mail_settings_swipe_action_read_title">标为未读</string>
   <string name="mail_settings_swipe_action_spam_title">标为垃圾邮件</string>
@@ -141,9 +141,9 @@
   <string name="mail_settings_auto_lock_change_pin_description">更改 PIN 码</string>
   <string name="mail_settings_auto_lock_item_timer_title">自动锁定时间</string>
   <string name="mail_settings_auto_lock_immediately">立刻</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">五分钟无操作</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">五分钟内无操作</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">十五分钟内无操作</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">一小时无操作</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">一小时内无操作</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">一天内无操作</string>
   <string name="mail_settings_auto_lock_update_error">更新设置时出现错误</string>
   <string name="mail_settings_pin_insertion_input_title">输入 PIN 码</string>
@@ -154,10 +154,10 @@
   <string name="mail_settings_pin_insertion_backspace_description">退格</string>
   <string name="mail_settings_pin_insertion_biometric_description">生物识别认证</string>
   <string name="mail_settings_pin_insertion_button_create">创建</string>
-  <string name="mail_settings_pin_insertion_button_confirm">确定</string>
+  <string name="mail_settings_pin_insertion_button_confirm">确认</string>
   <string name="mail_settings_pin_insertion_error_no_match">两次输入的 PIN 码不一致。</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">剩余 %s 次尝试.</item>
+    <item quantity="other">剩余 %s 次尝试</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">若再输错 %s 次数据将被清除！</item>

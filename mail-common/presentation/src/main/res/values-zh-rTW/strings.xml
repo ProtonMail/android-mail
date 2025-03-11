@@ -30,7 +30,7 @@
   <string name="action_mark_unread_description">標示為未讀取</string>
   <string name="action_star_description">標注星號</string>
   <string name="action_unstar_description">取消星號</string>
-  <string name="action_label_description">加上標籤…</string>
+  <string name="action_label_description">標簽注記為…</string>
   <string name="action_move_description">移至…</string>
   <string name="action_trash_description">移至垃圾桶</string>
   <string name="action_delete_description">刪除</string>

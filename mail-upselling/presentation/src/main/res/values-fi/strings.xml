@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 kuukausi</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Uudistuu automaattisesti samaan hintaan ja samoilla ehdoilla, ellei tilausta peruta.</string>
+  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">SÄÄSTÄ %s %%</string>
   <string name="upselling_month">/kuukausi</string>
   <string name="upselling_year">/vuosi</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d lisäominaisuus</item>
     <item quantity="other">%d lisäominaisuutta</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Laskutetaan %s %s kerran kuussa</string>
-  <string name="upselling_onboarding_billing_annual">Laskutetaan %s %s kerran vuodessa</string>
   <string name="upselling_onboarding_get_plan">Hanki %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Jatka Proton Freellä</string>
   <string name="upselling_onboarding_save_label">Säästä %s %%</string>

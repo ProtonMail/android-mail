@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 månad</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Autoförnyas med samma pris och villkor tills uppsägning.</string>
+  <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt vid %s %s%s om det inte annulleras.</string>
+  <string name="upselling_auto_renew_text_standard">Förnyas automatiskt vid %s %s%s om det inte annulleras.</string>
   <string name="upselling_discount_tag">SPARA %s %%</string>
   <string name="upselling_month">/månad</string>
   <string name="upselling_year">/år</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d till funktion</item>
     <item quantity="other">%d fler funktioner</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Faktureras med %s %s varje månad</string>
-  <string name="upselling_onboarding_billing_annual">Faktureras med %s %s var 12:e månad</string>
   <string name="upselling_onboarding_get_plan">Skaffa %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Fortsätt med Proton Free</string>
   <string name="upselling_onboarding_save_label">Spara %s %%</string>

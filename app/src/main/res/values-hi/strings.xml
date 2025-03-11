@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="dialog_sign_out_account_title">साइनआउट</string>
+  <string name="dialog_sign_out_account_description">पक्का साइनआउट करें?</string>
+  <string name="dialog_sign_out_account_confirm">हां</string>
+  <string name="dialog_sign_out_account_cancel">नहीं</string>
+  <string name="dialog_remove_account_title">खाता हटाएं</string>
+  <string name="dialog_remove_account_description">आप साइन आउट करेंगे और इस खाते से जुड़ी सभी जानकारी हटा देंगे।</string>
+  <string name="dialog_remove_account_confirm">हटाएं</string>
+  <string name="dialog_remove_account_cancel">कैंसिल करें</string>
+  <string name="user_select_other_account_content_description">दूसरा खाता चुनें</string>
+  <string name="you_are_offline">आप ऑफलाइन हैं</string>
+  <string name="feature_coming_soon">सुविधा जल्द शुरू होगी…</string>
+  <string name="mailbox_draft_saved">ड्राफ़्ट सेव किया गया</string>
+  <string name="mailbox_draft_discard">ख़ारिज करें</string>
+  <string name="mailbox_message_sending">संदेश भेजा जा रहा है…</string>
+  <string name="mailbox_message_sending_offline">आप ऑफ़लाइन हैं, ऑनलाइन होने पर संदेश भेजा जाएगा</string>
+  <string name="mailbox_message_sending_success">संदेश भेजा गया</string>
+  <string name="mailbox_message_sending_error">संदेश भेजने में समस्या आई</string>
+  <string name="mailbox_message_sending_error_action">ड्राफ्ट पर जाएं</string>
+  <string name="mailbox_attachment_uploading_error">अटैचमेंट अपलोड करने में समस्या आई</string>
+  <string name="notification_switched_account">इस खाते पर स्विच किया गया: %s</string>
+  <string name="label_saved">लेबल सहेजा गया</string>
+  <string name="label_deleted">लेबल मिटाया गया</string>
+  <string name="label_list_loading_error">लेबल लोड करने में एरर, कृपया बाद में वापस कोशिश करें</string>
+  <string name="app_locked">ऐप लॉक हो गया</string>
+  <string name="use_pin_instead">इसके जगह पिन इस्तेमाल करें</string>
+</resources>

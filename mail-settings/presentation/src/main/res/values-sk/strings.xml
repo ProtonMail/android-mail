@@ -196,7 +196,7 @@
   <string name="customize_toolbar_inbox">Doručená pošta</string>
   <string name="customize_toolbar_mailbox">Poštová schránka</string>
   <string name="customize_toolbar_done_action">Hotovo</string>
-  <string name="customize_toolbar_reset_to_default">Obnoviť predvolené</string>
+  <string name="customize_toolbar_reset_to_default">Obnoviť východzie nastavenie</string>
   <string name="customize_toolbar_reset_to_default_btn">Obnoviť východzie nastavenie</string>
   <string name="customize_toolbar_actions_section">Akcia panela nástrojov (vyberte až 5)</string>
   <string name="customize_toolbar_available_actions_section">Dostupné akcie</string>

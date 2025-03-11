@@ -116,5 +116,5 @@
   <string name="hide">Piilota</string>
   <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
   <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_cta">Mukauta</string>
 </resources>

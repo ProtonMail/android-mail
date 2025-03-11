@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 maand</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-vernieuwing tegen dezelfde prijs en voorwaarden, tenzij geannuleerd.</string>
+  <string name="upselling_auto_renew_text_promo">Welkom aanbod. Automatisch verlengen aan %s %s%s tenzij geannuleerd.</string>
+  <string name="upselling_auto_renew_text_standard">Wordt automatisch verlengt aan %s %s%s tenzij geannuleerd.</string>
   <string name="upselling_discount_tag">BESPAAR %s%%</string>
   <string name="upselling_month">/maand</string>
   <string name="upselling_year">/jaar</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d meer functie</item>
     <item quantity="other">%d meer functies</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Gefactureerd als %s%s per maand</string>
-  <string name="upselling_onboarding_billing_annual">Gefactureerd als %s%s per 12 maanden</string>
   <string name="upselling_onboarding_get_plan">Krijg %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Doorgaan met Proton Free</string>
   <string name="upselling_onboarding_save_label">Bespaar %s%%</string>

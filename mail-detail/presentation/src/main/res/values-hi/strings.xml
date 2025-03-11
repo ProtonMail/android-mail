@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">संपर्क लोड करने में असफल</string>
+  <string name="detail_error_loading_conversation">बातचीत लोड करने में असफल</string>
+  <string name="detail_error_loading_messages">संदेश लोड करने में असफल</string>
+  <string name="error_mark_unread_failed">नहीं पढ़ा मार्क करने में असफल। कृपया वापिस कोशिश करें।</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d संदेश</item>
+    <item quantity="other">%d संदेश</item>
+  </plurals>
+  <string name="quick_reply_button_content_description">जवाब दें</string>
+  <string name="quick_reply_all_button_content_description">सभी का जवाब दें</string>
+  <string name="more_button_content_description">और</string>
+  <string name="subject">विषय:</string>
+  <string name="from">से:</string>
+  <string name="to">को:</string>
+  <string name="cc">सीसी:</string>
+  <string name="bcc">बीसीसी:</string>
+  <string name="date">तिथि</string>
+  <plurals name="attachment">
+    <item quantity="one">%d अटैचमेंट</item>
+    <item quantity="other">%d अटैचमेंट</item>
+  </plurals>
+  <string name="hide_details">जानकारी छुपाएं</string>
+  <string name="undisclosed_recipients">अनजान प्राप्तकर्ता</string>
+  <string name="error_mark_as_unread_failed">नहीं पढ़ा मार्क करने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="error_star_operation_failed">तारा लगाने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="error_unstar_operation_failed">तारा हटाने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="error_move_to_trash_failed">कचरे में ले जाने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="message_moved_to_trash">संदेश कचरे में चला गया</string>
+  <string name="message_moved_to_archive">संदेश संग्रह में चला गया</string>
+  <string name="error_move_to_archive_failed">संग्रह में ले जाने में असफल। कृपया पुनः प्रयास करें।</string>
+  <string name="message_moved_to_spam">संदेश को स्पैम में भेज दिया गया है</string>
+  <string name="error_move_to_spam_failed">स्पैम में ले जाने में असफल। कृपया पुनः प्रयास करें।</string>
+  <string name="message_moved_to_selected_destination">संदेश %1$s में चला गया</string>
+  <string name="error_move_message_failed">संदेश ले जाने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="conversation_moved_to_trash">बातचीत कचरे में ले गए</string>
+  <string name="conversation_moved_to_selected_destination">बातचीत %1$s में चला गया</string>
+  <string name="conversation_moved_to_archive">बातचीत संग्रह में चला गया</string>
+  <string name="conversation_moved_to_spam">बातचीत स्पैम में ले गई</string>
+  <string name="error_move_conversation_failed">बातचीत ले जाने में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="error_loading_message">कुछ गड़बड़ हुई है, कृपया वापिस कोशिश करें।</string>
+  <string name="error_offline_loading_message">आप ऑफलाइन हैं। इस संदेश के कंटेंट को दिखानें के लिए एक इंटरनेट कनेक्शन की ज़रूरत हैं।</string>
+  <string name="error_get_attachment_failed">अटैचमेंट प्राप्त करने में असफल।</string>
+  <string name="error_attachment_download_in_progress">नया डाउनलोड शुरू करने से पहले मौजूदा डाउनलोड पूरा होना चाहिए।</string>
+  <string name="error_get_attachment_not_enough_memory">अपर्याप्त मेमोरी के कारण अटैचमेंट प्राप्त करने में असफल</string>
+  <string name="reload">फिर लोड करें</string>
+  <string name="error_relabel_message_failed">संदेश वापिस लेबल करनें में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="error_relabel_conversation_failed">बातचीत वापिस लेबल करनें में असफल। कृपया वापिस कोशिश करें।</string>
+  <string name="please_go_back_online_to_load_messages">आप ऑफलाइन हैं। संदेशों को लोड करने के लिए कृपया वापस ऑनलाइन जाएं</string>
+  <string name="decryption_error">संदेश डीक्रिप्शन असफल।</string>
+  <string name="detail_error_retrieving_message_body">संदेश लाने में असफल</string>
+  <string name="message_body_error_no_webview">इस संदेश का कॉन्टेंट देखने के लिए, WebView इंस्टॉल होना चाहिए।</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">अंदर डाले फोटो का स्वचालित लोडिंग बंद है। इसे सेटिंग में बदला जा सकता है।</string>
+  <string name="message_body_remote_content_banner_text">दूर कंटेंट का स्वचालित लोडिंग बंद है। इसे सेटिंग में बदला जा सकता है।</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">अंदर डाले फोटो और दूर कंटेंट का स्वचालित लोडिंग बंद है। इन्हें सेटिंग में बदला जा सकता है।</string>
+  <string name="message_phishing_banner_text">हमारे सिस्टम ने इस संदेश को फ़िशिंग प्रयास के रूप में चिह्नित किया। कृपया जाँच लें कि यह वैध है।</string>
+  <string name="message_expiration_banner_text">ये संदेश %1$s में खत्म हो जाएगा</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">आप ऐप छोड़ने वाले हैं और नेविगेट करने वाले हैं:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">वापस ना पूछें</string>
+  <string name="external_link_confirmation_dialog_cancel_button">रद्द करें</string>
+  <string name="external_link_confirmation_dialog_continue_button">जारी रखें</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">चेतावनी: संदिग्ध फर्ज़ी वेबसाइट</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">यह लिंक एक ऐसी वेबसाइट की ओर ले जाता है जो पासवर्ड और क्रेडिट कार्ड विवरण जैसी आपकी जानकारी चुराने का प्रयास कर सकती है।</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">आपकी सुरक्षा के लिए, आगे न बढ़ें।</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">वापस जाएं (सलाह)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">चेतावनी पे ध्यान ना दें और जारी रखें</string>
+  <string name="message_delete_dialog_title">संदेश मिटाएं</string>
+  <string name="message_delete_dialog_message">क्या आप वाकई इस संदेश को स्थायी रूप मे मिटा देना चाहते हैं?</string>
+  <string name="message_deleted">संदेश हटाये</string>
+  <string name="message_moved">संदेश चला गया</string>
+  <string name="message_moved_to">संदेश %s में चला गया</string>
+  <string name="error_delete_message_failed">संदेश मिटा देने में असफल</string>
+  <string name="error_delete_message_failed_wrong_folder">संदेश उस स्थान पर नहीं है जहाँ इसे मिटाया जा सके</string>
+  <string name="error_delete_conversation_failed">बातचीत मिटा देने में असफल</string>
+  <string name="error_delete_conversation_failed_wrong_folder">बातचीत उस स्थान पर नहीं है जहाँ इसे मिटाया जा सके</string>
+  <string name="conversation_delete_dialog_title">बातचीत हटाएँ</string>
+  <string name="conversation_delete_dialog_message">क्या आप वाकई इस बातचीत को स्थायी रूप से मिटा देना चाहते हैं?</string>
+  <string name="conversation_deleted">बातचीत हटाई गई</string>
+  <string name="message_body_load_remote_content_button_text">दूरस्थ सामग्री लोड करें</string>
+  <string name="message_body_load_embedded_images_button_text">अंदर डाले तस्वीरे लोड करें</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">दूरस्थ और अंदर डाली गई सामग्री लोड करें</string>
+  <string name="message_report_phishing_dialog_title_offline">ध्यान दें</string>
+  <string name="message_report_phishing_dialog_message_offline">यह खासियत केवल ऑनलाइन उपलब्ध है।</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">ठीक</string>
+  <string name="message_report_phishing_dialog_title">फिशिंग रिपोर्ट पक्का करें</string>
+  <string name="message_report_phishing_dialog_message">संदेश को फ़िशिंग प्रयास के रूप में रिपोर्ट करने से हमें संदेश भेजा जाएगा, इसलिए हम इसका विश्लेषण कर सकते हैं और अपने फ़िल्टर सुधार सकते हैं। इसका अर्थ है कि हम संदेश की सामग्री को पूर्ण रूप से देख पाएंगे।</string>
+  <string name="message_report_phishing_dialog_confim_button">पक्का करें</string>
+  <string name="message_report_phishing_dialog_cancel_button">रद्द करें</string>
+  <string name="open_on_protoncalendar_banner_title">Proton Calendar में खोलें</string>
+  <string name="open_on_protoncalendar_banner_description">सुरक्षित एन्क्रिप्ट किया कैलेंडर</string>
+  <string name="error_print_failed">संदेश प्रिंट करने में असफल</string>
+  <string name="trashed_messages_banner">इस वार्तालाप में ट्रैश किए गए संदेश हैं।</string>
+  <string name="non_trashed_messages_banner">इस वार्तालाप में गैर-ट्रैश किए गए संदेश हैं।</string>
+  <string name="show">दिखाएं</string>
+  <string name="hide">छुपाएं</string>
+  <string name="tooltip_customize_toolbar_title">टूलबार को अनुकूलित करें</string>
+  <string name="tooltip_customize_toolbar_message">अब आप इस टूलबार में कार्रवाई चुन और उन्हें पुनर्व्यवस्थित कर सकते हैं।</string>
+  <string name="tooltip_customize_toolbar_cta">कस्टम</string>
+</resources>

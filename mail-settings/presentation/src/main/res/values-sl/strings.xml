@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Dovoljeno</string>
   <string name="mail_settings_denied">Zavrnjeno</string>
   <string name="mail_settings_auto_detect">Samodejno zaznavanje</string>
-  <string name="mail_settings_customize_toolbar">Customize toolbar</string>
+  <string name="mail_settings_customize_toolbar">Prilagajanje orodne vrstice</string>
   <string name="mail_settings_app_information">Podatki o aplikaciji</string>
   <string name="mail_settings_app_version">Različica aplikacije</string>
   <string name="mail_settings_app_logs">Dnevniki aplikacije</string>
@@ -186,11 +186,11 @@
   <string name="unlock_using_biometrics">Odklepanje z uporabo biometrije</string>
   <string name="biometric_error_hw_not_available">Strojna oprema za biometrične podatke ni na voljo.</string>
   <!-- customize toolbar-->
-  <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
-  <string name="customize_toolbar_disclaimer_conversation">This toolbar is visible when reading a conversation.</string>
+  <string name="customize_toolbar_disclaimer_message">Ta orodna vrstica je vidna, ko berete sporočilo.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Ta orodna vrstica je vidna, ko berete pogovor.</string>
   <string name="customize_toolbar_disclaimer_inbox">Ta orodna vrstica se prikaže, ko izberete več sporočil v poštnem predalu.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">This toolbar appears when selecting multiple conversations in your mailbox.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Ta orodna vrstica se prikaže, ko izberete več sporočil v poštnem predalu.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Ta orodna vrstica se prikaže, ko izberete več pogovorov v poštnem predalu.</string>
   <string name="customize_toolbar_message">Sporočilo</string>
   <string name="customize_toolbar_conversation">Pogovor</string>
   <string name="customize_toolbar_inbox">Prejeto</string>
@@ -200,7 +200,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Ponastavi na privzeto</string>
   <string name="customize_toolbar_actions_section">Dejanja orodne vrstice (izberite do 5).</string>
   <string name="customize_toolbar_available_actions_section">Razpoložljiva dejanja</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Reset to default?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Ponastavi na privzeto?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Dejanja v orodni vrstici bodo ponastavljena na privzete.</string>
   <string name="customize_toolbar_reset_default_confirm">Potrdi</string>
 </resources>

@@ -29,5 +29,5 @@
   <string name="notification_permission_dialog_post_send_title">Хочаце заставацца ў курсе падзей?</string>
   <string name="notification_permission_dialog_post_send_message">Уключыце апавяшчэнні, каб быць у курсе атрымання адказу на вашу электронную пошту.</string>
   <string name="notification_permission_dialog_button_enable">Уключыць push-апавяшчэнні</string>
-  <string name="notification_permission_dialog_button_dismiss">Ігнараваць</string>
+  <string name="notification_permission_dialog_button_dismiss">Адхіліць</string>
 </resources>

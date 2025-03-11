@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">O lună</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Se reînnoiește automat la același preț și condiții, dacă nu este anulat.</string>
+  <string name="upselling_auto_renew_text_promo">Ofertă de bun venit. Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
+  <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
   <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>
   <string name="upselling_year">/an</string>
@@ -113,8 +115,6 @@
     <item quantity="few">Încă %d funcții</item>
     <item quantity="other">Încă %d de funcții</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Facturat cu %s %s lunar</string>
-  <string name="upselling_onboarding_billing_annual">Facturat cu %s %s la fiecare 12 luni</string>
   <string name="upselling_onboarding_get_plan">Luați %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continuare cu Proton Free</string>
   <string name="upselling_onboarding_save_label">Economisiți %s %%</string>

@@ -84,6 +84,8 @@
   <string name="upselling_select_plan_month">1 თვე</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">ავტომატურად განახლდება იგივე ფასით და პირობებით, თუ არ გააუქმებთ.</string>
+  <string name="upselling_auto_renew_text_promo">რეგისტრაციის საჩუქარი. ავტოგანახლების თარიღია %s %s%s, თუ არ გააუქმებთ.</string>
+  <string name="upselling_auto_renew_text_standard">ავტოგანახლების თარირია %s %s%s, თუ არ გააუქმებთ</string>
   <string name="upselling_discount_tag">დაზოგეთ %s%%</string>
   <string name="upselling_month">/თვე</string>
   <string name="upselling_year">/წელიწადში</string>
@@ -111,8 +113,6 @@
     <item quantity="one">%d მეტი ფუნქცია</item>
     <item quantity="other">%d მეტი ფუნქცია</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">გადაიხდით %s %s ყოველთვე</string>
-  <string name="upselling_onboarding_billing_annual">გადაიხდით %s %s ყოველ 12 თვეში</string>
   <string name="upselling_onboarding_get_plan">მიიღეთ %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">გაგრძელება Proton Free-ით</string>
   <string name="upselling_onboarding_save_label">დაზოგეთ %s%%</string>

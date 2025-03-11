@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">संपर्क</string>
+  <string name="contact_list_loading_error">संपर्क लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="no_contacts">कोई संपर्क नहीं मिला</string>
+  <string name="no_contact_groups">कोई संपर्क ग्रुप नहीं मिला</string>
+  <string name="no_contacts_description">अपने ईमेल अनुभव को बेहतर बनाने के लिए नया संपर्क बनाएं या मौजूदा संपर्कों को आयात करें।</string>
+  <string name="no_contact_groups_description">अपने ईमेल अनुभव को बेहतर बनाने के लिए नया संपर्क ग्रुप बनाएं।</string>
+  <string name="add_contact">संपर्क जोड़ें</string>
+  <string name="add_contact_group">संपर्क ग्रुप जोड़ें</string>
+  <string name="add_contact_content_description">संपर्क जोड़ें</string>
+  <string name="all_title">सब</string>
+  <string name="groups_title">ग्रुप</string>
+  <string name="group_member_count">%1$s सदस्य</string>
+  <string name="group_members_count">%1$s सदस्य</string>
+  <string name="new_contact">नया संपर्क</string>
+  <string name="new_group">नया ग्रुप</string>
+  <string name="import_contact">डिवाइस संपर्क अपलोड करें</string>
+  <string name="no_contact_email">कोई ईमेल पता नहीं</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <string name="contact_details_loading_error">संपर्क लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_details_delete_success">संपर्क हटाया गया</string>
+  <string name="edit_contact_content_description">संपादित संपर्क</string>
+  <string name="delete_contact_content_description">संपर्क हटाएँ</string>
+  <string name="contact_avatar_image_content_description">संपर्क अवतार</string>
+  <string name="contact_groups_content_description">संपर्क समूह</string>
+  <string name="contact_type_email">ईमेल</string>
+  <string name="contact_type_phone">फोन</string>
+  <string name="contact_type_home">होम</string>
+  <string name="contact_type_work">दफ्तर</string>
+  <string name="contact_type_other">दूसरा</string>
+  <string name="contact_type_mobile">मोबाइल</string>
+  <string name="contact_type_main">मुख्‍य</string>
+  <string name="contact_type_fax">फैक्स</string>
+  <string name="contact_type_pager">पेजर</string>
+  <string name="contact_type_address">पता</string>
+  <string name="contact_property_birthday">जन्मदिन</string>
+  <string name="contact_property_note">नोट</string>
+  <string name="contact_property_photo">तस्वीर</string>
+  <string name="contact_property_logo">चिन्ह</string>
+  <string name="contact_property_geo">भूगोल</string>
+  <string name="contact_property_organization">संगठन</string>
+  <string name="contact_property_anniversary">सालगिरह</string>
+  <string name="contact_property_title">टाइटल</string>
+  <string name="contact_property_role">भूमिका</string>
+  <string name="contact_property_member">सदस्य</string>
+  <string name="contact_property_url">यूआरएल</string>
+  <string name="contact_property_gender">लिंग</string>
+  <string name="contact_property_language">भाषा</string>
+  <string name="contact_property_time_zone">समय क्षेत्र</string>
+  <string name="contact_form_loading_error">संपर्क लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_form_save_success">संपर्क सेव किया</string>
+  <string name="contact_form_create_success">संपर्क बनाया गया</string>
+  <string name="contact_form_update_success">संपर्क अपडेट हुआ</string>
+  <string name="save_contact_content_description">संपर्क सहेजें</string>
+  <string name="contact_form_save">सहेजें</string>
+  <string name="add_new">नया जोड़ें</string>
+  <string name="email_section">ईमेल</string>
+  <string name="phone_section">फोन नंबर</string>
+  <string name="address_section">पता</string>
+  <string name="note_section">नोट</string>
+  <string name="birthday_section">जन्मदिन</string>
+  <string name="other_section">अतिरिक्त जानकारी</string>
+  <string name="display_name">डिस्प्ले नाम</string>
+  <string name="first_name">पहला नाम</string>
+  <string name="last_name">अंतिम नाम</string>
+  <string name="email_address">ईमेल पता</string>
+  <string name="phone_number">फोन नंबर</string>
+  <string name="additional_info">अतिरिक्त जानकारी</string>
+  <string name="remove_contact_property">संपर्क प्रॉपर्टी हटाएं</string>
+  <string name="property_type">प्रॉपर्टी प्रकार</string>
+  <string name="property_label">लेबल</string>
+  <string name="address_street">गली</string>
+  <string name="address_postal_code">डाक कोड</string>
+  <string name="address_city">शहर</string>
+  <string name="address_region">क्षेत्र</string>
+  <string name="address_country">देश</string>
+  <string name="contact_details_delete_dialog_title">संपर्क हटाएँ</string>
+  <string name="contact_details_delete_dialog_text">इस संपर्क को पक्का मिटाएं?</string>
+  <string name="contact_details_delete_dialog_cancel_button">रद्द करें</string>
+  <string name="contact_details_delete_dialog_confirm_button">ठीक</string>
+  <string name="contact_form_save_error">संपर्क सहेजते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_form_save_error_limit_reached">संपर्क सीमा पूरी हो गई</string>
+  <string name="all_contacts_tab">संपर्क</string>
+  <string name="contact_groups_tab">ग्रुप</string>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d मेंबर</item>
+    <item quantity="other">%1$d मेंबर</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">सदस्य (%1$d)</item>
+    <item quantity="other">सदस्य (%1$d)</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">संपर्क सहेजते समय त्रुटि, इसमें एक अमान्य ईमेल पता है</string>
+  <string name="contact_group_details_loading_error">संपर्क ग्रुप लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_group_details_deletion_success">संपर्क समूह हटाया गया</string>
+  <string name="contact_group_details_deletion_error">संपर्क ग्रुप मिटाते समय त्रुटि</string>
+  <string name="contact_group_delete_dialog_title">क्या संपर्कों से %s ग्रुप हटाएं?</string>
+  <string name="contact_group_delete_dialog_message">ग्रुप विघटित हो जाएगा, लेकिन आवंटित संपर्क अपरिवर्तित रहेंगे।</string>
+  <string name="contact_group_delete_dialog_confirm">हटाएं</string>
+  <string name="contact_group_delete_dialog_dismiss">इसे रखें</string>
+  <string name="contact_group_delete_button_text">ग्रुप मिटा दें</string>
+  <string name="contact_group_form_loading_error">संपर्क ग्रुप लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="edit_contact_group_content_description">संपर्क समूह संपादित करें</string>
+  <string name="delete_contact_group_content_description">संपर्क ग्रुप मिटाएं</string>
+  <string name="send_group_message">समूह संदेश भेजें</string>
+  <string name="contact_group_form_save">सहेजें</string>
+  <string name="contact_group_form_name_hint">डिस्प्ले नाम</string>
+  <string name="remove_member_content_description">सदस्य हटाएं</string>
+  <string name="add_members">सदस्य जोड़ें</string>
+  <string name="change_color">रंग बदलें</string>
+  <string name="contact_group_form_create_success">संपर्क समूह बनाया गया</string>
+  <string name="contact_group_form_update_success">संपर्क समूह अपडेट किया गया</string>
+  <string name="contact_group_form_save_error">संपर्क ग्रुप सहेजते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_group_form_save_error_already_exists">इस नाम का एक समूह पहले से मौजूद है</string>
+  <string name="contact_group_form_subscription_error">संपर्क ग्रुप बनाने के लिए आपको एक सशुल्क Proton Mail सदस्यता की आवश्यकता है</string>
+  <string name="members_loading_error">सदस्य लोड करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="members_done">हो गया</string>
+  <string name="add_members_error">सदस्य जोड़ते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="manage_members_title">सदस्यों को प्रबंधित करें</string>
+  <string name="search_contact">संपर्क खोजें</string>
+  <string name="search_contacts_description">संपर्क खोजें</string>
+  <string name="member_update_error">सदस्य अपडेट करते समय त्रुटि, कृपया बाद में वापस कोशिश करें</string>
+  <string name="contact_group_color">संपर्क ग्रुप रंग</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d सदस्य</item>
+    <item quantity="other">%d सदस्य</item>
+  </plurals>
+  <string name="contact_search_placeholder">संपर्क या ग्रुप खोजें</string>
+  <string name="contact_search_content_description">संपर्क या ग्रुप खोजें</string>
+  <string name="contact_search_arrow_back_content_description">संपर्कों पर वापस जाएँ</string>
+  <string name="contact_search_no_results">कोई परिणाम नहीं मिला |</string>
+</resources>

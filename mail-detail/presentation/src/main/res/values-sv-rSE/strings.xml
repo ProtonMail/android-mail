@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Kunde inte läsa in kontakter</string>
-  <string name="detail_error_loading_conversation">Kunde inte läsa in konversation</string>
-  <string name="detail_error_loading_messages">Kunde inte läsa in meddelanden</string>
+  <string name="detail_error_loading_contacts">Misslyckades ladda kontakter</string>
+  <string name="detail_error_loading_conversation">Misslyckades ladda konversation</string>
+  <string name="detail_error_loading_messages">Misslyckades ladda meddelanden</string>
   <string name="error_mark_unread_failed">Det gick inte att markera som oläst. Försök igen.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d meddelande</item>
