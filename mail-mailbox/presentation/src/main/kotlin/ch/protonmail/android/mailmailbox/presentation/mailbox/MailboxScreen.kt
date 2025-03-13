@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -612,6 +613,10 @@ private fun MailboxSwipeRefresh(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_generic)
             )
 
+            is MailboxScreenState.SearchInputInvalidError -> SearchNoResult(
+                subtitleRes = R.string.mailbox_error_search_input_invalid
+            )
+
             is MailboxScreenState.UnexpectedError -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_unexpected)
             )
@@ -920,7 +925,10 @@ private fun AppendError(
 
 
 @Composable
-private fun SearchNoResult(modifier: Modifier = Modifier) {
+private fun SearchNoResult(
+    modifier: Modifier = Modifier,
+    @StringRes subtitleRes: Int = R.string.mailbox_search_no_results_explanation
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -960,12 +968,11 @@ private fun SearchNoResult(modifier: Modifier = Modifier) {
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.mailbox_search_no_results_explanation),
+            text = stringResource(id = subtitleRes),
             textAlign = TextAlign.Center,
             style = ProtonTheme.typography.defaultStrongNorm,
             color = ProtonTheme.colors.textHint
         )
-
     }
 }
 

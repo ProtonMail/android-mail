@@ -25,19 +25,20 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearc
 import ch.protonmail.android.mailmailbox.presentation.paging.appendErrorToUiState
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageAppendFailed
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageRefreshFailed
+import ch.protonmail.android.mailmailbox.presentation.paging.isSearchInputInvalidError
 import ch.protonmail.android.mailmailbox.presentation.paging.refreshErrorToUiState
 
 object SearchRefreshErrorStateHandler {
 
     fun getNextState(paging: LazyPagingItems<MailboxItemUiModel>, searchMode: MailboxSearchMode): MailboxScreenState {
-
-        return if (paging.isPageRefreshFailed()) {
+        return if (paging.isSearchInputInvalidError()) {
+            MailboxScreenState.SearchInputInvalidError
+        } else if (paging.isPageRefreshFailed()) {
             refreshErrorToUiState(paging)
         } else if (paging.isPageAppendFailed()) {
             appendErrorToUiState(paging)
         } else {
             SearchStateFinder.getBestSearchState(paging, searchMode)
         }
-
     }
 }

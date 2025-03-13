@@ -30,11 +30,13 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageUpdateDr
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageValidateKeyNotAssociated
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.PayloadTooLarge
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.PermissionDenied
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.SearchInputInvalid
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Unknown
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.UploadFailure
 
 @Suppress("MagicNumber")
 fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
+    2001 -> SearchInputInvalid
     2026 -> PermissionDenied
     2027 -> InsufficientScope
     2028 -> Banned

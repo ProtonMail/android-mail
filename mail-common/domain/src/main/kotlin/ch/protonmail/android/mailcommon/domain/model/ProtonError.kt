@@ -28,6 +28,8 @@ sealed interface ProtonError {
 
     object PermissionDenied : ProtonError
 
+    object SearchInputInvalid : ProtonError
+
     object InsufficientScope : ProtonError
 
     object Banned : ProtonError

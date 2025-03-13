@@ -21,10 +21,14 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
+import ch.protonmail.android.mailcommon.domain.model.isSearchInputInvalidError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
+import me.proton.core.network.domain.isApiProtonError
 import timber.log.Timber
 
 fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(refreshRequested: Boolean): MailboxScreenState {
@@ -102,10 +106,19 @@ fun LazyPagingItems<MailboxItemUiModel>.isPageAppendFailed(): Boolean = this.loa
 
 fun LazyPagingItems<MailboxItemUiModel>.isPageRefreshFailed(): Boolean = this.loadState.refresh is LoadState.Error
 
+fun LazyPagingItems<MailboxItemUiModel>.isSearchInputInvalidError(): Boolean {
+    val error = loadState.refresh as? LoadState.Error
+        ?: loadState.append as? LoadState.Error
+        ?: loadState.prepend as? LoadState.Error
+        ?: return false
+    val dataError = error.error as? DataErrorException ?: return false
+    val protonError = dataError.error as? DataError.Remote ?: return false
+    return protonError.isSearchInputInvalidError()
+}
+
 fun LazyPagingItems<MailboxItemUiModel>.isPageEmpty(): Boolean = this.itemCount == 0
 
 fun LazyPagingItems<MailboxItemUiModel>.isPageInError(): Boolean = isPageRefreshFailed() || isPageAppendFailed()
-
 
 // Mediator or Source is Loading
 private fun CombinedLoadStates.isLoading() = this.isSourceLoading() || this.isMediatorLoading()

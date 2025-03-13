@@ -22,6 +22,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
@@ -82,6 +83,15 @@ class SearchPagingLoadingStateMapperKtTest {
             searchMode = MailboxSearchMode.SearchData,
             currentScreenState = MailboxScreenState.Data(mockk()),
             expectedScreenState = MailboxScreenState.SearchLoadingWithData
+        ),
+        // proton errors
+        TestItem(
+            lazyPagingItems = createPagingItemsInError(appendError = true, error = {
+                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+            }),
+            searchMode = MailboxSearchMode.NewSearchLoading,
+            currentScreenState = MailboxScreenState.SearchLoading,
+            expectedScreenState = MailboxScreenState.SearchInputInvalidError
         )
     )
 
@@ -213,6 +223,14 @@ class SearchPagingLoadingStateMapperKtTest {
             lazyPagingItems = createPagingItems(isRefreshLoading = false, itemCount = 5, isRefreshFailed = true),
             currentScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading),
             expectedScreenState = MailboxScreenState.ErrorWithData
+        ),
+        TestItem(
+            lazyPagingItems = createPagingItemsInError(appendError = true, error = {
+                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+            }),
+            searchMode = MailboxSearchMode.SearchData,
+            currentScreenState = MailboxScreenState.SearchData(mockk()),
+            expectedScreenState = MailboxScreenState.SearchInputInvalidError
         )
     )
 
@@ -246,6 +264,14 @@ class SearchPagingLoadingStateMapperKtTest {
             lazyPagingItems = createPagingItemsInError(appendError = true),
             currentScreenState = MailboxScreenState.SearchLoadingWithData,
             expectedScreenState = MailboxScreenState.AppendError
+        ),
+        TestItem(
+            lazyPagingItems = createPagingItemsInError(appendError = true, error = {
+                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+            }),
+            searchMode = MailboxSearchMode.SearchData,
+            currentScreenState = MailboxScreenState.SearchLoadingWithData,
+            expectedScreenState = MailboxScreenState.SearchInputInvalidError
         )
     )
 
@@ -353,7 +379,6 @@ class SearchPagingLoadingStateMapperKtTest {
         }
     }
 
-
     @Test
     fun testTransitionsFromSearchLoadingState() {
         transitionsFromSearchLoadingState.forEach { testItem ->
@@ -454,7 +479,8 @@ class SearchPagingLoadingStateMapperKtTest {
         isRefreshLoading: Boolean,
         isAppendLoading: Boolean = false,
         isRefreshFailed: Boolean = false,
-        itemCount: Int = 0
+        itemCount: Int = 0,
+        error: () -> DataError.Remote = { DataError.Remote.Unknown }
     ): LazyPagingItems<MailboxItemUiModel> {
         val loadState =
             CombinedLoadStates(
@@ -462,7 +488,7 @@ class SearchPagingLoadingStateMapperKtTest {
                     isRefreshLoading -> {
                         LoadState.Loading
                     }
-                    isRefreshFailed -> LoadState.Error(DataErrorException(DataError.Remote.Unknown))
+                    isRefreshFailed -> LoadState.Error(DataErrorException(error()))
                     else -> {
                         LoadState.NotLoading(true)
                     }
@@ -494,13 +520,14 @@ class SearchPagingLoadingStateMapperKtTest {
     private fun createPagingItemsInError(
         refreshError: Boolean = false,
         appendError: Boolean = false,
-        itemCount: Int = 0
+        itemCount: Int = 0,
+        error: () -> DataError.Remote = { mockk() }
     ): LazyPagingItems<MailboxItemUiModel> {
         val loadState =
             CombinedLoadStates(
-                refresh = if (refreshError) LoadState.Error(DataErrorException(mockk()))
+                refresh = if (refreshError) LoadState.Error(DataErrorException(error()))
                 else LoadState.NotLoading(true),
-                append = if (appendError) LoadState.Error(DataErrorException(mockk()))
+                append = if (appendError) LoadState.Error(DataErrorException(error()))
                 else LoadState.NotLoading(true),
                 prepend = mockk(),
                 source = mockk {

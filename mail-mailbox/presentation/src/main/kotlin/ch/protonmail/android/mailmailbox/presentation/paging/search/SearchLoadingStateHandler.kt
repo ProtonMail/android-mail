@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.paging.appendErrorToUiStat
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageEmpty
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageRefreshFailed
+import ch.protonmail.android.mailmailbox.presentation.paging.isSearchInputInvalidError
 import ch.protonmail.android.mailmailbox.presentation.paging.refreshErrorToUiState
 
 object SearchLoadingStateHandler {
@@ -39,7 +40,9 @@ object SearchLoadingStateHandler {
                 MailboxScreenState.SearchLoading
             }
         } else {
-            if (paging.isPageRefreshFailed()) {
+            if (paging.isSearchInputInvalidError()) {
+                MailboxScreenState.SearchInputInvalidError
+            } else if (paging.isPageRefreshFailed()) {
                 refreshErrorToUiState(paging)
             } else {
                 appendErrorToUiState(paging)

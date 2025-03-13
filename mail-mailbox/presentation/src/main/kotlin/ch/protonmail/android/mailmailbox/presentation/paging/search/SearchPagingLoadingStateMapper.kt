@@ -53,6 +53,7 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStatesInSearch(
         is MailboxScreenState.UnexpectedError,
         is MailboxScreenState.Error,
         is MailboxScreenState.Offline,
+        is MailboxScreenState.SearchInputInvalidError,
         is MailboxScreenState.OfflineWithData -> SearchRefreshErrorStateHandler.getNextState(this, searchMode)
 
         is MailboxScreenState.AppendError,

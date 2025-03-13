@@ -36,6 +36,7 @@
     <string name="mailbox_default_sender">(No Sender)</string>
     <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
     <string name="mailbox_error_message_generic">Loading mailbox failed</string>
+    <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
     <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
     <string name="mailbox_is_empty_title">No messages</string>
     <string name="mailbox_is_empty_description">You are up to date</string>

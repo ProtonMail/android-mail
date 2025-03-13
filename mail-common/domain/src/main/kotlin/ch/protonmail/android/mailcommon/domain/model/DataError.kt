@@ -86,6 +86,9 @@ sealed interface DataError {
 
 fun DataError.isOfflineError() = this is DataError.Remote.Http && this.networkError is NetworkError.NoNetwork
 
+fun DataError.isSearchInputInvalidError() = this is DataError.Remote.Proton &&
+    this.protonError is ProtonError.SearchInputInvalid
+
 fun DataError.isMessageAlreadySentDraftError() = this is DataError.Remote.Proton &&
     this.protonError is ProtonError.MessageUpdateDraftNotDraft
 

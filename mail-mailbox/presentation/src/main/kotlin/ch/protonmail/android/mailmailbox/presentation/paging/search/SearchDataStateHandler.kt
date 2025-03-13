@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.paging.appendErrorToUiStat
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageEmpty
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageRefreshFailed
+import ch.protonmail.android.mailmailbox.presentation.paging.isSearchInputInvalidError
 import ch.protonmail.android.mailmailbox.presentation.paging.refreshErrorToUiState
 
 object SearchDataStateHandler {
@@ -32,10 +33,10 @@ object SearchDataStateHandler {
     fun getNextState(paging: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
         return when {
             paging.isPageEmpty() -> {
-                if (paging.isPageLoadingWhenNoSearchData()) {
-                    MailboxScreenState.SearchLoading
-                } else {
-                    MailboxScreenState.SearchNoData
+                when {
+                    paging.isSearchInputInvalidError() -> MailboxScreenState.SearchInputInvalidError
+                    paging.isPageLoadingWhenNoSearchData() -> MailboxScreenState.SearchLoading
+                    else -> MailboxScreenState.SearchNoData
                 }
             }
             !paging.isPageInError() -> {

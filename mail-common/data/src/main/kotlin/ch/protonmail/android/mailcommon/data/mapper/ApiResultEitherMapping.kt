@@ -40,6 +40,7 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
             isMessageAlreadySentAttachmentError() ->
                 DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent).left()
             isMessageAlreadySentSendingError() -> DataError.Remote.Proton(ProtonError.MessageAlreadySent).left()
+            isSearchInputInvalidError() -> DataError.Remote.Proton(ProtonError.SearchInputInvalid).left()
             else -> DataError.Remote.Http(
                 NetworkError.fromHttpCode(httpCode),
                 this.extractApiErrorInfo(),
@@ -69,6 +70,10 @@ private fun ApiResult.Error.Http.isMessageAlreadySentAttachmentError() =
 private fun ApiResult.Error.Http.isMessageAlreadySentSendingError() =
     NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
         ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageAlreadySent
+
+private fun ApiResult.Error.Http.isSearchInputInvalidError() =
+    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
+        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.SearchInputInvalid
 
 private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
 
