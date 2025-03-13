@@ -22,13 +22,11 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailcommon.domain.model.isSearchInputInvalidError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
-import me.proton.core.network.domain.isApiProtonError
 import timber.log.Timber
 
 fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(refreshRequested: Boolean): MailboxScreenState {
