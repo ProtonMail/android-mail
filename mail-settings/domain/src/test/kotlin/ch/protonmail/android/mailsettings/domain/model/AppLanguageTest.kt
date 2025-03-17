@@ -35,7 +35,7 @@ class AppLanguageTest {
         assertEquals("pl", AppLanguage.POLISH.langTag)
         assertEquals("pt-BR", AppLanguage.PORTUGUESE_BRAZILIAN.langTag)
         assertEquals("ru", AppLanguage.RUSSIAN.langTag)
-        assertEquals("tr", AppLanguage.TURKIYE.langTag)
+        assertEquals("tr", AppLanguage.TURKISH.langTag)
         assertEquals("ca", AppLanguage.CATALAN.langTag)
         assertEquals("cs", AppLanguage.CZECH.langTag)
         assertEquals("da", AppLanguage.DANISH.langTag)

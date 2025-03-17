@@ -128,7 +128,7 @@ class LanguageSettingsViewModelTest {
         AppLanguage.POLISH,
         AppLanguage.PORTUGUESE_BRAZILIAN,
         AppLanguage.RUSSIAN,
-        AppLanguage.TURKIYE,
+        AppLanguage.TURKISH,
         AppLanguage.CATALAN,
         AppLanguage.CZECH,
         AppLanguage.DANISH,
