@@ -25,13 +25,13 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Ачысціць пошукавы запыт</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Увесці пошукавы запыт</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d выбраны</item>
-    <item quantity="few">%d выбрана</item>
-    <item quantity="many">%d выбрана</item>
-    <item quantity="other">%d выбрана</item>
+    <item quantity="one">Выбрана: %d</item>
+    <item quantity="few">Выбрана: %d</item>
+    <item quantity="many">Выбрана: %d</item>
+    <item quantity="other">Выбрана: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s непрачытаная</item>
+    <item quantity="one">%s непрачытанае</item>
     <item quantity="few">%s непрачытаныя</item>
     <item quantity="many">%s непрачытаных</item>
     <item quantity="other">%s непрачытаных</item>
@@ -49,13 +49,13 @@
   <string name="mailbox_is_empty_trash_description">Сметніца пустая</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Размова перамешчана ў Сметніцу</item>
-    <item quantity="few">%d размовы перамешчаны ў Сметніцу</item>
+    <item quantity="few">%d размовы перамешчаныя ў Сметніцу</item>
     <item quantity="many">%d размоў перамешчаны ў Сметніцу</item>
     <item quantity="other">%d размоў перамешчаны ў Сметніцу</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Паведамленне перамешчана ў Сметніцу</item>
-    <item quantity="few">%d паведамленні перамешчаны ў Сметніцу</item>
+    <item quantity="few">%d паведамленні перамешчаныя ў Сметніцу</item>
     <item quantity="many">%d паведамленняў перамешчаны ў Сметніцу</item>
     <item quantity="other">%d паведамленняў перамешчаны ў Сметніцу</item>
   </plurals>

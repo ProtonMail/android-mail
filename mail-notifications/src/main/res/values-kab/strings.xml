@@ -23,11 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Izen amaynut</string>
   <string name="notification_actions_archive_description">Tarcivt</string>
   <string name="notification_actions_trash_description">Idumman</string>
-  <string name="notification_actions_mark_as_read_description">Mark read</string>
+  <string name="notification_actions_mark_as_read_description">Creḍ yettwaɣra</string>
   <string name="notification_permission_dialog_title">Don\'t miss an email</string>
   <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
   <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
   <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
   <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
-  <string name="notification_permission_dialog_button_dismiss">Dismiss</string>
+  <string name="notification_permission_dialog_button_dismiss">Zgel</string>
 </resources>

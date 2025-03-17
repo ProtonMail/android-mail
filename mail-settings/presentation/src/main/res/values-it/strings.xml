@@ -161,7 +161,7 @@
     <item quantity="other">%s tentativi rimanenti</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s tentativo rimanente. I dati verranno rimossi.</item>
+    <item quantity="one">Dopo %s altro tentativo i dati verranno rimossi</item>
     <item quantity="other">%s tentativi rimanenti. I dati verranno rimossi.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Verifica del codice PIN non riuscita</string>

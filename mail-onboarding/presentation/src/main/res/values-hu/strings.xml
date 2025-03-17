@@ -27,7 +27,7 @@
   <string name="onboarding_neat_and_tidy_headline">Takaros</string>
   <string name="onboarding_neat_and_tidy_description">Rendezze el, címkézze fel és lássa el színkóddal üzeneteit, hogy létrehozza a saját tökéletes fiókját.</string>
   <!--  Onboarding actions  -->
-  <string name="onboarding_next">Következő</string>
+  <string name="onboarding_next">Tovább</string>
   <string name="onboarding_get_started">Kezdés</string>
   <string name="onboarding_illustration_content_description">Indulási illusztráció</string>
   <string name="onboarding_close_content_description">Bezárás</string>

@@ -84,20 +84,20 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Даведацца больш</string>
   <!-- message expiration -->
   <string name="expiration_expired">Пратэрмінавана</string>
-  <string name="expiration_days_arg">%d дз</string>
-  <string name="expiration_hours_arg">%d гадз</string>
+  <string name="expiration_days_arg">%d д</string>
+  <string name="expiration_hours_arg">%d г</string>
   <string name="expiration_minutes_arg">%d хв</string>
   <string name="expiration_auto_delete_hour">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз гадзіну</string>
   <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Гэта паведамленне будзе аўтаматычна выдалена за %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d хвіліна</item>
+    <item quantity="one">%d хвіліну</item>
     <item quantity="few">%d хвіліны</item>
     <item quantity="many">%d хвілін</item>
     <item quantity="other">%d хвілін</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
-    <item quantity="one">%d гадзіна</item>
+    <item quantity="one">%d гадзіну</item>
     <item quantity="few">%d гадзіны</item>
     <item quantity="many">%d гадзін</item>
     <item quantity="other">%d гадзін</item>

@@ -127,7 +127,7 @@
   <string name="mail_settings_swipe_action_label_as_description">Címkézés, mint…</string>
   <string name="mail_settings_swipe_action_move_to_description">Áthelyezés ide…</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push értesítések</string>
+  <string name="mail_settings_notifications_title">Azonnali értesítések</string>
   <string name="mail_settings_notifications_extended_notifications_title">Bővített értesítések</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Kapcsolja be ezt a funkciót, az e-mailek feladójának megjelenítéséhez az értesítésekben.</string>
   <string name="mail_settings_notifications_notifications_settings">Értesítési beállítások</string>

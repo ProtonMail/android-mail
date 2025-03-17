@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Borrar la consulta de búsqueda</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ingresar la consulta de búsqueda</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d seleccionado</item>
+    <item quantity="one">%d seleccionados</item>
     <item quantity="other">%d seleccionados</item>
   </plurals>
   <plurals name="filter_unread_button_text">
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Se ha movido la conversación a la papelera.</item>
-    <item quantity="other">Se han movido %d conversaciones a la papelera.</item>
+    <item quantity="other">Se han movido %d conversaciones a la Papelera</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Se ha movido el mensaje a la papelera.</item>
-    <item quantity="other">Se han movido %d mensajes a la papelera.</item>
+    <item quantity="other">Se han movido %d mensajes a la Papelera</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar la conversación</item>
@@ -69,18 +69,18 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Se ha eliminado el mensaje permanentemente.</item>
-    <item quantity="other">Se han eliminado %d mensajes permanentemente.</item>
+    <item quantity="other">Se han eliminado %d mensajes permanentemente</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Se ha eliminado la conversación permanentemente.</item>
-    <item quantity="other">Se han eliminado %d conversaciones permanentemente.</item>
+    <item quantity="other">Se han eliminado %d conversaciones permanentemente</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Error con la operación sobre la etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Error al obtener las etiquetas</string>
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de traslado</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_move_conversation">Se ha movido la conversación a %s.</string>
+  <string name="mailbox_action_move_conversation">Conversación movida a $%s</string>
   <string name="mailbox_action_move_message">Se ha movido el mensaje a %s.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se han encontrado resultados.</string>

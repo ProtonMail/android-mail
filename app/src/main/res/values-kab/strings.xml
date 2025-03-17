@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Asenser</string>
-  <string name="dialog_sign_out_account_description">Tebɣiḍ ad teffɣeḍ?</string>
+  <string name="dialog_sign_out_account_description">Titedt tebɣiḍ ad teffɣeḍ?</string>
   <string name="dialog_sign_out_account_confirm">Ih</string>
   <string name="dialog_sign_out_account_cancel">Ala</string>
   <string name="dialog_remove_account_title">Kkes amiḍan</string>
@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
   <string name="mailbox_message_sending_error_action">Ddu ɣer Yirewwayen</string>
   <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
-  <string name="notification_switched_account">Switched to account: %s</string>
+  <string name="notification_switched_account">Tnekzeḍ ɣer umiḍan: %s</string>
   <string name="label_saved">Label saved</string>
   <string name="label_deleted">Tabzimt tettwakkes</string>
   <string name="label_list_loading_error">Error loading label, please try again later</string>

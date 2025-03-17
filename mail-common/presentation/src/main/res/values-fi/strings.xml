@@ -74,7 +74,7 @@
   <string name="common_error_loading_actions">Toimintojen lataus epäonnistui</string>
   <string name="yesterday">Eilen</string>
   <string name="action_open_customize_toolbar">Mukauta työkalupalkkia</string>
-  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
+  <string name="action_open_customize_toolbar_description">Mukauta työkalupalkkia</string>
   <string name="auto_delete_banner_text_activate_trash">Poista roskakorissa yli 30 päivää olleet viestit automaattisesti.</string>
   <string name="auto_delete_banner_text_activate_spam">Poista roskapostissa yli 30 päivää olleet viestit automaattisesti.</string>
   <string name="auto_delete_banner_text_upgrade">Päivitä tilauksesi käyttääksesi roskakorissa ja roskapostissa yli 30 päivää olleiden viestien automaattista poistoa.</string>
@@ -84,14 +84,14 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Lue lisää</string>
   <!-- message expiration -->
   <string name="expiration_expired">Tuhoutunut</string>
-  <string name="expiration_days_arg">%d pv</string>
-  <string name="expiration_hours_arg">%d t</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_days_arg">%dpv</string>
+  <string name="expiration_hours_arg">%dt</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">Tämä viesti poistetaan automaattisesti vajaan tunnin kuluttua</string>
   <string name="expiration_auto_delete_day">Tämä viesti poistetaan automaattisesti vajaan vuorokauden kuluttua</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tämä viesti poistetaan automaattisesti %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d minuutti</item>
+    <item quantity="one">%d minuuttia</item>
     <item quantity="other">%d minuuttia</item>
   </plurals>
   <plurals name="expiration_hours_full_word">

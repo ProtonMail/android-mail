@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d 個檔案</item>
+    <item quantity="other">%d 檔案</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d 更多</string>
   <string name="attachment_permission_dialog_title">需要權限</string>
@@ -51,7 +51,7 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">複製電子郵件地址</string>
   <string name="contact_actions_copy_address_description">複製聯絡電子郵件位址</string>
-  <string name="contact_actions_copy_address_performed">位址已複製到剪貼簿</string>
+  <string name="contact_actions_copy_address_performed">地址已複製到剪貼簿</string>
   <string name="contact_actions_copy_name">複製名稱</string>
   <string name="contact_actions_copy_name_description">複製聯絡名稱</string>
   <string name="contact_actions_copy_name_performed">名稱已複製到剪貼簿</string>
@@ -66,7 +66,7 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail 需要獲得讀取您的聯絡人的權限，才能提供收件者建議。</string>
   <string name="device_contacts_permission_dialog_dismiss_button">好</string>
   <string name="device_contacts_permission_dialog_action_button">請求授權</string>
-  <string name="device_contacts_permission_dialog_action_button_deny">婉拒</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">拒絕</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">View entire message</string>
 </resources>

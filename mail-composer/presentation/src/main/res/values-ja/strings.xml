@@ -100,6 +100,6 @@
   <string name="set_message_password_button_remove_password">パスワードを削除</string>
   <string name="respondInline">インラインで返信</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="other">%d人のメンバー</item>
+    <item quantity="other">%d 人のメンバー</item>
   </plurals>
 </resources>

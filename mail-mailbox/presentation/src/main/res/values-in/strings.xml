@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Hapus kueri pencarian</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Masukkan kueri pencarian</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d Dipilih</item>
+    <item quantity="other">%d Terpilih</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s belum dibaca</item>

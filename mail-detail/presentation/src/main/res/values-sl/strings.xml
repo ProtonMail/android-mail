@@ -23,9 +23,9 @@
   <string name="error_mark_unread_failed">Označevanje kot neprebrano ni uspelo. Poskusite znova.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d sporočilo</item>
-    <item quantity="two">%d sporočili</item>
-    <item quantity="few">%d sporočila</item>
-    <item quantity="other">%d sporočil</item>
+    <item quantity="two">%d sporočil</item>
+    <item quantity="few">%d sporočil</item>
+    <item quantity="other">%d sporočili</item>
   </plurals>
   <string name="quick_reply_button_content_description">Odgovori</string>
   <string name="quick_reply_all_button_content_description">Odgovori vsem</string>
@@ -37,10 +37,10 @@
   <string name="bcc">Skp:</string>
   <string name="date">Datum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d priloga</item>
-    <item quantity="two">%d prilogi</item>
-    <item quantity="few">%d priloge</item>
-    <item quantity="other">%d prilog</item>
+    <item quantity="one">%d Priponka</item>
+    <item quantity="two">%d Priponki</item>
+    <item quantity="few">%d Priponke</item>
+    <item quantity="other">%d Priponk</item>
   </plurals>
   <string name="hide_details">Skrij podrobnosti</string>
   <string name="undisclosed_recipients">Skriti prejemniki</string>
@@ -58,7 +58,7 @@
   <string name="conversation_moved_to_trash">Pogovor je premaknjen v smetnjak</string>
   <string name="conversation_moved_to_selected_destination">Pogovor je premaknjen v %1$s</string>
   <string name="conversation_moved_to_archive">Pogovor je premaknjen v arhiv</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Pogovor premaknjen med neželeno pošto</string>
   <string name="error_move_conversation_failed">Premikanje pogovora ni uspelo. Poskusite znova.</string>
   <string name="error_loading_message">Nekaj je šlo narobe, poskusite znova.</string>
   <string name="error_offline_loading_message">Nimate povezave. Za prikaz vsebine tega sporočila je potrebna internetna povezava.</string>
@@ -93,7 +93,7 @@
   <string name="message_delete_dialog_message">Ali ste prepričani, da želite trajno izbrisati to sporočilo?</string>
   <string name="message_deleted">Sporočilo izbrisano</string>
   <string name="message_moved">Sporočilo premaknjeno</string>
-  <string name="message_moved_to">Message moved to %s</string>
+  <string name="message_moved_to">Sporočilo je premaknjeno v mapo %s</string>
   <string name="error_delete_message_failed">Brisanje sporočila ni uspelo</string>
   <string name="error_delete_message_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed">Pogovora ni bilo mogoče izbrisati</string>
@@ -105,7 +105,7 @@
   <string name="message_body_load_embedded_images_button_text">Naloži vdelane slike</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Naloži oddaljeno in vdelano vsebino</string>
   <string name="message_report_phishing_dialog_title_offline">Pozor</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Ta možnost je na voljo samo ob vzpostavljeni povezavi.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">V redu</string>
   <string name="message_report_phishing_dialog_title">Potrdite prijavo poskusa prevare</string>
   <string name="message_report_phishing_dialog_message">S prijavo lažnega predstavljanja nam boste poslali sporočilo v analizo, s katero bomo izboljšali svoje filtre. To pomeni, da nam bo vsebina sporočila v celoti vidna.</string>
@@ -118,7 +118,7 @@
   <string name="non_trashed_messages_banner">Ta pogovor vključuje sporočila, ki niso v smetnjaku.</string>
   <string name="show">Prikaži</string>
   <string name="hide">Skrij</string>
-  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_title">Prilagajanje orodne vrstice</string>
+  <string name="tooltip_customize_toolbar_message">Zdaj lahko izberete in prerazporedite dejanja v tej orodni vrstici.</string>
+  <string name="tooltip_customize_toolbar_cta">Prilagodi</string>
 </resources>

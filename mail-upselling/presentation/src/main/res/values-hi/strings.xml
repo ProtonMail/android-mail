@@ -19,24 +19,24 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">अपग्रेड बटन</string>
-  <string name="upselling_close_button_content_description">बंद करें बटन</string>
+  <string name="upselling_close_button_content_description">बंद बटन</string>
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">अधिक स्टोरेज और प्रीमियम खासियतें अनलॉक करने के लिए</string>
   <string name="upselling_mailbox_plus_title">Mail Plus में अपग्रेड करें</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Mail Plus के साथ आसानी से ग्रुप को ईमेल भेजें और अन्य प्रीमियम खासियतों का आनंद लें।</string>
+  <string name="upselling_contact_groups_plus_description_override">आसानी से ग्रुप को ईमेल भेजें और Mail Plus के साथ अन्य प्रीमियम खासियतों का आनंद लें।</string>
   <string name="upselling_contact_groups_plus_title">अपने संपर्कों को ग्रुप करें</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">जब आप Mail Plus में अपग्रेड करें, तो इन्हें और अन्य प्रीमियम खासियतें प्राप्त करें।</string>
-  <string name="upselling_labels_plus_title">क्या आपको अधिक लेबल या फोल्डर चाहिए?</string>
+  <string name="upselling_labels_plus_description_override">Mail Plus में अपग्रेड करने पर उन्हें और अन्य प्रीमियम खासियतें प्राप्त करें।</string>
+  <string name="upselling_labels_plus_title">क्या आपको और लेबल या फोल्डर चाहिए?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">जब आप Mail Plus में अपग्रेड करें, तो इन्हें और अन्य प्रीमियम खासियतें प्राप्त करें।</string>
-  <string name="upselling_folders_plus_title">क्या आपको अधिक लेबल या फोल्डर चाहिए?</string>
+  <string name="upselling_folders_plus_description_override">Mail Plus में अपग्रेड करने पर उन्हें और अन्य प्रीमियम खासियतें प्राप्त करें।</string>
+  <string name="upselling_folders_plus_title">क्या आपको और लेबल या फोल्डर चाहिए?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">अपने स्वयं के मोबाइल हस्ताक्षर का उपयोग करें और Mail Plus के साथ अन्य प्रीमियम खासियतों का आनंद लें।</string>
-  <string name="upselling_mobile_signature_plus_title">अपने हस्ताक्षर को अनुकूलित करें</string>
+  <string name="upselling_mobile_signature_plus_description_override">अपना स्वयं का मोबाइल हस्ताक्षर उपयोग करें और Mail Plus के साथ अन्य प्रीमियम खासियतों का आनंद लें।</string>
+  <string name="upselling_mobile_signature_plus_title">अपना हस्ताक्षर अनुकूलित करें</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Mail Plus के साथ एक साफ-सुथरा मेलबॉक्स का आनंद लें और अन्य प्रीमियम खासियतों का लाभ उठाएं।</string>
+  <string name="upselling_auto_delete_plus_description_override">एक व्यवस्थित मेलबॉक्स का आनंद लें और Mail Plus के साथ अन्य प्रीमियम खासियतों का लाभ उठाएं।</string>
   <string name="upselling_auto_delete_plus_title">पुराने कचरे और स्पैम हटाएं</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 जीबी स्टोरेज</string>
@@ -46,12 +46,12 @@
   <string name="upselling_plus_feature_folders_labels">असीमित फोल्डर, लेबल, और फिल्टर</string>
   <string name="upselling_plus_feature_plus_7_features">+7 प्रीमियम खासियतें</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">आपकी सर्व-समावेशी प्रीमियम सदस्यता</string>
-  <string name="upselling_unlimited_feature_storage">500 जीबी स्टोरेज के साथ फोटो बैकअप</string>
+  <string name="upselling_unlimited_description_override">आपकी सर्वांगीण प्रीमियम सदस्यता</string>
+  <string name="upselling_unlimited_feature_storage">500 जीबी स्टोरेज और फोटो बैकअप के साथ</string>
   <string name="upselling_unlimited_feature_mail_calendar">सभी प्रीमियम मेल और कैलेंडर सुविधाएं</string>
-  <string name="upselling_unlimited_feature_vpn">वीपीएन (90+ देश)</string>
+  <string name="upselling_unlimited_feature_vpn">वीपीएन (90+ देशों)</string>
   <string name="upselling_unlimited_feature_drive">सुरक्षित क्लाउड स्टोरेज</string>
-  <string name="upselling_unlimited_feature_pass">एन्क्रिप्टेड पासवर्ड मैनेजर</string>
+  <string name="upselling_unlimited_feature_pass">एन्क्रिप्ट किया हुआ पासवर्ड मैनेजर</string>
   <!-- Onboarding Upselling -->
   <string name="upselling_onboarding_premium_value_included">प्रीमियम मूल्य शामिल</string>
   <string name="upselling_onboarding_feature_e2e">शुरु-से-अंत तक एन्क्रिप्शन</string>
@@ -67,13 +67,13 @@
   <string name="upselling_onboarding_unlimited_feature_email_domains">3 कस्टम ईमेल डोमेन के लिए समर्थन</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">असीमित Hide-my-email नकलीनाम</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">समर्पित ग्राहक सहायता</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">अति तेज़ और निजी वीपीएन</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">एन्क्रिप्टेड पासवर्ड मैनेजर</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">फोटो और दस्तावेजों के लिए एन्क्रिप्टेड क्लाउड स्टोरेज</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">अत्यंत तेज़ और निजी वीपीएन</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">एन्क्रिप्ट किया हुआ पासवर्ड मैनेजर</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">फोटो और दस्तावेजों के लिए एन्क्रिप्ट किया हुआ क्लाउड स्टोरेज</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">उन्नत खाता सुरक्षा</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">स्टोरेज</string>
-  <string name="upselling_comparison_table_email_addresses">ईमेल पते</string>
+  <string name="upselling_comparison_table_email_addresses">ईमेल पता</string>
   <string name="upselling_comparison_table_custom_email_domain">कस्टम ईमेल डोमेन</string>
   <string name="upselling_comparison_table_desktop_app">डेस्कटॉप ऐप तक पहुँच</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">असीमित फोल्डर और लेबल</string>
@@ -83,30 +83,30 @@
   <string name="upselling_select_plan_year">1 साल</string>
   <string name="upselling_select_plan_month">1 महीना</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">अगर रद्द न किया गया तो समान मूल्य और शर्तों पर स्वतः नवीनीकरण होता है।</string>
-  <string name="upselling_auto_renew_text_promo">स्वागत प्रस्ताव। %s %s%s पर स्वचालित नवीनीकरण होगा, यदि [रद्द करें] नहीं किया जाता।</string>
-  <string name="upselling_auto_renew_text_standard">%s %s%s पर स्वचालित नवीनीकरण होगा, यदि [रद्द करें] नहीं किया जाता।</string>
+  <string name="upselling_auto_renew_text">स्वत: नवीनीकरण वही कीमत और शर्तों पर होता है, जब तक रद्द न किया जाए।</string>
+  <string name="upselling_auto_renew_text_promo">वेलकम ऑफर। %s %s%s पर स्वत: नवीनीकरण होता है, जब तक रद्द न किया जाए।</string>
+  <string name="upselling_auto_renew_text_standard">%s %s%s पर स्वत: नवीनीकरण होता है, जब तक रद्द न किया जाए।</string>
   <string name="upselling_discount_tag">%s%% की छूट</string>
-  <string name="upselling_month">/महीने</string>
+  <string name="upselling_month">/महीना</string>
   <string name="upselling_year">/साल</string>
-  <string name="upselling_get_button">प्राप्त %s</string>
+  <string name="upselling_get_button">%s लें</string>
   <plurals name="upselling_month">
     <item quantity="one">%d महीना</item>
     <item quantity="other">%d महीने</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">अपग्रेड विकल्प वापस लाने में असफल।</string>
+  <string name="upselling_unable_retrieve_options">अपग्रेड विकल्प प्राप्त करने में असमर्थ।</string>
   <string name="upselling_snackbar_error_no_user_id">एक गड़बड़ हुई।</string>
-  <string name="upselling_snackbar_error_no_subscriptions">सदस्यताएँ लाने में असफल।</string>
+  <string name="upselling_snackbar_error_no_subscriptions">सदस्यताएं लाने में असमर्थ।</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">सदस्यता का अपग्रेड जारी है…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">आपकी सदस्यता को अपग्रेड करते समय एक एरर हुई।</string>
+  <string name="upselling_snackbar_upgrade_in_progress">सदस्यता अपग्रेड प्रगति पर है…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">आपकी सदस्यता का अपग्रेड करते समय एरर हुई।</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">एक एरर हुआ। वापिस कोशिश करें।</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">एक प्लैन चुनें</string>
   <string name="upselling_onboarding_switcher_monthly">हर महीने</string>
   <string name="upselling_onboarding_switcher_annual">वार्षिक</string>
-  <string name="upselling_onboarding_best_value">सर्वश्रेष्ठ मूल्य</string>
+  <string name="upselling_onboarding_best_value">सबसे अच्छा मूल्य</string>
   <string name="upselling_onboarding_month">/महीना</string>
   <string name="upselling_onboarding_year">/साल</string>
   <plurals name="upselling_onboarding_more_features">
@@ -121,7 +121,7 @@
   <string name="post_subscription_continue_button">आगे चलें</string>
   <string name="post_subscription_got_it_button">ठीक है</string>
   <string name="post_subscription_welcome_page_title">Mail Plus में स्वागत है</string>
-  <string name="post_subscription_welcome_page_message">सभी के लिए इंटरनेट को सुरक्षित और निजी रखने में हमारा समर्थन करने के लिए धन्यवाद।</string>
+  <string name="post_subscription_welcome_page_message">हर किसी के लिए इंटरनेट को सुरक्षित और निजी रखने में हमारा समर्थन करने के लिए धन्यवाद।</string>
   <string name="post_subscription_welcome_page_unlocked">आपने अनलॉक कर लिया है</string>
   <string name="post_subscription_plus_feature_storage">15 जीबी स्टोरेज</string>
   <string name="post_subscription_plus_feature_email_addresses">10 अतिरिक्त ईमेल पते</string>
@@ -136,7 +136,7 @@
   <string name="post_subscription_proton_drive">Proton Drive</string>
   <string name="post_subscription_proton_drive_message">आपकी नई सदस्यता ने आपका स्टोरेज 15 जीबी तक बढ़ा दिया है।</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">गति और सुरक्षा के लिए सबसे अच्छा वीपीएन।</string>
+  <string name="post_subscription_proton_vpn_message">स्पीड और सुरक्षा के लिए सबसे अच्छा वीपीएन।</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
   <string name="post_subscription_proton_pass_message">सुरक्षित पासवर्ड स्टोरेज और अपने खातों में आसान साइन-इन।</string>
   <string name="post_subscription_button_installed">इंस्टॉल किया गया</string>

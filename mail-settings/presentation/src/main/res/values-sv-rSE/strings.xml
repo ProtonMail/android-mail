@@ -63,26 +63,26 @@
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mappar</string>
   <string name="mail_settings_conversation_mode">Konversationsläge</string>
-  <string name="mail_settings_auto_delete">Autoborttagning</string>
-  <string name="mail_settings_auto_delete_full_text">Autoborttagning av oönskade meddelanden</string>
+  <string name="mail_settings_auto_delete">Ta bort automatiskt</string>
+  <string name="mail_settings_auto_delete_full_text">Ta bort oönskade meddelanden automatiskt</string>
   <string name="mail_settings_auto_delete_hint">Meddelanden som varit i papperskorgen eller skräpposten i mer än 30 dagar kommer att tas bort automatiskt.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Du behöver en betald Proton Mail-prenumeration för att använda denna funktion</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Ta bort meddelanden?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Detta kommer ta bort alla meddelanden som varit i papperskorgen eller skräpposten i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktivera</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_title">Inaktivera autoborttagning?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Inaktivera automatisk borttagning?</string>
   <string name="mail_settings_auto_delete_dialog_disabling_text">E-postmeddelanden som schemalagts för borttagning kommer finnas kvar i papperskorgs- och skräppostmapparna.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Inaktivera</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Förvald e-postadress</string>
+  <string name="mail_settings_default_email_address_title">Standard e-postadress</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Inaktiva adresser</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">Inga inaktiva adresser</string>
   <string name="mail_settings_default_email_address_error_loading">Fel vid inläsning av inställningar</string>
   <string name="mail_settings_default_email_address_error_update">Fel vid uppdatering av inställningar</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Du behöver en betald Proton Mail-prenumeration för att välja denna adress som standard</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Du behöver en betald Proton Mail-prenumeration för att ställa in denna adress som standard</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Visningsnamn &amp; signatur</string>
   <string name="mail_settings_identity_save_button">Spara</string>

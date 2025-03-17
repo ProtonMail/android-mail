@@ -84,8 +84,8 @@
   <string name="upselling_select_plan_month">1 miesiąc</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Automatyczne odnowienie w tej samej cenie i na tych samych warunkach, chyba że zostanie anulowane.</string>
-  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_promo">Oferta powitalna. Automatyczne odnowienie za %s %s%s, chyba że anulujesz.</string>
+  <string name="upselling_auto_renew_text_standard">Automatyczne odnowienie za %s %s%s, chyba że anulujesz.</string>
   <string name="upselling_discount_tag">ZAOSZCZĘDŹ %s%%</string>
   <string name="upselling_month">/ miesiąc</string>
   <string name="upselling_year"> / rok</string>

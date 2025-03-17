@@ -24,10 +24,10 @@
   <string name="notification_actions_archive_description">Arhiviraj</string>
   <string name="notification_actions_trash_description">V smetnjak</string>
   <string name="notification_actions_mark_as_read_description">Označi kot prebrano</string>
-  <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
+  <string name="notification_permission_dialog_title">Ne spreglejte sporočila</string>
+  <string name="notification_permission_dialog_message">Obvestila vam omogočajo spremljati prispelo pošto, ne da bi morali preverjati v aplikaciji.</string>
+  <string name="notification_permission_dialog_post_send_title">Želite ostati na tekočem?</string>
   <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_button_enable">Omogoči potisna obvestila</string>
   <string name="notification_permission_dialog_button_dismiss">Opusti</string>
 </resources>

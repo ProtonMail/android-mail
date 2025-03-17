@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">ऐप भाषा</string>
   <string name="mail_settings_combined_contacts">संयुक्त संपर्क</string>
   <string name="mail_settings_local_cache">स्थानीय कैश</string>
-  <string name="mail_settings_local_cache_hint">उपयोग किया गया स्पेस: %s</string>
+  <string name="mail_settings_local_cache_hint">उपयोग की गई जगह: %s</string>
   <string name="mail_settings_local_cache_clear_button">डाटा मिटाएं</string>
   <string name="mail_settings_swipe_actions">स्वाइप क्रियाएं</string>
   <string name="mail_settings_combined_contacts_hint">अपने सभी साइन इन खातों से संपर्कों का इस्तेमाल करके ईमेल पतों को ऑटो-पुरा करने के लिएं इस फीचर को ऑन करें।</string>
@@ -66,23 +66,23 @@
   <string name="mail_settings_auto_delete">स्वचालित रूप से हटाएँ</string>
   <string name="mail_settings_auto_delete_full_text">अनचाहे संदेश अपनेआप मिटाएं</string>
   <string name="mail_settings_auto_delete_hint">30 दिनों से अधिक समय तक ट्रैश या स्पैम में मौजूद संदेश स्वचालित रूप से हटा दिए जाएंगे।</string>
-  <string name="mail_settings_auto_delete_subscription_needed">इस खासियत का उपयोग करने के लिए आपको एक भुगतान की गई Proton Mail सदस्यता चाहिए</string>
+  <string name="mail_settings_auto_delete_subscription_needed">इस खासियत का उपयोग करने के लिए आपको भुगतान वाली Proton Mail सदस्यता की आवश्यकता है</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">रद्द करें</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">संदेशों को मिटाएं?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">यह उन सभी संदेशों को हटा देगा जो 30 दिनों से अधिक समय से ट्रैश या स्पैम में हैं, जिनमें वर्तमान में इन फ़ोल्डरों में मौजूद संदेश भी शामिल हैं।</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">एनेबल</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">ऑटो-डिलीट अक्षम करें?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">हटाने के लिए निर्धारित ईमेल कचरा और स्पैम फोल्डरों में रहेंगे।</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">हटाने के लिए निर्धारित ईमेल कचरा और स्पैम फोल्डर में रहेंगी।</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">अक्षम करें</string>
   <string name="mail_settings_not_set">सेट नहीं</string>
   <string name="mail_settings_conversation_mode_hint">एक बातचीत के ईमेलों को अपने इनबॉक्स में एक साथ रखें या उन्हें अलग से दिखाएं।</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">डिफॉल्ट ईमेल पता</string>
   <string name="mail_settings_default_email_address_inactive_addresses">सक्रिय नहीं पते</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">कोई भी सक्रिय नहीं पते</string>
-  <string name="mail_settings_default_email_address_error_loading">सेटिंग लोड करने में एरर</string>
-  <string name="mail_settings_default_email_address_error_update">सेटिंग अपडेट करने में एरर</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">इस पता को डिफॉल्ट पर सेट करने के लिए आपको एक भुगतान की गई Proton Mail सदस्यता चाहिए</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">कोई सक्रिय नहीं पते</string>
+  <string name="mail_settings_default_email_address_error_loading">सेटिंग लोड करने में त्रुटि</string>
+  <string name="mail_settings_default_email_address_error_update">सेटिंग अपडेट करने में त्रुटि</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">इस पता को डिफॉल्ट सेट करने के लिए आपको भुगतान वाली Proton Mail सदस्यता की आवश्यकता है</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">डिस्प्ले नाम &amp; हस्ताक्षर</string>
   <string name="mail_settings_identity_save_button">सहेजें</string>
@@ -94,17 +94,17 @@
   <string name="mail_settings_identity_mobile_footer_subtext">यह आपके हस्ताक्षर के बाद जोड़ा जाता है।</string>
   <string name="mail_settings_identity_mobile_footer_hint">मोबाइल हस्ताक्षर</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android से भेजा गया</string>
-  <string name="mail_settings_identity_error_updating">सेटिंग अपडेट करने में एरर</string>
-  <string name="mail_settings_identity_error_loading">सेटिंग लोड करने में एरर</string>
+  <string name="mail_settings_identity_error_updating">सेटिंग अपडेट करने में त्रुटि</string>
+  <string name="mail_settings_identity_error_loading">सेटिंग लोड करने में त्रुटि</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">रिमोट कंटेंट अपनेआप दिखाएं</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">दूर कंटेंट अपनेआप दिखाएँ</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">अपनेआप दिखाएं अंदर डाले तस्वीर</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">स्क्रीनशॉट लेने से रोकें</string>
   <string name="mail_settings_privacy_request_link_confirmation">लिंक की पुष्टि का अनुरोध करें</string>
   <string name="mail_settings_privacy_background_sync">बैकग्राउंड सिंक</string>
   <string name="mail_settings_privacy_background_sync_description">अगर ये विकल्प सक्षम है, तो ऐप बैकग्राउंड में सर्वर के साथ सिंक हो जाएगा। इस सुविधा को अक्षम करने से पुश सूचनाए अक्षम हो जाएगी।</string>
-  <string name="mail_settings_privacy_error_updating">सेटिंग अपडेट करने में एरर</string>
-  <string name="mail_settings_privacy_error_loading">सेटिंग लोड करने में एरर</string>
+  <string name="mail_settings_privacy_error_updating">सेटिंग अपडेट करने में त्रुटि</string>
+  <string name="mail_settings_privacy_error_loading">सेटिंग लोड करने में त्रुटि</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">स्वाइप एक्शन</string>
   <string name="mail_settings_swipe_actions_subtitle">सबसे ज़्यादा इस्तेमाल एक्शनों तक पहुंचने के लिएं स्वाइप इशारें सेट करें।</string>
@@ -131,24 +131,24 @@
   <string name="mail_settings_notifications_extended_notifications_title">विस्तारित अधिसूचनाएँ</string>
   <string name="mail_settings_notifications_extended_notifications_summary">पुश सूचनाओं में ईमेल के प्रेषक \n को देखने के लिए इस सुविधा को चालू करें।</string>
   <string name="mail_settings_notifications_notifications_settings">सूचना सेटिंग्स</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">सिस्टम सूचना सेटिंग पर जाएं</string>
-  <string name="mail_settings_notifications_update_error">सेटिंग अपडेट करने में एरर</string>
-  <string name="mail_settings_notifications_loading_error">सेटिंग लोड करने में एरर</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">सिस्टम सूचना सेटिंग्स पर जाएँ</string>
+  <string name="mail_settings_notifications_update_error">सेटिंग अपडेट करने में त्रुटि</string>
+  <string name="mail_settings_notifications_loading_error">सेटिंग लोड करने में त्रुटि</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">अपनेआप-लॉक</string>
   <string name="mail_settings_auto_lock_item_title">ऑटो-लॉक ऐप</string>
-  <string name="mail_settings_auto_lock_item_description">अपने ऐप को ऑटो-लॉक करने के लिए इस खासियत को चालू करें और पिन कोड का उपयोग करके इसे अनलॉक करें।</string>
+  <string name="mail_settings_auto_lock_item_description">अपने ऐप को ऑटो-लॉक करने के लिए इस सुविधा को चालू करें और इसे अनलॉक करने के लिए पिन कोड का उपयोग करें।</string>
   <string name="mail_settings_auto_lock_change_pin_description">पिन कोड बदलें</string>
   <string name="mail_settings_auto_lock_item_timer_title">ऑटो-लॉक टाइमर</string>
   <string name="mail_settings_auto_lock_immediately">तुरंत</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 मिनट सक्रिय नहीं रहने पे</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 मिनट सक्रिय नहीं रहने पे</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 घंटे सक्रिय नहीं रहने पर</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 दिन सक्रिय नहीं रहने पर</string>
-  <string name="mail_settings_auto_lock_update_error">सेटिंग अपडेट करने में एरर</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 घंटे सक्रिय नहीं रहने पे</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 दिन सक्रिय नहीं रहने पे</string>
+  <string name="mail_settings_auto_lock_update_error">सेटिंग अपडेट करने में त्रुटि</string>
   <string name="mail_settings_pin_insertion_input_title">पिन कोड डालें</string>
   <string name="mail_settings_pin_insertion_set_title">पिन कोड सेट करें</string>
-  <string name="mail_settings_pin_insertion_confirm_title">पिन कोड सच्ची</string>
+  <string name="mail_settings_pin_insertion_confirm_title">पिन कोड की पुष्टि करें</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">लॉक आइकन</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">पिन डॉट</string>
   <string name="mail_settings_pin_insertion_backspace_description">बैकस्पेस</string>
@@ -162,18 +162,18 @@
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">डाटा को सुरक्षित मिटाने तक %s कोशिश बचा।</item>
-    <item quantity="other">डाटा को सुरक्षित मिटाने तक %s कोशिशें बचे।</item>
+    <item quantity="other">डाटा को सुरक्षित मिटाने तक %s कोशिश बचे।</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">पिन कोड सत्यापित करने में एक समस्या हुई।</string>
-  <string name="mail_settings_pin_insertion_signout_text">साइनआउट करें</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">साइनआउट करें</string>
+  <string name="mail_settings_pin_insertion_error_unknown">आपके पिन कोड के सत्यापन में एरर हुई।</string>
+  <string name="mail_settings_pin_insertion_signout_text">साइन आउट करें</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">साइन आउट करें</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">पक्का साइनआउट करें?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">हाँ</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">नहीं</string>
   <string name="mail_settings_pin_insertion_created_success">पिन कोड सफलतापूर्वक बनाया गया।</string>
   <string name="mail_settings_pin_insertion_changed_success">पिन कोड सफलतापूर्वक बदला गया।</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">स्थानीय कैश साफ किया जा रहा है…</string>
+  <string name="mail_settings_clearing_cached_data">स्थानीय कैश्ड डाटा हटाया जा रहा है…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">एक एरर हुआ। वापिस कोशिश करें।</string>
   <!-- strings used for biometric enrollment -->
@@ -182,21 +182,21 @@
   <string name="unlock_using_biometrics">बायोमेट्रिक से अनलॉक करें</string>
   <string name="biometric_error_hw_not_available">बायोमेट्रिक हार्डवेयर मौजूद नहीं।</string>
   <!-- customize toolbar-->
-  <string name="customize_toolbar_disclaimer_message">यह टूलबार संदेश पढ़ते समय दिखाई देता है।</string>
-  <string name="customize_toolbar_disclaimer_conversation">यह टूलबार बातचीत पढ़ते समय दिखाई देता है।</string>
-  <string name="customize_toolbar_disclaimer_inbox">यह टूलबार तब दिखाई देता है जब आप अपने मेलबॉक्स में कई संदेश चुनते हैं।</string>
-  <string name="customize_toolbar_disclaimer_mailbox">यह टूलबार तब दिखाई देता है जब आप अपने मेलबॉक्स में कई संदेश चुनते हैं।</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">यह टूलबार तब दिखाई देता है जब आप अपने मेलबॉक्स में कई बातचीत चुनते हैं।</string>
+  <string name="customize_toolbar_disclaimer_message">ये दूलबार संदेश पढ़ते हुए दिखता है</string>
+  <string name="customize_toolbar_disclaimer_conversation">ये टूलबार बातचीत पढ़ते हुए दिखता है।</string>
+  <string name="customize_toolbar_disclaimer_inbox">टूलबार दिखता है जब आप मेलबॉक्स में कई संदेश चुनते हैं।</string>
+  <string name="customize_toolbar_disclaimer_mailbox">टूलबार दिखता है जब आप मेलबॉक्स में कई संदेश चुनते हैं।</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">टूलबार दिखता है जब आप मेलबॉक्स में कई बातचीत चुनते हैं।</string>
   <string name="customize_toolbar_message">संदेश</string>
   <string name="customize_toolbar_conversation">बातचीत</string>
-  <string name="customize_toolbar_inbox">इंबॉक्स</string>
+  <string name="customize_toolbar_inbox">इनबॉक्स</string>
   <string name="customize_toolbar_mailbox">मेलबॉक्स</string>
-  <string name="customize_toolbar_done_action">हो गया</string>
+  <string name="customize_toolbar_done_action">पूरा हुआ</string>
   <string name="customize_toolbar_reset_to_default">डिफॉल्ट पे जाए</string>
   <string name="customize_toolbar_reset_to_default_btn">डिफॉल्ट पे जाए</string>
   <string name="customize_toolbar_actions_section">टूलबार एक्शन (5 तक चुनें)</string>
   <string name="customize_toolbar_available_actions_section">मौजूद एक्शन</string>
   <string name="customize_toolbar_reset_default_confirmation_title">डिफॉल्ट पे जाए?</string>
   <string name="customize_toolbar_reset_default_confirmation_desc">टूलबार के एक्शन डिफॉल्ट पर रीसेट किए जाएंगे।</string>
-  <string name="customize_toolbar_reset_default_confirm">सच्ची</string>
+  <string name="customize_toolbar_reset_default_confirm">पक्का करें</string>
 </resources>

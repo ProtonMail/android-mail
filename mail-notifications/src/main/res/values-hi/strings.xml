@@ -18,16 +18,16 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">नए संदेश</string>
-  <string name="notification_summary_text_new_login_alerts">नई लॉगइन सूचनाएँ</string>
+  <string name="notification_summary_text_new_login_alerts">नए लॉगइन अलर्ट</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
   <string name="notification_title_text_new_message_fallback">नया संदेश</string>
   <string name="notification_actions_archive_description">संग्रह</string>
   <string name="notification_actions_trash_description">कचरा</string>
   <string name="notification_actions_mark_as_read_description">पढ़ा मार्क करें</string>
   <string name="notification_permission_dialog_title">ईमेल न चूकें</string>
-  <string name="notification_permission_dialog_message">सूचनाएँ आपको बिना ऐप जांचे अपने इंबॉक्स पर नजर रखने में मदद करती हैं।</string>
+  <string name="notification_permission_dialog_message">सूचनाएं आपको बिना ऐप की जांच किए, अपनी इंबॉक्स पर नज़र रखने में मदद करती हैं।</string>
   <string name="notification_permission_dialog_post_send_title">क्या आप अपडेट रहना चाहते हैं?</string>
-  <string name="notification_permission_dialog_post_send_message">सूचनाएँ सक्षम करें ताकि आपको पता चल सके जब आपके ईमेल का जवाब मिले।</string>
-  <string name="notification_permission_dialog_button_enable">पुश सूचनाएँ सक्षम करें</string>
-  <string name="notification_permission_dialog_button_dismiss">हटा दें</string>
+  <string name="notification_permission_dialog_post_send_message">अपने ईमेल का जवाब मिलने पर यह जानने के लिए सूचनाएं सक्षम करें।</string>
+  <string name="notification_permission_dialog_button_enable">पुश सूचना सक्षम करें</string>
+  <string name="notification_permission_dialog_button_dismiss">रद्द करें</string>
 </resources>

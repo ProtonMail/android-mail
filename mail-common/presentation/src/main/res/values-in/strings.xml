@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Pelajari lebih lanjut</string>
   <!-- message expiration -->
   <string name="expiration_expired">Kedaluwarsa</string>
-  <string name="expiration_days_arg">%d h</string>
+  <string name="expiration_days_arg">%d hari</string>
   <string name="expiration_hours_arg">%d j</string>
-  <string name="expiration_minutes_arg">%d mnt</string>
+  <string name="expiration_minutes_arg">%d jt</string>
   <string name="expiration_auto_delete_hour">Pesan ini akan dihapus secara otomatis dalam waktu kurang dari satu jam</string>
   <string name="expiration_auto_delete_day">Pesan ini akan dihapus secara otomatis dalam waktu kurang dari satu hari</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Pesan ini akan dihapus secara otomatis dalam %s</string>

@@ -114,7 +114,7 @@
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
   <string name="contact_group_delete_dialog_confirm">移除</string>
   <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_delete_button_text">刪除群組</string>
   <string name="contact_group_form_loading_error">載入聯絡人群組時發生錯誤，請稍後再試</string>
   <string name="edit_contact_group_content_description">編輯聯絡人群組</string>
   <string name="delete_contact_group_content_description">刪除聯絡人群組</string>

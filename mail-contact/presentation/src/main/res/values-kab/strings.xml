@@ -23,9 +23,9 @@
   <string name="no_contact_groups">No contact groups found</string>
   <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
-  <string name="add_contact">Add contact</string>
+  <string name="add_contact">Rnu anermis</string>
   <string name="add_contact_group">Add contact group</string>
-  <string name="add_contact_content_description">Add contact</string>
+  <string name="add_contact_content_description">Rnu anermis</string>
   <string name="all_title">Akk</string>
   <string name="groups_title">Igrawen</string>
   <string name="group_member_count">%1$s n uεeggal</string>
@@ -90,7 +90,7 @@
   <string name="address_street">Abrid</string>
   <string name="address_postal_code">Tangalt n lpusṭa</string>
   <string name="address_city">Tamdint</string>
-  <string name="address_region">Region</string>
+  <string name="address_region">Tamnaḍt</string>
   <string name="address_country">Tamurt</string>
   <string name="contact_details_delete_dialog_title">Delete Contact</string>
   <string name="contact_details_delete_dialog_text">Triḍ ad tekseḍ anermis-agi?</string>
@@ -136,7 +136,7 @@
   <string name="add_members_error">Error adding members, please try again later</string>
   <string name="manage_members_title">Sefrek imttekkiyen</string>
   <string name="search_contact">Search for contact</string>
-  <string name="search_contacts_description">Search contacts</string>
+  <string name="search_contacts_description">Nadi inermisen</string>
   <string name="member_update_error">Error updating member, please try again later</string>
   <string name="contact_group_color">Contact group color</string>
   <plurals name="contact_search_contact_group_counter">

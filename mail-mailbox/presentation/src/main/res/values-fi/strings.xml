@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Tyhjennä hakusanat</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Syötä hakusanat</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d valittu</item>
-    <item quantity="other">%d valittu</item>
+    <item quantity="one">%d Valittu</item>
+    <item quantity="other">%d Valittu</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s lukematon</item>
+    <item quantity="one">%s lukematonta</item>
     <item quantity="other">%s lukematonta</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ei vastaanottajaa)</string>
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_trash_description">Roskakori on tyhjä</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Keskustelu siirrettiin roskakoriin</item>
-    <item quantity="other">%d keskustelua siirrettiin roskakoriin</item>
+    <item quantity="other">%d keskustelua siirrettiin Roskakoriin</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Viesti siirrettiin roskakoriin</item>
-    <item quantity="other">%d viestiä siirrettiin roskakoriin</item>
+    <item quantity="other">%d viestiä siirrettiin Roskakoriin</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Poista keskustelu</item>

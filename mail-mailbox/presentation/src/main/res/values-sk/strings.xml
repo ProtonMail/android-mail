@@ -25,16 +25,16 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadajte vyhľadávací reťazec</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d vybraný</item>
-    <item quantity="few">%d vybrané</item>
-    <item quantity="many">%d vybraných</item>
-    <item quantity="other">%d vybraných</item>
+    <item quantity="one">Vybrané: %d</item>
+    <item quantity="few">Vybrané: %d</item>
+    <item quantity="many">Vybrané: %d</item>
+    <item quantity="other">Vybrané: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s neprečítaná</item>
     <item quantity="few">%s neprečítané</item>
     <item quantity="many">%s neprečítaných</item>
-    <item quantity="other">%s neprečítaných</item>
+    <item quantity="other">%s neprečítaná</item>
   </plurals>
   <string name="mailbox_default_recipient">(Žiaden príjemca)</string>
   <string name="mailbox_default_sender">(Žiaden odosielateľ)</string>

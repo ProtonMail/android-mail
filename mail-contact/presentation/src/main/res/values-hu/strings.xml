@@ -102,7 +102,7 @@
   <string name="contact_groups_tab">Csoportok</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d tag</item>
-    <item quantity="other">%1$d tag</item>
+    <item quantity="other">%1$d tagok</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Tag (%1$d)</item>
@@ -144,7 +144,7 @@
     <item quantity="other">%d tag</item>
   </plurals>
   <string name="contact_search_placeholder">Névjegy vagy csoport keresése</string>
-  <string name="contact_search_content_description">Névjegy vagy csoport keresése</string>
+  <string name="contact_search_content_description">Keresés kapcsolatra vagy csoportra</string>
   <string name="contact_search_arrow_back_content_description">Vissza a névjegyekhez</string>
   <string name="contact_search_no_results">Nincs találat.</string>
 </resources>

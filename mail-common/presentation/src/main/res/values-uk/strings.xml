@@ -73,8 +73,8 @@
   <string name="action_more_content_description">Більше</string>
   <string name="common_error_loading_actions">Не вдалося завантажити дії</string>
   <string name="yesterday">Учора</string>
-  <string name="action_open_customize_toolbar">Customize toolbar</string>
-  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
+  <string name="action_open_customize_toolbar">Налаштувати панель інструментів</string>
+  <string name="action_open_customize_toolbar_description">Налаштувати панель інструментів</string>
   <string name="auto_delete_banner_text_activate_trash">Автоматично видаляти повідомлення, які перебували в смітнику понад 30 днів.</string>
   <string name="auto_delete_banner_text_activate_spam">Автоматично видаляти повідомлення, що позначені як спам, через 30 днів.</string>
   <string name="auto_delete_banner_text_upgrade">Покращте тариф, щоби повідомлення, які перебувають у смітнику або спамі понад 30 днів, видалялися автоматично.</string>
@@ -84,7 +84,7 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Докладніше</string>
   <!-- message expiration -->
   <string name="expiration_expired">Термін дії закінчився</string>
-  <string name="expiration_days_arg">%d д</string>
+  <string name="expiration_days_arg">%d дн</string>
   <string name="expiration_hours_arg">%d год</string>
   <string name="expiration_minutes_arg">%d хв</string>
   <string name="expiration_auto_delete_hour">Це повідомлення буде автоматично видалено менш ніж за годину</string>
@@ -92,21 +92,21 @@
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення буде автоматично видалиться через %s</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d хвилина</item>
-    <item quantity="few">%d хвилини</item>
+    <item quantity="few">%d хвилин</item>
     <item quantity="many">%d хвилин</item>
     <item quantity="other">%d хвилин</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
     <item quantity="one">%d година</item>
-    <item quantity="few">%d годин</item>
-    <item quantity="many">%d години</item>
-    <item quantity="other">%d години</item>
+    <item quantity="few">%d години</item>
+    <item quantity="many">%d годин</item>
+    <item quantity="other">%d годин</item>
   </plurals>
   <plurals name="expiration_days_full_word">
     <item quantity="one">%d день</item>
-    <item quantity="few">%d днів</item>
-    <item quantity="many">%d дні</item>
-    <item quantity="other">%d дні</item>
+    <item quantity="few">%d дні</item>
+    <item quantity="many">%d днів</item>
+    <item quantity="other">%d днів</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вкладення</string>

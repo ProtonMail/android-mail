@@ -18,9 +18,9 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d 个文件</item>
+    <item quantity="other">%d 文件</item>
   </plurals>
-  <string name="attachment_show_more_label">+更多 %1$d 个</string>
+  <string name="attachment_show_more_label">+还有 %1$d 项</string>
   <string name="attachment_permission_dialog_title">需要权限</string>
   <string name="attachment_permission_dialog_message">Proton Mail 需要设备存储权限才能下载附件。</string>
   <string name="attachment_permission_dialog_dismiss_button">确定</string>

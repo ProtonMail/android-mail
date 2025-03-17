@@ -102,7 +102,7 @@
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d удзельнік</item>
     <item quantity="few">%d удзельнікі</item>
-    <item quantity="many">%d удзельнікаў</item>
-    <item quantity="other">%d удзельнікаў</item>
+    <item quantity="many">%d удзельнікі</item>
+    <item quantity="other">%d удзельнікі</item>
   </plurals>
 </resources>

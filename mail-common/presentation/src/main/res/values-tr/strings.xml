@@ -86,7 +86,7 @@
   <string name="expiration_expired">Geçerlilik süresi dolmuş</string>
   <string name="expiration_days_arg">%dg</string>
   <string name="expiration_hours_arg">%ds</string>
-  <string name="expiration_minutes_arg">%da</string>
+  <string name="expiration_minutes_arg">%dd</string>
   <string name="expiration_auto_delete_hour">Bu ileti bir saat içinde otomatik olarak silinecek</string>
   <string name="expiration_auto_delete_day">Bu ileti bir gün içinde otomatik olarak silinecek</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Bu ileti %s içinde otomatik olarak silinecek</string>

@@ -35,8 +35,8 @@
   <string name="bcc">Piilokopio:</string>
   <string name="date">Päiväys:</string>
   <plurals name="attachment">
-    <item quantity="one">%d liite</item>
-    <item quantity="other">%d liitettä</item>
+    <item quantity="one">%d Liite</item>
+    <item quantity="other">%d Liitettä</item>
   </plurals>
   <string name="hide_details">Piilota tiedot</string>
   <string name="undisclosed_recipients">Piilotetut vastaanottajat</string>
@@ -114,7 +114,7 @@
   <string name="non_trashed_messages_banner">Keskustelu sisältää viestejä, jotka eivät ole roskakorissa.</string>
   <string name="show">Näytä</string>
   <string name="hide">Piilota</string>
-  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_title">Mukauta työkalupalkkia</string>
+  <string name="tooltip_customize_toolbar_message">Voit nyt valita ja järjestää tämän työkalupalkin toimintoja.</string>
   <string name="tooltip_customize_toolbar_cta">Mukauta</string>
 </resources>

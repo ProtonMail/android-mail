@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Ryd søgeforespørgsel</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Indtast søgeforespørgsel</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d valgt</item>
+    <item quantity="one">%d valgte</item>
     <item quantity="other">%d valgte</item>
   </plurals>
   <plurals name="filter_unread_button_text">
@@ -45,19 +45,19 @@
   <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Samtale flyttet til papirkurv</item>
-    <item quantity="other">%d samtaler flyttet til papirkurv</item>
+    <item quantity="other">%d conversations moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Besked flyttet til papirkurv</item>
-    <item quantity="other">%d beskeder flyttet til papirkurv</item>
+    <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Slet samtale</item>
-    <item quantity="other">Slet %d samtaler</item>
+    <item quantity="other">Delete %d conversations</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Slet besked</item>
-    <item quantity="other">Slet %d beskeder</item>
+    <item quantity="other">Delete %d messages</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Er du sikker på, at du vil slette denne samtale permanent?</item>
@@ -69,11 +69,11 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Besked er permanent slettet</item>
-    <item quantity="other">%d beskeder er permanent slettet</item>
+    <item quantity="other">%d messages permanently deleted</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Samtale er permanent slettet</item>
-    <item quantity="other">%d samtaler er permanent slettet</item>
+    <item quantity="other">%d conversations permanently deleted</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etikettering mislykkedes</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Etiketter kunne ikke hentes</string>

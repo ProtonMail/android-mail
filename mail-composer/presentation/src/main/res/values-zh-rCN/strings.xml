@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">获取用户等级失败，无法更改发件人地址。请重试。</string>
   <string name="composer_error_store_draft_sender_address">无法存储此草稿的发件人地址</string>
   <string name="composer_error_store_draft_body">无法存储此草稿正文</string>
-  <string name="composer_error_duplicate_recipient">删除了重复的收件人</string>
+  <string name="composer_error_duplicate_recipient">已移除重复收件人</string>
   <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，继续编辑将覆盖此前保存的内容。</string>
@@ -84,10 +84,10 @@
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">没有受信任的密钥：%s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在：%s</string>
   <string name="set_message_password_title">邮件加密</string>
-  <string name="set_message_password_info_message">为非 Proton Mail 用户设置阅读此邮件所需的密码.</string>
+  <string name="set_message_password_info_message">为非 Proton Mail 用户设置阅读此邮件所需的密码已将其邮件加密.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">了解详情</a></string>
   <string name="set_message_password_label">邮件密码</string>
-  <string name="set_message_password_label_repeat">确认密码</string>
+  <string name="set_message_password_label_repeat">再次输入密码</string>
   <string name="set_message_password_label_hint">密码提示 ( 可选 )</string>
   <string name="set_message_password_supporting_text">4 - 21 个字符</string>
   <string name="set_message_password_supporting_error_text">密码必须介于 4 到 21 个字符之间</string>

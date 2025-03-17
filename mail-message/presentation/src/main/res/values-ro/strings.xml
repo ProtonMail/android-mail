@@ -18,9 +18,9 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d fișier</item>
-    <item quantity="few">%d fișiere</item>
-    <item quantity="other">%d de fișiere</item>
+    <item quantity="one">Fișier %d</item>
+    <item quantity="few">%d de fișiere</item>
+    <item quantity="other">%d fișiere</item>
   </plurals>
   <string name="attachment_show_more_label">+ încă %1$d</string>
   <string name="attachment_permission_dialog_title">Permisiune necesară</string>

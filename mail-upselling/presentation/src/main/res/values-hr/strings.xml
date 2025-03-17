@@ -18,77 +18,77 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Dugme za nadogradnju</string>
-  <string name="upselling_close_button_content_description">Dugme za zatvaranje</string>
+  <string name="upselling_button_item_content_description">Upgrade button</string>
+  <string name="upselling_close_button_content_description">Close button</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">Da biste otključali više pohrane i premium značajki</string>
-  <string name="upselling_mailbox_plus_title">Nadogradite na Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Jednostavno šaljite e-poštu grupi i uživajte u drugim premium značajkama s Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Grupirajte svoje kontakte</string>
+  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Dobijte ih i druge premium značajke kada se nadogradite na Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Trebate li više oznaka ili mapa?</string>
+  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Dobijte ih i druge premium značajke kada se nadogradite na Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Trebate li više oznaka ili mapa?</string>
+  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Koristite svoj vlastiti mobilni potpis i uživajte u drugim premium značajkama s Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Prilagodite svoj potpis</string>
+  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB pohrane</string>
   <string name="upselling_plus_feature_email_addresses">10 adrese e-pošte</string>
-  <string name="upselling_plus_feature_custom_domain">Podrška za prilagođene domene e-pošte</string>
-  <string name="upselling_plus_feature_desktop_app">Nova Proton Mail aplikacija za računalo</string>
-  <string name="upselling_plus_feature_folders_labels">Neograničen broj mapa, oznaka, filtara</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium značajki</string>
+  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
+  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Vaša sve-u-jednom premium pretplata</string>
-  <string name="upselling_unlimited_feature_storage">500 GB pohrane s sigurnosnom kopijom fotografija</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Sve plaćene značajke Mail i Kalendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ država)</string>
-  <string name="upselling_unlimited_feature_drive">Sigurna cloud pohrana</string>
-  <string name="upselling_unlimited_feature_pass">Šifrirani upravitelj lozinki</string>
+  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
+  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and Calendar features</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_drive">Secure cloud storage</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Onboarding Upselling -->
   <string name="upselling_onboarding_premium_value_included">Premium value included</string>
-  <string name="upselling_onboarding_feature_e2e">End-to-end šifriranje</string>
+  <string name="upselling_onboarding_feature_e2e">Krajnje do krajnje šifriranje</string>
   <string name="upselling_onboarding_feature_folders_labels">Neograničen broj mapa i oznaka</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB pohrane i 1 adresa e-pošte</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB storage and 1 email address</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB pohrane</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 dodatnih adresa e-pošte za vas</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Podrška za 1 prilagođenu domenu e-pošte</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliasa</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra email addresses for you</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliases</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Prioritetna korisnička podrška</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GB pohrane</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 dodatnih adresa e-pošte za vas</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Podrška za 3 prilagođene domene e-pošte</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Neograničeni hide-my-email aliasi</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Posvećena korisnička podrška</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra brzi i privatni VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Šifrirani upravitelj lozinki</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Šifrirana cloud pohrana za fotografije i dokumente</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Napredna zaštita korisničkog računa</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 MB prostora za pohranu</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra email addresses for you</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Support for 3 custom email domains</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Unlimited hide-my-email aliases</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedicated customer support</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra fast and private VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Encrypted cloud storage for photos and documents</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Advanced account protection</string>
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Storage</string>
-  <string name="upselling_comparison_table_email_addresses">Email addresses</string>
+  <string name="upselling_comparison_table_storage">Prostor za pohranu</string>
+  <string name="upselling_comparison_table_email_addresses">Adrese e-pošte</string>
   <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
   <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
-  <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
-  <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Neograničen broj mapa i oznaka</string>
+  <string name="upselling_comparison_table_priority_support">Prioritetna korisnička podrška</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Select your plan</string>
-  <string name="upselling_select_plan_year">1 year</string>
-  <string name="upselling_select_plan_month">1 month</string>
+  <string name="upselling_select_plan_year">1 godina</string>
+  <string name="upselling_select_plan_month">1 mjesec</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
   <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">UŠTEDITE %s%%</string>
   <string name="upselling_month">/mjesec</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/godina</string>
   <string name="upselling_get_button">Nabavite %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mjesec</item>
@@ -96,42 +96,42 @@
     <item quantity="other">%d mjeseci</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Nije moguće dohvatiti opcije nadogradnje.</string>
+  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
   <string name="upselling_snackbar_error_no_user_id">Došlo je do pogreške.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Nije moguće dohvatiti pretplate.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Nadogradnja pretplate u tijeku…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Došlo je do pogreške prilikom nadogradnje vaše pretplate.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Došlo je do pogreške. Pokušajte ponovo.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
   <!-- Upselling: Onboarding -->
-  <string name="upselling_onboarding_title">Odaberite plan</string>
+  <string name="upselling_onboarding_title">Choose a plan</string>
   <string name="upselling_onboarding_switcher_monthly">Mjesečno</string>
-  <string name="upselling_onboarding_switcher_annual">Godišnje</string>
-  <string name="upselling_onboarding_best_value">Najbolja vrijednost</string>
+  <string name="upselling_onboarding_switcher_annual">Annual</string>
+  <string name="upselling_onboarding_best_value">Best value</string>
   <string name="upselling_onboarding_month">/mjesec</string>
-  <string name="upselling_onboarding_year">/year</string>
+  <string name="upselling_onboarding_year">/godina</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d više značajka</item>
     <item quantity="few">%d više značajke</item>
     <item quantity="other">%d više značajki</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Nabavite %s</string>
-  <string name="upselling_onboarding_continue_with_proton_free">Nastavi s Proton Free</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Continue with Proton Free</string>
+  <string name="upselling_onboarding_save_label">Uštedite %s%%</string>
   <!-- Post subscription -->
-  <string name="post_subscription_close_button_content_description">Close</string>
-  <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_got_it_button">Got it</string>
+  <string name="post_subscription_close_button_content_description">Zatvori</string>
+  <string name="post_subscription_continue_button">Nastavi</string>
+  <string name="post_subscription_got_it_button">Razumijem</string>
   <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
   <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_storage">15 GB pohrane</string>
   <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
   <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
-  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="post_subscription_plus_feature_folders_labels">Neograničen broj mapa i oznaka</string>
   <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
   <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
+  <string name="post_subscription_plus_feature_customer_support">Prioritetna korisnička podrška</string>
   <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>

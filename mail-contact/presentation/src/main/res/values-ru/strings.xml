@@ -36,7 +36,7 @@
   <string name="no_contact_email">Нет адреса электронной почты</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <string name="contact_details_loading_error">Ошибка загрузки контакта, повторите попытку позже</string>
-  <string name="contact_details_delete_success">Контакт удален</string>
+  <string name="contact_details_delete_success">Контакт удалён</string>
   <string name="edit_contact_content_description">Изменение контакта</string>
   <string name="delete_contact_content_description">Удалить контакт</string>
   <string name="contact_avatar_image_content_description">Аватар контакта</string>
@@ -101,10 +101,10 @@
   <string name="all_contacts_tab">Контакты</string>
   <string name="contact_groups_tab">Группы</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d член</item>
-    <item quantity="few">%1$d участников</item>
-    <item quantity="many">%1$d членов</item>
-    <item quantity="other">%1$d член</item>
+    <item quantity="one">%1$d участник</item>
+    <item quantity="few">%1$d участника</item>
+    <item quantity="many">%1$d участников</item>
+    <item quantity="other">%1$d участников</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Участник (%1$d)</item>

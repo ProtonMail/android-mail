@@ -21,7 +21,7 @@
     <item quantity="one">%d fájl</item>
     <item quantity="other">%d fájl</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d további</string>
+  <string name="attachment_show_more_label">+%1$d több</string>
   <string name="attachment_permission_dialog_title">Engedély szükséges</string>
   <string name="attachment_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a tárolójához való hozzáféréshez, hogy letöltse a mellékletet.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
@@ -47,7 +47,7 @@
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Hivatkozás másolása</string>
   <string name="message_link_long_click_copy_description">Szöveg Proton Mailről másolva</string>
-  <string name="message_link_long_click_share">Hivatkozás megosztása</string>
+  <string name="message_link_long_click_share">Link megosztása</string>
   <string name="message_link_long_click_share_via">Hivatkozás megosztása:</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Cím másolása</string>

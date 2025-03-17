@@ -84,20 +84,20 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">了解更多</string>
   <!-- message expiration -->
   <string name="expiration_expired">已過期</string>
-  <string name="expiration_days_arg">%d 天</string>
-  <string name="expiration_hours_arg">%d 時</string>
-  <string name="expiration_minutes_arg">%d 分</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">此郵件將於一小時內自動刪除</string>
   <string name="expiration_auto_delete_day">此郵件將於一天內自動刪除</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">此郵件將會自動於%s刪除</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="other">%d 分鐘</item>
+    <item quantity="other">%d分鐘</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
-    <item quantity="other">%d 小時</item>
+    <item quantity="other">%d小時</item>
   </plurals>
   <plurals name="expiration_days_full_word">
-    <item quantity="other">%d 天</item>
+    <item quantity="other">%d天</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">附件</string>

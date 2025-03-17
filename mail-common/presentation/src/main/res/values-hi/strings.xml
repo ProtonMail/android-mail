@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">और जानें</string>
   <!-- message expiration -->
   <string name="expiration_expired">एक्सपायर हो गया</string>
-  <string name="expiration_days_arg">%dदिन</string>
-  <string name="expiration_hours_arg">%dघंटे</string>
-  <string name="expiration_minutes_arg">%dमिनट</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">ये संदेश एक घंटे से कम समय में अपनेआप मिट जाएगा</string>
   <string name="expiration_auto_delete_day">ये संदेश एक दिन से कम समय में अपनेआप मिट जाएगा</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">ये संदेश %s को अपनेआप मिट जाएगा</string>
@@ -106,12 +106,12 @@
   <string name="attachment_download_notification_channel_name">अनुलग्नक</string>
   <string name="attachment_download_notification_channel_description">अनुलग्नक डाउनलोड के सूचनाएं</string>
   <string name="email_notification_channel_name">ईमेल</string>
-  <string name="login_notification_channel_name">लॉगइन अलर्ट</string>
+  <string name="login_notification_channel_name">लॉगइन सूचनाएं</string>
   <string name="email_notification_channel_description">आने वाले ईमेल की सूचनाएं</string>
   <string name="login_notification_channel_description">नए लॉगइन सूचनाएं</string>
   <string name="auth_badge_official">आधिकारिक</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">ये एक्शन करने के लिए कोई ऐप नहीं मिला</string>
-  <string name="action_copied_to_clipboard">क्लिपबोर्ड पे कॉपी किया</string>
+  <string name="action_copied_to_clipboard">क्लिपबोर्ड पर कॉपी किया गया</string>
   <string name="mailbox_action_delete_dialog_button_cancel">रद्द करें</string>
   <string name="mailbox_action_delete_dialog_button_delete">मिटाएं</string>
   <string name="picker_dialog_cancel">रद्द करें</string>
@@ -137,5 +137,5 @@
   <string name="color_pickle">आचार</string>
   <string name="undo_button_label">पूर्ववत् करें</string>
   <string name="undo_success_message">कार्रवाई वापस की गई</string>
-  <string name="undo_failure_message">कार्रवाई वापस करना असफल</string>
+  <string name="undo_failure_message">कार्रवाई वापस करना असफल रहा</string>
 </resources>

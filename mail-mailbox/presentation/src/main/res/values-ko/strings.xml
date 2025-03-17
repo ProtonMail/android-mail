@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">검색 쿼리 삭제</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">검색 쿼리 입력</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d 선택됨</item>
+    <item quantity="other">%d개 선택됨</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s 읽지 않음</item>

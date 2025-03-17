@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Εισάγετε το ερώτημα αναζήτησης</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Επιλεγμένο</item>
-    <item quantity="other">%d Επιλεγμένα</item>
+    <item quantity="one">%d Επιλεγμένο/α</item>
+    <item quantity="other">%d Επιλεγμένο/α</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s μη διαβασμένο</item>
+    <item quantity="one">%s μη διαβασμένα</item>
     <item quantity="other">%s μη διαβασμένα</item>
   </plurals>
   <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_trash_description">Τα Διαγραμμένα είναι άδεια</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</item>
-    <item quantity="other">%d συνομιλίες μετακινήθηκαν στα Διαγραμμένα</item>
+    <item quantity="other">%d συνομιλίες μετακινήθηκαν στον κάδο απορριμμάτων</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>
-    <item quantity="other">%d μηνύματα μετακινήθηκαν στα Διαγραμμένα</item>
+    <item quantity="other">%d μηνύματα μετακινήθηκαν στον κάδο απορριμμάτων</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Διαγραφή συνομιλίας</item>
@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Αποτυχία λήψης ρυθμίσεων χρωμάτων</string>
   <string name="mailbox_action_move_messages_failed">Η μετακίνηση απέτυχε</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
-  <string name="mailbox_action_move_conversation">Η συνομιλία μετακινήθηκε στον φάκελο %s</string>
-  <string name="mailbox_action_move_message">Το μήνυμα μετακινήθηκε στο %s</string>
+  <string name="mailbox_action_move_conversation">Η συνομιλία μετακινήθηκε στο %s</string>
+  <string name="mailbox_action_move_message">Το μήνυμα μετακινήθηκε στα %s</string>
   <string name="mailbox_search_placeholder_text">Αναζήτηση μηνυμάτων</string>
   <string name="mailbox_search_no_results_title">Δεν βρέθηκαν αποτελέσματα</string>
   <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλ. ταχυδρομείου ή θέμα</string>

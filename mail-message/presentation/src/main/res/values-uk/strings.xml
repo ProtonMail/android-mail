@@ -18,10 +18,10 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d файл</item>
-    <item quantity="few">%d файли</item>
-    <item quantity="many">%d файлів</item>
-    <item quantity="other">%d файлів</item>
+    <item quantity="one">%d</item>
+    <item quantity="few">%d файлів</item>
+    <item quantity="many">%d файли</item>
+    <item quantity="other">%d файли</item>
   </plurals>
   <string name="attachment_show_more_label">+ ще %1$d</string>
   <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
@@ -71,5 +71,5 @@
   <string name="device_contacts_permission_dialog_action_button">Запитати дозвіл</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Заборонити</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">View entire message</string>
+  <string name="button_view_entire_message">Переглянути все повідомлення</string>
 </resources>

@@ -85,14 +85,14 @@
   <!-- message expiration -->
   <string name="expiration_expired">Expiré</string>
   <string name="expiration_days_arg">%d j</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="expiration_auto_delete_hour">Ce message sera automatiquement supprimé dans moins d\'une heure.</string>
   <string name="expiration_auto_delete_day">Ce message sera automatiquement supprimé dans moins d\'un jour.</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Ce message sera automatiquement supprimé dans %s.</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d minute</item>
-    <item quantity="other">%d minutes</item>
+    <item quantity="other">%d minutes</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
     <item quantity="one">%d heure</item>
@@ -100,7 +100,7 @@
   </plurals>
   <plurals name="expiration_days_full_word">
     <item quantity="one">%d jour</item>
-    <item quantity="other">%d jours</item>
+    <item quantity="other">%d jours</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Pièces jointes</string>

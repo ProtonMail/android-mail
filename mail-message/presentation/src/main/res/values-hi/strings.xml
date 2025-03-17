@@ -23,7 +23,7 @@
   </plurals>
   <string name="attachment_show_more_label">+%1$d और</string>
   <string name="attachment_permission_dialog_title">अनुमति आवश्यक</string>
-  <string name="attachment_permission_dialog_message">Proton Mail को आपके स्टोरेज तक पहुँचने की अनुमति चाहिए ताकि वह अटैचमेंट डाउनलोड करें।</string>
+  <string name="attachment_permission_dialog_message">Proton Mail को अटैचमेंट डाउनलोड करने के लिए आपके स्टोरेज तक पहुँचने हेतु अनुमति की आवश्यकता है।</string>
   <string name="attachment_permission_dialog_dismiss_button">ठीक है</string>
   <string name="attachment_permission_dialog_action_button">सेटिंग</string>
   <string name="attachment_type_description">%1$s फाइल</string>
@@ -46,9 +46,9 @@
   <string name="bottom_sheet_more_header_message_from">%s से संदेश</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">लिंक कॉपी करें</string>
-  <string name="message_link_long_click_copy_description">Proton Mail से कॉपी किया गया पाठ</string>
+  <string name="message_link_long_click_copy_description">Proton Mail से टेक्स्ट कॉपी किया गया</string>
   <string name="message_link_long_click_share">लिंक साझा करें</string>
-  <string name="message_link_long_click_share_via">लिंक के माध्यम से शेयर करें</string>
+  <string name="message_link_long_click_share_via">लिंक साझा करें के माध्यम से</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">पता कॉपी करें</string>
   <string name="contact_actions_copy_address_description">संपर्क पता कॉपी करें</string>
@@ -64,10 +64,10 @@
   <string name="contact_actions_view_contact_details_description">संपर्क की जानकारी देखें</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">अनुमति आवश्यक</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail को आपके संपर्कों को पढ़ने की अनुमति चाहिए ताकि वह प्राप्तकर्ताओं का सुझाव दे सके।</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail को आपके संपर्क पढ़ने के लिए अनुमति की आवश्यकता है ताकि प्राप्तकर्ता का सुझाव दे सके।</string>
   <string name="device_contacts_permission_dialog_dismiss_button">ठीक</string>
   <string name="device_contacts_permission_dialog_action_button">अनुमति का अनुरोध करें</string>
   <string name="device_contacts_permission_dialog_action_button_deny">नकारें</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">पूरा संदेश देखें</string>
+  <string name="button_view_entire_message">संपूर्ण संदेश देखें</string>
 </resources>

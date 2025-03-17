@@ -46,7 +46,7 @@
   <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
   <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
   <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
-  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_trash">Poruka je premještena u otpad</string>
   <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
   <string name="message_moved_to_spam">Message moved to Spam</string>
@@ -91,13 +91,13 @@
   <string name="message_delete_dialog_message">Jeste li sigurni da želite trajno izbrisati ovu poruku?</string>
   <string name="message_deleted">Poruka izbrisana</string>
   <string name="message_moved">Message moved</string>
-  <string name="message_moved_to">Message moved to %s</string>
+  <string name="message_moved_to">Poruka premještena u %s</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_title">Izbriši razgovor</string>
+  <string name="conversation_delete_dialog_message">Jeste li sigurni da želite trajno izbrisati ovaj razgovor?</string>
   <string name="conversation_deleted">Razgovor izbrisan</string>
   <string name="message_body_load_remote_content_button_text">Učitaj udaljeni sadržaj</string>
   <string name="message_body_load_embedded_images_button_text">Učitaj ugrađene slike</string>
@@ -112,11 +112,11 @@
   <string name="open_on_protoncalendar_banner_title">Otvori u Proton Calendaru</string>
   <string name="open_on_protoncalendar_banner_description">Osiguraj šifrirani kalendar</string>
   <string name="error_print_failed">Failed to print message</string>
-  <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
-  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="trashed_messages_banner">Ovaj razgovor sadrži poruke koje su u otpadu.</string>
+  <string name="non_trashed_messages_banner">Ovaj razgovor sadrži poruke koje nisu u otpadu.</string>
   <string name="show">Prikaži</string>
-  <string name="hide">Hide</string>
+  <string name="hide">Sakrij</string>
   <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
   <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_cta">Prilagodi</string>
 </resources>

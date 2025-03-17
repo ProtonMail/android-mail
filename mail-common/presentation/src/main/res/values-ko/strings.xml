@@ -85,7 +85,7 @@
   <!-- message expiration -->
   <string name="expiration_expired">만료됨</string>
   <string name="expiration_days_arg">%d일</string>
-  <string name="expiration_hours_arg">%d시</string>
+  <string name="expiration_hours_arg">%d시간</string>
   <string name="expiration_minutes_arg">%d분</string>
   <string name="expiration_auto_delete_hour">이 메시지가 한 시간 이내로 자동 삭제됩니다.</string>
   <string name="expiration_auto_delete_day">이 메시지가 하루 내로 자동 삭제됩니다.</string>

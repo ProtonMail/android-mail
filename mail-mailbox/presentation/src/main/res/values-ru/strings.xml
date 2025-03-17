@@ -25,15 +25,15 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковый запрос</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Совершен выбор %d</item>
-    <item quantity="few">%d Selected</item>
-    <item quantity="many">%d выбрано</item>
-    <item quantity="other">%d выбрано</item>
+    <item quantity="one">Выбрано %d</item>
+    <item quantity="few">Выбрано %d</item>
+    <item quantity="many">Выбрано %d</item>
+    <item quantity="other">Выбрано %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s непрочитанное</item>
+    <item quantity="one">Не прочитано %s</item>
     <item quantity="few">Непрочитано %s</item>
-    <item quantity="many">Непрочитано %s</item>
+    <item quantity="many">Не прочитано %s</item>
     <item quantity="other">Не прочитано %s</item>
   </plurals>
   <string name="mailbox_default_recipient">(Нет получателя)</string>
@@ -49,27 +49,27 @@
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Цепочка писем перемещена в Корзину</item>
-    <item quantity="few">%d цепочки писем перемещены в Корзину</item>
+    <item quantity="few">%d цепочек писем перемещены в Корзину</item>
     <item quantity="many">%d цепочек писем перемещены в Корзину</item>
     <item quantity="other">%d цепочек писем перемещены в Корзину</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Сообщение перемещено в Корзину</item>
-    <item quantity="few">%d сообщения перемещены в Корзину</item>
+    <item quantity="few">%d сообщений перемещены в Корзину</item>
     <item quantity="many">%d сообщений перемещены в Корзину</item>
     <item quantity="other">%d сообщений перемещены в Корзину</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Удалить цепочку писем</item>
     <item quantity="few">Удалить %d цепочки писем</item>
-    <item quantity="many">Удалить %d цепочек писем</item>
-    <item quantity="other">Удалить %d цепочек писем</item>
+    <item quantity="many">Удалить %d цепочки писем</item>
+    <item quantity="other">Удалить %d цепочки писем</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Удалить сообщение</item>
     <item quantity="few">Удалить %d сообщения</item>
-    <item quantity="many">Удалить %d сообщений</item>
-    <item quantity="other">Удалить %d сообщений</item>
+    <item quantity="many">Удалить %d сообщения</item>
+    <item quantity="other">Удалить %d сообщения</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Вы уверены, что хотите безвозвратно удалить эту цепочку писем?</item>
@@ -85,22 +85,22 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Сообщение безвозвратно удалено</item>
-    <item quantity="few">%d сообщения безвозвратно удалены</item>
+    <item quantity="few">%d сообщений безвозвратно удалено</item>
     <item quantity="many">%d сообщений безвозвратно удалено</item>
     <item quantity="other">%d сообщений безвозвратно удалено</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Цепочка писем безвозвратно удалена</item>
-    <item quantity="few">%d цепочки писем безвозвратно удалены</item>
-    <item quantity="many">%d цепочек писем безвозвратно удалено</item>
-    <item quantity="other">%d цепочек писем безвозвратно удалено</item>
+    <item quantity="few">%d цепочек писем удалено безвозвратно</item>
+    <item quantity="many">%d цепочек писем удалено безвозвратно</item>
+    <item quantity="other">%d цепочек писем удалено безвозвратно</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <string name="mailbox_action_move_conversation">Цепочка писем перемещена в %s</string>
+  <string name="mailbox_action_move_conversation">Цепочка сообщений перемещена в %s</string>
   <string name="mailbox_action_move_message">Сообщение перемещено в %s</string>
   <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
   <string name="mailbox_search_no_results_title">Результатов не найдено</string>
@@ -118,9 +118,9 @@
   <string name="storage_first_limit_exceeded_warning_dialog_text">Хранилище вашей учётной записи Proton заполнено более чем на 80%. Освободите место или улучшите тариф, чтобы получить больше места.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Хранилище вашей учётной записи Proton заполнено более чем на 90%. Освободите место или улучшите тариф, чтобы получить больше места.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Больше не напоминать</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_confirm_button">Да</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Внимание</string>
   <string name="storage_quota_over_dialog_text">Хранилище вашей учётной записи Proton заполнено на 100%. Вы не сможете получать и отправлять почту, пока не удалите безвозвратно часть писем или не улучшите тариф, чтобы получить больше места.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_confirm_button">Да</string>
 </resources>

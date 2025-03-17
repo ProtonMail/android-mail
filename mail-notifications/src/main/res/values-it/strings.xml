@@ -26,7 +26,7 @@
   <string name="notification_actions_mark_as_read_description">Segna come letto</string>
   <string name="notification_permission_dialog_title">Notifiche non abilitate</string>
   <string name="notification_permission_dialog_message">Abilita le notifiche per tenere sotto controllo la casella di posta senza aprire l\'app.</string>
-  <string name="notification_permission_dialog_post_send_title">Rimani aggiornato</string>
+  <string name="notification_permission_dialog_post_send_title">Notifiche non abilitate</string>
   <string name="notification_permission_dialog_post_send_message">Abilita le notifiche push per sapere quando ricevi una risposta al messaggio.</string>
   <string name="notification_permission_dialog_button_enable">Abilita</string>
   <string name="notification_permission_dialog_button_dismiss">Ignora</string>

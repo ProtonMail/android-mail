@@ -25,7 +25,7 @@
   <string name="onboarding_easily_up_to_date_description">在對話模式中輕鬆地穿梭各個訊息討論串</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">整齊俐落</string>
-  <string name="onboarding_neat_and_tidy_description">歸檔、標籤與色彩編碼郵件，可創建您理想又可自訂的收件匣。</string>
+  <string name="onboarding_neat_and_tidy_description">資料夾、標籤與顏色等模式，助您創造理想中完美、自訂的收件匣。</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_get_started">入門指南</string>

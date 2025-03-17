@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">検索クエリを消去</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">検索クエリを入力</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d個選択済み</item>
+    <item quantity="other">%d個が選択済み</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s件未読</item>
@@ -51,7 +51,7 @@
     <item quantity="other">%d 件の会話を削除</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="other">%d 件のメッセージを削除</item>
+    <item quantity="other">%d個のメッセージを削除</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="other">この会話を完全に削除してよろしいですか？

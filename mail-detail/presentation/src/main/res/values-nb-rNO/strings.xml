@@ -49,10 +49,10 @@
   <string name="error_move_to_archive_failed">Flytting til arkiv mislyktes. Prøv på nytt.</string>
   <string name="message_moved_to_spam">Melding flyttet til søppelpost</string>
   <string name="error_move_to_spam_failed">Flytt til søppelpost mislyktes. Prøv på nytt.</string>
-  <string name="message_moved_to_selected_destination">Melding flyttet til %1$s</string>
+  <string name="message_moved_to_selected_destination">Meldingen flyttet til %1$s</string>
   <string name="error_move_message_failed">Kunne ikke flytte melding. Prøv på nytt.</string>
   <string name="conversation_moved_to_trash">Samtale flyttet til papirkurven</string>
-  <string name="conversation_moved_to_selected_destination">Samtale flyttet til %1$s</string>
+  <string name="conversation_moved_to_selected_destination">Samtalen flyttet til %1$s</string>
   <string name="conversation_moved_to_archive">Samtale flyttet til arkiv</string>
   <string name="conversation_moved_to_spam">Samtale flyttet til søppelpost</string>
   <string name="error_move_conversation_failed">Kunne ikke flytte samtale. Prøv på nytt.</string>
@@ -89,7 +89,7 @@
   <string name="message_delete_dialog_message">Er du sikker på at du vil slette denne meldingen permanent?</string>
   <string name="message_deleted">Melding slettet</string>
   <string name="message_moved">Meldingen er flyttet</string>
-  <string name="message_moved_to">Melding flyttet til %s</string>
+  <string name="message_moved_to">Meldingen flyttet til %s</string>
   <string name="error_delete_message_failed">Kunne ikke slette meldingen</string>
   <string name="error_delete_message_failed_wrong_folder">Meldingen er ikke på en plassering der den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>

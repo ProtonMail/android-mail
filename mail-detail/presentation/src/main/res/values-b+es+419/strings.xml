@@ -35,8 +35,8 @@
   <string name="bcc">Cco:</string>
   <string name="date">Fecha:</string>
   <plurals name="attachment">
-    <item quantity="one">%d archivo adjunto</item>
-    <item quantity="other">%d archivos adjuntos</item>
+    <item quantity="one">%d Archivo adjunto</item>
+    <item quantity="other">%d Archivos adjuntos</item>
   </plurals>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>

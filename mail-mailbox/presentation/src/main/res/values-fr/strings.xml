@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Effacer la recherche</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Saisir la recherche</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Sélection : %d</item>
-    <item quantity="other">Sélection : %d</item>
+    <item quantity="one">%d sélectionnés</item>
+    <item quantity="other">%d sélectionnés</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s non lu</item>
+    <item quantity="one">%s non lus</item>
     <item quantity="other">%s non lus</item>
   </plurals>
   <string name="mailbox_default_recipient">(aucun destinataire)</string>
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_trash_description">Le dossier Corbeille est vide.</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">La conversation a été déplacée dans le dossier Corbeille.</item>
-    <item quantity="other">%d conversations ont été déplacées dans le dossier Corbeille.</item>
+    <item quantity="other">%d conversations ont été déplacées dans le dossier Corbeille</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Le message a été déplacé dans le dossier Corbeille.</item>
-    <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille.</item>
+    <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Supprimer la conversation</item>
@@ -69,11 +69,11 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Le message a été supprimé définitivement.</item>
-    <item quantity="other">%d messages ont été supprimés définitivement.</item>
+    <item quantity="other">%d messages ont été supprimés définitivement</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">La conversation a été supprimée définitivement.</item>
-    <item quantity="other">%d conversations ont été supprimées définitivement.</item>
+    <item quantity="other">%d conversations ont été supprimées définitivement</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">L\'opération sur le label n\'a pas abouti.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Les labels n\'ont pas pu être obtenus.</string>

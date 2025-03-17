@@ -47,10 +47,10 @@
   <string name="error_move_to_archive_failed">郵件移至封存失敗。請再試一次。</string>
   <string name="message_moved_to_spam">訊息移至垃圾郵件</string>
   <string name="error_move_to_spam_failed">郵件扔進垃圾訊息失敗。請再試一次。</string>
-  <string name="message_moved_to_selected_destination">郵件已移至 %1$s</string>
+  <string name="message_moved_to_selected_destination">訊息已移至 %1$s</string>
   <string name="error_move_message_failed">無法移動郵件。請再試一次。</string>
   <string name="conversation_moved_to_trash">無法將往來對話訊息丟進垃圾桶</string>
-  <string name="conversation_moved_to_selected_destination">往來對話已移至 %1$s</string>
+  <string name="conversation_moved_to_selected_destination">對話內容已移至 %1$s</string>
   <string name="conversation_moved_to_archive">往來對話訊息已移至封存檔</string>
   <string name="conversation_moved_to_spam">無法將往來對話訊息丟進垃圾郵件</string>
   <string name="error_move_conversation_failed">無法移動往來對話。請再試一次。</string>
@@ -87,7 +87,7 @@
   <string name="message_delete_dialog_message">您確定要永久刪除此郵件嗎？</string>
   <string name="message_deleted">郵件已刪除</string>
   <string name="message_moved">郵件已移動</string>
-  <string name="message_moved_to">郵件已移至 %s</string>
+  <string name="message_moved_to">訊息已移至 %s</string>
   <string name="error_delete_message_failed">刪除信件失敗</string>
   <string name="error_delete_message_failed_wrong_folder">訊息位在無法刪除的地方</string>
   <string name="error_delete_conversation_failed">刪除對話失敗</string>

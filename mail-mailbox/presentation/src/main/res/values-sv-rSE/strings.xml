@@ -44,12 +44,12 @@
   <string name="mailbox_is_empty_spam_description">Din skräppostmapp är tom</string>
   <string name="mailbox_is_empty_trash_description">Papperskorg är tom</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Konversation flyttad till Papperskorg</item>
-    <item quantity="other">%d konversationer flyttade till Papperskorg</item>
+    <item quantity="one">Konversation flyttad till papperskorg</item>
+    <item quantity="other">%d konversationer flyttade till papperskorg</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Meddelanden flyttade till Papperskorg</item>
-    <item quantity="other">%d meddelanden flyttade till Papperskorg</item>
+    <item quantity="one">Meddelande flyttat till papperskorg</item>
+    <item quantity="other">%d meddelanden flyttades till papperskorg</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Ta bort konversation</item>
@@ -81,7 +81,7 @@
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
   <string name="mailbox_action_move_conversation">Konversation flyttad till %s</string>
-  <string name="mailbox_action_move_message">Meddelande flyttat till %s</string>
+  <string name="mailbox_action_move_message">Meddelandet flyttat till %s</string>
   <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
   <string name="mailbox_search_no_results_title">Inga resultat hittades</string>
   <string name="mailbox_search_no_results_explanation">Sök datum, namn, e-postadress eller ämnesrad</string>

@@ -23,9 +23,9 @@
   <string name="error_mark_unread_failed">Не вдалося позначити непрочитаним. Повторіть спробу.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d повідомлення</item>
-    <item quantity="few">%d повідомлення</item>
-    <item quantity="many">%d повідомлень</item>
-    <item quantity="other">%d повідомлень</item>
+    <item quantity="few">%d повідомлень</item>
+    <item quantity="many">%d повідомлення</item>
+    <item quantity="other">%d повідомлення</item>
   </plurals>
   <string name="quick_reply_button_content_description">Відповісти</string>
   <string name="quick_reply_all_button_content_description">Відповісти всім</string>
@@ -37,10 +37,10 @@
   <string name="bcc">Прихована копія:</string>
   <string name="date">Дата:</string>
   <plurals name="attachment">
-    <item quantity="one">%d вкладення</item>
-    <item quantity="few">%d вкладення</item>
-    <item quantity="many">%d вкладень</item>
-    <item quantity="other">%d вкладень</item>
+    <item quantity="one">%d Вкладення</item>
+    <item quantity="few">%d Вкладень</item>
+    <item quantity="many">%d Вкладення</item>
+    <item quantity="other">%d Вкладення</item>
   </plurals>
   <string name="hide_details">Сховати подробиці</string>
   <string name="undisclosed_recipients">Приховані отримувачі</string>
@@ -58,7 +58,7 @@
   <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>
   <string name="conversation_moved_to_selected_destination">Розмову переміщено до %1$s</string>
   <string name="conversation_moved_to_archive">Розмову переміщено до архіву</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Розмову перенесено в «Спам»</string>
   <string name="error_move_conversation_failed">Не вдалося перемістити розмову. Повторіть спробу.</string>
   <string name="error_loading_message">Щось пішло не так, повторіть спробу.</string>
   <string name="error_offline_loading_message">Ви офлайн. Для показів вмісту цього повідомлення потрібне з\'єднання з інтернетом.</string>
@@ -105,7 +105,7 @@
   <string name="message_body_load_embedded_images_button_text">Завантажити вбудовані зображення</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Завантажувати віддалений і вбудований вміст</string>
   <string name="message_report_phishing_dialog_title_offline">Увага</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Ця функція доступна лише в мережі.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Підтвердити звіт про шахрайство</string>
   <string name="message_report_phishing_dialog_message">Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.</string>
@@ -118,7 +118,7 @@
   <string name="non_trashed_messages_banner">Ця розмова містить не видалені повідомлення.</string>
   <string name="show">Показати</string>
   <string name="hide">Сховати</string>
-  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_title">Налаштувати панель інструментів</string>
+  <string name="tooltip_customize_toolbar_message">Тепер ви можете вибирати та змінювати порядок дій на цій панелі інструментів.</string>
+  <string name="tooltip_customize_toolbar_cta">Налаштувати</string>
 </resources>

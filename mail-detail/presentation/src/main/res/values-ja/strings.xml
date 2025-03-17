@@ -34,7 +34,7 @@
   <string name="bcc">BCC:</string>
   <string name="date">日時：</string>
   <plurals name="attachment">
-    <item quantity="other">%d 件の添付ファイル</item>
+    <item quantity="other">%d個の添付ファイル</item>
   </plurals>
   <string name="hide_details">詳細を非表示</string>
   <string name="undisclosed_recipients">非公開の宛先</string>
@@ -50,7 +50,7 @@
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再度お試しください。</string>
   <string name="conversation_moved_to_trash">会話をごみ箱に移動しました</string>
-  <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
+  <string name="conversation_moved_to_selected_destination">会話を %1$s に移動しました</string>
   <string name="conversation_moved_to_archive">会話をアーカイブに移動しました</string>
   <string name="conversation_moved_to_spam">会話をスパムに移動しました</string>
   <string name="error_move_conversation_failed">会話の移動に失敗しました。再度お試しください。</string>

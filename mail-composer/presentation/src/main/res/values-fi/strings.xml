@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Vaihda lähettäjä</string>
   <string name="composer_change_sender_paid_feature">Tarvitset maksullisen Proton Mail -tilauksen muuttaaksesi lähettäjän osoitetta</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Lähettäjää ei voida vaihtaa, koska käyttäjän tilaustietojen nouto epäonnistui. Yritä uudelleen.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Luonnoksen lähetysosoitteen tallennus epäonnistui</string>
+  <string name="composer_error_store_draft_body">Luonnoksen sisällön tallennus epäonnistui</string>
   <string name="composer_error_duplicate_recipient">Vastaanottajien kaksoiskappaleet poistettiin</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">Luonnoksen otsikon tallennus epäonnistui</string>
   <string name="composer_error_store_draft_recipients">Luonnoksen vastaanottajien tallennus epäonnistui</string>
   <string name="composer_error_loading_draft">Luonnoksen sisältö ei ole tällä hetkellä käytettävissä ja sen muokkaus korvaa kaiken olemassa olevan sisällön.</string>
   <string name="composer_add_attachments_content_description">Lisää liitteitä</string>
@@ -46,9 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Liiterajoitus on saavutettu</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Liitteiden enimmäiskoko on %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Liitteen uudelleensalaus epäonnistui ja kaikki liitteet poistettiin tietoturvasyistä.</string>
-  <string name="composer_attachment_not_found">Attachment not found.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
-  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_attachment_not_found">Liitettä ei löydy.</string>
+  <string name="composer_attachment_error_draft_loading">Alkuperäisen luonnosviestin lataaminen epäonnistui.</string>
+  <string name="composer_attachment_error_saving_attachment">Liitteen tallentaminen epäonnistui. Yritä uudelleen.</string>
   <string name="composer_warning_local_data_shown">Tämän luonnoksen uusimman version lataus epäonnistui. Kaikki muutokset korvaavat sen sisällön.</string>
   <string name="composer_button_add_password">Lisää salasana</string>
   <string name="composer_button_set_expiration">Aseta tuhoutumisaika</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Lähetysilmoitus</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Viestien lähetys @pm.me-osoitteesta on maksullinen ominaisuus. Viestisi lähetetään oletusosoitteestasi.</string>
   <string name="composer_sender_changed_original_address_disabled">Valittu lähetysosoite on poistettu käytöstä. Viestisi lähetetään oletusosoitteestasi.</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Alkuperäistä lähettäjän osoitetta ei voitu hakea. Viestisi lähetetään oletusosoitteestasi.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Kirjoita</string>
@@ -80,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Lähetysvirhe</string>
   <string name="message_sending_error_dialog_button_dismiss">Sulje</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Viestiäsi ei voida lähettää annettuun osoitteeseen seuraavasta syystä:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Luotettuja avaimia ei ole: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Osoitetta ei ole olemassa: %s</string>
   <string name="set_message_password_title">Salaa viesti</string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">4–21 merkkiä</string>
   <string name="set_message_password_supporting_error_text">Salasanan on oltava 4–21 merkkiä</string>
   <string name="set_message_password_supporting_text_repeat">Salasanojen on täsmättävä</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Salasanat eivät täsmää</string>
   <string name="set_message_password_button_show">Näytä salasana</string>
   <string name="set_message_password_button_hide">Piilota salasana</string>
   <string name="set_message_password_button_apply">Aseta salasana</string>

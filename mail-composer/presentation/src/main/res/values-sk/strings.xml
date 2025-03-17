@@ -101,8 +101,8 @@
   <string name="respondInline">Odpovedať v riadku</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d člen</item>
-    <item quantity="few">%d členovia</item>
-    <item quantity="many">%d členov</item>
-    <item quantity="other">%d členov</item>
+    <item quantity="few">%d členov</item>
+    <item quantity="many">%d členovia</item>
+    <item quantity="other">%d členovia</item>
   </plurals>
 </resources>

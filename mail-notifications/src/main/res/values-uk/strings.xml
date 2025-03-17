@@ -19,15 +19,15 @@
 <resources>
   <string name="notification_summary_text_new_messages">Нові повідомлення</string>
   <string name="notification_summary_text_new_login_alerts">Сповіщення про новий вхід</string>
-  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
   <string name="notification_title_text_new_message_fallback">Нове повідомлення</string>
   <string name="notification_actions_archive_description">Архів</string>
   <string name="notification_actions_trash_description">Смітник</string>
   <string name="notification_actions_mark_as_read_description">Позначити прочитаним</string>
   <string name="notification_permission_dialog_title">Не проґавте лист</string>
   <string name="notification_permission_dialog_message">Сповіщення допомагають вам стежити за своєю скринькою, не відкриваючи застосунок.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Хочете бути в курсі подій?</string>
+  <string name="notification_permission_dialog_post_send_message">Увімкніть сповіщення, щоб знати, коли ви отримаєте відповідь на свій лист.</string>
+  <string name="notification_permission_dialog_button_enable">Увімкнути push-сповіщення</string>
   <string name="notification_permission_dialog_button_dismiss">Відхилити</string>
 </resources>

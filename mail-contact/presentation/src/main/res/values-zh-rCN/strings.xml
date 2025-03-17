@@ -29,7 +29,7 @@
   <string name="all_title">全部</string>
   <string name="groups_title">群组</string>
   <string name="group_member_count">%1$s 位成員</string>
-  <string name="group_members_count">%1$s 位成員</string>
+  <string name="group_members_count">%1$s 位成员</string>
   <string name="new_contact">新建联系人</string>
   <string name="new_group">新建群组</string>
   <string name="import_contact">上传本机通讯录</string>
@@ -98,7 +98,7 @@
   <string name="contact_details_delete_dialog_confirm_button">好的</string>
   <string name="contact_form_save_error">保存联系人出错，请稍后再试</string>
   <string name="contact_form_save_error_limit_reached">联系人数量已达上限</string>
-  <string name="all_contacts_tab">通讯录</string>
+  <string name="all_contacts_tab">联系人</string>
   <string name="contact_groups_tab">群组</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="other">%1$d 位成员</item>

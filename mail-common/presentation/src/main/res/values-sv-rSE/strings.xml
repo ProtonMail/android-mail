@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Lär dig mer</string>
   <!-- message expiration -->
   <string name="expiration_expired">Löpt ut</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d t</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dt</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">Detta meddelande kommer att tas bort automatiskt om mindre än en timme</string>
   <string name="expiration_auto_delete_day">Detta meddelande kommer att tas bort automatiskt om mindre än en dag</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Detta meddelande kommer tas bort automatiskt om %s</string>
@@ -107,8 +107,8 @@
   <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>
   <string name="email_notification_channel_name">E-post</string>
   <string name="login_notification_channel_name">Inloggningsvarningar</string>
-  <string name="email_notification_channel_description">Aviseringar för inkommande e-post</string>
-  <string name="login_notification_channel_description">Aviseringar för nya inloggningar</string>
+  <string name="email_notification_channel_description">Inkommande e-postaviseringar</string>
+  <string name="login_notification_channel_description">Nya inloggningsaviseringar</string>
   <string name="auth_badge_official">Officiell</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app hittades för att hantera denna åtgärd</string>
   <string name="action_copied_to_clipboard">Kopierat till urklipp</string>
@@ -136,6 +136,6 @@
   <string name="color_olive">Oliv</string>
   <string name="color_pickle">Saltgurka</string>
   <string name="undo_button_label">Ångra</string>
-  <string name="undo_success_message">Åtgärd ångrad</string>
-  <string name="undo_failure_message">Ångring av åtgärd misslyckades</string>
+  <string name="undo_success_message">Åtgärd återställd</string>
+  <string name="undo_failure_message">Återställning av åtgärd misslyckades</string>
 </resources>

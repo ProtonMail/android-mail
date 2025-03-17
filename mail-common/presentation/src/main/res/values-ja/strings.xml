@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">もっと詳しく</string>
   <!-- message expiration -->
   <string name="expiration_expired">期限切れ</string>
-  <string name="expiration_days_arg">%d 日</string>
+  <string name="expiration_days_arg">%d日</string>
   <string name="expiration_hours_arg">%d 時間</string>
-  <string name="expiration_minutes_arg">%d 分</string>
+  <string name="expiration_minutes_arg">%d分</string>
   <string name="expiration_auto_delete_hour">このメッセージは一時間以内に自動的に削除されます</string>
   <string name="expiration_auto_delete_day">このメッセージは1日以内に自動的に削除されます</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">このメッセージは%s日で自動的に削除されます</string>

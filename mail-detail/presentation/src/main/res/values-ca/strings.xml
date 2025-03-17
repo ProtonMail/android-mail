@@ -49,10 +49,10 @@
   <string name="error_move_to_archive_failed">No s\'ha pogut moure a l\'arxiu. Proveu de nou.</string>
   <string name="message_moved_to_spam">S\'ha mogut el missatge al correu brossa.</string>
   <string name="error_move_to_spam_failed">No s\'ha pogut moure a correu brossa. Torneu-ho a provar.</string>
-  <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s</string>
+  <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s.</string>
   <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Proveu de nou.</string>
   <string name="conversation_moved_to_trash">La conversa s\'ha mogut a la paperera.</string>
-  <string name="conversation_moved_to_selected_destination">La conversa s\'ha mogut a %1$s</string>
+  <string name="conversation_moved_to_selected_destination">S\'ha mogut la conversa a %1$s.</string>
   <string name="conversation_moved_to_archive">La conversa s\'ha mogut a l\'arxiu.</string>
   <string name="conversation_moved_to_spam">S\'ha mogut la conversa al correu brossa.</string>
   <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Proveu de nou.</string>

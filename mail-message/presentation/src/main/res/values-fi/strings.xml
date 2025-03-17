@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d tiedosto</item>
+    <item quantity="one">Tiedostotyyppi: %d</item>
     <item quantity="other">%d tiedostoa</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d lisää</string>
@@ -69,5 +69,5 @@
   <string name="device_contacts_permission_dialog_action_button">Pyydä oikeutta</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Estä</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">View entire message</string>
+  <string name="button_view_entire_message">Näytä koko viesti</string>
 </resources>

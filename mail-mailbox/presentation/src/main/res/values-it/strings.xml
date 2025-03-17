@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserisci una parola chiave</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d elemento selezionato</item>
-    <item quantity="other">%d elementi selezionati</item>
+    <item quantity="one">%d selezionati</item>
+    <item quantity="other">%d selezionati</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s non letto</item>
+    <item quantity="one">%s non letti</item>
     <item quantity="other">%s non letti</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nessun destinatario)</string>
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_trash_description">Il cestino è vuoto</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">1 conversazione spostata nel cestino</item>
-    <item quantity="other">%d conversazioni spostate nel cestino</item>
+    <item quantity="other">%d conversazioni spostate nel Cestino</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">1 messaggio spostato nel cestino</item>
-    <item quantity="other">%d messaggi spostati nel cestino</item>
+    <item quantity="other">%d messaggi spostati nel Cestino</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Elimina 1 conversazione</item>

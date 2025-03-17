@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜尋欄</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">輸入搜索查詢</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">已選取 %d 個</item>
+    <item quantity="other">已選取 %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s 則未讀</item>
@@ -48,7 +48,7 @@
     <item quantity="other">%d 則訊息已移至垃圾桶</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">刪除 %d 篇對話</item>
+    <item quantity="other">刪除 %d 則往來對話</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">刪除 %d 封訊息</item>

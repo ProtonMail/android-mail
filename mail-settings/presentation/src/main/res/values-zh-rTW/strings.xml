@@ -195,6 +195,6 @@
   <string name="customize_toolbar_actions_section">工具列動作 (選取至多 5 項)</string>
   <string name="customize_toolbar_available_actions_section">適用的動作</string>
   <string name="customize_toolbar_reset_default_confirmation_title">重設為預設值？</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">重設工具列選項為預設值.</string>
   <string name="customize_toolbar_reset_default_confirm">確認</string>
 </resources>

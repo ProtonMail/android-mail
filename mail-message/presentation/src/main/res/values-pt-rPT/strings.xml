@@ -52,7 +52,7 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copiar o endereço</string>
   <string name="contact_actions_copy_address_description">Copiar o endereço do contacto</string>
-  <string name="contact_actions_copy_address_performed">Endereço copiado para a área de transferência</string>
+  <string name="contact_actions_copy_address_performed">O endereço foi copiado para a área de transferência.</string>
   <string name="contact_actions_copy_name">Copiar o nome</string>
   <string name="contact_actions_copy_name_description">Copiar o nome do contacto</string>
   <string name="contact_actions_copy_name_performed">O nome foi copiado para a área de transferência.</string>

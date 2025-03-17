@@ -74,13 +74,13 @@
   <string name="switch_on">Yermed</string>
   <string name="switch_off">Yekfa</string>
   <string name="folder_form_parent">Akaram amaraw</string>
-  <string name="folder_form_no_parent">Ula yiwen</string>
+  <string name="folder_form_no_parent">Ulac</string>
   <string name="folder_form_notifications">Ilɣa</string>
   <string name="folder_saved">Folder saved</string>
   <string name="folder_deleted">Akaram yettwakkes</string>
-  <string name="parent_folder_none">Ula yiwen</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
+  <string name="parent_folder_none">Ulac</string>
+  <string name="delete_label">Kkes tabzimt?</string>
+  <string name="delete_folder">Kkes akaram?</string>
   <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
   <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
 </resources>

@@ -157,7 +157,7 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Los códigos PIN no coinciden.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s intento restante</item>
+    <item quantity="one">%s intento restante.</item>
     <item quantity="other">%s intentos restantes</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">

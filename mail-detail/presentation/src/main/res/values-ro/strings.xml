@@ -22,9 +22,9 @@
   <string name="detail_error_loading_messages">Încărcarea mesajelor a eșuat.</string>
   <string name="error_mark_unread_failed">Marcarea ca necitit a eșuat. Reîncercați.</string>
   <plurals name="message_count_label_text">
-    <item quantity="one">Un mesaj</item>
-    <item quantity="few">%d mesaje</item>
-    <item quantity="other">%d de mesaje</item>
+    <item quantity="one">%d mesaje</item>
+    <item quantity="few">%d de mesaje</item>
+    <item quantity="other">%d mesaje</item>
   </plurals>
   <string name="quick_reply_button_content_description">Răspuns</string>
   <string name="quick_reply_all_button_content_description">Răspuns tuturor</string>
@@ -36,9 +36,9 @@
   <string name="bcc">Ca:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">%d atașament</item>
-    <item quantity="few">%d atașamente</item>
-    <item quantity="other">%d de atașamente</item>
+    <item quantity="one">Fișiere atașate: %d</item>
+    <item quantity="few">Fișiere atașate: %d</item>
+    <item quantity="other">Fișiere atașate: %d</item>
   </plurals>
   <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">Destinatari confidențiali</string>
@@ -51,7 +51,7 @@
   <string name="error_move_to_archive_failed">Mutarea în arhivă a eșuat. Reîncercați.</string>
   <string name="message_moved_to_spam">Mesaj mutat în «Nedorite».</string>
   <string name="error_move_to_spam_failed">Mutarea în mesaje nedorite a eșuat. Reîncercați.</string>
-  <string name="message_moved_to_selected_destination">Mesajul a fost mutat în %1$s.</string>
+  <string name="message_moved_to_selected_destination">Mesajul a fost mutat în «%1$s».</string>
   <string name="error_move_message_failed">Mutarea mesajului a eșuat. Reîncercați.</string>
   <string name="conversation_moved_to_trash">Conversația a fost mutată în «Gunoi».</string>
   <string name="conversation_moved_to_selected_destination">Conversația a fost mutată în «%1$s».</string>

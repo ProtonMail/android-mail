@@ -18,22 +18,22 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Кнопка оновлення</string>
+  <string name="upselling_button_item_content_description">Кнопка покращення</string>
   <string name="upselling_close_button_content_description">Кнопка закриття</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">Щоб розблокувати більше сховища та преміум функцій</string>
+  <string name="upselling_mailbox_plus_description_override">Щоб розблокувати більше сховище та преміальні функції</string>
   <string name="upselling_mailbox_plus_title">Передплатити Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Легко надсилайте електронні листи групі та насолоджуйтеся іншими преміум функціями з Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Сортуйте свої контакти</string>
+  <string name="upselling_contact_groups_plus_description_override">Легко надсилайте листи групі та користуйтеся іншими преміум функціями Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Групуйте свої контакти</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Отримайте їх та інші преміум функції, коли ви оновите до Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Потрібно більше міток або тек?</string>
+  <string name="upselling_labels_plus_description_override">Отримайте їх та інші преміум функції, перейшовши на Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Потрібно більше етикеток чи тек?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Отримайте їх та інші преміум функції, коли ви оновите до Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Потрібно більше міток або тек?</string>
+  <string name="upselling_folders_plus_description_override">Отримайте їх та інші преміум функції, перейшовши на Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Потрібно більше етикеток чи тек?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Використовуйте свій власний мобільний підпис і насолоджуйтеся іншими преміум функціями з Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_description_override">Використовуйте власний мобільний підпис і користуйтеся іншими преміум функціями Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Налаштуйте свій підпис</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Оцініть чистішу поштову скриньку й переваги інших преміальних функцій Mail Plus.</string>
@@ -43,11 +43,11 @@
   <string name="upselling_plus_feature_email_addresses">10 адрес електронної пошти</string>
   <string name="upselling_plus_feature_custom_domain">Підтримка власних доменів електронної пошти</string>
   <string name="upselling_plus_feature_desktop_app">Нова програма Proton Mail для комп\'ютера</string>
-  <string name="upselling_plus_feature_folders_labels">Необмежені теки, мітки, фільтри</string>
+  <string name="upselling_plus_feature_folders_labels">Необмежена кількість тек, міток і фільтрів</string>
   <string name="upselling_plus_feature_plus_7_features">+7 преміум функцій</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Ваше універсальне преміум підписка</string>
-  <string name="upselling_unlimited_feature_storage">500 ГБ сховища з резервною копією фото</string>
+  <string name="upselling_unlimited_description_override">Ваша універсальна преміальна підписка</string>
+  <string name="upselling_unlimited_feature_storage">500 ГБ сховища з резервним копіюванням фотографій</string>
   <string name="upselling_unlimited_feature_mail_calendar">Усі платні функції Proton Mail і Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90+ країн)</string>
   <string name="upselling_unlimited_feature_drive">Безпечне хмарне сховище</string>
@@ -55,21 +55,21 @@
   <!-- Onboarding Upselling -->
   <string name="upselling_onboarding_premium_value_included">Усі переваги преміум</string>
   <string name="upselling_onboarding_feature_e2e">Наскрізне шифрування</string>
-  <string name="upselling_onboarding_feature_folders_labels">Необмежені теки та мітки</string>
-  <string name="upselling_onboarding_free_feature_storage">1 ГБ сховища і 1 адреса електронної пошти</string>
+  <string name="upselling_onboarding_feature_folders_labels">Необмежена кількість тек і міток</string>
+  <string name="upselling_onboarding_free_feature_storage">1 ГБ сховища й 1 поштова адреса</string>
   <string name="upselling_onboarding_plus_feature_storage">15 ГБ сховища</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 додаткових адрес електронної пошти для вас</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 додаткових поштових адрес для вас</string>
   <string name="upselling_onboarding_plus_feature_email_domains">Підтримка 1 власного домену електронної пошти</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 псевдонімів hide-my-email</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Пріоритетна підтримка клієнтів</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 ГБ сховища</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 додаткових адрес електронної пошти для вас</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 додаткових поштових адрес для вас</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Підтримка 3 власних доменів електронної пошти</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Необмежена кількість псевдонімів hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Присвячена підтримка клієнтів</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Ультра швидка і приватна VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Необмежена кількість псевдонімів Hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Спеціалізована клієнтська підтримка</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ультра швидка та приватна VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Зашифрований менеджер паролів</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Зашифроване хмарне сховище для фото та документів</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Зашифроване хмарне сховище для фотографій і документів</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Розширений захист облікового запису</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Сховище</string>
@@ -84,9 +84,9 @@
   <string name="upselling_select_plan_month">1 місяць</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Автоматичне поновлення за тією ж ціною та умовами доки не скасувати.</string>
-  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_discount_tag">ЗБЕРЕЖІТЬ %s%%</string>
+  <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автоматично поновлюється через %s %s%s, якщо не скасовано.</string>
+  <string name="upselling_auto_renew_text_standard">Автоматично поновлюється через %s %s %s, якщо не скасовано.</string>
+  <string name="upselling_discount_tag">ЗАОЩАДЬТЕ %s%%</string>
   <string name="upselling_month">/місяць</string>
   <string name="upselling_year">/рік</string>
   <string name="upselling_get_button">Отримати %s</string>
@@ -97,25 +97,25 @@
     <item quantity="other">%d місяців</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Не вдалося отримати параметри оновлення.</string>
+  <string name="upselling_unable_retrieve_options">Не вдалося отримати параметри покращення.</string>
   <string name="upselling_snackbar_error_no_user_id">Сталася помилка.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Не вдалося отримати підписки.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Не вдається отримати підписки.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Оновлення підписки в процесі…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Під час оновлення вашої підписки сталася помилка.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Сталася помилка. Спробуйте ще раз.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Триває оновлення підписки…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Під час оновлення підписки сталася помилка.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Виникла помилка. Спробуйте ще раз.</string>
   <!-- Upselling: Onboarding -->
-  <string name="upselling_onboarding_title">Вибрати тарифний план</string>
+  <string name="upselling_onboarding_title">Вибрати план</string>
   <string name="upselling_onboarding_switcher_monthly">Щомісяця</string>
-  <string name="upselling_onboarding_switcher_annual">Щороку</string>
-  <string name="upselling_onboarding_best_value">Найкраща ціна</string>
+  <string name="upselling_onboarding_switcher_annual">Річний</string>
+  <string name="upselling_onboarding_best_value">Найвигідніший</string>
   <string name="upselling_onboarding_month">/місяць</string>
   <string name="upselling_onboarding_year">/рік</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d більше функція</item>
     <item quantity="few">%d більше функцій</item>
-    <item quantity="many">%d більше функцій</item>
-    <item quantity="other">%d більше функцій</item>
+    <item quantity="many">%d додаткових функцій</item>
+    <item quantity="other">%d додаткових функцій</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Отримати %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Продовжити з Proton Free</string>

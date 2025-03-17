@@ -26,7 +26,7 @@
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserir termo a pesquisar</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d selecionado</item>
-    <item quantity="other">%d selecionados</item>
+    <item quantity="other">%d selecionado</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s não lido</item>
@@ -45,7 +45,7 @@
   <string name="mailbox_is_empty_trash_description">O Lixo está vazio</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">A conversa foi movida para o lixo.</item>
-    <item quantity="other">%d conversas foram movidas para o lixo.</item>
+    <item quantity="other">%d conversas foram movidas para o lixo</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">A mensagem foi movida para o lixo.</item>

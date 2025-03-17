@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d fitxer</item>
+    <item quantity="one">Tipus de fitxer: %d</item>
     <item quantity="other">%d fitxers</item>
   </plurals>
   <string name="attachment_show_more_label">%1$d més</string>

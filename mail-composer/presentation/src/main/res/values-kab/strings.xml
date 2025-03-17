@@ -54,7 +54,7 @@
   <string name="composer_button_set_expiration">Sbadu azemz n ufati</string>
   <string name="composer_expiration_time_bottom_sheet_title">Afati n yizen</string>
   <string name="composer_expiration_time_bottom_sheet_done">Wennez</string>
-  <string name="composer_bottom_bar_expiration_time_none">Ula yiwen</string>
+  <string name="composer_bottom_bar_expiration_time_none">Ulac</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 n usrag</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 n wass</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 n wussan</string>
@@ -78,7 +78,7 @@
   <string name="composer_send_without_subject_dialog_confirm_button">Ih</string>
   <string name="composer_send_without_subject_dialog_reject_button">Uhu</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_header">Tuccḍa di tuzzna</string>
   <string name="message_sending_error_dialog_button_dismiss">Mdel</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">8 ar 21 n yisekkilen</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">Awalen uffiren ilaq ad ilin kifkif</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Awalen uffiren ur mṣadan ara</string>
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Ffer awal uffir</string>
   <string name="set_message_password_button_apply">Snes awal uffir</string>
@@ -100,7 +100,7 @@
   <string name="set_message_password_button_remove_password">Kkes wawal uffir</string>
   <string name="respondInline">Err degi imayl</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d member</item>
-    <item quantity="other">%d members</item>
+    <item quantity="one">%d n uεeggal</item>
+    <item quantity="other">%d n yiεeggalen</item>
   </plurals>
 </resources>

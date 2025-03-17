@@ -39,7 +39,7 @@
   <string name="upselling_auto_delete_plus_description_override">Genieße ein aufgeräumtes Postfach und profitiere von weiteren Premium-Funktionen mit Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Lösche alte Daten im Papierkorb und Spam</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
+  <string name="upselling_plus_feature_storage">15 GB Speicher</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_custom_domain">Unterstützung für eigene E-Mail-Domain</string>
   <string name="upselling_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
@@ -59,18 +59,18 @@
   <string name="upselling_onboarding_free_feature_storage">1 GB Speicherplatz und 1 E-Mail-Adresse</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_onboarding_plus_feature_email_addresses">10 zusätzliche E-Mail-Adressen für dich</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Unterstützung für 1 eigene E-Mail-Domain</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-Aliasse</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Unterstützung für eine eigene E-Mail-Domain</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 Hide-my-email-Aliasse</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Vorrangiger Kundensupport</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB Speicherplatz</string>
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 zusätzliche E-Mail-Adressen für dich</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Unterstützung für 3 eigene E-Mail-Domains</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Unbegrenzte hide-my-email-Aliasse</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Engagierter Kundensupport</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedizierter Kundensupport</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">Ultraschnelles und privates VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Verschlüsselter Cloud-Speicher für Fotos und Dokumente</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Erweiterter Schutz von Konten</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Erweiterter Kontoschutz</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Speicher</string>
   <string name="upselling_comparison_table_email_addresses">E‐Mail‐Adressen</string>
@@ -121,24 +121,24 @@
   <string name="post_subscription_continue_button">Fortfahren</string>
   <string name="post_subscription_got_it_button">Verstanden</string>
   <string name="post_subscription_welcome_page_title">Willkommen bei Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Danke, dass du uns dabei unterstützt, das Internet sicher und privat für alle zu halten.</string>
+  <string name="post_subscription_welcome_page_message">Danke, dass du uns dabei unterstützt, das Internet für alle sicher und privat zu halten.</string>
   <string name="post_subscription_welcome_page_unlocked">Du hast freigeschaltet</string>
   <string name="post_subscription_plus_feature_storage">15 GB Speicher</string>
   <string name="post_subscription_plus_feature_email_addresses">10 zusätzliche E-Mail-Adressen</string>
-  <string name="post_subscription_plus_feature_email_domains">Unterstützung für 1 benutzerdefinierte E-Mail-Domain</string>
+  <string name="post_subscription_plus_feature_email_domains">Unterstützung für eine eigene E-Mail-Domain</string>
   <string name="post_subscription_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
-  <string name="post_subscription_plus_feature_aliases">10 hide-my-email Aliasse</string>
+  <string name="post_subscription_plus_feature_aliases">10 Hide-my-email-Aliasse</string>
   <string name="post_subscription_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
   <string name="post_subscription_plus_feature_customer_support">Vorrangiger Kundensupport</string>
   <string name="post_subscription_discover_apps_page_title">Entdecke alle Apps</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">Du hast den Kalenderfreigabe und 8x mehr Kalender freigeschaltet.</string>
+  <string name="post_subscription_proton_calendar_message">Du hast die Kalenderfreigabe freigeschaltet und 8x mehr Kalender.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Dein neues Abonnement hat deinen Speicher auf 15 GB erhöht.</string>
+  <string name="post_subscription_proton_drive_message">Dein neues Abonnement hat deinen Speicherplatz auf 15 GB erweitert.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">Das beste VPN für Geschwindigkeit und Sicherheit.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Sichere Passwortspeicherung und einfacher Anmeldevorgang für deine Konten.</string>
+  <string name="post_subscription_proton_pass_message">Sichere Passwortspeicherung und einfacher Zugang zu deinen Konten.</string>
   <string name="post_subscription_button_installed">Installiert</string>
   <string name="post_subscription_button_get_the_app">App herunterladen</string>
 </resources>

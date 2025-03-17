@@ -27,7 +27,7 @@
   <string name="onboarding_neat_and_tidy_headline">干净利落，井井有条。</string>
   <string name="onboarding_neat_and_tidy_description">使用文件夹、标签和颜色打造与您一拍即合的完美邮箱。</string>
   <!--  Onboarding actions  -->
-  <string name="onboarding_next">继续</string>
+  <string name="onboarding_next">下一页</string>
   <string name="onboarding_get_started">立即体验</string>
   <string name="onboarding_illustration_content_description">入职流程插画</string>
   <string name="onboarding_close_content_description">关闭</string>

@@ -27,7 +27,7 @@
   <string name="notification_permission_dialog_title">Älä missaa viestejä</string>
   <string name="notification_permission_dialog_message">Ilmoituksilla pysyt saapuneista viesteistäsi ajan tasalla sovellusta avaamatta.</string>
   <string name="notification_permission_dialog_post_send_title">Haluatko pysyä ajan tasalla?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_post_send_message">Ota ilmoitukset käyttöön, jotta tiedät, kun saat vastauksen sähköpostiisi.</string>
   <string name="notification_permission_dialog_button_enable">Ota push-ilmoitukset käyttöön</string>
   <string name="notification_permission_dialog_button_dismiss">Hylkää</string>
 </resources>

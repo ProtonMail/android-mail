@@ -143,7 +143,7 @@
   <string name="contact_group_color">Contact group color</string>
   <plurals name="contact_search_contact_group_counter">
     <item quantity="one">%d član</item>
-    <item quantity="few">%d člana</item>
+    <item quantity="few">%d članova</item>
     <item quantity="other">%d članova</item>
   </plurals>
   <string name="contact_search_placeholder">Search for contact or group</string>

@@ -25,9 +25,9 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Počisti iskalno poizvedbo</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Vnesite iskalno poizvedbo</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d izbrano</item>
-    <item quantity="two">%d izbrani</item>
-    <item quantity="few">%d izbrana</item>
+    <item quantity="one">%d izbranih</item>
+    <item quantity="two">%d izbranih</item>
+    <item quantity="few">%d izbranih</item>
     <item quantity="other">%d izbranih</item>
   </plurals>
   <plurals name="filter_unread_button_text">
@@ -101,7 +101,7 @@
   <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_move_conversation">Pogovor je premaknjen v %s</string>
-  <string name="mailbox_action_move_message">Sporočilo premaknjeno v mapo %s</string>
+  <string name="mailbox_action_move_message">Sporočilo je premaknjeno v mapo %s</string>
   <string name="mailbox_search_placeholder_text">Išči sporočila</string>
   <string name="mailbox_search_no_results_title">Ni najdenih rezultatov</string>
   <string name="mailbox_search_no_results_explanation">Iskanje datuma, imena, e-poštnega naslova ali zadeve sporočila</string>

@@ -23,9 +23,9 @@
   <string name="error_mark_unread_failed">Označiť za neprečítané zlyhalo. Prosím skúste znova.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d správa</item>
-    <item quantity="few">%d správy</item>
-    <item quantity="many">%d správ</item>
-    <item quantity="other">%d správ</item>
+    <item quantity="few">%d správ</item>
+    <item quantity="many">%d správy</item>
+    <item quantity="other">%d správy</item>
   </plurals>
   <string name="quick_reply_button_content_description">Odpovedať</string>
   <string name="quick_reply_all_button_content_description">Odpovedať všetkým</string>
@@ -37,10 +37,10 @@
   <string name="bcc">Skrytá kópia:</string>
   <string name="date">Dátum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d príloha</item>
-    <item quantity="few">%d prílohy</item>
-    <item quantity="many">%d príloh</item>
-    <item quantity="other">%d príloh</item>
+    <item quantity="one">%d Príloha</item>
+    <item quantity="few">%d Príloh</item>
+    <item quantity="many">%d Prílohy</item>
+    <item quantity="other">%d Prílohy</item>
   </plurals>
   <string name="hide_details">Skryť detaily</string>
   <string name="undisclosed_recipients">Skrytí príjemcovia</string>
@@ -56,7 +56,7 @@
   <string name="message_moved_to_selected_destination">Správa presunutá do %1$s</string>
   <string name="error_move_message_failed">Presun správy zlyhal. Skúste to znova.</string>
   <string name="conversation_moved_to_trash">Konverzácia bola presunutá do koša</string>
-  <string name="conversation_moved_to_selected_destination">Konverzácia bola presunutá do %1$s</string>
+  <string name="conversation_moved_to_selected_destination">Konverzácia presunutá do %1$s</string>
   <string name="conversation_moved_to_archive">Konverzácia bola presunutá do archívu</string>
   <string name="conversation_moved_to_spam">Konverzácia bola presunutá do spamu</string>
   <string name="error_move_conversation_failed">Presun správy zlyhal. Skúste to znova.</string>
@@ -93,7 +93,7 @@
   <string name="message_delete_dialog_message">Naozaj chcete natrvalo vymazať túto správu?</string>
   <string name="message_deleted">Správa bola odstránená</string>
   <string name="message_moved">Správa presunutá</string>
-  <string name="message_moved_to">Správa bola presunutá do %s</string>
+  <string name="message_moved_to">Správa presunutá do %s</string>
   <string name="error_delete_message_failed">Nepodarilo sa odstrániť správu</string>
   <string name="error_delete_message_failed_wrong_folder">Správa sa nenachádza na mieste, kde ju možno vymazať</string>
   <string name="error_delete_conversation_failed">Nepodarilo sa odstrániť konverzáciu</string>

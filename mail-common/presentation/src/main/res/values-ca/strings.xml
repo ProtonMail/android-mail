@@ -85,8 +85,8 @@
   <!-- message expiration -->
   <string name="expiration_expired">Caducat</string>
   <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="expiration_auto_delete_hour">Aquest missatge s\'eliminarà automàticament en menys d\'una hora.</string>
   <string name="expiration_auto_delete_day">Aquest missatge s\'eliminarà automàticament en menys d\'un dia.</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Aquest missatge s\'eliminarà automàticament en %s.</string>

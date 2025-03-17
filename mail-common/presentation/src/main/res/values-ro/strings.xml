@@ -86,10 +86,10 @@
   <string name="expiration_expired">Expirată</string>
   <string name="expiration_days_arg">%d z</string>
   <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="expiration_auto_delete_hour">Acest mesaj va fi șters automat peste o oră.</string>
   <string name="expiration_auto_delete_day">Acest mesaj va fi șters automat în mai puțin de o zi.</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Acest mesaj va fi șters automat la peste %s.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Acest mesaj va fi șters automat peste %s.</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d minut</item>
     <item quantity="few">%d minute</item>

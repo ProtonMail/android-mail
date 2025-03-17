@@ -35,8 +35,8 @@
   <string name="bcc">Cco:</string>
   <string name="date">Fecha:</string>
   <plurals name="attachment">
-    <item quantity="one">%d archivo adjunto</item>
-    <item quantity="other">%d archivos adjuntos</item>
+    <item quantity="one">%d Archivo adjunto</item>
+    <item quantity="other">%d Archivos adjuntos</item>
   </plurals>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
@@ -49,7 +49,7 @@
   <string name="error_move_to_archive_failed">Error al mover a la carpeta Archivo. Intenta de nuevo.</string>
   <string name="message_moved_to_spam">Se ha movido el mensaje a la carpeta Spam.</string>
   <string name="error_move_to_spam_failed">Error al mover a la carpeta Spam. Intenta de nuevo.</string>
-  <string name="message_moved_to_selected_destination">Mensaje movido a %1$s</string>
+  <string name="message_moved_to_selected_destination">Se ha movido el mensaje a %1$s.</string>
   <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
   <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>

@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Змінити відправника</string>
   <string name="composer_change_sender_paid_feature">Вам потрібна платна підписка на Proton Mail щоб змінити адресу відправника.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
+  <string name="composer_error_store_draft_body">Не вдалося зберегти вміст цієї чернетки</string>
   <string name="composer_error_duplicate_recipient">Дублікати отримувачів вилучено</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">Не вдалося зберегти тему цієї чернетки</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
   <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний. Редагування перезапише будь-який попередній вміст.</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
@@ -46,9 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Досягнуто обмеження для вкладень</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень – %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Збій повторного шифрування вкладення. З міркувань безпеки усі вкладення вилучено.</string>
-  <string name="composer_attachment_not_found">Attachment not found.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
-  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_attachment_not_found">Вкладення не знайдено.</string>
+  <string name="composer_attachment_error_draft_loading">Не вдалося завантажити оригінальну чернетку повідомлення.</string>
+  <string name="composer_attachment_error_saving_attachment">Не вдалося зберегти вкладення. Спробуйте ще раз.</string>
   <string name="composer_warning_local_data_shown">Не вдалося завантажити останню версію цієї чернетки. Будь-які зміни перезапишуть її.</string>
   <string name="composer_button_add_password">Додати пароль</string>
   <string name="composer_button_set_expiration">Вказати термін дії</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Надсилання сповіщення</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Надсилання повідомлень з @pm.me є платною функцією. Ваше повідомлення буде надіслано з вашої типової адреси.</string>
   <string name="composer_sender_changed_original_address_disabled">Вибрана адреса відправника вимкнена. Ваше повідомлення буде надіслано з типової адреси.</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Не вдалося отримати оригінальну адресу відправника. Ваше повідомлення буде надіслано з типової адреси.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Написати</string>
@@ -80,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Надсилання звіту про помилку</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Вашого листа неможливо надіслати на вказану адресу з такої причини:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Немає довірених ключів: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Адреса %s не існує</string>
   <string name="set_message_password_title">Зашифрувати повідомлення</string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">Довжина від 4 до 21 символу</string>
   <string name="set_message_password_supporting_error_text">Пароль повинен мати від 4 до 21 символів</string>
   <string name="set_message_password_supporting_text_repeat">Паролі повинні збігатися</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">2 паролі відрізняються</string>
   <string name="set_message_password_button_show">Показати пароль</string>
   <string name="set_message_password_button_hide">Приховати пароль</string>
   <string name="set_message_password_button_apply">Застосувати пароль</string>
@@ -102,7 +102,7 @@
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d учасник</item>
     <item quantity="few">%d учасники</item>
-    <item quantity="many">%d учасників</item>
-    <item quantity="other">%d учасників</item>
+    <item quantity="many">%d учасники</item>
+    <item quantity="other">%d учасники</item>
   </plurals>
 </resources>

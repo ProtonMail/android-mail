@@ -35,8 +35,8 @@
   <string name="bcc">Cci :</string>
   <string name="date">Date :</string>
   <plurals name="attachment">
-    <item quantity="one">%d pièce jointe</item>
-    <item quantity="other">%d pièces jointes</item>
+    <item quantity="one">%d Pièce jointe</item>
+    <item quantity="other">%d Pièces jointes</item>
   </plurals>
   <string name="hide_details">Masquer les détails</string>
   <string name="undisclosed_recipients">Destinataires non divulgués</string>
@@ -49,10 +49,10 @@
   <string name="error_move_to_archive_failed">Le message n\'a pas pu être déplacé dans les archives. Merci de réessayer.</string>
   <string name="message_moved_to_spam">Le message a été déplacé dans le dossier Indésirables/spam.</string>
   <string name="error_move_to_spam_failed">Le message n\'a pas pu être déplacé dans le dossier Indésirables/spam. Merci de réessayer.</string>
-  <string name="message_moved_to_selected_destination">Le message a été déplacé dans %1$s.</string>
+  <string name="message_moved_to_selected_destination">Le message a été déplacé vers %1$s.</string>
   <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
-  <string name="conversation_moved_to_selected_destination">La conversation a été déplacée dans %1$s.</string>
+  <string name="conversation_moved_to_selected_destination">La conversation a été déplacée vers %1$s.</string>
   <string name="conversation_moved_to_archive">La conversation a été déplacée dans le dossier Archives.</string>
   <string name="conversation_moved_to_spam">La conversation a été déplacée dans le dossier Indésirables/spam.</string>
   <string name="error_move_conversation_failed">La conversation n\'a pas pu être déplacée. Veuillez réessayer.</string>
@@ -89,7 +89,7 @@
   <string name="message_delete_dialog_message">Voulez-vous vraiment supprimer définitivement ce message ?</string>
   <string name="message_deleted">Le message a été supprimé.</string>
   <string name="message_moved">Le message a été déplacé.</string>
-  <string name="message_moved_to">Le message a été déplacé dans %s.</string>
+  <string name="message_moved_to">Le message a été déplacé vers %s.</string>
   <string name="error_delete_message_failed">Le message n\'a pas pu être supprimé.</string>
   <string name="error_delete_message_failed_wrong_folder">Le message ne se trouve pas à un emplacement permettant sa suppression.</string>
   <string name="error_delete_conversation_failed">La conversation n\'a pas pu être supprimée.</string>

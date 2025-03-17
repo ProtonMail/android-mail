@@ -60,12 +60,12 @@
   <string name="upselling_onboarding_plus_feature_storage">15 GB のストレージ</string>
   <string name="upselling_onboarding_plus_feature_email_addresses">10 個の追加のメールアドレス</string>
   <string name="upselling_onboarding_plus_feature_email_domains">1 つのカスタムメールドメインをサポート</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 個の hide-my-email エイリアス</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 個の 非ide-my-email表示メールエイリアス</string>
   <string name="upselling_onboarding_plus_feature_customer_support">優先カスタマーサポート</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB のストレージ</string>
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 個の追加のメールアドレス</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">3 つのカスタムメールドメインをサポート</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">無制限の hide-my-email エイリアス</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">無制限のメール非表示ide-my-emailエイリアス</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">専用カスタマーサポート</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">超高速でプライベートな VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">暗号化されたパスワードマネージャー</string>

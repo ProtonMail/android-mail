@@ -19,22 +19,22 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Botão Atualizar</string>
-  <string name="upselling_close_button_content_description">Botão para fechar</string>
+  <string name="upselling_close_button_content_description">Botão fechar</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">Para desbloquear mais armazenamento e funcionalidades premium</string>
-  <string name="upselling_mailbox_plus_title">Atualizar para Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Para desbloquear mais funcionalidades de armazenamento e premium</string>
+  <string name="upselling_mailbox_plus_title">Atualize para Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Envie e-mails facilmente para um grupo e aproveite outras funcionalidades premium com Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_description_override">Envie e-mails facilmente para um grupo e beneficie de outras funcionalidades premium com Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupe seus contactos</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Obtenha-os e outras funcionalidades premium ao atualizar para Mail Plus.</string>
+  <string name="upselling_labels_plus_description_override">Obtenha estas e outras funcionalidades premium ao atualizar para Mail Plus.</string>
   <string name="upselling_labels_plus_title">Precisa de mais etiquetas ou pastas?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Obtenha-os e outras funcionalidades premium ao atualizar para Mail Plus.</string>
+  <string name="upselling_folders_plus_description_override">Obtenha estas e outras funcionalidades premium ao atualizar para Mail Plus.</string>
   <string name="upselling_folders_plus_title">Precisa de mais etiquetas ou pastas?</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Utilize sua própria assinatura móvel e aproveite outras funcionalidades premium com Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Personalize sua assinatura</string>
+  <string name="upselling_mobile_signature_plus_title">Personalize a sua assinatura</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Desfrute de uma caixa de entrada mais organizada e beneficie de outras funcionalidades premium com o Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Eliminar lixo e spam antigos</string>
@@ -43,10 +43,10 @@
   <string name="upselling_plus_feature_email_addresses">10 endereços de e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Suporte para domínio de e-mail personalizado</string>
   <string name="upselling_plus_feature_desktop_app">Nova aplicação Proton Mail para desktop</string>
-  <string name="upselling_plus_feature_folders_labels">Pastas, etiquetas e filtros ilimitados</string>
+  <string name="upselling_plus_feature_folders_labels">Pastas, etiquetas, e filtros ilimitados</string>
   <string name="upselling_plus_feature_plus_7_features">+7 funcionalidades premium</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Sua assinatura premium tudo-em-um</string>
+  <string name="upselling_unlimited_description_override">A sua subscrição premium tudo-em-um</string>
   <string name="upselling_unlimited_feature_storage">500 GB de armazenamento com cópias de segurança de fotos</string>
   <string name="upselling_unlimited_feature_mail_calendar">Todas as funcionalidades pagas do Mail e do Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (mais de 90 países)</string>
@@ -58,19 +58,19 @@
   <string name="upselling_onboarding_feature_folders_labels">Pastas e etiquetas ilimitadas</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB de armazenamento e 1 endereço de e-mail</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB de armazenamento</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 endereços de e-mail adicionais para você</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Suporte para 1 domínio de e-mail personalizado</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 pseudônimos hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 endereços de e-mail extra para si</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Apoio ao cliente para 1 domínio de e-mail personalizado</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 aliases de hide-my-email</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Apoio ao cliente prioritário</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB de armazenamento</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 endereços de e-mail adicionais para você</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Suporte para 3 domínios de e-mail personalizados</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Aliases ilimitados do Hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 endereços de e-mail extra para si</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Apoio ao cliente para 3 domínios de e-mail personalizados</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Aliases ilimitados do hide-my-email</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Apoio ao cliente dedicado</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultra rápida e privada</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN privada ultrarrápida</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de palavras-passe encriptado</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Armazenamento em nuvem encriptado para fotos e documentos</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Proteção avançada da conta</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Armazenamento na nuvem encriptado para fotografias e documentos</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Proteção avançada de conta</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Armazenamento</string>
   <string name="upselling_comparison_table_email_addresses">Endereços de e-mail</string>
@@ -99,14 +99,14 @@
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Não foi possível obter subscrições.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Atualização de subscrição em progresso…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Ocorreu um erro ao atualizar sua subscrição.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Atualização da subscrição em curso…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Ocorreu um erro ao atualizar a sua subscrição.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Ocorreu um erro. Tenta novamente.</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">Escolha um plano</string>
   <string name="upselling_onboarding_switcher_monthly">Mensalmente</string>
-  <string name="upselling_onboarding_switcher_annual">Anualmente</string>
-  <string name="upselling_onboarding_best_value">Melhor valor</string>
+  <string name="upselling_onboarding_switcher_annual">Anual</string>
+  <string name="upselling_onboarding_best_value">Melhor oferta</string>
   <string name="upselling_onboarding_month">/mês</string>
   <string name="upselling_onboarding_year">/ano</string>
   <plurals name="upselling_onboarding_more_features">

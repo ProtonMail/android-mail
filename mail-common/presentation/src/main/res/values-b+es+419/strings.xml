@@ -86,7 +86,7 @@
   <string name="expiration_expired">Expirada</string>
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="expiration_auto_delete_hour">Este mensaje se eliminará automáticamente en menos de una hora.</string>
   <string name="expiration_auto_delete_day">Este mensaje se eliminará automáticamente en menos de un día.</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Este mensaje se eliminará automáticamente en %s.</string>
@@ -100,7 +100,7 @@
   </plurals>
   <plurals name="expiration_days_full_word">
     <item quantity="one">%d día</item>
-    <item quantity="other">%d dias</item>
+    <item quantity="other">%d días</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Archivos adjuntos</string>

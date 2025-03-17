@@ -30,8 +30,8 @@
   <string name="action_mark_unread_description">Creḍ ur yettwaɣra ara</string>
   <string name="action_star_description">Itri</string>
   <string name="action_unstar_description">Kkes seg inurifen</string>
-  <string name="action_label_description">Label as…</string>
-  <string name="action_move_description">Move to…</string>
+  <string name="action_label_description">Bzem am…</string>
+  <string name="action_move_description">Mutti ɣer…</string>
   <string name="action_trash_description">Awi ar iḍumman</string>
   <string name="action_delete_description">Kkes</string>
   <string name="action_archive_description">Tarcivt</string>
@@ -54,8 +54,8 @@
   <string name="action_mark_unread_content_description">Creḍ ur yettwaɣra ara</string>
   <string name="action_star_content_description">Itri</string>
   <string name="action_unstar_content_description">Kkes seg yinurifen</string>
-  <string name="action_label_content_description">Label as…</string>
-  <string name="action_move_content_description">Move to…</string>
+  <string name="action_label_content_description">Bzem am…</string>
+  <string name="action_move_content_description">Mutti ɣer…</string>
   <string name="action_trash_content_description">Taqecwalt</string>
   <string name="action_delete_content_description">Kkes</string>
   <string name="action_archive_content_description">Taṛcivt</string>
@@ -73,20 +73,20 @@
   <string name="action_more_content_description">Ugar</string>
   <string name="common_error_loading_actions">Asali n tigawin yecceḍ</string>
   <string name="yesterday">Iḍelli</string>
-  <string name="action_open_customize_toolbar">Customize toolbar</string>
-  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
+  <string name="action_open_customize_toolbar">Sagen afeggag n yifecka</string>
+  <string name="action_open_customize_toolbar_description">Sagen afeggag n yifecka</string>
+  <string name="auto_delete_banner_text_activate_trash">Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.</string>
   <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
-  <string name="auto_delete_banner_button_activate_confirm">Enable</string>
-  <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
+  <string name="auto_delete_banner_text_upgrade">Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.</string>
+  <string name="auto_delete_banner_text_enabled_info">Iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan, ad ttwakksen s wudem awurman.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Rmed</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Uhu, tanemmirt</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Issin ugar</string>
   <!-- message expiration -->
-  <string name="expiration_expired">Ifut</string>
+  <string name="expiration_expired">Yemmut</string>
   <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%d srg</string>
-  <string name="expiration_minutes_arg">%d tsd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
   <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>

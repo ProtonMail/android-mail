@@ -58,7 +58,7 @@
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
   <string name="contact_actions_new_message">Izen amaynut</string>
   <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
-  <string name="contact_actions_add_contact">Add contact</string>
+  <string name="contact_actions_add_contact">Rnu anermis</string>
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
   <string name="contact_actions_view_contact_details">Wali talqayt n unermis</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>

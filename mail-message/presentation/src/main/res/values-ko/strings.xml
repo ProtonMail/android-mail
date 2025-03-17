@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="other">파일 %d개</item>
+    <item quantity="other">%d개 파일</item>
   </plurals>
   <string name="attachment_show_more_label">그 외 %1$d개</string>
   <string name="attachment_permission_dialog_title">권한 필요</string>

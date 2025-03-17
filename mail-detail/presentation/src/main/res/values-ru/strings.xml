@@ -25,7 +25,7 @@
     <item quantity="one">%d сообщение</item>
     <item quantity="few">%d сообщения</item>
     <item quantity="many">%d сообщений</item>
-    <item quantity="other">%d сообщения</item>
+    <item quantity="other">%d сообщений</item>
   </plurals>
   <string name="quick_reply_button_content_description">Ответить</string>
   <string name="quick_reply_all_button_content_description">Ответить всем</string>
@@ -77,7 +77,7 @@
   <string name="message_body_remote_content_banner_text">Автоматическая загрузка внешнего содержимого отключена. Это можно изменить в настройках.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматическая загрузка встроенных изображений и внешнего содержимого отключена. Это можно изменить в настройках.</string>
   <string name="message_phishing_banner_text">Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.</string>
-  <string name="message_expiration_banner_text">Срок действия сообщения истечёт через %1$s</string>
+  <string name="message_expiration_banner_text">Срок действия сообщения истечет через %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Вы собираетесь выйти из приложения и перейти по ссылке:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больше не спрашивать</string>

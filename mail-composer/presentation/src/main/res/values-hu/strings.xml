@@ -101,6 +101,6 @@
   <string name="respondInline">Válaszolás az eredeti levélben</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d tag</item>
-    <item quantity="other">%d tagok</item>
+    <item quantity="other">%d tag</item>
   </plurals>
 </resources>

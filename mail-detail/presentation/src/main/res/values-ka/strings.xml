@@ -35,8 +35,8 @@
   <string name="bcc">ბრმა ასლი:</string>
   <string name="date">თარიღი:</string>
   <plurals name="attachment">
-    <item quantity="one">%d მიმაგრება</item>
-    <item quantity="other">%d მიმაგრება</item>
+    <item quantity="one">%d Მიმაგრებული ფაილი</item>
+    <item quantity="other">%d Მიმაგრებული ფაილი</item>
   </plurals>
   <string name="hide_details">დეტალების დამალვა</string>
   <string name="undisclosed_recipients">გაუმჟღავნებელი მიმღებები</string>

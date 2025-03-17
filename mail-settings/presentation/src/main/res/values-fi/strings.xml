@@ -197,6 +197,6 @@
   <string name="customize_toolbar_actions_section">Työkalupalkin toiminnot (valitse enintään 5)</string>
   <string name="customize_toolbar_available_actions_section">Käytettävissä olevat toiminnot</string>
   <string name="customize_toolbar_reset_default_confirmation_title">Palautetaanko oletukset?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Työkalupalkin oletustoiminnot palautetaan.</string>
   <string name="customize_toolbar_reset_default_confirm">Vahvista</string>
 </resources>

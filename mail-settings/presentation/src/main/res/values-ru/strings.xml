@@ -67,7 +67,7 @@
   <string name="mail_settings_auto_delete_full_text">Автоматическое удаление нежелательных сообщений</string>
   <string name="mail_settings_auto_delete_hint">Сообщения, находящиеся в корзине и спаме более 30 дней, будут автоматически удалены.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Вам нужна платная подписка Proton Mail, чтобы использовать эту функцию</string>
-  <string name="mail_settings_auto_delete_dialog_button_cancel">Отмена</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Отменить</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Удалить сообщения?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Это удалит все сообщения, находящиеся в корзине или спаме более 30 дней, включая сообщения, находящиеся в этих папках сейчас.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Включить</string>
@@ -117,7 +117,7 @@
   <string name="mail_settings_swipe_action_star_title">Отметить звёздочкой</string>
   <string name="mail_settings_swipe_action_trash_title">Корзина</string>
   <string name="mail_settings_swipe_action_label_as_title">Отметить как…</string>
-  <string name="mail_settings_swipe_action_move_to_title">Переместить в...</string>
+  <string name="mail_settings_swipe_action_move_to_title">Переместить в…</string>
   <string name="mail_settings_swipe_action_none_description">Ничего не найдено</string>
   <string name="mail_settings_swipe_action_archive_description">Отправить в архив</string>
   <string name="mail_settings_swipe_action_read_description">Пометить как непрочитанное/прочитанное</string>
@@ -125,7 +125,7 @@
   <string name="mail_settings_swipe_action_star_description">Отметить звёздочкой / снять звёздочку</string>
   <string name="mail_settings_swipe_action_trash_description">Переместить в Корзину</string>
   <string name="mail_settings_swipe_action_label_as_description">Отметить как…</string>
-  <string name="mail_settings_swipe_action_move_to_description">Переместить в...</string>
+  <string name="mail_settings_swipe_action_move_to_description">Переместить в…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Push-уведомления</string>
   <string name="mail_settings_notifications_extended_notifications_title">Расширенные уведомления</string>
@@ -166,7 +166,7 @@
     <item quantity="one">Осталась %s попытка до безопасного стирания данных.</item>
     <item quantity="few">Остались %s попытки до безопасного стирания данных.</item>
     <item quantity="many">Остались %s попыток до безопасного стирания данных.</item>
-    <item quantity="other">Остались %s попыток до безопасного стирания данных.</item>
+    <item quantity="other">Остались %s попытки до безопасного стирания данных.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Произошла ошибка при проверке вашего PIN-а.</string>
   <string name="mail_settings_pin_insertion_signout_text">Выйти</string>

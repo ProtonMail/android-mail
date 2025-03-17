@@ -92,7 +92,7 @@
   <string name="upselling_get_button">Získať %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mesiac</item>
-    <item quantity="few">%d mesiacov</item>
+    <item quantity="few">%d mesiace</item>
     <item quantity="many">%d mesiace</item>
     <item quantity="other">%d mesiacov</item>
   </plurals>
@@ -114,7 +114,7 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d ďalší funkcia</item>
     <item quantity="few">%d ďalšie funkcie</item>
-    <item quantity="many">%d ďalších funkcií</item>
+    <item quantity="many">%d ďalšie funkcie</item>
     <item quantity="other">%d ďalších funkcií</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Získajte %s</string>

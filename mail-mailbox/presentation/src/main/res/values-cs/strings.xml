@@ -25,13 +25,13 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazat vyhledávací dotaz</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadejte vyhledávací dotaz</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d vybrán</item>
-    <item quantity="few">%d vybrány</item>
-    <item quantity="many">%d vybráno</item>
-    <item quantity="other">%d vybráno</item>
+    <item quantity="one">Vybráno: %d</item>
+    <item quantity="few">Vybráno: %d</item>
+    <item quantity="many">Vybráno: %d</item>
+    <item quantity="other">Vybráno: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s nepřečtená</item>
+    <item quantity="one">%s nepřečtených</item>
     <item quantity="few">%s nepřečtené</item>
     <item quantity="many">%s nepřečtených</item>
     <item quantity="other">%s nepřečtených</item>

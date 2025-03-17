@@ -28,7 +28,7 @@
   <string name="attachment_permission_dialog_message">Proton Mail potřebuje ke stažení přílohy oprávnění k přístupu do vašeho úložiště.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Nastavení</string>
-  <string name="attachment_type_description">Soubor %1$s</string>
+  <string name="attachment_type_description">%1$s soubor</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archiv</string>
   <string name="attachment_type_image">Obrázek</string>

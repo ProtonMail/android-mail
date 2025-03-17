@@ -25,16 +25,16 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введіть пошуковий запит</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Вибрано %d</item>
-    <item quantity="few">Вибрано %d</item>
-    <item quantity="many">Вибрано %d</item>
-    <item quantity="other">Вибрано %d</item>
+    <item quantity="one">%d Обраних</item>
+    <item quantity="few">%d Обрані</item>
+    <item quantity="many">%d Обраних</item>
+    <item quantity="other">%d Обраних</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s непрочитане</item>
     <item quantity="few">%s непрочитані</item>
     <item quantity="many">%s непрочитаних</item>
-    <item quantity="other">%s непрочитаних</item>
+    <item quantity="other">%s непрочитане</item>
   </plurals>
   <string name="mailbox_default_recipient">(Немає отримувача)</string>
   <string name="mailbox_default_sender">(Немає відправника)</string>
@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
   <string name="mailbox_is_empty_trash_description">Смітник порожній</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Розмову переміщено в смітник</item>
-    <item quantity="few">%d розмови переміщено в смітник</item>
-    <item quantity="many">%d розмов переміщено в смітник</item>
-    <item quantity="other">%d розмов переміщено в смітник</item>
+    <item quantity="one">Розмову переміщено в «Смітник»</item>
+    <item quantity="few">%d розмови переміщено в «Смітник»</item>
+    <item quantity="many">%d розмов переміщено в «Смітник»</item>
+    <item quantity="other">%d розмов переміщено в «Смітник»</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Повідомлення переміщено в смітник</item>
-    <item quantity="few">%d повідомлення переміщено в смітник</item>
-    <item quantity="many">%d повідомлень переміщено в смітник</item>
-    <item quantity="other">%d повідомлень переміщено в смітник</item>
+    <item quantity="one">Повідомлення переміщено в «Смітник»</item>
+    <item quantity="few">%d повідомлення переміщено в «Смітник»</item>
+    <item quantity="many">%d повідомлень переміщено в «Смітник»</item>
+    <item quantity="other">%d повідомлень переміщено в «Смітник»</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Видалити розмову</item>
@@ -100,8 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Не вдалося отримати налаштування кольору</string>
   <string name="mailbox_action_move_messages_failed">Помилка операції переміщення</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не вдалося отримати теки</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Розмову переміщено до %s</string>
+  <string name="mailbox_action_move_message">Повідомлення переміщено до %s</string>
   <string name="mailbox_search_placeholder_text">Пошук повідомлень</string>
   <string name="mailbox_search_no_results_title">Нічого не знайдено</string>
   <string name="mailbox_search_no_results_explanation">Пошук за датою, ім\'ям, електронною адресою або темою листа</string>

@@ -92,8 +92,8 @@
   <string name="upselling_get_button">Obțineți %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d lună</item>
-    <item quantity="few">%d de luni</item>
-    <item quantity="other">%d luni</item>
+    <item quantity="few">%d luni</item>
+    <item quantity="other">%d de luni</item>
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Imposibil de preluat opțiunile de modificare a planului.</string>

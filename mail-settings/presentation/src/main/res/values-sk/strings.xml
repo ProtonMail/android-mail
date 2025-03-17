@@ -158,7 +158,7 @@
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy sa nezhodujú.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">Zostáva %s pokus.</item>
-    <item quantity="few">Zostáva %s pokusov.</item>
+    <item quantity="few">Zostávajú %s pokusy.</item>
     <item quantity="many">Zostávajú %s pokusy.</item>
     <item quantity="other">Zostáva %s pokusov.</item>
   </plurals>

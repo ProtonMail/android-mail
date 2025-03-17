@@ -23,7 +23,7 @@
   <string name="error_mark_unread_failed">Olvasatlanként megjelölés sikertelen. Próbálja meg újra.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d üzenet</item>
-    <item quantity="other">%d üzenet</item>
+    <item quantity="other">%d üzenet(ek)</item>
   </plurals>
   <string name="quick_reply_button_content_description">Válasz</string>
   <string name="quick_reply_all_button_content_description">Válasz mindenkinek</string>
@@ -35,8 +35,8 @@
   <string name="bcc">Titkos másolat:</string>
   <string name="date">Dátum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d melléklet</item>
-    <item quantity="other">%d melléklet</item>
+    <item quantity="one">%d Melléklet</item>
+    <item quantity="other">%d Mellékletek</item>
   </plurals>
   <string name="hide_details">Részletek elrejtése</string>
   <string name="undisclosed_recipients">Meg nem nevezett címzettek</string>
@@ -52,7 +52,7 @@
   <string name="message_moved_to_selected_destination">Üzenet áthelyezve a %1$s mappába</string>
   <string name="error_move_message_failed">Az üzenet áthelyezése sikertelen. Próbálja újra.</string>
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
-  <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s</string>
+  <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s mappába</string>
   <string name="conversation_moved_to_archive">Beszélgetés áthelyezve az archívumba</string>
   <string name="conversation_moved_to_spam">Beszélgetés áthelyezve a levélszemétbe.</string>
   <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
@@ -73,7 +73,7 @@
   <string name="message_body_remote_content_banner_text">A távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">A beágyazott képek és távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
   <string name="message_phishing_banner_text">A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az.</string>
-  <string name="message_expiration_banner_text">Ez az üzenet lejár %1$s belül</string>
+  <string name="message_expiration_banner_text">Ez az üzenet le fog járni %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Elhagyja az alkalmazást és megnyitja ezt:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ne kérdezze újra</string>
