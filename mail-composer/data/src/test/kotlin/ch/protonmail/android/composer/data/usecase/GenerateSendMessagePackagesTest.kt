@@ -347,18 +347,49 @@ class GenerateSendMessagePackagesTest {
     }
 
     @Test
-    fun `generate packages for Internal and Cleartext creates 1 shared package`() = runTest {
+    fun `generate packages for Internal`() = runTest {
         // Given
         val sendPreferencesInternal = SendMessageSample.SendPreferences.ProtonMail.copy(
             publicKey = expectPublicKeyEncryptSessionKey()
         )
 
+        // When
+        val actual = sut(
+            mapOf(
+                SendMessageSample.RecipientEmail to sendPreferencesInternal
+            ),
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            emptyMap(),
+            emptyMap(),
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
+        ).getOrNull()
+
+        // Then
+
+        assertNotNull(actual)
+        assertTrue(actual.size == 1)
+        assertTrue(actual.first().addresses.size == 1)
+        assertTrue {
+            actual.first()
+                .addresses[SendMessageSample.RecipientEmail] is SendMessagePackage.Address.Internal
+        }
+        assertEquals(actual.first().type, PackageType.ProtonMail.type)
+    }
+
+    @Test
+    fun `generate packages for Cleartext`() = runTest {
+        // Given
         val sendPreferencesCleartext = SendMessageSample.SendPreferences.Cleartext
 
         // When
         val actual = sut(
             mapOf(
-                SendMessageSample.RecipientEmail to sendPreferencesInternal,
                 SendMessageSample.RecipientAliasEmail to sendPreferencesCleartext
             ),
             SendMessageSample.BodySessionKey,
@@ -377,16 +408,12 @@ class GenerateSendMessagePackagesTest {
 
         assertNotNull(actual)
         assertTrue(actual.size == 1)
-        assertTrue(actual.first().addresses.size == 2)
-        assertTrue {
-            actual.first()
-                .addresses[SendMessageSample.RecipientEmail] is SendMessagePackage.Address.Internal
-        }
+        assertTrue(actual.first().addresses.size == 1)
         assertTrue {
             actual.first()
                 .addresses[SendMessageSample.RecipientAliasEmail] is SendMessagePackage.Address.ExternalCleartext
         }
-        kotlin.test.assertEquals(actual.first().type, PackageType.ProtonMail.type + PackageType.Cleartext.type)
+        assertEquals(actual.first().type, PackageType.Cleartext.type)
     }
 
     @Test

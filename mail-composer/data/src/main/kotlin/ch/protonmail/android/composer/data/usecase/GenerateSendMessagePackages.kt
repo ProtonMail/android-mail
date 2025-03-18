@@ -65,22 +65,30 @@ class GenerateSendMessagePackages @Inject constructor(
             sendPreferences, isEncryptOutside = messagePassword != null
         )
 
-        val protonMailAndCleartextSendPreferences =
-            sendPreferencesBySubpackageType.getOrDefault(
-                PackageType.ProtonMail, emptyList()
-            ) + sendPreferencesBySubpackageType.getOrDefault(
-                PackageType.Cleartext, emptyList()
-            )
+        val protonMailSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
+            PackageType.ProtonMail, emptyList()
+        )
 
-        val protonMailAndCleartextPackage =
-            generateProtonMailAndCleartext(
-                protonMailAndCleartextSendPreferences,
-                decryptedBodySessionKey,
-                decryptedAttachmentSessionKeys,
-                encryptedBodyDataPacket,
-                areAllAttachmentsSigned,
-                bodyContentType
-            ).bind()
+        val protonMailPackage = generateProtonMail(
+            protonMailSendPreferences,
+            decryptedBodySessionKey,
+            decryptedAttachmentSessionKeys,
+            encryptedBodyDataPacket,
+            areAllAttachmentsSigned,
+            bodyContentType
+        ).bind()
+
+        val cleartextSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
+            PackageType.Cleartext, emptyList()
+        )
+
+        val cleartextPackage = generateCleartext(
+            cleartextSendPreferences,
+            decryptedBodySessionKey,
+            decryptedAttachmentSessionKeys,
+            encryptedBodyDataPacket,
+            bodyContentType
+        ).bind()
 
         val clearMimeSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
             PackageType.ClearMime, emptyList()
@@ -122,96 +130,12 @@ class GenerateSendMessagePackages @Inject constructor(
 
         return (
             listOfNotNull(
-                protonMailAndCleartextPackage.takeIf { it.addresses.isNotEmpty() },
+                protonMailPackage.takeIf { it.addresses.isNotEmpty() },
+                cleartextPackage.takeIf { it.addresses.isNotEmpty() },
                 clearMimePackage.takeIf { it.addresses.isNotEmpty() },
                 encryptedOutsidePackage.takeIf { it.addresses.isNotEmpty() }
             ) + pgpMimePackages
             ).right()
-    }
-
-
-    private fun generateProtonMailAndCleartext(
-        sendPreferences: List<Map.Entry<Email, SendPreferences>>,
-        decryptedBodySessionKey: SessionKey,
-        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
-        encryptedBodyDataPacket: ByteArray,
-        areAllAttachmentsSigned: Boolean,
-        bodyContentType: MimeType
-    ): Either<Error, SendMessagePackage> = either {
-
-        val addresses = sendPreferences.mapNotNull { (recipientEmail, sendPreference) ->
-            when (sendPreference.pgpScheme) {
-                PackageType.ProtonMail -> {
-
-                    val recipientPublicKey = sendPreference.publicKey
-
-                    if (recipientPublicKey == null) {
-                        Timber.e("GenerateSendMessagePackages: publicKey for ${sendPreference.pgpScheme.name} was null")
-                        return@mapNotNull null
-                    }
-
-                    val recipientBodyKeyPacket = runCatching {
-                        recipientPublicKey.encryptSessionKey(
-                            cryptoContext,
-                            decryptedBodySessionKey
-                        )
-                    }.getOrElse {
-                        raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for recipientBodyKeyPacket"))
-                    }
-
-                    val encryptedAttachmentKeyPackets = runCatching {
-                        decryptedAttachmentSessionKeys.mapValues {
-                            Base64.encode(recipientPublicKey.encryptSessionKey(cryptoContext, it.value))
-                        }
-                    }.getOrElse {
-                        raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for encryptedAttachmentKeyPackets"))
-                    }
-
-                    recipientEmail to SendMessagePackage.Address.Internal(
-                        signature = areAllAttachmentsSigned.toInt(),
-                        bodyKeyPacket = Base64.encode(recipientBodyKeyPacket),
-                        attachmentKeyPackets = encryptedAttachmentKeyPackets
-                    )
-
-                }
-
-                PackageType.Cleartext -> {
-
-                    recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
-
-                }
-
-                else -> null
-            }
-        }.toMap()
-
-        val (bodyKey, attachmentKeys) = if (addresses.any { it.value.type == PackageType.Cleartext.type }) {
-
-            val bodyKey = SendMessagePackage.Key(
-                Base64.encode(decryptedBodySessionKey.key),
-                SessionKeyAlgorithm
-            )
-
-            val packageAttachmentKeys = decryptedAttachmentSessionKeys.mapValues {
-                SendMessagePackage.Key(Base64.encode(it.value.key), SessionKeyAlgorithm)
-            }
-
-            Pair(bodyKey, packageAttachmentKeys)
-
-        } else Pair(null, null)
-
-        val globalPackageType = addresses.map { it.value.type }.takeIfNotEmpty()?.reduce { a, b ->
-            a.or(b) // logical OR of package types
-        } ?: -1
-
-        return SendMessagePackage(
-            addresses = addresses,
-            mimeType = bodyContentType.value,
-            body = Base64.encode(encryptedBodyDataPacket),
-            type = globalPackageType,
-            bodyKey = bodyKey,
-            attachmentKeys = attachmentKeys
-        ).right()
     }
 
     private fun groupBySubpackageType(
@@ -227,13 +151,102 @@ class GenerateSendMessagePackages @Inject constructor(
             }
             PackageType.PgpInline,
             PackageType.PgpMime -> when {
-                it.value.encrypt -> PackageType.PgpMime
                 isEncryptOutside -> PackageType.EncryptedOutside
-                else -> PackageType.ClearMime
+                it.value.encrypt -> PackageType.PgpMime
+                it.value.sign -> PackageType.ClearMime
+                else -> PackageType.Cleartext
             }
             PackageType.ClearMime -> if (isEncryptOutside) PackageType.EncryptedOutside else PackageType.ClearMime
             else -> null
         }
+    }
+
+    private fun generateProtonMail(
+        sendPreferences: List<Map.Entry<Email, SendPreferences>>,
+        decryptedBodySessionKey: SessionKey,
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
+        encryptedBodyDataPacket: ByteArray,
+        areAllAttachmentsSigned: Boolean,
+        bodyContentType: MimeType
+    ): Either<Error, SendMessagePackage> = either {
+        val addresses = sendPreferences.mapNotNull { (recipientEmail, sendPreference) ->
+
+            val recipientPublicKey = sendPreference.publicKey
+
+            if (recipientPublicKey == null) {
+                Timber.e("GenerateSendMessagePackages: publicKey for ${sendPreference.pgpScheme.name} was null")
+                return@mapNotNull null
+            }
+
+            val recipientBodyKeyPacket = runCatching {
+                recipientPublicKey.encryptSessionKey(
+                    cryptoContext,
+                    decryptedBodySessionKey
+                )
+            }.getOrElse {
+                raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for recipientBodyKeyPacket"))
+            }
+
+            val encryptedAttachmentKeyPackets = runCatching {
+                decryptedAttachmentSessionKeys.mapValues {
+                    Base64.encode(recipientPublicKey.encryptSessionKey(cryptoContext, it.value))
+                }
+            }.getOrElse {
+                raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for encryptedAttachmentKeyPackets"))
+            }
+
+            recipientEmail to SendMessagePackage.Address.Internal(
+                signature = areAllAttachmentsSigned.toInt(),
+                bodyKeyPacket = Base64.encode(recipientBodyKeyPacket),
+                attachmentKeyPackets = encryptedAttachmentKeyPackets
+            )
+        }.toMap()
+
+        val globalPackageType = addresses.map { it.value.type }.takeIfNotEmpty()?.reduce { a, b ->
+            a.or(b) // logical OR of package types
+        } ?: -1
+
+        return SendMessagePackage(
+            addresses = addresses,
+            mimeType = bodyContentType.value,
+            body = Base64.encode(encryptedBodyDataPacket),
+            type = globalPackageType
+        ).right()
+    }
+
+    private fun generateCleartext(
+        sendPreferences: List<Map.Entry<Email, SendPreferences>>,
+        decryptedBodySessionKey: SessionKey,
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
+        encryptedBodyDataPacket: ByteArray,
+        bodyContentType: MimeType
+    ): Either<Error, SendMessagePackage> = either {
+
+        val addresses = sendPreferences.associate { (recipientEmail, _) ->
+            recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
+        }
+
+        val bodyKey = SendMessagePackage.Key(
+            Base64.encode(decryptedBodySessionKey.key),
+            SessionKeyAlgorithm
+        )
+
+        val attachmentKeys = decryptedAttachmentSessionKeys.mapValues {
+            SendMessagePackage.Key(Base64.encode(it.value.key), SessionKeyAlgorithm)
+        }
+
+        val globalPackageType = addresses.map { it.value.type }.takeIfNotEmpty()?.reduce { a, b ->
+            a.or(b) // logical OR of package types
+        } ?: -1
+
+        return SendMessagePackage(
+            addresses = addresses,
+            mimeType = bodyContentType.value,
+            body = Base64.encode(encryptedBodyDataPacket),
+            type = globalPackageType,
+            bodyKey = bodyKey,
+            attachmentKeys = attachmentKeys
+        ).right()
     }
 
     private fun generateClearMime(
