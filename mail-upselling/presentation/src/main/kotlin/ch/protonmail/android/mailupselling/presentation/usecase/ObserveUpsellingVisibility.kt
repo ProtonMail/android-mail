@@ -36,24 +36,23 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val resolveUpsellingVisibility: ResolveUpsellingVisibility
 ) {
 
-    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature): Flow<Boolean> =
-        combine(
-            observePrimaryUser().distinctUntilChanged(),
-            purchaseManager.observePurchases()
-        ) { user, purchases ->
-            user to purchases
-        }.flatMapLatest { (user, purchases) ->
-            if (user == null) return@flatMapLatest flowOf(false)
-            flow {
-                val cached = cache.retrieve(upsellingEntryPoint)
-                if (cached != null) {
-                    emit(cached)
-                } else {
-                    emit(false)
-                    val resolved = resolveUpsellingVisibility(user, purchases, upsellingEntryPoint)
-                    cache.store(upsellingEntryPoint, resolved)
-                    emit(resolved)
-                }
-            }.distinctUntilChanged()
-        }
+    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature): Flow<Boolean> = combine(
+        observePrimaryUser().distinctUntilChanged(),
+        purchaseManager.observePurchases()
+    ) { user, purchases ->
+        user to purchases
+    }.flatMapLatest { (user, purchases) ->
+        if (user == null) return@flatMapLatest flowOf(false)
+        flow {
+            val cached = cache.retrieve(upsellingEntryPoint)
+            if (cached != null) {
+                emit(cached)
+            } else {
+                emit(false)
+                val resolved = resolveUpsellingVisibility(user, purchases, upsellingEntryPoint)
+                cache.store(upsellingEntryPoint, resolved)
+                emit(resolved)
+            }
+        }.distinctUntilChanged()
+    }
 }

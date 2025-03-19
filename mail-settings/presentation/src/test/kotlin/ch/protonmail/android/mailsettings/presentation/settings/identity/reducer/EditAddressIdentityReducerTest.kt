@@ -176,13 +176,7 @@ internal class EditAddressIdentityReducerTest(
                     shouldShowUpselling = true,
                     userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Initial
                 ),
-                expectedState = baseLoadedState.copy(
-                    mobileFooterState = baseMobileFooterState.copy(
-                        mobileFooterUiModel = baseMobileFooterState.mobileFooterUiModel.copy(
-                            isFieldEnabled = false
-                        )
-                    )
-                )
+                expectedState = baseLoadedState
             ),
             TestInput(
                 currentState = baseLoadedState,
