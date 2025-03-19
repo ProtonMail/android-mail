@@ -66,6 +66,7 @@ sealed interface EditAddressIdentityEvent : EditAddressIdentityOperation {
     }
 
     data class UpgradeStateChanged(
+        val mobileFooter: MobileFooter,
         val userUpgradeCheckState: UserUpgradeState.UserUpgradeCheckState,
         val shouldShowUpselling: Boolean
     ) : EditAddressIdentityEvent

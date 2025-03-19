@@ -141,13 +141,6 @@ internal class EditAddressIdentityViewModelTest {
                 EditAddressIdentityState.Loading,
                 EditAddressIdentityEvent.Error.LoadingError
             )
-            reducer.newStateFrom(
-                EditAddressIdentityState.LoadingError,
-                EditAddressIdentityEvent.UpgradeStateChanged(
-                    UserUpgradeState.UserUpgradeCheckState.Initial,
-                    shouldShowUpselling = true
-                )
-            )
         }
         confirmVerified(reducer)
     }
@@ -168,13 +161,6 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 EditAddressIdentityState.Loading,
                 EditAddressIdentityEvent.Error.LoadingError
-            )
-            reducer.newStateFrom(
-                EditAddressIdentityState.LoadingError,
-                EditAddressIdentityEvent.UpgradeStateChanged(
-                    UserUpgradeState.UserUpgradeCheckState.Initial,
-                    shouldShowUpselling = true
-                )
             )
         }
         confirmVerified(reducer)
@@ -198,13 +184,6 @@ internal class EditAddressIdentityViewModelTest {
                 EditAddressIdentityState.Loading,
                 EditAddressIdentityEvent.Error.LoadingError
             )
-            reducer.newStateFrom(
-                EditAddressIdentityState.LoadingError,
-                EditAddressIdentityEvent.UpgradeStateChanged(
-                    UserUpgradeState.UserUpgradeCheckState.Initial,
-                    shouldShowUpselling = true
-                )
-            )
         }
         confirmVerified(reducer)
     }
@@ -227,13 +206,6 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 EditAddressIdentityState.Loading,
                 EditAddressIdentityEvent.Error.LoadingError
-            )
-            reducer.newStateFrom(
-                EditAddressIdentityState.LoadingError,
-                EditAddressIdentityEvent.UpgradeStateChanged(
-                    UserUpgradeState.UserUpgradeCheckState.Initial,
-                    shouldShowUpselling = true
-                )
             )
         }
         confirmVerified(reducer)
@@ -265,6 +237,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -325,6 +298,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -370,6 +344,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -415,6 +390,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -468,6 +444,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -517,6 +494,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -606,6 +584,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -651,6 +630,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -698,6 +678,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -749,6 +730,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -797,6 +779,7 @@ internal class EditAddressIdentityViewModelTest {
             reducer.newStateFrom(
                 BaseLoadedState,
                 EditAddressIdentityEvent.UpgradeStateChanged(
+                    BaseMobileFooter,
                     UserUpgradeState.UserUpgradeCheckState.Initial,
                     shouldShowUpselling = false
                 )
@@ -842,6 +825,7 @@ internal class EditAddressIdentityViewModelTest {
                 reducer.newStateFrom(
                     any(),
                     EditAddressIdentityEvent.UpgradeStateChanged(
+                        BaseMobileFooter,
                         UserUpgradeState.UserUpgradeCheckState.Pending,
                         shouldShowUpselling = false
                     )

@@ -43,8 +43,9 @@ import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpselling
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -69,48 +70,44 @@ class EditAddressIdentityViewModel @Inject constructor(
     val state = mutableState.asStateFlow()
 
     init {
-        observePrimaryUserId().map { userId ->
-            userId ?: return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
+        observePrimaryUserId().flatMapLatest { userId ->
+            userId ?: return@flatMapLatest flowOf(emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError))
 
             val displayName = getPrimaryAddressDisplayName(userId).getOrElse {
-                return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
+                return@flatMapLatest flowOf(emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError))
             }
-
             val signature = getPrimaryAddressSignature(userId).getOrElse {
-                return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
+                return@flatMapLatest flowOf(emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError))
             }
-
             val mobileFooter = getMobileFooter(userId).getOrElse {
-                return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
-            }.let {
-                val shouldShowUpselling = observeUpsellingVisibility(
-                    UpsellingEntryPoint.Feature.MobileSignature
-                ).first()
-
-                if (shouldShowUpselling) {
-                    MobileFooter.FreeUserUpsellingMobileFooter(it.value)
-                } else it
+                return@flatMapLatest flowOf(emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError))
             }
 
-            emitNewStateFrom(
-                EditAddressIdentityEvent.Data.ContentLoaded(
-                    displayName,
-                    signature,
-                    mobileFooter
-                )
-            )
-        }.launchIn(viewModelScope)
-
-        userUpgradeState.userUpgradeCheckState
-            .combine(
-                observeUpsellingVisibility(UpsellingEntryPoint.Feature.MobileSignature)
-            ) { userUpgradeCheckState, shouldShowUpselling ->
+            observeUpsellingVisibility(UpsellingEntryPoint.Feature.MobileSignature).flatMapLatest {
+                    shouldShowUpselling ->
+                val footer = mobileFooter.adaptForUpsell(shouldShowUpselling)
                 emitNewStateFrom(
-                    EditAddressIdentityEvent.UpgradeStateChanged(userUpgradeCheckState, shouldShowUpselling)
+                    EditAddressIdentityEvent.Data.ContentLoaded(
+                        displayName,
+                        signature,
+                        footer
+                    )
                 )
+
+                userUpgradeState.userUpgradeCheckState.map { checkState ->
+                    val postUpgradeFooter = getMobileFooter(userId).getOrNull()
+                        ?.adaptForUpsell(shouldShowUpselling)
+                        ?: footer
+                    emitNewStateFrom(
+                        EditAddressIdentityEvent.UpgradeStateChanged(postUpgradeFooter, checkState, shouldShowUpselling)
+                    )
+                }
             }
-            .launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
+
+    private fun MobileFooter.adaptForUpsell(shouldShowUpselling: Boolean) =
+        if (shouldShowUpselling) MobileFooter.FreeUserUpsellingMobileFooter(value) else this
 
     internal fun submit(action: EditAddressIdentityViewAction) {
         viewModelScope.launch {

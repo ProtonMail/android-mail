@@ -36,7 +36,7 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val resolveUpsellingVisibility: ResolveUpsellingVisibility
 ) {
 
-    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature, emitOnStart: Boolean = true): Flow<Boolean> =
+    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature): Flow<Boolean> =
         combine(
             observePrimaryUser().distinctUntilChanged(),
             purchaseManager.observePurchases()
@@ -49,7 +49,7 @@ class ObserveUpsellingVisibility @Inject constructor(
                 if (cached != null) {
                     emit(cached)
                 } else {
-                    if (emitOnStart) emit(false)
+                    emit(false)
                     val resolved = resolveUpsellingVisibility(user, purchases, upsellingEntryPoint)
                     cache.store(upsellingEntryPoint, resolved)
                     emit(resolved)

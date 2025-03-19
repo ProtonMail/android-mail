@@ -33,11 +33,12 @@ class EditAddressIdentityMapper @Inject constructor() {
     fun toSignatureUiModel(signature: Signature) =
         AddressSignatureUiModel(textValue = signature.value.text, enabled = signature.enabled)
 
-    fun toMobileFooterUiModel(mobileFooter: MobileFooter): MobileFooterUiModel = MobileFooterUiModel(
-        mobileFooter.value,
-        mobileFooter.enabled,
-        mobileFooter.editable,
-        mobileFooter.toggleable,
-        !mobileFooter.editable && mobileFooter.toggleable
-    )
+    fun toMobileFooterUiModel(mobileFooter: MobileFooter, isUpgradePending: Boolean = false): MobileFooterUiModel =
+        MobileFooterUiModel(
+            textValue = mobileFooter.value,
+            enabled = mobileFooter.enabled,
+            isFieldEnabled = mobileFooter.editable && !isUpgradePending,
+            isToggleEnabled = mobileFooter.toggleable,
+            isUpsellingVisible = !mobileFooter.editable && mobileFooter.toggleable
+        )
 }

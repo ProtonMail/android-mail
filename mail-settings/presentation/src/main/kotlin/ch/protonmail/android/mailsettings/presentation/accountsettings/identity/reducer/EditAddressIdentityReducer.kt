@@ -74,9 +74,10 @@ class EditAddressIdentityReducer @Inject constructor(
 
                 is EditAddressIdentityEvent.UpgradeStateChanged -> this.copy(
                     mobileFooterState = this.mobileFooterState.copy(
-                        mobileFooterUiModel = this.mobileFooterState.mobileFooterUiModel.copy(
-                            isFieldEnabled = !event.shouldShowUpselling &&
-                                event.userUpgradeCheckState !is UserUpgradeState.UserUpgradeCheckState.Pending
+                        mobileFooterUiModel = editAddressIdentityMapper.toMobileFooterUiModel(
+                            event.mobileFooter,
+                            isUpgradePending = event.userUpgradeCheckState
+                            is UserUpgradeState.UserUpgradeCheckState.Pending
                         )
                     )
                 )

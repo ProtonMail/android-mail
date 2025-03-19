@@ -172,6 +172,7 @@ internal class EditAddressIdentityReducerTest(
             TestInput(
                 currentState = baseLoadedState,
                 event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    mobileFooter = baseFooter,
                     shouldShowUpselling = true,
                     userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Initial
                 ),
@@ -186,20 +187,16 @@ internal class EditAddressIdentityReducerTest(
             TestInput(
                 currentState = baseLoadedState,
                 event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    mobileFooter = baseFooter,
                     shouldShowUpselling = false,
                     userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Completed
                 ),
-                expectedState = baseLoadedState.copy(
-                    mobileFooterState = baseMobileFooterState.copy(
-                        mobileFooterUiModel = baseMobileFooterState.mobileFooterUiModel.copy(
-                            isFieldEnabled = true
-                        )
-                    )
-                )
+                expectedState = baseLoadedState
             ),
             TestInput(
                 currentState = baseLoadedState,
                 event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    mobileFooter = baseFooter,
                     shouldShowUpselling = false,
                     userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Pending
                 ),
