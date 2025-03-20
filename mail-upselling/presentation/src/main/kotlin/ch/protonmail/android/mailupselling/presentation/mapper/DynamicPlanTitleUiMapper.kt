@@ -34,6 +34,7 @@ internal class DynamicPlanTitleUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.Labels -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title))
             UpsellingEntryPoint.Feature.MobileSignature -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title))
             UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.MailboxPromo,
             UpsellingEntryPoint.Feature.Navbar -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
             UpsellingEntryPoint.Feature.AutoDelete -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_auto_delete_plus_title))
         }

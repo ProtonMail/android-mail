@@ -28,6 +28,7 @@ sealed interface UpsellingEntryPoint {
 
     sealed interface Feature : UpsellingEntryPoint {
         data object Mailbox : Standalone, Feature
+        data object MailboxPromo : Standalone, Feature
         data object Navbar : Standalone, Feature
         data object ContactGroups : BottomSheet, Feature
         data object Labels : BottomSheet, Feature
@@ -48,4 +49,5 @@ fun UpsellingEntryPoint.getDimensionValue(): String = when (this) {
     Feature.AutoDelete -> "auto_delete_messages"
     PostOnboarding -> "post_onboarding"
     Feature.Navbar -> "navbar_upsell"
+    Feature.MailboxPromo -> "mailbox_top_bar_promo"
 }

@@ -234,6 +234,7 @@ internal class ResolveUpsellingVisibilityTest {
 
             UpsellingEntryPoint.Feature.Labels -> every { isUpsellingLabelsEnabled.invoke() } returns value
             UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.MailboxPromo,
             UpsellingEntryPoint.Feature.Navbar -> {
                 val featureFlag = FeatureFlag(
                     userId = null,

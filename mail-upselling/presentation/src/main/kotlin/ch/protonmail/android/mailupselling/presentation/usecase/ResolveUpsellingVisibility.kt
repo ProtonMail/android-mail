@@ -64,6 +64,7 @@ class ResolveUpsellingVisibility @Inject constructor(
             UpsellingEntryPoint.Feature.Folders -> isUpsellingFoldersEnabled()
             UpsellingEntryPoint.Feature.Labels -> isUpsellingLabelsEnabled()
             UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.MailboxPromo,
             UpsellingEntryPoint.Feature.Navbar -> {
                 observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
             }

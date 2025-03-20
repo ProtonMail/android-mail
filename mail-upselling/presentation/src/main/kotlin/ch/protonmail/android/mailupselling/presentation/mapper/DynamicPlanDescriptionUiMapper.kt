@@ -59,6 +59,7 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
             R.string.upselling_labels_plus_description_override
         )
         UpsellingEntryPoint.Feature.Mailbox,
+        UpsellingEntryPoint.Feature.MailboxPromo,
         UpsellingEntryPoint.Feature.Navbar -> TextUiModel.TextRes(
             R.string.upselling_mailbox_plus_description_override
         )

@@ -20,7 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
-import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
+import ch.protonmail.android.mailupselling.domain.usecase.GetPromotionStatus
+import ch.protonmail.android.mailupselling.domain.usecase.PromoStatus
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
@@ -36,23 +37,33 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
     private val observeUpsellingOneClickOnCooldown: ObserveUpsellingOneClickOnCooldown,
     private val canUpgradeFromMobile: CanUpgradeFromMobile,
-    private val userHasAvailablePlans: UserHasAvailablePlans,
+    private val isPromotionEnabled: GetPromotionStatus,
     private val userHasPendingPurchases: UserHasPendingPurchases,
     @OneClickUpsellingAlwaysShown private val alwaysShowOneClickUpselling: Boolean
 ) {
 
-    operator fun invoke(): Flow<Boolean> = combine(
+    operator fun invoke(): Flow<UpsellingVisibility> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases(),
         observeUpsellingOneClickOnCooldown(),
         observeOneClickUpsellingEnabled(null)
     ) { user, purchases, isOneClickOnCooldown, isOneClickUpsellingEnabled ->
-        if (user == null) return@combine false
-        if (!canUpgradeFromMobile(user.userId)) return@combine false
-        if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value) return@combine false
-        if (isOneClickOnCooldown && !alwaysShowOneClickUpselling) return@combine false
-        if (userHasPendingPurchases(purchases, user.userId)) return@combine false
+        if (user == null) return@combine UpsellingVisibility.HIDDEN
+        if (!canUpgradeFromMobile(user.userId)) return@combine UpsellingVisibility.HIDDEN
+        if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value)
+            return@combine UpsellingVisibility.HIDDEN
+        if (isOneClickOnCooldown && !alwaysShowOneClickUpselling) return@combine UpsellingVisibility.HIDDEN
+        if (userHasPendingPurchases(purchases, user.userId)) return@combine UpsellingVisibility.HIDDEN
 
-        userHasAvailablePlans(user.userId)
+        val promoStatus = isPromotionEnabled(user.userId)
+        when (promoStatus) {
+            PromoStatus.NO_PLANS -> UpsellingVisibility.HIDDEN
+            PromoStatus.NORMAL -> UpsellingVisibility.NORMAL
+            PromoStatus.PROMO -> UpsellingVisibility.PROMO
+        }
     }
+}
+
+enum class UpsellingVisibility {
+    HIDDEN, PROMO, NORMAL
 }

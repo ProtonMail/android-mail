@@ -33,6 +33,7 @@ internal class DynamicPlanIconUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.Labels -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
             UpsellingEntryPoint.Feature.MobileSignature -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature)
             UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.MailboxPromo,
             UpsellingEntryPoint.Feature.Navbar -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
             UpsellingEntryPoint.Feature.AutoDelete -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
         }

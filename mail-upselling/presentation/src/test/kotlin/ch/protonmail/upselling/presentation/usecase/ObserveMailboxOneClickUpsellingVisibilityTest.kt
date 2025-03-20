@@ -21,11 +21,13 @@ package ch.protonmail.upselling.presentation.usecase
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
+import ch.protonmail.android.mailupselling.domain.usecase.GetPromotionStatus
+import ch.protonmail.android.mailupselling.domain.usecase.PromoStatus
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingOneClickOnCooldown
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -50,7 +52,7 @@ import kotlin.test.assertEquals
 internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
     private val observePrimaryUser = mockk<ObservePrimaryUser>()
-    private val userHasAvailablePlans = mockk<UserHasAvailablePlans>()
+    private val getPromotionStatus = mockk<GetPromotionStatus>()
     private val purchaseManager = mockk<PurchaseManager>()
     private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
     private val userHasPendingPurchases = mockk<UserHasPendingPurchases>()
@@ -64,7 +66,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             observeOneClickUpsellingEnabled,
             observeUpsellingOneClickOnCooldown,
             canUpgradeFromMobile,
-            userHasAvailablePlans,
+            getPromotionStatus,
             userHasPendingPurchases,
             alwaysShowOneClickUpselling.get()
         )
@@ -81,7 +83,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     }
 
     @Test
-    fun `should return false if observed user is null`() = runTest {
+    fun `should return hidden if observed user is null`() = runTest {
         // Given
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(true)
@@ -92,13 +94,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false is one click upselling is not enabled`() = runTest {
+    fun `should return hidden is one click upselling is not enabled`() = runTest {
         // Given
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(false)
@@ -109,13 +111,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if one click upselling value is null`() = runTest {
+    fun `should return hidden if one click upselling value is null`() = runTest {
         // Given
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(null)
@@ -126,13 +128,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if user can not upgrade from mobile`() = runTest {
+    fun `should return hidden if user can not upgrade from mobile`() = runTest {
         // Given
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(true)
@@ -143,13 +145,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if user has pending purchases`() = runTest {
+    fun `should return hidden if user has pending purchases`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -161,13 +163,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if user has no available plans`() = runTest {
+    fun `should return hidden if user has no available plans`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -176,17 +178,17 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, false)
+        expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NO_PLANS)
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return true if user has available plans, no pending subs and FF are enabled`() = runTest {
+    fun `should return normal if user has available plans, no pending subs and FF are enabled`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -195,17 +197,17 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NORMAL)
 
         // When + Then
         sut().test {
-            assertEquals(true, awaitItem())
+            assertEquals(UpsellingVisibility.NORMAL, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if visibility logic is on cooldown and FF is force enabled to always show`() = runTest {
+    fun `should return normal if visibility logic is on cooldown and FF is force enabled to always show`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -214,17 +216,17 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NORMAL)
 
         // When + Then
         sut().test {
-            assertEquals(true, awaitItem())
+            assertEquals(UpsellingVisibility.NORMAL, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return true if visibility logic is on cooldown and FF not is force enabled to always show`() = runTest {
+    fun `should return hidden if visibility logic is on cooldown and FF isnt force enabled to always show`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -233,17 +235,17 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NORMAL)
 
         // When + Then
         sut().test {
-            assertEquals(false, awaitItem())
+            assertEquals(UpsellingVisibility.HIDDEN, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return true if visibility logic is not cooldown and FF is force enabled to always show`() = runTest {
+    fun `should return normal if visibility logic is not cooldown and FF is force enabled to always show`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
@@ -252,17 +254,17 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NORMAL)
 
         // When + Then
         sut().test {
-            assertEquals(true, awaitItem())
+            assertEquals(UpsellingVisibility.NORMAL, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return true if visibility logic is not on cooldown and FF is not force enabled to always show`() =
+    fun `should return normal if visibility logic is not on cooldown and FF is not force enabled to always show`() =
         runTest {
             // Given
             expectedUser(UserSample.Primary)
@@ -272,11 +274,31 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             expectPurchases(listOf(mockk<Purchase>()))
             expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
             expectPendingPurchasesValue(UserSample.Primary.userId, false)
-            expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+            expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.NORMAL)
 
             // When + Then
             sut().test {
-                assertEquals(true, awaitItem())
+                assertEquals(UpsellingVisibility.NORMAL, awaitItem())
+                awaitComplete()
+            }
+        }
+
+    @Test
+    fun `should return promo if visibility logic is not on cooldown and FF is not force enabled, for promo`() =
+        runTest {
+            // Given
+            expectedUser(UserSample.Primary)
+            expectOneClickUpsellingEnabledValue(true)
+            expectLastSeenThresholdOffCooldown()
+            expectOneClickButtonAlwaysShown(false)
+            expectPurchases(listOf(mockk<Purchase>()))
+            expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
+            expectPendingPurchasesValue(UserSample.Primary.userId, false)
+            expectUsePromoStatus(UserSample.Primary.userId, PromoStatus.PROMO)
+
+            // When + Then
+            sut().test {
+                assertEquals(UpsellingVisibility.PROMO, awaitItem())
                 awaitComplete()
             }
         }
@@ -310,8 +332,8 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         every { observeOneClickUpsellingEnabled(null) } returns flowOf(featureFlag)
     }
 
-    private fun expectUserHasAvailablePlans(userId: UserId, value: Boolean) {
-        coEvery { userHasAvailablePlans(userId) } returns value
+    private fun expectUsePromoStatus(userId: UserId, value: PromoStatus) {
+        coEvery { getPromotionStatus(userId) } returns value
     }
 
     private fun expectPendingPurchasesValue(userId: UserId, value: Boolean) {

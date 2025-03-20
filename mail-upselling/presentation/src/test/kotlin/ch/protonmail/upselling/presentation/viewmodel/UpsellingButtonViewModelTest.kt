@@ -24,6 +24,7 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
 import io.mockk.coVerify
 import io.mockk.every
@@ -61,8 +62,8 @@ internal class UpsellingButtonViewModelTest {
     @Test
     fun `should emit not shown when visibility is false`() = runTest {
         // Given
-        every { oneClickUpsellingVisibility.invoke() } returns flowOf(false)
-        val expected = UpsellingButtonState(isShown = false)
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.HIDDEN)
+        val expected = UpsellingButtonState(visibility = UpsellingVisibility.HIDDEN)
 
         // When + Then
         viewModel.state.test {
@@ -71,10 +72,22 @@ internal class UpsellingButtonViewModelTest {
     }
 
     @Test
-    fun `should emit shown when visibility is true`() = runTest {
+    fun `should emit normal when visibility is normal`() = runTest {
         // Given
-        every { oneClickUpsellingVisibility.invoke() } returns flowOf(true)
-        val expected = UpsellingButtonState(isShown = true)
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.NORMAL)
+        val expected = UpsellingButtonState(visibility = UpsellingVisibility.NORMAL)
+
+        // When + Then
+        viewModel.state.test {
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit promo when visibility is promo`() = runTest {
+        // Given
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.PROMO)
+        val expected = UpsellingButtonState(visibility = UpsellingVisibility.PROMO)
 
         // When + Then
         viewModel.state.test {
@@ -85,14 +98,28 @@ internal class UpsellingButtonViewModelTest {
     @Test
     fun `should call the UC with the expected event when tracking the upselling button tap`() = runTest {
         // Given
-        every { oneClickUpsellingVisibility.invoke() } returns flowOf(true)
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.NORMAL)
 
         // When
-        viewModel.trackButtonInteraction()
+        viewModel.trackButtonInteraction(isPromo = false)
 
         // Then
         coVerify(exactly = 1) {
             upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Feature.Mailbox)
+        }
+    }
+
+    @Test
+    fun `should call the UC with the expected event when tracking the upselling promo button tap`() = runTest {
+        // Given
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.PROMO)
+
+        // When
+        viewModel.trackButtonInteraction(isPromo = true)
+
+        // Then
+        coVerify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Feature.MailboxPromo)
         }
     }
 }

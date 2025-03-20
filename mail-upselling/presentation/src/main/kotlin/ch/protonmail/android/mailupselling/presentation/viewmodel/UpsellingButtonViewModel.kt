@@ -25,6 +25,7 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,15 +50,20 @@ class UpsellingButtonViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun trackButtonInteraction() {
+    fun trackButtonInteraction(isPromo: Boolean) {
+        val feature = if (isPromo) {
+            UpsellingEntryPoint.Feature.MailboxPromo
+        } else {
+            UpsellingEntryPoint.Feature.Mailbox
+        }
         upsellingTelemetryRepository.trackEvent(
             UpsellingTelemetryEventType.Base.MailboxButtonTap,
-            UpsellingEntryPoint.Feature.Mailbox
+            feature
         )
     }
 
     companion object {
 
-        val initialState = UpsellingButtonState(isShown = false)
+        val initialState = UpsellingButtonState(visibility = UpsellingVisibility.HIDDEN)
     }
 }
