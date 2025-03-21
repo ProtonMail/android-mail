@@ -206,6 +206,7 @@ fun ComposerScreen2(actions: ComposerScreen.Actions) {
                         subjectTextField = viewModel.subjectTextField,
                         bodyTextField = viewModel.bodyFieldText,
                         quotedHtmlContent = mainState.quotedHtmlContent?.styled,
+                        shouldRestrictWebViewHeight = mainState.shouldRestrictWebViewHeight,
                         focusTextBody = effectsState.focusTextBody,
                         actions = formActions,
                         modifier = Modifier.testTag(ComposerTestTags.ComposerForm)

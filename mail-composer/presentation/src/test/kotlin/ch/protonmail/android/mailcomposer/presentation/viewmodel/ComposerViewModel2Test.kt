@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import android.os.Build
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -25,6 +26,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
+import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -74,6 +76,7 @@ import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewMod
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.userId
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.verifyStates
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -125,6 +128,12 @@ internal class ComposerViewModel2Test {
     private val networkManagerMock = mockk<NetworkManager>()
     private val composerStateReducer = spyk<ComposerStateReducer>()
     private val recipientsStateManager = spyk<RecipientsStateManager>()
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
+    private val buildVersionProvider = mockk<BuildVersionProvider> {
+        every { sdkInt() } returns Build.VERSION_CODES.S
+    }
 
     private fun viewModel(): ComposerViewModel2 = ComposerViewModel2(
         draftFacade,
@@ -139,7 +148,9 @@ internal class ComposerViewModel2Test {
         savedStateHandle,
         composerStateReducer,
         testDispatcher,
-        recipientsStateManager
+        recipientsStateManager,
+        shouldRestrictWebViewHeight,
+        buildVersionProvider
     )
 
     @AfterTest
@@ -185,6 +196,7 @@ internal class ComposerViewModel2Test {
             isDataRefreshed = true,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(defaultDraftFields.sender),
             quotedHtmlContent = QuotedHtmlContent(defaultDraftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = false
         )
 
@@ -233,6 +245,7 @@ internal class ComposerViewModel2Test {
             isDataRefreshed = false,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(defaultDraftFields.sender),
             quotedHtmlContent = QuotedHtmlContent(defaultDraftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = false
         )
 
@@ -295,6 +308,7 @@ internal class ComposerViewModel2Test {
             isDataRefreshed = true,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(draftFields.sender),
             quotedHtmlContent = QuotedHtmlContent(draftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = true
         )
 
@@ -364,6 +378,7 @@ internal class ComposerViewModel2Test {
             isDataRefreshed = true,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(defaultDraftFields.sender),
             quotedHtmlContent = QuotedHtmlContent(defaultDraftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = true
         )
 
@@ -441,6 +456,7 @@ internal class ComposerViewModel2Test {
             isDataRefreshed = true,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(defaultDraftFields.sender),
             quotedHtmlContent = QuotedHtmlContent(defaultDraftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = false
         )
 
@@ -472,6 +488,42 @@ internal class ComposerViewModel2Test {
         assertEquals(draftFields.body.value, viewModel.bodyFieldText.text.toString())
         assertEquals(draftFields.subject.value, viewModel.subjectTextField.text.toString())
         assertEquals(recipientsStateManager.recipients.value, RecipientsState.Empty)
+    }
+
+    @Test
+    fun `should prefill composer and limit web view height when the FF is ON and the Android version is 9`() = runTest {
+        // Given
+        val draftAction = DraftAction.Forward(parentMessageId)
+        val parentMessage = mockk<MessageWithDecryptedBody>()
+
+        val draftFields = defaultDraftFields.copy(
+            recipientsTo = RecipientsTo(emptyList()),
+            recipientsCc = RecipientsCc(emptyList()),
+            recipientsBcc = RecipientsBcc(emptyList())
+        )
+
+        setupDraftAction(draftAction, parentMessage, draftFields)
+        relaxMessageObservers()
+        expectParticipantsMapping(messageParticipantsFacade)
+        coEvery { draftFacade.startContinuousUpload(userId, messageId, draftAction, any()) } just runs
+        every { shouldRestrictWebViewHeight(null) } returns true
+        every { buildVersionProvider.sdkInt() } returns Build.VERSION_CODES.P
+
+        val expectedMainState = ComposerState.Main.initial(messageId).copy(
+            senderUiModel = SenderUiModel(draftFields.sender.value),
+            isSubmittable = false,
+            loadingType = ComposerState.LoadingType.None,
+            quotedHtmlContent = QuotedHtmlContent(draftFields.originalHtmlQuote!!, styledHtml),
+            shouldRestrictWebViewHeight = true
+        )
+
+        val viewModel = viewModel()
+
+        // When + Then
+        viewModel.composerStates.test {
+            advanceUntilIdle()
+            verifyStates(main = expectedMainState, actualStates = awaitItem())
+        }
     }
 
     @Test

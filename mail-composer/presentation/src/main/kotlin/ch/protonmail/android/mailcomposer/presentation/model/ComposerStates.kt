@@ -50,7 +50,8 @@ sealed interface ComposerState {
         val senderAddresses: ImmutableList<SenderUiModel>,
         val isSubmittable: Boolean,
         val loadingType: LoadingType,
-        val quotedHtmlContent: QuotedHtmlContent? = null
+        val quotedHtmlContent: QuotedHtmlContent? = null,
+        val shouldRestrictWebViewHeight: Boolean
     ) {
 
         companion object {
@@ -60,7 +61,8 @@ sealed interface ComposerState {
                 senderUiModel = SenderUiModel(""),
                 senderAddresses = emptyList<SenderUiModel>().toImmutableList(),
                 isSubmittable = false,
-                loadingType = LoadingType.None
+                loadingType = LoadingType.None,
+                shouldRestrictWebViewHeight = false
             )
         }
     }

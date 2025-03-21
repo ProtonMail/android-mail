@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -26,6 +27,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -80,6 +82,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
@@ -135,6 +138,12 @@ internal class ComposerViewModel2ActionsTest {
     private val networkManagerMock = mockk<NetworkManager>(relaxed = true)
     private val composerStateReducer = spyk<ComposerStateReducer>()
     private val recipientsStateManager = spyk<RecipientsStateManager>()
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
+    private val buildVersionProvider = mockk<BuildVersionProvider> {
+        every { sdkInt() } returns Build.VERSION_CODES.S
+    }
 
     private fun viewModel(): ComposerViewModel2 = ComposerViewModel2(
         draftFacade,
@@ -149,7 +158,9 @@ internal class ComposerViewModel2ActionsTest {
         savedStateHandle,
         composerStateReducer,
         testDispatcher,
-        recipientsStateManager
+        recipientsStateManager,
+        shouldRestrictWebViewHeight,
+        buildVersionProvider
     )
 
     @AfterTest

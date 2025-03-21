@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
@@ -33,6 +34,7 @@ import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.decode
 import ch.protonmail.android.mailcommon.domain.model.hasEmailData
+import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -73,6 +75,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.form.EmailValidator
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -119,7 +122,9 @@ class ComposerViewModel2 @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val composerStateReducer: ComposerStateReducer,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
-    @Assisted private val recipientsStateManager: RecipientsStateManager
+    @Assisted private val recipientsStateManager: RecipientsStateManager,
+    private val shouldRestrictWebViewHeight: ShouldRestrictWebViewHeight,
+    private val buildVersionProvider: BuildVersionProvider
 ) : ViewModel() {
 
     internal val subjectTextField = TextFieldState()
@@ -337,12 +342,16 @@ class ComposerViewModel2 @AssistedInject constructor(
 
         val quotedHtmlContent = draftFields.originalHtmlQuote.toQuotedContent()
 
+        val shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null) &&
+            buildVersionProvider.sdkInt() == Build.VERSION_CODES.P
+
         emitNewStateFromOperation(
             CompositeEvent.DraftContentReady(
                 senderEmail = validatedSender.value,
                 isDataRefreshed = true,
                 senderValidationResult = senderValidationResult,
                 quotedHtmlContent = quotedHtmlContent,
+                shouldRestrictWebViewHeight = shouldRestrictWebViewHeight,
                 forceBodyFocus = draftAction is DraftAction.Reply || draftAction is DraftAction.ReplyAll
             )
         )
@@ -393,12 +402,16 @@ class ComposerViewModel2 @AssistedInject constructor(
                     bccRecipients = fields.recipientsBcc.value
                 )
 
+                val shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null) &&
+                    buildVersionProvider.sdkInt() == Build.VERSION_CODES.P
+
                 emitNewStateFromOperation(
                     CompositeEvent.DraftContentReady(
                         senderEmail = fields.sender.value,
                         isDataRefreshed = draftFields is DecryptedDraftFields.Remote,
                         senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(fields.sender),
                         quotedHtmlContent = fields.originalHtmlQuote.toQuotedContent(),
+                        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight,
                         forceBodyFocus = false
                     )
                 )

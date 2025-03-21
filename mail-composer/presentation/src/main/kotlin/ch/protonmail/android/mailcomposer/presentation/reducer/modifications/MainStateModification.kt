@@ -26,10 +26,17 @@ import kotlinx.collections.immutable.toImmutableList
 
 internal sealed interface MainStateModification : ComposerStateModification<ComposerState.Main> {
 
-    data class OnDraftReady(val sender: String, val quotedHtmlContent: QuotedHtmlContent?) : MainStateModification {
+    data class OnDraftReady(
+        val sender: String,
+        val quotedHtmlContent: QuotedHtmlContent?,
+        val shouldRestrictWebViewHeight: Boolean
+    ) : MainStateModification {
 
-        override fun apply(state: ComposerState.Main): ComposerState.Main =
-            state.copy(senderUiModel = SenderUiModel(sender), quotedHtmlContent = quotedHtmlContent)
+        override fun apply(state: ComposerState.Main): ComposerState.Main = state.copy(
+            senderUiModel = SenderUiModel(sender),
+            quotedHtmlContent = quotedHtmlContent,
+            shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
+        )
     }
 
     data class UpdateLoading(val value: ComposerState.LoadingType) : MainStateModification {

@@ -54,18 +54,40 @@ internal class MainStateModificationTest(
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> = listOf(
             arrayOf(
-                "set sender and quoted content from initial state",
+                "set sender and quoted content with no restricted height from initial state",
                 initialState,
-                MainStateModification.OnDraftReady("test@example.com", quotedHtmlContent),
+                MainStateModification.OnDraftReady(
+                    sender = "test@example.com",
+                    quotedHtmlContent = quotedHtmlContent,
+                    shouldRestrictWebViewHeight = false
+                ),
                 initialState.copy(
                     senderUiModel = SenderUiModel("test@example.com"),
                     quotedHtmlContent = quotedHtmlContent
                 )
             ),
             arrayOf(
+                "set sender and quoted content with restricted height from initial state",
+                initialState,
+                MainStateModification.OnDraftReady(
+                    sender = "test@example.com",
+                    quotedHtmlContent = quotedHtmlContent,
+                    shouldRestrictWebViewHeight = true
+                ),
+                initialState.copy(
+                    senderUiModel = SenderUiModel("test@example.com"),
+                    quotedHtmlContent = quotedHtmlContent,
+                    shouldRestrictWebViewHeight = true
+                )
+            ),
+            arrayOf(
                 "set sender without quoted content",
                 initialState,
-                MainStateModification.OnDraftReady("another@example.com", null),
+                MainStateModification.OnDraftReady(
+                    sender = "another@example.com",
+                    quotedHtmlContent = null,
+                    shouldRestrictWebViewHeight = false
+                ),
                 initialState.copy(
                     senderUiModel = SenderUiModel("another@example.com")
                 )

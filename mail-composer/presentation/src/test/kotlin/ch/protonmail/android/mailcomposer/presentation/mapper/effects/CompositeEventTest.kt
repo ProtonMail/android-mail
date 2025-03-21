@@ -57,6 +57,7 @@ internal class CompositeEventTest(
             isDataRefreshed = false,
             senderValidationResult = ValidateSenderAddress.ValidationResult.Valid(senderEmail),
             quotedHtmlContent = null,
+            shouldRestrictWebViewHeight = false,
             forceBodyFocus = false
         )
 
@@ -72,7 +73,8 @@ internal class CompositeEventTest(
                 ComposerStateModifications(
                     mainModification = MainStateModification.OnDraftReady(
                         sender = senderEmail.value,
-                        quotedHtmlContent = null
+                        quotedHtmlContent = null,
+                        shouldRestrictWebViewHeight = false
                     ),
                     effectsModification = ContentEffectsStateModifications.DraftContentReady(
                         draftContentReady.senderValidationResult,

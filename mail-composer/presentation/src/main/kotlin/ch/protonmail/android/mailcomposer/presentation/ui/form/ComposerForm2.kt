@@ -58,6 +58,7 @@ internal fun ComposerForm2(
     subjectTextField: TextFieldState,
     bodyTextField: TextFieldState,
     quotedHtmlContent: StyledHtmlQuote?,
+    shouldRestrictWebViewHeight: Boolean,
     focusTextBody: Effect<Unit>,
     actions: ComposerForm2.Actions,
     modifier: Modifier = Modifier
@@ -135,7 +136,7 @@ internal fun ComposerForm2(
                     BodyHtmlQuote(
                         value = quotedHtmlContent.value,
                         modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody),
-                        shouldRestrictWebViewHeight = false // See MAILANDR-2527
+                        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
                     )
                 }
             }

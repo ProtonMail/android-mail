@@ -35,7 +35,11 @@ internal sealed interface CompositeEvent : ComposerStateEvent {
 
     override fun toStateModifications(): ComposerStateModifications = when (this) {
         is DraftContentReady -> ComposerStateModifications(
-            mainModification = MainStateModification.OnDraftReady(senderEmail, quotedHtmlContent),
+            mainModification = MainStateModification.OnDraftReady(
+                senderEmail,
+                quotedHtmlContent,
+                shouldRestrictWebViewHeight
+            ),
             effectsModification = ContentEffectsStateModifications.DraftContentReady(
                 senderValidationResult,
                 isDataRefreshed,
@@ -69,6 +73,7 @@ internal sealed interface CompositeEvent : ComposerStateEvent {
         val isDataRefreshed: Boolean,
         val senderValidationResult: ValidationResult,
         val quotedHtmlContent: QuotedHtmlContent?,
+        val shouldRestrictWebViewHeight: Boolean,
         val forceBodyFocus: Boolean
     ) : CompositeEvent
 
