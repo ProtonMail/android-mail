@@ -18,14 +18,15 @@
 
 package ch.protonmail.android.mailnotifications.presentation
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
 
     fun requestPermissionIfRequired() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rationalePermissionRequester?.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
+            rationalePermissionRequester?.launch(NOTIFICATION_PERMISSION)
         } else {
             navigateToNotificationSettings()
         }
@@ -52,9 +53,7 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
             // the requester is not a no-op.
             if (
                 !granted &&
-                !caller.shouldShowRequestPermissionRationale(
-                    NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION
-                )
+                !caller.shouldShowRequestPermissionRationale(NOTIFICATION_PERMISSION)
             ) {
                 navigateToNotificationSettings()
             }
@@ -79,3 +78,6 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
         intentPermissionRequester?.launch(intent)
     }
 }
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+private const val NOTIFICATION_PERMISSION = Manifest.permission.POST_NOTIFICATIONS

@@ -22,9 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
@@ -34,8 +31,8 @@ import ch.protonmail.android.navigation.model.LauncherState.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.account.domain.entity.isDisabled
@@ -56,38 +53,21 @@ import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import javax.inject.Inject
-import javax.inject.Provider
 
 @HiltViewModel
 class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
-    @NewNotificationPermissionFlowEnabled private val isNewNotificationPermissionFlowEnabled: Provider<Boolean>,
     private val newNotificationPermissionOrchestrator: NewNotificationPermissionOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
-    private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
+    private val userSettingsOrchestrator: UserSettingsOrchestrator
 ) : ViewModel() {
 
-    val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
-        notificationsPermissionsOrchestrator.permissionResult()
-    ) { accounts, permissionResult ->
+    val state: StateFlow<LauncherState> = accountManager.getAccounts().map { accounts ->
         when {
             accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-            accounts.any { it.isReady() } -> if (!isNewNotificationPermissionFlowEnabled.get()) {
-                when (permissionResult) {
-                    PermissionResult.CHECKING -> {
-                        notificationsPermissionsOrchestrator.requestPermissionIfRequired()
-                        StepNeeded
-                    }
-
-                    PermissionResult.SHOW_RATIONALE,
-                    PermissionResult.GRANTED,
-                    PermissionResult.DENIED -> PrimaryExist
-                }
-            } else PrimaryExist
-
+            accounts.any { it.isReady() } -> PrimaryExist
             accounts.any { it.isStepNeeded() } -> StepNeeded
             else -> Processing
         }
@@ -102,7 +82,6 @@ class LauncherViewModel @Inject constructor(
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
-        notificationsPermissionsOrchestrator.register(context)
         newNotificationPermissionOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
@@ -127,7 +106,6 @@ class LauncherViewModel @Inject constructor(
         plansOrchestrator.unregister()
         reportOrchestrator.unregister()
         userSettingsOrchestrator.unregister()
-        notificationsPermissionsOrchestrator.unregister()
         newNotificationPermissionOrchestrator.unregister()
     }
 

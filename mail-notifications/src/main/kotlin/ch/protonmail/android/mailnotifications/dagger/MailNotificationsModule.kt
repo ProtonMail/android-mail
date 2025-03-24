@@ -39,10 +39,6 @@ import ch.protonmail.android.mailnotifications.domain.handler.NotificationHandle
 import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotificationHandler
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxyImpl
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.Binds
 import dagger.Module
@@ -68,11 +64,6 @@ object MailNotificationsModule {
     fun provideNotificationManagerCompat(@ApplicationContext context: Context): NotificationManagerCompat =
         NotificationManagerCompat.from(context)
 
-    @Provides
-    @Singleton
-    @NewNotificationPermissionFlowEnabled
-    fun provideNewPermissionFlowEnabled(isEnabled: IsNewNotificationPermissionFlowEnabled) = isEnabled(null)
-
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface EntryPointModule {
@@ -87,12 +78,6 @@ object MailNotificationsModule {
         @Binds
         @Singleton
         fun bindFcmTokenPreferences(implementation: FcmTokenPreferencesImpl): NotificationTokenPreferences
-
-        @Binds
-        @Reusable
-        fun bindNotificationPermissionsOrchestrator(
-            implementation: NotificationsPermissionsOrchestratorImpl
-        ): NotificationsPermissionsOrchestrator
 
         @Binds
         @Reusable

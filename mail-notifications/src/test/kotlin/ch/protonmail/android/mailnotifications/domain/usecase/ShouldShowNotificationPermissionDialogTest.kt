@@ -9,27 +9,23 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import javax.inject.Provider
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ShouldShowNotificationPermissionDialogTest {
 
-    private val isNewNotificationPermissionFlowEnabled = mockk<Provider<Boolean>>()
     private val notificationManager = mockk<NotificationManagerCompat>()
     private val notificationPermissionRepository = mockk<NotificationPermissionRepository>()
 
     private val shouldShowNotificationPermissionDialog = ShouldShowNotificationPermissionDialog(
-        isNewNotificationPermissionFlowEnabled,
         notificationManager,
         notificationPermissionRepository
     )
 
     @Test
-    fun `should return true when the FF is ON, notifications are not enabled, timestamp is not saved`() = runTest {
+    fun `should return true when notifications are not enabled, timestamp is not saved`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns false
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -46,28 +42,8 @@ class ShouldShowNotificationPermissionDialogTest {
     }
 
     @Test
-    fun `should return false when the FF is OFF, notifications are not enabled, timestamp is not saved`() = runTest {
+    fun `should return false when notifications are enabled, timestamp is not saved`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled.get() } returns false
-        every { notificationManager.areNotificationsEnabled() } returns false
-        coEvery {
-            notificationPermissionRepository.getNotificationPermissionTimestamp()
-        } returns DataError.Local.NoDataCached.left()
-
-        // When
-        val actual = shouldShowNotificationPermissionDialog(
-            currentTimeMillis = 0,
-            isMessageSent = false
-        )
-
-        // Then
-        assertFalse(actual)
-    }
-
-    @Test
-    fun `should return false when the FF is ON, notifications are enabled, timestamp is not saved`() = runTest {
-        // Given
-        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns true
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -87,7 +63,6 @@ class ShouldShowNotificationPermissionDialogTest {
     fun `should return true when timestamp is saved, 20 days passed since first show and a message was sent`() =
         runTest {
             // Given
-            every { isNewNotificationPermissionFlowEnabled.get() } returns true
             every { notificationManager.areNotificationsEnabled() } returns false
             coEvery {
                 notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -108,7 +83,6 @@ class ShouldShowNotificationPermissionDialogTest {
     fun `should return false when 20 days passed since first show, a message was sent, stop showing value is true`() =
         runTest {
             // Given
-            every { isNewNotificationPermissionFlowEnabled.get() } returns true
             every { notificationManager.areNotificationsEnabled() } returns false
             coEvery {
                 notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -128,7 +102,6 @@ class ShouldShowNotificationPermissionDialogTest {
     @Test
     fun `should return false when 20 days passed since first show and a message was not sent`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns false
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()

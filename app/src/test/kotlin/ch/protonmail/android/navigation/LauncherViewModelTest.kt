@@ -20,11 +20,6 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.CHECKING
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.DENIED
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.GRANTED
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.SHOW_RATIONALE
 import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.testdata.AccountTestData
@@ -58,7 +53,6 @@ import me.proton.core.humanverification.presentation.HumanVerificationManagerObs
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
-import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -70,10 +64,6 @@ class LauncherViewModelTest {
     private val plansOrchestrator = mockk<PlansOrchestrator>(relaxUnitFun = true)
     private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
     private val userSettingsOrchestrator = mockk<UserSettingsOrchestrator>(relaxUnitFun = true)
-    private val notificationsPermissionsOrchestrator =
-        mockk<NotificationsPermissionsOrchestrator>(relaxUnitFun = true) {
-            every { permissionResult() } returns MutableStateFlow(GRANTED)
-        }
     private val newNotificationPermissionOrchestrator = mockk<NewNotificationPermissionOrchestrator>(
         relaxUnitFun = true
     )
@@ -85,10 +75,6 @@ class LauncherViewModelTest {
 
     private val context = mockk<AppCompatActivity> {
         every { lifecycle } returns mockk()
-    }
-
-    private val isNewNotificationPermissionFlowEnabled = mockk<Provider<Boolean>> {
-        every { this@mockk.get() } returns false
     }
 
     private val user1Username = "username"
@@ -296,119 +282,6 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `when the accounts are ready, should check if the permission needs to be requested`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when there are no accounts, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(emptyList())
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the accounts are disabled, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.disabledAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the accounts are missing steps, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.notReadyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the permission is already granted, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(GRANTED)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the permission is already denied, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(DENIED)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the permission is in rationale state, should not check for notifications permissions`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(SHOW_RATIONALE)
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
-    fun `when the FF is ON, should not check for notifications permission`() = runTest {
-        // given
-        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
-        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-        every { isNewNotificationPermissionFlowEnabled.get() } returns true
-
-        // when
-        val viewModel = buildViewModel()
-        viewModel.state.test { awaitItem() }
-
-        // then
-        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
-    }
-
-    @Test
     fun `should request notification permission when action is submitted`() {
         // When
         viewModel.submit(LauncherViewModel.Action.RequestNotificationPermission)
@@ -420,12 +293,10 @@ class LauncherViewModelTest {
     private fun buildViewModel() = LauncherViewModel(
         accountManager,
         authOrchestrator,
-        isNewNotificationPermissionFlowEnabled,
         newNotificationPermissionOrchestrator,
         plansOrchestrator,
         reportOrchestrator,
-        userSettingsOrchestrator,
-        notificationsPermissionsOrchestrator
+        userSettingsOrchestrator
     )
 
     private fun mockAccountManagerObserver(): AccountManagerObserver {
