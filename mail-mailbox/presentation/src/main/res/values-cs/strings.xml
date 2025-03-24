@@ -31,7 +31,7 @@
     <item quantity="other">Vybráno: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s nepřečtených</item>
+    <item quantity="one">%s nepřečtená</item>
     <item quantity="few">%s nepřečtené</item>
     <item quantity="many">%s nepřečtených</item>
     <item quantity="other">%s nepřečtených</item>
@@ -40,6 +40,7 @@
   <string name="mailbox_default_sender">(Žádný odesílatel)</string>
   <string name="mailbox_error_message_offline">Jste offline, položky nelze načíst</string>
   <string name="mailbox_error_message_generic">Načítání e-mailové schránky selhalo</string>
+  <string name="mailbox_error_search_input_invalid">Prosíme použijte pouze písmena a číslice ve vašem hledaném výrazu.</string>
   <string name="mailbox_error_message_unexpected">Něco se nečekaně zvrtlo</string>
   <string name="mailbox_is_empty_title">Žádné zprávy</string>
   <string name="mailbox_is_empty_description">Vše je vyřízeno</string>

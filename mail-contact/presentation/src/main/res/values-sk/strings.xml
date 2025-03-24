@@ -109,7 +109,7 @@
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Člen (%1$d)</item>
     <item quantity="few">Členovia (%1$d)</item>
-    <item quantity="many">Členov (%1$d)</item>
+    <item quantity="many">Členovia (%1$d)</item>
     <item quantity="other">Členovia (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Chyba pri ukladaní kontaktu, obsahuje neplatnú emailovú adresu</string>

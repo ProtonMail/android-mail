@@ -89,24 +89,24 @@
   <string name="expiration_minutes_arg">%dm</string>
   <string name="expiration_auto_delete_hour">To sporočilo bo samodejno izbrisano čez manj kot eno uro</string>
   <string name="expiration_auto_delete_day">To sporočilo bo samodejno izbrisano čez manj kot en dan</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Sporočilo se bo samodejno izbrisalo v %s</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">To sporočilo bo samodejno izbrisano v %s</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d minuta</item>
     <item quantity="two">%d minuti</item>
     <item quantity="few">%d minute</item>
-    <item quantity="other">%d minute</item>
+    <item quantity="other">%d minut</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
     <item quantity="one">%d ura</item>
-    <item quantity="two">%d ure</item>
-    <item quantity="few">%d uri</item>
-    <item quantity="other">%d uri</item>
+    <item quantity="two">%d uri</item>
+    <item quantity="few">%d ure</item>
+    <item quantity="other">%d ur</item>
   </plurals>
   <plurals name="expiration_days_full_word">
     <item quantity="one">%d dan</item>
-    <item quantity="two">%d dni</item>
-    <item quantity="few">%d dni</item>
-    <item quantity="other">%d dnevi</item>
+    <item quantity="two">%d dneva</item>
+    <item quantity="few">%d dnevi</item>
+    <item quantity="other">%d dni</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Priponke</string>

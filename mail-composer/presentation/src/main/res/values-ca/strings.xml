@@ -34,7 +34,7 @@
   <string name="composer_error_store_draft_sender_address">No s\'ha pogut desar l\'adreça del remitent.</string>
   <string name="composer_error_store_draft_body">No s\'ha pogut desar el cos de l\'esborrany.</string>
   <string name="composer_error_duplicate_recipient">S\'han eliminat un o més destinataris duplicats.</string>
-  <string name="composer_error_store_draft_subject">No s\'ha pogut desar l\'assumpte de l\'esborrany.</string>
+  <string name="composer_error_store_draft_subject">L\'assumpte no s\'ha desat</string>
   <string name="composer_error_store_draft_recipients">S\'ha produït un error en desar els destinataris de l\'esborrany.</string>
   <string name="composer_error_loading_draft">El contingut d\'aquest esborrany no està disponible en aquest moment. L\'edició substituirà qualsevol contingut preexistent.</string>
   <string name="composer_add_attachments_content_description">Afegiu fitxers adjunts</string>
@@ -44,7 +44,7 @@
   <string name="composer_sender_quote">El %s, %s &lt;%s&gt; va escriure:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">D\'acord</string>
   <string name="composer_attachment_size_exceeded_dialog_title">S\'ha assolit el límit de fitxers adjunts.</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida per als adjunts és de %1$s.</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida dels adjunts és %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_attachment_not_found">No s\'ha trobat l\'adjunt.</string>
   <string name="composer_attachment_error_draft_loading">No s\'ha pogut carregar l\'esborrany original del missatge.</string>
@@ -80,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error d\'enviament</string>
   <string name="message_sending_error_dialog_button_dismiss">Tanca</string>
-  <string name="message_sending_error_dialog_text_error">No es pot enviar el correu electrònic a l\'adreça indicada per aquest motiu:</string>
+  <string name="message_sending_error_dialog_text_error">El correu electrònic no es pot enviar a l\'adreça introduïda pel motiu següent:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">No hi ha claus de confiança: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">L\'adreça no existeix: %s</string>
   <string name="set_message_password_title">Xifra el missatge</string>

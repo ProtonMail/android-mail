@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Cap remitent)</string>
   <string name="mailbox_error_message_offline">Esteu fora de línia. No s\'han pogut recuperar els elements.</string>
   <string name="mailbox_error_message_generic">No s\'ha pogut carregar la bústia de correu</string>
+  <string name="mailbox_error_search_input_invalid">Incloeu només caràcters alfanumèrics al vostre terme de cerca.</string>
   <string name="mailbox_error_message_unexpected">Alguna cosa ha anat malament</string>
   <string name="mailbox_is_empty_title">Cap missatge</string>
   <string name="mailbox_is_empty_description">Esteu al dia.</string>
@@ -60,20 +61,20 @@
     <item quantity="other">Elimina %d missatges</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Segur que voleu eliminar permanentment aquesta conversa?</item>
-    <item quantity="other">Segur que voleu eliminar permanentment aquestes converses?</item>
+    <item quantity="one">Segur que voleu suprimir aquesta conversa permanentment?</item>
+    <item quantity="other">Segur que voleu suprimir aquestes converses permanentment?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Segur que voleu eliminar aquest missatge permanentment?</item>
-    <item quantity="other">Segur que voleu eliminar aquests missatges permanentment?</item>
+    <item quantity="one">Segur que voleu suprimir aquest missatge permanentment?</item>
+    <item quantity="other">Segur que voleu suprimir aquests missatges permanentment?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">S\'ha eliminat el missatge de manera permanent.</item>
     <item quantity="other">S\'han eliminat %d missatges de manera permanent.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">S\'ha eliminat la conversa de manera permanent.</item>
-    <item quantity="other">S\'han eliminat %d converses de manera permanent.</item>
+    <item quantity="one">Conversa eliminada permanentment.</item>
+    <item quantity="other">S\'han eliminat %d converses permanentment.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">No s\'ha pogut efectuar l\'operació sobre l\'etiqueta.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">No s\'han pogut obtenir les etiquetes.</string>

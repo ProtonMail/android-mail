@@ -101,7 +101,7 @@
   <string name="respondInline">Răspuns în mesaj</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d membru</item>
-    <item quantity="few">%d de membri</item>
-    <item quantity="other">%d membri</item>
+    <item quantity="few">%d membri</item>
+    <item quantity="other">%d de membri</item>
   </plurals>
 </resources>

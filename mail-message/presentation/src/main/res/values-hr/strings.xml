@@ -18,9 +18,9 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d datoteka</item>
-    <item quantity="few">%d datoteke</item>
-    <item quantity="other">%d datoteka</item>
+    <item quantity="one">%d file</item>
+    <item quantity="few">%d files</item>
+    <item quantity="other">%d files</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d više</string>
   <string name="attachment_permission_dialog_title">Permission required</string>

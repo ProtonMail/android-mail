@@ -145,9 +145,9 @@
   <string name="contact_group_color">Barva skupine stikov</string>
   <plurals name="contact_search_contact_group_counter">
     <item quantity="one">%d član</item>
-    <item quantity="two">%d člani</item>
-    <item quantity="few">%d člana</item>
-    <item quantity="other">%d člana</item>
+    <item quantity="two">%d člana</item>
+    <item quantity="few">%d člani</item>
+    <item quantity="other">%d članov</item>
   </plurals>
   <string name="contact_search_placeholder">Iskanje stika ali skupine</string>
   <string name="contact_search_content_description">Iskanje stika ali skupine</string>

@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Nincs feladó)</string>
   <string name="mailbox_error_message_offline">Jelenleg offline, az elemek így nem tölthetők be</string>
   <string name="mailbox_error_message_generic">A postafiók betöltése sikertelen</string>
+  <string name="mailbox_error_search_input_invalid">Kérjük, hogy a keresési kifejezésben csak alfanumerikus karaktereket használjon.</string>
   <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
   <string name="mailbox_is_empty_title">Nincsenek üzenetek</string>
   <string name="mailbox_is_empty_description">Ön naprakész</string>

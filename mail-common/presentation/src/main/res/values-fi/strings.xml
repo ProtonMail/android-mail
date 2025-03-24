@@ -86,7 +86,7 @@
   <string name="expiration_expired">Tuhoutunut</string>
   <string name="expiration_days_arg">%dpv</string>
   <string name="expiration_hours_arg">%dt</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_minutes_arg">%dmin</string>
   <string name="expiration_auto_delete_hour">Tämä viesti poistetaan automaattisesti vajaan tunnin kuluttua</string>
   <string name="expiration_auto_delete_day">Tämä viesti poistetaan automaattisesti vajaan vuorokauden kuluttua</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tämä viesti poistetaan automaattisesti %s</string>

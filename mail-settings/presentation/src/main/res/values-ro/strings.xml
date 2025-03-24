@@ -157,9 +157,9 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmare</string>
   <string name="mail_settings_pin_insertion_error_no_match">Codurile PIN nu coincid.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Încercări rămase: %s.</item>
-    <item quantity="few">Încercări rămase: %s.</item>
-    <item quantity="other">Încercări rămase: %s.</item>
+    <item quantity="one">Încercări rămase: %s</item>
+    <item quantity="few">Încercări rămase: %s</item>
+    <item quantity="other">Încercări rămase: %s</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">A mai rămas %s încercare până la ștergerea securizată a datelor.</item>

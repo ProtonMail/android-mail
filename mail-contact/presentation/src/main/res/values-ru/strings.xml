@@ -68,7 +68,7 @@
   <string name="contact_form_loading_error">Ошибка загрузки контакта, повторите попытку позже</string>
   <string name="contact_form_save_success">Контакт сохранён</string>
   <string name="contact_form_create_success">Контакт создан</string>
-  <string name="contact_form_update_success">Контакт обновлен</string>
+  <string name="contact_form_update_success">Контакт обновлён</string>
   <string name="save_contact_content_description">Сохранить контакт</string>
   <string name="contact_form_save">Сохранить</string>
   <string name="add_new">Добавить новый</string>
@@ -104,7 +104,7 @@
     <item quantity="one">%1$d участник</item>
     <item quantity="few">%1$d участника</item>
     <item quantity="many">%1$d участников</item>
-    <item quantity="other">%1$d участников</item>
+    <item quantity="other">%1$d участника</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Участник (%1$d)</item>
@@ -147,7 +147,7 @@
     <item quantity="one">%d участник</item>
     <item quantity="few">%d участника</item>
     <item quantity="many">%d участников</item>
-    <item quantity="other">%d участников</item>
+    <item quantity="other">%d участника</item>
   </plurals>
   <string name="contact_search_placeholder">Поиск контакта или группы</string>
   <string name="contact_search_content_description">Поиск контакта или группы</string>

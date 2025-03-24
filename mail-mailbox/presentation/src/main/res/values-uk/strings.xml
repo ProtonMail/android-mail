@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введіть пошуковий запит</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Обраних</item>
+    <item quantity="one">%d Обраний</item>
     <item quantity="few">%d Обрані</item>
     <item quantity="many">%d Обраних</item>
     <item quantity="other">%d Обраних</item>
@@ -34,12 +34,13 @@
     <item quantity="one">%s непрочитане</item>
     <item quantity="few">%s непрочитані</item>
     <item quantity="many">%s непрочитаних</item>
-    <item quantity="other">%s непрочитане</item>
+    <item quantity="other">%s непрочитаних</item>
   </plurals>
   <string name="mailbox_default_recipient">(Немає отримувача)</string>
   <string name="mailbox_default_sender">(Немає відправника)</string>
   <string name="mailbox_error_message_offline">Не вдалося завантажити елементи, тому що ви офлайн</string>
   <string name="mailbox_error_message_generic">Не вдалося завантажити поштову скриньку</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
   <string name="mailbox_is_empty_title">Немає повідомлень</string>
   <string name="mailbox_is_empty_description">Усе в актуальному стані</string>

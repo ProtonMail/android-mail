@@ -18,10 +18,10 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">Datoteka %d</item>
-    <item quantity="two">%d datotek</item>
-    <item quantity="few">%d datotek</item>
-    <item quantity="other">%d datoteke</item>
+    <item quantity="one">%d datoteka</item>
+    <item quantity="two">%d datoteki</item>
+    <item quantity="few">%d datoteke</item>
+    <item quantity="other">%d datotek</item>
   </plurals>
   <string name="attachment_show_more_label">in še %1$d</string>
   <string name="attachment_permission_dialog_title">Potrebno je dovoljenje</string>

@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Gönderici yok)</string>
   <string name="mailbox_error_message_offline">Çevrim dışı olduğunuzdan ögeler alınamadı</string>
   <string name="mailbox_error_message_generic">E-posta kutusu yüklenemedi</string>
+  <string name="mailbox_error_search_input_invalid">Lütfen arama ifadesinde yalnızca harf ve rakam karakterleri kullanın.</string>
   <string name="mailbox_error_message_unexpected">Beklenmeyen bir sorun çıktı</string>
   <string name="mailbox_is_empty_title">Herhangi bir ileti yok</string>
   <string name="mailbox_is_empty_description">Güncelsiniz!</string>

@@ -31,15 +31,16 @@
     <item quantity="other">Vybrané: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s neprečítaná</item>
+    <item quantity="one">%s neprečítané</item>
     <item quantity="few">%s neprečítané</item>
     <item quantity="many">%s neprečítaných</item>
-    <item quantity="other">%s neprečítaná</item>
+    <item quantity="other">%s neprečítaných</item>
   </plurals>
   <string name="mailbox_default_recipient">(Žiaden príjemca)</string>
   <string name="mailbox_default_sender">(Žiaden odosielateľ)</string>
   <string name="mailbox_error_message_offline">Ste odhlásený, nemôžete načítať položky</string>
   <string name="mailbox_error_message_generic">Načítanie poštovej schránky zlyhalo</string>
+  <string name="mailbox_error_search_input_invalid">Použite vo vašom hľadanom výraze len alfanumerické znaky, prosím.</string>
   <string name="mailbox_error_message_unexpected">Niečo sa nečakane pokazilo</string>
   <string name="mailbox_is_empty_title">Žiadne správy</string>
   <string name="mailbox_is_empty_description">Máte aktuálnu verziu</string>

@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">od 4 do 21 znaków</string>
   <string name="set_message_password_supporting_error_text">Hasło musi zawierać od 4 do 21 znaków</string>
   <string name="set_message_password_supporting_text_repeat">Hasła muszą pasować do siebie</string>
-  <string name="set_message_password_supporting_error_text_repeat">Hasła nie są zgodne</string>
+  <string name="set_message_password_supporting_error_text_repeat">Hasła nie pasują do siebie</string>
   <string name="set_message_password_button_show">Pokaż hasło</string>
   <string name="set_message_password_button_hide">Ukryj hasło</string>
   <string name="set_message_password_button_apply">Zastosuj hasło</string>

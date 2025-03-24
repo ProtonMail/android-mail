@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Borrar la consulta de búsqueda</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ingresar la consulta de búsqueda</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d seleccionados</item>
+    <item quantity="one">%d seleccionado</item>
     <item quantity="other">%d seleccionados</item>
   </plurals>
   <plurals name="filter_unread_button_text">
@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Sin remitente)</string>
   <string name="mailbox_error_message_offline">No hay conexión. No se pueden recuperar los elementos.</string>
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
+  <string name="mailbox_error_search_input_invalid">Por favor, incluya únicamente caracteres alfanuméricos en los términos de búsqueda.</string>
   <string name="mailbox_error_message_unexpected">Se ha producido un error imprevisto</string>
   <string name="mailbox_is_empty_title">Ningún mensaje</string>
   <string name="mailbox_is_empty_description">Estás al día.</string>
@@ -45,7 +46,7 @@
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Se ha movido la conversación a la papelera.</item>
-    <item quantity="other">Se han movido %d conversaciones a la Papelera</item>
+    <item quantity="other">Se han movido %d conversaciones a la papelera.</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Se ha movido el mensaje a la papelera.</item>
@@ -69,7 +70,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Se ha eliminado el mensaje permanentemente.</item>
-    <item quantity="other">Se han eliminado %d mensajes permanentemente</item>
+    <item quantity="other">Se han eliminado %d mensajes permanentemente.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Se ha eliminado la conversación permanentemente.</item>

@@ -34,6 +34,7 @@
   <string name="mailbox_default_sender">（无发件人）</string>
   <string name="mailbox_error_message_offline">网络未连接，无法获取数据</string>
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
+  <string name="mailbox_error_search_input_invalid">请仅在搜索词中使用字母和数字字符。</string>
   <string name="mailbox_error_message_unexpected">发生意外错误</string>
   <string name="mailbox_is_empty_title">无邮件</string>
   <string name="mailbox_is_empty_description">已是最新版本</string>

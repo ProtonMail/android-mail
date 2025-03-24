@@ -100,8 +100,8 @@
   <string name="set_message_password_button_remove_password">Ukloni lozinku</string>
   <string name="respondInline">Odgovori u ravnini s ostalim tekstom</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d član</item>
-    <item quantity="few">%d članova</item>
-    <item quantity="other">%d članova</item>
+    <item quantity="one">%d member</item>
+    <item quantity="few">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

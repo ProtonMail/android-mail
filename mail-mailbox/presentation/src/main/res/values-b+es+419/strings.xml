@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Sin remitente)</string>
   <string name="mailbox_error_message_offline">No hay conexión. No se pueden recuperar los elementos.</string>
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
+  <string name="mailbox_error_search_input_invalid">Por favor, incluya únicamente caracteres alfanuméricos en los términos de búsqueda.</string>
   <string name="mailbox_error_message_unexpected">Se produjo un error imprevisto.</string>
   <string name="mailbox_is_empty_title">Ningún mensaje</string>
   <string name="mailbox_is_empty_description">Está al día.</string>

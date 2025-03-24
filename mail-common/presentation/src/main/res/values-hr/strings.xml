@@ -91,19 +91,19 @@
   <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d minuta</item>
-    <item quantity="few">%d minute</item>
-    <item quantity="other">%d minuta</item>
+    <item quantity="one">%d minute</item>
+    <item quantity="few">%d minutes</item>
+    <item quantity="other">%d minutes</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
-    <item quantity="one">%d sat</item>
-    <item quantity="few">%d sata</item>
-    <item quantity="other">%d sati</item>
+    <item quantity="one">%d hour</item>
+    <item quantity="few">%d hours</item>
+    <item quantity="other">%d hours</item>
   </plurals>
   <plurals name="expiration_days_full_word">
-    <item quantity="one">%d dan</item>
-    <item quantity="few">%d dana</item>
-    <item quantity="other">%d dana</item>
+    <item quantity="one">%d day</item>
+    <item quantity="few">%d days</item>
+    <item quantity="other">%d days</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Privitci</string>

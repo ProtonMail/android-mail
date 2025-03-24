@@ -93,8 +93,8 @@
   <plurals name="upselling_month">
     <item quantity="one">%d miesiąc</item>
     <item quantity="few">%d miesiące</item>
-    <item quantity="many">%d miesiący</item>
-    <item quantity="other">%d miesięca</item>
+    <item quantity="many">%d miesięcy</item>
+    <item quantity="other">%d miesięcy</item>
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Nie można pobrać opcji ulepszenia.</string>
@@ -112,10 +112,10 @@
   <string name="upselling_onboarding_month">/ miesiąc</string>
   <string name="upselling_onboarding_year"> / rok</string>
   <plurals name="upselling_onboarding_more_features">
-    <item quantity="one">%d więcej funkcja</item>
-    <item quantity="few">%d więcej funkcje</item>
-    <item quantity="many">%d więcej funkcji</item>
-    <item quantity="other">%d więcej funkcji</item>
+    <item quantity="one">%d funkcja więcej</item>
+    <item quantity="few">%d funkcje więcej</item>
+    <item quantity="many">%d funkcji więcej</item>
+    <item quantity="other">%d funkcji więcej</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Wybierz plan %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Kontynuuj z planem Proton Free</string>

@@ -103,6 +103,6 @@
     <item quantity="one">%d участник</item>
     <item quantity="few">%d участника</item>
     <item quantity="many">%d участников</item>
-    <item quantity="other">%d участников</item>
+    <item quantity="other">%d участника</item>
   </plurals>
 </resources>

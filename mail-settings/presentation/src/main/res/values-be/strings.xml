@@ -163,10 +163,10 @@
     <item quantity="other">Засталося %s спроб.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">Засталася %s спроба, пакуль абароненыя даныя не будуць выцертыя.</item>
-    <item quantity="few">Засталося %s спробы, пакуль абароненыя даныя не будуць выцертыя.</item>
-    <item quantity="many">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
-    <item quantity="other">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
+    <item quantity="one">Засталася %s спроба, пакуль абароненыя даныя не будуць сцёртыя.</item>
+    <item quantity="few">Засталося %s спробы, пакуль абароненыя даныя не будуць сцёртыя.</item>
+    <item quantity="many">Засталося %s спроб, пакуль абароненыя даныя не будуць сцёртыя.</item>
+    <item quantity="other">Засталося %s спроб, пакуль абароненыя даныя не будуць сцёртыя.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка падчас праверкі вашага PIN-кода.</string>
   <string name="mail_settings_pin_insertion_signout_text">Выйсці</string>

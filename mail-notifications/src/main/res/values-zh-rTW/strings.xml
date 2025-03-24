@@ -24,10 +24,10 @@
   <string name="notification_actions_archive_description">封存</string>
   <string name="notification_actions_trash_description">垃圾桶</string>
   <string name="notification_actions_mark_as_read_description">標示為已讀取</string>
-  <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_title">不要錯過電子郵件</string>
+  <string name="notification_permission_dialog_message">通知可幫助您隨時掌握收件匣的狀態，而無需檢查應用程式。</string>
+  <string name="notification_permission_dialog_post_send_title">想要隨時取得最新資訊嗎？</string>
+  <string name="notification_permission_dialog_post_send_message">開啟通知功能，就能知道您的電子郵件何時收到回覆。</string>
+  <string name="notification_permission_dialog_button_enable">啟用推播通知</string>
   <string name="notification_permission_dialog_button_dismiss">忽略</string>
 </resources>

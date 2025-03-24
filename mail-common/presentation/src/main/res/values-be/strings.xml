@@ -91,13 +91,13 @@
   <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Гэта паведамленне будзе аўтаматычна выдалена за %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d хвіліну</item>
+    <item quantity="one">%d хвіліна</item>
     <item quantity="few">%d хвіліны</item>
     <item quantity="many">%d хвілін</item>
     <item quantity="other">%d хвілін</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
-    <item quantity="one">%d гадзіну</item>
+    <item quantity="one">%d гадзіна</item>
     <item quantity="few">%d гадзіны</item>
     <item quantity="many">%d гадзін</item>
     <item quantity="other">%d гадзін</item>

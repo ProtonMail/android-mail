@@ -61,12 +61,12 @@
   <string name="upselling_onboarding_plus_feature_email_addresses">10 direcciones de correo electrónico extra para ti</string>
   <string name="upselling_onboarding_plus_feature_email_domains">Soporte para 1 dominio de correo electrónico personalizado</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 alias de hide-my-email</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Soporte prioritario</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Atención al cliente prioritaria</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB de almacenamiento</string>
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 direcciones de correo electrónico extra para ti</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Soporte para 3 dominios de correo electrónico personalizado</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Número ilimitado de alias de hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Soporte al cliente dedicado</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Atención al cliente dedicada</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultrarrápida y privada</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Almacenamiento en la nube cifrado de fotos y documentos</string>
@@ -129,7 +129,7 @@
   <string name="post_subscription_plus_feature_folders_labels">Número ilimitado de carpetas y etiquetas</string>
   <string name="post_subscription_plus_feature_aliases">10 alias de hide-my-email</string>
   <string name="post_subscription_plus_feature_desktop_app">Nueva aplicación de escritorio de Proton Mail</string>
-  <string name="post_subscription_plus_feature_customer_support">Soporte al cliente prioritario</string>
+  <string name="post_subscription_plus_feature_customer_support">Atención al cliente prioritaria</string>
   <string name="post_subscription_discover_apps_page_title">Descubre todas las aplicaciones</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">Has desbloqueado el uso compartido de calendarios y 8 veces más calendarios.</string>

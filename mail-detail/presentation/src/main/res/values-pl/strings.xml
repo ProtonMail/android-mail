@@ -37,10 +37,10 @@
   <string name="bcc">Udw:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Załącznik</item>
-    <item quantity="few">%d Załączników</item>
-    <item quantity="many">%d Załączniki</item>
-    <item quantity="other">%d Załączniki</item>
+    <item quantity="one">%d załącznik</item>
+    <item quantity="few">%d załączniki</item>
+    <item quantity="many">%d załączników</item>
+    <item quantity="other">%d załączników</item>
   </plurals>
   <string name="hide_details">Ukryj szczegóły</string>
   <string name="undisclosed_recipients">Nieznani odbiorcy</string>
@@ -120,5 +120,5 @@
   <string name="hide">Ukryj</string>
   <string name="tooltip_customize_toolbar_title">Dostosuj pasek narzędzi</string>
   <string name="tooltip_customize_toolbar_message">Możesz teraz wybierać i zmieniać kolejność działań na tym pasku narzędzi.</string>
-  <string name="tooltip_customize_toolbar_cta">Personalizuj</string>
+  <string name="tooltip_customize_toolbar_cta">Dostosuj</string>
 </resources>

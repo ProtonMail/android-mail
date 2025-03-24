@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Ачысціць пошукавы запыт</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Увесці пошукавы запыт</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Выбрана: %d</item>
+    <item quantity="one">Выбраны: %d</item>
     <item quantity="few">Выбрана: %d</item>
     <item quantity="many">Выбрана: %d</item>
     <item quantity="other">Выбрана: %d</item>
@@ -40,6 +40,7 @@
   <string name="mailbox_default_sender">(Без адпраўніка)</string>
   <string name="mailbox_error_message_offline">Немагчыма атрымаць элементы, бо вы па-за сеткай</string>
   <string name="mailbox_error_message_generic">Збой загрузкі паштовай скрыні</string>
+  <string name="mailbox_error_search_input_invalid">Уключыце ў пошукавы запыт толькі алфавітна-лічбавыя сімвалы.</string>
   <string name="mailbox_error_message_unexpected">Нешта пайшло не так</string>
   <string name="mailbox_is_empty_title">Няма паведамленняў</string>
   <string name="mailbox_is_empty_description">Новыя пакуль адсутнічаюць</string>
@@ -49,13 +50,13 @@
   <string name="mailbox_is_empty_trash_description">Сметніца пустая</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Размова перамешчана ў Сметніцу</item>
-    <item quantity="few">%d размовы перамешчаныя ў Сметніцу</item>
+    <item quantity="few">%d размовы перамешчаны ў Сметніцу</item>
     <item quantity="many">%d размоў перамешчаны ў Сметніцу</item>
     <item quantity="other">%d размоў перамешчаны ў Сметніцу</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Паведамленне перамешчана ў Сметніцу</item>
-    <item quantity="few">%d паведамленні перамешчаныя ў Сметніцу</item>
+    <item quantity="few">%d паведамленні перамешчаны ў Сметніцу</item>
     <item quantity="many">%d паведамленняў перамешчаны ў Сметніцу</item>
     <item quantity="other">%d паведамленняў перамешчаны ў Сметніцу</item>
   </plurals>

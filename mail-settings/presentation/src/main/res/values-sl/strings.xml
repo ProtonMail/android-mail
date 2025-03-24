@@ -159,8 +159,8 @@
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">Še %s poskus.</item>
     <item quantity="two">Še %s poskusov.</item>
-    <item quantity="few">Še %s poskusa.</item>
-    <item quantity="other">Še %s poskusa.</item>
+    <item quantity="few">Še %s poskusi.</item>
+    <item quantity="other">Še %s poskusov.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">Še %s poskus do varnega izbrisa vseh podatkov.</item>

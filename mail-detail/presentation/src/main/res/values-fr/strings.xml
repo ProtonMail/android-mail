@@ -35,8 +35,8 @@
   <string name="bcc">Cci :</string>
   <string name="date">Date :</string>
   <plurals name="attachment">
-    <item quantity="one">%d Pièce jointe</item>
-    <item quantity="other">%d Pièces jointes</item>
+    <item quantity="one">%d pièce jointe</item>
+    <item quantity="other">%d pièces jointes</item>
   </plurals>
   <string name="hide_details">Masquer les détails</string>
   <string name="undisclosed_recipients">Destinataires non divulgués</string>

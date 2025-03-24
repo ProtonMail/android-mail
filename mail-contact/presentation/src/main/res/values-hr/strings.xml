@@ -101,7 +101,7 @@
   <string name="all_contacts_tab">Kontakti</string>
   <string name="contact_groups_tab">Grupe</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d član</item>
+    <item quantity="one">%1$d member</item>
     <item quantity="few">%1$d members</item>
     <item quantity="other">%1$d members</item>
   </plurals>
@@ -142,9 +142,9 @@
   <string name="member_update_error">Error updating member, please try again later</string>
   <string name="contact_group_color">Contact group color</string>
   <plurals name="contact_search_contact_group_counter">
-    <item quantity="one">%d član</item>
-    <item quantity="few">%d članova</item>
-    <item quantity="other">%d članova</item>
+    <item quantity="one">%d member</item>
+    <item quantity="few">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
   <string name="contact_search_placeholder">Search for contact or group</string>
   <string name="contact_search_content_description">Search for contact or group</string>

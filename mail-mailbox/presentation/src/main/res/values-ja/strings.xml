@@ -34,6 +34,7 @@
   <string name="mailbox_default_sender">(差出人なし)</string>
   <string name="mailbox_error_message_offline">オフラインのため、アイテムを取得できません。</string>
   <string name="mailbox_error_message_generic">メールボックスの読み込みに失敗しました</string>
+  <string name="mailbox_error_search_input_invalid">検索語には英数字のみを含めてください。</string>
   <string name="mailbox_error_message_unexpected">予期せぬ問題が発生しました</string>
   <string name="mailbox_is_empty_title">メッセージはありません</string>
   <string name="mailbox_is_empty_description">最新です</string>

@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">變更寄件人</string>
   <string name="composer_change_sender_paid_feature">您需有付費版的 Proton Mail 訂購授權才可更改寄件人地址</string>
   <string name="composer_error_change_sender_failed_getting_subscription">因無法取得訂購授權資料無法變更寄件者。請再試一次。</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">未儲存寄件者地址</string>
+  <string name="composer_error_store_draft_body">未儲存草稿電子郵件正文</string>
   <string name="composer_error_duplicate_recipient">已移除重複的收件人</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">未儲存主旨行</string>
   <string name="composer_error_store_draft_recipients">無法儲存此草稿的收件者</string>
   <string name="composer_error_loading_draft">目前無法擷取該草稿的內容。編輯將覆寫任何預先存在的內容。</string>
   <string name="composer_add_attachments_content_description">新增附件</string>
@@ -46,9 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">已達附件上限</string>
   <string name="composer_attachment_size_exceeded_dialog_message">附件大小上限為 %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">附件重新加密失敗。基於安全考量，所有附件已被移除。</string>
-  <string name="composer_attachment_not_found">Attachment not found.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
-  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_attachment_not_found">找不到附件</string>
+  <string name="composer_attachment_error_draft_loading">無法載入原始草稿訊息。</string>
+  <string name="composer_attachment_error_saving_attachment">無法儲存附件。請再試一次。</string>
   <string name="composer_warning_local_data_shown">此草稿的最新版本無法載入。任何變更將覆蓋其內容。</string>
   <string name="composer_button_add_password">新增密碼</string>
   <string name="composer_button_set_expiration">設定到期時間</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">傳送通知</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">以 @pm.me 傳送郵件乃付費功能。您的郵件將以您預設的電子郵件地址傳送。</string>
   <string name="composer_sender_changed_original_address_disabled">選取的寄件者電子郵件地址已停用。您的郵件將以您預設的電子郵件地址傳送。</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">無法取得原始寄件者地址。您的訊息將以您預設的電子郵件地址傳送。</string>
   <string name="composer_sender_changed_dialog_confirm_button">好</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">撰寫郵件</string>
@@ -80,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">傳送錯誤</string>
   <string name="message_sending_error_dialog_button_dismiss">關閉</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">基於以下原因，您的電子郵件無法傳送至已輸入的電子郵件：</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">無信任金鑰 : %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在 : %s</string>
   <string name="set_message_password_title">加密郵件</string>

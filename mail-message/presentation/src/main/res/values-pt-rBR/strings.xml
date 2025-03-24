@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">Categoria de arquivo: %d</item>
+    <item quantity="one">%d arquivo</item>
     <item quantity="other">%d arquivos</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d mais</string>

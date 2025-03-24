@@ -25,9 +25,9 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Golire text căutat</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Introducere text căutat</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d selectat</item>
-    <item quantity="few">%d selectat</item>
-    <item quantity="other">%d selectat</item>
+    <item quantity="one">Selectate: %d</item>
+    <item quantity="few">Selectate: %d</item>
+    <item quantity="other">Selectate: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">Necitite: %s</item>
@@ -38,6 +38,7 @@
   <string name="mailbox_default_sender">(Fără expeditor)</string>
   <string name="mailbox_error_message_offline">Nu aveți conexiune. Nu se pot prelua datele.</string>
   <string name="mailbox_error_message_generic">Eroare la încărcarea mesajelor.</string>
+  <string name="mailbox_error_search_input_invalid">Includeți doar caractere alfanumerice în termenul de căutare.</string>
   <string name="mailbox_error_message_unexpected">Ceva nu a funcționat bine.</string>
   <string name="mailbox_is_empty_title">Nu sunt mesaje</string>
   <string name="mailbox_is_empty_description">Sunteți la zi</string>
@@ -46,14 +47,14 @@
   <string name="mailbox_is_empty_spam_description">Folderul de mesaje nedorite este gol</string>
   <string name="mailbox_is_empty_trash_description">Folderul gunoi este gol</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversația a fost mutată în Gunoi.</item>
-    <item quantity="few">S-au mutat %d de conversații în «Gunoi»</item>
-    <item quantity="other">S-au mutat %d de conversații în «Gunoi»</item>
+    <item quantity="one">Conversația a fost mutată în «Gunoi».</item>
+    <item quantity="few">Conversații mutate în «Gunoi»: %d</item>
+    <item quantity="other">Conversații mutate în «Gunoi»: %d</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Mesajul a fost mutat în «Gunoi».</item>
-    <item quantity="few">S-au mutat %d mesaje în «Gunoi»</item>
-    <item quantity="other">S-au mutat %d mesaje în «Gunoi»</item>
+    <item quantity="few">Mesaje mutate în «Gunoi»: %d</item>
+    <item quantity="other">Mesaje mutate în «Gunoi»: %d</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Ștergere conversație</item>
@@ -77,13 +78,13 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Mesajul a fost șters definitiv.</item>
-    <item quantity="few">S-au șters definitiv %d de mesaje</item>
-    <item quantity="other">S-au șters definitiv %d de mesaje</item>
+    <item quantity="few">Mesaje șterse definitiv: %d</item>
+    <item quantity="other">Mesaje șterse definitiv: %d</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Conversația a fost ștearsă definitiv.</item>
-    <item quantity="few">S-au șters definitiv %d conversații</item>
-    <item quantity="other">S-au șters definitiv %d conversații</item>
+    <item quantity="few">Conversații șterse definitiv: %d</item>
+    <item quantity="other">Conversații șterse definitiv: %d</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Operația de etichetare a eșuat.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Eșuare obținere etichete.</string>

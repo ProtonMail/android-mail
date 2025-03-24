@@ -49,7 +49,7 @@
   <string name="folder_form_delete">Удалить папку</string>
   <string name="label_name_title">Название</string>
   <string name="add_a_label_name_hint">Добавить название ярлыка</string>
-  <string name="add_a_folder_name_hint">Добавить название папки</string>
+  <string name="add_a_folder_name_hint">Добавить имя папки</string>
   <string name="input_field_max_characters_count">%1d / %2d символов</string>
   <string name="color_picker_title">Цвет</string>
   <string name="save_label_error">Ошибка сохранения ярлыка, повторите попытку позже</string>

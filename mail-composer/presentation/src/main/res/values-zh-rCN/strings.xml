@@ -88,7 +88,7 @@
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">了解详情</a></string>
   <string name="set_message_password_label">邮件密码</string>
   <string name="set_message_password_label_repeat">再次输入密码</string>
-  <string name="set_message_password_label_hint">密码提示 ( 可选 )</string>
+  <string name="set_message_password_label_hint">密码提示（可选）</string>
   <string name="set_message_password_supporting_text">4 - 21 个字符</string>
   <string name="set_message_password_supporting_error_text">密码必须介于 4 到 21 个字符之间</string>
   <string name="set_message_password_supporting_text_repeat">两次输入的密码必须一致</string>

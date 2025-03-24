@@ -18,10 +18,10 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d</item>
-    <item quantity="few">%d plików</item>
-    <item quantity="many">%d pliki</item>
-    <item quantity="other">%d pliki</item>
+    <item quantity="one">%d plik</item>
+    <item quantity="few">%d pliki</item>
+    <item quantity="many">%d plików</item>
+    <item quantity="other">%d plików</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d więcej</string>
   <string name="attachment_permission_dialog_title">Uprawnienie jest wymagane</string>

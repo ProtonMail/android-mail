@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(გამომგზავნის გარეშე)</string>
   <string name="mailbox_error_message_offline">ინტერნეტკავშირის გარეშე. ელემენტების მიღება შეუძლებელია</string>
   <string name="mailbox_error_message_generic">საფოსტო ყუთის ჩატვირთვის შეცდომა</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">რაღაც, მოულოდნელად, გაფუჭდა</string>
   <string name="mailbox_is_empty_title">შეტყობინებების გარეშე</string>
   <string name="mailbox_is_empty_description">ყველაფერი განახლებულია</string>

@@ -108,7 +108,7 @@
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Člen (%1$d)</item>
-    <item quantity="few">Členové (%1$d)</item>
+    <item quantity="few">Členů (%1$d)</item>
     <item quantity="many">Členů (%1$d)</item>
     <item quantity="other">Členů (%1$d)</item>
   </plurals>

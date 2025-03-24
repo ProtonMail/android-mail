@@ -94,7 +94,7 @@
     <item quantity="one">%d минута</item>
     <item quantity="few">%d минуты</item>
     <item quantity="many">%d минут</item>
-    <item quantity="other">%d минут</item>
+    <item quantity="other">%d минуты</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
     <item quantity="one">%d час</item>
@@ -106,7 +106,7 @@
     <item quantity="one">%d день</item>
     <item quantity="few">%d дня</item>
     <item quantity="many">%d дней</item>
-    <item quantity="other">%d дней</item>
+    <item quantity="other">%d дня</item>
   </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вложения</string>

@@ -19,9 +19,9 @@
 <resources>
   <plurals name="attachment_count_label">
     <item quantity="one">Súbor %d</item>
-    <item quantity="few">%d súborov</item>
-    <item quantity="many">%d súbory</item>
-    <item quantity="other">%d súbory</item>
+    <item quantity="few">%d súbory</item>
+    <item quantity="many">%d súborov</item>
+    <item quantity="other">%d súborov</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d viac</string>
   <string name="attachment_permission_dialog_title">Vyžaduje sa oprávnenie</string>

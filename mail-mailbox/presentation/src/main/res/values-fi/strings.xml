@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Ei lähettäjää)</string>
   <string name="mailbox_error_message_offline">Ei yhteyttä. Kohteita ei voida noutaa.</string>
   <string name="mailbox_error_message_generic">Postilaatikon lataus epäonnistui</string>
+  <string name="mailbox_error_search_input_invalid">Syötä vain alfanumeerisia merkkejä hakutermiin.</string>
   <string name="mailbox_error_message_unexpected">Jotain meni yllättäen pieleen</string>
   <string name="mailbox_is_empty_title">Viestejä ei ole</string>
   <string name="mailbox_is_empty_description">Olet ajan tasalla</string>

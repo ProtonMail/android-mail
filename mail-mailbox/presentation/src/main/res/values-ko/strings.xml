@@ -34,6 +34,7 @@
   <string name="mailbox_default_sender">(보낸 사람 없음)</string>
   <string name="mailbox_error_message_offline">사용자가 오프라인 상태입니다, 항목 수신이 불가합니다</string>
   <string name="mailbox_error_message_generic">메일함 로딩 실패</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">예상치 못한 문제가 발생했습니다</string>
   <string name="mailbox_is_empty_title">메시지 없음</string>
   <string name="mailbox_is_empty_description">최신 상태입니다</string>

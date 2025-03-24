@@ -159,14 +159,14 @@
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">Осталась %s попытка.</item>
     <item quantity="few">Остались %s попытки.</item>
-    <item quantity="many">Остались %s попыток.</item>
-    <item quantity="other">Остались %s попыток.</item>
+    <item quantity="many">Осталось %s попыток.</item>
+    <item quantity="other">Осталось %s попытки.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">Осталась %s попытка до безопасного стирания данных.</item>
     <item quantity="few">Остались %s попытки до безопасного стирания данных.</item>
-    <item quantity="many">Остались %s попыток до безопасного стирания данных.</item>
-    <item quantity="other">Остались %s попытки до безопасного стирания данных.</item>
+    <item quantity="many">Осталось %s попыток до безопасного стирания данных.</item>
+    <item quantity="other">Осталось %s попытки до безопасного стирания данных.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Произошла ошибка при проверке вашего PIN-а.</string>
   <string name="mail_settings_pin_insertion_signout_text">Выйти</string>

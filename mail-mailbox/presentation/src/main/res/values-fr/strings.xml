@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(aucun expéditeur)</string>
   <string name="mailbox_error_message_offline">Vous êtes hors ligne, il n\'est pas possible de récupérer les éléments.</string>
   <string name="mailbox_error_message_generic">Le chargement de la messagerie n\'a pas abouti.</string>
+  <string name="mailbox_error_search_input_invalid">Veuillez inclure uniquement des caractères alphanumériques dans votre critère de recherche.</string>
   <string name="mailbox_error_message_unexpected">Une erreur imprévue s\'est produite.</string>
   <string name="mailbox_is_empty_title">Aucun message</string>
   <string name="mailbox_is_empty_description">Vous êtes à jour.</string>

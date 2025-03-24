@@ -159,7 +159,7 @@
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">Zostáva %s pokus.</item>
     <item quantity="few">Zostávajú %s pokusy.</item>
-    <item quantity="many">Zostávajú %s pokusy.</item>
+    <item quantity="many">Zostáva %s pokusov.</item>
     <item quantity="other">Zostáva %s pokusov.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">

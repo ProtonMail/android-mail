@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Ingen afsender)</string>
   <string name="mailbox_error_message_offline">Du er offline og kan ikke hente elementer</string>
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">Et eller andet gik uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen beskeder</string>
   <string name="mailbox_is_empty_description">Du er ajour</string>

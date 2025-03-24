@@ -56,7 +56,7 @@
   <string name="contact_actions_copy_name_description">複製聯絡名稱</string>
   <string name="contact_actions_copy_name_performed">名稱已複製到剪貼簿</string>
   <string name="contact_actions_new_message">新訊息</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">開始為此聯絡人撰寫新訊息</string>
   <string name="contact_actions_add_contact">新增聯絡人</string>
   <string name="contact_actions_add_contact_description">將此收件者儲存為聯絡人</string>
   <string name="contact_actions_view_contact_details">檢視聯絡人詳細資料</string>
@@ -68,5 +68,5 @@
   <string name="device_contacts_permission_dialog_action_button">請求授權</string>
   <string name="device_contacts_permission_dialog_action_button_deny">拒絕</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">View entire message</string>
+  <string name="button_view_entire_message">檢視完整訊息</string>
 </resources>

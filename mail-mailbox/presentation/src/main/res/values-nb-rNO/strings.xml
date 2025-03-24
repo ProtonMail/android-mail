@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(Ingen avsender)</string>
   <string name="mailbox_error_message_offline">Du er i frakoblet modus, ikke i stand til å hente elementer.</string>
   <string name="mailbox_error_message_generic">Lasting av postboks mislyktes</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">Noe gikk uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen meldinger</string>
   <string name="mailbox_is_empty_description">Du er à jour</string>

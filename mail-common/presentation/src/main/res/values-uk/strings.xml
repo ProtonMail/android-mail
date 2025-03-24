@@ -92,7 +92,7 @@
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення буде автоматично видалиться через %s</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d хвилина</item>
-    <item quantity="few">%d хвилин</item>
+    <item quantity="few">%d хвилини</item>
     <item quantity="many">%d хвилин</item>
     <item quantity="other">%d хвилин</item>
   </plurals>

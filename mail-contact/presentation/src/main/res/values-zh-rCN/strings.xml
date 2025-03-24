@@ -43,7 +43,7 @@
   <string name="contact_groups_content_description">联系人群组</string>
   <string name="contact_type_email">电子邮箱</string>
   <string name="contact_type_phone">电话号码</string>
-  <string name="contact_type_home">主页</string>
+  <string name="contact_type_home">首页</string>
   <string name="contact_type_work">工作</string>
   <string name="contact_type_other">其它</string>
   <string name="contact_type_mobile">手机</string>
@@ -104,7 +104,7 @@
     <item quantity="other">%1$d 位成员</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="other">成员 ( %1$d )</item>
+    <item quantity="other">成员 (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">保存联系人出错，其中包含无效电子邮件地址</string>
   <string name="contact_group_details_loading_error">加载联系人群组出错，请稍后再试</string>

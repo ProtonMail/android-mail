@@ -36,6 +36,7 @@
   <string name="mailbox_default_sender">(भेजनेवाले नहीं)</string>
   <string name="mailbox_error_message_offline">आप ऑफलाइन है, चीज़े लाने में असफल</string>
   <string name="mailbox_error_message_generic">मेलबॉक्स लोड करने में विफल है</string>
+  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
   <string name="mailbox_error_message_unexpected">अप्रत्याशित रूप से कुछ गलत हो गया</string>
   <string name="mailbox_is_empty_title">कोई संदेश नहीं</string>
   <string name="mailbox_is_empty_description">आप अप-टू-डेट हैं</string>
