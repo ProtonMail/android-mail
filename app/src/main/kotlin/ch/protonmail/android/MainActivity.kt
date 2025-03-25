@@ -41,6 +41,7 @@ import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.notification.presentation.deeplink.DeeplinkManager
 import me.proton.core.notification.presentation.deeplink.onActivityCreate
@@ -75,8 +76,9 @@ class MainActivity : AppCompatActivity() {
         // Register activities for result.
         launcherViewModel.register(this)
 
-        // Pass this activity's lifecycleScope to allow proper cancellation.
-        observePostSubscription.start(this, lifecycleScope)
+        lifecycleScope.launch {
+            observePostSubscription.start(this@MainActivity)
+        }
 
         shareIntentObserver.onNewIntent(intent)
 

@@ -18,24 +18,17 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.cancel
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.Completed
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.Pending
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.flow.map
 import me.proton.core.accountmanager.domain.SessionManager
-import me.proton.core.domain.entity.UserId
-import me.proton.core.payment.domain.PurchaseManager
-import me.proton.core.payment.domain.entity.PurchaseState
-import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.extension.hasSubscriptionForMail
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,91 +42,46 @@ import kotlin.time.Duration.Companion.seconds
  */
 @Singleton
 internal class ObserveUserSubscriptionUpgrade @Inject constructor(
-    private val userManager: UserManager,
-    private val observePrimaryUserId: ObservePrimaryUserId,
+    private val observePrimaryUser: ObservePrimaryUser,
     private val sessionManager: SessionManager,
-    private val purchaseManager: PurchaseManager,
     private val userUpgradeState: UserUpgradeState,
-    @AppScope private val scope: CoroutineScope
+    private val observeCurrentPurchasesState: ObserveCurrentPurchasesState,
+    private val resetPurchaseStatus: ResetPurchaseStatus
 ) {
 
-    private var observationJob: Job? = null
-
     suspend fun start() {
-        observePrimaryUserId().filterNotNull().distinctUntilChanged().collectLatest { user ->
-            // Cancel observation if the user already has a subscription.
-            if (userManager.getUser(user).hasSubscriptionForMail()) return@collectLatest
-
-            val sessionId = sessionManager.getSessionId(user)
-
-            purchaseManager.observePurchases().collectLatest purchases@{ purchases ->
-                val userIdPurchases = purchases.filter { it.sessionId == sessionId }
-
-                if (userIdPurchases.isEmpty()) {
-                    userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed)
-                    return@purchases
-                }
-
-                val hasPendingPurchases = userIdPurchases.any {
-                    it.purchaseState in listOf(
-                        PurchaseState.Pending,
-                        PurchaseState.Purchased,
-                        PurchaseState.Subscribed
-                    )
-                }
-
-                // Either Acknowledged or Deleted with no failure.
-                val hasAcknowledgedOrDeletedPurchases = userIdPurchases.any {
-                    it.purchaseState == PurchaseState.Acknowledged ||
-                        it.purchaseState == PurchaseState.Deleted && it.purchaseFailure == null
-                }
-
-                when {
-                    hasPendingPurchases -> {
-                        userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending)
-                    }
-
-                    hasAcknowledgedOrDeletedPurchases -> {
-                        stopObserving()
-                        startObserving(user)
-                    }
-
-                    else -> {
-                        userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed)
-                        return@purchases
-                    }
-                }
-            }
-        }
-    }
-
-    private fun startObserving(userId: UserId) {
-        userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending)
-
-        observationJob = scope.launch {
-            supervisorScope {
-                val job = launch innerScope@{
-                    userManager.observeUser(userId).filterNotNull().collect {
-
-                        if (it.hasSubscriptionForMail()) {
-                            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed)
-                            this@innerScope.cancel()
+        observePrimaryUser()
+            .filterNotNull()
+            .map { it to it.hasSubscriptionForMail() }
+            .distinctUntilChangedBy { it.second }
+            .collectLatest { (user, hasSubscription) ->
+                if (hasSubscription) {
+                    userUpgradeState.updateState(CompletedWithUpgrade)
+                    resetPurchaseStatus.invoke()
+                } else {
+                    val sessionId = sessionManager.getSessionId(user.userId)
+                    observeCurrentPurchasesState(sessionId).collectLatest {
+                        when (it) {
+                            CurrentPurchasesState.Pending -> {
+                                userUpgradeState.updateState(Pending)
+                            }
+                            CurrentPurchasesState.Deleted -> {
+                                userUpgradeState.updateState(Pending)
+                                delay(TIMEOUT)
+                                userUpgradeState.updateState(Completed)
+                            }
+                            CurrentPurchasesState.Acknowledged -> {
+                                userUpgradeState.updateState(CompletedWithUpgrade)
+                                delay(TIMEOUT)
+                                userUpgradeState.updateState(Completed)
+                            }
+                            CurrentPurchasesState.NotApplicable -> {
+                                userUpgradeState.updateState(Completed)
+                            }
                         }
                     }
                 }
-
-                try {
-                    withTimeout(TIMEOUT) { job.join() }
-                } catch (_: TimeoutCancellationException) {
-                    userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed)
-                }
             }
-        }
-    }
-
-    private fun stopObserving() {
-        observationJob?.cancel()
-        userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Initial)
     }
 
     private companion object {

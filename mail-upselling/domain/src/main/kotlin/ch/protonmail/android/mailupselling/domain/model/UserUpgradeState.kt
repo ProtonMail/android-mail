@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailupselling.domain.model
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,7 +37,7 @@ class UserUpgradeState @Inject constructor() {
      *
      * Note that currently it only supports Free -> Paid plan transitions.
      */
-    val userUpgradeCheckState: StateFlow<UserUpgradeCheckState> = _userUpgradeCheckState.asStateFlow()
+    val userUpgradeCheckState: Flow<UserUpgradeCheckState> = _userUpgradeCheckState.asStateFlow()
 
     /**
      * Returns whether the current user is upgrading their subscription.
@@ -58,6 +58,7 @@ class UserUpgradeState @Inject constructor() {
 
         data object Initial : UserUpgradeCheckState
         data object Completed : UserUpgradeCheckState
+        data object CompletedWithUpgrade : UserUpgradeCheckState
         data object Pending : UserUpgradeCheckState
     }
 }

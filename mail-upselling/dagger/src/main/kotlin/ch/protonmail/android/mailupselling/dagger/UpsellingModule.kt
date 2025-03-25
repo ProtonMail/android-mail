@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
+import ch.protonmail.android.mailupselling.data.repository.CurrentPurchaseStatusRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
@@ -28,6 +29,7 @@ import ch.protonmail.android.mailupselling.domain.annotations.SidebarUpsellingEn
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
+import ch.protonmail.android.mailupselling.domain.repository.CurrentPurchaseStatusRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
@@ -125,6 +127,12 @@ interface UpsellingLocalDataModule {
     @Binds
     @Reusable
     fun provideUpsellingVisibilityRepository(impl: UpsellingVisibilityRepositoryImpl): UpsellingVisibilityRepository
+
+    @Binds
+    @Reusable
+    fun provideCurrentPurchaseStatusRepository(
+        impl: CurrentPurchaseStatusRepositoryImpl
+    ): CurrentPurchaseStatusRepository
 
     @Module
     @InstallIn(SingletonComponent::class)

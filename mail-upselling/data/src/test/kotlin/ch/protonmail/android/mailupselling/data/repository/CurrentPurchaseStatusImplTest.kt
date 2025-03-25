@@ -21,13 +21,14 @@ package ch.protonmail.android.mailupselling.data.repository
 import java.io.IOException
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
-import ch.protonmail.android.mailupselling.domain.model.OneClickUpsellingLastSeenPreference
+import ch.protonmail.android.mailupselling.domain.model.CurrentPurchaseStatus
+import ch.protonmail.android.mailupselling.domain.model.PurchaseStatusUpdate
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -36,28 +37,31 @@ import io.mockk.spyk
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.payment.presentation.viewmodel.ProtonPaymentEvent
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class UpsellingVisibilityRepositoryImplTest {
+internal class CurrentPurchaseStatusImplTest {
 
     private val preferences = mockk<Preferences>()
     private val mockDataStore = spyk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<UpsellingDataStoreProvider> {
         every { this@mockk.upsellingDataStore } returns mockDataStore
     }
-    private val repository = UpsellingVisibilityRepositoryImpl(dataStoreProvider)
+    private val repository = CurrentPurchaseStatusRepositoryImpl(dataStoreProvider)
+
+    private val prefKey = "currentPurchaseStatus"
 
     @Test
-    fun `returns false when no preference is stored locally`() = runTest {
+    fun `returns initial when no preference is stored locally`() = runTest {
         // Given
-        coEvery { preferences.get<Boolean>(any()) } returns null
+        coEvery { preferences.get<String>(any()) } returns null
         every { mockDataStore.data } returns flowOf(preferences)
 
         // When
         repository.observe().test {
             // Then
-            assertEquals(DefaultValue.right(), awaitItem())
+            assertEquals(InitialStatus.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -65,13 +69,13 @@ internal class UpsellingVisibilityRepositoryImplTest {
     @Test
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
-        coEvery { preferences[longPreferencesKey("oneClickLastSeenTimestamp")] } returns AnotherValue.timestamp
+        coEvery { preferences[stringPreferencesKey(prefKey)] } returns "GiapSuccess"
         every { mockDataStore.data } returns flowOf(preferences)
 
         // When
         repository.observe().test {
             // Then
-            assertEquals(AnotherValue.right(), awaitItem())
+            assertEquals(GiapSuccessStatus.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -94,8 +98,9 @@ internal class UpsellingVisibilityRepositoryImplTest {
         // Given
         val expectedResult = Unit.right()
 
+
         // When
-        val result = repository.update(AnotherValue.timestamp)
+        val result = repository.onNewUpdate(PurchaseStatusUpdate(ProtonPaymentEvent.Error.PurchaseNotFound))
 
         // Then
         coVerify { mockDataStore.updateData(any()) }
@@ -109,7 +114,7 @@ internal class UpsellingVisibilityRepositoryImplTest {
         coEvery { mockDataStore.updateData(any()) } throws IOException()
 
         // When
-        val result = repository.update(AnotherValue.timestamp)
+        val result = repository.onNewUpdate(PurchaseStatusUpdate(ProtonPaymentEvent.Error.RecoverableBillingError))
 
         // Then
         assertEquals(expectedResult, result)
@@ -117,7 +122,7 @@ internal class UpsellingVisibilityRepositoryImplTest {
 
     private companion object {
 
-        val DefaultValue = OneClickUpsellingLastSeenPreference(0L)
-        val AnotherValue = OneClickUpsellingLastSeenPreference(123L)
+        val GiapSuccessStatus = CurrentPurchaseStatus(CurrentPurchaseStatus.FlowStatus.GiapSuccess)
+        val InitialStatus = CurrentPurchaseStatus(CurrentPurchaseStatus.FlowStatus.Initial)
     }
 }

@@ -18,14 +18,20 @@
 
 package ch.protonmail.upselling.domain.usecase
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.Completed
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState.Pending
+import ch.protonmail.android.mailupselling.domain.usecase.CurrentPurchasesState
+import ch.protonmail.android.mailupselling.domain.usecase.ObserveCurrentPurchasesState
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveUserSubscriptionUpgrade
-import ch.protonmail.upselling.domain.UpsellingTestData
-import ch.protonmail.upselling.domain.UpsellingTestData.BasePurchase
+import ch.protonmail.android.mailupselling.domain.usecase.ResetPurchaseStatus
 import io.mockk.called
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.just
@@ -33,23 +39,20 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import io.mockk.verifyOrder
-import io.mockk.verifySequence
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.network.domain.session.SessionId
-import me.proton.core.payment.domain.PurchaseManager
-import me.proton.core.payment.domain.entity.PurchaseState
-import me.proton.core.user.domain.UserManager
+import me.proton.core.user.domain.entity.User
 import org.junit.After
 import org.junit.Before
 import kotlin.test.Test
@@ -57,26 +60,23 @@ import kotlin.test.Test
 @ExperimentalCoroutinesApi
 class ObserveUserSubscriptionUpgradeTest {
 
-    private val userManager = mockk<UserManager>()
-    private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
+    private val observePrimaryUser = mockk<ObservePrimaryUser>()
     private val sessionManager = mockk<SessionManager>()
-    private val purchaseManager = mockk<PurchaseManager>()
     private val userUpgradeState = mockk<UserUpgradeState>()
+    private val observeCurrentPurchasesState = mockk<ObserveCurrentPurchasesState>()
+    private val resetPurchaseStatus = mockk<ResetPurchaseStatus>()
 
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher()
     }
 
-    private val coroutineScope = CoroutineScope(SupervisorJob() + testDispatcher)
-
     private val observeUserSubscriptionUpgrade by lazy {
         ObserveUserSubscriptionUpgrade(
-            userManager,
-            observePrimaryUserId,
+            observePrimaryUser,
             sessionManager,
-            purchaseManager,
             userUpgradeState,
-            coroutineScope
+            observeCurrentPurchasesState,
+            resetPurchaseStatus
         )
     }
 
@@ -91,13 +91,9 @@ class ObserveUserSubscriptionUpgradeTest {
     }
 
     @Test
-    fun `should do nothing when the user already has a mail subscription`() = runTest {
+    fun `should only reset and mark complete when the user already has a mail subscription`() = runTest {
         // Given
-        val user = UpsellingTestData.userId
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 1)
-
+        expectPaidUser()
 
         // When
         observeUserSubscriptionUpgrade.start()
@@ -105,137 +101,274 @@ class ObserveUserSubscriptionUpgradeTest {
         // Then
         verify(exactly = 1) {
             sessionManager wasNot called
-            purchaseManager wasNot called
-            userUpgradeState wasNot called
+            observeCurrentPurchasesState wasNot called
         }
+        coVerify(exactly = 1) { resetPurchaseStatus() }
+        verify(exactly = 1) { userUpgradeState.updateState(CompletedWithUpgrade) }
     }
 
     @Test
-    fun `should set the state as Not Pending when the user has no purchases`() = runTest {
+    fun `should set the state as Completed when the user has no applicable purchases`() = runTest {
         // Given
-        val user = UpsellingTestData.userId
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 0)
-        coEvery { sessionManager.getSessionId(user) } returns SessionId(user.id)
-        every { purchaseManager.observePurchases() } returns flowOf(emptyList())
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed) } just runs
+        expectFreeUser()
+        expectPurchaseStates(CurrentPurchasesState.NotApplicable)
+        expectUpdateCheckRuns(Completed)
 
         // When
         observeUserSubscriptionUpgrade.start()
 
         // Then
-        verify(exactly = 1) { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed) }
-        confirmVerified(userUpgradeState)
-    }
-
-    @Test
-    fun `should set the state as Not Pending when the user has no eligible purchases to trigger the check`() = runTest {
-        // Given
-        val user = UpsellingTestData.userId
-        val purchases = listOf(
-            BasePurchase.copy(purchaseState = PurchaseState.Deleted, purchaseFailure = "dummy message")
-        )
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 0)
-        coEvery { sessionManager.getSessionId(user) } returns SessionId(user.id)
-        every { purchaseManager.observePurchases() } returns flowOf(purchases)
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed) } just runs
-
-        // When
-        observeUserSubscriptionUpgrade.start()
-
-        // Then
-        verify(exactly = 1) { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed) }
+        verify(exactly = 1) { userUpgradeState.updateState(Completed) }
         confirmVerified(userUpgradeState)
     }
 
     @Test
     fun `should update state to Pending with pending purchases and user has no mail subscription`() = runTest {
         // Given
-        val user = UpsellingTestData.userId
-        val purchases = listOf(
-            BasePurchase.copy(purchaseState = PurchaseState.Pending),
-            BasePurchase.copy(purchaseState = PurchaseState.Subscribed)
-        )
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { sessionManager.getSessionId(user) } returns SessionId(user.id)
-        every { purchaseManager.observePurchases() } returns flowOf(purchases)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 0)
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending) } just runs
+        expectFreeUser()
+        expectUpdateCheckRuns(Pending)
+        expectPurchaseStates(CurrentPurchasesState.Pending)
 
         // When
         observeUserSubscriptionUpgrade.start()
 
         // Then
-        verify(exactly = 1) { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending) }
+        verify(exactly = 1) { userUpgradeState.updateState(Pending) }
         confirmVerified(userUpgradeState)
     }
 
+//
     @Test
-    fun `should stop and start observation when there are acknowledged or deleted purchases`() = runTest {
+    fun `should set to pending and then complete when there are deleted purchases`() = runTest {
         // Given
-        val user = UpsellingTestData.userId
-        val purchases = listOf(
-            BasePurchase.copy(purchaseState = PurchaseState.Acknowledged),
-            BasePurchase.copy(purchaseState = PurchaseState.Deleted, purchaseFailure = null)
-        )
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { sessionManager.getSessionId(user) } returns SessionId(user.id)
-        every { purchaseManager.observePurchases() } returns flowOf(purchases)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 0)
-        coEvery { userManager.observeUser(user) } returns flowOf(UserSample.Primary.copy(subscribed = 0))
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Initial) } just runs
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending) } just runs
+        expectFreeUser()
+        expectPurchaseStates(CurrentPurchasesState.Deleted)
+        expectUpdateCheckRuns(Pending)
+        expectUpdateCheckRuns(Completed)
 
         // When
         observeUserSubscriptionUpgrade.start()
 
         // Then
         verifyOrder {
-            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Initial)
-            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending)
+            userUpgradeState.updateState(Pending)
+            userUpgradeState.updateState(Completed)
         }
 
         confirmVerified(userUpgradeState)
     }
 
     @Test
-    fun `should stop observing as soon as user has mail subscription`() = runTest {
+    fun `should set to complete with upgrade and then complete when there are acknowledged purchases`() = runTest {
         // Given
-        val user = UpsellingTestData.userId
-        val purchases = listOf(
-            BasePurchase.copy(purchaseState = PurchaseState.Acknowledged),
-            BasePurchase.copy(purchaseState = PurchaseState.Deleted, purchaseFailure = null)
-        )
-
-        every { observePrimaryUserId.invoke() } returns flowOf(user)
-        coEvery { sessionManager.getSessionId(user) } returns SessionId(user.id)
-        every { purchaseManager.observePurchases() } returns flowOf(purchases)
-        coEvery { userManager.getUser(user) } returns UserSample.Primary.copy(subscribed = 0)
-        coEvery { userManager.observeUser(user) } coAnswers {
-            flowOf(UserSample.Primary.copy(subscribed = 1))
-        }
-
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Initial) } just runs
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending) } just runs
-        every { userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed) } just runs
+        expectFreeUser()
+        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectUpdateCheckRuns(Completed)
 
         // When
         observeUserSubscriptionUpgrade.start()
-        advanceUntilIdle()
 
         // Then
-        verifySequence {
-            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Initial)
-            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Pending)
-            userUpgradeState.updateState(UserUpgradeState.UserUpgradeCheckState.Completed)
+        verifyOrder {
+            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(Completed)
         }
 
         confirmVerified(userUpgradeState)
+    }
+
+    @Test
+    fun `should set to complete with upgrade and finish observation upon a new paid user`() = runTest {
+        // Given
+        expectUsersFlow(
+            flow {
+                emit(FreeUser)
+                delay(10_000)
+                emit(PaidUser)
+            }
+        )
+
+        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+
+        // When
+        observeUserSubscriptionUpgrade.start()
+
+        // Then
+        verifyOrder {
+            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade)
+        }
+
+        confirmVerified(userUpgradeState)
+    }
+
+    @Test
+    fun `should set to complete and finish observation upon a new paid user`() = runTest {
+        // Given
+        expectUsersFlow(
+            flow {
+                emit(FreeUser)
+                delay(10_000)
+                emit(PaidUser)
+            }
+        )
+        expectPurchaseStates(CurrentPurchasesState.Deleted)
+        expectUpdateCheckRuns(Pending)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+
+        // When
+        observeUserSubscriptionUpgrade.start()
+
+        // Then
+        verifyOrder {
+            userUpgradeState.updateState(Pending)
+            userUpgradeState.updateState(CompletedWithUpgrade)
+        }
+
+        confirmVerified(userUpgradeState)
+    }
+
+    @Test
+    fun `should set to complete with upgrade and revert to complete if no new paid user`() = runTest {
+        // Given
+        expectUsersFlow(
+            flow {
+                emit(FreeUser)
+            }
+        )
+        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectUpdateCheckRuns(Completed)
+
+        // When
+        observeUserSubscriptionUpgrade.start()
+
+        // Then
+        verifyOrder {
+            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(Completed)
+        }
+
+        confirmVerified(userUpgradeState)
+    }
+
+    @Test
+    fun `should set to pending when there are deleted purchases and revert to complete if no new paid user`() =
+        runTest {
+            // Given
+            expectUsersFlow(
+                flow {
+                    emit(FreeUser)
+                }
+            )
+            expectPurchaseStates(CurrentPurchasesState.Deleted)
+            expectUpdateCheckRuns(Pending)
+            expectUpdateCheckRuns(Completed)
+
+            // When
+            observeUserSubscriptionUpgrade.start()
+
+            // Then
+            verifyOrder {
+                userUpgradeState.updateState(Pending)
+                userUpgradeState.updateState(Completed)
+            }
+
+            confirmVerified(userUpgradeState)
+        }
+
+    @Test
+    fun `should update state corresponding to purchases states`() = runTest {
+        // Given
+        expectFreeUser()
+        expectPurchaseStates(
+            CurrentPurchasesState.NotApplicable,
+            CurrentPurchasesState.Deleted,
+            CurrentPurchasesState.NotApplicable,
+            CurrentPurchasesState.Acknowledged,
+            CurrentPurchasesState.NotApplicable
+        )
+        expectUpdateCheckRuns(Pending)
+        expectUpdateCheckRuns(Completed)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+
+        // When
+        observeUserSubscriptionUpgrade.start()
+
+        // Then
+        verifyOrder {
+            userUpgradeState.updateState(Completed)
+            userUpgradeState.updateState(Pending)
+            userUpgradeState.updateState(Completed)
+            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(Completed)
+        }
+
+        confirmVerified(userUpgradeState)
+    }
+
+    @Test
+    fun `should set state to pending, then ignore further purcahses upon a new paid user`() = runTest {
+        // Given
+        expectUsersFlow(
+            flow {
+                emit(FreeUser)
+                delay(10_000)
+                emit(PaidUser)
+            }
+        )
+        every { observeCurrentPurchasesState(SessionId(SessionId)) } returns flow {
+            emit(CurrentPurchasesState.Pending)
+            delay(15_000)
+            emit(CurrentPurchasesState.NotApplicable)
+        }
+        expectUpdateCheckRuns(Pending)
+        expectUpdateCheckRuns(CompletedWithUpgrade)
+
+        // When
+        observeUserSubscriptionUpgrade.start()
+
+        // Then
+        verifyOrder {
+            userUpgradeState.updateState(Pending)
+            userUpgradeState.updateState(CompletedWithUpgrade)
+        }
+
+        confirmVerified(userUpgradeState)
+    }
+
+    private fun expectFreeUser() {
+        coEvery { observePrimaryUser() } returns flowOf(FreeUser)
+        coEvery { sessionManager.getSessionId(FreeUser.userId) } returns SessionId(SessionId)
+    }
+
+    private fun expectPaidUser() {
+        coEvery { observePrimaryUser() } returns flowOf(PaidUser)
+        coEvery { resetPurchaseStatus() } returns Unit.right()
+        coEvery { userUpgradeState.updateState(any()) } just runs
+    }
+
+    private fun expectUsersFlow(user: Flow<User>) {
+        coEvery { observePrimaryUser() } returns user
+        coEvery { sessionManager.getSessionId(FreeUser.userId) } returns SessionId(SessionId)
+        coEvery { sessionManager.getSessionId(PaidUser.userId) } returns SessionId(SessionId)
+        coEvery { resetPurchaseStatus() } returns Unit.right()
+    }
+
+    private fun expectUpdateCheckRuns(checkState: UserUpgradeState.UserUpgradeCheckState) {
+        every { userUpgradeState.updateState(checkState) } just runs
+    }
+
+    private fun expectPurchaseStates(vararg states: CurrentPurchasesState) {
+        every { observeCurrentPurchasesState(SessionId(SessionId)) } returns flowOf(*states)
+    }
+
+    companion object {
+        private val PaidUser = UserSample.Primary.copy(subscribed = 1)
+        private val FreeUser = UserSample.Primary.copy(subscribed = 0)
+        private const val SessionId = "session-id"
     }
 }
 

@@ -22,63 +22,65 @@ import java.lang.ref.WeakReference
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import ch.protonmail.android.PostSubscriptionActivity
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import kotlinx.coroutines.CoroutineScope
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpgradeCheckState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
-import me.proton.core.accountmanager.domain.SessionManager
-import me.proton.core.payment.domain.PurchaseManager
-import me.proton.core.payment.domain.entity.PurchaseState
-import me.proton.core.user.domain.UserManager
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import me.proton.core.user.domain.extension.hasSubscriptionForMail
 import javax.inject.Inject
 
 class ObservePostSubscription @Inject constructor(
     private val observePostSubscriptionFlowEnabled: ObservePostSubscriptionFlowEnabled,
-    private val observePrimaryUserId: ObservePrimaryUserId,
-    private val purchaseManager: PurchaseManager,
-    private val sessionManager: SessionManager,
-    private val userManager: UserManager
+    private val observePrimaryUser: ObservePrimaryUser,
+    private val userUpgradeState: UserUpgradeState
 ) {
 
-    fun start(activity: AppCompatActivity, scope: CoroutineScope) {
+    suspend fun start(activity: AppCompatActivity) {
         val activityReference = WeakReference(activity)
-
-        scope.launch {
-            observePrimaryUserId().filterNotNull().distinctUntilChanged().collectLatest { userId ->
-                // Cancel observation if the user already has a subscription.
-                if (userManager.getUser(userId).hasSubscriptionForMail()) return@collectLatest
-
-                observePostSubscriptionFlowEnabled(userId).collectLatest featureFlag@{ isPostSubscriptionFlowEnabled ->
-                    // Proceed only if the FF is enabled
-                    if (isPostSubscriptionFlowEnabled?.value == true) {
-
-                        val sessionId = sessionManager.getSessionId(userId)
-
-                        purchaseManager.observePurchases().distinctUntilChanged().collectLatest purchases@{ purchases ->
-                            // Make sure the purchase was completed from the app
-                            val currentSessionPurchases = purchases.filter { it.sessionId == sessionId }
-                            val isMailPlusCompletedPurchaseFound = currentSessionPurchases.any {
-                                it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState == PurchaseState.Acknowledged
-                            }
-
-                            activityReference.get()?.let { activity ->
-                                if (isMailPlusCompletedPurchaseFound) {
-                                    val intent = Intent(activity, PostSubscriptionActivity::class.java)
-                                    activity.startActivity(intent)
-                                }
-                            }
-                        }
+        var startedPendingPurchase = false
+        observePrimaryUser()
+            .filterNotNull()
+            .map { it to it.hasSubscriptionForMail() }
+            .distinctUntilChangedBy { it.second }
+            .collectLatest { (user, hasSubscription) ->
+                if (hasSubscription) {
+                    if (startedPendingPurchase) {
+                        startedPendingPurchase = false
+                        activityReference.showPostSubscription()
                     }
+                    return@collectLatest
                 }
+                observePostSubscriptionFlowEnabled(user.userId)
+                    .filter { it?.value == true }
+                    .distinctUntilChanged()
+                    .collectLatest innerCollector@{
+                        userUpgradeState.userUpgradeCheckState.awaitPurchaseFlowStarted() ?: return@innerCollector
+                        startedPendingPurchase = true
+                        userUpgradeState.userUpgradeCheckState.awaitPurchaseAcknowledge() ?: return@innerCollector
+                        startedPendingPurchase = false
+                        activityReference.showPostSubscription()
+                    }
             }
+    }
+
+    private fun WeakReference<AppCompatActivity>.showPostSubscription() {
+        get()?.let { activity ->
+            activity.startActivity(Intent(activity, PostSubscriptionActivity::class.java))
         }
     }
 
-    companion object {
+    private suspend fun Flow<UserUpgradeCheckState>.awaitPurchaseFlowStarted() = filter {
+        it == UserUpgradeCheckState.Pending
+    }.firstOrNull()
 
-        private const val MAIL_PLUS_PLAN_NAME = "mail2022"
-    }
+    private suspend fun Flow<UserUpgradeCheckState>.awaitPurchaseAcknowledge() = filter {
+        it == UserUpgradeCheckState.CompletedWithUpgrade
+    }.firstOrNull()
 }

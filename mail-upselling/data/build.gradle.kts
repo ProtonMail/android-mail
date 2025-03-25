@@ -53,5 +53,6 @@ android {
         implementation(project(":mail-common:domain"))
 
         testImplementation(libs.bundles.test)
+        testImplementation(libs.proton.core.payment)
     }
 }
