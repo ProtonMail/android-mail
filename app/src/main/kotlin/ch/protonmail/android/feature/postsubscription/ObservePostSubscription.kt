@@ -61,9 +61,9 @@ class ObservePostSubscription @Inject constructor(
                     .filter { it?.value == true }
                     .distinctUntilChanged()
                     .collectLatest innerCollector@{
-                        userUpgradeState.userUpgradeCheckState.awaitPurchaseFlowStarted() ?: return@innerCollector
+                        userUpgradeState.userUpgradeCheckState.awaitFlowStarted() ?: return@innerCollector
                         startedPendingPurchase = true
-                        userUpgradeState.userUpgradeCheckState.awaitPurchaseAcknowledge() ?: return@innerCollector
+                        userUpgradeState.userUpgradeCheckState.awaitFlowComplete() ?: return@innerCollector
                         startedPendingPurchase = false
                         activityReference.showPostSubscription()
                     }
@@ -76,11 +76,11 @@ class ObservePostSubscription @Inject constructor(
         }
     }
 
-    private suspend fun Flow<UserUpgradeCheckState>.awaitPurchaseFlowStarted() = filter {
+    private suspend fun Flow<UserUpgradeCheckState>.awaitFlowStarted() = filter {
         it == UserUpgradeCheckState.Pending
     }.firstOrNull()
 
-    private suspend fun Flow<UserUpgradeCheckState>.awaitPurchaseAcknowledge() = filter {
+    private suspend fun Flow<UserUpgradeCheckState>.awaitFlowComplete() = filter {
         it == UserUpgradeCheckState.CompletedWithUpgrade
     }.firstOrNull()
 }

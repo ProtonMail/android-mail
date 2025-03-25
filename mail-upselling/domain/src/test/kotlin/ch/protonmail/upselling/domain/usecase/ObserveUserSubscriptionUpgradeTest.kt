@@ -18,7 +18,6 @@
 
 package ch.protonmail.upselling.domain.usecase
 
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
@@ -28,10 +27,8 @@ import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState.UserUpg
 import ch.protonmail.android.mailupselling.domain.usecase.CurrentPurchasesState
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveCurrentPurchasesState
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveUserSubscriptionUpgrade
-import ch.protonmail.android.mailupselling.domain.usecase.ResetPurchaseStatus
 import io.mockk.called
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.just
@@ -64,7 +61,6 @@ class ObserveUserSubscriptionUpgradeTest {
     private val sessionManager = mockk<SessionManager>()
     private val userUpgradeState = mockk<UserUpgradeState>()
     private val observeCurrentPurchasesState = mockk<ObserveCurrentPurchasesState>()
-    private val resetPurchaseStatus = mockk<ResetPurchaseStatus>()
 
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher()
@@ -75,8 +71,7 @@ class ObserveUserSubscriptionUpgradeTest {
             observePrimaryUser,
             sessionManager,
             userUpgradeState,
-            observeCurrentPurchasesState,
-            resetPurchaseStatus
+            observeCurrentPurchasesState
         )
     }
 
@@ -103,7 +98,6 @@ class ObserveUserSubscriptionUpgradeTest {
             sessionManager wasNot called
             observeCurrentPurchasesState wasNot called
         }
-        coVerify(exactly = 1) { resetPurchaseStatus() }
         verify(exactly = 1) { userUpgradeState.updateState(CompletedWithUpgrade) }
     }
 
@@ -162,7 +156,7 @@ class ObserveUserSubscriptionUpgradeTest {
     fun `should set to complete with upgrade and then complete when there are acknowledged purchases`() = runTest {
         // Given
         expectFreeUser()
-        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
         expectUpdateCheckRuns(CompletedWithUpgrade)
         expectUpdateCheckRuns(Completed)
 
@@ -189,7 +183,7 @@ class ObserveUserSubscriptionUpgradeTest {
             }
         )
 
-        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
         expectUpdateCheckRuns(CompletedWithUpgrade)
 
         // When
@@ -238,7 +232,7 @@ class ObserveUserSubscriptionUpgradeTest {
                 emit(FreeUser)
             }
         )
-        expectPurchaseStates(CurrentPurchasesState.Acknowledged)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
         expectUpdateCheckRuns(CompletedWithUpgrade)
         expectUpdateCheckRuns(Completed)
 
@@ -287,7 +281,7 @@ class ObserveUserSubscriptionUpgradeTest {
             CurrentPurchasesState.NotApplicable,
             CurrentPurchasesState.Deleted,
             CurrentPurchasesState.NotApplicable,
-            CurrentPurchasesState.Acknowledged,
+            CurrentPurchasesState.AcknowledgedOrSubscribed,
             CurrentPurchasesState.NotApplicable
         )
         expectUpdateCheckRuns(Pending)
@@ -346,7 +340,6 @@ class ObserveUserSubscriptionUpgradeTest {
 
     private fun expectPaidUser() {
         coEvery { observePrimaryUser() } returns flowOf(PaidUser)
-        coEvery { resetPurchaseStatus() } returns Unit.right()
         coEvery { userUpgradeState.updateState(any()) } just runs
     }
 
@@ -354,7 +347,6 @@ class ObserveUserSubscriptionUpgradeTest {
         coEvery { observePrimaryUser() } returns user
         coEvery { sessionManager.getSessionId(FreeUser.userId) } returns SessionId(SessionId)
         coEvery { sessionManager.getSessionId(PaidUser.userId) } returns SessionId(SessionId)
-        coEvery { resetPurchaseStatus() } returns Unit.right()
     }
 
     private fun expectUpdateCheckRuns(checkState: UserUpgradeState.UserUpgradeCheckState) {

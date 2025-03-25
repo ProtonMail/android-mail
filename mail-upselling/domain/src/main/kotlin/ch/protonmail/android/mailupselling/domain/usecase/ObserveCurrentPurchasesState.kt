@@ -18,13 +18,9 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import ch.protonmail.android.mailupselling.domain.model.CurrentPurchaseStatus.FlowStatus
-import ch.protonmail.android.mailupselling.domain.repository.CurrentPurchaseStatusRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
@@ -32,27 +28,12 @@ import me.proton.core.payment.domain.entity.PurchaseState
 import javax.inject.Inject
 
 internal class ObserveCurrentPurchasesState @Inject constructor(
-    private val currentPurchaseStatusRepository: CurrentPurchaseStatusRepository,
     private val purchaseManager: PurchaseManager
 ) {
 
     operator fun invoke(sessionId: SessionId?): Flow<CurrentPurchasesState> {
-        val purchaseEvents = purchaseManager.observePurchases().map { it.reduceToEvent(sessionId) }
+        return purchaseManager.observePurchases().map { it.reduceToEvent(sessionId) }
             .distinctUntilChanged()
-        val flowStatuses = currentPurchaseStatusRepository.observe()
-            .mapNotNull { it.getOrNull()?.flowStatus }
-            .distinctUntilChanged()
-
-        return combine(purchaseEvents, flowStatuses) { purchaseEvent, flowStatus ->
-            when (purchaseEvent) {
-                CurrentPurchasesState.Pending,
-                CurrentPurchasesState.Acknowledged,
-                CurrentPurchasesState.Deleted -> purchaseEvent
-                CurrentPurchasesState.NotApplicable -> if (flowStatus == FlowStatus.GiapSuccess) {
-                    CurrentPurchasesState.Pending
-                } else purchaseEvent
-            }
-        }
     }
 
     private fun List<Purchase>.reduceToEvent(sessionId: SessionId?): CurrentPurchasesState {
@@ -61,20 +42,22 @@ internal class ObserveCurrentPurchasesState @Inject constructor(
         val hasPendingPurchases = userIdPurchases.any {
             it.purchaseState in listOf(
                 PurchaseState.Pending,
-                PurchaseState.Purchased,
-                PurchaseState.Subscribed
+                PurchaseState.Purchased
             )
         }
         // Deleted with no failure.
         val hasDeletedPurchases = userIdPurchases.any {
             it.purchaseState == PurchaseState.Deleted && it.purchaseFailure == null
         }
-        val hasAcknowledgedPurchases = userIdPurchases.any {
-            it.purchaseState == PurchaseState.Acknowledged && it.planName == MAIL_PLUS_PLAN_NAME
+        val hasAcknowledgedOrSubscribedPurchases = userIdPurchases.any {
+            it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState in listOf(
+                PurchaseState.Acknowledged,
+                PurchaseState.Subscribed
+            )
         }
         return when {
             hasPendingPurchases -> CurrentPurchasesState.Pending
-            hasAcknowledgedPurchases -> CurrentPurchasesState.Acknowledged
+            hasAcknowledgedOrSubscribedPurchases -> CurrentPurchasesState.AcknowledgedOrSubscribed
             hasDeletedPurchases -> CurrentPurchasesState.Deleted
             else -> CurrentPurchasesState.NotApplicable
         }
@@ -83,4 +66,4 @@ internal class ObserveCurrentPurchasesState @Inject constructor(
 
 private const val MAIL_PLUS_PLAN_NAME = "mail2022"
 
-internal enum class CurrentPurchasesState { Pending, Acknowledged, Deleted, NotApplicable }
+internal enum class CurrentPurchasesState { Pending, AcknowledgedOrSubscribed, Deleted, NotApplicable }

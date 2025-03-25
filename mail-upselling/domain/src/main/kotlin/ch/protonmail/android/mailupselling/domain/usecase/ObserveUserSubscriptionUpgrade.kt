@@ -45,8 +45,7 @@ internal class ObserveUserSubscriptionUpgrade @Inject constructor(
     private val observePrimaryUser: ObservePrimaryUser,
     private val sessionManager: SessionManager,
     private val userUpgradeState: UserUpgradeState,
-    private val observeCurrentPurchasesState: ObserveCurrentPurchasesState,
-    private val resetPurchaseStatus: ResetPurchaseStatus
+    private val observeCurrentPurchasesState: ObserveCurrentPurchasesState
 ) {
 
     suspend fun start() {
@@ -57,7 +56,6 @@ internal class ObserveUserSubscriptionUpgrade @Inject constructor(
             .collectLatest { (user, hasSubscription) ->
                 if (hasSubscription) {
                     userUpgradeState.updateState(CompletedWithUpgrade)
-                    resetPurchaseStatus.invoke()
                 } else {
                     val sessionId = sessionManager.getSessionId(user.userId)
                     observeCurrentPurchasesState(sessionId).collectLatest {
@@ -70,7 +68,7 @@ internal class ObserveUserSubscriptionUpgrade @Inject constructor(
                                 delay(TIMEOUT)
                                 userUpgradeState.updateState(Completed)
                             }
-                            CurrentPurchasesState.Acknowledged -> {
+                            CurrentPurchasesState.AcknowledgedOrSubscribed -> {
                                 userUpgradeState.updateState(CompletedWithUpgrade)
                                 delay(TIMEOUT)
                                 userUpgradeState.updateState(Completed)
