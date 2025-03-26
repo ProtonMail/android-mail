@@ -23,6 +23,14 @@
     <application
         android:networkSecurityConfig="@xml/pm_network_security_config"
         tools:ignore="MissingApplicationIcon">
+
+        <meta-data
+            android:name="com.google.android.play.largest_release_audience.NONPRODUCTION"
+            android:value="" />
+        <meta-data
+            android:name="com.google.android.play.billingclient.enableBillingOverridesTesting"
+            android:value="true" />
+
         <activity android:name="ch.protonmail.android.test.utils.HiltComponentActivity" />
     </application>
 </manifest>
