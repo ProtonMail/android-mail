@@ -20,7 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
-import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
+import ch.protonmail.android.mailnotifications.presentation.NotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.testdata.AccountTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -64,7 +64,7 @@ class LauncherViewModelTest {
     private val plansOrchestrator = mockk<PlansOrchestrator>(relaxUnitFun = true)
     private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
     private val userSettingsOrchestrator = mockk<UserSettingsOrchestrator>(relaxUnitFun = true)
-    private val newNotificationPermissionOrchestrator = mockk<NewNotificationPermissionOrchestrator>(
+    private val notificationPermissionOrchestrator = mockk<NotificationPermissionOrchestrator>(
         relaxUnitFun = true
     )
 
@@ -287,13 +287,13 @@ class LauncherViewModelTest {
         viewModel.submit(LauncherViewModel.Action.RequestNotificationPermission)
 
         // Then
-        verify { newNotificationPermissionOrchestrator.requestPermissionIfRequired() }
+        verify { notificationPermissionOrchestrator.requestPermissionIfRequired() }
     }
 
     private fun buildViewModel() = LauncherViewModel(
         accountManager,
         authOrchestrator,
-        newNotificationPermissionOrchestrator,
+        notificationPermissionOrchestrator,
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator

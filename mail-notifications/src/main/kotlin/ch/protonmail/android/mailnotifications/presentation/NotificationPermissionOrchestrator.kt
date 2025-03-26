@@ -30,7 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NewNotificationPermissionOrchestrator @Inject constructor(
+class NotificationPermissionOrchestrator @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 

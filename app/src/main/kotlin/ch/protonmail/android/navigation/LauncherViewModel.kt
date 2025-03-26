@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
+import ch.protonmail.android.mailnotifications.presentation.NotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
@@ -58,7 +58,7 @@ import javax.inject.Inject
 class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
-    private val newNotificationPermissionOrchestrator: NewNotificationPermissionOrchestrator,
+    private val notificationPermissionOrchestrator: NotificationPermissionOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator
@@ -82,7 +82,7 @@ class LauncherViewModel @Inject constructor(
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
-        newNotificationPermissionOrchestrator.register(context)
+        notificationPermissionOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
@@ -106,7 +106,7 @@ class LauncherViewModel @Inject constructor(
         plansOrchestrator.unregister()
         reportOrchestrator.unregister()
         userSettingsOrchestrator.unregister()
-        newNotificationPermissionOrchestrator.unregister()
+        notificationPermissionOrchestrator.unregister()
     }
 
     fun submit(action: Action) {
@@ -158,7 +158,7 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onRequestNotificationPermission() {
-        newNotificationPermissionOrchestrator.requestPermissionIfRequired()
+        notificationPermissionOrchestrator.requestPermissionIfRequired()
     }
 
     private suspend fun onSignIn(userId: UserId?) {
