@@ -165,7 +165,7 @@ class ObservePostSubscriptionTest {
         expectUpgradeCheckStates(
             flow {
                 emit(UserUpgradeState.UserUpgradeCheckState.Pending)
-                emit(UserUpgradeState.UserUpgradeCheckState.Completed)
+                emit(UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade(listOf(MailPlusPlanName)))
             }
         )
 

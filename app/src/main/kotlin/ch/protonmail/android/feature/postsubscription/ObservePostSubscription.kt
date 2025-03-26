@@ -63,9 +63,12 @@ class ObservePostSubscription @Inject constructor(
                     .collectLatest innerCollector@{
                         userUpgradeState.userUpgradeCheckState.awaitFlowStarted() ?: return@innerCollector
                         startedPendingPurchase = true
-                        userUpgradeState.userUpgradeCheckState.awaitFlowComplete() ?: return@innerCollector
+                        val upgradeState = userUpgradeState.userUpgradeCheckState.awaitFlowComplete()
                         startedPendingPurchase = false
-                        activityReference.showPostSubscription()
+                        if (upgradeState == null) return@innerCollector
+                        if (upgradeState.upgradedPlanNames.contains(MAIL_PLUS_PLAN_NAME)) {
+                            activityReference.showPostSubscription()
+                        }
                     }
             }
     }
@@ -81,8 +84,8 @@ class ObservePostSubscription @Inject constructor(
     }.firstOrNull()
 
     private suspend fun Flow<UserUpgradeCheckState>.awaitFlowComplete() = filter {
-        (it as? UserUpgradeCheckState.CompletedWithUpgrade)?.upgradedPlanNames?.contains(MAIL_PLUS_PLAN_NAME) ?: false
-    }.firstOrNull()
+        it is UserUpgradeCheckState.CompletedWithUpgrade
+    }.firstOrNull() as? UserUpgradeCheckState.CompletedWithUpgrade
 }
 
 private const val MAIL_PLUS_PLAN_NAME = "mail2022"
