@@ -98,7 +98,7 @@ class ObserveUserSubscriptionUpgradeTest {
             sessionManager wasNot called
             observeCurrentPurchasesState wasNot called
         }
-        verify(exactly = 1) { userUpgradeState.updateState(CompletedWithUpgrade) }
+        verify(exactly = 1) { userUpgradeState.updateState(CompletedWithUpgrade(emptyList())) }
     }
 
     @Test
@@ -156,8 +156,8 @@ class ObserveUserSubscriptionUpgradeTest {
     fun `should set to complete with upgrade and then complete when there are acknowledged purchases`() = runTest {
         // Given
         expectFreeUser()
-        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")))
+        expectUpdateCheckRuns(CompletedWithUpgrade(listOf("plan-name")))
         expectUpdateCheckRuns(Completed)
 
         // When
@@ -165,7 +165,7 @@ class ObserveUserSubscriptionUpgradeTest {
 
         // Then
         verifyOrder {
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(listOf("plan-name")))
             userUpgradeState.updateState(Completed)
         }
 
@@ -183,16 +183,17 @@ class ObserveUserSubscriptionUpgradeTest {
             }
         )
 
-        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")))
+        expectUpdateCheckRuns(CompletedWithUpgrade(listOf("plan-name")))
+        expectUpdateCheckRuns(CompletedWithUpgrade(emptyList()))
 
         // When
         observeUserSubscriptionUpgrade.start()
 
         // Then
         verifyOrder {
-            userUpgradeState.updateState(CompletedWithUpgrade)
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(listOf("plan-name")))
+            userUpgradeState.updateState(CompletedWithUpgrade(emptyList()))
         }
 
         confirmVerified(userUpgradeState)
@@ -210,7 +211,7 @@ class ObserveUserSubscriptionUpgradeTest {
         )
         expectPurchaseStates(CurrentPurchasesState.Deleted)
         expectUpdateCheckRuns(Pending)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectUpdateCheckRuns(CompletedWithUpgrade(emptyList()))
 
         // When
         observeUserSubscriptionUpgrade.start()
@@ -218,7 +219,7 @@ class ObserveUserSubscriptionUpgradeTest {
         // Then
         verifyOrder {
             userUpgradeState.updateState(Pending)
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(emptyList()))
         }
 
         confirmVerified(userUpgradeState)
@@ -232,8 +233,8 @@ class ObserveUserSubscriptionUpgradeTest {
                 emit(FreeUser)
             }
         )
-        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectPurchaseStates(CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")))
+        expectUpdateCheckRuns(CompletedWithUpgrade(listOf("plan-name")))
         expectUpdateCheckRuns(Completed)
 
         // When
@@ -241,7 +242,7 @@ class ObserveUserSubscriptionUpgradeTest {
 
         // Then
         verifyOrder {
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(listOf("plan-name")))
             userUpgradeState.updateState(Completed)
         }
 
@@ -281,12 +282,12 @@ class ObserveUserSubscriptionUpgradeTest {
             CurrentPurchasesState.NotApplicable,
             CurrentPurchasesState.Deleted,
             CurrentPurchasesState.NotApplicable,
-            CurrentPurchasesState.AcknowledgedOrSubscribed,
+            CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")),
             CurrentPurchasesState.NotApplicable
         )
         expectUpdateCheckRuns(Pending)
         expectUpdateCheckRuns(Completed)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectUpdateCheckRuns(CompletedWithUpgrade(listOf("plan-name")))
 
         // When
         observeUserSubscriptionUpgrade.start()
@@ -296,7 +297,7 @@ class ObserveUserSubscriptionUpgradeTest {
             userUpgradeState.updateState(Completed)
             userUpgradeState.updateState(Pending)
             userUpgradeState.updateState(Completed)
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(listOf("plan-name")))
             userUpgradeState.updateState(Completed)
         }
 
@@ -319,7 +320,7 @@ class ObserveUserSubscriptionUpgradeTest {
             emit(CurrentPurchasesState.NotApplicable)
         }
         expectUpdateCheckRuns(Pending)
-        expectUpdateCheckRuns(CompletedWithUpgrade)
+        expectUpdateCheckRuns(CompletedWithUpgrade(emptyList()))
 
         // When
         observeUserSubscriptionUpgrade.start()
@@ -327,7 +328,7 @@ class ObserveUserSubscriptionUpgradeTest {
         // Then
         verifyOrder {
             userUpgradeState.updateState(Pending)
-            userUpgradeState.updateState(CompletedWithUpgrade)
+            userUpgradeState.updateState(CompletedWithUpgrade(emptyList()))
         }
 
         confirmVerified(userUpgradeState)

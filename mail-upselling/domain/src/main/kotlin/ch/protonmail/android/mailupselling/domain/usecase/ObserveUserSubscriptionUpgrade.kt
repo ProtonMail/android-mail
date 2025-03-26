@@ -55,7 +55,7 @@ internal class ObserveUserSubscriptionUpgrade @Inject constructor(
             .distinctUntilChangedBy { it.second }
             .collectLatest { (user, hasSubscription) ->
                 if (hasSubscription) {
-                    userUpgradeState.updateState(CompletedWithUpgrade)
+                    userUpgradeState.updateState(CompletedWithUpgrade(emptyList()))
                 } else {
                     val sessionId = sessionManager.getSessionId(user.userId)
                     observeCurrentPurchasesState(sessionId).collectLatest {
@@ -68,8 +68,8 @@ internal class ObserveUserSubscriptionUpgrade @Inject constructor(
                                 delay(TIMEOUT)
                                 userUpgradeState.updateState(Completed)
                             }
-                            CurrentPurchasesState.AcknowledgedOrSubscribed -> {
-                                userUpgradeState.updateState(CompletedWithUpgrade)
+                            is CurrentPurchasesState.AcknowledgedOrSubscribed -> {
+                                userUpgradeState.updateState(CompletedWithUpgrade(upgradedPlanNames = it.planNames))
                                 delay(TIMEOUT)
                                 userUpgradeState.updateState(Completed)
                             }

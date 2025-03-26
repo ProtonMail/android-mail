@@ -130,7 +130,7 @@ class ObserveCurrentPurchasesStateTest {
         sut.invoke(SessionId).test {
             // Then
             val firstItem = awaitItem()
-            assertEquals(CurrentPurchasesState.AcknowledgedOrSubscribed, firstItem)
+            assertEquals(CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")), firstItem)
             awaitComplete()
         }
     }
@@ -144,7 +144,7 @@ class ObserveCurrentPurchasesStateTest {
         sut.invoke(SessionId).test {
             // Then
             val firstItem = awaitItem()
-            assertEquals(CurrentPurchasesState.AcknowledgedOrSubscribed, firstItem)
+            assertEquals(CurrentPurchasesState.AcknowledgedOrSubscribed(listOf("plan-name")), firstItem)
             awaitComplete()
         }
     }
@@ -156,7 +156,7 @@ class ObserveCurrentPurchasesStateTest {
     companion object {
 
         private val SessionId = SessionId("session-id")
-        private val Purchase = BasePurchase.copy(sessionId = SessionId, planName = "mail2022")
+        private val Purchase = BasePurchase.copy(sessionId = SessionId, planName = "plan-name")
         private val ackPurchase = Purchase.copy(purchaseState = PurchaseState.Acknowledged)
         private val subscribedPurchase = Purchase.copy(purchaseState = PurchaseState.Subscribed)
         private val pendingPurchase = Purchase.copy(purchaseState = PurchaseState.Purchased)

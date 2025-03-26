@@ -58,7 +58,7 @@ class UserUpgradeState @Inject constructor() {
 
         data object Initial : UserUpgradeCheckState
         data object Completed : UserUpgradeCheckState
-        data object CompletedWithUpgrade : UserUpgradeCheckState
+        data class CompletedWithUpgrade(val upgradedPlanNames: List<String>) : UserUpgradeCheckState
         data object Pending : UserUpgradeCheckState
     }
 }

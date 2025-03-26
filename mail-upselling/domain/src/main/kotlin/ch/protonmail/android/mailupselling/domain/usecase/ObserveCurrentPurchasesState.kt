@@ -49,21 +49,28 @@ internal class ObserveCurrentPurchasesState @Inject constructor(
         val hasDeletedPurchases = userIdPurchases.any {
             it.purchaseState == PurchaseState.Deleted && it.purchaseFailure == null
         }
-        val hasAcknowledgedOrSubscribedPurchases = userIdPurchases.any {
-            it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState in listOf(
+
+        val acknowledgedOrSubscribedPurchases = userIdPurchases.filter {
+            it.purchaseState in listOf(
                 PurchaseState.Acknowledged,
                 PurchaseState.Subscribed
             )
         }
+        val hasAcknowledgedOrSubscribedPurchases = acknowledgedOrSubscribedPurchases.isNotEmpty()
         return when {
             hasPendingPurchases -> CurrentPurchasesState.Pending
-            hasAcknowledgedOrSubscribedPurchases -> CurrentPurchasesState.AcknowledgedOrSubscribed
+            hasAcknowledgedOrSubscribedPurchases -> {
+                val planNames = acknowledgedOrSubscribedPurchases.map { it.planName }
+                CurrentPurchasesState.AcknowledgedOrSubscribed(planNames)
+            }
             hasDeletedPurchases -> CurrentPurchasesState.Deleted
             else -> CurrentPurchasesState.NotApplicable
         }
     }
 }
 
-private const val MAIL_PLUS_PLAN_NAME = "mail2022"
-
-internal enum class CurrentPurchasesState { Pending, AcknowledgedOrSubscribed, Deleted, NotApplicable }
+internal sealed class CurrentPurchasesState { data object Pending : CurrentPurchasesState()
+    data class AcknowledgedOrSubscribed(val planNames: List<String>) : CurrentPurchasesState()
+    data object Deleted : CurrentPurchasesState()
+    data object NotApplicable : CurrentPurchasesState()
+}

@@ -81,6 +81,8 @@ class ObservePostSubscription @Inject constructor(
     }.firstOrNull()
 
     private suspend fun Flow<UserUpgradeCheckState>.awaitFlowComplete() = filter {
-        it == UserUpgradeCheckState.CompletedWithUpgrade
+        (it as? UserUpgradeCheckState.CompletedWithUpgrade)?.upgradedPlanNames?.contains(MAIL_PLUS_PLAN_NAME) ?: false
     }.firstOrNull()
 }
+
+private const val MAIL_PLUS_PLAN_NAME = "mail2022"

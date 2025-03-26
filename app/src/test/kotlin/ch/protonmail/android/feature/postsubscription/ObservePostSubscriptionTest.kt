@@ -92,14 +92,14 @@ class ObservePostSubscriptionTest {
     }
 
     @Test
-    fun `upon a free user with valid purchases, show post-sub activity`() = runTest {
+    fun `upon a free user with valid purchases for Mail Plus, show post-sub activity`() = runTest {
         // Given
         val activity = mockActivity
         expectFreeUser()
         expectUpgradeCheckStates(
             flowOf(
                 UserUpgradeState.UserUpgradeCheckState.Pending,
-                UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade
+                UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade(listOf(MailPlusPlanName))
             )
         )
 
@@ -109,6 +109,26 @@ class ObservePostSubscriptionTest {
         // Then
         coVerify(exactly = 1) { observePostSubscriptionFlowEnabled(any()) }
         verify(exactly = 1) { activity.startActivity(any()) }
+    }
+
+    @Test
+    fun `upon a free user with valid purchases for a different plan, don't show post-sub activity`() = runTest {
+        // Given
+        val activity = mockActivity
+        expectFreeUser()
+        expectUpgradeCheckStates(
+            flowOf(
+                UserUpgradeState.UserUpgradeCheckState.Pending,
+                UserUpgradeState.UserUpgradeCheckState.CompletedWithUpgrade(listOf(OtherPlanName))
+            )
+        )
+
+        // When
+        observePostSubscription.start(activity)
+
+        // Then
+        coVerify(exactly = 1) { observePostSubscriptionFlowEnabled(any()) }
+        verify(exactly = 0) { activity.startActivity(any()) }
     }
 
     @Test
@@ -174,6 +194,10 @@ class ObservePostSubscriptionTest {
     }
 
     companion object {
+
+        private const val OtherPlanName = "plan-123"
+        private const val MailPlusPlanName = "mail2022"
+
         private val PaidUser = UserSample.Primary.copy(subscribed = 1)
         private val FreeUser = UserSample.Primary.copy(subscribed = 0)
     }
