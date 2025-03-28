@@ -221,6 +221,12 @@ configurations {
     implementation.get().exclude(mapOf("group" to "org.intellij", "module" to "annotations"))
 }
 
+sentry {
+    autoInstallation {
+        sentryVersion.set(libs.versions.sentry.asProvider())
+    }
+}
+
 dependencies {
     implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
 

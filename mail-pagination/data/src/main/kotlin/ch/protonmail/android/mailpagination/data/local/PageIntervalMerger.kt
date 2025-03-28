@@ -31,7 +31,7 @@ fun List<PageIntervalEntity>.merge(): List<PageIntervalEntity> {
             result.isEmpty() || !current.overlapWith(result.last()) -> result.add(current)
             else -> {
                 // Merge current maxValue into last, if greater.
-                val last = result.removeLast()
+                val last = result.removeAt(result.lastIndex)
                 val merged = if (current.maxValue > last.maxValue) last.copy(
                     maxValue = current.maxValue,
                     maxOrder = current.maxOrder,

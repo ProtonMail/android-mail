@@ -2,7 +2,7 @@
 android-gradle-plugin = "8.7.3"
 google-services-plugin = "4.4.2"
 proton-core-plugin = "1.3.0"
-sentry-gradle-plugin = "3.14.0"
+sentry-gradle-plugin = "4.14.1"
 
 accompanist = "0.30.1"
 desugar-jdk-libs = "2.1.3"
@@ -59,12 +59,12 @@ kotlinx-serialization = "1.6.3"
 material = "1.12.0"
 mockk = "1.13.13"
 play-review = "2.0.2"
-proton-core = "30.4.3"
+proton-core = "31.0.0"
 kotlinpoet-ksp = "2.0.0"
 leakcanary = "2.12"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
-sentry = "6.34.0"
+sentry = "7.22.5"
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

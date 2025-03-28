@@ -57,7 +57,8 @@ object UserSettingsTestData {
         telemetry = null,
         crashReports = null,
         deviceRecovery = null,
-        sessionAccountRecovery = null
+        sessionAccountRecovery = null,
+        easyDeviceMigrationOptOut = false
     )
 
     val emptyUserSettings = UserSettings(
@@ -90,6 +91,7 @@ object UserSettingsTestData {
         telemetry = null,
         crashReports = null,
         deviceRecovery = null,
-        sessionAccountRecovery = null
+        sessionAccountRecovery = null,
+        easyDeviceMigrationOptOut = false
     )
 }

@@ -30,7 +30,7 @@ value class InsertedPin(val digits: List<Int>) {
     fun isNotEmpty() = digits.isNotEmpty()
 
     private fun List<Int>.append(value: Int): List<Int> = toMutableList().apply { add(value) }
-    private fun List<Int>.deleteLast(): List<Int> = toMutableList().apply { removeLast() }
+    private fun List<Int>.deleteLast(): List<Int> = toMutableList().apply { removeAt(lastIndex) }
 
     companion object {
 
