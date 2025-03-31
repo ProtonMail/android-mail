@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
+import me.proton.core.compose.theme.LocalColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -115,8 +116,12 @@ private fun UpsellingMailButton(onButtonClick: () -> Unit, modifier: Modifier = 
 private fun UpsellingPromotionalMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
     Box {
-        val iconColor = Color(0xFF8042FF)
-        val bgColor = Color(0x4d8a6eff)
+        val iconColor = if (LocalColors.current.isDark) {
+            UpsellingLayoutValues.UpsellingPromoButton.iconColorDark
+        } else {
+            UpsellingLayoutValues.UpsellingPromoButton.iconColorLight
+        }
+        val bgColor = UpsellingLayoutValues.UpsellingPromoButton.bgColor
         Surface(
             modifier = modifier.semantics { contentDescription = accessibilityDescription },
             color = bgColor,
@@ -150,7 +155,7 @@ private fun UpsellingPromotionalMailButton(onButtonClick: () -> Unit, modifier: 
                 modifier = Modifier
                     .size(6.dp)
                     .align(Alignment.Center)
-                    .background(color = ProtonTheme.colors.iconAccent, shape = CircleShape)
+                    .background(color = iconColor, shape = CircleShape)
             )
         }
     }

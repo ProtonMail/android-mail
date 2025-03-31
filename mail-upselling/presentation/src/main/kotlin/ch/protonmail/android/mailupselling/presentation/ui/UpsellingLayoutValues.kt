@@ -102,6 +102,12 @@ internal object UpsellingLayoutValues {
         const val paymentButtonTextSize = 16f
     }
 
+    object UpsellingPromoButton {
+        val iconColorDark = Color(0xFF8A6EFF)
+        val iconColorLight = Color(0xFF6D4AFF)
+        val bgColor = Color(0x4d8a6eff)
+    }
+
     object SquarePaymentButtons {
 
         val buttonCornerRadius: Int
