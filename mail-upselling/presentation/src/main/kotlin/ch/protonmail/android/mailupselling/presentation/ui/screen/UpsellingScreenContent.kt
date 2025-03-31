@@ -56,6 +56,8 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.backgroundGradient
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.backgroundGradientVariantB
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTable
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsListLayout
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
@@ -113,7 +115,10 @@ internal fun UpsellingScreenContent(
             modifier = modifier
                 .thenIf(isStandalone) { Modifier.fillMaxHeight() }
                 .verticalScroll(scrollState)
-                .background(UpsellingLayoutValues.backgroundGradient),
+                .background(
+                    if (state.plans.useVariantB)
+                        backgroundGradientVariantB else backgroundGradient
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -156,7 +161,8 @@ internal fun UpsellingScreenContent(
             Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
 
             when (state.plans.entitlements) {
-                is PlanEntitlementsUiModel.ComparisonTableList -> ComparisonTable(state.plans.entitlements)
+                is PlanEntitlementsUiModel.ComparisonTableList ->
+                    ComparisonTable(state.plans.useVariantB, state.plans.entitlements)
                 is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
             }
 
@@ -179,10 +185,30 @@ internal fun UpsellingScreenContent(
 
 @AdaptivePreviews
 @Composable
-private fun UpsellingScreenContentPreview() {
+private fun UpsellingScreenContentPreview_PromoA() {
     ProtonTheme3 {
         UpsellingScreenContent(
-            state = UpsellingContentPreviewData.Base,
+            state = UpsellingContentPreviewData.PromoA,
+            actions = UpsellingScreen.Actions(
+                onDisplayed = {},
+                onDismiss = {},
+                onError = {},
+                onUpgradeAttempt = {},
+                onUpgrade = {},
+                onUpgradeCancelled = {},
+                onUpgradeErrored = {},
+                onSuccess = {}
+            )
+        )
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun UpsellingScreenContentPreview_PromoB() {
+    ProtonTheme3 {
+        UpsellingScreenContent(
+            state = UpsellingContentPreviewData.PromoB,
             actions = UpsellingScreen.Actions(
                 onDisplayed = {},
                 onDismiss = {},

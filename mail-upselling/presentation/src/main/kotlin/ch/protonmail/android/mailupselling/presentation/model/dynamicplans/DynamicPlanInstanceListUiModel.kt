@@ -37,5 +37,12 @@ sealed interface DynamicPlanInstanceListUiModel {
             override val shorterCycle: DynamicPlanInstanceUiModel,
             override val longerCycle: DynamicPlanInstanceUiModel
         ) : Data(shorterCycle, longerCycle)
+
+        data class PromotionalVariantB(
+            val main: DynamicPlanInstanceUiModel,
+            val priceFormatted: String,
+            override val shorterCycle: DynamicPlanInstanceUiModel = main,
+            override val longerCycle: DynamicPlanInstanceUiModel = main
+        ) : Data(shorterCycle, longerCycle)
     }
 }

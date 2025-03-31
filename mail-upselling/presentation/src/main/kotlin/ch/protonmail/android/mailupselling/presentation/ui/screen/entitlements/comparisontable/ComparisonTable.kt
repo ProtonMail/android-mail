@@ -44,7 +44,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.ComparisonTableList) {
+internal fun ComparisonTable(useVariantB: Boolean, entitlementsUiModel: PlanEntitlementsUiModel.ComparisonTableList) {
     var highlightHeight by remember { mutableStateOf(0.dp) }
     var plusCellHeaderWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
@@ -71,17 +71,21 @@ internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.Compar
                     with(localDensity) { highlightHeight = coordinates.size.height.toDp() }
                 }
         ) {
-
-            ComparisonTableHeaderRow(onPaidColumnPlaced = { plusCellHeaderWidth = it })
+            if (useVariantB) {
+                ComparisonTableHeaderRowAlternate(onPaidColumnPlaced = { plusCellHeaderWidth = it })
+            } else {
+                ComparisonTableHeaderRow(onPaidColumnPlaced = { plusCellHeaderWidth = it })
+            }
 
             entitlementsUiModel.items.forEachIndexed { index, item ->
                 ComparisonTableEntitlement(item, plusCellWidth = plusCellHeaderWidth)
 
+                val spacing = if (useVariantB) 10.dp else ProtonDimens.ExtraSmallSpacing
                 if (index < entitlementsUiModel.items.size - 1) {
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = ProtonDimens.ExtraSmallSpacing)
+                            .padding(vertical = spacing)
                             .height(UpsellingLayoutValues.ComparisonTable.spacerHeight)
                             .background(UpsellingLayoutValues.ComparisonTable.spacerBackgroundColor)
                     )
@@ -89,7 +93,7 @@ internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.Compar
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = ProtonDimens.ExtraSmallSpacing / 2)
+                            .padding(vertical = spacing / 2)
                             .height(UpsellingLayoutValues.ComparisonTable.spacerHeight)
                     )
                 }
@@ -103,6 +107,9 @@ internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.Compar
 @Composable
 private fun ComparisonTablePreview() {
     ProtonTheme3 {
-        ComparisonTable(PlanEntitlementsUiModel.ComparisonTableList(ComparisonTableElementPreviewData.Entitlements))
+        ComparisonTable(
+            useVariantB = true,
+            PlanEntitlementsUiModel.ComparisonTableList(ComparisonTableElementPreviewData.Entitlements)
+        )
     }
 }

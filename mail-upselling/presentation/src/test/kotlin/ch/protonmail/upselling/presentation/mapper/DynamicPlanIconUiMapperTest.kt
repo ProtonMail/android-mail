@@ -39,6 +39,7 @@ internal class DynamicPlanIconUiMapperTest {
             UpsellingEntryPoint.Feature.Labels to DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels),
             UpsellingEntryPoint.Feature.MobileSignature to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature),
             UpsellingEntryPoint.Feature.Mailbox to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
+            UpsellingEntryPoint.Feature.MailboxPromo to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox_promo),
             UpsellingEntryPoint.Feature.AutoDelete to DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
         )
 
@@ -49,6 +50,7 @@ internal class DynamicPlanIconUiMapperTest {
             UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(UpsellingEntryPoint.Feature.Labels),
             UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.Feature.MobileSignature),
             UpsellingEntryPoint.Feature.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Feature.Mailbox),
+            UpsellingEntryPoint.Feature.MailboxPromo to mapper.toUiModel(UpsellingEntryPoint.Feature.MailboxPromo),
             UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.Feature.AutoDelete)
         )
 

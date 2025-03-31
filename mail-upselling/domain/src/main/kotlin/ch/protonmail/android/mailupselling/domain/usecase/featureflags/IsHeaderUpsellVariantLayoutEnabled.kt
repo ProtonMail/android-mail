@@ -16,13 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.model.dynamicplans
+package ch.protonmail.android.mailupselling.domain.usecase.featureflags
 
-internal data class DynamicPlansUiModel(
-    val icon: DynamicPlanIconUiModel,
-    val title: DynamicPlanTitleUiModel,
-    val description: DynamicPlanDescriptionUiModel,
-    val useVariantB: Boolean,
-    val entitlements: PlanEntitlementsUiModel,
-    val list: DynamicPlanInstanceListUiModel
-)
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
+
+class IsHeaderUpsellVariantLayoutEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
+
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidHeaderUpsellPromoScreen"
+    }
+}

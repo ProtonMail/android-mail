@@ -31,6 +31,12 @@ fun NavGraphBuilder.addUpsellingRoutes(actions: UpsellingScreen.Actions) {
             entryPoint = UpsellingEntryPoint.Feature.Mailbox
         )
     }
+    composable(route = Destination.Screen.Upselling.StandaloneMailboxPromo.route) {
+        UpsellingScreen(
+            bottomSheetActions = actions,
+            entryPoint = UpsellingEntryPoint.Feature.MailboxPromo
+        )
+    }
     composable(route = Destination.Screen.Upselling.StandaloneNavbar.route) {
         UpsellingScreen(
             bottomSheetActions = actions,

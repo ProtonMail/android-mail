@@ -228,7 +228,7 @@ object MailboxTopAppBar {
         val onEnterSearchMode: () -> Unit,
         val onSearch: (query: String) -> Unit,
         val onOpenComposer: () -> Unit,
-        val onNavigateToStandaloneUpselling: () -> Unit,
+        val onNavigateToStandaloneUpselling: (isPromo: Boolean) -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit
     )

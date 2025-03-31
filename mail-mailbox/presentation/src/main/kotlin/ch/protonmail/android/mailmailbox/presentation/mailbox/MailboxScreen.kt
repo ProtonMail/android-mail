@@ -128,6 +128,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionB
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -409,7 +410,7 @@ fun MailboxScreen(
                         onEnterSearchMode = { actions.onEnterSearchMode() },
                         onSearch = { query -> actions.onSearchQuery(query) },
                         onOpenComposer = { actions.navigateToComposer() },
-                        onNavigateToStandaloneUpselling = { actions.onNavigateToStandaloneUpselling() },
+                        onNavigateToStandaloneUpselling = { actions.onNavigateToStandaloneUpselling(it) },
                         onOpenUpsellingPage = actions.onOpenUpsellingPage,
                         onCloseUpsellingPage = actions.onCloseUpsellingPage
                     )
@@ -1117,7 +1118,7 @@ object MailboxScreen {
         val onSearchQuery: (String) -> Unit,
         val onSearchResult: () -> Unit,
         val onExitSearchMode: () -> Unit,
-        val onNavigateToStandaloneUpselling: () -> Unit,
+        val onNavigateToStandaloneUpselling: (isPromo: Boolean) -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit,
         val onShowRatingBooster: () -> Unit,

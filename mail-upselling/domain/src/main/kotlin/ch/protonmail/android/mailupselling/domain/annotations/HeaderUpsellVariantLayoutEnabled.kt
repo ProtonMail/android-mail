@@ -16,13 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.model.dynamicplans
+package ch.protonmail.android.mailupselling.domain.annotations
 
-internal data class DynamicPlansUiModel(
-    val icon: DynamicPlanIconUiModel,
-    val title: DynamicPlanTitleUiModel,
-    val description: DynamicPlanDescriptionUiModel,
-    val useVariantB: Boolean,
-    val entitlements: PlanEntitlementsUiModel,
-    val list: DynamicPlanInstanceListUiModel
-)
+import javax.inject.Qualifier
+
+/**
+ * Indicates whether the Header Upselling uses an alternative layout
+ */
+@Qualifier
+annotation class HeaderUpsellVariantLayoutEnabled

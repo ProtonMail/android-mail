@@ -53,6 +53,8 @@ internal fun UpsellingPlanButtonsFooter(
 
         when (plans) {
             is DynamicPlanInstanceListUiModel.Data.Promotional -> PaymentButtonsHorizontalLayout(plans, actions)
+            is DynamicPlanInstanceListUiModel.Data.PromotionalVariantB ->
+                PaymentButtonsPromoLayout(plans.priceFormatted, plans.shorterCycle, actions)
             is DynamicPlanInstanceListUiModel.Data.Standard -> PaymentButtonsSideBySideLayout(plans, actions)
         }
     }
@@ -65,8 +67,21 @@ private fun UpsellingStickyFooterPreview() {
     ProtonTheme3 {
         Box(modifier = Modifier.height(480.dp)) {
             UpsellingPlanButtonsFooter(
-                plans = UpsellingContentPreviewData.Base.plans.list
-                    as DynamicPlanInstanceListUiModel.Data,
+                plans = UpsellingContentPreviewData.NormalList,
+                actions = UpsellingScreen.Actions.Empty
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF522580)
+@AdaptivePreviews
+@Composable
+private fun UpsellingStickyFooterPreview_PromoA() {
+    ProtonTheme3 {
+        Box(modifier = Modifier.height(480.dp)) {
+            UpsellingPlanButtonsFooter(
+                plans = UpsellingContentPreviewData.PromoList,
                 actions = UpsellingScreen.Actions.Empty
             )
         }

@@ -37,10 +37,11 @@ internal fun UpsellingAutoRenewGenericPolicyText(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = UpsellingLayoutValues.autoRenewTextSize,
     color: Color = UpsellingLayoutValues.autoRenewText,
-    planUiModel: DynamicPlanInstanceUiModel? = null
+    planUiModel: DynamicPlanInstanceUiModel? = null,
+    short: Boolean = false
 ) {
 
-    val text = planUiModel?.let { getRenewalNoticeForPromotion(it) }
+    val text = planUiModel?.let { getRenewalNoticeForPromotion(it, short) }
         ?: stringResource(R.string.upselling_auto_renew_text)
 
     Text(
@@ -54,13 +55,13 @@ internal fun UpsellingAutoRenewGenericPolicyText(
 }
 
 @Composable
-private fun getRenewalNoticeForPromotion(planUiModel: DynamicPlanInstanceUiModel): String {
+private fun getRenewalNoticeForPromotion(planUiModel: DynamicPlanInstanceUiModel, short: Boolean): String {
     val displayedPrice = planUiModel.primaryPrice
     val period = planUiModel.cycle.cycleStringValue()
     val (baseText, price) = when (planUiModel) {
         is DynamicPlanInstanceUiModel.Promotional ->
             Pair(
-                R.string.upselling_auto_renew_text_promo,
+                if (short) R.string.upselling_auto_renew_text_promo_short else R.string.upselling_auto_renew_text_promo,
                 displayedPrice.secondaryPrice ?: displayedPrice.highlightedPrice
             )
 

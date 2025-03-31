@@ -56,14 +56,14 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun UpsellingMailButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: (isPromo: Boolean) -> Unit,
     viewModel: UpsellingButtonViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
 
     val isPromo = state.value.visibility == UpsellingVisibility.PROMO
     val onButtonClick = {
-        onClick()
+        onClick(isPromo)
         viewModel.trackButtonInteraction(isPromo)
     }
 

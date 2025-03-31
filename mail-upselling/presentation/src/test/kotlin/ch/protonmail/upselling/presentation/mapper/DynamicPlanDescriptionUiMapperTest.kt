@@ -74,6 +74,21 @@ internal class DynamicPlanDescriptionUiMapperTest {
     }
 
     @Test
+    fun `should return the local description when override is set, for MailboxPromo entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_mailbox_plus_promo_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.MailboxPromo)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `should return the local description when override is set, for Mobile Signature entry point`() {
         // Given
         every { forceOverride.get() } returns true

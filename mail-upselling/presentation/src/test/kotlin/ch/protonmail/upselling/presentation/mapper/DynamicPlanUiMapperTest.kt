@@ -40,13 +40,16 @@ import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanE
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithIdenticalInstances
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithNoInstances
+import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
+import javax.inject.Provider
 import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -57,13 +60,24 @@ internal class DynamicPlanUiMapperTest {
     private val descriptionUiMapper = mockk<DynamicPlanDescriptionUiMapper>()
     private val planInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper>()
     private val entitlementsUiMapper = mockk<DynamicPlanEntitlementsUiMapper>()
-    private val mapper = DynamicPlanUiMapper(
-        iconUiMapper,
-        titleUiMapper,
-        descriptionUiMapper,
-        planInstanceUiMapper,
-        entitlementsUiMapper
-    )
+    private val providerHeaderUpsellVariantLayoutEnabled = mockk<Provider<Boolean>>()
+
+    private val mapper by lazy {
+        DynamicPlanUiMapper(
+            iconUiMapper,
+            titleUiMapper,
+            descriptionUiMapper,
+            planInstanceUiMapper,
+            entitlementsUiMapper,
+            providerHeaderUpsellVariantLayoutEnabled.get()
+        )
+    }
+
+    @BeforeTest
+    fun setUp() {
+        MockKAnnotations.init(this)
+        headerUpsellVariantLayoutEnabled(false)
+    }
 
     @AfterTest
     fun teardown() {
@@ -84,7 +98,8 @@ internal class DynamicPlanUiMapperTest {
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
-            list = DynamicPlanInstanceListUiModel.Empty
+            list = DynamicPlanInstanceListUiModel.Empty,
+            useVariantB = false
         )
 
         // When
@@ -130,7 +145,8 @@ internal class DynamicPlanUiMapperTest {
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
-            list = DynamicPlanInstanceListUiModel.Invalid
+            list = DynamicPlanInstanceListUiModel.Invalid,
+            useVariantB = false
         )
 
         // When
@@ -188,11 +204,80 @@ internal class DynamicPlanUiMapperTest {
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
-            list = DynamicPlanInstanceListUiModel.Data.Standard(expectedShorterInstance, expectedLongerInstance)
+            list = DynamicPlanInstanceListUiModel.Data.Standard(expectedShorterInstance, expectedLongerInstance),
+            useVariantB = false
         )
 
         // When
         val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Feature.Mailbox)
+
+        // Then
+        assertEquals(expectedPlansUiModel, actual)
+    }
+
+    @Test
+    fun `should return a plan with promo if the variant FF is on`() {
+        // Given
+        expectIconUiModel()
+        expectTitleUiModelPromo()
+        expectDescriptionUiModelPromo()
+        expectEntitlementsUiModel()
+        headerUpsellVariantLayoutEnabled(true)
+
+        val plan = UpsellingTestData.PlusMonthlyPromoPlan
+        val shorterInstance = requireNotNull(plan.instances[1])
+        val longerInstance = requireNotNull(plan.instances[12])
+
+        val monthlyPlan = UpsellingTestData.MonthlyDynamicPromoPlanInstance
+        val yearlyPlan = UpsellingTestData.YearlyDynamicPlanInstance
+
+        val expectedShorterInstance = DynamicPlanInstanceUiModel.Promotional(
+            userId = UserIdUiModel(UserId),
+            name = UpsellingTestData.PlusPlan.title,
+            pricePerCycle = TextUiModel.Text("0.1"),
+            promotionalPrice = TextUiModel.Text("0.1"),
+            renewalPrice = TextUiModel.Text("0.4"),
+            discountRate = 75,
+            currency = "EUR",
+            cycle = DynamicPlanCycle.Monthly,
+            viewId = "${UserId}$monthlyPlan".hashCode(),
+            dynamicPlan = plan
+        )
+        val expectedLongerInstance = DynamicPlanInstanceUiModel.Standard(
+            userId = UserIdUiModel(UserId),
+            name = UpsellingTestData.PlusPlan.title,
+            pricePerCycle = TextUiModel.Text("0.09"),
+            totalPrice = TextUiModel.Text("1.08"),
+            discountRate = 10,
+            currency = "EUR",
+            cycle = DynamicPlanCycle.Yearly,
+            viewId = "${UserId}$yearlyPlan".hashCode(),
+            dynamicPlan = plan
+        )
+
+        expectInstanceUiModel(
+            userId = UserId,
+            monthlyInstance = shorterInstance,
+            yearlyInstance = longerInstance,
+            plan = plan,
+            expectedInstance = Pair(expectedShorterInstance, expectedLongerInstance)
+        )
+
+        val expectedPriceFormatted = "0.1"
+        val expectedPlansUiModel = DynamicPlansUiModel(
+            icon = ExpectedIconUiModel,
+            title = ExpectedTitleUiModelPromo,
+            description = ExpectedDescriptionUiModelPromo,
+            entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
+            list = DynamicPlanInstanceListUiModel.Data.PromotionalVariantB(
+                main = expectedShorterInstance,
+                priceFormatted = expectedPriceFormatted
+            ),
+            useVariantB = true
+        )
+
+        // When
+        val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Feature.MailboxPromo)
 
         // Then
         assertEquals(expectedPlansUiModel, actual)
@@ -203,11 +288,20 @@ internal class DynamicPlanUiMapperTest {
     }
 
     private fun expectTitleUiModel() {
-        every { titleUiMapper.toUiModel(any()) } returns ExpectedTitleUiModel
+        every { titleUiMapper.toUiModel(any(), UpsellingEntryPoint.Feature.Mailbox) } returns ExpectedTitleUiModel
+    }
+
+    private fun expectTitleUiModelPromo() {
+        every { titleUiMapper.toUiModel(any(), UpsellingEntryPoint.Feature.MailboxPromo) } returns
+            ExpectedTitleUiModelPromo
     }
 
     private fun expectDescriptionUiModel() {
         every { descriptionUiMapper.toUiModel(any(), any()) } returns ExpectedDescriptionUiModel
+    }
+
+    private fun expectDescriptionUiModelPromo() {
+        every { descriptionUiMapper.toUiModel(any(), any()) } returns ExpectedDescriptionUiModelPromo
     }
 
     private fun expectEntitlementsUiModel() {
@@ -226,12 +320,20 @@ internal class DynamicPlanUiMapperTest {
         every { planInstanceUiMapper.toUiModel(userId, monthlyInstance, yearlyInstance, plan) } returns expectedInstance
     }
 
+    private fun headerUpsellVariantLayoutEnabled(value: Boolean) {
+        every {
+            providerHeaderUpsellVariantLayoutEnabled.get()
+        } returns value
+    }
+
     private companion object {
 
         val ExpectedIconUiModel = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
         val ExpectedDescriptionUiModel = DynamicPlanDescriptionUiModel(TextUiModel.Text("description"))
+        val ExpectedDescriptionUiModelPromo = DynamicPlanDescriptionUiModel(TextUiModel.Text("description-promo"))
         val ExpectedEntitlementsUiModel = PlanEntitlementListUiModel.Default(TextUiModel.Text("item"), "")
         val ExpectedTitleUiModel = DynamicPlanTitleUiModel(TextUiModel.Text("title"))
+        val ExpectedTitleUiModelPromo = DynamicPlanTitleUiModel(TextUiModel.Text("title-promo"))
 
         val UserId = UserId("id")
     }

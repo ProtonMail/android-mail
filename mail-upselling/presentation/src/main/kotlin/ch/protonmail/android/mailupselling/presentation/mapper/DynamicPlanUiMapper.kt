@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
+import ch.protonmail.android.mailupselling.domain.annotations.HeaderUpsellVariantLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.extension.normalizedPriceString
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
+import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import javax.inject.Inject
 
 internal class DynamicPlanUiMapper @Inject constructor(
@@ -31,7 +34,8 @@ internal class DynamicPlanUiMapper @Inject constructor(
     private val titleUiMapper: DynamicPlanTitleUiMapper,
     private val descriptionUiMapper: DynamicPlanDescriptionUiMapper,
     private val planInstanceUiMapper: DynamicPlanInstanceUiMapper,
-    private val entitlementsUiMapper: DynamicPlanEntitlementsUiMapper
+    private val entitlementsUiMapper: DynamicPlanEntitlementsUiMapper,
+    @HeaderUpsellVariantLayoutEnabled private val headerUpsellVariantLayoutEnabled: Boolean
 ) {
 
     fun toUiModel(
@@ -41,9 +45,10 @@ internal class DynamicPlanUiMapper @Inject constructor(
     ): DynamicPlansUiModel {
         val emptyUiModel = DynamicPlansUiModel(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint),
-            title = titleUiMapper.toUiModel(upsellingEntryPoint),
+            title = titleUiMapper.toUiModel(plan, upsellingEntryPoint),
             description = descriptionUiMapper.toUiModel(plan, upsellingEntryPoint),
             entitlements = entitlementsUiMapper.toUiModel(plan, upsellingEntryPoint),
+            useVariantB = headerUpsellVariantLayoutEnabled,
             list = DynamicPlanInstanceListUiModel.Empty
         )
 
@@ -63,18 +68,27 @@ internal class DynamicPlanUiMapper @Inject constructor(
             plan
         )
 
-        val listUiModel = resolveListUiModel(shorterCycleUiModel, longerCycleUiModel)
+        val listUiModel = resolveListUiModel(monthlyPlan, shorterCycleUiModel, longerCycleUiModel, upsellingEntryPoint)
         return emptyUiModel.copy(list = listUiModel)
     }
 
     private fun resolveListUiModel(
+        shorterPlan: DynamicPlanInstance,
         shorterCycleUiModel: DynamicPlanInstanceUiModel,
-        longerCycleUiModel: DynamicPlanInstanceUiModel
+        longerCycleUiModel: DynamicPlanInstanceUiModel,
+        entryPoint: UpsellingEntryPoint
     ): DynamicPlanInstanceListUiModel.Data {
         return when {
             shorterCycleUiModel is DynamicPlanInstanceUiModel.Promotional ||
-                longerCycleUiModel is DynamicPlanInstanceUiModel.Promotional ->
-                DynamicPlanInstanceListUiModel.Data.Promotional(shorterCycleUiModel, longerCycleUiModel)
+                longerCycleUiModel is DynamicPlanInstanceUiModel.Promotional -> {
+                if (entryPoint == UpsellingEntryPoint.Feature.MailboxPromo && headerUpsellVariantLayoutEnabled) {
+                    val price = shorterPlan.price.values.first()
+                    val formattedPrice = price.normalizedPriceString(shorterPlan.cycle)
+                    DynamicPlanInstanceListUiModel.Data.PromotionalVariantB(shorterCycleUiModel, formattedPrice)
+                } else {
+                    DynamicPlanInstanceListUiModel.Data.Promotional(shorterCycleUiModel, longerCycleUiModel)
+                }
+            }
 
             else -> DynamicPlanInstanceListUiModel.Data.Standard(
                 shorterCycleUiModel as DynamicPlanInstanceUiModel.Standard,

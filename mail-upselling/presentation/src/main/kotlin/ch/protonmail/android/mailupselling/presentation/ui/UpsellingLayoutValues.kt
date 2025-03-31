@@ -44,6 +44,13 @@ internal object UpsellingLayoutValues {
         )
     )
 
+    val backgroundGradientVariantB = Brush.verticalGradient(
+        listOf(
+            Color(0xFF1D121D),
+            Color(0xFF6D4AFF)
+        )
+    )
+
     val discountTagColorStops = arrayOf(0.0f to Color(0xFFA792FF), 0.8f to Color(0xFF27DDB1))
 
     val autoRenewText = Color.White
@@ -62,6 +69,8 @@ internal object UpsellingLayoutValues {
         val plusBadgeGradient = Brush.linearGradient(
             listOf(Color(0xFFD8AAFF), Color(0xFF6D4AFF))
         )
+
+        val plusBadgeBackground = Color(0xFF2a1b5a)
 
         val plusBadgeShape = RoundedCornerShape(6.dp)
 
@@ -89,6 +98,7 @@ internal object UpsellingLayoutValues {
 
         val paymentButtonBackground = android.graphics.Color.parseColor("#FFFFFF")
         val paymentButtonTextColor = android.graphics.Color.parseColor("#000000")
+        val paymentButtonTextColorPromoVariant = android.graphics.Color.parseColor("#301E6C")
         const val paymentButtonTextSize = 16f
     }
 
