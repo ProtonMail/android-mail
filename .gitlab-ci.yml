@@ -89,7 +89,7 @@ detekt:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   tags:
-    - shared-medium
+    - shared-large
   script:
     - bundle exec fastlane analyse
   artifacts:
