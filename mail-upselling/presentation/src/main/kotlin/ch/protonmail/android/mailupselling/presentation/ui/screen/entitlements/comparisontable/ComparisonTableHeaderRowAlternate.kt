@@ -99,7 +99,7 @@ internal fun ComparisonTableHeaderRowAlternate(onPaidColumnPlaced: (Dp) -> Unit)
             Text(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(vertical = 6.dp, horizontal = 4.dp)
+                    .padding(vertical = ProtonDimens.SmallSpacing, horizontal = ProtonDimens.ExtraSmallSpacing)
                     .background(
                         color = UpsellingLayoutValues.ComparisonTable.plusBadgeBackground,
                         shape = RoundedCornerShape(8.dp)

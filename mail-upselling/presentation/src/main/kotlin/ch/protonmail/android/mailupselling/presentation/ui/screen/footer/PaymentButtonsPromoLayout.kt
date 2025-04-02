@@ -32,12 +32,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
@@ -51,7 +52,7 @@ import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
 @Composable
 internal fun PaymentButtonsPromoLayout(
-    priceFormatted: String,
+    priceFormatted: TextUiModel,
     plan: DynamicPlanInstanceUiModel,
     actions: UpsellingScreen.Actions
 ) {
@@ -63,23 +64,20 @@ internal fun PaymentButtonsPromoLayout(
         UpsellingAutoRenewGenericPolicyText(
             modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
             planUiModel = plan,
-            short = true
+            isShort = true
         )
 
         val userId = plan.userId.value
         val eventListener = UpsellingPaymentEventListener(
             context = LocalContext.current,
             userId = userId,
-            telemetryPayload = plan.toTelemetryPayload(),
+            telemetryPayload = plan.toTelemetryPayload(isVariantB = true),
             actions
         )
         val buttonCornerRadius = 8.dp.dpToPx()
 
         val btnText = remember { mutableStateOf("") }
-        val newText = stringResource(
-            R.string.upselling_get_button_promotional,
-            plan.currency, priceFormatted
-        )
+        val newText = priceFormatted.string()
         LaunchedEffect(Unit) {
             btnText.value = newText
         }
@@ -124,7 +122,7 @@ private fun PaymentButtonsPromoLayoutPreview() {
     ProtonTheme3 {
         Box(modifier = Modifier.height(180.dp)) {
             PaymentButtonsPromoLayout(
-                priceFormatted = "0.99",
+                priceFormatted = TextUiModel.Text("0.99"),
                 plan = UpsellingContentPreviewData.PromoList.shorterCycle,
                 actions = UpsellingScreen.Actions.Empty
             )

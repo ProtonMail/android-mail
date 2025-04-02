@@ -22,8 +22,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
-import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
-import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
@@ -104,7 +102,8 @@ internal object UpsellingContentPreviewData {
 
     private val PromoListVariantB = DynamicPlanInstanceListUiModel.Data.PromotionalVariantB(
         MailPlusPlanModelMonthlyPromo,
-        priceFormatted = "$ 0.99"
+        priceFormatted = TextUiModel
+            .TextResWithArgs(R.string.upselling_get_button_promotional, listOf("$", "0.99"))
     )
 
     private val Entitlements = PlanEntitlementsUiModel.SimpleList(

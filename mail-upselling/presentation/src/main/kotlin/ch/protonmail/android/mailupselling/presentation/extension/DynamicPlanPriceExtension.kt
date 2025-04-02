@@ -19,13 +19,18 @@
 package ch.protonmail.android.mailupselling.presentation.extension
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.R
 import me.proton.core.plan.domain.entity.DynamicPlanPrice
 
-internal fun DynamicPlanPrice.normalizedPrice(cycle: Int): TextUiModel = TextUiModel.Text(normalizedPriceString(cycle))
-
-internal fun DynamicPlanPrice.normalizedPriceString(cycle: Int): String {
+internal fun DynamicPlanPrice.normalizedPrice(cycle: Int): TextUiModel {
     val actualPrice = current.normalized(cycle)
-    return actualPrice.toDecimalString()
+    return TextUiModel.Text(actualPrice.toDecimalString())
+}
+
+internal fun DynamicPlanPrice.promoPrice(cycle: Int): TextUiModel {
+    val actualPrice = current.normalized(cycle)
+    return TextUiModel
+        .TextResWithArgs(R.string.upselling_get_button_promotional, listOf(currency, actualPrice.toDecimalString()))
 }
 
 internal fun DynamicPlanPrice.totalPrice(): Float = current.toActualPrice()

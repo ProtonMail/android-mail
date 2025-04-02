@@ -263,7 +263,10 @@ internal class DynamicPlanUiMapperTest {
             expectedInstance = Pair(expectedShorterInstance, expectedLongerInstance)
         )
 
-        val expectedPriceFormatted = "0.1"
+        val expectedPriceFormatted = TextUiModel.TextResWithArgs(
+            R.string.upselling_get_button_promotional,
+            listOf("EUR", "0.1")
+        )
         val expectedPlansUiModel = DynamicPlansUiModel(
             icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModelPromo,

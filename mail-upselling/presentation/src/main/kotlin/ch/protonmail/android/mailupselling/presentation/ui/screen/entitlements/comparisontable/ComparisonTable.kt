@@ -80,7 +80,7 @@ internal fun ComparisonTable(useVariantB: Boolean, entitlementsUiModel: PlanEnti
             entitlementsUiModel.items.forEachIndexed { index, item ->
                 ComparisonTableEntitlement(item, plusCellWidth = plusCellHeaderWidth)
 
-                val spacing = if (useVariantB) 10.dp else ProtonDimens.ExtraSmallSpacing
+                val spacing = if (useVariantB) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 if (index < entitlementsUiModel.items.size - 1) {
                     Spacer(
                         modifier = Modifier

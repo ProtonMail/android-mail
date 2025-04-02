@@ -38,10 +38,9 @@ internal fun UpsellingAutoRenewGenericPolicyText(
     fontSize: TextUnit = UpsellingLayoutValues.autoRenewTextSize,
     color: Color = UpsellingLayoutValues.autoRenewText,
     planUiModel: DynamicPlanInstanceUiModel? = null,
-    short: Boolean = false
+    isShort: Boolean = false
 ) {
-
-    val text = planUiModel?.let { getRenewalNoticeForPromotion(it, short) }
+    val text = planUiModel?.let { getRenewalNoticeForPromotion(it, isShort) }
         ?: stringResource(R.string.upselling_auto_renew_text)
 
     Text(

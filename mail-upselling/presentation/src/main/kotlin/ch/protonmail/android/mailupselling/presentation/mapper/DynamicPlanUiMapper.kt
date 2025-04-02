@@ -20,7 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.annotations.HeaderUpsellVariantLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.extension.normalizedPriceString
+import ch.protonmail.android.mailupselling.presentation.extension.promoPrice
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
@@ -83,7 +83,7 @@ internal class DynamicPlanUiMapper @Inject constructor(
                 longerCycleUiModel is DynamicPlanInstanceUiModel.Promotional -> {
                 if (entryPoint == UpsellingEntryPoint.Feature.MailboxPromo && headerUpsellVariantLayoutEnabled) {
                     val price = shorterPlan.price.values.first()
-                    val formattedPrice = price.normalizedPriceString(shorterPlan.cycle)
+                    val formattedPrice = price.promoPrice(shorterPlan.cycle)
                     DynamicPlanInstanceListUiModel.Data.PromotionalVariantB(shorterCycleUiModel, formattedPrice)
                 } else {
                     DynamicPlanInstanceListUiModel.Data.Promotional(shorterCycleUiModel, longerCycleUiModel)
