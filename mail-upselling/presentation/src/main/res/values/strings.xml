@@ -112,7 +112,7 @@
     <!-- Other UI Items -->
     <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
     <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
-    <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s</string>
+    <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
     <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
     <string name="upselling_discount_tag">SAVE %s%%</string>
     <string name="upselling_month">/month</string>

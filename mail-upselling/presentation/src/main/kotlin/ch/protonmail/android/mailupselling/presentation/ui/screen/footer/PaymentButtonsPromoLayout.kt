@@ -71,7 +71,7 @@ internal fun PaymentButtonsPromoLayout(
         val eventListener = UpsellingPaymentEventListener(
             context = LocalContext.current,
             userId = userId,
-            telemetryPayload = plan.toTelemetryPayload(isVariantB = true),
+            telemetryPayload = plan.toTelemetryPayload(),
             actions
         )
         val buttonCornerRadius = 8.dp.dpToPx()
@@ -122,7 +122,7 @@ private fun PaymentButtonsPromoLayoutPreview() {
     ProtonTheme3 {
         Box(modifier = Modifier.height(180.dp)) {
             PaymentButtonsPromoLayout(
-                priceFormatted = TextUiModel.Text("0.99"),
+                priceFormatted = TextUiModel.Text("Get 1 month for EUR 0.99"),
                 plan = UpsellingContentPreviewData.PromoList.shorterCycle,
                 actions = UpsellingScreen.Actions.Empty
             )
