@@ -119,6 +119,8 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         buildTelemetryDimensions(user, upsellingEntryPoint).bind().apply {
             addSelectedPlan(payload.planName)
             addSelectedPlanCycle(payload.planCycle)
+            addUpsellPromoVariant(isVariantB = payload.isVariantB)
+            addUpsellIsPromo(isPromo = payload.isPromotional)
             addUpsellModalVersion()
         }
     }

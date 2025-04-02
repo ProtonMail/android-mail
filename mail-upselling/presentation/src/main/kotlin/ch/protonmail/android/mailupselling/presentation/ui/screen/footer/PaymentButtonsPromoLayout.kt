@@ -71,7 +71,7 @@ internal fun PaymentButtonsPromoLayout(
         val eventListener = UpsellingPaymentEventListener(
             context = LocalContext.current,
             userId = userId,
-            telemetryPayload = plan.toTelemetryPayload(),
+            telemetryPayload = plan.toTelemetryPayload(isVariantB = true),
             actions
         )
         val buttonCornerRadius = 8.dp.dpToPx()

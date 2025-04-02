@@ -215,7 +215,7 @@ class OnboardingUpsellViewModelTest {
         expectPrimaryUser(freeUser)
         expectDynamicPlans(freeUser.userId, dynamicPlans)
 
-        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
 
         // When
@@ -233,7 +233,7 @@ class OnboardingUpsellViewModelTest {
         expectPrimaryUser(freeUser)
         expectDynamicPlans(freeUser.userId, dynamicPlans)
 
-        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(payload)
 
         // When
@@ -251,7 +251,7 @@ class OnboardingUpsellViewModelTest {
         expectPrimaryUser(freeUser)
         expectDynamicPlans(freeUser.userId, dynamicPlans)
 
-        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
 
         // When
@@ -269,7 +269,7 @@ class OnboardingUpsellViewModelTest {
         expectPrimaryUser(freeUser)
         expectDynamicPlans(freeUser.userId, dynamicPlans)
 
-        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
 
         // When

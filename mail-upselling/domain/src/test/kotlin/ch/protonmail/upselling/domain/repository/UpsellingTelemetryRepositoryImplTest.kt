@@ -34,7 +34,9 @@ import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName.GetSubscriptionNameError
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.BaseDimensions
-import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensions
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsNormal
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsPromoA
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsPromoB
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.mockInstant
 import io.mockk.called
 import io.mockk.coEvery
@@ -135,9 +137,13 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload(
+            "mail2022", 1,
+            isPromotional = true,
+            isVariantB = true
+        )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
-        val expectedEvent = UpsellingTelemetryEvent.UpgradeAttempt(UpgradeDimensions).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.UpgradeAttempt(UpgradeDimensionsPromoB).toTelemetryEvent()
 
         // When
         repository.trackEvent(eventType, expectedUpsellingEntryPoint)
@@ -157,9 +163,13 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload(
+            "mail2022", 1,
+            isPromotional = false,
+            isVariantB = false
+        )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(payload)
-        val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensions).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensionsNormal).toTelemetryEvent()
 
         // When
         repository.trackEvent(eventType, expectedUpsellingEntryPoint)
@@ -179,9 +189,13 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload(
+            "mail2022", 1,
+            isPromotional = true,
+            isVariantB = false
+        )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
-        val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensions).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensionsPromoA).toTelemetryEvent()
 
         // When
         repository.trackEvent(eventType, expectedUpsellingEntryPoint)
@@ -201,9 +215,13 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
+        val payload = UpsellingTelemetryTargetPlanPayload(
+            "mail2022", 1,
+            isPromotional = false,
+            isVariantB = false
+        )
         val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
-        val expectedEvent = UpsellingTelemetryEvent.PurchaseCompleted(UpgradeDimensions).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.PurchaseCompleted(UpgradeDimensionsNormal).toTelemetryEvent()
 
         // When
         repository.trackEvent(eventType, expectedUpsellingEntryPoint)

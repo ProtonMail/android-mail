@@ -22,6 +22,8 @@ sealed class UpsellingTelemetryEventDimensionsKey(val name: String) {
     data object PlanBeforeUpgrade : UpsellingTelemetryEventDimensionsKey("plan_before_upgrade")
     data object DaysSinceAccountCreation : UpsellingTelemetryEventDimensionsKey("days_since_account_creation")
     data object UpsellModalVersion : UpsellingTelemetryEventDimensionsKey("upsell_modal_version")
+    data object UpsellVariant : UpsellingTelemetryEventDimensionsKey("upsell_variant")
+    data object UpsellIsPromotional : UpsellingTelemetryEventDimensionsKey("upsell_is_promotional")
     data object SelectedPlan : UpsellingTelemetryEventDimensionsKey("selected_plan")
     data object SelectedCycle : UpsellingTelemetryEventDimensionsKey("selected_cycle")
     data object UpsellEntryPoint : UpsellingTelemetryEventDimensionsKey("upsell_entry_point")

@@ -29,8 +29,24 @@ class UpsellingTelemetryEventDimensions {
     fun addDaysSinceAccountCreation(value: String) =
         mutableMap.put(UpsellingTelemetryEventDimensionsKey.DaysSinceAccountCreation.name, value)
 
-    fun addUpsellModalVersion(value: String = "A.1") =
+    fun addUpsellModalVersion(value: String = MODAL_VERSION_A1) =
         mutableMap.put(UpsellingTelemetryEventDimensionsKey.UpsellModalVersion.name, value)
+
+    fun addUpsellPromoVariant(isVariantB: Boolean) = mutableMap.put(
+        UpsellingTelemetryEventDimensionsKey.UpsellVariant.name,
+        when {
+            isVariantB -> UPSELL_VARIANT_B1
+            else -> UPSELL_VARIANT_A1
+        }
+    )
+
+    fun addUpsellIsPromo(isPromo: Boolean) = mutableMap.put(
+        UpsellingTelemetryEventDimensionsKey.UpsellIsPromotional.name,
+        when {
+            isPromo -> true
+            else -> false
+        }.toString()
+    )
 
     fun addSelectedPlan(value: String) = mutableMap.put(UpsellingTelemetryEventDimensionsKey.SelectedPlan.name, value)
 
@@ -39,4 +55,10 @@ class UpsellingTelemetryEventDimensions {
 
     fun addUpsellEntryPoint(value: String) =
         mutableMap.put(UpsellingTelemetryEventDimensionsKey.UpsellEntryPoint.name, value)
+
+    companion object {
+        const val MODAL_VERSION_A1 = "A.1"
+        const val UPSELL_VARIANT_A1 = "A.1"
+        const val UPSELL_VARIANT_B1 = "B.1"
+    }
 }

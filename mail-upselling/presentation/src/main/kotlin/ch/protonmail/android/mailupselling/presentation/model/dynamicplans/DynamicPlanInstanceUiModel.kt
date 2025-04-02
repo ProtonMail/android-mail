@@ -100,8 +100,10 @@ sealed class DynamicPlanInstanceUiModel(
     }
 }
 
-internal fun DynamicPlanInstanceUiModel.toTelemetryPayload() = UpsellingTelemetryTargetPlanPayload(
-    planName = dynamicPlan.name ?: "",
-    planCycle = cycle.months,
-    isPromotional = this is DynamicPlanInstanceUiModel.Promotional
-)
+internal fun DynamicPlanInstanceUiModel.toTelemetryPayload(isVariantB: Boolean = false) =
+    UpsellingTelemetryTargetPlanPayload(
+        planName = dynamicPlan.name ?: "",
+        planCycle = cycle.months,
+        isPromotional = this is DynamicPlanInstanceUiModel.Promotional,
+        isVariantB = isVariantB
+    )
