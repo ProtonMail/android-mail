@@ -128,7 +128,6 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionB
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
