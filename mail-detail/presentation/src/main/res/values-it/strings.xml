@@ -35,8 +35,8 @@
   <string name="bcc">Ccn:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">%d File allegato</item>
-    <item quantity="other">%d File allegati</item>
+    <item quantity="one">%d file allegato</item>
+    <item quantity="other">%d file allegati</item>
   </plurals>
   <string name="hide_details">Nascondi i dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>

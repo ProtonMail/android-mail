@@ -25,10 +25,10 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Wyczyść zapytanie</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Wpisz zapytanie</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Wybrano %d</item>
-    <item quantity="few">Wybrano %d</item>
-    <item quantity="many">Wybrano %d</item>
-    <item quantity="other">Wybrano %d</item>
+    <item quantity="one">%d</item>
+    <item quantity="few">%d</item>
+    <item quantity="many">%d</item>
+    <item quantity="other">%d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">Nieprzeczytane: %s</item>
@@ -40,25 +40,25 @@
   <string name="mailbox_default_sender">(brak nadawcy)</string>
   <string name="mailbox_error_message_offline">Jesteś w trybie offline. Nie można odzyskać elementów</string>
   <string name="mailbox_error_message_generic">Ładowanie skrzynki pocztowej nie powiodło się</string>
-  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
+  <string name="mailbox_error_search_input_invalid">Wpisz w zapytaniu tylko znaki alfanumeryczne.</string>
   <string name="mailbox_error_message_unexpected">Coś poszło nie tak</string>
   <string name="mailbox_is_empty_title">Brak wiadomości</string>
   <string name="mailbox_is_empty_description">Jesteś na bieżąco</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Brak nieprzeczytanych wiadomości</string>
   <string name="mailbox_is_empty_folder_description">Folder jest pusty</string>
-  <string name="mailbox_is_empty_spam_description">Folder Spam jest pusty</string>
+  <string name="mailbox_is_empty_spam_description">Folder spam jest pusty</string>
   <string name="mailbox_is_empty_trash_description">Kosz jest pusty</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Wątek został przeniesiony do Kosza</item>
-    <item quantity="few">Przeniesiono %d wątki do Kosza</item>
-    <item quantity="many">Przeniesiono %d wątków do Kosza</item>
-    <item quantity="other">Przeniesiono %d wątków do Kosza</item>
+    <item quantity="one">Wątek został przeniesiony do kosza</item>
+    <item quantity="few">Przeniesiono %d wątki do kosza</item>
+    <item quantity="many">Przeniesiono %d wątków do kosza</item>
+    <item quantity="other">Przeniesiono %d wątków do kosza</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Wiadomość została przeniesiona do Kosza</item>
-    <item quantity="few">Przeniesiono %d wiadomości do Kosza</item>
-    <item quantity="many">Przeniesiono %d wiadomości do Kosza</item>
-    <item quantity="other">Przeniesiono %d wiadomości do Kosza</item>
+    <item quantity="one">Wiadomość została przeniesiona do kosza</item>
+    <item quantity="few">Przeniesiono %d wiadomości do kosza</item>
+    <item quantity="many">Przeniesiono %d wiadomości do kosza</item>
+    <item quantity="other">Przeniesiono %d wiadomości do kosza</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Usuń wątek</item>
@@ -106,13 +106,13 @@
   <string name="mailbox_search_placeholder_text">Szukaj wiadomości</string>
   <string name="mailbox_search_no_results_title">Nie znaleziono żadnych wyników</string>
   <string name="mailbox_search_no_results_explanation">Szukaj daty, nazwy, adresu e-mail lub tematu</string>
-  <string name="mailbox_action_button_clear_trash">Opróżnij Kosz</string>
-  <string name="mailbox_action_button_clear_spam">Opróżnij Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Opróżnij Kosz</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Opróżnij Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości z Kosza?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości ze Spamu?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Czy na pewno chcesz trwale usunąć wszystkie wątki ze Spamu?</string>
+  <string name="mailbox_action_button_clear_trash">Opróżnij kosz</string>
+  <string name="mailbox_action_button_clear_spam">Opróżnij spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Opróżnij kosz</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Opróżnij spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości z kosza?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości ze spamu?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Czy na pewno chcesz trwale usunąć wszystkie wątki ze spamu?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operacja wyczyszczenia jest zaplanowana"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Ostrzeżenie</string>

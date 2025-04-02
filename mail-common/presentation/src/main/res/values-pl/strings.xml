@@ -32,10 +32,10 @@
   <string name="action_unstar_description">Usuń gwiazdkę</string>
   <string name="action_label_description">Oznacz jako…</string>
   <string name="action_move_description">Przenieś do…</string>
-  <string name="action_trash_description">Przenieś do Kosza</string>
+  <string name="action_trash_description">Przenieś do kosza</string>
   <string name="action_delete_description">Usuń</string>
   <string name="action_archive_description">Archiwizuj</string>
-  <string name="action_spam_description">Przenieś do Spamu</string>
+  <string name="action_spam_description">Przenieś do spamu</string>
   <string name="action_view_in_light_mode_description">Pokaż wiadomość w jasnym motywie</string>
   <string name="action_view_in_dark_mode_description">Pokaż wiadomość w ciemnym motywie</string>
   <string name="action_print_description">Drukuj</string>
@@ -56,7 +56,7 @@
   <string name="action_unstar_content_description">Usuń gwiazdkę</string>
   <string name="action_label_content_description">Oznacz jako…</string>
   <string name="action_move_content_description">Przenieś do…</string>
-  <string name="action_trash_content_description">Przenieś do Kosza</string>
+  <string name="action_trash_content_description">Przenieś do kosza</string>
   <string name="action_delete_content_description">Usuń</string>
   <string name="action_archive_content_description">Archiwizuj</string>
   <string name="action_spam_content_description">Spam</string>
@@ -75,10 +75,10 @@
   <string name="yesterday">Wczoraj</string>
   <string name="action_open_customize_toolbar">Dostosuj pasek narzędzi</string>
   <string name="action_open_customize_toolbar_description">Dostosuj pasek narzędzi</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatycznie usuwaj wiadomości, które znajdują się w Spamie dłużej niż 30 dni.</string>
-  <string name="auto_delete_banner_text_upgrade">Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.</string>
-  <string name="auto_delete_banner_text_enabled_info">Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
+  <string name="auto_delete_banner_text_activate_trash">Automatycznie usuwaj wiadomości, które znajdują się w koszu dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_activate_spam">Automatycznie usuwaj wiadomości, które znajdują się w spamie dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_upgrade">Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w koszu lub spamie dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_enabled_info">Wiadomości, które znajdują się w koszu lub spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
   <string name="auto_delete_banner_button_activate_confirm">Włącz</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nie, dziękuję</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Dowiedz się więcej</string>

@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜索关键词</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">输入搜索关键词</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">已选%d项</item>
+    <item quantity="other">已选择 %d 项</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s 封未读邮件</item>
@@ -52,27 +52,27 @@
     <item quantity="other">删除 %d 项会话</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="other">删除 %d 条消息</item>
+    <item quantity="other">删除 %d 封邮件</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="other">确定要永久删除这些会话吗？</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="other">确定要永久删除此邮件吗？</item>
+    <item quantity="other">确定要永久删除这些邮件吗？</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="other">%d封邮件已永久删除</item>
+    <item quantity="other">%d 封邮件已永久删除</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="other">%d组对话已永久删除</item>
+    <item quantity="other">%d 项会话已永久删除</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">添加标签失败</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">获取标签失败</string>
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <string name="mailbox_action_move_conversation">对话已移动到 %s</string>
-  <string name="mailbox_action_move_message">消息已移动到 %s</string>
+  <string name="mailbox_action_move_conversation">会话已移至 %s</string>
+  <string name="mailbox_action_move_message">邮件已移至 %s</string>
   <string name="mailbox_search_placeholder_text">搜索邮件</string>
   <string name="mailbox_search_no_results_title">未找到结果</string>
   <string name="mailbox_search_no_results_explanation">搜索日期、姓名、邮箱地址或邮件主题</string>
@@ -92,6 +92,6 @@
   <string name="storage_limit_warning_dialog_confirm_button">好的</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">警告</string>
-  <string name="storage_quota_over_dialog_text">Proton邮箱存储空间提示：您的Proton账户存储空间已用满100%。除非永久删除部分邮件或升级账户以获取更多存储空间，否则您将无法收发电子邮件。</string>
+  <string name="storage_quota_over_dialog_text">您的 Proton 账户存储空间已满。请清理无用资料释放空间或升级以获取更多存储空间。</string>
   <string name="storage_quota_over_dialog_confirm_button">好的</string>
 </resources>

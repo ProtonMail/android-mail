@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">अधिक स्टोरेज और प्रीमियम खासियतें अनलॉक करने के लिए</string>
   <string name="upselling_mailbox_plus_title">Mail Plus में अपग्रेड करें</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">आसानी से ग्रुप को ईमेल भेजें और Mail Plus के साथ अन्य प्रीमियम खासियतों का आनंद लें।</string>
   <string name="upselling_contact_groups_plus_title">अपने संपर्कों को ग्रुप करें</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">स्वत: नवीनीकरण वही कीमत और शर्तों पर होता है, जब तक रद्द न किया जाए।</string>
   <string name="upselling_auto_renew_text_promo">वेलकम ऑफर। %s %s%s पर स्वत: नवीनीकरण होता है, जब तक रद्द न किया जाए।</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">%s %s%s पर स्वत: नवीनीकरण होता है, जब तक रद्द न किया जाए।</string>
   <string name="upselling_discount_tag">%s%% की छूट</string>
   <string name="upselling_month">/महीना</string>
   <string name="upselling_year">/साल</string>
   <string name="upselling_get_button">%s लें</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d महीना</item>
     <item quantity="other">%d महीने</item>

@@ -21,9 +21,9 @@
   <string name="dialog_sign_out_account_description">¿Está seguro de que quiere la cerrar sesión?</string>
   <string name="dialog_sign_out_account_confirm">Sí</string>
   <string name="dialog_sign_out_account_cancel">No</string>
-  <string name="dialog_remove_account_title">Eliminar la cuenta</string>
+  <string name="dialog_remove_account_title">Quitar la cuenta</string>
   <string name="dialog_remove_account_description">Cerrará la sesión y eliminará toda la información asociada con esta cuenta.</string>
-  <string name="dialog_remove_account_confirm">Eliminar</string>
+  <string name="dialog_remove_account_confirm">Quitar</string>
   <string name="dialog_remove_account_cancel">Cancelar</string>
   <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
   <string name="you_are_offline">No está conectado.</string>

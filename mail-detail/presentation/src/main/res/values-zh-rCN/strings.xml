@@ -17,12 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">通讯录加载失败</string>
+  <string name="detail_error_loading_contacts">联系人加载失败</string>
   <string name="detail_error_loading_conversation">会话加载失败</string>
   <string name="detail_error_loading_messages">邮件加载失败</string>
   <string name="error_mark_unread_failed">标为未读失败，请重试。</string>
   <plurals name="message_count_label_text">
-    <item quantity="other">%d 条消息</item>
+    <item quantity="other">%d 封邮件</item>
   </plurals>
   <string name="quick_reply_button_content_description">回复</string>
   <string name="quick_reply_all_button_content_description">回复所有人</string>
@@ -44,17 +44,17 @@
   <string name="error_move_to_trash_failed">移至回收站失败，请重试。</string>
   <string name="message_moved_to_trash">邮件已移至回收站</string>
   <string name="message_moved_to_archive">邮件已存档</string>
-  <string name="error_move_to_archive_failed">移至档案失败。请重试。</string>
-  <string name="message_moved_to_spam">邮件已移至垃圾箱</string>
+  <string name="error_move_to_archive_failed">移至归档失败，请重试。</string>
+  <string name="message_moved_to_spam">邮件已移至垃圾邮件</string>
   <string name="error_move_to_spam_failed">无法移动到垃圾邮件。请重试。</string>
   <string name="message_moved_to_selected_destination">消息已移动到 %1$s</string>
-  <string name="error_move_message_failed">邮件移动失败，请重试。</string>
-  <string name="conversation_moved_to_trash">会话已移动到回收站</string>
-  <string name="conversation_moved_to_selected_destination">对话已移动到 %1$s</string>
+  <string name="error_move_message_failed">转移邮件失败，请重试。</string>
+  <string name="conversation_moved_to_trash">会话已移至回收站</string>
+  <string name="conversation_moved_to_selected_destination">会话已移至 %1$s</string>
   <string name="conversation_moved_to_archive">会话已存档</string>
-  <string name="conversation_moved_to_spam">对话已移至垃圾邮件</string>
-  <string name="error_move_conversation_failed">会话移动失败，请重试。</string>
-  <string name="error_loading_message">出现错误。请重试。</string>
+  <string name="conversation_moved_to_spam">会话已移至垃圾邮件</string>
+  <string name="error_move_conversation_failed">转移会话失败。请重试。</string>
+  <string name="error_loading_message">出错啦，请重试。</string>
   <string name="error_offline_loading_message">您已离线。请连接至网络以显示邮件内容。</string>
   <string name="error_get_attachment_failed">获取附件失败。</string>
   <string name="error_attachment_download_in_progress">当前附件下载完成后方可下载其他附件。</string>
@@ -63,7 +63,7 @@
   <string name="error_relabel_message_failed">重新标记消息失败，请重试</string>
   <string name="error_relabel_conversation_failed">重新标记对话失败，请重试</string>
   <string name="please_go_back_online_to_load_messages">您已离线。请连接至网络以加载邮件</string>
-  <string name="decryption_error">消息解密失败。</string>
+  <string name="decryption_error">邮件解密失败。</string>
   <string name="detail_error_retrieving_message_body">无法获取消息</string>
   <string name="message_body_error_no_webview">此邮件的内容需要安装 WebView 才能查看。</string>
   <!-- Banners -->
@@ -75,7 +75,7 @@
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">您即将离开本应用并前往：</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">不再询问</string>
-  <string name="external_link_confirmation_dialog_cancel_button">关闭</string>
+  <string name="external_link_confirmation_dialog_cancel_button">取消</string>
   <string name="external_link_confirmation_dialog_continue_button">继续</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">警告：疑似虚假网站</string>
@@ -86,14 +86,14 @@
   <string name="message_delete_dialog_title">删除邮件</string>
   <string name="message_delete_dialog_message">确定要永久删除此邮件吗？</string>
   <string name="message_deleted">邮件已删除</string>
-  <string name="message_moved">消息已移动</string>
-  <string name="message_moved_to">消息已移动到 %s</string>
+  <string name="message_moved">邮件已移动</string>
+  <string name="message_moved_to">邮件已移动至 %s</string>
   <string name="error_delete_message_failed">删除邮件失败</string>
   <string name="error_delete_message_failed_wrong_folder">消息位于不可以删除的位置。</string>
   <string name="error_delete_conversation_failed">删除对话失败</string>
   <string name="error_delete_conversation_failed_wrong_folder">对话位于不可以删除的位置。</string>
-  <string name="conversation_delete_dialog_title">删除对话</string>
-  <string name="conversation_delete_dialog_message">您确定要永久删除此对话吗？</string>
+  <string name="conversation_delete_dialog_title">删除会话</string>
+  <string name="conversation_delete_dialog_message">您确定要永久删除此会话吗？</string>
   <string name="conversation_deleted">会话已删除</string>
   <string name="message_body_load_remote_content_button_text">加载外链内容</string>
   <string name="message_body_load_embedded_images_button_text">加载嵌入图像</string>

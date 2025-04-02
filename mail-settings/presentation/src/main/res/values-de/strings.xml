@@ -186,7 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Diese Symbolleiste wird beim Lesen einer Unterhaltung angezeigt.</string>
   <string name="customize_toolbar_disclaimer_inbox">Diese Symbolleiste wird angezeigt, wenn mehrere Nachrichten im Postfach ausgewählt werden.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Diese Symbolleiste wird angezeigt, wenn mehrere Nachrichten im Postfach ausgewählt werden.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">Diese Symbolleiste wird angezeigt, wenn du mehrere Konversationen in deiner Mailbox auswählst.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Diese Symbolleiste wird angezeigt, wenn du mehrere Unterhaltungen in deinem Postfach auswählst.</string>
   <string name="customize_toolbar_message">Nachricht</string>
   <string name="customize_toolbar_conversation">Unterhaltung</string>
   <string name="customize_toolbar_inbox">Posteingang</string>

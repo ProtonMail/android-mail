@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
   <string name="upselling_mailbox_plus_title">Mail Plus로 업그레이드</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Mail Plus로 그룹화하여 쉽게 이메일을 발송하고 다른 프리미엄 기능도 즐길 수 있어요.</string>
   <string name="upselling_contact_groups_plus_title">연락처를 그룹화하기</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">취소되기 전까지 같은 가격과 규정으로 갱신됩니다.</string>
   <string name="upselling_auto_renew_text_promo">환영 할인. 취소 전까지 %s %s%s(으)로 갱신됩니다.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">취소 전까지 %s %s%s(으)로 갱신됩니다.</string>
   <string name="upselling_discount_tag">%s%% 절약</string>
   <string name="upselling_month">/월</string>
   <string name="upselling_year">/연간</string>
   <string name="upselling_get_button">%s 받기</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="other">%d개월</item>
   </plurals>

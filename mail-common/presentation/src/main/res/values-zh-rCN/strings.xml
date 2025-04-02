@@ -81,7 +81,7 @@
   <string name="auto_delete_banner_text_enabled_info">已归入垃圾邮件或回收站超过 30 天的邮件将被自动删除。</string>
   <string name="auto_delete_banner_button_activate_confirm">启用</string>
   <string name="auto_delete_banner_button_activate_dismiss">不，谢谢</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">了解更多</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">了解详情</string>
   <!-- message expiration -->
   <string name="expiration_expired">已过期</string>
   <string name="expiration_days_arg">%d 天</string>

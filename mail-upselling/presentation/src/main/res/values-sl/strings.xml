@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Za več prostora za shranjevanje in premijskih funkcij</string>
   <string name="upselling_mailbox_plus_title">Nadgradite na Mail Plus</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Enostavno pošiljajte e-pošto skupini in uživajte v drugih premijskih funkcijah z Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Združite svoje stike v skupine</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
   <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_discount_tag">PRIHRANITE %s%%</string>
   <string name="upselling_month">/mesec</string>
   <string name="upselling_year">/leto</string>
   <string name="upselling_get_button">Pridobi %s</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mesec</item>
     <item quantity="two">%d meseca</item>

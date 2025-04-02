@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserisci una parola chiave</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d selezionati</item>
-    <item quantity="other">%d selezionati</item>
+    <item quantity="one">%d elemento selezionato</item>
+    <item quantity="other">%d elementi selezionati</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s non letti</item>
@@ -36,21 +36,21 @@
   <string name="mailbox_default_sender">(Nessun mittente)</string>
   <string name="mailbox_error_message_offline">Nessuna connessone a Internet. Caricamento dei messaggi non riuscito.</string>
   <string name="mailbox_error_message_generic">Caricamento dei messaggi non riuscito</string>
-  <string name="mailbox_error_search_input_invalid">Si prega di includere solo caratteri alfanumerici nel termine di ricerca.</string>
+  <string name="mailbox_error_search_input_invalid">Inserisci solo caratteri alfanumerici</string>
   <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto</string>
   <string name="mailbox_is_empty_title">Nessun messaggio</string>
-  <string name="mailbox_is_empty_description">Niente di nuovo qui</string>
+  <string name="mailbox_is_empty_description">Controlla più tardi</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Nessun messaggio non letto</string>
   <string name="mailbox_is_empty_folder_description">Questa cartella è vuota</string>
   <string name="mailbox_is_empty_spam_description">La cartella spam è vuota</string>
   <string name="mailbox_is_empty_trash_description">Il cestino è vuoto</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">1 conversazione spostata nel cestino</item>
-    <item quantity="other">%d conversazioni spostate nel Cestino</item>
+    <item quantity="other">%d conversazioni spostate nel cestino</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">1 messaggio spostato nel cestino</item>
-    <item quantity="other">%d messaggi spostati nel Cestino</item>
+    <item quantity="other">%d messaggi spostati nel cestino</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Elimina 1 conversazione</item>
@@ -69,12 +69,12 @@
     <item quantity="other">Sei sicuro di voler eliminare definitivamente questi messaggi?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Messaggio eliminato definitivamente</item>
-    <item quantity="other">%d messaggi eliminati definitivamente</item>
+    <item quantity="one">Messaggio eliminato</item>
+    <item quantity="other">%d messaggi eliminati</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversazione eliminata definitivamente</item>
-    <item quantity="other">%d conversazioni eliminate definitivamente</item>
+    <item quantity="one">Conversazione eliminata</item>
+    <item quantity="other">%d conversazioni eliminate</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etichettatura non riuscita</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Caricamento delle etichette non riuscito</string>
@@ -85,7 +85,7 @@
   <string name="mailbox_action_move_message">Messaggio spostato in %s</string>
   <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
   <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
-  <string name="mailbox_search_no_results_explanation">Cerca per data, nome, indirizzo email o oggetto del messaggio</string>
+  <string name="mailbox_search_no_results_explanation">Cerca per data, nome, indirizzo email o oggetto del messaggio</string>
   <string name="mailbox_action_button_clear_trash">Svuota il cestino</string>
   <string name="mailbox_action_button_clear_spam">Svuota la cartella spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Svuota il cestino</string>

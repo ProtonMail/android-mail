@@ -47,18 +47,18 @@
   <string name="error_mark_as_unread_failed">Oznaczenie jako nieprzeczytane nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_star_operation_failed">Oznaczenie gwiazdką nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_unstar_operation_failed">Usunięcie gwiazdki nie powiodło się. Spróbuj ponownie.</string>
-  <string name="error_move_to_trash_failed">Przeniesienie do Kosza nie powiodło się. Spróbuj ponownie.</string>
-  <string name="message_moved_to_trash">Wiadomość została przeniesiona do Kosza</string>
+  <string name="error_move_to_trash_failed">Przeniesienie do kosza nie powiodło się. Spróbuj ponownie.</string>
+  <string name="message_moved_to_trash">Wiadomość została przeniesiona do kosza</string>
   <string name="message_moved_to_archive">Wiadomość została przeniesiona do Archiwum</string>
   <string name="error_move_to_archive_failed">Przeniesienie do Archiwum nie powiodło się. Spróbuj ponownie.</string>
-  <string name="message_moved_to_spam">Wiadomość została przeniesiona do Spamu</string>
-  <string name="error_move_to_spam_failed">Przeniesienie do Spamu nie powiodło się. Spróbuj ponownie.</string>
+  <string name="message_moved_to_spam">Wiadomość została przeniesiona do spamu</string>
+  <string name="error_move_to_spam_failed">Przeniesienie do spamu nie powiodło się. Spróbuj ponownie.</string>
   <string name="message_moved_to_selected_destination">Wiadomość została przeniesiona do folderu %1$s</string>
   <string name="error_move_message_failed">Przenoszenie wiadomości nie powiodło się. Spróbuj ponownie.</string>
-  <string name="conversation_moved_to_trash">Wątek został przeniesiony do Kosza</string>
+  <string name="conversation_moved_to_trash">Wątek został przeniesiony do kosza</string>
   <string name="conversation_moved_to_selected_destination">Wątek został przeniesiony do folderu %1$s</string>
   <string name="conversation_moved_to_archive">Wątek został przeniesiony do Archiwum</string>
-  <string name="conversation_moved_to_spam">Wątek został przeniesiony do Spamu</string>
+  <string name="conversation_moved_to_spam">Wątek został przeniesiony do spamu</string>
   <string name="error_move_conversation_failed">Przenoszenie wątku nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_loading_message">Coś poszło nie tak. Spróbuj ponownie później.</string>
   <string name="error_offline_loading_message">Jesteś w trybie offline. Połączenie internetowe jest wymagane, aby wyświetlić zawartość wiadomości.</string>
@@ -119,6 +119,6 @@
   <string name="show">Pokaż</string>
   <string name="hide">Ukryj</string>
   <string name="tooltip_customize_toolbar_title">Dostosuj pasek narzędzi</string>
-  <string name="tooltip_customize_toolbar_message">Możesz teraz wybierać i zmieniać kolejność działań na tym pasku narzędzi.</string>
+  <string name="tooltip_customize_toolbar_message">Możesz zmienić kolejność akcji na pasku narzędzi.</string>
   <string name="tooltip_customize_toolbar_cta">Dostosuj</string>
 </resources>

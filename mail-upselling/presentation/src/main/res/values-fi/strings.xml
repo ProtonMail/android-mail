@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Avataksesi lisää tallennustilaa ja premium-ominaisuuksia</string>
   <string name="upselling_mailbox_plus_title">Päivitä Mail Plussaan</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Lähetä ryhmäviestejä helposti ja nauti muista premium-ominaisuuksista Mail Plussalla.</string>
   <string name="upselling_contact_groups_plus_title">Ryhmittele yhteystietojasi</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Uudistuu automaattisesti samaan hintaan ja samoilla ehdoilla, ellei tilausta peruta.</string>
   <string name="upselling_auto_renew_text_promo">Tervetuliaistarjous. Uudistuu automaattisesti %s %s%s, ellei peruuta.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Uudistuu automaattisesti %s %s%s, ellei peruuta.</string>
   <string name="upselling_discount_tag">SÄÄSTÄ %s %%</string>
   <string name="upselling_month">/kuukausi</string>
   <string name="upselling_year">/vuosi</string>
   <string name="upselling_get_button">Hanki %s</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d kuukausi</item>
     <item quantity="other">%d kuukautta</item>

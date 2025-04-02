@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Permitido</string>
   <string name="mail_settings_denied">Negado</string>
   <string name="mail_settings_auto_detect">Detectar automaticamente</string>
-  <string name="mail_settings_customize_toolbar">Personalizar a barra de ferramentas</string>
+  <string name="mail_settings_customize_toolbar">Personalizar barra de ferramentas</string>
   <string name="mail_settings_app_information">Informações do aplicativo</string>
   <string name="mail_settings_app_version">Versão do aplicativo</string>
   <string name="mail_settings_app_logs">Registros do aplicativo</string>

@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Pour accéder à plus d\'espace de stockage et de fonctionnalités premium</string>
   <string name="upselling_mailbox_plus_title">Je passe à Mail Plus</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Offre à durée limitée annulable à tout moment.</string>
+  <string name="upselling_mailbox_plus_promo_title">Essayez Mail Plus pour %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envoyez facilement des e-mails à un groupe et profitez d\'autres fonctionnalités premium avec Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Groupez vos contacts</string>
@@ -67,7 +70,7 @@
   <string name="upselling_onboarding_unlimited_feature_email_domains">Prise en charge de 3 domaines de messagerie personnalisés</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Nombre illimité d\'alias « hide-my-email »</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Support client dédié</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Un VPN ultrarapide et privé</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Un VPN ultra-rapide et privé</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestionnaire de mots de passe chiffré</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Stockage cloud chiffré de photos et documents.</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protection avancée des comptes</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Renouvellement automatique aux mêmes prix et conditions sauf annulation</string>
   <string name="upselling_auto_renew_text_promo">Offre de bienvenue. Renouvellement automatiquement à %s%s%s sauf annulation.</string>
+  <string name="upselling_auto_renew_text_promo_short">Offre de bienvenue. Renouvellement automatique à %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Renouvellement automatiquement à %s%s%s sauf annulation.</string>
   <string name="upselling_discount_tag">ÉCONOMISEZ %s %%</string>
   <string name="upselling_month">/mois</string>
   <string name="upselling_year">/an</string>
   <string name="upselling_get_button">Obtenir %s</string>
+  <string name="upselling_get_button_promotional">Obtenez 1 mois pour %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mois</item>
     <item quantity="other">%d mois</item>

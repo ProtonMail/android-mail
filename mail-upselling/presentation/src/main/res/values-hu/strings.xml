@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Több tárhely és prémium funkciók feloldása</string>
   <string name="upselling_mailbox_plus_title">Mail Plus előfizetés</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Küldjön e-maileket egy adott csoportnak, és élvezze az egyéb prémium funkciókat a Mail Plus segítségével.</string>
   <string name="upselling_contact_groups_plus_title">Csoportosítsa a kapcsolatait</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Lemondás nélkül automatikusan megújul ugyanazon az áron és feltételek mellett.</string>
   <string name="upselling_auto_renew_text_promo">Üdvözlő ajánlat. Automatikusan megújul %s %s%s, hacsak nem mondja mégsem.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Automatikusan megújul %s %s%s, hacsak nem mondja mégsem.</string>
   <string name="upselling_discount_tag">%s%% kedvezmény</string>
   <string name="upselling_month">/hó</string>
   <string name="upselling_year">/év</string>
   <string name="upselling_get_button">%s beszerzése</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d hónap</item>
     <item quantity="other">%d hónap</item>

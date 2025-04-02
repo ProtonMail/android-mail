@@ -21,7 +21,7 @@
   <string name="onboarding_privacy_for_all_headline">人人享有隐私</string>
   <string name="onboarding_privacy_for_all_description">邀请更多人使用 Proton Mail，让大家都能享受到端到端加密带来的好处。</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">有条不紊</string>
+  <string name="onboarding_easily_up_to_date_headline">轻松更新</string>
   <string name="onboarding_easily_up_to_date_description">会话模式能帮助您轻松应对各方的往来邮件。</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">干净利落，井井有条。</string>

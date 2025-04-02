@@ -25,12 +25,12 @@
   <string name="compose_message_placeholder">撰写邮件</string>
   <string name="close_composer_content_description">关闭编辑器</string>
   <string name="send_message_content_description">发送邮件</string>
-  <string name="composer_expand_recipients_button">显示其余收件人</string>
+  <string name="composer_expand_recipients_button">显示其他收件人</string>
   <string name="composer_error_invalid_email">电子邮箱地址无效</string>
   <string name="composer_error_invalid_sender">发件人地址无效</string>
   <string name="change_sender_button_content_description">更改发件地址</string>
   <string name="composer_change_sender_paid_feature">您需要付费的 Proton Mail 订阅才能更改发件人地址</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">获取用户等级失败，无法更改发件人地址。请重试。</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">无法更改发件人地址，系统未能获取用户订阅信息。请稍后重试。</string>
   <string name="composer_error_store_draft_sender_address">无法存储此草稿的发件人地址</string>
   <string name="composer_error_store_draft_body">无法存储此草稿正文</string>
   <string name="composer_error_duplicate_recipient">已移除重复收件人</string>
@@ -41,14 +41,14 @@
   <string name="composer_add_attachments_bottom_sheet_import_from">导入自…</string>
   <string name="composer_error_loading_parent_message">无法加载信件信息</string>
   <string name="composer_original_message_quote">原始信息</string>
-  <string name="composer_sender_quote">%s，%s &lt;%s&gt;，来信：</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">好的</string>
-  <string name="composer_attachment_size_exceeded_dialog_title">达到附件限制</string>
+  <string name="composer_sender_quote">在 %s，%s &lt;%s&gt; 写道：</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">确定</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">附件大小已达上限</string>
   <string name="composer_attachment_size_exceeded_dialog_message">附件大小限制为 %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">附件重新加密失败。出于安全原因，所有附件都被删除。</string>
   <string name="composer_attachment_not_found">找不到附件。</string>
   <string name="composer_attachment_error_draft_loading">无法加载原始草稿信息。</string>
-  <string name="composer_attachment_error_saving_attachment">无法存储附件。请重试。</string>
+  <string name="composer_attachment_error_saving_attachment">无法存储附件，请重试。</string>
   <string name="composer_warning_local_data_shown">此草稿的最新版本加载失败。任何更改都会覆盖其内容。</string>
   <string name="composer_button_add_password">添加密码</string>
   <string name="composer_button_set_expiration">设置有效期</string>
@@ -59,8 +59,8 @@
   <string name="composer_bottom_bar_expiration_time_one_day">1 天</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 天</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 周</string>
-  <string name="composer_bottom_bar_expiration_time_custom">其他</string>
-  <string name="composer_error_setting_expiration_time">设定到期时间失败</string>
+  <string name="composer_bottom_bar_expiration_time_custom">自定义</string>
+  <string name="composer_error_setting_expiration_time">设置有效期失败</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">不支持设置有效期</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">我们建议为下列收件人改为设置邮件阅读密码：</string>
@@ -71,7 +71,7 @@
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">从 @pm.me 发送信息是一项付费功能。您的信息将从您的默认地址发送。</string>
   <string name="composer_sender_changed_original_address_disabled">所选发件人地址已禁用。您的邮件将从您的默认地址发送。</string>
   <string name="composer_sender_changed_original_address_generic_error">无法获取原始发件人地址。您的邮件将从您的默认地址发送。</string>
-  <string name="composer_sender_changed_dialog_confirm_button">好的</string>
+  <string name="composer_sender_changed_dialog_confirm_button">确定</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">撰写</string>
   <string name="composer_send_without_subject_dialog_text">确定要发送无主题的邮件吗？</string>
@@ -83,7 +83,7 @@
   <string name="message_sending_error_dialog_text_error">由于以下原因，您的电子邮件无法发送到所输入的地址：</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">没有受信任的密钥：%s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在：%s</string>
-  <string name="set_message_password_title">邮件加密</string>
+  <string name="set_message_password_title">加密邮件</string>
   <string name="set_message_password_info_message">为非 Proton Mail 用户设置阅读此邮件所需的密码已将其邮件加密.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">了解详情</a></string>
   <string name="set_message_password_label">邮件密码</string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">4 - 21 个字符</string>
   <string name="set_message_password_supporting_error_text">密码必须介于 4 到 21 个字符之间</string>
   <string name="set_message_password_supporting_text_repeat">两次输入的密码必须一致</string>
-  <string name="set_message_password_supporting_error_text_repeat">密码不匹配</string>
+  <string name="set_message_password_supporting_error_text_repeat">密码不一致</string>
   <string name="set_message_password_button_show">显示密码</string>
   <string name="set_message_password_button_hide">隐藏密码</string>
   <string name="set_message_password_button_apply">确认密码</string>

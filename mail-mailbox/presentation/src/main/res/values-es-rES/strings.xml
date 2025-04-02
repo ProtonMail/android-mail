@@ -50,7 +50,7 @@
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Se ha movido el mensaje a la papelera.</item>
-    <item quantity="other">Se han movido %d mensajes a la Papelera</item>
+    <item quantity="other">Se han movido %d mensajes a la papelera</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar la conversación</item>

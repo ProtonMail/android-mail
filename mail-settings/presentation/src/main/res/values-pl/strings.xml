@@ -65,14 +65,14 @@
   <string name="mail_settings_conversation_mode">Tryb wątku</string>
   <string name="mail_settings_auto_delete">Automatyczne usuwanie</string>
   <string name="mail_settings_auto_delete_full_text">Automatyczne usuwanie niechcianych wiadomości</string>
-  <string name="mail_settings_auto_delete_hint">Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
+  <string name="mail_settings_auto_delete_hint">Wiadomości, które znajdują się w koszu lub spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Do korzystania z funkcji wymagana jest płatna subskrypcja Proton Mail</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Anuluj</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Usunąć wiadomości?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">Wszystkie wiadomości, które znajdują się w Koszu lub w Spamie dłużej niż 30 dni zostaną usunięte.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Wszystkie wiadomości, które znajdują się w koszu lub w spamie dłużej niż 30 dni zostaną usunięte.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Włącz</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Wyłączyć automatyczne usuwanie?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Wiadomości zaplanowane do usunięcia pozostaną w Koszu i Spamie.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Wiadomości zaplanowane do usunięcia pozostaną w koszu i spamie.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Wyłącz</string>
   <string name="mail_settings_not_set">Nie ustawiono</string>
   <string name="mail_settings_conversation_mode_hint">Grupuj wiadomości w skrzynce pocztowej do wątku lub wyświetlaj je oddzielnie</string>
@@ -115,15 +115,15 @@
   <string name="mail_settings_swipe_action_read_title">Nieprzeczytane</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Oznacz gwiazdką</string>
-  <string name="mail_settings_swipe_action_trash_title">Przenieś do Kosza</string>
+  <string name="mail_settings_swipe_action_trash_title">Przenieś do kosza</string>
   <string name="mail_settings_swipe_action_label_as_title">Oznacz jako…</string>
   <string name="mail_settings_swipe_action_move_to_title">Przenieś do…</string>
   <string name="mail_settings_swipe_action_none_description">Brak</string>
   <string name="mail_settings_swipe_action_archive_description">Przenieś do Archiwum</string>
   <string name="mail_settings_swipe_action_read_description">Oznacz jako nieprzeczytane / przeczytane</string>
-  <string name="mail_settings_swipe_action_spam_description">Przenieś do Spamu</string>
+  <string name="mail_settings_swipe_action_spam_description">Przenieś do spamu</string>
   <string name="mail_settings_swipe_action_star_description">Oznacz gwiazdką / usuń gwiazdkę</string>
-  <string name="mail_settings_swipe_action_trash_description">Przenieś do Kosza</string>
+  <string name="mail_settings_swipe_action_trash_description">Przenieś do kosza</string>
   <string name="mail_settings_swipe_action_label_as_description">Oznacz jako…</string>
   <string name="mail_settings_swipe_action_move_to_description">Przenieś do…</string>
   <!-- Notification settings -->

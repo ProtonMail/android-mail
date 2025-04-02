@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες</string>
   <string name="upselling_mailbox_plus_title">Αναβαθμίστε στο Mail Plus</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Στείλτε εύκολα μηνύματα ηλεκτρονικού ταχυδρομείου σε μια ομάδα και απολαύστε άλλες premium δυνατότητες με το Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Ομαδοποίηση των επαφών σας</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί.</string>
   <string name="upselling_auto_renew_text_promo">Προσφορά καλωσορίσματος. Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
   <string name="upselling_discount_tag">ΕΞΟΙΚΟΝΟΜΗΣΤΕ %s%%</string>
   <string name="upselling_month">/μήνα</string>
   <string name="upselling_year">/έτος</string>
   <string name="upselling_get_button">Αποκτήστε %s</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d μήνα</item>
     <item quantity="other">%d μήνες</item>

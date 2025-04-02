@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">მეტი საცავი და ფასიანი თვისებების მისაღებად</string>
   <string name="upselling_mailbox_plus_title">აწევა Mail Plus-მდე</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">ადვილად გაუგზავნეთ ელფოსტა ჯგუფებს და ისიანოვნეთ სხვა ფასიანი ფუნქციებით Mail Plus-სთან ერთად.</string>
   <string name="upselling_contact_groups_plus_title">დააჯგუფეთ თქვენი კონტაქტები</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">ავტომატურად განახლდება იგივე ფასით და პირობებით, თუ არ გააუქმებთ.</string>
   <string name="upselling_auto_renew_text_promo">რეგისტრაციის საჩუქარი. ავტოგანახლების თარიღია %s %s%s, თუ არ გააუქმებთ.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">ავტოგანახლების თარირია %s %s%s, თუ არ გააუქმებთ</string>
   <string name="upselling_discount_tag">დაზოგეთ %s%%</string>
   <string name="upselling_month">/თვე</string>
   <string name="upselling_year">/წელიწადში</string>
   <string name="upselling_get_button">%s-ის მიღება</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d თვე</item>
     <item quantity="other">%d თვე</item>

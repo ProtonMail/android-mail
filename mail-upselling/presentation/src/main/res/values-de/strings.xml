@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
   <string name="upselling_mailbox_plus_title">Auf Mail Plus upgraden</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Befristetes Angebot, jederzeit kündbar.</string>
+  <string name="upselling_mailbox_plus_promo_title">Probiere Mail Plus für %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Mit Mail Plus kannst du mühelos E-Mails an eine Gruppe senden und weitere Premium-Funktionen nutzen.</string>
   <string name="upselling_contact_groups_plus_title">Gruppiere deine Kontakte</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Verlängert sich automatisch zum gleichen Preis und zu den gleichen Bedingungen, wenn es nicht gekündigt wird.</string>
   <string name="upselling_auto_renew_text_promo">Willkommensangebot. Wird am %s %s%s automatisch verlängert, wenn du es nicht kündigst.</string>
+  <string name="upselling_auto_renew_text_promo_short">Willkommensangebot. Verlängert sich automatisch für %s %s %s.</string>
   <string name="upselling_auto_renew_text_standard">Wird am %s %s%s automatisch verlängert, wenn du es nicht kündigst.</string>
   <string name="upselling_discount_tag">SPARE %s%%</string>
   <string name="upselling_month">/Monat</string>
   <string name="upselling_year">/Jahr</string>
   <string name="upselling_get_button">%s holen</string>
+  <string name="upselling_get_button_promotional">Erhalte 1 Monat für %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d Monat</item>
     <item quantity="other">%d Monate</item>
@@ -108,7 +113,7 @@
   <string name="upselling_onboarding_switcher_annual">Jährlich</string>
   <string name="upselling_onboarding_best_value">Bester Preis</string>
   <string name="upselling_onboarding_month">/Monat</string>
-  <string name="upselling_onboarding_year">/jahr</string>
+  <string name="upselling_onboarding_year">/Jahr</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d weitere Funktion</item>
     <item quantity="other">%d weitere Funktionen</item>

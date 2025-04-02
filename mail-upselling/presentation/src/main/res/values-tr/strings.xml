@@ -23,6 +23,9 @@
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Daha fazla depolama alanı ve ücretli özellikler alın</string>
   <string name="upselling_mailbox_plus_title">Mail Plus tarifesine yükselt</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Mail Plus tarifesi ile bir gruba kolayca e-posta gönderin ve diğer ücretli özelliklerin tadını çıkarın.</string>
   <string name="upselling_contact_groups_plus_title">Kişilerinizi gruplayın</string>
@@ -85,11 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">İptal edilmediği sürece aynı fiyat ve koşullarla otomatik olarak yenilenir.</string>
   <string name="upselling_auto_renew_text_promo">Karşılama teklifi. İptal edilmedikçe %s%s%s zamanında otomatik olarak yenilenir.</string>
+  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">İptal edilmedikçe %s %s%s zamanında otomatik olarak yenilenir.</string>
   <string name="upselling_discount_tag">%s%% indirim</string>
   <string name="upselling_month">/ay</string>
   <string name="upselling_year">/yıl</string>
   <string name="upselling_get_button">%s alın</string>
+  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d ay</item>
     <item quantity="other">%d ay</item>

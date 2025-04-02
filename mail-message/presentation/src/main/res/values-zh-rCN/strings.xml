@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d 文件</item>
+    <item quantity="other">%d 个文件</item>
   </plurals>
   <string name="attachment_show_more_label">+还有 %1$d 项</string>
   <string name="attachment_permission_dialog_title">需要权限</string>
@@ -32,20 +32,20 @@
   <string name="attachment_type_video">视频</string>
   <string name="attachment_type_audio">音频</string>
   <string name="attachment_type_unknown">未知</string>
-  <string name="attachment_type_pdf">PDF文件</string>
+  <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">文本</string>
   <string name="attachment_type_document">文档</string>
   <string name="attachment_type_spreadsheet">电子表格</string>
   <string name="attachment_type_presentation">演示文稿</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">移动至…</string>
+  <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">完成</string>
   <string name="bottom_sheet_archive_action">同时存档？</string>
   <string name="bottom_sheet_label_as_title">加标签...</string>
   <string name="bottom_sheet_more_header_message_from">来自 %s 的邮件</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">复制链接</string>
-  <string name="message_link_long_click_copy_description">从Proton Mail复制的文字</string>
+  <string name="message_link_long_click_copy_description">从 Proton Mail 复制的文本</string>
   <string name="message_link_long_click_share">共享链接</string>
   <string name="message_link_long_click_share_via">通过</string>
   <!-- Contact Actions Bottom Sheet -->
@@ -54,18 +54,18 @@
   <string name="contact_actions_copy_address_performed">地址已复制到剪贴板</string>
   <string name="contact_actions_copy_name">复制名称</string>
   <string name="contact_actions_copy_name_description">复制联系人名称</string>
-  <string name="contact_actions_copy_name_performed">名称复制到剪贴板</string>
+  <string name="contact_actions_copy_name_performed">名称已复制到剪贴板</string>
   <string name="contact_actions_new_message">撰写邮件</string>
-  <string name="contact_actions_new_message_description">开始为此联系人撰写新消息</string>
+  <string name="contact_actions_new_message_description">开始为此联系人撰写新邮件</string>
   <string name="contact_actions_add_contact">添加联系人</string>
-  <string name="contact_actions_add_contact_description">将此接收者保存为联系人</string>
+  <string name="contact_actions_add_contact_description">将此收件人另存为联系人</string>
   <string name="contact_actions_view_contact_details">查看联系人详情</string>
-  <string name="contact_actions_view_contact_details_description">查看联系人的详细信息</string>
+  <string name="contact_actions_view_contact_details_description">查看联系人详情</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">需要权限</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail需要允许阅读您的联系人以保存接收者。</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail 需要权限才能读取您的联系人，以便提供收件人建议。</string>
   <string name="device_contacts_permission_dialog_dismiss_button">好的</string>
-  <string name="device_contacts_permission_dialog_action_button">请求许可</string>
+  <string name="device_contacts_permission_dialog_action_button">请求权限</string>
   <string name="device_contacts_permission_dialog_action_button_deny">拒绝</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">查看完整信息</string>
