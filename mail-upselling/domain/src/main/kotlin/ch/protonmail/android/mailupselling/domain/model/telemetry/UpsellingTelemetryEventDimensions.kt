@@ -42,10 +42,7 @@ class UpsellingTelemetryEventDimensions {
 
     fun addUpsellIsPromo(isPromo: Boolean) = mutableMap.put(
         UpsellingTelemetryEventDimensionsKey.UpsellIsPromotional.name,
-        when {
-            isPromo -> true
-            else -> false
-        }.toString()
+        isPromo.toString()
     )
 
     fun addSelectedPlan(value: String) = mutableMap.put(UpsellingTelemetryEventDimensionsKey.SelectedPlan.name, value)
