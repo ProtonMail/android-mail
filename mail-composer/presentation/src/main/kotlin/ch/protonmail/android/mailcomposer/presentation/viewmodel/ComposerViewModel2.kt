@@ -318,7 +318,7 @@ class ComposerViewModel2 @AssistedInject constructor(
 
     private suspend fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId()
-            ?: return setupStandaloneDraft(currentMessageId().id, draftAction, savedStateHandle.extractRecipient())
+            ?: return setupStandaloneDraft(null, draftAction, savedStateHandle.extractRecipient())
 
         val userId = primaryUserId.first()
         Timber.d("Opening composer for draft action ${draftAction::class.java.simpleName} / ${currentMessageId()}")

@@ -38,6 +38,8 @@ import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationFailure.CouldNotValidate
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -61,6 +63,7 @@ import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerStateRedu
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.defaultDraftFields
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.defaultRecipientsState
+import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.expectComposeToAddressDraft
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.expectDraftAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.expectExistingDraft
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel2SharedTestData.expectParticipantsMapping
@@ -94,6 +97,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.serialize
 import org.junit.Rule
@@ -681,6 +685,61 @@ internal class ComposerViewModel2Test {
             composerStateReducer.reduceNewState(any(), MainEvent.SenderChanged(defaultDraftFields.sender))
             composerStateReducer.reduceNewState(any(), MainEvent.LoadingDismissed)
             composerStateReducer.reduceNewState(any(), RecipientsChanged(areSubmittable = false))
+        }
+
+        assertEquals(expectedBodyWithSignature.value, viewModel.bodyFieldText.text.toString())
+        assertTrue(viewModel.subjectTextField.text.isEmpty())
+    }
+
+    @Test
+    fun `should setup a standalone draft when composing to address`() = runTest {
+        // Given
+        val action = DraftAction.ComposeToAddresses(listOf("123@321.1"))
+        val initialDraftFields = DraftFields(
+            sender = SenderEmail("sender@email.com"),
+            subject = Subject(""),
+            body = DraftBody("Signature"),
+            recipientsTo = RecipientsTo(recipientsTo),
+            recipientsCc = RecipientsCc(emptyList()),
+            recipientsBcc = RecipientsBcc(emptyList()),
+            originalHtmlQuote = null
+        )
+        expectParticipantsMapping(messageParticipantsFacade)
+        expectComposeToAddressDraft(
+            savedStateHandle,
+            Json
+                .encodeToString(DraftAction.serializer(), action)
+        )
+        every { savedStateHandle[ComposerScreen.HasSavedDraftKey] = true } just runs
+        coEvery { draftFacade.storeDraft(userId, messageId, initialDraftFields, action) } returns Unit.right()
+        every { draftFacade.provideNewDraftId() } returns messageId
+        coEvery { addressesFacade.getPrimarySenderEmail(userId) } returns initialDraftFields.sender.right()
+        every { draftFacade.startContinuousUpload(userId, messageId, action, any()) } just runs
+        relaxMessageObservers()
+
+        val expectedBodyWithSignature = DraftBody("Signature")
+        coEvery {
+            draftFacade.injectAddressSignature(userId, DraftBody(""), initialDraftFields.sender)
+        } returns expectedBodyWithSignature.right()
+
+        val expectedMainState = ComposerState.Main.initial(messageId).copy(
+            senderUiModel = SenderUiModel(initialDraftFields.sender.value),
+            isSubmittable = true
+        )
+
+        val viewModel = viewModel()
+
+        // When
+        viewModel.composerStates.test {
+            verifyStates(main = expectedMainState, actualStates = awaitItem())
+        }
+
+        // Then
+        coVerify {
+            composerStateReducer.reduceNewState(any(), MainEvent.InitialLoadingToggled)
+            composerStateReducer.reduceNewState(any(), MainEvent.SenderChanged(initialDraftFields.sender))
+            composerStateReducer.reduceNewState(any(), MainEvent.LoadingDismissed)
+            composerStateReducer.reduceNewState(any(), RecipientsChanged(areSubmittable = true))
         }
 
         assertEquals(expectedBodyWithSignature.value, viewModel.bodyFieldText.text.toString())

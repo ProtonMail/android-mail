@@ -108,6 +108,13 @@ internal object ComposerViewModel2SharedTestData {
         every { savedStateHandle.get<Boolean>(ComposerScreen.HasSavedDraftKey) } returns null
     }
 
+    fun expectComposeToAddressDraft(savedStateHandle: SavedStateHandle, rawData: String) {
+        every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns null
+        every { savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey) } returns rawData
+        every { savedStateHandle.get<String>(ComposerScreen.DraftActionForShareKey) } returns null
+        every { savedStateHandle.get<Boolean>(ComposerScreen.HasSavedDraftKey) } returns null
+    }
+
     @Suppress("LongParameterList")
     fun expectDraftAction(
         draftFacade: DraftFacade,
