@@ -134,7 +134,7 @@
   <string name="contact_group_form_update_success">Групу контактів оновлено</string>
   <string name="contact_group_form_save_error">Помилка збереження групи контактів, повторіть спробу пізніше</string>
   <string name="contact_group_form_save_error_already_exists">Група з цією назвою вже існує</string>
-  <string name="contact_group_form_subscription_error">Вам потрібна платна Proton Mail підписка для створення контактних груп</string>
+  <string name="contact_group_form_subscription_error">Щоб створювати групи контактів, необхідно передплатити Proton Mail</string>
   <string name="members_loading_error">Помилка завантаження учасників, повторіть спробу пізніше</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Помилка додавання учасників, повторіть спробу пізніше</string>

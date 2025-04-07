@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_mailbox_plus_title">Millora al pla Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Oferta per temps limitat. Cancel·la en qualsevol moment.</string>
+  <string name="upselling_mailbox_plus_promo_title">Proveu Mail Plus per %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envieu fàcilment correus electrònics a un grup i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupeu els contactes</string>
@@ -88,13 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Es renova automàticament al mateix preu i condicions tret que es cancel·li.</string>
   <string name="upselling_auto_renew_text_promo">Oferta de benvinguda. Es renova automàticament per %s%s%s tret que es cancel·li.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">Oferta de benvinguda. Es renova automàticament a %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Es renova automàticament per %s%s%s tret que es cancel·li.</string>
   <string name="upselling_discount_tag">ESTALVIEU EL %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_year">/any</string>
   <string name="upselling_get_button">Obtingueu %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Obtingueu 1 mes per %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mes</item>
     <item quantity="other">%d mesos</item>

@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Dowiedz się więcej</string>
   <!-- message expiration -->
   <string name="expiration_expired">Wygasła</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d d.</string>
+  <string name="expiration_hours_arg">%d godz.</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="expiration_auto_delete_hour">Wiadomość zostanie automatycznie usunięta za mniej niż godzinę</string>
   <string name="expiration_auto_delete_day">Wiadomość zostanie automatycznie usunięta za mniej niż 24 godziny</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Wiadomość zostanie automatycznie usunięta za %s</string>

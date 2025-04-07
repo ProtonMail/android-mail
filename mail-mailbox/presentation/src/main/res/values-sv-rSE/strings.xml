@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Rensa sökfråga</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ange sökfråga</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d vald</item>
+    <item quantity="one">%d valt</item>
     <item quantity="other">%d valda</item>
   </plurals>
   <plurals name="filter_unread_button_text">

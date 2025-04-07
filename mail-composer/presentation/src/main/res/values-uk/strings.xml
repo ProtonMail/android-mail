@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Недійсна адреса е-пошти</string>
   <string name="composer_error_invalid_sender">Адреса відправника недійсна</string>
   <string name="change_sender_button_content_description">Змінити відправника</string>
-  <string name="composer_change_sender_paid_feature">Вам потрібна платна підписка на Proton Mail щоб змінити адресу відправника.</string>
+  <string name="composer_change_sender_paid_feature">Щоб змінити адресу відправника, необхідно передплатити Proton Mail</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
   <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
   <string name="composer_error_store_draft_body">Не вдалося зберегти вміст цієї чернетки</string>

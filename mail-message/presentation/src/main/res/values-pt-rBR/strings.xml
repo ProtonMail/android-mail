@@ -52,22 +52,22 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copiar endereço</string>
   <string name="contact_actions_copy_address_description">Copiar endereço do contato</string>
-  <string name="contact_actions_copy_address_performed">O endereço foi copiado para a área de transferência</string>
+  <string name="contact_actions_copy_address_performed">Endereço copiado para a área de transferência</string>
   <string name="contact_actions_copy_name">Copiar nome</string>
   <string name="contact_actions_copy_name_description">Copiar nome do contato</string>
   <string name="contact_actions_copy_name_performed">Nome copiado para a área de transferência</string>
   <string name="contact_actions_new_message">Nova mensagem</string>
   <string name="contact_actions_new_message_description">Comece a escrever uma nova mensagem para este contato</string>
   <string name="contact_actions_add_contact">Adicionar contato</string>
-  <string name="contact_actions_add_contact_description">Salvar esse destinatário como um contato</string>
+  <string name="contact_actions_add_contact_description">Salvar destinatário como um contato</string>
   <string name="contact_actions_view_contact_details">Ver detalhes do contato</string>
   <string name="contact_actions_view_contact_details_description">Ver detalhes do contato</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Permissão necessária</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail precisa de permissão para ler seus contatos para poder sugerir destinatários.</string>
+  <string name="device_contacts_permission_dialog_message">O Proton Mail precisa de permissão para ler seus contatos a fim de sugerir destinatários.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Solicitar permissão</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Negar</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">Mostrar a mensagem toda</string>
+  <string name="button_view_entire_message">Mostrar a mensagem inteira</string>
 </resources>

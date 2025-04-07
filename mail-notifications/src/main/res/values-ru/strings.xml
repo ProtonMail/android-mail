@@ -25,9 +25,9 @@
   <string name="notification_actions_trash_description">Корзина</string>
   <string name="notification_actions_mark_as_read_description">Отметить как прочитанное</string>
   <string name="notification_permission_dialog_title">Не пропустите электронное письмо</string>
-  <string name="notification_permission_dialog_message">Уведомления помогают вам следить за почтовым ящиком, не заходя в приложение.</string>
+  <string name="notification_permission_dialog_message">Уведомления помогают следить за почтовым ящиком, не заходя в приложение.</string>
   <string name="notification_permission_dialog_post_send_title">Хотите быть в курсе событий?</string>
-  <string name="notification_permission_dialog_post_send_message">Включите уведомления, чтобы узнать, когда вы получите ответ на ваш адрес электронной почты</string>
+  <string name="notification_permission_dialog_post_send_message">Включите уведомления, чтобы узнать, когда вы получите ответ на электронный адрес.</string>
   <string name="notification_permission_dialog_button_enable">Включение Push-уведомлений</string>
   <string name="notification_permission_dialog_button_dismiss">Отклонить</string>
 </resources>

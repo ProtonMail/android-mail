@@ -23,7 +23,7 @@
   <string name="mail_settings_account_settings">Nastavení účtu</string>
   <string name="mail_settings_app_settings">Nastavení aplikace</string>
   <string name="mail_settings_theme">Motiv</string>
-  <string name="mail_settings_push_notifications">Push upozornění</string>
+  <string name="mail_settings_push_notifications">Vyskakovací oznámení</string>
   <string name="mail_settings_auto_lock">Automatické uzamčení</string>
   <string name="mail_settings_alternative_routing">Alternativní směrování</string>
   <string name="mail_settings_app_language">Jazyk aplikace</string>

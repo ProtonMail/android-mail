@@ -29,7 +29,7 @@
   <string name="all_title">Все</string>
   <string name="groups_title">Группы</string>
   <string name="group_member_count">%1$s участник</string>
-  <string name="group_members_count">%1$s участников</string>
+  <string name="group_members_count">%1$s участн.</string>
   <string name="new_contact">Новый контакт</string>
   <string name="new_group">Новая группа</string>
   <string name="import_contact">Загрузить контакты с устройства</string>
@@ -116,8 +116,8 @@
   <string name="contact_group_details_loading_error">Ошибка при загрузке группы контактов, повторите попытку позже</string>
   <string name="contact_group_details_deletion_success">Группа контактов удалена</string>
   <string name="contact_group_details_deletion_error">Ошибка при удалении группы контактов</string>
-  <string name="contact_group_delete_dialog_title">Удалить %s группу из контактов?</string>
-  <string name="contact_group_delete_dialog_message">Группа будет расформирована, но установленные в ней контакты останутся незатронутыми.</string>
+  <string name="contact_group_delete_dialog_title">Удалить группу %s из контактов?</string>
+  <string name="contact_group_delete_dialog_message">Группа будет расформирована, но призначенные ей контакты останутся незатронутыми.</string>
   <string name="contact_group_delete_dialog_confirm">Удалить</string>
   <string name="contact_group_delete_dialog_dismiss">Оставить</string>
   <string name="contact_group_delete_button_text">Удалить группу</string>

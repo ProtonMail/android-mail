@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">Pentru a debloca mai mult spațiu de stocare și funcții premium</string>
   <string name="upselling_mailbox_plus_title">Treceți la Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Ofertă limitată, anulați oricând.</string>
+  <string name="upselling_mailbox_plus_promo_title">Încercați Mail Plus cu %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Trimiteți cu ușurință mesaje unui grup și bucurați-vă de alte funcții premium cu Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Grupați-vă contactele</string>
@@ -88,13 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Se reînnoiește automat la același preț și condiții, dacă nu este anulat.</string>
   <string name="upselling_auto_renew_text_promo">Ofertă de bun venit. Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">Ofertă de bun venit. Autoreînnoire cu %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
   <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>
   <string name="upselling_year">/an</string>
   <string name="upselling_get_button">Obțineți %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Obțineți o lună cu %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d lună</item>
     <item quantity="few">%d luni</item>

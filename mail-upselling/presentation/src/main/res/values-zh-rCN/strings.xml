@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">解锁更多存储和付費版伺服器功能</string>
   <string name="upselling_mailbox_plus_title">升级至 Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">限时优惠，随时可取消。</string>
+  <string name="upselling_mailbox_plus_promo_title">立即体验为 %s 打造的Mail Plus高级服务</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">轻松地发送电子邮件给群组，并使用 Mail Plus 享受其他付費版伺服器功能。</string>
   <string name="upselling_contact_groups_plus_title">分组您的联系人</string>
@@ -88,13 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">除非取消，否则以相同价格和条款自动续订</string>
   <string name="upselling_auto_renew_text_promo">迎新优惠。除非手动取消，否则将在 %s %s%s 时自动续订。</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">欢迎优惠。订阅将以 %s %s %s 自动续订。</string>
   <string name="upselling_auto_renew_text_standard">除非手动取消，否则将在 %s %s%s 时自动续订。</string>
   <string name="upselling_discount_tag">立省 %s%%</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/年</string>
   <string name="upselling_get_button">开通 %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">获得1个月的 %s %s</string>
   <plurals name="upselling_month">
     <item quantity="other">%d 月</item>
   </plurals>

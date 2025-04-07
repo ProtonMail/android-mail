@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
   <string name="upselling_mailbox_plus_title">Uppgradera till Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Tidsbegränsat erbjudande, avbryt när som helst.</string>
+  <string name="upselling_mailbox_plus_promo_title">Prova Mail Plus för %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Skicka enkelt e-post till en grupp och njut av andra premiumfunktioner med Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Gruppera dina kontakter</string>
@@ -87,14 +87,14 @@
   <string name="upselling_select_plan_month">1 månad</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Autoförnyas med samma pris och villkor tills uppsägning.</string>
-  <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt vid %s %s%s om det inte annulleras.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Förnyas automatiskt vid %s %s%s om det inte annulleras.</string>
+  <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt med %s %s%s om det inte sägs upp.</string>
+  <string name="upselling_auto_renew_text_promo_short">Välkomsterbjudande. Förnyas automatiskt med %s %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Förnyas automatiskt med %s %s%s om det inte sägs upp.</string>
   <string name="upselling_discount_tag">SPARA %s %%</string>
   <string name="upselling_month">/månad</string>
   <string name="upselling_year">/år</string>
   <string name="upselling_get_button">Skaffa %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Få 1 månad för %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d månad</item>
     <item quantity="other">%d månader</item>

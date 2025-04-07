@@ -40,13 +40,13 @@
   <string name="mailbox_default_sender">(Нет отправителя)</string>
   <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
   <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
-  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
+  <string name="mailbox_error_search_input_invalid">Включите в поисковый запрос только буквенно-цифровые символы.</string>
   <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
   <string name="mailbox_is_empty_title">Сообщений нет</string>
   <string name="mailbox_is_empty_description">Обновление не требуется</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Нет непрочитанных сообщений</string>
   <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
-  <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
+  <string name="mailbox_is_empty_spam_description">Папка «Спам» пуста</string>
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash_conversation">
     <item quantity="one">Цепочка писем перемещена в Корзину</item>
@@ -108,20 +108,20 @@
   <string name="mailbox_search_no_results_explanation">Поиск по дате, имени, адресу электронной почты или теме письма</string>
   <string name="mailbox_action_button_clear_trash">Очистить Корзину</string>
   <string name="mailbox_action_button_clear_spam">Очистить Спам</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Очистить папку Корзина</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Очистить папку Спам</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из Корзины?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из папки Спам?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы уверены, что хотите безвозвратно удалить все цепочки писем из папки Спам?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Очистить папку «Корзина»</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Очистить папку «Спам»</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из корзины?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из папки «Спам»?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы уверены, что хотите безвозвратно удалить все цепочки писем из папки «Спам»?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Очистка запланирована"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Предупреждение</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Хранилище вашей учётной записи Proton заполнено более чем на 80%. Освободите место или улучшите тариф, чтобы получить больше места.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Хранилище вашей учётной записи Proton заполнено более чем на 90%. Освободите место или улучшите тариф, чтобы получить больше места.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Хранилище аккаунта Proton заполнено более чем на 80 %. Освободите место или улучшите тариф, чтобы получить больше места.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Хранилище аккаунта Proton заполнено более чем на 90 %. Освободите место или улучшите тариф, чтобы получить больше места.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Больше не напоминать</string>
   <string name="storage_limit_warning_dialog_confirm_button">Да</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Предупреждение</string>
-  <string name="storage_quota_over_dialog_text">Хранилище вашей учётной записи Proton заполнено на 100%. Вы не сможете получать и отправлять почту, пока не удалите безвозвратно часть писем или не улучшите тариф, чтобы получить больше места.</string>
+  <string name="storage_quota_over_dialog_text">Хранилище аккаунта Proton заполнено на 100 %. Вы не сможете получать и отправлять почту, пока не удалите безвозвратно часть писем или не улучшите тариф, чтобы получить больше места.</string>
   <string name="storage_quota_over_dialog_confirm_button">Да</string>
 </resources>

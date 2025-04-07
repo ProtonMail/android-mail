@@ -35,8 +35,8 @@
   <string name="bcc">Cco:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Anexo</item>
-    <item quantity="other">%d Anexos</item>
+    <item quantity="one">%d anexo</item>
+    <item quantity="other">%d anexos</item>
   </plurals>
   <string name="hide_details">Ocultar detalhes</string>
   <string name="undisclosed_recipients">Destinatários ocultos</string>
@@ -101,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Carregar imagens incorporadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carregar conteúdo remoto e imagens incorporadas</string>
   <string name="message_report_phishing_dialog_title_offline">Atenção</string>
-  <string name="message_report_phishing_dialog_message_offline">Esse recurso só está disponível on-line</string>
+  <string name="message_report_phishing_dialog_message_offline">Esse recurso só está disponível on-line.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Confirmar denúncia de phishing</string>
   <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing enviará a mensagem para nós, para podermos analisá-la e aprimorar nossos filtros. Isso significa que conseguiremos ver todo o conteúdo da mensagem.</string>
@@ -115,6 +115,6 @@
   <string name="show">Mostrar</string>
   <string name="hide">Ocultar</string>
   <string name="tooltip_customize_toolbar_title">Personalizar barra de ferramentas</string>
-  <string name="tooltip_customize_toolbar_message">Você agora pode escolher e reorganizar as ações nessa barra de ferramentas.</string>
+  <string name="tooltip_customize_toolbar_message">Agora, você pode escolher e reorganizar as ações nesta barra de ferramentas.</string>
   <string name="tooltip_customize_toolbar_cta">Personalizar</string>
 </resources>

@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">Pro odemknutí většího úložného prostoru a prémiových funkcí</string>
   <string name="upselling_mailbox_plus_title">Navýšit na Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Časově omezená nabídka, zrušit lze kdykoli.</string>
+  <string name="upselling_mailbox_plus_promo_title">Vyzkoušejte Mail Plus za %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Snadno odesílejte e-maily skupině a využívejte další prémiové funkce s Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Seskupujte své kontakty</string>
@@ -88,13 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Automatické obnovení za stejnou cenu a za stejných podmínek, pokud není zrušeno.</string>
   <string name="upselling_auto_renew_text_promo">Uvítací nabídka. Automaticky se obnoví %s %s%s, pokud nebude zrušena.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">Uvítací nabídka. Obnovuje se automaticky %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Automaticky se obnoví %s %s%s, pokud nebude zrušena.</string>
   <string name="upselling_discount_tag">UŠETŘETE %s%%</string>
   <string name="upselling_month">/měsíčně</string>
   <string name="upselling_year">/ročně</string>
   <string name="upselling_get_button">Získejte %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Získejte 1 měsíc za %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d měsíc</item>
     <item quantity="few">%d měsíce</item>

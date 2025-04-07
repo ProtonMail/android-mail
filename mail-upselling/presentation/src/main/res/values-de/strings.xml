@@ -25,7 +25,7 @@
   <string name="upselling_mailbox_plus_title">Auf Mail Plus upgraden</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Befristetes Angebot, jederzeit kündbar.</string>
-  <string name="upselling_mailbox_plus_promo_title">Probiere Mail Plus für %s</string>
+  <string name="upselling_mailbox_plus_promo_title">Mail Plus für %s ausprobieren</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Mit Mail Plus kannst du mühelos E-Mails an eine Gruppe senden und weitere Premium-Funktionen nutzen.</string>
   <string name="upselling_contact_groups_plus_title">Gruppiere deine Kontakte</string>
@@ -94,7 +94,7 @@
   <string name="upselling_month">/Monat</string>
   <string name="upselling_year">/Jahr</string>
   <string name="upselling_get_button">%s holen</string>
-  <string name="upselling_get_button_promotional">Erhalte 1 Monat für %s %s</string>
+  <string name="upselling_get_button_promotional">Hole dir 1 Monat für %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d Monat</item>
     <item quantity="other">%d Monate</item>

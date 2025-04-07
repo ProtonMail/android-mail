@@ -55,8 +55,8 @@
   <string name="save_label_error">Помилка під час збереження мітки, повторіть спробу пізніше</string>
   <string name="save_folder_error">Помилка під час збереження теки, повторіть спробу пізніше</string>
   <string name="label_already_exists">Мітка або тека з такою назвою вже існує</string>
-  <string name="label_limit_reached_error">Вам потрібна платна Proton Mail підписка, щоб створити більше міток</string>
-  <string name="folder_limit_reached_error">Вам потрібна платна Proton Mail підписка, щоб створити більше тек</string>
+  <string name="label_limit_reached_error">Щоб створити більше міток, необхідно передплатити Proton Mail</string>
+  <string name="folder_limit_reached_error">Щоб створити більше тек, необхідно передплатити Proton Mail</string>
   <string name="delete_label_error">Не вдалося видалити мітку</string>
   <string name="input_field_clear_content_description">Очистити</string>
   <string name="label_list_item_content_description">Елемент списку міток</string>

@@ -19,7 +19,7 @@
 <resources>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Privacidad para todos</string>
-  <string name="onboarding_privacy_for_all_description">Invita a más personas a Proton Mail para beneficiar del cifrado de extremo a extremo.</string>
+  <string name="onboarding_privacy_for_all_description">Invita a otros a Proton Mail para que todos se beneficien del cifrado de extremo a extremo.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Estar al día es más fácil</string>
   <string name="onboarding_easily_up_to_date_description">Consulta rápidamente los mensajes hilados en el modo de conversación.</string>

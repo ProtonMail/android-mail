@@ -71,7 +71,7 @@
   <string name="contact_form_update_success">Contato atualizado</string>
   <string name="save_contact_content_description">Salvar contato</string>
   <string name="contact_form_save">Salvar</string>
-  <string name="add_new">Adicionar um contato</string>
+  <string name="add_new">Adicionar novo</string>
   <string name="email_section">E-mail</string>
   <string name="phone_section">Número do telefone</string>
   <string name="address_section">Endereço</string>

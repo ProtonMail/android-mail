@@ -49,7 +49,7 @@
   <string name="upselling_plus_feature_folders_labels">Необмежена кількість тек, міток і фільтрів</string>
   <string name="upselling_plus_feature_plus_7_features">+7 преміум функцій</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Ваша універсальна преміальна підписка</string>
+  <string name="upselling_unlimited_description_override">Преміальна передплата з усіма можливостями</string>
   <string name="upselling_unlimited_feature_storage">500 ГБ сховища з резервним копіюванням фотографій</string>
   <string name="upselling_unlimited_feature_mail_calendar">Усі платні функції Proton Mail і Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90+ країн)</string>
@@ -104,10 +104,10 @@
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Не вдалося отримати параметри покращення.</string>
   <string name="upselling_snackbar_error_no_user_id">Сталася помилка.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Не вдається отримати підписки.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Не вдається отримати інформацію про передплати.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Триває оновлення підписки…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Під час оновлення підписки сталася помилка.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Триває оновлення передплати…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Під час оновлення передплати сталася помилка.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Виникла помилка. Спробуйте ще раз.</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">Вибрати план</string>

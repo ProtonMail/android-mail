@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Limpar consulta de pesquisa</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Digite a palavra que quer pesquisar</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Selecionado</item>
-    <item quantity="other">%d Selecionado</item>
+    <item quantity="one">%d selecionado</item>
+    <item quantity="other">%d selecionados</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s não lidos</item>
+    <item quantity="one">%s não lido</item>
     <item quantity="other">%s não lidos</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nenhum destinatário)</string>
@@ -45,11 +45,11 @@
   <string name="mailbox_is_empty_spam_description">Sua pasta de spam está vazia</string>
   <string name="mailbox_is_empty_trash_description">A lixeira está vazia</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversa movida para a Lixeira</item>
-    <item quantity="other">%d conversas movidas para a Lixeira</item>
+    <item quantity="one">Conversa movida para Lixeira</item>
+    <item quantity="other">%d conversas movidas para Lixeira</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Mensagem movida para a Lixeira</item>
+    <item quantity="one">Mensagem movida para Lixeira</item>
     <item quantity="other">%d mensagens movidas para Lixeira</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
@@ -61,12 +61,12 @@
     <item quantity="other">Excluir %d mensagens</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Você tem certeza de que quer excluir permanentemente esta conversa?</item>
-    <item quantity="other">Você tem certeza de que quer excluir permanentemente estas conversas?</item>
+    <item quantity="one">Você tem certeza de que deseja excluir permanentemente esta conversa?</item>
+    <item quantity="other">Você tem certeza de que deseja excluir permanentemente estas conversas?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Você tem certeza de que deseja excluir permanentemente esta mensagem?</item>
-    <item quantity="other">Você tem certeza que deseja excluir estas mensagens permanentemente?</item>
+    <item quantity="other">Você tem certeza de que deseja excluir permanentemente estas mensagens?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Mensagem excluída permanentemente</item>

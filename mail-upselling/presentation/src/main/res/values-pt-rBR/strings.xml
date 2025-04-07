@@ -21,31 +21,31 @@
   <string name="upselling_button_item_content_description">Botão de upgrade</string>
   <string name="upselling_close_button_content_description">Botão Fechar</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">Obtenha mais armazenamento e recursos premium</string>
+  <string name="upselling_mailbox_plus_description_override">Para obter mais armazenamento e recursos premium</string>
   <string name="upselling_mailbox_plus_title">Faça upgrade para o Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Oferta por tempo limitado. Cancele quando quiser.</string>
+  <string name="upselling_mailbox_plus_promo_title">Experimente o Mail Plus por %s.</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Envie facilmente e-mails para um grupo e aproveite outros recursos premium com Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Agrupe seus contatos</string>
+  <string name="upselling_contact_groups_plus_description_override">Envie facilmente e-mails para um grupo e aproveite outros recursos premium com o Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Agrupar seus contatos</string>
   <!-- Upselling: Labels -->
   <string name="upselling_labels_plus_description_override">Obtenha esses e outros recursos premium quando você fizer o upgrade para o Mail Plus.</string>
   <string name="upselling_labels_plus_title">Precisa de mais marcadores ou pastas?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Obtenha esses e outros recursos premium quando você fizer o upgrade para o Mail Plus.</string>
+  <string name="upselling_folders_plus_description_override">Obtenha esses e outros recursos premium ao fazer upgrade para o Mail Plus.</string>
   <string name="upselling_folders_plus_title">Precisa de mais marcadores ou pastas?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use sua própria assinatura móvel e aproveite os outros recursos premium com o Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Personalize sua assinatura</string>
+  <string name="upselling_mobile_signature_plus_description_override">Use a própria assinatura móvel e aproveite os outros recursos premium com o Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Personalizar sua assinatura</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Aproveite de uma caixa de correio mais organizada e beneficie-se de outros recursos premium com Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Limpe a lixeira e spam antigos</string>
+  <string name="upselling_auto_delete_plus_description_override">Organize sua caixa de correio e aproveite outros recursos premium com o Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Limpar a lixeira e spam antigos</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB de armazenamento</string>
   <string name="upselling_plus_feature_email_addresses">10 endereços de e-mail</string>
-  <string name="upselling_plus_feature_custom_domain">Suporte para domínios de email personalizados</string>
-  <string name="upselling_plus_feature_desktop_app">Novo aplicativo do Proton Mail para computador</string>
+  <string name="upselling_plus_feature_custom_domain">Suporte a domínios de e-mail personalizados</string>
+  <string name="upselling_plus_feature_desktop_app">Novo aplicativo do Proton Mail para desktop</string>
   <string name="upselling_plus_feature_folders_labels">Pastas, marcadores e filtros ilimitados</string>
   <string name="upselling_plus_feature_plus_7_features">+7 recursos premium</string>
   <!-- Unlimited -->
@@ -78,7 +78,7 @@
   <string name="upselling_comparison_table_storage">Armazenamento</string>
   <string name="upselling_comparison_table_email_addresses">Endereços de e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Domínio de e-mail personalizado</string>
-  <string name="upselling_comparison_table_desktop_app">Acesso ao aplicativo para computador</string>
+  <string name="upselling_comparison_table_desktop_app">Acesso ao aplicativo para desktop</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Pastas e marcadores ilimitados</string>
   <string name="upselling_comparison_table_priority_support">Suporte prioritário ao cliente</string>
   <!-- Rectangular plan buttons -->
@@ -86,25 +86,25 @@
   <string name="upselling_select_plan_year">1 ano</string>
   <string name="upselling_select_plan_month">1 mês</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Renovação automática com o mesmo preço e condições, a menos que seja cancelado.</string>
-  <string name="upselling_auto_renew_text_promo">Oferta de boas-vindas. Renovação automática em %s %s%s, a menos que seja cancelada.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Renovação automática em %s %s%s, a menos que seja cancelada.</string>
+  <string name="upselling_auto_renew_text">Renovação automática com o mesmo preço e condições, a menos que você cancele o plano.</string>
+  <string name="upselling_auto_renew_text_promo">Oferta de boas-vindas. Renovação automática em %s %s%s, a menos que você cancele o plano.</string>
+  <string name="upselling_auto_renew_text_promo_short">Oferta de boas-vindas. Renovação automática em %s %s%s</string>
+  <string name="upselling_auto_renew_text_standard">Renovação automática em %s %s%s, a menos que você cancele o plano.</string>
   <string name="upselling_discount_tag">ECONOMIZE %s%%</string>
   <string name="upselling_month">/mês</string>
   <string name="upselling_year">/ano</string>
   <string name="upselling_get_button">Obter %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Obtenha 1 mês por %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mês</item>
     <item quantity="other">%d meses</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Não foi possível obter as opções de upgrade.</string>
+  <string name="upselling_unable_retrieve_options">Não foi possível recuperar as opções de upgrade.</string>
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Não é possível obter as assinaturas.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Upgrade da assinatura em progresso…</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Upgrade da assinatura em andamento…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Ocorreu um erro ao fazer upgrade da sua assinatura.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Ocorreu um erro. Tente novamente.</string>
   <!-- Upselling: Onboarding -->
@@ -115,8 +115,8 @@
   <string name="upselling_onboarding_month">/mês</string>
   <string name="upselling_onboarding_year">/ano</string>
   <plurals name="upselling_onboarding_more_features">
-    <item quantity="one">%d mais recurso</item>
-    <item quantity="other">%d mais recursos</item>
+    <item quantity="one">Mais %d recurso</item>
+    <item quantity="other">Mais %d recursos</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Obter %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continuar com o Proton Free</string>
@@ -126,24 +126,24 @@
   <string name="post_subscription_continue_button">Continuar</string>
   <string name="post_subscription_got_it_button">Entendi</string>
   <string name="post_subscription_welcome_page_title">Boas-vindas ao Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Obrigado por nos ajudar a manter a Internet segura e privada para todos.</string>
-  <string name="post_subscription_welcome_page_unlocked">Você desbloqueou</string>
-  <string name="post_subscription_plus_feature_storage">15 GB de armazenamento</string>
-  <string name="post_subscription_plus_feature_email_addresses">10 endereços de e-mail extras</string>
+  <string name="post_subscription_welcome_page_message">Agradecemos por nos ajudar a manter a internet segura e privada para todos.</string>
+  <string name="post_subscription_welcome_page_unlocked">Você tem acesso a</string>
+  <string name="post_subscription_plus_feature_storage">15 GB de armazenamento</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 endereços de e-mail adicionais</string>
   <string name="post_subscription_plus_feature_email_domains">Suporte para 1 domínio de e-mail personalizado</string>
   <string name="post_subscription_plus_feature_folders_labels">Pastas e marcadores ilimitados</string>
   <string name="post_subscription_plus_feature_aliases">10 aliases do hide-my-email</string>
-  <string name="post_subscription_plus_feature_desktop_app">Novo aplicativo do Proton Mail para computador</string>
+  <string name="post_subscription_plus_feature_desktop_app">Novo aplicativo do Proton Mail para desktop</string>
   <string name="post_subscription_plus_feature_customer_support">Suporte prioritário ao cliente</string>
-  <string name="post_subscription_discover_apps_page_title">Descubra todos os nossos aplicativos</string>
+  <string name="post_subscription_discover_apps_page_title">Conheça todos os nossos aplicativos</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">Você desbloqueou o compartilhamento de calendário e 8 vezes mais calendários.</string>
+  <string name="post_subscription_proton_calendar_message">Você tem acesso ao compartilhamento de calendário e a 8 vezes mais calendários.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Sua nova assinatura aumento seu espaço de armazenamento para 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">A nova assinatura aumentou seu espaço de armazenamento para 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">A melhor VPN para velocidade e segurança.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Armazenamento de senha seguro e início de sessão fácil para as suas contas</string>
+  <string name="post_subscription_proton_pass_message">Armazene senhas com segurança e Inicie sessão com facilidade nas suas contas.</string>
   <string name="post_subscription_button_installed">Instalado</string>
-  <string name="post_subscription_button_get_the_app">Obter aplicativo</string>
+  <string name="post_subscription_button_get_the_app">Baixar aplicativo</string>
 </resources>

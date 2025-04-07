@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Вся почта</string>
   <string name="label_title_all_drafts">Все черновики</string>
   <string name="label_title_all_sent">Все отправленные</string>
-  <string name="label_title_all_scheduled">Все Запланированные</string>
+  <string name="label_title_all_scheduled">Все запланированные</string>
   <string name="label_title_snoozed">Отложенные</string>
   <string name="label_title_folders">Папки</string>
   <string name="label_title_parent_folder">Родительская папка</string>
@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Отсутствует</string>
   <string name="delete_label">Удалить ярлык?</string>
   <string name="delete_folder">Удалить папку?</string>
-  <string name="delete_label_message">Это действие не может быть отменено. Почта с этим ярлыком не будет удалена, её можно будет найти в папке \'Вся почта\'.</string>
-  <string name="delete_folder_message">Это действие не может быть отменено. Почта, содержащаяся в этой папке, не будет удалена, ее можно будет найти в папке \'Вся почта\'.</string>
+  <string name="delete_label_message">Это действие не может быть отменено. Почта с этим ярлыком не будет удалена, её можно будет найти в папке «Вся почта».</string>
+  <string name="delete_folder_message">Это действие не может быть отменено. Почта, содержащаяся в этой папке, не будет удалена, её можно будет найти в папке «Вся почта».</string>
 </resources>

@@ -36,8 +36,8 @@
   <string name="action_delete_description">Удалить</string>
   <string name="action_archive_description">Архив</string>
   <string name="action_spam_description">Переместить в Спам</string>
-  <string name="action_view_in_light_mode_description">Посмотреть сообщение в Светлой теме</string>
-  <string name="action_view_in_dark_mode_description">Посмотреть сообщение в Тёмной теме</string>
+  <string name="action_view_in_light_mode_description">Посмотреть сообщение в светлой теме</string>
+  <string name="action_view_in_dark_mode_description">Посмотреть сообщение в тёмной теме</string>
   <string name="action_print_description">Печать</string>
   <string name="action_view_headers_description">Просмотреть заголовки</string>
   <string name="action_view_html_description">Просмотр HTML</string>
@@ -76,17 +76,17 @@
   <string name="action_open_customize_toolbar">Настроить панель инструментов</string>
   <string name="action_open_customize_toolbar_description">Настроить панель инструментов</string>
   <string name="auto_delete_banner_text_activate_trash">Автоматически удалять сообщения, находящиеся в корзине более 30 дней.</string>
-  <string name="auto_delete_banner_text_activate_spam">Автоматически удалять сообщения, находящиеся в Спаме более 30 дней.</string>
-  <string name="auto_delete_banner_text_upgrade">Улучшите тариф для автоматического удаления сообщений, находящихся в Корзине или Спаме более 30 дней.</string>
-  <string name="auto_delete_banner_text_enabled_info">Сообщения, находящиеся в Корзине и Спаме более 30 дней, будут автоматически удалены.</string>
+  <string name="auto_delete_banner_text_activate_spam">Автоматически удалять сообщения, находящиеся в спаме более 30 дней.</string>
+  <string name="auto_delete_banner_text_upgrade">Повысьте тариф для автоматического удаления сообщений, находящихся в корзине или спаме более 30 дней.</string>
+  <string name="auto_delete_banner_text_enabled_info">Сообщения, находящиеся в корзине и спаме более 30 дней, будут автоматически удалены.</string>
   <string name="auto_delete_banner_button_activate_confirm">Включить</string>
   <string name="auto_delete_banner_button_activate_dismiss">Нет, спасибо</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Узнать больше</string>
   <!-- message expiration -->
   <string name="expiration_expired">Срок действия истёк</string>
-  <string name="expiration_days_arg">Осталось %dd дней</string>
-  <string name="expiration_hours_arg">Осталось %dd дней</string>
-  <string name="expiration_minutes_arg">Осталось %dm минут</string>
+  <string name="expiration_days_arg">%d дн.</string>
+  <string name="expiration_hours_arg">%d ч</string>
+  <string name="expiration_minutes_arg">%d мин</string>
   <string name="expiration_auto_delete_hour">Это сообщение будет автоматически удалено менее чем через час</string>
   <string name="expiration_auto_delete_day">Это сообщение будет автоматически удалено менее чем через день</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Это сообщение будет автоматически удалено через %s</string>

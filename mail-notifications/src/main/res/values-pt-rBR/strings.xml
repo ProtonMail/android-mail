@@ -23,11 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Nova mensagem</string>
   <string name="notification_actions_archive_description">Arquivo</string>
   <string name="notification_actions_trash_description">Lixeira</string>
-  <string name="notification_actions_mark_as_read_description">Marcar como lido</string>
-  <string name="notification_permission_dialog_title">Não perca um e-mail</string>
-  <string name="notification_permission_dialog_message">As notificações ajudam você a ficar por dentro da sua caixa de entrada sem precisar verificar o aplicativo.</string>
-  <string name="notification_permission_dialog_post_send_title">Quer ficar atualizado?</string>
+  <string name="notification_actions_mark_as_read_description">Marcar como lida</string>
+  <string name="notification_permission_dialog_title">Não perca nenhum e-mail</string>
+  <string name="notification_permission_dialog_message">As notificações ajudam você a se manter a par da sua caixa de entrada sem precisar verificar o aplicativo.</string>
+  <string name="notification_permission_dialog_post_send_title">Quer ficar a par de tudo?</string>
   <string name="notification_permission_dialog_post_send_message">Ative as notificações para saber quando você receber uma resposta ao seu e-mail.</string>
   <string name="notification_permission_dialog_button_enable">Ativar as notificações push</string>
-  <string name="notification_permission_dialog_button_dismiss">Dispensar</string>
+  <string name="notification_permission_dialog_button_dismiss">Ignorar</string>
 </resources>

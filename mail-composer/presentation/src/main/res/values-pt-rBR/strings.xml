@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Alterar o remetente</string>
   <string name="composer_change_sender_paid_feature">Você precisa de uma assinatura paga do Proton Mail para alterar o endereço do remetente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Não é possível alterar o remetente, pois a assinatura do usuário não pôde ser obtida. Tente novamente.</string>
-  <string name="composer_error_store_draft_sender_address">Erro ao armazenar o endereço do remetente deste rascunho</string>
-  <string name="composer_error_store_draft_body">Erro ao armazenar o corpo deste rascunho</string>
-  <string name="composer_error_duplicate_recipient">Remoção de destinatário(s) duplicado(s)</string>
-  <string name="composer_error_store_draft_subject">Erro ao salvar o assunto deste rascunho</string>
+  <string name="composer_error_store_draft_sender_address">O endereço do remetente não foi salvo</string>
+  <string name="composer_error_store_draft_body">O corpo do e-mail de rascunho não foi salvo</string>
+  <string name="composer_error_duplicate_recipient">As duplicações do destinatário foram removidas</string>
+  <string name="composer_error_store_draft_subject">O assunto não foi salvo</string>
   <string name="composer_error_store_draft_recipients">Erro ao salvar os destinatários deste rascunho</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição substituirá qualquer conteúdo pré-existente.</string>
   <string name="composer_add_attachments_content_description">Adicionar anexos</string>
@@ -80,9 +80,9 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
-  <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o endereço entrado pelo seguinte motivo:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves confiáveis: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Endereço não existe: %s</string>
+  <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o endereço inserido pelo seguinte motivo:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves de confiança: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">O endereço não existe: %s</string>
   <string name="set_message_password_title">Criptografar mensagem</string>
   <string name="set_message_password_info_message">Defina uma senha para criptografar esta mensagem para destinatários que não usam Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Saiba mais</a></string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">de 4 a 21 caracteres</string>
   <string name="set_message_password_supporting_error_text">A sua senha deve ter entre 4 e 21 caracteres</string>
   <string name="set_message_password_supporting_text_repeat">As senhas devem ser iguais.</string>
-  <string name="set_message_password_supporting_error_text_repeat">As senhas não correspondem.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Senhas não correspondem</string>
   <string name="set_message_password_button_show">Mostrar senha</string>
   <string name="set_message_password_button_hide">Ocultar senha</string>
   <string name="set_message_password_button_apply">Aplicar senha</string>

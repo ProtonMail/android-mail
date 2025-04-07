@@ -86,12 +86,12 @@
   <string name="expiration_expired">Expirado</string>
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="expiration_auto_delete_hour">Esta mensagem será automaticamente excluída em menos de uma hora</string>
   <string name="expiration_auto_delete_day">Esta mensagem será automaticamente excluída em menos de um dia</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Esta mensagem será automaticamente excluída em %s</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Esta mensagem será excluída automaticamente em %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d minutos</item>
+    <item quantity="one">%d minuto</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="expiration_hours_full_word">

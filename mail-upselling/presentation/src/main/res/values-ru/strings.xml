@@ -18,14 +18,14 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Кнопка улучшения</string>
+  <string name="upselling_button_item_content_description">Кнопка перехода</string>
   <string name="upselling_close_button_content_description">Кнопка закрытия</string>
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Чтобы получить больше хранилища и платные функции</string>
   <string name="upselling_mailbox_plus_title">Улучшить до Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Ограниченное по времени предложение, отменить можно в любое время.</string>
+  <string name="upselling_mailbox_plus_promo_title">Попробуйте Mail Plus за %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">С лёгкостью отправляйте письма группам и наслаждайтесь другими платными функциями с Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Сгруппируйте ваши контакты</string>
@@ -37,7 +37,7 @@
   <string name="upselling_folders_plus_title">Нужно больше ярлыков или папок?</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Используйте собственную мобильную подпись и наслаждайтесь другими платными услугами с Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Отредактируйте вашу подпись.</string>
+  <string name="upselling_mobile_signature_plus_title">Создайте свою подпись</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Наслаждайтесь аккуратным почтовым ящиком и преимуществами других платных функций с Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Избавьтесь от старых писем в корзине и от спама</string>
@@ -49,7 +49,7 @@
   <string name="upselling_plus_feature_folders_labels">Неограниченное количество папок, ярлыков и фильтров</string>
   <string name="upselling_plus_feature_plus_7_features">+7 платных услуг</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Ваш платная подписка \"все в одном\"</string>
+  <string name="upselling_unlimited_description_override">Ваша комплексная платная подписка</string>
   <string name="upselling_unlimited_feature_storage">Хранилище на 500 ГБ с возможностью резервного копирования фотографий</string>
   <string name="upselling_unlimited_feature_mail_calendar">Все платные функции Mail и Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (больше 90 стран)</string>
@@ -62,12 +62,12 @@
   <string name="upselling_onboarding_free_feature_storage">1 ГБ хранилища и 1 адрес электронной почты</string>
   <string name="upselling_onboarding_plus_feature_storage">15 ГБ хранилища</string>
   <string name="upselling_onboarding_plus_feature_email_addresses">10 дополнительных адресов эл. почты для вас</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Поддержку 1 своего домена электронной почты</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Поддержка 1 пользовательского домена электронной почты</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 псевдонимов hide-my-email</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Приоритетная поддержка клиентов</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 ГБ хранилища</string>
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 дополнительных адресов эл. почты для вас</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Поддержка для 3 пользовательских доменов электронной почты</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Поддержка 3 пользовательских доменов электронной почты</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Неограниченное количество псевдонимов hide-my-email</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Выделенная поддержка клиентов</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">Сверхбыстрый и конфиденциальный VPN</string>
@@ -82,19 +82,19 @@
   <string name="upselling_comparison_table_unlimited_folders_labels">Неограниченное количество папок и ярлыков</string>
   <string name="upselling_comparison_table_priority_support">Приоритетная поддержка клиентов</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Выберете себе план</string>
+  <string name="upselling_select_plan">Выберите план</string>
   <string name="upselling_select_plan_year">1 год</string>
   <string name="upselling_select_plan_month">1 месяц</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Автоматически продляется по той же цене, пока не будет отменено.</string>
+  <string name="upselling_auto_renew_text">Автоматическое продление по той же цене и на тех же условиях, если не отменено.</string>
   <string name="upselling_auto_renew_text_promo">Приветственное предложение. Автоматически продлевается через %s %s%s, если не отменено.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">Приветственное предложение. Автоматическое продление по цене %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автоматически продлевается через %s %s%s, если не отменено.</string>
   <string name="upselling_discount_tag">Сэкономьте %s%%</string>
   <string name="upselling_month">/месяц</string>
   <string name="upselling_year">/год</string>
   <string name="upselling_get_button">Получить %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Получите 1 месяц за %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d месяц</item>
     <item quantity="few">%d месяца</item>
@@ -107,7 +107,7 @@
   <string name="upselling_snackbar_error_no_subscriptions">Не удалось загрузить подписки.</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Идет улучшение подписки…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Произошла ошибка при улучшении вашей подписки.</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Произошла ошибка при улучшении подписки.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Произошла ошибка. Повторите попытку.</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">Выбрать тариф</string>
@@ -141,13 +141,13 @@
   <string name="post_subscription_plus_feature_customer_support">Приоритетную пользовательскую поддержку</string>
   <string name="post_subscription_discover_apps_page_title">Обнаружить все приложения</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">Вы разблокировали общий доступ к календарям и еще 8x календарей.</string>
+  <string name="post_subscription_proton_calendar_message">Вы разблокировали общий доступ к календарям и в 8 раз больше календарей.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Ваша новая подписка увеличила ваше хранилище до 15 ГБ.</string>
+  <string name="post_subscription_proton_drive_message">Новая подписка увеличила ваше хранилище до 15 ГБ.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">Лучший VPN для скорости и безопасности.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Безопасное хранение паролей и легкий вход в аккаунты.</string>
+  <string name="post_subscription_proton_pass_message">Безопасное хранение паролей и лёгкий вход в аккаунты.</string>
   <string name="post_subscription_button_installed">Установлено</string>
   <string name="post_subscription_button_get_the_app">Получить приложение</string>
 </resources>

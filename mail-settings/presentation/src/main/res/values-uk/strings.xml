@@ -66,7 +66,7 @@
   <string name="mail_settings_auto_delete">Автовидалення</string>
   <string name="mail_settings_auto_delete_full_text">Автовидалення небажаних повідомлень</string>
   <string name="mail_settings_auto_delete_hint">Повідомлення в смітнику або спамі автоматично видалятимуться через 30 днів.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">Потрібна платна підписка Proton Mail, щоби використовувати цю функцію</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Щоб користуватися цією функцією, необхідно передплатити Proton Mail</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Скасувати</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Видалити повідомлення?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Це призведе до видалення всіх повідомлень, які перебувають у теці «Смітник» або «Спам» понад 30 днів, включно з повідомленнями, які наразі знаходяться в цих теках.</string>
@@ -82,7 +82,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Немає неактивних адрес</string>
   <string name="mail_settings_default_email_address_error_loading">Помилка завантаження налаштувань</string>
   <string name="mail_settings_default_email_address_error_update">Помилка оновлення налаштувань</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Вам потрібна платна підписка Proton Mail, щоб встановити цю адресу за замовчуванням</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Щоб зробити цю адресу типовою, необхідно передплатити Proton Mail</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Ім\'я та підпис</string>
   <string name="mail_settings_identity_save_button">Зберегти</string>
