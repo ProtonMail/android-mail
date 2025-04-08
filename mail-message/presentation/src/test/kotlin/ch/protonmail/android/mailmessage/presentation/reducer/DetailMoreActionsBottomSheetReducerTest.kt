@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.reducer
 
+import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
@@ -40,26 +41,21 @@ internal class DetailMoreActionsBottomSheetReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val mapper = mockk<DetailMoreActionsBottomSheetUiMapper>()
+    private val mapper = mockk<DetailMoreActionsBottomSheetUiMapper> {
+        every { this@mockk.mapMoreActionUiModels(any()) } returns expectedMultipleParticipantAction.toImmutableList()
+    }
     private val reducer = DetailMoreActionsBottomSheetReducer(mapper)
 
     @Before
     fun setup() {
         every {
-            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
-        } returns expectedSingleParticipantAction
-
-        every {
-            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
-        } returns expectedSingleParticipantAction
-
-        every {
-            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
+            mapper.mapMoreActionUiModels(
+                listOf(
+                    Action.Forward, Action.ReportPhishing,
+                    Action.OpenCustomizeToolbar
+                )
+            )
         } returns expectedMultipleParticipantAction
-
-        every {
-            mapper.mapMoreActionUiModels(showCustomizeToolbar = false, affectingConversation = false)
-        } returns expectedActionsNoToolbar
 
         every {
             mapper.toHeaderUiModel(ExpectedSender, ExpectedSubject, ExpectedMessageId)
@@ -101,21 +97,17 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                 ActionUiModelSample.Forward, ActionUiModelSample.ReportPhishing,
                 ActionUiModelSample.CustomizeToolbar
             ).toImmutableList()
-        private val expectedActionsNoToolbar =
-            listOf(
-                ActionUiModelSample.Reply, ActionUiModelSample.ReportPhishing
-            ).toImmutableList()
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
-                    showCustomizeToolbarButton = true,
                     affectingConversation = false,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
                     messageId = ExpectedMessageId,
-                    participantsCount = MultipleParticipantsCount
+                    participantsCount = MultipleParticipantsCount,
+                    actions = emptyList()
                 ),
                 expectedState = BottomSheetState(
                     contentState = DetailMoreActionsBottomSheetState.Data(
@@ -129,35 +121,17 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
                     affectingConversation = false,
-                    showCustomizeToolbarButton = true,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
                     messageId = ExpectedMessageId,
-                    participantsCount = SingleParticipantCount
+                    participantsCount = SingleParticipantCount,
+                    actions = emptyList()
                 ),
                 expectedState = BottomSheetState(
                     contentState = DetailMoreActionsBottomSheetState.Data(
                         isAffectingConversation = false,
                         messageDataUiModel = expectedUiModel,
                         replyActionsUiModel = expectedMultipleParticipantAction
-                    )
-                )
-            ),
-            TestInput(
-                currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
-                operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
-                    affectingConversation = false,
-                    showCustomizeToolbarButton = false,
-                    messageSender = ExpectedSender,
-                    messageSubject = ExpectedSubject,
-                    messageId = ExpectedMessageId,
-                    participantsCount = SingleParticipantCount
-                ),
-                expectedState = BottomSheetState(
-                    contentState = DetailMoreActionsBottomSheetState.Data(
-                        isAffectingConversation = false,
-                        messageDataUiModel = expectedUiModel,
-                        replyActionsUiModel = expectedActionsNoToolbar
                     )
                 )
             )
