@@ -59,7 +59,7 @@ kotlinx-serialization = "1.6.3"
 material = "1.12.0"
 mockk = "1.13.13"
 play-review = "2.0.2"
-proton-core = "31.0.0"
+proton-core = "32.0.0"
 kotlinpoet-ksp = "2.0.0"
 leakcanary = "2.12"
 okhttp = "4.12.0"
@@ -189,6 +189,7 @@ proton-core-accountRecoveryTest = { module = "me.proton.core:account-recovery-te
 proton-core-auth = { module = "me.proton.core:auth", version.ref = "proton-core" }
 proton-core-authTest = { module = "me.proton.core:auth-test", version.ref = "proton-core" }
 proton-core-authFido = { module = "me.proton.core:auth-fido", version.ref = "proton-core" }
+proton-core-biometric = { module = "me.proton.core:biometric", version.ref = "proton-core" }
 proton-core-challenge = { module = "me.proton.core:challenge", version.ref = "proton-core" }
 proton-core-contact = { module = "me.proton.core:contact", version.ref = "proton-core" }
 proton-core-contact-domain = { module = "me.proton.core:contact-domain", version.ref = "proton-core" }
@@ -200,6 +201,7 @@ proton-core-crypto = { module = "me.proton.core:crypto", version.ref = "proton-c
 proton-core-cryptoValidator = { module = "me.proton.core:crypto-validator", version.ref = "proton-core" }
 proton-core-data = { module = "me.proton.core:data", version.ref = "proton-core" }
 proton-core-dataRoom = { module = "me.proton.core:data-room", version.ref = "proton-core" }
+proton-core-deviceMigration = { module = "me.proton.core:device-migration", version.ref = "proton-core" }
 proton-core-domain = { module = "me.proton.core:domain", version.ref = "proton-core" }
 proton-core-eventManager = { module = "me.proton.core:event-manager", version.ref = "proton-core" }
 proton-core-featureFlag = { module = "me.proton.core:feature-flag", version.ref = "proton-core" }
@@ -273,6 +275,7 @@ appLibs = [
     "proton-core-accountRecovery",
     "proton-core-auth",
     "proton-core-authFido",
+    "proton-core-biometric",
     "proton-core-challenge",
     "proton-core-contact",
     "proton-core-country",
@@ -280,6 +283,7 @@ appLibs = [
     "proton-core-cryptoValidator",
     "proton-core-data",
     "proton-core-dataRoom",
+    "proton-core-deviceMigration",
     "proton-core-domain",
     "proton-core-eventManager",
     "proton-core-featureFlag",

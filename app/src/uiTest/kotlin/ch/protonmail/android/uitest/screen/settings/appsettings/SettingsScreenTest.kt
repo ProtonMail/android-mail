@@ -78,7 +78,8 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
                         onClearCacheClick = {},
                         onBackClick = {},
                         onExportLogsClick = {},
-                        onCustomizeToolbarClick = {}
+                        onCustomizeToolbarClick = {},
+                        onSignOut = {}
                     ),
                     LogsExportFeatureSetting(enabled = false, internalEnabled = false)
                 )

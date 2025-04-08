@@ -259,6 +259,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                 },
                 onBackClick = {
                     navController.navigateBack()
+                },
+                onSignOut = {
+                    navController.navigate(Destination.Dialog.SignOut(it))
                 }
             )
         )

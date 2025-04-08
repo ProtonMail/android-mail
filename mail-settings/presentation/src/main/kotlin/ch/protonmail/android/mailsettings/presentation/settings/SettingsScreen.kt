@@ -52,6 +52,8 @@ import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.devicemigration.presentation.settings.SignInToAnotherDeviceItem
+import me.proton.core.domain.entity.UserId
 import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingToggleItem
 import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingToggleItem
@@ -116,6 +118,16 @@ fun MainSettingsScreen(
                     modifier = Modifier.testTag(SettingsScreenTestTags.AccountSettingsItem),
                     accountInfo = state.account,
                     onAccountClicked = actions.onAccountClick
+                )
+            }
+            item {
+                // Note: `SignInToAnotherDeviceItem` modifies its own visibility.
+                SignInToAnotherDeviceItem(
+                    content = { label, onClick ->
+                        ProtonSettingsItem(name = label, onClick = onClick)
+                        Divider()
+                    },
+                    onLogOut = actions.onSignOut
                 )
             }
             item { ProtonSettingsHeader(title = string.mail_settings_app_settings) }
@@ -343,7 +355,8 @@ object MainSettingsScreen {
         val onSwipeActionsClick: () -> Unit,
         val onClearCacheClick: () -> Unit,
         val onExportLogsClick: (isInternalFeatureEnabled: Boolean) -> Unit,
-        val onBackClick: () -> Unit
+        val onBackClick: () -> Unit,
+        val onSignOut: (UserId) -> Unit
     )
 }
 

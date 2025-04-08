@@ -50,6 +50,7 @@ object AccountTestData {
                 requiredAccountType = Internal,
                 secondFactorEnabled = true,
                 twoPassModeEnabled = true,
+                passphrase = null,
                 password = null,
                 fido2AuthenticationOptionsJson = null
             )
@@ -70,6 +71,7 @@ object AccountTestData {
                 requiredAccountType = Internal,
                 secondFactorEnabled = true,
                 twoPassModeEnabled = true,
+                passphrase = null,
                 password = null,
                 fido2AuthenticationOptionsJson = null
             )
@@ -90,6 +92,7 @@ object AccountTestData {
                 requiredAccountType = Internal,
                 secondFactorEnabled = true,
                 twoPassModeEnabled = true,
+                passphrase = null,
                 password = null,
                 fido2AuthenticationOptionsJson = null
             )
@@ -110,6 +113,7 @@ object AccountTestData {
                 requiredAccountType = Internal,
                 secondFactorEnabled = true,
                 twoPassModeEnabled = true,
+                passphrase = null,
                 password = null,
                 fido2AuthenticationOptionsJson = null
             )

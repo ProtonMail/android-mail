@@ -64,6 +64,7 @@ dependencies {
 
     implementation(libs.proton.core.account)
     implementation(libs.proton.core.accountManager)
+    implementation(libs.proton.core.deviceMigration)
     implementation(libs.proton.core.key)
     implementation(libs.proton.core.user)
     implementation(libs.proton.core.userSettings)

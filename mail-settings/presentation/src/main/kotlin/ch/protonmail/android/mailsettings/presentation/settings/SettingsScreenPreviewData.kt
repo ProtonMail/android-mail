@@ -50,6 +50,7 @@ object SettingsScreenPreviewData {
         onClearCacheClick = {},
         onExportLogsClick = {},
         onBackClick = {},
-        onCustomizeToolbarClick = {}
+        onCustomizeToolbarClick = {},
+        onSignOut = {}
     )
 }
