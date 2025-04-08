@@ -215,6 +215,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
         AffectingMailboxList,
         AffectingTopAppBar,
         AffectingBottomAppBar,
+        AffectingBottomSheet,
         AffectingActionMessage,
         AffectingDeleteDialog
 

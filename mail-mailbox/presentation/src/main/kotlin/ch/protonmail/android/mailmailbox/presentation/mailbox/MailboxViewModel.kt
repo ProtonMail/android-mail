@@ -27,7 +27,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
-import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -61,6 +60,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -106,7 +106,6 @@ import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.annotations.AutodeleteFeatureEnabled
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAlmostAllMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
@@ -165,6 +164,7 @@ class MailboxViewModel @Inject constructor(
     private val getMessagesWithLabels: GetMessagesWithLabels,
     private val getConversationsWithLabels: GetConversationsWithLabels,
     private val getMailboxActions: GetMailboxActions,
+    private val getMailboxBottomSheetActions: GetMailboxBottomSheetActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val swipeActionsMapper: SwipeActionsMapper,
@@ -191,8 +191,7 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
-    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
+    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -976,21 +975,16 @@ class MailboxViewModel @Inject constructor(
         }
         emitNewStateFrom(operation)
 
+        val currentMailLabel = selectedMailLabelId.flow.value.labelId
+        val isTrashOrSpam = when (currentMailLabel) {
+            SystemLabelId.Trash.labelId, SystemLabelId.Trash.labelId -> true
+            else -> false
+        }
+
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
                 MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
-                    listOfNotNull(
-                        Action.MarkRead,
-                        Action.MarkUnread,
-                        Action.Trash,
-                        Action.Move,
-                        Action.Label,
-                        Action.Spam,
-                        Action.Star,
-                        Action.Unstar,
-                        Action.Archive,
-                        Action.OpenCustomizeToolbar.takeIf { showCustomizeToolbarAction }
-                    )
+                    getMailboxBottomSheetActions(isTrashOrSpam)
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()
                 )

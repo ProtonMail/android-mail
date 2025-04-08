@@ -44,6 +44,7 @@ import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentVal
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.DelayedMarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetDetailBottomSheetActions
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -125,7 +126,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
@@ -185,6 +185,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessagesWithLabels,
     private val observeDetailActions: ObserveConversationDetailActions,
+    private val getBottomSheetActions: GetDetailBottomSheetActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
@@ -219,8 +220,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
     private val shouldMessageBeHidden: ShouldMessageBeHidden,
     private val observeCustomizeToolbarSpotlight: ObserveCustomizeToolbarSpotlight,
-    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight,
-    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
+    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -844,6 +844,7 @@ class ConversationDetailViewModel @Inject constructor(
 
             val userId = primaryUserId.first()
             val contacts = observeContacts(userId).first().getOrNull()
+            val conversation = observeConversation(userId, conversationId, false).first().getOrNull()
             val message = observeMessage(userId, initialEvent.messageId).first().getOrElse {
                 Timber.e("Unable to fetch message data.")
                 emitNewStateFrom(DismissBottomSheet)
@@ -854,14 +855,19 @@ class ConversationDetailViewModel @Inject constructor(
                 return@let resolveParticipantName(message.sender, it)
             }?.name ?: message.sender.name
 
+            val actions = getBottomSheetActions(
+                conversation = conversation,
+                affectingConversation = affectingConversation, message = message
+            )
+
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
-                    showCustomizeToolbarButton = showCustomizeToolbarAction,
                     affectingConversation = affectingConversation,
                     messageSender = sender,
                     messageSubject = message.subject,
                     messageId = message.messageId.id,
-                    participantsCount = message.allRecipientsDeduplicated.size
+                    participantsCount = message.allRecipientsDeduplicated.size,
+                    actions = actions
                 )
             )
 

@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetDetailBottomSheetActions
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
@@ -83,7 +84,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -133,6 +133,7 @@ class MessageDetailViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeContacts: ObserveContacts,
     private val observeDetailActions: ObserveMessageDetailActions,
+    private val getBottomSheetActions: GetDetailBottomSheetActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
@@ -160,8 +161,7 @@ class MessageDetailViewModel @Inject constructor(
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
     private val observeCustomizeToolbarSpotlight: ObserveCustomizeToolbarSpotlight,
-    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight,
-    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
+    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -505,14 +505,16 @@ class MessageDetailViewModel @Inject constructor(
                 return@let resolveParticipantName(message.sender, it)
             }?.name ?: message.sender.name
 
+            val actions = getBottomSheetActions(conversation = null, affectingConversation = false, message = message)
+
             val event = MessageDetailEvent.MessageBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
-                    showCustomizeToolbarButton = showCustomizeToolbarAction,
                     affectingConversation = false,
                     messageSender = sender,
                     messageSubject = message.subject,
                     messageId = message.messageId.id,
-                    participantsCount = message.allRecipientsDeduplicated.size
+                    participantsCount = message.allRecipientsDeduplicated.size,
+                    actions = actions
                 )
             )
 

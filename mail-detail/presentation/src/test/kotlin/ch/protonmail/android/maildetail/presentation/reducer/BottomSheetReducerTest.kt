@@ -267,12 +267,12 @@ internal class BottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
-                    showCustomizeToolbarButton = true,
                     affectingConversation = false,
                     messageSender = "Sender",
                     messageSubject = "Subject",
                     messageId = "messageId",
-                    participantsCount = 1
+                    participantsCount = 1,
+                    actions = emptyList()
                 ),
                 expectedState = BottomSheetState(
                     DetailMoreActionsBottomSheetState.Data(

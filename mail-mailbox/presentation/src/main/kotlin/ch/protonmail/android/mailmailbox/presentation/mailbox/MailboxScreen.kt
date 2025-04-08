@@ -313,6 +313,7 @@ fun MailboxScreen(
                         onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
                         onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) },
                         onTrash = { viewModel.submit(MailboxViewAction.Trash) },
+                        onDelete = { viewModel.submit(MailboxViewAction.Delete) },
                         onLabel = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
                         onRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
                         onUnRead = { viewModel.submit(MailboxViewAction.MarkAsUnread) },

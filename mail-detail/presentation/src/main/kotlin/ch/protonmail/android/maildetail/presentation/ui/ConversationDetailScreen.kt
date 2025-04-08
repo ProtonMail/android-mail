@@ -284,6 +284,9 @@ fun ConversationDetailScreen(
                         onForwardConversation = {
                             viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
                         },
+                        onDelete = {
+                            viewModel.submit(ConversationDetailViewAction.DeleteRequested)
+                        },
                         onOpenCustomizeToolbar = actions.navigateToCustomizeToolbar
                     )
                 )

@@ -222,6 +222,7 @@ object DetailMoreActionsBottomSheetContent {
         val onMoveToSpamConversation: () -> Unit,
         val onMove: (MessageId) -> Unit,
         val onMoveConversation: () -> Unit,
+        val onDelete: () -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onPrintLastMessage: () -> Unit,
         val onReportPhishing: (MessageId) -> Unit,
@@ -302,5 +303,6 @@ private val emptyActions = DetailMoreActionsBottomSheetContent.Actions(
     onMoveToTrashConversation = {},
     onMarkUnreadConversation = {},
     onPrintLastMessage = {},
-    onOpenCustomizeToolbar = {}
+    onOpenCustomizeToolbar = {},
+    onDelete = {}
 )

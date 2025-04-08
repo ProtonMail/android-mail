@@ -49,6 +49,7 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetDetailBottomSheetActions
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
@@ -184,7 +185,6 @@ import me.proton.core.network.domain.NetworkStatus
 import org.junit.After
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
-import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -394,7 +394,9 @@ class MessageDetailViewModelTest {
     }
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+    private val getBottomSheetActions = mockk<GetDetailBottomSheetActions> {
+        every { this@mockk.invoke(any(), any(), any()) } returns listOf(Action.Archive)
+    }
 
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(
@@ -457,7 +459,7 @@ class MessageDetailViewModelTest {
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
             observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
             updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight,
-            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
+            getBottomSheetActions = getBottomSheetActions
         )
     }
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
@@ -465,7 +467,6 @@ class MessageDetailViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        customizeToolbarFeatureEnabled(true)
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockk()
     }
@@ -1955,11 +1956,5 @@ class MessageDetailViewModelTest {
     private suspend fun ReceiveTurbine<MessageDetailState>.lastEmittedItem(): MessageDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 }

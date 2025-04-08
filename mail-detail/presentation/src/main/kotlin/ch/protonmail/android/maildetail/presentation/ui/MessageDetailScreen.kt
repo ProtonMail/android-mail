@@ -223,6 +223,7 @@ fun MessageDetailScreen(
                             viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode))
                         },
                         onMoveToTrash = { viewModel.submit(MessageViewAction.Trash) },
+                        onDelete = { viewModel.submit(MessageViewAction.DeleteRequested) },
                         onMoveToArchive = { viewModel.submit(MessageViewAction.Archive) },
                         onMoveToSpam = { viewModel.submit(MessageViewAction.Spam) },
                         onMove = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },

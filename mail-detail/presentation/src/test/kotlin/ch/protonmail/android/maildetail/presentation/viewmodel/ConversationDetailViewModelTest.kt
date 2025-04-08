@@ -52,6 +52,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.usecase.DelayedMarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetDetailBottomSheetActions
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -163,7 +164,6 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
-import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -365,7 +365,9 @@ class ConversationDetailViewModelTest {
     }
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+    private val getBottomSheetActions = mockk<GetDetailBottomSheetActions> {
+        every { this@mockk.invoke(any(), any(), any()) } returns listOf(Action.Archive)
+    }
 
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
@@ -421,14 +423,13 @@ class ConversationDetailViewModelTest {
             observeMailLabels = observeMailLabels,
             observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
             updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight,
-            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
+            getBottomSheetActions = getBottomSheetActions
         )
     }
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        customizeToolbarFeatureEnabled(true)
     }
 
     @AfterTest
@@ -2926,11 +2927,5 @@ class ConversationDetailViewModelTest {
     private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 }

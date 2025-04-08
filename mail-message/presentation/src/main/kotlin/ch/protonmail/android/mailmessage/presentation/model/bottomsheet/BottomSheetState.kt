@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.model.bottomsheet
 
+import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
@@ -147,12 +148,12 @@ sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
     sealed interface MessageDetailMoreActionsBottomSheetOperation : BottomSheetOperation
     sealed interface MessageDetailMoreActionsBottomSheetEvent : MessageDetailMoreActionsBottomSheetOperation {
         data class DataLoaded(
-            val showCustomizeToolbarButton: Boolean,
             val affectingConversation: Boolean,
             val messageSender: String,
             val messageSubject: String,
             val messageId: String,
-            val participantsCount: Int
+            val participantsCount: Int,
+            val actions: List<Action>
         ) : MessageDetailMoreActionsBottomSheetEvent
     }
 

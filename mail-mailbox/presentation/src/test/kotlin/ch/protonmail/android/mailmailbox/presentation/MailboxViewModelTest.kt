@@ -70,6 +70,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -294,7 +295,31 @@ class MailboxViewModelTest {
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+    private val getMailboxBottomSheetActions = mockk<GetMailboxBottomSheetActions> {
+        every { this@mockk.invoke(true) } returns listOf(
+            Action.MarkRead,
+            Action.MarkUnread,
+            Action.Trash,
+            Action.Delete,
+            Action.Move,
+            Action.Label,
+            Action.Spam,
+            Action.Star,
+            Action.Unstar,
+            Action.Archive
+        )
+        every { this@mockk.invoke(false) } returns listOf(
+            Action.MarkRead,
+            Action.MarkUnread,
+            Action.Trash,
+            Action.Move,
+            Action.Label,
+            Action.Spam,
+            Action.Star,
+            Action.Unstar,
+            Action.Archive
+        )
+    }
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -344,7 +369,7 @@ class MailboxViewModelTest {
             observeAutoDeleteSetting = observeAutoDeleteSetting,
             updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
             isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
-            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
+            getMailboxBottomSheetActions = getMailboxBottomSheetActions
         )
     }
 
@@ -352,7 +377,6 @@ class MailboxViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         mockkStatic(Log::class)
-        customizeToolbarFeatureEnabled(false)
         every { Log.isLoggable(any(), any()) } returns false
         autoDeleteFeatureEnabled(false)
     }
@@ -5572,12 +5596,6 @@ class MailboxViewModelTest {
     private fun autoDeleteFeatureEnabled(value: Boolean) {
         every {
             provideIsAutodeleteFeatureEnabled.get()
-        } returns value
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
         } returns value
     }
 }

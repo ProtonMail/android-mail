@@ -39,29 +39,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
         messageId
     )
 
-    fun mapMoreActionUiModels(
-        showCustomizeToolbar: Boolean,
-        affectingConversation: Boolean
-    ): ImmutableList<ActionUiModel> {
-        return mutableListOf<ActionUiModel>().apply {
-            if (!affectingConversation) {
-                add(ActionUiModel(Action.Reply))
-                add(ActionUiModel(Action.ReplyAll))
-                add(ActionUiModel(Action.Forward))
-            }
-            add(ActionUiModel(Action.MarkUnread))
-            add(ActionUiModel(Action.Label))
-            if (!affectingConversation) add(ActionUiModel(Action.ViewInLightMode))
-            if (!affectingConversation) add(ActionUiModel(Action.ViewInDarkMode))
-            add(ActionUiModel(Action.Trash))
-            add(ActionUiModel(Action.Archive))
-            add(ActionUiModel(Action.Spam))
-            add(ActionUiModel(Action.Move))
-            add(ActionUiModel(Action.Print))
-            if (showCustomizeToolbar) {
-                add(ActionUiModel(Action.OpenCustomizeToolbar))
-            }
-            add(ActionUiModel(Action.ReportPhishing))
-        }.toImmutableList()
-    }
+    fun mapMoreActionUiModels(actions: List<Action>): ImmutableList<ActionUiModel> = actions.map {
+        ActionUiModel(it)
+    }.toImmutableList()
 }

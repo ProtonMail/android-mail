@@ -70,77 +70,23 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         ).toImmutableList()
 
         // When
-        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = false, affectingConversation = false)
-
-        // Then
-        assertEquals(expectedList, actual)
-    }
-
-    @Test
-    fun `should include customize toolbar when passed true`() {
-        // Given
-        val expectedList = listOf(
-            ActionUiModel(Action.Reply),
-            ActionUiModel(Action.ReplyAll),
-            ActionUiModel(Action.Forward),
-            ActionUiModel(Action.MarkUnread),
-            ActionUiModel(Action.Label),
-            ActionUiModel(Action.ViewInLightMode),
-            ActionUiModel(Action.ViewInDarkMode),
-            ActionUiModel(Action.Trash),
-            ActionUiModel(Action.Archive),
-            ActionUiModel(Action.Spam),
-            ActionUiModel(Action.Move),
-            ActionUiModel(Action.Print),
-            ActionUiModel(Action.OpenCustomizeToolbar),
-            ActionUiModel(Action.ReportPhishing)
-        ).toImmutableList()
-
-        // When
-        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
-
-        // Then
-        assertEquals(expectedList, actual)
-    }
-
-    @Test
-    fun `should map the to correct ui model for conversation`() {
-        // Given
-        val expectedList = listOf(
-            ActionUiModel(Action.MarkUnread),
-            ActionUiModel(Action.Label),
-            ActionUiModel(Action.Trash),
-            ActionUiModel(Action.Archive),
-            ActionUiModel(Action.Spam),
-            ActionUiModel(Action.Move),
-            ActionUiModel(Action.Print),
-            ActionUiModel(Action.OpenCustomizeToolbar),
-            ActionUiModel(Action.ReportPhishing)
-        ).toImmutableList()
-
-        // When
-        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = true)
-
-        // Then
-        assertEquals(expectedList, actual)
-    }
-
-    @Test
-    fun `should map the to correct ui model for conversation without customize toolbar`() {
-        // Given
-        val expectedList = listOf(
-            ActionUiModel(Action.MarkUnread),
-            ActionUiModel(Action.Label),
-            ActionUiModel(Action.Trash),
-            ActionUiModel(Action.Archive),
-            ActionUiModel(Action.Spam),
-            ActionUiModel(Action.Move),
-            ActionUiModel(Action.Print),
-            ActionUiModel(Action.ReportPhishing)
-        ).toImmutableList()
-
-        // When
-        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = false, affectingConversation = true)
+        val actual = mapper.mapMoreActionUiModels(
+            listOf(
+                Action.Reply,
+                Action.ReplyAll,
+                Action.Forward,
+                Action.MarkUnread,
+                Action.Label,
+                Action.ViewInLightMode,
+                Action.ViewInDarkMode,
+                Action.Trash,
+                Action.Archive,
+                Action.Spam,
+                Action.Move,
+                Action.Print,
+                Action.ReportPhishing
+            )
+        )
 
         // Then
         assertEquals(expectedList, actual)
