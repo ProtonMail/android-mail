@@ -451,7 +451,7 @@ class MessageDetailReducerTest(
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
-                shouldReduceBottomSheetState = false,
+                shouldReduceBottomSheetState = true,
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = true
