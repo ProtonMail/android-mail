@@ -137,7 +137,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object Trash : MessageViewAction
     object DeleteRequested : MessageViewAction, AffectingDeleteDialog
     object DeleteDialogDismissed : MessageViewAction, AffectingDeleteDialog
-    object DeleteConfirmed : MessageViewAction, AffectingDeleteDialog
+    object DeleteConfirmed : MessageViewAction, AffectingDeleteDialog, AffectingBottomSheet
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) : MessageViewAction, AffectingBottomSheet

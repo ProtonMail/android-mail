@@ -36,10 +36,11 @@ class GetDetailBottomSheetActions @Inject constructor(
         affectingConversation: Boolean
     ): List<Action> {
         val showCustomizeToolbar = isCustomizeToolbarEnabled
-        val allSpamOrTrash = if (affectingConversation) {
-            conversation?.allMessagesAreSpamOrTrash() ?: false
-        } else {
-            message.isSpamOrTrash()
+        val showDelete = when {
+            conversation != null -> {
+                affectingConversation && conversation.allMessagesAreSpamOrTrash()
+            }
+            else -> message.isSpamOrTrash()
         }
 
         return mutableListOf<Action>().apply {
@@ -52,7 +53,7 @@ class GetDetailBottomSheetActions @Inject constructor(
             add(Action.Label)
             if (!affectingConversation) add(Action.ViewInLightMode)
             if (!affectingConversation) add(Action.ViewInDarkMode)
-            if (allSpamOrTrash) {
+            if (showDelete) {
                 add(Action.Delete)
             } else {
                 add(Action.Trash)

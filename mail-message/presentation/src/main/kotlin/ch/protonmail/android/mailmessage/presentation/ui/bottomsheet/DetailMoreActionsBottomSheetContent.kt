@@ -155,6 +155,7 @@ private fun callbackForAction(
     Action.ViewInLightMode -> actionCallbacks.onViewInLightMode
     Action.ViewInDarkMode -> actionCallbacks.onViewInDarkMode
     Action.Trash -> actionCallbacks.onMoveToTrash
+    Action.Delete -> actionCallbacks.onDeleteMessage
     Action.Archive -> actionCallbacks.onMoveToArchive
     Action.Spam -> actionCallbacks.onMoveToSpam
     Action.Move -> actionCallbacks.onMove
@@ -223,6 +224,7 @@ object DetailMoreActionsBottomSheetContent {
         val onMove: (MessageId) -> Unit,
         val onMoveConversation: () -> Unit,
         val onDelete: () -> Unit,
+        val onDeleteMessage: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onPrintLastMessage: () -> Unit,
         val onReportPhishing: (MessageId) -> Unit,
@@ -304,5 +306,6 @@ private val emptyActions = DetailMoreActionsBottomSheetContent.Actions(
     onMarkUnreadConversation = {},
     onPrintLastMessage = {},
     onOpenCustomizeToolbar = {},
-    onDelete = {}
+    onDelete = {},
+    onDeleteMessage = {}
 )

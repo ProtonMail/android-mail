@@ -13,7 +13,6 @@ import javax.inject.Provider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class GetDetailBottomSheetActionsTest {
 
     private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
@@ -169,7 +168,6 @@ class GetDetailBottomSheetActionsTest {
                 Action.Spam,
                 Action.Move,
                 Action.Print,
-                Action.OpenCustomizeToolbar,
                 Action.ReportPhishing
             ),
             result
@@ -215,6 +213,86 @@ class GetDetailBottomSheetActionsTest {
                 Action.MarkUnread,
                 Action.Label,
                 Action.Delete,
+                Action.Archive,
+                Action.Spam,
+                Action.Move,
+                Action.Print,
+                Action.OpenCustomizeToolbar,
+                Action.ReportPhishing
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `returns correct actions for a spam conversation message with toolbar FF enabled`() = runTest {
+        // Given
+        customizeToolbarFeatureEnabled(true)
+
+        // When
+        val result = sut(spamConversation, normalMessage, affectingConversation = true)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.MarkUnread,
+                Action.Label,
+                Action.Delete,
+                Action.Archive,
+                Action.Spam,
+                Action.Move,
+                Action.Print,
+                Action.OpenCustomizeToolbar,
+                Action.ReportPhishing
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `does not return delete action if the entire conversation is not trashed or spam`() = runTest {
+        // Given
+        customizeToolbarFeatureEnabled(true)
+
+        // When
+        val result = sut(normalConversation, trashMessage, affectingConversation = true)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.MarkUnread,
+                Action.Label,
+                Action.Trash,
+                Action.Archive,
+                Action.Spam,
+                Action.Move,
+                Action.Print,
+                Action.OpenCustomizeToolbar,
+                Action.ReportPhishing
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `does not return delete action if affecting a message inside a conversation`() = runTest {
+        // Given
+        customizeToolbarFeatureEnabled(true)
+
+        // When
+        val result = sut(normalConversation, trashMessage, affectingConversation = false)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.Reply,
+                Action.ReplyAll,
+                Action.Forward,
+                Action.MarkUnread,
+                Action.Label,
+                Action.ViewInLightMode,
+                Action.ViewInDarkMode,
+                Action.Trash,
                 Action.Archive,
                 Action.Spam,
                 Action.Move,
