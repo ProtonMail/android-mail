@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiMod
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -104,6 +105,9 @@ class ContactListViewModelTest {
     private val observeUpsellingVisibilityMock = mockk<ObserveUpsellingVisibility> {
         every { this@mockk(any()) } returns flowOf(false)
     }
+    private val getUpsellingVisibilityMock = mockk<GetUpsellingVisibility> {
+        coEvery { this@mockk(any()) } returns false
+    }
 
     private val userUpgradeState = mockk<UserUpgradeState> {
         every { this@mockk.isUserPendingUpgrade } returns false
@@ -126,6 +130,7 @@ class ContactListViewModelTest {
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
             observeUpsellingVisibilityMock,
+            getUpsellingVisibilityMock,
             userUpgradeState,
             observePrimaryUserId
         )
@@ -416,6 +421,7 @@ class ContactListViewModelTest {
             expectContactsData()
             expectPaidUser(false)
             coEvery { observeUpsellingVisibilityMock(any()) } returns flowOf(true)
+            coEvery { getUpsellingVisibilityMock(any()) } returns true
 
             // When
             contactListViewModel.state.test {

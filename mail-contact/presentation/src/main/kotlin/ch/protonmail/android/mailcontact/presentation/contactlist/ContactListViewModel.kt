@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiMo
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
+import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -55,6 +56,7 @@ class ContactListViewModel @Inject constructor(
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
+    private val getObservingVisibility: GetUpsellingVisibility,
     private val userUpgradeState: UserUpgradeState,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
@@ -88,8 +90,7 @@ class ContactListViewModel @Inject constructor(
     private suspend fun handleOnNewContactGroupClick() {
         if (userUpgradeState.isUserPendingUpgrade) return emitNewStateFor(ContactListEvent.UpsellingInProgress)
 
-        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Feature.ContactGroups).first()
-
+        val shouldShowUpselling = getObservingVisibility(UpsellingEntryPoint.Feature.ContactGroups)
         if (shouldShowUpselling) {
             emitNewStateFor(ContactListEvent.OpenUpsellingBottomSheet)
         } else {
