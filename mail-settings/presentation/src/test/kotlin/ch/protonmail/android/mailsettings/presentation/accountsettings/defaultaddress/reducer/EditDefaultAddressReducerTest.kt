@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultad
 import io.mockk.spyk
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.user.domain.entity.AddressId
+import me.proton.core.user.domain.entity.AddressType
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,15 +52,31 @@ internal class EditDefaultAddressReducerTest(
 
     companion object {
 
+        private val externalAddressWithSend = UserAddressSample.build(
+            addressId = AddressId("567"), email = "address4@proton.me", order = 4,
+            addressType = AddressType.External,
+            canSend = true
+        )
+
+        private val externalAddressWithoutSend = UserAddressSample.build(
+            addressId = AddressId("234"), email = "address5@proton.me", order = 5,
+            addressType = AddressType.External,
+            canSend = false
+        )
+
         private val activeAddresses = listOf(
             UserAddressSample.build(addressId = AddressId("123"), email = "address1@proton.me", order = 1),
             UserAddressSample.build(addressId = AddressId("456"), email = "address2@proton.me", order = 2),
-            UserAddressSample.build(addressId = AddressId("789"), email = "address3@proton.me", order = 3)
+            UserAddressSample.build(addressId = AddressId("789"), email = "address3@proton.me", order = 3),
+            externalAddressWithSend,
+            externalAddressWithoutSend
         )
         private val updatedAddresses = listOf(
             UserAddressSample.build(addressId = AddressId("456"), email = "address2@proton.me", order = 1),
             UserAddressSample.build(addressId = AddressId("123"), email = "address1@proton.me", order = 2),
-            UserAddressSample.build(addressId = AddressId("789"), email = "address3@proton.me", order = 3)
+            UserAddressSample.build(addressId = AddressId("789"), email = "address3@proton.me", order = 3),
+            externalAddressWithSend,
+            externalAddressWithoutSend
         )
 
         private val inactiveAddresses = emptyList<UserAddress>()
@@ -71,7 +88,8 @@ internal class EditDefaultAddressReducerTest(
                 listOf(
                     DefaultAddressUiModel.Active(isDefault = true, addressId = "123", address = "address1@proton.me"),
                     DefaultAddressUiModel.Active(isDefault = false, addressId = "456", address = "address2@proton.me"),
-                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "567", address = "address4@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
@@ -85,7 +103,8 @@ internal class EditDefaultAddressReducerTest(
                 listOf(
                     DefaultAddressUiModel.Active(isDefault = true, addressId = "456", address = "address2@proton.me"),
                     DefaultAddressUiModel.Active(isDefault = false, addressId = "123", address = "address1@proton.me"),
-                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "567", address = "address4@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(

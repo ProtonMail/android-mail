@@ -41,11 +41,20 @@ object UserAddressSample {
         enabled = false
     )
 
-    val ExternalAddress = build(
+    val ExternalAddressWithSend = build(
         addressId = AddressIdSample.ExternalAddressId,
         addressType = AddressType.External,
         email = "external@gmail.com",
-        order = 2
+        order = 2,
+        canSend = true
+    )
+
+    val ExternalAddressWithoutSend = build(
+        addressId = AddressIdSample.ExternalAddressId,
+        addressType = AddressType.External,
+        email = "external@gmail.com",
+        order = 2,
+        canSend = false
     )
 
     val PmMeAddressAlias = build(
@@ -60,11 +69,12 @@ object UserAddressSample {
         email: String = "primary-email@pm.me",
         order: Int = 0,
         enabled: Boolean = true,
-        addressType: AddressType = AddressType.Original
+        addressType: AddressType = AddressType.Original,
+        canSend: Boolean = true
     ) = UserAddress(
         addressId = addressId,
         canReceive = true,
-        canSend = true,
+        canSend = canSend,
         displayName = "name",
         email = email,
         enabled = enabled,

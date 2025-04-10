@@ -61,7 +61,8 @@ class GetComposerSenderAddressesTest {
 
             val addresses = listOf(
                 UserAddressSample.PrimaryAddress,
-                UserAddressSample.AliasAddress.copy(canSend = false)
+                UserAddressSample.AliasAddress.copy(canSend = false),
+                UserAddressSample.ExternalAddressWithoutSend
             )
 
             every { observeUserAddresses(userId) } returns flowOf(addresses)
@@ -99,21 +100,46 @@ class GetComposerSenderAddressesTest {
     }
 
     @Test
-    fun `excludes disabled and external accounts from the returned list`() = runTest {
+    fun `excludes disabled and includes external accounts with send permission`() = runTest {
         // Given
-        val disabledExternalAddresses = listOf(
+        val allUserAddresses = listOf(
             UserAddressSample.PrimaryAddress,
             UserAddressSample.DisabledAddress,
-            UserAddressSample.ExternalAddress
+            UserAddressSample.ExternalAddressWithSend,
+            UserAddressSample.ExternalAddressWithoutSend
         )
         coEvery { isPaidMailUser(userId) } returns true.right()
-        coEvery { observeUserAddresses(userId) } returns flowOf(disabledExternalAddresses)
+        coEvery { observeUserAddresses(userId) } returns flowOf(allUserAddresses)
 
         // When
         val actual = getComposerSenderAddresses()
 
         // Then
-        val expected = listOf(UserAddressSample.PrimaryAddress)
+        val expected = listOf(
+            UserAddressSample.PrimaryAddress,
+            UserAddressSample.ExternalAddressWithSend
+        )
+        Assert.assertEquals(expected.right(), actual)
+    }
+
+    @Test
+    fun `allows free users to switch to their external address`() = runTest {
+        // Given
+        val allUserAddresses = listOf(
+            UserAddressSample.PrimaryAddress,
+            UserAddressSample.ExternalAddressWithSend
+        )
+        coEvery { isPaidMailUser(userId) } returns false.right()
+        coEvery { observeUserAddresses(userId) } returns flowOf(allUserAddresses)
+
+        // When
+        val actual = getComposerSenderAddresses()
+
+        // Then
+        val expected = listOf(
+            UserAddressSample.PrimaryAddress,
+            UserAddressSample.ExternalAddressWithSend
+        )
         Assert.assertEquals(expected.right(), actual)
     }
 

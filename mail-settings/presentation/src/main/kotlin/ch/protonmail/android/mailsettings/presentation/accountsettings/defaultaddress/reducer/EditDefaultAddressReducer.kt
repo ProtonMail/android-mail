@@ -27,6 +27,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultad
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.user.domain.entity.UserAddress
+import me.proton.core.user.domain.entity.isExternal
 import me.proton.core.user.domain.entity.isInternal
 import javax.inject.Inject
 
@@ -37,7 +38,6 @@ class EditDefaultAddressReducer @Inject constructor(
     fun newStateFrom(currentState: EditDefaultAddressState, operation: EditDefaultAddressOperation) = when (operation) {
         is EditDefaultAddressEvent -> currentState.toNewStateFromEvent(operation)
     }
-
 
     private fun EditDefaultAddressState.toNewStateFromEvent(event: EditDefaultAddressEvent): EditDefaultAddressState {
 
@@ -121,5 +121,5 @@ class EditDefaultAddressReducer @Inject constructor(
     }
 
     private fun List<UserAddress>.splitAddresses(): Pair<List<UserAddress>, List<UserAddress>> =
-        filter { it.isInternal() }.partition { it.enabled }
+        filter { it.isInternal() || it.isExternal() && it.canSend }.partition { it.enabled }
 }
