@@ -505,7 +505,7 @@ class MessageDetailViewModel @Inject constructor(
                 return@let resolveParticipantName(message.sender, it)
             }?.name ?: message.sender.name
 
-            val actions = getBottomSheetActions(conversation = null, affectingConversation = false, message = message)
+            val actions = getBottomSheetActions(message = message)
 
             val event = MessageDetailEvent.MessageBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(

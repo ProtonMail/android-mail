@@ -62,7 +62,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(false)
 
         // When
-        val result = sut(null, normalMessage, affectingConversation = false)
+        val result = sut(normalMessage)
 
         // Then
         assertEquals(
@@ -91,7 +91,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(null, normalMessage, affectingConversation = false)
+        val result = sut(normalMessage)
 
         // Then
         assertEquals(
@@ -121,7 +121,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(null, spamMessage, affectingConversation = false)
+        val result = sut(spamMessage)
 
         // Then
         assertEquals(
@@ -151,7 +151,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(false)
 
         // When
-        val result = sut(null, trashMessage, affectingConversation = false)
+        val result = sut(trashMessage)
 
         // Then
         assertEquals(
@@ -180,7 +180,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(normalConversation, trashMessage, affectingConversation = true)
+        val result = sut(normalConversation, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -205,7 +205,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(trashedConversation, trashMessage, affectingConversation = true)
+        val result = sut(trashedConversation, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -225,12 +225,12 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a spam conversation message with toolbar FF enabled`() = runTest {
+    fun `returns correct actions for a spam conversation with toolbar FF enabled`() = runTest {
         // Given
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(spamConversation, normalMessage, affectingConversation = true)
+        val result = sut(spamConversation, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -255,7 +255,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(normalConversation, trashMessage, affectingConversation = true)
+        val result = sut(normalConversation, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -280,7 +280,7 @@ class GetDetailBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val result = sut(normalConversation, trashMessage, affectingConversation = false)
+        val result = sut(normalConversation, affectingConversation = false)
 
         // Then
         assertEquals(

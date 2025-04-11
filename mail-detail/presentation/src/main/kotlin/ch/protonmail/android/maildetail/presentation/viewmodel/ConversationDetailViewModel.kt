@@ -857,7 +857,7 @@ class ConversationDetailViewModel @Inject constructor(
 
             val actions = getBottomSheetActions(
                 conversation = conversation,
-                affectingConversation = affectingConversation, message = message
+                affectingConversation = affectingConversation
             )
 
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(

@@ -366,7 +366,7 @@ class ConversationDetailViewModelTest {
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
     private val getBottomSheetActions = mockk<GetDetailBottomSheetActions> {
-        every { this@mockk.invoke(any(), any(), any()) } returns listOf(Action.Archive)
+        every { this@mockk.invoke(any(), any()) } returns listOf(Action.Archive)
     }
 
     private val testDispatcher: TestDispatcher by lazy {

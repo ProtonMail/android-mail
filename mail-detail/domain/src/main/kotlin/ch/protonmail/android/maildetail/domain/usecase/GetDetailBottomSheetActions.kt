@@ -30,18 +30,16 @@ class GetDetailBottomSheetActions @Inject constructor(
     @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
 ) {
 
-    operator fun invoke(
-        conversation: Conversation?,
-        message: Message,
-        affectingConversation: Boolean
-    ): List<Action> {
+    operator fun invoke(conversation: Conversation?, affectingConversation: Boolean): List<Action> {
+        val showDelete = affectingConversation && conversation?.allMessagesAreSpamOrTrash() == true
+        return getActions(showDelete = showDelete, affectingConversation = affectingConversation)
+    }
+
+    operator fun invoke(message: Message): List<Action> =
+        getActions(showDelete = message.isSpamOrTrash(), affectingConversation = false)
+
+    private fun getActions(showDelete: Boolean, affectingConversation: Boolean): List<Action> {
         val showCustomizeToolbar = isCustomizeToolbarEnabled
-        val showDelete = when {
-            conversation != null -> {
-                affectingConversation && conversation.allMessagesAreSpamOrTrash()
-            }
-            else -> message.isSpamOrTrash()
-        }
 
         return mutableListOf<Action>().apply {
             if (!affectingConversation) {
