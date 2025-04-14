@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Змінити відправника</string>
   <string name="composer_change_sender_paid_feature">Щоб змінити адресу відправника, необхідно передплатити Proton Mail</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
-  <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
-  <string name="composer_error_store_draft_body">Не вдалося зберегти вміст цієї чернетки</string>
-  <string name="composer_error_duplicate_recipient">Дублікати отримувачів вилучено</string>
-  <string name="composer_error_store_draft_subject">Не вдалося зберегти тему цієї чернетки</string>
+  <string name="composer_error_store_draft_sender_address">Адресу відправника не збережено</string>
+  <string name="composer_error_store_draft_body">Вміст чернетки листа не збережено</string>
+  <string name="composer_error_duplicate_recipient">Вилучено дублікати отримувачів</string>
+  <string name="composer_error_store_draft_subject">Рядок теми не збережено</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
   <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний. Редагування перезапише будь-який попередній вміст.</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
@@ -92,7 +92,7 @@
   <string name="set_message_password_supporting_text">Довжина від 4 до 21 символу</string>
   <string name="set_message_password_supporting_error_text">Пароль повинен мати від 4 до 21 символів</string>
   <string name="set_message_password_supporting_text_repeat">Паролі повинні збігатися</string>
-  <string name="set_message_password_supporting_error_text_repeat">2 паролі відрізняються</string>
+  <string name="set_message_password_supporting_error_text_repeat">Паролі відрізняються</string>
   <string name="set_message_password_button_show">Показати пароль</string>
   <string name="set_message_password_button_hide">Приховати пароль</string>
   <string name="set_message_password_button_apply">Застосувати пароль</string>

@@ -25,10 +25,10 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введіть пошуковий запит</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Обраний</item>
-    <item quantity="few">%d Обрані</item>
-    <item quantity="many">%d Обраних</item>
-    <item quantity="other">%d Обраних</item>
+    <item quantity="one">Вибрано %d</item>
+    <item quantity="few">Вибрано %d</item>
+    <item quantity="many">Вибрано %d</item>
+    <item quantity="other">Вибрано %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s непрочитане</item>
@@ -49,16 +49,16 @@
   <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
   <string name="mailbox_is_empty_trash_description">Смітник порожній</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Розмову переміщено в «Смітник»</item>
-    <item quantity="few">%d розмови переміщено в «Смітник»</item>
-    <item quantity="many">%d розмов переміщено в «Смітник»</item>
-    <item quantity="other">%d розмов переміщено в «Смітник»</item>
+    <item quantity="one">Розмову переміщено до смітника</item>
+    <item quantity="few">%d розмови переміщено до смітника</item>
+    <item quantity="many">%d розмов переміщено до смітника</item>
+    <item quantity="other">%d розмов переміщено до смітника</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Повідомлення переміщено в «Смітник»</item>
-    <item quantity="few">%d повідомлення переміщено в «Смітник»</item>
-    <item quantity="many">%d повідомлень переміщено в «Смітник»</item>
-    <item quantity="other">%d повідомлень переміщено в «Смітник»</item>
+    <item quantity="one">Повідомлення переміщено до смітника</item>
+    <item quantity="few">%d повідомлення переміщено до смітника</item>
+    <item quantity="many">%d повідомлень переміщено до смітника</item>
+    <item quantity="other">%d повідомлень переміщено до смітника</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Видалити розмову</item>
@@ -73,16 +73,16 @@
     <item quantity="other">Видалити %d повідомлень</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Ви дійсно бажаєте остаточно видалити цю розмову?</item>
-    <item quantity="few">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
-    <item quantity="many">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
-    <item quantity="other">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
+    <item quantity="one">Ви дійсно хочете остаточно видалити цю розмову?</item>
+    <item quantity="few">Ви дійсно хочете остаточно видалити ці розмови?</item>
+    <item quantity="many">Ви дійсно хочете остаточно видалити ці розмови?</item>
+    <item quantity="other">Ви дійсно хочете остаточно видалити ці розмови?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Ви дійсно бажаєте остаточно видалити це повідомлення?</item>
-    <item quantity="few">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
-    <item quantity="many">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
-    <item quantity="other">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
+    <item quantity="one">Ви дійсно хочете остаточно видалити це повідомлення?</item>
+    <item quantity="few">Ви дійсно хочете остаточно видалити ці повідомлення?</item>
+    <item quantity="many">Ви дійсно хочете остаточно видалити ці повідомлення?</item>
+    <item quantity="other">Ви дійсно хочете остаточно видалити ці повідомлення?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Повідомлення остаточно видалено</item>

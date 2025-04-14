@@ -90,7 +90,7 @@
   <string name="message_moved_to">邮件已移动至 %s</string>
   <string name="error_delete_message_failed">删除邮件失败</string>
   <string name="error_delete_message_failed_wrong_folder">消息位于不可以删除的位置。</string>
-  <string name="error_delete_conversation_failed">删除对话失败</string>
+  <string name="error_delete_conversation_failed">删除会话失败</string>
   <string name="error_delete_conversation_failed_wrong_folder">对话位于不可以删除的位置。</string>
   <string name="conversation_delete_dialog_title">删除会话</string>
   <string name="conversation_delete_dialog_message">您确定要永久删除此会话吗？</string>

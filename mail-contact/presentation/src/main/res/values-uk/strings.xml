@@ -109,8 +109,8 @@
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Учасник (%1$d)</item>
     <item quantity="few">Учасники (%1$d)</item>
-    <item quantity="many">Учасників (%1$d)</item>
-    <item quantity="other">Учасників (%1$d)</item>
+    <item quantity="many">Учасники (%1$d)</item>
+    <item quantity="other">Учасники (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Помилка збереження контакту: недійсна адреса електронної пошти</string>
   <string name="contact_group_details_loading_error">Помилка завантаження групи контактів, повторіть спробу пізніше</string>

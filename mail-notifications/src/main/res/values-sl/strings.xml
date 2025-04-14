@@ -27,7 +27,7 @@
   <string name="notification_permission_dialog_title">Ne spreglejte sporočila</string>
   <string name="notification_permission_dialog_message">Obvestila vam omogočajo spremljati prispelo pošto, ne da bi morali preverjati v aplikaciji.</string>
   <string name="notification_permission_dialog_post_send_title">Želite ostati na tekočem?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_post_send_message">Vklopite obvestila, da boste vedeli, kdaj prejmete odgovor na e-pošto.</string>
   <string name="notification_permission_dialog_button_enable">Omogoči potisna obvestila</string>
   <string name="notification_permission_dialog_button_dismiss">Opusti</string>
 </resources>

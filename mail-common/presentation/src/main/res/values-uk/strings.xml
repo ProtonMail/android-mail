@@ -30,8 +30,8 @@
   <string name="action_mark_unread_description">Позначити непрочитаним</string>
   <string name="action_star_description">Позначити зірочкою</string>
   <string name="action_unstar_description">Прибрати зірочку</string>
-  <string name="action_label_description">Позначити як…</string>
-  <string name="action_move_description">Перемістити до…</string>
+  <string name="action_label_description">Позначити міткою…</string>
+  <string name="action_move_description">Перемістити…</string>
   <string name="action_trash_description">Перемістити до смітника</string>
   <string name="action_delete_description">Видалити</string>
   <string name="action_archive_description">Архівувати</string>
@@ -54,8 +54,8 @@
   <string name="action_mark_unread_content_description">Позначити непрочитаним</string>
   <string name="action_star_content_description">Позначити зірочкою</string>
   <string name="action_unstar_content_description">Прибрати зірочку</string>
-  <string name="action_label_content_description">Позначити як…</string>
-  <string name="action_move_content_description">Перемістити до…</string>
+  <string name="action_label_content_description">Позначити міткою…</string>
+  <string name="action_move_content_description">Перемістити…</string>
   <string name="action_trash_content_description">Смітник</string>
   <string name="action_delete_content_description">Видалити</string>
   <string name="action_archive_content_description">Архівувати</string>
@@ -75,9 +75,9 @@
   <string name="yesterday">Учора</string>
   <string name="action_open_customize_toolbar">Налаштувати панель інструментів</string>
   <string name="action_open_customize_toolbar_description">Налаштувати панель інструментів</string>
-  <string name="auto_delete_banner_text_activate_trash">Автоматично видаляти повідомлення, які перебували в смітнику понад 30 днів.</string>
-  <string name="auto_delete_banner_text_activate_spam">Автоматично видаляти повідомлення, що позначені як спам, через 30 днів.</string>
-  <string name="auto_delete_banner_text_upgrade">Покращте тариф, щоби повідомлення, які перебувають у смітнику або спамі понад 30 днів, видалялися автоматично.</string>
+  <string name="auto_delete_banner_text_activate_trash">Автоматично видаляти повідомлення у смітнику через 30 днів.</string>
+  <string name="auto_delete_banner_text_activate_spam">Автоматично видаляти повідомлення у спамі через 30 днів.</string>
+  <string name="auto_delete_banner_text_upgrade">Передплатіть тарифний план, щоб повідомлення, які перебувають у смітнику або спамі понад 30 днів, видалялися автоматично.</string>
   <string name="auto_delete_banner_text_enabled_info">Повідомлення, що перебувають у смітнику та спамі понад 30 днів, автоматично видалятимуться.</string>
   <string name="auto_delete_banner_button_activate_confirm">Увімкнути</string>
   <string name="auto_delete_banner_button_activate_dismiss">Ні, дякую</string>
@@ -87,9 +87,9 @@
   <string name="expiration_days_arg">%d дн</string>
   <string name="expiration_hours_arg">%d год</string>
   <string name="expiration_minutes_arg">%d хв</string>
-  <string name="expiration_auto_delete_hour">Це повідомлення буде автоматично видалено менш ніж за годину</string>
-  <string name="expiration_auto_delete_day">Це повідомлення буде автоматично видалено менш ніж за день</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення буде автоматично видалиться через %s</string>
+  <string name="expiration_auto_delete_hour">Це повідомлення автоматично видалиться менш ніж за годину</string>
+  <string name="expiration_auto_delete_day">Це повідомлення автоматично видалиться менш ніж за день</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення автоматично видалиться через %s</string>
   <plurals name="expiration_minutes_full_word">
     <item quantity="one">%d хвилина</item>
     <item quantity="few">%d хвилини</item>

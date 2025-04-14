@@ -120,7 +120,7 @@
   <string name="delete_contact_group_content_description">删除联系人群组</string>
   <string name="send_group_message">群发邮件</string>
   <string name="contact_group_form_save">保存</string>
-  <string name="contact_group_form_name_hint">显示名称</string>
+  <string name="contact_group_form_name_hint">昵称</string>
   <string name="remove_member_content_description">移除成员</string>
   <string name="add_members">添加成员</string>
   <string name="change_color">更改颜色</string>

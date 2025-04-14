@@ -77,7 +77,7 @@
   <string name="action_open_customize_toolbar_description">Barra degli strumenti</string>
   <string name="auto_delete_banner_text_activate_trash">Elimina automaticamente i messaggi che sono rimasti nel cestino per oltre 30 giorni</string>
   <string name="auto_delete_banner_text_activate_spam">Elimina automaticamente i messaggi che sono rimasti nella cartella spam per oltre 30 giorni</string>
-  <string name="auto_delete_banner_text_upgrade">Effettua l\'upgrade per eliminare automaticamente i messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni</string>
+  <string name="auto_delete_banner_text_upgrade">Passa a un piano a pagamento per eliminare automaticamente i messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni</string>
   <string name="auto_delete_banner_text_enabled_info">I messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni verranno eliminati</string>
   <string name="auto_delete_banner_button_activate_confirm">Abilita</string>
   <string name="auto_delete_banner_button_activate_dismiss">Annulla</string>

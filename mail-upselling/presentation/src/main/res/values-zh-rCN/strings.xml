@@ -40,7 +40,7 @@
   <string name="upselling_mobile_signature_plus_title">自定义您的签名</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">享受一个更整洁的邮箱，并从其他邮件Plus的其他优质功能中受益。</string>
-  <string name="upselling_auto_delete_plus_title">彻底清理旧回收站和垃圾邮件</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>

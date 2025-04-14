@@ -21,14 +21,14 @@
     <item quantity="one">%d файл</item>
     <item quantity="few">%d файли</item>
     <item quantity="many">%d файлів</item>
-    <item quantity="other">і%d файлів</item>
+    <item quantity="other">%d файлів</item>
   </plurals>
   <string name="attachment_show_more_label">+ ще %1$d</string>
   <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
   <string name="attachment_permission_dialog_message">Щоб завантажити вкладення, Proton Mail потребує дозволу на доступ до вашого сховища.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Налаштування</string>
-  <string name="attachment_type_description">%1$s</string>
+  <string name="attachment_type_description">Файл %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Архів</string>
   <string name="attachment_type_image">Зображення</string>
@@ -71,5 +71,5 @@
   <string name="device_contacts_permission_dialog_action_button">Запитати дозвіл</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Заборонити</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">Переглянути все повідомлення</string>
+  <string name="button_view_entire_message">Переглянути повідомлення цілком</string>
 </resources>
