@@ -308,7 +308,7 @@ class MailboxViewModelTest {
             Action.Unstar,
             Action.Archive
         )
-        every { this@mockk.invoke(SystemLabelId.Inbox.labelId) } returns listOf(
+        every { this@mockk.invoke(any()) } returns listOf(
             Action.MarkRead,
             Action.MarkUnread,
             Action.Trash,
