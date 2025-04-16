@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -42,7 +43,7 @@ class GetMailboxBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(false)
 
         // When
-        val actual = sut(isTrashOrSpam = false)
+        val actual = sut(SystemLabelId.Sent.labelId)
 
         // Then
         assertEquals(
@@ -67,7 +68,7 @@ class GetMailboxBottomSheetActionsTest {
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val actual = sut(isTrashOrSpam = false)
+        val actual = sut(SystemLabelId.Inbox.labelId)
 
         // Then
         assertEquals(
@@ -88,12 +89,37 @@ class GetMailboxBottomSheetActionsTest {
     }
 
     @Test
-    fun `return spam or trash actions for toolbar FF disabled`() = runTest {
+    fun `return trash actions for toolbar FF disabled`() = runTest {
         // Given
         customizeToolbarFeatureEnabled(false)
 
         // When
-        val actual = sut(isTrashOrSpam = true)
+        val actual = sut(SystemLabelId.Trash.labelId)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.MarkRead,
+                Action.MarkUnread,
+                Action.Delete,
+                Action.Move,
+                Action.Label,
+                Action.Spam,
+                Action.Star,
+                Action.Unstar,
+                Action.Archive
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun `return spam actions for toolbar FF disabled`() = runTest {
+        // Given
+        customizeToolbarFeatureEnabled(false)
+
+        // When
+        val actual = sut(SystemLabelId.Spam.labelId)
 
         // Then
         assertEquals(
@@ -114,12 +140,38 @@ class GetMailboxBottomSheetActionsTest {
     }
 
     @Test
-    fun `return spam or trash actions with customize toolbar action for toolbar FF enabled`() = runTest {
+    fun `return trash actions with customize toolbar action for toolbar FF enabled`() = runTest {
         // Given
         customizeToolbarFeatureEnabled(true)
 
         // When
-        val actual = sut(isTrashOrSpam = true)
+        val actual = sut(SystemLabelId.Trash.labelId)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.MarkRead,
+                Action.MarkUnread,
+                Action.Delete,
+                Action.Move,
+                Action.Label,
+                Action.Spam,
+                Action.Star,
+                Action.Unstar,
+                Action.Archive,
+                Action.OpenCustomizeToolbar
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun `return spam actions with customize toolbar action for toolbar FF enabled`() = runTest {
+        // Given
+        customizeToolbarFeatureEnabled(true)
+
+        // When
+        val actual = sut(SystemLabelId.Spam.labelId)
 
         // Then
         assertEquals(

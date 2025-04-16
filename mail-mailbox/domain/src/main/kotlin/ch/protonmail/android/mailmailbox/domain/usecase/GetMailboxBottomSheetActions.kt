@@ -19,24 +19,30 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class GetMailboxBottomSheetActions @Inject constructor(
     @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
 ) {
 
-    operator fun invoke(isTrashOrSpam: Boolean) = listOfNotNull(
-        Action.MarkRead,
-        Action.MarkUnread,
-        Action.Trash,
-        Action.Delete.takeIf { isTrashOrSpam },
-        Action.Move,
-        Action.Label,
-        Action.Spam,
-        Action.Star,
-        Action.Unstar,
-        Action.Archive,
-        Action.OpenCustomizeToolbar.takeIf { showCustomizeToolbarAction }
-    )
+    operator fun invoke(currentMailLabel: LabelId): List<Action> {
+        val isTrash = currentMailLabel == SystemLabelId.Trash.labelId
+        val isSpam = currentMailLabel == SystemLabelId.Spam.labelId
+        return listOfNotNull(
+            Action.MarkRead,
+            Action.MarkUnread,
+            Action.Trash.takeIf { !isTrash },
+            Action.Delete.takeIf { isTrash || isSpam },
+            Action.Move,
+            Action.Label,
+            Action.Spam,
+            Action.Star,
+            Action.Unstar,
+            Action.Archive,
+            Action.OpenCustomizeToolbar.takeIf { showCustomizeToolbarAction }
+        )
+    }
 }

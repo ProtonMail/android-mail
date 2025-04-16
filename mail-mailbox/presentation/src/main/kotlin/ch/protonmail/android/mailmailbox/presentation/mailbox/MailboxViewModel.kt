@@ -976,15 +976,10 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(operation)
 
         val currentMailLabel = selectedMailLabelId.flow.value.labelId
-        val isTrashOrSpam = when (currentMailLabel) {
-            SystemLabelId.Trash.labelId, SystemLabelId.Trash.labelId -> true
-            else -> false
-        }
-
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
                 MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
-                    getMailboxBottomSheetActions(isTrashOrSpam)
+                    getMailboxBottomSheetActions(currentMailLabel)
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()
                 )

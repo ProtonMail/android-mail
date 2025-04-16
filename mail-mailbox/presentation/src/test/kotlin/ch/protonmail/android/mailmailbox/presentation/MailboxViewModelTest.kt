@@ -296,7 +296,7 @@ class MailboxViewModelTest {
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
 
     private val getMailboxBottomSheetActions = mockk<GetMailboxBottomSheetActions> {
-        every { this@mockk.invoke(true) } returns listOf(
+        every { this@mockk.invoke(SystemLabelId.Spam.labelId) } returns listOf(
             Action.MarkRead,
             Action.MarkUnread,
             Action.Trash,
@@ -308,7 +308,7 @@ class MailboxViewModelTest {
             Action.Unstar,
             Action.Archive
         )
-        every { this@mockk.invoke(false) } returns listOf(
+        every { this@mockk.invoke(SystemLabelId.Inbox.labelId) } returns listOf(
             Action.MarkRead,
             Action.MarkUnread,
             Action.Trash,
