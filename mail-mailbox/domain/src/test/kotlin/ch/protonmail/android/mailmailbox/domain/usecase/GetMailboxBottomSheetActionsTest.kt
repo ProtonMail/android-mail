@@ -130,7 +130,6 @@ class GetMailboxBottomSheetActionsTest {
                 Action.Delete,
                 Action.Move,
                 Action.Label,
-                Action.Spam,
                 Action.Star,
                 Action.Unstar,
                 Action.Archive
@@ -182,7 +181,6 @@ class GetMailboxBottomSheetActionsTest {
                 Action.Delete,
                 Action.Move,
                 Action.Label,
-                Action.Spam,
                 Action.Star,
                 Action.Unstar,
                 Action.Archive,

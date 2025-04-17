@@ -38,7 +38,7 @@ class GetMailboxBottomSheetActions @Inject constructor(
             Action.Delete.takeIf { isTrash || isSpam },
             Action.Move,
             Action.Label,
-            Action.Spam,
+            Action.Spam.takeIf { !isSpam },
             Action.Star,
             Action.Unstar,
             Action.Archive,
