@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,13 +31,11 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 class ObserveMailMessageToolbarSettings @Inject constructor(
-    private val mailSettingsRepository: MailSettingsRepository,
-    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
 
     operator fun invoke(userId: UserId, isMailBox: Boolean): Flow<List<Action>?> =
         mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull().map { settings ->
-            if (isCustomizeToolbarEnabled.not()) return@map null
             val isConvMode = settings?.viewMode?.enum == ViewMode.ConversationGrouping
             val toolbar = when {
                 isMailBox -> settings?.mobileSettings?.listToolbar?.actions

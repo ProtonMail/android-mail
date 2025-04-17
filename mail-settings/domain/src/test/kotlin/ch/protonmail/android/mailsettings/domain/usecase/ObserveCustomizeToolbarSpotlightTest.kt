@@ -21,7 +21,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
 import org.junit.After
-import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -31,15 +30,13 @@ class ObserveCustomizeToolbarSpotlightTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserId("first"))
     }
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
     private val useCase by lazy {
-        ObserveCustomizeToolbarSpotlight(repo, observePrimaryUserId, provideIsCustomizeToolbarEnabled.get())
+        ObserveCustomizeToolbarSpotlight(repo, observePrimaryUserId)
     }
 
     @BeforeTest
     fun setUp() {
         MockKAnnotations.init(this)
-        customizeToolbarFeatureEnabled(true)
         Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
@@ -95,22 +92,5 @@ class ObserveCustomizeToolbarSpotlightTest {
         useCase.invoke().test {
             awaitComplete()
         }
-    }
-
-    @Test
-    fun `does not emit if FF is off`() = runTest {
-        every { repo.observeCustomizeToolbar() } returns
-            flowOf(SpotlightLastSeenPreference(seen = false).right())
-        customizeToolbarFeatureEnabled(false)
-
-        useCase.invoke().test {
-            awaitComplete()
-        }
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 }

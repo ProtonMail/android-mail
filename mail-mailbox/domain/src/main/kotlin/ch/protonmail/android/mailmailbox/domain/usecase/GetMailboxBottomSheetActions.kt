@@ -20,13 +20,10 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class GetMailboxBottomSheetActions @Inject constructor(
-    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
-) {
+class GetMailboxBottomSheetActions @Inject constructor() {
 
     operator fun invoke(currentMailLabel: LabelId): List<Action> {
         val isTrash = currentMailLabel == SystemLabelId.Trash.labelId
@@ -42,7 +39,7 @@ class GetMailboxBottomSheetActions @Inject constructor(
             Action.Star,
             Action.Unstar,
             Action.Archive,
-            Action.OpenCustomizeToolbar.takeIf { showCustomizeToolbarAction }
+            Action.OpenCustomizeToolbar
         )
     }
 }

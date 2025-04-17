@@ -9,18 +9,13 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
-import javax.inject.Provider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetDetailBottomSheetActionsTest {
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
-
     private val sut by lazy {
-        GetDetailBottomSheetActions(
-            provideIsCustomizeToolbarEnabled.get()
-        )
+        GetDetailBottomSheetActions()
     }
 
     private val normalLabels = listOf(
@@ -58,39 +53,7 @@ class GetDetailBottomSheetActionsTest {
 
     @Test
     fun `returns correct actions for a normal message`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(false)
-
-        // When
-        val result = sut(normalMessage)
-
-        // Then
-        assertEquals(
-            listOf(
-                Action.Reply,
-                Action.ReplyAll,
-                Action.Forward,
-                Action.MarkUnread,
-                Action.Label,
-                Action.ViewInLightMode,
-                Action.ViewInDarkMode,
-                Action.Trash,
-                Action.Archive,
-                Action.Spam,
-                Action.Move,
-                Action.Print,
-                Action.ReportPhishing
-            ),
-            result
-        )
-    }
-
-    @Test
-    fun `returns correct actions for a normal message with toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+        // Given + When
         val result = sut(normalMessage)
 
         // Then
@@ -116,11 +79,8 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a spam message with toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `returns correct actions for a spam message`() = runTest {
+        // Given + When
         val result = sut(spamMessage)
 
         // Then
@@ -146,11 +106,8 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a trash message with toolbar FF disabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(false)
-
-        // When
+    fun `returns correct actions for a trash message`() = runTest {
+        // Given + When
         val result = sut(trashMessage)
 
         // Then
@@ -168,6 +125,7 @@ class GetDetailBottomSheetActionsTest {
                 Action.Spam,
                 Action.Move,
                 Action.Print,
+                Action.OpenCustomizeToolbar,
                 Action.ReportPhishing
             ),
             result
@@ -175,11 +133,8 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a normal conversation message with toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `returns correct actions for a normal conversation message`() = runTest {
+        // Given + When
         val result = sut(normalConversation, affectingConversation = true)
 
         // Then
@@ -200,11 +155,8 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a trashed conversation message with toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `returns correct actions for a trashed conversation message`() = runTest {
+        // Given + When
         val result = sut(trashedConversation, affectingConversation = true)
 
         // Then
@@ -225,11 +177,8 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a spam conversation with toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `returns correct actions for a spam conversation`() = runTest {
+        // Given + When
         val result = sut(spamConversation, affectingConversation = true)
 
         // Then
@@ -251,10 +200,7 @@ class GetDetailBottomSheetActionsTest {
 
     @Test
     fun `does not return delete action if the entire conversation is not trashed or spam`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+        // Given + When
         val result = sut(normalConversation, affectingConversation = true)
 
         // Then
@@ -276,10 +222,7 @@ class GetDetailBottomSheetActionsTest {
 
     @Test
     fun `does not return delete action if affecting a message inside a conversation`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+        // Given + When
         val result = sut(normalConversation, affectingConversation = false)
 
         // Then
@@ -302,12 +245,6 @@ class GetDetailBottomSheetActionsTest {
             ),
             result
         )
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 
     private fun List<LabelId>.toConversationLabels() = map { labelId ->

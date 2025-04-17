@@ -22,13 +22,10 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.Message
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class GetDetailBottomSheetActions @Inject constructor(
-    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
-) {
+class GetDetailBottomSheetActions @Inject constructor() {
 
     operator fun invoke(conversation: Conversation?, affectingConversation: Boolean): List<Action> {
         val showDelete = affectingConversation && conversation?.allMessagesAreSpamOrTrash() == true
@@ -39,8 +36,6 @@ class GetDetailBottomSheetActions @Inject constructor(
         getActions(showDelete = message.isSpamOrTrash(), affectingConversation = false)
 
     private fun getActions(showDelete: Boolean, affectingConversation: Boolean): List<Action> {
-        val showCustomizeToolbar = isCustomizeToolbarEnabled
-
         return mutableListOf<Action>().apply {
             if (!affectingConversation) {
                 add(Action.Reply)
@@ -60,9 +55,7 @@ class GetDetailBottomSheetActions @Inject constructor(
             add(Action.Spam)
             add(Action.Move)
             add(Action.Print)
-            if (showCustomizeToolbar) {
-                add(Action.OpenCustomizeToolbar)
-            }
+            add(Action.OpenCustomizeToolbar)
             add(Action.ReportPhishing)
         }.toList()
     }

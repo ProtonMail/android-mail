@@ -27,8 +27,7 @@ sealed class SettingsState {
         val account: AccountInfo?,
         val appSettings: AppSettings,
         val appInformation: AppInformation,
-        val totalSizeInformation: LocalStorageUsageInformation,
-        val showCustomizeToolbar: Boolean
+        val totalSizeInformation: LocalStorageUsageInformation
     ) : SettingsState()
 
     object Loading : SettingsState()

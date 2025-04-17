@@ -164,14 +164,12 @@ fun MainSettingsScreen(
                 )
                 Divider()
             }
-            if (state.showCustomizeToolbar) {
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_customize_toolbar),
-                        onClick = actions.onCustomizeToolbarClick
-                    )
-                    Divider()
-                }
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(id = string.mail_settings_customize_toolbar),
+                    onClick = actions.onCustomizeToolbarClick
+                )
+                Divider()
             }
             item {
                 ClearLocalCacheItem(

@@ -20,12 +20,10 @@ package ch.protonmail.android.mailsettings.domain.usecase
 
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.SpotlightLastSeenPreference
 import ch.protonmail.android.mailsettings.domain.repository.LocalSpotlightEventsRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -34,12 +32,10 @@ import javax.inject.Inject
 
 class ObserveCustomizeToolbarSpotlight @Inject constructor(
     private val repo: LocalSpotlightEventsRepository,
-    private val observePrimaryUserId: ObservePrimaryUserId,
-    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
+    private val observePrimaryUserId: ObservePrimaryUserId
 ) {
 
     operator fun invoke(): Flow<Unit> {
-        if (!isCustomizeToolbarEnabled) return emptyFlow()
         return observePrimaryUserId().flatMapLatest {
             delay(DefaultDelayMs)
             repo.observeCustomizeToolbar().mapNotNull {

@@ -20,54 +20,19 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import javax.inject.Provider
 import kotlin.test.assertEquals
 
 class GetMailboxBottomSheetActionsTest {
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
-
     private val sut by lazy {
-        GetMailboxBottomSheetActions(
-            provideIsCustomizeToolbarEnabled.get()
-        )
+        GetMailboxBottomSheetActions()
     }
 
     @Test
     fun `return normal actions for non-trash or spam folders`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(false)
-
-        // When
-        val actual = sut(SystemLabelId.Sent.labelId)
-
-        // Then
-        assertEquals(
-            listOf(
-                Action.MarkRead,
-                Action.MarkUnread,
-                Action.Trash,
-                Action.Move,
-                Action.Label,
-                Action.Spam,
-                Action.Star,
-                Action.Unstar,
-                Action.Archive
-            ),
-            actual
-        )
-    }
-
-    @Test
-    fun `return normal actions with customize toolbar action if FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+        // Given + When
         val actual = sut(SystemLabelId.Inbox.labelId)
 
         // Then
@@ -89,61 +54,8 @@ class GetMailboxBottomSheetActionsTest {
     }
 
     @Test
-    fun `return trash actions for toolbar FF disabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(false)
-
-        // When
-        val actual = sut(SystemLabelId.Trash.labelId)
-
-        // Then
-        assertEquals(
-            listOf(
-                Action.MarkRead,
-                Action.MarkUnread,
-                Action.Delete,
-                Action.Move,
-                Action.Label,
-                Action.Spam,
-                Action.Star,
-                Action.Unstar,
-                Action.Archive
-            ),
-            actual
-        )
-    }
-
-    @Test
-    fun `return spam actions for toolbar FF disabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(false)
-
-        // When
-        val actual = sut(SystemLabelId.Spam.labelId)
-
-        // Then
-        assertEquals(
-            listOf(
-                Action.MarkRead,
-                Action.MarkUnread,
-                Action.Trash,
-                Action.Delete,
-                Action.Move,
-                Action.Label,
-                Action.Star,
-                Action.Unstar,
-                Action.Archive
-            ),
-            actual
-        )
-    }
-
-    @Test
-    fun `return trash actions with customize toolbar action for toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `return trash actions`() = runTest {
+        // Given + When
         val actual = sut(SystemLabelId.Trash.labelId)
 
         // Then
@@ -165,11 +77,8 @@ class GetMailboxBottomSheetActionsTest {
     }
 
     @Test
-    fun `return spam actions with customize toolbar action for toolbar FF enabled`() = runTest {
-        // Given
-        customizeToolbarFeatureEnabled(true)
-
-        // When
+    fun `return spam actions`() = runTest {
+        // Given + When
         val actual = sut(SystemLabelId.Spam.labelId)
 
         // Then
@@ -188,11 +97,5 @@ class GetMailboxBottomSheetActionsTest {
             ),
             actual
         )
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 }

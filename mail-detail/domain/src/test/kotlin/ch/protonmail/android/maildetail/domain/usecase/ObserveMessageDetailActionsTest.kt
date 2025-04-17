@@ -34,7 +34,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
@@ -52,20 +51,16 @@ internal class ObserveMessageDetailActionsTest {
         } returns flowOf(null)
     }
 
-    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
-
     private val observeDetailActions by lazy {
         ObserveMessageDetailActions(
             observeMessage = observeMessage,
-            observeToolbarActions = observeToolbarActions,
-            isCustomizeToolbarEnabled = provideIsCustomizeToolbarEnabled.get()
+            observeToolbarActions = observeToolbarActions
         )
     }
 
     @BeforeTest
     fun setUp() {
         MockKAnnotations.init(this)
-        customizeToolbarFeatureEnabled(true)
     }
 
     @Test
@@ -106,25 +101,6 @@ internal class ObserveMessageDetailActionsTest {
                 Action.ReportPhishing,
                 Action.Star,
                 Action.More
-            )
-            assertEquals(expected.right(), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `returns actions without more when FF disabled`() = runTest {
-        // Given
-        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
-        customizeToolbarFeatureEnabled(false)
-        // When
-        observeDetailActions.invoke(userId, messageId).test {
-            // Then
-            val expected = listOf(
-                Action.MarkUnread,
-                Action.Trash,
-                Action.Label,
-                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -307,11 +283,5 @@ internal class ObserveMessageDetailActionsTest {
             assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
             awaitComplete()
         }
-    }
-
-    private fun customizeToolbarFeatureEnabled(value: Boolean) {
-        every {
-            provideIsCustomizeToolbarEnabled.get()
-        } returns value
     }
 }

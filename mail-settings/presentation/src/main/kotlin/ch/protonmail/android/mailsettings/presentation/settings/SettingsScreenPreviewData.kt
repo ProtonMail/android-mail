@@ -35,8 +35,7 @@ object SettingsScreenPreviewData {
             hasCombinedContacts = true
         ),
         AppInformation(appVersionName = "6.0.0-alpha"),
-        totalSizeInformation = sizeInformation,
-        showCustomizeToolbar = true
+        totalSizeInformation = sizeInformation
     )
 
     val Actions = MainSettingsScreen.Actions(

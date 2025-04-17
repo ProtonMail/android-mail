@@ -280,7 +280,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
 
-    private val getBottomSheetActions = GetDetailBottomSheetActions(isCustomizeToolbarEnabled = true)
+    private val getBottomSheetActions = GetDetailBottomSheetActions()
 
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
