@@ -57,8 +57,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             hasCombinedContacts = true
         ),
         AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026),
-        LocalStorageUsageInformation(123L),
-        showCustomizeToolbar = true
+        LocalStorageUsageInformation(123L)
     )
 
     @Before
