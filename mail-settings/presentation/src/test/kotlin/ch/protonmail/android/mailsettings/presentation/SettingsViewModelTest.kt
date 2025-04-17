@@ -79,7 +79,8 @@ class SettingsViewModelTest {
             observePrimaryUser,
             observeOverallLocalStorageUsage,
             clearLocalStorage,
-            logsExportFeatureSetting)
+            logsExportFeatureSetting
+        )
     }
 
     @BeforeTest
