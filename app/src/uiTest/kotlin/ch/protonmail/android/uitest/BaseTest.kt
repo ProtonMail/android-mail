@@ -29,6 +29,7 @@ import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
+import ch.protonmail.android.uitest.rule.SpotlightSeenRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
@@ -80,11 +81,15 @@ internal open class BaseTest(
     @Inject
     lateinit var mockOnboardingRuntimeRule: MockOnboardingRuntimeRule
 
+    @Inject
+    lateinit var spotlightSeenRule: SpotlightSeenRule
+
     @Before
     open fun setup() {
         setupDeviceForAutomation(true)
         loginTestHelper.logoutAll()
         mockOnboardingRuntimeRule(shouldForceShow = false)
+        spotlightSeenRule.invoke(seen = true)
 
         ActivityScenario.launch(MainActivity::class.java)
     }

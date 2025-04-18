@@ -32,6 +32,7 @@ import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockIntentsRule
 import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
+import ch.protonmail.android.uitest.rule.SpotlightSeenRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.unmockkObject
@@ -72,6 +73,9 @@ internal open class MockedNetworkTest(
     @Inject
     lateinit var mockOnboardingRuntimeRule: MockOnboardingRuntimeRule
 
+    @Inject
+    lateinit var spotlightSeenRule: SpotlightSeenRule
+
     @get:Rule
     val ruleChain: RuleChain = RuleChain.outerRule(
         hiltAndroidRule
@@ -102,6 +106,7 @@ internal open class MockedNetworkTest(
 
         mockWebServer.dispatcher = authenticationDispatcher(loginType)
         mockOnboardingRuntimeRule(showOnboarding)
+        spotlightSeenRule.invoke(seen = true)
     }
 
     @After
