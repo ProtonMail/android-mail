@@ -97,9 +97,6 @@ internal object UpsellingLayoutValues {
         val spacerColor = Color.White.copy(alpha = 0.24f)
 
         val paymentButtonBackground = android.graphics.Color.parseColor("#FFFFFF")
-        val paymentButtonTextColor = android.graphics.Color.parseColor("#000000")
-        val paymentButtonTextColorPromoVariant = android.graphics.Color.parseColor("#301E6C")
-        const val paymentButtonTextSize = 16f
     }
 
     object UpsellingPromoButton {

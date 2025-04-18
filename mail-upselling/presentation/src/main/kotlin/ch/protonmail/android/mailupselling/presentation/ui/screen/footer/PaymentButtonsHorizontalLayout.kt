@@ -103,16 +103,14 @@ internal fun PaymentButtonsHorizontalLayout(
                     .padding(horizontal = ProtonDimens.DefaultSpacing)
                     .padding(bottom = ProtonDimens.DefaultSpacing),
                 factory = { ctx ->
-                    ProtonPaymentButton(ContextThemeWrapper(ctx, R.style.ProtonTheme))
+                    ProtonPaymentButton(ContextThemeWrapper(ctx, R.style.ProtonTheme_LightPaymentButton))
                 },
                 update = { button ->
                     button.apply {
                         this.setBackgroundColor(
                             UpsellingLayoutValues.UpsellingPlanButtonsFooter.paymentButtonBackground
                         )
-                        this.setTextAppearance(R.style.ProtonTextView_Body1)
-                        this.setTextColor(UpsellingLayoutValues.UpsellingPlanButtonsFooter.paymentButtonTextColor)
-                        this.textSize = UpsellingLayoutValues.UpsellingPlanButtonsFooter.paymentButtonTextSize
+                        this.setTextAppearance(R.style.ProtonTextView_LightPaymentButton)
                         this.cornerRadius = buttonCornerRadius
                         this.userId = userId
                         this.currency = selectedPlan.currency

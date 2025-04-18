@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ProtonTheme.LightPaymentButton">
+        <item name="progressDrawable">@drawable/upselling_button_spinner</item>
+    </style>
+
+    <style name="ProtonTextView.LightPaymentButton" parent="ProtonTextView.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/upselling_button_text_color</item>
+    </style>
+
+    <style name="ProtonTextView.Bold.LightPaymentButton" parent="ProtonTextView.Body1.Bold">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/upselling_promo_button_text_color</item>
+    </style>
+
+</resources>
