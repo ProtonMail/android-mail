@@ -27,15 +27,38 @@ import javax.inject.Inject
 
 class GetDetailBottomSheetActions @Inject constructor() {
 
-    operator fun invoke(conversation: Conversation?, affectingConversation: Boolean): List<Action> {
-        val showDelete = affectingConversation && conversation?.allMessagesAreSpamOrTrash() == true
-        return getActions(showDelete = showDelete, affectingConversation = affectingConversation)
+    operator fun invoke(
+        conversation: Conversation?,
+        message: Message,
+        affectingConversation: Boolean
+    ): List<Action> {
+        val areAllSpam = affectingConversation && conversation?.allMessagesAreSpam() == true ||
+            !affectingConversation && message.isSpam()
+        val areAllTrash = affectingConversation && conversation?.allMessagesAreTrash() == true ||
+            !affectingConversation && message.isTrash()
+        return getActions(
+            showDelete = areAllSpam || areAllTrash,
+            showSpam = !areAllSpam,
+            affectingConversation = affectingConversation
+        )
     }
 
-    operator fun invoke(message: Message): List<Action> =
-        getActions(showDelete = message.isSpamOrTrash(), affectingConversation = false)
+    operator fun invoke(message: Message): List<Action> {
+        val isSpam = message.isSpam()
+        val isTrash = message.isTrash()
 
-    private fun getActions(showDelete: Boolean, affectingConversation: Boolean): List<Action> {
+        return getActions(
+            showDelete = isSpam || isTrash,
+            showSpam = !isSpam,
+            affectingConversation = false
+        )
+    }
+
+    private fun getActions(
+        showDelete: Boolean,
+        showSpam: Boolean,
+        affectingConversation: Boolean
+    ): List<Action> {
         return mutableListOf<Action>().apply {
             if (!affectingConversation) {
                 add(Action.Reply)
@@ -52,7 +75,9 @@ class GetDetailBottomSheetActions @Inject constructor() {
                 add(Action.Trash)
             }
             add(Action.Archive)
-            add(Action.Spam)
+            if (showSpam) {
+                add(Action.Spam)
+            }
             add(Action.Move)
             add(Action.Print)
             add(Action.OpenCustomizeToolbar)
@@ -60,21 +85,34 @@ class GetDetailBottomSheetActions @Inject constructor() {
         }.toList()
     }
 
-    private fun Message.isSpamOrTrash() = this.labelIds
-        .ignoringAllMail()
+    private fun List<LabelId>.filterRelevant() = ignoringAllMail()
         .ignoringAllSent()
         .ignoringAllDrafts()
-        .areAllTrashOrSpam()
 
-    private fun Conversation.allMessagesAreSpamOrTrash() = labels
+    private fun Message.isSpam() = this.labelIds
+        .filterRelevant()
+        .areAllSpam()
+
+    private fun Message.isTrash() = this.labelIds
+        .filterRelevant()
+        .areAllTrash()
+
+    private fun Conversation.allMessagesAreSpam() = labels
         .map { it.labelId }
-        .ignoringAllMail()
-        .ignoringAllSent()
-        .ignoringAllDrafts()
-        .areAllTrashOrSpam()
+        .filterRelevant()
+        .areAllSpam()
 
-    private fun List<LabelId>.areAllTrashOrSpam() = this.all {
-        it == SystemLabelId.Spam.labelId || it == SystemLabelId.Trash.labelId
+    private fun Conversation.allMessagesAreTrash() = labels
+        .map { it.labelId }
+        .filterRelevant()
+        .areAllTrash()
+
+    private fun List<LabelId>.areAllSpam() = this.all {
+        it == SystemLabelId.Spam.labelId
+    }
+
+    private fun List<LabelId>.areAllTrash() = this.all {
+        it == SystemLabelId.Trash.labelId
     }
 
     private fun List<LabelId>.ignoringAllMail() = this.filterNot {

@@ -95,7 +95,6 @@ class GetDetailBottomSheetActionsTest {
                 Action.ViewInDarkMode,
                 Action.Delete,
                 Action.Archive,
-                Action.Spam,
                 Action.Move,
                 Action.Print,
                 Action.OpenCustomizeToolbar,
@@ -133,9 +132,9 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a normal conversation message`() = runTest {
+    fun `returns correct actions for a normal conversation`() = runTest {
         // Given + When
-        val result = sut(normalConversation, affectingConversation = true)
+        val result = sut(normalConversation, normalMessage, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -155,9 +154,9 @@ class GetDetailBottomSheetActionsTest {
     }
 
     @Test
-    fun `returns correct actions for a trashed conversation message`() = runTest {
+    fun `returns correct actions for a trashed conversation`() = runTest {
         // Given + When
-        val result = sut(trashedConversation, affectingConversation = true)
+        val result = sut(trashedConversation, normalMessage, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -165,6 +164,33 @@ class GetDetailBottomSheetActionsTest {
                 Action.MarkUnread,
                 Action.Label,
                 Action.Delete,
+                Action.Archive,
+                Action.Spam,
+                Action.Move,
+                Action.Print,
+                Action.OpenCustomizeToolbar,
+                Action.ReportPhishing
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `returns correct actions for a trashed conversation and normal message`() = runTest {
+        // Given + When
+        val result = sut(trashedConversation, normalMessage, affectingConversation = false)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.Reply,
+                Action.ReplyAll,
+                Action.Forward,
+                Action.MarkUnread,
+                Action.Label,
+                Action.ViewInLightMode,
+                Action.ViewInDarkMode,
+                Action.Trash,
                 Action.Archive,
                 Action.Spam,
                 Action.Move,
@@ -179,7 +205,7 @@ class GetDetailBottomSheetActionsTest {
     @Test
     fun `returns correct actions for a spam conversation`() = runTest {
         // Given + When
-        val result = sut(spamConversation, affectingConversation = true)
+        val result = sut(spamConversation, normalMessage, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -187,6 +213,32 @@ class GetDetailBottomSheetActionsTest {
                 Action.MarkUnread,
                 Action.Label,
                 Action.Delete,
+                Action.Archive,
+                Action.Move,
+                Action.Print,
+                Action.OpenCustomizeToolbar,
+                Action.ReportPhishing
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `returns correct actions for a spam conversation and normal message`() = runTest {
+        // Given + When
+        val result = sut(spamConversation, normalMessage, affectingConversation = false)
+
+        // Then
+        assertEquals(
+            listOf(
+                Action.Reply,
+                Action.ReplyAll,
+                Action.Forward,
+                Action.MarkUnread,
+                Action.Label,
+                Action.ViewInLightMode,
+                Action.ViewInDarkMode,
+                Action.Trash,
                 Action.Archive,
                 Action.Spam,
                 Action.Move,
@@ -201,7 +253,7 @@ class GetDetailBottomSheetActionsTest {
     @Test
     fun `does not return delete action if the entire conversation is not trashed or spam`() = runTest {
         // Given + When
-        val result = sut(normalConversation, affectingConversation = true)
+        val result = sut(normalConversation, normalMessage, affectingConversation = true)
 
         // Then
         assertEquals(
@@ -223,7 +275,7 @@ class GetDetailBottomSheetActionsTest {
     @Test
     fun `does not return delete action if affecting a message inside a conversation`() = runTest {
         // Given + When
-        val result = sut(normalConversation, affectingConversation = false)
+        val result = sut(normalConversation, normalMessage, affectingConversation = false)
 
         // Then
         assertEquals(

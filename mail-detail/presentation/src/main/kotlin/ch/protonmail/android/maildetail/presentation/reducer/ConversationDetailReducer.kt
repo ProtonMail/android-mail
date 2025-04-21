@@ -365,8 +365,12 @@ class ConversationDetailReducer @Inject constructor(
         operation: ConversationDetailOperation
     ): SpotlightTooltipState {
         return if (operation is ConversationDetailOperation.AffectingSpotlight) {
-            val canShow = bottomSheetState == null && bottomBarState is BottomBarState.Data
-            if (canShow) {
+            val hasBottomBar = bottomBarState is BottomBarState.Data
+            val canReduce = when (operation) {
+                ConversationDetailEvent.RequestCustomizeToolbarSpotlight -> hasBottomBar && bottomSheetState == null
+                ConversationDetailViewAction.SpotlightDismissed -> hasBottomBar
+            }
+            if (canReduce) {
                 customizeToolbarSpotlightReducer.newStateFrom(operation)
             } else {
                 spotlightTooltip
