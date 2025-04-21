@@ -24,7 +24,7 @@
   <string name="upselling_mailbox_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_mailbox_plus_title">Millora al pla Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Oferta per temps limitat. Cancel·la en qualsevol moment.</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Oferta de temps limitat. Cancel·leu en qualsevol moment.</string>
   <string name="upselling_mailbox_plus_promo_title">Proveu Mail Plus per %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envieu fàcilment correus electrònics a un grup i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>

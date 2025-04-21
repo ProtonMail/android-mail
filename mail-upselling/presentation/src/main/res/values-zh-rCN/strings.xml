@@ -21,26 +21,26 @@
   <string name="upselling_button_item_content_description">升级按钮</string>
   <string name="upselling_close_button_content_description">关闭按钮</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">解锁更多存储和付費版伺服器功能</string>
+  <string name="upselling_mailbox_plus_description_override">解锁更多存储空间和高级功能</string>
   <string name="upselling_mailbox_plus_title">升级至 Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">限时优惠，随时可取消。</string>
   <string name="upselling_mailbox_plus_promo_title">立即体验为 %s 打造的Mail Plus高级服务</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">轻松地发送电子邮件给群组，并使用 Mail Plus 享受其他付費版伺服器功能。</string>
+  <string name="upselling_contact_groups_plus_description_override">使用 Mail Plus，轻松向群组发送电子邮件并享受其他高级功能。</string>
   <string name="upselling_contact_groups_plus_title">分组您的联系人</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">升级到 Mail Plus 后获得它们以及其他付費版伺服器功能。</string>
+  <string name="upselling_labels_plus_description_override">升级至 Mail Plus 后，即可获得这些功能和其他高级功能。</string>
   <string name="upselling_labels_plus_title">需要更多的标签或文件夹吗？</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">升级到 Mail Plus 后获得它们以及其他付費版伺服器功能。</string>
+  <string name="upselling_folders_plus_description_override">升级至 Mail Plus 后，即可获得这些功能和其他高级功能。</string>
   <string name="upselling_folders_plus_title">需要更多的标签或文件夹吗？</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">使用您自己的移动签名，并使用 Mail Plus 享受其他付費版伺服器功能。</string>
+  <string name="upselling_mobile_signature_plus_description_override">使用自己的手机数字签名，并享受 Mail Plus 的其他高级功能。</string>
   <string name="upselling_mobile_signature_plus_title">自定义您的签名</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">享受一个更整洁的邮箱，并从其他邮件Plus的其他优质功能中受益。</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_title">清除旧回收站和垃圾邮件</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>

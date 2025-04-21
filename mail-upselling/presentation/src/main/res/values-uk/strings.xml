@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">Щоб розблокувати більше сховище та преміальні функції</string>
   <string name="upselling_mailbox_plus_title">Передплатити Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Обмежена пропозиція, скасувати можна будь-коли.</string>
+  <string name="upselling_mailbox_plus_promo_title">Спробуйте Mail Plus для %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Надсилайте листи групі контактів та користуйтеся іншими преміальними функціями Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Створюйте групи контактів</string>
@@ -88,13 +88,13 @@
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Автоматичне поновлення за тією ж ціною та умовами доки не скасувати.</string>
   <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автоматично поновлюється через %s %s%s, якщо не скасовано.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
+  <string name="upselling_auto_renew_text_promo_short">Вітальна пропозиція. Автоматично поновлюється за %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автоматично поновлюється через %s %s %s, якщо не скасовано.</string>
   <string name="upselling_discount_tag">ЗАОЩАДЬТЕ %s%%</string>
   <string name="upselling_month">/місяць</string>
   <string name="upselling_year">/рік</string>
   <string name="upselling_get_button">Отримати %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Отримайте 1 місяць за %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d місяць</item>
     <item quantity="few">%d місяці</item>

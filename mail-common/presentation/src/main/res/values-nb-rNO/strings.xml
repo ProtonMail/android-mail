@@ -84,9 +84,9 @@
   <string name="auto_delete_banner_action_upgrade_learn_more">Lær mer</string>
   <!-- message expiration -->
   <string name="expiration_expired">Utløpt</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="expiration_auto_delete_hour">Denne meldingen slettes automatisk om mindre enn en time</string>
   <string name="expiration_auto_delete_day">Denne meldingen slettes automatisk om mindre enn en dag</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Denne meldingen slettes automatisk om %s</string>

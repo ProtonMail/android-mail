@@ -40,7 +40,7 @@
   <string name="mailbox_default_sender">(Немає відправника)</string>
   <string name="mailbox_error_message_offline">Не вдалося завантажити елементи, тому що ви офлайн</string>
   <string name="mailbox_error_message_generic">Не вдалося завантажити поштову скриньку</string>
-  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
+  <string name="mailbox_error_search_input_invalid">Використовуйте лише літерно-цифрові символи в пошуковому запиті.</string>
   <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
   <string name="mailbox_is_empty_title">Немає повідомлень</string>
   <string name="mailbox_is_empty_description">Усе в актуальному стані</string>
