@@ -106,7 +106,6 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
-import ch.protonmail.android.mailmessage.domain.usecase.DeleteSearchResults
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
@@ -274,7 +273,6 @@ class MailboxViewModelTest {
     private val starConversations = mockk<StarConversations>()
     private val unStarMessages = mockk<UnStarMessages>()
     private val unStarConversations = mockk<UnStarConversations>()
-    private val deleteSearchResults = mockk<DeleteSearchResults>()
     private val observePrimaryUserAccountStorageStatus = mockk<ObservePrimaryUserAccountStorageStatus> {
         every { this@mockk() } returns flowOf()
     }
@@ -359,7 +357,6 @@ class MailboxViewModelTest {
             unStarConversations = unStarConversations,
             mailboxReducer = mailboxReducer,
             dispatchersProvider = TestDispatcherProvider(),
-            deleteSearchResults = deleteSearchResults,
             observePrimaryUserAccountStorageStatus = observePrimaryUserAccountStorageStatus,
             shouldUpgradeStorage = shouldUpgradeStorage,
             shouldShowRatingBooster = shouldShowRatingBooster,
@@ -4773,7 +4770,6 @@ class MailboxViewModelTest {
                 MailboxViewAction.ExitSearchMode
             )
         } returns expectedState
-        coEvery { deleteSearchResults.invoke(any()) } just runs
 
         // When
         mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
@@ -4781,7 +4777,6 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
-            coVerify { deleteSearchResults.invoke(any()) }
         }
     }
 
@@ -4889,7 +4884,6 @@ class MailboxViewModelTest {
         } returns mailboxSearchQueryState
 
         every { observeAlmostAllMailSettings.invoke(any()) } returns flowOf(false)
-        coEvery { deleteSearchResults.invoke(any()) } just runs
 
         mailboxViewModel.items.test {
             // Then
@@ -4975,7 +4969,6 @@ class MailboxViewModelTest {
         } returns mailboxSearchQueryState
 
         every { observeAlmostAllMailSettings.invoke(any()) } returns flowOf(true)
-        coEvery { deleteSearchResults.invoke(any()) } just runs
 
         mailboxViewModel.items.test {
             // Then
