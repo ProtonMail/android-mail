@@ -39,7 +39,7 @@
   <string name="upselling_mobile_signature_plus_description_override">Utilitzeu la vostra pròpia signatura mòbil i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Personalitzeu la signatura</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Gaudiu d’una bústia més ordenada i dels avantatges d’altres funcions prèmium amb Mail Plus</string>
+  <string name="upselling_auto_delete_plus_description_override">Gaudiu d’una bústia més ordenada i dels avantatges d’altres funcions prèmium amb el Mail Plus</string>
   <string name="upselling_auto_delete_plus_title">Buida la paperera i el correu brossa</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>

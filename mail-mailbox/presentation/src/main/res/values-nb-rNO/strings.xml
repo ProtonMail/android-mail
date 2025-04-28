@@ -29,7 +29,7 @@
     <item quantity="other">%d valgt</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s uleste</item>
+    <item quantity="one">%s ulest</item>
     <item quantity="other">%s uleste</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ingen mottaker)</string>
