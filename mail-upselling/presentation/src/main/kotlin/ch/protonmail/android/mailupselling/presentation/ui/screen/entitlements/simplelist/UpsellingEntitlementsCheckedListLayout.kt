@@ -19,40 +19,26 @@
 package ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
-import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-internal fun UpsellingEntitlementsListLayout(list: PlanEntitlementsUiModel.SimpleList) {
+internal fun UpsellingEntitlementsCheckedListLayout(list: PlanEntitlementsUiModel.CheckedSimpleList) {
     Column {
-        list.items.forEachIndexed { index, model ->
-            UpsellingEntitlementsListItem(entitlementUiModel = model)
-
-            if (index != list.items.lastIndex) {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .padding(horizontal = ProtonDimens.DefaultSpacing)
-                        .padding(vertical = ProtonDimens.ExtraSmallSpacing),
-                    color = UpsellingLayoutValues.EntitlementsList.rowDivider
-                )
-            }
+        list.items.forEachIndexed { _, model ->
+            UpsellingEntitlementsCheckedListItem(model = model)
         }
     }
 }
 
 @Preview
 @Composable
-private fun UpsellingEntitlementsListLayoutPreview() {
+private fun CheckedListLayoutPreview() {
     ProtonTheme3 {
-        val items = UpsellingContentPreviewData.SimpleListEntitlements
-        UpsellingEntitlementsListLayout(items)
+        val items = UpsellingContentPreviewData.CheckedListEntitlements
+        UpsellingEntitlementsCheckedListLayout(items)
     }
 }

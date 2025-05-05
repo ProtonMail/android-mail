@@ -21,13 +21,20 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import javax.inject.Inject
 
 internal class DynamicPlanIconUiMapper @Inject constructor() {
 
     @Suppress("MaxLineLength")
-    fun toUiModel(upsellingEntryPoint: UpsellingEntryPoint.Feature): DynamicPlanIconUiModel =
-        when (upsellingEntryPoint) {
+    fun toUiModel(
+        upsellingEntryPoint: UpsellingEntryPoint.Feature,
+        variant: DynamicPlansVariant
+    ): DynamicPlanIconUiModel {
+        if (variant == DynamicPlansVariant.SocialProof) {
+            return DynamicPlanIconUiModel(R.drawable.ic_mail_social_proof)
+        }
+        return when (upsellingEntryPoint) {
             UpsellingEntryPoint.Feature.ContactGroups -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_contact_groups)
             UpsellingEntryPoint.Feature.Folders -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
             UpsellingEntryPoint.Feature.Labels -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
@@ -35,6 +42,8 @@ internal class DynamicPlanIconUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.MailboxPromo -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox_promo)
             UpsellingEntryPoint.Feature.Mailbox,
             UpsellingEntryPoint.Feature.Navbar -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
+
             UpsellingEntryPoint.Feature.AutoDelete -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
         }
+    }
 }

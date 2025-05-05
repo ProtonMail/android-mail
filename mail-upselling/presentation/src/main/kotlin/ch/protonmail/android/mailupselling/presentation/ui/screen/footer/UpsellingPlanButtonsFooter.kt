@@ -53,6 +53,7 @@ internal fun UpsellingPlanButtonsFooter(
 
         when (plans) {
             is DynamicPlanInstanceListUiModel.Data.Promotional -> PaymentButtonsHorizontalLayout(plans, actions)
+            is DynamicPlanInstanceListUiModel.Data.SocialProof -> PaymentButtonsHorizontalLayout(plans, actions)
             is DynamicPlanInstanceListUiModel.Data.PromotionalVariantB ->
                 PaymentButtonsPromoLayout(plans.priceFormatted, plans.shorterCycle, actions)
             is DynamicPlanInstanceListUiModel.Data.Standard -> PaymentButtonsSideBySideLayout(plans, actions)

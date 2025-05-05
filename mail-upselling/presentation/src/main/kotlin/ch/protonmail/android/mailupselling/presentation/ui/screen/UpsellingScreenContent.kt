@@ -53,12 +53,15 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.backgroundGradient
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.backgroundGradientVariantB
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTable
+import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsCheckedListLayout
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsListLayout
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
 import ch.protonmail.android.uicomponents.thenIf
@@ -116,12 +119,16 @@ internal fun UpsellingScreenContent(
                 .thenIf(isStandalone) { Modifier.fillMaxHeight() }
                 .verticalScroll(scrollState)
                 .background(
-                    if (state.plans.useVariantB)
-                        backgroundGradientVariantB else backgroundGradient
+                    when (state.plans.variant) {
+                        DynamicPlansVariant.PromoB,
+                        DynamicPlansVariant.SocialProof -> backgroundGradientVariantB
+                        DynamicPlansVariant.Normal,
+                        DynamicPlansVariant.PromoA -> backgroundGradient
+                    }
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            Spacer(modifier = Modifier.height(ProtonDimens.MediumSpacing))
             Spacer(modifier = Modifier.weight(UpsellingLayoutValues.topSpacingWeight))
 
             if (!isNarrowScreen) {
@@ -148,22 +155,31 @@ internal fun UpsellingScreenContent(
 
             Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
 
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = ProtonDimens.DefaultSpacing)
-                    .padding(top = ProtonDimens.SmallSpacing),
-                text = dynamicPlansModel.description.text.string(),
-                style = ProtonTheme.typography.body2Regular,
-                color = UpsellingLayoutValues.subtitleColor,
-                textAlign = TextAlign.Center
-            )
+            when (dynamicPlansModel.description) {
+                is DynamicPlanDescriptionUiModel.Simple -> Text(
+                    modifier = Modifier
+                        .padding(horizontal = ProtonDimens.DefaultSpacing)
+                        .padding(top = ProtonDimens.SmallSpacing),
+                    text = dynamicPlansModel.description.text.string(),
+                    style = ProtonTheme.typography.body2Regular,
+                    color = UpsellingLayoutValues.subtitleColor,
+                    textAlign = TextAlign.Center
+                )
+                DynamicPlanDescriptionUiModel.SocialProof -> SocialProofDescription()
+            }
 
-            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+            if (state.plans.variant == DynamicPlansVariant.SocialProof) {
+                SocialProofBadges(modifier = Modifier.padding(vertical = ProtonDimens.DefaultSpacing))
+            }
+
+            Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
 
             when (state.plans.entitlements) {
                 is PlanEntitlementsUiModel.ComparisonTableList ->
-                    ComparisonTable(state.plans.useVariantB, state.plans.entitlements)
+                    ComparisonTable(state.plans.variant == DynamicPlansVariant.PromoB, state.plans.entitlements)
                 is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
+                is PlanEntitlementsUiModel.CheckedSimpleList ->
+                    UpsellingEntitlementsCheckedListLayout(state.plans.entitlements)
             }
 
             Spacer(modifier = Modifier.weight(UpsellingLayoutValues.bottomSpacingWeight))
@@ -209,6 +225,26 @@ private fun UpsellingScreenContentPreview_PromoB() {
     ProtonTheme3 {
         UpsellingScreenContent(
             state = UpsellingContentPreviewData.PromoB,
+            actions = UpsellingScreen.Actions(
+                onDisplayed = {},
+                onDismiss = {},
+                onError = {},
+                onUpgradeAttempt = {},
+                onUpgrade = {},
+                onUpgradeCancelled = {},
+                onUpgradeErrored = {},
+                onSuccess = {}
+            )
+        )
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun UpsellingContentPreview_SocialProof() {
+    ProtonTheme3 {
+        UpsellingScreenContent(
+            state = UpsellingContentPreviewData.SocialProof,
             actions = UpsellingScreen.Actions(
                 onDisplayed = {},
                 onDismiss = {},

@@ -23,6 +23,7 @@ import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsel
 import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTableElementPreviewData.Entitlements
@@ -46,7 +47,14 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
         return PlanEntitlementsUiModel.SimpleList(list)
     }
 
-    fun toUiModel(plan: DynamicPlan, upsellingEntryPoint: UpsellingEntryPoint): PlanEntitlementsUiModel {
+    fun toUiModel(
+        plan: DynamicPlan,
+        upsellingEntryPoint: UpsellingEntryPoint,
+        variant: DynamicPlansVariant
+    ): PlanEntitlementsUiModel {
+        if (variant == DynamicPlansVariant.SocialProof) {
+            return PlanEntitlementsUiModel.CheckedSimpleList(MailboxSocialProofEntitlements)
+        }
         if (upsellingEntryPoint is UpsellingEntryPoint.Standalone) {
             return mapToComparisonTable()
         }
@@ -112,6 +120,8 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
                 localResource = R.drawable.ic_upselling_tag
             )
         )
+
+        private val MailboxSocialProofEntitlements = MailboxPlusOverriddenEntitlements.map { it.text }
 
         private val SharedPlusOverriddenEntitlements = listOf(
             PlanEntitlementListUiModel.Overridden(

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject
 
@@ -33,9 +34,15 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
 
     fun toUiModel(
         dynamicPlan: DynamicPlan,
-        upsellingEntryPoint: UpsellingEntryPoint.Feature
+        upsellingEntryPoint: UpsellingEntryPoint.Feature,
+        variant: DynamicPlansVariant
     ): DynamicPlanDescriptionUiModel {
-        if (!shouldOverrideEntitlementsList) return DynamicPlanDescriptionUiModel(getDefaultDescription(dynamicPlan))
+        if (!shouldOverrideEntitlementsList)
+            return DynamicPlanDescriptionUiModel.Simple(getDefaultDescription(dynamicPlan))
+
+        if (variant == DynamicPlansVariant.SocialProof) {
+            return DynamicPlanDescriptionUiModel.SocialProof
+        }
 
         val description = when (dynamicPlan.name) {
             DynamicPlansOneClickIds.UnlimitedPlanId -> getUnlimitedDescription()
@@ -43,7 +50,7 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
             else -> getDefaultDescription(dynamicPlan)
         }
 
-        return DynamicPlanDescriptionUiModel(description)
+        return DynamicPlanDescriptionUiModel.Simple(description)
     }
 
     private fun getDefaultDescription(dynamicPlan: DynamicPlan) = TextUiModel.Text(dynamicPlan.description ?: "")

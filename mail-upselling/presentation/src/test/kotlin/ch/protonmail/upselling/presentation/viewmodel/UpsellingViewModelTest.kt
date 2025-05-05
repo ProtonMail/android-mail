@@ -175,7 +175,10 @@ internal class UpsellingViewModelTest {
         expectPrimaryUser(user)
         expectDynamicPlans(user.userId, dynamicPlans)
         expectSubscriptionOptions(user.userId, dynamicPlans, listOf(expectedDynamicPlan))
-        val expectedPayload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
+        val expectedPayload = UpsellingTelemetryTargetPlanPayload(
+            "plan", 1, isPromotional = false,
+            isVariantB = false, isSocialProofVariant = false
+        )
 
         // When
         viewModel.trackUpgradeAttempt(expectedPayload)
@@ -197,7 +200,10 @@ internal class UpsellingViewModelTest {
         expectPrimaryUser(user)
         expectDynamicPlans(user.userId, dynamicPlans)
         expectSubscriptionOptions(user.userId, dynamicPlans, listOf(expectedDynamicPlan))
-        val expectedPayload = UpsellingTelemetryTargetPlanPayload("plan", 1, isPromotional = false, isVariantB = false)
+        val expectedPayload = UpsellingTelemetryTargetPlanPayload(
+            "plan", 1, isPromotional = false,
+            isVariantB = false, isSocialProofVariant = true
+        )
 
         // When
         viewModel.trackPurchaseCompleted(expectedPayload)

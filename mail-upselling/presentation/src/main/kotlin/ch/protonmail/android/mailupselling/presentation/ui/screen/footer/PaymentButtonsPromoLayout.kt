@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
@@ -71,7 +72,7 @@ internal fun PaymentButtonsPromoLayout(
         val eventListener = UpsellingPaymentEventListener(
             context = LocalContext.current,
             userId = userId,
-            telemetryPayload = plan.toTelemetryPayload(isVariantB = true),
+            telemetryPayload = plan.toTelemetryPayload(DynamicPlansVariant.PromoB),
             actions
         )
         val buttonCornerRadius = 8.dp.dpToPx()

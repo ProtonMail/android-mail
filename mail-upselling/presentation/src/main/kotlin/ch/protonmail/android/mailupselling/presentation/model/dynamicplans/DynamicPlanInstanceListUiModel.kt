@@ -27,24 +27,30 @@ sealed interface DynamicPlanInstanceListUiModel {
 
     sealed class Data(
         open val shorterCycle: DynamicPlanInstanceUiModel,
-        open val longerCycle: DynamicPlanInstanceUiModel
+        open val longerCycle: DynamicPlanInstanceUiModel,
+        val variant: DynamicPlansVariant
     ) : DynamicPlanInstanceListUiModel {
 
         data class Standard(
             override val shorterCycle: DynamicPlanInstanceUiModel.Standard,
             override val longerCycle: DynamicPlanInstanceUiModel.Standard
-        ) : Data(shorterCycle, longerCycle)
+        ) : Data(shorterCycle, longerCycle, DynamicPlansVariant.Normal)
 
         class Promotional(
             override val shorterCycle: DynamicPlanInstanceUiModel,
             override val longerCycle: DynamicPlanInstanceUiModel
-        ) : Data(shorterCycle, longerCycle)
+        ) : Data(shorterCycle, longerCycle, DynamicPlansVariant.PromoA)
+
+        data class SocialProof(
+            override val shorterCycle: DynamicPlanInstanceUiModel,
+            override val longerCycle: DynamicPlanInstanceUiModel
+        ) : Data(shorterCycle, longerCycle, DynamicPlansVariant.SocialProof)
 
         data class PromotionalVariantB(
             val main: DynamicPlanInstanceUiModel,
             val priceFormatted: TextUiModel,
             override val shorterCycle: DynamicPlanInstanceUiModel = main,
             override val longerCycle: DynamicPlanInstanceUiModel = main
-        ) : Data(shorterCycle, longerCycle)
+        ) : Data(shorterCycle, longerCycle, DynamicPlansVariant.PromoB)
     }
 }

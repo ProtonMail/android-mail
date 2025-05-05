@@ -20,5 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.model.dynamicplans
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-@JvmInline
-internal value class DynamicPlanDescriptionUiModel(val text: TextUiModel)
+internal sealed interface DynamicPlanDescriptionUiModel {
+    @JvmInline
+    value class Simple(val text: TextUiModel) : DynamicPlanDescriptionUiModel
+    data object SocialProof : DynamicPlanDescriptionUiModel
+}

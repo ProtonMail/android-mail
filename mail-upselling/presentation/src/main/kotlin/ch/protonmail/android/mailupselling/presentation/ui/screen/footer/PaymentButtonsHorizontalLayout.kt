@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
@@ -36,18 +37,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.cyclebuttons.CycleOptions
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
 @Composable
@@ -64,7 +69,7 @@ internal fun PaymentButtonsHorizontalLayout(
             style = ProtonTheme.typography.body2Regular,
             fontSize = UpsellingLayoutValues.RectangularPaymentButtons.textSize,
             color = UpsellingLayoutValues.RectangularPaymentButtons.textColor,
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Center
         )
 
         Box(
@@ -90,7 +95,7 @@ internal fun PaymentButtonsHorizontalLayout(
         val eventListener = UpsellingPaymentEventListener(
             context = LocalContext.current,
             userId = userId,
-            telemetryPayload = selectedPlan.toTelemetryPayload(),
+            telemetryPayload = selectedPlan.toTelemetryPayload(plans.variant),
             actions
         )
         val buttonCornerRadius = 8.dp.dpToPx()
@@ -120,6 +125,20 @@ internal fun PaymentButtonsHorizontalLayout(
                         setOnEventListener(eventListener)
                     }
                 }
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF522580)
+@AdaptivePreviews
+@Composable
+private fun PaymentButtonsHorizontalLayoutPreview() {
+    ProtonTheme3 {
+        Box(modifier = Modifier.height(480.dp)) {
+            PaymentButtonsHorizontalLayout(
+                plans = UpsellingContentPreviewData.NormalList,
+                actions = UpsellingScreen.Actions.Empty
             )
         }
     }

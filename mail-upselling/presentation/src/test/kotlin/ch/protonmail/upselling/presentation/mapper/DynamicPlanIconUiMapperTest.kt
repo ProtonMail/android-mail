@@ -22,6 +22,7 @@ import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanIconUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -40,18 +41,20 @@ internal class DynamicPlanIconUiMapperTest {
             UpsellingEntryPoint.Feature.MobileSignature to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature),
             UpsellingEntryPoint.Feature.Mailbox to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
             UpsellingEntryPoint.Feature.MailboxPromo to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox_promo),
-            UpsellingEntryPoint.Feature.AutoDelete to DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
+            UpsellingEntryPoint.Feature.AutoDelete to DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete),
+            UpsellingEntryPoint.Feature.Mailbox to DynamicPlanIconUiModel(R.drawable.ic_mail_social_proof)
         )
 
         // When
         val actual = mapOf(
-            UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.Feature.ContactGroups),
-            UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(UpsellingEntryPoint.Feature.Folders),
-            UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(UpsellingEntryPoint.Feature.Labels),
-            UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.Feature.MobileSignature),
-            UpsellingEntryPoint.Feature.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Feature.Mailbox),
-            UpsellingEntryPoint.Feature.MailboxPromo to mapper.toUiModel(UpsellingEntryPoint.Feature.MailboxPromo),
-            UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.Feature.AutoDelete)
+            UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.Feature.ContactGroups, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(UpsellingEntryPoint.Feature.Folders, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(UpsellingEntryPoint.Feature.Labels, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.Feature.MobileSignature, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Feature.Mailbox, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.MailboxPromo to mapper.toUiModel(UpsellingEntryPoint.Feature.MailboxPromo, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.Feature.AutoDelete, DynamicPlansVariant.Normal),
+            UpsellingEntryPoint.Feature.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Feature.AutoDelete, DynamicPlansVariant.SocialProof)
         )
 
         // Then

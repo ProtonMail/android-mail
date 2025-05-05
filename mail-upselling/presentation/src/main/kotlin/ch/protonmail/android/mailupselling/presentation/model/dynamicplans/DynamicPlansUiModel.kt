@@ -22,7 +22,14 @@ internal data class DynamicPlansUiModel(
     val icon: DynamicPlanIconUiModel,
     val title: DynamicPlanTitleUiModel,
     val description: DynamicPlanDescriptionUiModel,
-    val useVariantB: Boolean,
+    val variant: DynamicPlansVariant,
     val entitlements: PlanEntitlementsUiModel,
     val list: DynamicPlanInstanceListUiModel
 )
+
+enum class DynamicPlansVariant {
+    Normal,
+    PromoA,
+    PromoB,
+    SocialProof
+}

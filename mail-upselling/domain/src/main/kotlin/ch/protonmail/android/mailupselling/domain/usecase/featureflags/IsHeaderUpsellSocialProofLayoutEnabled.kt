@@ -16,12 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.model.telemetry
+package ch.protonmail.android.mailupselling.domain.usecase.featureflags
 
-data class UpsellingTelemetryTargetPlanPayload(
-    val planName: String,
-    val planCycle: Int,
-    val isPromotional: Boolean,
-    val isVariantB: Boolean,
-    val isSocialProofVariant: Boolean
-)
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
+
+class IsHeaderUpsellSocialProofLayoutEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
+
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidHeaderUpsellSocialProofScreen"
+    }
+}

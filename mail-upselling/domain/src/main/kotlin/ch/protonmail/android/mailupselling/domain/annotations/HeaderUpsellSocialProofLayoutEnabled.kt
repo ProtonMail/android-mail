@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.model.telemetry
+package ch.protonmail.android.mailupselling.domain.annotations
 
-data class UpsellingTelemetryTargetPlanPayload(
-    val planName: String,
-    val planCycle: Int,
-    val isPromotional: Boolean,
-    val isVariantB: Boolean,
-    val isSocialProofVariant: Boolean
-)
+import javax.inject.Qualifier
+
+/**
+ * Indicates whether the Header Upselling uses a social proof layout
+ */
+@Qualifier
+annotation class HeaderUpsellSocialProofLayoutEnabled

@@ -22,11 +22,12 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Free
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Plus
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -143,7 +144,10 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
+        val actual = mapper.toUiModel(
+            UpsellingTestData.PlusPlan,
+            UpsellingEntryPoint.Feature.Mailbox, DynamicPlansVariant.Normal
+        )
 
         // Then
         assertEquals(expected, actual)
@@ -183,14 +187,36 @@ internal class DynamicPlanEntitlementsUiMapperTest {
 
         // When
         val actual = listOf(
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.ContactGroups),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Labels),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Folders),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.MobileSignature),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.AutoDelete)
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.ContactGroups, DynamicPlansVariant.Normal),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Labels, DynamicPlansVariant.Normal),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Folders, DynamicPlansVariant.Normal),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.MobileSignature, DynamicPlansVariant.Normal),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.AutoDelete, DynamicPlansVariant.Normal)
         )
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should correctly map social proof variant`() {
+        // Given
+        every { forceOverride.get() } returns true
+
+        val expectedEntitlements = listOf(
+            TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels)
+        )
+
+        val expected = PlanEntitlementsUiModel.CheckedSimpleList(expectedEntitlements)
+
+        // Then
+        assertEquals(
+            expected,
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox, DynamicPlansVariant.SocialProof)
+        )
     }
 }

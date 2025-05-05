@@ -114,6 +114,10 @@
     <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
     <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
     <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+    <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+    <string name="upselling_description_left">Loved by over</string>
+    <string name="upselling_description_right">1+ million paid subscribers.</string>
+    <string name="upselling_description_second">"Upgrade your productivity today.</string>
     <string name="upselling_discount_tag">SAVE %s%%</string>
     <string name="upselling_month">/month</string>
     <string name="upselling_year">/year</string>

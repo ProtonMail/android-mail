@@ -18,9 +18,8 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen.footer.cyclebuttons
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,28 +31,24 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
@@ -62,83 +57,50 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-internal fun CycleOptions(
-    modifier: Modifier = Modifier,
-    plans: DynamicPlanInstanceListUiModel.Data,
-    selectedPlan: DynamicPlanInstanceUiModel,
-    onPlanSelected: (plan: DynamicPlanInstanceUiModel) -> Unit
-) {
-    val density = LocalDensity.current
-    var maxHeight by remember { mutableStateOf(0.dp) }
-
-    val shorterInteractionSource = remember { MutableInteractionSource() }
-    val longerInteractionSource = remember { MutableInteractionSource() }
-
-    Column(modifier = modifier) {
-        // Yearly option sets the height.
-        CycleOptionCard(
-            cycleOptionUiModel = plans.longerCycle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .onSizeChanged { size ->
-                    with(density) {
-                        maxHeight = size.height.toDp()
-                    }
-                }
-                .clickable(interactionSource = longerInteractionSource, indication = null) {
-                    onPlanSelected(plans.longerCycle)
-                },
-            isSelected = plans.longerCycle == selectedPlan
-        )
-
-        Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
-
-        // Monthly option inherits the height of the yearly option.
-        CycleOptionCard(
-            cycleOptionUiModel = plans.shorterCycle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(maxHeight)
-                .clickable(interactionSource = shorterInteractionSource, indication = null) {
-                    onPlanSelected(plans.shorterCycle)
-                },
-            isSelected = plans.shorterCycle == selectedPlan
-        )
-    }
-}
-
-@Composable
 internal fun CycleOptionCard(
-    modifier: Modifier = Modifier,
     cycleOptionUiModel: DynamicPlanInstanceUiModel,
+    modifier: Modifier = Modifier,
     isSelected: Boolean = true
 ) {
-    OutlinedCard(
-        colors = CardDefaults.outlinedCardColors()
-            .copy(containerColor = UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardContainerColor),
-        border = if (isSelected) {
-            UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardSelectedBorderStroke
-        } else {
-            UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardStandardBorderStroke
-        },
-        modifier = modifier
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center
+    Box(modifier = modifier) {
+        OutlinedCard(
+            colors = CardDefaults.outlinedCardColors()
+                .copy(containerColor = UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardContainerColor),
+            border = if (isSelected) {
+                UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardSelectedBorderStroke
+            } else {
+                UpsellingLayoutValues.RectangularPaymentButtons.outlinedCardStandardBorderStroke
+            },
+            modifier = Modifier.padding(top = ProtonDimens.DefaultIconSize / 2)
         ) {
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(ProtonDimens.DefaultSpacing),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
             ) {
-                CycleName(uiModel = cycleOptionUiModel)
-                CyclePrices(uiModel = cycleOptionUiModel)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(ProtonDimens.DefaultSpacing),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CycleName(uiModel = cycleOptionUiModel)
+                    CyclePrices(uiModel = cycleOptionUiModel)
+                }
             }
+        }
+        if (isSelected) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_check_filled),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(end = ProtonDimens.DefaultIconSize / 2)
+                    .width(ProtonDimens.DefaultIconSize)
+                    .wrapContentHeight(),
+                contentDescription = NO_CONTENT_DESCRIPTION
+            )
         }
     }
 }
@@ -166,9 +128,7 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanc
                 Text(
                     modifier = Modifier
                         .background(
-                            brush = Brush.linearGradient(
-                                colorStops = UpsellingLayoutValues.RectangularPaymentButtons.discountTagColorStops
-                            ),
+                            color = UpsellingLayoutValues.RectangularPaymentButtons.discountTagBackground,
                             shape = UpsellingLayoutValues.RectangularPaymentButtons.discountBadgeShape
                         )
                         .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing),
@@ -176,7 +136,7 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanc
                         R.string.upselling_select_plan_save,
                         listOf(uiModel.discountRate.toString())
                     ).string(),
-                    style = ProtonTheme.typography.captionMedium,
+                    style = ProtonTheme.typography.body1Bold,
                     color = UpsellingLayoutValues.RectangularPaymentButtons.discountTagTextColor,
                     textAlign = TextAlign.Center,
                     fontSize = UpsellingLayoutValues.RectangularPaymentButtons.discountTextSize
@@ -232,13 +192,30 @@ private fun CyclePrices(modifier: Modifier = Modifier, uiModel: DynamicPlanInsta
 
 @AdaptivePreviews
 @Composable
-private fun UpsellingCard() {
+private fun CycleOptionCardPreview_Regular() {
+    val plans = UpsellingContentPreviewData.NormalList
+    val cycle = plans.longerCycle
     ProtonTheme3 {
         Column(modifier = Modifier.height(108.dp)) {
-            CycleOptions(
-                plans = UpsellingContentPreviewData.Base.plans.list as DynamicPlanInstanceListUiModel.Data,
-                selectedPlan = UpsellingContentPreviewData.Base.plans.list.longerCycle
-            ) { }
+            CycleOptionCard(
+                cycleOptionUiModel = cycle,
+                modifier = Modifier
+            )
+        }
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun CycleOptionCardPreview_Promo() {
+    val plans = UpsellingContentPreviewData.PromoList
+    val cycle = plans.longerCycle
+    ProtonTheme3 {
+        Column(modifier = Modifier.height(108.dp)) {
+            CycleOptionCard(
+                cycleOptionUiModel = cycle,
+                modifier = Modifier
+            )
         }
     }
 }

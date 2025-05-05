@@ -43,7 +43,7 @@ internal object UpsellingTelemetryRepositoryTestHelper {
             addSelectedPlanCycle(1)
             addUpsellEntryPoint("contact_groups")
             addUpsellIsPromo(false)
-            addUpsellPromoVariant(isVariantB = false)
+            addUpsellPromoVariant(isVariantB = false, isSocialProofVariant = false)
         }
 
     val UpgradeDimensionsPromoA: UpsellingTelemetryEventDimensions
@@ -55,7 +55,7 @@ internal object UpsellingTelemetryRepositoryTestHelper {
             addSelectedPlanCycle(1)
             addUpsellEntryPoint("contact_groups")
             addUpsellIsPromo(true)
-            addUpsellPromoVariant(isVariantB = false)
+            addUpsellPromoVariant(isVariantB = false, isSocialProofVariant = false)
         }
 
     val UpgradeDimensionsPromoB: UpsellingTelemetryEventDimensions
@@ -67,7 +67,19 @@ internal object UpsellingTelemetryRepositoryTestHelper {
             addSelectedPlanCycle(1)
             addUpsellEntryPoint("contact_groups")
             addUpsellIsPromo(true)
-            addUpsellPromoVariant(isVariantB = true)
+            addUpsellPromoVariant(isVariantB = true, isSocialProofVariant = false)
+        }
+
+    val UpgradeDimensionsSocialProof: UpsellingTelemetryEventDimensions
+        get() = UpsellingTelemetryEventDimensions().apply {
+            addPlanBeforeUpgrade("free")
+            addDaysSinceAccountCreation("01-03")
+            addUpsellModalVersion("A.1")
+            addSelectedPlan("mail2022")
+            addSelectedPlanCycle(1)
+            addUpsellEntryPoint("contact_groups")
+            addUpsellIsPromo(false)
+            addUpsellPromoVariant(isVariantB = false, isSocialProofVariant = true)
         }
 
     fun mockInstant() {

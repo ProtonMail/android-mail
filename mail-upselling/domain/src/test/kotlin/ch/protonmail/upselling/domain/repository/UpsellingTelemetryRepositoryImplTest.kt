@@ -37,6 +37,7 @@ import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTes
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsNormal
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsPromoA
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsPromoB
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensionsSocialProof
 import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.mockInstant
 import io.mockk.called
 import io.mockk.coEvery
@@ -140,7 +141,8 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val payload = UpsellingTelemetryTargetPlanPayload(
             "mail2022", 1,
             isPromotional = true,
-            isVariantB = true
+            isVariantB = true,
+            isSocialProofVariant = false
         )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
         val expectedEvent = UpsellingTelemetryEvent.UpgradeAttempt(UpgradeDimensionsPromoB).toTelemetryEvent()
@@ -166,10 +168,11 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val payload = UpsellingTelemetryTargetPlanPayload(
             "mail2022", 1,
             isPromotional = false,
-            isVariantB = false
+            isVariantB = false,
+            isSocialProofVariant = true
         )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(payload)
-        val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensionsNormal).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensionsSocialProof).toTelemetryEvent()
 
         // When
         repository.trackEvent(eventType, expectedUpsellingEntryPoint)
@@ -192,7 +195,8 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val payload = UpsellingTelemetryTargetPlanPayload(
             "mail2022", 1,
             isPromotional = true,
-            isVariantB = false
+            isVariantB = false,
+            isSocialProofVariant = false
         )
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
         val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensionsPromoA).toTelemetryEvent()
@@ -218,7 +222,8 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val payload = UpsellingTelemetryTargetPlanPayload(
             "mail2022", 1,
             isPromotional = false,
-            isVariantB = false
+            isVariantB = false,
+            isSocialProofVariant = false
         )
         val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
         val expectedEvent = UpsellingTelemetryEvent.PurchaseCompleted(UpgradeDimensionsNormal).toTelemetryEvent()

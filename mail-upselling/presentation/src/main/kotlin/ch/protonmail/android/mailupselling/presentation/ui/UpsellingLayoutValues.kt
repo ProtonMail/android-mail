@@ -37,6 +37,11 @@ internal object UpsellingLayoutValues {
     val closeButtonColor = Color.White
     val closeButtonBackgroundColor = Color.White.copy(alpha = 0.08f)
 
+    val SocialProofDescColor = Color(0xFFDFCEFC)
+    val CheckMarkEntitlementColor = Color.White.copy(alpha = 0.9f)
+
+    val BlueInteractionNorm = Color(0xFF6D4AFF)
+
     val backgroundGradient = Brush.verticalGradient(
         listOf(
             Color(0xFF0C0233),
@@ -47,7 +52,7 @@ internal object UpsellingLayoutValues {
     val backgroundGradientVariantB = Brush.verticalGradient(
         listOf(
             Color(0xFF1D121D),
-            Color(0xFF6D4AFF)
+            BlueInteractionNorm
         )
     )
 
@@ -56,7 +61,7 @@ internal object UpsellingLayoutValues {
     val autoRenewText = Color.White
     val autoRenewTextSize = 12.sp
 
-    const val topSpacingWeight = 0.3f
+    const val topSpacingWeight = 0.25f
     const val bottomSpacingWeight = 0.4f
 
     object ComparisonTable {
@@ -67,7 +72,7 @@ internal object UpsellingLayoutValues {
         val spacerBackgroundColor = Color.White.copy(alpha = 0.12f)
 
         val plusBadgeGradient = Brush.linearGradient(
-            listOf(Color(0xFFD8AAFF), Color(0xFF6D4AFF))
+            listOf(Color(0xFFD8AAFF), BlueInteractionNorm)
         )
 
         val plusBadgeBackground = Color(0xFF2a1b5a)
@@ -101,7 +106,7 @@ internal object UpsellingLayoutValues {
 
     object UpsellingPromoButton {
         val iconColorDark = Color(0xFF8A6EFF)
-        val iconColorLight = Color(0xFF6D4AFF)
+        val iconColorLight = BlueInteractionNorm
         val bgColor = Color(0x4d8a6eff)
     }
 
@@ -143,14 +148,14 @@ internal object UpsellingLayoutValues {
         val mainPriceTextSize = 16.sp
         val mainPriceTextColor = Color.White
 
-        val discountTagColorStops = arrayOf(0.0f to Color(0xFFA792FF), 0.8f to Color(0xFF27DDB1))
-        val discountTagTextColor = Color(0xFF1B1340)
-        val discountBadgeShape = RoundedCornerShape(6.dp)
+        val discountTagTextColor = Color.White
+        val discountTagBackground = Color.White.copy(alpha = 0.12f)
+        val discountBadgeShape = RoundedCornerShape(8.dp)
         val discountTextSize = 12.sp
 
         val outlinedCardContainerColor = Color.Black.copy(alpha = 0.4f)
 
-        val outlinedCardSelectedBorderStroke = BorderStroke(1.dp, Color.White)
+        val outlinedCardSelectedBorderStroke = BorderStroke(2.dp, Color.White)
         val outlinedCardStandardBorderStroke = BorderStroke(1.dp, Color.White.copy(alpha = 0.25f))
     }
 

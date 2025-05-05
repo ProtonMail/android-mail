@@ -27,6 +27,9 @@ sealed interface PlanEntitlementsUiModel {
     value class SimpleList(val items: List<PlanEntitlementListUiModel>) : PlanEntitlementsUiModel
 
     @JvmInline
+    value class CheckedSimpleList(val items: List<TextUiModel>) : PlanEntitlementsUiModel
+
+    @JvmInline
     value class ComparisonTableList(val items: List<ComparisonTableEntitlementItemUiModel>) : PlanEntitlementsUiModel
 }
 

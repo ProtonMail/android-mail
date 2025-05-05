@@ -29,6 +29,7 @@ import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.Dynam
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansVariant
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import me.proton.core.domain.entity.UserId
@@ -90,14 +91,32 @@ internal object UpsellingContentPreviewData {
         dynamicPlan = dynPlan
     )
 
+    private val MailPusPlanModelYearlyPromo = DynamicPlanInstanceUiModel.Promotional(
+        name = "Mail Plus",
+        userId = UserIdUiModel(UserId("12")),
+        currency = "EUR",
+        pricePerCycle = TextUiModel("49.99"),
+        promotionalPrice = TextUiModel("39.99"),
+        renewalPrice = TextUiModel("49.99"),
+        discountRate = 20,
+        cycle = DynamicPlanCycle.Monthly,
+        viewId = 123,
+        dynamicPlan = dynPlan
+    )
+
     val NormalList = DynamicPlanInstanceListUiModel.Data.Standard(
+        MailPlusPlanModelMonthly,
+        MailPusPlanModelYearly
+    )
+
+    val SocialProofList = DynamicPlanInstanceListUiModel.Data.SocialProof(
         MailPlusPlanModelMonthly,
         MailPusPlanModelYearly
     )
 
     val PromoList = DynamicPlanInstanceListUiModel.Data.Promotional(
         MailPlusPlanModelMonthlyPromo,
-        MailPusPlanModelYearly
+        MailPusPlanModelYearlyPromo
     )
 
     private val PromoListVariantB = DynamicPlanInstanceListUiModel.Data.PromotionalVariantB(
@@ -106,7 +125,7 @@ internal object UpsellingContentPreviewData {
             .TextResWithArgs(R.string.upselling_get_button_promotional, listOf("$", "0.99"))
     )
 
-    private val Entitlements = PlanEntitlementsUiModel.SimpleList(
+    val SimpleListEntitlements = PlanEntitlementsUiModel.SimpleList(
         listOf(
             PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.Text("Entitlement 1"),
@@ -123,13 +142,22 @@ internal object UpsellingContentPreviewData {
         )
     )
 
+    val CheckedListEntitlements = PlanEntitlementsUiModel.CheckedSimpleList(
+        listOf(
+            TextUiModel.Text("Entitlement 1"),
+            TextUiModel.Text("Entitlement 2"),
+            TextUiModel.Text("Entitlement 3"),
+            TextUiModel.Text("Entitlement 4")
+        )
+    )
+
     val Base = UpsellingScreenContentState.Data(
         DynamicPlansUiModel(
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
             title = DynamicPlanTitleUiModel(TextUiModel.Text("Mail Plus")),
-            description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
-            entitlements = Entitlements,
-            useVariantB = false,
+            description = DynamicPlanDescriptionUiModel.Simple(TextUiModel.Text("Description")),
+            entitlements = SimpleListEntitlements,
+            variant = DynamicPlansVariant.Normal,
             list = NormalList
         )
     )
@@ -138,11 +166,11 @@ internal object UpsellingContentPreviewData {
         DynamicPlansUiModel(
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
             title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
-            description = DynamicPlanDescriptionUiModel(
+            description = DynamicPlanDescriptionUiModel.Simple(
                 TextUiModel.Text("To unlock more storage and premium features")
             ),
-            entitlements = Entitlements,
-            useVariantB = false,
+            entitlements = SimpleListEntitlements,
+            variant = DynamicPlansVariant.PromoA,
             list = PromoList
         )
     )
@@ -151,10 +179,21 @@ internal object UpsellingContentPreviewData {
         DynamicPlansUiModel(
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox_promo),
             title = DynamicPlanTitleUiModel(TextUiModel.Text("Try Mail Plus for $1")),
-            description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Limited-time offer, cancel anytime.")),
-            entitlements = Entitlements,
-            useVariantB = true,
+            description = DynamicPlanDescriptionUiModel.Simple(TextUiModel.Text("Limited-time offer, cancel anytime.")),
+            entitlements = SimpleListEntitlements,
+            variant = DynamicPlansVariant.PromoB,
             list = PromoListVariantB
+        )
+    )
+
+    val SocialProof = UpsellingScreenContentState.Data(
+        DynamicPlansUiModel(
+            icon = DynamicPlanIconUiModel(R.drawable.ic_mail_social_proof),
+            title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
+            description = DynamicPlanDescriptionUiModel.SocialProof,
+            entitlements = CheckedListEntitlements,
+            variant = DynamicPlansVariant.SocialProof,
+            list = SocialProofList
         )
     )
 }

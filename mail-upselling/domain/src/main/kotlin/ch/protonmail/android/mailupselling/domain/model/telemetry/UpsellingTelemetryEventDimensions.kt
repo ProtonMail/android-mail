@@ -32,9 +32,10 @@ class UpsellingTelemetryEventDimensions {
     fun addUpsellModalVersion(value: String = MODAL_VERSION_A1) =
         mutableMap.put(UpsellingTelemetryEventDimensionsKey.UpsellModalVersion.name, value)
 
-    fun addUpsellPromoVariant(isVariantB: Boolean) = mutableMap.put(
+    fun addUpsellPromoVariant(isVariantB: Boolean, isSocialProofVariant: Boolean) = mutableMap.put(
         UpsellingTelemetryEventDimensionsKey.UpsellVariant.name,
         when {
+            isSocialProofVariant -> UPSELL_VARIANT_SOCIAL_PROOF
             isVariantB -> UPSELL_VARIANT_B1
             else -> UPSELL_VARIANT_A1
         }
@@ -57,5 +58,6 @@ class UpsellingTelemetryEventDimensions {
         const val MODAL_VERSION_A1 = "A.1"
         const val UPSELL_VARIANT_A1 = "A.1"
         const val UPSELL_VARIANT_B1 = "B.1"
+        const val UPSELL_VARIANT_SOCIAL_PROOF = "C.1"
     }
 }
