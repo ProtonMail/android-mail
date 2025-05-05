@@ -100,9 +100,7 @@ sealed class DynamicPlanInstanceUiModel(
     }
 }
 
-internal fun DynamicPlanInstanceUiModel.toTelemetryPayload(
-    variant: DynamicPlansVariant = DynamicPlansVariant.Normal
-) =
+internal fun DynamicPlanInstanceUiModel.toTelemetryPayload(variant: DynamicPlansVariant = DynamicPlansVariant.Normal) =
     UpsellingTelemetryTargetPlanPayload(
         planName = dynamicPlan.name ?: "",
         planCycle = cycle.months,
