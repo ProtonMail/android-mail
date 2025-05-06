@@ -19,10 +19,11 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -49,7 +50,12 @@ class ObserveSendingMessagesStatusTest {
         val actual = observeSendingMessageState.invoke(userId).first()
 
         // Then
-        assertEquals(MessageSendingStatus.SendMessageError, actual)
+        assertEquals(
+            MessageSendingStatus.SendMessageError(
+                SendingError.ExternalAddressSendDisabled("Api message for disabled")
+            ),
+            actual
+        )
     }
 
     @Test
@@ -96,7 +102,12 @@ class ObserveSendingMessagesStatusTest {
         val actual = observeSendingMessageState.invoke(userId).first()
 
         // Then
-        assertEquals(MessageSendingStatus.SendMessageError, actual)
+        assertEquals(
+            MessageSendingStatus.SendMessageError(
+                SendingError.ExternalAddressSendDisabled("Api message for disabled")
+            ),
+            actual
+        )
     }
 
     @Test
