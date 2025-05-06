@@ -25,6 +25,7 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.asExternalAddressSendDisabledError
 import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentSendingError
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
@@ -213,10 +214,19 @@ class SendMessage @Inject constructor(
                 }
 
                 is SendingToApi -> {
-                    if (this.remoteDataError.isMessageAlreadySentSendingError()) {
-                        SendingError.MessageAlreadySent
-                    } else {
-                        SendingError.Other
+                    val externalAddressDisabledError = remoteDataError.asExternalAddressSendDisabledError()
+                    when {
+                        externalAddressDisabledError != null -> {
+                            SendingError.ExternalAddressSendDisabled(externalAddressDisabledError.apiMessage)
+                        }
+
+                        this.remoteDataError.isMessageAlreadySentSendingError() -> {
+                            SendingError.MessageAlreadySent
+                        }
+
+                        else -> {
+                            SendingError.Other
+                        }
                     }
                 }
 

@@ -132,7 +132,7 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            val expected = DataError.Remote.Proton(ProtonError.Unknown).left()
+            val expected = DataError.Remote.Proton(ProtonError.Unknown, null).left()
             assertEquals(expected, awaitItem())
             loggingTestRule.assertErrorLogged("UNHANDLED PROTON ERROR caused by result: $dataResult")
             awaitComplete()
@@ -234,7 +234,7 @@ internal class DataResultEitherMappingsTest {
                 cause = ApiException(
                     ApiResult.Error.Http(
                         httpCode = 0,
-                        message = "",
+                        message = "msg123",
                         cause = protonException
                     )
                 ),
@@ -244,7 +244,7 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            assertEquals(DataError.Remote.Proton(ProtonError.Base64Format).left(), awaitItem())
+            assertEquals(DataError.Remote.Proton(ProtonError.Base64Format, "msg123").left(), awaitItem())
             awaitComplete()
         }
     }

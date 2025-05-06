@@ -55,6 +55,7 @@ class FormatMessageSendingError @Inject constructor(
             }
 
             SendingError.Other -> emptyList()
+            is SendingError.ExternalAddressSendDisabled -> emptyList()
             SendingError.MessageAlreadySent -> emptyList()
         }
 

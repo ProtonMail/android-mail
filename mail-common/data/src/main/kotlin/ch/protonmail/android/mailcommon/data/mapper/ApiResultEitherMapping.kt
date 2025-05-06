@@ -35,12 +35,12 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
     is ApiResult.Success -> value.right()
 
     is ApiResult.Error.Http -> {
+        val protonError = ProtonError.fromProtonCode(this.proton?.code).takeIf {
+            it != ProtonError.Unknown && NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity
+        }
+
         when {
-            isMessageAlreadySentDraftError() -> DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
-            isMessageAlreadySentAttachmentError() ->
-                DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent).left()
-            isMessageAlreadySentSendingError() -> DataError.Remote.Proton(ProtonError.MessageAlreadySent).left()
-            isSearchInputInvalidError() -> DataError.Remote.Proton(ProtonError.SearchInputInvalid).left()
+            protonError != null -> DataError.Remote.Proton(protonError, apiMessage = this.message).left()
             else -> DataError.Remote.Http(
                 NetworkError.fromHttpCode(httpCode),
                 this.extractApiErrorInfo(),
@@ -58,22 +58,6 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
         DataError.Remote.Http(toNetworkError(this), this.cause.tryExtractError(), this.isRetryable()).left()
     }
 }
-
-private fun ApiResult.Error.Http.isMessageAlreadySentDraftError() =
-    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
-        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageUpdateDraftNotDraft
-
-private fun ApiResult.Error.Http.isMessageAlreadySentAttachmentError() =
-    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
-        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.AttachmentUploadMessageAlreadySent
-
-private fun ApiResult.Error.Http.isMessageAlreadySentSendingError() =
-    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
-        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageAlreadySent
-
-private fun ApiResult.Error.Http.isSearchInputInvalidError() =
-    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
-        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.SearchInputInvalid
 
 private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
 

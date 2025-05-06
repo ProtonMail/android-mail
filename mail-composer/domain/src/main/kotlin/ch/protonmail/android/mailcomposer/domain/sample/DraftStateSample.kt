@@ -79,7 +79,8 @@ object DraftStateSample {
     val RemoteDraftInErrorSendingState = build(
         messageId = MessageIdSample.RemoteDraft,
         apiMessageId = MessageIdSample.RemoteDraft,
-        state = DraftSyncState.ErrorSending
+        state = DraftSyncState.ErrorSending,
+        sendingError = SendingError.ExternalAddressSendDisabled("Api message for disabled")
     )
 
     /**

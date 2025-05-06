@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.mailcomposer.domain.model
 
+import ch.protonmail.android.mailmessage.domain.model.SendingError
+
 sealed interface MessageSendingStatus {
     object MessageSent : MessageSendingStatus
-    object SendMessageError : MessageSendingStatus
+    data class SendMessageError(val error: SendingError?) : MessageSendingStatus
     object UploadAttachmentsError : MessageSendingStatus
     object None : MessageSendingStatus
 }

@@ -33,8 +33,9 @@ class ObserveSendingMessagesStatus @Inject constructor(
     operator fun invoke(userId: UserId) = draftStateRepository.observeAll(userId).map { draftStates ->
         val unconfirmedDraftStates = draftStates.filter { !it.sendingStatusConfirmed }
 
-        if (unconfirmedDraftStates.any { it.state == DraftSyncState.ErrorSending }) {
-            return@map MessageSendingStatus.SendMessageError
+        val erroredState = unconfirmedDraftStates.firstOrNull { it.state == DraftSyncState.ErrorSending }
+        if (erroredState != null) {
+            return@map MessageSendingStatus.SendMessageError(erroredState.sendingError)
         }
 
         if (unconfirmedDraftStates.any { it.state == DraftSyncState.ErrorUploadAttachments }) {

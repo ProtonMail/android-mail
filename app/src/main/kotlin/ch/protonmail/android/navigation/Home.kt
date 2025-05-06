@@ -56,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
 import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
@@ -84,6 +85,7 @@ import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
+import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addExportLogsSettings
 import ch.protonmail.android.navigation.route.addFolderForm
 import ch.protonmail.android.navigation.route.addFolderList
@@ -92,7 +94,6 @@ import ch.protonmail.android.navigation.route.addLabelList
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addManageMembers
-import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
@@ -211,11 +212,16 @@ fun Home(
 
     val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
     val errorSendingMessageActionText = stringResource(id = R.string.mailbox_message_sending_error_action)
-    fun showErrorSendingMessageSnackbar() = scope.launch {
+    fun showErrorSendingMessageSnackbar(error: SendingError?) = scope.launch {
+        val message = when (error) {
+            is SendingError.ExternalAddressSendDisabled -> error.apiMessage ?: errorSendingMessageText
+            else -> errorSendingMessageText
+        }
+
         val shouldShowAction = viewModel.shouldNavigateToDraftsOnSendingFailure(navController.currentDestination)
         val result = snackbarHostErrorState.showSnackbar(
             type = ProtonSnackbarType.ERROR,
-            message = errorSendingMessageText,
+            message = message,
             actionLabel = if (shouldShowAction) errorSendingMessageActionText else null,
             duration = if (shouldShowAction) SnackbarDuration.Long else SnackbarDuration.Short
         )
@@ -268,7 +274,7 @@ fun Home(
     ConsumableLaunchedEffect(state.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
-            is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
+            is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar(sendingStatus.error)
             is MessageSendingStatus.UploadAttachmentsError -> showErrorUploadAttachmentSnackbar()
             is MessageSendingStatus.None -> {}
         }

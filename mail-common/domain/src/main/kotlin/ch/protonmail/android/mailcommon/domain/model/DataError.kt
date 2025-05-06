@@ -69,7 +69,7 @@ sealed interface DataError {
         /**
          * The API returned a success, but proton code is not OK
          */
-        data class Proton(val protonError: ProtonError) : Remote
+        data class Proton(val protonError: ProtonError, val apiMessage: String?) : Remote
 
         /**
          * This object is not meant to be actively used.
@@ -97,3 +97,7 @@ fun DataError.isMessageAlreadySentAttachmentError() = this is DataError.Remote.P
 
 fun DataError.isMessageAlreadySentSendingError() = this is DataError.Remote.Proton &&
     this.protonError is ProtonError.MessageAlreadySent
+
+fun DataError.asExternalAddressSendDisabledError() = (this as? DataError.Remote.Proton)?.takeIf {
+    it.protonError is ProtonError.ExternalAddressSendDisabled
+}

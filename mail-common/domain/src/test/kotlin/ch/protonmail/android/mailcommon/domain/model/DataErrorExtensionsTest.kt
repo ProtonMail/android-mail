@@ -51,7 +51,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `data error is a message already sent error when type is Remote Proton and contains DraftNotDraftError`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
+        val dataError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft, null)
         // then
         assertTrue(dataError.isMessageAlreadySentDraftError())
     }
@@ -59,7 +59,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `is not a message already sent error when type is Remote Proton and does not contain DraftNotDraftError`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.Banned)
+        val dataError = DataError.Remote.Proton(ProtonError.Banned, null)
         // then
         assertFalse(dataError.isMessageAlreadySentDraftError())
     }
@@ -67,7 +67,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `is a message already sent error when type is Remote Proton and contains AttachmentMessageAlreadySentError`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent)
+        val dataError = DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent, null)
         // then
         assertTrue(dataError.isMessageAlreadySentAttachmentError())
     }
@@ -75,7 +75,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `is a message already sent error when type is Remote Proton and contains MessageAlreadySentError`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.MessageAlreadySent)
+        val dataError = DataError.Remote.Proton(ProtonError.MessageAlreadySent, null)
         // then
         assertTrue(dataError.isMessageAlreadySentSendingError())
     }
@@ -91,7 +91,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `is search input invalid error when type is Remote proton of type SearchInputInvalid`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+        val dataError = DataError.Remote.Proton(ProtonError.SearchInputInvalid, null)
         // then
         assertTrue(dataError.isSearchInputInvalidError())
     }

@@ -58,7 +58,7 @@ private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Re
     if (protonError == ProtonError.Unknown) {
         Timber.e("UNHANDLED PROTON ERROR caused by result: $dataResult")
     }
-    return DataError.Remote.Proton(protonError)
+    return DataError.Remote.Proton(protonError, apiMessage = dataResult.message)
 }
 
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {

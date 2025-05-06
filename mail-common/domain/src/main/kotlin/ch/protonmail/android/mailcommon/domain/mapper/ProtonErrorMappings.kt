@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError.PermissionDenie
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.SearchInputInvalid
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Unknown
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.UploadFailure
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.ExternalAddressSendDisabled
 
 @Suppress("MagicNumber")
 fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
@@ -43,6 +44,7 @@ fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
     2030 -> UploadFailure
     2031 -> PayloadTooLarge
     2063 -> Base64Format
+    2032 -> ExternalAddressSendDisabled
     2500 -> MessageAlreadySent
     11_109 -> AttachmentUploadMessageAlreadySent
     15_034 -> MessageUpdateDraftNotDraft

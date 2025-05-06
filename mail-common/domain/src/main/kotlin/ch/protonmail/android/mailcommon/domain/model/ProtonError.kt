@@ -46,6 +46,8 @@ sealed interface ProtonError {
 
     object MessageAlreadySent : ProtonError
 
+    object ExternalAddressSendDisabled : ProtonError
+
     object AttachmentUploadMessageAlreadySent : ProtonError
 
     /**
