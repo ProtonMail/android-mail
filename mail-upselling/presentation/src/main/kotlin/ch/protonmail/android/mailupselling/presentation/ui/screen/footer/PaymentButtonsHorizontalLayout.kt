@@ -64,7 +64,12 @@ internal fun PaymentButtonsHorizontalLayout(
 
     Column {
         Text(
-            modifier = Modifier.padding(ProtonDimens.DefaultSpacing).align(Alignment.CenterHorizontally),
+            modifier = Modifier.padding(
+                top = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.SmallSpacing,
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing
+            ).align(Alignment.CenterHorizontally),
             text = stringResource(R.string.upselling_select_plan),
             style = ProtonTheme.typography.body2Regular,
             fontSize = UpsellingLayoutValues.RectangularPaymentButtons.textSize,
