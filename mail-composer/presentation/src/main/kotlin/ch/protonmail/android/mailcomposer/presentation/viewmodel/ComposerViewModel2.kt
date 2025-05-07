@@ -163,6 +163,9 @@ class ComposerViewModel2 @AssistedInject constructor(
 
             processActions()
         }
+        viewModelScope.launch {
+            addressesFacade.refreshSenderAddresses()
+        }
     }
 
     internal fun submitAction(action: ComposerAction2) {

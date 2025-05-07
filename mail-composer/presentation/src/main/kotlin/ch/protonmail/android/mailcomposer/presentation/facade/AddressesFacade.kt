@@ -27,17 +27,20 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.RefreshComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationFailure
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationFailure.CouldNotValidate
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationResult
 import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
 class AddressesFacade @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
-    private val validateSenderAddress: ValidateSenderAddress
+    private val validateSenderAddress: ValidateSenderAddress,
+    private val refreshAddresses: RefreshComposerSenderAddresses
 ) {
 
     suspend fun getPrimarySenderEmail(userId: UserId): Either<DataError, SenderEmail> = either {
@@ -48,7 +51,10 @@ class AddressesFacade @Inject constructor(
         SenderEmail(address.email)
     }
 
-    suspend fun getSenderAddresses() = getComposerSenderAddresses.invoke()
+    suspend fun getSenderAddresses(): Either<GetComposerSenderAddresses.Error, List<UserAddress>> =
+        getComposerSenderAddresses.invoke()
+
+    suspend fun refreshSenderAddresses() = refreshAddresses.invoke()
 
     suspend fun validateSenderAddress(
         userId: UserId,
