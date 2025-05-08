@@ -244,7 +244,10 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            assertEquals(DataError.Remote.Proton(ProtonError.Base64Format, "msg123").left(), awaitItem())
+            assertEquals(
+                DataError.Remote.Proton(ProtonError.Base64Format, "Wrapping error message").left(),
+                awaitItem()
+            )
             awaitComplete()
         }
     }
