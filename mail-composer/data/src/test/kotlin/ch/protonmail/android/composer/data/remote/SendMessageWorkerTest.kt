@@ -197,7 +197,9 @@ class SendMessageWorkerTest {
     private fun givenSendMessageFailsWithSendingToApiError(userId: UserId, messageId: MessageId) {
         coEvery {
             sendMessageMock(userId, messageId)
-        } returns SendMessage.Error.SendingToApi(DataError.Remote.Proton(ProtonError.MessageAlreadySent)).left()
+        } returns SendMessage.Error.SendingToApi(
+            DataError.Remote.Proton(ProtonError.MessageAlreadySent, apiMessage = "Api message")
+        ).left()
     }
 
     private fun givenSendMessageSucceeds(userId: UserId, messageId: MessageId) {

@@ -138,7 +138,10 @@ class UploadAttachmentsWorkerTest {
         val messageId = MessageIdSample.LocalDraft
         givenInputData(userId, messageId)
         givenUploadAttachmentsFails(
-            userId, messageId, AttachmentUploadError.UploadFailed(DataError.Remote.Proton(ProtonError.UploadFailure))
+            userId, messageId,
+            AttachmentUploadError.UploadFailed(
+                DataError.Remote.Proton(ProtonError.UploadFailure, null)
+            )
         )
         givenUpdateDraftStateForErrorSucceeds(userId, messageId)
 
@@ -162,7 +165,7 @@ class UploadAttachmentsWorkerTest {
                 userId,
                 messageId,
                 AttachmentUploadError.UploadFailed(
-                    DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent)
+                    DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent, null)
                 )
             )
             givenUpdateDraftStateForErrorSucceeds(userId, messageId, SendingError.MessageAlreadySent)

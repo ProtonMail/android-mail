@@ -204,7 +204,7 @@ class UploadDraftTest {
         val messageId = MessageIdSample.LocalDraft
         val expectedDraft = MessageWithBodySample.Invoice
         val expectedAction = DraftAction.Compose
-        val expectedError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
+        val expectedError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft, null)
         val expectedDraftState = DraftStateSample.NewDraftState
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)

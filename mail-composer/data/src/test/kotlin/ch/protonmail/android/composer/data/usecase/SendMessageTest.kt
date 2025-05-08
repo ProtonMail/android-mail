@@ -281,7 +281,7 @@ class SendMessageTest {
         // Given
         val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
         val expectedError = SendMessage.Error.SendingToApi(
-            DataError.Remote.Proton(ProtonError.Unknown)
+            DataError.Remote.Proton(ProtonError.Unknown, "api msg")
         ).left()
 
         expectFindLocalDraftSucceeds()
@@ -296,7 +296,7 @@ class SendMessageTest {
                 messageId.id,
                 generateSendMessageBody(messagePackages)
             )
-        } returns DataError.Remote.Proton(ProtonError.fromProtonCode(503)).left()
+        } returns DataError.Remote.Proton(ProtonError.fromProtonCode(503), "api msg").left()
 
         // When
         val result = sendMessage(userId, messageId)

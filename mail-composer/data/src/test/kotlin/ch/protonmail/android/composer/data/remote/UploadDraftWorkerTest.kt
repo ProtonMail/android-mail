@@ -226,7 +226,7 @@ internal class UploadDraftWorkerTest {
     private fun givenUploadDraftFailsWithMessageAlreadySentError(userId: UserId, messageId: MessageId) {
         coEvery {
             uploadDraft(userId, messageId)
-        } returns DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
+        } returns DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft, null).left()
     }
 
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {
