@@ -10,4 +10,5 @@
     <bool name="core_feature_notifications_permission_request_enabled">false</bool>
     <integer name="core_feature_auth_user_check_max_free_user_count">2</integer>
     <bool name="core_feature_device_migration_enabled">true</bool>
+    <bool name="core_feature_payments_v5_enabled">true</bool>
 </resources>
