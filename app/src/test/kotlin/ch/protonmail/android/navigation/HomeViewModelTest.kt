@@ -283,7 +283,7 @@ class HomeViewModelTest {
             // Given
             every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
             every { observeSendingMessagesStatus(user.userId) } returns flowOf(
-                MessageSendingStatus.SendMessageError
+                MessageSendingStatus.SendMessageError(null)
             )
 
             // When
@@ -292,7 +292,7 @@ class HomeViewModelTest {
                 val expectedItem = HomeState(
                     notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
+                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError(null)),
                     navigateToEffect = Effect.empty(),
                     startedFromLauncher = false
                 )
