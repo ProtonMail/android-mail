@@ -62,7 +62,8 @@ interface DraftStateRepository {
     suspend fun updateDraftSyncState(
         userId: UserId,
         messageId: MessageId,
-        syncState: DraftSyncState
+        syncState: DraftSyncState,
+        sendingError: SendingError?
     ): Either<DataError, Unit>
 
     /**

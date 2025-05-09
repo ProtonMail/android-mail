@@ -39,13 +39,13 @@ class ResetDraftStateErrorTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = DraftStateSample.RemoteDraftInErrorSendingState.messageId
-        coJustRun { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized) }
+        coJustRun { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized, null) }
 
         // When
         resetDraftStateError.invoke(userId, messageId)
 
         // Then
-        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized) }
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized, null) }
     }
 
 }

@@ -53,19 +53,21 @@ class DraftStateRepositoryImpl @Inject constructor(
         val draftState = localDataSource.observe(userId, messageId).first().getOrElse {
             DraftState(userId, messageId, null, DraftSyncState.Local, action, null, false)
         }
-        val updatedState = draftState.copy(state = DraftSyncState.Local)
+        val updatedState = draftState.copy(state = DraftSyncState.Local, sendingStatusConfirmed = false)
         localDataSource.save(updatedState)
     }
 
     override suspend fun updateDraftSyncState(
         userId: UserId,
         messageId: MessageId,
-        syncState: DraftSyncState
+        syncState: DraftSyncState,
+        sendingError: SendingError?
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().bind()
         localDataSource.save(
             draftState.copy(
-                state = validateUpdateDraftSyncState(draftState.state, syncState)
+                state = validateUpdateDraftSyncState(draftState.state, syncState),
+                sendingError = sendingError
             )
         )
     }

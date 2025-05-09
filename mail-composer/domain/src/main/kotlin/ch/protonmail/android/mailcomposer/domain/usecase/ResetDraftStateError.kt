@@ -29,6 +29,6 @@ class ResetDraftStateError @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId) {
-        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized)
+        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized, null)
     }
 }

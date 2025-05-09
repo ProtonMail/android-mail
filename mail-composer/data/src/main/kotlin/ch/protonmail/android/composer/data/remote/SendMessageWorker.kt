@@ -56,7 +56,7 @@ internal class SendMessageWorker @AssistedInject constructor(
                 Result.failure()
             },
             ifRight = {
-                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
+                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent, null)
                 Result.success()
             }
         )

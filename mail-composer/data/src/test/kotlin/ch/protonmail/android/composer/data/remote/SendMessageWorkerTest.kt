@@ -146,7 +146,7 @@ class SendMessageWorkerTest {
         val actual = sendMessageWorker.doWork()
 
         // Then
-        coVerify { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, DraftSyncState.Sent) }
+        coVerify { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, DraftSyncState.Sent, null) }
         assertEquals(Result.success(), actual)
     }
 
@@ -179,7 +179,8 @@ class SendMessageWorkerTest {
         messageId: MessageId,
         syncState: DraftSyncState
     ) {
-        coEvery { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, syncState) } returns Unit.right()
+        coEvery { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, syncState, null) } returns
+            Unit.right()
     }
 
     private fun givenUpdateDraftStateForErrorSucceeds(

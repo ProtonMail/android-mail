@@ -57,14 +57,13 @@ class UpdateDraftStateForErrorTest {
         val newState = DraftSyncState.ErrorUploadDraft
         val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Local) }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, newState)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, newState, null)
 
         // When
         updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
-        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, newState) }
-        coVerify(exactly = 0) { draftStateRepository.updateSendingError(userId, messageId, any()) }
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, newState, null) }
     }
 
     @Test
@@ -75,14 +74,13 @@ class UpdateDraftStateForErrorTest {
         val newState = DraftSyncState.ErrorUploadDraft
         val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Local) }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, newState)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, newState, null)
 
         // When
         updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
         verify { messageRepository wasNot Called }
-        coVerify(exactly = 0) { draftStateRepository.updateSendingError(userId, messageId, any()) }
     }
 
     @Test
@@ -94,16 +92,14 @@ class UpdateDraftStateForErrorTest {
         val expectedState = DraftSyncState.ErrorSending
         val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
-        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState, sendingError)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
 
         // When
         updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
-        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState) }
-        coVerify { draftStateRepository.updateSendingError(userId, messageId, sendingError) }
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState, sendingError) }
     }
 
     @Test
@@ -115,8 +111,7 @@ class UpdateDraftStateForErrorTest {
         val expectedState = DraftSyncState.ErrorSending
         val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
-        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState, sendingError)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
 
         // When
@@ -125,7 +120,6 @@ class UpdateDraftStateForErrorTest {
         // Then
         coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
     }
-
 
     @Test
     fun `moves message back to draft folder using api message if available when current state is Sending`() = runTest {
@@ -139,8 +133,7 @@ class UpdateDraftStateForErrorTest {
         givenExistingDraftState(userId, messageId) {
             buildDraftStateWithApiMessageId(DraftSyncState.Sending, apiMessageId)
         }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
-        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState, sendingError)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, apiMessageId)
 
         // When
@@ -159,15 +152,14 @@ class UpdateDraftStateForErrorTest {
         val expectedState = DraftSyncState.Sent
         val sendingError = SendingError.MessageAlreadySent
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
-        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
-        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState, null)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
 
         // When
         updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
-        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState) }
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState, null) }
     }
 
     private fun buildDraftState(syncState: DraftSyncState) = DraftState(
@@ -201,21 +193,13 @@ class UpdateDraftStateForErrorTest {
     private fun givenUpdateDraftSyncStateSucceeds(
         userId: UserId,
         messageId: MessageId,
-        state: DraftSyncState
+        state: DraftSyncState,
+        error: SendingError?
     ) {
-        coEvery { draftStateRepository.updateDraftSyncState(userId, messageId, state) } returns Unit.right()
-    }
-
-    private fun givenUpdateSendingErrorStateSucceeds(
-        userId: UserId,
-        messageId: MessageId,
-        sendingError: SendingError
-    ) {
-        coEvery { draftStateRepository.updateSendingError(userId, messageId, sendingError) } returns Unit.right()
+        coEvery { draftStateRepository.updateDraftSyncState(userId, messageId, state, error) } returns Unit.right()
     }
 
     private fun givenMoveMessageBackFromSentToDraftsSucceeds(userId: UserId, messageId: MessageId) {
         coJustRun { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
     }
-
 }

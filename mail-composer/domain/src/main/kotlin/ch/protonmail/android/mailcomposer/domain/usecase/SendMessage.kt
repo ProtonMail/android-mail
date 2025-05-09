@@ -54,7 +54,7 @@ class SendMessage @Inject constructor(
                 Timber.e("SendMessage: failed to store draft with all fields: $it")
             }
 
-            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending).onLeft {
+            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending, null).onLeft {
                 Timber.e("SendMessage: error updating draft sync state: $it")
             }
 
