@@ -36,7 +36,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelId("label1")),
-                key = "k1",
+                key = "label1",
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -51,7 +51,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label2")),
-                key = "k2",
+                key = "label2",
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -66,7 +66,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label3")),
-                key = "k3",
+                key = "label3",
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,
@@ -84,7 +84,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelId("label1")),
-                key = "k4",
+                key = "label1",
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -99,7 +99,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label2")),
-                key = "k5",
+                key = "label2",
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -114,7 +114,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label3")),
-                key = "k6",
+                key = "label3",
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,
@@ -132,7 +132,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelId("label1")),
-                key = "k7",
+                key = "label1",
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -147,7 +147,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label2")),
-                key = "k8",
+                key = "label2",
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -162,7 +162,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("label3")),
-                key = "k9",
+                key = "label3",
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,
@@ -180,7 +180,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Document),
-                key = "k10",
+                key = LabelIdSample.Document.id,
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -195,7 +195,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
-                key = "k11",
+                key = LabelIdSample.Label2021.id,
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -210,7 +210,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
-                key = "k12",
+                key = LabelIdSample.Label2022.id,
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,
@@ -228,7 +228,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Document),
-                key = "k13",
+                key = LabelIdSample.Document.id,
                 text = TextUiModel.Text("document"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Transparent,
@@ -243,7 +243,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Label2021),
-                key = "k14",
+                key = LabelIdSample.Label2021.id,
                 text = TextUiModel.Text("Label2021"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Transparent,
@@ -258,7 +258,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Label2022),
-                key = "k15",
+                key = LabelIdSample.Label2022.id,
                 text = TextUiModel.Text("Label2022"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Transparent,
@@ -276,7 +276,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Document),
-                key = "k16",
+                key = LabelIdSample.Document.id,
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -291,7 +291,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
-                key = "k17",
+                key = LabelIdSample.Label2021.id,
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -306,7 +306,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
-                key = "k18",
+                key = LabelIdSample.Label2022.id,
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,
@@ -324,7 +324,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Label(LabelIdSample.Document),
-                key = "k19",
+                key = LabelIdSample.Document.id,
                 text = TextUiModel.Text("Label1"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Blue,
@@ -339,7 +339,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
-                key = "k20",
+                key = LabelIdSample.Label2021.id,
                 text = TextUiModel.Text("This is a label with a really unnecessary long name"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Red,
@@ -354,7 +354,7 @@ object LabelUiModelWithSelectedStateSample {
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
-                key = "k21",
+                key = LabelIdSample.Label2022.id,
                 text = TextUiModel.Text("Label3"),
                 icon = R.drawable.ic_proton_circle_filled,
                 iconTint = Color.Green,

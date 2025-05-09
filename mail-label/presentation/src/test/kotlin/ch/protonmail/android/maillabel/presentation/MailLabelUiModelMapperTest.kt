@@ -59,6 +59,7 @@ class MailLabelUiModelMapperTest {
         val expected = listOf(
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0")),
+                key = "0",
                 text = TextUiModel.Text("0"),
                 icon = R.drawable.ic_proton_folders_filled,
                 iconTint = Color(0),
@@ -70,6 +71,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.1")),
+                key = "0.1",
                 text = TextUiModel.Text("0.1"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color(0),
@@ -81,6 +83,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
+                key = "0.2",
                 text = TextUiModel.Text("0.2"),
                 icon = R.drawable.ic_proton_folders_filled,
                 iconTint = Color(0),
@@ -92,6 +95,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.1")),
+                key = "0.2.1",
                 text = TextUiModel.Text("0.2.1"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color(0),
@@ -103,6 +107,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.2")),
+                key = "0.2.2",
                 text = TextUiModel.Text("0.2.2"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color(0),
@@ -155,6 +160,7 @@ class MailLabelUiModelMapperTest {
         val expected = listOf(
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0")),
+                key = "0",
                 text = TextUiModel.Text("0"),
                 icon = R.drawable.ic_proton_folders_filled,
                 iconTint = Color.Green,
@@ -166,6 +172,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.1")),
+                key = "0.1",
                 text = TextUiModel.Text("0.1"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color.Green,
@@ -177,6 +184,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
+                key = "0.2",
                 text = TextUiModel.Text("0.2"),
                 icon = R.drawable.ic_proton_folders_filled,
                 iconTint = Color.Green,
@@ -188,6 +196,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.1")),
+                key = "0.2.1",
                 text = TextUiModel.Text("0.2.1"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color.Green,
@@ -199,6 +208,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.2")),
+                key = "0.2.2",
                 text = TextUiModel.Text("0.2.2"),
                 icon = R.drawable.ic_proton_folder_filled,
                 iconTint = Color.Green,
@@ -251,6 +261,7 @@ class MailLabelUiModelMapperTest {
         val expected = listOf(
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0")),
+                key = "0",
                 text = TextUiModel.Text("0"),
                 icon = R.drawable.ic_proton_folders,
                 iconTint = null,
@@ -262,6 +273,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.1")),
+                key = "0.1",
                 text = TextUiModel.Text("0.1"),
                 icon = R.drawable.ic_proton_folder,
                 iconTint = null,
@@ -273,6 +285,7 @@ class MailLabelUiModelMapperTest {
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
+                key = "0",
                 text = TextUiModel.Text("0.2"),
                 icon = R.drawable.ic_proton_folders,
                 iconTint = null,

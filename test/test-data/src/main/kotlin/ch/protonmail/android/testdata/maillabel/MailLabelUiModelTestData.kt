@@ -34,7 +34,7 @@ object MailLabelUiModelTestData {
 
     val spamFolder = MailLabelUiModel.System(
         id = MailLabelId.System.Spam,
-        key = "1",
+        key = MailLabelId.System.Spam.systemLabelId.labelId.id,
         text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
         icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
         iconTint = null,
@@ -45,7 +45,7 @@ object MailLabelUiModelTestData {
         spamFolder,
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
-            key = "f1",
+            key = "folder1",
             text = TextUiModel.Text("Folder1"),
             icon = R.drawable.ic_proton_folders_filled,
             iconTint = Color.Blue,
@@ -60,7 +60,7 @@ object MailLabelUiModelTestData {
         spamFolder.copy(isSelected = true),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
-            key = "f2",
+            key = "folder1",
             text = TextUiModel.Text("Folder1"),
             icon = R.drawable.ic_proton_folders_filled,
             iconTint = Color.Blue,
@@ -75,7 +75,7 @@ object MailLabelUiModelTestData {
         spamFolder,
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
-            key = "f3",
+            key = "folder1",
             text = TextUiModel.Text("Folder1"),
             icon = R.drawable.ic_proton_folders_filled,
             iconTint = Color.Blue,
@@ -90,7 +90,7 @@ object MailLabelUiModelTestData {
         spamFolder.copy(isSelected = true),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
-            key = "f4",
+            key = "folder1",
             text = TextUiModel.Text("Folder1"),
             icon = R.drawable.ic_proton_folders_filled,
             iconTint = Color.Blue,
@@ -102,7 +102,7 @@ object MailLabelUiModelTestData {
         ),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder2")),
-            key = "f5",
+            key = "folder2",
             text = TextUiModel.Text("Folder2"),
             icon = R.drawable.ic_proton_folder_filled,
             iconTint = Color.Red,
@@ -116,7 +116,7 @@ object MailLabelUiModelTestData {
     val archiveAndCustomFolder = listOf(
         MailLabelUiModel.System(
             id = MailLabelId.System.Archive,
-            key = "f6",
+            key = MailLabelId.System.Archive.systemLabelId.labelId.id,
             text = TextUiModel.TextRes(MailLabelId.System.Archive.systemLabelId.textRes()),
             icon = MailLabelId.System.Archive.systemLabelId.iconRes(),
             iconTint = null,
@@ -125,7 +125,7 @@ object MailLabelUiModelTestData {
         ),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
-            key = "f6",
+            key = "folder1",
             text = TextUiModel.Text("Folder1"),
             icon = R.drawable.ic_proton_folders_filled,
             iconTint = Color.Blue,
@@ -139,7 +139,7 @@ object MailLabelUiModelTestData {
     val customLabelList = MailLabelTestData.listOfCustomLabels.map {
         MailLabelUiModel.Custom(
             id = it.id,
-            key = "f7",
+            key = it.id.labelId.id,
             text = TextUiModel.Text(it.text),
             icon = R.drawable.ic_proton_circle_filled,
             iconTint = Color(it.color),
