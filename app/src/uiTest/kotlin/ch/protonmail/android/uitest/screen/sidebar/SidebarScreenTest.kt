@@ -135,6 +135,7 @@ internal class SidebarScreenTest : HiltInstrumentedTest() {
 
     private fun buildMailLabelFolderUiModel(text: String) = MailLabelUiModel.Custom(
         id = MailLabelId.Custom.Folder(LabelId(text)),
+        key = text,
         text = TextUiModel.Text(text),
         icon = R.drawable.ic_proton_folder_filled,
         iconTint = Color(0),
@@ -147,6 +148,7 @@ internal class SidebarScreenTest : HiltInstrumentedTest() {
 
     private fun buildMailLabelLabelUiModel(text: String) = MailLabelUiModel.Custom(
         id = MailLabelId.Custom.Label(LabelId(text)),
+        key = text,
         text = TextUiModel.Text(text),
         icon = R.drawable.ic_proton_circle_filled,
         iconTint = Color(0),

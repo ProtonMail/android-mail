@@ -200,6 +200,7 @@ fun MoveToBottomSheetContentPreview() {
             moveToDestinations = listOf(
                 MailLabelUiModel.System(
                     id = MailLabelId.System.Spam,
+                    key = "k1",
                     text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
                     icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
                     iconTint = null,
@@ -208,6 +209,7 @@ fun MoveToBottomSheetContentPreview() {
                 ),
                 MailLabelUiModel.Custom(
                     id = MailLabelId.Custom.Folder(LabelId("folder1")),
+                    key = "k2",
                     text = TextUiModel.Text("Folder1"),
                     icon = R.drawable.ic_proton_folders_filled,
                     iconTint = Color.Blue,
@@ -219,6 +221,7 @@ fun MoveToBottomSheetContentPreview() {
                 ),
                 MailLabelUiModel.Custom(
                     id = MailLabelId.Custom.Folder(LabelId("folder2")),
+                    key = "k3",
                     text = TextUiModel.Text("Folder2"),
                     icon = R.drawable.ic_proton_folder_filled,
                     iconTint = Color.Red,
@@ -230,6 +233,7 @@ fun MoveToBottomSheetContentPreview() {
                 ),
                 MailLabelUiModel.Custom(
                     id = MailLabelId.Custom.Folder(LabelId("folder3")),
+                    key = "k4",
                     text = TextUiModel.Text("Folder3"),
                     icon = R.drawable.ic_proton_folder_filled,
                     iconTint = Color.Yellow,
@@ -241,6 +245,7 @@ fun MoveToBottomSheetContentPreview() {
                 ),
                 MailLabelUiModel.Custom(
                     id = MailLabelId.Custom.Folder(LabelId("really long folder name")),
+                    key = "k5",
                     text = TextUiModel.Text("THis folder is really long so that truncation can be tested"),
                     icon = R.drawable.ic_proton_folders_filled,
                     iconTint = Color.Blue,

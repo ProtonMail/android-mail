@@ -33,9 +33,9 @@ fun MailLabels.toUiModels(
     counters: Map<LabelId, Int?>,
     selected: MailLabelId
 ): MailLabelsUiModel = MailLabelsUiModel(
-    systems = systemLabels.map { it.toSystemUiModel(settings, counters, selected) },
-    folders = folders.map { it.toCustomUiModel(settings, counters, selected) },
-    labels = labels.map { it.toCustomUiModel(settings, counters, selected) }
+    systems = systemLabels.map { it.toSystemUiModel(settings, counters, selected) }.distinctBy { it.key },
+    folders = folders.map { it.toCustomUiModel(settings, counters, selected) }.distinctBy { it.key },
+    labels = labels.map { it.toCustomUiModel(settings, counters, selected) }.distinctBy { it.key }
 )
 
 fun MailLabel.toUiModel(
@@ -59,6 +59,7 @@ fun MailLabel.System.toSystemUiModel(
     selected: MailLabelId?
 ): MailLabelUiModel.System = MailLabelUiModel.System(
     id = id,
+    key = id.labelId.id,
     text = text() as TextUiModel.TextRes,
     icon = iconRes(settings),
     iconTint = iconTintColor(settings),
@@ -72,6 +73,7 @@ fun MailLabel.Custom.toCustomUiModel(
     selected: MailLabelId?
 ): MailLabelUiModel.Custom = MailLabelUiModel.Custom(
     id = id,
+    key = id.labelId.id,
     text = text() as TextUiModel.Text,
     icon = iconRes(settings),
     iconTint = iconTintColor(settings),

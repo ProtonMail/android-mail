@@ -194,6 +194,6 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified },
                 id = label.labelId.id
             )
-        }.toImmutableList()
+        }.distinctBy { it.id }.toImmutableList()
 }
 

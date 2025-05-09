@@ -132,7 +132,7 @@ class MailboxItemUiModelMapper @Inject constructor(
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified },
                 id = label.labelId.id
             )
-        }.toImmutableList()
+        }.distinctBy { it.id }.toImmutableList()
 
     private fun ParticipantsResolvedNamesResult.toParticipantsUiModel(): ParticipantsUiModel {
         return if (this.list.any { it.name.isNotBlank() }) {

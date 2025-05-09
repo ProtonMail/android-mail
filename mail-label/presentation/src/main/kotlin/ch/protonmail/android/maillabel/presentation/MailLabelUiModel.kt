@@ -32,6 +32,7 @@ import me.proton.core.label.domain.entity.LabelId
 sealed interface MailLabelUiModel {
 
     val id: MailLabelId
+    val key: String
     val text: TextUiModel
     val icon: Int
     val iconTint: Color?
@@ -41,6 +42,7 @@ sealed interface MailLabelUiModel {
     @Immutable
     data class System(
         override val id: MailLabelId.System,
+        override val key: String,
         override val text: TextUiModel.TextRes,
         override val icon: Int,
         override val iconTint: Color?,
@@ -51,6 +53,7 @@ sealed interface MailLabelUiModel {
     @Immutable
     data class Custom(
         override val id: MailLabelId.Custom,
+        override val key: String,
         override val text: TextUiModel.Text,
         override val icon: Int,
         override val iconTint: Color?,

@@ -173,6 +173,7 @@ private fun PreviewSidebarLabelFolderItems() {
                 items = listOf(
                     MailLabelUiModel.Custom(
                         id = MailLabelId.Custom.Folder(LabelId("folder1")),
+                        key = "k1",
                         text = TextUiModel.Text("Folder1"),
                         icon = R.drawable.ic_proton_folders_filled,
                         iconTint = Color.Blue,
@@ -184,6 +185,7 @@ private fun PreviewSidebarLabelFolderItems() {
                     ),
                     MailLabelUiModel.Custom(
                         id = MailLabelId.Custom.Folder(LabelId("folder2")),
+                        key = "k2",
                         text = TextUiModel.Text("Folder2"),
                         icon = R.drawable.ic_proton_folder_filled,
                         iconTint = Color.Red,
@@ -195,6 +197,7 @@ private fun PreviewSidebarLabelFolderItems() {
                     ),
                     MailLabelUiModel.Custom(
                         id = MailLabelId.Custom.Folder(LabelId("folder3")),
+                        key = "k3",
                         text = TextUiModel.Text("Folder3"),
                         icon = R.drawable.ic_proton_folder_filled,
                         iconTint = Color.Yellow,
@@ -212,6 +215,7 @@ private fun PreviewSidebarLabelFolderItems() {
                 items = listOf(
                     MailLabelUiModel.Custom(
                         id = MailLabelId.Custom.Label(LabelId("label1")),
+                        key = "k4",
                         text = TextUiModel.Text("Label1"),
                         icon = R.drawable.ic_proton_circle_filled,
                         iconTint = Color.Green,
@@ -223,6 +227,7 @@ private fun PreviewSidebarLabelFolderItems() {
                     ),
                     MailLabelUiModel.Custom(
                         id = MailLabelId.Custom.Label(LabelId("label2")),
+                        key = "k5",
                         text = TextUiModel.Text("Label2"),
                         icon = R.drawable.ic_proton_circle_filled,
                         iconTint = Color.Cyan,
