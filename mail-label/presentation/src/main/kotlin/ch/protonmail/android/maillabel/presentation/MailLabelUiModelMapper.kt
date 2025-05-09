@@ -48,9 +48,9 @@ fun MailLabel.toUiModel(
 }
 
 fun MailLabels.toUiModels(settings: FolderColorSettings): MailLabelsUiModel = MailLabelsUiModel(
-    systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) },
-    folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) },
-    labels = labels.map { it.toCustomUiModel(settings, emptyMap(), null) }
+    systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) }.distinctBy { it.key },
+    folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) }.distinctBy { it.key },
+    labels = labels.map { it.toCustomUiModel(settings, emptyMap(), null) }.distinctBy { it.key }
 )
 
 fun MailLabel.System.toSystemUiModel(
