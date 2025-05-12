@@ -25,14 +25,17 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
+import ch.protonmail.android.mailcomposer.domain.annotation.IsExternalAddressSendingEnabled
 import kotlinx.coroutines.flow.first
 import me.proton.core.user.domain.entity.UserAddress
+import me.proton.core.user.domain.entity.isExternal
 import javax.inject.Inject
 
 class GetComposerSenderAddresses @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val isPaidUser: IsPaidMailUser,
-    private val observeUserAddresses: ObserveUserAddresses
+    private val observeUserAddresses: ObserveUserAddresses,
+    @IsExternalAddressSendingEnabled val externalSendingEnabled: Boolean
 ) {
 
     suspend operator fun invoke(): Either<Error, List<UserAddress>> {
@@ -43,7 +46,7 @@ class GetComposerSenderAddresses @Inject constructor(
         }
 
         val addresses = observeUserAddresses(userId).first()
-            .filter { it.enabled && it.canSend }
+            .filter { it.enabledAndCanSend() }
 
         return if (addresses.size < 2 && !isPaidUser) {
             Error.UpgradeToChangeSender.left()
@@ -51,6 +54,9 @@ class GetComposerSenderAddresses @Inject constructor(
             addresses.right()
         }
     }
+
+    private fun UserAddress.enabledAndCanSend() = enabled && canSend &&
+        (externalSendingEnabled || isExternal().not())
 
     sealed interface Error {
         object UpgradeToChangeSender : Error

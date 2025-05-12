@@ -117,9 +117,7 @@ internal class ComposerViewModel2Test {
         every { this@mockk.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } just runs
     }
     private val attachmentsFacade = mockk<AttachmentsFacade>()
-    private val addressesFacade = mockk<AddressesFacade> {
-        coEvery { this@mockk.refreshSenderAddresses() } just runs
-    }
+    private val addressesFacade = mockk<AddressesFacade>()
     private val messageAttributesFacade = mockk<MessageAttributesFacade>()
     private val messageContentFacade = mockk<MessageContentFacade>()
     private val messageParticipantsFacade = mockk<MessageParticipantsFacade> {

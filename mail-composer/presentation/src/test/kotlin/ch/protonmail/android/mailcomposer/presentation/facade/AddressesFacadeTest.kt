@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
-import ch.protonmail.android.mailcomposer.domain.usecase.RefreshComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationFailure
 import io.mockk.coEvery
@@ -43,7 +42,6 @@ internal class AddressesFacadeTest {
     private val getPrimaryAddress = mockk<GetPrimaryAddress>(relaxed = true)
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses>(relaxed = true)
     private val validateSenderAddress = mockk<ValidateSenderAddress>(relaxed = true)
-    private val refreshSenderAddresses = mockk<RefreshComposerSenderAddresses>(relaxed = true)
 
     private lateinit var addressesFacade: AddressesFacade
 
@@ -52,8 +50,7 @@ internal class AddressesFacadeTest {
         addressesFacade = AddressesFacade(
             getPrimaryAddress,
             getComposerSenderAddresses,
-            validateSenderAddress,
-            refreshSenderAddresses
+            validateSenderAddress
         )
     }
 

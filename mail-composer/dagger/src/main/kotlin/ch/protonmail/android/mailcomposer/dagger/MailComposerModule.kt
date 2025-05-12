@@ -45,6 +45,7 @@ import ch.protonmail.android.composer.data.repository.MessagePasswordRepositoryI
 import ch.protonmail.android.composer.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.annotation.IsComposerV2Enabled
+import ch.protonmail.android.mailcomposer.domain.annotation.IsExternalAddressSendingEnabled
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.ContactsPermissionRepository
@@ -53,6 +54,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.MessageExpirationTim
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.featureflags.IsComposerV2FeatureEnabled
+import ch.protonmail.android.mailcomposer.domain.usecase.featureflags.IsExternalAddressEnabled
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import dagger.Binds
 import dagger.Module
@@ -143,6 +145,11 @@ abstract class MailComposerModule {
         @Singleton
         @IsComposerV2Enabled
         fun provideComposerV2FeatureFlag(isEnabled: IsComposerV2FeatureEnabled) = isEnabled()
+
+        @Provides
+        @Singleton
+        @IsExternalAddressSendingEnabled
+        fun provideExternalAddressFeatureFlag(isEnabled: IsExternalAddressEnabled) = isEnabled()
     }
 
     @Binds

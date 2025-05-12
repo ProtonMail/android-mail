@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
+import javax.inject.Provider
 
 class GetComposerSenderAddressesTest {
 
@@ -47,16 +48,22 @@ class GetComposerSenderAddressesTest {
         coEvery { this@mockk(userId) } returns flowOf(addresses)
     }
 
-    private val getComposerSenderAddresses = GetComposerSenderAddresses(
-        observePrimaryUserId,
-        isPaidMailUser,
-        observeUserAddresses
-    )
+    private val provideIsExternalAddressesEnabled = mockk<Provider<Boolean>>()
+
+    private val getComposerSenderAddresses by lazy {
+        GetComposerSenderAddresses(
+            observePrimaryUserId = observePrimaryUserId,
+            isPaidUser = isPaidMailUser,
+            observeUserAddresses = observeUserAddresses,
+            externalSendingEnabled = provideIsExternalAddressesEnabled.get()
+        )
+    }
 
     @Test
     fun `returns paid feature error when user account has 1 send enabled address only and no paid mail subscription`() =
         runTest {
             // Given
+            externalAddressesEnabled(true)
             coEvery { isPaidMailUser(userId) } returns false.right()
 
             val addresses = listOf(
@@ -78,6 +85,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `returns list of addresses to free user when addresses are send-enabled`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         coEvery { isPaidMailUser(userId) } returns false.right()
 
         // When
@@ -90,6 +98,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `returns list of user addresses when user has a paid mail subscription`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         coEvery { isPaidMailUser(userId) } returns true.right()
 
         // When
@@ -102,6 +111,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `excludes disabled and includes external accounts with send permission`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         val allUserAddresses = listOf(
             UserAddressSample.PrimaryAddress,
             UserAddressSample.DisabledAddress,
@@ -122,9 +132,35 @@ class GetComposerSenderAddressesTest {
         Assert.assertEquals(expected.right(), actual)
     }
 
+
+    @Test
+    fun `excludes external accounts if FF disabled`() = runTest {
+        // Given
+        externalAddressesEnabled(false)
+        val allUserAddresses = listOf(
+            UserAddressSample.PrimaryAddress,
+            UserAddressSample.DisabledAddress,
+            UserAddressSample.ExternalAddressWithSend,
+            UserAddressSample.ExternalAddressWithoutSend
+        )
+        coEvery { isPaidMailUser(userId) } returns true.right()
+        coEvery { observeUserAddresses(userId) } returns flowOf(allUserAddresses)
+
+        // When
+        val actual = getComposerSenderAddresses()
+
+        // Then
+        val expected = listOf(
+            UserAddressSample.PrimaryAddress
+        )
+        Assert.assertEquals(expected.right(), actual)
+    }
+
+
     @Test
     fun `allows free users to switch to their external address`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         val allUserAddresses = listOf(
             UserAddressSample.PrimaryAddress,
             UserAddressSample.ExternalAddressWithSend
@@ -146,6 +182,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `returns failed getting primary user error when no primary user exists`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         every { observePrimaryUserId() } returns flowOf(null)
 
         // When
@@ -158,6 +195,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `returns failed determining user subscription when is paid user fails`() = runTest {
         // Given
+        externalAddressesEnabled(true)
         coEvery { isPaidMailUser(userId) } returns DataError.Local.NoDataCached.left()
 
         // When
@@ -165,5 +203,11 @@ class GetComposerSenderAddressesTest {
 
         // Then
         Assert.assertEquals(GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription.left(), actual)
+    }
+
+    private fun externalAddressesEnabled(value: Boolean) {
+        every {
+            provideIsExternalAddressesEnabled.get()
+        } returns value
     }
 }
