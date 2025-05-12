@@ -40,7 +40,7 @@
   <string name="mailbox_default_sender">(brez pošiljatelja)</string>
   <string name="mailbox_error_message_offline">Ste brez povezave, predmetov ni mogoče naložiti</string>
   <string name="mailbox_error_message_generic">Nalaganje poštnega predala ni uspelo</string>
-  <string name="mailbox_error_search_input_invalid">Please include only alphanumeric characters in your search term.</string>
+  <string name="mailbox_error_search_input_invalid">V iskalni niz vključite samo alfanumerične znake.</string>
   <string name="mailbox_error_message_unexpected">Prišlo je do nepričakovane napake</string>
   <string name="mailbox_is_empty_title">Ni sporočil</string>
   <string name="mailbox_is_empty_description">Vse je posodobljeno</string>

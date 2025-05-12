@@ -85,8 +85,8 @@
   <!-- message expiration -->
   <string name="expiration_expired">Poteklo</string>
   <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_hours_arg">%d ur</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="expiration_auto_delete_hour">To sporočilo bo samodejno izbrisano čez manj kot eno uro</string>
   <string name="expiration_auto_delete_day">To sporočilo bo samodejno izbrisano čez manj kot en dan</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">To sporočilo bo samodejno izbrisano v %s</string>

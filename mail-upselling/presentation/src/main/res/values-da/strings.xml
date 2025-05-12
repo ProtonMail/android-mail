@@ -69,7 +69,7 @@
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra email addresses for you</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Understøttelse af 3 brugertilpassede e-mail-domæner</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Ubegrænsede hide-my-email-aliasser</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedicated customer support</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikeret kundesupport</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">Ultra hurtig og privat VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Krypteret adgangskodehåndtering</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Krypteret sky-lagring til billeder og dokumenter</string>
@@ -94,7 +94,7 @@
   <string name="upselling_month">/måned</string>
   <string name="upselling_year">/år</string>
   <string name="upselling_get_button">Få %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Få 1 måned for %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d måned</item>
     <item quantity="other">%d måneder</item>
@@ -119,7 +119,7 @@
     <item quantity="other">%d flere funktioner</item>
   </plurals>
   <string name="upselling_onboarding_get_plan">Få %s</string>
-  <string name="upselling_onboarding_continue_with_proton_free">Continue with Proton Free</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Fortsæt med Proton Free</string>
   <string name="upselling_onboarding_save_label">Gem %s%%</string>
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Luk</string>

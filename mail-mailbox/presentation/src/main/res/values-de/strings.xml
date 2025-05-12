@@ -39,7 +39,7 @@
   <string name="mailbox_error_search_input_invalid">Bitte verwende für deinen Suchbegriff nur alphanumerische Zeichen.</string>
   <string name="mailbox_error_message_unexpected">Etwas ging unerwartet schief</string>
   <string name="mailbox_is_empty_title">Keine Nachrichten</string>
-  <string name="mailbox_is_empty_description">Du bist auf den neusten Stand</string>
+  <string name="mailbox_is_empty_description">Du bist auf dem neuesten Stand</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Keine ungelesenen Nachrichten</string>
   <string name="mailbox_is_empty_folder_description">Dieser Ordner ist leer</string>
   <string name="mailbox_is_empty_spam_description">Dein Spam-Ordner ist leer</string>

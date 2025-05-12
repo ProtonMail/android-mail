@@ -24,8 +24,8 @@
   <string name="upselling_mailbox_plus_description_override">Za več prostora za shranjevanje in premijskih funkcij</string>
   <string name="upselling_mailbox_plus_title">Nadgradite na Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Časovno omejena ponudba. Kadar koli lahko prekličete.</string>
+  <string name="upselling_mailbox_plus_promo_title">Preizkusite Mail Plus za %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Enostavno pošiljajte e-pošto skupini in uživajte v drugih premijskih funkcijah z Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Združite svoje stike v skupine</string>
@@ -39,8 +39,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Uporabite svoj lastni mobilni podpis in uživajte v drugih premijskih funkcijah z Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Prilagodite svoj podpis</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Uživajte v bolj urejenem poštnem predalu in izkoristite druge premijske funkcije z Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Počisti stare smeti in neželeno pošto</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostora za shranjevanje</string>
   <string name="upselling_plus_feature_email_addresses">10 e-poštnih naslovov</string>
@@ -56,7 +56,7 @@
   <string name="upselling_unlimited_feature_drive">Varna shramba v oblaku</string>
   <string name="upselling_unlimited_feature_pass">Upravitelj šifriranih gesel</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
+  <string name="upselling_onboarding_premium_value_included">Vključuje premijske funkcije</string>
   <string name="upselling_onboarding_feature_e2e">Šifriranje od konca do konca</string>
   <string name="upselling_onboarding_feature_folders_labels">Neomejeno število map in oznak</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB prostora in 1 e-pošta</string>
@@ -78,7 +78,7 @@
   <string name="upselling_comparison_table_storage">Shramba</string>
   <string name="upselling_comparison_table_email_addresses">E-poštni naslovi</string>
   <string name="upselling_comparison_table_custom_email_domain">E-poštna domena po meri</string>
-  <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
+  <string name="upselling_comparison_table_desktop_app">Dostop do namizne aplikacije</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Neomejeno število map in oznak</string>
   <string name="upselling_comparison_table_priority_support">Prednostna podpora strankam</string>
   <!-- Rectangular plan buttons -->
@@ -86,15 +86,15 @@
   <string name="upselling_select_plan_year">1 leto</string>
   <string name="upselling_select_plan_month">1 mesec</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
-  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text">Samodejno se obnovi po enaki ceni in pod enakimi pogoji, razen če je preklicano.</string>
+  <string name="upselling_auto_renew_text_promo">Ponudba dobrodošlice. Samodejno se obnovi po ceni %s %s%s, razen če je preklicana.</string>
+  <string name="upselling_auto_renew_text_promo_short">Ponudba dobrodošlice. Samodejno se obnovi po ceni %s %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Samodejno se obnovi po %s %s%s, razen če je preklicano.</string>
   <string name="upselling_discount_tag">PRIHRANITE %s%%</string>
   <string name="upselling_month">/mesec</string>
   <string name="upselling_year">/leto</string>
   <string name="upselling_get_button">Pridobi %s</string>
-  <string name="upselling_get_button_promotional">Get 1 month for %s %s</string>
+  <string name="upselling_get_button_promotional">Pridobite 1 mesec za %s %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mesec</item>
     <item quantity="two">%d meseca</item>
@@ -130,7 +130,7 @@
   <string name="post_subscription_continue_button">Nadaljuj</string>
   <string name="post_subscription_got_it_button">Razumem</string>
   <string name="post_subscription_welcome_page_title">Dobrodošli pri Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_message">Hvala, ker nas podpirate pri ohranjanju interneta varnega in zasebnega za vse.</string>
   <string name="post_subscription_welcome_page_unlocked">Odklenili ste</string>
   <string name="post_subscription_plus_feature_storage">15 GB prostora za shranjevanje</string>
   <string name="post_subscription_plus_feature_email_addresses">10 dodatnih e-poštnih naslovov</string>
@@ -141,13 +141,13 @@
   <string name="post_subscription_plus_feature_customer_support">Prednostna podpora strankam</string>
   <string name="post_subscription_discover_apps_page_title">Odkrijte vse aplikacije</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Odklenili ste funkcijo skupne uporabe koledarja in 8-krat več koledarjev.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Vaša nova naročnina je povečala vašo shrambo na 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_vpn_message">Najboljši VPN za hitrost in varnost.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_proton_pass_message">Varna shramba gesel in enostavna prijava v vaše račune.</string>
   <string name="post_subscription_button_installed">Nameščeno</string>
   <string name="post_subscription_button_get_the_app">Pridobi aplikacijo</string>
 </resources>

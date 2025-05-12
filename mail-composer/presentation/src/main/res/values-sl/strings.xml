@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Velikost priponk je omejena na %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Vnovično šifriranje priponk ni bilo uspešno. Iz varnostnih razlogov so bile vse priponke odstranjene.</string>
   <string name="composer_attachment_not_found">Priponke ni bilo mogoče najti.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
+  <string name="composer_attachment_error_draft_loading">Izvirnega osnutka sporočila ni mogoče naložiti.</string>
   <string name="composer_attachment_error_saving_attachment">Priponke ni bilo mogoče shraniti. Poskusite znova.</string>
   <string name="composer_warning_local_data_shown">Zadnje različice tega osnutka ni bilo mogoče naložiti. Vsaka sprememba bo vplivala na njeno vsebino.</string>
   <string name="composer_button_add_password">Dodaj geslo</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Obvestilo pred pošiljanjem</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pošiljanje sporočil z naslova @pm.me je plačljiva funkcija. Sporočilo bo poslano z vašega privzetega naslova.</string>
   <string name="composer_sender_changed_original_address_disabled">Izbrani naslov pošiljatelja je onemogočen. Sporočilo bo poslano z vašega privzetega naslova.</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Izvirnega naslova pošiljatelja ni bilo mogoče pridobiti. Vaše sporočilo bo poslano z vašega privzetega naslova.</string>
   <string name="composer_sender_changed_dialog_confirm_button">V redu</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Sestavi</string>

@@ -81,7 +81,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de traslado</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_move_conversation">Conversación movida a $%s</string>
+  <string name="mailbox_action_move_conversation">Conversación movida a %s</string>
   <string name="mailbox_action_move_message">Se ha movido el mensaje a %s.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se han encontrado resultados.</string>

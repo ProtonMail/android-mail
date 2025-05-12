@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">E-mailadresse er ugyldig</string>
   <string name="composer_error_invalid_sender">Afsenderadresse er ugyldig</string>
   <string name="change_sender_button_content_description">Skift afsender</string>
-  <string name="composer_change_sender_paid_feature">You need a paid Proton Mail subscription to change the sender address</string>
+  <string name="composer_change_sender_paid_feature">Du skal have et betalt Proton Mail-abonnement for at ændre afsenderadressen</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke ændre afsender, da hentning af brugerens abonnement mislykkedes. Prøv igen.</string>
   <string name="composer_error_store_draft_sender_address">Lagring af denne kladdes afsenderadresse mislykkedes</string>
   <string name="composer_error_store_draft_body">Opbevaring af denne kladdes indholdstekst mislykkedes</string>

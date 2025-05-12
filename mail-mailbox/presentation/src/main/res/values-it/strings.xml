@@ -96,8 +96,8 @@
   <string name="mailbox_action_clear_operation_scheduled">"Lo svuotamento è programmato"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Spazio quasi pieno</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre l\'80%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre il 90%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre l\'80%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre il 90%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Non ricordarmelo di nuovo</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
