@@ -18,15 +18,14 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import ch.protonmail.android.mailcommon.presentation.mapper.MarkdownMapper
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.theme.ProtonDimens
@@ -34,32 +33,30 @@ import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
 internal fun SocialProofDescription() {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = ProtonDimens.DefaultSpacing)
-            .padding(top = ProtonDimens.SmallSpacing)
-    ) {
-        Text(
-            modifier = Modifier,
-            text = stringResource(R.string.upselling_description_left),
-            style = ProtonTheme.typography.body2Regular,
-            color = UpsellingLayoutValues.SocialProofDescColor,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
-        Text(
-            modifier = Modifier,
-            text = stringResource(R.string.upselling_description_right),
-            style = ProtonTheme.typography.body2Medium,
-            color = UpsellingLayoutValues.subtitleColor,
-            textAlign = TextAlign.Center
+    val descMarkdown = stringResource(R.string.upselling_description_social_proof)
+    val desc = remember(Unit) {
+        MarkdownMapper.parseBoldToAnnotatedString(
+            descMarkdown,
+            boldColor = UpsellingLayoutValues.subtitleColor,
+            normalColor = UpsellingLayoutValues.SocialProofDescColor
         )
     }
+
     Text(
         modifier = Modifier
             .padding(horizontal = ProtonDimens.DefaultSpacing)
             .padding(top = ProtonDimens.SmallSpacing),
-        text = stringResource(R.string.upselling_description_second),
+        text = desc,
+        style = ProtonTheme.typography.body2Medium,
+        color = UpsellingLayoutValues.subtitleColor,
+        textAlign = TextAlign.Center
+    )
+
+    Text(
+        modifier = Modifier
+            .padding(horizontal = ProtonDimens.DefaultSpacing)
+            .padding(top = ProtonDimens.SmallSpacing),
+        text = stringResource(R.string.upselling_description_social_proof_second),
         style = ProtonTheme.typography.body2Regular,
         color = UpsellingLayoutValues.SocialProofDescColor,
         textAlign = TextAlign.Center

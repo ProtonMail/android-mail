@@ -37,12 +37,11 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
         upsellingEntryPoint: UpsellingEntryPoint.Feature,
         variant: DynamicPlansVariant
     ): DynamicPlanDescriptionUiModel {
-        if (!shouldOverrideEntitlementsList)
-            return DynamicPlanDescriptionUiModel.Simple(getDefaultDescription(dynamicPlan))
-
         if (variant == DynamicPlansVariant.SocialProof) {
             return DynamicPlanDescriptionUiModel.SocialProof
         }
+        if (!shouldOverrideEntitlementsList)
+            return DynamicPlanDescriptionUiModel.Simple(getDefaultDescription(dynamicPlan))
 
         val description = when (dynamicPlan.name) {
             DynamicPlansOneClickIds.UnlimitedPlanId -> getUnlimitedDescription()
