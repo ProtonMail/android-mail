@@ -18,14 +18,22 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen
 
+import android.text.Spanned
+import android.text.style.StyleSpan
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import ch.protonmail.android.mailcommon.presentation.mapper.MarkdownMapper
+import androidx.compose.ui.text.withStyle
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.theme.ProtonDimens
@@ -33,10 +41,11 @@ import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
 internal fun SocialProofDescription() {
-    val descMarkdown = stringResource(R.string.upselling_description_social_proof)
+    val ctx = LocalContext.current
     val desc = remember(Unit) {
-        MarkdownMapper.parseBoldToAnnotatedString(
-            descMarkdown,
+        val desc = ctx.resources
+            .getText(R.string.upselling_description_social_proof)
+        desc.toBoldedAnnotatedString(
             boldColor = UpsellingLayoutValues.subtitleColor,
             normalColor = UpsellingLayoutValues.SocialProofDescColor
         )
@@ -61,4 +70,23 @@ internal fun SocialProofDescription() {
         color = UpsellingLayoutValues.SocialProofDescColor,
         textAlign = TextAlign.Center
     )
+}
+
+private fun CharSequence.toBoldedAnnotatedString(boldColor: Color, normalColor: Color): AnnotatedString {
+    val sequence = this
+    return buildAnnotatedString {
+        val full = sequence.toString()
+        withStyle(SpanStyle(color = normalColor)) {
+            append(full)
+        }
+        val spanned = sequence as? Spanned
+        spanned?.getSpans(0, full.length, StyleSpan::class.java)?.filter { it.style == android.graphics.Typeface.BOLD }
+            ?.forEach { span ->
+                addStyle(
+                    SpanStyle(color = boldColor, fontWeight = FontWeight.Bold),
+                    start = spanned.getSpanStart(span),
+                    end = spanned.getSpanEnd(span)
+                )
+            }
+    }
 }
