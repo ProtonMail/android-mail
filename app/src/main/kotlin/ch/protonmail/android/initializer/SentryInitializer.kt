@@ -56,7 +56,9 @@ class SentryInitializer : Initializer<Unit> {
 
         entryPoint.accountSentryHubBuilder().invoke(
             sentryDsn = BuildConfig.ACCOUNT_SENTRY_DSN
-        )
+        ) { options ->
+            options.isEnableUncaughtExceptionHandler = false // MAILANDR-2602
+        }
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
