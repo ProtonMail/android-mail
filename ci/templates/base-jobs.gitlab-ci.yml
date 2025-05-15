@@ -1,7 +1,7 @@
 .build_job:
   stage: build
   tags:
-    - xlarge-k8s
+    - android-xlarge
   artifacts:
     paths:
       - app/build/outputs
