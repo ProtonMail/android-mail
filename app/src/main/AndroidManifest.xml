@@ -39,11 +39,13 @@
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:memtagMode="async"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:taskAffinity=""
+      
         android:theme="@style/ProtonTheme.Mail"
         tools:replace="android:theme,android:supportsRtl">
         <profileable
