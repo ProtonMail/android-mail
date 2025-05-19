@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Ofertă de bun venit. Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
   <string name="upselling_auto_renew_text_promo_short">Ofertă de bun venit. Autoreînnoire cu %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s%s dacă nu e anulată.</string>
+  <string name="upselling_social_proof_reviews">Peste 3.500 de recenzii</string>
+  <string name="upselling_description_social_proof">Apreciat de peste <b>1 milion</b> de abonați plătitori.</string>
+  <string name="upselling_description_social_proof_second">Îmbunătățiți-vă productivitatea astăzi.</string>
   <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>
   <string name="upselling_year">/an</string>

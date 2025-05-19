@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Вітальная прапанова. Аўтаматычнае падаўжэнне %s %s%s, пакуль не будзе скасавана.</string>
   <string name="upselling_auto_renew_text_promo_short">Вітальная прапанова. Аўтаматычнае падаўжэнне за %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Аўтаматычнае падаўжэнне %s %s%s, пакуль не будзе скасавана.</string>
+  <string name="upselling_social_proof_reviews">3500+ ВОДГУКАЎ</string>
+  <string name="upselling_description_social_proof">Упадабалі больш за <b>1 мільён платных падпісчыкаў.</b></string>
+  <string name="upselling_description_social_proof_second">Палепшыце сваю прадукцыйнасць сёння.</string>
   <string name="upselling_discount_tag">ЭКАНОМІЯ %s%%</string>
   <string name="upselling_month">/месяц</string>
   <string name="upselling_year">/год</string>

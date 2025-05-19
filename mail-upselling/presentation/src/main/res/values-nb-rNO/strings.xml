@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk %s%s%s med mindre avbestilling.</string>
   <string name="upselling_auto_renew_text_promo_short">Velkomsttilbud. Fornyes automatisk til %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Fornyes automatisk %s%s%s med mindre avbestilling.</string>
+  <string name="upselling_social_proof_reviews">3,500+ ANMELDELSER</string>
+  <string name="upselling_description_social_proof">Elsket av over <b>1 million betalende abonnenter.</b></string>
+  <string name="upselling_description_social_proof_second">Oppgrader produktiviteten din i dag.</string>
   <string name="upselling_discount_tag">Spar %s%%</string>
   <string name="upselling_month">/måned</string>
   <string name="upselling_year">/år</string>

@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Oferta de bienvenida. Se renueva automáticamente para %s %s%s a menos que se cancele.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta de bienvenida. Se renueva automáticamente por %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Se renueva automáticamente para %s %s%s a menos que se cancele.</string>
+  <string name="upselling_social_proof_reviews">MÁS DE 3.500 RESEÑAS</string>
+  <string name="upselling_description_social_proof">Con la confianza de más de <b>1+ millón de suscriptores de pago.</b></string>
+  <string name="upselling_description_social_proof_second">Actualice su productividad hoy mismo.</string>
   <string name="upselling_discount_tag">AHORRE UN %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_year">/año</string>

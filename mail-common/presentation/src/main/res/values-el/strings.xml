@@ -35,11 +35,11 @@
   <string name="action_trash_description">Μετακίνηση στα Διαγραμμένα</string>
   <string name="action_delete_description">Διαγραφή</string>
   <string name="action_archive_description">Αρχειοθετημένα</string>
-  <string name="action_spam_description">Μετακίνηση στα ενοχλητικά</string>
+  <string name="action_spam_description">Μετακίνηση στα ανεπιθύμητα</string>
   <string name="action_view_in_light_mode_description">Προβολή μηνύματος σε φωτεινή διαμόρφωση</string>
   <string name="action_view_in_dark_mode_description">Προβολή μηνύματος σε σκούρα διαμόρφωση</string>
   <string name="action_print_description">Εκτύπωση</string>
-  <string name="action_view_headers_description">Προβολή Κεφαλίδων</string>
+  <string name="action_view_headers_description">Προβολή κεφαλίδων</string>
   <string name="action_view_html_description">Προβολή HTML</string>
   <string name="action_report_phishing_description">Αναφορά ηλεκτρονικού «ψαρέματος»</string>
   <string name="action_remind_description">Υπενθύμισέ μου</string>

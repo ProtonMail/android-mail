@@ -27,7 +27,7 @@
   <string name="attachment_permission_dialog_action_button">设置</string>
   <string name="attachment_type_description">%1$s文件</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">压缩</string>
+  <string name="attachment_type_archive">归档</string>
   <string name="attachment_type_image">图像</string>
   <string name="attachment_type_video">视频</string>
   <string name="attachment_type_audio">音频</string>
@@ -40,7 +40,7 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">完成</string>
-  <string name="bottom_sheet_archive_action">同时存档？</string>
+  <string name="bottom_sheet_archive_action">同时归档？</string>
   <string name="bottom_sheet_label_as_title">加标签...</string>
   <string name="bottom_sheet_more_header_message_from">来自 %s 的邮件</string>
   <!-- Message body link actions -->

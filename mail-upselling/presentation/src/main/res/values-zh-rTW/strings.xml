@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">歡迎優惠。除非取消，否則會在 %s %s%s 時自動續約。</string>
   <string name="upselling_auto_renew_text_promo_short">歡迎優惠。會在 %s %s%s 時自動續約。</string>
   <string name="upselling_auto_renew_text_standard">除非取消，否則會在 %s %s%s 時自動續約。</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">儲存 %s%%</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/年</string>

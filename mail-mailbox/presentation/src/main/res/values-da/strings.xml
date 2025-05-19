@@ -54,7 +54,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Slet samtale</item>
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="other">Slet %d samtaler</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Slet besked</item>
@@ -74,7 +74,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Samtale er permanent slettet</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="other">%d samtaler slettet permanent</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etikettering mislykkedes</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Etiketter kunne ikke hentes</string>

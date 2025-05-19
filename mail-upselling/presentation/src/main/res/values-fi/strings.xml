@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Tervetuliaistarjous. Uudistuu automaattisesti %s %s%s, ellei peruuta.</string>
   <string name="upselling_auto_renew_text_promo_short">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Uudistuu automaattisesti %s %s%s, ellei peruuta.</string>
+  <string name="upselling_social_proof_reviews">YLI 3500 ARVOSTELUA</string>
+  <string name="upselling_description_social_proof">Yli <b>1+ miljoonan maksavan tilaajan rakastama.</b></string>
+  <string name="upselling_description_social_proof_second">Päivitä tuottavuutesi tänään.</string>
   <string name="upselling_discount_tag">SÄÄSTÄ %s %%</string>
   <string name="upselling_month">/kuukausi</string>
   <string name="upselling_year">/vuosi</string>

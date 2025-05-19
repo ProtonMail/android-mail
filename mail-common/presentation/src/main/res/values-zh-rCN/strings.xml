@@ -58,7 +58,7 @@
   <string name="action_move_content_description">移至…</string>
   <string name="action_trash_content_description">移至回收站</string>
   <string name="action_delete_content_description">删除</string>
-  <string name="action_archive_content_description">存档</string>
+  <string name="action_archive_content_description">归档</string>
   <string name="action_spam_content_description">标为垃圾邮件</string>
   <string name="action_view_in_light_mode_content_description">在浅色模式下阅读邮件</string>
   <string name="action_view_in_dark_mode_content_description">在深色模式下阅读邮件</string>

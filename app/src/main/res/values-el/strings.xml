@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Αποσύνδεση</string>
-  <string name="dialog_sign_out_account_description">Θέλετε σίγουρα να αποσυνδεθείτε;</string>
+  <string name="dialog_sign_out_account_description">Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;</string>
   <string name="dialog_sign_out_account_confirm">Ναι</string>
   <string name="dialog_sign_out_account_cancel">Όχι</string>
   <string name="dialog_remove_account_title">Αφαίρεση Λογαριασμού</string>

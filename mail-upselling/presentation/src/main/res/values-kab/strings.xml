@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">SAVE %s%%</string>
   <string name="upselling_month">/ayyur</string>
   <string name="upselling_year">/n useggas</string>

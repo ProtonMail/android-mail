@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">ウェルカムオファー。キャンセルしない限り、 %s %s%s で自動更新します。</string>
   <string name="upselling_auto_renew_text_promo_short">歓迎オファー。 %s %s%s で自動更新。</string>
   <string name="upselling_auto_renew_text_standard">キャンセルしない限り、 %s %s%s で自動更新します。</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">%s%%節約</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/ 年間</string>

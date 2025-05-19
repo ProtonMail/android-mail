@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Üdvözlő ajánlat. Automatikusan megújul %s %s%s, hacsak nem mondja mégsem.</string>
   <string name="upselling_auto_renew_text_promo_short">Üdvözlő ajánlat. Automatikusan megújul %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Automatikusan megújul %s %s%s, hacsak nem mondja mégsem.</string>
+  <string name="upselling_social_proof_reviews">3500+ értékelés</string>
+  <string name="upselling_description_social_proof">Több mint <b>1+ millió</b> fizető előfizető által kedvelt.</string>
+  <string name="upselling_description_social_proof_second">Fokozza a termelékenységét ma.</string>
   <string name="upselling_discount_tag">%s%% kedvezmény</string>
   <string name="upselling_month">/hó</string>
   <string name="upselling_year">/év</string>

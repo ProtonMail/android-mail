@@ -102,7 +102,7 @@ igen.</string>
   <string name="message_body_load_embedded_images_button_text">Indlæs indlejrede billeder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Indlæs eksternt og indlejret indhold</string>
   <string name="message_report_phishing_dialog_title_offline">Bemærk</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Denne funktion er kun tilgængelig online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Ok</string>
   <string name="message_report_phishing_dialog_title">Bekræft phishing-anmeldelse</string>
   <string name="message_report_phishing_dialog_message">Rapporteres en besked som et phishing-forsøg videresendes beskeden til os, så vi kan analysere den og forbedre vores filtre. Det betyder, at vi vil kunne se hele beskedindholdet.</string>

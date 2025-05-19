@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Ponudba dobrodošlice. Samodejno se obnovi po ceni %s %s%s, razen če je preklicana.</string>
   <string name="upselling_auto_renew_text_promo_short">Ponudba dobrodošlice. Samodejno se obnovi po ceni %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Samodejno se obnovi po %s %s%s, razen če je preklicano.</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">PRIHRANITE %s%%</string>
   <string name="upselling_month">/mesec</string>
   <string name="upselling_year">/leto</string>

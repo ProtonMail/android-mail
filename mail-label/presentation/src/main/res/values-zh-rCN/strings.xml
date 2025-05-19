@@ -21,7 +21,7 @@
   <string name="label_title_drafts">草稿</string>
   <string name="label_title_sent">已发送</string>
   <string name="label_title_starred">星标邮件</string>
-  <string name="label_title_archive">存档</string>
+  <string name="label_title_archive">归档</string>
   <string name="label_title_spam">垃圾邮件</string>
   <string name="label_title_trash">回收站</string>
   <string name="label_title_outbox">发件箱</string>

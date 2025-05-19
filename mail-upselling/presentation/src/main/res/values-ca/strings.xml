@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Oferta de benvinguda. Es renova automàticament a %s%s%s tret que es cancel·li.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta de benvinguda. Es renova automàticament a %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Es renova automàticament per %s%s%s tret que es cancel·li.</string>
+  <string name="upselling_social_proof_reviews">MÉS DE 3.500 RESENYES</string>
+  <string name="upselling_description_social_proof">Estimats per més de <b>1 milió d\'abonats de pagament</b>.</string>
+  <string name="upselling_description_social_proof_second">Milloreu la vostra productivitat avui.</string>
   <string name="upselling_discount_tag">ESTALVIEU EL %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_year">/any</string>

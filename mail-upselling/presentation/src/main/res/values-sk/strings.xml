@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Uvítacia ponuka. Automatická obnova za %s %s%s až do zrušenia.</string>
   <string name="upselling_auto_renew_text_promo_short">Uvítacia ponuka. Automatické obnovenie za %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Automatická obnova za %s %s%s až do zrušenia.</string>
+  <string name="upselling_social_proof_reviews">3 500+ RECENZIÍ</string>
+  <string name="upselling_description_social_proof">Milovaný viac ako <b>1+ miliónom platiacich odberateľov.</b></string>
+  <string name="upselling_description_social_proof_second">Zvýšte svoju produktivitu ešte dnes.</string>
   <string name="upselling_discount_tag">UŠETRÍTE %s%%</string>
   <string name="upselling_month">/mesiac</string>
   <string name="upselling_year">/rok</string>

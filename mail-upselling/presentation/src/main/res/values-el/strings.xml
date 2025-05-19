@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Προσφορά καλωσορίσματος. Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
   <string name="upselling_auto_renew_text_promo_short">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Ανανεώνεται αυτόματα σε %s %s%s εκτός εάν ακυρωθεί.</string>
+  <string name="upselling_social_proof_reviews">3.500+ ΚΡΙΤΙΚΕΣ</string>
+  <string name="upselling_description_social_proof">Αγαπημένο από πάνω από <b>1+ εκατομμύριο συνδρομητές επί πληρωμή.</b></string>
+  <string name="upselling_description_social_proof_second">Αναβαθμίστε την παραγωγικότητά σας σήμερα.</string>
   <string name="upselling_discount_tag">ΕΞΟΙΚΟΝΟΜΗΣΤΕ %s%%</string>
   <string name="upselling_month">/μήνα</string>
   <string name="upselling_year">/έτος</string>

@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">환영 할인. 취소 전까지 %s %s%s(으)로 갱신됩니다.</string>
   <string name="upselling_auto_renew_text_promo_short">환영 할인. 매년 %s %s%s에 갱신됩니다.</string>
   <string name="upselling_auto_renew_text_standard">취소 전까지 %s %s%s(으)로 갱신됩니다.</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">%s%% 절약</string>
   <string name="upselling_month">/월</string>
   <string name="upselling_year">/연간</string>

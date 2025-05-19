@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автоматично поновлюється через %s %s%s, якщо не скасовано.</string>
   <string name="upselling_auto_renew_text_promo_short">Вітальна пропозиція. Автоматично поновлюється за %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автоматично поновлюється через %s %s %s, якщо не скасовано.</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">ЗАОЩАДЬТЕ %s%%</string>
   <string name="upselling_month">/місяць</string>
   <string name="upselling_year">/рік</string>

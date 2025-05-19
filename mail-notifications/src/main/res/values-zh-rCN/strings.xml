@@ -21,7 +21,7 @@
   <string name="notification_summary_text_new_login_alerts">新的账户登录</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
   <string name="notification_title_text_new_message_fallback">撰写邮件</string>
-  <string name="notification_actions_archive_description">存档</string>
+  <string name="notification_actions_archive_description">归档</string>
   <string name="notification_actions_trash_description">回收站</string>
   <string name="notification_actions_mark_as_read_description">标为已读</string>
   <string name="notification_permission_dialog_title">不要错过电子邮件</string>

@@ -25,7 +25,7 @@
   <string name="notification_actions_trash_description">Papirkurv</string>
   <string name="notification_actions_mark_as_read_description">Markér som læst</string>
   <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
+  <string name="notification_permission_dialog_message">Notifikationer hjælper dig med at følge med i din indbakke uden at åbne appen.</string>
   <string name="notification_permission_dialog_post_send_title">Vil du holdes opdateret?</string>
   <string name="notification_permission_dialog_post_send_message">Slå notifikationer til for at vide, hvornår du får et svar på din e-mail.</string>
   <string name="notification_permission_dialog_button_enable">Aktiver push-notifikationer</string>

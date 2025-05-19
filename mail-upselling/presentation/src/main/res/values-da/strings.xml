@@ -25,7 +25,7 @@
   <string name="upselling_mailbox_plus_title">Opgradér til Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
-  <string name="upselling_mailbox_plus_promo_title">Try Mail Plus for %s</string>
+  <string name="upselling_mailbox_plus_promo_title">Prøv Mail Plus i %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Send nemt mails til en gruppe, og nyd andre premium-funktioner med Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Gruppér dine kontakter</string>
@@ -59,14 +59,14 @@
   <string name="upselling_onboarding_premium_value_included">Premium-tilbud inkluderet</string>
   <string name="upselling_onboarding_feature_e2e">End-to-end kryptering</string>
   <string name="upselling_onboarding_feature_folders_labels">Ubegrænsede mapper og etiketter</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB storage and 1 email address</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB lagerplads og 1 e-mailadresse</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB lagerplads</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra email addresses for you</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 ekstra e-mailadresser til dig</string>
   <string name="upselling_onboarding_plus_feature_email_domains">Understøttelse af 1 brugerdefineret e-mail-domæne</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-aliasser</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Prioriteret kundesupport</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB lagerplads</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra email addresses for you</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 ekstra e-mailadresser til dig</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Understøttelse af 3 brugertilpassede e-mail-domæner</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Ubegrænsede hide-my-email-aliasser</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikeret kundesupport</string>
@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
   <string name="upselling_discount_tag">SPAR %s%%</string>
   <string name="upselling_month">/måned</string>
   <string name="upselling_year">/år</string>
@@ -126,7 +129,7 @@
   <string name="post_subscription_continue_button">Forsæt</string>
   <string name="post_subscription_got_it_button">Forstået</string>
   <string name="post_subscription_welcome_page_title">Velkommen til Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_message">Tak for at støtte os i at holde internettet sikkert og privat for alle.</string>
   <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
   <string name="post_subscription_plus_feature_storage">15 GB lagerplads</string>
   <string name="post_subscription_plus_feature_email_addresses">10 ekstra e-mailadresser</string>
@@ -135,13 +138,13 @@
   <string name="post_subscription_plus_feature_aliases">10 hide-my-email-aliasser</string>
   <string name="post_subscription_plus_feature_desktop_app">Ny Proton Mail-skrivebordsapp</string>
   <string name="post_subscription_plus_feature_customer_support">Prioriteret kundesupport</string>
-  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_discover_apps_page_title">Opdag alle apps</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
   <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_vpn_message">Den bedste VPN for hastighed og sikkerhed.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
   <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
   <string name="post_subscription_button_installed">Installeret</string>

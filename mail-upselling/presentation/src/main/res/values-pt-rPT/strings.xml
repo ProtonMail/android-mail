@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Oferta de boas-vindas. Renovação automática a %s %s%s a menos que seja cancelada.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta de boas-vindas. Renovação automática a %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Renovação automática a %s %s%s a menos que seja cancelada.</string>
+  <string name="upselling_social_proof_reviews">MAIS DE 3.500 AVALIAÇÕES</string>
+  <string name="upselling_description_social_proof">Preferido por mais de <b>1 milhão de subscritores pagos</b>.</string>
+  <string name="upselling_description_social_proof_second">Melhore a sua produtividade hoje.</string>
   <string name="upselling_discount_tag">POUPE %s%%</string>
   <string name="upselling_month">/mês</string>
   <string name="upselling_year">/ano</string>

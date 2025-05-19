@@ -90,6 +90,9 @@
   <string name="upselling_auto_renew_text_promo">Penawaran selamat datang. Akan diperbarui secara otomatis pada %s %s%s kecuali dibatalkan.</string>
   <string name="upselling_auto_renew_text_promo_short">Penawaran selamat datang. Diperbarui secara otomatis pada harga %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Diperbarui secara otomatis pada %s %s%s kecuali dibatalkan.</string>
+  <string name="upselling_social_proof_reviews">3.500+ ULASAN</string>
+  <string name="upselling_description_social_proof">Disukai oleh lebih dari <b>1+ juta pelanggan berbayar.</b></string>
+  <string name="upselling_description_social_proof_second">Tingkatkan produktivitas Anda hari ini.</string>
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>
   <string name="upselling_year">/tahun</string>
