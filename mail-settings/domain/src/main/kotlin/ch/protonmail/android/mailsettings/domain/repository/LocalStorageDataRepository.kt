@@ -19,14 +19,9 @@
 package ch.protonmail.android.mailsettings.domain.repository
 
 import ch.protonmail.android.mailsettings.domain.model.ClearDataAction
-import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface LocalStorageDataRepository {
-
-    fun observeMessageDataTotalRawSize(): Flow<Long>
-
-    suspend fun getAttachmentDataSizeForUserId(userId: UserId): Long
 
     fun performClearData(userId: UserId, clearDataAction: ClearDataAction)
 }

@@ -20,28 +20,15 @@ package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.work.Constraints
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailsettings.data.local.ClearLocalDataWorker
 import ch.protonmail.android.mailsettings.domain.model.ClearDataAction
 import ch.protonmail.android.mailsettings.domain.repository.LocalStorageDataRepository
-import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class LocalStorageDataRepositoryImpl @Inject constructor(
-    private val messageLocalDataSource: MessageLocalDataSource,
-    private val attachmentLocalDataSource: AttachmentLocalDataSource,
     private val enqueuer: Enqueuer
 ) : LocalStorageDataRepository {
-
-    override fun observeMessageDataTotalRawSize(): Flow<Long> = messageLocalDataSource.observeCachedMessagesTotalSize()
-
-    override suspend fun getAttachmentDataSizeForUserId(userId: UserId): Long {
-        val folder = attachmentLocalDataSource.getAttachmentFolderForUserId(userId) ?: return 0
-        if (folder.isDirectory() && folder.list()?.isEmpty() == true) return 0
-        return folder.length()
-    }
 
     override fun performClearData(userId: UserId, clearDataAction: ClearDataAction) {
         enqueuer.enqueueUniqueWork<ClearLocalDataWorker>(

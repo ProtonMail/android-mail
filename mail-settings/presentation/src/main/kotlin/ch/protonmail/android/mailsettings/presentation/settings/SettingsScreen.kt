@@ -40,7 +40,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
@@ -54,7 +53,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.devicemigration.presentation.settings.SignInToAnotherDeviceItem
 import me.proton.core.domain.entity.UserId
-import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingToggleItem
 import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingToggleItem
 
@@ -185,7 +183,6 @@ fun MainSettingsScreen(
             }
             item {
                 ClearLocalCacheItem(
-                    totalSize = state.totalSizeInformation,
                     onClearCacheClick = actions.onClearCacheClick
                 )
             }
@@ -234,11 +231,7 @@ private fun CombinedContactsSettingItem(
 }
 
 @Composable
-private fun ClearLocalCacheItem(
-    modifier: Modifier = Modifier,
-    totalSize: LocalStorageUsageInformation,
-    onClearCacheClick: () -> Unit
-) {
+private fun ClearLocalCacheItem(modifier: Modifier = Modifier, onClearCacheClick: () -> Unit) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -248,10 +241,6 @@ private fun ClearLocalCacheItem(
         ProtonSettingsItem(
             modifier = Modifier.weight(1f),
             name = stringResource(id = string.mail_settings_local_cache),
-            hint = stringResource(
-                id = string.mail_settings_local_cache_hint,
-                totalSize.value.formatByteToHumanReadable()
-            ),
             isClickable = false
         )
 

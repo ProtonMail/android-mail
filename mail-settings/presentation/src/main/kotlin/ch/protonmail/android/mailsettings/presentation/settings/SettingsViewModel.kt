@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.ClearDataAction
 import ch.protonmail.android.mailsettings.domain.usecase.ClearLocalStorage
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAppSettings
-import ch.protonmail.android.mailsettings.domain.usecase.ObserveOverallLocalStorageUsage
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,21 +44,18 @@ class SettingsViewModel @Inject constructor(
     appInformation: AppInformation,
     observeAppSettings: ObserveAppSettings,
     observePrimaryUser: ObservePrimaryUser,
-    observeOverallLocalDataUsage: ObserveOverallLocalStorageUsage,
     private val clearLocalStorage: ClearLocalStorage,
     @LogsExportFeatureSettingValue val logsExportFeatureSetting: LogsExportFeatureSetting
 ) : ViewModel() {
 
     val state = combine(
         observePrimaryUser(),
-        observeAppSettings(),
-        observeOverallLocalDataUsage()
-    ) { user, appSettings, totalDataSize ->
+        observeAppSettings()
+    ) { user, appSettings ->
         Data(
-            buildAccountData(user),
-            appSettings,
-            appInformation,
-            totalDataSize
+            account = buildAccountData(user),
+            appSettings = appSettings,
+            appInformation = appInformation
         )
     }.stateIn(
         viewModelScope,

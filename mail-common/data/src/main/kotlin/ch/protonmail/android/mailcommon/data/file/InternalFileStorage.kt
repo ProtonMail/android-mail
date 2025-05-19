@@ -116,7 +116,6 @@ class InternalFileStorage @Inject constructor(
         content = content
     )
 
-
     suspend fun writeFile(
         userId: UserId,
         folder: Folder,

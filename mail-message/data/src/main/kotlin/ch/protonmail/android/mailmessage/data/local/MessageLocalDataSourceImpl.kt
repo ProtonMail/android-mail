@@ -376,8 +376,6 @@ class MessageLocalDataSourceImpl @Inject constructor(
         attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId, apiAssignedId)
     }
 
-    override fun observeCachedMessagesTotalSize(): Flow<Long> = messageDao.observeCachedMessagesTotalSize()
-
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {
         deleteLabels()
         insertLabels()

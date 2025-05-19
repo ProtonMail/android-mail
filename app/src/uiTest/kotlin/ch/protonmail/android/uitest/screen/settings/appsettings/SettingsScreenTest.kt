@@ -28,7 +28,6 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
@@ -56,8 +55,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             customAppLanguage = null,
             hasCombinedContacts = true
         ),
-        AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026),
-        LocalStorageUsageInformation(123L)
+        AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026)
     )
 
     @Before
