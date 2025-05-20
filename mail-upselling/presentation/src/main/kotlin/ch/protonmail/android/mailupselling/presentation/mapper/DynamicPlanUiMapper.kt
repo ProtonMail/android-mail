@@ -49,7 +49,11 @@ internal class DynamicPlanUiMapper @Inject constructor(
         val monthlyPlanInstance = plan.instances.minByOrNull { it.key }?.value
         val yearlyPlanInstance = plan.instances.maxByOrNull { it.key }?.value
 
-        val variant = resolveVariant(monthlyPlanInstance, yearlyPlanInstance)
+        val variant = resolveVariant(
+            monthlyPlanInstance,
+            yearlyPlanInstance,
+            upsellingEntryPoint
+        )
 
         val emptyUiModel = DynamicPlansUiModel(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint, variant),
@@ -111,7 +115,8 @@ internal class DynamicPlanUiMapper @Inject constructor(
 
     private fun resolveVariant(
         monthlyInstance: DynamicPlanInstance?,
-        yearlyInstance: DynamicPlanInstance?
+        yearlyInstance: DynamicPlanInstance?,
+        entryPoint: UpsellingEntryPoint
     ): DynamicPlansVariant {
         val isPromotional = listOfNotNull(monthlyInstance, yearlyInstance).any { instance ->
             val price = instance.price.values.first()
@@ -120,12 +125,25 @@ internal class DynamicPlanUiMapper @Inject constructor(
             val isPromotional = defaultPrice != null && currentPrice < defaultPrice
             isPromotional
         }
+        val supportsHeaderVariants = entryPoint.supportsHeaderVariants()
         return when {
-            isPromotional -> if (headerUpsellVariantLayoutEnabled) {
+            isPromotional -> if (supportsHeaderVariants && headerUpsellVariantLayoutEnabled) {
                 DynamicPlansVariant.PromoB
             } else DynamicPlansVariant.PromoA
-            headerUpsellSocialProofLayoutEnabled -> DynamicPlansVariant.SocialProof
+            supportsHeaderVariants && headerUpsellSocialProofLayoutEnabled -> DynamicPlansVariant.SocialProof
             else -> DynamicPlansVariant.Normal
         }
+    }
+
+    private fun UpsellingEntryPoint.supportsHeaderVariants() = when (this) {
+        UpsellingEntryPoint.Feature.Mailbox,
+        UpsellingEntryPoint.Feature.MailboxPromo,
+        UpsellingEntryPoint.Feature.Navbar -> true
+        UpsellingEntryPoint.Feature.AutoDelete,
+        UpsellingEntryPoint.Feature.ContactGroups,
+        UpsellingEntryPoint.Feature.Folders,
+        UpsellingEntryPoint.Feature.Labels,
+        UpsellingEntryPoint.Feature.MobileSignature,
+        UpsellingEntryPoint.PostOnboarding -> false
     }
 }

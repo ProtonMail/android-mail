@@ -291,6 +291,73 @@ internal class DynamicPlanUiMapperTest {
     }
 
     @Test
+    fun `should return a plan with default variant for non-header entry points`() {
+        // Given
+        expectIconUiModel()
+        expectTitleUiModel()
+        expectDescriptionUiModel()
+        expectEntitlementsUiModel()
+        headerUpsellVariantLayoutEnabled(false)
+        headerUpsellSocialProofEnabled(true)
+
+        val plan = UpsellingTestData.PlusPlan
+        val shorterInstance = requireNotNull(plan.instances[1])
+        val longerInstance = requireNotNull(plan.instances[12])
+
+        val monthlyPlan = UpsellingTestData.MonthlyDynamicPlanInstance
+        val yearlyPlan = UpsellingTestData.YearlyDynamicPlanInstance
+
+        val expectedShorterInstance = DynamicPlanInstanceUiModel.Standard(
+            userId = UserIdUiModel(UserId),
+            name = UpsellingTestData.PlusPlan.title,
+            pricePerCycle = TextUiModel.Text("0.1"),
+            totalPrice = TextUiModel.Text("10.08"),
+            discountRate = 75,
+            currency = "EUR",
+            cycle = DynamicPlanCycle.Monthly,
+            viewId = "${UserId}$monthlyPlan".hashCode(),
+            dynamicPlan = plan
+        )
+        val expectedLongerInstance = DynamicPlanInstanceUiModel.Standard(
+            userId = UserIdUiModel(UserId),
+            name = UpsellingTestData.PlusPlan.title,
+            pricePerCycle = TextUiModel.Text("0.09"),
+            totalPrice = TextUiModel.Text("1.08"),
+            discountRate = 10,
+            currency = "EUR",
+            cycle = DynamicPlanCycle.Yearly,
+            viewId = "${UserId}$yearlyPlan".hashCode(),
+            dynamicPlan = plan
+        )
+
+        expectInstanceUiModel(
+            userId = UserId,
+            monthlyInstance = shorterInstance,
+            yearlyInstance = longerInstance,
+            plan = plan,
+            expectedInstance = Pair(expectedShorterInstance, expectedLongerInstance)
+        )
+
+        val expectedPlansUiModel = DynamicPlansUiModel(
+            icon = ExpectedIconUiModel,
+            title = ExpectedTitleUiModel,
+            description = ExpectedDescriptionUiModel,
+            entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
+            list = DynamicPlanInstanceListUiModel.Data.Standard(
+                shorterCycle = expectedShorterInstance,
+                longerCycle = expectedLongerInstance
+            ),
+            variant = DynamicPlansVariant.Normal
+        )
+
+        // When
+        val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Feature.Folders)
+
+        // Then
+        assertEquals(expectedPlansUiModel, actual)
+    }
+
+    @Test
     fun `should return a plan with social proof if the variant FF is on`() {
         // Given
         expectIconUiModelSocialProof()
@@ -366,7 +433,7 @@ internal class DynamicPlanUiMapperTest {
     }
 
     private fun expectTitleUiModel() {
-        every { titleUiMapper.toUiModel(any(), UpsellingEntryPoint.Feature.Mailbox) } returns ExpectedTitleUiModel
+        every { titleUiMapper.toUiModel(any(), any()) } returns ExpectedTitleUiModel
     }
 
     private fun expectTitleUiModelPromo() {
