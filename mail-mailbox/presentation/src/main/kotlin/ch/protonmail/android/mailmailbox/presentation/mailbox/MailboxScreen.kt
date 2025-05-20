@@ -66,6 +66,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -691,21 +692,29 @@ private fun MailboxItemsList(
     )
 
     // Detect if user manually scrolled the list
-    var mailboxScrolled by rememberSaveable { mutableStateOf(false) }
+    var shouldScrollToTop by rememberSaveable { mutableStateOf(true) }
     var userTapped by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = listState.isScrollInProgress) {
-        if (!mailboxScrolled && userTapped && listState.isScrollInProgress) {
-            mailboxScrolled = true
+        if (shouldScrollToTop && userTapped && listState.isScrollInProgress) {
+            shouldScrollToTop = false
+        }
+        // Update the state only when the scroll action stops.
+        if (!listState.isScrollInProgress && !shouldScrollToTop) {
+            if (listState.firstVisibleItemIndex == 0) {
+                shouldScrollToTop = true
+            }
         }
     }
 
     // Scroll to the top of the list to make the first item always visible until the user scrolls the list
-    if (!mailboxScrolled) {
-        LaunchedEffect(listState.firstVisibleItemIndex) {
-            if (listState.firstVisibleItemIndex > 0) {
-                listState.scrollToItem(0)
-                mailboxScrolled = true
-            }
+    if (shouldScrollToTop) {
+        LaunchedEffect(Unit) {
+            snapshotFlow { listState.firstVisibleItemIndex }
+                .collect { index ->
+                    if (index > 0) {
+                        listState.scrollToItem(0)
+                    }
+                }
         }
     }
 
