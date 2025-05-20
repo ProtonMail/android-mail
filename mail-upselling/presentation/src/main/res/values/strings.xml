@@ -54,6 +54,7 @@
     <string name="upselling_plus_feature_email_addresses">10 email addresses</string>
     <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
     <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+    <string name="upselling_plus_feature_calendar">Premium calendar features</string>
     <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
     <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
 

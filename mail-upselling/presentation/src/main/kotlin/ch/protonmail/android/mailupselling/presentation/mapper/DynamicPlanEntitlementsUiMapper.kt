@@ -98,6 +98,16 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
 
     companion object {
 
+        val MailboxSocialProofEntitlements = listOf(
+            TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_calendar),
+            TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_sentinel)
+        )
+
         private val MailboxPlusOverriddenEntitlements = listOf(
             PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
@@ -120,8 +130,6 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
                 localResource = R.drawable.ic_upselling_tag
             )
         )
-
-        private val MailboxSocialProofEntitlements = MailboxPlusOverriddenEntitlements.map { it.text }
 
         private val SharedPlusOverriddenEntitlements = listOf(
             PlanEntitlementListUiModel.Overridden(

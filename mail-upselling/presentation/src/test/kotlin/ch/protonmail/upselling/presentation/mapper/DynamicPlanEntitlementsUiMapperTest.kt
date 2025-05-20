@@ -206,9 +206,11 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         val expectedEntitlements = listOf(
             TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
             TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
             TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
             TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
-            TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels)
+            TextUiModel.TextRes(R.string.upselling_plus_feature_calendar),
+            TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_sentinel)
         )
 
         val expected = PlanEntitlementsUiModel.CheckedSimpleList(expectedEntitlements)
