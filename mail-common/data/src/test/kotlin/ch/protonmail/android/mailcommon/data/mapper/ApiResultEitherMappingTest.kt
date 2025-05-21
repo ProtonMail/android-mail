@@ -140,7 +140,7 @@ class ApiResultEitherMappingTest {
             val result = apiResult.toEither()
 
             // then
-            val expected = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft, "none")
+            val expected = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft, "Message Already Sent")
             assertEquals(expected.left(), result)
         }
     }

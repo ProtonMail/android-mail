@@ -40,7 +40,7 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
         }
 
         when {
-            protonError != null -> DataError.Remote.Proton(protonError, apiMessage = this.message).left()
+            protonError != null -> DataError.Remote.Proton(protonError, apiMessage = proton?.error ?: message).left()
             else -> DataError.Remote.Http(
                 NetworkError.fromHttpCode(httpCode),
                 this.extractApiErrorInfo(),
