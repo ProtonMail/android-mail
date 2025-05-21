@@ -63,7 +63,7 @@ internal fun SocialProofBadges(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(horizontal = ProtonDimens.MediumLargeSpacing, vertical = ProtonDimens.DefaultSpacing)
+                    .padding(horizontal = ProtonDimens.MediumSpacing, vertical = 12.dp)
                     .wrapContentWidth()
             ) {
                 Image(
@@ -81,12 +81,12 @@ internal fun SocialProofBadges(modifier: Modifier = Modifier) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+        Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
         Image(
             painter = painterResource(id = R.drawable.ic_pcmag_award),
             contentDescription = null,
             modifier = Modifier
-                .height(84.dp)
+                .height(76.dp)
                 .wrapContentWidth(Alignment.CenterHorizontally)
         )
     }

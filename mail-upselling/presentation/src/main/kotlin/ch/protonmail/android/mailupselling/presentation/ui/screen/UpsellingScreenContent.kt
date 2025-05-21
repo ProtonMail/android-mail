@@ -128,7 +128,7 @@ internal fun UpsellingScreenContent(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(ProtonDimens.MediumSpacing))
+            Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
             Spacer(modifier = Modifier.weight(UpsellingLayoutValues.topSpacingWeight))
 
             if (!isNarrowScreen) {
@@ -172,7 +172,7 @@ internal fun UpsellingScreenContent(
                 SocialProofBadges(modifier = Modifier.padding(vertical = ProtonDimens.DefaultSpacing))
             }
 
-            Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
+            Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
 
             when (state.plans.entitlements) {
                 is PlanEntitlementsUiModel.ComparisonTableList ->

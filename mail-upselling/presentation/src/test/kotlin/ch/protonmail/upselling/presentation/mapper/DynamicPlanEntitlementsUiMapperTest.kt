@@ -204,8 +204,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         every { forceOverride.get() } returns true
 
         val expectedEntitlements = listOf(
-            TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
-            TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+            TextUiModel.TextRes(R.string.upselling_plus_feature_storage_plus_mails),
             TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
             TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
             TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
