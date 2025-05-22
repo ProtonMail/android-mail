@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">清除舊垃圾桶與垃圾郵件</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 儲存空間</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10 個電子信箱</string>
   <string name="upselling_plus_feature_custom_domain">支援自訂電子郵件網域</string>
   <string name="upselling_plus_feature_desktop_app">新的 Proton Mail 桌面應用程式</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">資料夾、標籤與篩選器無上限</string>
   <string name="upselling_plus_feature_plus_7_features">與 7 項進階功能</string>
   <!-- Unlimited -->
@@ -90,9 +92,9 @@
   <string name="upselling_auto_renew_text_promo">歡迎優惠。除非取消，否則會在 %s %s%s 時自動續約。</string>
   <string name="upselling_auto_renew_text_promo_short">歡迎優惠。會在 %s %s%s 時自動續約。</string>
   <string name="upselling_auto_renew_text_standard">除非取消，否則會在 %s %s%s 時自動續約。</string>
-  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
-  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
-  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
+  <string name="upselling_social_proof_reviews">3,500 則以上的評論</string>
+  <string name="upselling_description_social_proof">深受超過<b>一百萬個付費訂閱者</b>喜愛。</string>
+  <string name="upselling_description_social_proof_second">今天就升級您的生產力。</string>
   <string name="upselling_discount_tag">儲存 %s%%</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/年</string>

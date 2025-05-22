@@ -72,7 +72,7 @@
   <string name="mail_settings_auto_delete_dialog_enabling_text">Opsi ini akan menghapus seluruh pesan yang telah berada di sampah atau spam selama lebih dari 30 hari, termasuk pesan yang saat ini berada pada kedua folder tersebut.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktifkan</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Nonaktifkan penghapusan otomatis?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Email yang terjadwal untuk dihapus akan tetap berada pada folder sampah dan spam.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Email yang dijadwalkan untuk dihapus akan tetap berada pada folder sampah dan spam.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Nonaktifkan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
   <string name="mail_settings_conversation_mode_hint">Tentukan apakah email yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
@@ -129,7 +129,7 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notifikasi push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notifikasi terperinci</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Aktifkan fitur ini untuk menampilkan nama pengirim email dalam notifikasi push yang diterima.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Aktifkan fitur ini untuk menampilkan nama pengirim email dalam notifikasi push.</string>
   <string name="mail_settings_notifications_notifications_settings">Pengaturan notifikasi</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Tuju pengaturan notifikasi sistem</string>
   <string name="mail_settings_notifications_update_error">Terdapat kesalahan dalam memperbarui pengaturan</string>

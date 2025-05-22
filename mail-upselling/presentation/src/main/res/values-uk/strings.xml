@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Очистьте смітник і спам</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховища</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10 адрес електронної пошти</string>
   <string name="upselling_plus_feature_custom_domain">Підтримка власних доменів електронної пошти</string>
   <string name="upselling_plus_feature_desktop_app">Нова програма Proton Mail для комп\'ютера</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">Необмежена кількість тек, міток і фільтрів</string>
   <string name="upselling_plus_feature_plus_7_features">+7 преміальних функцій</string>
   <!-- Unlimited -->

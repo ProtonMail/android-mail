@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">오래된 휴지통 및 스팸함 내 항목 완전히 지우기</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">저장공간 15GB</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">이메일 주소 10개</string>
   <string name="upselling_plus_feature_custom_domain">사용자 지정 이메일 도메인 지원</string>
   <string name="upselling_plus_feature_desktop_app">새로운 Proton Mail 데스크톱 앱</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">무제한 폴더, 라벨, 필터</string>
   <string name="upselling_plus_feature_plus_7_features">+7개 프리미엄 기능</string>
   <!-- Unlimited -->

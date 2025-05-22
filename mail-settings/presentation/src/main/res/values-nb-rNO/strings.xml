@@ -120,7 +120,7 @@
   <string name="mail_settings_swipe_action_move_to_title">Flytt til…</string>
   <string name="mail_settings_swipe_action_none_description">Ingen</string>
   <string name="mail_settings_swipe_action_archive_description">Flytt til arkiv</string>
-  <string name="mail_settings_swipe_action_read_description">Marker som ulest/lest</string>
+  <string name="mail_settings_swipe_action_read_description">Merk som ulest/lest</string>
   <string name="mail_settings_swipe_action_spam_description">Flytt til søppelpost</string>
   <string name="mail_settings_swipe_action_star_description">Stjernemerk/fjern stjernemerking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytt til papirkurven</string>

@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Избавьтесь от старых писем в корзине и от спама</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ хранилища</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 ГБ хранилища, 10 адресов электронной почты</string>
   <string name="upselling_plus_feature_email_addresses">10 адресов электронной почты</string>
   <string name="upselling_plus_feature_custom_domain">Поддержка пользовательских доменов электронной почты</string>
   <string name="upselling_plus_feature_desktop_app">Новое приложение для настольных компьютеров Proton Mail</string>
+  <string name="upselling_plus_feature_calendar">Функции платного календаря</string>
   <string name="upselling_plus_feature_folders_labels">Неограниченное количество папок, ярлыков и фильтров</string>
   <string name="upselling_plus_feature_plus_7_features">+7 платных услуг</string>
   <!-- Unlimited -->
@@ -90,7 +92,7 @@
   <string name="upselling_auto_renew_text_promo">Приветственное предложение. Автоматически продлевается через %s %s%s, если не отменено.</string>
   <string name="upselling_auto_renew_text_promo_short">Приветственное предложение. Автоматическое продление по цене %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автоматически продлевается через %s %s%s, если не отменено.</string>
-  <string name="upselling_social_proof_reviews">БОЛЕЕ 3500 ОТЗЫВОВ</string>
+  <string name="upselling_social_proof_reviews">БОЛЕЕ 3,500 ОТЗЫВОВ</string>
   <string name="upselling_description_social_proof">Нас любят более <b>1+ миллиона платных подписчиков.</b></string>
   <string name="upselling_description_social_proof_second">Улучшите вашу продуктивность сегодня.</string>
   <string name="upselling_discount_tag">Сэкономьте %s%%</string>

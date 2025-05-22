@@ -116,6 +116,6 @@ igen.</string>
   <string name="show">Vis</string>
   <string name="hide">Skjul</string>
   <string name="tooltip_customize_toolbar_title">Tilpas værktøjslinje</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_message">Du kan nu vælge og omarrangere handlingerne i denne værktøjslinje.</string>
   <string name="tooltip_customize_toolbar_cta">Tilpas</string>
 </resources>

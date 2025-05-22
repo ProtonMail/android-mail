@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Goliți mesajele vechi din folderele gunoi și nedorite</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GiB spațiu de stocare</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GiB spațiu de stocare, 10 adrese de e-mail</string>
   <string name="upselling_plus_feature_email_addresses">10 adrese de e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Suport pentru domeniu personal de e-mail</string>
   <string name="upselling_plus_feature_desktop_app">Aplicație nouă Proton Mail pentru desktop</string>
+  <string name="upselling_plus_feature_calendar">Funcții calendar speciale</string>
   <string name="upselling_plus_feature_folders_labels">Foldere, etichete și filtre nelimitate</string>
   <string name="upselling_plus_feature_plus_7_features">Peste 7 funcții premium</string>
   <!-- Unlimited -->

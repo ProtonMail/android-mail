@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Lösche alte Daten im Papierkorb und Spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB Speicher</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB Speicherplatz, 10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_custom_domain">Unterstützung für eigene E-Mail-Domain</string>
   <string name="upselling_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
+  <string name="upselling_plus_feature_calendar">Premium-Kalenderfunktionen</string>
   <string name="upselling_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.</string>
   <string name="upselling_plus_feature_plus_7_features">+7 Premium-Funktionen</string>
   <!-- Unlimited -->

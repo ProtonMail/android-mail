@@ -24,7 +24,7 @@
   <string name="upselling_mailbox_plus_description_override">For at låse op for mere lagerplads og premium-funktioner</string>
   <string name="upselling_mailbox_plus_title">Opgradér til Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Limited-time offer, cancel anytime.</string>
+  <string name="upselling_mailbox_plus_promo_description_override">Tidsbegrænset tilbud, annullér når som helst.</string>
   <string name="upselling_mailbox_plus_promo_title">Prøv Mail Plus i %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Send nemt mails til en gruppe, og nyd andre premium-funktioner med Mail Plus.</string>
@@ -39,13 +39,15 @@
   <string name="upselling_mobile_signature_plus_description_override">Brug din egen mobilsignatur, og nyd andre premium-funktioner med Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Tilpas din signatur</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_description_override">Nyd fordelen ved velorganiserede postkasser og andre førsteklassesfunktioner med Mail Plus</string>
   <string name="upselling_auto_delete_plus_title">Fjern gammelt affald og spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagerplads</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadresser</string>
   <string name="upselling_plus_feature_custom_domain">Understøttelse af brugerdefinerede e-maildomæner</string>
   <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-skrivebordsapp</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">Ubegrænsede mapper, etiketter og filtre</string>
   <string name="upselling_plus_feature_plus_7_features">+ 7 premium-funktioner</string>
   <!-- Unlimited -->
@@ -90,9 +92,9 @@
   <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
   <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
+  <string name="upselling_social_proof_reviews">3.500+ ANMELDELSER</string>
   <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
-  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
+  <string name="upselling_description_social_proof_second">Opgradér din produktivitet i dag.</string>
   <string name="upselling_discount_tag">SPAR %s%%</string>
   <string name="upselling_month">/måned</string>
   <string name="upselling_year">/år</string>

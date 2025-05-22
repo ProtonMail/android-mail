@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Ürítse a régi lomtárat és levélszemetet</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB tárhely</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mail cím</string>
   <string name="upselling_plus_feature_custom_domain">Egyéni e-mail domain név támogatás</string>
   <string name="upselling_plus_feature_desktop_app">Új Proton Mail asztali alkalmazás</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">Korlátlan számú mappa, címke és szűrő</string>
   <string name="upselling_plus_feature_plus_7_features">+7 prémium funkció</string>
   <!-- Unlimited -->

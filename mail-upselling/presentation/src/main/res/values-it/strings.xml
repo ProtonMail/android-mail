@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Rimuovi i vecchi elementi nel cestino e nello spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB di spazio di archiviazione</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB di archiviazione, 10 indirizzi email</string>
   <string name="upselling_plus_feature_email_addresses">10 indirizzi email</string>
   <string name="upselling_plus_feature_custom_domain">Supporto per domini email personalizzati</string>
   <string name="upselling_plus_feature_desktop_app">Nuova app di Proton Mail per desktop</string>
+  <string name="upselling_plus_feature_calendar">Funzionalità premium del calendario</string>
   <string name="upselling_plus_feature_folders_labels">Cartelle, etichette e filtri illimitati</string>
   <string name="upselling_plus_feature_plus_7_features">+7 funzionalità premium</string>
   <!-- Unlimited -->

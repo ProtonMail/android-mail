@@ -46,9 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Grænse for vedhæftning nået</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrænsen for vedhæftede filer er %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Rekryptering af vedhæftet fil mislykkedes. Af sikkerhedsgrunde blev alle vedhæftede filer fjernet.</string>
-  <string name="composer_attachment_not_found">Attachment not found.</string>
-  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
-  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
+  <string name="composer_attachment_not_found">Vedhæftet fil ikke fundet.</string>
+  <string name="composer_attachment_error_draft_loading">Oprindeligt udkast kunne ikke indlæses</string>
+  <string name="composer_attachment_error_saving_attachment">Vedhæftet fil kunne ikke lagres. Prøv venligst igen.</string>
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
   <string name="composer_button_add_password">Tilføj adgangskode</string>
   <string name="composer_button_set_expiration">Indstil udløbstidspunkt</string>
@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Sender notifikation</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Afsendelse af beskeder fra @pm.me er en betalt funktion. Din besked vil blive sendt fra din standardadresse.</string>
   <string name="composer_sender_changed_original_address_disabled">Den valgte afsenderadresse er deaktiveret. Din besked vil blive sendt fra din standardadresse.</string>
-  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Den oprindelige afsenderadresse kunne ikke hentes. Beskeden vil blive sendt fra din standardadresse.</string>
   <string name="composer_sender_changed_dialog_confirm_button">Ok</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Skriv</string>

@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Εκκαθαρίστε τα παλιά διαγραμμένα και τα ενοχλητικά</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB αποθηκευτικού χώρου</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB αποθηκευτικού χώρου, 10 ηλεκτρονικές διευθύνσεις</string>
   <string name="upselling_plus_feature_email_addresses">10 διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>
   <string name="upselling_plus_feature_custom_domain">Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου</string>
   <string name="upselling_plus_feature_desktop_app">Νέα Proton Mail εφαρμογή για υπολογιστές</string>
+  <string name="upselling_plus_feature_calendar">Δυνατότητες premium ημερολογίου</string>
   <string name="upselling_plus_feature_folders_labels">Απεριόριστοι φάκελοι, ετικέτες, φίλτρα</string>
   <string name="upselling_plus_feature_plus_7_features">+7 premium χαρακτηριστικά</string>
   <!-- Unlimited -->

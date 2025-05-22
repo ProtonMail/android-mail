@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">古いゴミやスパムを削除</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB のストレージ</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10個のメールアドレス</string>
   <string name="upselling_plus_feature_custom_domain">カスタムメールドメインのサポート</string>
   <string name="upselling_plus_feature_desktop_app">新しい Proton Mail デスクトップアプリ</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">無制限のフォルダー、ラベル、フィルター</string>
   <string name="upselling_plus_feature_plus_7_features">+7個のプレミアム機能</string>
   <!-- Unlimited -->

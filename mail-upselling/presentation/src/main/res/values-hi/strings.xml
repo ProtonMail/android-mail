@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">पुराने कचरे और स्पैम हटाएं</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 जीबी स्टोरेज</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
   <string name="upselling_plus_feature_email_addresses">10 ईमेल पते</string>
   <string name="upselling_plus_feature_custom_domain">कस्टम ईमेल डोमेन समर्थन</string>
   <string name="upselling_plus_feature_desktop_app">नया Proton Mail डेस्कटॉप ऐप</string>
+  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
   <string name="upselling_plus_feature_folders_labels">असीमित फोल्डर, लेबल, और फिल्टर</string>
   <string name="upselling_plus_feature_plus_7_features">+7 प्रीमियम खासियतें</string>
   <!-- Unlimited -->

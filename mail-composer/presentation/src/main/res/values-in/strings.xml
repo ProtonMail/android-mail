@@ -32,7 +32,7 @@
   <string name="composer_change_sender_paid_feature">Anda memerlukan langganan Proton Mail berbayar untuk mengubah alamat pengirim</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Pengirim tidak dapat diubah karena status langganan pengguna gagal dimuat. Silakan coba lagi.</string>
   <string name="composer_error_store_draft_sender_address">Alamat pengirim tidak disimpan</string>
-  <string name="composer_error_store_draft_body">Isi email draf tidak disimpan</string>
+  <string name="composer_error_store_draft_body">Badan email draf tidak disimpan</string>
   <string name="composer_error_duplicate_recipient">Penerima yang terduplikasi dihapus</string>
   <string name="composer_error_store_draft_subject">Baris subjek tidak disimpan</string>
   <string name="composer_error_store_draft_recipients">Gagal menyimpan draf penerima</string>

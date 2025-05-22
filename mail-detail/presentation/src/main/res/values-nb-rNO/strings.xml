@@ -40,7 +40,7 @@
   </plurals>
   <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">Ikke avslørte mottakere</string>
-  <string name="error_mark_as_unread_failed">Kunne ikke markere som ulest. Prøv på nytt.</string>
+  <string name="error_mark_as_unread_failed">Kunne ikke merke som ulest. Prøv på nytt.</string>
   <string name="error_star_operation_failed">Kunne ikke legge til stjernemerke. Prøv på nytt.</string>
   <string name="error_unstar_operation_failed">Kunne ikke fjerne stjernemerking. Prøv på nytt.</string>
   <string name="error_move_to_trash_failed">Kunne ikke flytte til papirkurven. Prøv på nytt.</string>

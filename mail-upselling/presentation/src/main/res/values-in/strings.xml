@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Bersihkan sampah dan spam yang telah lama menumpuk</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">Ruang penyimpanan 15 GB</string>
+  <string name="upselling_plus_feature_storage_plus_mails">Ruang penyimpanan 15 GB, 10 alamat email</string>
   <string name="upselling_plus_feature_email_addresses">10 alamat email</string>
   <string name="upselling_plus_feature_custom_domain">Dukungan domain email khusus</string>
   <string name="upselling_plus_feature_desktop_app">Aplikasi desktop Proton Mail baru</string>
+  <string name="upselling_plus_feature_calendar">Fitur kalender premium</string>
   <string name="upselling_plus_feature_folders_labels">Tanpa batasan jumlah folder, label, dan filter</string>
   <string name="upselling_plus_feature_plus_7_features">+7 fitur premium</string>
   <!-- Unlimited -->
@@ -59,10 +61,10 @@
   <string name="upselling_onboarding_premium_value_included">Meliputi nilai premium</string>
   <string name="upselling_onboarding_feature_e2e">Enkripsi end-to-end</string>
   <string name="upselling_onboarding_feature_folders_labels">Folder dan label tidak terbatas</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB penyimpanan dan 1 alamat email</string>
+  <string name="upselling_onboarding_free_feature_storage">Ruang penyimpanan 1 GB dan 1 alamat email</string>
   <string name="upselling_onboarding_plus_feature_storage">Penyimpanan 15 GB</string>
   <string name="upselling_onboarding_plus_feature_email_addresses">10 alamat email tambahan untuk Anda</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Dukungan 1 domain email khusus</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Dukungan untuk 1 domain email khusus</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 alias hide-my-email</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Dukungan pelanggan prioritas</string>
   <string name="upselling_onboarding_unlimited_feature_storage">Ruang penyimpanan 500 GB</string>
@@ -131,7 +133,7 @@
   <string name="post_subscription_welcome_page_unlocked">Anda membuka</string>
   <string name="post_subscription_plus_feature_storage">Penyimpanan 15 GB</string>
   <string name="post_subscription_plus_feature_email_addresses">10 alamat email tambahan</string>
-  <string name="post_subscription_plus_feature_email_domains">Dukungan 1 domain email khusus</string>
+  <string name="post_subscription_plus_feature_email_domains">Dukungan untuk 1 domain email khusus</string>
   <string name="post_subscription_plus_feature_folders_labels">Folder dan label tidak terbatas</string>
   <string name="post_subscription_plus_feature_aliases">10 alias hide-my-email</string>
   <string name="post_subscription_plus_feature_desktop_app">Aplikasi desktop Proton Mail baru</string>

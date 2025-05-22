@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Verwijder oude berichten in de prullenbak en spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB opslagruimte</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB opslagruimte, 10 e-mailadressen</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadressen</string>
   <string name="upselling_plus_feature_custom_domain">Gepersonaliseerde e-maildomein ondersteuning</string>
   <string name="upselling_plus_feature_desktop_app">Nieuwe Proton Mail desktop-app</string>
+  <string name="upselling_plus_feature_calendar">Premium Agendafuncties</string>
   <string name="upselling_plus_feature_folders_labels">Onbeperkt aantal mappen, labels en filters</string>
   <string name="upselling_plus_feature_plus_7_features">+7 premium functies</string>
   <!-- Unlimited -->

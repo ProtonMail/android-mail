@@ -43,9 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Çöp ve istenmeyen kutularındaki eski iletiler temizleyin</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB depolama alanı, 10 e-posta adresi</string>
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
   <string name="upselling_plus_feature_custom_domain">Özel e-posta etki alanı desteği</string>
   <string name="upselling_plus_feature_desktop_app">Yeni Proton Mail bilgisayar uygulaması</string>
+  <string name="upselling_plus_feature_calendar">Ayrıcalıklı takvim özellikleri</string>
   <string name="upselling_plus_feature_folders_labels">Sınırsız klasör, etiket, süzgeç</string>
   <string name="upselling_plus_feature_plus_7_features">+7 ücretli özellik</string>
   <!-- Unlimited -->
