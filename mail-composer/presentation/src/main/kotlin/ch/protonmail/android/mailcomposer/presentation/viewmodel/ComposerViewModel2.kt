@@ -299,7 +299,7 @@ class ComposerViewModel2 @AssistedInject constructor(
                 emitNewStateFromOperation(MainEvent.SenderChanged(value))
 
                 if (isCreatingEmptyDraft(inputDraftId, draftAction)) {
-                    injectAddressSignature(value)
+                    injectAddressSignature(value, previousSenderEmail = null)
                 }
 
                 recipients?.let { recipient ->
@@ -449,7 +449,10 @@ class ComposerViewModel2 @AssistedInject constructor(
         }
 
         val sharedDraftBody = DraftBody(fileShareInfo.emailBody ?: "")
-        injectAddressSignature(senderEmail = senderEmail, draftBody = sharedDraftBody)
+        injectAddressSignature(
+            senderEmail = senderEmail, draftBody = sharedDraftBody,
+            previousSenderEmail = prevSenderEmail()
+        )
 
         emitNewStateFromOperation(MainEvent.SenderChanged(senderEmail))
     }
@@ -480,7 +483,7 @@ class ComposerViewModel2 @AssistedInject constructor(
 
     private suspend fun injectAddressSignature(
         senderEmail: SenderEmail,
-        previousSenderEmail: SenderEmail? = null,
+        previousSenderEmail: SenderEmail?,
         draftBody: DraftBody = DraftBody(bodyFieldText.text.toString())
     ) {
         draftFacade.injectAddressSignature(
@@ -573,6 +576,13 @@ class ComposerViewModel2 @AssistedInject constructor(
         }
 
         emitNewStateFromOperation(CompositeEvent.UserChangedSender(newSender))
+
+        val draftFields = currentDraftFields()
+        injectAddressSignature(
+            senderEmail = currentSenderEmail(),
+            draftBody = DraftBody(draftFields.body.value),
+            previousSenderEmail = prevSenderEmail()
+        )
     }
 
     private suspend fun onChangeSenderRequested() {
@@ -708,9 +718,10 @@ class ComposerViewModel2 @AssistedInject constructor(
 
         if (draftFields.haveBlankRecipients()) {
             val signatureBody = draftFacade.injectAddressSignature(
-                primaryUserId.first(),
-                DraftBody(""),
-                currentSenderEmail()
+                userId = primaryUserId.first(),
+                draftBody = DraftBody(""),
+                senderEmail = currentSenderEmail(),
+                previousSenderEmail = null
             ).getOrNull()?.value
 
             return draftFields.body.value == signatureBody
@@ -721,6 +732,7 @@ class ComposerViewModel2 @AssistedInject constructor(
 
     private fun currentMessageId() = mutableComposerStates.value.main.draftId
     private fun currentSenderEmail() = SenderEmail(mutableComposerStates.value.main.senderUiModel.email)
+    private fun prevSenderEmail() = mutableComposerStates.value.main.prevSenderEmail
     private fun currentDraftActionOrDefault() = draftAction ?: DraftAction.Compose
     private fun resolveDraftId() = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
         ?: draftFacade.provideNewDraftId().id

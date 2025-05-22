@@ -637,7 +637,7 @@ internal class ComposerViewModel2Test {
         every { draftFacade.provideNewDraftId() } returns messageId
         coEvery { addressesFacade.getPrimarySenderEmail(userId) } returns defaultDraftFields.sender.right()
         coEvery {
-            draftFacade.injectAddressSignature(userId, draftBody, defaultDraftFields.sender)
+            draftFacade.injectAddressSignature(userId, draftBody, defaultDraftFields.sender, null)
         } returns draftBodyWithSignature.right()
 
         coEvery { draftFacade.storeDraft(userId, messageId, any(), any()) } returns Unit.right()
@@ -665,7 +665,11 @@ internal class ComposerViewModel2Test {
 
         val expectedBodyWithSignature = DraftBody("Signature")
         coEvery {
-            draftFacade.injectAddressSignature(userId, DraftBody(""), defaultDraftFields.sender)
+            draftFacade.injectAddressSignature(userId, DraftBody(""), defaultDraftFields.sender, null)
+        } returns expectedBodyWithSignature.right()
+
+        coEvery {
+            draftFacade.injectAddressSignature(userId, DraftBody("Signature"), defaultDraftFields.sender, null)
         } returns expectedBodyWithSignature.right()
 
         val expectedMainState = ComposerState.Main.initial(messageId).copy(
@@ -719,7 +723,7 @@ internal class ComposerViewModel2Test {
 
         val expectedBodyWithSignature = DraftBody("Signature")
         coEvery {
-            draftFacade.injectAddressSignature(userId, DraftBody(""), initialDraftFields.sender)
+            draftFacade.injectAddressSignature(userId, DraftBody(""), initialDraftFields.sender, null)
         } returns expectedBodyWithSignature.right()
 
         val expectedMainState = ComposerState.Main.initial(messageId).copy(

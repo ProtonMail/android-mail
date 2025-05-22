@@ -92,7 +92,7 @@ class DraftFacade @Inject constructor(
         userId: UserId,
         draftBody: DraftBody,
         senderEmail: SenderEmail,
-        previousSenderEmail: SenderEmail? = null
+        previousSenderEmail: SenderEmail?
     ) = injectAddressSignature.invoke(userId, draftBody, senderEmail, previousSenderEmail)
 
     suspend fun storeDraftWithParentAttachments(

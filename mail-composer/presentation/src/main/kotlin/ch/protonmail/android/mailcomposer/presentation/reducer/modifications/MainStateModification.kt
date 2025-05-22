@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerState
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import kotlinx.collections.immutable.toImmutableList
+import me.proton.core.util.kotlin.takeIfNotBlank
 
 internal sealed interface MainStateModification : ComposerStateModification<ComposerState.Main> {
 
@@ -46,8 +47,15 @@ internal sealed interface MainStateModification : ComposerStateModification<Comp
 
     data class UpdateSender(val sender: SenderEmail) : MainStateModification {
 
-        override fun apply(state: ComposerState.Main): ComposerState.Main =
-            state.copy(senderUiModel = SenderUiModel(sender.value))
+        override fun apply(state: ComposerState.Main): ComposerState.Main {
+            val currentSender = state.senderUiModel.email
+            return state.copy(
+                senderUiModel = SenderUiModel(sender.value),
+                prevSenderEmail = currentSender
+                    .takeIfNotBlank()
+                    ?.let { SenderEmail(it) }
+            )
+        }
     }
 
     data class SendersListReady(val list: List<SenderUiModel>) : MainStateModification {

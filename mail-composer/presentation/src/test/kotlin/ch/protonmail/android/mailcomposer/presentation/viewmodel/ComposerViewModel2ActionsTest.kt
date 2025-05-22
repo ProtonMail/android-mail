@@ -267,8 +267,17 @@ internal class ComposerViewModel2ActionsTest {
             attachmentsFacade.reEncryptAttachments(userId, messageId, defaultDraftFields.sender, newSender)
         } returns Unit.right()
 
+        coEvery {
+            draftFacade.injectAddressSignature(
+                userId, DraftBody(""),
+                senderEmail = newSender,
+                previousSenderEmail = SenderEmail("sender@email.com")
+            )
+        } returns DraftBody("").right()
+
         val finalMainState = ComposerState.Main.initial(messageId).copy(
-            senderUiModel = SenderUiModel(newSender.value)
+            senderUiModel = SenderUiModel(newSender.value),
+            prevSenderEmail = SenderEmail("sender@email.com")
         )
 
         val finalEffectsState = ComposerState.Effects.initial().copy(
@@ -626,6 +635,12 @@ internal class ComposerViewModel2ActionsTest {
         coEvery { draftFacade.stopContinuousUpload() } just runs
         coEvery { draftFacade.storeDraft(userId, messageId, expectedDraftFields, any()) } returns Unit.right()
         coEvery { draftFacade.forceUpload(userId, messageId) } just runs
+        coEvery {
+            draftFacade.injectAddressSignature(
+                userId, DraftBody("draft-body"),
+                senderEmail = defaultDraftFields.sender, previousSenderEmail = null
+            )
+        } returns DraftBody("").right()
 
         val viewModel = viewModel()
 
@@ -1174,7 +1189,10 @@ internal class ComposerViewModel2ActionsTest {
         coEvery { addressesFacade.getPrimarySenderEmail(userId) } returns defaultDraftFields.sender.right()
 
         coEvery {
-            draftFacade.injectAddressSignature(userId, DraftBody(""), defaultDraftFields.sender)
+            draftFacade.injectAddressSignature(
+                userId, DraftBody(""),
+                senderEmail = defaultDraftFields.sender, previousSenderEmail = null
+            )
         } returns DraftBody("").right()
     }
 }

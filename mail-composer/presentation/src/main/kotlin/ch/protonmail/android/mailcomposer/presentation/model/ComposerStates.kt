@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -47,6 +48,7 @@ sealed interface ComposerState {
     data class Main(
         val draftId: MessageId,
         val senderUiModel: SenderUiModel,
+        val prevSenderEmail: SenderEmail?,
         val senderAddresses: ImmutableList<SenderUiModel>,
         val isSubmittable: Boolean,
         val loadingType: LoadingType,
@@ -59,6 +61,7 @@ sealed interface ComposerState {
             fun initial(draftId: MessageId) = Main(
                 draftId = draftId,
                 senderUiModel = SenderUiModel(""),
+                prevSenderEmail = null,
                 senderAddresses = emptyList<SenderUiModel>().toImmutableList(),
                 isSubmittable = false,
                 loadingType = LoadingType.None,
