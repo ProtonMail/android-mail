@@ -94,8 +94,11 @@ internal class EditDefaultAddressReducerTest(
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
                 emptyList<DefaultAddressUiModel.Inactive>().toImmutableList()
             ),
-            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty()),
+            showOverlayLoader = false
         )
+
+        private val overlaidLoaderState = baseState.copy(showOverlayLoader = true)
 
         private val updatedState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
@@ -108,7 +111,8 @@ internal class EditDefaultAddressReducerTest(
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
                 emptyList<DefaultAddressUiModel.Inactive>().toImmutableList()
             ),
-            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty()),
+            showOverlayLoader = false
         )
 
         private val errorState = EditDefaultAddressState.LoadingError
@@ -156,6 +160,11 @@ internal class EditDefaultAddressReducerTest(
                 currentState = baseState,
                 event = Error.Update.Generic,
                 expectedState = updateErrorState
+            ),
+            TestInput(
+                currentState = baseState,
+                event = EditDefaultAddressEvent.Update(newAddressId = "123"),
+                expectedState = overlaidLoaderState
             )
         )
 

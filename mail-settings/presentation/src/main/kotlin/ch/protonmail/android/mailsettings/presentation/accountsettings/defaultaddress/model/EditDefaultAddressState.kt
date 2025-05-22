@@ -26,7 +26,8 @@ sealed interface EditDefaultAddressState {
     data class WithData(
         val activeAddressesState: ActiveAddressesState,
         val inactiveAddressesState: InactiveAddressesState,
-        val updateErrorState: UpdateErrorState
+        val updateErrorState: UpdateErrorState,
+        val showOverlayLoader: Boolean
     ) : EditDefaultAddressState {
 
         data class ActiveAddressesState(val addresses: ImmutableList<DefaultAddressUiModel.Active>)

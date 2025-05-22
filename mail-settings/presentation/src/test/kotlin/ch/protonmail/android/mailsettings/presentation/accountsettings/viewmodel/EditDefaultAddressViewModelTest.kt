@@ -234,7 +234,7 @@ internal class EditDefaultAddressViewModelTest {
         viewModel.state.test {
             skipItems(1)
             viewModel.setPrimaryAddress(baseSecondaryId.id)
-            assertEquals(baseExpectedLocalUpdateDataState, awaitItem())
+            assertEquals(baseExpectedUpdatedDataState, awaitItem())
         }
         verify {
             reducer.newStateFrom(
@@ -246,7 +246,7 @@ internal class EditDefaultAddressViewModelTest {
                 EditDefaultAddressEvent.Update(baseSecondaryId.id)
             )
             reducer.newStateFrom(
-                baseExpectedLocalUpdateDataState,
+                baseExpectedOverlaidLoaderDataState,
                 EditDefaultAddressEvent.Data.ContentUpdated(updatedAddresses)
             )
         }
@@ -283,7 +283,7 @@ internal class EditDefaultAddressViewModelTest {
                 EditDefaultAddressEvent.Update(baseSecondaryId.id)
             )
             reducer.newStateFrom(
-                baseExpectedLocalUpdateDataState,
+                baseExpectedOverlaidLoaderDataState,
                 capture(error)
             )
         }
@@ -343,11 +343,17 @@ internal class EditDefaultAddressViewModelTest {
         val baseExpectedDataState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(uiModelActiveList),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(uiModelInactiveList),
-            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty()),
+            showOverlayLoader = false
         )
 
-        val baseExpectedLocalUpdateDataState = baseExpectedDataState.copy(
+        val baseExpectedUpdatedDataState = baseExpectedDataState.copy(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(uiModelActiveListUpdated)
+        )
+
+        val baseExpectedOverlaidLoaderDataState = baseExpectedDataState.copy(
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(uiModelActiveListUpdated),
+            showOverlayLoader = true
         )
     }
 }

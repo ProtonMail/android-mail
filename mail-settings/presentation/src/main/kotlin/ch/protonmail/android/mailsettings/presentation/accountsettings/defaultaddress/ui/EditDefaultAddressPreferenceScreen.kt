@@ -18,14 +18,24 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
@@ -77,6 +87,10 @@ fun EditDefaultAddressScreen(
         }
     )
 
+    if ((state as? EditDefaultAddressState.WithData)?.showOverlayLoader == true) {
+        OverlayLoadingIndicator()
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -102,6 +116,25 @@ fun EditDefaultAddressScreen(
     )
 }
 
+@Composable
+private fun OverlayLoadingIndicator(preventBackNavigation: Boolean = true) {
+    BackHandler(enabled = preventBackNavigation) { }
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.25f))
+            .zIndex(1f)
+            .pointerInput(Unit) {
+                detectTapGestures { }
+                detectDragGestures { _, _ -> }
+            }
+    ) {
+        ProtonCenteredProgress()
+    }
+}
+
 @Preview
 @Composable
 private fun DefaultAddressPreview() {
@@ -110,7 +143,8 @@ private fun DefaultAddressPreview() {
             state = EditDefaultAddressState.WithData(
                 activeAddressesState = EditDefaultAddressPreviewData.ActiveAddressesState,
                 inactiveAddressesState = EditDefaultAddressPreviewData.InactiveAddressesEmptyState,
-                updateErrorState = EditDefaultAddressPreviewData.NoErrorState
+                updateErrorState = EditDefaultAddressPreviewData.NoErrorState,
+                showOverlayLoader = false
             ),
             onBackClick = {},
             onAddressSelected = {}
@@ -126,7 +160,8 @@ private fun DefaultAddressPreviewInactiveAddresses() {
             state = EditDefaultAddressState.WithData(
                 activeAddressesState = EditDefaultAddressPreviewData.ActiveAddressesState,
                 inactiveAddressesState = EditDefaultAddressPreviewData.InactiveAddressesState,
-                updateErrorState = EditDefaultAddressPreviewData.NoErrorState
+                updateErrorState = EditDefaultAddressPreviewData.NoErrorState,
+                showOverlayLoader = false
             ),
             onBackClick = {},
             onAddressSelected = {}

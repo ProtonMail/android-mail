@@ -82,7 +82,8 @@ class EditDefaultAddressReducer @Inject constructor(
         val addresses = getActiveAddressesListWithNewDefault(addressId)
 
         return copy(
-            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(addresses = addresses)
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(addresses = addresses),
+            showOverlayLoader = true
         )
     }
 
@@ -95,7 +96,8 @@ class EditDefaultAddressReducer @Inject constructor(
 
         return copy(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(addresses = addresses),
-            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(error, subscriptionError)
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(error, subscriptionError),
+            showOverlayLoader = false
         )
     }
 
@@ -115,7 +117,8 @@ class EditDefaultAddressReducer @Inject constructor(
         return EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(activeUiAddresses),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(inactiveUiAddresses),
-            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty()),
+            showOverlayLoader = false
         )
     }
 
