@@ -34,6 +34,7 @@
   <string name="mailbox_message_sending_offline">Frakoblet modus, melding satt i sendekø</string>
   <string name="mailbox_message_sending_success">Melding sendt</string>
   <string name="mailbox_message_sending_error">Feil ved sending av melding</string>
+  <string name="mailbox_message_sending_error_address_disabled">Denne adressen er deaktivert, sendingen mislyktes</string>
   <string name="mailbox_message_sending_error_action">Gå til utkast</string>
   <string name="mailbox_attachment_uploading_error">Feil ved opplasting av vedlegg</string>
   <string name="notification_switched_account">Byttet til konto %s</string>

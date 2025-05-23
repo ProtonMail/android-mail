@@ -34,9 +34,10 @@
   <string name="mailbox_message_sending_offline">Ei yhteyttä. Viesti merkittiin lähetettäväksi myöhemmin.</string>
   <string name="mailbox_message_sending_success">Viesti lähetettiin</string>
   <string name="mailbox_message_sending_error">Virhe lähetettäessä viestiä</string>
+  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
   <string name="mailbox_message_sending_error_action">Avaa luonnokset</string>
   <string name="mailbox_attachment_uploading_error">Virhe lisättäessä liitettä</string>
-  <string name="notification_switched_account">Vaihdettiin tiliin %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Tunniste tallennettiin</string>
   <string name="label_deleted">Tunniste poistettiin</string>
   <string name="label_list_loading_error">Virhe ladattaessa tunnistetta. Yritä myöhemmin uudelleen.</string>

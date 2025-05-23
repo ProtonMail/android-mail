@@ -34,9 +34,10 @@
   <string name="mailbox_message_sending_offline">Deconectat, mesajul va fi trimis ulterior.</string>
   <string name="mailbox_message_sending_success">Mesaj trimis</string>
   <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
+  <string name="mailbox_message_sending_error_address_disabled">Această adresă este dezactivată, trimiterea a eșuat.</string>
   <string name="mailbox_message_sending_error_action">Accesare Ciorne</string>
   <string name="mailbox_attachment_uploading_error">Eroare la încărcare atașament.</string>
-  <string name="notification_switched_account">S-a comutat la contul: %s</string>
+  <string name="notification_switched_account">S-a comutat la contul %s</string>
   <string name="label_saved">Etichetă a fost salvată.</string>
   <string name="label_deleted">Etichetă a fost ștearsă.</string>
   <string name="label_list_loading_error">Eroare la încărcarea etichetei. Reîncercați mai târziu.</string>

@@ -34,6 +34,7 @@
   <string name="mailbox_message_sending_offline">Sin conexión, mensaje puesto en cola de envío</string>
   <string name="mailbox_message_sending_success">Mensaje enviado</string>
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
+  <string name="mailbox_message_sending_error_address_disabled">Esta dirección está desactivada. Error con el envío.</string>
   <string name="mailbox_message_sending_error_action">Ir a Borradores</string>
   <string name="mailbox_attachment_uploading_error">Error al cargar el archivo adjunto</string>
   <string name="notification_switched_account">Se cambió a la cuenta %s</string>

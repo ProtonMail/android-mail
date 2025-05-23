@@ -34,9 +34,10 @@
   <string name="mailbox_message_sending_offline">网络尚未连接，邮件将稍后发送</string>
   <string name="mailbox_message_sending_success">邮件已发送</string>
   <string name="mailbox_message_sending_error">发送信息时出错</string>
+  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
   <string name="mailbox_message_sending_error_action">转至草稿箱</string>
   <string name="mailbox_attachment_uploading_error">上传附件时出错</string>
-  <string name="notification_switched_account">已切换至账户：%s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">标签已保存</string>
   <string name="label_deleted">标签已删除</string>
   <string name="label_list_loading_error">加载标签出错，请稍后再试。</string>

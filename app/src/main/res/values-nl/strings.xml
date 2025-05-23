@@ -34,6 +34,7 @@
   <string name="mailbox_message_sending_offline">Offline, bericht geplaatst in wachtrij voor verzenden</string>
   <string name="mailbox_message_sending_success">Bericht verzonden</string>
   <string name="mailbox_message_sending_error">Fout bij verzenden bericht</string>
+  <string name="mailbox_message_sending_error_address_disabled">Dit adres is uitgeschakeld, verzenden mislukt</string>
   <string name="mailbox_message_sending_error_action">Ga naar Concepten</string>
   <string name="mailbox_attachment_uploading_error">Fout bij het uploaden van bijlage</string>
   <string name="notification_switched_account">Overgeschakeld naar account %s</string>
