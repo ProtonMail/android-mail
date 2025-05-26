@@ -43,11 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Siivoa roskakori ja roskapostit</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 Gt tallennustilaa</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 Gt tallennustilaa, 10 sähköpostiosoitetta</string>
   <string name="upselling_plus_feature_email_addresses">10 sähköpostiosoitetta</string>
   <string name="upselling_plus_feature_custom_domain">Tuki omille sähköpostiverkkotunnuksille</string>
   <string name="upselling_plus_feature_desktop_app">Uusi Proton Mail -työpöytäsovellus</string>
-  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
+  <string name="upselling_plus_feature_calendar">Premium-kalenteriominaisuudet</string>
   <string name="upselling_plus_feature_folders_labels">Rajattomasti kansioita, tunnisteita ja suodattimia</string>
   <string name="upselling_plus_feature_plus_7_features">+7 premium-ominaisuutta</string>
   <!-- Unlimited -->

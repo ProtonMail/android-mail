@@ -92,7 +92,7 @@
   <string name="upselling_auto_renew_text_promo">Welkom aanbod. Automatisch verlengen aan %s %s%s tenzij geannuleerd.</string>
   <string name="upselling_auto_renew_text_promo_short">Welkomstaanbieding, verlengt automatisch op %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Wordt automatisch verlengt aan %s %s%s tenzij geannuleerd.</string>
-  <string name="upselling_social_proof_reviews">3.500+ RECENSIES</string>
+  <string name="upselling_social_proof_reviews">3 500+ RECENSIES</string>
   <string name="upselling_description_social_proof">Geliefd bij meer dan <b>1+ miljoen betalende abonnees.</b></string>
   <string name="upselling_description_social_proof_second">Upgrade uw productiviteit vandaag.</string>
   <string name="upselling_discount_tag">BESPAAR %s%%</string>

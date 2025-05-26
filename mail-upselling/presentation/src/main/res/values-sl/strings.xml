@@ -43,7 +43,7 @@
   <string name="upselling_auto_delete_plus_title">Počisti stare smeti in neželeno pošto</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostora za shranjevanje</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB prostora, 10 e-pošt</string>
   <string name="upselling_plus_feature_email_addresses">10 e-poštnih naslovov</string>
   <string name="upselling_plus_feature_custom_domain">Podpora za e-poštno domeno po meri</string>
   <string name="upselling_plus_feature_desktop_app">Nova namizna aplikacija Proton Mail</string>

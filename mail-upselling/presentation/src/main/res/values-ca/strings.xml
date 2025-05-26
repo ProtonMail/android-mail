@@ -25,7 +25,7 @@
   <string name="upselling_mailbox_plus_title">Millora al pla Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Oferta de temps limitat. Cancel·leu en qualsevol moment.</string>
-  <string name="upselling_mailbox_plus_promo_title">Proveu Mail Plus per %s</string>
+  <string name="upselling_mailbox_plus_promo_title">Proveu el Mail Plus per %s</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envieu fàcilment correus electrònics a un grup i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupeu els contactes</string>
@@ -43,11 +43,11 @@
   <string name="upselling_auto_delete_plus_title">Buida la paperera i el correu brossa</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB d\'emmagatzematge, 10 adreces de correu</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB d\'emmagatzematge, 10 adreces de correu electrònic</string>
   <string name="upselling_plus_feature_email_addresses">10 adreces de correu electrònic</string>
   <string name="upselling_plus_feature_custom_domain">Suport de domini de correu electrònic personalitzat</string>
   <string name="upselling_plus_feature_desktop_app">Nova aplicació d\'escriptori de Proton Mail</string>
-  <string name="upselling_plus_feature_calendar">Funcions prèmium del calendari</string>
+  <string name="upselling_plus_feature_calendar">Característiques prèmium del calendari</string>
   <string name="upselling_plus_feature_folders_labels">Carpetes, etiquetes, filtres il·limitats</string>
   <string name="upselling_plus_feature_plus_7_features">+ 7 característiques prèmium</string>
   <!-- Unlimited -->
@@ -94,7 +94,7 @@
   <string name="upselling_auto_renew_text_standard">Es renova automàticament per %s%s%s tret que es cancel·li.</string>
   <string name="upselling_social_proof_reviews">MÉS DE 3.500 RESENYES</string>
   <string name="upselling_description_social_proof">Estimats per més de <b>1 milió d\'abonats de pagament</b>.</string>
-  <string name="upselling_description_social_proof_second">Milloreu la vostra productivitat avui.</string>
+  <string name="upselling_description_social_proof_second">Milloreu la productivitat avui.</string>
   <string name="upselling_discount_tag">ESTALVIEU EL %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_year">/any</string>

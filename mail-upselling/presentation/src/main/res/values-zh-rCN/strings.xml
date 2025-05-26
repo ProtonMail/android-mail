@@ -43,11 +43,11 @@
   <string name="upselling_auto_delete_plus_title">清除旧回收站和垃圾邮件</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB 存储空间，10 个邮箱地址</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>
   <string name="upselling_plus_feature_custom_domain">自有域名支持</string>
   <string name="upselling_plus_feature_desktop_app">新 Proton Mail 桌面应用</string>
-  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
+  <string name="upselling_plus_feature_calendar">高级日历功能</string>
   <string name="upselling_plus_feature_folders_labels">不限量文件夹、标签和筛选规则</string>
   <string name="upselling_plus_feature_plus_7_features">+7 高级功能</string>
   <!-- Unlimited -->

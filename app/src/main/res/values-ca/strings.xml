@@ -34,7 +34,7 @@
   <string name="mailbox_message_sending_offline">Fora de línia, missatge a la cua per enviar</string>
   <string name="mailbox_message_sending_success">S\'ha enviat el missatge.</string>
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
-  <string name="mailbox_message_sending_error_address_disabled">Aquesta adreça està desactivada. L\'enviament no ha funcionat</string>
+  <string name="mailbox_message_sending_error_address_disabled">Aquesta adreça està inhabilitada, l\'enviament ha fallat.</string>
   <string name="mailbox_message_sending_error_action">Aneu a Esborranys</string>
   <string name="mailbox_attachment_uploading_error">S\'ha produït un error en carregar l\'adjunt.</string>
   <string name="notification_switched_account">S\'ha canviat al compte %s.</string>

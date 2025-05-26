@@ -34,10 +34,10 @@
   <string name="mailbox_message_sending_offline">오프라인, 메시지 전송 대기중</string>
   <string name="mailbox_message_sending_success">메시지 보냄</string>
   <string name="mailbox_message_sending_error">메시지 전송 오류</string>
-  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+  <string name="mailbox_message_sending_error_address_disabled">비활성화 주소이므로 전송에 실패했습니다</string>
   <string name="mailbox_message_sending_error_action">임시 보관함으로 이동하기</string>
   <string name="mailbox_attachment_uploading_error">첨부 파일 업로드 중 오류</string>
-  <string name="notification_switched_account">Switched to account %s</string>
+  <string name="notification_switched_account">\'%s\' 계정으로 전환됨</string>
   <string name="label_saved">라벨을 저장했습니다.</string>
   <string name="label_deleted">라벨을 삭제했습니다.</string>
   <string name="label_list_loading_error">라벨 로드 중 오류 발생, 다시 시도하십시오.</string>
