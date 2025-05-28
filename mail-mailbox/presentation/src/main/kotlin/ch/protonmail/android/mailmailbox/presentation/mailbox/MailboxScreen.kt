@@ -26,6 +26,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -40,6 +41,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -70,6 +72,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -241,7 +244,8 @@ fun MailboxScreen(
         },
         onAutoDeleteDialogAction = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(it)) },
         onAutoDeleteDialogShow = { viewModel.submit(MailboxViewAction.ShowAutoDeleteDialog) },
-        openDrawerMenu = { scope.launch { drawerState.open() } }
+        openDrawerMenu = { scope.launch { drawerState.open() } },
+        includeSpamTrashClicked = { viewModel.submit(MailboxViewAction.IncludeAllClicked) }
     )
 
     mailboxState.bottomSheetState?.let {
@@ -550,9 +554,9 @@ private fun MailboxSwipeRefresh(
     // We need to show the Pull To Refresh indicator at top at correct times, which are first time we fetch data from
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
     var loadingWithDataCount by remember { mutableIntStateOf(0) }
+    val searchState = (state as? MailboxListState.Data)?.searchState
     val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
-    val searchMode = (state as? MailboxListState.Data)?.searchState?.searchMode ?: MailboxSearchMode.None
-
+    val searchMode = searchState?.searchMode ?: MailboxSearchMode.None
     var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
     val currentViewState = remember(items.loadState, state) {
@@ -617,7 +621,7 @@ private fun MailboxSwipeRefresh(
             )
 
             is MailboxScreenState.SearchInputInvalidError -> SearchNoResult(
-                subtitleRes = R.string.mailbox_error_search_input_invalid
+                subtitleRes = R.string.mailbox_error_search_input_invalid, showIncludeAll = false
             )
 
             is MailboxScreenState.UnexpectedError -> MailboxError(
@@ -646,7 +650,10 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.NewSearch -> {}
 
-            is MailboxScreenState.SearchNoData -> SearchNoResult()
+            is MailboxScreenState.SearchNoData -> SearchNoResult(
+                showIncludeAll = searchState?.showIncludeSpamTrashButton ?: false,
+                onIncludeAllClicked = actions.includeSpamTrashClicked
+            )
 
             is MailboxScreenState.SearchLoading -> ProtonCenteredProgress(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
@@ -756,6 +763,12 @@ private fun MailboxItemsList(
                             onConfirmClick = actions.onAutoDeleteDialogShow
                         )
                     )
+                }
+            }
+
+            if (state.searchState.showIncludeSpamTrashButton == true) {
+                item {
+                    IncludeSpamTrashItem(onClick = actions.includeSpamTrashClicked)
                 }
             }
         }
@@ -938,7 +951,9 @@ private fun AppendError(
 @Composable
 private fun SearchNoResult(
     modifier: Modifier = Modifier,
-    @StringRes subtitleRes: Int = R.string.mailbox_search_no_results_explanation
+    showIncludeAll: Boolean,
+    @StringRes subtitleRes: Int = R.string.mailbox_search_no_results_explanation,
+    onIncludeAllClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -949,6 +964,9 @@ private fun SearchNoResult(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (showIncludeAll) {
+            IncludeSpamTrashItem(onClick = onIncludeAllClicked)
+        }
 
         Spacer(
             modifier = Modifier
@@ -1137,7 +1155,8 @@ object MailboxScreen {
         val onAutoDeleteDialogShow: () -> Unit,
         val onAutoDeleteDialogAction: (Boolean) -> Unit,
         val onRequestNotificationPermission: () -> Unit,
-        val navigateToCustomizeToolbar: () -> Unit
+        val navigateToCustomizeToolbar: () -> Unit,
+        val includeSpamTrashClicked: () -> Unit
     ) {
 
         companion object {
@@ -1197,7 +1216,8 @@ object MailboxScreen {
                 onAutoDeleteShowUpselling = {},
                 onAutoDeleteDialogShow = {},
                 onRequestNotificationPermission = {},
-                navigateToCustomizeToolbar = {}
+                navigateToCustomizeToolbar = {},
+                includeSpamTrashClicked = {}
             )
         }
     }
@@ -1224,7 +1244,7 @@ private fun MailboxScreenPreview(@PreviewParameter(MailboxPreviewProvider::class
 @Composable
 private fun SearchNoResultPreview() {
     ProtonTheme {
-        SearchNoResult(modifier = Modifier.fillMaxSize())
+        SearchNoResult(modifier = Modifier.fillMaxSize(), showIncludeAll = true, onIncludeAllClicked = {})
     }
 }
 

@@ -88,6 +88,7 @@ import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteSearchResults
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
@@ -119,6 +120,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -189,7 +191,8 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
+    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
+    private val deleteSearchResults: DeleteSearchResults
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -395,6 +398,7 @@ class MailboxViewModel @Inject constructor(
 
                 is MailboxViewAction.DismissAutoDelete -> handleDismissAutoDelete(viewAction)
                 is MailboxViewAction.ShowAutoDeleteDialog -> emitNewStateFrom(viewAction)
+                MailboxViewAction.IncludeAllClicked -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
@@ -420,6 +424,15 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {
+        val searchedAllMail = (state.value.mailboxListState as? MailboxListState.Data)
+            ?.searchState
+            ?.isSearchingAllMail
+            ?: false
+        if (searchedAllMail) {
+            val user = primaryUserId.filterNotNull().first()
+            deleteSearchResults(user)
+        }
+
         emitNewStateFrom(viewAction)
     }
 
@@ -515,14 +528,15 @@ class MailboxViewModel @Inject constructor(
                 state.observeMailLabelChanges(),
                 state.observeUnreadFilterState(),
                 observeViewModeByLocation(),
-                state.observeSearchQuery(),
+                state.observeSearchState(),
                 observeAlmostAllMailSettings.invoke(userId)
-            ) { selectedMailLabel, unreadFilterEnabled, viewMode, query, almostAllMailSetting ->
+            ) { selectedMailLabel, unreadFilterEnabled, viewMode, searchState, almostAllMailSetting ->
+                val query = searchState.searchQuery
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
                     selectedMailLabelId = when {
                         query.isEmpty() -> selectedMailLabel.id
-                        almostAllMailSetting -> MailLabelId.System.AlmostAllMail
+                        searchState.isSearchingAllMail.not() && almostAllMailSetting -> MailLabelId.System.AlmostAllMail
                         else -> MailLabelId.System.AllMail
                     },
                     filterUnread = unreadFilterEnabled,
@@ -1271,9 +1285,9 @@ class MailboxViewModel @Inject constructor(
             .mapNotNull { it?.currentMailLabel }
             .distinctUntilChanged()
 
-    private fun Flow<MailboxState>.observeSearchQuery() = this.map { it.mailboxListState as? MailboxListState.Data }
-        .mapNotNull { it?.searchState?.searchQuery }
-        .distinctUntilChanged()
+    private fun Flow<MailboxState>.observeSearchState() = this.map { it.mailboxListState as? MailboxListState.Data }
+        .mapNotNull { it?.searchState }
+        .distinctUntilChangedBy { it.isSearchingAllMail to it.searchQuery }
 
     private fun MailboxState.isInSearchMode() =
         this.mailboxListState is MailboxListState.Data && this.mailboxListState.searchState.isInSearch()

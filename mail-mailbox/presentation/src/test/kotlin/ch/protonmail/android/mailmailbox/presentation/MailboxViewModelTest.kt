@@ -106,6 +106,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteSearchResults
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
@@ -273,6 +274,7 @@ class MailboxViewModelTest {
     private val starConversations = mockk<StarConversations>()
     private val unStarMessages = mockk<UnStarMessages>()
     private val unStarConversations = mockk<UnStarConversations>()
+    private val deleteSearchResults = mockk<DeleteSearchResults>()
     private val observePrimaryUserAccountStorageStatus = mockk<ObservePrimaryUserAccountStorageStatus> {
         every { this@mockk() } returns flowOf()
     }
@@ -366,7 +368,8 @@ class MailboxViewModelTest {
             observeAutoDeleteSetting = observeAutoDeleteSetting,
             updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
             isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
-            getMailboxBottomSheetActions = getMailboxBottomSheetActions
+            getMailboxBottomSheetActions = getMailboxBottomSheetActions,
+            deleteSearchResults = deleteSearchResults
         )
     }
 
@@ -4777,6 +4780,53 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `deletes search results upon exiting if search all mails was enabled`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Inbox.copy(
+            mailboxListState = (MailboxStateSampleData.Inbox.mailboxListState as Data.ViewMode).copy(
+                searchState = MailboxSearchStateSampleData.NewSearchAllMail
+            )
+        )
+        coEvery { deleteSearchResults.invoke(any()) } just runs
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.EnterSearchMode
+            )
+        } returns initialState
+        val expectedState = MailboxStateSampleData.Inbox.copy(
+            mailboxListState = Data.ViewMode(
+                currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.of(Unit),
+                refreshRequested = false,
+                swipingEnabled = false,
+                swipeActions = null,
+                searchState = MailboxSearchStateSampleData.NotSearching,
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                initialState,
+                MailboxViewAction.ExitSearchMode
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.EnterSearchMode)
+        mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+            coVerify { deleteSearchResults.invoke(any()) }
         }
     }
 

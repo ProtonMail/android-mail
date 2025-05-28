@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
@@ -16,19 +17,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailmessage.domain.usecase
 
-data class MailboxSearchState(
-    val searchQuery: String,
-    val searchMode: MailboxSearchMode,
-    val isSearchingAllMail: Boolean,
-    val showIncludeSpamTrashButton: Boolean
+import ch.protonmail.android.mailmessage.domain.repository.SearchResultsRepository
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
+
+class DeleteSearchResults @Inject constructor(
+    private val searchResultsRepository: SearchResultsRepository
 ) {
 
-    fun isInSearch() = searchMode.isInSearch()
-
-    companion object {
-
-        val NotSearching = MailboxSearchState("", MailboxSearchMode.None, false, false)
+    suspend operator fun invoke(userId: UserId) {
+        searchResultsRepository.deleteAll(userId)
     }
 }

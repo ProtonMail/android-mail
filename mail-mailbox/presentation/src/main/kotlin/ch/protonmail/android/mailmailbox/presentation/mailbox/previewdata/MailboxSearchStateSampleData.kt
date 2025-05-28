@@ -26,22 +26,37 @@ object MailboxSearchStateSampleData {
 
     val NotSearching = MailboxSearchState(
         searchQuery = "",
-        searchMode = MailboxSearchMode.None
+        searchMode = MailboxSearchMode.None,
+        showIncludeSpamTrashButton = false,
+        isSearchingAllMail = false
     )
 
     val NewSearch = MailboxSearchState(
         searchQuery = "",
-        searchMode = MailboxSearchMode.NewSearch
+        searchMode = MailboxSearchMode.NewSearch,
+        showIncludeSpamTrashButton = false,
+        isSearchingAllMail = false
+    )
+
+    val NewSearchAllMail = MailboxSearchState(
+        searchQuery = "",
+        searchMode = MailboxSearchMode.NewSearch,
+        showIncludeSpamTrashButton = false,
+        isSearchingAllMail = true
     )
 
     val SearchLoading = MailboxSearchState(
         searchQuery = QueryString,
-        searchMode = MailboxSearchMode.NewSearchLoading
+        searchMode = MailboxSearchMode.NewSearchLoading,
+        showIncludeSpamTrashButton = false,
+        isSearchingAllMail = false
     )
 
     val SearchData = MailboxSearchState(
         searchQuery = QueryString,
-        searchMode = MailboxSearchMode.SearchData
+        searchMode = MailboxSearchMode.SearchData,
+        showIncludeSpamTrashButton = true,
+        isSearchingAllMail = false
     )
 
 }

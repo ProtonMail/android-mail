@@ -80,6 +80,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
             is MailboxViewAction.SearchQuery -> reduceSearchQuery(operation, currentState)
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
+            is MailboxViewAction.IncludeAllClicked -> reduceIncludeAll(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
             is MailboxEvent.AutoDeleteStateChanged -> reduceAutoDeleteBannerState(operation, currentState)
@@ -92,7 +93,9 @@ class MailboxListReducer @Inject constructor() {
                 swipingEnabled = false,
                 searchState = MailboxSearchState(
                     searchMode = MailboxSearchMode.NewSearch,
-                    searchQuery = ""
+                    searchQuery = "",
+                    showIncludeSpamTrashButton = false,
+                    isSearchingAllMail = false
                 )
             )
 
@@ -129,7 +132,22 @@ class MailboxListReducer @Inject constructor() {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 searchState = currentState.searchState.copy(
-                    searchMode = MailboxSearchMode.SearchData
+                    searchMode = MailboxSearchMode.SearchData,
+                    showIncludeSpamTrashButton = currentState.searchState.isSearchingAllMail.not()
+                )
+            )
+
+            else -> currentState
+        }
+    }
+
+    private fun reduceIncludeAll(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                searchState = currentState.searchState.copy(
+                    searchMode = MailboxSearchMode.SearchData,
+                    showIncludeSpamTrashButton = false,
+                    isSearchingAllMail = true
                 )
             )
 
