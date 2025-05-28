@@ -31,7 +31,7 @@ workflow:
       when: never
     - if: '$CI_COMMIT_TAG != null'
       when: never
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
 
 .gradle-cache-dev: &gradle-cache-dev
   key:
@@ -74,6 +74,7 @@ stages:
   - danger-review
   - localise
   - build
+  - sign
   - startReview
   - test
   - deploy
@@ -152,6 +153,18 @@ build_dev_debug:
     - bundle exec fastlane assembleDevDebug
     - bundle exec fastlane assembleDevDebugAndroidTest
 
+.sign_base:
+  extends: .artifact-signing
+  stage: sign
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-package-kit
+    ARTIFACT_SIGNATURE_PROFILE: android
+    ARTIFACT_SIGNATURE_REF_TYPE: protected-branch
+    ARTIFACT_SIGNATURE_DEST: signedArtifacts/
+
 build_alpha_release:
   extends: .build_job
   cache:
@@ -160,13 +173,11 @@ build_alpha_release:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   script:
-    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
-    - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleAlphaRelease
   rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
       # Always build on merge requests
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
@@ -180,17 +191,29 @@ build_prod_release:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   script:
-    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
-    - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleProdRelease
   rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
       # Always build on merge requests
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
+
+sign_alpha_release:
+  extends: .sign_base
+  dependencies:
+    - build_alpha_release
+  variables:
+    ARTIFACT_SIGNATURE_FILES: app/build/outputs/apk/alpha/release/*.apk
+
+sign_prod_release:
+  extends: .sign_base
+  dependencies:
+    - build_prod_release
+  variables:
+    ARTIFACT_SIGNATURE_FILES: app/build/outputs/apk/prod/release/*.apk
 
 startReview:
   stage: startReview
@@ -357,7 +380,7 @@ deploy_play_store_internal:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   dependencies:
-    - build_prod_release
+    - sign_prod_release
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -433,6 +456,10 @@ include:
   - component: gitlab.protontech.ch/proton/devops/cicd-components/community/gradle-wrapper/validate@0.0.3
     inputs:
       stage: analyse
+
+  - project: 'proton/devops/tooling/templates'
+    ref: main
+    file: '/packaging/signing/artifact-signing.gitlab-ci.yml'
 
   - project: 'translations/generator'
     ref: master

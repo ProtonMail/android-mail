@@ -99,13 +99,6 @@ android {
                 keyPassword = "android"
             }
         }
-
-        register("release") {
-            storeFile = file("$rootDir/keystore/ProtonMail.keystore")
-            storePassword = "${privateProperties["keyStorePassword"]}"
-            keyAlias = "ProtonMail"
-            keyPassword = "${privateProperties["keyStoreKeyPassword"]}"
-        }
     }
 
     buildTypes {
@@ -134,7 +127,7 @@ android {
                 file("proguard").listFiles()?.forEach { proguardFile(it) }
             }
             manifestPlaceholders["isFcmServiceEnabled"] = isFcmServiceEnabled
-            signingConfig = signingConfigs["release"]
+            signingConfig = signingConfigs["debug"]
         }
         create("benchmark") {
             initWith(getByName("release"))
