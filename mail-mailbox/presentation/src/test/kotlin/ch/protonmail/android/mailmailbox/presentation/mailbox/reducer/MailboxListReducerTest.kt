@@ -277,7 +277,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Loading,
-                operation = MailboxViewAction.SearchResult,
+                operation = MailboxViewAction.SearchResultsReady(true),
                 expectedState = MailboxListState.Loading
             )
         )
@@ -2162,7 +2162,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = listStateWithSearchModeNewSearchLoading,
-                operation = MailboxViewAction.SearchResult,
+                operation = MailboxViewAction.SearchResultsReady(true),
                 expectedState = listStateWithSearchModeSearchData
             ),
             TestInput(

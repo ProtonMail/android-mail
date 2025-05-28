@@ -79,7 +79,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.UnStar -> reduceUnStar(currentState)
             is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
             is MailboxViewAction.SearchQuery -> reduceSearchQuery(operation, currentState)
-            is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
+            is MailboxViewAction.SearchResultsReady -> reduceSearchResult(operation, currentState)
             is MailboxViewAction.IncludeAllClicked -> reduceIncludeAll(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
@@ -128,12 +128,16 @@ class MailboxListReducer @Inject constructor() {
         }
     }
 
-    private fun reduceSearchResult(currentState: MailboxListState): MailboxListState {
+    private fun reduceSearchResult(
+        operation: MailboxViewAction.SearchResultsReady,
+        currentState: MailboxListState
+    ): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 searchState = currentState.searchState.copy(
                     searchMode = MailboxSearchMode.SearchData,
-                    showIncludeSpamTrashButton = currentState.searchState.isSearchingAllMail.not()
+                    showIncludeSpamTrashButton = operation.almostAllMailSetting &&
+                        currentState.searchState.isSearchingAllMail.not()
                 )
             )
 

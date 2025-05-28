@@ -385,7 +385,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.EnterSearchMode -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
                 is MailboxViewAction.SearchQuery -> emitNewStateFrom(viewAction)
-                is MailboxViewAction.SearchResult -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.SearchResult -> handleSearchResult(viewAction)
                 is MailboxViewAction.DeleteAll -> handleClearAllAction()
                 is MailboxViewAction.DeleteAllConfirmed -> handleClearAllConfirmedAction()
                 is MailboxViewAction.DeleteAllDialogDismissed -> handleClearAllDialogDismissed(viewAction)
@@ -399,6 +399,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DismissAutoDelete -> handleDismissAutoDelete(viewAction)
                 is MailboxViewAction.ShowAutoDeleteDialog -> emitNewStateFrom(viewAction)
                 MailboxViewAction.IncludeAllClicked -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.SearchResultsReady -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
@@ -421,6 +422,13 @@ class MailboxViewModel @Inject constructor(
             }
         }
         emitNewStateFrom(viewAction)
+    }
+
+    private suspend fun handleSearchResult(viewAction: MailboxViewAction.SearchResult) {
+        emitNewStateFrom(viewAction)
+        val almostAllSetting = observeAlmostAllMailSettings(primaryUserId.filterNotNull().first())
+            .first()
+        emitNewStateFrom(MailboxViewAction.SearchResultsReady(almostAllSetting))
     }
 
     private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {

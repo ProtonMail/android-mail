@@ -4886,14 +4886,14 @@ class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 MailboxStateSampleData.Loading,
-                MailboxViewAction.SearchResult
+                MailboxViewAction.SearchResultsReady(true)
             )
         } returns expectedState
+        every { observeAlmostAllMailSettings.invoke(any()) } returns flowOf(true)
 
         // When
         mailboxViewModel.submit(MailboxViewAction.SearchResult)
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
