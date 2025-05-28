@@ -337,7 +337,7 @@ class MailboxViewModel @Inject constructor(
         }.distinctUntilChanged()
     }
 
-    @SuppressWarnings("ComplexMethod")
+    @SuppressWarnings("ComplexMethod", "LongMethod")
     internal fun submit(viewAction: MailboxViewAction) {
         viewModelScope.launch {
             when (viewAction) {
