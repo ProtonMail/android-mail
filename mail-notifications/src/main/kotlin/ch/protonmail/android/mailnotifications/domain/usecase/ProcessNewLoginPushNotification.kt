@@ -22,20 +22,23 @@ import java.time.Instant
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.work.ListenableWorker
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationDismissPendingIntentData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 internal class ProcessNewLoginPushNotification @Inject constructor(
     @ApplicationContext private val context: Context,
     private val notificationProvider: NotificationProvider,
-    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
+    private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
+    private val createNotificationAction: CreateNotificationAction
 ) {
 
     operator fun invoke(notificationData: LocalPushNotificationData.Login): ListenableWorker.Result {
@@ -51,7 +54,7 @@ internal class ProcessNewLoginPushNotification @Inject constructor(
             userData.userId
         ).hashCode()
 
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(notificationUrl))
+        val intent = Intent(Intent.ACTION_VIEW, notificationUrl.toUri())
 
         val contentPendingIntent = PendingIntent.getActivities(
             context,
@@ -77,7 +80,12 @@ internal class ProcessNewLoginPushNotification @Inject constructor(
             group = notificationGroup,
             isGroupSummary = true,
             autoCancel = true
-        ).apply { setContentIntent(contentPendingIntent) }.build()
+        ).apply {
+            setContentIntent(contentPendingIntent)
+
+            val actionIntent = PushNotificationDismissPendingIntentData.GroupNotification(notificationGroup)
+            setDeleteIntent(createNotificationAction(actionIntent))
+        }.build()
 
         notificationManagerCompatProxy.run {
             showNotification(Instant.now().hashCode(), notification)

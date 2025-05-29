@@ -19,14 +19,12 @@
 package ch.protonmail.android.mailnotifications.domain.proxy
 
 import android.app.Notification
+import android.service.notification.StatusBarNotification
 
 interface NotificationManagerCompatProxy {
+    val activeNotifications: List<StatusBarNotification>
 
     fun dismissNotification(notificationId: Int)
-
-    fun dismissNotificationGroupIfEmpty(groupKey: String)
-
-    fun getGroupKeyForNotification(notificationId: Int): String?
 
     fun showNotification(notificationId: Int, notification: Notification)
 

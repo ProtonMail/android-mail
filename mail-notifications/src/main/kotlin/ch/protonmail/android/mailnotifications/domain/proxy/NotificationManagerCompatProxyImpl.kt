@@ -20,6 +20,7 @@ package ch.protonmail.android.mailnotifications.domain.proxy
 
 import android.annotation.SuppressLint
 import android.app.Notification
+import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationManagerCompat
 import javax.inject.Inject
 
@@ -27,24 +28,11 @@ internal class NotificationManagerCompatProxyImpl @Inject constructor(
     private val notificationManagerCompat: NotificationManagerCompat
 ) : NotificationManagerCompatProxy {
 
+    override val activeNotifications: List<StatusBarNotification>
+        get() = notificationManagerCompat.activeNotifications
+
     override fun dismissNotification(notificationId: Int) {
         notificationManagerCompat.cancel(notificationId)
-    }
-
-    override fun dismissNotificationGroupIfEmpty(groupKey: String) {
-        val notifications = notificationManagerCompat.activeNotifications.filter {
-            it.groupKey.contains(groupKey) // groupKey here has a different format here.
-        }
-
-        if (notifications.size == 1) dismissNotification(notifications.first().id)
-    }
-
-    override fun getGroupKeyForNotification(notificationId: Int): String? {
-        val notification = notificationManagerCompat.activeNotifications.firstOrNull {
-            it.id == notificationId
-        }
-
-        return notification?.groupKey
     }
 
     @SuppressLint("MissingPermission")

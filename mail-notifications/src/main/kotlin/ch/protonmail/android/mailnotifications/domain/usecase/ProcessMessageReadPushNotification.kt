@@ -20,23 +20,18 @@ package ch.protonmail.android.mailnotifications.domain.usecase
 
 import androidx.work.ListenableWorker
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
-import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 internal class ProcessMessageReadPushNotification @Inject constructor(
-    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
+    private val dismissEmailNotificationsForUser: DismissEmailNotificationsForUser
 ) {
 
     operator fun invoke(notificationData: LocalPushNotificationData.MessageRead): ListenableWorker.Result {
+        val userId = UserId(notificationData.userData.userId)
         val notificationId = notificationData.pushData.messageId.hashCode()
 
-        notificationManagerCompatProxy.run {
-            val notificationGroup = getGroupKeyForNotification(notificationId) ?: return@run
-
-            dismissNotification(notificationId)
-            dismissNotificationGroupIfEmpty(notificationGroup)
-        }
-
+        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = true)
         return ListenableWorker.Result.success()
     }
 }

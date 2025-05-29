@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat.Action
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.data.local.PushNotificationActionsBroadcastReceiver
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationDismissPendingIntentData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.util.kotlin.serialize
@@ -33,6 +34,18 @@ import javax.inject.Inject
 internal class CreateNotificationAction @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+
+    operator fun invoke(payload: PushNotificationDismissPendingIntentData): PendingIntent {
+        val intent = Intent(context, PushNotificationActionsBroadcastReceiver::class.java).apply {
+            putExtra(NotificationDismissalIntentExtraKey, payload.serialize())
+        }
+        return PendingIntent.getBroadcast(
+            context,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+    }
 
     operator fun invoke(payload: PushNotificationPendingIntentPayloadData): Action {
         val pendingIntent = when (payload.action) {
@@ -88,5 +101,7 @@ internal class CreateNotificationAction @Inject constructor(
     companion object {
 
         const val NotificationActionIntentExtraKey = "notificationAction"
+
+        const val NotificationDismissalIntentExtraKey = "notificationDismissal"
     }
 }

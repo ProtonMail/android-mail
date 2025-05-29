@@ -109,7 +109,7 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
             }
 
             isMessageReadNotification(decryptedNotification.value) -> {
-                val notificationData = data.toLocalMessageReadNotificationData()
+                val notificationData = data.toLocalMessageReadNotificationData(userId.id, user.email ?: "")
                 processMessageReadPushNotification(notificationData)
             }
 
@@ -134,9 +134,13 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         return LocalPushNotificationData.NewMessage(userData, pushData)
     }
 
-    private fun PushNotificationData.toLocalMessageReadNotificationData(): LocalPushNotificationData.MessageRead {
+    private fun PushNotificationData.toLocalMessageReadNotificationData(
+        userId: String,
+        userEmail: String
+    ): LocalPushNotificationData.MessageRead {
+        val userData = UserPushData(userId, userEmail)
         val pushData = MessageReadPushData(messageId)
-        return LocalPushNotificationData.MessageRead(pushData)
+        return LocalPushNotificationData.MessageRead(userData, pushData)
     }
 
     private fun PushNotificationData.toLocalNewLoginNotificationData(

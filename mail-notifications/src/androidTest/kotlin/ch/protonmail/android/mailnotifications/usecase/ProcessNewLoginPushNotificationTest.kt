@@ -28,9 +28,11 @@ import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.bigText
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationDismissPendingIntentData
 import ch.protonmail.android.mailnotifications.domain.model.UserPushData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
+import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
 import ch.protonmail.android.mailnotifications.summaryText
 import ch.protonmail.android.mailnotifications.text
 import ch.protonmail.android.mailnotifications.title
@@ -57,10 +59,13 @@ internal class ProcessNewLoginPushNotificationTest {
 
     private val notificationProvider = getNotificationProvider()
     private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>(relaxUnitFun = true)
+    private val createNotificationAction = mockk<CreateNotificationAction>()
+
     private val processNewLoginPushNotification = ProcessNewLoginPushNotification(
         context,
         notificationProvider,
-        notificationManagerCompatProxy
+        notificationManagerCompatProxy,
+        createNotificationAction
     )
 
     private val userData = UserPushData(NotificationUserId, NotificationEmail)
@@ -86,6 +91,8 @@ internal class ProcessNewLoginPushNotificationTest {
         val expectedOpenUrlNotificationEntryId = Instant.now().hashCode()
         val notification = slot<Notification>()
         val groupNotification = slot<Notification>()
+
+        every { createNotificationAction(any<PushNotificationDismissPendingIntentData>()) } returns mockk()
 
         // When
         val result = processNewLoginPushNotification(data)

@@ -23,12 +23,13 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailnotifications.PushNotificationSample
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
-import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.MessageReadPushData
+import ch.protonmail.android.mailnotifications.domain.model.UserPushData
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageReadPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
@@ -104,8 +105,9 @@ internal class ProcessPushNotificationDataWorkerMessageReadTest {
         // Given
         prepareSharedMocks(isAppInBackground = true)
 
+        val userData = UserPushData(userId.id, "")
         val pushData = MessageReadPushData("messageId")
-        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(pushData)
+        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(userData, pushData)
 
         // When
         val result = worker.doWork()
@@ -122,9 +124,9 @@ internal class ProcessPushNotificationDataWorkerMessageReadTest {
     fun newMessageReadNotificationDismissesNotificationWhenAppIsInForeground() = runTest {
         // Given
         prepareSharedMocks(isAppInBackground = false)
-
+        val userData = UserPushData(userId.id, "")
         val pushData = MessageReadPushData("messageId")
-        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(pushData)
+        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(userData, pushData)
 
         // When
         val result = worker.doWork()
@@ -141,9 +143,9 @@ internal class ProcessPushNotificationDataWorkerMessageReadTest {
     fun newMessageReadNotificationIsProcessedWhenBackgroundSyncIsDisabled() = runTest {
         // Given
         prepareSharedMocks(isAppInBackground = false, hasBackgroundSyncEnabled = false)
-
+        val userData = UserPushData(userId.id, "")
         val pushData = MessageReadPushData("messageId")
-        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(pushData)
+        val messageReadPushNotificationData = LocalPushNotificationData.MessageRead(userData, pushData)
 
         // When
         val result = worker.doWork()

@@ -28,3 +28,14 @@ internal data class PushNotificationPendingIntentPayloadData(
     val messageId: String,
     val action: LocalNotificationAction
 )
+
+@Serializable
+internal sealed class PushNotificationDismissPendingIntentData {
+
+    @Serializable
+    data class SingleNotification(val userId: String, val notificationId: Int) :
+        PushNotificationDismissPendingIntentData()
+
+    @Serializable
+    data class GroupNotification(val groupId: String) : PushNotificationDismissPendingIntentData()
+}

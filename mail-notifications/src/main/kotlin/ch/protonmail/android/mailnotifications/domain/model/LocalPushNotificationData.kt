@@ -21,6 +21,7 @@ package ch.protonmail.android.mailnotifications.domain.model
 internal sealed class LocalPushNotificationData {
 
     data class MessageRead(
+        val userData: UserPushData,
         val pushData: MessageReadPushData
     )
 

@@ -30,6 +30,7 @@ import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelpe
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.NewMessagePushData
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationDismissPendingIntentData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.model.UserPushData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
@@ -76,7 +77,7 @@ internal class ProcessNewMessagePushNotificationTest {
     private val notificationProvider = getNotificationProvider()
     private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>(relaxUnitFun = true)
     private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val createNotificationAction = spyk(CreateNotificationAction(context, notificationsDeepLinkHelper))
+    private val createNotificationAction = spyk(CreateNotificationAction(context))
     private val createNewMessageNavigationIntent = spyk(
         CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper)
     )
@@ -151,6 +152,10 @@ internal class ProcessNewMessagePushNotificationTest {
             createNotificationAction(expectedMarkAsReadPayload)
         }
 
+        verify(exactly = 2) {
+            createNotificationAction(any<PushNotificationDismissPendingIntentData>())
+        }
+
         coVerifySequence {
             eventManagerProvider.get(EventManagerConfig.Core(UserId(userData.userId)))
             eventManager.resume()
@@ -216,7 +221,6 @@ internal class ProcessNewMessagePushNotificationTest {
         val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
         every { notificationsDeepLinkHelper.buildMessageDeepLinkIntent(any(), any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(any(), any()) } returns mockedIntent
-        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
     }
 
     private companion object {

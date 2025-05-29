@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationDismissPendingIntentData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
@@ -95,6 +96,13 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
             addAction(createNotificationAction(archiveAction))
             addAction(createNotificationAction(trashAction))
             addAction(createNotificationAction(markAsReadAction))
+
+            val dismissalAction = PushNotificationDismissPendingIntentData.SingleNotification(
+                userData.userId,
+                notificationId
+            )
+
+            setDeleteIntent(createNotificationAction(dismissalAction))
         }.build()
 
         val groupNotification = notificationProvider.provideEmailNotificationBuilder(
@@ -107,6 +115,9 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
             autoCancel = true
         ).apply {
             setContentIntent(createNewMessageNavigationIntent(notificationId, userData.userId))
+
+            val dismissalAction = PushNotificationDismissPendingIntentData.GroupNotification(userData.userId)
+            setDeleteIntent(createNotificationAction(dismissalAction))
         }.build()
 
         notificationManagerCompatProxy.run {
