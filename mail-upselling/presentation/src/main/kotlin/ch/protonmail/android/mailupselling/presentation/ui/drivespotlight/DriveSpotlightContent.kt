@@ -63,6 +63,7 @@ import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.compose.theme.headlineSmallNorm
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("UseComposableActions")
 @Composable
 internal fun DriveSpotlightContent(
     state: DriveSpotlightUIState.Data,

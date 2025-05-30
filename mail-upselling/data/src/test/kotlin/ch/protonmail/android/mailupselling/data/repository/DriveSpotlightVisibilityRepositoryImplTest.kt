@@ -65,7 +65,7 @@ class DriveSpotlightVisibilityRepositoryImplTest {
     @Test
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
-        coEvery { preferences[longPreferencesKey("driveSpotlightLastSeenPreference1")] } returns
+        coEvery { preferences[longPreferencesKey("driveSpotlightLastSeenPreference")] } returns
             AnotherValue.seenTimestamp
         every { mockDataStore.data } returns flowOf(preferences)
 
