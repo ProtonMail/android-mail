@@ -20,7 +20,9 @@ package ch.protonmail.android.mailupselling.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
+import ch.protonmail.android.mailupselling.data.repository.DriveSpotlightVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
+import ch.protonmail.android.mailupselling.domain.annotations.DriveSpotlightEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
 import ch.protonmail.android.mailupselling.domain.annotations.HeaderUpsellSocialProofLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.HeaderUpsellVariantLayoutEnabled
@@ -30,12 +32,14 @@ import ch.protonmail.android.mailupselling.domain.annotations.SidebarUpsellingEn
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.AlwaysShowOneClickUpselling
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsDriveSpotlightEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsHeaderUpsellSocialProofLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsHeaderUpsellVariantLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsOneClickUpsellingTelemetryEnabled
@@ -88,6 +92,10 @@ object UpsellingModule {
     fun provideHeaderUpsellVariantLayoutEnabled(isEnabled: IsHeaderUpsellVariantLayoutEnabled) = isEnabled(null)
 
     @Provides
+    @DriveSpotlightEnabled
+    fun provideDriveSpotlightEnabled(isEnabled: IsDriveSpotlightEnabled) = isEnabled(null)
+
+    @Provides
     @HeaderUpsellSocialProofLayoutEnabled
     fun provideUpsellSocialProofLayoutEnabled(isEnabled: IsHeaderUpsellSocialProofLayoutEnabled) = isEnabled(null)
 
@@ -137,6 +145,12 @@ interface UpsellingLocalDataModule {
     @Binds
     @Reusable
     fun provideUpsellingVisibilityRepository(impl: UpsellingVisibilityRepositoryImpl): UpsellingVisibilityRepository
+
+    @Binds
+    @Reusable
+    fun provideDriveSpotlightRepository(
+        impl: DriveSpotlightVisibilityRepositoryImpl
+    ): DriveSpotlightVisibilityRepository
 
     @Module
     @InstallIn(SingletonComponent::class)

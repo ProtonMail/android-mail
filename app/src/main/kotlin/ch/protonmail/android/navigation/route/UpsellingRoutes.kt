@@ -20,7 +20,9 @@ package ch.protonmail.android.navigation.route
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.ui.drivespotlight.DriveSpotlightScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.model.Destination
 
@@ -42,5 +44,11 @@ fun NavGraphBuilder.addUpsellingRoutes(actions: UpsellingScreen.Actions) {
             bottomSheetActions = actions,
             entryPoint = UpsellingEntryPoint.Feature.Navbar
         )
+    }
+}
+
+fun NavGraphBuilder.addDriveSpotlightRoute(actions: DriveSpotlightScreen.Actions) {
+    dialog(route = Destination.Screen.DriveSpotlight.route) {
+        DriveSpotlightScreen(actions)
     }
 }

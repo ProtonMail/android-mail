@@ -61,6 +61,7 @@ import ch.protonmail.android.mailnotifications.domain.model.telemetry.Notificati
 import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
+import ch.protonmail.android.mailupselling.presentation.ui.drivespotlight.DriveSpotlightScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
 import ch.protonmail.android.navigation.model.Destination.Dialog
@@ -84,6 +85,7 @@ import ch.protonmail.android.navigation.route.addCustomizeToolbar
 import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
+import ch.protonmail.android.navigation.route.addDriveSpotlightRoute
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addExportLogsSettings
@@ -694,6 +696,12 @@ fun Home(
                         onDismiss = { navController.navigateBack() },
                         onUpgrade = { message -> scope.launch { showNormalSnackbar(message) } },
                         onError = { message -> scope.launch { showErrorSnackbar(message) } }
+                    )
+                )
+                addDriveSpotlightRoute(
+                    DriveSpotlightScreen.Actions(
+                        onError = { message -> scope.launch { showErrorSnackbar(message) } },
+                        onDismiss = { navController.navigateBack() }
                     )
                 )
 
