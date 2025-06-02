@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_local_cache">Caché local</string>
-  <string name="mail_settings_local_cache_hint">Espacio usado: %s</string>
   <string name="mail_settings_local_cache_clear_button">Limpiar los datos</string>
   <string name="mail_settings_swipe_actions">Acciones de deslizamiento</string>
   <string name="mail_settings_combined_contacts_hint">Active esta función para completar automáticamente las direcciones usando los contactos de todas las cuentas conectadas.</string>

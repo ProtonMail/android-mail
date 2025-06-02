@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
   <string name="mail_settings_local_cache">Локальний кеш</string>
-  <string name="mail_settings_local_cache_hint">Використано простору: %s</string>
   <string name="mail_settings_local_cache_clear_button">Очистити дані</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
   <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх ваших під\'єднаних облікових записів.</string>

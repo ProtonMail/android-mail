@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">App-språk</string>
   <string name="mail_settings_combined_contacts">Kombinerte kontakter</string>
   <string name="mail_settings_local_cache">Lokal hurtigbuffer</string>
-  <string name="mail_settings_local_cache_hint">Plass brukt: %s</string>
   <string name="mail_settings_local_cache_clear_button">Tøm data</string>
   <string name="mail_settings_swipe_actions">Sveipehandlinger</string>
   <string name="mail_settings_combined_contacts_hint">Aktiver denne funksjonen for å autofullføre e-postadresser ved hjelp av kontakter fra alle påloggede kontoer.</string>

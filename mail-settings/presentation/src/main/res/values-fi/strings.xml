@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Sovelluksen kieli</string>
   <string name="mail_settings_combined_contacts">Yhdistetyt yhteystiedot</string>
   <string name="mail_settings_local_cache">Paikallinen välimuisti</string>
-  <string name="mail_settings_local_cache_hint">Käytetty tila: %s</string>
   <string name="mail_settings_local_cache_clear_button">Tyhjennä tiedot</string>
   <string name="mail_settings_swipe_actions">Pyyhkäisytoiminnot</string>
   <string name="mail_settings_combined_contacts_hint">Käytä ominaisuutta, jos haluat täydentää sähköpostiosoitteita automaattisesti kaikkien sisäänkirjattujen tilien yhteystiedoista.</string>

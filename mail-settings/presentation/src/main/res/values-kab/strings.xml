@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Tutlayt n usnas</string>
   <string name="mail_settings_combined_contacts">Inermisen uddisen</string>
   <string name="mail_settings_local_cache">Tuffirt tadigant</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
   <string name="mail_settings_local_cache_clear_button">Sfeḍ isefka</string>
   <string name="mail_settings_swipe_actions">Tigawin n uḍummu</string>
   <string name="mail_settings_combined_contacts_hint">Sermed tawuri-agi i usemmed awurman n tansiwin imayl s useqdec n yinermisen n yal imiḍanen-inek•inem yeqqnen.</string>

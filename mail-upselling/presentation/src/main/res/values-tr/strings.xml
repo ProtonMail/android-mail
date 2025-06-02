@@ -47,7 +47,7 @@
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
   <string name="upselling_plus_feature_custom_domain">Özel e-posta etki alanı desteği</string>
   <string name="upselling_plus_feature_desktop_app">Yeni Proton Mail bilgisayar uygulaması</string>
-  <string name="upselling_plus_feature_calendar">Ayrıcalıklı takvim özellikleri</string>
+  <string name="upselling_plus_feature_calendar">Ücretli takvim özellikleri</string>
   <string name="upselling_plus_feature_folders_labels">Sınırsız klasör, etiket, süzgeç</string>
   <string name="upselling_plus_feature_plus_7_features">+7 ücretli özellik</string>
   <!-- Unlimited -->
@@ -94,7 +94,7 @@
   <string name="upselling_auto_renew_text_standard">İptal edilmedikçe %s %s%s zamanında otomatik olarak yenilenir.</string>
   <string name="upselling_social_proof_reviews">3.500+ YORUM</string>
   <string name="upselling_description_social_proof"><b>1 milyondan fazla ücretli abone</b> tarafından seviliyor.</string>
-  <string name="upselling_description_social_proof_second">Üretkenliğinizi bugün yükseltin.</string>
+  <string name="upselling_description_social_proof_second">Üretkenliğinizi artırın.</string>
   <string name="upselling_discount_tag">%s%% indirim</string>
   <string name="upselling_month">/ay</string>
   <string name="upselling_year">/yıl</string>

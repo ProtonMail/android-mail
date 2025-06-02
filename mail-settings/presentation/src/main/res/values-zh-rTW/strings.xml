@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">應用程式語言</string>
   <string name="mail_settings_combined_contacts">合併聯絡人</string>
   <string name="mail_settings_local_cache">本機快取</string>
-  <string name="mail_settings_local_cache_hint">空間使用: %s</string>
   <string name="mail_settings_local_cache_clear_button">清除資料</string>
   <string name="mail_settings_swipe_actions">滑動動作</string>
   <string name="mail_settings_combined_contacts_hint">啟用此功能以使用您所有已登入帳號中的聯絡人來自動完成電子郵件位址。</string>

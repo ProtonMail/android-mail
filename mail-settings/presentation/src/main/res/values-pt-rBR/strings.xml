@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Idioma do aplicativo</string>
   <string name="mail_settings_combined_contacts">Contatos combinados</string>
   <string name="mail_settings_local_cache">Cache local</string>
-  <string name="mail_settings_local_cache_hint">Espaço utilizado: %s</string>
   <string name="mail_settings_local_cache_clear_button">Limpar dados</string>
   <string name="mail_settings_swipe_actions">Ações de deslizar</string>
   <string name="mail_settings_combined_contacts_hint">Ative este recurso para preencher automaticamente endereços de e-mail usando os contatos de todas as suas contas conectadas.</string>

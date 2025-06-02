@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">ऐप भाषा</string>
   <string name="mail_settings_combined_contacts">संयुक्त संपर्क</string>
   <string name="mail_settings_local_cache">स्थानीय कैश</string>
-  <string name="mail_settings_local_cache_hint">उपयोग की गई जगह: %s</string>
   <string name="mail_settings_local_cache_clear_button">डाटा मिटाएं</string>
   <string name="mail_settings_swipe_actions">स्वाइप क्रियाएं</string>
   <string name="mail_settings_combined_contacts_hint">अपने सभी साइन इन खातों से संपर्कों का इस्तेमाल करके ईमेल पतों को ऑटो-पुरा करने के लिएं इस फीचर को ऑन करें।</string>

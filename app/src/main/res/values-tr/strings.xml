@@ -34,10 +34,10 @@
   <string name="mailbox_message_sending_offline">Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı</string>
   <string name="mailbox_message_sending_success">İleti gönderildi</string>
   <string name="mailbox_message_sending_error">İleti gönderilirken sorun çıktı</string>
-  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+  <string name="mailbox_message_sending_error_address_disabled">Bu adres kullanımdan kaldırılmış, gönderilemedi</string>
   <string name="mailbox_message_sending_error_action">Taslaklar kutusuna git</string>
   <string name="mailbox_attachment_uploading_error">Ek dosya yüklenirken sorun çıktı</string>
-  <string name="notification_switched_account">Switched to account %s</string>
+  <string name="notification_switched_account">%s hesabına geçildi</string>
   <string name="label_saved">Etiket kaydedldi</string>
   <string name="label_deleted">Etiket silindi</string>
   <string name="label_list_loading_error">Etiket yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>

@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Jezik aplikacije</string>
   <string name="mail_settings_combined_contacts">Združeni stiki</string>
   <string name="mail_settings_local_cache">Krajevni predpomnilnik</string>
-  <string name="mail_settings_local_cache_hint">Uporabljen prostor: %s</string>
   <string name="mail_settings_local_cache_clear_button">Počisti podatke</string>
   <string name="mail_settings_swipe_actions">Dejanja s potegom prsta</string>
   <string name="mail_settings_combined_contacts_hint">Vključite to možnost za samodejno dokončevanje e-poštnih naslovov z uporabo stikov vseh prijavljenih računov.</string>

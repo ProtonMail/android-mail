@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Γλώσσα εφαρμογής</string>
   <string name="mail_settings_combined_contacts">Συνδυασμένες επαφές</string>
   <string name="mail_settings_local_cache">Τοπική προσωρινή μνήμη</string>
-  <string name="mail_settings_local_cache_hint">Xώρος που χρησιμοποιείται: %s</string>
   <string name="mail_settings_local_cache_clear_button">Εκκαθάριση δεδομένων</string>
   <string name="mail_settings_swipe_actions">Ενέργειες ολίσθησης</string>
   <string name="mail_settings_combined_contacts_hint">Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τα E-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.</string>

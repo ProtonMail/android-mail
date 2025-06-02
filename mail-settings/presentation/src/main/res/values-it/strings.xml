@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Lingua dell\'interfaccia</string>
   <string name="mail_settings_combined_contacts">Inclusione dei contatti</string>
   <string name="mail_settings_local_cache">Cache locale</string>
-  <string name="mail_settings_local_cache_hint">Spazio utilizzato: %s</string>
   <string name="mail_settings_local_cache_clear_button">Cancella la cache</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
   <string name="mail_settings_combined_contacts_hint">Abilita questa opzione per completare automaticamente gli indirizzi email con i contatti di tutti gli account a cui hai effettuato l\'accesso.</string>

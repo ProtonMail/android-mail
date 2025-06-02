@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Bahasa aplikasi</string>
   <string name="mail_settings_combined_contacts">Kontak gabungan</string>
   <string name="mail_settings_local_cache">Cache lokal</string>
-  <string name="mail_settings_local_cache_hint">Ruang terpakai: %s</string>
   <string name="mail_settings_local_cache_clear_button">Hapus data</string>
   <string name="mail_settings_swipe_actions">Tindakan gestur</string>
   <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>

@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Мова праграмы</string>
   <string name="mail_settings_combined_contacts">Камбінаваныя кантакты</string>
   <string name="mail_settings_local_cache">Лакальны кэш</string>
-  <string name="mail_settings_local_cache_hint">Выкарыстана прасторы: %s</string>
   <string name="mail_settings_local_cache_clear_button">Ачысціць даныя</string>
   <string name="mail_settings_swipe_actions">Дзеянні правядзення</string>
   <string name="mail_settings_combined_contacts_hint">Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.</string>

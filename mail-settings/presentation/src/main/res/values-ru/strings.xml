@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
   <string name="mail_settings_local_cache">Локальный кэш</string>
-  <string name="mail_settings_local_cache_hint">Использовано места: %s</string>
   <string name="mail_settings_local_cache_clear_button">Очистить данные</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.</string>

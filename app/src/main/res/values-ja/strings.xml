@@ -34,10 +34,10 @@
   <string name="mailbox_message_sending_offline">オフライン、メッセージは送信待ち</string>
   <string name="mailbox_message_sending_success">メッセージが送信されました</string>
   <string name="mailbox_message_sending_error">メッセージ送信エラー</string>
-  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+  <string name="mailbox_message_sending_error_address_disabled">アドレスが無効です。送信できません。</string>
   <string name="mailbox_message_sending_error_action">下書きを開く</string>
   <string name="mailbox_attachment_uploading_error">添付ファイルのアップロードエラー</string>
-  <string name="notification_switched_account">Switched to account %s</string>
+  <string name="notification_switched_account">アカウント %s に切り替えました</string>
   <string name="label_saved">ラベルが保存されました</string>
   <string name="label_deleted">ラベルが削除されました</string>
   <string name="label_list_loading_error">ラベルの読み込み中にエラーが発生しました。後でもう一度お試しください。</string>

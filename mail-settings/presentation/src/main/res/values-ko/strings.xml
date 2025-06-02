@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">앱 언어</string>
   <string name="mail_settings_combined_contacts">병합된 연락처</string>
   <string name="mail_settings_local_cache">로컬 캐시</string>
-  <string name="mail_settings_local_cache_hint">사용된 공간: %s</string>
   <string name="mail_settings_local_cache_clear_button">데이터 지우기</string>
   <string name="mail_settings_swipe_actions">스와이프 동작</string>
   <string name="mail_settings_combined_contacts_hint">로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.</string>

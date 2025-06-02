@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Jazyk aplikácie</string>
   <string name="mail_settings_combined_contacts">Kombinované kontakty</string>
   <string name="mail_settings_local_cache">Lokálna medzipamäť</string>
-  <string name="mail_settings_local_cache_hint">Využitý priestor: %s</string>
   <string name="mail_settings_local_cache_clear_button">Vymazať údaje</string>
   <string name="mail_settings_swipe_actions">Akcia po prejdení prstom</string>
   <string name="mail_settings_combined_contacts_hint">Zapnutím tejto funkcie sa budú emailové adresy automaticky dopĺňať pomocou kontaktov zo všetkých vašich prihlásených účtov.</string>

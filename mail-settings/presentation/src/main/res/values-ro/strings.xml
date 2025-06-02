@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Limbă aplicație</string>
   <string name="mail_settings_combined_contacts">Contacte combinate</string>
   <string name="mail_settings_local_cache">Buffer local</string>
-  <string name="mail_settings_local_cache_hint">Spațiu utilizat: %s</string>
   <string name="mail_settings_local_cache_clear_button">Golire buffer</string>
   <string name="mail_settings_swipe_actions">Acțiuni de glisare</string>
   <string name="mail_settings_combined_contacts_hint">Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.</string>

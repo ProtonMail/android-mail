@@ -29,7 +29,6 @@
   <string name="mail_settings_app_language">Appspråk</string>
   <string name="mail_settings_combined_contacts">Kombinerade kontakter</string>
   <string name="mail_settings_local_cache">Lokal cache</string>
-  <string name="mail_settings_local_cache_hint">Använt utrymme: %s</string>
   <string name="mail_settings_local_cache_clear_button">Rensa data</string>
   <string name="mail_settings_swipe_actions">Svepåtgärder</string>
   <string name="mail_settings_combined_contacts_hint">Aktivera denna funktion för att automatiskt slutföra e-postadresser med hjälp av kontakter från alla dina inloggade konton.</string>

@@ -43,11 +43,11 @@
   <string name="upselling_auto_delete_plus_title">古いゴミやスパムを削除</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB のストレージ</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">ストレージ容量15 GB、メールアドレス 10 個</string>
   <string name="upselling_plus_feature_email_addresses">10個のメールアドレス</string>
   <string name="upselling_plus_feature_custom_domain">カスタムメールドメインのサポート</string>
   <string name="upselling_plus_feature_desktop_app">新しい Proton Mail デスクトップアプリ</string>
-  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
+  <string name="upselling_plus_feature_calendar">カレンダーのプレミアム機能</string>
   <string name="upselling_plus_feature_folders_labels">無制限のフォルダー、ラベル、フィルター</string>
   <string name="upselling_plus_feature_plus_7_features">+7個のプレミアム機能</string>
   <!-- Unlimited -->
@@ -92,9 +92,9 @@
   <string name="upselling_auto_renew_text_promo">ウェルカムオファー。キャンセルしない限り、 %s %s%s で自動更新します。</string>
   <string name="upselling_auto_renew_text_promo_short">歓迎オファー。 %s %s%s で自動更新。</string>
   <string name="upselling_auto_renew_text_standard">キャンセルしない限り、 %s %s%s で自動更新します。</string>
-  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
-  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
-  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
+  <string name="upselling_social_proof_reviews">3,500件以上のレビュー</string>
+  <string name="upselling_description_social_proof"><b>100万人以上</b>の方にご利用いただいております。</string>
+  <string name="upselling_description_social_proof_second">より効率的なサービスに向けて、いざアップグレード！</string>
   <string name="upselling_discount_tag">%s%%節約</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/ 年間</string>
