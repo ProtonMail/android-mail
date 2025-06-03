@@ -25,6 +25,7 @@ import ch.protonmail.android.mailupselling.domain.usecase.GetPromotionStatus
 import ch.protonmail.android.mailupselling.domain.usecase.PromoStatus
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveDriveSpotlightVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingOneClickOnCooldown
 import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
@@ -59,6 +60,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     private val canUpgradeFromMobile = mockk<CanUpgradeFromMobile>()
     private val observeUpsellingOneClickOnCooldown = mockk<ObserveUpsellingOneClickOnCooldown>()
     private val alwaysShowOneClickUpselling = mockk<Provider<Boolean>>()
+    private val observeDriveSpotlightVisibility = mockk<ObserveDriveSpotlightVisibility>()
     private val sut: ObserveMailboxOneClickUpsellingVisibility
         get() = ObserveMailboxOneClickUpsellingVisibility(
             observePrimaryUser,
@@ -68,13 +70,15 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             canUpgradeFromMobile,
             getPromotionStatus,
             userHasPendingPurchases,
-            alwaysShowOneClickUpselling.get()
+            alwaysShowOneClickUpselling.get(),
+            observeDriveSpotlightVisibility
         )
 
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        every { observeDriveSpotlightVisibility.invoke(any()) } returns flowOf(false)
     }
 
     @AfterTest

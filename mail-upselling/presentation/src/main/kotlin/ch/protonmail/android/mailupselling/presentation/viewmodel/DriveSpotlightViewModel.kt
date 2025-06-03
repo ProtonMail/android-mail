@@ -22,6 +22,8 @@ import java.time.Instant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
 import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage
 import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage.GetAvailableDriveStorageError
@@ -35,11 +37,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 internal class DriveSpotlightViewModel @Inject constructor(
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
     private val updateDriveSpotlightLastTimestamp: UpdateDriveSpotlightLastTimestamp,
     private val driveStorage: GetAvailableDriveStorage,
     private val reducer: DriveSpotlightContentReducer
@@ -73,7 +75,7 @@ internal class DriveSpotlightViewModel @Inject constructor(
     }
 
     private fun trackCTAClicked() {
-        Timber.i("This will be tracked")
+        upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.DriveSpotlightCTATap, null)
     }
 
     private fun emitNewStateFrom(operation: DriveSpotlightContentEvent) {

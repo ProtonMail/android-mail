@@ -50,16 +50,22 @@ class UpsellingButtonViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun trackButtonInteraction(isPromo: Boolean) {
-        val feature = if (isPromo) {
-            UpsellingEntryPoint.Feature.MailboxPromo
-        } else {
-            UpsellingEntryPoint.Feature.Mailbox
+    fun trackButtonInteraction(type: UpsellingVisibility) {
+        when (type) {
+            UpsellingVisibility.HIDDEN -> return
+            UpsellingVisibility.PROMO -> upsellingTelemetryRepository.trackEvent(
+                UpsellingTelemetryEventType.Base.MailboxButtonTap,
+                UpsellingEntryPoint.Feature.MailboxPromo
+            )
+            UpsellingVisibility.NORMAL -> upsellingTelemetryRepository.trackEvent(
+                UpsellingTelemetryEventType.Base.MailboxButtonTap,
+                UpsellingEntryPoint.Feature.Mailbox
+            )
+            UpsellingVisibility.DRIVE_SPOTLIGHT -> upsellingTelemetryRepository.trackEvent(
+                UpsellingTelemetryEventType.Base.MailboxDriveSpotlightButtonTap,
+                null
+            )
         }
-        upsellingTelemetryRepository.trackEvent(
-            UpsellingTelemetryEventType.Base.MailboxButtonTap,
-            feature
-        )
     }
 
     companion object {

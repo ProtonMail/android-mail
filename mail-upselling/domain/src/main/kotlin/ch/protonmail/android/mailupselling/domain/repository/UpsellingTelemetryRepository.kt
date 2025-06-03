@@ -23,5 +23,5 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 
 interface UpsellingTelemetryRepository {
 
-    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint)
+    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint?)
 }

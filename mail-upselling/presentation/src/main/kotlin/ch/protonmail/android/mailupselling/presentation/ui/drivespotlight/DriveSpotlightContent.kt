@@ -162,7 +162,7 @@ private fun DriveSpotlightContentPreview() {
     ProtonTheme3 {
         DriveSpotlightContent(
             state = DriveSpotlightUIState.Data(
-                storageAmount = TextUiModel.TextRes(R.string.drive_spotlight_storage_free)
+                storageAmount = TextUiModel.TextResWithArgs(R.string.drive_spotlight_storage_up_to, listOf(1))
             ),
             onDismiss = {},
             onDisplayed = {},

@@ -57,15 +57,15 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun UpsellingMailButton(
     modifier: Modifier = Modifier,
-    onClick: (isPromo: Boolean) -> Unit,
+    onClick: (type: UpsellingVisibility) -> Unit,
     viewModel: UpsellingButtonViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
 
-    val isPromo = state.value.visibility == UpsellingVisibility.PROMO
+    val type = state.value.visibility
     val onButtonClick = {
-        onClick(isPromo)
-        viewModel.trackButtonInteraction(isPromo)
+        onClick(type)
+        viewModel.trackButtonInteraction(type)
     }
 
     AnimatedVisibility(
@@ -73,10 +73,13 @@ fun UpsellingMailButton(
         enter = scaleIn(),
         exit = scaleOut()
     ) {
-        if (isPromo) {
-            UpsellingPromotionalMailButton(modifier = modifier, onButtonClick = onButtonClick)
-        } else {
-            UpsellingMailButton(modifier = modifier, onButtonClick = onButtonClick)
+        when (state.value.visibility) {
+            UpsellingVisibility.HIDDEN -> Unit
+            UpsellingVisibility.PROMO ->
+                UpsellingPromotionalMailButton(modifier = modifier, onButtonClick = onButtonClick)
+            UpsellingVisibility.NORMAL -> UpsellingMailButton(modifier = modifier, onButtonClick = onButtonClick)
+            UpsellingVisibility.DRIVE_SPOTLIGHT ->
+                DriveSpotlightButton(modifier = modifier, onButtonClick = onButtonClick)
         }
     }
 }
@@ -161,6 +164,49 @@ private fun UpsellingPromotionalMailButton(onButtonClick: () -> Unit, modifier: 
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun DriveSpotlightButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
+    Box {
+        val dotColor = if (LocalColors.current.isDark) {
+            UpsellingLayoutValues.UpsellingPromoButton.iconColorDark
+        } else {
+            UpsellingLayoutValues.UpsellingPromoButton.iconColorLight
+        }
+        Surface(
+            modifier = modifier.semantics { contentDescription = accessibilityDescription },
+            color = Color.Transparent,
+            onClick = onButtonClick,
+            border = null,
+            shape = ProtonTheme.shapes.large
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(ProtonDimens.SmallSpacing),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_upselling_gift),
+                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    tint = ProtonTheme.colors.iconNorm
+                )
+            }
+        }
+        Box(
+            modifier = Modifier.align(Alignment.TopEnd)
+                .offset(x = (-8).dp, y = 8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(6.dp)
+                    .align(Alignment.Center)
+                    .background(color = dotColor, shape = CircleShape)
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
 @Composable
@@ -176,5 +222,14 @@ fun UpsellingMailButtonPreview() {
 fun UpsellingMailButtonPreview_Promo() {
     ProtonTheme {
         UpsellingPromotionalMailButton(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun DriveSpotlightButtonPreview() {
+    ProtonTheme {
+        DriveSpotlightButton(onButtonClick = {})
     }
 }

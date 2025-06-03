@@ -130,6 +130,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBotto
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
@@ -1127,7 +1128,7 @@ object MailboxScreen {
         val onSearchQuery: (String) -> Unit,
         val onSearchResult: () -> Unit,
         val onExitSearchMode: () -> Unit,
-        val onNavigateToStandaloneUpselling: (isPromo: Boolean) -> Unit,
+        val onNavigateToStandaloneUpselling: (type: UpsellingVisibility) -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit,
         val onShowRatingBooster: () -> Unit,

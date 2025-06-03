@@ -20,7 +20,6 @@ package ch.protonmail.android.mailupselling.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightUIState
@@ -36,12 +35,9 @@ internal class DriveSpotlightContentReducer @Inject constructor() {
         )
 
         is DriveSpotlightContentEvent.DataLoaded -> DriveSpotlightUIState.Data(
-            storageAmount = TextUiModel.TextRes(
-                when (event.storage) {
-                    AvailableDriveStorage.Free -> R.string.drive_spotlight_storage_free
-                    AvailableDriveStorage.Plus -> R.string.drive_spotlight_storage_plus
-                    AvailableDriveStorage.Unlimited -> R.string.drive_spotlight_storage_unlimited
-                }
+            storageAmount = TextUiModel.TextResWithArgs(
+                R.string.drive_spotlight_storage_up_to,
+                listOf(event.storage.totalDriveStorageGB)
             )
         )
     }

@@ -29,6 +29,14 @@ sealed class UpsellingTelemetryEvent(
         override val dimensions: UpsellingTelemetryEventDimensions
     ) : UpsellingTelemetryEvent(name = "upsell_button_tapped", dimensions)
 
+    data class DriveSpotlightMailboxButtonTapped(
+        override val dimensions: UpsellingTelemetryEventDimensions
+    ) : UpsellingTelemetryEvent(name = "drive_spotlight_mailbox_button_tapped", dimensions)
+
+    data class DriveSpotlightCTAButtonTapped(
+        override val dimensions: UpsellingTelemetryEventDimensions
+    ) : UpsellingTelemetryEvent(name = "drive_spotlight_cta_button_tapped", dimensions)
+
     data class UpgradeAttempt(
         override val dimensions: UpsellingTelemetryEventDimensions
     ) : UpsellingTelemetryEvent(name = "upgrade_attempt", dimensions)

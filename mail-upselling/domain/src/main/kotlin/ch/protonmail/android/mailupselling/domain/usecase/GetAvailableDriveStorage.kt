@@ -23,7 +23,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import kotlinx.coroutines.flow.first
-import me.proton.core.user.domain.extension.hasSubscription
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,16 +33,14 @@ class GetAvailableDriveStorage @Inject constructor(
     suspend operator fun invoke(): Either<GetAvailableDriveStorageError, AvailableDriveStorage> {
         val user = observePrimaryUser.invoke().first()
         if (user == null) return GetAvailableDriveStorageError.left()
-        if (user.hasSubscription().not()) return AvailableDriveStorage.Free.right()
 
-        return AvailableDriveStorage.Plus.right()
+        val driveStorageBytes = user.maxDriveSpace ?: user.maxSpace
+        val driveStorageGB = (driveStorageBytes / (1024 * 1024 * 1024)).toInt()
+
+        return AvailableDriveStorage(driveStorageGB).right()
     }
 
     data object GetAvailableDriveStorageError
 }
 
-sealed interface AvailableDriveStorage {
-    object Free : AvailableDriveStorage
-    object Plus : AvailableDriveStorage
-    object Unlimited : AvailableDriveStorage
-}
+data class AvailableDriveStorage(val totalDriveStorageGB: Int)

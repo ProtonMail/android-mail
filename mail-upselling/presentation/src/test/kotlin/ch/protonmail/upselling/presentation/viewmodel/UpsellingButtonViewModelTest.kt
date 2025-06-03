@@ -101,7 +101,7 @@ internal class UpsellingButtonViewModelTest {
         every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.NORMAL)
 
         // When
-        viewModel.trackButtonInteraction(isPromo = false)
+        viewModel.trackButtonInteraction(type = UpsellingVisibility.NORMAL)
 
         // Then
         coVerify(exactly = 1) {
@@ -115,7 +115,7 @@ internal class UpsellingButtonViewModelTest {
         every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.PROMO)
 
         // When
-        viewModel.trackButtonInteraction(isPromo = true)
+        viewModel.trackButtonInteraction(type = UpsellingVisibility.PROMO)
 
         // Then
         coVerify(exactly = 1) {

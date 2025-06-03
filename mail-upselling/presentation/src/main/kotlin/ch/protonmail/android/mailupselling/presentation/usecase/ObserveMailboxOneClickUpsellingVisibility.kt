@@ -27,6 +27,9 @@ import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import me.proton.core.domain.entity.UserId
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import javax.inject.Inject
@@ -39,31 +42,40 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     private val canUpgradeFromMobile: CanUpgradeFromMobile,
     private val isPromotionEnabled: GetPromotionStatus,
     private val userHasPendingPurchases: UserHasPendingPurchases,
-    @OneClickUpsellingAlwaysShown private val alwaysShowOneClickUpselling: Boolean
+    @OneClickUpsellingAlwaysShown private val alwaysShowOneClickUpselling: Boolean,
+    private val observeDriveSpotlightVisibility: ObserveDriveSpotlightVisibility
 ) {
 
-    operator fun invoke(): Flow<UpsellingVisibility> = combine(
-        observePrimaryUser().distinctUntilChanged(),
-        purchaseManager.observePurchases(),
-        observeUpsellingOneClickOnCooldown(),
-        observeOneClickUpsellingEnabled(null)
-    ) { user, purchases, isOneClickOnCooldown, isOneClickUpsellingEnabled ->
-        if (user == null) return@combine UpsellingVisibility.HIDDEN
-        if (!canUpgradeFromMobile(user.userId)) return@combine UpsellingVisibility.HIDDEN
-        if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value)
-            return@combine UpsellingVisibility.HIDDEN
-        if (isOneClickOnCooldown && !alwaysShowOneClickUpselling) return@combine UpsellingVisibility.HIDDEN
-        if (userHasPendingPurchases(purchases, user.userId)) return@combine UpsellingVisibility.HIDDEN
+    operator fun invoke(): Flow<UpsellingVisibility> = observePrimaryUser()
+        .distinctUntilChanged()
+        .flatMapLatest { user ->
+            if (user == null) return@flatMapLatest flowOf(UpsellingVisibility.HIDDEN)
+            combine(
+                purchaseManager.observePurchases(),
+                observeUpsellingOneClickOnCooldown(),
+                observeOneClickUpsellingEnabled(null),
+                observeDriveSpotlightVisibility(user)
+            ) { purchases, isOneClickOnCooldown, isOneClickUpsellingEnabled, driveSpotlightVisible ->
+                if (driveSpotlightVisible) return@combine UpsellingVisibility.DRIVE_SPOTLIGHT
 
-        val promoStatus = isPromotionEnabled(user.userId)
-        when (promoStatus) {
-            PromoStatus.NO_PLANS -> UpsellingVisibility.HIDDEN
-            PromoStatus.NORMAL -> UpsellingVisibility.NORMAL
-            PromoStatus.PROMO -> UpsellingVisibility.PROMO
+                if (!canUpgradeFromMobile(user.userId)) return@combine UpsellingVisibility.HIDDEN
+                if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value)
+                    return@combine UpsellingVisibility.HIDDEN
+                if (isOneClickOnCooldown && !alwaysShowOneClickUpselling) return@combine UpsellingVisibility.HIDDEN
+                if (userHasPendingPurchases(purchases, user.userId)) return@combine UpsellingVisibility.HIDDEN
+
+                user.userId.resolvePromoVisibility()
+            }
         }
+
+    private suspend fun UserId.resolvePromoVisibility() = when (isPromotionEnabled(this)) {
+        PromoStatus.NO_PLANS -> UpsellingVisibility.HIDDEN
+        PromoStatus.NORMAL -> UpsellingVisibility.NORMAL
+        PromoStatus.PROMO -> UpsellingVisibility.PROMO
     }
 }
 
 enum class UpsellingVisibility {
-    HIDDEN, PROMO, NORMAL
+    HIDDEN, PROMO, NORMAL, DRIVE_SPOTLIGHT
 }
+

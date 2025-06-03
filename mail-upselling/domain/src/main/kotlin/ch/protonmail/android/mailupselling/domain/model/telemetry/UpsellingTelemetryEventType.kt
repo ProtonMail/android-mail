@@ -30,5 +30,7 @@ sealed interface UpsellingTelemetryEventType {
     sealed interface Base : UpsellingTelemetryEventType {
         data object MailboxButtonTap : Base
         data object NavbarButtonTap : Base
+        data object MailboxDriveSpotlightButtonTap : Base
+        data object DriveSpotlightCTATap : Base
     }
 }

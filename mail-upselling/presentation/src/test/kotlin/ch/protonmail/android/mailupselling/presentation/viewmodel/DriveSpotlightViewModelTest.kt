@@ -23,6 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
 import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage
@@ -55,6 +56,7 @@ class DriveSpotlightViewModelTest {
 
     private val viewModel: DriveSpotlightViewModel by lazy {
         DriveSpotlightViewModel(
+            upsellingTelemetryRepository = upsellingTelemetryRepository,
             updateDriveSpotlightLastTimestamp = updateDriveSpotlightLastTimestamp,
             driveStorage = driveStorage,
             reducer = reducer
@@ -73,11 +75,13 @@ class DriveSpotlightViewModelTest {
 
     @Test
     fun `should emit loading state at start`() = runTest {
-        coEvery { driveStorage.invoke() } returns AvailableDriveStorage.Plus.right()
+        coEvery { driveStorage.invoke() } returns AvailableDriveStorage(1).right()
         // When + Then
         viewModel.state.test {
             assertEquals(
-                DriveSpotlightUIState.Data(TextUiModel.TextRes(R.string.drive_spotlight_storage_plus)),
+                DriveSpotlightUIState.Data(
+                    TextUiModel.TextResWithArgs(R.string.drive_spotlight_storage_up_to, listOf(1))
+                ),
                 awaitItem()
             )
         }
@@ -100,20 +104,44 @@ class DriveSpotlightViewModelTest {
     }
 
     @Test
-    fun `should call update usecase when displayed`() = runTest {
+    fun `should call update use case when displayed`() = runTest {
         // Given
-        coEvery { driveStorage.invoke() } returns AvailableDriveStorage.Free.right()
+        coEvery { driveStorage.invoke() } returns AvailableDriveStorage(10).right()
         coEvery { updateDriveSpotlightLastTimestamp.invoke(any()) } just runs
 
         // When + Then
         viewModel.submit(DriveSpotlightContentViewEvent.ContentShown)
         viewModel.state.test {
             assertEquals(
-                DriveSpotlightUIState.Data(TextUiModel.TextRes(R.string.drive_spotlight_storage_free)),
+                DriveSpotlightUIState.Data(
+                    TextUiModel.TextResWithArgs(R.string.drive_spotlight_storage_up_to, listOf(10))
+                ),
                 awaitItem()
             )
-            cancelAndIgnoreRemainingEvents()
             coVerify(exactly = 1) { updateDriveSpotlightLastTimestamp.invoke(any()) }
+        }
+    }
+
+    @Test
+    fun `should call upselling repo when CTA clicked`() = runTest {
+        // Given
+        coEvery { driveStorage.invoke() } returns AvailableDriveStorage(10).right()
+        coEvery {
+            upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.DriveSpotlightCTATap, null)
+        } just runs
+
+        // When + Then
+        viewModel.submit(DriveSpotlightContentViewEvent.OpenDriveClicked)
+        viewModel.state.test {
+            assertEquals(
+                DriveSpotlightUIState.Data(
+                    TextUiModel.TextResWithArgs(R.string.drive_spotlight_storage_up_to, listOf(10))
+                ),
+                awaitItem()
+            )
+            coVerify(exactly = 1) {
+                upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.DriveSpotlightCTATap, null)
+            }
         }
     }
 }

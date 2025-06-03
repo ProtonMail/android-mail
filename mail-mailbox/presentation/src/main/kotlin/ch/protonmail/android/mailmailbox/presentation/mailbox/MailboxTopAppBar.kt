@@ -44,6 +44,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTe
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingMailButton
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import ch.protonmail.android.uicomponents.SearchView
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
@@ -228,7 +229,7 @@ object MailboxTopAppBar {
         val onEnterSearchMode: () -> Unit,
         val onSearch: (query: String) -> Unit,
         val onOpenComposer: () -> Unit,
-        val onNavigateToStandaloneUpselling: (isPromo: Boolean) -> Unit,
+        val onNavigateToStandaloneUpselling: (type: UpsellingVisibility) -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit
     )

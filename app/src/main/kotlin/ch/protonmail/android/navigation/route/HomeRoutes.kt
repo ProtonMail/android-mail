@@ -57,6 +57,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionScreen
+import ch.protonmail.android.mailupselling.presentation.usecase.UpsellingVisibility
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.SavedStateKey
@@ -106,12 +107,14 @@ internal fun NavGraphBuilder.addMailbox(
                 showErrorSnackbar = showErrorSnackbar,
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
                 onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
-                onNavigateToStandaloneUpselling = { isPromo ->
-                    if (isPromo) {
-                        navController.navigate(Destination.Screen.Upselling.StandaloneMailboxPromo.route)
-                    } else {
-                        navController.navigate(Destination.Screen.Upselling.StandaloneMailbox.route)
+                onNavigateToStandaloneUpselling = { type ->
+                    val destination = when (type) {
+                        UpsellingVisibility.HIDDEN -> return@copy
+                        UpsellingVisibility.PROMO -> Destination.Screen.Upselling.StandaloneMailboxPromo.route
+                        UpsellingVisibility.NORMAL -> Destination.Screen.Upselling.StandaloneMailbox.route
+                        UpsellingVisibility.DRIVE_SPOTLIGHT -> Destination.Screen.DriveSpotlight.route
                     }
+                    navController.navigate(destination)
                 },
                 onRequestNotificationPermission = onRequestNotificationPermission,
                 navigateToCustomizeToolbar = {
