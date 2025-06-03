@@ -492,7 +492,7 @@ class ComposerViewModel2 @AssistedInject constructor(
             senderEmail,
             previousSenderEmail
         ).getOrNull()
-            ?.let { it: DraftBody -> bodyFieldText.replaceText(it.value, resetRange = true) }
+            ?.let { it: DraftBody -> bodyFieldText.replaceText(it.value, resetRange = false, keepSelection = true) }
     }
 
     private suspend fun processActions() {
@@ -773,11 +773,24 @@ class ComposerViewModel2 @AssistedInject constructor(
     }
 }
 
-private fun TextFieldState.replaceText(text: String, resetRange: Boolean = false) {
+private fun TextFieldState.replaceText(
+    text: String,
+    resetRange: Boolean = false,
+    keepSelection: Boolean = false
+) {
+    val oldSelection = selection
     clearText()
     edit {
         append(text)
-        if (resetRange) selection = TextRange.Zero
+        when {
+            resetRange -> selection = TextRange.Zero
+            keepSelection -> {
+                val newStart = oldSelection.start.coerceIn(0, text.length)
+                val newEnd = oldSelection.end.coerceIn(0, text.length)
+                selection = TextRange(newStart, newEnd)
+            }
+            else -> Unit
+        }
     }
 }
 
