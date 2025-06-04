@@ -128,7 +128,7 @@ internal class UpsellingButtonViewModelTest {
             upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Feature.MailboxPromo)
         }
     }
-    
+
     @Test
     fun `should call the UC with the expected event when tracking the drive spotlight button tap`() = runTest {
         // Given
