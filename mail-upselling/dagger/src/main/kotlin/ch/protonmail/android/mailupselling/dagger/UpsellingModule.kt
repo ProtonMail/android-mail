@@ -32,6 +32,8 @@ import ch.protonmail.android.mailupselling.domain.annotations.SidebarUpsellingEn
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepository
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepositoryImpl
@@ -130,6 +132,12 @@ interface UpsellingModuleBindings {
     @Binds
     @Reusable
     fun provideTelemetryRepository(impl: UpsellingTelemetryRepositoryImpl): UpsellingTelemetryRepository
+
+    @Binds
+    @Reusable
+    fun provideDriveSpotlightTelemetryRepository(
+        impl: DriveSpotlightTelemetryRepositoryImpl
+    ): DriveSpotlightTelemetryRepository
 
     @Binds
     @Reusable

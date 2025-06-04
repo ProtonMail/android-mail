@@ -21,7 +21,9 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.telemetry.DriveSpotlightTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
@@ -38,7 +40,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UpsellingButtonViewModel @Inject constructor(
     observeMailboxOneClickUpsellingVisibility: ObserveMailboxOneClickUpsellingVisibility,
-    private val upsellingTelemetryRepository: UpsellingTelemetryRepository
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
+    private val driveSpotlightTelemetryRepository: DriveSpotlightTelemetryRepository
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(initialState)
@@ -61,9 +64,8 @@ class UpsellingButtonViewModel @Inject constructor(
                 UpsellingTelemetryEventType.Base.MailboxButtonTap,
                 UpsellingEntryPoint.Feature.Mailbox
             )
-            UpsellingVisibility.DRIVE_SPOTLIGHT -> upsellingTelemetryRepository.trackEvent(
-                UpsellingTelemetryEventType.Base.MailboxDriveSpotlightButtonTap,
-                null
+            UpsellingVisibility.DRIVE_SPOTLIGHT -> driveSpotlightTelemetryRepository.trackEvent(
+                DriveSpotlightTelemetryEventType.MailboxDriveSpotlightButtonTap
             )
         }
     }

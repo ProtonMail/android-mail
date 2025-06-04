@@ -49,10 +49,7 @@ import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightUIState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.protonButtonColors
@@ -66,7 +63,6 @@ import me.proton.core.compose.theme.headlineSmallNorm
 @Suppress("UseComposableActions")
 @Composable
 internal fun DriveSpotlightContent(
-    state: DriveSpotlightUIState.Data,
     onDismiss: () -> Unit,
     onDisplayed: () -> Unit,
     onCTAClicked: () -> Unit,
@@ -123,12 +119,11 @@ internal fun DriveSpotlightContent(
             textAlign = TextAlign.Center
         )
 
-        val storageArg = state.storageAmount.string()
         Text(
             modifier = Modifier
                 .padding(horizontal = ProtonDimens.DefaultSpacing)
                 .padding(top = ProtonDimens.DefaultSpacing),
-            text = stringResource(R.string.drive_spotlight_description, storageArg),
+            text = stringResource(R.string.drive_spotlight_description),
             style = ProtonTheme.typography.body2Regular,
             color = ProtonTheme.colors.textNorm,
             textAlign = TextAlign.Center
@@ -161,9 +156,6 @@ internal fun DriveSpotlightContent(
 private fun DriveSpotlightContentPreview() {
     ProtonTheme3 {
         DriveSpotlightContent(
-            state = DriveSpotlightUIState.Data(
-                storageAmount = TextUiModel.TextResWithArgs(R.string.drive_spotlight_storage_up_to, listOf(1))
-            ),
             onDismiss = {},
             onDisplayed = {},
             onCTAClicked = {}

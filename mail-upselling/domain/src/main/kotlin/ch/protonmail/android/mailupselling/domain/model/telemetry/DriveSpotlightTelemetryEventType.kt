@@ -16,12 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.repository
+package ch.protonmail.android.mailupselling.domain.model.telemetry
 
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+sealed interface DriveSpotlightTelemetryEventType {
 
-interface UpsellingTelemetryRepository {
-
-    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint)
+    data object MailboxDriveSpotlightButtonTap : DriveSpotlightTelemetryEventType
+    data object DriveSpotlightCTATap : DriveSpotlightTelemetryEventType
 }

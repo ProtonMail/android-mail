@@ -16,12 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.repository
+package ch.protonmail.android.mailupselling.domain.model.telemetry
 
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+class DriveSpotlightEventDimensions {
 
-interface UpsellingTelemetryRepository {
+    private val mutableMap = mutableMapOf<String, String>()
+    fun asMap() = mutableMap.toMap()
 
-    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint)
+    fun addPlanBeforeUpgrade(value: String) =
+        mutableMap.put(UpsellingTelemetryEventDimensionsKey.PlanBeforeUpgrade.name, value)
+
+    fun addDaysSinceAccountCreation(value: String) =
+        mutableMap.put(UpsellingTelemetryEventDimensionsKey.DaysSinceAccountCreation.name, value)
 }

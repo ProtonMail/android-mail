@@ -34,7 +34,6 @@ fun DriveSpotlightScreen(actions: DriveSpotlightScreen.Actions) {
     val state = viewmodel.state.collectAsStateWithLifecycle().value
     when (state) {
         is DriveSpotlightUIState.Data -> DriveSpotlightBottomSheet(
-            state,
             onDismiss = actions.onDismiss,
             onEvent = viewmodel::submit
         )

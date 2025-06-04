@@ -21,12 +21,9 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import java.time.Instant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.Either
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
-import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
-import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
-import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage
-import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage.GetAvailableDriveStorageError
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailupselling.domain.model.telemetry.DriveSpotlightTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightContentViewEvent
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightUIState
@@ -35,15 +32,16 @@ import ch.protonmail.android.mailupselling.presentation.usecase.UpdateDriveSpotl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class DriveSpotlightViewModel @Inject constructor(
-    private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
+    private val driveSpotlightTelemetryRepository: DriveSpotlightTelemetryRepository,
     private val updateDriveSpotlightLastTimestamp: UpdateDriveSpotlightLastTimestamp,
-    private val driveStorage: GetAvailableDriveStorage,
+    private val observePrimaryUserId: ObservePrimaryUserId,
     private val reducer: DriveSpotlightContentReducer
 ) : ViewModel() {
 
@@ -52,14 +50,11 @@ internal class DriveSpotlightViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val storageResult = driveStorage.invoke()
-            val storage = when (storageResult) {
-                is Either.Left<GetAvailableDriveStorageError> ->
-                    return@launch emitNewStateFrom(DriveSpotlightContentEvent.StorageError)
-                is Either.Right<AvailableDriveStorage> -> storageResult.value
+            val userId = observePrimaryUserId.invoke().firstOrNull()
+            if (userId == null) {
+                return@launch emitNewStateFrom(DriveSpotlightContentEvent.UserError)
             }
-
-            emitNewStateFrom(DriveSpotlightContentEvent.DataLoaded(storage))
+            emitNewStateFrom(DriveSpotlightContentEvent.DataLoaded)
         }
     }
 
@@ -75,7 +70,7 @@ internal class DriveSpotlightViewModel @Inject constructor(
     }
 
     private fun trackCTAClicked() {
-        upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.DriveSpotlightCTATap, null)
+        driveSpotlightTelemetryRepository.trackEvent(DriveSpotlightTelemetryEventType.DriveSpotlightCTATap)
     }
 
     private fun emitNewStateFrom(operation: DriveSpotlightContentEvent) {

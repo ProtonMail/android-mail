@@ -18,10 +18,9 @@
 
 package ch.protonmail.android.mailupselling.domain.repository
 
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.model.telemetry.DriveSpotlightTelemetryEventType
 
-interface UpsellingTelemetryRepository {
+interface DriveSpotlightTelemetryRepository {
 
-    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint)
+    fun trackEvent(eventType: DriveSpotlightTelemetryEventType)
 }

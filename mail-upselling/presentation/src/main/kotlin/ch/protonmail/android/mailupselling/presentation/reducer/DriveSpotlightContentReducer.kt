@@ -28,17 +28,12 @@ import javax.inject.Inject
 internal class DriveSpotlightContentReducer @Inject constructor() {
 
     fun newStateFrom(event: DriveSpotlightContentEvent): DriveSpotlightUIState = when (event) {
-        is DriveSpotlightContentEvent.StorageError -> DriveSpotlightUIState.Error(
+        is DriveSpotlightContentEvent.UserError -> DriveSpotlightUIState.Error(
             error = Effect.of(
                 TextUiModel.TextRes(R.string.upselling_snackbar_error_no_user_id)
             )
         )
 
-        is DriveSpotlightContentEvent.DataLoaded -> DriveSpotlightUIState.Data(
-            storageAmount = TextUiModel.TextResWithArgs(
-                R.string.drive_spotlight_storage_up_to,
-                listOf(event.storage.totalDriveStorageGB)
-            )
-        )
+        is DriveSpotlightContentEvent.DataLoaded -> DriveSpotlightUIState.Data
     }
 }

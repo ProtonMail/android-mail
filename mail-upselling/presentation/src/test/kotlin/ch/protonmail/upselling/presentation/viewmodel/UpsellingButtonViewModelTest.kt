@@ -20,7 +20,9 @@ package ch.protonmail.upselling.presentation.viewmodel
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.telemetry.DriveSpotlightTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Base
+import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
@@ -44,9 +46,13 @@ internal class UpsellingButtonViewModelTest {
 
     private val oneClickUpsellingVisibility = mockk<ObserveMailboxOneClickUpsellingVisibility>()
     private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
+    private val driveSpotlightTelemetryRepository = mockk<DriveSpotlightTelemetryRepository>(relaxUnitFun = true)
 
     private val viewModel: UpsellingButtonViewModel by lazy {
-        UpsellingButtonViewModel(oneClickUpsellingVisibility, upsellingTelemetryRepository)
+        UpsellingButtonViewModel(
+            oneClickUpsellingVisibility, upsellingTelemetryRepository,
+            driveSpotlightTelemetryRepository
+        )
     }
 
     @Before
@@ -120,6 +126,22 @@ internal class UpsellingButtonViewModelTest {
         // Then
         coVerify(exactly = 1) {
             upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Feature.MailboxPromo)
+        }
+    }
+    
+    @Test
+    fun `should call the UC with the expected event when tracking the drive spotlight button tap`() = runTest {
+        // Given
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(UpsellingVisibility.DRIVE_SPOTLIGHT)
+
+        // When
+        viewModel.trackButtonInteraction(type = UpsellingVisibility.DRIVE_SPOTLIGHT)
+
+        // Then
+        coVerify(exactly = 1) {
+            driveSpotlightTelemetryRepository.trackEvent(
+                DriveSpotlightTelemetryEventType.MailboxDriveSpotlightButtonTap
+            )
         }
     }
 }

@@ -20,30 +20,18 @@ package ch.protonmail.android.mailupselling.domain.model.telemetry
 
 import me.proton.core.telemetry.domain.entity.TelemetryEvent
 
-sealed class UpsellingTelemetryEvent(
+sealed class DriveSpotlightEvent(
     val name: String,
-    open val dimensions: UpsellingTelemetryEventDimensions
+    open val dimensions: DriveSpotlightEventDimensions
 ) {
 
-    data class UpsellButtonTapped(
-        override val dimensions: UpsellingTelemetryEventDimensions
-    ) : UpsellingTelemetryEvent(name = "upsell_button_tapped", dimensions)
+    data class DriveSpotlightMailboxButtonTapped(
+        override val dimensions: DriveSpotlightEventDimensions
+    ) : DriveSpotlightEvent(name = "drive_spotlight_mailbox_button_tapped", dimensions)
 
-    data class UpgradeAttempt(
-        override val dimensions: UpsellingTelemetryEventDimensions
-    ) : UpsellingTelemetryEvent(name = "upgrade_attempt", dimensions)
-
-    data class UpgradeCancelled(
-        override val dimensions: UpsellingTelemetryEventDimensions
-    ) : UpsellingTelemetryEvent(name = "upgrade_cancelled_by_user", dimensions)
-
-    data class UpgradeErrored(
-        override val dimensions: UpsellingTelemetryEventDimensions
-    ) : UpsellingTelemetryEvent(name = "upgrade_error", dimensions)
-
-    data class PurchaseCompleted(
-        override val dimensions: UpsellingTelemetryEventDimensions
-    ) : UpsellingTelemetryEvent(name = "upgrade_success", dimensions)
+    data class DriveSpotlightCTAButtonTapped(
+        override val dimensions: DriveSpotlightEventDimensions
+    ) : DriveSpotlightEvent(name = "drive_spotlight_cta_button_tapped", dimensions)
 
     fun toTelemetryEvent() = TelemetryEvent(
         group = EventGroup,

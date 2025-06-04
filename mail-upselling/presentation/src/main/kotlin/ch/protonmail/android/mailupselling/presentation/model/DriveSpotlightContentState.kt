@@ -20,11 +20,10 @@ package ch.protonmail.android.mailupselling.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
 
 internal sealed interface DriveSpotlightUIState {
     data object Loading : DriveSpotlightUIState
-    data class Data(val storageAmount: TextUiModel) : DriveSpotlightUIState
+    data object Data : DriveSpotlightUIState
     data class Error(val error: Effect<TextUiModel>) : DriveSpotlightUIState
 }
 
@@ -37,9 +36,7 @@ internal sealed interface DriveSpotlightContentViewEvent : DriveSpotlightContent
 
 internal sealed interface DriveSpotlightContentEvent : DriveSpotlightContentOperation {
 
-    data class DataLoaded(
-        val storage: AvailableDriveStorage
-    ) : DriveSpotlightContentEvent
+    data object DataLoaded : DriveSpotlightContentEvent
 
-    data object StorageError : DriveSpotlightContentEvent
+    data object UserError : DriveSpotlightContentEvent
 }
