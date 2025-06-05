@@ -158,7 +158,6 @@ build_dev_debug:
   stage: sign
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
-      when: manual
   variables:
     ARTIFACT_SIGNATURE_KIND: android-package-kit
     ARTIFACT_SIGNATURE_PROFILE: android
