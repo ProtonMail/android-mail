@@ -61,7 +61,8 @@ class EditDefaultAddressReducer @Inject constructor(
                     updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(
                         updateError = Effect.of(Unit),
                         incompatibleSubscriptionError = Effect.empty()
-                    )
+                    ),
+                    showOverlayLoader = false
                 )
             }
 
