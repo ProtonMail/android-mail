@@ -36,16 +36,28 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
 
     is ApiResult.Error.Http -> {
         val protonError = ProtonError.fromProtonCode(this.proton?.code).takeIf {
-            it != ProtonError.Unknown && NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity
+            val handleProtonError = it != ProtonError.Unknown &&
+                NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity
+            if (!handleProtonError) {
+                Timber.i("Proton error ignored: Proton code: ${proton?.code}, http code: $httpCode")
+            }
+            handleProtonError
         }
 
         when {
-            protonError != null -> DataError.Remote.Proton(protonError, apiMessage = proton?.error ?: message).left()
-            else -> DataError.Remote.Http(
-                NetworkError.fromHttpCode(httpCode),
-                this.extractApiErrorInfo(),
-                this.isRetryable()
-            ).left()
+            protonError != null -> {
+                Timber.i("Proton error: $protonError, code: ${proton?.code}, message: ${proton?.error}")
+                DataError.Remote.Proton(protonError, apiMessage = proton?.error ?: message).left()
+            }
+            else -> {
+                val code = NetworkError.fromHttpCode(httpCode)
+                Timber.i("Http error: $code")
+                DataError.Remote.Http(
+                    code,
+                    this.extractApiErrorInfo(),
+                    this.isRetryable()
+                ).left()
+            }
         }
     }
 
@@ -61,7 +73,13 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
 
 private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
 
-private fun ApiResult.Error.Http.extractApiErrorInfo(): String = "${this.message} - ${this.proton?.error}"
+private fun ApiResult.Error.Http.extractApiErrorInfo(): String {
+    return if (message.isBlank()) {
+        proton?.error.orEmpty()
+    } else {
+        "${this.message} - ${this.proton?.error}"
+    }
+}
 
 private fun toNetworkError(apiResult: ApiResult.Error.Connection): NetworkError = when (apiResult) {
     is ApiResult.Error.NoInternet -> NetworkError.NoNetwork
