@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Bucurați-vă de o interfață mai ordonată și beneficiați de alte funcții premium cu Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Goliți mesajele vechi din folderele gunoi și nedorite</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Albume foto sunt disponibile în Proton Drive</string>
+  <string name="drive_spotlight_description">Partajați în siguranță fotografii cu familia și prietenii cu albume în Proton Drive. Inclus gratuit cu planul actual.</string>
+  <string name="drive_spotlight_cta">Deschidere albume în Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GiB spațiu de stocare</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GiB spațiu de stocare, 10 adrese de e-mail</string>

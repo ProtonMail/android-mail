@@ -44,9 +44,9 @@
   <string name="action_report_phishing_description">Anmeld phishing</string>
   <string name="action_remind_description">Påmind mig</string>
   <string name="action_save_pdf_description">Gem som PDF</string>
-  <string name="action_sender_emails_description">Indstil handling for fremtidige e-mails fra denne afsender</string>
+  <string name="action_sender_emails_description">Opret handling for fremtidige e-mails fra denne afsender</string>
   <string name="action_save_attachments_description">Gem vedhæftninger</string>
-  <string name="action_more_description">Flere</string>
+  <string name="action_more_description">Mere</string>
   <string name="action_reply_content_description">Svar</string>
   <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
@@ -78,7 +78,7 @@
   <string name="auto_delete_banner_text_activate_trash">Slet automatisk beskeder, der har været i papirkurven i mere end 30 dage.</string>
   <string name="auto_delete_banner_text_activate_spam">Slet automatisk beskeder, der har været i spam i mere end 30 dage.</string>
   <string name="auto_delete_banner_text_upgrade">Opgradér for automatisk at slette beskeder, der har været i papirkurven eller spam i mere end 30 dage.</string>
-  <string name="auto_delete_banner_text_enabled_info">Beskeder der har været i papirkurven og spam i mere end 30 dage vil blive slettet automatisk.</string>
+  <string name="auto_delete_banner_text_enabled_info">Beskeder, der har været i papirkurven eller spam i mere end 30 dage, vil blive slettet automatisk.</string>
   <string name="auto_delete_banner_button_activate_confirm">Aktiver</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nej tak</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Få mere at vide</string>
@@ -106,8 +106,8 @@
   <string name="attachment_download_notification_channel_name">Vedhæftninger</string>
   <string name="attachment_download_notification_channel_description">Notifikationer ved download af vedhæftninger</string>
   <string name="email_notification_channel_name">E-mails</string>
-  <string name="login_notification_channel_name">Login-varsler</string>
-  <string name="email_notification_channel_description">Indgående e-mail-meddelelser</string>
+  <string name="login_notification_channel_name">Login-advarsler</string>
+  <string name="email_notification_channel_description">Indkommende e-mail-notifikationer</string>
   <string name="login_notification_channel_description">Notifikationer om nye logins</string>
   <string name="auth_badge_official">Officiel</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app til håndtering af denne handling fundet</string>
@@ -116,11 +116,11 @@
   <string name="mailbox_action_delete_dialog_button_delete">Slet</string>
   <string name="picker_dialog_cancel">Annullér</string>
   <string name="color_purple">Lilla</string>
-  <string name="color_enzian">Ensian</string>
+  <string name="color_enzian">Dybblå</string>
   <string name="color_pink">Pink</string>
   <string name="color_plum">Blomme</string>
   <string name="color_strawberry">Jordbær</string>
-  <string name="color_cerise">Cerise</string>
+  <string name="color_cerise">Kirsebær</string>
   <string name="color_carrot">Gulerod</string>
   <string name="color_copper">Kobber</string>
   <string name="color_sahara">Sahara</string>
@@ -136,6 +136,6 @@
   <string name="color_olive">Oliven</string>
   <string name="color_pickle">Agurk</string>
   <string name="undo_button_label">Fortryd</string>
-  <string name="undo_success_message">Handling tilbageført</string>
-  <string name="undo_failure_message">Tilbageførsel af handling fejlede</string>
+  <string name="undo_success_message">Handling fortrudt</string>
+  <string name="undo_failure_message">Fortrydelse af handling mislykkedes</string>
 </resources>

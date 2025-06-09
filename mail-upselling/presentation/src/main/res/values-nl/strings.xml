@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Geniet van een opgeruimde mailbox en profiteer van andere premium functies met Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Verwijder oude berichten in de prullenbak en spam</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Fotoalbums is nu beschikbaar in Proton Drive</string>
+  <string name="drive_spotlight_description">Veilig foto\'s delen met familie en vrienden met albums in Proton Drive. Gratis inbegrepen bij uw abonnement.</string>
+  <string name="drive_spotlight_cta">Albums openen in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB opslagruimte</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB opslagruimte, 10 e-mailadressen</string>

@@ -17,30 +17,30 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Asenser</string>
-  <string name="dialog_sign_out_account_description">Titedt tebɣiḍ ad teffɣeḍ?</string>
+  <string name="dialog_sign_out_account_title">Ffeɣ</string>
+  <string name="dialog_sign_out_account_description">D titedt tebɣiḍ ad teffɣeḍ?</string>
   <string name="dialog_sign_out_account_confirm">Ih</string>
   <string name="dialog_sign_out_account_cancel">Ala</string>
   <string name="dialog_remove_account_title">Kkes amiḍan</string>
   <string name="dialog_remove_account_description">Ad teffɣeḍ syen kkes talɣut akk yeqqnen ɣer umiḍan-a.</string>
   <string name="dialog_remove_account_confirm">Kkes</string>
   <string name="dialog_remove_account_cancel">Sefsex</string>
-  <string name="user_select_other_account_content_description">Fren amiḍan-nniḍen</string>
+  <string name="user_select_other_account_content_description">Fren amiḍan niḍen</string>
   <string name="you_are_offline">Ur teqqineḍ ara</string>
   <string name="feature_coming_soon">Tamahilt-a ad tili ticki…</string>
   <string name="mailbox_draft_saved">Arewway yettusekles</string>
   <string name="mailbox_draft_discard">Sefsex</string>
   <string name="mailbox_message_sending">Tuzna n yizen…</string>
-  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_offline">D aruqqin, izen deg udras i tuzna</string>
   <string name="mailbox_message_sending_success">Izen yettwazen</string>
-  <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
-  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+  <string name="mailbox_message_sending_error">Tuccḍa deg tuzna n yizen</string>
+  <string name="mailbox_message_sending_error_address_disabled">Tansa-a tensa, tecceḍ tuzna</string>
   <string name="mailbox_message_sending_error_action">Ddu ɣer Yirewwayen</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
-  <string name="notification_switched_account">Switched to account %s</string>
-  <string name="label_saved">Label saved</string>
+  <string name="mailbox_attachment_uploading_error">Tuccḍa deg usali n umedday</string>
+  <string name="notification_switched_account">Yettwabeddel ɣer umiḍan %s</string>
+  <string name="label_saved">Tettwasekles tebzimt</string>
   <string name="label_deleted">Tabzimt tettwakkes</string>
-  <string name="label_list_loading_error">Error loading label, please try again later</string>
-  <string name="app_locked">Asnas yesekkeṛ</string>
-  <string name="use_pin_instead">Seqdec PIN deg umḍiq</string>
+  <string name="label_list_loading_error">Tuccḍa deg usali n tebzimt, txil-k⋅m ɛreḍ tikkelt niḍen ticki</string>
+  <string name="app_locked">Asnas isekkeṛ</string>
+  <string name="use_pin_instead">Seqdec PIN deg wadeg-is</string>
 </resources>

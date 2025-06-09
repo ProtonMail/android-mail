@@ -41,13 +41,17 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Nyd fordelen ved velorganiserede postkasser og andre førsteklassesfunktioner med Mail Plus</string>
   <string name="upselling_auto_delete_plus_title">Fjern gammelt affald og spam</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Fotoalbum nu tilgængelige i Proton Drive</string>
+  <string name="drive_spotlight_description">Del fotos sikkert med familie og venner med albummer i Proton Drive. Følger gratis med dit abonnement.</string>
+  <string name="drive_spotlight_cta">Åbn albummer i Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagerplads</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 GB lagerplads, 10 e-mailadresser</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadresser</string>
   <string name="upselling_plus_feature_custom_domain">Understøttelse af brugerdefinerede e-maildomæner</string>
   <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-skrivebordsapp</string>
-  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
+  <string name="upselling_plus_feature_calendar">Premium kalenderfunktioner</string>
   <string name="upselling_plus_feature_folders_labels">Ubegrænsede mapper, etiketter og filtre</string>
   <string name="upselling_plus_feature_plus_7_features">+ 7 premium-funktioner</string>
   <!-- Unlimited -->
@@ -89,11 +93,11 @@
   <string name="upselling_select_plan_month">1 måned</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Fornyes automatisk til samme pris og vilkår, medmindre aftalen opsiges.</string>
-  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s %s%s unless canceled.</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s %s%s, medmindre det annulleres.</string>
+  <string name="upselling_auto_renew_text_promo_short">Velkomsttilbud. Fornyes automatisk til %s %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s %s%s, medmindre det annulleres.</string>
   <string name="upselling_social_proof_reviews">3.500+ ANMELDELSER</string>
-  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
+  <string name="upselling_description_social_proof">Elsket af over <b>1+ million betalende abonnenter.</b></string>
   <string name="upselling_description_social_proof_second">Opgradér din produktivitet i dag.</string>
   <string name="upselling_discount_tag">SPAR %s%%</string>
   <string name="upselling_month">/måned</string>
@@ -132,7 +136,7 @@
   <string name="post_subscription_got_it_button">Forstået</string>
   <string name="post_subscription_welcome_page_title">Velkommen til Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Tak for at støtte os i at holde internettet sikkert og privat for alle.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_welcome_page_unlocked">Du har låst op</string>
   <string name="post_subscription_plus_feature_storage">15 GB lagerplads</string>
   <string name="post_subscription_plus_feature_email_addresses">10 ekstra e-mailadresser</string>
   <string name="post_subscription_plus_feature_email_domains">Understøttelse af 1 brugerdefineret e-mail-domæne</string>
@@ -142,13 +146,13 @@
   <string name="post_subscription_plus_feature_customer_support">Prioriteret kundesupport</string>
   <string name="post_subscription_discover_apps_page_title">Opdag alle apps</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Du låste op for kalenderdeling og 8 gange flere kalendere.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Dit nye abonnement øgede din lagerplads til 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">Den bedste VPN for hastighed og sikkerhed.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_proton_pass_message">Sikkert adgangskode-lager og nemt login til dine konti.</string>
   <string name="post_subscription_button_installed">Installeret</string>
   <string name="post_subscription_button_get_the_app">Hent appen</string>
 </resources>

@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Nauti siistimmästä postilaatikosta ja hyödynnä muita premium-ominaisuuksia Mail Plussalla.</string>
   <string name="upselling_auto_delete_plus_title">Siivoa roskakori ja roskapostit</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
+  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
+  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 Gt tallennustilaa</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 Gt tallennustilaa, 10 sähköpostiosoitetta</string>

@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Uživajte v bolj urejenem poštnem predalu in izkoristite druge premijske funkcije z Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Počisti stare smeti in neželeno pošto</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
+  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
+  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostora za shranjevanje</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB prostora, 10 e-poštnih naslovov</string>

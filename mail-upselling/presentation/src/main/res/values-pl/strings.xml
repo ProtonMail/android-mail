@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Ciesz się bardziej uporządkowaną skrzynką pocztową i korzystaj z innych funkcji premium planu Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Opróżnij kosz i spam</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Albumy ze zdjęciami są dostępne w Proton Drive</string>
+  <string name="drive_spotlight_description">Bezpiecznie udostępniaj zdjęcia za pomocą albumów w Proton Drive. Za darmo w Twoim planie.</string>
+  <string name="drive_spotlight_cta">Otwórz albumy w Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB przestrzeni dyskowej</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB przestrzeni dyskowej i 10 adresów e-mail</string>

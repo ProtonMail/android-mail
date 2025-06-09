@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
+  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
+  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GAṬ n uḥraz</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
@@ -79,7 +83,7 @@
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Asekles</string>
   <string name="upselling_comparison_table_email_addresses">Tansiwin imayl</string>
-  <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
+  <string name="upselling_comparison_table_custom_email_domain">Taɣult n yimaylen udmawanen</string>
   <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Ikaramen d tebzimin war talast</string>
   <string name="upselling_comparison_table_priority_support">Tallelt n umsaɣ yezwaren</string>

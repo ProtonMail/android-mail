@@ -41,6 +41,10 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Наслаждайтесь аккуратным почтовым ящиком и преимуществами других платных функций с Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Избавьтесь от старых писем в корзине и от спама</string>
+  <!-- Drive Spotlight-->
+  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
+  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
+  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ хранилища</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 ГБ хранилища, 10 адресов электронной почты</string>
