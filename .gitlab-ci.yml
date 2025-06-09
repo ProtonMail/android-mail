@@ -252,7 +252,7 @@ run_unit_test:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   tags:
-    - xlarge-k8s
+    - android-xlarge
   dependencies:
     - build_dev_debug
   script:
