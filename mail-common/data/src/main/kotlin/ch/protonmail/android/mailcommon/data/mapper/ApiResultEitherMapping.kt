@@ -50,10 +50,10 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
                 DataError.Remote.Proton(protonError, apiMessage = proton?.error ?: message).left()
             }
             else -> {
-                val code = NetworkError.fromHttpCode(httpCode)
-                Timber.i("Http error: $code")
+                val networkError = NetworkError.fromHttpCode(httpCode)
+                Timber.i("Http network error: $networkError")
                 DataError.Remote.Http(
-                    code,
+                    networkError,
                     this.extractApiErrorInfo(),
                     this.isRetryable()
                 ).left()
