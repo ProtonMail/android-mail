@@ -124,7 +124,7 @@ platform :android do
     upload_to_play_store(
       package_name: "ch.protonmail.android",
       track: "internal",
-      apk: "./app/build/outputs/apk/prod/release/app-prod-release.apk",
+      apk: "./signedArtifacts/app-prod-release.apk",
       json_key: "/tmp/play_store_service_account.json"
     )
   end
