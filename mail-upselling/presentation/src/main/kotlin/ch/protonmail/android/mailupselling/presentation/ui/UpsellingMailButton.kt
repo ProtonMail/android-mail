@@ -181,15 +181,16 @@ private fun DriveSpotlightButton(onButtonClick: () -> Unit, modifier: Modifier =
             border = null,
             shape = ProtonTheme.shapes.large
         ) {
-            Row(
+            Box(
                 modifier = Modifier
                     .padding(ProtonDimens.SmallSpacing),
-                verticalAlignment = Alignment.CenterVertically
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_upselling_gift),
                     contentDescription = NO_CONTENT_DESCRIPTION,
-                    tint = ProtonTheme.colors.iconNorm
+                    tint = ProtonTheme.colors.iconNorm,
+                    modifier = Modifier.size(ProtonDimens.DefaultIconSize)
                 )
             }
         }

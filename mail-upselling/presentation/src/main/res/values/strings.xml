@@ -52,6 +52,7 @@
     <!-- Drive Spotlight-->
     <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
     <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
+    <string name="drive_spotlight_description_with_gb">Securely share photos with family and friends with albums in Proton Drive. You still have %d GB of secure cloud storage available.</string>
     <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
 
     <!-- Mail Plus -->

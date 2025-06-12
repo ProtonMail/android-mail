@@ -23,7 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightUIState
 import ch.protonmail.android.mailupselling.presentation.viewmodel.DriveSpotlightViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -34,6 +36,11 @@ fun DriveSpotlightScreen(actions: DriveSpotlightScreen.Actions) {
     val state = viewmodel.state.collectAsStateWithLifecycle().value
     when (state) {
         is DriveSpotlightUIState.Data -> DriveSpotlightBottomSheet(
+            copy = if (state.storageGB != null) {
+                TextUiModel.TextResWithArgs(R.string.drive_spotlight_description_with_gb, listOf(state.storageGB))
+            } else {
+                TextUiModel.TextRes(R.string.drive_spotlight_description)
+            },
             onDismiss = actions.onDismiss,
             onEvent = viewmodel::submit
         )

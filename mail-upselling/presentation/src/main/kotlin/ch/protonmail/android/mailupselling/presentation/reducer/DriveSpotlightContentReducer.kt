@@ -28,12 +28,16 @@ import javax.inject.Inject
 internal class DriveSpotlightContentReducer @Inject constructor() {
 
     fun newStateFrom(event: DriveSpotlightContentEvent): DriveSpotlightUIState = when (event) {
-        is DriveSpotlightContentEvent.UserError -> DriveSpotlightUIState.Error(
+        is DriveSpotlightContentEvent.StorageError -> DriveSpotlightUIState.Error(
             error = Effect.of(
                 TextUiModel.TextRes(R.string.upselling_snackbar_error_no_user_id)
             )
         )
 
-        is DriveSpotlightContentEvent.DataLoaded -> DriveSpotlightUIState.Data
+        is DriveSpotlightContentEvent.DataLoaded -> {
+            DriveSpotlightUIState.Data(event.storageGB.takeIf { it > MIN_STORAGE_GB_THRESHOLD }?.toInt())
+        }
     }
 }
+
+private const val MIN_STORAGE_GB_THRESHOLD = 1.5f

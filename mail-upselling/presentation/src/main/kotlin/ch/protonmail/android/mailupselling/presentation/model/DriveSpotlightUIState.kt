@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 internal sealed interface DriveSpotlightUIState {
     data object Loading : DriveSpotlightUIState
-    data object Data : DriveSpotlightUIState
+    data class Data(val storageGB: Int?) : DriveSpotlightUIState
     data class Error(val error: Effect<TextUiModel>) : DriveSpotlightUIState
 }
 
@@ -36,7 +36,7 @@ internal sealed interface DriveSpotlightContentViewEvent : DriveSpotlightContent
 
 internal sealed interface DriveSpotlightContentEvent : DriveSpotlightContentOperation {
 
-    data object DataLoaded : DriveSpotlightContentEvent
+    data class DataLoaded(val storageGB: Float) : DriveSpotlightContentEvent
 
-    data object UserError : DriveSpotlightContentEvent
+    data object StorageError : DriveSpotlightContentEvent
 }

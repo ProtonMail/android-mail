@@ -41,6 +41,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,6 +50,8 @@ import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.component.ProtonButton
@@ -63,6 +66,7 @@ import me.proton.core.compose.theme.headlineSmallNorm
 @Suppress("UseComposableActions")
 @Composable
 internal fun DriveSpotlightContent(
+    copy: TextUiModel,
     onDismiss: () -> Unit,
     onDisplayed: () -> Unit,
     onCTAClicked: () -> Unit,
@@ -87,6 +91,7 @@ internal fun DriveSpotlightContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
+                contentScale = ContentScale.FillWidth,
                 painter = painterResource(id = R.drawable.drive_spotlight_bg),
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
@@ -111,7 +116,7 @@ internal fun DriveSpotlightContent(
         Text(
             modifier = Modifier
                 .padding(horizontal = ProtonDimens.DefaultSpacing)
-                .padding(top = ProtonDimens.DefaultSpacing),
+                .padding(top = ProtonDimens.MediumSpacing),
             text = stringResource(R.string.drive_spotlight_title),
             style = if (isNarrowScreen) {
                 ProtonTheme.typography.headlineSmallNorm
@@ -123,7 +128,7 @@ internal fun DriveSpotlightContent(
             modifier = Modifier
                 .padding(horizontal = ProtonDimens.DefaultSpacing)
                 .padding(top = ProtonDimens.DefaultSpacing),
-            text = stringResource(R.string.drive_spotlight_description),
+            text = copy.string(),
             style = ProtonTheme.typography.body2Regular,
             color = ProtonTheme.colors.textNorm,
             textAlign = TextAlign.Center
@@ -156,6 +161,10 @@ internal fun DriveSpotlightContent(
 private fun DriveSpotlightContentPreview() {
     ProtonTheme3 {
         DriveSpotlightContent(
+            copy = TextUiModel.Text(
+                "Securely share photos with family and friends with albums in Proton Drive. " +
+                    "Included free with your plan."
+            ),
             onDismiss = {},
             onDisplayed = {},
             onCTAClicked = {}

@@ -19,12 +19,14 @@
 package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.telemetry.DriveSpotlightTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelemetryRepository
+import ch.protonmail.android.mailupselling.domain.usecase.AvailableDriveStorage
+import ch.protonmail.android.mailupselling.domain.usecase.GetAvailableDriveStorage
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightContentViewEvent
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightUIState
@@ -37,7 +39,6 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -50,14 +51,14 @@ class DriveSpotlightViewModelTest {
 
     private val telemetryRepository = mockk<DriveSpotlightTelemetryRepository>(relaxUnitFun = true)
     private val reducer = DriveSpotlightContentReducer()
-    private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
+    private val getAvailableDriveStorage = mockk<GetAvailableDriveStorage>()
     private val updateDriveSpotlightLastTimestamp = mockk<UpdateDriveSpotlightLastTimestamp>()
 
     private val viewModel: DriveSpotlightViewModel by lazy {
         DriveSpotlightViewModel(
             driveSpotlightTelemetryRepository = telemetryRepository,
             updateDriveSpotlightLastTimestamp = updateDriveSpotlightLastTimestamp,
-            observePrimaryUserId = observePrimaryUserId,
+            getAvailableDriveStorage = getAvailableDriveStorage,
             reducer = reducer
         )
     }
@@ -74,11 +75,11 @@ class DriveSpotlightViewModelTest {
 
     @Test
     fun `should emit loading state at start`() = runTest {
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(UserIdSample.Primary)
+        coEvery { getAvailableDriveStorage.invoke() } returns AvailableDriveStorage(1f).right()
         // When + Then
         viewModel.state.test {
             assertEquals(
-                DriveSpotlightUIState.Data,
+                DriveSpotlightUIState.Data(null),
                 awaitItem()
             )
         }
@@ -87,7 +88,8 @@ class DriveSpotlightViewModelTest {
     @Test
     fun `should emit error when drive storage can not be determined`() = runTest {
         // Given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(null)
+        coEvery { getAvailableDriveStorage.invoke() } returns
+            GetAvailableDriveStorage.GetAvailableDriveStorageError.left()
 
         // When + Then
         viewModel.state.test {
@@ -103,14 +105,14 @@ class DriveSpotlightViewModelTest {
     @Test
     fun `should call update use case when displayed`() = runTest {
         // Given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(UserIdSample.Primary)
+        coEvery { getAvailableDriveStorage.invoke() } returns AvailableDriveStorage(10f).right()
         coEvery { updateDriveSpotlightLastTimestamp.invoke(any()) } just runs
 
         // When + Then
         viewModel.submit(DriveSpotlightContentViewEvent.ContentShown)
         viewModel.state.test {
             assertEquals(
-                DriveSpotlightUIState.Data,
+                DriveSpotlightUIState.Data(10),
                 awaitItem()
             )
             coVerify(exactly = 1) { updateDriveSpotlightLastTimestamp.invoke(any()) }
@@ -120,7 +122,7 @@ class DriveSpotlightViewModelTest {
     @Test
     fun `should call upselling repo when CTA clicked`() = runTest {
         // Given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(UserIdSample.Primary)
+        coEvery { getAvailableDriveStorage.invoke() } returns AvailableDriveStorage(20f).right()
         coEvery {
             telemetryRepository.trackEvent(DriveSpotlightTelemetryEventType.DriveSpotlightCTATap)
         } just runs
@@ -129,7 +131,7 @@ class DriveSpotlightViewModelTest {
         viewModel.submit(DriveSpotlightContentViewEvent.OpenDriveClicked)
         viewModel.state.test {
             assertEquals(
-                DriveSpotlightUIState.Data,
+                DriveSpotlightUIState.Data(20),
                 awaitItem()
             )
             coVerify(exactly = 1) {

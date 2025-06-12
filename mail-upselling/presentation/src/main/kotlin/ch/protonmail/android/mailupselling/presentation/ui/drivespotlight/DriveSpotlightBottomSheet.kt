@@ -32,12 +32,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DriveSpotlightContentViewEvent
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DriveSpotlightBottomSheet(onDismiss: () -> Unit, onEvent: (DriveSpotlightContentViewEvent) -> Unit) {
+internal fun DriveSpotlightBottomSheet(
+    copy: TextUiModel,
+    onDismiss: () -> Unit,
+    onEvent: (DriveSpotlightContentViewEvent) -> Unit
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val orientation = LocalConfiguration.current.orientation
     val isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -56,6 +61,7 @@ internal fun DriveSpotlightBottomSheet(onDismiss: () -> Unit, onEvent: (DriveSpo
     ) {
         val ctx = LocalContext.current
         DriveSpotlightContent(
+            copy,
             onDismiss = onDismiss,
             onDisplayed = {
                 onEvent(DriveSpotlightContentViewEvent.ContentShown)
