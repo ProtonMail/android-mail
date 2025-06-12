@@ -35,7 +35,7 @@ internal class DriveSpotlightContentReducer @Inject constructor() {
         )
 
         is DriveSpotlightContentEvent.DataLoaded -> {
-            DriveSpotlightUIState.Data(event.storageGB.takeIf { it > MIN_STORAGE_GB_THRESHOLD }?.toInt())
+            DriveSpotlightUIState.Data(event.storageGB?.takeIf { it > MIN_STORAGE_GB_THRESHOLD }?.toInt())
         }
     }
 }

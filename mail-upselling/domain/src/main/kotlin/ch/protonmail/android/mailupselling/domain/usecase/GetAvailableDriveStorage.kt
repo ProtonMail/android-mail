@@ -34,8 +34,19 @@ class GetAvailableDriveStorage @Inject constructor(
         val user = observePrimaryUser.invoke().first()
         if (user == null) return GetAvailableDriveStorageError.left()
 
-        val driveStorageBytes = user.maxDriveSpace ?: user.maxSpace
-        val driveStorageGB = driveStorageBytes / (1024F * 1024 * 1024)
+        val maxSplitDriveSpace = user.maxDriveSpace
+        val usedSplitDriveSpace = user.usedDriveSpace
+        val isSplit = maxSplitDriveSpace != null && usedSplitDriveSpace != null
+        val availableDriveStorageBytes = if (isSplit) {
+            maxSplitDriveSpace - usedSplitDriveSpace
+        } else if (user.maxSpace > 0) {
+            user.maxSpace - user.usedSpace
+        } else {
+            null
+        }
+        val driveStorageGB = availableDriveStorageBytes?.takeIf { it > 0 }?.let {
+            it / (1024F * 1024 * 1024)
+        }
 
         return AvailableDriveStorage(driveStorageGB).right()
     }
@@ -43,4 +54,4 @@ class GetAvailableDriveStorage @Inject constructor(
     data object GetAvailableDriveStorageError
 }
 
-data class AvailableDriveStorage(val totalDriveStorageGB: Float)
+data class AvailableDriveStorage(val totalDriveStorageGB: Float?)

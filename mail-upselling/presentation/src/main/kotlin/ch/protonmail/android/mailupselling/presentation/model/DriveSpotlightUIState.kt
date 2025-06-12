@@ -36,7 +36,7 @@ internal sealed interface DriveSpotlightContentViewEvent : DriveSpotlightContent
 
 internal sealed interface DriveSpotlightContentEvent : DriveSpotlightContentOperation {
 
-    data class DataLoaded(val storageGB: Float) : DriveSpotlightContentEvent
+    data class DataLoaded(val storageGB: Float?) : DriveSpotlightContentEvent
 
     data object StorageError : DriveSpotlightContentEvent
 }

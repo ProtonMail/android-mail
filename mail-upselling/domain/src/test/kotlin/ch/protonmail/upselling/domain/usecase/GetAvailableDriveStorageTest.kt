@@ -39,11 +39,30 @@ class GetAvailableDriveStorageTest {
 
     private val oneGB = 1024 * 1024 * 1024L
     private val gb20 = 20 * oneGB
+    private val gb10 = 10 * oneGB
     private val gb500 = 500 * oneGB
 
-    private val freeUser1GB = UserSample.Primary.copy(subscribed = 0, maxDriveSpace = oneGB)
-    private val paidUser20GB = UserSample.Primary.copy(subscribed = 1, maxSpace = gb20, maxDriveSpace = null)
-    private val paidUser500GB = UserSample.Primary.copy(subscribed = 1, maxSpace = gb500, maxDriveSpace = null)
+    private val user0outOf1GB = UserSample.Primary.copy(
+        subscribed = 0, maxDriveSpace = oneGB, usedDriveSpace = oneGB
+    )
+    private val user1outOf1GB = UserSample.Primary.copy(
+        subscribed = 0, maxDriveSpace = oneGB, usedDriveSpace = 0
+    )
+    private val user10OutOf20GB = UserSample.Primary.copy(
+        subscribed = 1, maxSpace = gb20, maxDriveSpace = null, usedSpace = gb10, usedDriveSpace = null
+    )
+    private val user499OutOf500GB = UserSample.Primary.copy(
+        subscribed = 1, maxSpace = gb500, maxDriveSpace = null, usedSpace = oneGB, usedDriveSpace = null
+    )
+    private val userUsedAboveMax = UserSample.Primary.copy(
+        subscribed = 1, maxSpace = gb20, maxDriveSpace = null, usedSpace = gb20 + oneGB, usedDriveSpace = null
+    )
+    private val userUndetermined1 = UserSample.Primary.copy(
+        subscribed = 1, maxSpace = 0, maxDriveSpace = null, usedSpace = 0, usedDriveSpace = null
+    )
+    private val userUndetermined2 = UserSample.Primary.copy(
+        subscribed = 1, maxSpace = 0, maxDriveSpace = null, usedSpace = 0, usedDriveSpace = gb10
+    )
 
     @Test
     fun `returns error if no primary user`() = runTest {
@@ -58,9 +77,21 @@ class GetAvailableDriveStorageTest {
     }
 
     @Test
+    fun `returns null for 0 GB free user`() = runTest {
+        // Given
+        every { observePrimaryUser.invoke() } returns flowOf(user0outOf1GB)
+
+        // When
+        val result = sut()
+
+        // Then
+        assertEquals(AvailableDriveStorage(null).right(), result)
+    }
+
+    @Test
     fun `returns 1 GB for 1 GB free user`() = runTest {
         // Given
-        every { observePrimaryUser.invoke() } returns flowOf(freeUser1GB)
+        every { observePrimaryUser.invoke() } returns flowOf(user1outOf1GB)
 
         // When
         val result = sut()
@@ -70,26 +101,62 @@ class GetAvailableDriveStorageTest {
     }
 
     @Test
-    fun `returns 20 GB for 20 GB paid user`() = runTest {
+    fun `returns 10 GB for 10 GB paid user`() = runTest {
         // Given
-        every { observePrimaryUser.invoke() } returns flowOf(paidUser20GB)
+        every { observePrimaryUser.invoke() } returns flowOf(user10OutOf20GB)
 
         // When
         val result = sut()
 
         // Then
-        assertEquals(AvailableDriveStorage(20f).right(), result)
+        assertEquals(AvailableDriveStorage(10f).right(), result)
     }
 
     @Test
-    fun `returns 500 GB for 500 GB paid user`() = runTest {
+    fun `returns 499 GB for 499 GB paid user`() = runTest {
         // Given
-        every { observePrimaryUser.invoke() } returns flowOf(paidUser500GB)
+        every { observePrimaryUser.invoke() } returns flowOf(user499OutOf500GB)
 
         // When
         val result = sut()
 
         // Then
-        assertEquals(AvailableDriveStorage(500f).right(), result)
+        assertEquals(AvailableDriveStorage(499f).right(), result)
+    }
+
+    @Test
+    fun `returns null for user who used above max`() = runTest {
+        // Given
+        every { observePrimaryUser.invoke() } returns flowOf(userUsedAboveMax)
+
+        // When
+        val result = sut()
+
+        // Then
+        assertEquals(AvailableDriveStorage(null).right(), result)
+    }
+
+    @Test
+    fun `returns null user whose storage cannot be determined - unified`() = runTest {
+        // Given
+        every { observePrimaryUser.invoke() } returns flowOf(userUndetermined1)
+
+        // When
+        val result = sut()
+
+        // Then
+        assertEquals(AvailableDriveStorage(null).right(), result)
+    }
+
+    @Test
+    fun `returns null user whose storage cannot be determined - split`() = runTest {
+        // Given
+        every { observePrimaryUser.invoke() } returns flowOf(userUndetermined2)
+
+        // When
+        val result = sut()
+
+        // Then
+        assertEquals(AvailableDriveStorage(null).right(), result)
     }
 }
