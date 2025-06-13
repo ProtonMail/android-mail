@@ -42,16 +42,17 @@
   <string name="upselling_auto_delete_plus_description_override">Оцініть чистішу поштову скриньку й переваги інших преміальних функцій Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Очистьте смітник і спам</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
-  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
-  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
+  <string name="drive_spotlight_title">Нове! Альбоми в Proton</string>
+  <string name="drive_spotlight_description">Організовуйте фотографії в альбомах та безпечно поділіться ними з друзями та родиною. Безплатно входить до вашого тарифу.</string>
+  <string name="drive_spotlight_description_with_gb">Організуйте фотографії в альбомах та безпечно поділіться ними з друзями та родиною. У вас ще є %d ГБ безпечного хмарного сховища.</string>
+  <string name="drive_spotlight_cta">Відкрити альбоми в Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховища</string>
-  <string name="upselling_plus_feature_storage_plus_mails">15 GB storage, 10 email addresses</string>
+  <string name="upselling_plus_feature_storage_plus_mails">15 ГБ сховища, 10 поштових адрес</string>
   <string name="upselling_plus_feature_email_addresses">10 адрес електронної пошти</string>
   <string name="upselling_plus_feature_custom_domain">Підтримка власних доменів електронної пошти</string>
   <string name="upselling_plus_feature_desktop_app">Нова програма Proton Mail для комп\'ютера</string>
-  <string name="upselling_plus_feature_calendar">Premium calendar features</string>
+  <string name="upselling_plus_feature_calendar">Преміум функції календаря</string>
   <string name="upselling_plus_feature_folders_labels">Необмежена кількість тек, міток і фільтрів</string>
   <string name="upselling_plus_feature_plus_7_features">+7 преміальних функцій</string>
   <!-- Unlimited -->
@@ -96,9 +97,9 @@
   <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автоматично поновлюється через %s %s%s, якщо не скасовано.</string>
   <string name="upselling_auto_renew_text_promo_short">Вітальна пропозиція. Автоматично поновлюється за %s %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автоматично поновлюється через %s %s %s, якщо не скасовано.</string>
-  <string name="upselling_social_proof_reviews">3,500+ REVIEWS</string>
-  <string name="upselling_description_social_proof">Loved by over <b>1+ million paid subscribers.</b></string>
-  <string name="upselling_description_social_proof_second">Upgrade your productivity today.</string>
+  <string name="upselling_social_proof_reviews">3,500+ ВІДГУКІВ</string>
+  <string name="upselling_description_social_proof">Нас люблять понад <b>1 мільйон платних підписників.</b></string>
+  <string name="upselling_description_social_proof_second">Покращте вашу продуктивність сьогодні.</string>
   <string name="upselling_discount_tag">ЗАОЩАДЬТЕ %s%%</string>
   <string name="upselling_month">/місяць</string>
   <string name="upselling_year">/рік</string>

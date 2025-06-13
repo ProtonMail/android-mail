@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Mail Plus로 더 간결한 우편함과 다른 프리미엄 기능을 즐겨보세요.</string>
   <string name="upselling_auto_delete_plus_title">오래된 휴지통 및 스팸함 내 항목 완전히 지우기</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">이제 Proton Drive에서 사진 앨범을 만나보세요</string>
-  <string name="drive_spotlight_description">Proton Drive 앨범으로 가족 및 친구와 안전하게 사진을 공유해보세요. 현재 플랜에 무료로 포함됩니다.</string>
+  <string name="drive_spotlight_title">New! Albums in Proton</string>
+  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
+  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
   <string name="drive_spotlight_cta">Proton Drive에서 앨범 열기</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">저장공간 15GB</string>

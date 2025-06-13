@@ -42,9 +42,10 @@
   <string name="upselling_auto_delete_plus_description_override">Mail Plus tarifesi ile daha düzenli bir posta kutusunun ve diğer ücretli özelliklerin tadını çıkarın.</string>
   <string name="upselling_auto_delete_plus_title">Çöp ve istenmeyen kutularındaki eski iletiler temizleyin</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Photo albums now available in Proton Drive</string>
-  <string name="drive_spotlight_description">Securely share photos with family and friends with albums in Proton Drive. Included free with your plan.</string>
-  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
+  <string name="drive_spotlight_title">Yeni! Proton\'da Albümler</string>
+  <string name="drive_spotlight_description">Fotoğraflarınızı albümlerde düzenleyin ve bunları arkadaşlarınızla ve ailenizle güvenle paylaşın. Tarifenize ücretsiz olarak dahildir.</string>
+  <string name="drive_spotlight_description_with_gb">Fotoğraflarınızı albümlerde düzenleyin ve bunları arkadaşlarınızla ve ailenizle güvenle paylaşın. Hâlâ %d GB güvenli bulut depolama alanınız var.</string>
+  <string name="drive_spotlight_cta">Albümleri Proton Drive\'da Açın</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB depolama alanı, 10 e-posta adresi</string>

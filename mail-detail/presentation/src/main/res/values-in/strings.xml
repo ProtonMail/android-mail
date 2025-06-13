@@ -89,7 +89,7 @@
   <string name="message_moved">Pesan dipindahkan</string>
   <string name="message_moved_to">Pesan dipindahkan ke %s</string>
   <string name="error_delete_message_failed">Pesan gagal dihapus</string>
-  <string name="error_delete_message_failed_wrong_folder">Pesan tidak terletak pada lokasi yang memungkinkan pesan untuk dihapus</string>
+  <string name="error_delete_message_failed_wrong_folder">Pesan tidak berada pada lokasi yang memungkinkan pesan untuk dihapus</string>
   <string name="error_delete_conversation_failed">Percakapan gagal dihapus</string>
   <string name="error_delete_conversation_failed_wrong_folder">Percakapan tidak terletak pada lokasi yang memungkinkan percakapan untuk dihapus</string>
   <string name="conversation_delete_dialog_title">Hapus percakapan</string>

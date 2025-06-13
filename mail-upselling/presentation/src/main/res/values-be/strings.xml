@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з тарыфным планам Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Ачысціць выдаленыя файлы і спам</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Фотаальбомы цяпер даступны ў Proton Drive</string>
-  <string name="drive_spotlight_description">Бяспечна абагульвайце фатаграфіі з сям\'ёй і сябрамі пры дапамозе альбомаў у Proton Drive. Уключана бясплатна ў ваш тарыфны план.</string>
+  <string name="drive_spotlight_title">Новае! Альбомы ў Proton</string>
+  <string name="drive_spotlight_description">Арганізоўвайце фатаграфіі ў альбомах і бяспечна абагульвайце іх з сябрамі і сям\'ёй. Ваш тарыфны план ужо прадугледжаване гэту функцыю.</string>
+  <string name="drive_spotlight_description_with_gb">Арганізоўвайце фатаграфіі ў альбомах і бяспечна абагульвайце іх з сябрамі і сям\'ёй. У вас яшчэ ёсць %d ГБ бяспечнага воблачнага сховішча.</string>
   <string name="drive_spotlight_cta">Адкрыць альбомы ў Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>

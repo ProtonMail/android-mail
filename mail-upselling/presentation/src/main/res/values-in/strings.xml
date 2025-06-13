@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Nikmati kotak surat yang lebih rapi dan manfaat dari berbagai fitur premium lainnya dengan Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Bersihkan sampah dan spam yang telah lama menumpuk</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Album foto sekarang tersedia di Proton Drive</string>
-  <string name="drive_spotlight_description">Bagikan foto dengan aman dengan keluarga dan teman dengan album di Proton Drive. Termasuk gratis dengan paket Anda.</string>
+  <string name="drive_spotlight_title">New! Albums in Proton</string>
+  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
+  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
   <string name="drive_spotlight_cta">Buka Album di Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">Ruang penyimpanan 15 GB</string>

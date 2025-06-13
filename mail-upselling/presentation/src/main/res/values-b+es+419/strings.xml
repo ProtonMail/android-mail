@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Disfrute de un buzón más ordenado y del beneficio de otras funciones premium con Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Borrar la papelera y spam antiguos</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Álbumes de fotos ahora disponibles en Proton Drive</string>
-  <string name="drive_spotlight_description">Comparta fotos de forma segura con familiares y amigos con álbumes en Proton Drive. Incluido gratis con su plan.</string>
+  <string name="drive_spotlight_title">¡Nuevo! Álbumes en Proton Drive</string>
+  <string name="drive_spotlight_description">Organice fotos en álbumes y compártalas de forma segura con amigos y familiares. Incluido gratis con su plan.</string>
+  <string name="drive_spotlight_description_with_gb">Organice fotos en álbumes y compártalas de forma segura con amigos y familiares. Usted aún tiene %d GB de almacenamiento seguro en la nube disponibles.</string>
   <string name="drive_spotlight_cta">Abrir álbumes en Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>

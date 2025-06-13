@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Απολαύστε ένα πιο τακτοποιημένο γραμματοκιβώτιο και επωφεληθείτε από άλλες premium δυνατότητες με το Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Εκκαθαρίστε τα παλιά διαγραμμένα και τα ενοχλητικά</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Άλμπουμ φωτογραφιών τώρα διαθέσιμα στο Proton Drive</string>
-  <string name="drive_spotlight_description">Ασφαλής κοινοποίηση φωτογραφιών με την οικογένεια και τους φίλους με άλμπουμ στο Proton Drive. Περιλαμβάνεται δωρεάν με το πλάνο σας.</string>
+  <string name="drive_spotlight_title">Νέο! Άλμπουμ στο Proton</string>
+  <string name="drive_spotlight_description">Οργανώστε φωτογραφίες σε άλμπουμ και μοιραστείτε τες με ασφάλεια με φίλους και συγγενείς. Περιλαμβάνεται δωρεάν με το πλάνο σας.</string>
+  <string name="drive_spotlight_description_with_gb">Οργανώστε φωτογραφίες σε άλμπουμ και κοινοποιήστε τες με ασφάλεια σε φίλους και συγγενείς. Σας απομένουν ακόμη %d GB ασφαλούς χώρου αποθήκευσης στο cloud.</string>
   <string name="drive_spotlight_cta">Άνοιγμα Άλμπουμ στο Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB αποθηκευτικού χώρου</string>

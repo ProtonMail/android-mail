@@ -32,10 +32,10 @@
   <string name="action_unstar_description">Retirer des favoris</string>
   <string name="action_label_description">Labelliser…</string>
   <string name="action_move_description">Déplacer vers…</string>
-  <string name="action_trash_description">Déplacer dans le dossier Corbeille</string>
+  <string name="action_trash_description">Déplacer vers la corbeille</string>
   <string name="action_delete_description">Supprimer</string>
-  <string name="action_archive_description">Déplacer dans le dossier Archives</string>
-  <string name="action_spam_description">Déplacer dans le dossier Indésirables/spam</string>
+  <string name="action_archive_description">Déplacer vers les archives</string>
+  <string name="action_spam_description">Déplacer vers le dossier Indésirables/spam</string>
   <string name="action_view_in_light_mode_description">Voir le message en mode clair</string>
   <string name="action_view_in_dark_mode_description">Voir le message en mode sombre</string>
   <string name="action_print_description">Imprimer</string>

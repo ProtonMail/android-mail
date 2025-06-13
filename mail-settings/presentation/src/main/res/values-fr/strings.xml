@@ -118,11 +118,11 @@
   <string name="mail_settings_swipe_action_label_as_title">Labelliser…</string>
   <string name="mail_settings_swipe_action_move_to_title">Déplacer vers…</string>
   <string name="mail_settings_swipe_action_none_description">Aucun</string>
-  <string name="mail_settings_swipe_action_archive_description">Déplacer dans le dossier Archives</string>
+  <string name="mail_settings_swipe_action_archive_description">Déplacer vers les archives</string>
   <string name="mail_settings_swipe_action_read_description">Marquer comme non lu/lu</string>
-  <string name="mail_settings_swipe_action_spam_description">Déplacer dans le dossier Indésirables/spam</string>
+  <string name="mail_settings_swipe_action_spam_description">Déplacer vers le dossier Indésirables/spam</string>
   <string name="mail_settings_swipe_action_star_description">Ajouter/Retirer des Favoris</string>
-  <string name="mail_settings_swipe_action_trash_description">Déplacer dans le dossier Corbeille</string>
+  <string name="mail_settings_swipe_action_trash_description">Déplacer vers la corbeille</string>
   <string name="mail_settings_swipe_action_label_as_description">Labelliser…</string>
   <string name="mail_settings_swipe_action_move_to_description">Déplacer vers…</string>
   <!-- Notification settings -->

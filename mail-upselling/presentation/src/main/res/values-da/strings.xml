@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Nyd fordelen ved velorganiserede postkasser og andre førsteklassesfunktioner med Mail Plus</string>
   <string name="upselling_auto_delete_plus_title">Fjern gammelt affald og spam</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Fotoalbum nu tilgængelige i Proton Drive</string>
-  <string name="drive_spotlight_description">Del fotos sikkert med familie og venner med albummer i Proton Drive. Følger gratis med dit abonnement.</string>
+  <string name="drive_spotlight_title">Nyt! Albummer i Proton</string>
+  <string name="drive_spotlight_description">Organiser fotos i albummer og del dem sikkert med venner og familie. Medfølger gratis i dit abonnement.</string>
+  <string name="drive_spotlight_description_with_gb">Organiser fotos i album og del dem sikkert med venner og familie. Du har stadig %d GB sikker sky-lagerplads til rådighed.</string>
   <string name="drive_spotlight_cta">Åbn albummer i Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagerplads</string>

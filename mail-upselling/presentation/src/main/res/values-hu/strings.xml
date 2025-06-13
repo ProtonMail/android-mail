@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Élvezze a rendezettebb postafiókot és élvezze a Mail Plus prémium funkciók előnyeit.</string>
   <string name="upselling_auto_delete_plus_title">Ürítse a régi lomtárat és levélszemetet</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Fénykép albumok már elérhetők a Proton Drive-ban</string>
-  <string name="drive_spotlight_description">Biztonságosan ossza meg fényképeit családjával és barátaival a Proton Drive-ban lévő albumokkal. A csomagjához ingyenesen hozzátartozik.</string>
+  <string name="drive_spotlight_title">New! Albums in Proton</string>
+  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
+  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
   <string name="drive_spotlight_cta">Albumok megnyitása a Proton Drive-ban</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB tárhely</string>

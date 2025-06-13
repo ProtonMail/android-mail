@@ -42,8 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Užívejte si přehlednější e-mailovou schránku a další prémiové funkce Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Smazání starých položek z koše a spamu</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Fotoalba jsou nyní dostupná v Proton Drive</string>
-  <string name="drive_spotlight_description">Pomocí alb v Proton Drive můžete bezpečně sdílet své oblíbené okamžiky s přáteli a rodinou. Zdarma ve vašem tarifu.</string>
+  <string name="drive_spotlight_title">Nové! Alba v Protonu</string>
+  <string name="drive_spotlight_description">Uspořádejte fotky do alb a bezpečně je sdílejte s přáteli a rodinou. Zdarma ve vašem tarifu.</string>
+  <string name="drive_spotlight_description_with_gb">Uspořádejte fotky do alb a bezpečně je sdílejte s přáteli a rodinou. Stále máte k dispozici %d GB zabezpečeného cloudového úložiště.</string>
   <string name="drive_spotlight_cta">Otevřít alba v Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostoru</string>
