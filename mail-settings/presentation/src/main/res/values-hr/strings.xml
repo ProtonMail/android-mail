@@ -44,7 +44,7 @@
   <string name="mail_settings_allowed">Dopušteno</string>
   <string name="mail_settings_denied">Odbijeno</string>
   <string name="mail_settings_auto_detect">Automatsko otkrivanje</string>
-  <string name="mail_settings_customize_toolbar">Customize toolbar</string>
+  <string name="mail_settings_customize_toolbar">Prilagodi alatnu traku</string>
   <string name="mail_settings_app_information">Informacije o aplikaciji</string>
   <string name="mail_settings_app_version">Verzija aplikacije</string>
   <string name="mail_settings_app_logs">Zapisnici aplikacije</string>
@@ -64,14 +64,14 @@
   <string name="mail_settings_conversation_mode">Način razgovora</string>
   <string name="mail_settings_auto_delete">Automatsko brisanje</string>
   <string name="mail_settings_auto_delete_full_text">Automatsko brisanje neželjenih poruka</string>
-  <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
+  <string name="mail_settings_auto_delete_hint">Poruke koje se nalaze u otpadu ili neželjenoj pošti duže od 30 dana bit će automatski izbrisane.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Potrebna Vam je pretplata za Proton Mail da biste koristili ovu značajku</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Poništi</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Izbriši poruke?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Ovo će izbrisati sve poruke koje se nalaze u otpadu ili neželjenoj pošti dulje od 30 dana, uključujući i poruke koje se upravo sada nalaze u tim mapama.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Omogući</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Onemogućiti automatsko brisanje?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">E-poruke za koje je zakazano brisanje ostat će u otpadu ili neželjenoj pošti.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Onemogući</string>
   <string name="mail_settings_not_set">Nije postavljeno</string>
   <string name="mail_settings_conversation_mode_hint">Grupirajte e-poštu u istom razgovoru u pristigloj pošti ili ih prikažite zasebno</string>
@@ -81,7 +81,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Nema neaktivnih adresa</string>
   <string name="mail_settings_default_email_address_error_loading">Greška kod učitavanja postavki</string>
   <string name="mail_settings_default_email_address_error_update">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">You need a paid Proton Mail subscription to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Potrebna Vam je pretplata za Proton Mail da biste ovu adresu postavili kao zadanu</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Zaslonski naziv i potpis</string>
   <string name="mail_settings_identity_save_button">Spremi</string>
@@ -89,9 +89,9 @@
   <string name="mail_settings_identity_display_name_hint">Zaslonski naziv</string>
   <string name="mail_settings_identity_signature">Potpis</string>
   <string name="mail_settings_identity_signature_hint">Potpis</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Mobilni potpis</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Ovo se dodaje nakon Vašeg potpisa.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobilni potpis</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Poslano iz Proton Maila za Android</string>
   <string name="mail_settings_identity_error_updating">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_identity_error_loading">Greška kod učitavanja postavki</string>
@@ -101,7 +101,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Spriječite snimanje snimki zaslona</string>
   <string name="mail_settings_privacy_request_link_confirmation">Zatražite potvrdu poveznice</string>
   <string name="mail_settings_privacy_background_sync">Sinkronizacija u pozadini</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync_description">Ako je ova opcija omogućena, aplikacija će se u pozadini sinkronizirati s poslužiteljem. Onemogućavanjem ove značajke, onemogućit će se i push obavijesti.</string>
   <string name="mail_settings_privacy_error_updating">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_privacy_error_loading">Greška kod učitavanja postavki</string>
   <!-- Swipe Actions -->
@@ -148,33 +148,33 @@
   <string name="mail_settings_pin_insertion_input_title">Unesite PIN kôd</string>
   <string name="mail_settings_pin_insertion_set_title">Postavite PIN kôd</string>
   <string name="mail_settings_pin_insertion_confirm_title">Potvrdite PIN kȏd</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Ikona lokota</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Točka PIN-a</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Brisanje</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrijska autentikacija</string>
   <string name="mail_settings_pin_insertion_button_create">Stvori</string>
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdi</string>
-  <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN kôdovi se ne podudaraju.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">Preostao %s pokušaj.</item>
+    <item quantity="few">Preostala %s pokušaja.</item>
+    <item quantity="other">Preostalo %s pokušaja.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="few">%s remaining attempts until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Preostao %s pokušaj prije sigurnosnog brisanja podataka.</item>
+    <item quantity="few">Preostala %s pokušaja prije sigurnosnog brisanja podataka.</item>
+    <item quantity="other">Preostalo %s pokušaja prije sigurnosnog brisanja podataka.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Dogodila se greška kod potvrđivanja Vašeg PIN kôda.</string>
   <string name="mail_settings_pin_insertion_signout_text">Odjava</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Odjava</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Da li ste sigurni da se želite odjaviti?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>
-  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN kôd je uspješno stvoren.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN kôd je uspješno promijenjen.</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">Brisanje lokalne predmemorije podataka…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Došlo je do pogreške. Pokušajte ponovo.</string>
   <!-- strings used for biometric enrollment -->
@@ -183,21 +183,21 @@
   <string name="unlock_using_biometrics">Otključajte biometrijom</string>
   <string name="biometric_error_hw_not_available">Biometrijski hardver nije dostupan.</string>
   <!-- customize toolbar-->
-  <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
-  <string name="customize_toolbar_disclaimer_conversation">This toolbar is visible when reading a conversation.</string>
-  <string name="customize_toolbar_disclaimer_inbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">This toolbar appears when selecting multiple conversations in your mailbox.</string>
+  <string name="customize_toolbar_disclaimer_message">Ova alatna traka je vidljiva prilikom čitanja poruke.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Ova alatna traka je vidljiva prilikom čitanja razgovora.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Ova alatna traka pojavljuje se kad odaberete više poruka u Vašem sandučiću.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Ova alatna traka pojavljuje se kad odaberete više poruka u Vašem sandučiću.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Ova alatna traka pojavljuje se kad odaberete više razgovora u Vašem sandučiću.</string>
   <string name="customize_toolbar_message">Poruka</string>
   <string name="customize_toolbar_conversation">Razgovor</string>
   <string name="customize_toolbar_inbox">Pristigla pošta</string>
   <string name="customize_toolbar_mailbox">Poštanski sandučić</string>
   <string name="customize_toolbar_done_action">Gotovo</string>
-  <string name="customize_toolbar_reset_to_default">Reset to Default</string>
+  <string name="customize_toolbar_reset_to_default">Resetiraj na zadano</string>
   <string name="customize_toolbar_reset_to_default_btn">Vrati na zadane postavke</string>
-  <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
+  <string name="customize_toolbar_actions_section">Radnje alatne trake (odaberite maks. 5)</string>
   <string name="customize_toolbar_available_actions_section">Dostupne radnje</string>
   <string name="customize_toolbar_reset_default_confirmation_title">Vrati na zadane postavke?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Radnje u ovoj alatnoj traci bit će resetirane na zadane postavke.</string>
   <string name="customize_toolbar_reset_default_confirm">Potvrdi</string>
 </resources>

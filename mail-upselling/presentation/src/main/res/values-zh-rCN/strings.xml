@@ -42,10 +42,10 @@
   <string name="upselling_auto_delete_plus_description_override">享受一个更整洁的邮箱，并从其他邮件Plus的其他优质功能中受益。</string>
   <string name="upselling_auto_delete_plus_title">清除旧回收站和垃圾邮件</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">New! Albums in Proton</string>
-  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
-  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
-  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
+  <string name="drive_spotlight_title">新功能！Proton 中的相册</string>
+  <string name="drive_spotlight_description">在相册中整理照片，并安全地与亲友分享。您的套餐免费包含此功能。</string>
+  <string name="drive_spotlight_description_with_gb">在相册中整理照片，并安全地与亲友分享。您仍有 %d GB 的安全云存储可用。</string>
+  <string name="drive_spotlight_cta">在 Proton Drive 中打开相册</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB 存储空间，10 个邮箱地址</string>

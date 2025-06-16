@@ -42,9 +42,9 @@
   <string name="upselling_auto_delete_plus_description_override">Bucurați-vă de o interfață mai ordonată și beneficiați de alte funcții premium cu Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Goliți mesajele vechi din folderele gunoi și nedorite</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">New! Albums in Proton</string>
-  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
-  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
+  <string name="drive_spotlight_title">Nou! Albume în Proton</string>
+  <string name="drive_spotlight_description">Organizați fotografiile în albume și partajați-le în siguranță cu prietenii și familia. Inclus gratuit în planul actual.</string>
+  <string name="drive_spotlight_description_with_gb">Organizați fotografiile în albume și partajați-le în siguranță cu prietenii și familia. Mai aveți %d GiB de stocare securizată în cloud disponibilă.</string>
   <string name="drive_spotlight_cta">Deschidere albume în Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GiB spațiu de stocare</string>

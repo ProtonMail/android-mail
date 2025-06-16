@@ -43,9 +43,9 @@
   <string name="upselling_auto_delete_plus_title">Buida la paperera i el correu brossa</string>
   <!-- Drive Spotlight-->
   <string name="drive_spotlight_title">Nou! Àlbums a Proton</string>
-  <string name="drive_spotlight_description">Organitzeu les fotos en àlbums i compartiu-les de forma segura amb amics i familiars. És de franc amb el vostre pla.</string>
-  <string name="drive_spotlight_description_with_gb">Organitzeu fotos en àlbums i compartiu-les de manera segura amb amics i família. Encara teniu %d GB disponibles d\'emmagatzematge segur al núvol.</string>
-  <string name="drive_spotlight_cta">Obriu Àlbums al Proton Drive</string>
+  <string name="drive_spotlight_description">Organitzeu les fotos en àlbums i compartiu-les de forma segura amb amics i familiars. Inclòs de forma gratuïta amb el vostre pla.</string>
+  <string name="drive_spotlight_description_with_gb">Organitzeu fotos en àlbums i compartiu-les de forma segura amb amics i família. Encara teniu %d GB disponibles d\'emmagatzematge segur al núvol.</string>
+  <string name="drive_spotlight_cta">Obre Àlbums al Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>
   <string name="upselling_plus_feature_storage_plus_mails">15 GB d\'emmagatzematge, 10 adreces de correu electrònic</string>

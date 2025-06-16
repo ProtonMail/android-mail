@@ -34,10 +34,10 @@
   <string name="mailbox_message_sending_offline">Izvan mreže, poruka čeka na slanje</string>
   <string name="mailbox_message_sending_success">Poruka je poslana</string>
   <string name="mailbox_message_sending_error">Pogreška pri slanju poruke</string>
-  <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+  <string name="mailbox_message_sending_error_address_disabled">Ova adresa je onemogućena, a slanje nije uspjelo</string>
   <string name="mailbox_message_sending_error_action">Idi u skice</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
-  <string name="notification_switched_account">Switched to account %s</string>
+  <string name="mailbox_attachment_uploading_error">Greška kod učitavanja privitka</string>
+  <string name="notification_switched_account">Prebačeno na račun %s</string>
   <string name="label_saved">Oznaka spremljena</string>
   <string name="label_deleted">Oznaka izbrisana</string>
   <string name="label_list_loading_error">Pogreška pri učitavanju oznake, pokušajte ponovno kasnije</string>

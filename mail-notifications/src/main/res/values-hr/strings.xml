@@ -18,16 +18,16 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">Nove poruke</string>
-  <string name="notification_summary_text_new_login_alerts">New login alerts</string>
+  <string name="notification_summary_text_new_login_alerts">Nove obavijesti o prijavi</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
   <string name="notification_title_text_new_message_fallback">Nova poruka</string>
   <string name="notification_actions_archive_description">Arhiva</string>
   <string name="notification_actions_trash_description">Otpad</string>
   <string name="notification_actions_mark_as_read_description">Označi kao pročitano</string>
-  <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_title">Ne propustite e-poruke</string>
+  <string name="notification_permission_dialog_message">Obavijesti Vam omogućuju da budete u toku s Vašom ulaznom poštom bez otvaranja aplikacije.</string>
+  <string name="notification_permission_dialog_post_send_title">Želite li biti u toku?</string>
+  <string name="notification_permission_dialog_post_send_message">Uključite obavijesti da biste znali kada Vam stigne odgovor na e-poruku.</string>
+  <string name="notification_permission_dialog_button_enable">Omogući push obavijesti</string>
   <string name="notification_permission_dialog_button_dismiss">Odbaci</string>
 </resources>

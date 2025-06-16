@@ -43,8 +43,8 @@
   <string name="upselling_auto_delete_plus_title">Rensa bort gammalt i papperskorg och skräppost</string>
   <!-- Drive Spotlight-->
   <string name="drive_spotlight_title">Nytt! Album i Proton</string>
-  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
-  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
+  <string name="drive_spotlight_description">Organisera foton i album och dela dem säkert med vänner och familj. Inkluderat gratis med ditt paket.</string>
+  <string name="drive_spotlight_description_with_gb">Organisera foton i album och dela dem säkert med vänner och familj. Du har fortfarande %d GB säkert molnlagringsutrymme tillgängligt.</string>
   <string name="drive_spotlight_cta">Öppna album i Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagringsutrymme</string>
