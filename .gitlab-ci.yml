@@ -190,6 +190,7 @@ build_prod_release:
     - <<: *ruby-cache
       policy: !reference [ .cache-policy, cache, policy ]
   script:
+    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleProdRelease
