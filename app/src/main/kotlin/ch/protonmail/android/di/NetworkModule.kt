@@ -60,10 +60,10 @@ object NetworkModule {
             get() = "android-mail@${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
             get() = BuildConfig.DEBUG
-        override val shouldUseDoh: Boolean
-            get() = hasAlternativeRouting().value.isEnabled
-        override val userAgent: String
-            get() = buildUserAgent()
+
+        override val userAgent: String get() = buildUserAgent()
+
+        override suspend fun shouldUseDoh(): Boolean = hasAlternativeRouting().value.isEnabled
 
         override fun forceUpdate(errorMessage: String) {
             forceUpdateHandler.onForceUpdate(errorMessage)
