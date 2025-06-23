@@ -42,7 +42,7 @@
   <string name="upselling_auto_delete_plus_description_override">Bénéficiez d\'une messagerie plus organisée et d\'autres fonctionnalités premium avec Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Vider la corbeille et les indésirables/spam</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">Nouveau ! Les Albums dans Proton</string>
+  <string name="drive_spotlight_title">Nouveau ! Les albums dans Proton</string>
   <string name="drive_spotlight_description">Organisez vos photos dans des albums et partagez-les en toute sécurité avec vos amis et votre famille. Inclus gratuitement dans votre abonnement.</string>
   <string name="drive_spotlight_description_with_gb">Organisez vos photos dans des albums et partagez-les en toute sécurité avec vos amis et votre famille. Il vous reste toujours %d Go d\'espace de stockage cloud sécurisé disponible.</string>
   <string name="drive_spotlight_cta">Ouvrir les albums sur Proton Drive</string>
