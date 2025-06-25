@@ -51,6 +51,10 @@ internal sealed class ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending_error), SnackbarType.Error, duration = SendingTimeout
     )
 
+    data object AddressDisabled : ComposerSnackbar(
+        getTestString(R.string.test_mailbox_message_sending_address_disabled_error), SnackbarType.Error, duration = SendingTimeout
+    )
+
     data object MessageQueued : ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending_offline), SnackbarType.Normal
     )
