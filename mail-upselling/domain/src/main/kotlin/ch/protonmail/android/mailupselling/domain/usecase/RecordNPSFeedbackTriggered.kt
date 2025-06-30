@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 class RecordNPSFeedbackTriggered @Inject constructor(
     private val featureFlagManager: FeatureFlagManager,
-    private val observePrimaryUserId: ObservePrimaryUserId,
+    private val observePrimaryUserId: ObservePrimaryUserId
 ) {
 
     suspend operator fun invoke() {

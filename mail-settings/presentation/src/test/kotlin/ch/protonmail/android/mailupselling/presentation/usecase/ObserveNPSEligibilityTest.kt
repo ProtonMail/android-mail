@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailupselling.presentation.usecase
 
-import java.time.Duration
-import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
@@ -27,13 +25,9 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.featureflag.domain.entity.FeatureFlag
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -48,19 +42,6 @@ internal class ObserveNPSEligibilityTest {
     )
 
     private val user = UserSample.Primary
-    private val fixedNow = Instant.ofEpochMilli(20_000_000_000L)
-    private val thresholdMs = Duration.ofDays(180).toMillis()
-
-    @Before
-    fun setUp() {
-        mockkStatic(Instant::class)
-        every { Instant.now() } returns fixedNow
-    }
-
-    @After
-    fun tearDown() {
-        unmockkAll()
-    }
 
     @Test
     fun `should emit false when primary user is null`() = runTest {
@@ -91,7 +72,7 @@ internal class ObserveNPSEligibilityTest {
             assertEquals(true, awaitItem())
             awaitComplete()
         }
-    0}
+    }
 
     private fun isFFEnabled(enabled: Boolean) {
         every { observeMailFeature(user.userId, MailFeatureId.NPSFeedback) } returns
