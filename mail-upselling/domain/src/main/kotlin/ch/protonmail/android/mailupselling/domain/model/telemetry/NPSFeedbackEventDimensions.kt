@@ -52,6 +52,8 @@ internal class NPSFeedbackEventDimensions {
         put(NPSFeedbackEventDimensionsKey.VpnInstalled.name, apps.contains(InstalledProtonApp.VPN).toString())
         put(NPSFeedbackEventDimensionsKey.DriveInstalled.name, apps.contains(InstalledProtonApp.Drive).toString())
         put(NPSFeedbackEventDimensionsKey.CalendarInstalled.name, apps.contains(InstalledProtonApp.Calendar).toString())
+        put(NPSFeedbackEventDimensionsKey.PassInstalled.name, apps.contains(InstalledProtonApp.Pass).toString())
+        put(NPSFeedbackEventDimensionsKey.WalletInstalled.name, apps.contains(InstalledProtonApp.Wallet).toString())
     }
 }
 
@@ -66,5 +68,7 @@ private sealed class NPSFeedbackEventDimensionsKey(val name: String) {
     data object VpnInstalled : NPSFeedbackEventDimensionsKey("vpn_installed")
     data object DriveInstalled : NPSFeedbackEventDimensionsKey("drive_installed")
     data object CalendarInstalled : NPSFeedbackEventDimensionsKey("calendar_installed")
+    data object PassInstalled : NPSFeedbackEventDimensionsKey("pass_installed")
+    data object WalletInstalled : NPSFeedbackEventDimensionsKey("wallet_installed")
     data object DaysSinceAccountCreation : NPSFeedbackEventDimensionsKey("days_since_account_creation")
 }

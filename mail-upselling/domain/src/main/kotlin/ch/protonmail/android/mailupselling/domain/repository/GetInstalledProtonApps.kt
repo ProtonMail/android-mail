@@ -36,8 +36,10 @@ private fun InstalledProtonApp.packageName() = when (this) {
     InstalledProtonApp.VPN -> "ch.protonvpn.android"
     InstalledProtonApp.Drive -> "me.proton.android.drive"
     InstalledProtonApp.Calendar -> "me.proton.android.calendar"
+    InstalledProtonApp.Pass -> "proton.android.pass"
+    InstalledProtonApp.Wallet -> "me.proton.wallet.android"
 }
 
 enum class InstalledProtonApp {
-    VPN, Drive, Calendar
+    VPN, Drive, Calendar, Pass, Wallet
 }

@@ -21,7 +21,6 @@ package ch.protonmail.android.mailupselling.dagger
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
 import ch.protonmail.android.mailupselling.data.repository.DriveSpotlightVisibilityRepositoryImpl
-import ch.protonmail.android.mailupselling.data.repository.NPSFeedbackVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotations.DriveSpotlightEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
@@ -38,7 +37,6 @@ import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightTelem
 import ch.protonmail.android.mailupselling.domain.repository.DriveSpotlightVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackTelemetryRepositoryImpl
-import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
@@ -167,12 +165,6 @@ interface UpsellingLocalDataModule {
     fun provideDriveSpotlightRepository(
         impl: DriveSpotlightVisibilityRepositoryImpl
     ): DriveSpotlightVisibilityRepository
-
-    @Binds
-    @Reusable
-    fun provideNPSFeedbackVisibilityRepository(
-        impl: NPSFeedbackVisibilityRepositoryImpl
-    ): NPSFeedbackVisibilityRepository
 
     @Module
     @InstallIn(SingletonComponent::class)

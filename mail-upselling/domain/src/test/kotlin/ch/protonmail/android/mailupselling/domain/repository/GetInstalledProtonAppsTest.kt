@@ -103,6 +103,8 @@ internal class GetInstalledProtonAppsTest {
                 InstalledProtonApp.VPN -> "ch.protonvpn.android"
                 InstalledProtonApp.Drive -> "me.proton.android.drive"
                 InstalledProtonApp.Calendar -> "me.proton.android.calendar"
+                InstalledProtonApp.Pass -> "proton.android.pass"
+                InstalledProtonApp.Wallet -> "me.proton.wallet.android"
             }
             if (installedApps.contains(app)) {
                 every { pm.getLaunchIntentForPackage(pkg) } returns mockk<Intent>()

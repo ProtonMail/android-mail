@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import java.time.Instant
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackVisibilityRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import me.proton.core.featureflag.domain.FeatureFlagManager
@@ -31,7 +29,6 @@ import javax.inject.Inject
 class RecordNPSFeedbackTriggered @Inject constructor(
     private val featureFlagManager: FeatureFlagManager,
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val repo: NPSFeedbackVisibilityRepository
 ) {
 
     suspend operator fun invoke() {
@@ -42,6 +39,5 @@ class RecordNPSFeedbackTriggered @Inject constructor(
             default = FeatureFlag.default(MailFeatureId.NPSFeedback.id.id, false)
         ).copy(value = false)
         featureFlagManager.update(featureFlag)
-        repo.updateLastSeen(Instant.now().toEpochMilli())
     }
 }

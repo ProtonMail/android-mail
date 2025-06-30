@@ -18,43 +18,26 @@
 
 package ch.protonmail.android.mailupselling.presentation.usecase
 
-import java.time.Duration
-import java.time.Instant
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackVisibilityRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ObserveNPSEligibility @Inject constructor(
     private val observePrimaryUser: ObservePrimaryUser,
-    private val visibilityRepo: NPSFeedbackVisibilityRepository,
     private val observeMailFeature: ObserveMailFeature
 ) {
     operator fun invoke(): Flow<Boolean> = observePrimaryUser()
         .distinctUntilChanged()
         .flatMapLatest { user ->
             if (user == null) return@flatMapLatest flowOf(false)
-            combine(
-                observeMailFeature(user.userId, MailFeatureId.NPSFeedback),
-                visibilityRepo.observe()
-            ) { npsFeatureFlag, prefEither ->
-
-                if (npsFeatureFlag.value.not()) return@combine false
-
-                prefEither.map { pref ->
-                    val now = Instant.now().toEpochMilli()
-                    val seenTimestamp = pref.seenTimestamp
-                    val seenInPeriod = seenTimestamp != null && now - seenTimestamp < THRESHOLD_180_DAYS
-                    !seenInPeriod
-                }.getOrNull() ?: false
+            observeMailFeature(user.userId, MailFeatureId.NPSFeedback).map { npsFeatureFlag ->
+                npsFeatureFlag.value
             }
         }
 }
-
-private val THRESHOLD_180_DAYS = Duration.ofDays(180).toMillis()

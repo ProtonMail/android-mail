@@ -21,15 +21,10 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 import java.time.Duration
 import java.time.Instant
 import app.cash.turbine.test
-import arrow.core.left
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.domain.model.NPSFeedbackLastSeenPreference
-import ch.protonmail.android.mailupselling.domain.repository.NPSFeedbackVisibilityRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -45,12 +40,10 @@ import kotlin.test.assertEquals
 internal class ObserveNPSEligibilityTest {
 
     private val observePrimaryUser = mockk<ObservePrimaryUser>()
-    private val visibilityRepo = mockk<NPSFeedbackVisibilityRepository>()
     private val observeMailFeature = mockk<ObserveMailFeature>()
 
     private val sut = ObserveNPSEligibility(
         observePrimaryUser,
-        visibilityRepo,
         observeMailFeature
     )
 
@@ -82,8 +75,6 @@ internal class ObserveNPSEligibilityTest {
     fun `should emit false when mail feature flag is disabled`() = runTest {
         every { observePrimaryUser() } returns flowOf(user)
         isFFEnabled(false)
-        // preference flow shouldn't matter—flag is off
-        every { visibilityRepo.observe() } returns flowOf(NPSFeedbackLastSeenPreference(null).right())
 
         sut().test {
             assertEquals(false, awaitItem())
@@ -92,54 +83,15 @@ internal class ObserveNPSEligibilityTest {
     }
 
     @Test
-    fun `should emit true when feature enabled and never seen before`() = runTest {
+    fun `should emit true when feature enabled`() = runTest {
         every { observePrimaryUser() } returns flowOf(user)
         isFFEnabled(true)
-        every { visibilityRepo.observe() } returns flowOf(NPSFeedbackLastSeenPreference(null).right())
 
         sut().test {
             assertEquals(true, awaitItem())
             awaitComplete()
         }
-    }
-
-    @Test
-    fun `should emit false when preferences load error`() = runTest {
-        every { observePrimaryUser() } returns flowOf(user)
-        isFFEnabled(true)
-        every { visibilityRepo.observe() } returns flowOf(PreferencesError.left())
-
-        sut().test {
-            assertEquals(false, awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `should emit false when seen recently (within 180 days)`() = runTest {
-        val recentTs = fixedNow.toEpochMilli() - (thresholdMs - 1)
-        every { observePrimaryUser() } returns flowOf(user)
-        isFFEnabled(true)
-        every { visibilityRepo.observe() } returns flowOf(NPSFeedbackLastSeenPreference(recentTs).right())
-
-        sut().test {
-            assertEquals(false, awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `should emit true when seen long ago (180 days or more)`() = runTest {
-        val oldTs = fixedNow.toEpochMilli() - (thresholdMs + 1)
-        every { observePrimaryUser() } returns flowOf(user)
-        isFFEnabled(true)
-        every { visibilityRepo.observe() } returns flowOf(NPSFeedbackLastSeenPreference(oldTs).right())
-
-        sut().test {
-            assertEquals(true, awaitItem())
-            awaitComplete()
-        }
-    }
+    0}
 
     private fun isFFEnabled(enabled: Boolean) {
         every { observeMailFeature(user.userId, MailFeatureId.NPSFeedback) } returns
