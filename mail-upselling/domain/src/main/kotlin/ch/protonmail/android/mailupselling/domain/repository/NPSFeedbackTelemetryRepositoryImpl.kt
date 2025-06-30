@@ -24,7 +24,6 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.NPSFeedbackEve
 import ch.protonmail.android.mailupselling.domain.model.telemetry.NPSFeedbackTelemetryEvent.Skipped
 import ch.protonmail.android.mailupselling.domain.model.telemetry.NPSFeedbackTelemetryEvent.SubmitButtonTapped
 import ch.protonmail.android.mailupselling.domain.model.telemetry.NPSFeedbackTelemetryEventType
-import ch.protonmail.android.mailupselling.domain.model.telemetry.data.SubscriptionName
 import ch.protonmail.android.mailupselling.domain.model.telemetry.data.toUpsellingTelemetryDimensionValue
 import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName
@@ -60,7 +59,7 @@ class NPSFeedbackTelemetryRepositoryImpl @Inject constructor(
     private suspend fun createBaseEvent(event: NPSFeedbackTelemetryEventType, user: User): TelemetryEvent {
 
         val accountAgeInDays = getAccountAgeInDays(user).toUpsellingTelemetryDimensionValue()
-        val subscriptionName : SubscriptionName? = getSubscriptionName(user.userId).getOrNull()
+        val subscriptionName = getSubscriptionName(user.userId).getOrNull()
 
         val dimensions = NPSFeedbackEventDimensions().apply {
             addPlanName(subscriptionName?.value)
