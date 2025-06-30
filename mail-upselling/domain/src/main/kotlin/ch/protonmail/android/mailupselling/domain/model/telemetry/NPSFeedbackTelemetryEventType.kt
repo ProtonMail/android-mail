@@ -16,17 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain
+package ch.protonmail.android.mailupselling.domain.model.telemetry
 
-import me.proton.core.featureflag.domain.entity.FeatureId
+sealed interface NPSFeedbackTelemetryEventType {
 
-/**
- * This class contains all the feature flags that are used by the Mail client.
- */
-enum class MailFeatureId(val id: FeatureId) {
-
-    // Remote flags
-    ConversationMode(FeatureId("ThreadingAndroid")),
-    RatingBooster(FeatureId("RatingAndroidMail")),
-    NPSFeedback(FeatureId("NPSFeedbackAndroidMail"))
+    data class SubmitTap(val ratingValue: Int, val comment: String?) : NPSFeedbackTelemetryEventType
+    data object Skipped : NPSFeedbackTelemetryEventType
 }

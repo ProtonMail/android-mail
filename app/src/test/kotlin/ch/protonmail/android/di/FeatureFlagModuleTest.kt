@@ -46,7 +46,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.RatingBooster to false
+                    MailFeatureId.RatingBooster to false,
+                    MailFeatureId.NPSFeedback to false
                 )
             ),
             TestInput(
@@ -54,7 +55,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.RatingBooster to false
+                    MailFeatureId.RatingBooster to false,
+                    MailFeatureId.NPSFeedback to false
                 )
             ),
             TestInput(
@@ -62,7 +64,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.RatingBooster to false
+                    MailFeatureId.RatingBooster to false,
+                    MailFeatureId.NPSFeedback to false
                 )
             )
         )

@@ -16,17 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain
+package ch.protonmail.android.mailupselling.domain.repository
 
-import me.proton.core.featureflag.domain.entity.FeatureId
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailupselling.domain.model.NPSFeedbackLastSeenPreference
+import kotlinx.coroutines.flow.Flow
 
-/**
- * This class contains all the feature flags that are used by the Mail client.
- */
-enum class MailFeatureId(val id: FeatureId) {
+interface NPSFeedbackVisibilityRepository {
 
-    // Remote flags
-    ConversationMode(FeatureId("ThreadingAndroid")),
-    RatingBooster(FeatureId("RatingAndroidMail")),
-    NPSFeedback(FeatureId("NPSFeedbackAndroidMail"))
+    fun observe(): Flow<Either<PreferencesError, NPSFeedbackLastSeenPreference>>
+
+    suspend fun updateLastSeen(value: Long): Either<PreferencesError, Unit>
 }

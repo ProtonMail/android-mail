@@ -36,7 +36,8 @@ object FeatureFlagModule {
         return MailFeatureDefaults(
             mapOf(
                 MailFeatureId.ConversationMode to true,
-                MailFeatureId.RatingBooster to false
+                MailFeatureId.RatingBooster to false,
+                MailFeatureId.NPSFeedback to false
             )
         )
     }
