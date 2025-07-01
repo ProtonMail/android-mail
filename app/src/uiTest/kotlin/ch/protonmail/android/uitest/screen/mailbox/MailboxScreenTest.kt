@@ -233,7 +233,8 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 bottomSheetState = null,
                 error = Effect.empty(),
                 showRatingBooster = Effect.empty(),
-                autoDeleteSettingState = AutoDeleteSettingState.Loading
+                autoDeleteSettingState = AutoDeleteSettingState.Loading,
+                showNPSFeedback = Effect.empty()
             )
         }
 
