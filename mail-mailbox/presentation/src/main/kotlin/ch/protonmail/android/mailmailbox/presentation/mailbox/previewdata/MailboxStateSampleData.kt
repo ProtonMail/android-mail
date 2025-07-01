@@ -56,7 +56,8 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading
+        autoDeleteSettingState = AutoDeleteSettingState.Loading,
+        showNPSFeedback = Effect.empty()
     )
 
     val Inbox = MailboxState(
@@ -94,7 +95,8 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading
+        autoDeleteSettingState = AutoDeleteSettingState.Loading,
+        showNPSFeedback = Effect.empty()
     )
 
     val AllMail = MailboxState(
@@ -132,7 +134,8 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading
+        autoDeleteSettingState = AutoDeleteSettingState.Loading,
+        showNPSFeedback = Effect.empty()
     )
 
     fun createSelectionMode(
@@ -175,6 +178,7 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = error,
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading
+        autoDeleteSettingState = AutoDeleteSettingState.Loading,
+        showNPSFeedback = Effect.empty()
     )
 }

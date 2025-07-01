@@ -112,6 +112,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSettin
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveNPSEligibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -121,6 +122,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -192,7 +194,8 @@ class MailboxViewModel @Inject constructor(
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
     private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
-    private val deleteSearchResults: DeleteSearchResults
+    private val deleteSearchResults: DeleteSearchResults,
+    private val observeNPSEligibility: ObserveNPSEligibility
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -237,6 +240,10 @@ class MailboxViewModel @Inject constructor(
             observeAutoDeleteSetting()
         ) { currentMailLabel, autoDeleteSetting ->
             handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting, isAutodeleteFeatureEnabled)
+        }.launchIn(viewModelScope)
+
+        observeNPSEligibility.invoke().filter { it }.onEach {
+            emitNewStateFrom(MailboxEvent.ShowNPSFeedback)
         }.launchIn(viewModelScope)
 
         combine(
@@ -1376,7 +1383,8 @@ class MailboxViewModel @Inject constructor(
             bottomSheetState = null,
             actionResult = Effect.empty(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            showNPSFeedback = Effect.empty()
         )
     }
 }

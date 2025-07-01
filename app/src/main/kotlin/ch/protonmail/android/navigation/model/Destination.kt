@@ -241,6 +241,8 @@ sealed class Destination(val route: String) {
         }
 
         object DriveSpotlight : Destination("spotlight/drive")
+
+        object NPSFeedback : Destination("nps/feedback")
     }
 
     object Dialog {

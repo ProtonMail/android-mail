@@ -72,6 +72,7 @@ class MailboxReducer @Inject constructor(
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation),
             showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
+            showNPSFeedback = currentState.toNewShowNPSFeedbackState(operation),
             autoDeleteSettingState = currentState.toNewAutoDeleteSettingState(operation)
         )
 
@@ -234,6 +235,14 @@ class MailboxReducer @Inject constructor(
             Effect.of(Unit)
         } else {
             showRatingBooster
+        }
+    }
+
+    private fun MailboxState.toNewShowNPSFeedbackState(operation: MailboxOperation): Effect<Unit> {
+        return if (operation is MailboxOperation.AffectingNPSFeedback) {
+            Effect.of(Unit)
+        } else {
+            showNPSFeedback
         }
     }
 

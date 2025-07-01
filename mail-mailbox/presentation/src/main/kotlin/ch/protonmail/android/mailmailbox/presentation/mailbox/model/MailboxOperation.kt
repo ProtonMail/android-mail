@@ -59,6 +59,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingUpgradeStorage
     sealed interface AffectingRatingBooster
+    sealed interface AffectingNPSFeedback
     sealed interface AffectingAutoDelete
 }
 
@@ -265,6 +266,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorMoving : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     data object ShowRatingBooster : MailboxEvent, AffectingRatingBooster
+    data object ShowNPSFeedback : MailboxEvent, MailboxOperation.AffectingNPSFeedback
 
     sealed class SwipeActionMoveCompleted(
         val viewMode: ViewMode,

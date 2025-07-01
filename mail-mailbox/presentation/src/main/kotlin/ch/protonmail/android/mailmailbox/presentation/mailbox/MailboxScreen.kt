@@ -389,6 +389,10 @@ fun MailboxScreen(
         actions.onShowRatingBooster()
     }
 
+    ConsumableLaunchedEffect(mailboxState.showNPSFeedback) {
+        actions.navigateToNPSFeedback()
+    }
+
     DeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
     DeleteDialog(state = mailboxState.deleteAllDialogState, actions.deleteAllConfirmed, actions.deleteAllDismissed)
 
@@ -1100,6 +1104,7 @@ object MailboxScreen {
     data class Actions(
         val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
         val navigateToComposer: () -> Unit,
+        val navigateToNPSFeedback: () -> Unit,
         val onDisableUnreadFilter: () -> Unit,
         val onEnableUnreadFilter: () -> Unit,
         val onExitSelectionMode: () -> Unit,
@@ -1161,6 +1166,7 @@ object MailboxScreen {
             val Empty = Actions(
                 navigateToMailboxItem = {},
                 navigateToComposer = {},
+                navigateToNPSFeedback = {},
                 onDisableUnreadFilter = {},
                 onEnableUnreadFilter = {},
                 onExitSelectionMode = {},

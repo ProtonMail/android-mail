@@ -119,6 +119,9 @@ internal fun NavGraphBuilder.addMailbox(
                 onRequestNotificationPermission = onRequestNotificationPermission,
                 navigateToCustomizeToolbar = {
                     navController.navigate(Screen.CustomizeToolbar.route)
+                },
+                navigateToNPSFeedback = {
+                    navController.navigate(Screen.NPSFeedback.route)
                 }
             ),
             drawerState = drawerState

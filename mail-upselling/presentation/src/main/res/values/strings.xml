@@ -96,6 +96,16 @@
     <string name="upselling_onboarding_unlimited_feature_drive">Encrypted cloud storage for photos and documents</string>
     <string name="upselling_onboarding_unlimited_feature_sentinel">Advanced account protection</string>
 
+    <!-- NPS feedback-->
+    <string name="nps_feedback_title">Feedback</string>
+    <string name="nps_feedback_headline">How likely are you to recommend Proton Mail to a friend or colleague?</string>
+    <string name="nps_cta">Share anonymously</string>
+    <string name="nps_label_left">0 is very unlikely</string>
+    <string name="nps_label_right">10 is very likely</string>
+    <string name="nps_optional">Optional</string>
+    <string name="nps_why_description">Please let us know why you gave that rating</string>
+    <string name="nps_success">Thanks for your feedback! It helps us make Proton Mail even better ❤️</string>
+
     <!-- Comparison Table -->
     <string name="upselling_free_plan" translatable="false">Free</string>
     <string name="upselling_plus_plan" translatable="false">Plus</string>

@@ -179,6 +179,8 @@ internal class MailboxReducerTest(
         }
 
         assertEquals(testInput.deleteAllDialogState, nextState.deleteAllDialogState)
+
+        assertEquals(testInput.showNPSState, nextState.showNPSFeedback)
     }
 
     companion object {
@@ -215,7 +217,8 @@ internal class MailboxReducerTest(
             storageLimitState = StorageLimitState.None,
             error = Effect.empty(),
             showRatingBooster = Effect.empty(),
-            autoDeleteSettingState = AutoDeleteSettingState.Loading
+            autoDeleteSettingState = AutoDeleteSettingState.Loading,
+            showNPSFeedback = Effect.empty()
         )
 
         private val actions = listOf(
@@ -825,6 +828,18 @@ internal class MailboxReducerTest(
                 showRatingBoosterState = Effect.of(Unit)
             ),
             TestInput(
+                MailboxEvent.ShowNPSFeedback,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                showNPSState = Effect.of(Unit)
+            ),
+            TestInput(
                 MailboxViewAction.DismissAutoDelete,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
@@ -908,6 +923,7 @@ internal class MailboxReducerTest(
         val shouldReduceStorageLimitState: Boolean,
         val errorBarState: Effect<TextUiModel> = Effect.empty(),
         val showRatingBoosterState: Effect<Unit> = Effect.empty(),
+        val showNPSState: Effect<Unit> = Effect.empty(),
         val autoDeleteSettingState: AutoDeleteSettingState = AutoDeleteSettingState.Loading,
         val notificationPermissionDialogState: NotificationPermissionDialogState =
             NotificationPermissionDialogState.Hidden

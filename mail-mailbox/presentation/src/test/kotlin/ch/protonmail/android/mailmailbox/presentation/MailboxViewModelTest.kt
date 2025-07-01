@@ -133,6 +133,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSettin
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveNPSEligibility
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -294,6 +295,9 @@ class MailboxViewModelTest {
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
+    private val observeNPSEligibility = mockk<ObserveNPSEligibility> {
+        every { this@mockk.invoke() } returns flowOf(false)
+    }
 
     private val getMailboxBottomSheetActions = mockk<GetMailboxBottomSheetActions> {
         every { this@mockk.invoke(SystemLabelId.Spam.labelId) } returns listOf(
@@ -369,7 +373,8 @@ class MailboxViewModelTest {
             updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
             isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
             getMailboxBottomSheetActions = getMailboxBottomSheetActions,
-            deleteSearchResults = deleteSearchResults
+            deleteSearchResults = deleteSearchResults,
+            observeNPSEligibility = observeNPSEligibility
         )
     }
 
@@ -412,7 +417,8 @@ class MailboxViewModelTest {
                 actionResult = Effect.empty(),
                 error = Effect.empty(),
                 showRatingBooster = Effect.empty(),
-                autoDeleteSettingState = AutoDeleteSettingState.Loading
+                autoDeleteSettingState = AutoDeleteSettingState.Loading,
+                showNPSFeedback = Effect.empty()
             )
 
             assertEquals(expected, actual)
@@ -5168,6 +5174,22 @@ class MailboxViewModelTest {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.ShowRatingBooster)
             }
             coVerify { recordRatingBoosterTriggered(userId) }
+        }
+    }
+
+    @Test
+    fun `should create new state for showing the NPS when it should be shown`() = runTest {
+        // Given
+        every { observeNPSEligibility() } returns flowOf(true)
+
+        // When
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowNPSFeedback)
+            }
         }
     }
 
