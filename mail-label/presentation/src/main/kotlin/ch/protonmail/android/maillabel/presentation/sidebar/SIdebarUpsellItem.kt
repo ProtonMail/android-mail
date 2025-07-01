@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.compose.dropUnlessResumedDebounced
 import ch.protonmail.android.maillabel.presentation.R
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -43,7 +44,7 @@ fun SidebarUpsellItem(
                 modifier = modifier,
                 icon = painterResource(id = R.drawable.ic_upselling_mail_plus),
                 text = stringResource(R.string.upselling_mailbox_plus_title),
-                onClick = onClick
+                onClick = dropUnlessResumedDebounced(onClick)
             )
             HorizontalDivider(color = ProtonTheme.colors.separatorNorm)
         }

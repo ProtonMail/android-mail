@@ -45,6 +45,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.dropUnlessResumed
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.presentation.R
@@ -91,7 +92,7 @@ private fun UpsellingMailButton(onButtonClick: () -> Unit, modifier: Modifier = 
     Surface(
         modifier = modifier.semantics { contentDescription = accessibilityDescription },
         color = Color.Transparent,
-        onClick = onButtonClick,
+        onClick = dropUnlessResumed { onButtonClick() },
         border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
         shape = ProtonTheme.shapes.large
     ) {
@@ -128,7 +129,7 @@ private fun UpsellingPromotionalMailButton(onButtonClick: () -> Unit, modifier: 
         Surface(
             modifier = modifier.semantics { contentDescription = accessibilityDescription },
             color = bgColor,
-            onClick = onButtonClick,
+            onClick = dropUnlessResumed { onButtonClick() },
             border = null,
             shape = ProtonTheme.shapes.large
         ) {
@@ -177,7 +178,7 @@ private fun DriveSpotlightButton(onButtonClick: () -> Unit, modifier: Modifier =
         Surface(
             modifier = modifier.semantics { contentDescription = accessibilityDescription },
             color = Color.Transparent,
-            onClick = onButtonClick,
+            onClick = dropUnlessResumed { onButtonClick() },
             border = null,
             shape = ProtonTheme.shapes.large
         ) {
