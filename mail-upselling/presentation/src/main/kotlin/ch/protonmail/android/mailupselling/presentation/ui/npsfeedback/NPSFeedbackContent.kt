@@ -34,8 +34,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -82,12 +80,10 @@ internal fun NPSFeedbackContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val inputFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.selection) {
         if (state.selection != null) {
-            bringIntoViewRequester.bringIntoView()
             inputFocusRequester.requestFocus()
         }
     }
@@ -185,7 +181,6 @@ internal fun NPSFeedbackContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = ProtonDimens.LargeSpacing)
-                    .bringIntoViewRequester(bringIntoViewRequester)
                     .focusRequester(inputFocusRequester)
             ) {
                 Column {
