@@ -146,16 +146,23 @@ internal fun NPSFeedbackContent(
             Text(
                 text = stringResource(R.string.nps_feedback_headline),
                 style = ProtonTheme.typography.hero.copy(fontSize = 24.sp),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = ProtonDimens.DefaultSpacing),
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(ProtonDimens.LargeSpacing))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
             ) {
-                Text(text = stringResource(R.string.nps_label_left))
-                Text(text = stringResource(R.string.nps_label_right))
+                Text(
+                    text = stringResource(R.string.nps_label_left), textAlign = TextAlign.Start,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = stringResource(R.string.nps_label_right), textAlign = TextAlign.End,
+                    modifier = Modifier.weight(1f)
+                )
             }
             val isNarrowScreen = LocalConfiguration.current.screenWidthDp <= MailDimens.NarrowScreenWidth.value
             FlowRow(
