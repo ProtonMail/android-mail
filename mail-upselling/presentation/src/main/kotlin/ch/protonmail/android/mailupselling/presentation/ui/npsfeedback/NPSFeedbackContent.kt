@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -55,6 +56,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -200,6 +202,9 @@ internal fun NPSFeedbackContent(
                         value = state.feedbackText,
                         onValueChange = { onEvent(NPSFeedbackViewEvent.FeedbackChanged(it)) },
                         modifier = Modifier.fillMaxWidth().heightIn(min = 120.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            capitalization = KeyboardCapitalization.Sentences
+                        ),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = ProtonTheme.colors.interactionNorm,
                             unfocusedBorderColor = ProtonTheme.colors.interactionWeakNorm,
