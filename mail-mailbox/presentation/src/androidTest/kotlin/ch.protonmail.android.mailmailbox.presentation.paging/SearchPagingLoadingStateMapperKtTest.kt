@@ -87,7 +87,7 @@ class SearchPagingLoadingStateMapperKtTest {
         // proton errors
         TestItem(
             lazyPagingItems = createPagingItemsInError(appendError = true, error = {
-                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+                DataError.Remote.Proton(ProtonError.InputInvalid, apiMessage = null)
             }),
             searchMode = MailboxSearchMode.NewSearchLoading,
             currentScreenState = MailboxScreenState.SearchLoading,
@@ -226,7 +226,7 @@ class SearchPagingLoadingStateMapperKtTest {
         ),
         TestItem(
             lazyPagingItems = createPagingItemsInError(appendError = true, error = {
-                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+                DataError.Remote.Proton(ProtonError.InputInvalid, apiMessage = null)
             }),
             searchMode = MailboxSearchMode.SearchData,
             currentScreenState = MailboxScreenState.SearchData(mockk()),
@@ -267,7 +267,7 @@ class SearchPagingLoadingStateMapperKtTest {
         ),
         TestItem(
             lazyPagingItems = createPagingItemsInError(appendError = true, error = {
-                DataError.Remote.Proton(ProtonError.SearchInputInvalid)
+                DataError.Remote.Proton(ProtonError.InputInvalid, apiMessage = null)
             }),
             searchMode = MailboxSearchMode.SearchData,
             currentScreenState = MailboxScreenState.SearchLoadingWithData,

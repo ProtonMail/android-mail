@@ -150,7 +150,7 @@ class UploadAttachmentsWorkerTest {
 
         // Then
         coVerify { uploadAttachments(userId, messageId) }
-        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments) }
+        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, null) }
         assertEquals(ListenableWorker.Result.failure(), actual)
     }
 

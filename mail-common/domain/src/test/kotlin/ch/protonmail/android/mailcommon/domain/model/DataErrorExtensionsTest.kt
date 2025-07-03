@@ -91,7 +91,7 @@ internal class DataErrorExtensionsTest {
     @Test
     fun `is search input invalid error when type is Remote proton of type SearchInputInvalid`() {
         // given
-        val dataError = DataError.Remote.Proton(ProtonError.SearchInputInvalid, null)
+        val dataError = DataError.Remote.Proton(ProtonError.InputInvalid, null)
         // then
         assertTrue(dataError.isSearchInputInvalidError())
     }

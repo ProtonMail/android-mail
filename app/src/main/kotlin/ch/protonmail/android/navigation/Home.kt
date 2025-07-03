@@ -219,6 +219,7 @@ fun Home(
     val errorSendingMessageActionText = stringResource(id = R.string.mailbox_message_sending_error_action)
     fun showErrorSendingMessageSnackbar(error: SendingError?) = scope.launch {
         val message = when (error) {
+            is SendingError.GenericLocalized -> error.apiMessage
             is SendingError.ExternalAddressSendDisabled -> error.apiMessage ?: errorSendingMessageText
             is SendingError.SendPreferences -> {
                 val addressDisabled = error.errors.values.any {

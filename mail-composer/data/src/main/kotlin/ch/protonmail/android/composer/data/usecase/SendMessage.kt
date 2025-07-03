@@ -26,6 +26,7 @@ import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.asExternalAddressSendDisabledError
+import ch.protonmail.android.mailcommon.domain.model.asLocalizedApiError
 import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentSendingError
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
@@ -187,7 +188,7 @@ class SendMessage @Inject constructor(
 
         object DownloadingAttachments : Error
 
-        fun toSendingError(): SendingError {
+        fun toSendingError(isApiSendingErrorsEnabled: Boolean): SendingError {
             return when (this) {
                 is SendPreferences -> {
                     SendingError.SendPreferences(
@@ -214,6 +215,11 @@ class SendMessage @Inject constructor(
                 }
 
                 is SendingToApi -> {
+                    val localizedApiErrorMsg = if (isApiSendingErrorsEnabled) {
+                        remoteDataError.asLocalizedApiError()?.apiMessage
+                    } else {
+                        null
+                    }
                     val externalAddressDisabledError = remoteDataError.asExternalAddressSendDisabledError()
                     when {
                         externalAddressDisabledError != null -> {
@@ -222,6 +228,10 @@ class SendMessage @Inject constructor(
 
                         this.remoteDataError.isMessageAlreadySentSendingError() -> {
                             SendingError.MessageAlreadySent
+                        }
+
+                        localizedApiErrorMsg != null -> {
+                            SendingError.GenericLocalized(localizedApiErrorMsg)
                         }
 
                         else -> {

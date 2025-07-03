@@ -69,7 +69,8 @@ class SendMessageWorkerTest {
         parameters,
         sendMessageMock,
         draftStateRepositoryMock,
-        updateDraftStateForErrorMock
+        updateDraftStateForErrorMock,
+        isApiSendingErrorsEnabled = true
     )
 
     @Test

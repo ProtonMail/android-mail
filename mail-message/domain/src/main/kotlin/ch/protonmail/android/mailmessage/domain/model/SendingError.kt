@@ -31,6 +31,9 @@ sealed interface SendingError {
     data class ExternalAddressSendDisabled(val apiMessage: String?) : SendingError
 
     @Serializable
+    data class GenericLocalized(val apiMessage: String) : SendingError
+
+    @Serializable
     object MessageAlreadySent : SendingError
 
     @Serializable

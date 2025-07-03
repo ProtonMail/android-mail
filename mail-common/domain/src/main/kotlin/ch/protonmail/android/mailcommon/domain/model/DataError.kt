@@ -87,7 +87,7 @@ sealed interface DataError {
 fun DataError.isOfflineError() = this is DataError.Remote.Http && this.networkError is NetworkError.NoNetwork
 
 fun DataError.isSearchInputInvalidError() = this is DataError.Remote.Proton &&
-    this.protonError is ProtonError.SearchInputInvalid
+    this.protonError is ProtonError.InputInvalid
 
 fun DataError.isMessageAlreadySentDraftError() = this is DataError.Remote.Proton &&
     this.protonError is ProtonError.MessageUpdateDraftNotDraft
@@ -100,4 +100,25 @@ fun DataError.isMessageAlreadySentSendingError() = this is DataError.Remote.Prot
 
 fun DataError.asExternalAddressSendDisabledError() = (this as? DataError.Remote.Proton)?.takeIf {
     it.protonError is ProtonError.ExternalAddressSendDisabled
+}
+
+fun DataError.asLocalizedApiError() = (this as? DataError.Remote.Proton)?.takeIf {
+    if (apiMessage.isNullOrBlank()) return@takeIf false
+    when (it.protonError) {
+        ProtonError.Banned,
+        ProtonError.ExternalAddressSendDisabled,
+        ProtonError.PermissionDenied,
+        ProtonError.InputInvalid,
+        ProtonError.UploadFailure,
+        ProtonError.MessageAlreadySent,
+        ProtonError.AddressDoesNotExist -> true
+        ProtonError.AttachmentUploadMessageAlreadySent,
+        ProtonError.Base64Format,
+        ProtonError.InsufficientScope,
+        ProtonError.MessageSearchQuerySyntax,
+        ProtonError.MessageUpdateDraftNotDraft,
+        ProtonError.MessageValidateKeyNotAssociated,
+        ProtonError.PayloadTooLarge,
+        ProtonError.Unknown -> false
+    }
 }

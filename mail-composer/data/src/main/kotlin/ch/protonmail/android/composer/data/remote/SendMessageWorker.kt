@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import ch.protonmail.android.composer.data.annotations.ApiSendingErrorsEnabled
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
@@ -39,7 +40,8 @@ internal class SendMessageWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
     private val sendMessage: SendMessage,
     private val draftStateRepository: DraftStateRepository,
-    private val updateDraftStateForError: UpdateDraftStateForError
+    private val updateDraftStateForError: UpdateDraftStateForError,
+    @ApiSendingErrorsEnabled private val isApiSendingErrorsEnabled: Boolean
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -52,7 +54,10 @@ internal class SendMessageWorker @AssistedInject constructor(
                     .tag("SendMessageWorker")
                     .e("API error sending message - error: %s - messageId: %s", it, messageId)
 
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorSending, it.toSendingError())
+                updateDraftStateForError(
+                    userId, messageId, DraftSyncState.ErrorSending,
+                    sendingError = it.toSendingError(isApiSendingErrorsEnabled)
+                )
                 Result.failure()
             },
             ifRight = {

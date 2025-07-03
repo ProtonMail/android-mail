@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.dagger
 
+import ch.protonmail.android.composer.data.annotations.ApiSendingErrorsEnabled
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.ContactsPermissionLocalDataSource
@@ -43,6 +44,7 @@ import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessageExpirationTimeRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessagePasswordRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessageRepositoryImpl
+import ch.protonmail.android.composer.data.usecase.featureflags.IsApiSendingErrorsEnabled
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.annotation.IsComposerV2Enabled
 import ch.protonmail.android.mailcomposer.domain.annotation.IsExternalAddressSendingEnabled
@@ -150,6 +152,11 @@ abstract class MailComposerModule {
         @Singleton
         @IsExternalAddressSendingEnabled
         fun provideExternalAddressFeatureFlag(isEnabled: IsExternalAddressEnabled) = isEnabled()
+
+        @Provides
+        @Singleton
+        @ApiSendingErrorsEnabled
+        fun provideIsApiSendingErrorsEnabled(isEnabled: IsApiSendingErrorsEnabled) = isEnabled()
     }
 
     @Binds
