@@ -51,7 +51,7 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
             }
             else -> {
                 val networkError = NetworkError.fromHttpCode(httpCode)
-                Timber.i("Http network error: $networkError")
+                Timber.i("Http network error: $networkError for http code $httpCode")
                 DataError.Remote.Http(
                     networkError,
                     this.extractApiErrorInfo(),

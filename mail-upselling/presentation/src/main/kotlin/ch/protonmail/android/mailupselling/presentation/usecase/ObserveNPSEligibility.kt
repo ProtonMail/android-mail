@@ -40,4 +40,5 @@ class ObserveNPSEligibility @Inject constructor(
                 npsFeatureFlag.value
             }
         }
+        .distinctUntilChanged()
 }

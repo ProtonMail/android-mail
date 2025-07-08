@@ -109,7 +109,11 @@ fun DataError.asLocalizedApiError() = (this as? DataError.Remote.Proton)?.takeIf
         ProtonError.ExternalAddressSendDisabled,
         ProtonError.PermissionDenied,
         ProtonError.InputInvalid,
+        ProtonError.AttachmentTooLarge,
+        ProtonError.SendingLimitReached,
         ProtonError.UploadFailure,
+        ProtonError.NumOfRecipientsTooLarge,
+        ProtonError.PaidSubscriptionRequired,
         ProtonError.AddressDoesNotExist -> true
         ProtonError.AttachmentUploadMessageAlreadySent,
         ProtonError.MessageAlreadySent,

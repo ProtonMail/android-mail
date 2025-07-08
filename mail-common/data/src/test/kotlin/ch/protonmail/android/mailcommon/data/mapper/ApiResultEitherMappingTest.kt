@@ -144,4 +144,33 @@ class ApiResultEitherMappingTest {
             assertEquals(expected.left(), result)
         }
     }
+
+    @Test
+    fun `returns proton error for selected http 422 http errors`() {
+        // given
+        val codesAndMessages = listOf(
+            2011 to ("sending limit reached" to ProtonError.SendingLimitReached),
+            2022 to ("num of recipients too large" to ProtonError.NumOfRecipientsTooLarge),
+            2024 to ("file is too large" to ProtonError.AttachmentTooLarge),
+            2511 to ("paid sub is needed" to ProtonError.PaidSubscriptionRequired)
+        )
+
+        mockkStatic(NetworkError.Companion::fromHttpCode) {
+            codesAndMessages.forEach { (code, msgAndType) ->
+                every { NetworkError.fromHttpCode(any()) } returns NetworkError.UnprocessableEntity
+                val (message, type) = msgAndType
+                val protonData = ApiResult.Error.ProtonData(
+                    code, message
+                )
+                val apiResult = ApiResult.Error.Http(422, "none", protonData)
+
+                // when
+                val result = apiResult.toEither()
+
+                // then
+                val expected = DataError.Remote.Proton(type, message)
+                assertEquals(expected.left(), result)
+            }
+        }
+    }
 }

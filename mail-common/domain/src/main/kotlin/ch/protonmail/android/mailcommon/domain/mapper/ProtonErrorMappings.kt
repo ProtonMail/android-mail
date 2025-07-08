@@ -35,10 +35,17 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError.InputInvalid
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Unknown
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.UploadFailure
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.ExternalAddressSendDisabled
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.AttachmentTooLarge
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.NumOfRecipientsTooLarge
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.PaidSubscriptionRequired
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.SendingLimitReached
 
 @Suppress("MagicNumber")
 fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
     2001 -> InputInvalid
+    2011 -> SendingLimitReached
+    2022 -> NumOfRecipientsTooLarge
+    2024 -> AttachmentTooLarge
     2026 -> PermissionDenied
     2027 -> InsufficientScope
     2028 -> Banned
@@ -47,6 +54,7 @@ fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
     2063 -> Base64Format
     2032 -> ExternalAddressSendDisabled
     2500 -> MessageAlreadySent
+    2511 -> PaidSubscriptionRequired
     33_102 -> AddressDoesNotExist
     11_109 -> AttachmentUploadMessageAlreadySent
     15_034 -> MessageUpdateDraftNotDraft

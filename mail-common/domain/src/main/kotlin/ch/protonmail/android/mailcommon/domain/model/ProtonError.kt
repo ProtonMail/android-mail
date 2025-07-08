@@ -30,6 +30,12 @@ sealed interface ProtonError {
 
     object InputInvalid : ProtonError
 
+    object AttachmentTooLarge : ProtonError
+
+    object NumOfRecipientsTooLarge : ProtonError
+
+    object SendingLimitReached : ProtonError
+
     object AddressDoesNotExist : ProtonError
 
     object InsufficientScope : ProtonError
@@ -39,6 +45,8 @@ sealed interface ProtonError {
     object UploadFailure : ProtonError
 
     object PayloadTooLarge : ProtonError
+
+    object PaidSubscriptionRequired : ProtonError
 
     object MessageUpdateDraftNotDraft : ProtonError
 
