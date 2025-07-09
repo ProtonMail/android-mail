@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Зашыфраванае воблачнае сховішча для фатаграфій і дакументаў</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Пашыраная абарона ўліковага запісу</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Зваротная сувязь</string>
+  <string name="nps_feedback_headline">З якой верагоднасцю вы парэкамендуеце Proton Mail сябрам або калегам?</string>
+  <string name="nps_cta">Абагуліць ананімна</string>
+  <string name="nps_label_left">0 - гэта вельмі малаверагодна</string>
+  <string name="nps_label_right">10 - гэта вельмі верагодна</string>
+  <string name="nps_optional">Неабавязкова</string>
+  <string name="nps_why_description">Растлумачце, чаму вы так нас ацанілі</string>
+  <string name="nps_success">Дзякуй за ваш водгук! Гэта дапамагае нам зрабіць Proton Mail яшчэ лепшым ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Сховішча</string>
   <string name="upselling_comparison_table_email_addresses">Адрасы электроннай пошты</string>

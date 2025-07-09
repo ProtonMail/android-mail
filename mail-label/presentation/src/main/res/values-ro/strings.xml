@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Toate mesajele</string>
   <string name="label_title_all_drafts">Toate ciornele</string>
   <string name="label_title_all_sent">Toate trimise</string>
-  <string name="label_title_all_scheduled">Toate programate</string>
+  <string name="label_title_all_scheduled">Toate programările</string>
   <string name="label_title_snoozed">Amânat</string>
   <string name="label_title_folders">Foldere</string>
   <string name="label_title_parent_folder">Folder părinte</string>
@@ -50,7 +50,11 @@
   <string name="label_name_title">Nume</string>
   <string name="add_a_label_name_hint">Adăugați un nume etichetei.</string>
   <string name="add_a_folder_name_hint">Adăugați un nume folderului.</string>
-  <string name="input_field_max_characters_count">%1d/%2d caractere</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d/%2d caracter</item>
+    <item quantity="few">%1d/%2d caractere</item>
+    <item quantity="other">%1d/%2d de caractere</item>
+  </plurals>
   <string name="color_picker_title">Culoare</string>
   <string name="save_label_error">Eroare la salvarea etichetei. Reîncercați mai târziu.</string>
   <string name="save_folder_error">Eroare la salvarea folderului. Reîncercați mai târziu.</string>

@@ -42,10 +42,10 @@
   <string name="upselling_auto_delete_plus_description_override">Mail Plusで、より整理されたメールボックスと他のプレミアム機能をお楽しみください。</string>
   <string name="upselling_auto_delete_plus_title">古いゴミやスパムを削除</string>
   <!-- Drive Spotlight-->
-  <string name="drive_spotlight_title">New! Albums in Proton</string>
-  <string name="drive_spotlight_description">Organize photos in albums and securely share them with friends and family. Included free with your plan.</string>
-  <string name="drive_spotlight_description_with_gb">Organize photos in albums and securely share them with friends and family. You still have %d GB of secure cloud storage available.</string>
-  <string name="drive_spotlight_cta">Open Albums in Proton Drive</string>
+  <string name="drive_spotlight_title">新登場！Protonのアルバム</string>
+  <string name="drive_spotlight_description">アルバムで写真を整理し、友人や家族と安全に共有できます。お客様のプランに無料で含まれています。</string>
+  <string name="drive_spotlight_description_with_gb">アルバムで写真を整理し、友人や家族と安全に共有できます。残り%d GBの安全なクラウドストレージが利用可能です。</string>
+  <string name="drive_spotlight_cta">Proton Drive のアルバムを開く</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB のストレージ</string>
   <string name="upselling_plus_feature_storage_plus_mails">ストレージ容量15 GB、メールアドレス 10 個</string>
@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">暗号化されたパスワードマネージャー</string>
   <string name="upselling_onboarding_unlimited_feature_drive">写真や文書のための暗号化クラウドストレージ</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">高度なアカウント保護</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">フィードバック</string>
+  <string name="nps_feedback_headline">Proton Mailを友人や同僚におすすめする可能性はどれくらいですか?</string>
+  <string name="nps_cta">匿名で共有</string>
+  <string name="nps_label_left">0はとても可能性が低い</string>
+  <string name="nps_label_right">10はとても可能性が高い</string>
+  <string name="nps_optional">任意</string>
+  <string name="nps_why_description">評価の理由を教えてください</string>
+  <string name="nps_success">フィードバックをありがとうございます! これはProton Mailをさらによくするのに役立ちます❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">容量</string>
   <string name="upselling_comparison_table_email_addresses">メールアドレス</string>

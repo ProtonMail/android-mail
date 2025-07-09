@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Všechna pošta</string>
   <string name="label_title_all_drafts">Všechny koncepty</string>
   <string name="label_title_all_sent">Všechny odeslané</string>
-  <string name="label_title_all_scheduled">Vše naplánováno</string>
+  <string name="label_title_all_scheduled">Všechno naplánované</string>
   <string name="label_title_snoozed">Odloženo</string>
   <string name="label_title_folders">Složky</string>
   <string name="label_title_parent_folder">Nadřazená složka</string>
@@ -50,7 +50,12 @@
   <string name="label_name_title">Název</string>
   <string name="add_a_label_name_hint">Přidejte název štítku</string>
   <string name="add_a_folder_name_hint">Přidat název složky</string>
-  <string name="input_field_max_characters_count">%1d / %2d znaků</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d znaku</item>
+    <item quantity="few">%1d / %2d znaků</item>
+    <item quantity="many">%1d / %2d znaků</item>
+    <item quantity="other">%1d / %2d znaků</item>
+  </plurals>
   <string name="color_picker_title">Barva</string>
   <string name="save_label_error">Chyba při ukládání štítku, zkuste to prosím později</string>
   <string name="save_folder_error">Chyba při ukládání složky, zkuste to prosím později</string>

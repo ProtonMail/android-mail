@@ -44,7 +44,7 @@
   <!-- Drive Spotlight-->
   <string name="drive_spotlight_title">¡Nuevo! Álbumes en Proton Drive</string>
   <string name="drive_spotlight_description">Organice fotos en álbumes y compártalas de forma segura con amigos y familiares. Incluido gratis con su plan.</string>
-  <string name="drive_spotlight_description_with_gb">Organice fotos en álbumes y compártalas de forma segura con amigos y familiares. Usted aún tiene %d GB de almacenamiento seguro en la nube disponibles.</string>
+  <string name="drive_spotlight_description_with_gb">Organice fotos en álbumes y compártalas de forma segura con amigos y familiares. Aún tiene %d GB de almacenamiento seguro en la nube disponibles.</string>
   <string name="drive_spotlight_cta">Abrir álbumes en Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>
@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Almacenamiento en la nube cifrado de fotos y documentos</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protección de cuentas avanzada</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Comentarios</string>
+  <string name="nps_feedback_headline">¿Qué tan probable es que recomiende Proton Mail a un amigo o a un compañero de trabajo?</string>
+  <string name="nps_cta">Compartir de forma anónima</string>
+  <string name="nps_label_left">0: Poco probable</string>
+  <string name="nps_label_right">10: Muy probable</string>
+  <string name="nps_optional">Opcional</string>
+  <string name="nps_why_description">Cuéntenos por qué ha dado esa calificación.</string>
+  <string name="nps_success">¡Gracias por sus comentarios! Nos ayuda a que Proton Mail sea aún mejor ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Almacenamiento</string>
   <string name="upselling_comparison_table_email_addresses">Direcciones de correo electrónico</string>

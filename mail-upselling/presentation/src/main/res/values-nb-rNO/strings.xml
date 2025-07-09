@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Kryptert passordbehandler</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Kryptert skylagring for bilder og dokumenter</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Avansert kontobeskyttelse</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Tilbakemelding</string>
+  <string name="nps_feedback_headline">Hvor sannsynlig er det at du vil anbefale Proton Mail til en venn eller kollega?</string>
+  <string name="nps_cta">Del anonymt</string>
+  <string name="nps_label_left">0 er svært usannsynlig</string>
+  <string name="nps_label_right">10 er svært sannsynlig</string>
+  <string name="nps_optional">Valgfritt</string>
+  <string name="nps_why_description">Fortell oss hvorfor du ga den vurderingen</string>
+  <string name="nps_success">Takk for din tilbakemelding! Det hjelper oss å gjøre Proton Mail enda bedre ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Lagring</string>
   <string name="upselling_comparison_table_email_addresses">E-postadresser</string>

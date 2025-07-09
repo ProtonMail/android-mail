@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Wszystkie wiadomości</string>
   <string name="label_title_all_drafts">Wszystkie szkice</string>
   <string name="label_title_all_sent">Wszystkie wysłane</string>
-  <string name="label_title_all_scheduled">Zaplanowane</string>
+  <string name="label_title_all_scheduled">Wszystkie zaplanowane</string>
   <string name="label_title_snoozed">Odłożone</string>
   <string name="label_title_folders">Foldery</string>
   <string name="label_title_parent_folder">Folder nadrzędny</string>
@@ -50,7 +50,12 @@
   <string name="label_name_title">Nazwa</string>
   <string name="add_a_label_name_hint">Dodaj nazwę etykiety</string>
   <string name="add_a_folder_name_hint">Dodaj nazwę folderu</string>
-  <string name="input_field_max_characters_count">Znaki: %1d / %2d</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d znak</item>
+    <item quantity="few">%1d / %2d znaki</item>
+    <item quantity="many">%1d / %2d znaków</item>
+    <item quantity="other">%1d / %2d znaków</item>
+  </plurals>
   <string name="color_picker_title">Kolor</string>
   <string name="save_label_error">Wystąpił błąd podczas zapisywania etykiety. Spróbuj ponownie później</string>
   <string name="save_folder_error">Wystąpił błąd podczas zapisywania folderu. Spróbuj ponownie później</string>

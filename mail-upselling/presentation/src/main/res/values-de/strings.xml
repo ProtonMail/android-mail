@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Verschlüsselter Cloud-Speicher für Fotos und Dokumente</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Erweiterter Kontoschutz</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Feedback</string>
+  <string name="nps_feedback_headline">Wie wahrscheinlich ist es, dass du Proton Mail einen Freund oder Kollegen empfiehlst?</string>
+  <string name="nps_cta">Anonym teilen</string>
+  <string name="nps_label_left">0 (sehr unwahrscheinlich)</string>
+  <string name="nps_label_right">10 (sehr wahrscheinlich)</string>
+  <string name="nps_optional">Optional</string>
+  <string name="nps_why_description">Lasse uns bitte wissen, warum du diese Bewertung abgegeben hast</string>
+  <string name="nps_success">Vielen Dank für deine Rückmeldung! Es hilft uns, Proton Mail noch besser zu machen ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Speicher</string>
   <string name="upselling_comparison_table_email_addresses">E‐Mail‐Adressen</string>

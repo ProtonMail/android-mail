@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Šifrovaný správca hesiel</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Šifrované cloudové úložisko pre fotografie a dokumenty</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Rozšírená ochrana účtu</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Spätná väzba</string>
+  <string name="nps_feedback_headline">Aká je pravdepodobnosť, že odporučíte Proton Mail svojmu priateľovi alebo kolegovi?</string>
+  <string name="nps_cta">Zdieľať anonymne</string>
+  <string name="nps_label_left">0 je veľmi nepravdepodobne</string>
+  <string name="nps_label_right">10 je vysoko pravdepodobne</string>
+  <string name="nps_optional">Voliteľné</string>
+  <string name="nps_why_description">Dajte nám, prosím, vedieť, prečo ste udelili toto hodnotenie</string>
+  <string name="nps_success">Ďakujeme za vašu spätnú väzbu! Pomáha nám to urobiť Proton Mail ešte lepším ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Úložisko</string>
   <string name="upselling_comparison_table_email_addresses">Emailové adresy</string>

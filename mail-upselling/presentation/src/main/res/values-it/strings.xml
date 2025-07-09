@@ -44,7 +44,7 @@
   <!-- Drive Spotlight-->
   <string name="drive_spotlight_title">Novità! Album in Proton</string>
   <string name="drive_spotlight_description">Organizza le foto in album e condividili in modo sicuro con amici e familiari. Incluso gratuitamente con il tuo piano.</string>
-  <string name="drive_spotlight_description_with_gb">Organizza le foto in album e condividili in modo sicuro con amici e familiari. Hai ancora %d GB di spazio di archiviazione cloud sicuro disponibili.</string>
+  <string name="drive_spotlight_description_with_gb">Organizza le foto in album e condividili in modo sicuro con amici e familiari. Hai ancora %d GB di spazio di archiviazione cloud sicuro.</string>
   <string name="drive_spotlight_cta">Apri gli album in Proton Drive</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB di spazio di archiviazione</string>
@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Gestore di password crittografato</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Archiviazione cloud crittografata per foto e documenti</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protezione avanzata dell\'account</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Feedback</string>
+  <string name="nps_feedback_headline">Consiglieresti Proton Mail a un amico o collega?</string>
+  <string name="nps_cta">Condividi in modo anonimo</string>
+  <string name="nps_label_left">0 è molto improbabile</string>
+  <string name="nps_label_right">10 è molto probabile</string>
+  <string name="nps_optional">Opzionale</string>
+  <string name="nps_why_description">Facci sapere perché hai dato questa valutazione</string>
+  <string name="nps_success">Grazie per il tuo feedback! Ci aiuta a rendere Proton Mail migliore ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Archiviazione</string>
   <string name="upselling_comparison_table_email_addresses">Indirizzi email</string>

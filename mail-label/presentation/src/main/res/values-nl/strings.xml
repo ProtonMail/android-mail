@@ -50,7 +50,10 @@
   <string name="label_name_title">Naam</string>
   <string name="add_a_label_name_hint">Een labelnaam toevoegen</string>
   <string name="add_a_folder_name_hint">Een foldernaam toevoegen</string>
-  <string name="input_field_max_characters_count">%1d/%2d tekens</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d/%2d teken</item>
+    <item quantity="other">%1d/%2d tekens</item>
+  </plurals>
   <string name="color_picker_title">Kleur</string>
   <string name="save_label_error">Fout tijdens opslaan label, probeer het later opnieuw</string>
   <string name="save_folder_error">Fout tijdens opslaan folder, probeer het later opnieuw</string>

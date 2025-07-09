@@ -76,6 +76,8 @@
     <item quantity="one">बातचीत स्थायी रूप से हटा दी गई है</item>
     <item quantity="other">%d बातचीत स्थायी रूप से मिटा दिए गए हैं</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Can\'t find what you\'re looking for?</string>
+  <string name="mailbox_include_all_button">Include Spam/Trash</string>
   <string name="mailbox_action_label_messages_failed">चिप्पी कार्य विफल हुआ</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">चिप्पियों को प्राप्त करने में विफलता हुई</string>
   <string name="mailbox_action_failed_retrieving_colors">रंग सेटिंग्स को प्राप्त करने में विफलता हुई</string>

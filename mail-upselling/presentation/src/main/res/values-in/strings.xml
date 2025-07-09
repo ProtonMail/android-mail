@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Pengelola kata sandi terenkripsi</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Ruang penyimpanan cloud terenkripsi untuk foto dan dokumen</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Perlindungan akun tingkat lanjut</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Tanggapan</string>
+  <string name="nps_feedback_headline">Seberapa terdorongkah Anda untuk menyarankan Proton Mail kepada teman atau kolega Anda?</string>
+  <string name="nps_cta">Bagikan secara anonim</string>
+  <string name="nps_label_left">0 adalah sangat tidak mungkin</string>
+  <string name="nps_label_right">10 adalah sangat mungkin</string>
+  <string name="nps_optional">Opsional</string>
+  <string name="nps_why_description">Beri tahu kami mengapa Anda memberikan penilaian tersebut</string>
+  <string name="nps_success">Terima kasih atas tanggapan Anda! Ini membantu kami membuat Proton Mail semakin baik ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Penyimpanan</string>
   <string name="upselling_comparison_table_email_addresses">Alamat email</string>

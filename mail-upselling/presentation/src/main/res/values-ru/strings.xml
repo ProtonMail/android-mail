@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Зашифрованный менеджер паролей</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Облачное хранилище с шифрованием для фотографий и документов</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Расширенная защита аккаунта</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Обратная связь</string>
+  <string name="nps_feedback_headline">Насколько вероятно, что вы порекомендуете Proton Mail другу или коллеге?</string>
+  <string name="nps_cta">Поделиться анонимно</string>
+  <string name="nps_label_left">0 очень маловероятно</string>
+  <string name="nps_label_right">10 довольно вероятно</string>
+  <string name="nps_optional">Дополнительно</string>
+  <string name="nps_why_description">Дайте нам знать, почему вы поставили такую оценку</string>
+  <string name="nps_success">Thanks for your feedback! It helps us make Proton Mail even better ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Хранилище</string>
   <string name="upselling_comparison_table_email_addresses">Адреса электронной почты</string>

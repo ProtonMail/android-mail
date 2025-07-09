@@ -96,6 +96,8 @@
     <item quantity="many">%d размоў незваротна выдалены</item>
     <item quantity="other">%d размоў незваротна выдалены</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Не знайшлі тое, што шукалі?</string>
+  <string name="mailbox_include_all_button">Уключыць Спам/Сметніцу</string>
   <string name="mailbox_action_label_messages_failed">Збой аперацыі з меткай</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не ўдалося атрымаць меткі</string>
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>

@@ -66,6 +66,8 @@
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">%d 项会话已永久删除</item>
   </plurals>
+  <string name="mailbox_include_all_desc">找不到您想要的结果？</string>
+  <string name="mailbox_include_all_button">包含垃圾邮件和回收站中的搜索结果</string>
   <string name="mailbox_action_label_messages_failed">添加标签失败</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">获取标签失败</string>
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>

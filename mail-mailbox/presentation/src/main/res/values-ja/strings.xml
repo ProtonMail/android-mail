@@ -68,6 +68,8 @@
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">%d 件のメッセージを完全に削除しました</item>
   </plurals>
+  <string name="mailbox_include_all_desc">探しているものが見つかりませんか?</string>
+  <string name="mailbox_include_all_button">迷惑メール・ごみ箱も含める</string>
   <string name="mailbox_action_label_messages_failed">ラベル操作に失敗しました</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">ラベルの取得に失敗しました</string>
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>

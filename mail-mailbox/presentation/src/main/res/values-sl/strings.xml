@@ -96,6 +96,8 @@
     <item quantity="few">%d pogovori trajno izbrisani</item>
     <item quantity="other">%d pogovorov trajno izbrisanih</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Ne najdete tega, kar iščete?</string>
+  <string name="mailbox_include_all_button">Vključi neželeno pošto in smetnjak</string>
   <string name="mailbox_action_label_messages_failed">Dodajanje oznake ni uspelo</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Oznak ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_failed_retrieving_colors">Nastavitev barv ni bilo mogoče pridobiti</string>

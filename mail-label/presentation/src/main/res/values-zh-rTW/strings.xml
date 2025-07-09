@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">所有郵件</string>
   <string name="label_title_all_drafts">所有草稿</string>
   <string name="label_title_all_sent">全部寄件備份</string>
-  <string name="label_title_all_scheduled">全部排程</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">已延後</string>
   <string name="label_title_folders">資料夾</string>
   <string name="label_title_parent_folder">上層資料夾</string>
@@ -50,7 +50,9 @@
   <string name="label_name_title">名稱</string>
   <string name="add_a_label_name_hint">新增標籤名稱</string>
   <string name="add_a_folder_name_hint">新增一個資料夾名稱</string>
-  <string name="input_field_max_characters_count">%1d/%2d 個字元</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="other">%1d / %2d characters</item>
+  </plurals>
   <string name="color_picker_title">顏色</string>
   <string name="save_label_error">儲存存標籤時發生錯誤，請稍後再試。</string>
   <string name="save_folder_error">儲存資料夾時發生錯誤，請稍後再試</string>

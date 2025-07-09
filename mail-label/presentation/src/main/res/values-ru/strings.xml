@@ -50,7 +50,12 @@
   <string name="label_name_title">Название</string>
   <string name="add_a_label_name_hint">Добавить название ярлыка</string>
   <string name="add_a_folder_name_hint">Добавить имя папки</string>
-  <string name="input_field_max_characters_count">%1d / %2d символов</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d character</item>
+    <item quantity="few">%1d / %2d characters</item>
+    <item quantity="many">%1d / %2d characters</item>
+    <item quantity="other">%1d / %2d characters</item>
+  </plurals>
   <string name="color_picker_title">Цвет</string>
   <string name="save_label_error">Ошибка сохранения ярлыка, повторите попытку позже</string>
   <string name="save_folder_error">Ошибка сохранения папки, повторите попытку позже</string>

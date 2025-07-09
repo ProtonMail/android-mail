@@ -76,6 +76,8 @@
     <item quantity="one">Konversation permanent borttagen</item>
     <item quantity="other">%d konversationer permanent borttagna</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Kan du inte hitta det du letar efter?</string>
+  <string name="mailbox_include_all_button">Inkludera skräppost/papperskorg</string>
   <string name="mailbox_action_label_messages_failed">Etikettåtgärd misslyckades</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Misslyckades att hämta etiketter</string>
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>

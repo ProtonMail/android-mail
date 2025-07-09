@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Manager de parole criptat</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Stocare în cloud criptată pentru fotografii și documente</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protecție avansată a contului</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Feedback</string>
+  <string name="nps_feedback_headline">Cât de probabil este să recomandați Proton Mail unui prieten sau coleg?</string>
+  <string name="nps_cta">Partajare anonimă</string>
+  <string name="nps_label_left">0 este foarte improbabil</string>
+  <string name="nps_label_right">10 este foarte probabil</string>
+  <string name="nps_optional">Opțional</string>
+  <string name="nps_why_description">Vă rugăm să ne spuneți de ce ați acordat această evaluare</string>
+  <string name="nps_success">Vă mulțumim pentru feedback! Ne ajută să facem Proton Mail și mai bun ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Spațiu de stocare</string>
   <string name="upselling_comparison_table_email_addresses">Adrese de e-mail</string>

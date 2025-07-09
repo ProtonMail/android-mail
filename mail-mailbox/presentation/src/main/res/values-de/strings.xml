@@ -76,6 +76,8 @@
     <item quantity="one">Unterhaltung dauerhaft gelöscht</item>
     <item quantity="other">%d Unterhaltungen dauerhaft gelöscht</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Nicht gefunden, was du gesucht hast?</string>
+  <string name="mailbox_include_all_button">Spam/Papierkorb einschließen</string>
   <string name="mailbox_action_label_messages_failed">Fehler beim Kategorisieren.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Fehler beim Laden der Kategorien.</string>
   <string name="mailbox_action_failed_retrieving_colors">Fehler beim Laden der Farbeinstellungen.</string>

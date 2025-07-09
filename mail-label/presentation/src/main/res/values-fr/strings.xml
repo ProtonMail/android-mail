@@ -50,7 +50,10 @@
   <string name="label_name_title">Nom</string>
   <string name="add_a_label_name_hint">Ajoutez un nom de label.</string>
   <string name="add_a_folder_name_hint">Ajouter un nom de dossier</string>
-  <string name="input_field_max_characters_count">Nombre de caractères : %1d sur %2d</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d/%2d caractère</item>
+    <item quantity="other">%1d/%2d caractères</item>
+  </plurals>
   <string name="color_picker_title">Couleur</string>
   <string name="save_label_error">Une erreur s\'est produite lors de l\'enregistrement du label. Veuillez réessayer plus tard.</string>
   <string name="save_folder_error">Une erreur s\'est produite lors de l\'enregistrement du dossier, réessayez plus tard.</string>

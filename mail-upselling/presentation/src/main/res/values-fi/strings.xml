@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Salattu salasanahallinta</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Salattu pilvitallennustila kuville ja dokumenteille</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Edistynyt tilin suojaus</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Palaute</string>
+  <string name="nps_feedback_headline">How likely are you to recommend Proton Mail to a friend or colleague?</string>
+  <string name="nps_cta">Jaa anonyymisti</string>
+  <string name="nps_label_left">0 on hyvin epätodennäköistä</string>
+  <string name="nps_label_right">10 on hyvin todennäköistä</string>
+  <string name="nps_optional">Valinnainen</string>
+  <string name="nps_why_description">Kerro meille, miksi annoit kyseisen arvion</string>
+  <string name="nps_success">Thanks for your feedback! It helps us make Proton Mail even better ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Tallennustila</string>
   <string name="upselling_comparison_table_email_addresses">Sähköpostiosoitteet</string>

@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Κρυπτογραφημένη εφαρμογή διαχείρισης κωδικών πρόσβασης</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Κρυπτογραφημένος χώρος αποθήκευσης στο cloud για φωτογραφίες και έγγραφα</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Προηγμένη προστασία λογαριασμού</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Αξιολόγηση</string>
+  <string name="nps_feedback_headline">Πόσο πιθανό είναι να προτείνετε το Proton Mail σε φίλους ή συνεργάτες;</string>
+  <string name="nps_cta">Μοιραστείτε ανώνυμα</string>
+  <string name="nps_label_left">0 είναι το πλέον απίθανο</string>
+  <string name="nps_label_right">10 είναι το πιθανότερο</string>
+  <string name="nps_optional">Προαιρετικό</string>
+  <string name="nps_why_description">Παρακαλούμε αιτιολογήστε τη βαθμολογία σας.</string>
+  <string name="nps_success">Ευχαριστούμε για την αξιολόγηση σας! Μας βοηθά να κάνουμε το Proton Mail ακόμα καλύτερο ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Αποθηκευτικός χώρος</string>
   <string name="upselling_comparison_table_email_addresses">Διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>

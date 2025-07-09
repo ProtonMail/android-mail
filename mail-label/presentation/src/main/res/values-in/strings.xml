@@ -50,7 +50,9 @@
   <string name="label_name_title">Nama</string>
   <string name="add_a_label_name_hint">Tambah nama label</string>
   <string name="add_a_folder_name_hint">Tambah nama folder</string>
-  <string name="input_field_max_characters_count">%1d / %2d karakter</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="other">%1d / %2d karakter</item>
+  </plurals>
   <string name="color_picker_title">Warna</string>
   <string name="save_label_error">Terjadi kesalahan menyimpan label, silakan coba lagi nanti</string>
   <string name="save_folder_error">Terdapat kesalahan dalam menyimpan folder. Silakan coba lagi nanti</string>

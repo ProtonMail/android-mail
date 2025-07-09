@@ -96,6 +96,8 @@
     <item quantity="many">%d wątków zostało trwale usuniętych</item>
     <item quantity="other">%d wątków zostało trwale usuniętych</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Nie widzisz tego, czego szukasz?</string>
+  <string name="mailbox_include_all_button">Uwzględnij foldery spam i kosz</string>
   <string name="mailbox_action_label_messages_failed">Etykietowanie nie powiodło się</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Nie udało się pobrać etykiet</string>
   <string name="mailbox_action_failed_retrieving_colors">Nie udało się pobrać ustawień kolorów</string>

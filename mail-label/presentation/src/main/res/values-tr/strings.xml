@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Tüm e-postalar</string>
   <string name="label_title_all_drafts">Tüm taslaklar</string>
   <string name="label_title_all_sent">Tüm gönderilmişler</string>
-  <string name="label_title_all_scheduled">Tüm zamanlanmışlar</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Ertelenmişler</string>
   <string name="label_title_folders">Klasörler</string>
   <string name="label_title_parent_folder">Üst klasör</string>
@@ -50,7 +50,10 @@
   <string name="label_name_title">Ad</string>
   <string name="add_a_label_name_hint">Etiket adını yazın</string>
   <string name="add_a_folder_name_hint">Bir klasör adı yazın</string>
-  <string name="input_field_max_characters_count">%1d / %2d karakter</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d character</item>
+    <item quantity="other">%1d / %2d characters</item>
+  </plurals>
   <string name="color_picker_title">Renk</string>
   <string name="save_label_error">Etiket kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="save_folder_error">Klasör kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>

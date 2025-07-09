@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Tot el correu</string>
   <string name="label_title_all_drafts">Tots els esborranys</string>
   <string name="label_title_all_sent">Tots els enviats</string>
-  <string name="label_title_all_scheduled">Totes les programacions</string>
+  <string name="label_title_all_scheduled">Tot el que s\'ha programat</string>
   <string name="label_title_snoozed">Ajornat</string>
   <string name="label_title_folders">Carpetes</string>
   <string name="label_title_parent_folder">Carpeta principal</string>
@@ -50,7 +50,10 @@
   <string name="label_name_title">Nom</string>
   <string name="add_a_label_name_hint">Afegeix un nom a l\'etiqueta</string>
   <string name="add_a_folder_name_hint">Afegeix un nom de carpeta</string>
-  <string name="input_field_max_characters_count">%1d / %2d caràcters</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d caràcter</item>
+    <item quantity="other">%1d / %2d caràcters</item>
+  </plurals>
   <string name="color_picker_title">Color</string>
   <string name="save_label_error">S\'ha produït un error en desar l\'etiqueta. Proveu de nou més tard.</string>
   <string name="save_folder_error">S\'ha produït un error en desar la carpeta. Torneu a provar més tard.</string>

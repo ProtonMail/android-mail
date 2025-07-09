@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">所有邮件</string>
   <string name="label_title_all_drafts">所有草稿</string>
   <string name="label_title_all_sent">所有已发送</string>
-  <string name="label_title_all_scheduled">所有定时发送</string>
+  <string name="label_title_all_scheduled">所有预定</string>
   <string name="label_title_snoozed">已延迟通知</string>
   <string name="label_title_folders">文件夹</string>
   <string name="label_title_parent_folder">上层文件夹</string>
@@ -50,7 +50,9 @@
   <string name="label_name_title">名称</string>
   <string name="add_a_label_name_hint">新增标签名</string>
   <string name="add_a_folder_name_hint">添加文件夹名称</string>
-  <string name="input_field_max_characters_count">%1d/%2d 个字符</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="other">%1d/%2d 个字符</item>
+  </plurals>
   <string name="color_picker_title">颜色</string>
   <string name="save_label_error">保存标签出错，请稍后再试。</string>
   <string name="save_folder_error">保存文件夹错误，请稍后再试</string>

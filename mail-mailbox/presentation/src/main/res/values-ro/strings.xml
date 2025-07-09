@@ -86,6 +86,8 @@
     <item quantity="few">Conversații șterse definitiv: %d</item>
     <item quantity="other">Conversații șterse definitiv: %d</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Nu găsiți ceea ce căutați?</string>
+  <string name="mailbox_include_all_button">Includere mesaje din Nedorite/Gunoi</string>
   <string name="mailbox_action_label_messages_failed">Operația de etichetare a eșuat.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Eșuare obținere etichete.</string>
   <string name="mailbox_action_failed_retrieving_colors">Eșuare obținere setări culori.</string>

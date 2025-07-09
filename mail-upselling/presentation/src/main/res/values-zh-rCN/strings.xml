@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">加密的密码管理器</string>
   <string name="upselling_onboarding_unlimited_feature_drive">用于照片和文档的加密云存储</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">高级账户保护</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">意见反馈</string>
+  <string name="nps_feedback_headline">您向朋友或同事推荐 Proton Mail 的可能性有多大？</string>
+  <string name="nps_cta">匿名分享</string>
+  <string name="nps_label_left">0 代表不推荐</string>
+  <string name="nps_label_right">10 代表非常推荐</string>
+  <string name="nps_optional">选填</string>
+  <string name="nps_why_description">请告诉我们您为何给予这样的评价</string>
+  <string name="nps_success">感谢您的反馈！这有助于我们将 Proton Mail 做得更好 ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">存储空间</string>
   <string name="upselling_comparison_table_email_addresses">邮箱地址</string>

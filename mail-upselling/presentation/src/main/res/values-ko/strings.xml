@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
   <string name="upselling_onboarding_unlimited_feature_drive">사진 및 문서에 대한 암호화된 클라우드 스토리지</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">향상된 계정 보호</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">피드백</string>
+  <string name="nps_feedback_headline">Proton Mail을 친구나 동료에게 얼마나 추천하실 것 같나요?</string>
+  <string name="nps_cta">익명으로 공유</string>
+  <string name="nps_label_left">0은 매우 가능성이 낮음</string>
+  <string name="nps_label_right">10은 매우 가능성이 높음</string>
+  <string name="nps_optional">선택 사항</string>
+  <string name="nps_why_description">저희에게 이 점수를 주신 이유를 알려주세요</string>
+  <string name="nps_success">의견 주셔서 감사합니다! 회원님의 의견은 Proton Mail을 더욱 개선하는 데 도움이 됩니다 ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">저장 공간</string>
   <string name="upselling_comparison_table_email_addresses">이메일 주소</string>

@@ -50,7 +50,10 @@
   <string name="label_name_title">Navn</string>
   <string name="add_a_label_name_hint">Tilføj et etiketnavn</string>
   <string name="add_a_folder_name_hint">Tilføj et mappenavn</string>
-  <string name="input_field_max_characters_count">%1d / %2d tegn</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d tegn</item>
+    <item quantity="other">%1d / %2d tegn</item>
+  </plurals>
   <string name="color_picker_title">Farve</string>
   <string name="save_label_error">Lagringsfejl af etiket. Prøv igen senere.</string>
   <string name="save_folder_error">Lagringsfejl af mappe. Prøv igen senere.</string>

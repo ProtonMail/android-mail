@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contrasenyes xifrat</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge xifrat al núvol per a fotos i documents</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protecció avançada del compte</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Comentaris</string>
+  <string name="nps_feedback_headline">Amb quina probabilitat recomanaríeu el Proton Mail a un amic o col·lega?</string>
+  <string name="nps_cta">Comparteix de manera anònima</string>
+  <string name="nps_label_left">0 és molt improbable</string>
+  <string name="nps_label_right">10 és molt probable</string>
+  <string name="nps_optional">Opcional</string>
+  <string name="nps_why_description">Feu-nos saber per què heu donat aquesta puntuació</string>
+  <string name="nps_success">Gràcies pels vostres comentaris! Ens ajuda a fer el Proton Mail encara millor ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Emmagatzematge</string>
   <string name="upselling_comparison_table_email_addresses">Adreces de correu electrònic</string>

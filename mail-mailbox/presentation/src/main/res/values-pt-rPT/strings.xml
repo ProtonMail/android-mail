@@ -76,6 +76,8 @@
     <item quantity="one">Conversa eliminada permanentemente</item>
     <item quantity="other">%d conversas eliminadas permanentemente</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Não encontra o que procura?</string>
+  <string name="mailbox_include_all_button">Incluir as pastas Spam/Lixo</string>
   <string name="mailbox_action_label_messages_failed">Erro na operação da etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Erro ao obter etiquetas</string>
   <string name="mailbox_action_failed_retrieving_colors">Erro ao obter definições de cor</string>

@@ -50,7 +50,10 @@
   <string name="label_name_title">Name</string>
   <string name="add_a_label_name_hint">Kategoriename hinzufügen</string>
   <string name="add_a_folder_name_hint">Ordnername hinzufügen</string>
-  <string name="input_field_max_characters_count">%1d / %2d Zeichen</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d/%2d Zeichen</item>
+    <item quantity="other">%1d/%2d Zeichen</item>
+  </plurals>
   <string name="color_picker_title">Farbe</string>
   <string name="save_label_error">Fehler beim Speichern der Kategorie. Bitte versuche es später erneut.</string>
   <string name="save_folder_error">Fehler beim Speichern des Ordners. Bitte versuche es erneut.</string>

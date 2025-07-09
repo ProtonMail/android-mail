@@ -50,7 +50,10 @@
   <string name="label_name_title">Nimi</string>
   <string name="add_a_label_name_hint">Nimeä tunniste</string>
   <string name="add_a_folder_name_hint">Nimeä kansio</string>
-  <string name="input_field_max_characters_count">%1d/%2d merkkiä</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d character</item>
+    <item quantity="other">%1d / %2d characters</item>
+  </plurals>
   <string name="color_picker_title">Väri</string>
   <string name="save_label_error">Virhe tallennettaessa tunnistetta. Yritä myöhemmin uudelleen.</string>
   <string name="save_folder_error">Virhe tallennettaessa kansiota. Yritä myöhemmin uudelleen.</string>

@@ -81,6 +81,15 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Versleutelde cloudopslag voor foto\'s en documenten</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Geavanceerde accountbeveiliging</string>
+  <!-- NPS feedback-->
+  <string name="nps_feedback_title">Feedback</string>
+  <string name="nps_feedback_headline">Hoe waarschijnlijk is het dat u Proton Mail aan een vriend of collega zult aanbevelen?</string>
+  <string name="nps_cta">Anoniem delen</string>
+  <string name="nps_label_left">0 is zeer onwaarschijnlijk</string>
+  <string name="nps_label_right">10 is zeer waarschijnlijk</string>
+  <string name="nps_optional">Optioneel</string>
+  <string name="nps_why_description">Laat ons weten waarom u die beoordeling heeft gegeven</string>
+  <string name="nps_success">Bedankt voor uw feedback! Het helpt ons Proton Mail nog beter te maken ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Opslag</string>
   <string name="upselling_comparison_table_email_addresses">E-mailadressen</string>

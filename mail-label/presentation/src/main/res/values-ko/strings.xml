@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">모든 메일</string>
   <string name="label_title_all_drafts">모든 초안</string>
   <string name="label_title_all_sent">모든 보낸 메일</string>
-  <string name="label_title_all_scheduled">전체 예약</string>
+  <string name="label_title_all_scheduled">전체 예약됨</string>
   <string name="label_title_snoozed">방해 금지 상태</string>
   <string name="label_title_folders">폴더</string>
   <string name="label_title_parent_folder">상위 폴더</string>
@@ -50,7 +50,9 @@
   <string name="label_name_title">이름</string>
   <string name="add_a_label_name_hint">라벨 이름 추가</string>
   <string name="add_a_folder_name_hint">폴더 이름을 추가하세요</string>
-  <string name="input_field_max_characters_count">%1d / %2d글자</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="other">%1d / %2d글자</item>
+  </plurals>
   <string name="color_picker_title">색상</string>
   <string name="save_label_error">라벨 저장 오류, 다시 시도하십시오.</string>
   <string name="save_folder_error">파일 저장 중 오류 발생, 다시 시도하십시오.</string>

@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">सारे मेल</string>
   <string name="label_title_all_drafts">सारे ड्राफ्ट</string>
   <string name="label_title_all_sent">सारे भेजे गए</string>
-  <string name="label_title_all_scheduled">सभी शेड्यूल किए गए</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">स्नूज़ किया हुआ</string>
   <string name="label_title_folders">फोल्डर</string>
   <string name="label_title_parent_folder">मुख्य फोल्डर</string>
@@ -50,7 +50,10 @@
   <string name="label_name_title">नाम</string>
   <string name="add_a_label_name_hint">लेबल नाम जोड़ें</string>
   <string name="add_a_folder_name_hint">फोल्डर का नाम जोड़ें</string>
-  <string name="input_field_max_characters_count">%1d / %2d अक्षर</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d character</item>
+    <item quantity="other">%1d / %2d characters</item>
+  </plurals>
   <string name="color_picker_title">रंग</string>
   <string name="save_label_error">लेबल सहेजने में एरर, कृपया बाद में कोशिश करें</string>
   <string name="save_folder_error">फोल्डर सहेजने में एरर, कृपया बाद में कोशिश करें</string>

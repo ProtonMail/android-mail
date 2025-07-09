@@ -96,6 +96,8 @@
     <item quantity="many">%d цепочек писем удалено безвозвратно</item>
     <item quantity="other">%d цепочки писем удалено безвозвратно</item>
   </plurals>
+  <string name="mailbox_include_all_desc">Can\'t find what you\'re looking for?</string>
+  <string name="mailbox_include_all_button">Включить Спам/Корзину</string>
   <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>

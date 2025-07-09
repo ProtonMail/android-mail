@@ -50,7 +50,10 @@
   <string name="label_name_title">Nome</string>
   <string name="add_a_label_name_hint">Aggiungi un nome all\'etichetta</string>
   <string name="add_a_folder_name_hint">Aggiungi un nome alla cartella</string>
-  <string name="input_field_max_characters_count">%1d / %2d caratteri</string>
+  <plurals name="input_field_max_characters_count">
+    <item quantity="one">%1d / %2d carattere</item>
+    <item quantity="other">%1d / %2d caratteri</item>
+  </plurals>
   <string name="color_picker_title">Colore</string>
   <string name="save_label_error">Salvataggio dell\'etichetta non riuscito</string>
   <string name="save_folder_error">Salvataggio della cartella non riuscito</string>

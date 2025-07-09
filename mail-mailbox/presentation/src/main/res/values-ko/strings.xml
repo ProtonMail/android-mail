@@ -66,6 +66,8 @@
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">대화 %d개를 완전히 삭제했습니다</item>
   </plurals>
+  <string name="mailbox_include_all_desc">원하시는 것을 찾을 수 없으신가요?</string>
+  <string name="mailbox_include_all_button">스팸 및 휴지통을 포함하여 검색해 보세요</string>
   <string name="mailbox_action_label_messages_failed">라벨 작업에 실패했습니다</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">라벨 불러오기에 실패했습니다</string>
   <string name="mailbox_action_failed_retrieving_colors">색상 설정 불러오기를 실패했습니다.</string>
