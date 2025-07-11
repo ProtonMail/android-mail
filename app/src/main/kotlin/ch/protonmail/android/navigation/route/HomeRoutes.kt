@@ -121,7 +121,7 @@ internal fun NavGraphBuilder.addMailbox(
                     navController.navigate(Screen.CustomizeToolbar.route)
                 },
                 navigateToNPSFeedback = {
-                    navController.navigate(Screen.NPSFeedback.route)
+                    // Ignored as of 4.14.0, needs additional work on submission
                 }
             ),
             drawerState = drawerState
