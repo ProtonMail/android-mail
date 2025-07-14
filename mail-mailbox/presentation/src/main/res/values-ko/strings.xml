@@ -55,7 +55,7 @@
     <item quantity="other">메시지 %d개 삭제</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="other">이 대화를 영구적으로 삭제하는 것이 맞습니까?</item>
+    <item quantity="other">이 대화를 정말 영구적으로 삭제하시겠습니까?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="other">이 메시지를 완전히 삭제하시겠어요?</item>

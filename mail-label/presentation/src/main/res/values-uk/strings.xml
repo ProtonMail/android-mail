@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Уся пошта</string>
   <string name="label_title_all_drafts">Усі чернетки</string>
   <string name="label_title_all_sent">Усі надіслані</string>
-  <string name="label_title_all_scheduled">All scheduled</string>
+  <string name="label_title_all_scheduled">Все заплановано</string>
   <string name="label_title_snoozed">Відкладено</string>
   <string name="label_title_folders">Теки</string>
   <string name="label_title_parent_folder">Тека вищого рівня</string>
@@ -51,10 +51,10 @@
   <string name="add_a_label_name_hint">Додайте назву мітки</string>
   <string name="add_a_folder_name_hint">Додайте назву теки</string>
   <plurals name="input_field_max_characters_count">
-    <item quantity="one">%1d / %2d character</item>
-    <item quantity="few">%1d / %2d characters</item>
-    <item quantity="many">%1d / %2d characters</item>
-    <item quantity="other">%1d / %2d characters</item>
+    <item quantity="one">%1d / %2d символу</item>
+    <item quantity="few">%1d / %2d символів</item>
+    <item quantity="many">%1d / %2d символів</item>
+    <item quantity="other">%1d / %2d символів</item>
   </plurals>
   <string name="color_picker_title">Колір</string>
   <string name="save_label_error">Помилка під час збереження мітки, повторіть спробу пізніше</string>

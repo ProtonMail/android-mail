@@ -37,7 +37,7 @@ enum class AppLanguage(val langName: String, val langTag: String) {
     FINNISH("Suomi", "fi"),
     CROATIAN("Hrvatski", "hr"),
     HUNGARIAN("Magyar", "hu"),
-    INDONESIAN("Bahasa (Indonesia)", "in"),
+    INDONESIAN("Bahasa Indonesia", "in"),
     KABYLE("Taqbaylit", "kab"),
     NORWEGIAN_BOKMAL("Norsk bokmål", "nb-NO"),
     PORTUGUESE("Português (Portugal)", "pt-PT"),

@@ -82,14 +82,14 @@
   <string name="upselling_onboarding_unlimited_feature_drive">Зашифроване хмарне сховище для фотографій і документів</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Розширений захист облікового запису</string>
   <!-- NPS feedback-->
-  <string name="nps_feedback_title">Feedback</string>
-  <string name="nps_feedback_headline">How likely are you to recommend Proton Mail to a friend or colleague?</string>
-  <string name="nps_cta">Share anonymously</string>
-  <string name="nps_label_left">0 is very unlikely</string>
-  <string name="nps_label_right">10 is very likely</string>
-  <string name="nps_optional">Optional</string>
-  <string name="nps_why_description">Please let us know why you gave that rating</string>
-  <string name="nps_success">Thanks for your feedback! It helps us make Proton Mail even better ❤️</string>
+  <string name="nps_feedback_title">Відгук</string>
+  <string name="nps_feedback_headline">Наскільки ймовірно, що ви порекомендуєте Proton Mail друзям або колегам?</string>
+  <string name="nps_cta">Поділитися анонімно</string>
+  <string name="nps_label_left">0 – дуже малоймовірно</string>
+  <string name="nps_label_right">10 – цілком ймовірно</string>
+  <string name="nps_optional">Необов\'язково</string>
+  <string name="nps_why_description">Повідомте, чому ви поставили таку оцінку</string>
+  <string name="nps_success">Дякуємо за ваш відгук! Він допомагає нам зробити Proton Mail ще кращим ❤️</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Сховище</string>
   <string name="upselling_comparison_table_email_addresses">Адреси електронної пошти</string>

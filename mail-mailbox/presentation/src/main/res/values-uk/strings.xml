@@ -96,8 +96,8 @@
     <item quantity="many">%d розмов остаточно видалено</item>
     <item quantity="other">%d розмов остаточно видалено</item>
   </plurals>
-  <string name="mailbox_include_all_desc">Can\'t find what you\'re looking for?</string>
-  <string name="mailbox_include_all_button">Include Spam/Trash</string>
+  <string name="mailbox_include_all_desc">Не вдається знайти те, що шукали?</string>
+  <string name="mailbox_include_all_button">Включити Спам / Смітник</string>
   <string name="mailbox_action_label_messages_failed">Помилка операції з міткою</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не вдалося отримати мітки</string>
   <string name="mailbox_action_failed_retrieving_colors">Не вдалося отримати налаштування кольору</string>
