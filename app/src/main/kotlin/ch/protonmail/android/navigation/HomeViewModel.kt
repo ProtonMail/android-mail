@@ -135,7 +135,7 @@ class HomeViewModel @Inject constructor(
         if (navController.currentDestination?.route != Destination.Screen.Mailbox.route) {
             navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
         }
-        selectedMailLabelId.set(MailLabelId.System.Drafts)
+        selectedMailLabelId.set(MailLabelId.System.AllDrafts)
     }
 
     fun discardDraft(messageId: MessageId) {
