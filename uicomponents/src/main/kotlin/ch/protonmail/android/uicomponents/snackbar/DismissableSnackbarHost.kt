@@ -22,6 +22,7 @@ package ch.protonmail.android.uicomponents.snackbar
 
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SnackbarData
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -31,7 +32,11 @@ import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 
 @Composable
-fun DismissableSnackbarHost(modifier: Modifier = Modifier, protonSnackbarHostState: ProtonSnackbarHostState) {
+fun DismissableSnackbarHost(
+    modifier: Modifier = Modifier,
+    protonSnackbarHostState: ProtonSnackbarHostState,
+    customSnackbar: (@Composable (SnackbarData) -> Unit)? = null
+) {
     val dismissSnackbarState = rememberDismissState(confirmStateChange = { value ->
         if (value != DismissValue.Default) {
             protonSnackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
@@ -51,10 +56,26 @@ fun DismissableSnackbarHost(modifier: Modifier = Modifier, protonSnackbarHostSta
         state = dismissSnackbarState,
         background = {},
         dismissContent = {
-            ProtonSnackbarHost(
-                modifier = modifier,
-                hostState = protonSnackbarHostState
-            )
+            if (customSnackbar != null) {
+                ProtonSnackbarHost(
+                    modifier = modifier,
+                    hostState = protonSnackbarHostState,
+                    snackbar = customSnackbar
+                )
+            } else {
+                ProtonSnackbarHost(
+                    modifier = modifier,
+                    hostState = protonSnackbarHostState
+                )
+            }
         }
     )
 }
+
+fun SnackbarData.shouldGoInTwoRows(): Boolean {
+    return actionLabel.orEmpty().length > THRESHOLD_LONG_ACTION ||
+        message.length > THRESHOLD_LONG_MESSAGE
+}
+
+private const val THRESHOLD_LONG_MESSAGE = 60
+private const val THRESHOLD_LONG_ACTION = 30

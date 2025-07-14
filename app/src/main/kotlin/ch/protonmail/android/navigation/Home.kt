@@ -110,8 +110,10 @@ import ch.protonmail.android.navigation.route.addSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addThemeSettings
 import ch.protonmail.android.navigation.route.addUpsellingRoutes
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import ch.protonmail.android.uicomponents.snackbar.shouldGoInTwoRows
 import io.sentry.compose.withSentryObservableEffect
 import kotlinx.coroutines.launch
+import me.proton.core.compose.component.ProtonSnackbar
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -348,7 +350,14 @@ fun Home(
             )
             DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                protonSnackbarHostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState,
+                customSnackbar = { data ->
+                    ProtonSnackbar(
+                        snackbarData = data,
+                        type = snackbarHostErrorState.type,
+                        actionOnNewLine = data.shouldGoInTwoRows()
+                    )
+                }
             )
         }
     ) { contentPadding ->
