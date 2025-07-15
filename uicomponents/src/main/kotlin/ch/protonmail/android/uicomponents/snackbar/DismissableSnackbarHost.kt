@@ -78,4 +78,4 @@ fun SnackbarData.shouldGoInTwoRows(): Boolean {
 }
 
 private const val THRESHOLD_LONG_MESSAGE = 60
-private const val THRESHOLD_LONG_ACTION = 30
+private const val THRESHOLD_LONG_ACTION = 25
