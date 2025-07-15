@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesS
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.GetDraftLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -81,6 +82,7 @@ class HomeViewModel @Inject constructor(
     private val saveShouldStopShowingPermissionDialog: SaveShouldStopShowingPermissionDialog,
     private val trackNotificationPermissionTelemetryEvent: TrackNotificationPermissionTelemetryEvent,
     @IsComposerV2Enabled val isComposerV2Enabled: Boolean,
+    private val getDraftLabelId: GetDraftLabelId,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
@@ -135,7 +137,13 @@ class HomeViewModel @Inject constructor(
         if (navController.currentDestination?.route != Destination.Screen.Mailbox.route) {
             navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
         }
-        selectedMailLabelId.set(MailLabelId.System.AllDrafts)
+        viewModelScope.launch {
+            getDraftLabelId.invoke().mapLeft {
+                Timber.e("Error getting draft label: $it")
+            }.onRight { draftsLabel ->
+                selectedMailLabelId.set(draftsLabel)
+            }
+        }
     }
 
     fun discardDraft(messageId: MessageId) {

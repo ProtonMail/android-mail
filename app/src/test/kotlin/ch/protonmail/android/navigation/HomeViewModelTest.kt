@@ -20,7 +20,10 @@ package ch.protonmail.android.navigation
 
 import android.content.Intent
 import android.net.Uri
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
@@ -31,6 +34,8 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.GetDraftLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
@@ -41,6 +46,7 @@ import ch.protonmail.android.mailnotifications.domain.usecase.TrackNotificationP
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
+import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
 import io.mockk.coEvery
@@ -98,6 +104,8 @@ class HomeViewModelTest {
         every { this@mockk() } returns emptyFlow()
     }
 
+    private val getDraftLabelId = mockk<GetDraftLabelId>()
+
     private val discardDraft = mockk<DiscardDraft>(relaxUnitFun = true)
 
     private val shouldShowNotificationPermissionDialog = mockk<ShouldShowNotificationPermissionDialog> {
@@ -128,6 +136,7 @@ class HomeViewModelTest {
             saveShouldStopShowingPermissionDialog,
             trackNotificationPermissionTelemetry,
             isComposerV2Enabled.get(),
+            getDraftLabelId,
             observePrimaryUserMock,
             shareIntentObserver
         )
@@ -535,6 +544,28 @@ class HomeViewModelTest {
                     NotificationPermissionDialogType.PostOnboarding
                 )
             )
+        }
+    }
+
+    @Test
+    fun `should set the draft label as returned by usecase`() = runTest {
+        // Given
+        val destination = mockk<NavDestination> {
+            every { this@mockk.route } returns Destination.Screen.Mailbox.route
+        }
+        val navc = mockk<NavController> {
+            every { this@mockk.currentDestination } returns destination
+        }
+        coEvery { getDraftLabelId.invoke() } returns MailLabelId.System.AllDrafts.right()
+
+        every { networkManager.observe() } returns flowOf()
+
+        // When
+        homeViewModel.navigateToDrafts(navc)
+
+        // Then
+        verify {
+            selectedMailLabelId.set(MailLabelId.System.AllDrafts)
         }
     }
 
