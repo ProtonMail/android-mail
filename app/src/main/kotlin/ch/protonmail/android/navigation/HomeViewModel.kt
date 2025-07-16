@@ -138,11 +138,7 @@ class HomeViewModel @Inject constructor(
             navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
         }
         viewModelScope.launch {
-            getDraftLabelId.invoke().mapLeft {
-                Timber.e("Error getting draft label: $it")
-            }.onRight { draftsLabel ->
-                selectedMailLabelId.set(draftsLabel)
-            }
+            selectedMailLabelId.set(getDraftLabelId.invoke())
         }
     }
 

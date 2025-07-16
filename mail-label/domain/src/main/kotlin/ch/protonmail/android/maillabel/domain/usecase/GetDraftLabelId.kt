@@ -18,20 +18,12 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.mailsettings.domain.entity.ShowMoved
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 class GetDraftLabelId @Inject constructor(
@@ -39,22 +31,11 @@ class GetDraftLabelId @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId
 ) {
 
-    suspend operator fun invoke(): Either<DataError, MailLabelId> = Either.catch {
+    suspend operator fun invoke(): MailLabelId {
         val userId = observePrimaryUserId.invoke().filterNotNull().first()
-        mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
-    }.mapLeft {
-        val error = when (it) {
-            is UnknownHostException -> NetworkError.NoNetwork
-            is SocketTimeoutException -> NetworkError.Unreachable
-            else -> {
-                Timber.e("Unknown error while getting labels: $it")
-                NetworkError.Unknown
-            }
-        }
-        DataError.Remote.Http(error)
-    }.map { settingsFlow ->
-        val showMoved = settingsFlow.firstOrNull()?.showMoved
-        if (showMoved?.enum == ShowMoved.Both) {
+        val mailSettings = mailSettingsRepository.getMailSettings(userId)
+        val showMoved = mailSettings.showMoved
+        return if (showMoved?.enum == ShowMoved.Both) {
             MailLabelId.System.AllDrafts
         } else {
             MailLabelId.System.Drafts

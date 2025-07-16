@@ -18,19 +18,13 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import java.net.SocketTimeoutException
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData.buildMailSettings
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.ShowMoved
@@ -55,13 +49,8 @@ class GetDraftLabelIdTest {
     )
 
     private fun isMovedEnabled(isMovedEnabld: Boolean) {
-        coEvery { mailSettingsRepository.getMailSettingsFlow(userId) } returns
-            flowOf(
-                DataResult.Success(
-                    ResponseSource.Remote,
-                    value = if (isMovedEnabld) settingsWithMovedBoth else settingsWithoutMoved
-                )
-            )
+        coEvery { mailSettingsRepository.getMailSettings(userId) } returns
+            if (isMovedEnabld) settingsWithMovedBoth else settingsWithoutMoved
     }
 
     @Before
@@ -79,8 +68,7 @@ class GetDraftLabelIdTest {
         val actual = sut()
 
         // then
-        assertTrue(actual.isRight())
-        assertEquals(MailLabelId.System.AllDrafts, actual.getOrNull())
+        assertEquals(MailLabelId.System.AllDrafts, actual)
     }
 
     @Test
@@ -93,23 +81,6 @@ class GetDraftLabelIdTest {
         val actual = sut()
 
         // then
-        assertTrue(actual.isRight())
-        assertEquals(MailLabelId.System.Drafts, actual.getOrNull())
-    }
-
-    @Test
-    fun `invoke maps SocketTimeoutException to Unreachable`() = runTest {
-        // given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(userId)
-        coEvery { mailSettingsRepository.getMailSettingsFlow(userId) } throws SocketTimeoutException()
-
-        // when
-        val result = sut()
-
-        // then
-        assertTrue(result.isLeft())
-        val error = result.swap().getOrNull()!!
-        assertTrue(error is DataError.Remote.Http)
-        assertEquals(NetworkError.Unreachable, (error as DataError.Remote.Http).networkError)
+        assertEquals(MailLabelId.System.Drafts, actual)
     }
 }

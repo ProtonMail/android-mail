@@ -23,7 +23,6 @@ import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import app.cash.turbine.test
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
@@ -556,7 +555,7 @@ class HomeViewModelTest {
         val navc = mockk<NavController> {
             every { this@mockk.currentDestination } returns destination
         }
-        coEvery { getDraftLabelId.invoke() } returns MailLabelId.System.AllDrafts.right()
+        coEvery { getDraftLabelId.invoke() } returns MailLabelId.System.AllDrafts
 
         every { networkManager.observe() } returns flowOf()
 
