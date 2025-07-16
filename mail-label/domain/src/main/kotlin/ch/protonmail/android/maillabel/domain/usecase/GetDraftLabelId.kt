@@ -18,21 +18,17 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
+import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ShowMoved
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class GetDraftLabelId @Inject constructor(
-    private val mailSettingsRepository: MailSettingsRepository,
-    private val observePrimaryUserId: ObservePrimaryUserId
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    suspend operator fun invoke(): MailLabelId {
-        val userId = observePrimaryUserId.invoke().filterNotNull().first()
+    suspend operator fun invoke(userId: UserId): MailLabelId {
         val mailSettings = mailSettingsRepository.getMailSettings(userId)
         val showMoved = mailSettings.showMoved
         return if (showMoved?.enum == ShowMoved.Both) {

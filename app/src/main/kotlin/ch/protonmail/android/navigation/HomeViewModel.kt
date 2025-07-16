@@ -138,7 +138,9 @@ class HomeViewModel @Inject constructor(
             navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
         }
         viewModelScope.launch {
-            selectedMailLabelId.set(getDraftLabelId.invoke())
+            primaryUser.firstOrNull()?.let { user ->
+                selectedMailLabelId.set(getDraftLabelId.invoke(user.userId))
+            } ?: Timber.e("Primary user is not available!")
         }
     }
 

@@ -555,7 +555,7 @@ class HomeViewModelTest {
         val navc = mockk<NavController> {
             every { this@mockk.currentDestination } returns destination
         }
-        coEvery { getDraftLabelId.invoke() } returns MailLabelId.System.AllDrafts
+        coEvery { getDraftLabelId.invoke(user.userId) } returns MailLabelId.System.AllDrafts
 
         every { networkManager.observe() } returns flowOf()
 

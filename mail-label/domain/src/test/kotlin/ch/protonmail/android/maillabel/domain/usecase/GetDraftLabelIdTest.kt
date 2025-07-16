@@ -18,12 +18,10 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData.buildMailSettings
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
@@ -35,7 +33,6 @@ import kotlin.test.assertEquals
 
 class GetDraftLabelIdTest {
     private val mailSettingsRepository: MailSettingsRepository = mockk()
-    private val observePrimaryUserId: ObservePrimaryUserId = mockk()
     private lateinit var sut: GetDraftLabelId
 
     private val userId = UserId("user-1")
@@ -55,17 +52,16 @@ class GetDraftLabelIdTest {
 
     @Before
     fun setUp() {
-        sut = GetDraftLabelId(mailSettingsRepository, observePrimaryUserId)
+        sut = GetDraftLabelId(mailSettingsRepository)
     }
 
     @Test
     fun `invoke returns AllDrafts when showMoved is Both`() = runTest {
         // given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(userId)
         isMovedEnabled(true)
 
         // when
-        val actual = sut()
+        val actual = sut(userId)
 
         // then
         assertEquals(MailLabelId.System.AllDrafts, actual)
@@ -74,11 +70,10 @@ class GetDraftLabelIdTest {
     @Test
     fun `invoke returns Drafts when showMoved is None`() = runTest {
         // given
-        coEvery { observePrimaryUserId.invoke() } returns flowOf(userId)
         isMovedEnabled(false)
 
         // when
-        val actual = sut()
+        val actual = sut(userId)
 
         // then
         assertEquals(MailLabelId.System.Drafts, actual)
