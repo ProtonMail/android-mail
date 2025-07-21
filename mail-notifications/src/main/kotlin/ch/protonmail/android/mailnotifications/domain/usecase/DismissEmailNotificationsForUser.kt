@@ -29,12 +29,12 @@ internal class DismissEmailNotificationsForUser @Inject constructor(
     operator fun invoke(
         userId: UserId,
         notificationId: Int,
-        isSilentNotification: Boolean = false
+        checkIfNotificationExists: Boolean = true
     ) {
         val shouldDismissGroup = shouldDismissGroupNotification(
             userId = userId,
             notificationId = notificationId,
-            isSilentNotification = isSilentNotification
+            checkIfNotificationExists = checkIfNotificationExists
         )
 
         if (shouldDismissGroup) {
@@ -48,26 +48,34 @@ internal class DismissEmailNotificationsForUser @Inject constructor(
         notificationManagerCompatProxy.dismissNotification(userId.id.hashCode())
     }
 
-    private fun shouldDismissGroupNotification(userId: UserId) =
-        notificationManagerCompatProxy.activeNotifications.count { userId.id in it.groupKey } <= DISMISSAL_THRESHOLD
-
     private fun shouldDismissGroupNotification(
         userId: UserId,
         notificationId: Int,
-        isSilentNotification: Boolean
+        checkIfNotificationExists: Boolean
     ): Boolean {
-        val isSingleRegularNotification = !isSilentNotification &&
-            shouldDismissGroupNotification(userId)
+        val groupNotificationId = userId.id.hashCode()
 
-        val isSingleSilentNotification = isSilentNotification &&
-            notificationManagerCompatProxy.activeNotifications.any { it.id == notificationId } &&
-            shouldDismissGroupNotification(userId)
+        // Check if the notification we're trying to dismiss actually exists
+        if (checkIfNotificationExists) {
+            val notificationExists = notificationManagerCompatProxy.activeNotifications.any {
+                it.id == notificationId
+            }
 
-        return isSingleRegularNotification || isSingleSilentNotification
-    }
+            if (!notificationExists) {
+                // Notification already gone (user swiped it away)
+                // Check if we should clean up an empty group
+                val remainingChildren = notificationManagerCompatProxy.activeNotifications.count {
+                    userId.id in it.groupKey && it.id != groupNotificationId
+                }
+                return remainingChildren == 0
+            }
+        }
 
-    private companion object {
+        // Count child notifications before dismissal
+        val childNotificationsCount = notificationManagerCompatProxy.activeNotifications.count {
+            userId.id in it.groupKey && it.id != groupNotificationId
+        }
 
-        const val DISMISSAL_THRESHOLD = 2 // It's 2 since we always show group + child notification.
+        return childNotificationsCount == 1
     }
 }

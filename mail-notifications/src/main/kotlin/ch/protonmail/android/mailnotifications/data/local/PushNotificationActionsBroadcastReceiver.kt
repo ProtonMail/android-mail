@@ -121,7 +121,11 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
             }
         }
 
-        dismissEmailNotificationsForUser(userId, actionData.notificationId)
+        dismissEmailNotificationsForUser(
+            userId = userId,
+            notificationId = actionData.notificationId,
+            checkIfNotificationExists = false
+        )
     }
 
     private fun handleNotificationDismissal(actionData: PushNotificationDismissPendingIntentData) {
@@ -136,7 +140,7 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
                 dismissEmailNotificationsForUser(
                     userId = UserId(actionData.userId),
                     notificationId = actionData.notificationId,
-                    isSilentNotification = false
+                    checkIfNotificationExists = true // Always check for swipe dismissals
                 )
             }
         }

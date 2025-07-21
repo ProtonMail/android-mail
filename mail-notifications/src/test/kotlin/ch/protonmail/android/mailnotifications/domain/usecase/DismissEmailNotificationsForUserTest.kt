@@ -22,7 +22,6 @@ import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerC
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import io.mockk.verifySequence
 import me.proton.core.domain.entity.UserId
 import org.junit.Test
@@ -34,7 +33,7 @@ internal class DismissEmailNotificationsForUserTest {
     private val dismissEmailNotificationsForUser = DismissEmailNotificationsForUser(notificationManagerCompatProxy)
 
     @Test
-    fun `when dismissal is invoked, call is proxied when activeNotifications count is greater than 1`() {
+    fun `when dismissal is invoked with userId only, group notification is dismissed`() {
         // Given
         val userId = UserId("user-id")
 
@@ -50,52 +49,42 @@ internal class DismissEmailNotificationsForUserTest {
     }
 
     @Test
-    fun `when dismissal is invoked for a standard notification, group is dismissed when group count is less than 2`() {
+    fun `when dismissal is invoked and notification exists with only one child, dismiss group`() {
         // Given
         val userId = UserId("user-id")
         val notificationId = Random.nextInt()
+        val groupId = userId.id.hashCode()
+
         every { notificationManagerCompatProxy.activeNotifications } returns listOf(
-            mockk { every { this@mockk.groupKey } returns "12312323|${userId.id}" }
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns notificationId
+            },
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns groupId
+            }
         )
 
         // When
-        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = false)
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = true)
 
         // Then
         verifySequence {
-            notificationManagerCompatProxy.activeNotifications
-            notificationManagerCompatProxy.dismissNotification(userId.id.hashCode())
+            notificationManagerCompatProxy.activeNotifications // Check if exists
+            notificationManagerCompatProxy.activeNotifications // Count children
+            notificationManagerCompatProxy.dismissNotification(groupId)
         }
         confirmVerified(notificationManagerCompatProxy)
     }
 
     @Test
-    fun `when dismissal is invoked for a standard notification, group is not dismissed on count greater than 2`() {
+    fun `when dismissal is invoked and notification exists with multiple children, dismiss individual`() {
         // Given
         val userId = UserId("user-id")
         val notificationId = Random.nextInt()
-        every { notificationManagerCompatProxy.activeNotifications } returns listOf(
-            mockk { every { this@mockk.groupKey } returns "12312323|${userId.id}" },
-            mockk { every { this@mockk.groupKey } returns "12312323|${userId.id}" },
-            mockk { every { this@mockk.groupKey } returns "12312323|${userId.id}" }
-        )
+        val groupId = userId.id.hashCode()
 
-        // When
-        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = false)
-
-        // Then
-        verifySequence {
-            notificationManagerCompatProxy.activeNotifications
-            notificationManagerCompatProxy.dismissNotification(notificationId)
-        }
-        confirmVerified(notificationManagerCompatProxy)
-    }
-
-    @Test
-    fun `when dismissal is invoked for a silent notification, dismiss group only if notification is active`() {
-        // Given
-        val userId = UserId("user-id")
-        val notificationId = Random.nextInt()
         every { notificationManagerCompatProxy.activeNotifications } returns listOf(
             mockk {
                 every { this@mockk.groupKey } returns "12312323|${userId.id}"
@@ -104,23 +93,88 @@ internal class DismissEmailNotificationsForUserTest {
             mockk {
                 every { this@mockk.groupKey } returns "12312323|${userId.id}"
                 every { this@mockk.id } returns notificationId + 1
+            },
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns groupId
             }
         )
 
         // When
-        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = true)
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = true)
 
         // Then
-        verify(exactly = 2) { notificationManagerCompatProxy.activeNotifications }
-        verify { notificationManagerCompatProxy.dismissNotification(userId.id.hashCode()) }
+        verifySequence {
+            notificationManagerCompatProxy.activeNotifications // Check if exists
+            notificationManagerCompatProxy.activeNotifications // Count children
+            notificationManagerCompatProxy.dismissNotification(notificationId)
+        }
         confirmVerified(notificationManagerCompatProxy)
     }
 
     @Test
-    fun `when dismissal is invoked for a silent notification, do not dismiss group if others are active`() {
+    fun `when dismissal is invoked and notification doesn't exist with no remaining children, dismiss group`() {
         // Given
         val userId = UserId("user-id")
         val notificationId = Random.nextInt()
+        val groupId = userId.id.hashCode()
+
+        every { notificationManagerCompatProxy.activeNotifications } returns listOf(
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns groupId // Only group remains
+            }
+        )
+
+        // When
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = true)
+
+        // Then
+        verifySequence {
+            notificationManagerCompatProxy.activeNotifications // Check if exists
+            notificationManagerCompatProxy.activeNotifications // Count remaining children
+            notificationManagerCompatProxy.dismissNotification(groupId)
+        }
+        confirmVerified(notificationManagerCompatProxy)
+    }
+
+    @Test
+    fun `when dismissal is invoked and notification doesn't exist with remaining children, dismiss individual`() {
+        // Given
+        val userId = UserId("user-id")
+        val notificationId = Random.nextInt()
+        val groupId = userId.id.hashCode()
+
+        every { notificationManagerCompatProxy.activeNotifications } returns listOf(
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns notificationId + 1 // Different notification
+            },
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns groupId
+            }
+        )
+
+        // When
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = true)
+
+        // Then
+        verifySequence {
+            notificationManagerCompatProxy.activeNotifications // Check if exists
+            notificationManagerCompatProxy.activeNotifications // Count remaining children
+            notificationManagerCompatProxy.dismissNotification(notificationId)
+        }
+        confirmVerified(notificationManagerCompatProxy)
+    }
+
+    @Test
+    fun `when dismissal is invoked without checking existence and only one child, dismiss group`() {
+        // Given
+        val userId = UserId("user-id")
+        val notificationId = Random.nextInt()
+        val groupId = userId.id.hashCode()
+
         every { notificationManagerCompatProxy.activeNotifications } returns listOf(
             mockk {
                 every { this@mockk.groupKey } returns "12312323|${userId.id}"
@@ -128,41 +182,51 @@ internal class DismissEmailNotificationsForUserTest {
             },
             mockk {
                 every { this@mockk.groupKey } returns "12312323|${userId.id}"
-                every { this@mockk.id } returns "another-id".hashCode()
-            },
-            mockk {
-                every { this@mockk.groupKey } returns "12312323|${userId.id}"
-                every { this@mockk.id } returns "another-id-2".hashCode()
+                every { this@mockk.id } returns groupId
             }
         )
 
         // When
-        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = true)
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = false)
 
         // Then
-        verify(exactly = 2) { notificationManagerCompatProxy.activeNotifications }
-        verify { notificationManagerCompatProxy.dismissNotification(notificationId) }
+        verifySequence {
+            notificationManagerCompatProxy.activeNotifications // Count children
+            notificationManagerCompatProxy.dismissNotification(groupId)
+        }
         confirmVerified(notificationManagerCompatProxy)
     }
 
     @Test
-    fun `when dismissal is invoked for a silent notification, do not dismiss group if notification is not active`() {
+    fun `when dismissal is invoked without checking existence and multiple children, dismiss individual`() {
         // Given
         val userId = UserId("user-id")
         val notificationId = Random.nextInt()
+        val groupId = userId.id.hashCode()
+
         every { notificationManagerCompatProxy.activeNotifications } returns listOf(
             mockk {
                 every { this@mockk.groupKey } returns "12312323|${userId.id}"
-                every { this@mockk.id } returns "another-id".hashCode()
+                every { this@mockk.id } returns notificationId
+            },
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns notificationId + 1
+            },
+            mockk {
+                every { this@mockk.groupKey } returns "12312323|${userId.id}"
+                every { this@mockk.id } returns groupId
             }
         )
 
         // When
-        dismissEmailNotificationsForUser(userId, notificationId, isSilentNotification = true)
+        dismissEmailNotificationsForUser(userId, notificationId, checkIfNotificationExists = false)
 
         // Then
-        verify { notificationManagerCompatProxy.activeNotifications }
-        verify { notificationManagerCompatProxy.dismissNotification(notificationId) }
+        verifySequence {
+            notificationManagerCompatProxy.activeNotifications // Count children
+            notificationManagerCompatProxy.dismissNotification(notificationId)
+        }
         confirmVerified(notificationManagerCompatProxy)
     }
 }

@@ -53,7 +53,7 @@ internal class ProcessMessageReadPushNotificationTest {
             dismissEmailNotificationsForUser(
                 userId = UserId,
                 notificationId = NotificationId,
-                isSilentNotification = true
+                checkIfNotificationExists = true
             )
         }
         confirmVerified(dismissEmailNotificationsForUser)
