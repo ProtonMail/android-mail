@@ -36,6 +36,8 @@
     <string name="mailbox_message_sending_success">Message sent</string>
     <string name="mailbox_message_sending_error">Error sending message</string>
     <string name="mailbox_message_sending_error_address_disabled">This address is disabled, sending failed</string>
+    <string name="mailbox_message_sending_error_address_disabled_single">%s is disabled, sending failed</string>
+    <string name="mailbox_message_sending_error_address_disabled_multiple">%s and %d more addresses are disabled, sending failed</string>
     <string name="mailbox_message_sending_error_action">Go to Drafts</string>
     <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
     <string name="notification_switched_account">Switched to account %s</string>
