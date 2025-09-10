@@ -83,7 +83,7 @@ class RustConversationDataSourceImpl @Inject constructor(
         pageKey: PageKey.DefaultPageKey
     ): Either<PaginationError, List<LocalConversation>> = rustConversationsQuery.getConversations(userId, pageKey)
 
-    override fun observeConversation(
+    override suspend fun observeConversation(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
@@ -91,7 +91,7 @@ class RustConversationDataSourceImpl @Inject constructor(
         rustConversationDetailQuery.observeConversation(userId, conversationId, labelId)
             .flowOn(ioDispatcher)
 
-    override fun observeConversationMessages(
+    override suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId

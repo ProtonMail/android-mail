@@ -28,7 +28,7 @@ class ObserveAllConversationBottomBarActions @Inject constructor(
     private val actionRepository: ConversationActionRepository
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         userId: UserId,
         labelId: LabelId,
         conversationId: ConversationId

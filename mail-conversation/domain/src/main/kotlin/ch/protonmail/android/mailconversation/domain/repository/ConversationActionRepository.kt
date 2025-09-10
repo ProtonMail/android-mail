@@ -55,7 +55,7 @@ interface ConversationActionRepository {
         conversationIds: List<ConversationId>
     ): Either<DataError, AllBottomBarActions>
 
-    fun observeAllBottomBarActions(
+    suspend fun observeAllBottomBarActions(
         userId: UserId,
         labelId: LabelId,
         conversationId: ConversationId

@@ -140,7 +140,6 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -226,11 +225,11 @@ class ConversationDetailViewModelTest {
         } returns flowOf(emptyList<ContactMetadata.Contact>().right())
     }
     private val observeConversation: ObserveConversation = mockk {
-        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
+        coEvery { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
     private val observeConversationMessages: ObserveConversationMessages = mockk {
-        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns flowOf(
+        coEvery { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns flowOf(
             ConversationMessages(
                 nonEmptyListOf(
                     MessageSample.Invoice,
@@ -468,7 +467,7 @@ class ConversationDetailViewModelTest {
         )
         val labelId = LabelIdSample.AllMail
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
-        every {
+        coEvery {
             observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId)
         } returns flowOf(ConversationError.UnknownMessage.left())
         coEvery {
@@ -499,7 +498,7 @@ class ConversationDetailViewModelTest {
         val labelId = LabelIdSample.AllMail
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
 
-        every {
+        coEvery {
             observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId)
         } returns flow {
             emit(ConversationSample.WeatherForecast.right())
@@ -596,7 +595,7 @@ class ConversationDetailViewModelTest {
         )
         val labelId = LabelIdSample.AllMail
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
-        every {
+        coEvery {
             observeConversationMessages(UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId)
         } returns flowOf(ConversationError.Other(DataError.Remote.Http(NetworkError.ServerError)).left())
         coEvery {
@@ -622,7 +621,7 @@ class ConversationDetailViewModelTest {
         val expectedState = initialState.copy(messagesState = ConversationDetailsMessagesState.Offline)
         val labelId = LabelIdSample.AllMail
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
-        every {
+        coEvery {
             observeConversationMessages(UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId)
         } returns flowOf(ConversationError.Other(DataError.Remote.Http(NetworkError.NoNetwork)).left())
         coEvery {
@@ -727,7 +726,7 @@ class ConversationDetailViewModelTest {
         val expectedState = initialState.copy(bottomBarState = BottomBarState.Data.Shown(actionUiModels))
 
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
-        every {
+        coEvery {
             observeDetailBottomBarActions(UserIdSample.Primary, labelId, ConversationIdSample.WeatherForecast)
         } returns flowOf(actions.right())
         coEvery {
@@ -746,7 +745,7 @@ class ConversationDetailViewModelTest {
             refreshToolbarSharedFlow.emit(Unit)
             advanceUntilIdle()
 
-            verify(exactly = 2) {
+            coVerify(exactly = 2) {
                 observeDetailBottomBarActions(UserIdSample.Primary, labelId, ConversationIdSample.WeatherForecast)
             }
 
@@ -1480,7 +1479,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // Then
-            verify { observeConversation(any(), any(), any()) }
+            coVerify { observeConversation(any(), any(), any()) }
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -1928,7 +1927,7 @@ class ConversationDetailViewModelTest {
         ).toImmutableList()
         val labelId = LabelIdSample.AllMail
         every { savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns labelId.id
-        every {
+        coEvery {
             observeConversationMessages(
                 UserIdSample.Primary,
                 ConversationIdSample.WeatherForecast,

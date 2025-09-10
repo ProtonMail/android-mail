@@ -27,7 +27,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRepo
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -37,7 +37,7 @@ import kotlin.test.assertEquals
 class ObserveConversationTest {
 
     private val repository = mockk<ConversationRepository> {
-        every {
+        coEvery {
             this@mockk.observeConversation(
                 userId,
                 any(),
@@ -54,7 +54,7 @@ class ObserveConversationTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val error = ConversationError.NullValueReturned
         val labelId = LabelId("3")
-        every { repository.observeConversation(userId, conversationId, labelId) } returns
+        coEvery { repository.observeConversation(userId, conversationId, labelId) } returns
             flowOf(error.left())
 
         // When
@@ -71,7 +71,7 @@ class ObserveConversationTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.conversation
         val labelId = LabelId("3")
-        every { repository.observeConversation(userId, conversationId, labelId) } returns flowOf(conversation.right())
+        coEvery { repository.observeConversation(userId, conversationId, labelId) } returns flowOf(conversation.right())
 
         // When
         observeConversation(userId, conversationId, labelId).test {
@@ -87,7 +87,7 @@ class ObserveConversationTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.conversation
         val labelId = LabelId("3")
-        every { repository.observeConversation(userId, conversationId, labelId) } returns flowOf(conversation.right())
+        coEvery { repository.observeConversation(userId, conversationId, labelId) } returns flowOf(conversation.right())
 
         // When
         observeConversation(userId, conversationId, labelId).test {

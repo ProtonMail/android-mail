@@ -246,13 +246,13 @@ internal class ConversationDetailViewModelIntegrationTest {
         } returns flowOf(emptyList<ContactMetadata.Contact>().right())
     }
     private val observeConversationUseCase: ObserveConversation = mockk {
-        every {
+        coEvery {
             this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, filterByLocationLabelId)
         } returns flowOf(ConversationSample.WeatherForecast.right())
     }
     private val observeMessage = mockk<ObserveMessage>()
     private val observeConversationMessages: ObserveConversationMessages = mockk {
-        every {
+        coEvery {
             this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, filterByLocationLabelId)
         } returns flowOf(
             ConversationMessages(
@@ -677,7 +677,7 @@ internal class ConversationDetailViewModelIntegrationTest {
             ).right()
         )
         val observeConversationMessagesMock = mockk<ObserveConversationMessages> {
-            every {
+            coEvery {
                 this@mockk(userId, initialMessage.conversationId, filterByLocationLabelId)
             } returns conversationWithLabelsFlow
         }
@@ -2623,8 +2623,11 @@ internal class ConversationDetailViewModelIntegrationTest {
         coEvery {
             observeContacts(userId = UserIdSample.Primary)
         } returns flowOf(emptyList<ContactMetadata.Contact>().right())
-        every { observeConversationUseCase(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
-            flowOf(ConversationSample.WeatherForecast.right())
+        coEvery {
+            observeConversationUseCase(
+                UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()
+            )
+        } returns flowOf(ConversationSample.WeatherForecast.right())
         coEvery {
             observeDetailBottomBarActions(
                 UserIdSample.Primary,

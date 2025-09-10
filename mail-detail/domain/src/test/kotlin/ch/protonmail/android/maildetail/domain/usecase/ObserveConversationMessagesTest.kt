@@ -30,7 +30,7 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.ConversationMessages
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -56,7 +56,7 @@ internal class ObserveConversationMessagesTest {
             MessageSample.AugWeatherForecast.messageId
         ).right()
         val labelId = LabelId("1")
-        every {
+        coEvery {
             conversationRepository.observeConversationMessages(
                 UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId
             )
@@ -84,7 +84,7 @@ internal class ObserveConversationMessagesTest {
             message.messageId
         ).right()
         val labelId = LabelId("1")
-        every {
+        coEvery {
             conversationRepository.observeConversationMessages(
                 UserIdSample.Primary, ConversationIdSample.Invoices, labelId
             )
@@ -109,7 +109,7 @@ internal class ObserveConversationMessagesTest {
         // given
         val error = ConversationError.NullValueReturned.left()
         val labelId = LabelId("1")
-        every {
+        coEvery {
             conversationRepository.observeConversationMessages(
                 UserIdSample.Primary, ConversationIdSample.WeatherForecast, labelId
             )
