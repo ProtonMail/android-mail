@@ -38,13 +38,13 @@ import uniffi.proton_mail_uniffi.MoveAction
 
 interface RustConversationDataSource {
 
-    fun observeConversation(
+    suspend fun observeConversation(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
     ): Flow<Either<ConversationError, LocalConversation>>
 
-    fun observeConversationMessages(
+    suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId

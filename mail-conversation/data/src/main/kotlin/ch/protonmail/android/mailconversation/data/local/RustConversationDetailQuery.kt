@@ -28,13 +28,13 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface RustConversationDetailQuery {
-    fun observeConversation(
+    suspend fun observeConversation(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
     ): Flow<Either<ConversationError, LocalConversation>>
 
-    fun observeConversationMessages(
+    suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId

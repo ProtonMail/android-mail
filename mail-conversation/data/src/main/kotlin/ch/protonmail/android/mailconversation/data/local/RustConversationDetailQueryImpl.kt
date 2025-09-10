@@ -104,7 +104,7 @@ class RustConversationDetailQueryImpl @Inject constructor(
         }
     }
 
-    override fun observeConversation(
+    override suspend fun observeConversation(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
@@ -115,7 +115,7 @@ class RustConversationDetailQueryImpl @Inject constructor(
         return conversationStatusFlow
     }
 
-    override fun observeConversationMessages(
+    override suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
@@ -126,41 +126,40 @@ class RustConversationDetailQueryImpl @Inject constructor(
         return conversationMessagesStatusFlow
     }
 
-    private fun initialiseOrUpdateWatcher(
+    private suspend fun initialiseOrUpdateWatcher(
         userId: UserId,
         conversationId: LocalConversationId,
         labelId: LocalLabelId
     ) {
-        coroutineScope.launch {
-            mutex.withLock {
-                if (currentConversationId != conversationId || conversationWatcher == null) {
-                    // If the conversationId is different or there's no active watcher, destroy and create a new one
-                    destroy()
+        mutex.withLock {
+            if (currentConversationId != conversationId || conversationWatcher == null) {
+                // If the conversationId is different or there's no active watcher, destroy and create a new one
+                destroy()
 
-                    val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
-                    if (mailbox == null) {
-                        Timber.e("Failed to observe conversation, null mailbox")
-                        return@withLock
-                    }
-
-                    currentUserId = userId
-                    currentLabelId = labelId
-                    val convoWatcherEither = createRustConversationWatcher(
-                        mailbox, conversationId, conversationUpdatedCallback
-                    ).onLeft {
-                        Timber.w("Failed to create watcher for conversation: $it")
-                    }.onRight {
-                        conversationWatcher = it
-                    }
-
-                    conversationMutableStatusFlow.value = convoWatcherEither.map { it.conversation }
-                    conversationMessagesMutableStatusFlow.value = convoWatcherEither.map {
-                        LocalConversationMessages(it.messageIdToOpen, it.messages)
-                    }
-                    currentConversationId = conversationId
+                val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
+                if (mailbox == null) {
+                    Timber.e("Failed to observe conversation, null mailbox")
+                    return@withLock
                 }
+
+                currentUserId = userId
+                currentLabelId = labelId
+                val convoWatcherEither = createRustConversationWatcher(
+                    mailbox, conversationId, conversationUpdatedCallback
+                ).onLeft {
+                    Timber.w("Failed to create watcher for conversation: $it")
+                }.onRight {
+                    conversationWatcher = it
+                }
+
+                conversationMutableStatusFlow.value = convoWatcherEither.map { it.conversation }
+                conversationMessagesMutableStatusFlow.value = convoWatcherEither.map {
+                    LocalConversationMessages(it.messageIdToOpen, it.messages)
+                }
+                currentConversationId = conversationId
             }
         }
+
     }
 
     private fun destroy() {

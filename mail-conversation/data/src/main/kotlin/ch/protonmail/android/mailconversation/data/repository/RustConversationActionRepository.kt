@@ -102,7 +102,7 @@ class RustConversationActionRepository @Inject constructor(
         return allActions.map { it.toAllBottomBarActions() }
     }
 
-    override fun observeAllBottomBarActions(
+    override suspend fun observeAllBottomBarActions(
         userId: UserId,
         labelId: LabelId,
         conversationId: ConversationId

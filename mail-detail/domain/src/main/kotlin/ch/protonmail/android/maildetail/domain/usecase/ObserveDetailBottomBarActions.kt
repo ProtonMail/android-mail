@@ -37,7 +37,7 @@ class ObserveDetailBottomBarActions @Inject constructor(
     private val observeAllMessageBottomBarActions: ObserveAllMessageBottomBarActions
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         userId: UserId,
         labelId: LabelId,
         conversationId: ConversationId

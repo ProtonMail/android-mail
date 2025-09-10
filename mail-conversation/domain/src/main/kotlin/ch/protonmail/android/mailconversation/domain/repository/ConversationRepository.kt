@@ -47,7 +47,7 @@ interface ConversationRepository {
      * Returns any conversation data that is available locally right away.
      * Message metadata is fetched and returned as available
      */
-    fun observeConversation(
+    suspend fun observeConversation(
         userId: UserId,
         id: ConversationId,
         labelId: LabelId
@@ -56,7 +56,7 @@ interface ConversationRepository {
     /**
      * Get all the [Message]s metadata for a given [ConversationId], for [userId] from the local storage
      */
-    fun observeConversationMessages(
+    suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId

@@ -36,7 +36,7 @@ import ch.protonmail.android.mailmessage.domain.model.ConversationMessages
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.testdata.message.MessageTestData
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
@@ -65,7 +65,7 @@ internal class GetMessagesInSameExclusiveLocationTest {
         @Test
         fun `should return error when messages can not be fetched`() = runTest {
             // Given
-            every {
+            coEvery {
                 observeConversationMessages.invoke(userId, conversationId, localLabelId)
             } returns flowOf(ConversationError.UnknownLabel.left())
 
@@ -93,7 +93,7 @@ internal class GetMessagesInSameExclusiveLocationTest {
         @Test
         fun `should return the correct count of messages in the location`() = runTest {
             // Given
-            every {
+            coEvery {
                 observeConversationMessages.invoke(userId, conversationId, localLabelId)
             } returns flowOf(ConversationMessages(testInput.messagesList, testInput.messageId).right())
 

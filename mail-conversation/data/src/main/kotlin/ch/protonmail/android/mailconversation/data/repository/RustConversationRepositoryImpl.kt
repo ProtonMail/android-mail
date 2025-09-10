@@ -60,7 +60,7 @@ class RustConversationRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun observeConversation(
+    override suspend fun observeConversation(
         userId: UserId,
         id: ConversationId,
         labelId: LabelId
@@ -69,7 +69,7 @@ class RustConversationRepositoryImpl @Inject constructor(
         .map { eitherFlow -> eitherFlow.map { it.toConversation() } }
 
 
-    override fun observeConversationMessages(
+    override suspend fun observeConversationMessages(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
