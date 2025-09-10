@@ -22,6 +22,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalDraftSendResult
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
+import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDisabled
+import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDoesNotHavePrimaryKey
+import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.InvalidRecipient
 import ch.protonmail.android.mailcomposer.domain.model.SendErrorReason
 import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import uniffi.proton_mail_uniffi.DraftAttachmentUploadErrorReason
@@ -113,6 +116,9 @@ fun DraftSaveErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
         SendErrorReason.ErrorWithMessage.ProtonRecipientDoesNotExist(v1)
 
     is DraftSaveErrorReason.MessageDoesNotExist -> SendErrorReason.ErrorNoMessage.MessageDoesNotExist
+    DraftSaveErrorReason.AttachmentTooLarge -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
+    DraftSaveErrorReason.TooManyAttachments -> SendErrorReason.ErrorNoMessage.TooManyAttachments
+    DraftSaveErrorReason.TotalAttachmentSizeTooLarge -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
 }
 
 fun DraftAttachmentUploadErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
@@ -168,9 +174,12 @@ fun DraftSaveError.toSaveDraftError(): SaveDraftError = when (this) {
         is DraftSaveErrorReason.MessageDoesNotExist,
         is DraftSaveErrorReason.MessageIsNotADraft -> SaveDraftError.MessageIsNotADraft
 
-        is DraftSaveErrorReason.AddressDisabled -> SaveDraftError.AddressDisabled(reason.v1)
-        is DraftSaveErrorReason.AddressDoesNotHavePrimaryKey -> SaveDraftError.AddressDoesNotHavePrimaryKey(reason.v1)
-        is DraftSaveErrorReason.RecipientEmailInvalid -> SaveDraftError.InvalidRecipient(reason.v1)
-        is DraftSaveErrorReason.ProtonRecipientDoesNotExist -> SaveDraftError.InvalidRecipient(reason.v1)
+        is DraftSaveErrorReason.AddressDisabled -> AddressDisabled(reason.v1)
+        is DraftSaveErrorReason.AddressDoesNotHavePrimaryKey -> AddressDoesNotHavePrimaryKey(reason.v1)
+        is DraftSaveErrorReason.RecipientEmailInvalid -> InvalidRecipient(reason.v1)
+        is DraftSaveErrorReason.ProtonRecipientDoesNotExist -> InvalidRecipient(reason.v1)
+        is DraftSaveErrorReason.AttachmentTooLarge -> SaveDraftError.AttachmentsTooLarge
+        is DraftSaveErrorReason.TooManyAttachments -> SaveDraftError.TooManyAttachments
+        is DraftSaveErrorReason.TotalAttachmentSizeTooLarge -> SaveDraftError.AttachmentsTooLarge
     }
 }

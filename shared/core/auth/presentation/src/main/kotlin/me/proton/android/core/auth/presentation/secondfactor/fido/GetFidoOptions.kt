@@ -22,6 +22,7 @@ import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.auth.presentation.flow.FlowManager
 import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
 import uniffi.proton_account_uniffi.Fido2ResponseFfi
+import uniffi.proton_account_uniffi.LoginFlowGetFidoDetailsResult
 import uniffi.proton_account_uniffi.PasswordFlowFidoDetailsResult
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,7 +34,10 @@ class GetFidoOptions @Inject constructor(
 
     suspend operator fun invoke(userId: CoreUserId): Fido2ResponseFfi? {
         return when (val fidoFlowResult = flowManager.getCurrentActiveFlow(userId)) {
-            is CurrentFlow.LoggingIn -> fidoFlowResult.flow.getFidoDetails()
+            is CurrentFlow.LoggingIn -> when (val fidoDetailsResult = fidoFlowResult.flow.getFidoDetails()) {
+                is LoginFlowGetFidoDetailsResult.Error -> null
+                is LoginFlowGetFidoDetailsResult.Ok -> fidoDetailsResult.v1
+            }
             is CurrentFlow.ChangingPassword -> {
                 when (val fidoDetailsResult = fidoFlowResult.flow.fidoDetails()) {
                     is PasswordFlowFidoDetailsResult.Error -> null

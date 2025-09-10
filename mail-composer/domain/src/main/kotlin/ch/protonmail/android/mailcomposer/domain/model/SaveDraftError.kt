@@ -25,6 +25,8 @@ sealed interface SaveDraftError {
     data object EmptyRecipientGroupName : SaveDraftError
     data object DuplicateRecipient : SaveDraftError
     data object SaveFailed : SaveDraftError
+    data object TooManyAttachments : SaveDraftError
+    data object AttachmentsTooLarge : SaveDraftError
 
     data class InvalidRecipient(val message: String) : SaveDraftError
     data class AddressDisabled(val message: String) : SaveDraftError
