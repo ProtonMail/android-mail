@@ -75,31 +75,32 @@ class RustMessageQuery @Inject constructor(
         }
     }
 
-    fun observeMessage(session: MailUserSessionWrapper, messageId: LocalMessageId): Flow<Either<DataError, Message>> {
+    suspend fun observeMessage(
+        session: MailUserSessionWrapper,
+        messageId: LocalMessageId
+    ): Flow<Either<DataError, Message>> {
         initialiseOrUpdateWatcher(session, messageId)
 
         return messageStatusFlow
     }
 
-    private fun initialiseOrUpdateWatcher(session: MailUserSessionWrapper, messageId: LocalMessageId) {
-        coroutineScope.launch {
-            mutex.withLock {
-                if (currentMessageId != messageId || messageWatcher == null) {
-                    // If the messageId is different or there's no active watcher, destroy and create a new one
-                    destroy()
+    private suspend fun initialiseOrUpdateWatcher(session: MailUserSessionWrapper, messageId: LocalMessageId) {
+        mutex.withLock {
+            if (currentMessageId != messageId || messageWatcher == null) {
+                // If the messageId is different or there's no active watcher, destroy and create a new one
+                destroy()
 
-                    currentUserSession = session
-                    currentMessageId = messageId
-                    val messageWatcherEither = createRustMessageWatcher(
-                        session, messageId, messageUpdatedCallback
-                    ).onLeft {
-                        Timber.w("Failed to observe message: $it")
-                    }.onRight {
-                        messageWatcher = it
-                    }
-
-                    messageMutableStatusFlow.value = messageWatcherEither.map { it.message }
+                currentUserSession = session
+                currentMessageId = messageId
+                val messageWatcherEither = createRustMessageWatcher(
+                    session, messageId, messageUpdatedCallback
+                ).onLeft {
+                    Timber.w("Failed to observe message: $it")
+                }.onRight {
+                    messageWatcher = it
                 }
+
+                messageMutableStatusFlow.value = messageWatcherEither.map { it.message }
             }
         }
     }
