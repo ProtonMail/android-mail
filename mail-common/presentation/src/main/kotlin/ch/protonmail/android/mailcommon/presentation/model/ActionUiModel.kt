@@ -36,7 +36,7 @@ fun Action.iconDrawable() = when (this) {
     Action.Reply -> R.drawable.ic_proton_reply
     Action.ReplyAll -> R.drawable.ic_proton_reply_all
     Action.Forward -> R.drawable.ic_proton_forward
-    Action.MarkRead -> R.drawable.ic_proton_envelope
+    Action.MarkRead -> R.drawable.ic_proton_envelope_open
     Action.MarkUnread -> R.drawable.ic_proton_envelope_dot
     Action.Star -> R.drawable.ic_proton_star
     Action.Unstar -> R.drawable.ic_proton_star_filled

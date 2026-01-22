@@ -55,7 +55,7 @@ class ActionUiModelMapperTest(
                     action = Action.MarkRead,
                     expected = ActionUiModel(
                         Action.MarkRead,
-                        R.drawable.ic_proton_envelope,
+                        R.drawable.ic_proton_envelope_open,
                         TextUiModel(commonRes.string.action_mark_read_description),
                         TextUiModel(commonRes.string.action_mark_read_content_description)
                     )
