@@ -26,7 +26,8 @@ sealed interface WebSettingsState {
     data class Data(
         val webSettingsUrl: String,
         val theme: Theme,
-        val upsellingVisibility: UpsellingVisibility
+        val upsellingVisibility: UpsellingVisibility,
+        val sessionId: String
     ) : WebSettingsState
 
     data object Loading : WebSettingsState

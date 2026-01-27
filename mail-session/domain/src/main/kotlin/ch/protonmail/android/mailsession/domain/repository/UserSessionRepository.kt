@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailcommon.domain.model.autolock.SetAutoLockPinError
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
 import ch.protonmail.android.mailsession.domain.model.UserSettings
@@ -61,7 +61,7 @@ interface UserSessionRepository {
 
     suspend fun getUserSettings(userId: UserId): UserSettings?
 
-    suspend fun forkSession(userId: UserId): Either<SessionError, ForkedSessionId>
+    suspend fun forkSession(userId: UserId): Either<SessionError, Fork>
 
     suspend fun setPrimaryAccount(userId: UserId)
 

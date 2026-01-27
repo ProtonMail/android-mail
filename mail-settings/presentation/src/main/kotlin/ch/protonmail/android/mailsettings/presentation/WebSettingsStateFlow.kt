@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation
 
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
 import ch.protonmail.android.mailsession.domain.usecase.ForkSession
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.Theme
@@ -49,7 +48,7 @@ class ObserveWebSettingsStateFlow @Inject constructor(
 
     operator fun invoke(
         coroutineScope: CoroutineScope,
-        getSettingsUrl: (ForkedSessionId, Theme, WebSettingsConfig) -> String
+        getSettingsUrl: (String, Theme, WebSettingsConfig) -> String
     ): Flow<WebSettingsState> = invoke(
         coroutineScope = coroutineScope,
         upsellingFlow = flowOf(UpsellingVisibility.Hidden),
@@ -59,7 +58,7 @@ class ObserveWebSettingsStateFlow @Inject constructor(
     operator fun invoke(
         coroutineScope: CoroutineScope,
         entryPoint: UpsellingEntryPoint.Feature,
-        getSettingsUrl: (ForkedSessionId, Theme, WebSettingsConfig) -> String
+        getSettingsUrl: (String, Theme, WebSettingsConfig) -> String
     ): Flow<WebSettingsState> = invoke(
         coroutineScope = coroutineScope,
         upsellingFlow = observeUpsellingVisibility(entryPoint),
@@ -69,7 +68,7 @@ class ObserveWebSettingsStateFlow @Inject constructor(
     private fun invoke(
         coroutineScope: CoroutineScope,
         upsellingFlow: Flow<UpsellingVisibility>,
-        getSettingsUrl: (ForkedSessionId, Theme, WebSettingsConfig) -> String
+        getSettingsUrl: (String, Theme, WebSettingsConfig) -> String
     ): Flow<WebSettingsState> = combine(
         observePrimaryUserId().filterNotNull(),
         appSettingsRepository.observeTheme(),
@@ -78,11 +77,12 @@ class ObserveWebSettingsStateFlow @Inject constructor(
     ) { userId, theme, webSettingsConfig, upsellingVisibility ->
 
         forkSession(userId).fold(
-            ifRight = { forkedSessionId ->
+            ifRight = { fork ->
                 WebSettingsState.Data(
-                    webSettingsUrl = getSettingsUrl(forkedSessionId, theme, webSettingsConfig),
+                    webSettingsUrl = getSettingsUrl(fork.selector.value, theme, webSettingsConfig),
                     theme = theme,
-                    upsellingVisibility = upsellingVisibility
+                    upsellingVisibility = upsellingVisibility,
+                    sessionId = fork.sessionId.value
                 )
             },
             ifLeft = { sessionError ->

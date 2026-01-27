@@ -34,7 +34,9 @@ import ch.protonmail.android.mailsession.data.mapper.toUserSettings
 import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
+import ch.protonmail.android.mailsession.domain.model.CookieSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
+import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
 import ch.protonmail.android.mailsession.domain.model.UserSettings
@@ -199,11 +201,11 @@ class UserSessionRepositoryImpl @Inject constructor(
         }?.toUserSettings()
     }
 
-    override suspend fun forkSession(userId: UserId): Either<SessionError, ForkedSessionId> {
+    override suspend fun forkSession(userId: UserId): Either<SessionError, Fork> {
         val userSession = getUserSession(userId) ?: return SessionError.Local.Unknown.left()
 
         return userSession.fork()
-            .map { sessionId -> ForkedSessionId(sessionId) }
+            .map { fork -> Fork(Selector(fork.selector), CookieSessionId(fork.id)) }
             .mapLeft {
                 Timber.e("user-session: Forking session failed $it")
                 SessionError.Local.Unknown

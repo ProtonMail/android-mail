@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.websettings
 import android.annotation.SuppressLint
 import android.net.http.SslError
 import android.os.Build
+import android.webkit.CookieManager
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -30,6 +31,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailsettings.presentation.websettings.UpsellJsHelper.UpsellInterfaceName
@@ -123,30 +127,52 @@ fun SettingWebView(
 
     val webViewState = rememberWebViewState(url = resolvedUrl)
 
-    Column(modifier = modifier.fillMaxSize()) {
-        WebView(
-            onCreated = {
-                it.settings.javaScriptEnabled = true
-                it.settings.domStorageEnabled = false
-                it.settings.loadWithOverviewMode = true
-                it.settings.allowFileAccess = false
-                it.settings.allowContentAccess = false
-                it.settings.useWideViewPort = true
-                it.settings.safeBrowsingEnabled = true
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.settings.isAlgorithmicDarkeningAllowed = true
-                }
-                if (isUpsellEligible) {
-                    it.addJavascriptInterface(jsInterface, UpsellInterfaceName)
-                }
-            },
-            captureBackPresses = true,
-            state = webViewState,
-            modifier = Modifier
-                .fillMaxSize(),
-            client = client,
-            chromeClient = chromeClient
+    val cookiesReady = remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        WebViewCookieHelper.setSessionCookie(
+            url = resolvedUrl,
+            sessionId = state.sessionId
         )
+        cookiesReady.value = true
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            WebViewCookieHelper.clearSessionCookie(
+                url = resolvedUrl
+            )
+        }
+    }
+
+    if (cookiesReady.value) {
+        Column(modifier = modifier.fillMaxSize()) {
+            WebView(
+                onCreated = {
+                    it.settings.javaScriptEnabled = true
+                    it.settings.domStorageEnabled = false
+                    it.settings.loadWithOverviewMode = true
+                    it.settings.allowFileAccess = false
+                    it.settings.allowContentAccess = false
+                    it.settings.useWideViewPort = true
+                    it.settings.safeBrowsingEnabled = true
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.settings.isAlgorithmicDarkeningAllowed = true
+                    }
+                    if (isUpsellEligible) {
+                        it.addJavascriptInterface(jsInterface, UpsellInterfaceName)
+                    }
+
+                    val cookieManager = CookieManager.getInstance()
+                    cookieManager.setAcceptThirdPartyCookies(it, true)
+                },
+                captureBackPresses = true,
+                state = webViewState,
+                modifier = Modifier.fillMaxSize(),
+                client = client,
+                chromeClient = chromeClient
+            )
+        }
     }
 }
 

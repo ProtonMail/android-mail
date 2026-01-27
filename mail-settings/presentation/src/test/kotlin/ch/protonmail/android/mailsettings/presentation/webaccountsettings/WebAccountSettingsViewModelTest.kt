@@ -21,8 +21,10 @@ package ch.protonmail.android.mailsettings.presentation.webaccountsettings
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailsession.domain.model.CookieSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
+import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.usecase.ForkSession
 import ch.protonmail.android.mailsettings.domain.model.Theme
@@ -52,7 +54,7 @@ class WebAccountSettingsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val forkedSessionId = ForkedSessionId("test-selector-id")
+    private val fork = Fork(Selector("test-selector-id"), CookieSessionId("test-session-id"))
     private val testTheme = Theme.DARK
     private val testWebSettingsConfig = WebSettingsConfig(
         baseUrl = "https://test.com",
@@ -69,7 +71,7 @@ class WebAccountSettingsViewModelTest {
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
     private val forkSession = mockk<ForkSession> {
-        coEvery { this@mockk(primaryUserId) } returns forkedSessionId.right()
+        coEvery { this@mockk(primaryUserId) } returns fork.right()
     }
     private val appSettingsRepository = mockk<AppSettingsRepository>()
     private val observeWebSettingsConfig = mockk<ObserveWebSettingsConfig> {

@@ -30,6 +30,7 @@ import timber.log.Timber
 import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
 import uniffi.proton_mail_uniffi.EventLoopErrorObserver
 import uniffi.proton_mail_uniffi.ExecuteWhenOnlineCallbackAsync
+import uniffi.proton_mail_uniffi.Fork
 import uniffi.proton_mail_uniffi.MailUserSession
 import uniffi.proton_mail_uniffi.MailUserSessionForkResult
 import uniffi.proton_mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
@@ -41,7 +42,7 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
 
     fun getRustUserSession() = userSession
 
-    suspend fun fork(): Either<DataError, String> = when (val result = userSession.fork("android", "mail")) {
+    suspend fun fork(): Either<DataError, Fork> = when (val result = userSession.fork("android", "mail")) {
         is MailUserSessionForkResult.Error -> result.v1.toDataError().left()
         is MailUserSessionForkResult.Ok -> result.v1.right()
     }

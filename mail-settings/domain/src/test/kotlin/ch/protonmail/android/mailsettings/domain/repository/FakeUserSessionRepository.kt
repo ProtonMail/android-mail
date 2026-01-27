@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailcommon.domain.model.autolock.SetAutoLockPinError
 import ch.protonmail.android.mailsession.domain.model.Account
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
 import ch.protonmail.android.mailsession.domain.model.UserSettings
@@ -81,7 +81,7 @@ internal class FakeUserSessionRepository(
         TODO("Not yet implemented")
     }
 
-    override suspend fun forkSession(userId: UserId): Either<SessionError, ForkedSessionId> {
+    override suspend fun forkSession(userId: UserId): Either<SessionError, Fork> {
         TODO("Not yet implemented")
     }
 

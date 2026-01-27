@@ -8,7 +8,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalUser
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
+import ch.protonmail.android.mailsession.domain.model.CookieSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
+import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.account.domain.usecase.ObserveStoredAccounts
 import org.junit.Rule
+import uniffi.proton_mail_uniffi.Fork as RustFork
 import uniffi.proton_mail_uniffi.StoredAccount
 import uniffi.proton_mail_uniffi.StoredSession
 import kotlin.test.Test
@@ -135,12 +138,12 @@ class UserSessionRepositoryImplTest {
     }
 
     @Test
-    fun `fork session should return session id on success`() = runTest {
+    fun `fork session should return fork data on success`() = runTest {
         // Given
         val userId = UserIdTestData.userId
-        val expectedSessionId = "forked-session-id"
+        val expectedFork = RustFork("selector", "forked-session-id")
         val expectedMailUserSession = mockk<MailUserSessionWrapper> {
-            coEvery { fork() } returns expectedSessionId.right()
+            coEvery { fork() } returns expectedFork.right()
         }
         val mailSession = mailSessionWithReadyInitializedSession(expectedMailUserSession)
         coEvery { mailSessionRepository.getMailSession() } returns mailSession
@@ -150,7 +153,10 @@ class UserSessionRepositoryImplTest {
 
         // Then
         assert(result.isRight())
-        assertEquals(ForkedSessionId(expectedSessionId), result.getOrNull())
+        assertEquals(
+            Fork(Selector("selector"), CookieSessionId("forked-session-id")),
+            result.getOrNull()
+        )
         coVerify { expectedMailUserSession.fork() }
     }
 

@@ -63,11 +63,12 @@ class EmailSignatureSettingsViewModel @Inject constructor(
         ) { userId, theme, webSettingsConfig ->
 
             forkSession(userId).fold(
-                ifRight = { forkedSessionId ->
+                ifRight = { fork ->
                     WebSettingsState.Data(
-                        webSettingsUrl = webSettingsConfig.toEmailSignatureUrl(forkedSessionId, theme),
+                        webSettingsUrl = webSettingsConfig.toEmailSignatureUrl(fork.selector.value, theme),
                         theme = theme,
-                        upsellingVisibility = UpsellingVisibility.Hidden // Upselling flow not available here.
+                        upsellingVisibility = UpsellingVisibility.Hidden, // Upselling flow not available here.
+                        sessionId = fork.sessionId.value
                     )
                 },
                 ifLeft = { sessionError ->

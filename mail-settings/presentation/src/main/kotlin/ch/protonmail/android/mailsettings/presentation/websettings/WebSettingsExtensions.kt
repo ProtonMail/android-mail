@@ -18,31 +18,30 @@
 
 package ch.protonmail.android.mailsettings.presentation.websettings
 
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.WebSettingsConfig
 import ch.protonmail.android.mailsettings.presentation.BuildConfig
 import timber.log.Timber
 
-fun WebSettingsConfig.toPrivacyAndSecuritySettingsUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, privacySecuritySettingsAction)
+fun WebSettingsConfig.toPrivacyAndSecuritySettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, privacySecuritySettingsAction)
 
-fun WebSettingsConfig.toSpamFilterSettingsUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, spamFilterSettingsAction)
+fun WebSettingsConfig.toSpamFilterSettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, spamFilterSettingsAction)
 
-fun WebSettingsConfig.toFolderAndLabelSettingsUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, labelSettingsAction)
+fun WebSettingsConfig.toFolderAndLabelSettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, labelSettingsAction)
 
-fun WebSettingsConfig.toEmailSettingsUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, emailSettingsAction)
+fun WebSettingsConfig.toEmailSettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, emailSettingsAction)
 
-fun WebSettingsConfig.toAccountSettingsUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, accountSettingsAction).also {
+fun WebSettingsConfig.toAccountSettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, accountSettingsAction).also {
         Timber.d("web-settings: Account settings URL: $it")
     }
 
-fun WebSettingsConfig.toEmailSignatureUrl(forkedSessionId: ForkedSessionId, theme: Theme): String =
-    toSettingsUrl(forkedSessionId, theme, emailSignatureAction).also {
+fun WebSettingsConfig.toEmailSignatureUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, emailSignatureAction).also {
         Timber.d("web-settings: Email signature settings URL: $it")
     }
 
@@ -54,11 +53,11 @@ private fun Theme.getUriParam(): String = when (this) {
 
 @Suppress("MaxLineLength")
 private fun WebSettingsConfig.toSettingsUrl(
-    forkedSessionId: ForkedSessionId,
+    selector: String,
     theme: Theme,
     action: String
 ) =
-    "$baseUrl?action=$action&theme=${theme.getUriParam()}&app-version=${BuildConfig.WEBVIEW_APP_VERSION}#selector=${forkedSessionId.id}"
+    "$baseUrl?action=$action&theme=${theme.getUriParam()}&app-version=${BuildConfig.WEBVIEW_APP_VERSION}#selector=$selector"
 
 const val SYSTEM_DEFAULT_THEME_PLACEHOLDER = "{SYSTEM_DEFAULT_THEME}"
 const val LIGHT_THEME_URI_PARAM = "0"

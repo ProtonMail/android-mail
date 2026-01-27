@@ -18,6 +18,15 @@
 
 package ch.protonmail.android.mailsession.domain.model
 
-data class ForkedSessionId(
-    val id: String
+data class Fork(
+    val selector: Selector,
+    val sessionId: CookieSessionId
+)
+
+data class Selector(
+    val value: String
+)
+
+data class CookieSessionId(
+    val value: String
 )

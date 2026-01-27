@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsession.domain.usecase
 
 import arrow.core.Either
-import ch.protonmail.android.mailsession.domain.model.ForkedSessionId
+import ch.protonmail.android.mailsession.domain.model.Fork
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import me.proton.core.domain.entity.UserId
@@ -28,6 +28,5 @@ import javax.inject.Inject
 class ForkSession @Inject constructor(
     private val userSessionRepository: UserSessionRepository
 ) {
-    suspend operator fun invoke(userId: UserId): Either<SessionError, ForkedSessionId> =
-        userSessionRepository.forkSession(userId)
+    suspend operator fun invoke(userId: UserId): Either<SessionError, Fork> = userSessionRepository.forkSession(userId)
 }
