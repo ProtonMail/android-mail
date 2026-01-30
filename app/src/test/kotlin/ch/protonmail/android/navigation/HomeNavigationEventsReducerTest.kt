@@ -102,27 +102,6 @@ class HomeNavigationEventsReducerTest {
     }
 
     @Test
-    fun `reduce NotificationIntentReceived sets NavigateToUri effect`() {
-        // Given
-        val initialState = HomeState.Initial
-        val uri = mockk<Uri>()
-        val event = HomeNavigationEvent.NotificationIntentReceived(
-            intent = Intent(Intent.ACTION_VIEW, uri),
-            uri = uri
-        )
-
-        // When
-        val result = reducer.reduce(initialState, event)
-
-        // Then
-        val expectedNavigation = NavigationEffect.NavigateToUri(uri)
-        val expectedEffect = Effect.of(expectedNavigation)
-
-        assertEquals(expectedEffect, result.navigateToEffect)
-        assertEquals(initialState.startedFromLauncher, result.startedFromLauncher)
-    }
-
-    @Test
     fun `navigate to composer when external share intent is received`() {
         // Given
         val initialState = HomeState.Initial

@@ -43,7 +43,6 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailpinlock.domain.usecase.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.mailsession.domain.eventloop.EventLoopErrorSignal
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -417,28 +416,6 @@ class HomeViewModelTest {
         homeViewModel.state.test {
             val effect = awaitItem().navigateToEffect.consume()
             assertTrue { effect is NavigationEffect.NavigateTo }
-        }
-    }
-
-    @Test
-    fun `should emit a new state with navigation effect when a notification intent is received`() = runTest {
-        // Given
-        val uri = mockk<Uri> {
-            every { this@mockk.host } returns NotificationsDeepLinkHelper.NotificationHost
-        }
-
-        val shareIntent = mockIntent(
-            action = Intent.ACTION_VIEW,
-            data = uri,
-            externalBoolean = true
-        )
-
-        every { newIntentObserver() } returns flowOf(shareIntent)
-
-        // When + Then
-        homeViewModel.state.test {
-            val effect = awaitItem().navigateToEffect.consume()
-            assertTrue { effect is NavigationEffect.NavigateToUri }
         }
     }
 

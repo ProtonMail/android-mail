@@ -21,7 +21,6 @@ import android.content.Intent
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.data.file.isMailToIntent
 import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.model.HomeNavigationEvent
 import javax.inject.Inject
 
@@ -29,13 +28,6 @@ class IntentMapper @Inject constructor() {
 
     fun map(intent: Intent): HomeNavigationEvent {
         return when {
-            intent.isNotificationIntent() && intent.data != null -> {
-                HomeNavigationEvent.NotificationIntentReceived(
-                    intent = intent,
-                    uri = intent.data!!
-                )
-            }
-
             intent.isLauncherIntent() -> {
                 HomeNavigationEvent.LauncherIntentReceived(intent)
             }
@@ -67,8 +59,6 @@ class IntentMapper @Inject constructor() {
             }
         }
     }
-
-    private fun Intent.isNotificationIntent(): Boolean = data?.host == NotificationsDeepLinkHelper.NotificationHost
 
     private fun Intent.isLauncherIntent(): Boolean = action == Intent.ACTION_MAIN &&
         categories?.contains(Intent.CATEGORY_LAUNCHER) == true ||

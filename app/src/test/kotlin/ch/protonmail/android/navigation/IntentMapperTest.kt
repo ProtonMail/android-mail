@@ -20,16 +20,15 @@ package ch.protonmail.android.navigation
 
 import android.content.ClipData
 import android.content.Intent
-import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
-import ch.protonmail.android.navigation.mapper.IntentMapper
 import android.net.Uri
 import ch.protonmail.android.mailcommon.data.file.IntentExtraKeys
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
+import ch.protonmail.android.navigation.mapper.IntentMapper
 import ch.protonmail.android.navigation.model.HomeNavigationEvent
 import io.mockk.every
 import io.mockk.mockk
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -48,26 +47,6 @@ class IntentMapperTest {
         isExternal = true
     )
     private val sampleShareInfoInternal = sampleShareInfoExternal.copy(isExternal = false)
-
-    @Test
-    fun `map notification intent`() {
-        // Given
-        val uri = mockk<Uri>()
-        every { uri.host } returns NotificationsDeepLinkHelper.NotificationHost
-
-        val intent = mockIntent(
-            action = Intent.ACTION_VIEW,
-            data = uri,
-            externalBoolean = false
-        )
-
-        // When
-        val result = mapper.map(intent)
-
-        // Then
-        assertTrue(result is HomeNavigationEvent.NotificationIntentReceived)
-        assertEquals(uri, result.uri)
-    }
 
     @Test
     fun `map launcher intent with category launcher`() {

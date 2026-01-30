@@ -19,16 +19,10 @@
 package ch.protonmail.android.navigation.model
 
 import android.content.Intent
-import android.net.Uri
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 
 sealed interface HomeNavigationEvent {
     val intent: Intent
-
-    data class NotificationIntentReceived(
-        override val intent: Intent,
-        val uri: Uri
-    ) : HomeNavigationEvent
 
     data class LauncherIntentReceived(
         override val intent: Intent

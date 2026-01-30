@@ -19,23 +19,20 @@
 package ch.protonmail.android.navigation.reducer
 
 import java.net.URLEncoder
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.navigation.model.HomeNavigationEvent
-import ch.protonmail.android.navigation.model.HomeState
-import timber.log.Timber
-import javax.inject.Inject
 import ch.protonmail.android.mailcommon.domain.model.encode
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.HomeNavigationEvent
+import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.model.NavigationEffect
+import timber.log.Timber
+import javax.inject.Inject
 
 class HomeNavigationEventsReducer @Inject constructor() {
 
     fun reduce(state: HomeState, event: HomeNavigationEvent): HomeState {
         return when (event) {
-            is HomeNavigationEvent.NotificationIntentReceived ->
-                handleNotificationIntentReceived(state, event)
-
             is HomeNavigationEvent.LauncherIntentReceived ->
                 handleLauncherIntentReceived(state)
 
@@ -50,6 +47,7 @@ class HomeNavigationEventsReducer @Inject constructor() {
 
             is HomeNavigationEvent.InvalidShareIntentReceived ->
                 handleInvalidShareIntentReceived(state)
+
             is HomeNavigationEvent.UnknownIntentReceived ->
                 handleUnknownIntentReceived(state)
         }
@@ -63,16 +61,6 @@ class HomeNavigationEventsReducer @Inject constructor() {
 
         Timber.tag("intent-navigation").d("Launcher intent detected, setting startedFromLauncher=true")
         return state.copy(startedFromLauncher = true)
-    }
-
-    private fun handleNotificationIntentReceived(
-        state: HomeState,
-        event: HomeNavigationEvent.NotificationIntentReceived
-    ): HomeState {
-        Timber.tag("intent-navigation").d("Received notification intent: ${event.uri}")
-
-        val navigation = NavigationEffect.NavigateToUri(event.uri)
-        return state.copy(navigateToEffect = Effect.of(navigation))
     }
 
     private fun handleExternalShareIntentReceived(
