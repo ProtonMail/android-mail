@@ -58,5 +58,6 @@ dependencies {
     implementation(project(":mail-attachments:domain"))
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.androidx.test.core)
     testImplementation(project(":test:utils"))
 }

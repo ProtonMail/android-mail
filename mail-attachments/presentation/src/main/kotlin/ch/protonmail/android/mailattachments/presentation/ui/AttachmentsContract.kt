@@ -65,7 +65,7 @@ class OpenAttachmentContract : ActivityResultContract<OpenAttachmentInput, Unit>
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(input.uri, input.mimeType)
             putExtra(Intent.EXTRA_STREAM, input.uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
         return Intent.createChooser(intent, context.getString(R.string.open_with))
