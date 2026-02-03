@@ -99,6 +99,11 @@ include(":mail-detail:data")
 include(":mail-detail:domain")
 include(":mail-detail:presentation")
 
+include(":mail-events:dagger")
+include(":mail-events:data")
+include(":mail-events:domain")
+include(":mail-events:presentation")
+
 include(":mail-featureflags:dagger")
 include(":mail-featureflags:data")
 include(":mail-featureflags:domain")
