@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import ch.protonmail.android.design.compose.navigation.require
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
@@ -62,10 +61,15 @@ import ch.protonmail.android.mailsettings.presentation.webprivacysettings.WebPri
 import ch.protonmail.android.mailsettings.presentation.websettings.WebSettingsScreenActions
 import ch.protonmail.android.mailsettings.presentation.webspamsettings.WebSpamFilterSettingsScreen
 import ch.protonmail.android.navigation.model.Destination.Screen
+import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
+import ch.protonmail.android.navigation.transitions.composableWithTransitions
 import me.proton.core.util.kotlin.deserialize
 
 fun NavGraphBuilder.addWebAccountSettings(navController: NavHostController) {
-    composable(route = Screen.AccountSettings.route) {
+    composableWithTransitions(
+        route = Screen.AccountSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             WebAccountSettingScreen(
                 actions = WebSettingsScreenActions.Empty.copy(
@@ -77,7 +81,10 @@ fun NavGraphBuilder.addWebAccountSettings(navController: NavHostController) {
 }
 
 fun NavGraphBuilder.addWebEmailSettings(navController: NavHostController) {
-    composable(route = Screen.EmailSettings.route) {
+    composableWithTransitions(
+        route = Screen.EmailSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             WebEmailSettingScreen(
                 actions = WebSettingsScreenActions.Empty.copy(
@@ -89,7 +96,10 @@ fun NavGraphBuilder.addWebEmailSettings(navController: NavHostController) {
 }
 
 fun NavGraphBuilder.addWebFolderAndLabelSettings(navController: NavHostController) {
-    composable(route = Screen.FolderAndLabelSettings.route) {
+    composableWithTransitions(
+        route = Screen.FolderAndLabelSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             WebFoldersAndLabelsSettingScreen(
                 actions = WebSettingsScreenActions.Empty.copy(
@@ -104,7 +114,10 @@ fun NavGraphBuilder.addWebFolderAndLabelSettings(navController: NavHostControlle
 }
 
 fun NavGraphBuilder.addWebPrivacyAndSecuritySettings(navController: NavHostController) {
-    composable(route = Screen.PrivacyAndSecuritySettings.route) {
+    composableWithTransitions(
+        route = Screen.PrivacyAndSecuritySettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             WebPrivacyAndSecuritySettingsScreen(
                 actions = WebSettingsScreenActions.Empty.copy(
@@ -116,7 +129,10 @@ fun NavGraphBuilder.addWebPrivacyAndSecuritySettings(navController: NavHostContr
 }
 
 fun NavGraphBuilder.addWebSpamFilterSettings(navController: NavHostController) {
-    composable(route = Screen.SpamFilterSettings.route) {
+    composableWithTransitions(
+        route = Screen.SpamFilterSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             WebSpamFilterSettingsScreen(
                 actions = WebSettingsScreenActions.Empty.copy(
@@ -128,7 +144,7 @@ fun NavGraphBuilder.addWebSpamFilterSettings(navController: NavHostController) {
 }
 
 internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostController) {
-    composable(route = Screen.CombinedContactsSettings.route) {
+    composableWithTransitions(route = Screen.CombinedContactsSettings.route) {
         CombinedContactsSettingScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
@@ -137,7 +153,7 @@ internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostCo
 }
 
 internal fun NavGraphBuilder.addPrivacySettings(navController: NavHostController) {
-    composable(route = Screen.PrivacySettings.route) {
+    composableWithTransitions(route = Screen.PrivacySettings.route) {
         PrivacySettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
@@ -146,7 +162,7 @@ internal fun NavGraphBuilder.addPrivacySettings(navController: NavHostController
 }
 
 internal fun NavGraphBuilder.addAppIconSettings(navController: NavHostController, onLearnMoreClick: (Uri) -> Unit) {
-    composable(route = Screen.AppIconSettings.route) {
+    composableWithTransitions(route = Screen.AppIconSettings.route) {
         ProtonInvertedTheme {
             AppIconSettingsScreen(
                 modifier = Modifier,
@@ -157,7 +173,10 @@ internal fun NavGraphBuilder.addAppIconSettings(navController: NavHostController
 }
 
 internal fun NavGraphBuilder.addMobileSignatureSettings(navController: NavHostController) {
-    composable(route = Screen.MobileSignatureSettings.route) {
+    composableWithTransitions(
+        route = Screen.MobileSignatureSettings.route,
+        transitions = RouteTransitionSpec.ForwardBack
+    ) {
         ProtonInvertedTheme {
             MobileSignatureSettingsScreen(
                 modifier = Modifier,
@@ -170,7 +189,10 @@ internal fun NavGraphBuilder.addMobileSignatureSettings(navController: NavHostCo
 }
 
 internal fun NavGraphBuilder.addEmailSignatureSettings(navController: NavHostController) {
-    composable(route = Screen.EmailSignatureSettings.route) {
+    composableWithTransitions(
+        route = Screen.EmailSignatureSettings.route,
+        transitions = RouteTransitionSpec.ForwardBack
+    ) {
         ProtonInvertedTheme {
             EmailSignatureSettingScreen(
                 modifier = Modifier,
@@ -183,7 +205,10 @@ internal fun NavGraphBuilder.addEmailSignatureSettings(navController: NavHostCon
 }
 
 internal fun NavGraphBuilder.addSignatureMenuSettings(navController: NavHostController) {
-    composable(route = Screen.SignatureSettingsMenu.route) {
+    composableWithTransitions(
+        route = Screen.SignatureSettingsMenu.route,
+        transitions = RouteTransitionSpec.SignatureSettingsMenu
+    ) {
         ProtonInvertedTheme {
             SignatureSettingsMenuScreen(
                 modifier = Modifier,
@@ -206,7 +231,7 @@ internal fun NavGraphBuilder.addSignatureMenuSettings(navController: NavHostCont
 
 @Suppress("ForbiddenComment")
 internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostController) {
-    composable(route = Screen.AutoLockSettings.route) {
+    composableWithTransitions(route = Screen.AutoLockSettings.route) {
         ProtonInvertedTheme {
             AutoLockSettingsScreen(
                 modifier = Modifier,
@@ -223,7 +248,7 @@ internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostControlle
 }
 
 internal fun NavGraphBuilder.addAutoLockOverlay(onClose: () -> Unit, onNavigateToPinLock: () -> Unit) {
-    composable(route = Screen.AutoLockOverlay.route) {
+    composableWithTransitions(route = Screen.AutoLockOverlay.route) {
         LockScreenOverlay(
             onClose = onClose,
             onNavigateToPinInsertion = onNavigateToPinLock
@@ -232,13 +257,13 @@ internal fun NavGraphBuilder.addAutoLockOverlay(onClose: () -> Unit, onNavigateT
 }
 
 internal fun NavGraphBuilder.addAutoLockPinScreen(onClose: () -> Unit, onShowSuccessSnackbar: (String) -> Unit) {
-    composable(route = Screen.AutoLockPinScreen.route) {
+    composableWithTransitions(route = Screen.AutoLockPinScreen.route) {
         AutoLockPinScreen(onClose = onClose, onShowSuccessSnackbar = onShowSuccessSnackbar)
     }
 }
 
 internal fun NavGraphBuilder.addEditSwipeActionsSettings(navController: NavHostController) {
-    composable(route = Screen.EditSwipeActionSettings.route) {
+    composableWithTransitions(route = Screen.EditSwipeActionSettings.route) {
         EditSwipeActionPreferenceScreen(
             modifier = Modifier,
             direction = SwipeActionDirection(it.require(SWIPE_DIRECTION_KEY)),
@@ -276,7 +301,7 @@ internal fun NavGraphBuilder.addPinDialog(navController: NavHostController) {
 
 
 internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostController) {
-    composable(route = Screen.SwipeActionsSettings.route) {
+    composableWithTransitions(route = Screen.SwipeActionsSettings.route) {
         SwipeActionsPreferenceScreen(
             modifier = Modifier,
             actions = SwipeActionsPreferenceScreen.Actions(
@@ -311,7 +336,7 @@ internal fun NavGraphBuilder.addThemeSettings(navController: NavHostController) 
 }
 
 internal fun NavGraphBuilder.addNotificationsSettings(navController: NavHostController) {
-    composable(route = Screen.Notifications.route) {
+    composableWithTransitions(route = Screen.Notifications.route) {
         PushNotificationsSettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
@@ -320,7 +345,7 @@ internal fun NavGraphBuilder.addNotificationsSettings(navController: NavHostCont
 }
 
 internal fun NavGraphBuilder.addCustomizeToolbarSettings(navController: NavHostController) {
-    composable(route = Screen.CustomizeToolbar.route) {
+    composableWithTransitions(route = Screen.CustomizeToolbar.route) {
         CustomizeToolbarScreen(
             modifier = Modifier,
             onBack = { navController.navigateBack() },
@@ -329,7 +354,7 @@ internal fun NavGraphBuilder.addCustomizeToolbarSettings(navController: NavHostC
             }
         )
     }
-    composable(route = Screen.EditToolbarScreen.route) {
+    composableWithTransitions(route = Screen.EditToolbarScreen.route) {
         CustomizeToolbarEditScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
@@ -338,7 +363,7 @@ internal fun NavGraphBuilder.addCustomizeToolbarSettings(navController: NavHostC
 }
 
 internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostController) {
-    composable(route = Screen.ApplicationLogs.route) {
+    composableWithTransitions(route = Screen.ApplicationLogs.route) {
         ApplicationLogsScreen(
             actions = ApplicationLogsScreen.Actions(
                 onBackClick = { navController.navigateBack() },
@@ -349,7 +374,7 @@ internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostControl
             )
         )
     }
-    composable(route = Screen.ApplicationLogsView.route) {
+    composableWithTransitions(route = Screen.ApplicationLogsView.route) {
         ApplicationLogsPeekView(
             onBack = { navController.navigateBack() }
         )
@@ -357,7 +382,7 @@ internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostControl
 }
 
 internal fun NavGraphBuilder.addFeatureFlagsOverrides(navController: NavHostController) {
-    composable(route = Screen.FeatureFlagsOverrides.route) {
+    composableWithTransitions(route = Screen.FeatureFlagsOverrides.route) {
         FeatureFlagOverridesScreen(
             onBack = { navController.navigateBack() }
         )
@@ -365,7 +390,7 @@ internal fun NavGraphBuilder.addFeatureFlagsOverrides(navController: NavHostCont
 }
 
 internal fun NavGraphBuilder.addBugReporting(navController: NavController, onShowNormalSnackbar: (String) -> Unit) {
-    composable(route = Screen.BugReporting.route) {
+    composableWithTransitions(route = Screen.BugReporting.route) {
         BugReportScreen(
             onBack = { navController.navigateBack() },
             onSuccess = {

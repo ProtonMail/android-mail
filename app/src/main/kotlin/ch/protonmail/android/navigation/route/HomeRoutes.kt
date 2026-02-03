@@ -61,8 +61,9 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsettings.presentation.appsettings.AppSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.navigation.RouteTransitions
 import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
+import ch.protonmail.android.navigation.transitions.composableWithTransitions
 import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountSwitchEvent
 import me.proton.core.domain.entity.UserId
@@ -106,16 +107,13 @@ internal fun NavGraphBuilder.addConversationDetail(
         }
     }
 
-    // for now no transition as navigation library 2.9.0 has a bug where the exit transition will not work
-    // with the above intermediary destination
-    composable(
+    composableWithTransitions(
         route = Destination.Screen.Conversation.route,
-        enterTransition = { RouteTransitions.enterTransientLeftToRight },
-        popEnterTransition = { RouteTransitions.enterTransientLeftToRight },
-        popExitTransition = { RouteTransitions.exitTransitionRightToLeft },
-        exitTransition = { RouteTransitions.exitTransitionRightToLeft }
+        transitions = RouteTransitionSpec.Conversation
     ) {
-        PagedConversationDetailScreen(actions = actions)
+        PagedConversationDetailScreen(
+            actions = actions
+        )
     }
 }
 
@@ -131,13 +129,9 @@ internal fun NavGraphBuilder.addMailbox(
     onActionBarVisibilityChanged: (Boolean) -> Unit,
     onShowRatingBooster: () -> Unit
 ) {
-    composable(
+    composableWithTransitions(
         route = Destination.Screen.Mailbox.route,
-        exitTransition = {
-            if (targetState.destination.route == Destination.Screen.Conversation.route) {
-                RouteTransitions.exitTransitionLeftToRight
-            } else null
-        }
+        transitions = RouteTransitionSpec.Mailbox
     ) {
         MailboxScreen(
             actions = MailboxScreen.Actions.Empty.copy(
@@ -190,7 +184,7 @@ internal fun NavGraphBuilder.addEntireMessageBody(
     navController: NavHostController,
     onOpenMessageBodyLink: (Uri) -> Unit
 ) {
-    composable(route = Destination.Screen.EntireMessageBody.route) {
+    composableWithTransitions(route = Destination.Screen.EntireMessageBody.route) {
         EntireMessageBodyScreen(
             onBackClick = { navController.navigateBack() },
             onOpenMessageBodyLink = onOpenMessageBodyLink
@@ -199,7 +193,7 @@ internal fun NavGraphBuilder.addEntireMessageBody(
 }
 
 internal fun NavGraphBuilder.addRawMessageData(navController: NavHostController) {
-    composable(route = Destination.Screen.RawMessageData.route) {
+    composableWithTransitions(route = Destination.Screen.RawMessageData.route) {
         RawMessageDataScreen(
             onBackClick = { navController.navigateBack() }
         )
@@ -232,10 +226,18 @@ internal fun NavGraphBuilder.addComposer(
             navController.navigate(Destination.Screen.FeatureUpselling(entryPoint, type))
         }
     )
-    composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
-    composable(
+    composableWithTransitions(
+        route = Destination.Screen.Composer.route,
+        transitions = RouteTransitionSpec.ComposerFromFab
+    ) { ComposerScreen(actions) }
+
+    composableWithTransitions(
+        route = Destination.Screen.EditDraftComposer.route,
+        transitions = RouteTransitionSpec.ComposerFromDrafts
+
+    ) { ComposerScreen(actions) }
+    composableWithTransitions(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
+    composableWithTransitions(
         route = Destination.Screen.ShareFileComposer.route,
         arguments = listOf(
             navArgument("isExternal") {
@@ -274,7 +276,7 @@ internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostContr
 }
 
 internal fun NavGraphBuilder.addSetMessagePassword(navController: NavHostController) {
-    composable(route = Destination.Screen.SetMessagePassword.route) {
+    composableWithTransitions(route = Destination.Screen.SetMessagePassword.route) {
         SetMessagePasswordScreen(
             onBackClick = {
                 navController.navigateBack()
@@ -294,7 +296,10 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
 }
 
 internal fun NavGraphBuilder.addSettings(navController: NavHostController, activityActions: MainActivity.Actions) {
-    composable(route = Destination.Screen.Settings.route) {
+    composableWithTransitions(
+        route = Destination.Screen.Settings.route,
+        transitions = RouteTransitionSpec.Settings
+    ) {
         ProtonInvertedTheme {
             MainSettingsScreen(
                 actions = MainSettingsScreen.Actions(
@@ -332,7 +337,10 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
 }
 
 internal fun NavGraphBuilder.addAppSettings(navController: NavHostController, showFeatureMissingSnackbar: () -> Unit) {
-    composable(route = Destination.Screen.AppSettings.route) {
+    composableWithTransitions(
+        route = Destination.Screen.AppSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
         ProtonInvertedTheme {
             AppSettingsScreen(
                 actions = AppSettingsScreen.Actions(
@@ -384,7 +392,10 @@ internal fun NavGraphBuilder.addContacts(
     showErrorSnackbar: (message: String) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
-    composable(route = Destination.Screen.Contacts.route) {
+    composableWithTransitions(
+        route = Destination.Screen.Contacts.route,
+        transitions = RouteTransitionSpec.Contacts
+    ) {
         ContactListScreen(
             listActions = ContactListScreen.Actions.Empty.copy(
                 onNavigateToNewContactForm = {
@@ -424,7 +435,10 @@ internal fun NavGraphBuilder.addContactDetails(
     onMessageContact: (String) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
-    composable(route = Destination.Screen.ContactDetails.route) {
+    composableWithTransitions(
+        route = Destination.Screen.ContactDetails.route,
+        transitions = RouteTransitionSpec.ContactDetails
+    ) {
         ContactDetailsScreen(
             actions = ContactDetailsScreen.Actions(
                 onBack = { navController.navigateBack() },
@@ -446,7 +460,10 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
         },
         onClose = { navController.navigateBack() }
     )
-    composable(route = Destination.Screen.ContactSearch.route) {
+    composableWithTransitions(
+        route = Destination.Screen.ContactSearch.route,
+        transitions = RouteTransitionSpec.ContactSearch
+    ) {
         ContactSearchScreen(
             actions
         )
@@ -460,7 +477,7 @@ internal fun NavGraphBuilder.addContactGroupDetails(
     onOpenContact: (ContactId) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
-    composable(route = Destination.Screen.ContactGroupDetails.route) {
+    composableWithTransitions(route = Destination.Screen.ContactGroupDetails.route) {
         ContactGroupDetailsScreen(
             actions = ContactGroupDetailsScreen.Actions(
                 onBack = { navController.navigateBack() },

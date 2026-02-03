@@ -147,6 +147,7 @@ import ch.protonmail.android.navigation.route.addWebEmailSettings
 import ch.protonmail.android.navigation.route.addWebFolderAndLabelSettings
 import ch.protonmail.android.navigation.route.addWebPrivacyAndSecuritySettings
 import ch.protonmail.android.navigation.route.addWebSpamFilterSettings
+import ch.protonmail.android.navigation.transitions.RouteTransitions
 import ch.protonmail.android.uicomponents.fab.FabHost
 import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -608,6 +609,10 @@ fun Home(
                 NavHost(
                     navController = navController,
                     startDestination = Screen.Mailbox.route,
+                    enterTransition = { RouteTransitions.defaultEnterTransition() },
+                    exitTransition = { RouteTransitions.defaultExitTransition() },
+                    popEnterTransition = { RouteTransitions.defaultPopEnterTransition() },
+                    popExitTransition = { RouteTransitions.defaultPopExitTransition() },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(contentPadding)
