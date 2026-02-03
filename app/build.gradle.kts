@@ -249,6 +249,7 @@ dependencies {
 
     implementation(libs.play.review.core)
     implementation(libs.play.review.ext)
+    implementation(libs.androidx.compose.animation)
 
     debugImplementation(libs.bundles.app.debug)
 
