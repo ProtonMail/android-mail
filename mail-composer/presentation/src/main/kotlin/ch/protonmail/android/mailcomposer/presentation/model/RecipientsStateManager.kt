@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftRecipient
 import ch.protonmail.android.mailcomposer.presentation.mapper.RecipientUiModelMapper
+import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,4 +74,28 @@ class RecipientsStateManager @Inject constructor() {
     }.let { list ->
         list.isNotEmpty() && list.all { it !is RecipientUiModel.Invalid && it.address.isNotBlank() }
     }
+
+    /**
+     * Sets all recipients to Validating state with NoLock encryption info.
+     * This signals that encryption info is being refreshed (e.g., due to sender change).
+     */
+    fun resetValidationState() {
+        mutableRecipients.update {
+            it.copy(
+                toRecipients = it.toRecipients.map { recipient -> recipient.toValidating() }.toImmutableList(),
+                ccRecipients = it.ccRecipients.map { recipient -> recipient.toValidating() }.toImmutableList(),
+                bccRecipients = it.bccRecipients.map { recipient -> recipient.toValidating() }.toImmutableList()
+            )
+        }
+    }
+
+    /**
+     * Restores a previously saved recipients state.
+     */
+    fun restoreState(state: RecipientsState) {
+        mutableRecipients.value = state
+    }
+
+    private fun RecipientUiModel.toValidating(): RecipientUiModel =
+        RecipientUiModel.Validating(address, EncryptionInfoUiModel.NoLock)
 }

@@ -51,15 +51,25 @@ internal class ChipsListState(
     }
 
     /**
-     * Preserves existing encryption info when the new item has NoLock but existing has WithLock.
-     * This prevents the lock icon from flashing during re-validation.
+     * Merges encryption info to prevent flashing during re-validation.
+     *
+     * Rules:
+     * - Accept Validating items immediately (signals intentional refresh, e.g., sender change)
+     * - Preserve existing lock when new item has NoLock (prevents flash from intermediate states)
+     * - Accept all other updates
      */
     private fun mergeEncryptionInfo(existingItem: ChipItem?, newItem: ChipItem): ChipItem {
         if (existingItem == null) return newItem
 
+        // Accept Validating items - this signals an intentional refresh (e.g., sender change)
+        if (newItem is ChipItem.Validating) {
+            return newItem
+        }
+
         val existingHasLock = existingItem.encryptionInfo is EncryptionInfoUiModel.WithLock
         val newHasNoLock = newItem.encryptionInfo is EncryptionInfoUiModel.NoLock
 
+        // Preserve existing lock when receiving NoLock (likely intermediate state from Rust)
         if (existingHasLock && newHasNoLock) {
             return newItem.withEncryptionInfo(existingItem.encryptionInfo)
         }

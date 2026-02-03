@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftRecipient
 import ch.protonmail.android.mailpadlocks.domain.PrivacyLock
+import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -191,6 +192,52 @@ internal class RecipientsStateManagerTest {
         assertEquals(toRecipients, actualRecipients.toRecipients)
         assertEquals(ccRecipients, actualRecipients.ccRecipients)
         assertEquals(bccRecipients, actualRecipients.bccRecipients)
+    }
+
+    @Test
+    fun `resetValidationState should set all recipients to Validating`() {
+        // Given
+        val recipientsStateManager = RecipientsStateManager()
+        val initialToRecipients = listOf(
+            RecipientUiModel.Valid("to@example.com", EncryptionInfoUiModel.NoLock)
+        )
+        val initialCcRecipients = listOf(
+            RecipientUiModel.Valid("cc@example.com", EncryptionInfoUiModel.NoLock)
+        )
+        recipientsStateManager.updateRecipients(initialToRecipients, ContactSuggestionsField.TO)
+        recipientsStateManager.updateRecipients(initialCcRecipients, ContactSuggestionsField.CC)
+
+        // When
+        recipientsStateManager.resetValidationState()
+
+        // Then
+        val currentState = recipientsStateManager.recipients.value
+        assertTrue(currentState.toRecipients.all { it is RecipientUiModel.Validating })
+        assertTrue(currentState.ccRecipients.all { it is RecipientUiModel.Validating })
+        assertEquals("to@example.com", currentState.toRecipients.first().address)
+        assertEquals("cc@example.com", currentState.ccRecipients.first().address)
+    }
+
+    @Test
+    fun `restoreState should restore previously saved state`() {
+        // Given
+        val recipientsStateManager = RecipientsStateManager()
+        val initialToRecipients = listOf(
+            RecipientUiModel.Valid("to@example.com", EncryptionInfoUiModel.NoLock)
+        )
+        recipientsStateManager.updateRecipients(initialToRecipients, ContactSuggestionsField.TO)
+        val savedState = recipientsStateManager.recipients.value
+
+        // Clear and verify state changed
+        recipientsStateManager.resetValidationState()
+        assertTrue(recipientsStateManager.recipients.value.toRecipients.first() is RecipientUiModel.Validating)
+
+        // When
+        recipientsStateManager.restoreState(savedState)
+
+        // Then
+        assertEquals(savedState, recipientsStateManager.recipients.value)
+        assertTrue(recipientsStateManager.recipients.value.toRecipients.first() is RecipientUiModel.Valid)
     }
 
 }

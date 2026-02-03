@@ -640,8 +640,16 @@ class ComposerViewModel @AssistedInject constructor(
     private suspend fun onChangeSender(sender: SenderUiModel) {
         val newSender = SenderEmail(sender.email)
 
+        // Keep previous state to restore on failure and clear encryption info
+        // before changing sender to avoid race conditions with Rust callbacks.
+        val previousRecipientsState = recipientsStateManager.recipients.value
+        recipientsStateManager.resetValidationState()
+
         changeSenderAddress(newSender)
             .onLeft { error ->
+                // Restore previous encryption info since sender change failed
+                recipientsStateManager.restoreState(previousRecipientsState)
+
                 when (error) {
                     is ChangeSenderError.AddressCanNotSend,
                     is ChangeSenderError.AddressDisabled,
