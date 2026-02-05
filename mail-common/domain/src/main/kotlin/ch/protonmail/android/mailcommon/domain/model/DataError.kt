@@ -50,6 +50,8 @@ sealed interface DataError {
 
         data object InvalidRequest : Local
 
+        data object TaskCancelled : Local
+
         data class Other(val error: String) : Local
 
         /**

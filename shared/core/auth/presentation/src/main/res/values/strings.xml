@@ -131,7 +131,6 @@
     <string name="auth_fido_manage_security_keys">Manage security keys</string>
     <string name="auth_fido_add_security_key">Add security key</string>
     <string name="auth_fido_security_keys_learn_more">Learn more</string>
-    <string name="auth_user_check_delinquent_error">Your account is currently on hold due to an overdue invoice.</string>
     <plurals name="auth_user_check_max_free_error">
         <item quantity="one">The maximum number of %d free account has been exceeded.</item>
         <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>

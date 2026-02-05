@@ -22,6 +22,7 @@ import me.proton.android.core.payment.presentation.R
 import uniffi.proton_mail_uniffi.OtherErrorReason
 import uniffi.proton_mail_uniffi.OtherErrorReason.InvalidParameter
 import uniffi.proton_mail_uniffi.OtherErrorReason.Other
+import uniffi.proton_mail_uniffi.OtherErrorReason.TaskCancelled
 import uniffi.proton_mail_uniffi.ProtonError
 import uniffi.proton_mail_uniffi.ProtonError.Network
 import uniffi.proton_mail_uniffi.ProtonError.NonProcessableActions
@@ -107,6 +108,7 @@ fun UnexpectedError.getErrorMessage() = when (this) {
 }
 
 fun OtherErrorReason.getErrorMessage() = when (this) {
+    is TaskCancelled -> "TaskCancelled"
     is InvalidParameter -> "InvalidParameter"
     is Other -> this.v1
 }
