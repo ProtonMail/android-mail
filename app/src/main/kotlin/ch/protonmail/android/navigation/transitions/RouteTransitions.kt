@@ -132,12 +132,12 @@ object RouteTransitions {
 
     fun popExitToRight(): ExitTransition = slideOutHorizontally(
         animationSpec = slideSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit),
-        targetOffsetX = { width -> partial(width) }
+        targetOffsetX = { width -> width }
     ) + fadeOut(animationSpec = fadeSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit))
 
     fun popExitToLeft(): ExitTransition = slideOutHorizontally(
         animationSpec = slideSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit),
-        targetOffsetX = { width -> -partial(width) }
+        targetOffsetX = { width -> -width }
     ) + fadeOut(animationSpec = fadeSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit))
 
     // ---------------------- Screen enter from bottom (such Composer Fab) ----------------------
