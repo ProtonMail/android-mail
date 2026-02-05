@@ -292,7 +292,6 @@ fun SignupException.getErrorMessage(
     is SignupException.SignupBlockedByServer -> getString(R.string.common_error_something_went_wrong)
 
     is SignupException.PostLoginValidationException -> when (val loginError = this.v1) {
-        is PostLoginValidationError.DelinquentUser -> getString(R.string.auth_user_check_delinquent_error)
         is PostLoginValidationError.FreeAccountLimitExceeded -> getQuantityString(
             R.plurals.auth_user_check_max_free_error,
             loginError.v1.toInt(),

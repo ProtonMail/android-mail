@@ -26,6 +26,7 @@ import uniffi.proton_account_uniffi.PostLoginValidationError
 import uniffi.proton_mail_uniffi.OtherErrorReason
 import uniffi.proton_mail_uniffi.OtherErrorReason.InvalidParameter
 import uniffi.proton_mail_uniffi.OtherErrorReason.Other
+import uniffi.proton_mail_uniffi.OtherErrorReason.TaskCancelled
 import uniffi.proton_mail_uniffi.ProtonError
 import uniffi.proton_mail_uniffi.ProtonError.Network
 import uniffi.proton_mail_uniffi.ProtonError.NonProcessableActions
@@ -78,7 +79,6 @@ fun LoginError.getErrorMessage(context: Context): String = when (this) {
     is LoginError.MissingSession -> context.getString(R.string.auth_login_error_invalid_action_cannot_unlock_keys)
 
     is LoginError.PostLoginValidationFailed -> when (val loginError = this.v1) {
-        is PostLoginValidationError.DelinquentUser -> context.getString(R.string.auth_user_check_delinquent_error)
         is PostLoginValidationError.FreeAccountLimitExceeded -> context.resources.getQuantityString(
             R.plurals.auth_user_check_max_free_error,
             loginError.v1.toInt(), loginError.v1.toInt()
@@ -123,6 +123,7 @@ fun UnexpectedError.getErrorMessage() = when (this) {
 }
 
 private fun OtherErrorReason.getErrorMessage(context: Context) = when (this) {
+    is TaskCancelled -> context.getString(R.string.presentation_error_general)
     is InvalidParameter -> context.getString(R.string.auth_login_error_invalid_action_invalid_credentials)
     is Other -> this.v1
 }
@@ -141,6 +142,6 @@ fun UserSessionError.getErrorMessage(context: Context) = when (this) {
         is SessionReason.DuplicateSession -> "DUPLICATE_SESSION"
         is SessionReason.MethodCalledInWrongOrigin -> "METHOD_CALLED_IN_WRONG_ORIGIN"
         is SessionReason.UnknownLabel -> "UNKNOWN_LABEL"
-        is SessionReason.UserSessionNotInitialized -> "USER_SESSION_NOT_INITIALIZED "
+        is SessionReason.UserSessionNotInitialized -> "USER_SESSION_NOT_INITIALIZED"
     }
 }

@@ -89,7 +89,9 @@ private fun ProtonError.getMessage(context: Context): String = when (this) {
     is ProtonError.Network -> context.getString(R.string.presentation_general_connection_error)
     is ProtonError.NonProcessableActions -> context.getString(R.string.proton_error_non_processable_actions)
     is ProtonError.OtherReason -> when (val reason = this.v1) {
-        is OtherErrorReason.InvalidParameter -> context.getString(R.string.presentation_error_general)
+        is OtherErrorReason.InvalidParameter,
+        is OtherErrorReason.TaskCancelled -> context.getString(R.string.presentation_error_general)
+
         is OtherErrorReason.Other -> reason.v1
     }
 

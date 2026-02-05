@@ -58,5 +58,6 @@ fun ProtonError.toDataError(): DataError = when (this) {
 
 fun ProtonError.OtherReason.toDataError() = when (val error = this.v1) {
     OtherErrorReason.InvalidParameter -> DataError.Local.InvalidRequest
+    OtherErrorReason.TaskCancelled -> DataError.Local.TaskCancelled
     is OtherErrorReason.Other -> DataError.Local.Other(error.v1)
 }
