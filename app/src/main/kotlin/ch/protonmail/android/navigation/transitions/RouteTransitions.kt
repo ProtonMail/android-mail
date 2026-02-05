@@ -131,14 +131,14 @@ object RouteTransitions {
     ) + fadeIn(animationSpec = fadeSpec(M3Duration.Emphasized.Enter, M3Easing.Emphasized.Enter))
 
     fun popExitToRight(): ExitTransition = slideOutHorizontally(
-        animationSpec = slideSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit),
+        animationSpec = FastPopExit.slideSpec(),
         targetOffsetX = { width -> width }
-    ) + fadeOut(animationSpec = fadeSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit))
+    ) + fadeOut(animationSpec = FastPopExit.fadeSpec())
 
     fun popExitToLeft(): ExitTransition = slideOutHorizontally(
-        animationSpec = slideSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit),
+        animationSpec = FastPopExit.slideSpec(),
         targetOffsetX = { width -> -width }
-    ) + fadeOut(animationSpec = fadeSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit))
+    ) + fadeOut(animationSpec = FastPopExit.fadeSpec())
 
     // ---------------------- Screen enter from bottom (such Composer Fab) ----------------------
     fun enterFromBottom(): EnterTransition = slideInVertically(
@@ -150,4 +150,22 @@ object RouteTransitions {
         animationSpec = slideSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit),
         targetOffsetY = { fullHeight -> fullHeight }
     ) + fadeOut(animationSpec = fadeSpec(M3Duration.Emphasized.Exit, M3Easing.Emphasized.Exit))
+
+    internal object FastPopExit {
+        private const val FadeOutDuration = 80
+        private const val FadeOutDelay = 40
+        private const val SlideOutDuration = 120
+        private val Easing = M3Easing.Standard.Exit
+
+        fun <T> slideSpec() = slideSpec<T>(
+            duration = SlideOutDuration,
+            easing = Easing
+        )
+
+        fun fadeSpec() = fadeSpec(
+            duration = FadeOutDuration,
+            easing = Easing,
+            delay = FadeOutDelay
+        )
+    }
 }
