@@ -20,12 +20,12 @@
   <string name="spotlight_screen_version_text">Version %s</string>
   <string name="spotlight_screen_title">Vad som är nytt i Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Diskret ikon</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.</string>
+  <string name="spotlight_feature_item_discreet_icon_description">Behåll standardikonen för Proton Mail eller dölj den med en generisk ikon för ökad integritet.</string>
   <string name="spotlight_feature_item_tracking_protection_title">Spårningsskydd</string>
   <string name="spotlight_feature_item_tracking_protection_description">Se vem som försökte övervaka dig med dolda pixlar och spårningslänkar, och hur många försök som blockerades.</string>
   <string name="spotlight_feature_item_encryption_locks_title">Krypteringslås</string>
   <string name="spotlight_feature_item_encryption_locks_description">Använd låsikoner för att identifiera och verifiera vilken typ av kryptering som skyddar dina meddelanden.</string>
   <string name="spotlight_feature_item_headers_html_title">Visa rubriker och HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.</string>
+  <string name="spotlight_feature_item_headers_html_description">Granska misstänkta meddelanden för att bekräfta deras äkthet och avslöja eventuella dolda spårningselement.</string>
   <string name="spotlight_screen_got_it">Jag förstår</string>
 </resources>

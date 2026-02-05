@@ -25,7 +25,7 @@
   <string name="spotlight_feature_item_tracking_protection_description">Katso, kuka yritti seurata sinua piilotettujen pikselien ja seurantalinkkien avulla, ja kuinka monta yritystä estettiin.</string>
   <string name="spotlight_feature_item_encryption_locks_title">Salauslukot</string>
   <string name="spotlight_feature_item_encryption_locks_description">Käytä lukkokuvakkeita tunnistaaksesi ja tarkistaaksesi viestejäsi suojaavan salauksen tyypin.</string>
-  <string name="spotlight_feature_item_headers_html_title">Näytä otsikot ja HTML</string>
+  <string name="spotlight_feature_item_headers_html_title">Näytä otsakkeet ja HTML</string>
   <string name="spotlight_feature_item_headers_html_description">Tarkista epäilyttävät viestit niiden aitouden varmistamiseksi ja piilotettujen seurantaelementtien paljastamiseksi.</string>
   <string name="spotlight_screen_got_it">Selvä</string>
 </resources>

@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_protection">Seurannan suojaus:</string>
+  <string name="trackers_protection">Seurantasuojaus:</string>
   <string name="show_details">Näytä tiedot</string>
-  <string name="trackers_protection_no_trackers_detected">Seurannan suojaus: seurantoja ei havaittu</string>
-  <string name="tracking_protection">Seurannan suojaus</string>
+  <string name="trackers_protection_no_trackers_detected">Seurantasuojaus: seurantoja ei havaittu</string>
+  <string name="tracking_protection">Seurantasuojaus</string>
   <string name="tracking_protection_description">Suojaamme sinua aktiivisesti seurannalta. Täällä voit tarkastella tässä viestissä estettyjä vakoilupikseleitä ja puhdistettuja seurantalinkkejä.</string>
   <string name="tracking_protection_learn_more">Lue lisää</string>
   <string name="original">Alkuperäinen</string>
@@ -33,7 +33,7 @@
     <item quantity="other">%s seurantaa estetty</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="one">%s linkkiä puhdistettu</item>
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="one">%s linkki puhdistettu</item>
+    <item quantity="other">%s linkkiä puhdistettu</item>
   </plurals>
 </resources>

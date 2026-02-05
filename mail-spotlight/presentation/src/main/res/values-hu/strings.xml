@@ -17,15 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Version %s</string>
-  <string name="spotlight_screen_title">What’s new in Proton Mail</string>
-  <string name="spotlight_feature_item_discreet_icon_title">Discreet icon</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.</string>
-  <string name="spotlight_feature_item_tracking_protection_title">Tracking protection</string>
-  <string name="spotlight_feature_item_tracking_protection_description">See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked.</string>
-  <string name="spotlight_feature_item_encryption_locks_title">Encryption locks</string>
-  <string name="spotlight_feature_item_encryption_locks_description">Use the lock icons to identify and verify the type of encryption protecting your messages.</string>
-  <string name="spotlight_feature_item_headers_html_title">View headers and HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.</string>
-  <string name="spotlight_screen_got_it">Got it</string>
+  <string name="spotlight_screen_version_text">Verzió %s</string>
+  <string name="spotlight_screen_title">Újdonságok a Proton Mailben</string>
+  <string name="spotlight_feature_item_discreet_icon_title">Diszkrét ikon</string>
+  <string name="spotlight_feature_item_discreet_icon_description">Tartsa meg az alapértelmezett Proton Mail ikont, vagy álcázza egy általánossal a nagyobb adatvédelem érdekében.</string>
+  <string name="spotlight_feature_item_tracking_protection_title">Követés elleni védelem</string>
+  <string name="spotlight_feature_item_tracking_protection_description">Nézze meg, ki próbálta megfigyelni rejtett képpontokkal és követő hivatkozásokkal, és hány kísérletet tiltottunk le.</string>
+  <string name="spotlight_feature_item_encryption_locks_title">Titkosítási lakatok</string>
+  <string name="spotlight_feature_item_encryption_locks_description">Használja a lakat ikonokat az üzeneteit védő titkosítás típusának azonosítására és ellenőrzésére.</string>
+  <string name="spotlight_feature_item_headers_html_title">Fejlécek és HTML megtekintése</string>
+  <string name="spotlight_feature_item_headers_html_description">Vizsgálja meg a gyanús üzeneteket hitelességük megerősítése és az esetleges rejtett követő elemek felfedése érdekében.</string>
+  <string name="spotlight_screen_got_it">Megvan</string>
 </resources>

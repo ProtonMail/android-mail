@@ -186,7 +186,7 @@
   <string name="image_downloaded_successfully">Kuva ladattiin</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Viestin otsakkeet</string>
-  <string name="raw_message_data_html_title">HTML Viesti</string>
+  <string name="raw_message_data_html_title">Viestin HTML</string>
   <string name="raw_message_data_close_button_content_description">Sulje</string>
   <string name="raw_message_data_more_button_content_description">Lisää</string>
   <string name="raw_message_data_download_action">Lataa</string>

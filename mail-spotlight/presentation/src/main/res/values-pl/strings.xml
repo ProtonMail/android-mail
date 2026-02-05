@@ -17,15 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Version %s</string>
-  <string name="spotlight_screen_title">What’s new in Proton Mail</string>
-  <string name="spotlight_feature_item_discreet_icon_title">Discreet icon</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.</string>
-  <string name="spotlight_feature_item_tracking_protection_title">Tracking protection</string>
-  <string name="spotlight_feature_item_tracking_protection_description">See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked.</string>
-  <string name="spotlight_feature_item_encryption_locks_title">Encryption locks</string>
-  <string name="spotlight_feature_item_encryption_locks_description">Use the lock icons to identify and verify the type of encryption protecting your messages.</string>
-  <string name="spotlight_feature_item_headers_html_title">View headers and HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.</string>
-  <string name="spotlight_screen_got_it">Got it</string>
+  <string name="spotlight_screen_version_text">Wersja %s</string>
+  <string name="spotlight_screen_title">Co nowego w Proton Mail</string>
+  <string name="spotlight_feature_item_discreet_icon_title">Dyskretna ikona</string>
+  <string name="spotlight_feature_item_discreet_icon_description">Zachowaj domyślną ikonę Proton Mail lub zamaskuj ją przy użyciu ogólnej ikony dla większej prywatności.</string>
+  <string name="spotlight_feature_item_tracking_protection_title">Ochrona przed śledzeniem</string>
+  <string name="spotlight_feature_item_tracking_protection_description">Zobacz, kto próbował Cię monitorować za pomocą ukrytych pikseli i linków śledzących oraz ile prób zablokowano.</string>
+  <string name="spotlight_feature_item_encryption_locks_title">Kłódki szyfrowania</string>
+  <string name="spotlight_feature_item_encryption_locks_description">Używaj ikon kłódek, aby zidentyfikować i zweryfikować typ szyfrowania chroniącego Twoje wiadomości.</string>
+  <string name="spotlight_feature_item_headers_html_title">Podgląd nagłówków i HTML</string>
+  <string name="spotlight_feature_item_headers_html_description">Sprawdzaj podejrzane wiadomości, aby potwierdzić ich autentyczność i wykryć wszelkie ukryte elementy śledzące.</string>
+  <string name="spotlight_screen_got_it">Rozumiem</string>
 </resources>

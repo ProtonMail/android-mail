@@ -17,15 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Version %s</string>
-  <string name="spotlight_screen_title">What’s new in Proton Mail</string>
-  <string name="spotlight_feature_item_discreet_icon_title">Discreet icon</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.</string>
-  <string name="spotlight_feature_item_tracking_protection_title">Tracking protection</string>
-  <string name="spotlight_feature_item_tracking_protection_description">See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked.</string>
-  <string name="spotlight_feature_item_encryption_locks_title">Encryption locks</string>
-  <string name="spotlight_feature_item_encryption_locks_description">Use the lock icons to identify and verify the type of encryption protecting your messages.</string>
-  <string name="spotlight_feature_item_headers_html_title">View headers and HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.</string>
-  <string name="spotlight_screen_got_it">Got it</string>
+  <string name="spotlight_screen_version_text">版本 %s</string>
+  <string name="spotlight_screen_title">Proton Mail 有什麼新功能</string>
+  <string name="spotlight_feature_item_discreet_icon_title">低調圖示</string>
+  <string name="spotlight_feature_item_discreet_icon_description">保留預設的 Proton Mail 圖示，或將其偽裝成一般圖示以提升隱私。</string>
+  <string name="spotlight_feature_item_tracking_protection_title">追蹤保護</string>
+  <string name="spotlight_feature_item_tracking_protection_description">查看誰試圖透過隱藏像素和追蹤連結監控您，以及有多少嘗試已遭封鎖。</string>
+  <string name="spotlight_feature_item_encryption_locks_title">加密鎖</string>
+  <string name="spotlight_feature_item_encryption_locks_description">使用鎖定圖示來識別並驗證保護您訊息的加密類型。</string>
+  <string name="spotlight_feature_item_headers_html_title">檢視標頭與 HTML</string>
+  <string name="spotlight_feature_item_headers_html_description">檢查可疑訊息以確認其真實性，並揭露任何隱藏的追蹤元素。</string>
+  <string name="spotlight_screen_got_it">知道了</string>
 </resources>

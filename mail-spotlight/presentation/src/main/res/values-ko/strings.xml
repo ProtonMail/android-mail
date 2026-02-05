@@ -17,15 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Version %s</string>
-  <string name="spotlight_screen_title">What’s new in Proton Mail</string>
-  <string name="spotlight_feature_item_discreet_icon_title">Discreet icon</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.</string>
-  <string name="spotlight_feature_item_tracking_protection_title">Tracking protection</string>
-  <string name="spotlight_feature_item_tracking_protection_description">See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked.</string>
-  <string name="spotlight_feature_item_encryption_locks_title">Encryption locks</string>
-  <string name="spotlight_feature_item_encryption_locks_description">Use the lock icons to identify and verify the type of encryption protecting your messages.</string>
-  <string name="spotlight_feature_item_headers_html_title">View headers and HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.</string>
-  <string name="spotlight_screen_got_it">Got it</string>
+  <string name="spotlight_screen_version_text">버전 %s</string>
+  <string name="spotlight_screen_title">Proton Mail의 새로운 기능</string>
+  <string name="spotlight_feature_item_discreet_icon_title">숨겨진 아이콘</string>
+  <string name="spotlight_feature_item_discreet_icon_description">기본 Proton Mail 아이콘을 유지하거나 개인 정보 보호를 위해 일반 아이콘으로 위장하세요.</string>
+  <string name="spotlight_feature_item_tracking_protection_title">트래킹 보호</string>
+  <string name="spotlight_feature_item_tracking_protection_description">숨겨진 픽셀 및 추적 링크로 누가 회원님을 감시하려고 했는지, 그리고 몇 건의 시도가 차단되었는지 확인하세요.</string>
+  <string name="spotlight_feature_item_encryption_locks_title">암호화 잠금</string>
+  <string name="spotlight_feature_item_encryption_locks_description">메시지를 보호하는 암호화 유형을 식별하고 확인하기 위해 잠금 아이콘을 사용하세요.</string>
+  <string name="spotlight_feature_item_headers_html_title">HTML 및 헤더 보기</string>
+  <string name="spotlight_feature_item_headers_html_description">숨겨진 추적 요소를 찾아내고 해당 메시지의 진위 여부를 확인하기 위해 의심스러운 메시지를 검사하세요.</string>
+  <string name="spotlight_screen_got_it">확인</string>
 </resources>
