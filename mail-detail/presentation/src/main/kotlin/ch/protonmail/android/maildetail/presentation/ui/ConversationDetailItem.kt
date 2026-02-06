@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
@@ -47,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
@@ -56,6 +56,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
@@ -79,7 +80,7 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
-import timber.log.Timber
+import androidx.compose.runtime.derivedStateOf
 
 @Composable
 @Suppress("LongParameterList")
@@ -260,19 +261,36 @@ private fun ColumnScope.ConversationDetailExpandedItem(
             }
         )
 
+        val itemState by remember(
+            isWebViewLoading.value,
+            viewPreviouslyLoaded,
+            cachedWebContentHeight,
+            isExpanding.value,
+            showLoadingSpinner
+        ) {
+            derivedStateOf {
+                when {
+                    isWebViewLoading.value && viewPreviouslyLoaded ->
+                        ItemState.ReLoading(cachedHeight = cachedWebContentHeight ?: 0)
+
+                    isExpanding.value ->
+                        ItemState.Expanding
+
+                    showLoadingSpinner ->
+                        ItemState.Loading
+
+                    else ->
+                        ItemState.Visible
+                }
+            }
+        }
+
         Column(
             // only reveal the content of this card once the webview content has loaded and resizing has finished
             modifier = Modifier
                 .reveal(
                     id = id.id,
-                    itemState = {
-                        if (isWebViewLoading.value && viewPreviouslyLoaded) ItemState.ReLoading(
-                            cachedHeight = cachedWebContentHeight ?: 0
-                        )
-                        else if (isExpanding.value) ItemState.Expanding
-                        else if (showLoadingSpinner) ItemState.Loading
-                        else ItemState.Visible
-                    },
+                    itemState = itemState,
                     snap = viewPreviouslyLoaded
                 )
                 .onSizeChanged {
@@ -482,64 +500,42 @@ fun Modifier.show(isVisible: Boolean, shouldAnimate: Boolean): Modifier {
 @Composable
 fun Modifier.reveal(
     id: String,
-    itemState: () -> ItemState,
+    itemState: ItemState,
     snap: Boolean
 ): Modifier {
-    var lastHeight by rememberSaveable(id) { mutableIntStateOf(0) }
+    var lastHeightPx by rememberSaveable(id) { mutableIntStateOf(0) }
+
+    val holdHeightPx: Int? = when (itemState) {
+        ItemState.Loading -> 0
+
+        is ItemState.ReLoading -> itemState.cachedHeight
+
+        ItemState.Expanding -> lastHeightPx
+
+        ItemState.Visible -> null
+    }
+
+    // Cache height when actually visible
+    val cacheHeightModifier = if (itemState == ItemState.Visible) {
+        Modifier.onSizeChanged { size ->
+            if (size.height > 0) lastHeightPx = size.height
+        }
+    } else {
+        Modifier
+    }
+
+    val animationModifier = if (snap) Modifier else Modifier.animateContentSize()
+
+    val heightModifier = when (holdHeightPx) {
+        null -> Modifier
+        else -> Modifier.requiredHeight(holdHeightPx.pxToDp())
+    }
+
     return this
         .clipToBounds()
-        .let {
-            if (snap) {
-                it
-            } else {
-                it.animateContentSize()
-            }
-        }
-
-        // embedded images are loaded into the webview asynchronously causing various different height adjustments when
-        // expanding
-        .layout { measurable, constraints ->
-            val placeable = measurable.measure(
-                constraints
-            )
-
-            val height = when (val state = itemState()) {
-                ItemState.Loading -> {
-                    // don't render the view until we are ready, so we don't see the black box of the webview
-                    0
-                }
-
-                is ItemState.ReLoading -> {
-                    // when reloading, for example we scroll back to this view then we don't want to show a loading
-                    // spinner, but we don't want the view to jump as it scrolls in, therefore use the cached height
-                    // that was saved by the parent view
-                    state.cachedHeight
-                }
-
-                ItemState.Expanding -> {
-                    // when expanding use the last known height until the view is loaded to prevent jumping
-                    // We will ignore placeable requested heights until expanding is finished
-                    lastHeight
-                }
-
-                ItemState.Visible -> {
-                    // cache this height for later if we need to maintain a sensible height during resizing
-                    // like when we click on the dots to expand.
-                    lastHeight = placeable.height
-                    placeable.height
-                }
-            }
-
-            layout(placeable.width, height) {
-                // Guard against detached node - can happen when LazyColumn recycles items
-                // during reveal animation (race condition exposed in Compose 1.10+)
-                if (coordinates?.isAttached != false) {
-                    placeable.placeRelative(0, 0)
-                } else {
-                    Timber.e("Node unattached - skipping placeRelative call.")
-                }
-            }
-        }
+        .then(animationModifier)
+        .then(heightModifier)
+        .then(cacheHeightModifier)
 }
 
 sealed class ItemState {
