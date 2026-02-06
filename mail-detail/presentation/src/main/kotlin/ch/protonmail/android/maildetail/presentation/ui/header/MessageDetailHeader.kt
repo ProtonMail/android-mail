@@ -172,19 +172,19 @@ private fun MessageDetailHeaderLayout(
             )
             Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Large))
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 SenderNameRow(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    participantUiModel = uiModel.sender, icons = {
+                    modifier = Modifier.fillMaxWidth(),
+                    participantUiModel = uiModel.sender,
+                    icons = {
                         Icons(uiModel = uiModel)
                         Spacer(modifier.width(ProtonDimens.Spacing.Compact))
                         Time(time = uiModel.time)
                     }
                 )
-                Row {
+                Spacer(modifier.height(ProtonDimens.Spacing.Small))
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
@@ -193,26 +193,25 @@ private fun MessageDetailHeaderLayout(
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1
                         )
-                        Spacer(modifier.height(ProtonDimens.Spacing.Small))
+                        Spacer(modifier.height(ProtonDimens.Spacing.Compact))
                         AllRecipients(
                             allRecipients = uiModel.allRecipients,
                             hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients,
                             onClick = actions.onClick,
                             isExpanded = isExpanded
                         )
-                        if (uiModel.labels.isNotEmpty()) {
-                            Spacer(modifier.height(ProtonDimens.Spacing.Compact))
-                            Labels(modifier = Modifier, uiModels = uiModel.labels)
-                        }
                     }
-                    Spacer(modifier = modifier.size(ProtonDimens.Spacing.Large))
+                    Spacer(modifier = modifier.width(ProtonDimens.Spacing.Large))
                     MessageDetailHeaderActions(
                         modifier = modifier
-                            .padding(top = ProtonDimens.Spacing.Standard)
                             .testTag(MessageDetailHeaderTestTags.ActionsRootItem),
                         uiModel = uiModel,
                         actions = actions
                     )
+                }
+                if (uiModel.labels.isNotEmpty()) {
+                    Spacer(modifier.height(ProtonDimens.Spacing.Compact))
+                    Labels(modifier = Modifier, uiModels = uiModel.labels)
                 }
             }
         }
