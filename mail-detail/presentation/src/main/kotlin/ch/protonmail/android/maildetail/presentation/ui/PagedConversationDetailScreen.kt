@@ -20,8 +20,8 @@ package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -234,13 +234,10 @@ private fun ConversationPager(
             )
         }
     ) { innerPadding ->
-        // if we apply the padding in this view it breaks the layout, it must applied in the DetailsScreen
-        val innerPadding = remember { mutableStateOf(innerPadding) }
 
         Pager(
-            modifier = modifier,
+            modifier = Modifier.padding(innerPadding),
             pagerState = pagerState,
-            innerPadding = innerPadding.value,
             pages = state.pages,
             conversationActions = conversationActions,
             conversationDetailNavigationArgs = conversationDetailScreenNavArgs,
@@ -257,7 +254,6 @@ private fun ConversationPager(
 private fun Pager(
     modifier: Modifier,
     pagerState: PagerState,
-    innerPadding: PaddingValues,
     conversationActions: ConversationDetail.Actions,
     conversationDetailNavigationArgs: ConversationDetail.NavigationArgs,
     pages: ImmutableList<Page>,
@@ -287,7 +283,6 @@ private fun Pager(
                     onTopBarStateUpdated(topBarHostState)
                 }
                 PageUpdated(
-                    innerPadding = innerPadding,
                     topBarHostState = topBarHostState,
                     conversationActions = conversationActions,
                     navigationArgs = conversationDetailNavigationArgs.copy(
@@ -320,7 +315,6 @@ private fun Pager(
 
 @Composable
 private fun PageUpdated(
-    innerPadding: PaddingValues,
     topBarHostState: ConversationTopBarState,
     conversationActions: ConversationDetail.Actions,
     navigationArgs: ConversationDetail.NavigationArgs,
@@ -328,7 +322,6 @@ private fun PageUpdated(
     isDirectionForwards: () -> Boolean
 ) {
     ConversationDetailScreen(
-        padding = innerPadding,
         actions = conversationActions,
         conversationId = conversationId,
         navigationArgs = navigationArgs,

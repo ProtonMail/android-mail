@@ -25,18 +25,13 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.AnimationConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -58,7 +53,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
@@ -169,7 +163,6 @@ import timber.log.Timber
 @Composable
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
-    padding: PaddingValues,
     actions: ConversationDetail.Actions,
     conversationId: ConversationId,
     navigationArgs: ConversationDetail.NavigationArgs,
@@ -546,7 +539,6 @@ fun ConversationDetailScreen(
         CompositionLocalProvider(LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled) {
             ConversationDetailScreen(
                 modifier = modifier,
-                padding = padding,
                 state = state,
                 topBarState = topBarState,
                 isDirectionForwards = isDirectionForwards,
@@ -726,7 +718,6 @@ fun ConversationDetailScreen(
 private fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
-    padding: PaddingValues,
     modifier: Modifier = Modifier,
     topBarState: ConversationTopBarState,
     isDirectionForwards: () -> Boolean
@@ -936,17 +927,24 @@ private fun ConversationDetailScreen(
                 )
                 val uiModel = (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel
 
-                MessagesContentWithHiddenEdges(
-                    modifier = modifier,
+                val layoutDirection = LocalLayoutDirection.current
+
+                MessagesContent(
+                    modifier = Modifier.padding(
+                        start = innerPadding.calculateStartPadding(layoutDirection),
+                        top = (innerPadding.calculateTopPadding() - MailDimens.SingleLineTopAppBarHeight)
+                            .coerceAtLeast(0f.dp),
+                        end = innerPadding.calculateEndPadding(layoutDirection),
+                        bottom = (innerPadding.calculateBottomPadding() - ProtonDimens.Spacing.Tiny)
+                            .coerceAtLeast(0f.dp)
+                    ),
                     uiModels = state.messagesState.messages,
                     subject = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                     hiddenMessagesBannerState = state.hiddenMessagesBannerState,
-                    parentPadding = padding,
-                    innerPadding = innerPadding,
                     scrollToMessageState = state.scrollToMessageState,
                     actions = conversationDetailItemActions,
                     onHiddenMessagesBannerClick = actions.onHiddenMessagesBannerClick,
-                    conversationKey = state.conversationId(),
+                    conversationId = state.conversationId(),
                     isDirectionForwards = isDirectionForwards,
                     onSubjectScrolled = { alpha ->
                         topBarState.updateSubjectAlpha(alpha)
@@ -967,57 +965,6 @@ private fun ConversationDetailScreen(
     }
 }
 
-@Composable
-@Suppress("UseComposableActions")
-fun MessagesContentWithHiddenEdges(
-    uiModels: ImmutableList<ConversationDetailMessageUiModel>,
-    subject: String,
-    hiddenMessagesBannerState: HiddenMessagesBannerState,
-    parentPadding: PaddingValues,
-    innerPadding: PaddingValues,
-    scrollToMessageState: ScrollToMessageState,
-    modifier: Modifier = Modifier,
-    actions: ConversationDetailItem.Actions,
-    onHiddenMessagesBannerClick: () -> Unit,
-    conversationKey: String,
-    isDirectionForwards: () -> Boolean,
-    onSubjectScrolled: (Float) -> Unit
-) {
-
-    Box(modifier = Modifier.fillMaxWidth()) {
-        MessagesContent(
-            modifier = modifier,
-            uiModels = uiModels,
-            subject = subject,
-            hiddenMessagesBannerState = hiddenMessagesBannerState,
-            parentPadding = parentPadding,
-            innerPadding = innerPadding,
-            scrollToMessageState = scrollToMessageState,
-            actions = actions,
-            onHiddenMessagesBannerClick = onHiddenMessagesBannerClick,
-            conversationId = conversationKey,
-            isDirectionForwards = isDirectionForwards,
-            onSubjectScrolled = onSubjectScrolled
-        )
-
-        // Cover left and right edges
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(MailDimens.MediumBorder)
-                .align(Alignment.CenterStart)
-                .background(ProtonTheme.colors.backgroundNorm)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(MailDimens.MediumBorder)
-                .align(Alignment.CenterEnd)
-                .background(ProtonTheme.colors.backgroundNorm)
-        )
-    }
-}
-
 @OptIn(
     ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class, FlowPreview::class,
     ExperimentalAnimationApi::class
@@ -1028,8 +975,6 @@ private fun MessagesContent(
     uiModels: ImmutableList<ConversationDetailMessageUiModel>,
     subject: String,
     hiddenMessagesBannerState: HiddenMessagesBannerState,
-    parentPadding: PaddingValues,
-    innerPadding: PaddingValues,
     scrollToMessageState: ScrollToMessageState,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
@@ -1040,14 +985,6 @@ private fun MessagesContent(
 ) {
     val listState = rememberLazyListState()
     val loadedItemsHeight = remember(conversationId) { mutableStateMapOf<String, Int>() }
-
-    val layoutDirection = LocalLayoutDirection.current
-    val contentPadding = PaddingValues(
-        start = parentPadding.calculateStartPadding(layoutDirection),
-        end = parentPadding.calculateEndPadding(layoutDirection),
-        top = ProtonDimens.Spacing.Standard + parentPadding.calculateTopPadding(),
-        bottom = (innerPadding.calculateBottomPadding() - ProtonDimens.Spacing.Tiny).coerceAtLeast(0f.dp)
-    )
 
     // Map of item heights in LazyColumn (Row index -> height)
     // We will use this map to calculate total height of first non-draft message + any draft messages below it
@@ -1178,7 +1115,6 @@ private fun MessagesContent(
                 }
                 false // Allow the event to propagate
             },
-        contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(-MailDimens.ConversationCollapseHeaderOverlapHeight),
         state = listState
     ) {
@@ -1442,7 +1378,6 @@ private fun ConversationDetailScreenPreview(
 ) {
     ProtonTheme {
         ConversationDetailScreen(
-            padding = PaddingValues(),
             topBarState = ConversationTopBarState(),
             state = state,
             actions = ConversationDetailScreen.Actions.Empty,
