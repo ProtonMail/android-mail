@@ -44,7 +44,7 @@
   <string name="composer_error_store_draft_invalid_recipient">无法存稿 - 无效的收件人</string>
   <string name="composer_error_store_draft_message_not_a_draft">无法存稿 - 此邮件不是草稿</string>
   <string name="composer_error_store_draft_generic">无法存稿 - 出现一般错误</string>
-  <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
+  <string name="composer_error_create_draft">出错了，无法创建新草稿。</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，无法进行编辑。</string>
   <string name="composer_add_attachments_content_description">添加附件</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">导入自…</string>

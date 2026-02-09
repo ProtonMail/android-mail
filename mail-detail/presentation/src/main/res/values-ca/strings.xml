@@ -85,7 +85,7 @@
   <string name="message_expiration_banner_text">Aquest missatge expirarà en %1$s</string>
   <string name="message_auto_delete_banner_text">Aquest missatge s\'eliminarà automàticament en %1$s.</string>
   <string name="message_auth_fail_banner_text">Aquest correu electrònic no ha superat els requisits d\'autenticació del seu domini. Pot ser que s\'hagi suplantat la identitat del remitent o que s\'hagi reenviat incorrectament.</string>
-  <string name="message_auth_fail_banner_button">Per saber-ne més</string>
+  <string name="message_auth_fail_banner_button">Més informació</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Esteu a punt de deixar l\'aplicació i navegar a:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">No tornis a preguntar</string>

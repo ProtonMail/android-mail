@@ -24,8 +24,8 @@
   <string name="spotlight_feature_item_tracking_protection_title">Protecció contra rastrejadors</string>
   <string name="spotlight_feature_item_tracking_protection_description">Vegeu qui us ha intentat monitoritzar amb píxels amagats i enllaços de seguiment, i quants intents s\'han bloquejat.</string>
   <string name="spotlight_feature_item_encryption_locks_title">Bloquejos de xifratge</string>
-  <string name="spotlight_feature_item_encryption_locks_description">Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els vostres missatges.</string>
+  <string name="spotlight_feature_item_encryption_locks_description">Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els missatges.</string>
   <string name="spotlight_feature_item_headers_html_title">Mostra les capçaleres i l\'HTML</string>
-  <string name="spotlight_feature_item_headers_html_description">Examineu els missatges sospitosos per confirmar que siguin autèntics i per descobrir-hi possibles elements de rastreig ocults.</string>
+  <string name="spotlight_feature_item_headers_html_description">Inspeccioneu els missatges sospitosos per confirmar-ne l\'autenticitat i descobrir elements de seguiment ocults.</string>
   <string name="spotlight_screen_got_it">D\'acord</string>
 </resources>

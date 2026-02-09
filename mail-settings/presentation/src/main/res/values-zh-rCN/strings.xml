@@ -155,16 +155,16 @@
   <!-- Custom App Icon -->
   <string name="settings_app_icon_toolbar_title">应用图标</string>
   <string name="settings_app_icon_name_default">默认</string>
-  <string name="settings_app_icon_name_discreet">Discreet</string>
-  <string name="settings_app_icon_title_default">App icon - default</string>
-  <string name="settings_app_icon_title_discreet">App icon - discreet</string>
-  <string name="settings_app_icon_description">Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy.\nNotifications will always show the Proton Mail name and icon.</string>
-  <string name="settings_app_icon_learn_more">Learn more…</string>
-  <string name="settings_app_icon_discreet_toggle">Discreet app icon</string>
-  <string name="settings_app_icon_confirmation_title">Change app icon?</string>
-  <string name="settings_app_icon_confirmation_details">This will cause the Proton Mail app to close and all notifications to be dismissed.\n\nTo restart Proton Mail, just tap your new app icon.</string>
-  <string name="settings_app_icon_action_cancel">Cancel</string>
-  <string name="settings_app_icon_change_icon">Change icon</string>
+  <string name="settings_app_icon_name_discreet">隐秘模式</string>
+  <string name="settings_app_icon_title_default">应用图标 - 默认</string>
+  <string name="settings_app_icon_title_discreet">应用图标 - 隐秘</string>
+  <string name="settings_app_icon_description">保留默认的 Proton Mail 图标，或更换为更隐秘的图标以获得额外隐私。\n通知将始终显示 Proton Mail 的名称和图标。</string>
+  <string name="settings_app_icon_learn_more">了解详情…</string>
+  <string name="settings_app_icon_discreet_toggle">隐秘应用图标</string>
+  <string name="settings_app_icon_confirmation_title">更改应用图标？</string>
+  <string name="settings_app_icon_confirmation_details">此操作将导致 Proton Mail 应用关闭，所有通知将被清除。\n\n要重新启动 Proton Mail，只需点击您的新应用图标。</string>
+  <string name="settings_app_icon_action_cancel">取消</string>
+  <string name="settings_app_icon_change_icon">更改图标</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
 </resources>
