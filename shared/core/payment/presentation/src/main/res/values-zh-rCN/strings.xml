@@ -44,6 +44,6 @@
   <string name="payment_subscription_managed_by_google">您的订阅由 Google Play 管理。</string>
   <string name="payment_subscription_managed_by_apple">您的订阅由 Apple Store 管理。</string>
   <string name="payment_subscription_managed_by_other">您的订阅无法在移动应用内进行管理。</string>
-  <string name="payment_subscription_restricted_access_title">Restricted access</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_title">访问受限</string>
+  <string name="payment_subscription_restricted_access_description">抱歉，您没有权限访问此页面。如果您认为不应发生这种情况，请联系您的管理员。</string>
 </resources>

@@ -182,14 +182,14 @@
   <string name="error_downloading_image">下载图片失败</string>
   <string name="image_downloaded_successfully">图片已下载</string>
   <!-- Raw message data screen -->
-  <string name="raw_message_data_headers_title">Message headers</string>
-  <string name="raw_message_data_html_title">Message HTML</string>
-  <string name="raw_message_data_close_button_content_description">Close</string>
-  <string name="raw_message_data_more_button_content_description">More</string>
-  <string name="raw_message_data_download_action">Download</string>
-  <string name="raw_message_data_copy_action">Copy</string>
-  <string name="raw_message_data_learn_more_action">Learn more</string>
-  <string name="raw_message_data_error">Error loading data</string>
-  <string name="raw_message_data_successful_download">Download completed</string>
-  <string name="raw_message_data_failed_download">Download failed</string>
+  <string name="raw_message_data_headers_title">邮件头</string>
+  <string name="raw_message_data_html_title">邮件 HTML</string>
+  <string name="raw_message_data_close_button_content_description">关闭</string>
+  <string name="raw_message_data_more_button_content_description">更多</string>
+  <string name="raw_message_data_download_action">下载</string>
+  <string name="raw_message_data_copy_action">复制</string>
+  <string name="raw_message_data_learn_more_action">了解详情</string>
+  <string name="raw_message_data_error">数据加载错误</string>
+  <string name="raw_message_data_successful_download">下载完成</string>
+  <string name="raw_message_data_failed_download">下载失败</string>
 </resources>

@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_blocked_links_cleaned_numbers">%s trackers blocked, %s links cleaned</string>
-  <string name="trackers_protection">Tracker protection:</string>
+  <string name="trackers_blocked_links_cleaned_numbers">已拦截 %s 个跟踪器，已清理 %s 个链接</string>
+  <string name="trackers_protection">跟踪器保护：</string>
   <string name="show_details">查看详情</string>
-  <string name="trackers_protection_no_trackers_detected">Tracker protection: no trackers detected</string>
-  <string name="tracking_protection">Tracking protection</string>
-  <string name="tracking_protection_description">If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details.</string>
-  <string name="tracking_protection_learn_more">Learn  more...</string>
+  <string name="trackers_protection_no_trackers_detected">跟踪器保护：未检测到跟踪器</string>
+  <string name="tracking_protection">跟踪保护</string>
+  <string name="tracking_protection_description">如果您收到包含间谍像素（跟踪器）或跟踪链接的电子邮件，您将在邮件详情中看到盾牌图标。</string>
+  <string name="tracking_protection_learn_more">了解详情…</string>
   <string name="original">原始</string>
-  <string name="cleaned">Cleaned</string>
+  <string name="cleaned">已清理</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="other">%s trackers blocked</item>
+    <item quantity="other">已拦截 %s 个跟踪器</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="other">已清理 %s 个链接</item>
   </plurals>
 </resources>
