@@ -44,7 +44,7 @@ class GetConversationCursor @Inject constructor(
         singleMessageMode: Boolean,
         conversationId: ConversationId,
         messageId: String?,
-        viewModeIsConversationMode: Boolean
+        locationViewModeIsConversation: Boolean
     ) = cursorRepository.observeCursor()
         .map { state ->
             val shouldInitializeCursor = state == null ||
@@ -53,7 +53,7 @@ class GetConversationCursor @Inject constructor(
 
             if (shouldInitializeCursor) {
                 setEphemeralMailboxCursor(
-                    userId, viewModeIsConversationMode,
+                    userId, locationViewModeIsConversation,
                     CursorId(conversationId, messageId)
                 )
                 EphemeralMailboxCursor.Initialising

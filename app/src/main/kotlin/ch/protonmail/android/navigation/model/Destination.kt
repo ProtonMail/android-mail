@@ -38,7 +38,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen.INPUT_PARAMS_KEY
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen.MESSAGE_ID_KEY
-import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen.ViewModeIsConversation
+import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen.LocationViewModeIsConversation
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen.RAW_DATA_TYPE_KEY
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -68,7 +68,7 @@ sealed class Destination(val route: String) {
         object ConversationRouter : Destination(
             "mailbox/conversation/${ConversationIdKey.wrap()}/" +
                 "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}/" +
-                ConversationDetailEntryPointNameKey.wrap() + "/${ViewModeIsConversation.wrap()}"
+                ConversationDetailEntryPointNameKey.wrap() + "/${LocationViewModeIsConversation.wrap()}"
         ) {
 
             operator fun invoke(
@@ -76,19 +76,19 @@ sealed class Destination(val route: String) {
                 scrollToMessageId: MessageId? = null,
                 openedFromLocation: LabelId,
                 entryPoint: ConversationDetailEntryPoint,
-                viewModeIsConversation: Boolean
+                locationViewModeIsConversation: Boolean
             ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
                 .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
                 .replace(OpenedFromLocationKey.wrap(), openedFromLocation.id)
                 .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
-                .replace(ViewModeIsConversation.wrap(), viewModeIsConversation.toString())
+                .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
         }
 
 
         object Conversation : Destination(
             "mailbox/conversation/${ConversationIdKey.wrap()}/" +
                 "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}/${IsSingleMessageMode.wrap()}" +
-                "/${ConversationDetailEntryPointNameKey.wrap()}/${ViewModeIsConversation.wrap()}"
+                "/${ConversationDetailEntryPointNameKey.wrap()}/${LocationViewModeIsConversation.wrap()}"
         ) {
 
             operator fun invoke(
@@ -97,13 +97,13 @@ sealed class Destination(val route: String) {
                 openedFromLocation: LabelId,
                 isSingleMessageMode: Boolean,
                 entryPoint: ConversationDetailEntryPoint,
-                viewModeIsConversation: Boolean
+                locationViewModeIsConversation: Boolean
             ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
                 .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
                 .replace(OpenedFromLocationKey.wrap(), openedFromLocation.id)
                 .replace(IsSingleMessageMode.wrap(), isSingleMessageMode.toString())
                 .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
-                .replace(ViewModeIsConversation.wrap(), viewModeIsConversation.toString())
+                .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
         }
 
         data object EntireMessageBody : Destination(

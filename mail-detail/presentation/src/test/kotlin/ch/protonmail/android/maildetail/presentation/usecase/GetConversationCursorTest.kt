@@ -238,7 +238,7 @@ internal class GetConversationCursorTest {
 
         // When
         GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, viewModeIsConversationMode = true)
+            .invoke(userId, false, conversationId, messageId, locationViewModeIsConversation = true)
             .toList()
 
         // Then

@@ -56,7 +56,7 @@ internal fun DeepLinkNavigationEffect(navController: NavHostController, onUserSw
                         openedFromLocation = current.contextLabelId,
                         isSingleMessageMode = false,
                         entryPoint = ConversationDetailEntryPoint.PushNotification,
-                        viewModeIsConversation = true
+                        locationViewModeIsConversation = true
                     )
                 ) {
                     popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
@@ -74,7 +74,7 @@ internal fun DeepLinkNavigationEffect(navController: NavHostController, onUserSw
                         openedFromLocation = current.contextLabelId,
                         isSingleMessageMode = true,
                         entryPoint = ConversationDetailEntryPoint.PushNotification,
-                        viewModeIsConversation = false
+                        locationViewModeIsConversation = false
                     )
                 ) {
                     popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }

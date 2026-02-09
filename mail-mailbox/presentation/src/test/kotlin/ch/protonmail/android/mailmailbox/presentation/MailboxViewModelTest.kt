@@ -1382,7 +1382,7 @@ internal class MailboxViewModelTest {
             openEffect = Effect.of(
                 OpenMailboxItemRequest(
                     MailboxItemId(item.id), shouldOpenInComposer = false, openedFromLocation = labelId,
-                    viewModeIsConversation = false, subItemId = MailboxItemId(item.id)
+                    locationViewModeIsConversation = false, subItemId = MailboxItemId(item.id)
                 )
             )
         )

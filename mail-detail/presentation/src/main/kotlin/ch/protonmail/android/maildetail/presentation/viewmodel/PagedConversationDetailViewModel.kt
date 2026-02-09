@@ -119,7 +119,7 @@ class PagedConversationDetailViewModel @Inject constructor(
                         conversationId = params.conversationId,
                         userId = params.userId,
                         messageId = getInitialScrollToMessageId()?.id,
-                        viewModeIsConversationMode = requireViewModeModeIsConversation()
+                        locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
                     ).map { state ->
                         Triple(params.swipeEnabled, params.autoAdvance, state)
                     }
@@ -267,8 +267,9 @@ class PagedConversationDetailViewModel @Inject constructor(
         return singleMessageMode.toBoolean()
     }
 
-    private fun requireViewModeModeIsConversation(): Boolean {
-        val isConversation = savedStateHandle.get<String>(PagedConversationDetailScreen.ViewModeIsConversation)
+    @Suppress("FunctionMaxLength")
+    private fun requireLocationViewModeModeIsConversation(): Boolean {
+        val isConversation = savedStateHandle.get<String>(PagedConversationDetailScreen.LocationViewModeIsConversation)
             ?: throw IllegalStateException("No viewMode given")
         return isConversation.toBoolean()
     }

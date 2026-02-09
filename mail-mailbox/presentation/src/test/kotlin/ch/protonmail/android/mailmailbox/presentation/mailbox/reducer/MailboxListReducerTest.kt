@@ -440,7 +440,7 @@ internal class MailboxListReducerTest(
                             shouldOpenInComposer = false,
                             subItemId = null,
                             openedFromLocation = MailLabelTestData.customLabelOne.id.labelId,
-                            viewModeIsConversation = true
+                            locationViewModeIsConversation = true
                         )
                     ),
                     scrollToMailboxTop = Effect.empty(),
@@ -476,7 +476,7 @@ internal class MailboxListReducerTest(
                             itemId = MailboxItemId(MailboxItemUiModelTestData.draftMailboxItemUiModel.id),
                             shouldOpenInComposer = true,
                             openedFromLocation = MailLabelTestData.customLabelOne.id.labelId,
-                            viewModeIsConversation = true
+                            locationViewModeIsConversation = true
                         )
                     ),
                     scrollToMailboxTop = Effect.empty(),

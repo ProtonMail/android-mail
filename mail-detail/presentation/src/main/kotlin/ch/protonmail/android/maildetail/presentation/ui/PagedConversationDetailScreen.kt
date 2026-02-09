@@ -339,7 +339,7 @@ private fun PageUpdated(
 
 object PagedConversationDetailScreen {
 
-    const val ViewModeIsConversation = "View mode"
+    const val LocationViewModeIsConversation = "Location View Mode"
 }
 
 internal data class PagerStateSnapshot(

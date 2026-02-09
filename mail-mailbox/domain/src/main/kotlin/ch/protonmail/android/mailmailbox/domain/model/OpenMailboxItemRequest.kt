@@ -25,5 +25,5 @@ data class OpenMailboxItemRequest(
     val shouldOpenInComposer: Boolean,
     val subItemId: MailboxItemId? = null,
     val openedFromLocation: LabelId,
-    val viewModeIsConversation: Boolean = true
+    val locationViewModeIsConversation: Boolean = true
 )

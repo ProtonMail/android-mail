@@ -52,7 +52,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
 import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen
-import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen.ViewModeIsConversation
+import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen.LocationViewModeIsConversation
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationRouterViewModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -94,7 +94,10 @@ internal fun NavGraphBuilder.addConversationDetail(
                 // for the conversation view
                 isSingleMessageMode = singleMessageMode,
                 // for the message list grouping
-                viewModeIsConversation = backStackEntry.arguments?.getString(ViewModeIsConversation)!!.toBoolean(),
+                locationViewModeIsConversation =
+                backStackEntry.arguments?.getString(
+                    LocationViewModeIsConversation
+                )!!.toBoolean(),
                 entryPoint = ConversationDetailEntryPoint.valueOf(
                     backStackEntry.arguments?.getString(ConversationDetailEntryPointNameKey)!!
                 )
@@ -144,7 +147,7 @@ internal fun NavGraphBuilder.addMailbox(
                                 MessageId(mailboxItemId.value)
                             },
                             openedFromLocation = request.openedFromLocation,
-                            viewModeIsConversation = request.viewModeIsConversation,
+                            locationViewModeIsConversation = request.locationViewModeIsConversation,
                             entryPoint = ConversationDetailEntryPoint.Mailbox
                         )
                     }
