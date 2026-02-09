@@ -27,6 +27,8 @@ import ch.protonmail.android.mailcommon.domain.model.EphemeralMailboxCursor
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
+import ch.protonmail.android.maildetail.domain.model.ConversationOpenMode
+import ch.protonmail.android.maildetail.domain.usecase.ObserveIsSingleMessageViewModePreferred
 import ch.protonmail.android.maildetail.presentation.mapper.toPage
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.NavigationArgs
@@ -46,6 +48,7 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.repository.AutoAdvanceRepository
 import ch.protonmail.android.mailsettings.domain.repository.SwipeNextRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,6 +56,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -69,6 +73,7 @@ class PagedConversationDetailViewModel @Inject constructor(
     private val getConversationCursor: GetConversationCursor,
     private val swipeNextRepository: SwipeNextRepository,
     private val observePrimaryUserId: ObservePrimaryUserId,
+    private val observeIsSingleMessageViewModePreferred: ObserveIsSingleMessageViewModePreferred,
     private val savedStateHandle: SavedStateHandle,
     private val reducer: PagedConversationDetailReducer
 ) : ViewModel() {
@@ -114,25 +119,47 @@ class PagedConversationDetailViewModel @Inject constructor(
             cursorParamsFlow
                 .distinctUntilChanged()
                 .flatMapLatest { params ->
-                    getConversationCursor(
-                        singleMessageMode = requireSingleMessageMode(),
-                        conversationId = params.conversationId,
-                        userId = params.userId,
-                        messageId = getInitialScrollToMessageId()?.id,
-                        locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
-                    ).map { state ->
-                        Triple(params.swipeEnabled, params.autoAdvance, state)
-                    }
+                    resolveSingleMessageModePreferredFlow(params.userId)
+                        .flatMapLatest { singleMessageModePreferred ->
+                            getConversationCursor(
+                                singleMessageModePreferred = singleMessageModePreferred,
+                                conversationId = params.conversationId,
+                                userId = params.userId,
+                                messageId = getInitialScrollToMessageId()?.id,
+                                locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
+                            ).map { cursorState ->
+                                CursorResult(
+                                    swipeEnabled = params.swipeEnabled,
+                                    autoAdvance = params.autoAdvance,
+                                    singleMessageModePreferred = singleMessageModePreferred,
+                                    cursorState = cursorState
+                                )
+                            }
+                        }
                 }
-                .collect { triple ->
-                    onCursor(triple.first, triple.second, triple.third)
+                .collect { result ->
+                    onCursor(
+                        swipeEnabled = result.swipeEnabled,
+                        autoAdvance = result.autoAdvance,
+                        singleMessageModePreferred = result.singleMessageModePreferred,
+                        cursorState = result.cursorState
+                    )
                 }
+        }
+    }
+
+    private fun resolveSingleMessageModePreferredFlow(userId: UserId): Flow<Boolean> {
+        return when (requireConversationOpenMode()) {
+            ConversationOpenMode.Message -> flowOf(true)
+            ConversationOpenMode.Conversation -> flowOf(false)
+            ConversationOpenMode.UseUserPreference -> observeIsSingleMessageViewModePreferred(userId)
         }
     }
 
     private suspend fun onCursor(
         swipeEnabled: Boolean,
         autoAdvance: Boolean,
+        singleMessageModePreferred: Boolean,
         cursorState: EphemeralMailboxCursor?
     ) {
         when (cursorState) {
@@ -162,7 +189,7 @@ class PagedConversationDetailViewModel @Inject constructor(
                         cursor.previous.toPage(),
                         navigationArgs = NavigationArgs(
                             openedFromLocation = requireLabelId(),
-                            singleMessageMode = requireSingleMessageMode(),
+                            singleMessageMode = singleMessageModePreferred,
                             conversationEntryPoint = getEntryPoint()
                         )
                     )
@@ -261,10 +288,10 @@ class PagedConversationDetailViewModel @Inject constructor(
         return LabelId(labelId)
     }
 
-    private fun requireSingleMessageMode(): Boolean {
-        val singleMessageMode = savedStateHandle.get<String>(ConversationDetailScreen.IsSingleMessageMode)
-            ?: throw IllegalStateException("No IsSingleMessageMode given")
-        return singleMessageMode.toBoolean()
+    private fun requireConversationOpenMode(): ConversationOpenMode {
+        val value = savedStateHandle.get<String>(ConversationDetailScreen.ConversationOpenModeKey)
+            ?: throw IllegalStateException("No ConversationOpenMode given")
+        return ConversationOpenMode.valueOf(value)
     }
 
     @Suppress("FunctionMaxLength")
@@ -304,5 +331,12 @@ class PagedConversationDetailViewModel @Inject constructor(
         val conversationId: ConversationId,
         val swipeEnabled: Boolean,
         val autoAdvance: Boolean
+    )
+
+    private data class CursorResult(
+        val swipeEnabled: Boolean,
+        val autoAdvance: Boolean,
+        val singleMessageModePreferred: Boolean,
+        val cursorState: EphemeralMailboxCursor?
     )
 }

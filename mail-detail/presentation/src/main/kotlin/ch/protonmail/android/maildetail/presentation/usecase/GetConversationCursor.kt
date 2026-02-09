@@ -41,7 +41,7 @@ class GetConversationCursor @Inject constructor(
 
     suspend operator fun invoke(
         userId: UserId,
-        singleMessageMode: Boolean,
+        singleMessageModePreferred: Boolean,
         conversationId: ConversationId,
         messageId: String?,
         locationViewModeIsConversation: Boolean

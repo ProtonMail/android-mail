@@ -619,7 +619,6 @@ fun Home(
                 ) {
                     // home
                     addConversationDetail(
-                        navController = navController,
                         actions = ConversationDetail.Actions(
                             onExit = { notifyUserMessage ->
                                 navController.navigateBack()

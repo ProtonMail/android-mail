@@ -25,6 +25,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
+import ch.protonmail.android.maildetail.domain.model.ConversationOpenMode
 import ch.protonmail.android.navigation.model.Destination
 import timber.log.Timber
 
@@ -54,7 +55,7 @@ internal fun DeepLinkNavigationEffect(navController: NavHostController, onUserSw
                         conversationId = current.conversationId,
                         scrollToMessageId = current.scrollToMessageId,
                         openedFromLocation = current.contextLabelId,
-                        isSingleMessageMode = false,
+                        conversationOpenMode = ConversationOpenMode.Conversation,
                         entryPoint = ConversationDetailEntryPoint.PushNotification,
                         locationViewModeIsConversation = true
                     )
@@ -72,7 +73,7 @@ internal fun DeepLinkNavigationEffect(navController: NavHostController, onUserSw
                         conversationId = current.conversationId,
                         scrollToMessageId = current.messageId,
                         openedFromLocation = current.contextLabelId,
-                        isSingleMessageMode = true,
+                        conversationOpenMode = ConversationOpenMode.Message,
                         entryPoint = ConversationDetailEntryPoint.PushNotification,
                         locationViewModeIsConversation = false
                     )

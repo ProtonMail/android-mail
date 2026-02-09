@@ -92,7 +92,7 @@ data class RouteTransitionSpec(
             exit = {
                 whenTargetRoute { route ->
                     when (route) {
-                        Destination.Screen.ConversationRouter.route -> {
+                        Destination.Screen.Conversation.route -> {
                             RouteTransitions.pushExitToLeft()
                         }
 

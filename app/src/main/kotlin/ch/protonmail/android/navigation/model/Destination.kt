@@ -29,10 +29,11 @@ import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ui.ContactDetailsScreen.CONTACT_DETAILS_ID_KEY
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.CONTACT_GROUP_DETAILS_ID_KEY
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
+import ch.protonmail.android.maildetail.domain.model.ConversationOpenMode
 import ch.protonmail.android.maildetail.presentation.model.RawMessageDataType
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationDetailEntryPointNameKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.IsSingleMessageMode
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationOpenModeKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromLocationKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
@@ -65,43 +66,24 @@ sealed class Destination(val route: String) {
     object Screen {
         object Mailbox : Destination("mailbox")
 
-        object ConversationRouter : Destination(
-            "mailbox/conversation/${ConversationIdKey.wrap()}/" +
-                "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}/" +
-                ConversationDetailEntryPointNameKey.wrap() + "/${LocationViewModeIsConversation.wrap()}"
-        ) {
-
-            operator fun invoke(
-                conversationId: ConversationId,
-                scrollToMessageId: MessageId? = null,
-                openedFromLocation: LabelId,
-                entryPoint: ConversationDetailEntryPoint,
-                locationViewModeIsConversation: Boolean
-            ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
-                .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
-                .replace(OpenedFromLocationKey.wrap(), openedFromLocation.id)
-                .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
-                .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
-        }
-
-
         object Conversation : Destination(
             "mailbox/conversation/${ConversationIdKey.wrap()}/" +
-                "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}/${IsSingleMessageMode.wrap()}" +
-                "/${ConversationDetailEntryPointNameKey.wrap()}/${LocationViewModeIsConversation.wrap()}"
+                "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}" +
+                "/${ConversationDetailEntryPointNameKey.wrap()}/${LocationViewModeIsConversation.wrap()}" +
+                "/${ConversationOpenModeKey.wrap()}"
         ) {
 
             operator fun invoke(
                 conversationId: ConversationId,
                 scrollToMessageId: MessageId? = null,
                 openedFromLocation: LabelId,
-                isSingleMessageMode: Boolean,
                 entryPoint: ConversationDetailEntryPoint,
-                locationViewModeIsConversation: Boolean
+                locationViewModeIsConversation: Boolean,
+                conversationOpenMode: ConversationOpenMode = ConversationOpenMode.UseUserPreference
             ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
                 .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
                 .replace(OpenedFromLocationKey.wrap(), openedFromLocation.id)
-                .replace(IsSingleMessageMode.wrap(), isSingleMessageMode.toString())
+                .replace(ConversationOpenModeKey.wrap(), conversationOpenMode.name)
                 .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
                 .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
         }
