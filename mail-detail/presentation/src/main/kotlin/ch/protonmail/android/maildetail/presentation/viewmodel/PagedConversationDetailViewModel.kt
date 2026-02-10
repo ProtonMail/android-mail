@@ -48,15 +48,14 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.repository.AutoAdvanceRepository
 import ch.protonmail.android.mailsettings.domain.repository.SwipeNextRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -119,23 +118,22 @@ class PagedConversationDetailViewModel @Inject constructor(
             cursorParamsFlow
                 .distinctUntilChanged()
                 .flatMapLatest { params ->
-                    resolveSingleMessageModePreferredFlow(params.userId)
-                        .flatMapLatest { singleMessageModePreferred ->
-                            getConversationCursor(
-                                singleMessageModePreferred = singleMessageModePreferred,
-                                conversationId = params.conversationId,
-                                userId = params.userId,
-                                messageId = getInitialScrollToMessageId()?.id,
-                                locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
-                            ).map { cursorState ->
-                                CursorResult(
-                                    swipeEnabled = params.swipeEnabled,
-                                    autoAdvance = params.autoAdvance,
-                                    singleMessageModePreferred = singleMessageModePreferred,
-                                    cursorState = cursorState
-                                )
-                            }
-                        }
+                    val singleMessageModePreferred = resolveSingleMessageModePreferred(params.userId)
+
+                    getConversationCursor(
+                        singleMessageModePreferred = singleMessageModePreferred,
+                        conversationId = params.conversationId,
+                        userId = params.userId,
+                        messageId = getInitialScrollToMessageId()?.id,
+                        locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
+                    ).map { cursorState ->
+                        CursorResult(
+                            swipeEnabled = params.swipeEnabled,
+                            autoAdvance = params.autoAdvance,
+                            singleMessageModePreferred = singleMessageModePreferred,
+                            cursorState = cursorState
+                        )
+                    }
                 }
                 .collect { result ->
                     onCursor(
@@ -148,11 +146,11 @@ class PagedConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun resolveSingleMessageModePreferredFlow(userId: UserId): Flow<Boolean> {
+    private suspend fun resolveSingleMessageModePreferred(userId: UserId): Boolean {
         return when (requireConversationOpenMode()) {
-            ConversationOpenMode.Message -> flowOf(true)
-            ConversationOpenMode.Conversation -> flowOf(false)
-            ConversationOpenMode.UseUserPreference -> observeIsSingleMessageViewModePreferred(userId)
+            ConversationOpenMode.Message -> true
+            ConversationOpenMode.Conversation -> false
+            ConversationOpenMode.UseUserPreference -> observeIsSingleMessageViewModePreferred(userId).first()
         }
     }
 
