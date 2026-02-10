@@ -26,6 +26,7 @@ import android.provider.OpenableColumns
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import me.proton.core.util.kotlin.DispatcherProvider
+import timber.log.Timber
 import javax.inject.Inject
 
 class UriHelper @Inject constructor(
@@ -34,7 +35,10 @@ class UriHelper @Inject constructor(
 ) {
 
     suspend fun readFromUri(uri: Uri): InputStream? = withContext(dispatcherProvider.Io) {
-        runCatching { contentResolverHelper.openInputStream(uri) }.getOrNull()
+        runCatching { contentResolverHelper.openInputStream(uri) }.getOrElse {
+            Timber.e(it, "uri-helper: Could not read from uri")
+            null
+        }
     }
 
     suspend fun resolveFileInformation(uri: Uri, file: File): FileInformation? {
@@ -42,7 +46,10 @@ class UriHelper @Inject constructor(
         val size = getFileSizeFromUri(uri)
         val mimeType = getFileMimeTypeFromUri(uri)
 
-        if (name.isNullOrEmpty() || size == null || mimeType.isNullOrEmpty()) return null
+        if (name.isNullOrEmpty() || size == null || mimeType.isNullOrEmpty()) {
+            Timber.e("uri-helper: Could not resolve file information")
+            return null
+        }
 
         return FileInformation(
             name = name,

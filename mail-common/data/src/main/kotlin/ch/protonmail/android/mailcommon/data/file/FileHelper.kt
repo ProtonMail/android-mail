@@ -109,7 +109,10 @@ class FileHelper @Inject constructor(
             }
             when (result.isSuccess) {
                 true -> fileToSave
-                false -> null
+                false -> {
+                    Timber.e(result.exceptionOrNull(), "file-helper: Could not write to file")
+                    null
+                }
             }
         }
     }
