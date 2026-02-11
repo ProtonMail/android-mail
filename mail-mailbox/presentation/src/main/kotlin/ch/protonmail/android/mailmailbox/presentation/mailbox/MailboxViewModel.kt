@@ -319,9 +319,12 @@ class MailboxViewModel @Inject constructor(
             emitNewStateFrom(MailboxEvent.PrimaryAccountAvatarChanged(item))
         }.launchIn(viewModelScope)
 
-        observePageInvalidationEvents().onEach {
-            emitNewStateFrom(MailboxEvent.PaginatorInvalidated(it))
-        }.launchIn(viewModelScope)
+        observePageInvalidationEvents()
+            .onEach { event ->
+                Timber.d("Received page invalidation event with id: ${event.id}")
+                emitNewStateFrom(MailboxEvent.PaginatorInvalidated(event))
+            }
+            .launchIn(viewModelScope)
 
         loadingBarController.observeState().onEach {
             emitNewStateFrom(MailboxEvent.LoadingBarStateUpdated(it))
