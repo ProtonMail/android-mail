@@ -264,7 +264,7 @@ class RustConversationsQueryImpl @Inject constructor(
 
     private fun invalidateLoadedItems() {
         coroutineScope.launch {
-            invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated)
+            invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated())
         }
     }
 

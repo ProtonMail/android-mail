@@ -247,7 +247,7 @@ class RustMessageListQueryImpl @Inject constructor(
 
     private fun invalidateLoadedItems() {
         coroutineScope.launch {
-            invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated)
+            invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated())
         }
     }
 

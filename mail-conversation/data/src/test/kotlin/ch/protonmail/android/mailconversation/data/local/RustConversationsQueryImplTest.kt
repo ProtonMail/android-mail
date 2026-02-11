@@ -447,9 +447,7 @@ class RustConversationsQueryImplTest {
             )
         } returns paginator.right()
 
-        coEvery {
-            invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated)
-        } just Runs
+        expectConversationsInvalidatedSubmit()
 
         // When
         rustConversationsQuery.getConversations(userId, pageKey)
@@ -464,7 +462,7 @@ class RustConversationsQueryImplTest {
         )
 
         // Then
-        coVerify { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated) }
+        verifyConversationsInvalidatedSubmitted()
     }
 
     @Test
@@ -505,9 +503,7 @@ class RustConversationsQueryImplTest {
             )
         } returns paginator.right()
 
-        coEvery {
-            invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated)
-        } just Runs
+        expectConversationsInvalidatedSubmit()
 
         // When
         rustConversationsQuery.getConversations(userId, pageKey)
@@ -522,7 +518,7 @@ class RustConversationsQueryImplTest {
         )
 
         // Then
-        coVerify { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated) }
+        verifyConversationsInvalidatedSubmitted()
     }
 
     @Test
@@ -588,7 +584,7 @@ class RustConversationsQueryImplTest {
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
-        coEvery { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated) } just Runs
+        expectConversationsInvalidatedSubmit()
 
         val paginator = mockk<ConversationPaginatorWrapper> {
             coEvery { nextPage() } answers {
@@ -641,7 +637,7 @@ class RustConversationsQueryImplTest {
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
 
-        coEvery { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated) } just Runs
+        coEvery { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated(id = 1)) } just Runs
 
         val lateItems = listOf(LocalConversationTestData.OctConversation)
 
@@ -686,7 +682,23 @@ class RustConversationsQueryImplTest {
 
         // Late Append causes invalidation
         testScheduler.advanceUntilIdle()
-        coVerify(exactly = 1) { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated) }
+        coVerify(exactly = 1) {
+            invalidationRepository.submit(
+                PageInvalidationEvent.ConversationsInvalidated(id = 1)
+            )
+        }
+    }
+
+    private fun expectConversationsInvalidatedSubmit() {
+        coEvery {
+            invalidationRepository.submit(match { it is PageInvalidationEvent.ConversationsInvalidated })
+        } just Runs
+    }
+
+    private fun verifyConversationsInvalidatedSubmitted(exactly: Int = 1) {
+        coVerify(exactly = exactly) {
+            invalidationRepository.submit(match { it is PageInvalidationEvent.ConversationsInvalidated })
+        }
     }
 
     companion object {
