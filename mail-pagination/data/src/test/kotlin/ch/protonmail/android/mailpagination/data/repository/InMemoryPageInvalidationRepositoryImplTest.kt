@@ -31,7 +31,7 @@ class InMemoryPageInvalidationRepositoryImplTest {
     @Test
     fun `submit should emit event to observer`() = runTest {
         // Given
-        val testEvent = PageInvalidationEvent.ConversationsInvalidated
+        val testEvent = PageInvalidationEvent.ConversationsInvalidated()
 
         // When
         repository.observePageInvalidationEvents().test {
@@ -39,6 +39,50 @@ class InMemoryPageInvalidationRepositoryImplTest {
 
             // Then
             assertEquals(testEvent, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `late subscription should still receive events emitted before observing`() = runTest {
+        // Given
+        val event1 = PageInvalidationEvent.ConversationsInvalidated()
+        val event2 = PageInvalidationEvent.ConversationsInvalidated()
+
+        // When: emit BEFORE subscribing
+        repository.submit(event1)
+        repository.submit(event2)
+
+        // Then: subscriber should still receive both in order (channel buffered)
+        repository.observePageInvalidationEvents().test {
+            assertEquals(event1, awaitItem())
+            assertEquals(event2, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `early subscription should receive events emitted after observing`() = runTest {
+        // Given
+        val events = listOf(
+            PageInvalidationEvent.ConversationsInvalidated(),
+            PageInvalidationEvent.ConversationsInvalidated(),
+            PageInvalidationEvent.ConversationsInvalidated()
+        )
+
+        repository.observePageInvalidationEvents().test {
+            // Ensure no events are emitted initially
+            expectNoEvents()
+
+            // When
+            events.forEach { repository.submit(it) }
+
+            // Then
+            events.forEach { expected ->
+                assertEquals(expected, awaitItem())
+            }
 
             cancelAndIgnoreRemainingEvents()
         }
