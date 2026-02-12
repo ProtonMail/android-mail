@@ -66,7 +66,7 @@ class SearchMessagePaginatorWrapper(
     override fun disconnect() {
         Timber.d("search-paginator: Disconnecting paginator with id=%s", rustPaginator.id())
 
-        rustPaginator.handle().disconnect()
+        rustPaginator.watchHandle().disconnect()
         rustPaginator.terminate()
     }
 

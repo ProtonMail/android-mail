@@ -74,7 +74,7 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
 
     fun disconnect() {
         Timber.d("conversation-paginator: Disconnecting paginator with id=%s", rustPaginator.id())
-        rustPaginator.handle().disconnect()
+        rustPaginator.watchHandle().disconnect()
         rustPaginator.terminate()
     }
 

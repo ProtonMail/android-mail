@@ -17,7 +17,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.NoPointer
+import uniffi.proton_mail_uniffi.NoHandle
 import uniffi.proton_mail_uniffi.SettingsWatcher
 import uniffi.proton_mail_uniffi.WatchHandle
 import kotlin.test.assertEquals
@@ -62,7 +62,7 @@ class RustMailSettingsDataSourceTest {
         val userSessionMock = mockk<MailUserSessionWrapper>()
         coEvery { userSessionRepository.getUserSession(userId) } returns userSessionMock
 
-        val mockWatchHandle = object : WatchHandle(NoPointer) {
+        val mockWatchHandle = object : WatchHandle(NoHandle) {
             override fun disconnect() {
                 // NOP
             }

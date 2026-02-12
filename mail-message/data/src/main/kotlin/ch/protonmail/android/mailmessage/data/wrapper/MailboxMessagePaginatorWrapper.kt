@@ -63,7 +63,7 @@ class MailboxMessagePaginatorWrapper(
 
     override fun disconnect() {
         Timber.d("message-paginator: Disconnecting paginator with id=%s", rustPaginator.id())
-        rustPaginator.handle().disconnect()
+        rustPaginator.watchHandle().disconnect()
         rustPaginator.terminate()
     }
 
