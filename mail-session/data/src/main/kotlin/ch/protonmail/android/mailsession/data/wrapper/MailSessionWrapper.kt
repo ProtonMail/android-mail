@@ -45,6 +45,8 @@ import uniffi.proton_mail_uniffi.MailSessionUnsetBiometricsAppProtectionResult
 import uniffi.proton_mail_uniffi.MailSessionUserSessionFromStoredSessionResult
 import uniffi.proton_mail_uniffi.MailSessionVerifyPinCodeResult
 import uniffi.proton_mail_uniffi.MailSessionWatchAccountsResult
+import uniffi.proton_mail_uniffi.MeasurementEventType
+import uniffi.proton_mail_uniffi.MeasurementValue
 import uniffi.proton_mail_uniffi.StoredAccount
 import uniffi.proton_mail_uniffi.StoredSession
 import uniffi.proton_mail_uniffi.WatchedAccounts
@@ -168,6 +170,13 @@ class MailSessionWrapper(private val mailSession: MailSession) {
      * Used to resume work when the app is brought back to the foreground.
      */
     fun onEnterForeground() = mailSession.onEnterForeground()
+
+    suspend fun sendMeasurementEvent(
+        eventType: MeasurementEventType,
+        asid: String,
+        appPackageName: String,
+        fields: Map<String, MeasurementValue?>
+    ) = mailSession.recordMeasurementPrelogin(eventType, asid, appPackageName, fields)
 
     suspend fun newLoginFlow(): Either<DataError, LoginFlowWrapper> {
         return when (val result = mailSession.newLoginFlow()) {
