@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailspotlight.domain.usecase
 
-import ch.protonmail.android.mailspotlight.domain.repository.AppInstallTimeRepository
+import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test
@@ -31,11 +31,11 @@ import kotlin.time.Instant
 
 internal class IsRecentAppInstallTest {
 
-    private val appInstallTimeRepository = mockk<AppInstallTimeRepository>()
+    private val appInstallRepository = mockk<AppInstallRepository>()
     private val clock = mockk<Clock>()
 
     private val isRecentAppInstall = IsRecentAppInstall(
-        appInstallTimeRepository = appInstallTimeRepository,
+        appInstallRepository = appInstallRepository,
         clock = clock
     )
 
@@ -46,7 +46,7 @@ internal class IsRecentAppInstallTest {
         val installTime = now.minus(12.hours).toEpochMilliseconds()
 
         every { clock.now() } returns now
-        every { appInstallTimeRepository.getFirstInstallTime() } returns installTime
+        every { appInstallRepository.getFirstInstallTime() } returns installTime
 
         // When
         val result = isRecentAppInstall()
@@ -62,7 +62,7 @@ internal class IsRecentAppInstallTest {
         val installTime = now.minus(2.days).toEpochMilliseconds()
 
         every { clock.now() } returns now
-        every { appInstallTimeRepository.getFirstInstallTime() } returns installTime
+        every { appInstallRepository.getFirstInstallTime() } returns installTime
 
         // When
         val result = isRecentAppInstall()
@@ -78,7 +78,7 @@ internal class IsRecentAppInstallTest {
         val installTime = now.minus(1.days).toEpochMilliseconds()
 
         every { clock.now() } returns now
-        every { appInstallTimeRepository.getFirstInstallTime() } returns installTime
+        every { appInstallRepository.getFirstInstallTime() } returns installTime
 
         // When
         val result = isRecentAppInstall()
@@ -94,7 +94,7 @@ internal class IsRecentAppInstallTest {
         val installTime = now.minus(6.hours).toEpochMilliseconds()
 
         every { clock.now() } returns now
-        every { appInstallTimeRepository.getFirstInstallTime() } returns installTime
+        every { appInstallRepository.getFirstInstallTime() } returns installTime
 
         // When
         val result = isRecentAppInstall(threshold = 12.hours)
