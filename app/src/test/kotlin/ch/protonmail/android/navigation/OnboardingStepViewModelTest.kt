@@ -22,6 +22,8 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
@@ -29,10 +31,13 @@ import ch.protonmail.android.mailonboarding.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -45,23 +50,26 @@ internal class OnboardingStepViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val saveOnboarding = mockk<SaveOnboarding>(relaxed = true)
+    private val appEventBroadcaster = mockk<AppEventBroadcaster>()
     private val observeOnboarding = mockk<ObserveOnboarding>()
 
     private val viewModel by lazy {
-        OnboardingStepViewModel(saveOnboarding, observeOnboarding)
+        OnboardingStepViewModel(saveOnboarding, appEventBroadcaster, observeOnboarding)
     }
 
     @Test
     fun `should call save onboarding when marking onboarding as completed`() = runTest {
         // Given
         every { observeOnboarding() } returns flowOf(OnboardingPreference(false).right())
+        coEvery { appEventBroadcaster.emit(any()) } just runs
 
         // When
         viewModel.submit(OnboardingStepAction.MarkOnboardingComplete)
 
         // Then
         coVerify(exactly = 1) { saveOnboarding(false) }
-        confirmVerified(saveOnboarding)
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OnboardingCompleted) }
+        confirmVerified(saveOnboarding, appEventBroadcaster)
     }
 
     @Test
@@ -97,3 +105,4 @@ internal class OnboardingStepViewModelTest {
         }
     }
 }
+
