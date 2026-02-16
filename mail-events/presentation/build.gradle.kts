@@ -48,8 +48,10 @@ android {
 dependencies {
     implementation(project(":mail-events:domain"))
     implementation(project(":mail-common:domain"))
+    implementation(project(":shared:core:events:domain"))
 
     implementation(libs.bundles.module.domain)
 
     testImplementation(libs.bundles.test)
+    testImplementation(project(":test:utils"))
 }
