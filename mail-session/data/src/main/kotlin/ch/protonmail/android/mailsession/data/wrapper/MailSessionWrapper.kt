@@ -28,12 +28,10 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.mapper.toAutoLockPinError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import uniffi.proton_mail_uniffi.BackgroundExecutionCallback
-import uniffi.proton_mail_uniffi.LiveQueryCallback
 import uniffi.proton_mail_uniffi.MailSession
 import uniffi.proton_mail_uniffi.MailSessionDeletePinCodeResult
 import uniffi.proton_mail_uniffi.MailSessionGetAccountResult
 import uniffi.proton_mail_uniffi.MailSessionGetAccountSessionsResult
-import uniffi.proton_mail_uniffi.MailSessionGetAccountsResult
 import uniffi.proton_mail_uniffi.MailSessionGetPrimaryAccountResult
 import uniffi.proton_mail_uniffi.MailSessionGetSessionsResult
 import uniffi.proton_mail_uniffi.MailSessionInitializedUserSessionFromStoredSessionResult
@@ -44,27 +42,14 @@ import uniffi.proton_mail_uniffi.MailSessionSetPinCodeResult
 import uniffi.proton_mail_uniffi.MailSessionUnsetBiometricsAppProtectionResult
 import uniffi.proton_mail_uniffi.MailSessionUserSessionFromStoredSessionResult
 import uniffi.proton_mail_uniffi.MailSessionVerifyPinCodeResult
-import uniffi.proton_mail_uniffi.MailSessionWatchAccountsResult
 import uniffi.proton_mail_uniffi.MeasurementEventType
 import uniffi.proton_mail_uniffi.MeasurementValue
 import uniffi.proton_mail_uniffi.StoredAccount
 import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.WatchedAccounts
 
 class MailSessionWrapper(private val mailSession: MailSession) {
 
     fun getRustMailSession() = mailSession
-
-    suspend fun watchAccounts(liveQueryCallback: LiveQueryCallback): Either<DataError, WatchedAccounts> =
-        when (val result = mailSession.watchAccounts(liveQueryCallback)) {
-            is MailSessionWatchAccountsResult.Error -> result.v1.toDataError().left()
-            is MailSessionWatchAccountsResult.Ok -> result.v1.right()
-        }
-
-    suspend fun getAccounts(): Either<DataError, List<StoredAccount>> = when (val result = mailSession.getAccounts()) {
-        is MailSessionGetAccountsResult.Error -> result.v1.toDataError().left()
-        is MailSessionGetAccountsResult.Ok -> result.v1.right()
-    }
 
     suspend fun getAccount(userId: LocalUserId): Either<DataError, StoredAccount> =
         when (val result = mailSession.getAccount(userId)) {
