@@ -53,4 +53,5 @@ dependencies {
 
     implementation(project(":mail-events:data"))
     implementation(project(":mail-events:domain"))
+    implementation(project(":shared:core:events:domain"))
 }

@@ -46,11 +46,15 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.proton.rust.core)
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-events:domain"))
+    implementation(project(":mail-session:data"))
+    implementation(project(":mail-session:domain"))
 
     implementation(libs.bundles.module.data)
+    implementation(libs.proton.core.domain)
     implementation(libs.play.installreferrer)
 
     testImplementation(libs.bundles.test)
