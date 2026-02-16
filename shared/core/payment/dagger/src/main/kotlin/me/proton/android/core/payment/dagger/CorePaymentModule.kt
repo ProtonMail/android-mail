@@ -22,8 +22,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.proton.android.core.payment.data.IconResourceManagerRust
-import me.proton.android.core.payment.data.SubscriptionManagerRust
 import me.proton.android.core.payment.data.PaymentMetricsTrackerRust
+import me.proton.android.core.payment.data.SubscriptionManagerRust
 import me.proton.android.core.payment.domain.IconResourceManager
 import me.proton.android.core.payment.domain.PaymentMetricsTracker
 import me.proton.android.core.payment.domain.SubscriptionManager

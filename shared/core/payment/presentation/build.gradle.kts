@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
     implementation(project(":shared:core:payment:domain"))
+    implementation(project(":shared:core:events:domain"))
 
     kapt(libs.bundles.app.annotationProcessors)
 

@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":presentation-compose"))
     implementation(project(":shared:core:account:domain"))
     implementation(project(":shared:core:auth:data"))
+    implementation(project(":shared:core:events:domain"))
     implementation(project(":shared:core:device-migration:presentation"))
 
     debugImplementation(libs.androidx.compose.ui.tooling)
