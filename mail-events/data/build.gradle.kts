@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":mail-events:domain"))
 
     implementation(libs.bundles.module.data)
+    implementation(libs.play.installreferrer)
 
     testImplementation(libs.bundles.test)
     testImplementation(project(":test:utils"))
