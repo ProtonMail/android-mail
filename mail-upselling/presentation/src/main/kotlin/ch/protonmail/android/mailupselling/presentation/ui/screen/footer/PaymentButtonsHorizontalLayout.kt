@@ -91,6 +91,7 @@ internal fun PaymentButtonsHorizontalLayout(
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = selectedPlan.product,
                 variant = MailPurchaseButtonVariant.Default,
+                onPurchaseClicked = actions.onUpgradeAttempt,
                 onSuccess = { _ -> actions.onSuccess() },
                 onErrorMessage = actions.onError
             )

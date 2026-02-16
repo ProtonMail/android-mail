@@ -139,8 +139,8 @@ internal class PlanUpgradeUiMapperTest {
 
         val monthlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = shorterInstance.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
             product = shorterInstance.toProduct(context),
@@ -149,8 +149,8 @@ internal class PlanUpgradeUiMapperTest {
 
         val yearlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = longerInstance.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Yearly,
             product = longerInstance.toProduct(context),
@@ -195,8 +195,8 @@ internal class PlanUpgradeUiMapperTest {
 
         val monthlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = shorterInstance.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
             product = shorterInstance.toProduct(context),
@@ -205,8 +205,8 @@ internal class PlanUpgradeUiMapperTest {
 
         val yearlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = longerInstance.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(12), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Yearly,
             product = longerInstance.toProduct(context),

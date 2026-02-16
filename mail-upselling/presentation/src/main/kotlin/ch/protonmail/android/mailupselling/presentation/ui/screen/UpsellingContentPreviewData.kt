@@ -44,8 +44,8 @@ internal object UpsellingContentPreviewData {
 
     private val MailPlusPlanModelMonthly = PlanUpgradeInstanceUiModel.Standard(
         name = "Mail Plus",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
-        totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
         discountRate = null,
         cycle = PlanUpgradeCycle.Monthly,
         yearlySaving = null,
@@ -63,9 +63,9 @@ internal object UpsellingContentPreviewData {
 
     private val mailMonthlyPromoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
         name = "Mail Plus",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(5.99), currencyCode = "EUR"),
-        promotionalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
-        renewalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(5.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(5.99), currencyCode = "EUR"),
+        promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(5.99), currencyCode = "EUR"),
         discountRate = null,
         cycle = PlanUpgradeCycle.Monthly,
         yearlySaving = null,
@@ -88,8 +88,8 @@ internal object UpsellingContentPreviewData {
 
     private val MailPlusPlanModelYearly = PlanUpgradeInstanceUiModel.Standard(
         name = "Mail Plus",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
-        totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(49.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(49.99), currencyCode = "EUR"),
         discountRate = null,
         cycle = PlanUpgradeCycle.Yearly,
         yearlySaving = null,
@@ -107,9 +107,9 @@ internal object UpsellingContentPreviewData {
 
     private val mailYearlyPromoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
         name = "Mail Plus",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(49.99), currencyCode = "EUR"),
-        promotionalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(39.99), currencyCode = "EUR"),
-        renewalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(49.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(49.99), currencyCode = "EUR"),
+        promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(39.99), currencyCode = "EUR"),
+        renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(49.99), currencyCode = "EUR"),
         discountRate = 20,
         cycle = PlanUpgradeCycle.Monthly,
         yearlySaving = null,
@@ -132,8 +132,8 @@ internal object UpsellingContentPreviewData {
 
     private val UnlimitedPlanModelMonthly = PlanUpgradeInstanceUiModel.Standard(
         name = "Proton Unlimited",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
-        totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
         discountRate = null,
         cycle = PlanUpgradeCycle.Monthly,
         yearlySaving = null,
@@ -150,8 +150,8 @@ internal object UpsellingContentPreviewData {
     )
     private val UnlimitedPlanModelYearly = PlanUpgradeInstanceUiModel.Standard(
         name = "Proton Unlimited",
-        pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
-        totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal(4.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
         discountRate = null,
         cycle = PlanUpgradeCycle.Monthly,
         yearlySaving = null,

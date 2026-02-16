@@ -22,6 +22,8 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.usecase.GetOnboardingPlanUpgrades
@@ -35,7 +37,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
@@ -51,6 +55,7 @@ internal class OnboardingUpsellViewModelTest {
     private val observePrimaryUser = mockk<ObservePrimaryUser>()
     private val reducer = mockk<OnboardingUpsellingReducer>(relaxed = true)
     private val getOnboardingPlanUpgrades = mockk<GetOnboardingPlanUpgrades>()
+    private val appEventBroadcaster = mockk<AppEventBroadcaster>()
 
     private val isUpsellEnabled = mockk<FeatureFlag<Boolean>>()
 
@@ -58,7 +63,8 @@ internal class OnboardingUpsellViewModelTest {
         observePrimaryUser,
         reducer,
         getOnboardingPlanUpgrades,
-        isUpsellEnabled
+        isUpsellEnabled,
+        appEventBroadcaster
     )
 
     @AfterTest
@@ -138,6 +144,7 @@ internal class OnboardingUpsellViewModelTest {
         val user = UserTestData.Primary.copy(subscribed = 0)
         val expectedList = listOf<ProductOfferDetail>(mockk())
         every { observePrimaryUser() } returns flowOf(user.right())
+        coEvery { appEventBroadcaster.emit(any()) } just runs
         coEvery { getOnboardingPlanUpgrades(user.userId) } returns expectedList.right()
         coEvery { isUpsellEnabled.get() } returns true
 
@@ -149,5 +156,25 @@ internal class OnboardingUpsellViewModelTest {
         // Then
         coVerify { reducer.newStateFrom(OnboardingUpsellEvent.DataLoaded(user.userId, expectedList)) }
         confirmVerified(reducer)
+    }
+
+    @Test
+    fun `should broadcast subscription onboarding shown event when data loads successfully`() = runTest {
+        // Given
+        val user = UserTestData.Primary.copy(subscribed = 0)
+        val expectedList = listOf<ProductOfferDetail>(mockk())
+        every { observePrimaryUser() } returns flowOf(user.right())
+        coEvery { appEventBroadcaster.emit(any()) } just runs
+        coEvery { getOnboardingPlanUpgrades(user.userId) } returns expectedList.right()
+        coEvery { isUpsellEnabled.get() } returns true
+
+        // When
+        viewModel().state.test {
+            awaitItem()
+        }
+
+        // Then
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.SubscriptionOnboardingShown) }
+        confirmVerified(appEventBroadcaster)
     }
 }

@@ -36,6 +36,10 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
     val viewModel = hiltViewModel<UpsellingViewModel>()
 
     val actions = upsellingActions.copy(
+        onUpgradeAttempt = {
+            viewModel.onPurchaseClicked()
+            upsellingActions.onUpgradeAttempt()
+        },
         onSuccess = {
             viewModel.overrideUpsellingVisibility()
             upsellingActions.onSuccess()

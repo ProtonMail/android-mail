@@ -249,7 +249,9 @@ private fun OnboardingUpsellScreen(
             plans.forEach { plan ->
                 when (plan) {
                     is OnboardingPlanUpgradeUiModel.Free -> FreePlanCard(plan, onDismiss)
-                    is OnboardingPlanUpgradeUiModel.Paid -> PaidPlanCardContent(plan, onDismiss, onError)
+                    is OnboardingPlanUpgradeUiModel.Paid -> PaidPlanCardContent(
+                        plan, onDismiss, onError
+                    )
                 }
             }
 

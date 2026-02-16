@@ -487,6 +487,7 @@ fun Home(
             }
 
             is HomeInterstitialPriority.BlackFriday -> {
+                blackFridayModalUpsellViewModel.recordModalSeen(priority.state.wave)
                 navController.navigate(
                     Screen.FeatureUpselling(UpsellingEntryPoint.Feature.Navbar, priority.state.wave)
                 )
