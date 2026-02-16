@@ -64,7 +64,8 @@ class MainInitializer : Initializer<Unit> {
         ChallengeInitializer::class.java,
         BackgroundExecutionInitializer::class.java,
         RustNetworkObserverInitializer::class.java,
-        WebViewCrashExceptionHandlerInitializer::class.java
+        WebViewCrashExceptionHandlerInitializer::class.java,
+        EventsStartupInitializer::class.java
     )
 
     companion object {

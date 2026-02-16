@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkHelperImpl
 import com.google.android.play.core.review.ReviewManager
@@ -80,5 +81,8 @@ object ApplicationModule {
 
         @Binds
         fun bindNotificationsDeepLinkHelper(impl: NotificationsDeepLinkHelperImpl): NotificationsDeepLinkHelper
+
+        @Binds
+        fun bindAppInfoProvider(impl: AppInfoProviderImpl): AppInfoProvider
     }
 }

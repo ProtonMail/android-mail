@@ -22,10 +22,10 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailonboarding.domain.usecase.SaveOnboarding
-import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule

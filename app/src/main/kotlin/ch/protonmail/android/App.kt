@@ -30,6 +30,7 @@ import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcrashrecord.domain.usecase.SaveMessageBodyWebViewCrash
+import ch.protonmail.android.mailevents.presentation.AppOpenLifecycleObserver
 import ch.protonmail.android.mailnotifications.domain.FirebaseMessagingTokenLifecycleObserver
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
 import dagger.hilt.android.HiltAndroidApp
@@ -59,6 +60,9 @@ internal class App : Application() {
     lateinit var eventLoopLifecycleObserver: Provider<RustEventLoopErrorLifecycleObserver>
 
     @Inject
+    lateinit var appOpenLifecycleObserver: Provider<AppOpenLifecycleObserver>
+
+    @Inject
     lateinit var saveMessageBodyWebViewCrash: SaveMessageBodyWebViewCrash
 
     @OptIn(ExperimentalComposeRuntimeApi::class)
@@ -77,6 +81,7 @@ internal class App : Application() {
         addDatabaseObserver()
         addFirebaseTokenLifecycleObserver()
         addEventLoopObserver()
+        addAppOpenLifecycleObserver()
 
         benchmarkTracer.end()
     }
@@ -97,5 +102,9 @@ internal class App : Application() {
 
     private fun addEventLoopObserver() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(eventLoopLifecycleObserver.get())
+    }
+
+    private fun addAppOpenLifecycleObserver() {
+        ProcessLifecycleOwner.get().lifecycle.addObserver(appOpenLifecycleObserver.get())
     }
 }
