@@ -31,7 +31,7 @@
   <string name="padlocks_proton_send_recipient_pgp_signed_description">您已%s此电子邮件，向收件人证明您的电子邮件是真实的且未被篡改。</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">数字签名</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">零访问加密</string>
-  <string name="padlocks_proton_send_zero_access_encryption_disabled_description">该收件人已禁用其帐户上的端到端加密。</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled_description">此收件人已在其账户上禁用了端到端加密。</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled_description_link_text">零访问加密</string>
   <string name="padlocks_proton_receive_e2ee">端到端加密</string>
   <string name="padlocks_proton_receive_e2ee_description">此电子邮件在发件人的设备上是 %s，并且只能由收件人解密。Proton 无法在任何时候查看电子邮件的内容。</string>

@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Spravovat bezpečnostní klíče</string>
   <string name="auth_fido_add_security_key">Přidat bezpečnostní klíč</string>
   <string name="auth_fido_security_keys_learn_more">Více informací</string>
-  <string name="auth_user_check_delinquent_error">Váš účet je aktuálně pozastaven kvůli faktuře po splatnosti.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Maximální počet %d bezplatného účtů byl překročen.</item>
     <item quantity="few">Maximální počet %d bezplatných účtů byl překročen.</item>

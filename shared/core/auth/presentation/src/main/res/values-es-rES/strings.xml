@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gestionar las claves de seguridad</string>
   <string name="auth_fido_add_security_key">Añadir una clave de seguridad</string>
   <string name="auth_fido_security_keys_learn_more">Más información</string>
-  <string name="auth_user_check_delinquent_error">Tu cuenta se encuentra suspendida en este momento debido a una factura vencida.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Se ha superado el número máximo de %d cuenta gratuita.</item>
     <item quantity="other">Se ha superado el número máximo de %d cuentas gratuitas.</item>

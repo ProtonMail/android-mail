@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Sicherheitsschlüssel verwalten</string>
   <string name="auth_fido_add_security_key">Sicherheitsschlüssel hinzufügen</string>
   <string name="auth_fido_security_keys_learn_more">Mehr erfahren</string>
-  <string name="auth_user_check_delinquent_error">Dein Konto ist derzeit wegen einer überfälligen Rechnung eingefroren.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Die maximale Anzahl von %d kostenlosen Konto wurde überschritten.</item>
     <item quantity="other">Die maximale Anzahl von %d kostenlosen Konten wurde überschritten.</item>

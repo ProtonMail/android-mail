@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Behandle sikkerhetsnøkler</string>
   <string name="auth_fido_add_security_key">Legg til sikkerhetsnøkkel</string>
   <string name="auth_fido_security_keys_learn_more">Lær mer</string>
-  <string name="auth_user_check_delinquent_error">Kontoen din er for øyeblikket satt på pause på grunn av en forfalt faktura.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Maksimalt antall %d gratis konto er overskredet.</item>
     <item quantity="other">Maksimalt antall %d gratis kontoer er overskredet.</item>

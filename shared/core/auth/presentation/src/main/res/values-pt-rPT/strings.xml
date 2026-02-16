@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gerir as chaves de segurança</string>
   <string name="auth_fido_add_security_key">Adicionar uma chave de segurança</string>
   <string name="auth_fido_security_keys_learn_more">Saiba mais</string>
-  <string name="auth_user_check_delinquent_error">A sua conta encontra-se atualmente em estado de espera devido a uma fatura vencida.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">The maximum number of %d free account has been exceeded.</item>
     <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>

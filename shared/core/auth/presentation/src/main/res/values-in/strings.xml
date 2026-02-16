@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Kelola kunci keamanan</string>
   <string name="auth_fido_add_security_key">Tambahkan kunci keamanan</string>
   <string name="auth_fido_security_keys_learn_more">Pelajari lebih lanjut</string>
-  <string name="auth_user_check_delinquent_error">Akun Anda sedang ditangguhkan karena adanya faktur yang tertunggak.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="other">Jumlah %d akun gratis maksimal telah terlampaui.</item>
   </plurals>

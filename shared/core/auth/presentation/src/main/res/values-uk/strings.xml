@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Керувати ключами безпеки</string>
   <string name="auth_fido_add_security_key">Додати ключ безпеки</string>
   <string name="auth_fido_security_keys_learn_more">Докладніше</string>
-  <string name="auth_user_check_delinquent_error">Ваш обліковий запис наразі призупинено через несплату рахунку.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Максимальна кількість %d безплатного облікового запису була перевищена.</item>
     <item quantity="few">Максимальна кількість %d безплатних облікових записів була перевищена.</item>

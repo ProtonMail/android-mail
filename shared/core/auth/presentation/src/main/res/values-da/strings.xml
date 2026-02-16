@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Håndter sikkerhedsnøgler</string>
   <string name="auth_fido_add_security_key">Tilføj sikkerhedsnøgle</string>
   <string name="auth_fido_security_keys_learn_more">Få mere at vide</string>
-  <string name="auth_user_check_delinquent_error">Din konto er i øjeblikket sat i bero pga. en forfalden faktura.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Det maksimale antal på %d gratis konto er overskredet.</item>
     <item quantity="other">Det maksimale antal på %d gratis konti er overskredet.</item>

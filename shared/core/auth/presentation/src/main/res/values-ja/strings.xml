@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">セキュリティキーを管理</string>
   <string name="auth_fido_add_security_key">セキュリティキーを追加</string>
   <string name="auth_fido_security_keys_learn_more">より詳しく</string>
-  <string name="auth_user_check_delinquent_error">アカウントは支払い期限を過ぎたため現在保留中です。</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="other">%d 個の無料アカウント数が上限に達しました。</item>
   </plurals>

@@ -31,12 +31,12 @@
   <string name="intro_origin_sign_in_hint_4">4. 然后在设备上点击 <b>扫描二维码</b> 并扫描即可。</string>
   <string name="intro_origin_sign_in_tips">安全提示</string>
   <string name="intro_origin_sign_in_tip_1">请谨慎对待带有二维码的信息，只有在您信任来源的情况下才扫描二维码。</string>
-  <string name="intro_origin_sign_in_tip_2">Proton 绝不会突然联系您，并要求您使用二维码登入。</string>
+  <string name="intro_origin_sign_in_tip_2">Proton 绝不会突然联系您，并要求您使用二维码登录！</string>
   <string name="intro_origin_sign_in_tip_3">Proton 绝不会要求您扫描来自非 <b>https://proton.me</b> 或 Proton 官方应用的二维码。</string>
   <string name="intro_origin_sign_in_begin">扫描二维码</string>
   <string name="intro_origin_biometrics_title">解锁您的设备以继续</string>
   <string name="manual_code_input_title">手动输入验证码</string>
-  <string name="manual_code_input_description">要获取您要登入设备的代码，请在登入屏幕的帮助菜单中点击<b>通过二维码登入</b>按钮，然后点击<b>手动输入密钥</b>。</string>
+  <string name="manual_code_input_description">要获取您要登录设备的代码，请在登录屏幕的帮助菜单中点 <b>击通过二维码登录</b> 按钮，然后点击 <b>手动输入密钥</b>。</string>
   <string name="manual_code_input_code_label">代码</string>
   <string name="manual_code_input_clear_code">清空</string>
   <string name="manual_code_input_submit">继续</string>
@@ -45,7 +45,7 @@
   <string name="qr_code_scan_hint">请将二维码放入扫描框</string>
   <string name="qr_code_scan_enter_manually">手动输入验证码</string>
   <string name="target_sign_in_title">扫描二维码登录</string>
-  <string name="target_sign_in_scan_code">如何使用其他设备登入</string>
+  <string name="target_sign_in_scan_code">如何使用其他设备登录</string>
   <string name="target_sign_in_instruction_1">1. 获取另一台已登录 Proton 账户的设备</string>
   <string name="target_sign_in_instruction_2">2. 使用该设备，打开任何 Proton 应用并选择 <b>设置</b></string>
   <string name="target_sign_in_instruction_3">3. 选择 <b>在其他设备上登录 → 扫描二维码</b></string>

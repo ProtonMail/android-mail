@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Hallitse suojausavaimia</string>
   <string name="auth_fido_add_security_key">Liitä suojausavain</string>
   <string name="auth_fido_security_keys_learn_more">Lue lisää</string>
-  <string name="auth_user_check_delinquent_error">Tilisi on lukittu erääntyneen laskun vuoksi.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Ilmaisten tilien maksimimäärä (%d) on ylitetty.</item>
     <item quantity="other">Ilmaisten tilien maksimimäärä (%d) on ylitetty.</item>

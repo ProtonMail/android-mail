@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Кіраваць ключамі бяспекі</string>
   <string name="auth_fido_add_security_key">Дадаць ключ бяспекі</string>
   <string name="auth_fido_security_keys_learn_more">Даведацца больш</string>
-  <string name="auth_user_check_delinquent_error">Ваш уліковы запіс прыпынены з прычыны неаплачанага рахунка.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Максімальная колькасць %d бясплатнага ўліковага запіса была перавышана.</item>
     <item quantity="few">Максімальная колькасць %d бясплатных уліковых запісаў была перавышана.</item>

@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gerenciar chaves de segurança</string>
   <string name="auth_fido_add_security_key">Adicionar chave de segurança</string>
   <string name="auth_fido_security_keys_learn_more">Saiba mais</string>
-  <string name="auth_user_check_delinquent_error">Sua conta está suspensa no momento devido a uma fatura vencida.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">O número máximo de %d conta gratuita foi excedido.</item>
     <item quantity="other">O número máximo de %d contas gratuitas foi excedido.</item>

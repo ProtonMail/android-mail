@@ -33,10 +33,10 @@
   <string name="auth_login_close">关闭</string>
   <string name="auth_login_help">帮助</string>
   <string name="auth_sign_in">登录</string>
-  <string name="auth_login_username">用户名或电子邮箱</string>
-  <string name="auth_email">电子邮箱</string>
+  <string name="auth_login_username">用户名或邮箱</string>
+  <string name="auth_email">邮箱</string>
   <string name="auth_password">密码</string>
-  <string name="auth_username_placeholder">用户名或电子邮箱</string>
+  <string name="auth_username_placeholder">用户名或邮箱</string>
   <string name="auth_password_placeholder">密码</string>
   <string name="auth_login_assistive_text">请输入您的 Proton 邮箱或用户名。</string>
   <string name="auth_account_details">请输入您的 Proton 账户信息。</string>
@@ -93,7 +93,7 @@
   <string name="auth_signup_skip_recovery_description">如果忘记密码或被锁定，恢复方法可帮助您访问账户。</string>
   <string name="auth_signup_skip_recovery">跳过</string>
   <string name="auth_signup_set_recovery">设置恢复方法</string>
-  <string name="auth_signup_your_account_is_being_setup">您的帐户正在创建…</string>
+  <string name="auth_signup_your_account_is_being_setup">正在创建您的账户…</string>
   <string name="auth_signup_please_wait">通常只需不到一分钟。</string>
   <string name="auth_signup_congratulations_subtitle">您的 Proton 账户已成功创建。\n请尽情享受隐私世界。</string>
   <string name="auth_signup_congratulations_title">恭喜！</string>
@@ -121,9 +121,8 @@
   <string name="auth_fido_manage_security_keys">管理安全密钥</string>
   <string name="auth_fido_add_security_key">添加安全密钥</string>
   <string name="auth_fido_security_keys_learn_more">了解详情</string>
-  <string name="auth_user_check_delinquent_error">您的账户因欠费已被停用。</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="other">已超出免费帐户的最大数量 %d。</item>
+    <item quantity="other">已超出 %d 个免费账户的最大数量限制！</item>
   </plurals>
   <string name="common_error_something_went_wrong">出错了，请再试一次。</string>
   <string name="auth_fido_config_error">检索存储的密钥时出错。</string>
@@ -139,10 +138,10 @@
     <item quantity="other">至少%1$s个字符</item>
   </plurals>
   <string name="settings_password_management_title">更改密码</string>
-  <string name="settings_save_second_password">保存新的副密码</string>
+  <string name="settings_save_second_password">保存新的二级密码</string>
   <string name="settings_save_main_password">保存新的主密码</string>
   <string name="settings_password_management_tab_main_password">主密码</string>
-  <string name="settings_password_management_tab_second_password">副密码</string>
+  <string name="settings_password_management_tab_second_password">二级密码</string>
   <string name="settings_password_management_change_password_note">要更改任意密码，您需要知道您的主密码。\u0020</string>
   <string name="settings_password_management_forgot_main_password">忘记主密码？</string>
   <string name="settings_password_management_header">更改密码</string>
@@ -151,12 +150,12 @@
   <string name="settings_main_password_hint_new">新主密码</string>
   <string name="settings_main_password_hint_new_confirm">确认新主密码</string>
   <string name="settings_second_password_hint_current_main_password">当前主密码</string>
-  <string name="settings_second_password_hint_new">新副密码</string>
-  <string name="settings_second_password_hint_new_confirm">确认新副密码</string>
+  <string name="settings_second_password_hint_new">新的二级密码</string>
+  <string name="settings_second_password_hint_new_confirm">确认新的二级密码</string>
   <string name="settings_change_password_error">密码更改失败。</string>
   <string name="settings_recovery_email_success">密保邮箱地址已更新</string>
   <string name="settings_password_management_login_success">登录密码已更改</string>
-  <string name="settings_password_management_second_success">第二密码已更新</string>
+  <string name="settings_password_management_second_success">二级密码已更新</string>
   <string name="settings_password_management_start_recovery">忘记了你的密码？</string>
   <string name="settings_password_management_2fa">需要双重认证</string>
   <string name="settings_password_invalid_2fa">双重认证码无效，请重试。</string>

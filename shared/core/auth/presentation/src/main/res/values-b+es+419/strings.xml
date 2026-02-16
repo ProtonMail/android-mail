@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gestionar claves de seguridad</string>
   <string name="auth_fido_add_security_key">Agregar clave de seguridad</string>
   <string name="auth_fido_security_keys_learn_more">Más información</string>
-  <string name="auth_user_check_delinquent_error">La cuenta está actualmente en espera debido a una factura atrasada.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Se ha excedido el número máximo de %d cuenta gratuita.</item>
     <item quantity="other">Se ha excedido el número máximo de %d cuentas gratuitas.</item>

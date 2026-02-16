@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gestiona les claus de seguretat</string>
   <string name="auth_fido_add_security_key">Afegeix una clau de seguretat</string>
   <string name="auth_fido_security_keys_learn_more">Més informació</string>
-  <string name="auth_user_check_delinquent_error">El compte està actualment en suspens a causa d\'una factura vençuda.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">S\'ha superat el nombre màxim d\'%d compte gratuït.</item>
     <item quantity="other">S\'ha superat el nombre màxim de %d comptes gratuïts.</item>

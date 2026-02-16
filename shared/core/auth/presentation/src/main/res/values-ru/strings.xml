@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Управление ключами безопасности</string>
   <string name="auth_fido_add_security_key">Добавить ключ безопасности</string>
   <string name="auth_fido_security_keys_learn_more">Подробнее</string>
-  <string name="auth_user_check_delinquent_error">Ваш аккаунт на данный момент заблокирован из-за просроченного счета.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">The maximum number of %d free account has been exceeded.</item>
     <item quantity="few">The maximum number of %d free accounts have been exceeded.</item>

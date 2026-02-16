@@ -35,15 +35,15 @@
   <string name="composer_error_duplicate_recipient">已移除重复收件人</string>
   <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
-  <string name="composer_error_store_draft_address_disabled">无法存稿 - 此发件人地址已禁用</string>
-  <string name="composer_error_store_draft_address_pk_missing">无法存稿 - 此发件人地址没有主键</string>
-  <string name="composer_error_store_draft_attachment_too_large">无法存稿 - 附件超过大小限制</string>
-  <string name="composer_error_store_draft_too_many_attachments">无法存稿 - 附件数量超过限制</string>
-  <string name="composer_error_store_draft_duplicate_recipient">无法存稿 - 一个或多个收件人重复</string>
-  <string name="composer_error_store_draft_recipient_group_name">无法存稿 - 无效的收件人组合名称</string>
-  <string name="composer_error_store_draft_invalid_recipient">无法存稿 - 无效的收件人</string>
-  <string name="composer_error_store_draft_message_not_a_draft">无法存稿 - 此邮件不是草稿</string>
-  <string name="composer_error_store_draft_generic">无法存稿 - 出现一般错误</string>
+  <string name="composer_error_store_draft_address_disabled">无法保存草稿 - 发件人地址已被禁用</string>
+  <string name="composer_error_store_draft_address_pk_missing">无法保存草稿 - 此发件人地址没有主密钥</string>
+  <string name="composer_error_store_draft_attachment_too_large">无法保存草稿 - 附件超出大小限制</string>
+  <string name="composer_error_store_draft_too_many_attachments">无法保存草稿 - 已达到附件数量上限</string>
+  <string name="composer_error_store_draft_duplicate_recipient">无法保存草稿 - 存在一个或多个重复的收件人</string>
+  <string name="composer_error_store_draft_recipient_group_name">无法保存草稿 - 收件人组名称无效</string>
+  <string name="composer_error_store_draft_invalid_recipient">无法保存草稿 - 收件人无效</string>
+  <string name="composer_error_store_draft_message_not_a_draft">无法保存草稿 - 此邮件不是草稿</string>
+  <string name="composer_error_store_draft_generic">无法保存草稿 - 发生常规错误</string>
   <string name="composer_error_create_draft">出错了，无法创建新草稿。</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，无法进行编辑。</string>
   <string name="composer_add_attachments_content_description">添加附件</string>
@@ -76,12 +76,12 @@
   <string name="composer_bottom_bar_expiration_time_custom">在指定日期</string>
   <string name="composer_error_setting_expiration_time">设置有效期失败</string>
   <!-- Send expiring message to external recipients dialog -->
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">添加密码以设置邮件有效期</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">添加密码以使用过期功能</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">取消</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">仍然发送</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">添加密码保护</string>
-  <string name="composer_send_expiring_message_to_external_may_fail">无法确认所有收件人均使用 Proton Mail。只有 Proton 的邮箱地址支持邮件有效期。在这种情况下，我们建议添加密码。</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">一些收件人邮箱地址（%1$s）不支持邮件有效期。跟非 Proton Mail 收件人沟通的情况下，需添加密码·，才能设置邮件有效期。</string>
+  <string name="composer_send_expiring_message_to_external_may_fail">我们无法确认所有收件人都使用 Proton Mail。只有 Proton 地址支持邮件过期功能。在此情况下，我们建议您改为添加密码。</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">部分收件人 (%1$s) 默认不支持过期功能，请添加密码以为非 Proton Mail 收件人启用过期功能。</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">默认情况下，收件人均不支持邮件过期功能。如需对非 Proton Mail 用户设置过期时间，请添加密码。</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">提示</string>
@@ -151,9 +151,9 @@
   <string name="composer_external_encryption_unexpected_error">未预料到的错误 %s。请重试。</string>
   <string name="composer_sender_changed_original_address_cannot_send">当前地址不可用，将使用默认地址发送。</string>
   <string name="composer_expiration_time_bottom_sheet_description">设置邮件在收件箱和已发送文件夹中的删除时间。如果收件人非 Proton Mail 用户，需设置密码。</string>
-  <string name="expiration_time_set_time_and_date">设定日期和时间</string>
-  <string name="composer_expiration_set_expiration">设定截止日期</string>
-  <string name="composer_expiration_pick_time_title">设定时间</string>
+  <string name="expiration_time_set_time_and_date">设置时间和日期</string>
+  <string name="composer_expiration_set_expiration">设置过期时间</string>
+  <string name="composer_expiration_pick_time_title">设置时间</string>
   <string name="composer_expiration_time_custom_time_on">在 %1$s</string>
   <string name="composer_error_send_draft_generic">发送邮件时发生意外错误，请重试。</string>
   <string name="composer_error_send_draft_invalid_sender">邮箱地址被禁用或无效，请确认地址有效且可用。</string>

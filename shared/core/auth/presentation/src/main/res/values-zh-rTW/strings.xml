@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">管理安全金鑰</string>
   <string name="auth_fido_add_security_key">新增安全金鑰</string>
   <string name="auth_fido_security_keys_learn_more">了解更多</string>
-  <string name="auth_user_check_delinquent_error">由於一筆繳款單已逾期，您的帳號目前已經被暫停。</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
   </plurals>

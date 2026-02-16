@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gérer les clés de sécurité</string>
   <string name="auth_fido_add_security_key">Ajouter une clé de sécurité</string>
   <string name="auth_fido_security_keys_learn_more">En savoir plus</string>
-  <string name="auth_user_check_delinquent_error">Votre compte est actuellement suspendu en raison d\'une facture impayée.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Le nombre maximal de %d comptes gratuits a été atteint.</item>
     <item quantity="other">Le nombre maximal des %d comptes gratuits a été atteint.</item>

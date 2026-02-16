@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Hitelesítési kulcsok kezelése</string>
   <string name="auth_fido_add_security_key">Hitelesítési kulcs hozzáadása</string>
   <string name="auth_fido_security_keys_learn_more">További információk</string>
-  <string name="auth_user_check_delinquent_error">Fiókja jelenleg, számlatartozás miatt, fel van függesztve.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">A %d ingyenes fiók maximális száma túllépésre került.</item>
     <item quantity="other">A %d ingyenes fiók maximális száma túllépésre került.</item>

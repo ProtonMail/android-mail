@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gestisci le chiavi di sicurezza</string>
   <string name="auth_fido_add_security_key">Aggiungi una chiave</string>
   <string name="auth_fido_security_keys_learn_more">Scopri di più</string>
-  <string name="auth_user_check_delinquent_error">Account sospeso a causa di una fattura scaduta</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">È stato raggiunto il numero massimo di %d account gratuiti.</item>
     <item quantity="other">È stato raggiunto il numero massimo di %d account gratuiti.</item>

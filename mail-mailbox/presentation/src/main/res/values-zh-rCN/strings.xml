@@ -94,7 +94,7 @@
   <string name="mailbox_action_clear_spam_dialog_body_message">确定要永久删除垃圾文件夹中的所有邮件吗？</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">确定要永久删除垃圾文件夹中的所有会话吗？</string>
   <string name="mailbox_action_clear_operation_scheduled">"清除操作已经安排"</string>
-  <string name="mailbox_action_maximum_selection_reached">"已达到选择数量上限"</string>
+  <string name="mailbox_action_maximum_selection_reached">"已达到最大选择数量"</string>
   <string name="mailbox_talkback_readout_unread">未读</string>
   <string name="mailbox_talkback_readout_starred">无星标</string>
   <string name="mailbox_talkback_readout_not_starred">星标</string>

@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Διαχείριση κλειδιών ασφαλείας</string>
   <string name="auth_fido_add_security_key">Προσθήκη κλειδιού ασφαλείας</string>
   <string name="auth_fido_security_keys_learn_more">Μάθετε περισσότερα</string>
-  <string name="auth_user_check_delinquent_error">Ο λογαριασμός σας είναι σε αναστολή λόγω ενός ληξιπρόθεσμου τιμολογίου.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Ο μέγιστος αριθμός %d δωρεάν λογαριασμού έχει ξεπεραστεί.</item>
     <item quantity="other">Ο μέγιστος αριθμός %d δωρεάν λογαριασμών έχει ξεπεραστεί.</item>

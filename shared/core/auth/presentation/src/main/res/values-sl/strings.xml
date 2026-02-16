@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Upravljanje varnostnih ključev</string>
   <string name="auth_fido_add_security_key">Dodaj varnostni ključ</string>
   <string name="auth_fido_security_keys_learn_more">Več o tem</string>
-  <string name="auth_user_check_delinquent_error">Vaš račun je trenutno zadržan zaradi neplačanega računa.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Največje možno število %d brezplačnega računa je bilo preseženo.</item>
     <item quantity="two">Največje možno število %d brezplačnih računov je bilo preseženo.</item>

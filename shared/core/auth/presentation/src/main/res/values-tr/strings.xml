@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Güvenlik anahtarları yönetimi</string>
   <string name="auth_fido_add_security_key">Güvenlik anahtarı ekle</string>
   <string name="auth_fido_security_keys_learn_more">Ayrıntılı bilgi alın</string>
-  <string name="auth_user_check_delinquent_error">Süresi geçmiş bir fatura nedeniyle hesabınız askıya alındı.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Olabilecek en fazla %d ücretsiz hesap sayısı aşıldı.</item>
     <item quantity="other">Olabilecek en fazla %d ücretsiz hesap sayısı aşıldı.</item>

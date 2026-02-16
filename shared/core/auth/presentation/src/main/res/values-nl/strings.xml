@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Beveiligingssleutels beheren</string>
   <string name="auth_fido_add_security_key">Beveiligingssleutel toevoegen</string>
   <string name="auth_fido_security_keys_learn_more">Meer info</string>
-  <string name="auth_user_check_delinquent_error">Uw account staat momenteel in de wacht wegens een achterstallige factuur.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Het maximale aantal van %d gratis account is overschreden.</item>
     <item quantity="other">Het maximale aantal van %d gratis accounts is overschreden.</item>

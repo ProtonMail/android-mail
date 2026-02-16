@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Gestionare chei de securitate</string>
   <string name="auth_fido_add_security_key">Adăugare cheie de securitate</string>
   <string name="auth_fido_security_keys_learn_more">Detalii</string>
-  <string name="auth_user_check_delinquent_error">Contul vă este suspendat datorită unei facturi neachitate.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Numărul maxim de %d cont gratuit a fost depășit.</item>
     <item quantity="few">Numărul maxim de %d conturi gratuite a fost depășit.</item>

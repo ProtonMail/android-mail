@@ -121,7 +121,6 @@
   <string name="auth_fido_manage_security_keys">Hantera säkerhetsnycklar</string>
   <string name="auth_fido_add_security_key">Lägg till säkerhetsnyckel</string>
   <string name="auth_fido_security_keys_learn_more">Lär dig mer</string>
-  <string name="auth_user_check_delinquent_error">Ditt konto är för närvarande pausat på grund av en förfallen faktura.</string>
   <plurals name="auth_user_check_max_free_error">
     <item quantity="one">Det maximala antalet %d gratiskonto har överskridits.</item>
     <item quantity="other">Det maximala antalet %d gratiskonton har överskridits.</item>
