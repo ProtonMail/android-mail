@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.android.core.auth.presentation.IODispatcher
 import me.proton.android.core.auth.presentation.challenge.toUserBehavior
+import me.proton.android.core.auth.presentation.flow.FlowCache
 import me.proton.core.challenge.domain.entity.ChallengeFrameDetails
 import uniffi.mail_account_uniffi.LoginError
 import uniffi.mail_account_uniffi.LoginFlowLoginResult
@@ -51,11 +52,15 @@ import javax.inject.Inject
 class LoginViewModel @Inject internal constructor(
     @ApplicationContext private val context: Context,
     private val sessionInterface: MailSession,
+    private val flowCache: FlowCache,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val loginFlowDeferred: Deferred<MailSessionNewLoginFlowResult> =
-        viewModelScope.async { sessionInterface.newLoginFlow() }
+        viewModelScope.async {
+            flowCache.clear()
+            sessionInterface.newLoginFlow()
+        }
     private val mutableState: MutableStateFlow<LoginViewState> = MutableStateFlow(LoginViewState.Idle)
 
     val state: StateFlow<LoginViewState> = mutableState.asStateFlow()
