@@ -213,6 +213,7 @@ fun AnnotatedLinkText(
     val annotatedString = remember(fullText, linkText, linkUrl) {
         buildAnnotatedString {
             append(fullText)
+            append(" ")
             withLink(
                 LinkAnnotation.Url(
                     url = linkUrl,
