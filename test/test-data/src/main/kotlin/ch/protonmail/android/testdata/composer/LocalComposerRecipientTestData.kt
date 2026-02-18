@@ -19,6 +19,7 @@
 package ch.protonmail.android.testdata.composer
 
 import uniffi.mail_uniffi.ComposerRecipient
+import uniffi.mail_uniffi.ComposerRecipientGroup
 import uniffi.mail_uniffi.ComposerRecipientSingle
 import uniffi.mail_uniffi.ComposerRecipientValidState
 import uniffi.mail_uniffi.PrivacyLock
@@ -48,6 +49,16 @@ object LocalComposerRecipientTestData {
     val John = build(
         address = "john@pm.me",
         name = "John"
+    )
+
+    fun buildGroup(name: String, emails: List<String>) = ComposerRecipient.Group(
+        ComposerRecipientGroup(
+            displayName = name,
+            recipients = emails.map { email ->
+                ComposerRecipientSingle(email, email, ComposerRecipientValidState.Validating, null)
+            },
+            totalContactsInGroup = emails.size.toULong()
+        )
     )
 
     private fun build(

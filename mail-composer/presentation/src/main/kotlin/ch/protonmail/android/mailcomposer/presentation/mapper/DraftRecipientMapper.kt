@@ -24,21 +24,30 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientValidityError
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailpadlocks.domain.PrivacyLock
 
-fun RecipientUiModel.toDraftRecipient() = when (this) {
+fun RecipientUiModel.toDraftRecipient(): DraftRecipient = when (this) {
+    is RecipientUiModel.Group -> DraftRecipient.GroupRecipient(
+        name = this.name,
+        recipients = this.members.map { email ->
+            DraftRecipient.SingleRecipient(
+                name = "",
+                address = email,
+                validity = DraftRecipientValidity.Validating,
+                privacyLock = PrivacyLock.None
+            )
+        }
+    )
     is RecipientUiModel.Invalid -> DraftRecipient.SingleRecipient(
         name = "",
         address = this.address,
         validity = DraftRecipientValidity.Invalid(RecipientValidityError.Format),
         privacyLock = PrivacyLock.None
     )
-
     is RecipientUiModel.Valid -> DraftRecipient.SingleRecipient(
         name = "",
         address = this.address,
         validity = DraftRecipientValidity.Valid,
         privacyLock = PrivacyLock.None
     )
-
     is RecipientUiModel.Validating -> DraftRecipient.SingleRecipient(
         name = "",
         address = this.address,

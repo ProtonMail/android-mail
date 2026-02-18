@@ -135,4 +135,29 @@ internal class RecipientUiModelMapperTest {
         // Then
         assertEquals(expectedRecipientUiModel, actual)
     }
+
+    @Test
+    fun `should map from GroupRecipient to RecipientUiModel Group`() {
+        // Given
+        val groupName = "Team Proton"
+        val member1 = DraftRecipient.SingleRecipient("Alice", validAddress1, privacyLock = PrivacyLock.None)
+        val member2 = DraftRecipient.SingleRecipient("Bob", validAddress2, privacyLock = PrivacyLock.None)
+        val groupRecipient = DraftRecipient.GroupRecipient(
+            name = groupName,
+            recipients = listOf(member1, member2)
+        )
+        val expectedRecipientUiModel = listOf(
+            RecipientUiModel.Group(
+                name = groupName,
+                members = listOf(validAddress1, validAddress2),
+                color = ""
+            )
+        )
+
+        // When
+        val actual = RecipientUiModelMapper.mapFromDraftRecipients(listOf(groupRecipient))
+
+        // Then
+        assertEquals(expectedRecipientUiModel, actual)
+    }
 }

@@ -31,7 +31,11 @@ internal object RecipientUiModelMapper {
     private fun String.toModel() = RecipientUiModel.Valid(this)
 
     private fun DraftRecipient.toUiModel() = when (val recipient = this) {
-        is DraftRecipient.GroupRecipient -> RecipientUiModel.Valid(recipient.name)
+        is DraftRecipient.GroupRecipient -> RecipientUiModel.Group(
+            name = recipient.name,
+            members = recipient.recipients.map { it.address },
+            color = "" // Currently not exposed by the SDK
+        )
         is DraftRecipient.SingleRecipient -> singleRecipientToUiModel(recipient)
     }
 

@@ -52,6 +52,15 @@ fun List<LocalComposerRecipient>.toSingleRecipients(): List<DraftRecipient.Singl
         )
     }
 
+fun List<LocalComposerRecipient>.toGroupRecipients(): List<DraftRecipient.GroupRecipient> = this
+    .filterIsInstance<ComposerRecipient.Group>()
+    .map { group ->
+        DraftRecipient.GroupRecipient(
+            name = group.v1.displayName,
+            recipients = group.v1.recipients.map { it.toSingleDraftRecipient() }
+        )
+    }
+
 fun List<LocalComposerRecipient>.toComposerRecipients(): List<DraftRecipient> = this.map { localRecipient ->
     when (localRecipient) {
         is ComposerRecipient.Group -> DraftRecipient.GroupRecipient(

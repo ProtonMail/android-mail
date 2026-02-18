@@ -41,6 +41,12 @@ sealed class RecipientUiModel(
         override val address: String,
         override val encryptionInfo: EncryptionInfoUiModel = EncryptionInfoUiModel.NoLock
     ) : RecipientUiModel(address, encryptionInfo)
+
+    data class Group(
+        val name: String,
+        val members: List<String>,
+        val color: String
+    ) : RecipientUiModel(address = name, encryptionInfo = EncryptionInfoUiModel.NoLock)
 }
 
 internal fun List<RecipientUiModel>.toImmutableChipList() = this.map { it.toChipItem() }.toImmutableList()
@@ -49,4 +55,10 @@ private fun RecipientUiModel.toChipItem(): ChipItem = when (this) {
     is RecipientUiModel.Invalid -> ChipItem.Invalid(address, encryptionInfo)
     is RecipientUiModel.Valid -> ChipItem.Valid(address, encryptionInfo)
     is RecipientUiModel.Validating -> ChipItem.Validating(address, encryptionInfo)
+    is RecipientUiModel.Group -> ChipItem.Group(
+        value = name,
+        color = color,
+        memberCount = members.size,
+        members = members
+    )
 }

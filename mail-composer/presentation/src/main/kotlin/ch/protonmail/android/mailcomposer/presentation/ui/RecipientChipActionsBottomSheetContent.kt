@@ -90,9 +90,15 @@ internal fun RecipientChipActionsBottomSheetContent(
             )
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge))
 
+            val actions = if (chipItem is ChipItem.Group) {
+                persistentListOf(Actions.Remove)
+            } else {
+                persistentListOf(Actions.Copy, Actions.Remove)
+            }
+
             ActionGroup(
                 modifier = Modifier,
-                items = persistentListOf(Actions.Copy, Actions.Remove),
+                items = actions,
                 onItemClicked = { source ->
                     when (source) {
                         Actions.Copy -> onCopy(chipItem)

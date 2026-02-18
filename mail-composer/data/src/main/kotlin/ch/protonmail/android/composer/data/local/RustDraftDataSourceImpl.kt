@@ -27,6 +27,7 @@ import ch.protonmail.android.composer.data.mapper.toChangeSenderError
 import ch.protonmail.android.composer.data.mapper.toComposerRecipients
 import ch.protonmail.android.composer.data.mapper.toDraftCreateMode
 import ch.protonmail.android.composer.data.mapper.toDraftSendError
+import ch.protonmail.android.composer.data.mapper.toGroupRecipients
 import ch.protonmail.android.composer.data.mapper.toLocalDraft
 import ch.protonmail.android.composer.data.mapper.toLocalDraftWithSyncStatus
 import ch.protonmail.android.composer.data.mapper.toLocalExpirationTime
@@ -340,26 +341,55 @@ class RustDraftDataSourceImpl @Inject constructor(
         recipientsWrapper: ComposerRecipientListWrapper,
         updatedRecipients: List<DraftRecipient>
     ): Either<SaveDraftError, Unit> = either {
-        val currentRecipients = recipientsWrapper.recipients().toSingleRecipients()
+        val currentSingles = recipientsWrapper.recipients().toSingleRecipients()
+        val currentGroups = recipientsWrapper.recipients().toGroupRecipients()
 
-        val updatedSingleRecipients = updatedRecipients
-            .filterIsInstance<DraftRecipient.SingleRecipient>()
-
+        // single recipients diff
+        val updatedSingleRecipients = updatedRecipients.filterIsInstance<DraftRecipient.SingleRecipient>()
         val recipientsToAdd = updatedSingleRecipients.filterNot { updatedRecipient ->
-            updatedRecipient.address in currentRecipients.map { it.address }
+            updatedRecipient.address in currentSingles.map { it.address }
         }.toSet()
-        val recipientsToRemove = currentRecipients.filterNot { currentRecipient ->
+        val recipientsToRemove = currentSingles.filterNot { currentRecipient ->
             currentRecipient.address in updatedSingleRecipients.map { it.address }
         }.toSet()
 
+        var foundDuplicate = false
         recipientsToAdd.forEach {
             recipientsWrapper.addSingleRecipient(it.toSingleRecipientEntry())
-                .onLeft { error -> raise(error) }
+                .onLeft { error ->
+                    when (error) {
+                        is SaveDraftError.DuplicateRecipient -> foundDuplicate = true
+                        else -> raise(error)
+                    }
+                }
         }
-
         recipientsToRemove.forEach {
             recipientsWrapper.removeSingleRecipient(it.toSingleRecipientEntry())
                 .onLeft { error -> raise(error) }
+        }
+
+        // group recipients diff
+        val updatedGroups = updatedRecipients.filterIsInstance<DraftRecipient.GroupRecipient>()
+        val groupsToAdd = updatedGroups.filterNot { u -> u.name in currentGroups.map { it.name } }
+        val groupsToRemove = currentGroups.filterNot { c -> c.name in updatedGroups.map { it.name } }
+
+        groupsToAdd.forEach { group ->
+            recipientsWrapper.addGroupRecipient(
+                groupName = group.name,
+                recipients = group.recipients.map { it.toSingleRecipientEntry() },
+                totalContactsInGroup = group.recipients.size.toULong()
+            ).onLeft { error -> raise(error) }
+        }
+        groupsToRemove.forEach { group ->
+            recipientsWrapper.removeGroup(group.name)
+                .onLeft { error -> raise(error) }
+        }
+
+        // Force a Rust -> UI sync to remove any stale Validating chips for the rejected duplicates,
+        // then signal the caller so it can show the appropriate toast.
+        if (foundDuplicate) {
+            recipientsUpdatedCallback.onUpdate()
+            raise(SaveDraftError.DuplicateRecipient)
         }
     }
 

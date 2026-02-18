@@ -51,6 +51,7 @@ internal fun inputChipBorder(chipItem: ChipItem): BorderStroke {
     val borderColor = when (chipItem) {
         is ChipItem.Invalid -> ProtonTheme.colors.notificationError
         is ChipItem.Counter,
+        is ChipItem.Group,
         is ChipItem.Validating,
         is ChipItem.Valid -> ProtonTheme.colors.borderStrong
     }

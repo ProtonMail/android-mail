@@ -96,6 +96,8 @@ class RecipientsStateManager @Inject constructor() {
         mutableRecipients.value = state
     }
 
-    private fun RecipientUiModel.toValidating(): RecipientUiModel =
-        RecipientUiModel.Validating(address, EncryptionInfoUiModel.NoLock)
+    private fun RecipientUiModel.toValidating(): RecipientUiModel = when (this) {
+        is RecipientUiModel.Group -> this
+        else -> RecipientUiModel.Validating(address, EncryptionInfoUiModel.NoLock)
+    }
 }

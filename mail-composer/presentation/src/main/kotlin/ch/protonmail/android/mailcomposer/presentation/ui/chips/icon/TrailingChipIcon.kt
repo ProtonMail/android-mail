@@ -35,6 +35,7 @@ internal fun TrailingChipIcon(chipItem: ChipItem) {
     val tint = when (chipItem) {
         is ChipItem.Invalid -> ProtonTheme.colors.textInverted
         is ChipItem.Counter,
+        is ChipItem.Group,
         is ChipItem.Validating,
         is ChipItem.Valid -> ProtonTheme.colors.textNorm
     }

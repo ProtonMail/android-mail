@@ -219,6 +219,31 @@ internal class RecipientsStateManagerTest {
     }
 
     @Test
+    fun `resetValidationState preserves group recipients unchanged`() {
+        // Given
+        val group = RecipientUiModel.Group("Team", listOf("a@pm.me", "b@pm.me"), "#FF0000")
+        val recipientStateManager = RecipientsStateManager()
+        recipientStateManager.updateRecipients(listOf(group), ContactSuggestionsField.TO)
+
+        // When
+        recipientStateManager.resetValidationState()
+
+        // Then
+        assertEquals(listOf<RecipientUiModel>(group), recipientStateManager.recipients.value.toRecipients)
+    }
+
+    @Test
+    fun `hasValidRecipients returns true when only group recipients present`() {
+        // Given
+        val group = RecipientUiModel.Group("Team", listOf("a@pm.me"), "#FF0000")
+        val recipientStateManager = RecipientsStateManager()
+        recipientStateManager.updateRecipients(listOf(group), ContactSuggestionsField.TO)
+
+        // When / Then
+        assertTrue(recipientStateManager.hasValidRecipients())
+    }
+
+    @Test
     fun `restoreState should restore previously saved state`() {
         // Given
         val recipientsStateManager = RecipientsStateManager()

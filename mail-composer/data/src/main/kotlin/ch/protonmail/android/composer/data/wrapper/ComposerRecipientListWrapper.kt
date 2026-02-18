@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.mapper.toSaveDraftError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
+import uniffi.mail_uniffi.AddGroupRecipientError
 import uniffi.mail_uniffi.AddSingleRecipientError
 import uniffi.mail_uniffi.ComposerRecipient
 import uniffi.mail_uniffi.ComposerRecipientList
@@ -47,6 +48,27 @@ class ComposerRecipientListWrapper(private val rustRecipients: ComposerRecipient
 
     fun removeSingleRecipient(recipient: SingleRecipientEntry): Either<SaveDraftError, Unit> =
         when (val error = rustRecipients.removeSingleRecipient(recipient.email)) {
+            is RemoveRecipientError.Ok -> Unit.right()
+            is RemoveRecipientError.EmptyGroupName -> SaveDraftError.EmptyRecipientGroupName.left()
+            is RemoveRecipientError.Other -> SaveDraftError.Other(DataError.Local.Unknown).left()
+            is RemoveRecipientError.SaveFailed -> error.v1.toSaveDraftError().left()
+        }
+
+    fun addGroupRecipient(
+        groupName: String,
+        recipients: List<SingleRecipientEntry>,
+        totalContactsInGroup: ULong
+    ): Either<SaveDraftError, Unit> =
+        when (val error = rustRecipients.addGroupRecipient(groupName, recipients, totalContactsInGroup)) {
+            is AddGroupRecipientError.Ok -> Unit.right()
+            is AddGroupRecipientError.Duplicate -> SaveDraftError.DuplicateRecipient.left()
+            is AddGroupRecipientError.EmptyGroupName -> SaveDraftError.EmptyRecipientGroupName.left()
+            is AddGroupRecipientError.Other -> SaveDraftError.Other(DataError.Local.Unknown).left()
+            is AddGroupRecipientError.SaveFailed -> error.v1.toSaveDraftError().left()
+        }
+
+    fun removeGroup(groupName: String): Either<SaveDraftError, Unit> =
+        when (val error = rustRecipients.removeGroup(groupName)) {
             is RemoveRecipientError.Ok -> Unit.right()
             is RemoveRecipientError.EmptyGroupName -> SaveDraftError.EmptyRecipientGroupName.left()
             is RemoveRecipientError.Other -> SaveDraftError.Other(DataError.Local.Unknown).left()

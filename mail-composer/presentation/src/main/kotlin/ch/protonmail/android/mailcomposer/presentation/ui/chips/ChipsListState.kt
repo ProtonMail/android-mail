@@ -60,6 +60,7 @@ internal class ChipsListState(
      */
     private fun mergeEncryptionInfo(existingItem: ChipItem?, newItem: ChipItem): ChipItem {
         if (existingItem == null) return newItem
+        if (existingItem is ChipItem.Group && newItem is ChipItem.Group) return existingItem
 
         // Accept Validating items - this signals an intentional refresh (e.g., sender change)
         if (newItem is ChipItem.Validating) {
@@ -82,6 +83,7 @@ internal class ChipsListState(
         is ChipItem.Invalid -> copy(encryptionInfo = encryptionInfo)
         is ChipItem.Validating -> copy(encryptionInfo = encryptionInfo)
         is ChipItem.Counter -> this
+        is ChipItem.Group -> this
     }
 
     fun getItems(): ChipItemsList = when {
@@ -143,6 +145,20 @@ internal class ChipsListState(
 
     fun onDelete(chipItem: ChipItem) {
         items.remove(chipItem)
+        onListChanged(items.toImmutableList())
+    }
+
+    fun addGroupChip(
+        name: String,
+        color: String,
+        members: List<String>
+    ) {
+        items.add(ChipItem.Group(value = name, color = color, memberCount = members.size, members = members))
+        onListChanged(items.toImmutableList())
+    }
+
+    fun onDeleteByValue(value: String) {
+        items.removeIf { it.value == value }
         onListChanged(items.toImmutableList())
     }
 

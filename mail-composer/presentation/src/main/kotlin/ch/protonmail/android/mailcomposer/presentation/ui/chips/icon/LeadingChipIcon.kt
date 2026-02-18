@@ -27,10 +27,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcomposer.presentation.ui.chips.item.ChipItem
@@ -70,6 +72,14 @@ internal fun LeadingChipIcon(chipItem: ChipItem) {
                     color = ProtonTheme.colors.iconWeak
                 )
 
+                is ChipIconState.Group -> Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_proton_users),
+                    contentDescription = null,
+                    modifier = Modifier.size(ProtonDimens.IconSize.Small),
+                    tint = runCatching { Color(state.colorHex.toColorInt()) }
+                        .getOrDefault(ProtonTheme.colors.iconWeak)
+                )
+
                 ChipIconState.None -> Unit
             }
         }
@@ -85,11 +95,13 @@ private fun ChipItem.toIconState(): ChipIconState = when (this) {
     }
 
     is ChipItem.Counter -> ChipIconState.None
+    is ChipItem.Group -> ChipIconState.Group(colorHex = this.color)
 }
 
 private sealed interface ChipIconState {
     data object Invalid : ChipIconState
     data object Loading : ChipIconState
     data class Lock(val icon: Int, val color: Int) : ChipIconState
+    data class Group(val colorHex: String) : ChipIconState
     data object None : ChipIconState
 }

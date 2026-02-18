@@ -52,4 +52,12 @@ internal sealed class ChipItem(
         override val value: String,
         override val encryptionInfo: EncryptionInfoUiModel = EncryptionInfoUiModel.NoLock
     ) : ChipItem(value, encryptionInfo)
+
+    @Parcelize
+    data class Group(
+        override val value: String,
+        val color: String,
+        val memberCount: Int,
+        val members: List<String>
+    ) : ChipItem(value, EncryptionInfoUiModel.NoLock)
 }

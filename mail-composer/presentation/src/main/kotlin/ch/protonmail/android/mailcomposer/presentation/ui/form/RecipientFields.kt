@@ -283,5 +283,10 @@ private fun List<ChipItem>.toUiModel() = mapNotNull { it ->
         is ChipItem.Invalid -> RecipientUiModel.Invalid(it.value)
         is ChipItem.Valid -> RecipientUiModel.Valid(it.value)
         is ChipItem.Validating -> RecipientUiModel.Validating(it.value)
+        is ChipItem.Group -> RecipientUiModel.Group(
+            name = it.value,
+            members = it.members,
+            color = it.color
+        )
     }
 }

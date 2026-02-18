@@ -75,7 +75,6 @@ import ch.protonmail.android.uicomponents.thenIf
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import me.proton.core.util.kotlin.takeIfNotBlank
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -304,17 +303,22 @@ private fun ChipsListContent(
                 actions = ContactSuggestionsList.Actions(
                     onContactSuggestionsDismissed = actions.onSuggestionsDismissed,
                     onContactSuggestionSelected = { item ->
-                        val selection = when (item) {
-                            is ContactSuggestionUiModel.Data.ContactGroup ->
-                                item.emails
-                                    .joinToString(separator = "\n")
-                                    .takeIfNotBlank()
-                                    .orEmpty()
-
-                            is ContactSuggestionUiModel.Data.Contact -> item.email
-                        }
                         actions.onSuggestionsDismissed()
-                        listState.typeWord(selection)
+                        when (item) {
+                            is ContactSuggestionUiModel.Data.ContactGroup -> {
+                                if (item.emails.isNotEmpty()) {
+                                    listState.addGroupChip(
+                                        name = item.name,
+                                        color = item.color,
+                                        members = item.emails
+                                    )
+                                }
+                            }
+
+                            is ContactSuggestionUiModel.Data.Contact -> {
+                                listState.typeWord(item.email)
+                            }
+                        }
                         textFieldState.edit { delete(0, length) }
                     },
                     onRequestContactsPermission = actions.onPermissionRequest,

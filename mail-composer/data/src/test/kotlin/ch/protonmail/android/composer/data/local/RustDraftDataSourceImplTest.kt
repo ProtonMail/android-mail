@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcomposer.domain.model.BodyFields
 import ch.protonmail.android.mailcomposer.domain.model.DiscardDraftError
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftHead
+import ch.protonmail.android.mailcomposer.domain.model.DraftRecipient
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationError
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
@@ -663,6 +664,80 @@ class RustDraftDataSourceImplTest {
             toRecipientsWrapperMock.addSingleRecipient(john.toSingleRecipientEntry())
             toRecipientsWrapperMock.removeSingleRecipient(bob.toSingleRecipientEntry())
         }
+    }
+
+    @Test
+    fun `updateToRecipients adds group recipient via addGroupRecipient`() = runTest {
+        // Given
+        val groupRecipient = DraftRecipient.GroupRecipient(
+            name = "Team",
+            recipients = listOf(DraftRecipientTestData.Alice, DraftRecipientTestData.Bob)
+        )
+        val toRecipientsWrapperMock = mockk<ComposerRecipientListWrapper>()
+        val expectedDraftWrapper = expectDraftWrapperReturns(toRecipientsWrapper = toRecipientsWrapperMock)
+        coEvery { toRecipientsWrapperMock.recipients() } returns emptyList()
+        coEvery { toRecipientsWrapperMock.addGroupRecipient(any(), any(), any()) } returns Unit.right()
+        every { draftCache.get() } returns expectedDraftWrapper
+
+        // When
+        dataSource.updateToRecipients(listOf(groupRecipient))
+
+        // Then
+        verify {
+            toRecipientsWrapperMock.addGroupRecipient(
+                "Team",
+                listOf(
+                    DraftRecipientTestData.Alice.toSingleRecipientEntry(),
+                    DraftRecipientTestData.Bob.toSingleRecipientEntry()
+                ),
+                2uL
+            )
+        }
+        verify(exactly = 0) { toRecipientsWrapperMock.addSingleRecipient(any()) }
+    }
+
+    @Test
+    fun `updateToRecipients removes group recipient via removeGroup`() = runTest {
+        // Given
+        val currentGroupInRust = LocalComposerRecipientTestData.buildGroup(
+            name = "Team",
+            emails = listOf("alice@pm.me", "bob@pm.me")
+        )
+        val toRecipientsWrapperMock = mockk<ComposerRecipientListWrapper>()
+        val expectedDraftWrapper = expectDraftWrapperReturns(toRecipientsWrapper = toRecipientsWrapperMock)
+        coEvery { toRecipientsWrapperMock.recipients() } returns listOf(currentGroupInRust)
+        coEvery { toRecipientsWrapperMock.removeGroup(any()) } returns Unit.right()
+        every { draftCache.get() } returns expectedDraftWrapper
+
+        // When
+        dataSource.updateToRecipients(emptyList())
+
+        // Then
+        verify { toRecipientsWrapperMock.removeGroup("Team") }
+    }
+
+    @Test
+    fun `updateToRecipients handles mixed singles and groups correctly`() = runTest {
+        // Given
+        val alice = DraftRecipientTestData.Alice
+        val john = DraftRecipientTestData.John
+        val team = DraftRecipient.GroupRecipient("Team", listOf(DraftRecipientTestData.Bob))
+        val toRecipientsWrapperMock = mockk<ComposerRecipientListWrapper>()
+        val expectedDraftWrapper = expectDraftWrapperReturns(toRecipientsWrapper = toRecipientsWrapperMock)
+        coEvery { toRecipientsWrapperMock.recipients() } returns listOf(
+            LocalComposerRecipientTestData.Alice,
+            LocalComposerRecipientTestData.buildGroup("Team", listOf("bob@pm.me"))
+        )
+        coEvery { toRecipientsWrapperMock.addSingleRecipient(any()) } returns Unit.right()
+        every { draftCache.get() } returns expectedDraftWrapper
+
+        // When
+        dataSource.updateToRecipients(listOf(alice, team, john))
+
+        // Then
+        verify { toRecipientsWrapperMock.addSingleRecipient(john.toSingleRecipientEntry()) }
+        verify(exactly = 0) { toRecipientsWrapperMock.addGroupRecipient(any(), any(), any()) }
+        verify(exactly = 0) { toRecipientsWrapperMock.removeGroup(any()) }
     }
 
     @Test
