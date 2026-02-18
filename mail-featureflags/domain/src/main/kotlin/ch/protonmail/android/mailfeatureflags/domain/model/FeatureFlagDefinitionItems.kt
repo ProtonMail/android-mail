@@ -58,6 +58,22 @@ data object MailBlackFriday2025Wave2Enabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object SpringOffer2026Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SpringOffer2026",
+    name = "Enable Spring Offer 26 (Wave 1)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Spring 26 wave 1.",
+    defaultValue = false
+)
+
+data object SpringOffer2026Wave2Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SpringOffer2026Wave2",
+    name = "Enable Spring Offer 26 (Wave 2)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Spring 26 wave 2.",
+    defaultValue = false
+)
+
 data object ComposerAutoCollapseQuotedText : FeatureFlagDefinition(
     key = "MailAndroidV7ComposerAutoCollapsedText",
     name = "Auto collapse composer quoted text",

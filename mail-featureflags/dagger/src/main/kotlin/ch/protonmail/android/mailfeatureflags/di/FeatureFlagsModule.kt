@@ -35,6 +35,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpse
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
@@ -48,6 +50,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEn
 import ch.protonmail.android.mailfeatureflags.domain.model.PrivacyBundle2601
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellingEnabled
 import dagger.Module
 import dagger.Provides
@@ -113,6 +117,18 @@ object FeatureFlagsModule {
     @IsBlackFridayWave2Enabled
     fun provideBlackFridayWave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = MailBlackFriday2025Wave2Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsSpringOffer2026Enabled
+    fun provideSpringOffer2026Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SpringOffer2026Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsSpringOffer2026Wave2Enabled
+    fun provideSpringOffer2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SpringOffer2026Wave2Enabled.key, false)
 
     @Provides
     @Singleton

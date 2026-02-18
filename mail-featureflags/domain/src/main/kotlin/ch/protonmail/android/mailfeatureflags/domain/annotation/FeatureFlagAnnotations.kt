@@ -38,6 +38,14 @@ annotation class IsBlackFridayWave2Enabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsSpringOffer2026Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSpringOffer2026Wave2Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class ComposerAutoCollapseQuotedTextEnabled
 
 @Qualifier
