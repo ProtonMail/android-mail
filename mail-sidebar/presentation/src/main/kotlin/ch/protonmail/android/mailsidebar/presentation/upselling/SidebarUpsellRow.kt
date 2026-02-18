@@ -72,6 +72,7 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
                 is UpsellingVisibility.Promotional.BlackFriday ->
                     SidebarUpsellRowBlackFriday(visibility, onButtonClick = { onClick(type) })
 
+                is UpsellingVisibility.Promotional.SpringPromo -> Unit // ET-5890 SP26
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
                 is UpsellingVisibility.Normal -> SidebarUpsellRow(onButtonClick = { onClick(type) })
             }

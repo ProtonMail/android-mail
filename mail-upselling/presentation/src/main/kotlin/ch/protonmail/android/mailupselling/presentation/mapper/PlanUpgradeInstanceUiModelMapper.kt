@@ -74,6 +74,7 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
 
         val promoKind = when {
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) -> PromoKind.BlackFriday
+            productDetail.isTaggedWith(PlanUpgradeSupportedTags.SpringOffer) -> PromoKind.SpringPromo
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.IntroductoryPrice) -> PromoKind.IntroPrice
             productDetail.offer.isBaseOffer -> null
             else -> null

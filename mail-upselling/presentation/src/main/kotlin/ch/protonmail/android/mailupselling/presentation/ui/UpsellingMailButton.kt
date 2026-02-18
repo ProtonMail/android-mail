@@ -79,6 +79,8 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
             is UpsellingVisibility.Promotional.BlackFriday ->
                 UpsellingBlackFridayMailButton(visibility, modifier = modifier, onButtonClick = { onClick(type) })
 
+            is UpsellingVisibility.Promotional.SpringPromo -> Unit // ET-5890 SP26
+
             is UpsellingVisibility.Normal -> UpsellingMailButton(modifier = modifier, onButtonClick = { onClick(type) })
         }
     }
