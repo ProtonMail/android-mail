@@ -86,8 +86,10 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
             val promotionalPrice = currentPrice.normalizedPrice(cycle.months)
             val renewalPrice = defaultPrice.normalizedPrice(cycle.months)
 
-            // In case of BF, discount rate is based on monthly pricing, not on original same-cycle pricing.
-            val discountRate = if (promoKind == PromoKind.BlackFriday && cycle == PlanUpgradeCycle.Yearly) {
+            val isSeasonalOffer = promoKind == PromoKind.SpringPromo || promoKind == PromoKind.BlackFriday
+
+            // In case of seasonal offer, discount % is based on monthly pricing, not on original same-cycle pricing.
+            val discountRate = if (isSeasonalOffer && cycle == PlanUpgradeCycle.Yearly) {
                 comparisonPriceInstance?.let { getDiscountRate(it, productDetail) }
             } else {
                 getDiscountRate(promotionalPrice, renewalPrice)

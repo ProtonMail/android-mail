@@ -48,7 +48,7 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
             is PlanUpgradeVariant.Normal,
             is PlanUpgradeVariant.IntroductoryPrice,
             is PlanUpgradeVariant.SocialProof -> UpsellingScreenContent(modifier, state, actions)
-
+            is PlanUpgradeVariant.SpringPromo -> Unit // ET-5890
             is PlanUpgradeVariant.BlackFriday -> UpsellingScreenContentBlackFriday(modifier, state, actions)
         }
 
