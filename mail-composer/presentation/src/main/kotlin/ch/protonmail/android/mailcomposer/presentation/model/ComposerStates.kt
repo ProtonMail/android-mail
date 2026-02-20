@@ -125,7 +125,8 @@ sealed interface ComposerState {
         val injectInlineAttachments: Effect<List<String>>,
         val stripInlineAttachment: Effect<String>,
         val refreshBody: Effect<DraftDisplayBodyUiModel>,
-        val pickMessageExpiration: Effect<Unit>
+        val pickMessageExpiration: Effect<Unit>,
+        val duplicateRemovalWarning: Effect<TextUiModel> = Effect.empty()
     ) {
 
         companion object {

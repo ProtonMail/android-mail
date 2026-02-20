@@ -158,7 +158,13 @@ internal sealed interface RecoverableError : EffectsStateModification {
     data class SaveRecipientFailed(val saveDraftError: SaveDraftError) : RecoverableError {
 
         override fun apply(state: ComposerState.Effects): ComposerState.Effects =
-            state.copy(error = Effect.of(SaveDraftErrorMapper.toTextUiModel(saveDraftError)))
+            if (saveDraftError is SaveDraftError.DuplicateRecipient) {
+                state.copy(
+                    duplicateRemovalWarning = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
+                )
+            } else {
+                state.copy(error = Effect.of(SaveDraftErrorMapper.toTextUiModel(saveDraftError)))
+            }
     }
 
     data class SaveSubjectFailed(val saveDraftError: SaveDraftError) : RecoverableError {

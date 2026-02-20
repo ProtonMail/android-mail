@@ -386,6 +386,22 @@ internal class EffectsStateModificationTest(
                 )
             ),
             arrayOf(
+                "shows duplicate recipient toast when saving recipient fails with DuplicateRecipient",
+                initialState,
+                RecoverableError.SaveRecipientFailed(SaveDraftError.DuplicateRecipient),
+                initialState.copy(
+                    duplicateRemovalWarning = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
+                )
+            ),
+            arrayOf(
+                "shows error snackbar when saving recipient fails with non-duplicate error",
+                initialState,
+                RecoverableError.SaveRecipientFailed(SaveDraftError.SaveFailed),
+                initialState.copy(
+                    error = Effect.of(TextUiModel.TextRes(R.string.composer_error_store_draft_generic))
+                )
+            ),
+            arrayOf(
                 "Show confirmation when send with expiration to externals may fail",
                 initialState,
                 ConfirmationsEffectsStateModification.SendExpirationSupportUnknownConfirmationRequested,

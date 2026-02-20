@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.content.Intent
 import android.text.format.Formatter
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -572,6 +573,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
 
     ConsumableTextEffect(effect = effectsState.error) { error ->
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = error)
+    }
+
+    ConsumableTextEffect(effect = effectsState.duplicateRemovalWarning) {
+        Toast.makeText(context, it, Toast.LENGTH_LONG).show()
     }
 
     ConsumableTextEffect(effect = effectsState.exitError) {
