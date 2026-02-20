@@ -48,11 +48,8 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
             is PlanUpgradeVariant.Normal,
             is PlanUpgradeVariant.IntroductoryPrice,
             is PlanUpgradeVariant.SocialProof -> UpsellingScreenContent(modifier, state, actions)
-            is PlanUpgradeVariant.SpringPromo -> Unit // ET-5890
             is PlanUpgradeVariant.BlackFriday -> UpsellingScreenContentBlackFriday(modifier, state, actions)
-
-            // Navigate to BF25 landing for now, this will have its own screen later.
-            is PlanUpgradeVariant.SpringPromo -> UpsellingScreenContentBlackFriday(modifier, state, actions)
+            is PlanUpgradeVariant.SpringPromo -> UpsellingScreenContentSpringPromo(modifier, state, actions)
         }
 
         is UpsellingScreenContentState.Error -> UpsellingScreenContentError(state = state, actions)

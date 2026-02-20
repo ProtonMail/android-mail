@@ -90,6 +90,7 @@ internal fun PaymentButtonsHorizontalLayout(
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = selectedPlan.product,
+                variant = MailPurchaseButtonVariant.Default,
                 onSuccess = { _ -> actions.onSuccess() },
                 onErrorMessage = actions.onError
             )

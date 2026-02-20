@@ -262,6 +262,19 @@ internal object UpsellingContentPreviewData {
         )
     )
 
+    val SpringPromo = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.spring_promo_header),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = ComparisonTableEntitlements,
+            variant = PlanUpgradeVariant.SpringPromo.Wave1,
+            list = BlackFridayList
+        )
+    )
+
     val SocialProof = UpsellingScreenContentState.Data(
         PlanUpgradeUiModel(
             icon = PlanUpgradeIconUiModel(R.drawable.ic_mail_social_proof),

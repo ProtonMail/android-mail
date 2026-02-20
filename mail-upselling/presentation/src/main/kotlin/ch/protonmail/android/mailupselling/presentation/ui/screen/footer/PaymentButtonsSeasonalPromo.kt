@@ -32,12 +32,19 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData.BlackFridayList
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.cyclebuttons.CycleOptionCard
 
 @Composable
-internal fun PaymentButtonsBlackFriday(instance: PlanUpgradeInstanceUiModel, actions: UpsellingScreen.Actions) {
+internal fun PaymentButtonsSeasonalPromo(
+    instance: PlanUpgradeInstanceUiModel,
+    buttonVariant: MailPurchaseButtonVariant = MailPurchaseButtonVariant.Default,
+    actions: UpsellingScreen.Actions,
+    colors: UpsellingVariantColors? = null
+) {
     Column {
         Box(
             Modifier
@@ -47,7 +54,8 @@ internal fun PaymentButtonsBlackFriday(instance: PlanUpgradeInstanceUiModel, act
             CycleOptionCard(
                 cycleOptionUiModel = instance,
                 modifier = Modifier.fillMaxWidth(),
-                isSelected = false
+                isSelected = false,
+                colors = colors
             )
         }
 
@@ -59,7 +67,7 @@ internal fun PaymentButtonsBlackFriday(instance: PlanUpgradeInstanceUiModel, act
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = instance.product,
-                variant = MailPurchaseButtonVariant.BlackFriday,
+                variant = buttonVariant,
                 onSuccess = { _ -> actions.onSuccess() },
                 onErrorMessage = actions.onError
             )
@@ -70,7 +78,8 @@ internal fun PaymentButtonsBlackFriday(instance: PlanUpgradeInstanceUiModel, act
         UpsellingAutoRenewGenericPolicyText(
             modifier = Modifier
                 .padding(horizontal = ProtonDimens.Spacing.Large),
-            planUiModel = instance
+            planUiModel = instance,
+            color = colors?.autoRenewalColor ?: UpsellingLayoutValues.autoRenewText
         )
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
@@ -82,9 +91,10 @@ internal fun PaymentButtonsBlackFriday(instance: PlanUpgradeInstanceUiModel, act
 private fun PaymentButtonsHorizontalLayoutPreview() {
     ProtonTheme {
         Box(modifier = Modifier.height(480.dp)) {
-            PaymentButtonsBlackFriday(
+            PaymentButtonsSeasonalPromo(
                 instance = BlackFridayList.shorterCycle,
-                actions = UpsellingScreen.Actions.Empty
+                actions = UpsellingScreen.Actions.Empty,
+                buttonVariant = MailPurchaseButtonVariant.BlackFriday
             )
         }
     }

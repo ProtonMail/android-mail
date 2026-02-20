@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
+import ch.protonmail.android.design.compose.theme.isNightMode
 
 object UpsellingLayoutValues {
 
@@ -67,18 +67,9 @@ object UpsellingLayoutValues {
         val highlightBarColor = Color.White.copy(alpha = 0.08f)
         val highlightBarShape = RoundedCornerShape(8.dp)
         val spacerHeight = 1.dp
-        val spacerBackgroundColor = Color.White.copy(alpha = 0.12f)
 
         val titleColumnSize = 16.sp
-        val textColor = Color.White
-
         val itemTextSize = 14.sp
-
-        fun checkmarkTint(variant: PlanUpgradeVariant) =
-            if (variant is PlanUpgradeVariant.BlackFriday) Color.Black else Color.White
-
-        fun checkmarkBackground(variant: PlanUpgradeVariant) =
-            if (variant is PlanUpgradeVariant.BlackFriday) Color.White else Color.Black.copy(alpha = 0.2f)
     }
 
     object EntitlementsList {
@@ -150,6 +141,15 @@ object UpsellingLayoutValues {
     object SpringPromo {
 
         val mainColor = Color(0xFFFF4C81)
+        val borderBrush = Brush.linearGradient(colors = listOf(mainColor, mainColor))
+
+        @Composable
+        @Suppress("MagicNumber")
+        fun backgroundGradient(): Brush = if (isNightMode()) {
+            Brush.verticalGradient(listOf(Color(0xFF2A0073), Color(0xFF000000)))
+        } else {
+            Brush.verticalGradient(listOf(Color(0xFFE5F0FA), Color(0xFFBADEF9)))
+        }
     }
 
     object BlackFriday {

@@ -18,7 +18,11 @@
 
 package ch.protonmail.android.mailupselling.presentation.model.planupgrades
 
+import androidx.compose.runtime.Stable
+
 sealed interface PlanUpgradeInstanceListUiModel {
+
+    @Stable
     sealed class Data(
         open val shorterCycle: PlanUpgradeInstanceUiModel,
         open val longerCycle: PlanUpgradeInstanceUiModel,
