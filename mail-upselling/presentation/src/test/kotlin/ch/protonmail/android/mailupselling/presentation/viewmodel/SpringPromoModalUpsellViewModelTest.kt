@@ -51,7 +51,7 @@ internal class SpringPromoModalUpsellViewModelTest {
     private val springPromoRepository = mockk<SpringPromoRepository>()
     private val springPromoModalTrigger = mockk<SpringPromoModalTrigger>()
 
-    private fun viewModel() = SpringSaleModalUpsellViewModel(
+    private fun viewModel() = SpringPromoModalUpsellViewModel(
         observeUpsellingVisibility,
         springPromoRepository,
         springPromoModalTrigger

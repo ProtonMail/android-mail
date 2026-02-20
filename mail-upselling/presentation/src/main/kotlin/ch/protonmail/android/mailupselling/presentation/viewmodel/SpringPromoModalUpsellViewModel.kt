@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SpringSaleModalUpsellViewModel @Inject constructor(
+class SpringPromoModalUpsellViewModel @Inject constructor(
     observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val springPromoRepository: SpringPromoRepository,
     private val springPromoModalTrigger: SpringPromoModalTrigger

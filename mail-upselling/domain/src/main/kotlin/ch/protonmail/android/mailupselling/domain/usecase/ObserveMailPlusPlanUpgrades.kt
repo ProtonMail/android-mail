@@ -24,6 +24,8 @@ import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySupported
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -36,6 +38,7 @@ class ObserveMailPlusPlanUpgrades @Inject constructor(
     private val cache: AvailableUpgradesCache,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
+    private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion
 ) {
 
@@ -48,10 +51,16 @@ class ObserveMailPlusPlanUpgrades @Inject constructor(
             isBlackFridayOngoing &&
             isEligibleForBlackFridayPromotion(userId)
 
-        val offersTag = if (supportsBlackFridayPromo) {
-            PlanUpgradeSupportedTags.BlackFriday
-        } else {
-            PlanUpgradeSupportedTags.IntroductoryPrice
+        val flowSupportsSpringPromo = entryPoint is SpringPromoSupported
+        val isSpringPromoOngoing = getCurrentSpringPromoPhase() != SpringPromoPhase.None
+        val supportsSpringPromo = flowSupportsSpringPromo &&
+            isSpringPromoOngoing &&
+            isEligibleForBlackFridayPromotion(userId)
+
+        val offersTag = when {
+            supportsSpringPromo -> PlanUpgradeSupportedTags.SpringOffer
+            supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
+            else -> PlanUpgradeSupportedTags.IntroductoryPrice
         }
 
         // Here should be either BF **OR** Intro pricing, never fallback between 2 promo prices

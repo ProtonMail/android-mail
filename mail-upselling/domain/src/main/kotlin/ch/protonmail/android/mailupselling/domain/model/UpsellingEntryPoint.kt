@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.domain.model
 import kotlinx.serialization.Serializable
 
 sealed interface BlackFridaySupported
+sealed interface SpringPromoSupported
 
 @Serializable
 sealed interface UpsellingEntryPoint {
@@ -29,10 +30,10 @@ sealed interface UpsellingEntryPoint {
     sealed interface Feature : UpsellingEntryPoint {
 
         @Serializable
-        data object Navbar : Feature, BlackFridaySupported
+        data object Navbar : Feature, BlackFridaySupported, SpringPromoSupported
 
         @Serializable
-        data object Sidebar : Feature, BlackFridaySupported
+        data object Sidebar : Feature, BlackFridaySupported, SpringPromoSupported
 
         @Serializable
         data object ContactGroups : Feature

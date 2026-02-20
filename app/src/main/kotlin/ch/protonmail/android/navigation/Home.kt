@@ -102,7 +102,7 @@ import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.viewmodel.BlackFridayModalUpsellViewModel
-import ch.protonmail.android.mailupselling.presentation.viewmodel.SpringSaleModalUpsellViewModel
+import ch.protonmail.android.mailupselling.presentation.viewmodel.SpringPromoModalUpsellViewModel
 import ch.protonmail.android.navigation.deeplinks.DeepLinkNavigationEffect
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
@@ -171,7 +171,7 @@ fun Home(
     onboardingStepViewModel: OnboardingStepViewModel = hiltViewModel(),
     notificationsPermissionViewModel: NotificationsPermissionViewModel = hiltViewModel(),
     blackFridayModalUpsellViewModel: BlackFridayModalUpsellViewModel = hiltViewModel(),
-    springSaleModalUpsellViewModel: SpringSaleModalUpsellViewModel = hiltViewModel(),
+    springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
@@ -204,7 +204,7 @@ fun Home(
     val onboardingEligibilityState by onboardingStepViewModel.onboardingEligibilityState.collectAsStateWithLifecycle()
     val notificationsPermissionsState by notificationsPermissionViewModel.state.collectAsStateWithLifecycle()
     val blackFridayEligibilityState by blackFridayModalUpsellViewModel.state.collectAsStateWithLifecycle()
-    val springSaleEligibilityState by springSaleModalUpsellViewModel.state.collectAsStateWithLifecycle()
+    val springSaleEligibilityState by springPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
@@ -494,7 +494,7 @@ fun Home(
             }
 
             is HomeInterstitialPriority.SpringPromo -> {
-                springSaleModalUpsellViewModel.saveModalSeenTimestamp(priority.state.wave)
+                springPromoModalUpsellViewModel.saveModalSeenTimestamp(priority.state.wave)
                 navController.navigate(
                     Screen.FeatureUpselling(UpsellingEntryPoint.Feature.Navbar, priority.state.wave)
                 )
