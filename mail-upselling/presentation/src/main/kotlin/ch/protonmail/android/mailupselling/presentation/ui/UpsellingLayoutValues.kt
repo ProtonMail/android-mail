@@ -147,6 +147,11 @@ object UpsellingLayoutValues {
         )
     )
 
+    object SpringPromo {
+
+        val mainColor = Color(0xFFFF4C81)
+    }
+
     object BlackFriday {
 
         val mainColor = Color(0xFFD8FF00)

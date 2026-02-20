@@ -26,6 +26,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -49,6 +50,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibilit
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.getSidebarIcon
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
+import ch.protonmail.android.mailupselling.presentation.R as upsellingR
 
 @Composable
 fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVisibility) -> Unit) {
@@ -72,7 +74,9 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
                 is UpsellingVisibility.Promotional.BlackFriday ->
                     SidebarUpsellRowBlackFriday(visibility, onButtonClick = { onClick(type) })
 
-                is UpsellingVisibility.Promotional.SpringPromo -> Unit // ET-5890 SP26
+                is UpsellingVisibility.Promotional.SpringPromo ->
+                    SidebarUpsellRowSpringPromo(onButtonClick = { onClick(type) })
+
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
                 is UpsellingVisibility.Normal -> SidebarUpsellRow(onButtonClick = { onClick(type) })
             }
@@ -116,6 +120,24 @@ private fun SidebarUpsellRowBlackFriday(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun SidebarUpsellRowSpringPromo(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val iconModifier = Modifier
+        .width(ProtonDimens.IconSize.Default)
+        .padding(vertical = ProtonDimens.Spacing.Small)
+
+    ProtonSidebarItem(
+        modifier = modifier,
+        icon = painterResource(upsellingR.drawable.ic_upselling_spring),
+        iconTint = Color.Unspecified,
+        iconModifier = iconModifier,
+        text = stringResource(R.string.drawer_upgrade_plus_spring_sale),
+        textColor = UpsellingLayoutValues.SpringPromo.mainColor,
+        onClick = onButtonClick
+    )
+}
+
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
 @Composable
@@ -131,5 +153,14 @@ fun SidebarUpsellRowPreview() {
 fun SidebarUpsellRowBlackFridayPreview() {
     ProtonTheme {
         SidebarUpsellRowBlackFriday(UpsellingVisibility.Promotional.BlackFriday.Wave1, onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun SidebarUpsellRowSpringPromoPreview() {
+    ProtonTheme {
+        SidebarUpsellRowSpringPromo(onButtonClick = {})
     }
 }
