@@ -48,6 +48,7 @@ internal fun UpsellingPlanButtonsFooter(
         plans.shorterCycle is PlanUpgradeInstanceUiModel.Promotional
 
     val shouldShowBlackFridayFooter = plans is PlanUpgradeInstanceListUiModel.Data.BlackFriday
+    val shouldShowSpringPromoFooter = plans is PlanUpgradeInstanceListUiModel.Data.SpringPromo
 
     Column(
         modifier.background(UpsellingLayoutValues.UpsellingPlanButtonsFooter.backgroundColor)
@@ -60,6 +61,12 @@ internal fun UpsellingPlanButtonsFooter(
         )
 
         when {
+            shouldShowSpringPromoFooter -> when {
+                plans.longerCycle is PlanUpgradeInstanceUiModel.Promotional.SpringPromo &&
+                    plans.variant is PlanUpgradeVariant.SpringPromo ->
+                    PaymentButtonsBlackFriday(plans.longerCycle, actions)
+            }
+
             shouldShowBlackFridayFooter -> when {
                 plans.longerCycle is PlanUpgradeInstanceUiModel.Promotional.BlackFriday &&
                     plans.variant == PlanUpgradeVariant.BlackFriday.Wave1 ->

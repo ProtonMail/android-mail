@@ -225,6 +225,18 @@ private fun getSecondaryPriceInfo(uiModel: PlanUpgradeInstanceUiModel): Secondar
             }
         }
 
+        is PlanUpgradeInstanceUiModel.Promotional.SpringPromo -> {
+            when (uiModel.cycle) {
+                PlanUpgradeCycle.Yearly -> {
+                    SecondaryPriceInfo(
+                        text = stringResource(R.string.upselling_month_only, pricePerCycle.getFullFormat())
+                    )
+                }
+
+                else -> null
+            }
+        }
+
         else -> null
     }
 }
