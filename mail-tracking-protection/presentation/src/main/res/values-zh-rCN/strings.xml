@@ -22,7 +22,7 @@
   <string name="trackers_protection_no_trackers_detected">跟踪保护：未检测到跟踪器</string>
   <string name="tracking_protection">跟踪保护</string>
   <string name="tracking_protection_description">我们主动保护您免受跟踪，您可以在此处查看我们在此邮件中拦截的间谍像素和清理的跟踪链接。</string>
-  <string name="tracking_protection_learn_more">了解更多</string>
+  <string name="tracking_protection_learn_more">了解详情</string>
   <string name="original">原始</string>
   <string name="cleaned">已清理</string>
   <string name="open_link">打开链接</string>

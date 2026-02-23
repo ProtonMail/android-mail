@@ -17,8 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="open_with">Open with…</string>
-  <string name="file_saved">File saved</string>
-  <string name="file_saved_fallback">File saved to Downloads folder</string>
-  <string name="error_saving_file">An error occurred during file save</string>
+  <string name="open_with">Otwórz za pomocą…</string>
+  <string name="file_saved">Plik został zapisany</string>
+  <string name="file_saved_fallback">Plik został zapisany w folderze Pobrane</string>
+  <string name="error_saving_file">Wystąpił błąd podczas zapisywania pliku</string>
 </resources>

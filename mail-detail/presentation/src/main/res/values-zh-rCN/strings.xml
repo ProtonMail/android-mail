@@ -83,7 +83,7 @@
   <string name="message_expiration_banner_text">此信息将在 %1$s 后过期</string>
   <string name="message_auto_delete_banner_text">此消息将于 %1$s 内自动删除</string>
   <string name="message_auth_fail_banner_text">不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。</string>
-  <string name="message_auth_fail_banner_button">了解更多</string>
+  <string name="message_auth_fail_banner_button">了解详情</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">您即将离开本应用并前往：</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">不再询问</string>

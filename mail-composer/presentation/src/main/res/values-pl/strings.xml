@@ -44,7 +44,7 @@
   <string name="composer_error_store_draft_invalid_recipient">Nie można zapisać szkicu. Odbiorcy są nieprawidłowi</string>
   <string name="composer_error_store_draft_message_not_a_draft">Nie można zapisać szkicu. Wiadomość nie jest szkicem</string>
   <string name="composer_error_store_draft_generic">Nie można zapisać szkicu. Wystąpił błąd</string>
-  <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
+  <string name="composer_error_create_draft">Coś poszło nie tak. Nie można utworzyć nowego szkicu.</string>
   <string name="composer_error_loading_draft">Zawartość szkicu nie jest obecnie dostępna. Edycja nie jest możliwa.</string>
   <string name="composer_add_attachments_content_description">Dodaj załączniki</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importuj z…</string>
@@ -60,7 +60,7 @@
   <string name="composer_too_many_attachments_error">Limit maksymalnej liczby załączników (100) został osiągnięty.</string>
   <string name="composer_delete_attachment_error">Wystąpił nieoczekiwany błąd podczas usuwania załącznika.</string>
   <string name="composer_unexpected_attachments_error">Wystąpił nieoczekiwany błąd z załącznikami.</string>
-  <string name="composer_storage_quota_exceeded_error">Your storage is full. Please free up space or upgrade to add more.</string>
+  <string name="composer_storage_quota_exceeded_error">Twoje miejsce na dane zostało zapełnione. Zwolnij miejsce lub ulepsz konto, aby dodać więcej.</string>
   <string name="composer_attach_capture_from_camera_error">Przechwytywanie załącznika z aparatu nie jest obecnie możliwe</string>
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
   <string name="composer_button_add_password">Dodaj hasło</string>
@@ -68,7 +68,7 @@
   <string name="composer_button_set_expiration">Ustaw czas wygaśnięcia</string>
   <string name="composer_expiration_time_bottom_sheet_title">Wygaśniecie wiadomości</string>
   <string name="composer_expiration_time_bottom_sheet_done">Ustaw</string>
-  <string name="composer_bottom_bar_expiration_time_none">Never expires</string>
+  <string name="composer_bottom_bar_expiration_time_none">Nigdy nie wygasa</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Po 1 godzinie</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Po 1 dniu</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Po 3 dniach</string>
@@ -174,7 +174,7 @@
   <string name="composer_error_send_draft_too_many_attachments">Unable to send draft - Attachment limit reached</string>
   <string name="composer_error_send_draft_attachments_crypto_error">Unable to send draft - Attachment encryption failed.</string>
   <string name="composer_expiration_time_learn_more">Dowiedz się więcej</string>
-  <string name="composer_enter_recipient_content_description">Enter a recipient</string>
-  <string name="composer_sender_address_description">Choose Sender Address</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_enter_recipient_content_description">Wpisz odbiorcę</string>
+  <string name="composer_sender_address_description">Wybierz adres nadawcy</string>
+  <string name="composer_encryption_info_learn_more">Dowiedz się więcej</string>
 </resources>

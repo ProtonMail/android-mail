@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_offline">Brak połączenia z siecią. Wiadomość została dodana do kolejki wysyłania</string>
   <string name="mailbox_message_sending_success">Wiadomość została wysłana</string>
   <string name="mailbox_message_sending_error">Wystąpił błąd podczas wysyłania wiadomości</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">Przejdź do szkicu</string>
   <string name="notification_switched_account">Przełączono na konto %s</string>
   <string name="label_saved">Etykieta została zapisana</string>
   <string name="label_deleted">Etykieta została usunięta</string>
@@ -45,6 +45,6 @@
   <string name="mailbox_message_scheduling">Planowanie wiadomości…</string>
   <string name="mailbox_message_scheduling_offline">Brak połączenia z siecią. Wiadomość została dodana do kolejki wysyłania</string>
   <string name="mailbox_message_scheduled_for_sending_success">Wiadomość zostanie wysłana w dniu: %1$s</string>
-  <string name="launcher_alert_duplicate_account_description">The user is already signed in</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="launcher_alert_duplicate_account_description">Użytkownik jest już zalogowany</string>
+  <string name="home_event_loop_error_snackbar">Nie udało się zsynchronizować Twojej poczty. Spróbuj się wylogować i zalogować ponownie. Jeśli to nie pomoże, zgłoś błąd.</string>
 </resources>
