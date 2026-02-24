@@ -170,7 +170,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
     )
 
     val filesPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
+        contract = ActivityResultContracts.OpenMultipleDocuments(),
         onResult = { uris ->
             viewModel.submit(ComposerAction.AddFileAttachments(uris))
         }
@@ -184,7 +184,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
     )
 
     ConsumableLaunchedEffect(effect = effectsState.openFilesPicker) {
-        filesPicker.launch("*/*")
+        filesPicker.launch(arrayOf("*/*"))
     }
 
     ConsumableLaunchedEffect(effect = effectsState.openPhotosPicker) {
