@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.content.Intent
 import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -172,6 +173,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
     val filesPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
         onResult = { uris ->
+            uris.forEach { uri ->
+                context.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
             viewModel.submit(ComposerAction.AddFileAttachments(uris))
         }
     )
