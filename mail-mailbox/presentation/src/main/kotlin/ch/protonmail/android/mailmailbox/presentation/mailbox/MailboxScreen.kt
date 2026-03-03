@@ -107,7 +107,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.component.ProtonModalBottomSheetLayout
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -918,6 +917,8 @@ private fun MailboxItemsList(
 
     val coroutineScope = rememberCoroutineScope()
 
+    val snapshotKeys = rememberDuplicateTolerantMailboxKeys(items)
+
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
@@ -964,7 +965,9 @@ private fun MailboxItemsList(
 
         items(
             count = items.itemCount,
-            key = items.itemKey { it.id.plus(it.userId) },
+            key = { index ->
+                snapshotKeys.getOrNull(index) ?: "mailbox-placeholder-$index"
+            },
             contentType = items.itemContentType { MailboxItemUiModel::class }
         ) { index ->
             items[index]?.let { item ->
