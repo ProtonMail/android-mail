@@ -173,7 +173,7 @@
     <string name="settings_password_management_login_success">Login password updated</string>
     <string name="settings_password_management_second_success">Second password updated</string>
     <string name="settings_password_management_start_recovery">Don\'t know your current password?</string>
-    <string name="settings_password_management_2fa">Two FA is needed</string>
+    <string name="settings_password_management_2fa">2FA is needed</string>
     <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
     <string name="settings_password_error_empty">Password cannot be empty.</string>
     <string name="settings_password_error">Incorrect username or password. Please try again.</string>
