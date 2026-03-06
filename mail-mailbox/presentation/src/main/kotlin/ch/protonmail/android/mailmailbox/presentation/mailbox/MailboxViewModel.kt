@@ -240,6 +240,7 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
+        Timber.d("MailboxViewModel initialized")
         observeCurrentMailLabel()
             .onEach { currentMailLabel ->
                 currentMailLabel?.let {
@@ -321,7 +322,7 @@ class MailboxViewModel @Inject constructor(
 
         observePageInvalidationEvents()
             .onEach { event ->
-                Timber.d("Received page invalidation event with id: ${event.id}")
+                Timber.d("Paginator: Received page invalidation event with id: ${event.id}")
                 emitNewStateFrom(MailboxEvent.PaginatorInvalidated(event))
             }
             .launchIn(viewModelScope)

@@ -793,8 +793,12 @@ private fun MailboxSwipeRefresh(
     }
 
     val listDataState = state as? MailboxListState.Data
-    listDataState?.paginatorInvalidationEffect?.let {
-        ConsumableLaunchedEffect(it) {
+    listDataState?.paginatorInvalidationEffect?.let { effect ->
+        ConsumableLaunchedEffect(effect) { event ->
+            Timber.d(
+                "Paginator: UI calling items.refresh() for invalidation event id=%s",
+                event.id
+            )
             items.refresh()
         }
     }

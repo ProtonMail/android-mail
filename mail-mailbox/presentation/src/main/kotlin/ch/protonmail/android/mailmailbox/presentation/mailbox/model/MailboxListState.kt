@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
+import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 
 sealed interface MailboxListState {
 
@@ -36,7 +37,7 @@ sealed interface MailboxListState {
         val searchState: MailboxSearchState
         val shouldShowFab: Boolean
         val avatarImagesUiModel: AvatarImagesUiModel
-        val paginatorInvalidationEffect: Effect<Unit>
+        val paginatorInvalidationEffect: Effect<PageInvalidationEvent>
         val refreshOngoing: Boolean
         val loadingBarState: LoadingBarUiState
 
@@ -46,7 +47,7 @@ sealed interface MailboxListState {
             override val searchState: MailboxSearchState,
             override val shouldShowFab: Boolean,
             override val avatarImagesUiModel: AvatarImagesUiModel,
-            override val paginatorInvalidationEffect: Effect<Unit> = Effect.empty(),
+            override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
             override val loadingBarState: LoadingBarUiState,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
@@ -66,7 +67,7 @@ sealed interface MailboxListState {
             override val searchState: MailboxSearchState,
             override val shouldShowFab: Boolean,
             override val avatarImagesUiModel: AvatarImagesUiModel,
-            override val paginatorInvalidationEffect: Effect<Unit> = Effect.empty(),
+            override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
             override val loadingBarState: LoadingBarUiState,
             val selectedMailboxItems: Set<SelectedMailboxItem>,
