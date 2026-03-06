@@ -115,13 +115,13 @@ class LauncherViewModel @Inject constructor(
                     accounts.isEmpty() || accounts.all { it.state == AccountState.Disabled } ->
                         AccountNeeded
 
+                    accounts.any { it.state == AccountState.Ready } ->
+                        PrimaryExist
+
                     accounts.any { it.state == AccountState.TwoPasswordNeeded } ||
                         accounts.any { it.state == AccountState.TwoFactorNeeded } ||
                         accounts.any { it.state == AccountState.NewPassNeeded } ->
                         StepNeeded
-
-                    accounts.any { it.state == AccountState.Ready } ->
-                        PrimaryExist
 
                     else -> {
                         if (afterMigration) {

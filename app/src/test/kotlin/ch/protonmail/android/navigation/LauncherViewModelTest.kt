@@ -89,6 +89,27 @@ class LauncherViewModelTest {
         primaryAddress = "address"
     )
 
+    private val twoPasswordNeededAccount = Account(
+        userId = UserIdSample.Secondary,
+        name = "User 2",
+        state = AccountState.TwoPasswordNeeded,
+        primaryAddress = "address2"
+    )
+
+    private val twoFactorNeededAccount = Account(
+        userId = UserIdSample.Secondary,
+        name = "User 2",
+        state = AccountState.TwoFactorNeeded,
+        primaryAddress = "address2"
+    )
+
+    private val newPasswordNeededAccount = Account(
+        userId = UserIdSample.Secondary,
+        name = "User 2",
+        state = AccountState.NewPassNeeded,
+        primaryAddress = "address2"
+    )
+
     private fun viewModel() = LauncherViewModel(
         authOrchestrator,
         paymentOrchestrator,
@@ -236,5 +257,65 @@ class LauncherViewModelTest {
 
         // then
         coVerify { setPrimaryAccount(UserIdTestData.userId) }
+    }
+
+    @Test
+    fun `state should be PrimaryExist when one account is Ready and another is TwoPasswordNeeded`() = runTest {
+        // Given
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns flowOf(
+            listOf(readyAccount, twoPasswordNeededAccount)
+        )
+
+        // When & Then
+        viewModel().state.test {
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `state should be PrimaryExist when one account is Ready and another is TwoFactorNeeded`() = runTest {
+        // Given
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns flowOf(
+            listOf(readyAccount, twoFactorNeededAccount)
+        )
+
+        // When & Then
+        viewModel().state.test {
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `state should be PrimaryExist when one account is Ready and another is NewPassNeeded`() = runTest {
+        // Given
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns flowOf(
+            listOf(readyAccount, newPasswordNeededAccount)
+        )
+
+        // When & Then
+        viewModel().state.test {
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `state should be StepNeeded when no account is Ready and one account needs two password`() = runTest {
+        // Given
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns flowOf(
+            listOf(twoPasswordNeededAccount)
+        )
+
+        // When & Then
+        viewModel().state.test {
+            assertEquals(LauncherState.StepNeeded, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 }

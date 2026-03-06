@@ -23,4 +23,5 @@ import me.proton.core.domain.entity.UserId
 object UserIdSample {
 
     val Primary = UserId("primary")
+    val Secondary = UserId("secondary")
 }
