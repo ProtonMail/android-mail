@@ -18,7 +18,11 @@
 
 package ch.protonmail.android.mailupselling.presentation.model.planupgrades
 
+import androidx.compose.runtime.Stable
+
 sealed interface PlanUpgradeInstanceListUiModel {
+
+    @Stable
     sealed class Data(
         open val shorterCycle: PlanUpgradeInstanceUiModel,
         open val longerCycle: PlanUpgradeInstanceUiModel,
@@ -40,6 +44,12 @@ sealed interface PlanUpgradeInstanceListUiModel {
             override val shorterCycle: PlanUpgradeInstanceUiModel,
             override val longerCycle: PlanUpgradeInstanceUiModel
         ) : Data(shorterCycle, longerCycle, blackFridayVariant)
+
+        class SpringPromo(
+            springPromoVariant: PlanUpgradeVariant.SpringPromo,
+            override val shorterCycle: PlanUpgradeInstanceUiModel,
+            override val longerCycle: PlanUpgradeInstanceUiModel
+        ) : Data(shorterCycle, longerCycle, springPromoVariant)
 
         data class SocialProof(
             override val shorterCycle: PlanUpgradeInstanceUiModel,

@@ -20,9 +20,11 @@ package ch.protonmail.android.mailpagination.data.repository
 
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.repository.PageInvalidationRepository
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,10 +32,12 @@ import javax.inject.Singleton
 class InMemoryPageInvalidationRepositoryImpl @Inject constructor() : PageInvalidationRepository {
 
     private val mutableEventsFlow = MutableSharedFlow<PageInvalidationEvent>(
-        replay = 0
+        replay = 1,
+        extraBufferCapacity = 64,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-
     override suspend fun submit(event: PageInvalidationEvent) {
+        Timber.d("Paginator: Submitting page invalidation event with id: ${event.id}")
         mutableEventsFlow.emit(event)
     }
 

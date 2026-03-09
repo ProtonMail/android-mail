@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +56,7 @@ import ch.protonmail.android.mailupselling.presentation.extension.cycleStringVal
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingCheckmark
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 
@@ -62,20 +64,21 @@ import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingConte
 internal fun CycleOptionCard(
     cycleOptionUiModel: PlanUpgradeInstanceUiModel,
     modifier: Modifier = Modifier,
-    isSelected: Boolean = true
+    isSelected: Boolean = true,
+    colors: UpsellingVariantColors? = null
 ) {
     val paymentButtonParams = UpsellingLayoutValues.PaymentButtons
     val defaultColors = CardDefaults.outlinedCardColors()
-    val containerColor = if (isSelected) {
-        paymentButtonParams.outlinedCardContainerSelectedColor
-    } else {
-        paymentButtonParams.outlinedCardContainerColor
+    val containerColor = when {
+        isSelected -> paymentButtonParams.outlinedCardContainerSelectedColor
+        colors != null -> colors.cycleCardContainerColor
+        else -> paymentButtonParams.outlinedCardContainerColor
     }
 
-    val border = if (isSelected) {
-        paymentButtonParams.outlinedCardSelectedBorderStroke
-    } else {
-        CardDefaults.outlinedCardBorder(enabled = false)
+    val border = when {
+        isSelected -> paymentButtonParams.outlinedCardSelectedBorderStroke
+        colors != null -> androidx.compose.foundation.BorderStroke(2.dp, colors.cycleCardBorderColor)
+        else -> CardDefaults.outlinedCardBorder(enabled = false)
     }
 
     Box(modifier = modifier) {
@@ -97,8 +100,8 @@ internal fun CycleOptionCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CycleName(uiModel = cycleOptionUiModel)
-                    CyclePrices(uiModel = cycleOptionUiModel)
+                    CycleName(uiModel = cycleOptionUiModel, colors = colors)
+                    CyclePrices(uiModel = cycleOptionUiModel, colors = colors)
                 }
             }
         }
@@ -115,8 +118,16 @@ internal fun CycleOptionCard(
 }
 
 @Composable
-private fun CycleName(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanceUiModel) {
+private fun CycleName(
+    modifier: Modifier = Modifier,
+    uiModel: PlanUpgradeInstanceUiModel,
+    colors: UpsellingVariantColors? = null
+) {
     val paymentButtonParams = UpsellingLayoutValues.PaymentButtons
+    val planNameColor = colors?.cycleCardTextColor ?: paymentButtonParams.planNameColor
+    val badgeBackground = colors?.cycleCardDiscountBadgeBackground ?: paymentButtonParams.discountTagBackground
+    val badgeTextColor = colors?.cycleCardDiscountBadgeTextColor ?: paymentButtonParams.discountTagTextColor
+    val badgeHasShadow = colors?.cycleCardDiscountBadgeHasShadow ?: false
 
     Row(
         modifier = modifier,
@@ -125,7 +136,7 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanc
         Text(
             text = uiModel.cycle.cyclePlanName().string(),
             style = ProtonTheme.typography.bodyLarge,
-            color = paymentButtonParams.planNameColor
+            color = planNameColor
         )
 
         val discountRate = uiModel.discountRate
@@ -136,8 +147,16 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanc
             ) {
                 Text(
                     modifier = Modifier
+                        .then(
+                            if (badgeHasShadow) Modifier.shadow(
+                                elevation = 4.dp,
+                                shape = paymentButtonParams.discountBadgeShape,
+                                ambientColor = Color.Black.copy(alpha = 0.20f),
+                                spotColor = Color.Black.copy(alpha = 0.20f)
+                            ) else Modifier
+                        )
                         .background(
-                            color = paymentButtonParams.discountTagBackground,
+                            color = badgeBackground,
                             shape = paymentButtonParams.discountBadgeShape
                         )
                         .padding(horizontal = ProtonDimens.Spacing.Compact, vertical = ProtonDimens.Spacing.Small),
@@ -147,7 +166,7 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanc
                     ).string(),
                     style = ProtonTheme.typography.labelMediumNorm,
                     fontWeight = FontWeight.Bold,
-                    color = paymentButtonParams.discountTagTextColor,
+                    color = badgeTextColor,
                     textAlign = TextAlign.Center
                 )
             }
@@ -156,30 +175,40 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanc
 }
 
 @Composable
-private fun CyclePrices(modifier: Modifier = Modifier, uiModel: PlanUpgradeInstanceUiModel) {
+private fun CyclePrices(
+    modifier: Modifier = Modifier,
+    uiModel: PlanUpgradeInstanceUiModel,
+    colors: UpsellingVariantColors? = null
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End
     ) {
         PrimaryPriceRow(
             price = uiModel.primaryPrice.highlightedPrice,
-            period = uiModel.cycle.cycleStringValue()
+            period = uiModel.cycle.cycleStringValue(),
+            colors = colors
         )
 
-        SecondaryPriceText(uiModel = uiModel)
+        SecondaryPriceText(uiModel = uiModel, colors = colors)
     }
 }
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PrimaryPriceRow(price: PlanUpgradePriceUiModel, period: TextUiModel) {
+private fun PrimaryPriceRow(
+    price: PlanUpgradePriceUiModel,
+    period: TextUiModel,
+    colors: UpsellingVariantColors? = null
+) {
+    val textColor = colors?.cycleCardTextColor ?: Color.White
     FlowRow {
         Text(
             text = price.getFullFormat(),
             style = ProtonTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
-            color = Color.White
+            color = textColor
         )
         Text(
             modifier = Modifier
@@ -187,7 +216,7 @@ private fun PrimaryPriceRow(price: PlanUpgradePriceUiModel, period: TextUiModel)
                 .padding(start = ProtonDimens.Spacing.Small / 2),
             text = period.string(),
             style = ProtonTheme.typography.labelMediumNorm,
-            color = Color.White.copy(alpha = 0.7f)
+            color = textColor.copy(alpha = 0.7f)
         )
     }
 }
@@ -225,13 +254,26 @@ private fun getSecondaryPriceInfo(uiModel: PlanUpgradeInstanceUiModel): Secondar
             }
         }
 
+        is PlanUpgradeInstanceUiModel.Promotional.SpringPromo -> {
+            when (uiModel.cycle) {
+                PlanUpgradeCycle.Yearly -> {
+                    SecondaryPriceInfo(
+                        text = stringResource(R.string.upselling_month_only, pricePerCycle.getFullFormat())
+                    )
+                }
+
+                else -> null
+            }
+        }
+
         else -> null
     }
 }
 
 @Composable
-private fun SecondaryPriceText(uiModel: PlanUpgradeInstanceUiModel) {
+private fun SecondaryPriceText(uiModel: PlanUpgradeInstanceUiModel, colors: UpsellingVariantColors? = null) {
     val info = getSecondaryPriceInfo(uiModel) ?: return
+    val textColor = colors?.cycleCardTextColor ?: Color.White
 
     Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Tiny))
     Text(
@@ -239,7 +281,7 @@ private fun SecondaryPriceText(uiModel: PlanUpgradeInstanceUiModel) {
         style = ProtonTheme.typography.labelMediumNorm.copy(
             textDecoration = if (info.strikethrough) TextDecoration.LineThrough else null
         ),
-        color = Color.White.copy(alpha = 0.7f),
+        color = textColor.copy(alpha = 0.7f),
         textAlign = TextAlign.End
     )
 }

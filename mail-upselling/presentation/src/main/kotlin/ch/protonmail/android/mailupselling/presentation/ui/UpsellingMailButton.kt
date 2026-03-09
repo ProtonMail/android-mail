@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -78,6 +79,9 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
 
             is UpsellingVisibility.Promotional.BlackFriday ->
                 UpsellingBlackFridayMailButton(visibility, modifier = modifier, onButtonClick = { onClick(type) })
+
+            is UpsellingVisibility.Promotional.SpringPromo ->
+                UpsellingSpringPromoMailButton(modifier = modifier, onButtonClick = { onClick(type) })
 
             is UpsellingVisibility.Normal -> UpsellingMailButton(modifier = modifier, onButtonClick = { onClick(type) })
         }
@@ -151,6 +155,23 @@ private fun UpsellingBlackFridayMailButton(
                 tint = UpsellingLayoutValues.BlackFriday.upsellingButtonTint
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun UpsellingSpringPromoMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
+
+    IconButton(
+        modifier = modifier,
+        onClick = onButtonClick
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_upselling_spring),
+            contentDescription = accessibilityDescription,
+            tint = null
+        )
     }
 }
 
@@ -238,6 +259,15 @@ fun UpsellingBFMailButtonWave2Preview() {
             visibility = UpsellingVisibility.Promotional.BlackFriday.Wave2,
             onButtonClick = {}
         )
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun UpsellingSpringPromoMailButtonPreview() {
+    ProtonTheme {
+        UpsellingSpringPromoMailButton(onButtonClick = {})
     }
 }
 

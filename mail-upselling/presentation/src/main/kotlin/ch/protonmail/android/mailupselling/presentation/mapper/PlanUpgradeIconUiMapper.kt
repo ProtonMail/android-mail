@@ -25,33 +25,32 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanU
 import javax.inject.Inject
 
 internal class PlanUpgradeIconUiMapper @Inject constructor() {
+
     fun toUiModel(
         upsellingEntryPoint: UpsellingEntryPoint.Feature,
         variant: PlanUpgradeVariant
     ): PlanUpgradeIconUiModel {
-        if (variant == PlanUpgradeVariant.SocialProof) {
-            return PlanUpgradeIconUiModel(R.drawable.ic_mail_social_proof)
-        }
 
-        if (variant is PlanUpgradeVariant.BlackFriday.Wave1) {
-            return PlanUpgradeIconUiModel(R.drawable.upselling_bf_header_wave1)
-        }
+        val drawableRes = when (variant) {
+            PlanUpgradeVariant.SocialProof -> R.drawable.ic_mail_social_proof
+            PlanUpgradeVariant.BlackFriday.Wave1 -> R.drawable.upselling_bf_header_wave1
+            PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.upselling_bf_header_wave2
 
-        if (variant is PlanUpgradeVariant.BlackFriday.Wave2) {
-            return PlanUpgradeIconUiModel(R.drawable.upselling_bf_header_wave2)
-        }
+            PlanUpgradeVariant.SpringPromo.Wave1,
+            PlanUpgradeVariant.SpringPromo.Wave2 -> R.drawable.spring_promo_header
 
-        val drawableRes = when (upsellingEntryPoint) {
-            UpsellingEntryPoint.Feature.AutoDelete -> R.drawable.illustration_upselling_auto_delete
-            UpsellingEntryPoint.Feature.ContactGroups -> R.drawable.illustration_upselling_contact_groups
-            UpsellingEntryPoint.Feature.Folders -> R.drawable.illustration_upselling_labels
-            UpsellingEntryPoint.Feature.Labels -> R.drawable.illustration_upselling_labels
-            UpsellingEntryPoint.Feature.MobileSignature -> R.drawable.illustration_upselling_mobile_signature
-            UpsellingEntryPoint.Feature.ScheduleSend -> R.drawable.illustration_upselling_schedule_send
-            UpsellingEntryPoint.Feature.Snooze -> R.drawable.illustration_upselling_snooze
+            else -> when (upsellingEntryPoint) {
+                UpsellingEntryPoint.Feature.AutoDelete -> R.drawable.illustration_upselling_auto_delete
+                UpsellingEntryPoint.Feature.ContactGroups -> R.drawable.illustration_upselling_contact_groups
+                UpsellingEntryPoint.Feature.Folders -> R.drawable.illustration_upselling_labels
+                UpsellingEntryPoint.Feature.Labels -> R.drawable.illustration_upselling_labels
+                UpsellingEntryPoint.Feature.MobileSignature -> R.drawable.illustration_upselling_mobile_signature
+                UpsellingEntryPoint.Feature.ScheduleSend -> R.drawable.illustration_upselling_schedule_send
+                UpsellingEntryPoint.Feature.Snooze -> R.drawable.illustration_upselling_snooze
 
-            UpsellingEntryPoint.Feature.Sidebar,
-            UpsellingEntryPoint.Feature.Navbar -> R.drawable.illustration_upselling_mailbox
+                UpsellingEntryPoint.Feature.Sidebar,
+                UpsellingEntryPoint.Feature.Navbar -> R.drawable.illustration_upselling_mailbox
+            }
         }
 
         return PlanUpgradeIconUiModel(drawableRes)

@@ -408,7 +408,7 @@ class RustMessageListQueryImplTest {
                 callback = capture(callback)
             )
         } returns paginator.right()
-        coEvery { invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated) } just Runs
+        coEvery { invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated(id = 1)) } just Runs
 
         // When
         rustMessageListQuery.getMessages(userId, pageKey)
@@ -423,7 +423,7 @@ class RustMessageListQueryImplTest {
         )
         advanceUntilIdle()
 
-        coVerify { invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated) }
+        coVerify { invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated(id = 1)) }
     }
 
     @Test
@@ -507,7 +507,11 @@ class RustMessageListQueryImplTest {
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
         }
-        coEvery { invalidationRepository.submit(PageInvalidationEvent.MessagesInvalidated) } just Runs
+        coEvery {
+            invalidationRepository.submit(
+                match { it is PageInvalidationEvent.MessagesInvalidated }
+            )
+        } just Runs
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
         coEvery {

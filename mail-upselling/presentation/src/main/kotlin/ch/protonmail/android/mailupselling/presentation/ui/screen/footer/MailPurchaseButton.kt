@@ -61,7 +61,7 @@ fun MailPurchaseButton(
     product: Product,
     modifier: Modifier = Modifier,
     ctaText: String = stringResource(R.string.payment_purchase_button_get, product.header.title),
-    variant: MailPurchaseButtonVariant = MailPurchaseButtonVariant.Default,
+    variant: MailPurchaseButtonVariant,
     onSuccess: (Product) -> Unit = {},
     onErrorMessage: (String) -> Unit = {},
     viewModel: PurchaseButtonViewModel? = hiltViewModelOrNull<PurchaseButtonViewModel>(product.productId)
@@ -114,6 +114,7 @@ private fun MailPurchaseButton(
         val textColor = when (variant) {
             MailPurchaseButtonVariant.Default,
             MailPurchaseButtonVariant.BlackFriday -> Color.Black
+            MailPurchaseButtonVariant.SpringPromo -> Color.White
 
             MailPurchaseButtonVariant.Inverted -> ProtonTheme.colors.textInverted
         }
@@ -153,11 +154,13 @@ private fun MailPurchaseButton(
     val backgroundColor = when (variant) {
         MailPurchaseButtonVariant.Default -> Color.White
         MailPurchaseButtonVariant.BlackFriday -> UpsellingLayoutValues.BlackFriday.mainColor
+        MailPurchaseButtonVariant.SpringPromo,
         MailPurchaseButtonVariant.Inverted -> ProtonTheme.colors.interactionBrandDefaultNorm
     }
     val progressIndicatorColor = when (variant) {
         MailPurchaseButtonVariant.Default,
-        MailPurchaseButtonVariant.BlackFriday -> Color.Black
+        MailPurchaseButtonVariant.BlackFriday,
+        MailPurchaseButtonVariant.SpringPromo -> Color.Black
 
         MailPurchaseButtonVariant.Inverted -> Color.White
     }
@@ -196,5 +199,6 @@ private fun MailPurchaseButton(
 enum class MailPurchaseButtonVariant {
     Default,
     Inverted,
-    BlackFriday
+    BlackFriday,
+    SpringPromo
 }

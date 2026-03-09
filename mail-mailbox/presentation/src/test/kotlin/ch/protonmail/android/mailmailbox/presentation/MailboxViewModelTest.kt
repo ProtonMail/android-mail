@@ -3514,10 +3514,10 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `observe invalidation events and update ui state upon receiving invalidationrequest`() = runTest {
+    fun `observe invalidation events and update ui state upon receiving invalidation request`() = runTest {
         // Given
         val invalidationEventsFlow = MutableSharedFlow<PageInvalidationEvent>()
-        val invalidationEvent = PageInvalidationEvent.ConversationsInvalidated
+        val invalidationEvent = PageInvalidationEvent.ConversationsInvalidated(id = 1)
         every {
             observePageInvalidationEvents()
         } returns invalidationEventsFlow

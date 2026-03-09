@@ -75,6 +75,7 @@ sealed class PlanUpgradeInstanceUiModel(
     ) : PlanUpgradeInstanceUiModel(
         name, discountRate, yearlySaving, cycle, product
     ) {
+
         override val primaryPrice: PlanUpgradePriceDisplayUiModel
             get() = PlanUpgradePriceDisplayUiModel(
                 pricePerCycle = pricePerCycle,
@@ -98,6 +99,14 @@ sealed class PlanUpgradeInstanceUiModel(
             params.cycle, params.product
         )
 
+        data class SpringPromo(
+            private val params: Params
+        ) : Promotional(
+            params.name, params.pricePerCycle, params.promotionalPrice,
+            params.renewalPrice, params.yearlySaving, params.discountRate,
+            params.cycle, params.product
+        )
+
         data class Params(
             val name: String,
             val pricePerCycle: PlanUpgradePriceUiModel,
@@ -114,11 +123,12 @@ sealed class PlanUpgradeInstanceUiModel(
             operator fun invoke(promoKind: PromoKind, params: Params): Promotional = when (promoKind) {
                 PromoKind.IntroPrice -> IntroductoryPrice(params)
                 PromoKind.BlackFriday -> BlackFriday(params)
+                PromoKind.SpringPromo -> SpringPromo(params)
             }
         }
     }
 }
 
 enum class PromoKind {
-    IntroPrice, BlackFriday
+    IntroPrice, BlackFriday, SpringPromo
 }

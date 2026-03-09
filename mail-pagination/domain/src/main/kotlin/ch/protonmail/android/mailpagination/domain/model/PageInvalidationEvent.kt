@@ -20,7 +20,19 @@ package ch.protonmail.android.mailpagination.domain.model
 
 sealed interface PageInvalidationEvent {
 
-    data object MessagesInvalidated : PageInvalidationEvent
+    val id: Long
 
-    data object ConversationsInvalidated : PageInvalidationEvent
+    data class MessagesInvalidated(
+        override val id: Long = nextId()
+    ) : PageInvalidationEvent
+
+    data class ConversationsInvalidated(
+        override val id: Long = nextId()
+    ) : PageInvalidationEvent
+
+    companion object {
+
+        private val counter = java.util.concurrent.atomic.AtomicLong(0)
+        private fun nextId(): Long = counter.incrementAndGet()
+    }
 }

@@ -21,8 +21,10 @@ package ch.protonmail.android.mailupselling.domain
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.IsEligibleForBlackFridayPromotion
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveMailPlusPlanUpgrades
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
@@ -47,6 +49,7 @@ internal class ObserveMailPlusPlanUpgradesTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
+    private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
 
     private val userId = UserId("user-id")
@@ -56,10 +59,12 @@ internal class ObserveMailPlusPlanUpgradesTest {
     fun setup() {
         every { observePrimaryUserId() } returns flowOf(userId)
         coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.None
+        coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.None
         observeMailPlusPlanUpgrades = ObserveMailPlusPlanUpgrades(
             availableUpgradesCache,
             observePrimaryUserId,
             getCurrentBlackFridayPhase,
+            getCurrentSpringPromoPhase,
             isEligibleForBlackFridayPromotion
         )
     }
