@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.wrapper
 
-import uniffi.proton_mail_uniffi.RsvpEventServiceProvider
+import uniffi.mail_uniffi.RsvpEventServiceProvider
 
 class RsvpEventServiceProviderWrapper(
     private val rsvpEventServiceProvider: RsvpEventServiceProvider

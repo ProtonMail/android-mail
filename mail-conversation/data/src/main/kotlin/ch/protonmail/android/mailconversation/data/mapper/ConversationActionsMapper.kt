@@ -21,8 +21,8 @@ package ch.protonmail.android.mailconversation.data.mapper
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AvailableActions
 import ch.protonmail.android.mailmessage.data.mapper.toAction
-import uniffi.proton_mail_uniffi.ConversationAction
-import uniffi.proton_mail_uniffi.ConversationActionSheet
+import uniffi.mail_uniffi.ConversationAction
+import uniffi.mail_uniffi.ConversationActionSheet
 
 fun ConversationActionSheet.toAvailableActions(): AvailableActions {
     return AvailableActions(

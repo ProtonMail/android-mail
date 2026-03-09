@@ -26,12 +26,12 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
-import uniffi.proton_mail_uniffi.ExclusiveLocation
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.MessageFlags
-import uniffi.proton_mail_uniffi.MessageRecipient
-import uniffi.proton_mail_uniffi.MessageSender
-import uniffi.proton_mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.ExclusiveLocation
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.MessageFlags
+import uniffi.mail_uniffi.MessageRecipient
+import uniffi.mail_uniffi.MessageSender
+import uniffi.mail_uniffi.SystemLabel
 import kotlin.test.Test
 
 class MessageMapperTest {

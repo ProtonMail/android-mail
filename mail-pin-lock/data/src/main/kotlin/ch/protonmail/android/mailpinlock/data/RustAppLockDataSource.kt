@@ -23,8 +23,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionShouldAutoLockResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionShouldAutoLockResult
 import javax.inject.Inject
 
 class RustAppLockDataSource @Inject constructor() : AppLockDataSource {

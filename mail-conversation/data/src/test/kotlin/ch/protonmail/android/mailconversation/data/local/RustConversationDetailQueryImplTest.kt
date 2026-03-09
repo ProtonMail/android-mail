@@ -47,10 +47,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.ConversationAndMessages
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.OpenConversationOrigin
-import uniffi.proton_mail_uniffi.WatchedConversation
+import uniffi.mail_uniffi.ConversationAndMessages
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.OpenConversationOrigin
+import uniffi.mail_uniffi.WatchedConversation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

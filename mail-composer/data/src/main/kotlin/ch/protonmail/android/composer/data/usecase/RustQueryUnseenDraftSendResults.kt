@@ -24,9 +24,9 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.DraftSendResult
-import uniffi.proton_mail_uniffi.DraftSendResultUnseenResult
-import uniffi.proton_mail_uniffi.draftSendResultUnseen
+import uniffi.mail_uniffi.DraftSendResult
+import uniffi.mail_uniffi.DraftSendResultUnseenResult
+import uniffi.mail_uniffi.draftSendResultUnseen
 import javax.inject.Inject
 
 class RustQueryUnseenDraftSendResults @Inject constructor() {

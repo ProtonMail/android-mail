@@ -48,12 +48,12 @@ import me.proton.android.core.auth.presentation.signup.RecoveryMethod
 import me.proton.android.core.auth.presentation.signup.mapToNavigationRoute
 import me.proton.android.core.auth.presentation.signup.ui.Country
 import me.proton.core.challenge.domain.entity.ChallengeFrameDetails
-import uniffi.proton_account_uniffi.SignupFlow
-import uniffi.proton_account_uniffi.SignupFlowAvailableCountriesResult
-import uniffi.proton_account_uniffi.SignupFlowSkipRecoveryResult
-import uniffi.proton_account_uniffi.SignupFlowSubmitRecoveryEmailResult
-import uniffi.proton_account_uniffi.SignupFlowSubmitRecoveryPhoneResult
-import uniffi.proton_account_uniffi.Country as RustCountry
+import uniffi.mail_account_uniffi.SignupFlow
+import uniffi.mail_account_uniffi.SignupFlowAvailableCountriesResult
+import uniffi.mail_account_uniffi.SignupFlowSkipRecoveryResult
+import uniffi.mail_account_uniffi.SignupFlowSubmitRecoveryEmailResult
+import uniffi.mail_account_uniffi.SignupFlowSubmitRecoveryPhoneResult
+import uniffi.mail_account_uniffi.Country as RustCountry
 
 /**
  * Handler responsible for account recovery actions during signup process.

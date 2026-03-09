@@ -38,9 +38,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.WatchedMessage
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.WatchedMessage
 import javax.inject.Inject
 
 class RustMessageQuery @Inject constructor(

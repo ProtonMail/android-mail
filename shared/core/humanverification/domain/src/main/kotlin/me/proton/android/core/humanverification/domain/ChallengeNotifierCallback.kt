@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import me.proton.android.core.humanverification.domain.entity.HumanVerificationPayload
 import me.proton.android.core.humanverification.domain.entity.HumanVerificationState
-import uniffi.proton_mail_uniffi.ChallengeNotifier
-import uniffi.proton_mail_uniffi.ChallengePayload
-import uniffi.proton_mail_uniffi.ChallengeResponse
-import uniffi.proton_mail_uniffi.ChallengeServer
+import uniffi.mail_uniffi.ChallengeNotifier
+import uniffi.mail_uniffi.ChallengePayload
+import uniffi.mail_uniffi.ChallengeResponse
+import uniffi.mail_uniffi.ChallengeServer
 import javax.inject.Inject
 import javax.inject.Singleton
 

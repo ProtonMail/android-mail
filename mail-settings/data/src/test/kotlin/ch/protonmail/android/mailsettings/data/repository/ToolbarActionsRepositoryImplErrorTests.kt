@@ -31,7 +31,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.MobileAction
+import uniffi.mail_uniffi.MobileAction
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

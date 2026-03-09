@@ -23,16 +23,16 @@ import ch.protonmail.android.mailcomposer.domain.model.BodyFields
 import ch.protonmail.android.mailcomposer.domain.model.ComposerValues.EDITOR_ID
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftHead
-import uniffi.proton_mail_uniffi.Draft
-import uniffi.proton_mail_uniffi.DraftComposerContentResult
-import uniffi.proton_mail_uniffi.DraftExpirationTime
-import uniffi.proton_mail_uniffi.DraftScheduleSendOptionsResult
-import uniffi.proton_mail_uniffi.ImagePolicy
-import uniffi.proton_mail_uniffi.MailTheme
-import uniffi.proton_mail_uniffi.ThemeOpts
-import uniffi.proton_mail_uniffi.UnixTimestamp
-import uniffi.proton_mail_uniffi.VoidDraftSaveResult
-import uniffi.proton_mail_uniffi.VoidDraftSendResult
+import uniffi.mail_uniffi.Draft
+import uniffi.mail_uniffi.DraftComposerContentResult
+import uniffi.mail_uniffi.DraftExpirationTime
+import uniffi.mail_uniffi.DraftScheduleSendOptionsResult
+import uniffi.mail_uniffi.ImagePolicy
+import uniffi.mail_uniffi.MailTheme
+import uniffi.mail_uniffi.ThemeOpts
+import uniffi.mail_uniffi.UnixTimestamp
+import uniffi.mail_uniffi.VoidDraftSaveResult
+import uniffi.mail_uniffi.VoidDraftSendResult
 
 @Suppress("TooManyFunctions")
 class DraftWrapper(private val rustDraft: Draft) {

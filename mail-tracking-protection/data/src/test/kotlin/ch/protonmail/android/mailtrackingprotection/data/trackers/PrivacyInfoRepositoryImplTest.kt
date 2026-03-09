@@ -39,11 +39,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.StrippedUtmInfo
-import uniffi.proton_mail_uniffi.TrackerDomain
-import uniffi.proton_mail_uniffi.TrackerInfo
-import uniffi.proton_mail_uniffi.UtmLink
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.StrippedUtmInfo
+import uniffi.mail_uniffi.TrackerDomain
+import uniffi.mail_uniffi.TrackerInfo
+import uniffi.mail_uniffi.UtmLink
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

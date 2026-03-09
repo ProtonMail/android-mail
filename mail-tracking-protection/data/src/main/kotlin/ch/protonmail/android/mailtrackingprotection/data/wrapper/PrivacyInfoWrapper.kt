@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailtrackingprotection.data.wrapper
 
-import uniffi.proton_mail_uniffi.PrivacyInfo
-import uniffi.proton_mail_uniffi.StrippedUtmInfo
-import uniffi.proton_mail_uniffi.TrackerInfo
-import uniffi.proton_mail_uniffi.TrackerInfoWithStatus
+import uniffi.mail_uniffi.PrivacyInfo
+import uniffi.mail_uniffi.StrippedUtmInfo
+import uniffi.mail_uniffi.TrackerInfo
+import uniffi.mail_uniffi.TrackerInfoWithStatus
 
 data class PrivacyInfoWrapper(
     val trackerInfo: TrackerInfo,

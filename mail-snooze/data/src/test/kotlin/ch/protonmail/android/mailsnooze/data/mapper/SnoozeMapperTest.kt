@@ -32,14 +32,14 @@ import ch.protonmail.android.mailsnooze.domain.model.UnSnooze
 import ch.protonmail.android.mailsnooze.domain.model.UnsnoozeError
 import ch.protonmail.android.mailsnooze.domain.model.UpgradeRequired
 import org.junit.Assert
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.SnoozeActions
-import uniffi.proton_mail_uniffi.SnoozeErrorReason
-import uniffi.proton_mail_uniffi.SnoozeTime
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.SnoozeActions
+import uniffi.mail_uniffi.SnoozeErrorReason
+import uniffi.mail_uniffi.SnoozeTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Instant
-import uniffi.proton_mail_uniffi.SnoozeError as SnoozeErrorRemote
+import uniffi.mail_uniffi.SnoozeError as SnoozeErrorRemote
 
 class SnoozeMapperTest {
 

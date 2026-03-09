@@ -26,9 +26,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.MoveMessagesResult
-import uniffi.proton_mail_uniffi.Undo
-import uniffi.proton_mail_uniffi.moveMessages
+import uniffi.mail_uniffi.MoveMessagesResult
+import uniffi.mail_uniffi.Undo
+import uniffi.mail_uniffi.moveMessages
 import javax.inject.Inject
 
 class RustMoveMessages @Inject constructor() {

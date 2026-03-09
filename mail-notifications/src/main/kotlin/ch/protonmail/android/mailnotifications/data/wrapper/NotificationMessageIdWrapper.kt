@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailnotifications.data.wrapper
 
-import uniffi.proton_mail_uniffi.RemoteId
+import uniffi.mail_uniffi.RemoteId
 
 internal data class NotificationMessageIdWrapper(private val remoteId: RemoteId) {
 

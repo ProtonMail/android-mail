@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.data.wrapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalViewMode
-import uniffi.proton_mail_uniffi.Mailbox
+import uniffi.mail_uniffi.Mailbox
 
 /**
  * Wraps rust Mailbox object, which is used to keep track of the currently selected label

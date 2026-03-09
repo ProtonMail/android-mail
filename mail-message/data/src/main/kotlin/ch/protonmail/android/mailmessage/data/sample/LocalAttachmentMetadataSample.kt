@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentDisposition
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeTypeCategory
-import uniffi.proton_mail_uniffi.AttachmentMimeType
+import uniffi.mail_uniffi.AttachmentMimeType
 
 object LocalAttachmentMetadataSample {
 

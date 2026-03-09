@@ -25,8 +25,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toUndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.VoidDraftUndoSendResult
-import uniffi.proton_mail_uniffi.draftUndoSend
+import uniffi.mail_uniffi.VoidDraftUndoSendResult
+import uniffi.mail_uniffi.draftUndoSend
 import javax.inject.Inject
 
 class RustDraftUndoSend @Inject constructor() {

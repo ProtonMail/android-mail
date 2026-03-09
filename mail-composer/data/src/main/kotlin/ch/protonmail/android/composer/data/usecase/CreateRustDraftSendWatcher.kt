@@ -24,10 +24,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.DraftSendResultCallback
-import uniffi.proton_mail_uniffi.DraftSendResultWatcher
-import uniffi.proton_mail_uniffi.NewDraftSendWatcherResult
-import uniffi.proton_mail_uniffi.newDraftSendWatcher
+import uniffi.mail_uniffi.DraftSendResultCallback
+import uniffi.mail_uniffi.DraftSendResultWatcher
+import uniffi.mail_uniffi.NewDraftSendWatcherResult
+import uniffi.mail_uniffi.newDraftSendWatcher
 import javax.inject.Inject
 
 class CreateRustDraftSendWatcher @Inject constructor() {

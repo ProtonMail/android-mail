@@ -42,12 +42,12 @@ import me.proton.core.auth.fido.domain.entity.SecondFactorProof
 import me.proton.core.auth.fido.domain.usecase.PerformTwoFaWithSecurityKey
 import me.proton.core.auth.fido.domain.usecase.PerformTwoFaWithSecurityKey.Result
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_mail_uniffi.FidoSignResultStatus
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.recordFidoSignResult
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_uniffi.FidoSignResultStatus
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.recordFidoSignResult
 import javax.inject.Inject
 
 @Suppress("TooGenericExceptionCaught")

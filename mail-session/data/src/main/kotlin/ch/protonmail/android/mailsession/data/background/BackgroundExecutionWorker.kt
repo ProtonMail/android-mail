@@ -27,7 +27,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.BackgroundExecutionStatus
+import uniffi.mail_uniffi.BackgroundExecutionStatus
 
 @HiltWorker
 internal class BackgroundExecutionWorker @AssistedInject constructor(

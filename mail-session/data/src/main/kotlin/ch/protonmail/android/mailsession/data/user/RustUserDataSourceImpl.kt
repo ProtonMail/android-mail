@@ -28,9 +28,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MailUserSessionWatchUserStreamResult
-import uniffi.proton_mail_uniffi.User
-import uniffi.proton_mail_uniffi.WatchUserStreamNextAsyncResult
+import uniffi.mail_uniffi.MailUserSessionWatchUserStreamResult
+import uniffi.mail_uniffi.User
+import uniffi.mail_uniffi.WatchUserStreamNextAsyncResult
 import javax.inject.Inject
 
 class RustUserDataSourceImpl @Inject constructor() : RustUserDataSource {

@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalContactSuggestion
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupId
 import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailcontact.domain.model.ContactMetadata
-import uniffi.proton_mail_uniffi.ContactSuggestionKind
+import uniffi.mail_uniffi.ContactSuggestionKind
 import javax.inject.Inject
 
 class ContactSuggestionsMapper @Inject constructor() {

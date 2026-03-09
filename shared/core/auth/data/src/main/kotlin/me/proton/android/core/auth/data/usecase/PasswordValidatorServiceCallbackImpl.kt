@@ -23,9 +23,9 @@ import kotlinx.coroutines.channels.trySendBlocking
 import me.proton.android.core.auth.data.entity.PasswordValidatorTokenWrapper
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorResult
 import me.proton.core.passvalidator.domain.usecase.ValidatePassword
-import uniffi.proton_account_uniffi.PasswordValidatorServiceCallback
-import uniffi.proton_account_uniffi.PasswordValidatorServiceResult
-import uniffi.proton_account_uniffi.PasswordValidatorServiceToken
+import uniffi.mail_account_uniffi.PasswordValidatorServiceCallback
+import uniffi.mail_account_uniffi.PasswordValidatorServiceResult
+import uniffi.mail_account_uniffi.PasswordValidatorServiceToken
 
 internal class PasswordValidatorServiceCallbackImpl(
     private val producerScope: ProducerScope<ValidatePassword.Result>

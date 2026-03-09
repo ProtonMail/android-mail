@@ -45,14 +45,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AttachmentListAddInlineResult
-import uniffi.proton_mail_uniffi.AttachmentListAddResult
-import uniffi.proton_mail_uniffi.AttachmentListAttachmentsResult
-import uniffi.proton_mail_uniffi.AttachmentListRemoveResult
-import uniffi.proton_mail_uniffi.AttachmentListRemoveWithCidResult
-import uniffi.proton_mail_uniffi.AttachmentListWatcherStreamResult
-import uniffi.proton_mail_uniffi.VoidDraftAttachmentDispositionSwapResult
-import uniffi.proton_mail_uniffi.VoidProtonResult
+import uniffi.mail_uniffi.AttachmentListAddInlineResult
+import uniffi.mail_uniffi.AttachmentListAddResult
+import uniffi.mail_uniffi.AttachmentListAttachmentsResult
+import uniffi.mail_uniffi.AttachmentListRemoveResult
+import uniffi.mail_uniffi.AttachmentListRemoveWithCidResult
+import uniffi.mail_uniffi.AttachmentListWatcherStreamResult
+import uniffi.mail_uniffi.VoidDraftAttachmentDispositionSwapResult
+import uniffi.mail_uniffi.VoidProtonResult
 import javax.inject.Inject
 
 class RustAttachmentDataSourceImpl @Inject constructor(

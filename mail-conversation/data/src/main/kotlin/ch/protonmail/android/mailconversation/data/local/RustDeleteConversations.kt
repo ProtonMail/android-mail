@@ -20,7 +20,7 @@ package ch.protonmail.android.mailconversation.data.local
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.deleteConversations
+import uniffi.mail_uniffi.deleteConversations
 import javax.inject.Inject
 
 class RustDeleteConversations @Inject constructor() {

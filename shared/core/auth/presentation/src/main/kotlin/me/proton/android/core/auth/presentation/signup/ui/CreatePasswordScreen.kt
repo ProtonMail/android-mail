@@ -82,7 +82,7 @@ import me.proton.core.compose.viewmodel.hiltViewModelOrNull
 import me.proton.core.passvalidator.domain.entity.PasswordValidationType
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorToken
 import me.proton.core.passvalidator.presentation.report.PasswordPolicyReport
-import uniffi.proton_mail_uniffi.SignupScreenId
+import uniffi.mail_uniffi.SignupScreenId
 
 @Composable
 fun CreatePasswordScreen(

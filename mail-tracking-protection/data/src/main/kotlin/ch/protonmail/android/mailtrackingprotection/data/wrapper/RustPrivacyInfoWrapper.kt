@@ -24,9 +24,9 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.WatchPrivacyInfoStreamResult
-import uniffi.proton_mail_uniffi.watchPrivacyInfoStream
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.WatchPrivacyInfoStreamResult
+import uniffi.mail_uniffi.watchPrivacyInfoStream
 
 class RustPrivacyInfoWrapper(private val rustSession: MailUserSession) {
 

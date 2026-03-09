@@ -37,7 +37,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import uniffi.proton_mail_uniffi.LabelDescription
+import uniffi.mail_uniffi.LabelDescription
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

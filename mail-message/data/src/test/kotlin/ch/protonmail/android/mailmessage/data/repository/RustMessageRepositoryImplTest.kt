@@ -55,7 +55,7 @@ import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.Id
+import uniffi.mail_uniffi.Id
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

@@ -39,10 +39,10 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.NonDefaultWeekStart
-import uniffi.proton_mail_uniffi.SnoozeActions
-import uniffi.proton_mail_uniffi.SnoozeTime
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.NonDefaultWeekStart
+import uniffi.mail_uniffi.SnoozeActions
+import uniffi.mail_uniffi.SnoozeTime
 import kotlin.time.Instant
 
 class RustSnoozeRepositoryTest {

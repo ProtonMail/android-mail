@@ -26,10 +26,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AppAppearance
-import uniffi.proton_mail_uniffi.AppProtection
-import uniffi.proton_mail_uniffi.AppSettings
-import uniffi.proton_mail_uniffi.AutoLock
+import uniffi.mail_uniffi.AppAppearance
+import uniffi.mail_uniffi.AppProtection
+import uniffi.mail_uniffi.AppSettings
+import uniffi.mail_uniffi.AutoLock
 import kotlin.test.assertNull
 
 class AppSettingsMapperTest {

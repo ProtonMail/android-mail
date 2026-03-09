@@ -24,9 +24,9 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftHead
 import io.mockk.every
 import io.mockk.mockk
-import uniffi.proton_mail_uniffi.ComposerContent
-import uniffi.proton_mail_uniffi.Draft
-import uniffi.proton_mail_uniffi.DraftComposerContentResult
+import uniffi.mail_uniffi.ComposerContent
+import uniffi.mail_uniffi.Draft
+import uniffi.mail_uniffi.DraftComposerContentResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

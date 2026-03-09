@@ -21,7 +21,7 @@ package ch.protonmail.android.mailnotifications.domain.mapper
 import ch.protonmail.android.mailnotifications.NotificationTestData
 import ch.protonmail.android.mailnotifications.data.wrapper.DecryptedPushNotificationWrapper
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotification
-import uniffi.proton_mail_uniffi.DecryptedPushNotification
+import uniffi.mail_uniffi.DecryptedPushNotification
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

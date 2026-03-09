@@ -27,12 +27,12 @@ import ch.protonmail.android.mailsession.data.mapper.toLocalUserId
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetSessionsResult
-import uniffi.proton_mail_uniffi.PushNotificationQuickAction
-import uniffi.proton_mail_uniffi.RemoteId
-import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetSessionsResult
+import uniffi.mail_uniffi.PushNotificationQuickAction
+import uniffi.mail_uniffi.RemoteId
+import uniffi.mail_uniffi.StoredSession
+import uniffi.mail_uniffi.VoidActionResult
 import javax.inject.Inject
 
 internal class ExecutePushNotificationAction @Inject constructor(

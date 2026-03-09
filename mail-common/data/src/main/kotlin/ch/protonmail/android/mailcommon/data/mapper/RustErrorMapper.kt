@@ -19,12 +19,12 @@
 package ch.protonmail.android.mailcommon.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.ActionError
-import uniffi.proton_mail_uniffi.ActionErrorReason
-import uniffi.proton_mail_uniffi.OtherErrorReason
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.SessionReason
-import uniffi.proton_mail_uniffi.UserSessionError
+import uniffi.mail_uniffi.ActionError
+import uniffi.mail_uniffi.ActionErrorReason
+import uniffi.mail_uniffi.OtherErrorReason
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.SessionReason
+import uniffi.mail_uniffi.UserSessionError
 
 fun UserSessionError.toDataError(): DataError = when (this) {
     is UserSessionError.Other -> this.v1.toDataError()

@@ -24,8 +24,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.NewMailboxResult
-import uniffi.proton_mail_uniffi.newMailbox
+import uniffi.mail_uniffi.NewMailboxResult
+import uniffi.mail_uniffi.newMailbox
 import javax.inject.Inject
 
 class CreateMailbox @Inject constructor() {

@@ -34,15 +34,15 @@ import me.proton.android.core.auth.presentation.passmanagement.PasswordManagemen
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementState.Error
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementState.UserInput
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorToken
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowSubmitNewPasswordResult
-import uniffi.proton_account_uniffi.PasswordFlow
-import uniffi.proton_account_uniffi.PasswordFlowChangePassResult
-import uniffi.proton_account_uniffi.SimplePasswordState.COMPLETE
-import uniffi.proton_account_uniffi.SimplePasswordState.INVALID
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_CHANGE
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_PASS
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_TFA
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowSubmitNewPasswordResult
+import uniffi.mail_account_uniffi.PasswordFlow
+import uniffi.mail_account_uniffi.PasswordFlowChangePassResult
+import uniffi.mail_account_uniffi.SimplePasswordState.COMPLETE
+import uniffi.mail_account_uniffi.SimplePasswordState.INVALID
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_CHANGE
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_PASS
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_TFA
 
 class LoginPasswordHandler private constructor(
     private val context: Context,

@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailcontact.data.usecase
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalDeviceContact
-import uniffi.proton_mail_uniffi.ContactSuggestionsResult
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.contactSuggestions
+import uniffi.mail_uniffi.ContactSuggestionsResult
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.contactSuggestions
 import javax.inject.Inject
 
 /**

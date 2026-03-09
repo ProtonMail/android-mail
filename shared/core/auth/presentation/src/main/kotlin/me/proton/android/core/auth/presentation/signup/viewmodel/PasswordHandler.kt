@@ -36,10 +36,10 @@ import me.proton.android.core.auth.presentation.signup.CreatePasswordState.Valid
 import me.proton.android.core.auth.presentation.signup.SignUpState
 import me.proton.android.core.auth.presentation.signup.mapToNavigationRoute
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorToken
-import uniffi.proton_account_uniffi.PasswordValidatorServiceToken
-import uniffi.proton_account_uniffi.SignupException
-import uniffi.proton_account_uniffi.SignupFlow
-import uniffi.proton_account_uniffi.SignupFlowSubmitPasswordResult
+import uniffi.mail_account_uniffi.PasswordValidatorServiceToken
+import uniffi.mail_account_uniffi.SignupException
+import uniffi.mail_account_uniffi.SignupFlow
+import uniffi.mail_account_uniffi.SignupFlowSubmitPasswordResult
 
 /**
  * Handler responsible for password-related actions during signup process.

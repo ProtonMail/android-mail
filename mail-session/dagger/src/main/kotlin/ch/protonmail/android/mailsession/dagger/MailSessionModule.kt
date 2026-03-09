@@ -46,10 +46,10 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import uniffi.proton_issue_reporter_service_uniffi.IssueReporter
-import uniffi.proton_mail_uniffi.DeviceInfoProvider
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.OsKeyChain
+import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
+import uniffi.mail_uniffi.DeviceInfoProvider
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.OsKeyChain
 import javax.inject.Singleton
 
 @Module(includes = [MailSessionModule.BindsModule::class])

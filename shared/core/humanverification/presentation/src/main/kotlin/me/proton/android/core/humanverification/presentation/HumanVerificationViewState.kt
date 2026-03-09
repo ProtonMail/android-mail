@@ -18,7 +18,7 @@
 
 package me.proton.android.core.humanverification.presentation
 
-import uniffi.proton_mail_uniffi.ChallengeLoader
+import uniffi.mail_uniffi.ChallengeLoader
 
 sealed interface HumanVerificationViewState {
     data object Idle : HumanVerificationViewState

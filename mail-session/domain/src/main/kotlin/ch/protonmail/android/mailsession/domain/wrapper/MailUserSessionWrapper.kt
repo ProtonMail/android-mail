@@ -27,16 +27,16 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.mapper.toEventLoopError
 import ch.protonmail.android.mailsession.domain.model.EventLoopError
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
-import uniffi.proton_mail_uniffi.EventLoopErrorObserver
-import uniffi.proton_mail_uniffi.ExecuteWhenOnlineCallbackAsync
-import uniffi.proton_mail_uniffi.Fork
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionForkResult
-import uniffi.proton_mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
-import uniffi.proton_mail_uniffi.MailUserSessionUserResult
-import uniffi.proton_mail_uniffi.User
-import uniffi.proton_mail_uniffi.VoidEventResult
+import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.EventLoopErrorObserver
+import uniffi.mail_uniffi.ExecuteWhenOnlineCallbackAsync
+import uniffi.mail_uniffi.Fork
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionForkResult
+import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
+import uniffi.mail_uniffi.MailUserSessionUserResult
+import uniffi.mail_uniffi.User
+import uniffi.mail_uniffi.VoidEventResult
 
 class MailUserSessionWrapper(private val userSession: MailUserSession) {
 

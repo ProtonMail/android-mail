@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.testdata.label.rust
 
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.IsSelected
-import uniffi.proton_mail_uniffi.LabelAsAction
-import uniffi.proton_mail_uniffi.LabelColor
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.IsSelected
+import uniffi.mail_uniffi.LabelAsAction
+import uniffi.mail_uniffi.LabelColor
 
 object LocalLabelAsActionTestData {
 

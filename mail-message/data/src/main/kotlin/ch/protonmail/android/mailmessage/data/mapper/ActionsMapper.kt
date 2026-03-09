@@ -30,15 +30,15 @@ import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AllConversationActions
-import uniffi.proton_mail_uniffi.AllListActions
-import uniffi.proton_mail_uniffi.AllMessageActions
-import uniffi.proton_mail_uniffi.ConversationAction
-import uniffi.proton_mail_uniffi.IsSelected
-import uniffi.proton_mail_uniffi.ListActions
-import uniffi.proton_mail_uniffi.MessageAction
-import uniffi.proton_mail_uniffi.MessageActionSheet
-import uniffi.proton_mail_uniffi.MoveAction
+import uniffi.mail_uniffi.AllConversationActions
+import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.AllMessageActions
+import uniffi.mail_uniffi.ConversationAction
+import uniffi.mail_uniffi.IsSelected
+import uniffi.mail_uniffi.ListActions
+import uniffi.mail_uniffi.MessageAction
+import uniffi.mail_uniffi.MessageActionSheet
+import uniffi.mail_uniffi.MoveAction
 
 fun List<LocalLabelAsAction>.toLabelAsActions(): LabelAsActions {
     val labels = this.map { it.toLabel() }

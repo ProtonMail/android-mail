@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.LiveQueryCallback
 import javax.inject.Inject
 
 class RustMailSettingsDataSource @Inject constructor(

@@ -74,11 +74,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AllListActions
-import uniffi.proton_mail_uniffi.AllMessageActions
-import uniffi.proton_mail_uniffi.MessageActionSheet
-import uniffi.proton_mail_uniffi.MoveAction
-import uniffi.proton_mail_uniffi.ThemeOpts
+import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.AllMessageActions
+import uniffi.mail_uniffi.MessageActionSheet
+import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.ThemeOpts
 import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList", "TooManyFunctions")

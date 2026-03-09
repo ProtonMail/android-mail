@@ -20,8 +20,8 @@ package ch.protonmail.android.mailsession.domain.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailsession.domain.model.EventLoopError
-import uniffi.proton_mail_uniffi.EventError
-import uniffi.proton_mail_uniffi.EventErrorReason
+import uniffi.mail_uniffi.EventError
+import uniffi.mail_uniffi.EventErrorReason
 
 fun EventError.toEventLoopError(): EventLoopError = when (this) {
     is EventError.Other -> EventLoopError.Other(this.v1.toDataError())

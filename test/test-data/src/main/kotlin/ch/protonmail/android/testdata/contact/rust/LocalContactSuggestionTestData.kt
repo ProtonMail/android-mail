@@ -22,9 +22,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAvatarInformation
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactSuggestion
 import ch.protonmail.android.mailcommon.domain.sample.AvatarInformationSample
 import ch.protonmail.android.testdata.contact.ContactIdTestData
-import uniffi.proton_mail_uniffi.ContactEmailItem
-import uniffi.proton_mail_uniffi.ContactSuggestionKind
-import uniffi.proton_mail_uniffi.Id
+import uniffi.mail_uniffi.ContactEmailItem
+import uniffi.mail_uniffi.ContactSuggestionKind
+import uniffi.mail_uniffi.Id
 
 object LocalContactSuggestionTestData {
 

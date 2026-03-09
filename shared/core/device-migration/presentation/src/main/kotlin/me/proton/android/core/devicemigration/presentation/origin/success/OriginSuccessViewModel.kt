@@ -28,8 +28,8 @@ import kotlinx.coroutines.flow.flow
 import me.proton.android.core.account.domain.usecase.ObservePrimaryCoreAccount
 import me.proton.android.core.devicemigration.presentation.R
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_account_uniffi.QrLoginScanScreenViewTotalScreenId
-import uniffi.proton_account_uniffi.qrLoginScanScreenTotal
+import uniffi.mail_account_uniffi.QrLoginScanScreenViewTotalScreenId
+import uniffi.mail_account_uniffi.qrLoginScanScreenTotal
 import javax.inject.Inject
 
 @HiltViewModel

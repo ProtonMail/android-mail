@@ -27,9 +27,9 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import uniffi.proton_mail_uniffi.DraftAddressValidationError
-import uniffi.proton_mail_uniffi.DraftAddressValidationResult
-import uniffi.proton_mail_uniffi.DraftScheduleSendOptions
+import uniffi.mail_uniffi.DraftAddressValidationError
+import uniffi.mail_uniffi.DraftAddressValidationResult
+import uniffi.mail_uniffi.DraftScheduleSendOptions
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

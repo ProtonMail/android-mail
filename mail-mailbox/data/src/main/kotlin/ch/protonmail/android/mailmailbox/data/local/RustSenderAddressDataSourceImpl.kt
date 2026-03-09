@@ -34,10 +34,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
-import uniffi.proton_mail_uniffi.MailUserSessionHasValidSenderAddressResult
-import uniffi.proton_mail_uniffi.MailUserSessionWatchAddressesResult
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.MailUserSessionHasValidSenderAddressResult
+import uniffi.mail_uniffi.MailUserSessionWatchAddressesResult
+import uniffi.mail_uniffi.WatchHandle
 import javax.inject.Inject
 
 class RustSenderAddressDataSourceImpl @Inject constructor(

@@ -23,7 +23,7 @@ import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import ch.protonmail.android.useragent.BuildUserAgent
 import me.proton.core.configuration.EnvironmentConfigurationDefaults
 import okhttp3.HttpUrl
-import uniffi.proton_mail_uniffi.ApiEnvId
+import uniffi.mail_uniffi.ApiEnvId
 import javax.inject.Inject
 
 class MailRustApiConfig @Inject constructor(

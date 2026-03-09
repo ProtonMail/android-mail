@@ -43,8 +43,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.WatchedConversation
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.WatchedConversation
 import javax.inject.Inject
 
 @SuppressWarnings("MagicNumber")

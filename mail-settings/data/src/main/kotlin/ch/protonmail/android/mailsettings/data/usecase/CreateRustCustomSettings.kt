@@ -20,8 +20,8 @@ package ch.protonmail.android.mailsettings.data.usecase
 
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import ch.protonmail.android.mailsettings.data.wrapper.CustomSettingsWrapper
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.customSettings
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.customSettings
 import javax.inject.Inject
 
 class CreateRustCustomSettings @Inject constructor() {

@@ -21,9 +21,9 @@ package me.proton.android.core.auth.presentation.secondfactor.fido
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.auth.presentation.flow.FlowManager
 import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
-import uniffi.proton_account_uniffi.Fido2ResponseFfi
-import uniffi.proton_account_uniffi.LoginFlowGetFidoDetailsResult
-import uniffi.proton_account_uniffi.PasswordFlowFidoDetailsResult
+import uniffi.mail_account_uniffi.Fido2ResponseFfi
+import uniffi.mail_account_uniffi.LoginFlowGetFidoDetailsResult
+import uniffi.mail_account_uniffi.PasswordFlowFidoDetailsResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

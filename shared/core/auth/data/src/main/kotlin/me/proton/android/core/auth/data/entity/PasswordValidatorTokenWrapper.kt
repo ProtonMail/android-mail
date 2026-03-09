@@ -19,7 +19,7 @@
 package me.proton.android.core.auth.data.entity
 
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorToken
-import uniffi.proton_account_uniffi.PasswordValidatorServiceToken
+import uniffi.mail_account_uniffi.PasswordValidatorServiceToken
 
 class PasswordValidatorTokenWrapper(private val token: PasswordValidatorServiceToken) : PasswordValidatorToken {
 

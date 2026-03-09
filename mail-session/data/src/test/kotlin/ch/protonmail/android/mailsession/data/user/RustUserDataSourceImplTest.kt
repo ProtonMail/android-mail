@@ -30,11 +30,11 @@ import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
-import uniffi.proton_mail_uniffi.MailUserSessionWatchUserResult
-import uniffi.proton_mail_uniffi.MailUserSessionWatchUserStreamResult
-import uniffi.proton_mail_uniffi.WatchHandle
-import uniffi.proton_mail_uniffi.WatchUserStream
+import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.MailUserSessionWatchUserResult
+import uniffi.mail_uniffi.MailUserSessionWatchUserStreamResult
+import uniffi.mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.WatchUserStream
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

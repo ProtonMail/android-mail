@@ -3,7 +3,7 @@ package ch.protonmail.android.mailsession.data.repository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import uniffi.proton_mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSession
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

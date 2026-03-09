@@ -44,14 +44,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.DraftSendFailure
-import uniffi.proton_mail_uniffi.DraftSendResultCallback
-import uniffi.proton_mail_uniffi.DraftSendResultOrigin
-import uniffi.proton_mail_uniffi.DraftSendResultWatcher
-import uniffi.proton_mail_uniffi.DraftSendStatus
+import uniffi.mail_uniffi.DraftSendFailure
+import uniffi.mail_uniffi.DraftSendResultCallback
+import uniffi.mail_uniffi.DraftSendResultOrigin
+import uniffi.mail_uniffi.DraftSendResultWatcher
+import uniffi.mail_uniffi.DraftSendStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import uniffi.proton_mail_uniffi.ProtonError as LocalProtonError
+import uniffi.mail_uniffi.ProtonError as LocalProtonError
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RustSendingStatusDataSourceImplTest {

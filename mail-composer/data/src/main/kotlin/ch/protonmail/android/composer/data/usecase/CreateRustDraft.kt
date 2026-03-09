@@ -25,9 +25,9 @@ import ch.protonmail.android.composer.data.mapper.toOpenDraftError
 import ch.protonmail.android.composer.data.wrapper.DraftWrapper
 import ch.protonmail.android.mailcomposer.domain.model.OpenDraftError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.DraftCreateMode
-import uniffi.proton_mail_uniffi.NewDraftResult
-import uniffi.proton_mail_uniffi.newDraft
+import uniffi.mail_uniffi.DraftCreateMode
+import uniffi.mail_uniffi.NewDraftResult
+import uniffi.mail_uniffi.newDraft
 import javax.inject.Inject
 
 class CreateRustDraft @Inject constructor() {

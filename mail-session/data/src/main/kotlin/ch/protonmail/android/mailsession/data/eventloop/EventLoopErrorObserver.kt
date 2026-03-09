@@ -30,10 +30,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.EventError
-import uniffi.proton_mail_uniffi.EventLoopErrorObserver
-import uniffi.proton_mail_uniffi.EventLoopErrorObserverHandle
-import uniffi.proton_mail_uniffi.MailUserSessionObserveEventLoopErrorsResult
+import uniffi.mail_uniffi.EventError
+import uniffi.mail_uniffi.EventLoopErrorObserver
+import uniffi.mail_uniffi.EventLoopErrorObserverHandle
+import uniffi.mail_uniffi.MailUserSessionObserveEventLoopErrorsResult
 import javax.inject.Inject
 
 class RustEventLoopErrorObserver @Inject constructor(

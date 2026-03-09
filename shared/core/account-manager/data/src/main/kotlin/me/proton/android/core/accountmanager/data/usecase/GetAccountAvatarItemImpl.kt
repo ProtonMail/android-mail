@@ -21,8 +21,8 @@ package me.proton.android.core.accountmanager.data.usecase
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
 import me.proton.android.core.accountmanager.domain.usecase.GetAccountAvatarItem
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAccountResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAccountResult
 import javax.inject.Inject
 
 class GetAccountAvatarItemImpl @Inject constructor(

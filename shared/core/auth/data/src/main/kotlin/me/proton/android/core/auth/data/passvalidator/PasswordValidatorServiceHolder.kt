@@ -23,7 +23,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.android.core.auth.data.LogTag
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_account_uniffi.PasswordValidatorService
+import uniffi.mail_account_uniffi.PasswordValidatorService
 import javax.inject.Inject
 
 @ActivityRetainedScoped

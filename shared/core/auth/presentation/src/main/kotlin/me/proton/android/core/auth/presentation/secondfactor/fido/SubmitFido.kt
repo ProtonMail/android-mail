@@ -22,15 +22,15 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.auth.presentation.flow.FlowManager
+import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
 import me.proton.android.core.auth.presentation.login.getErrorMessage
 import me.proton.android.core.auth.presentation.passmanagement.getErrorMessage
-import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
 import me.proton.core.auth.fido.domain.entity.SecondFactorProof
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowSubmitFidoResult
-import uniffi.proton_account_uniffi.PasswordFlow
-import uniffi.proton_account_uniffi.PasswordFlowSubmitFidoResult
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowSubmitFidoResult
+import uniffi.mail_account_uniffi.PasswordFlow
+import uniffi.mail_account_uniffi.PasswordFlowSubmitFidoResult
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
 import javax.inject.Inject
 
 class SubmitFido @Inject constructor(

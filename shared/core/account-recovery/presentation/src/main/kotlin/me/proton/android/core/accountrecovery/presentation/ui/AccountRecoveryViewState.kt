@@ -20,7 +20,7 @@ package me.proton.android.core.accountrecovery.presentation.ui
 
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.core.presentation.utils.StringBox
-import uniffi.proton_mail_uniffi.AccountRecoveryScreenId
+import uniffi.mail_uniffi.AccountRecoveryScreenId
 
 sealed interface AccountRecoveryViewState {
 

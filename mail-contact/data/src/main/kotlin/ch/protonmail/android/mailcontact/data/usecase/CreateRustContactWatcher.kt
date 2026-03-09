@@ -24,10 +24,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.ContactsLiveQueryCallback
-import uniffi.proton_mail_uniffi.WatchContactListResult
-import uniffi.proton_mail_uniffi.WatchedContactList
-import uniffi.proton_mail_uniffi.watchContactList
+import uniffi.mail_uniffi.ContactsLiveQueryCallback
+import uniffi.mail_uniffi.WatchContactListResult
+import uniffi.mail_uniffi.WatchedContactList
+import uniffi.mail_uniffi.watchContactList
 import javax.inject.Inject
 
 class CreateRustContactWatcher @Inject constructor() {

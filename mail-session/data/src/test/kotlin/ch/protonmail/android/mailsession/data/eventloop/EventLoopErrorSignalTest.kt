@@ -24,7 +24,7 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.EventError
+import uniffi.mail_uniffi.EventError
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -20,10 +20,10 @@ package ch.protonmail.android.mailnotifications.data.repository
 
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.DeviceEnvironment
-import uniffi.proton_mail_uniffi.MailSessionRegisterDeviceTaskResult
-import uniffi.proton_mail_uniffi.RegisteredDevice
-import uniffi.proton_mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.DeviceEnvironment
+import uniffi.mail_uniffi.MailSessionRegisterDeviceTaskResult
+import uniffi.mail_uniffi.RegisteredDevice
+import uniffi.mail_uniffi.VoidActionResult
 import javax.inject.Inject
 
 internal class DeviceRegistrationRepositoryImpl @Inject constructor(

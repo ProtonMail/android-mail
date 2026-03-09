@@ -29,15 +29,15 @@ import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.android.core.humanverification.domain.ChallengeNotifierCallback
 import timber.log.Timber
-import uniffi.proton_issue_reporter_service_uniffi.IssueReporter
-import uniffi.proton_mail_uniffi.ApiConfig
-import uniffi.proton_mail_uniffi.AppDetails
-import uniffi.proton_mail_uniffi.CreateMailSessionResult
-import uniffi.proton_mail_uniffi.DeviceInfoProvider
-import uniffi.proton_mail_uniffi.MailSessionParams
-import uniffi.proton_mail_uniffi.Origin
-import uniffi.proton_mail_uniffi.OsKeyChain
-import uniffi.proton_mail_uniffi.createMailSession
+import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
+import uniffi.mail_uniffi.ApiConfig
+import uniffi.mail_uniffi.AppDetails
+import uniffi.mail_uniffi.CreateMailSessionResult
+import uniffi.mail_uniffi.DeviceInfoProvider
+import uniffi.mail_uniffi.MailSessionParams
+import uniffi.mail_uniffi.Origin
+import uniffi.mail_uniffi.OsKeyChain
+import uniffi.mail_uniffi.createMailSession
 import javax.inject.Inject
 
 class InitRustCommonLibrary @Inject constructor(

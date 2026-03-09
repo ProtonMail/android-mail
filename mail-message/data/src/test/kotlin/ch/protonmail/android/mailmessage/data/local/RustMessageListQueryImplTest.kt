@@ -53,10 +53,10 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.MessageScrollerListUpdate
-import uniffi.proton_mail_uniffi.MessageScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.MessageScrollerUpdate
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.MessageScrollerListUpdate
+import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
+import uniffi.mail_uniffi.MessageScrollerUpdate
 import kotlin.test.Test
 
 class RustMessageListQueryImplTest {

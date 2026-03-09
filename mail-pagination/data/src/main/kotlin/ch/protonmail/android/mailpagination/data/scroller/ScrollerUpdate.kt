@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailpagination.data.scroller
 
-import uniffi.proton_mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.MailScrollerError
 
 sealed class ScrollerUpdate<out T> {
     abstract val scrollerId: String

@@ -23,8 +23,8 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.mapper.toDiscardDraftError
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.VoidDraftDiscardResult
-import uniffi.proton_mail_uniffi.draftDiscard
+import uniffi.mail_uniffi.VoidDraftDiscardResult
+import uniffi.mail_uniffi.draftDiscard
 import javax.inject.Inject
 
 class DiscardRustDraft @Inject constructor() {

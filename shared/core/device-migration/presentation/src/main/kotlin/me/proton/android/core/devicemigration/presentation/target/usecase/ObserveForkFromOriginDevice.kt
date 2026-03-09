@@ -27,11 +27,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.devicemigration.presentation.R
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionNewLoginFlowResult
-import uniffi.proton_mail_uniffi.OtherErrorReason
-import uniffi.proton_mail_uniffi.ProtonError
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionNewLoginFlowResult
+import uniffi.mail_uniffi.OtherErrorReason
+import uniffi.mail_uniffi.ProtonError
 import javax.inject.Inject
 
 internal class ObserveForkFromOriginDevice @Inject constructor(

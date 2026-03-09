@@ -22,8 +22,8 @@ import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.repository.getPrimarySession
 import me.proton.core.biometric.data.StrongAuthenticatorsResolver
 import me.proton.core.biometric.domain.CheckBiometricAuthAvailability
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionUserSettingsResult
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
 import javax.inject.Inject
 
 internal class IsQrLoginAvailableOnOrigin @Inject constructor(

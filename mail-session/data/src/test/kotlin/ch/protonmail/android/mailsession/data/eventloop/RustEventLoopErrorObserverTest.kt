@@ -41,11 +41,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.EventError
-import uniffi.proton_mail_uniffi.EventErrorReason
-import uniffi.proton_mail_uniffi.EventLoopErrorObserver
-import uniffi.proton_mail_uniffi.EventLoopErrorObserverHandle
-import uniffi.proton_mail_uniffi.MailUserSessionObserveEventLoopErrorsResult
+import uniffi.mail_uniffi.EventError
+import uniffi.mail_uniffi.EventErrorReason
+import uniffi.mail_uniffi.EventLoopErrorObserver
+import uniffi.mail_uniffi.EventLoopErrorObserverHandle
+import uniffi.mail_uniffi.MailUserSessionObserveEventLoopErrorsResult
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

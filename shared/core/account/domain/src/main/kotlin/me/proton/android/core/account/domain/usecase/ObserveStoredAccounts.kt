@@ -19,7 +19,7 @@
 package me.proton.android.core.account.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
-import uniffi.proton_mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredAccount
 
 interface ObserveStoredAccounts {
 

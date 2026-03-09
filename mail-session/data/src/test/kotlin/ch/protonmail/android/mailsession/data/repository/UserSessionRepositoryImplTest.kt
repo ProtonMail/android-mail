@@ -25,12 +25,12 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.account.domain.usecase.ObserveStoredAccounts
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.Fork as RustFork
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredSession
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredSession
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import uniffi.mail_uniffi.Fork as RustFork
 
 class UserSessionRepositoryImplTest {
 

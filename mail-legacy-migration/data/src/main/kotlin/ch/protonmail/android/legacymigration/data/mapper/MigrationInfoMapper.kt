@@ -25,8 +25,8 @@ import ch.protonmail.android.legacymigration.domain.model.LegacySessionInfo
 import ch.protonmail.android.legacymigration.domain.model.LegacySignaturePreference
 import ch.protonmail.android.legacymigration.domain.model.LegacyUserAddressInfo
 import ch.protonmail.android.legacymigration.domain.model.LegacyUserInfo
-import uniffi.proton_account_uniffi.MigrationData
-import uniffi.proton_account_uniffi.PasswordMode
+import uniffi.mail_account_uniffi.MigrationData
+import uniffi.mail_account_uniffi.PasswordMode
 import javax.inject.Inject
 
 @Suppress("LongParameterList")

@@ -29,12 +29,12 @@ import me.proton.android.core.payment.domain.model.ProductOfferTags
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.domain.model.SubscriptionDetail
 import me.proton.core.presentation.utils.formatCentsPriceDefaultLocale
-import uniffi.proton_mail_uniffi.Plan
-import uniffi.proton_mail_uniffi.PlanDecoration
-import uniffi.proton_mail_uniffi.PlanEntitlement
-import uniffi.proton_mail_uniffi.PlanInstance
-import uniffi.proton_mail_uniffi.PlanVendorName
-import uniffi.proton_mail_uniffi.Subscription
+import uniffi.mail_uniffi.Plan
+import uniffi.mail_uniffi.PlanDecoration
+import uniffi.mail_uniffi.PlanEntitlement
+import uniffi.mail_uniffi.PlanInstance
+import uniffi.mail_uniffi.PlanVendorName
+import uniffi.mail_uniffi.Subscription
 
 private fun getFormattedPrice(amount: ULong?, currency: String?) = when {
     amount == null -> ""

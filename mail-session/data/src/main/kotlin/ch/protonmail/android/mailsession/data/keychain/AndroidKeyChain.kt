@@ -22,9 +22,9 @@ import java.io.IOException
 import kotlinx.coroutines.runBlocking
 import me.proton.core.crypto.common.keystore.KeyStoreCrypto
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.OsKeyChain
-import uniffi.proton_mail_uniffi.OsKeyChainEntryKind
-import uniffi.proton_mail_uniffi.OsKeyChainException
+import uniffi.mail_uniffi.OsKeyChain
+import uniffi.mail_uniffi.OsKeyChainEntryKind
+import uniffi.mail_uniffi.OsKeyChainException
 import javax.inject.Inject
 
 @SuppressWarnings("TooGenericExceptionCaught", "SwallowedException")

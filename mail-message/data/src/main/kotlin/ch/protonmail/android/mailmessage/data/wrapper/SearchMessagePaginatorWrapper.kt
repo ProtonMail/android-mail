@@ -25,13 +25,13 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.IncludeSwitch
-import uniffi.proton_mail_uniffi.PaginatorSearchOptions
-import uniffi.proton_mail_uniffi.SearchScroller
-import uniffi.proton_mail_uniffi.SearchScrollerCursorResult
-import uniffi.proton_mail_uniffi.SearchScrollerFetchMoreResult
-import uniffi.proton_mail_uniffi.SearchScrollerGetItemsResult
-import uniffi.proton_mail_uniffi.SearchScrollerSupportsIncludeFilterResult
+import uniffi.mail_uniffi.IncludeSwitch
+import uniffi.mail_uniffi.PaginatorSearchOptions
+import uniffi.mail_uniffi.SearchScroller
+import uniffi.mail_uniffi.SearchScrollerCursorResult
+import uniffi.mail_uniffi.SearchScrollerFetchMoreResult
+import uniffi.mail_uniffi.SearchScrollerGetItemsResult
+import uniffi.mail_uniffi.SearchScrollerSupportsIncludeFilterResult
 
 class SearchMessagePaginatorWrapper(
     private val rustPaginator: SearchScroller

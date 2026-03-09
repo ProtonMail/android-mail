@@ -25,9 +25,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toUndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.DraftCancelScheduleSendResult
-import uniffi.proton_mail_uniffi.DraftCancelScheduledSendInfo
-import uniffi.proton_mail_uniffi.draftCancelScheduleSend
+import uniffi.mail_uniffi.DraftCancelScheduleSendResult
+import uniffi.mail_uniffi.DraftCancelScheduledSendInfo
+import uniffi.mail_uniffi.draftCancelScheduleSend
 import javax.inject.Inject
 
 class RustCancelScheduleSendMessage @Inject constructor() {

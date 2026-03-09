@@ -22,10 +22,10 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailsession.domain.model.LoginError
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowMigrateResult
-import uniffi.proton_account_uniffi.MigrationData
-import uniffi.proton_account_uniffi.LoginError as UniffiLoginError
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowMigrateResult
+import uniffi.mail_account_uniffi.MigrationData
+import uniffi.mail_account_uniffi.LoginError as UniffiLoginError
 
 class LoginFlowWrapper(private val loginFlow: LoginFlow) {
 
@@ -37,29 +37,29 @@ class LoginFlowWrapper(private val loginFlow: LoginFlow) {
 
 internal fun UniffiLoginError.toLoginError(): LoginError = when (this) {
     // 1. API-related failures
-    is uniffi.proton_account_uniffi.LoginError.AddressFetch,
-    is uniffi.proton_account_uniffi.LoginError.ApiError,
-    is uniffi.proton_account_uniffi.LoginError.FlowLogin,
-    is uniffi.proton_account_uniffi.LoginError.FlowTotp,
-    is uniffi.proton_account_uniffi.LoginError.FlowFido,
-    is uniffi.proton_account_uniffi.LoginError.UserFetch,
-    is uniffi.proton_account_uniffi.LoginError.KeySecretSaltFetch,
-    is uniffi.proton_account_uniffi.LoginError.WithCodePollFlowFailed ->
+    is uniffi.mail_account_uniffi.LoginError.AddressFetch,
+    is uniffi.mail_account_uniffi.LoginError.ApiError,
+    is uniffi.mail_account_uniffi.LoginError.FlowLogin,
+    is uniffi.mail_account_uniffi.LoginError.FlowTotp,
+    is uniffi.mail_account_uniffi.LoginError.FlowFido,
+    is uniffi.mail_account_uniffi.LoginError.UserFetch,
+    is uniffi.mail_account_uniffi.LoginError.KeySecretSaltFetch,
+    is uniffi.mail_account_uniffi.LoginError.WithCodePollFlowFailed ->
         LoginError.ApiFailure
 
     // 2. Internal data/state issues
-    is uniffi.proton_account_uniffi.LoginError.AddressKeySetup,
-    is uniffi.proton_account_uniffi.LoginError.AddressSetup,
-    is uniffi.proton_account_uniffi.LoginError.AuthStore,
-    is uniffi.proton_account_uniffi.LoginError.CantUnlockUserKey,
-    is uniffi.proton_account_uniffi.LoginError.InvalidState,
-    is uniffi.proton_account_uniffi.LoginError.UserKeySetup,
-    is uniffi.proton_account_uniffi.LoginError.Other,
-    is uniffi.proton_account_uniffi.LoginError.QrLoginEncoding ->
+    is uniffi.mail_account_uniffi.LoginError.AddressKeySetup,
+    is uniffi.mail_account_uniffi.LoginError.AddressSetup,
+    is uniffi.mail_account_uniffi.LoginError.AuthStore,
+    is uniffi.mail_account_uniffi.LoginError.CantUnlockUserKey,
+    is uniffi.mail_account_uniffi.LoginError.InvalidState,
+    is uniffi.mail_account_uniffi.LoginError.UserKeySetup,
+    is uniffi.mail_account_uniffi.LoginError.Other,
+    is uniffi.mail_account_uniffi.LoginError.QrLoginEncoding ->
         LoginError.InternalError
 
     // 3. Login-specific validation failures
-    is uniffi.proton_account_uniffi.LoginError.InvalidCredentials ->
+    is uniffi.mail_account_uniffi.LoginError.InvalidCredentials ->
         LoginError.AuthenticationFailure
 
     // 4. Fallback

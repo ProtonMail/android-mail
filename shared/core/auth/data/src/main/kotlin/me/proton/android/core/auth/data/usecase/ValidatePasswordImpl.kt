@@ -28,7 +28,7 @@ import me.proton.android.core.auth.data.passvalidator.PasswordValidatorServiceHo
 import me.proton.core.domain.entity.UserId
 import me.proton.core.passvalidator.domain.entity.PasswordValidationType
 import me.proton.core.passvalidator.domain.usecase.ValidatePassword
-import uniffi.proton_account_uniffi.PasswordType
+import uniffi.mail_account_uniffi.PasswordType
 import javax.inject.Inject
 
 @ActivityRetainedScoped

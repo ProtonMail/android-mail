@@ -24,11 +24,11 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.MailMessageCursor
-import uniffi.proton_mail_uniffi.MailMessageCursorFetchNextResult
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.NextMailCursorMessage
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.MailMessageCursor
+import uniffi.mail_uniffi.MailMessageCursorFetchNextResult
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.NextMailCursorMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

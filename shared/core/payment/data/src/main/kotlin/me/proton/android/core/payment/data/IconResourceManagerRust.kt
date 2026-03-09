@@ -20,7 +20,7 @@ package me.proton.android.core.payment.data
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.repository.getPrimarySession
 import me.proton.android.core.payment.domain.IconResourceManager
-import uniffi.proton_mail_uniffi.MailUserSessionGetPaymentsResourcesIconsResult
+import uniffi.mail_uniffi.MailUserSessionGetPaymentsResourcesIconsResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

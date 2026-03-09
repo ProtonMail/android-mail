@@ -42,22 +42,22 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.AttachmentListAddInlineResult
-import uniffi.proton_mail_uniffi.AttachmentListAddResult
-import uniffi.proton_mail_uniffi.AttachmentListAttachmentsResult
-import uniffi.proton_mail_uniffi.AttachmentListRemoveResult
-import uniffi.proton_mail_uniffi.AttachmentListRemoveWithCidResult
-import uniffi.proton_mail_uniffi.AttachmentListWatcherStreamResult
-import uniffi.proton_mail_uniffi.DraftAttachment
-import uniffi.proton_mail_uniffi.DraftAttachmentListUpdateStream
-import uniffi.proton_mail_uniffi.DraftAttachmentState
-import uniffi.proton_mail_uniffi.DraftAttachmentUploadError
-import uniffi.proton_mail_uniffi.DraftAttachmentUploadErrorReason
-import uniffi.proton_mail_uniffi.OtherErrorReason
+import uniffi.mail_uniffi.AttachmentListAddInlineResult
+import uniffi.mail_uniffi.AttachmentListAddResult
+import uniffi.mail_uniffi.AttachmentListAttachmentsResult
+import uniffi.mail_uniffi.AttachmentListRemoveResult
+import uniffi.mail_uniffi.AttachmentListRemoveWithCidResult
+import uniffi.mail_uniffi.AttachmentListWatcherStreamResult
+import uniffi.mail_uniffi.DraftAttachment
+import uniffi.mail_uniffi.DraftAttachmentListUpdateStream
+import uniffi.mail_uniffi.DraftAttachmentState
+import uniffi.mail_uniffi.DraftAttachmentUploadError
+import uniffi.mail_uniffi.DraftAttachmentUploadErrorReason
+import uniffi.mail_uniffi.OtherErrorReason
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import uniffi.proton_mail_uniffi.ProtonError as LocalProtonError
+import uniffi.mail_uniffi.ProtonError as LocalProtonError
 
 class RustAttachmentDataSourceImplTest {
 

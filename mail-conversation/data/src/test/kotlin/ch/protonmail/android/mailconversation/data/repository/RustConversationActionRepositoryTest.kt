@@ -39,14 +39,14 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AllListActions
-import uniffi.proton_mail_uniffi.ConversationAction
-import uniffi.proton_mail_uniffi.ConversationActionSheet
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.ListActions
-import uniffi.proton_mail_uniffi.MovableSystemFolder
-import uniffi.proton_mail_uniffi.MovableSystemFolderAction
-import uniffi.proton_mail_uniffi.MoveAction
+import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.ConversationAction
+import uniffi.mail_uniffi.ConversationActionSheet
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.ListActions
+import uniffi.mail_uniffi.MovableSystemFolder
+import uniffi.mail_uniffi.MovableSystemFolderAction
+import uniffi.mail_uniffi.MoveAction
 import kotlin.test.assertEquals
 
 internal class RustConversationActionRepositoryTest {

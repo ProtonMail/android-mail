@@ -5,10 +5,10 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import org.junit.Test
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.MovableSystemFolder
-import uniffi.proton_mail_uniffi.MovableSystemFolderAction
-import uniffi.proton_mail_uniffi.MoveAction
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.MovableSystemFolder
+import uniffi.mail_uniffi.MovableSystemFolderAction
+import uniffi.mail_uniffi.MoveAction
 import kotlin.test.assertEquals
 
 class ActionsMapperTest {

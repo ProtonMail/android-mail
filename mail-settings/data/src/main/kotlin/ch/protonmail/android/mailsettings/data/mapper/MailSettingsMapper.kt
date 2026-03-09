@@ -50,7 +50,7 @@ import me.proton.core.mailsettings.domain.entity.ToolbarAction
 import me.proton.core.mailsettings.domain.entity.ViewLayout
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MobileSetting
+import uniffi.mail_uniffi.MobileSetting
 
 object MailSettingsMapper {
 
@@ -111,14 +111,14 @@ object MailSettingsMapper {
     private fun LocalViewLayout.toViewLayout(): IntEnum<ViewLayout>? = ViewLayout.enumOf(this.value.toInt())
 
     private fun LocalSwipeAction.toSwipeAction(): IntEnum<SwipeAction>? = when (this) {
-        uniffi.proton_mail_uniffi.SwipeAction.TRASH -> IntEnum(SwipeAction.Trash.value, SwipeAction.Trash)
-        uniffi.proton_mail_uniffi.SwipeAction.SPAM -> IntEnum(SwipeAction.Spam.value, SwipeAction.Spam)
-        uniffi.proton_mail_uniffi.SwipeAction.STAR -> IntEnum(SwipeAction.Star.value, SwipeAction.Star)
-        uniffi.proton_mail_uniffi.SwipeAction.ARCHIVE -> IntEnum(SwipeAction.Archive.value, SwipeAction.Archive)
-        uniffi.proton_mail_uniffi.SwipeAction.MARK_AS_READ -> IntEnum(SwipeAction.MarkRead.value, SwipeAction.MarkRead)
-        uniffi.proton_mail_uniffi.SwipeAction.LABEL_AS -> IntEnum(SwipeAction.LabelAs.value, SwipeAction.LabelAs)
-        uniffi.proton_mail_uniffi.SwipeAction.MOVE_TO -> IntEnum(SwipeAction.MoveTo.value, SwipeAction.MoveTo)
-        uniffi.proton_mail_uniffi.SwipeAction.NO_ACTION -> IntEnum(SwipeAction.None.value, SwipeAction.None)
+        uniffi.mail_uniffi.SwipeAction.TRASH -> IntEnum(SwipeAction.Trash.value, SwipeAction.Trash)
+        uniffi.mail_uniffi.SwipeAction.SPAM -> IntEnum(SwipeAction.Spam.value, SwipeAction.Spam)
+        uniffi.mail_uniffi.SwipeAction.STAR -> IntEnum(SwipeAction.Star.value, SwipeAction.Star)
+        uniffi.mail_uniffi.SwipeAction.ARCHIVE -> IntEnum(SwipeAction.Archive.value, SwipeAction.Archive)
+        uniffi.mail_uniffi.SwipeAction.MARK_AS_READ -> IntEnum(SwipeAction.MarkRead.value, SwipeAction.MarkRead)
+        uniffi.mail_uniffi.SwipeAction.LABEL_AS -> IntEnum(SwipeAction.LabelAs.value, SwipeAction.LabelAs)
+        uniffi.mail_uniffi.SwipeAction.MOVE_TO -> IntEnum(SwipeAction.MoveTo.value, SwipeAction.MoveTo)
+        uniffi.mail_uniffi.SwipeAction.NO_ACTION -> IntEnum(SwipeAction.None.value, SwipeAction.None)
     }
 
     private fun LocalPgpScheme.toPackageType(): IntEnum<PackageType>? = PackageType.enumOf(this.value.toInt())
@@ -137,13 +137,13 @@ object MailSettingsMapper {
 
     private fun LocalMimeType.toMimeType(): StringEnum<MimeType>? {
         val mimeType = when (this) {
-            uniffi.proton_mail_uniffi.MimeType.TEXT_HTML -> MimeType.Html
-            uniffi.proton_mail_uniffi.MimeType.TEXT_PLAIN -> MimeType.PlainText
-            uniffi.proton_mail_uniffi.MimeType.MULTIPART_MIXED -> MimeType.Mixed
-            uniffi.proton_mail_uniffi.MimeType.APPLICATION_JSON,
-            uniffi.proton_mail_uniffi.MimeType.APPLICATION_PDF,
-            uniffi.proton_mail_uniffi.MimeType.MESSAGE_RFC822,
-            uniffi.proton_mail_uniffi.MimeType.MULTIPART_RELATED -> {
+            uniffi.mail_uniffi.MimeType.TEXT_HTML -> MimeType.Html
+            uniffi.mail_uniffi.MimeType.TEXT_PLAIN -> MimeType.PlainText
+            uniffi.mail_uniffi.MimeType.MULTIPART_MIXED -> MimeType.Mixed
+            uniffi.mail_uniffi.MimeType.APPLICATION_JSON,
+            uniffi.mail_uniffi.MimeType.APPLICATION_PDF,
+            uniffi.mail_uniffi.MimeType.MESSAGE_RFC822,
+            uniffi.mail_uniffi.MimeType.MULTIPART_RELATED -> {
                 Timber.w("rust-mail-settings: Mapping from unsupported Mime type $this. Fallback to text/plain")
                 MimeType.PlainText
             }

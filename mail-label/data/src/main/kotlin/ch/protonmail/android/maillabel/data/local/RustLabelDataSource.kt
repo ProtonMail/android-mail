@@ -41,11 +41,11 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.SidebarCustomFolder
-import uniffi.proton_mail_uniffi.SidebarCustomLabel
-import uniffi.proton_mail_uniffi.SidebarSystemLabel
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.SidebarCustomFolder
+import uniffi.mail_uniffi.SidebarCustomLabel
+import uniffi.mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.WatchHandle
 import javax.inject.Inject
 
 class RustLabelDataSource @Inject constructor(

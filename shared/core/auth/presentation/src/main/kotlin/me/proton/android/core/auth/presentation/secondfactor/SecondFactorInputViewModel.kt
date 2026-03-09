@@ -40,11 +40,11 @@ import me.proton.android.core.auth.presentation.secondfactor.SecondFactorInputSt
 import me.proton.android.core.auth.presentation.secondfactor.fido.GetFidoOptions
 import me.proton.core.auth.fido.domain.usecase.PerformTwoFaWithSecurityKey.LaunchResult
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_mail_uniffi.FidoLaunchResultStatus
-import uniffi.proton_mail_uniffi.LoginScreenId
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.recordFidoLaunchResult
-import uniffi.proton_mail_uniffi.recordLoginScreenView
+import uniffi.mail_uniffi.FidoLaunchResultStatus
+import uniffi.mail_uniffi.LoginScreenId
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.recordFidoLaunchResult
+import uniffi.mail_uniffi.recordLoginScreenView
 import javax.inject.Inject
 
 @HiltViewModel

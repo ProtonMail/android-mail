@@ -24,7 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.NextMessageOnMove
+import uniffi.mail_uniffi.NextMessageOnMove
 import javax.inject.Inject
 
 // Here we're not intentionally using the MailSettingsRepository

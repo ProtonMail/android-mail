@@ -45,8 +45,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.WatchHandle
 import kotlin.test.assertEquals
 
 internal class RustLabelDataSourceTest {

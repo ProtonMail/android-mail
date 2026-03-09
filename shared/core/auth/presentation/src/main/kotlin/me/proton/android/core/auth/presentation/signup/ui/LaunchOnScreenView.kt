@@ -23,7 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.savedstate.compose.LocalSavedStateRegistryOwner
 import me.proton.core.presentation.utils.launchOnScreenView
-import uniffi.proton_mail_uniffi.SignupScreenId
+import uniffi.mail_uniffi.SignupScreenId
 
 @Composable
 internal fun SignupScreenId.LaunchOnScreenView(onScreenView: (SignupScreenId) -> Unit) {

@@ -33,14 +33,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AvailableSnoozeActionsForConversationResult
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.SnoozeActions
-import uniffi.proton_mail_uniffi.SnoozeConversationsResult
-import uniffi.proton_mail_uniffi.UnsnoozeConversationsResult
-import uniffi.proton_mail_uniffi.availableSnoozeActionsForConversation
-import uniffi.proton_mail_uniffi.snoozeConversations
-import uniffi.proton_mail_uniffi.unsnoozeConversations
+import uniffi.mail_uniffi.AvailableSnoozeActionsForConversationResult
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.SnoozeActions
+import uniffi.mail_uniffi.SnoozeConversationsResult
+import uniffi.mail_uniffi.UnsnoozeConversationsResult
+import uniffi.mail_uniffi.availableSnoozeActionsForConversation
+import uniffi.mail_uniffi.snoozeConversations
+import uniffi.mail_uniffi.unsnoozeConversations
 import javax.inject.Inject
 import kotlin.time.Instant
 

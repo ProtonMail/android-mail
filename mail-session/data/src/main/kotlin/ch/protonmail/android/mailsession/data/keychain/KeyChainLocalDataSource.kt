@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsession.data.keychain
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import me.proton.core.crypto.common.keystore.EncryptedString
-import uniffi.proton_mail_uniffi.OsKeyChainEntryKind
+import uniffi.mail_uniffi.OsKeyChainEntryKind
 
 interface KeyChainLocalDataSource {
 

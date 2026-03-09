@@ -27,8 +27,8 @@ import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificatio
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
-import uniffi.proton_mail_uniffi.EncryptedPushNotification
-import uniffi.proton_mail_uniffi.MailUserSessionUserResult
+import uniffi.mail_uniffi.EncryptedPushNotification
+import uniffi.mail_uniffi.MailUserSessionUserResult
 import javax.inject.Inject
 
 internal class DecryptPushNotificationContent @Inject constructor(

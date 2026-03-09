@@ -25,8 +25,8 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.repository.ViewModeRepository
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.ViewMode.CONVERSATIONS
-import uniffi.proton_mail_uniffi.ViewMode.MESSAGES
+import uniffi.mail_uniffi.ViewMode.CONVERSATIONS
+import uniffi.mail_uniffi.ViewMode.MESSAGES
 import javax.inject.Inject
 
 class ViewModeRepositoryImpl @Inject constructor(

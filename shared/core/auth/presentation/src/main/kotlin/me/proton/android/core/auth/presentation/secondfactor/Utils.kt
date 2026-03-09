@@ -20,11 +20,11 @@ package me.proton.android.core.auth.presentation.secondfactor
 
 import me.proton.android.core.auth.presentation.LogTag
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAccountResult
-import uniffi.proton_mail_uniffi.MailSessionGetAccountSessionsResult
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredSession
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAccountResult
+import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredSession
 
 suspend fun MailSession.getSessionsForAccount(account: StoredAccount?): List<StoredSession>? {
     if (account == null) {

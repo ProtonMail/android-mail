@@ -32,7 +32,7 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.NextMessageOnMove
+import uniffi.mail_uniffi.NextMessageOnMove
 import kotlin.test.assertEquals
 
 internal class AutoAdvanceDataSourceImplTest {

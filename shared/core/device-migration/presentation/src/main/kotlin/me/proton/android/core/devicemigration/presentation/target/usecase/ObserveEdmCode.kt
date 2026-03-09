@@ -27,8 +27,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.timeout
 import me.proton.android.core.devicemigration.presentation.R
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowGenerateSignInQrCodeResult
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowGenerateSignInQrCodeResult
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes

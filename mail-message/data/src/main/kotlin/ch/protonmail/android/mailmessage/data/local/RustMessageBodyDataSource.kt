@@ -41,8 +41,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.ImagePolicy
-import uniffi.proton_mail_uniffi.TransformOpts
+import uniffi.mail_uniffi.ImagePolicy
+import uniffi.mail_uniffi.TransformOpts
 import javax.inject.Inject
 
 class RustMessageBodyDataSource @Inject constructor(

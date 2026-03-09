@@ -26,8 +26,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAppSettingsDiff
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
-import uniffi.proton_mail_uniffi.MailSessionChangeAppSettingsResult
-import uniffi.proton_mail_uniffi.MailSessionGetAppSettingsResult
+import uniffi.mail_uniffi.MailSessionChangeAppSettingsResult
+import uniffi.mail_uniffi.MailSessionGetAppSettingsResult
 import javax.inject.Inject
 
 class RustAppSettingsDataSource @Inject constructor() : AppSettingsDataSource {

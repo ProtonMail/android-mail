@@ -44,14 +44,14 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AvatarInformation
-import uniffi.proton_mail_uniffi.Disposition
-import uniffi.proton_mail_uniffi.InlineCustomLabel
-import uniffi.proton_mail_uniffi.LabelColor
-import uniffi.proton_mail_uniffi.MessageFlags
-import uniffi.proton_mail_uniffi.MessageRecipient
-import uniffi.proton_mail_uniffi.MessageSender
-import uniffi.proton_mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.Disposition
+import uniffi.mail_uniffi.InlineCustomLabel
+import uniffi.mail_uniffi.LabelColor
+import uniffi.mail_uniffi.MessageFlags
+import uniffi.mail_uniffi.MessageRecipient
+import uniffi.mail_uniffi.MessageSender
+import uniffi.mail_uniffi.SystemLabel
 
 class MessageMapperTest {
 

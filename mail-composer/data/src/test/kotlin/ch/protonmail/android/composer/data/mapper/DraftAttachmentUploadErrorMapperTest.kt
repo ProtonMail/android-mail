@@ -21,7 +21,7 @@ package ch.protonmail.android.composer.data.mapper
 import ch.protonmail.android.mailcomposer.domain.model.SendErrorReason
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import uniffi.proton_mail_uniffi.DraftAttachmentUploadErrorReason
+import uniffi.mail_uniffi.DraftAttachmentUploadErrorReason
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

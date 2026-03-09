@@ -34,17 +34,17 @@ import kotlinx.coroutines.withContext
 import me.proton.android.core.auth.presentation.IODispatcher
 import me.proton.android.core.auth.presentation.challenge.toUserBehavior
 import me.proton.core.challenge.domain.entity.ChallengeFrameDetails
-import uniffi.proton_account_uniffi.LoginError
-import uniffi.proton_account_uniffi.LoginFlowLoginResult
-import uniffi.proton_account_uniffi.LoginFlowUserIdResult
-import uniffi.proton_account_uniffi.PostLoginValidationError
-import uniffi.proton_mail_uniffi.LoginScreenId
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetSessionResult
-import uniffi.proton_mail_uniffi.MailSessionNewLoginFlowResult
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
-import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.recordLoginScreenView
+import uniffi.mail_account_uniffi.LoginError
+import uniffi.mail_account_uniffi.LoginFlowLoginResult
+import uniffi.mail_account_uniffi.LoginFlowUserIdResult
+import uniffi.mail_account_uniffi.PostLoginValidationError
+import uniffi.mail_uniffi.LoginScreenId
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetSessionResult
+import uniffi.mail_uniffi.MailSessionNewLoginFlowResult
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_uniffi.StoredSession
+import uniffi.mail_uniffi.recordLoginScreenView
 import javax.inject.Inject
 
 @HiltViewModel

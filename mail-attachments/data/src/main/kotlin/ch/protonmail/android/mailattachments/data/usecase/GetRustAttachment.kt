@@ -25,8 +25,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.DecryptedAttachment
-import uniffi.proton_mail_uniffi.MailUserSessionGetAttachmentResult
+import uniffi.mail_uniffi.DecryptedAttachment
+import uniffi.mail_uniffi.MailUserSessionGetAttachmentResult
 import javax.inject.Inject
 
 class GetRustAttachment @Inject constructor() {

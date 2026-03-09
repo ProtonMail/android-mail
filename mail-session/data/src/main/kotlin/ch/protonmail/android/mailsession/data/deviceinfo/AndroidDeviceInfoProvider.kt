@@ -31,8 +31,8 @@ import me.proton.core.util.android.device.deviceTimezone
 import me.proton.core.util.android.device.deviceTimezoneOffset
 import me.proton.core.util.android.device.isDeviceRooted
 import me.proton.core.util.android.device.nightMode
-import uniffi.proton_mail_uniffi.DeviceInfoProvider
-import uniffi.proton_mail_uniffi.DeviceInfo
+import uniffi.mail_uniffi.DeviceInfo
+import uniffi.mail_uniffi.DeviceInfoProvider
 import javax.inject.Inject
 
 @SuppressLint("HardwareIds")

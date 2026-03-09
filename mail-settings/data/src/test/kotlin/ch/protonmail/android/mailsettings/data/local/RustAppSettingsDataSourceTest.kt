@@ -27,17 +27,17 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AppAppearance
-import uniffi.proton_mail_uniffi.AppProtection
-import uniffi.proton_mail_uniffi.AutoLock
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAppSettingsResult
-import uniffi.proton_mail_uniffi.SessionReason
-import uniffi.proton_mail_uniffi.UserSessionError
+import uniffi.mail_uniffi.AppAppearance
+import uniffi.mail_uniffi.AppProtection
+import uniffi.mail_uniffi.AutoLock
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAppSettingsResult
+import uniffi.mail_uniffi.SessionReason
+import uniffi.mail_uniffi.UserSessionError
 
 class RustAppSettingsDataSourceTest {
 
-    private val mockAppSettings = uniffi.proton_mail_uniffi.AppSettings(
+    private val mockAppSettings = uniffi.mail_uniffi.AppSettings(
         AppAppearance.LIGHT_MODE,
         AppProtection.PIN,
         AutoLock.Always,

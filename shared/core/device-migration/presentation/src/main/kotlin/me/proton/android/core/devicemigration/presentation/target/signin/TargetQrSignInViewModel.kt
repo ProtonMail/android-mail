@@ -30,8 +30,8 @@ import me.proton.android.core.devicemigration.presentation.origin.qr.QrBitmapGen
 import me.proton.android.core.devicemigration.presentation.target.usecase.ObserveForkFromOriginDevice
 import me.proton.core.compose.effect.Effect
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_account_uniffi.QrLoginShowQrCodeScreenViewTotalScreenId
-import uniffi.proton_account_uniffi.qrLoginShowQrScreenTotal
+import uniffi.mail_account_uniffi.QrLoginShowQrCodeScreenViewTotalScreenId
+import uniffi.mail_account_uniffi.qrLoginShowQrScreenTotal
 import javax.inject.Inject
 
 @HiltViewModel

@@ -20,8 +20,8 @@ package ch.protonmail.android.mailpagination.data.scroller
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import uniffi.proton_mail_uniffi.MailScrollerError
-import uniffi.proton_mail_uniffi.ProtonError
+import uniffi.mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.ProtonError
 
 data class ScrollerItem(val id: String)
 

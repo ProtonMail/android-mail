@@ -18,8 +18,8 @@
 
 package me.proton.android.core.account.domain.model
 
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredAccountState
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredAccountState
 
 data class CoreAccount(
     val userId: CoreUserId,

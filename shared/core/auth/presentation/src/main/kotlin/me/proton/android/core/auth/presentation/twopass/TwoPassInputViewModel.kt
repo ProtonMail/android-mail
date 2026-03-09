@@ -41,19 +41,19 @@ import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.presentation.utils.InputValidationResult
 import me.proton.core.presentation.utils.ValidationType
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_account_uniffi.LoginError
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowSubmitMailboxPasswordResult
-import uniffi.proton_mail_uniffi.LoginScreenId
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAccountResult
-import uniffi.proton_mail_uniffi.MailSessionGetAccountSessionsResult
-import uniffi.proton_mail_uniffi.MailSessionResumeLoginFlowResult
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.recordLoginScreenView
+import uniffi.mail_account_uniffi.LoginError
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowSubmitMailboxPasswordResult
+import uniffi.mail_uniffi.LoginScreenId
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAccountResult
+import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
+import uniffi.mail_uniffi.MailSessionResumeLoginFlowResult
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredSession
+import uniffi.mail_uniffi.recordLoginScreenView
 import javax.inject.Inject
 
 @HiltViewModel

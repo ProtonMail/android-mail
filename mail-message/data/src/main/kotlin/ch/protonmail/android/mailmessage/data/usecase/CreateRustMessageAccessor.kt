@@ -30,10 +30,10 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.MessageResult
-import uniffi.proton_mail_uniffi.ResolveMessageIdResult
-import uniffi.proton_mail_uniffi.message
-import uniffi.proton_mail_uniffi.resolveMessageId
+import uniffi.mail_uniffi.MessageResult
+import uniffi.mail_uniffi.ResolveMessageIdResult
+import uniffi.mail_uniffi.message
+import uniffi.mail_uniffi.resolveMessageId
 import javax.inject.Inject
 
 class CreateRustMessageAccessor @Inject constructor() {

@@ -25,11 +25,11 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
+import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
@@ -37,12 +37,12 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.AllListActions
-import uniffi.proton_mail_uniffi.AllMessageActions
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.MessageActionSheet
-import uniffi.proton_mail_uniffi.MoveAction
-import uniffi.proton_mail_uniffi.ThemeOpts
+import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.AllMessageActions
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.MessageActionSheet
+import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.ThemeOpts
 
 @Suppress("ComplexInterface", "TooManyFunctions")
 interface RustMessageDataSource {

@@ -52,14 +52,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AllConversationActions
-import uniffi.proton_mail_uniffi.AllListActions
-import uniffi.proton_mail_uniffi.ConversationActionSheet
-import uniffi.proton_mail_uniffi.LabelAsAction
-import uniffi.proton_mail_uniffi.MoveAction
+import uniffi.mail_uniffi.AllConversationActions
+import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.ConversationActionSheet
+import uniffi.mail_uniffi.LabelAsAction
+import uniffi.mail_uniffi.MoveAction
 import javax.inject.Inject
-import uniffi.proton_mail_uniffi.starConversations as rustStarConversation
-import uniffi.proton_mail_uniffi.unstarConversations as rustUnstarConversation
+import uniffi.mail_uniffi.starConversations as rustStarConversation
+import uniffi.mail_uniffi.unstarConversations as rustUnstarConversation
 
 class RustConversationDataSourceImpl @Inject constructor(
     private val rustMailboxFactory: RustMailboxFactory,

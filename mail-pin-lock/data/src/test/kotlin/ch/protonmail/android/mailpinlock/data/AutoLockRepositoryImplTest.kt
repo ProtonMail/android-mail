@@ -59,10 +59,10 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AppAppearance
-import uniffi.proton_mail_uniffi.AppProtection
-import uniffi.proton_mail_uniffi.AutoLock
-import uniffi.proton_mail_uniffi.MailSession
+import uniffi.mail_uniffi.AppAppearance
+import uniffi.mail_uniffi.AppProtection
+import uniffi.mail_uniffi.AutoLock
+import uniffi.mail_uniffi.MailSession
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

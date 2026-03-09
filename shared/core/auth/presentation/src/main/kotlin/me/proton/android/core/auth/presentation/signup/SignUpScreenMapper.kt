@@ -20,7 +20,7 @@ package me.proton.android.core.auth.presentation.signup
 
 import me.proton.android.core.auth.presentation.LogTag
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_account_uniffi.SimpleSignupState
+import uniffi.mail_account_uniffi.SimpleSignupState
 
 fun SimpleSignupState.mapToNavigationRoute(): String {
     return when (this) {

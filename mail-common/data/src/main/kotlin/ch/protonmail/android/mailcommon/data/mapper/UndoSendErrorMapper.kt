@@ -19,10 +19,10 @@
 package ch.protonmail.android.mailcommon.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
-import uniffi.proton_mail_uniffi.DraftCancelScheduleSendError
-import uniffi.proton_mail_uniffi.DraftCancelScheduleSendErrorReason
-import uniffi.proton_mail_uniffi.DraftUndoSendError
-import uniffi.proton_mail_uniffi.DraftUndoSendErrorReason
+import uniffi.mail_uniffi.DraftCancelScheduleSendError
+import uniffi.mail_uniffi.DraftCancelScheduleSendErrorReason
+import uniffi.mail_uniffi.DraftUndoSendError
+import uniffi.mail_uniffi.DraftUndoSendErrorReason
 
 fun DraftUndoSendError.toUndoSendError(): UndoSendError = when (this) {
     is DraftUndoSendError.Other -> UndoSendError.Other(this.v1.toDataError())

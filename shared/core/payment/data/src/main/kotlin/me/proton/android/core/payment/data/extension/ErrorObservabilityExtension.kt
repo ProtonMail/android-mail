@@ -19,24 +19,24 @@
 package me.proton.android.core.payment.data.extension
 
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
-import uniffi.proton_mail_uniffi.OtherErrorReason
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.SessionReason
-import uniffi.proton_mail_uniffi.UserSessionError
-import uniffi.uniffi_common.UserApiServiceError
-import uniffi.uniffi_common.UserApiServiceError.BadGateway
-import uniffi.uniffi_common.UserApiServiceError.BadRequest
-import uniffi.uniffi_common.UserApiServiceError.Forbidden
-import uniffi.uniffi_common.UserApiServiceError.Internal
-import uniffi.uniffi_common.UserApiServiceError.InternalServerError
-import uniffi.uniffi_common.UserApiServiceError.NetworkFailure
-import uniffi.uniffi_common.UserApiServiceError.NotFound
-import uniffi.uniffi_common.UserApiServiceError.NotImplemented
-import uniffi.uniffi_common.UserApiServiceError.OtherHttpError
-import uniffi.uniffi_common.UserApiServiceError.ServiceUnavailable
-import uniffi.uniffi_common.UserApiServiceError.TooManyRequests
-import uniffi.uniffi_common.UserApiServiceError.Unauthorized
-import uniffi.uniffi_common.UserApiServiceError.UnprocessableEntity
+import uniffi.mail_uniffi.OtherErrorReason
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.SessionReason
+import uniffi.mail_uniffi.UserSessionError
+import uniffi.mail_uniffi_common.UserApiServiceError
+import uniffi.mail_uniffi_common.UserApiServiceError.BadGateway
+import uniffi.mail_uniffi_common.UserApiServiceError.BadRequest
+import uniffi.mail_uniffi_common.UserApiServiceError.Forbidden
+import uniffi.mail_uniffi_common.UserApiServiceError.Internal
+import uniffi.mail_uniffi_common.UserApiServiceError.InternalServerError
+import uniffi.mail_uniffi_common.UserApiServiceError.NetworkFailure
+import uniffi.mail_uniffi_common.UserApiServiceError.NotFound
+import uniffi.mail_uniffi_common.UserApiServiceError.NotImplemented
+import uniffi.mail_uniffi_common.UserApiServiceError.OtherHttpError
+import uniffi.mail_uniffi_common.UserApiServiceError.ServiceUnavailable
+import uniffi.mail_uniffi_common.UserApiServiceError.TooManyRequests
+import uniffi.mail_uniffi_common.UserApiServiceError.Unauthorized
+import uniffi.mail_uniffi_common.UserApiServiceError.UnprocessableEntity
 
 fun UserSessionError.toObservabilityValue(): PaymentObservabilityValue {
     return when (this) {

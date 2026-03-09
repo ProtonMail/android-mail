@@ -26,8 +26,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MailSessionIsFeatureEnabledResult
-import uniffi.proton_mail_uniffi.MailUserSessionIsFeatureEnabledResult
+import uniffi.mail_uniffi.MailSessionIsFeatureEnabledResult
+import uniffi.mail_uniffi.MailUserSessionIsFeatureEnabledResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -38,8 +38,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.DraftSendResultCallback
-import uniffi.proton_mail_uniffi.DraftSendResultWatcher
+import uniffi.mail_uniffi.DraftSendResultCallback
+import uniffi.mail_uniffi.DraftSendResultWatcher
 import javax.inject.Inject
 
 class RustSendingStatusDataSourceImpl @Inject constructor(

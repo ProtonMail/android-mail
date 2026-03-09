@@ -32,7 +32,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import uniffi.proton_mail_uniffi.MobileAction
+import uniffi.mail_uniffi.MobileAction
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -30,8 +30,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalShowMoved
 import ch.protonmail.android.mailcommon.data.mapper.LocalSwipeAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalViewLayout
 import ch.protonmail.android.mailcommon.data.mapper.LocalViewMode
-import uniffi.proton_mail_uniffi.AlmostAllMail
-import uniffi.proton_mail_uniffi.NextMessageOnMove
+import uniffi.mail_uniffi.AlmostAllMail
+import uniffi.mail_uniffi.NextMessageOnMove
 
 object LocalMailSettingsTestData {
 

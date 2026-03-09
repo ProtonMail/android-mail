@@ -48,9 +48,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AppAppearance
-import uniffi.proton_mail_uniffi.AppProtection
-import uniffi.proton_mail_uniffi.AutoLock
+import uniffi.mail_uniffi.AppAppearance
+import uniffi.mail_uniffi.AppProtection
+import uniffi.mail_uniffi.AutoLock
 
 internal class AppSettingsRepositoryTest {
 
@@ -63,7 +63,7 @@ internal class AppSettingsRepositoryTest {
 
     private lateinit var appSettingsRepository: AppSettingsRepository
 
-    private val mockAppSettings = uniffi.proton_mail_uniffi.AppSettings(
+    private val mockAppSettings = uniffi.mail_uniffi.AppSettings(
         AppAppearance.LIGHT_MODE,
         AppProtection.PIN,
         AutoLock.Always,

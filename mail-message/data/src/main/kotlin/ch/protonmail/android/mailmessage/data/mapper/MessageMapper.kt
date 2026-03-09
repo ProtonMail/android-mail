@@ -60,14 +60,14 @@ import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
 import ch.protonmail.android.mailsnooze.data.mapper.toSnoozeInformation
 import me.proton.core.user.domain.entity.AddressId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AttachmentMetadata
-import uniffi.proton_mail_uniffi.BodyOutput
-import uniffi.proton_mail_uniffi.DraftCancelScheduledSendInfo
-import uniffi.proton_mail_uniffi.MailTheme
-import uniffi.proton_mail_uniffi.MessageRecipient
-import uniffi.proton_mail_uniffi.MessageSender
-import uniffi.proton_mail_uniffi.ThemeOpts
-import uniffi.proton_mail_uniffi.TransformOpts
+import uniffi.mail_uniffi.AttachmentMetadata
+import uniffi.mail_uniffi.BodyOutput
+import uniffi.mail_uniffi.DraftCancelScheduledSendInfo
+import uniffi.mail_uniffi.MailTheme
+import uniffi.mail_uniffi.MessageRecipient
+import uniffi.mail_uniffi.MessageSender
+import uniffi.mail_uniffi.ThemeOpts
+import uniffi.mail_uniffi.TransformOpts
 import kotlin.time.Instant
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId as RustRemoteMessageId
 

@@ -19,13 +19,13 @@
 package ch.protonmail.android.composer.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
-import ch.protonmail.android.mailcomposer.domain.model.RecipientsExpirationSupport
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationError
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
-import uniffi.proton_mail_uniffi.DraftExpirationError
-import uniffi.proton_mail_uniffi.DraftExpirationErrorReason
-import uniffi.proton_mail_uniffi.DraftExpirationTime
-import uniffi.proton_mail_uniffi.DraftRecipientExpirationFeatureReport
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsExpirationSupport
+import uniffi.mail_uniffi.DraftExpirationError
+import uniffi.mail_uniffi.DraftExpirationErrorReason
+import uniffi.mail_uniffi.DraftExpirationTime
+import uniffi.mail_uniffi.DraftRecipientExpirationFeatureReport
 import kotlin.time.Instant
 
 fun MessageExpirationTime.toLocalExpirationTime() = when (this) {

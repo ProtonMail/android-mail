@@ -21,9 +21,9 @@ package ch.protonmail.android.mailpagination.data.mapper
 import ch.protonmail.android.mailcommon.data.mapper.LocalMailScrollerError
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
-import uniffi.proton_mail_uniffi.MailScrollerError
-import uniffi.proton_mail_uniffi.MailScrollerErrorReason
-import uniffi.proton_mail_uniffi.ProtonError
+import uniffi.mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.MailScrollerErrorReason
+import uniffi.mail_uniffi.ProtonError
 
 fun LocalMailScrollerError.toPaginationError(): PaginationError = when (this) {
     is MailScrollerError.Other -> when (this.v1) {

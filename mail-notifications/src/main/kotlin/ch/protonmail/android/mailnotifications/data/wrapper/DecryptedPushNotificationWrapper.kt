@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailnotifications.data.wrapper
 
-import uniffi.proton_mail_uniffi.DecryptedEmailPushNotification
-import uniffi.proton_mail_uniffi.DecryptedOpenUrlPushNotification
-import uniffi.proton_mail_uniffi.DecryptedPushNotification
+import uniffi.mail_uniffi.DecryptedEmailPushNotification
+import uniffi.mail_uniffi.DecryptedOpenUrlPushNotification
+import uniffi.mail_uniffi.DecryptedPushNotification
 
 internal sealed class DecryptedPushNotificationWrapper {
     data class Email(

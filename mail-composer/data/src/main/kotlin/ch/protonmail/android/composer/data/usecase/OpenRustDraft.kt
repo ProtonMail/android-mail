@@ -25,8 +25,8 @@ import ch.protonmail.android.composer.data.wrapper.DraftWrapper
 import ch.protonmail.android.composer.data.wrapper.DraftWrapperWithSyncStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.OpenDraftResult
-import uniffi.proton_mail_uniffi.openDraft
+import uniffi.mail_uniffi.OpenDraftResult
+import uniffi.mail_uniffi.openDraft
 import javax.inject.Inject
 
 class OpenRustDraft @Inject constructor() {

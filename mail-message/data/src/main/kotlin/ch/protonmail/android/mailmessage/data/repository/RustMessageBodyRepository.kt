@@ -30,7 +30,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.RawMessageData
 import ch.protonmail.android.mailmessage.domain.repository.MessageBodyRepository
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.ImagePolicy
+import uniffi.mail_uniffi.ImagePolicy
 import javax.inject.Inject
 
 class RustMessageBodyRepository @Inject constructor(

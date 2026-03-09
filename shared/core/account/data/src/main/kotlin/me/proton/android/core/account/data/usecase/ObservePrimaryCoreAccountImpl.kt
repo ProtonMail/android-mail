@@ -25,8 +25,8 @@ import me.proton.android.core.account.domain.model.CoreAccount
 import me.proton.android.core.account.domain.model.CoreAccountState
 import me.proton.android.core.account.domain.usecase.ObserveCoreAccounts
 import me.proton.android.core.account.domain.usecase.ObservePrimaryCoreAccount
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetPrimaryAccountResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetPrimaryAccountResult
 import javax.inject.Inject
 
 class ObservePrimaryCoreAccountImpl @Inject constructor(

@@ -19,11 +19,11 @@
 package me.proton.android.core.payment.data.extension
 
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
-import uniffi.proton_mail_uniffi.MailUserSessionGetPaymentsPlansResult
-import uniffi.proton_mail_uniffi.MailUserSessionGetPaymentsStatusResult
-import uniffi.proton_mail_uniffi.MailUserSessionGetPaymentsSubscriptionResult
-import uniffi.proton_mail_uniffi.MailUserSessionPostPaymentsSubscriptionResult
-import uniffi.proton_mail_uniffi.MailUserSessionPostPaymentsTokensResult
+import uniffi.mail_uniffi.MailUserSessionGetPaymentsPlansResult
+import uniffi.mail_uniffi.MailUserSessionGetPaymentsStatusResult
+import uniffi.mail_uniffi.MailUserSessionGetPaymentsSubscriptionResult
+import uniffi.mail_uniffi.MailUserSessionPostPaymentsSubscriptionResult
+import uniffi.mail_uniffi.MailUserSessionPostPaymentsTokensResult
 
 fun MailUserSessionPostPaymentsTokensResult.toObservabilityValue(): PaymentObservabilityValue {
     return when (this) {

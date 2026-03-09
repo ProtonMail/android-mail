@@ -24,8 +24,8 @@ import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.data.model.scroller.PendingRequest
 import ch.protonmail.android.mailpagination.data.model.scroller.RequestType
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MailScrollerError
-import uniffi.proton_mail_uniffi.MailScrollerErrorReason
+import uniffi.mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.MailScrollerErrorReason
 
 class ScrollerOnUpdateHandler<T>(
     private val tag: String,

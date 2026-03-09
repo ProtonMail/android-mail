@@ -35,6 +35,11 @@ import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.accountrecovery.presentation.LogTag
 import me.proton.android.core.accountrecovery.presentation.R
 import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery
+import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Cancelled
+import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Expired
+import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Grace
+import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Insecure
+import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.None
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryDialogAction.CancelPasswordRequest
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryDialogAction.HideCancellationForm
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryDialogAction.Init
@@ -46,14 +51,9 @@ import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryNav
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryNavigationAction.StartPasswordManager
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Closed
-import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Opened
-import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Loading
 import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Error
-import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Grace
-import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.None
-import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Insecure
-import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Expired
-import me.proton.android.core.accountrecovery.presentation.entity.UserRecovery.State.Cancelled
+import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Loading
+import me.proton.android.core.accountrecovery.presentation.ui.AccountRecoveryViewState.Opened
 import me.proton.android.core.accountrecovery.presentation.ui.Arg
 import me.proton.android.core.accountrecovery.presentation.usecase.CancelRecovery
 import me.proton.android.core.accountrecovery.presentation.usecase.ObserveUserRecovery
@@ -61,8 +61,8 @@ import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.presentation.utils.StringBox
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_mail_uniffi.AccountRecoveryScreenId
-import uniffi.proton_mail_uniffi.recordAccountRecoveryScreenView
+import uniffi.mail_uniffi.AccountRecoveryScreenId
+import uniffi.mail_uniffi.recordAccountRecoveryScreenView
 import javax.inject.Inject
 
 @SuppressWarnings("TooGenericExceptionCaught")

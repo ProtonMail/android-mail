@@ -19,11 +19,11 @@
 package me.proton.android.core.auth.presentation.secondfactor.fido
 
 import me.proton.core.auth.fido.domain.entity.SecondFactorProof
-import uniffi.proton_account_uniffi.Fido2AuthenticationExtensionsClientInputsFfi
-import uniffi.proton_account_uniffi.Fido2AuthenticationOptionsFfi
-import uniffi.proton_account_uniffi.Fido2PublicKeyCredentialDescriptorFfi
-import uniffi.proton_account_uniffi.Fido2PublicKeyCredentialRequestOptionsFfi
-import uniffi.proton_account_uniffi.Fido2RequestFfi
+import uniffi.mail_account_uniffi.Fido2AuthenticationExtensionsClientInputsFfi
+import uniffi.mail_account_uniffi.Fido2AuthenticationOptionsFfi
+import uniffi.mail_account_uniffi.Fido2PublicKeyCredentialDescriptorFfi
+import uniffi.mail_account_uniffi.Fido2PublicKeyCredentialRequestOptionsFfi
+import uniffi.mail_account_uniffi.Fido2RequestFfi
 
 fun SecondFactorProof.Fido2.toFido2Data(): Fido2RequestFfi {
     val authenticationOptions = createAuthenticationOptions()

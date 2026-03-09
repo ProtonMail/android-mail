@@ -22,10 +22,10 @@ import me.proton.android.core.payment.data.model.toExternal
 import me.proton.android.core.payment.domain.PaymentMetricsTracker
 import me.proton.android.core.payment.domain.model.PaymentObservabilityMetric
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
-import uniffi.proton_mail_uniffi.PaymentObservabilityMetric as MetricRust
-import uniffi.proton_mail_uniffi.sendPaymentObservabilityMetric
+import uniffi.mail_uniffi.sendPaymentObservabilityMetric
 import javax.inject.Inject
 import javax.inject.Singleton
+import uniffi.mail_uniffi.PaymentObservabilityMetric as MetricRust
 
 @Singleton
 class PaymentMetricsTrackerRust @Inject constructor() : PaymentMetricsTracker {

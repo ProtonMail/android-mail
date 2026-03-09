@@ -19,8 +19,8 @@
 package ch.protonmail.android.composer.data.wrapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
-import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
-import uniffi.proton_mail_uniffi.AttachmentList
+import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.AttachmentList
 
 class AttachmentsWrapper(private val rustAttachmentList: AttachmentList) {
 

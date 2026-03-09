@@ -39,8 +39,8 @@ import me.proton.core.presentation.utils.doOnApplyWindowInsets
 import me.proton.core.presentation.utils.launchOnScreenView
 import me.proton.core.presentation.utils.onClick
 import me.proton.core.presentation.utils.viewBinding
-import uniffi.proton_account_uniffi.QrLoginScanScreenViewTotalScreenId
-import uniffi.proton_account_uniffi.qrLoginScanScreenTotal
+import uniffi.mail_account_uniffi.QrLoginScanScreenViewTotalScreenId
+import uniffi.mail_account_uniffi.qrLoginScanScreenTotal
 import kotlin.math.min
 import kotlin.math.roundToInt
 

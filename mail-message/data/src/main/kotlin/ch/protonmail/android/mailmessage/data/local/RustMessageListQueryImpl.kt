@@ -52,11 +52,11 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.MessageScrollerListUpdate
-import uniffi.proton_mail_uniffi.MessageScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.MessageScrollerStatusUpdate
-import uniffi.proton_mail_uniffi.MessageScrollerUpdate
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.MessageScrollerListUpdate
+import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
+import uniffi.mail_uniffi.MessageScrollerStatusUpdate
+import uniffi.mail_uniffi.MessageScrollerUpdate
 import javax.inject.Inject
 
 class RustMessageListQueryImpl @Inject constructor(

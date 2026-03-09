@@ -20,7 +20,7 @@ package ch.protonmail.android.mailsettings.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalMobileAction
 import ch.protonmail.android.mailcommon.domain.model.Action
-import uniffi.proton_mail_uniffi.MobileAction
+import uniffi.mail_uniffi.MobileAction
 
 fun LocalMobileAction.toAction() = when (this) {
     MobileAction.ARCHIVE -> Action.Archive

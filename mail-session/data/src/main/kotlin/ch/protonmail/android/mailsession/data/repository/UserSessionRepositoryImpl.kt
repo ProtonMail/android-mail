@@ -52,7 +52,7 @@ import me.proton.android.core.account.domain.usecase.ObserveStoredAccounts
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.MailUserSessionUserSettingsResult
+import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

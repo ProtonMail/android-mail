@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeGroup
 import ch.protonmail.android.mailcontact.domain.model.ContactMetadata
-import uniffi.proton_mail_uniffi.ContactGroupItem
+import uniffi.mail_uniffi.ContactGroupItem
 import javax.inject.Inject
 
 class ContactGroupItemMapper @Inject constructor() {

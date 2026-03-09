@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsession.domain.model
 
-import uniffi.proton_mail_uniffi.ApiEnvId
+import uniffi.mail_uniffi.ApiEnvId
 
 interface RustApiConfig {
 

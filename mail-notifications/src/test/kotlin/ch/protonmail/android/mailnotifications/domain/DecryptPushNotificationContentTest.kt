@@ -34,9 +34,9 @@ import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Test
-import uniffi.proton_mail_uniffi.EncryptedPushNotification
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionUserResult
+import uniffi.mail_uniffi.EncryptedPushNotification
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionUserResult
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals

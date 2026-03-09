@@ -20,7 +20,7 @@ package ch.protonmail.android.mailbugreport.data.mapper
 
 import ch.protonmail.android.mailbugreport.domain.model.IssueReport
 import ch.protonmail.android.mailcommon.data.mapper.LocalIssueReport
-import uniffi.proton_mail_uniffi.ClientType
+import uniffi.mail_uniffi.ClientType
 
 internal fun IssueReport.toLocalIssueReport() = LocalIssueReport(
     operatingSystem = operatingSystem.value,

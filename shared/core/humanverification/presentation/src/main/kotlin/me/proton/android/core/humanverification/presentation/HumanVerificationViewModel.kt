@@ -32,17 +32,17 @@ import me.proton.android.core.humanverification.domain.ChallengeNotifierCallback
 import me.proton.android.core.humanverification.presentation.HV3ResponseMessage.MessageType
 import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_mail_uniffi.ApiConfig
-import uniffi.proton_mail_uniffi.AppDetails
-import uniffi.proton_mail_uniffi.ChallengeLoader
-import uniffi.proton_mail_uniffi.HumanVerificationScreenId
-import uniffi.proton_mail_uniffi.HumanVerificationStatus
-import uniffi.proton_mail_uniffi.HumanVerificationViewLoadingStatus
-import uniffi.proton_mail_uniffi.NewChallengeLoaderResult
-import uniffi.proton_mail_uniffi.newChallengeLoader
-import uniffi.proton_mail_uniffi.recordHumanVerificationResult
-import uniffi.proton_mail_uniffi.recordHumanVerificationScreenView
-import uniffi.proton_mail_uniffi.recordHumanVerificationViewLoadingResult
+import uniffi.mail_uniffi.ApiConfig
+import uniffi.mail_uniffi.AppDetails
+import uniffi.mail_uniffi.ChallengeLoader
+import uniffi.mail_uniffi.HumanVerificationScreenId
+import uniffi.mail_uniffi.HumanVerificationStatus
+import uniffi.mail_uniffi.HumanVerificationViewLoadingStatus
+import uniffi.mail_uniffi.NewChallengeLoaderResult
+import uniffi.mail_uniffi.newChallengeLoader
+import uniffi.mail_uniffi.recordHumanVerificationResult
+import uniffi.mail_uniffi.recordHumanVerificationScreenView
+import uniffi.mail_uniffi.recordHumanVerificationViewLoadingResult
 import javax.inject.Inject
 
 @HiltViewModel

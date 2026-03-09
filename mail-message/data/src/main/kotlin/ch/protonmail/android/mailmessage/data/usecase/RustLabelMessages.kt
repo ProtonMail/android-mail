@@ -26,9 +26,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.LabelAsOutput
-import uniffi.proton_mail_uniffi.LabelMessagesAsResult
-import uniffi.proton_mail_uniffi.labelMessagesAs
+import uniffi.mail_uniffi.LabelAsOutput
+import uniffi.mail_uniffi.LabelMessagesAsResult
+import uniffi.mail_uniffi.labelMessagesAs
 import javax.inject.Inject
 
 class RustLabelMessages @Inject constructor() {

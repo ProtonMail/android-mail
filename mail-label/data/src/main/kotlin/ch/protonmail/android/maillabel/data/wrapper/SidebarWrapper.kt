@@ -23,16 +23,16 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.Sidebar
-import uniffi.proton_mail_uniffi.SidebarAllCustomFoldersResult
-import uniffi.proton_mail_uniffi.SidebarCustomFolder
-import uniffi.proton_mail_uniffi.SidebarCustomLabel
-import uniffi.proton_mail_uniffi.SidebarCustomLabelsResult
-import uniffi.proton_mail_uniffi.SidebarSystemLabel
-import uniffi.proton_mail_uniffi.SidebarSystemLabelsResult
-import uniffi.proton_mail_uniffi.SidebarWatchLabelsResult
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.Sidebar
+import uniffi.mail_uniffi.SidebarAllCustomFoldersResult
+import uniffi.mail_uniffi.SidebarCustomFolder
+import uniffi.mail_uniffi.SidebarCustomLabel
+import uniffi.mail_uniffi.SidebarCustomLabelsResult
+import uniffi.mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.SidebarSystemLabelsResult
+import uniffi.mail_uniffi.SidebarWatchLabelsResult
+import uniffi.mail_uniffi.WatchHandle
 
 class SidebarWrapper(private val sidebar: Sidebar) {
 

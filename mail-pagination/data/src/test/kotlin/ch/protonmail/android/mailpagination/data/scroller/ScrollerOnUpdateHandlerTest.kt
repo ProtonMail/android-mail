@@ -27,9 +27,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import uniffi.proton_mail_uniffi.MailScrollerError
-import uniffi.proton_mail_uniffi.MailScrollerErrorReason
-import uniffi.proton_mail_uniffi.ProtonError
+import uniffi.mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.MailScrollerErrorReason
+import uniffi.mail_uniffi.ProtonError
 
 class ScrollerOnUpdateHandlerTest {
 

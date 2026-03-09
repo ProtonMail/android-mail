@@ -41,7 +41,7 @@ import ch.protonmail.android.mailmessage.data.mapper.toParticipant
 import ch.protonmail.android.mailmessage.data.model.LocalConversationMessages
 import ch.protonmail.android.mailmessage.domain.model.ConversationMessages
 import ch.protonmail.android.mailsnooze.data.mapper.toSnoozeInformation
-import uniffi.proton_mail_uniffi.OpenConversationOrigin
+import uniffi.mail_uniffi.OpenConversationOrigin
 
 fun LocalConversation.toConversation() = Conversation(
     conversationId = this.id.toConversationId(),

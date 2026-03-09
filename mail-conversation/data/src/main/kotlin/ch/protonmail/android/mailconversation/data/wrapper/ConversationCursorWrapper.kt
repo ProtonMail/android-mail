@@ -22,10 +22,10 @@ import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailmessage.data.mapper.toConversationCursorError
 import ch.protonmail.android.mailmessage.data.mapper.toConversationId
-import uniffi.proton_mail_uniffi.Conversation
-import uniffi.proton_mail_uniffi.MailConversationCursor
-import uniffi.proton_mail_uniffi.MailConversationCursorFetchNextResult
-import uniffi.proton_mail_uniffi.NextMailCursorConversation
+import uniffi.mail_uniffi.Conversation
+import uniffi.mail_uniffi.MailConversationCursor
+import uniffi.mail_uniffi.MailConversationCursorFetchNextResult
+import uniffi.mail_uniffi.NextMailCursorConversation
 
 class ConversationCursorWrapper(private val cursor: MailConversationCursor) : ConversationCursor {
 

@@ -14,7 +14,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
-import uniffi.proton_mail_uniffi.ContactGroupItem
+import uniffi.mail_uniffi.ContactGroupItem
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

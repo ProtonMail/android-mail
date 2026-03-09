@@ -28,14 +28,14 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.mapper.toAttachmentDataError
 import ch.protonmail.android.mailmessage.domain.model.AttachmentDataError
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AttachmentDataResult
-import uniffi.proton_mail_uniffi.AttachmentMetadata
-import uniffi.proton_mail_uniffi.BodyOutput
-import uniffi.proton_mail_uniffi.BodyOutputResult
-import uniffi.proton_mail_uniffi.DecryptedMessage
-import uniffi.proton_mail_uniffi.ImagePolicy
-import uniffi.proton_mail_uniffi.TransformOpts
-import uniffi.proton_mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.AttachmentDataResult
+import uniffi.mail_uniffi.AttachmentMetadata
+import uniffi.mail_uniffi.BodyOutput
+import uniffi.mail_uniffi.BodyOutputResult
+import uniffi.mail_uniffi.DecryptedMessage
+import uniffi.mail_uniffi.ImagePolicy
+import uniffi.mail_uniffi.TransformOpts
+import uniffi.mail_uniffi.VoidActionResult
 
 class DecryptedMessageWrapper(private val decryptedMessage: DecryptedMessage) {
 

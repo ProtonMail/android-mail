@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.Action
-import uniffi.proton_mail_uniffi.MovableSystemFolder
+import uniffi.mail_uniffi.MovableSystemFolder
 
 fun MovableSystemFolder.toAction() = when (this) {
     MovableSystemFolder.TRASH -> Action.Trash

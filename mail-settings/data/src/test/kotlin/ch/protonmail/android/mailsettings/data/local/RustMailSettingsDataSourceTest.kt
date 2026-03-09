@@ -16,10 +16,10 @@ import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.NoHandle
-import uniffi.proton_mail_uniffi.SettingsWatcher
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.NoHandle
+import uniffi.mail_uniffi.SettingsWatcher
+import uniffi.mail_uniffi.WatchHandle
 import kotlin.test.assertEquals
 
 class RustMailSettingsDataSourceTest {

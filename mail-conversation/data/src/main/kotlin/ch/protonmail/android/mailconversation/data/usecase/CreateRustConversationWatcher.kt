@@ -25,11 +25,11 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailconversation.data.mapper.toConversationError
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.OpenConversationOrigin
-import uniffi.proton_mail_uniffi.WatchConversationResult
-import uniffi.proton_mail_uniffi.WatchedConversation
-import uniffi.proton_mail_uniffi.watchConversation
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.OpenConversationOrigin
+import uniffi.mail_uniffi.WatchConversationResult
+import uniffi.mail_uniffi.WatchedConversation
+import uniffi.mail_uniffi.watchConversation
 import javax.inject.Inject
 
 class CreateRustConversationWatcher @Inject constructor() {

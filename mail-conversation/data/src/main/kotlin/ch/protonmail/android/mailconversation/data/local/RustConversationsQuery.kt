@@ -26,7 +26,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.ConversationScrollerStatusUpdate
+import uniffi.mail_uniffi.ConversationScrollerStatusUpdate
 
 interface RustConversationsQuery {
 

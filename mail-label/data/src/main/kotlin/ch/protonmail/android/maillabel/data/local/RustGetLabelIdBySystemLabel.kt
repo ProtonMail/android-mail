@@ -25,8 +25,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.ResolveSystemLabelIdResult
-import uniffi.proton_mail_uniffi.resolveSystemLabelId
+import uniffi.mail_uniffi.ResolveSystemLabelIdResult
+import uniffi.mail_uniffi.resolveSystemLabelId
 import javax.inject.Inject
 
 class RustGetLabelIdBySystemLabel @Inject constructor() {

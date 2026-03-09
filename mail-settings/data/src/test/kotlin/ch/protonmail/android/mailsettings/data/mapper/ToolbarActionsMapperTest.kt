@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.Action
-import uniffi.proton_mail_uniffi.MobileAction
+import uniffi.mail_uniffi.MobileAction
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

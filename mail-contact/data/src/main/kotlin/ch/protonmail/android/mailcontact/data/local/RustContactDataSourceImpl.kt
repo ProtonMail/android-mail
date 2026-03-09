@@ -51,9 +51,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.ContactsLiveQueryCallback
-import uniffi.proton_mail_uniffi.VoidActionResult
-import uniffi.proton_mail_uniffi.WatchedContactList
+import uniffi.mail_uniffi.ContactsLiveQueryCallback
+import uniffi.mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.WatchedContactList
 import javax.inject.Inject
 import javax.inject.Singleton
 

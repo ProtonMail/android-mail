@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.data.usecase
 
 import ch.protonmail.android.maillabel.data.wrapper.SidebarWrapper
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.Sidebar
+import uniffi.mail_uniffi.Sidebar
 import javax.inject.Inject
 
 class CreateRustSidebar @Inject constructor() {

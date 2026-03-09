@@ -25,9 +25,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalContactId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.ContactDetailCard
-import uniffi.proton_mail_uniffi.GetContactDetailsResult
-import uniffi.proton_mail_uniffi.getContactDetails
+import uniffi.mail_uniffi.ContactDetailCard
+import uniffi.mail_uniffi.GetContactDetailsResult
+import uniffi.mail_uniffi.getContactDetails
 import javax.inject.Inject
 
 class RustGetContactDetails @Inject constructor() {

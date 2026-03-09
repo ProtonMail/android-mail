@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailnotifications.data.wrapper
 
 import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationActionType
-import uniffi.proton_mail_uniffi.DecryptedEmailPushNotificationAction
+import uniffi.mail_uniffi.DecryptedEmailPushNotificationAction
 
 internal data class NotificationActionWrapper(private val pushAction: DecryptedEmailPushNotificationAction?) {
 

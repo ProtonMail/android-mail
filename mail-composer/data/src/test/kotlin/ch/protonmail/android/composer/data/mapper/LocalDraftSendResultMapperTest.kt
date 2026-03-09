@@ -22,9 +22,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalDraftSendResult
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import org.junit.Test
-import uniffi.proton_mail_uniffi.DraftSendResultOrigin
-import uniffi.proton_mail_uniffi.DraftSendStatus
-import uniffi.proton_mail_uniffi.Id
+import uniffi.mail_uniffi.DraftSendResultOrigin
+import uniffi.mail_uniffi.DraftSendStatus
+import uniffi.mail_uniffi.Id
 import kotlin.test.assertEquals
 import kotlin.time.DurationUnit
 import kotlin.time.Instant

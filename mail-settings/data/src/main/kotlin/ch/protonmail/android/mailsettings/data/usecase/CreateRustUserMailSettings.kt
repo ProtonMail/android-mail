@@ -24,10 +24,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.SettingsWatcher
-import uniffi.proton_mail_uniffi.WatchMailSettingsResult
-import uniffi.proton_mail_uniffi.watchMailSettings
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.SettingsWatcher
+import uniffi.mail_uniffi.WatchMailSettingsResult
+import uniffi.mail_uniffi.watchMailSettings
 import javax.inject.Inject
 
 class CreateRustUserMailSettings @Inject constructor() {

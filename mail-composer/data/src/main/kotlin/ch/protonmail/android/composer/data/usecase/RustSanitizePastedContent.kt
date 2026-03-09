@@ -20,8 +20,8 @@ package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.mailcomposer.domain.model.PasteMimeType
 import ch.protonmail.android.mailcomposer.domain.usecase.SanitizePastedContent
-import uniffi.proton_mail_uniffi.MessageMimeType
-import uniffi.proton_mail_uniffi.sanitizePastedContent
+import uniffi.mail_uniffi.MessageMimeType
+import uniffi.mail_uniffi.sanitizePastedContent
 import javax.inject.Inject
 
 class RustSanitizePastedContent @Inject constructor() : SanitizePastedContent {

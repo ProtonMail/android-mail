@@ -25,8 +25,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.IsMessageSenderBlockedResult
-import uniffi.proton_mail_uniffi.isMessageSenderBlocked
+import uniffi.mail_uniffi.IsMessageSenderBlockedResult
+import uniffi.mail_uniffi.isMessageSenderBlocked
 import javax.inject.Inject
 
 class RustIsMessageSenderBlocked @Inject constructor() {

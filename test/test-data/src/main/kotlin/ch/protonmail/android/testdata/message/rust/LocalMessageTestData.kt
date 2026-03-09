@@ -24,12 +24,12 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
-import uniffi.proton_mail_uniffi.AvatarInformation
-import uniffi.proton_mail_uniffi.InlineCustomLabel
-import uniffi.proton_mail_uniffi.LabelColor
-import uniffi.proton_mail_uniffi.MessageFlags
-import uniffi.proton_mail_uniffi.MessageRecipient
-import uniffi.proton_mail_uniffi.MessageSender
+import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.InlineCustomLabel
+import uniffi.mail_uniffi.LabelColor
+import uniffi.mail_uniffi.MessageFlags
+import uniffi.mail_uniffi.MessageRecipient
+import uniffi.mail_uniffi.MessageSender
 
 object LocalMessageTestData {
     const val RAW_SUBJECT = "Subject"

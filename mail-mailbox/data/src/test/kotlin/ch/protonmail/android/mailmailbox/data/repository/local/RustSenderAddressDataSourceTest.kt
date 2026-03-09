@@ -33,12 +33,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import uniffi.proton_mail_uniffi.AsyncLiveQueryCallback
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionHasValidSenderAddressResult
-import uniffi.proton_mail_uniffi.MailUserSessionWatchAddressesResult
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.WatchHandle
+import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionHasValidSenderAddressResult
+import uniffi.mail_uniffi.MailUserSessionWatchAddressesResult
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.WatchHandle
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

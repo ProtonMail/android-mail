@@ -20,8 +20,8 @@ package me.proton.android.core.devicemigration.presentation.origin.usecase
 
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.repository.getPrimarySession
-import uniffi.proton_account_uniffi.ProcessTargetDeviceQrError
-import uniffi.proton_mail_uniffi.MailUserSessionProcessTargetDeviceQrCodeResult
+import uniffi.mail_account_uniffi.ProcessTargetDeviceQrError
+import uniffi.mail_uniffi.MailUserSessionProcessTargetDeviceQrCodeResult
 import javax.inject.Inject
 
 internal class ForkSessionIntoTargetDevice @Inject constructor(

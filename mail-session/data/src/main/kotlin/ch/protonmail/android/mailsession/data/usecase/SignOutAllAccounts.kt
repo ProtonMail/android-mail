@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsession.data.usecase
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
-import uniffi.proton_mail_uniffi.MailSessionSignOutAllResult
+import uniffi.mail_uniffi.MailSessionSignOutAllResult
 import javax.inject.Inject
 
 class SignOutAllAccounts @Inject constructor(

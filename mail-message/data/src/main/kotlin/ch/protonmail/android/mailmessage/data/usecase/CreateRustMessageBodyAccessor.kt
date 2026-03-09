@@ -24,13 +24,13 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.data.wrapper.DecryptedMessageWrapper
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.mailmessage.data.wrapper.DecryptedMessageWrapper
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.GetMessageBodyResult
-import uniffi.proton_mail_uniffi.getMessageBody
+import uniffi.mail_uniffi.GetMessageBodyResult
+import uniffi.mail_uniffi.getMessageBody
 import javax.inject.Inject
 
 class CreateRustMessageBodyAccessor @Inject constructor() {

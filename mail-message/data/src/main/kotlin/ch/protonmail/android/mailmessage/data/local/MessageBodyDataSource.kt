@@ -28,7 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyTransformations
 import ch.protonmail.android.mailmessage.domain.model.RawMessageData
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.ImagePolicy
+import uniffi.mail_uniffi.ImagePolicy
 
 interface MessageBodyDataSource {
 

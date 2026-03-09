@@ -36,8 +36,8 @@ import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.displayName
 import me.proton.core.util.kotlin.coroutine.flowWithResultContext
-import uniffi.proton_account_uniffi.QrLoginScanScreenViewTotalScreenId
-import uniffi.proton_account_uniffi.qrLoginScanScreenTotal
+import uniffi.mail_account_uniffi.QrLoginScanScreenViewTotalScreenId
+import uniffi.mail_account_uniffi.qrLoginScanScreenTotal
 import javax.inject.Inject
 
 @HiltViewModel

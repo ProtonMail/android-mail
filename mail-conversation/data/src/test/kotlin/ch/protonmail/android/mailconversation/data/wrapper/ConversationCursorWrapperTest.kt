@@ -26,11 +26,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
-import uniffi.proton_mail_uniffi.Conversation
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.MailConversationCursor
-import uniffi.proton_mail_uniffi.MailConversationCursorFetchNextResult
-import uniffi.proton_mail_uniffi.NextMailCursorConversation
+import uniffi.mail_uniffi.Conversation
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.MailConversationCursor
+import uniffi.mail_uniffi.MailConversationCursorFetchNextResult
+import uniffi.mail_uniffi.NextMailCursorConversation
 
 internal class ConversationCursorWrapperTest {
 

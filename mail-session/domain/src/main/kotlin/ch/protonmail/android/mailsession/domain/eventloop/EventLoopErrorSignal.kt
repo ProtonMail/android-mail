@@ -22,7 +22,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import uniffi.proton_mail_uniffi.EventError
+import uniffi.mail_uniffi.EventError
 import javax.inject.Inject
 import javax.inject.Singleton
 

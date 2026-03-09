@@ -27,12 +27,12 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderAddresses
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailpadlocks.data.mapper.toPrivacyLock
 import ch.protonmail.android.mailpadlocks.domain.PrivacyLock
-import uniffi.proton_mail_uniffi.ComposerRecipient
-import uniffi.proton_mail_uniffi.ComposerRecipientSingle
-import uniffi.proton_mail_uniffi.ComposerRecipientValidState
-import uniffi.proton_mail_uniffi.DraftSenderAddressList
-import uniffi.proton_mail_uniffi.RecipientInvalidReason
-import uniffi.proton_mail_uniffi.SingleRecipientEntry
+import uniffi.mail_uniffi.ComposerRecipient
+import uniffi.mail_uniffi.ComposerRecipientSingle
+import uniffi.mail_uniffi.ComposerRecipientValidState
+import uniffi.mail_uniffi.DraftSenderAddressList
+import uniffi.mail_uniffi.RecipientInvalidReason
+import uniffi.mail_uniffi.SingleRecipientEntry
 
 fun DraftSenderAddressList.toLocalSenderAddresses() = LocalSenderAddresses(this.available, this.active)
 fun LocalSenderAddresses.toSenderAddresses() = SenderAddresses(

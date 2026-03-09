@@ -23,8 +23,8 @@ import io.sentry.SentryEvent
 import io.sentry.SentryLevel
 import io.sentry.protocol.Message
 import io.sentry.protocol.User
-import uniffi.proton_issue_reporter_service_uniffi.IssueLevel
-import uniffi.proton_issue_reporter_service_uniffi.IssueReporter
+import uniffi.mail_issue_reporter_service_uniffi.IssueLevel
+import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
 import javax.inject.Inject
 
 class SentryIssueReporter @Inject constructor() : IssueReporter {

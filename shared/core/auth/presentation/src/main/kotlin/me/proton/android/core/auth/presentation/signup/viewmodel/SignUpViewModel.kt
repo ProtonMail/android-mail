@@ -54,21 +54,21 @@ import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.presentation.savedstate.state
 import me.proton.core.util.kotlin.CoreLogger
 import me.proton.core.util.kotlin.CoroutineScopeProvider
-import uniffi.proton_account_uniffi.PasswordValidatorService
-import uniffi.proton_account_uniffi.PostLoginValidationError
-import uniffi.proton_account_uniffi.SignupException
-import uniffi.proton_account_uniffi.SignupFlow
-import uniffi.proton_account_uniffi.SignupFlowCompleteResult
-import uniffi.proton_account_uniffi.SignupFlowCreateResult
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAccountResult
-import uniffi.proton_mail_uniffi.MailSessionGetAccountSessionsResult
-import uniffi.proton_mail_uniffi.MailSessionNewSignupFlowResult
-import uniffi.proton_mail_uniffi.ProtonError
-import uniffi.proton_mail_uniffi.SignupScreenId
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.recordSignupScreenView
+import uniffi.mail_account_uniffi.PasswordValidatorService
+import uniffi.mail_account_uniffi.PostLoginValidationError
+import uniffi.mail_account_uniffi.SignupException
+import uniffi.mail_account_uniffi.SignupFlow
+import uniffi.mail_account_uniffi.SignupFlowCompleteResult
+import uniffi.mail_account_uniffi.SignupFlowCreateResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAccountResult
+import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
+import uniffi.mail_uniffi.MailSessionNewSignupFlowResult
+import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.SignupScreenId
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredSession
+import uniffi.mail_uniffi.recordSignupScreenView
 import javax.inject.Inject
 
 @Suppress("TooGenericExceptionCaught")

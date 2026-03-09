@@ -29,11 +29,11 @@ import me.proton.android.core.humanverification.presentation.webview.ProtonWebVi
 import me.proton.core.util.kotlin.CoreLogger
 import me.proton.core.util.kotlin.annotation.ExcludeFromCoverage
 import me.proton.core.util.kotlin.takeIfNotBlank
-import uniffi.proton_mail_uniffi.ChallengeLoader
-import uniffi.proton_mail_uniffi.ChallengeLoaderGetResult
-import uniffi.proton_mail_uniffi.Header
-import uniffi.proton_mail_uniffi.HumanVerificationViewLoadingStatus
-import uniffi.proton_mail_uniffi.Query
+import uniffi.mail_uniffi.ChallengeLoader
+import uniffi.mail_uniffi.ChallengeLoaderGetResult
+import uniffi.mail_uniffi.Header
+import uniffi.mail_uniffi.HumanVerificationViewLoadingStatus
+import uniffi.mail_uniffi.Query
 import kotlin.text.Charsets.UTF_8
 
 /** Used to override HTTP headers to access captcha iframe on debug from outside the VPN */

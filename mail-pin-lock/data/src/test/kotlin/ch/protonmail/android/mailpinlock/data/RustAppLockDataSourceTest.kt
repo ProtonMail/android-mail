@@ -25,10 +25,10 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionShouldAutoLockResult
-import uniffi.proton_mail_uniffi.SessionReason
-import uniffi.proton_mail_uniffi.UserSessionError
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionShouldAutoLockResult
+import uniffi.mail_uniffi.SessionReason
+import uniffi.mail_uniffi.UserSessionError
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

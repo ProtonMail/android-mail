@@ -52,7 +52,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.DraftAddressValidationError
+import uniffi.mail_uniffi.DraftAddressValidationError
 import javax.inject.Inject
 import kotlin.time.Instant
 

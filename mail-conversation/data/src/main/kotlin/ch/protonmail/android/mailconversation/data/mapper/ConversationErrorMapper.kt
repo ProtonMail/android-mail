@@ -20,8 +20,8 @@ package ch.protonmail.android.mailconversation.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
-import uniffi.proton_mail_uniffi.ActionError
-import uniffi.proton_mail_uniffi.ActionErrorReason
+import uniffi.mail_uniffi.ActionError
+import uniffi.mail_uniffi.ActionErrorReason
 
 fun ActionError.toConversationError() = when (this) {
     is ActionError.Other -> ConversationError.Other(this.v1.toDataError())

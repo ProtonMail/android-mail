@@ -42,12 +42,12 @@ import me.proton.android.core.auth.presentation.secondfactor.otp.OneTimePassword
 import me.proton.android.core.auth.presentation.secondfactor.otp.OneTimePasswordInputState.Loading
 import me.proton.android.core.auth.presentation.secondfactor.otp.OneTimePasswordInputState.LoggedIn
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_account_uniffi.LoginError
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowSubmitTotpResult
-import uniffi.proton_account_uniffi.PasswordFlowSubmitTotpResult
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_account_uniffi.LoginError
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowSubmitTotpResult
+import uniffi.mail_account_uniffi.PasswordFlowSubmitTotpResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
 import javax.inject.Inject
 
 @HiltViewModel

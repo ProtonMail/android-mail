@@ -27,9 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.IpAddr
-import uniffi.proton_mail_uniffi.Resolver
-import uniffi.proton_mail_uniffi.ResolverException
+import uniffi.mail_uniffi.IpAddr
+import uniffi.mail_uniffi.Resolver
+import uniffi.mail_uniffi.ResolverException
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume

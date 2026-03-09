@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailtrackingprotection.data.wrapper
 
-import uniffi.proton_mail_uniffi.PrivacyInfo
-import uniffi.proton_mail_uniffi.WatchPrivacyInfoStream
-import uniffi.proton_mail_uniffi.WatchPrivacyInfoStreamNextAsyncResult
+import uniffi.mail_uniffi.PrivacyInfo
+import uniffi.mail_uniffi.WatchPrivacyInfoStream
+import uniffi.mail_uniffi.WatchPrivacyInfoStreamNextAsyncResult
 
 class PrivacyInfoStreamWrapper(private val stream: WatchPrivacyInfoStream) {
 

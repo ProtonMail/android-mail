@@ -48,8 +48,8 @@ import me.proton.android.core.auth.presentation.passmanagement.PasswordManagemen
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementAction.UserInputAction.UpdateMailboxPassword
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementState.UserInput
 import me.proton.core.compose.viewmodel.BaseViewModel
-import uniffi.proton_account_uniffi.ChangePasswordScreenId
-import uniffi.proton_account_uniffi.recordChangePasswordScreenView
+import uniffi.mail_account_uniffi.ChangePasswordScreenId
+import uniffi.mail_account_uniffi.recordChangePasswordScreenView
 import javax.inject.Inject
 
 @HiltViewModel

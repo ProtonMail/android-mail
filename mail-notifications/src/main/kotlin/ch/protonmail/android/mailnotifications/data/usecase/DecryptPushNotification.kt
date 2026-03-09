@@ -21,10 +21,10 @@ package ch.protonmail.android.mailnotifications.data.usecase
 import arrow.core.raise.either
 import ch.protonmail.android.mailnotifications.data.model.DecryptionError
 import ch.protonmail.android.mailnotifications.data.wrapper.DecryptedPushNotificationWrapper
-import uniffi.proton_mail_uniffi.DecryptPushNotificationResult
-import uniffi.proton_mail_uniffi.EncryptedPushNotification
-import uniffi.proton_mail_uniffi.OsKeyChain
-import uniffi.proton_mail_uniffi.decryptPushNotification
+import uniffi.mail_uniffi.DecryptPushNotificationResult
+import uniffi.mail_uniffi.EncryptedPushNotification
+import uniffi.mail_uniffi.OsKeyChain
+import uniffi.mail_uniffi.decryptPushNotification
 import javax.inject.Inject
 
 internal class DecryptPushNotification @Inject constructor(

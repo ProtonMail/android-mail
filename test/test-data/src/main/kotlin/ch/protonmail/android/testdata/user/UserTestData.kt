@@ -24,12 +24,12 @@ import ch.protonmail.android.testdata.user.UserTestData.USER_DISPLAY_NAME_RAW
 import ch.protonmail.android.testdata.user.UserTestData.USER_EMAIL_RAW
 import ch.protonmail.android.testdata.user.UserTestData.USER_NAME_RAW
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.Flags
-import uniffi.proton_mail_uniffi.ProductUsedSpace
-import uniffi.proton_mail_uniffi.Role
-import uniffi.proton_mail_uniffi.UnixTimestamp
-import uniffi.proton_mail_uniffi.UserMnemonicStatus
-import uniffi.proton_mail_uniffi.UserType
+import uniffi.mail_uniffi.Flags
+import uniffi.mail_uniffi.ProductUsedSpace
+import uniffi.mail_uniffi.Role
+import uniffi.mail_uniffi.UnixTimestamp
+import uniffi.mail_uniffi.UserMnemonicStatus
+import uniffi.mail_uniffi.UserType
 
 object UserTestData {
 

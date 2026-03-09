@@ -30,11 +30,11 @@ import kotlinx.coroutines.sync.withLock
 import me.proton.android.core.account.data.qualifier.QueryWatcherCoroutineScope
 import me.proton.android.core.account.domain.usecase.ObserveCoreSessions
 import me.proton.android.core.account.domain.usecase.ObserveStoredAccounts
-import uniffi.proton_mail_uniffi.LiveQueryCallback
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetAccountsResult
-import uniffi.proton_mail_uniffi.MailSessionWatchAccountsResult
-import uniffi.proton_mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.LiveQueryCallback
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetAccountsResult
+import uniffi.mail_uniffi.MailSessionWatchAccountsResult
+import uniffi.mail_uniffi.StoredAccount
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -33,7 +33,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.OsNetworkStatus
+import uniffi.mail_uniffi.OsNetworkStatus
 
 internal class RustNetworkObserverInitializer : Initializer<Unit> {
 

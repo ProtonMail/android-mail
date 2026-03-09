@@ -25,9 +25,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.AllAvailableConversationActionsForActionSheetResult
-import uniffi.proton_mail_uniffi.ConversationActionSheet
-import uniffi.proton_mail_uniffi.allAvailableConversationActionsForActionSheet
+import uniffi.mail_uniffi.AllAvailableConversationActionsForActionSheetResult
+import uniffi.mail_uniffi.ConversationActionSheet
+import uniffi.mail_uniffi.allAvailableConversationActionsForActionSheet
 import javax.inject.Inject
 
 class GetRustConversationBottomSheetActions @Inject constructor() {

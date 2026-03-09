@@ -25,11 +25,11 @@ import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificatio
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSenderData
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
-import uniffi.proton_mail_uniffi.DecryptedEmailPushNotification
-import uniffi.proton_mail_uniffi.DecryptedEmailPushNotificationAction
-import uniffi.proton_mail_uniffi.DecryptedOpenUrlPushNotification
-import uniffi.proton_mail_uniffi.NotificationSender
-import uniffi.proton_mail_uniffi.RemoteId
+import uniffi.mail_uniffi.DecryptedEmailPushNotification
+import uniffi.mail_uniffi.DecryptedEmailPushNotificationAction
+import uniffi.mail_uniffi.DecryptedOpenUrlPushNotification
+import uniffi.mail_uniffi.NotificationSender
+import uniffi.mail_uniffi.RemoteId
 
 internal object NotificationTestData {
 

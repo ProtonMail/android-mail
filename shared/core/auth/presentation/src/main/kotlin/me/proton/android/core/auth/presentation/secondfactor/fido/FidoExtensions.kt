@@ -22,10 +22,10 @@ import me.proton.core.auth.fido.domain.entity.Fido2AuthenticationExtensionsClien
 import me.proton.core.auth.fido.domain.entity.Fido2AuthenticationOptions
 import me.proton.core.auth.fido.domain.entity.Fido2PublicKeyCredentialDescriptor
 import me.proton.core.auth.fido.domain.entity.Fido2PublicKeyCredentialRequestOptions
-import uniffi.proton_account_uniffi.Fido2AuthenticationExtensionsClientInputsFfi
-import uniffi.proton_account_uniffi.Fido2AuthenticationOptionsFfi
-import uniffi.proton_account_uniffi.Fido2PublicKeyCredentialDescriptorFfi
-import uniffi.proton_account_uniffi.Fido2PublicKeyCredentialRequestOptionsFfi
+import uniffi.mail_account_uniffi.Fido2AuthenticationExtensionsClientInputsFfi
+import uniffi.mail_account_uniffi.Fido2AuthenticationOptionsFfi
+import uniffi.mail_account_uniffi.Fido2PublicKeyCredentialDescriptorFfi
+import uniffi.mail_account_uniffi.Fido2PublicKeyCredentialRequestOptionsFfi
 
 fun Fido2AuthenticationOptionsFfi.toNative(): Fido2AuthenticationOptions {
     return Fido2AuthenticationOptions(

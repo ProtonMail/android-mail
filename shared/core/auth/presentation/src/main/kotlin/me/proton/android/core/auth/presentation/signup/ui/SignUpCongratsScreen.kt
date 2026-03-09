@@ -59,7 +59,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTypography
 import me.proton.core.compose.theme.defaultSmallWeak
-import uniffi.proton_mail_uniffi.SignupScreenId
+import uniffi.mail_uniffi.SignupScreenId
 
 @Composable
 fun SignUpCongratsScreen(

@@ -52,10 +52,10 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.ConversationScrollerListUpdate
-import uniffi.proton_mail_uniffi.ConversationScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.ConversationScrollerStatusUpdate
-import uniffi.proton_mail_uniffi.ConversationScrollerUpdate
+import uniffi.mail_uniffi.ConversationScrollerListUpdate
+import uniffi.mail_uniffi.ConversationScrollerLiveQueryCallback
+import uniffi.mail_uniffi.ConversationScrollerStatusUpdate
+import uniffi.mail_uniffi.ConversationScrollerUpdate
 import javax.inject.Inject
 import javax.inject.Singleton
 

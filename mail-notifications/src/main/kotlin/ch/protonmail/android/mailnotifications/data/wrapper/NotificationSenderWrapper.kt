@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailnotifications.data.wrapper
 
-import uniffi.proton_mail_uniffi.NotificationSender
+import uniffi.mail_uniffi.NotificationSender
 
 internal data class NotificationSenderWrapper(private val notificationSender: NotificationSender) {
 

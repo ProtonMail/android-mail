@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.data.usecase
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactId
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
-import uniffi.proton_mail_uniffi.deleteContact
+import uniffi.mail_uniffi.deleteContact
 import javax.inject.Inject
 
 class RustDeleteContact @Inject constructor() {

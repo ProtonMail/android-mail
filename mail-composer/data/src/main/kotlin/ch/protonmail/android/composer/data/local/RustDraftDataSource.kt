@@ -43,10 +43,10 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.DraftAddressValidationResult
-import uniffi.proton_mail_uniffi.DraftExpirationTime
-import uniffi.proton_mail_uniffi.DraftRecipientExpirationFeatureReport
-import uniffi.proton_mail_uniffi.DraftScheduleSendOptions
+import uniffi.mail_uniffi.DraftAddressValidationResult
+import uniffi.mail_uniffi.DraftExpirationTime
+import uniffi.mail_uniffi.DraftRecipientExpirationFeatureReport
+import uniffi.mail_uniffi.DraftScheduleSendOptions
 
 @Suppress("ComplexInterface", "TooManyFunctions")
 interface RustDraftDataSource {

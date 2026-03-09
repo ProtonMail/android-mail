@@ -26,9 +26,9 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MailboxMessagePaginatorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
-import uniffi.proton_mail_uniffi.MessageScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.ScrollMessagesForLabelResult
-import uniffi.proton_mail_uniffi.scrollMessagesForLabel
+import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
+import uniffi.mail_uniffi.ScrollMessagesForLabelResult
+import uniffi.mail_uniffi.scrollMessagesForLabel
 import javax.inject.Inject
 
 class CreateRustMessagesPaginator @Inject constructor() {

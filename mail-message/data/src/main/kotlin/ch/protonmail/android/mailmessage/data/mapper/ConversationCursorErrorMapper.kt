@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
-import uniffi.proton_mail_uniffi.MailScrollerError
+import uniffi.mail_uniffi.MailScrollerError
 
 fun MailScrollerError.toConversationCursorError() = when (this) {
     is MailScrollerError.Other -> this.v1.toDataError().let {

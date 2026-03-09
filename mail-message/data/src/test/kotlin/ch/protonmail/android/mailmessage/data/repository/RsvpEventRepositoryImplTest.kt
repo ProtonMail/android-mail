@@ -27,9 +27,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import uniffi.proton_mail_uniffi.RsvpAttendeeStatus as LocalRsvpAttendeeStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import uniffi.mail_uniffi.RsvpAttendeeStatus as LocalRsvpAttendeeStatus
 
 class RsvpEventRepositoryImplTest {
 

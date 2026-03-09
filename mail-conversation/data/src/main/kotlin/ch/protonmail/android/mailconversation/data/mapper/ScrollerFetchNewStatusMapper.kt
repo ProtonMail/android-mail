@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailconversation.data.mapper
 
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
-import uniffi.proton_mail_uniffi.ConversationScrollerStatusUpdate
+import uniffi.mail_uniffi.ConversationScrollerStatusUpdate
 
 fun ConversationScrollerStatusUpdate.toConversationScrollerFetchNewStatus(): ConversationScrollerFetchNewStatus {
     val timestampMs = System.currentTimeMillis()

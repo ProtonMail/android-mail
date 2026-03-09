@@ -26,10 +26,10 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.SearchMessagePaginatorWrapper
-import uniffi.proton_mail_uniffi.MessageScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.PaginatorSearchOptions
-import uniffi.proton_mail_uniffi.ScrollerSearchResult
-import uniffi.proton_mail_uniffi.scrollerSearch
+import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
+import uniffi.mail_uniffi.PaginatorSearchOptions
+import uniffi.mail_uniffi.ScrollerSearchResult
+import uniffi.mail_uniffi.scrollerSearch
 import javax.inject.Inject
 
 class CreateRustSearchPaginator @Inject constructor() {

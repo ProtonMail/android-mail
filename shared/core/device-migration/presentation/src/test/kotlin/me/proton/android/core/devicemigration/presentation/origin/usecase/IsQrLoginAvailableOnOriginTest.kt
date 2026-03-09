@@ -12,8 +12,8 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.biometric.data.StrongAuthenticatorsResolver
 import me.proton.core.biometric.domain.CheckBiometricAuthAvailability
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionUserSettingsResult
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse

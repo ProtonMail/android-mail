@@ -24,15 +24,15 @@ import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.account.domain.model.toCoreAccount
 import me.proton.android.core.auth.presentation.secondfactor.getAccountById
 import me.proton.android.core.auth.presentation.secondfactor.getSessionsForAccount
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.PasswordFlow
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionResumeLoginFlowResult
-import uniffi.proton_mail_uniffi.MailSessionToUserSessionResult
-import uniffi.proton_mail_uniffi.MailSessionUserSessionFromStoredSessionResult
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MailUserSessionNewPasswordChangeFlowResult
-import uniffi.proton_mail_uniffi.StoredSession
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.PasswordFlow
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionResumeLoginFlowResult
+import uniffi.mail_uniffi.MailSessionToUserSessionResult
+import uniffi.mail_uniffi.MailSessionUserSessionFromStoredSessionResult
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionNewPasswordChangeFlowResult
+import uniffi.mail_uniffi.StoredSession
 import javax.inject.Inject
 import javax.inject.Singleton
 

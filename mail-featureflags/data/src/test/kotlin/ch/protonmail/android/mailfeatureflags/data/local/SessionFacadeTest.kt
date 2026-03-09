@@ -30,8 +30,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
-import uniffi.proton_mail_uniffi.MailUserSessionIsFeatureEnabledResult
-import uniffi.proton_mail_uniffi.ProtonError
+import uniffi.mail_uniffi.MailUserSessionIsFeatureEnabledResult
+import uniffi.mail_uniffi.ProtonError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

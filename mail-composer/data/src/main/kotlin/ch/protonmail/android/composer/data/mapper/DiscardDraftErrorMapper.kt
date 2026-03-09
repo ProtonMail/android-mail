@@ -20,8 +20,8 @@ package ch.protonmail.android.composer.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcomposer.domain.model.DiscardDraftError
-import uniffi.proton_mail_uniffi.DraftDiscardError
-import uniffi.proton_mail_uniffi.DraftDiscardErrorReason
+import uniffi.mail_uniffi.DraftDiscardError
+import uniffi.mail_uniffi.DraftDiscardErrorReason
 
 fun DraftDiscardError.toDiscardDraftError(): DiscardDraftError = when (this) {
     is DraftDiscardError.Other -> DiscardDraftError.Other(this.v1.toDataError())

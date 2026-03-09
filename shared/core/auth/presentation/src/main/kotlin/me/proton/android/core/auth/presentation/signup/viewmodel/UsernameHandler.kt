@@ -43,11 +43,11 @@ import me.proton.android.core.auth.presentation.signup.ValidationField
 import me.proton.android.core.auth.presentation.signup.mapToNavigationRoute
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.challenge.domain.entity.ChallengeFrameDetails
-import uniffi.proton_account_uniffi.SignupException
-import uniffi.proton_account_uniffi.SignupFlow
-import uniffi.proton_account_uniffi.SignupFlowAvailableDomainsResult
-import uniffi.proton_account_uniffi.SignupFlowSubmitExternalUsernameResult
-import uniffi.proton_account_uniffi.SignupFlowSubmitInternalUsernameResult
+import uniffi.mail_account_uniffi.SignupException
+import uniffi.mail_account_uniffi.SignupFlow
+import uniffi.mail_account_uniffi.SignupFlowAvailableDomainsResult
+import uniffi.mail_account_uniffi.SignupFlowSubmitExternalUsernameResult
+import uniffi.mail_account_uniffi.SignupFlowSubmitInternalUsernameResult
 
 /**
  * Handler responsible for username-related actions during signup process.

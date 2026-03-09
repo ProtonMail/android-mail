@@ -26,18 +26,18 @@ import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.MailUserSession
-import uniffi.proton_mail_uniffi.MobileActionsResult
-import uniffi.proton_mail_uniffi.VoidActionResult
-import uniffi.proton_mail_uniffi.getAllMobileConversationActions
-import uniffi.proton_mail_uniffi.getAllMobileListActions
-import uniffi.proton_mail_uniffi.getAllMobileMessageActions
-import uniffi.proton_mail_uniffi.getMobileConversationToolbarActions
-import uniffi.proton_mail_uniffi.getMobileListToolbarActions
-import uniffi.proton_mail_uniffi.getMobileMessageToolbarActions
-import uniffi.proton_mail_uniffi.updateMobileConversationToolbarActions
-import uniffi.proton_mail_uniffi.updateMobileListToolbarActions
-import uniffi.proton_mail_uniffi.updateMobileMessageToolbarActions
+import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MobileActionsResult
+import uniffi.mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.getAllMobileConversationActions
+import uniffi.mail_uniffi.getAllMobileListActions
+import uniffi.mail_uniffi.getAllMobileMessageActions
+import uniffi.mail_uniffi.getMobileConversationToolbarActions
+import uniffi.mail_uniffi.getMobileListToolbarActions
+import uniffi.mail_uniffi.getMobileMessageToolbarActions
+import uniffi.mail_uniffi.updateMobileConversationToolbarActions
+import uniffi.mail_uniffi.updateMobileListToolbarActions
+import uniffi.mail_uniffi.updateMobileMessageToolbarActions
 import javax.inject.Inject
 
 class RustToolbarActionSettingsDataSource @Inject constructor(

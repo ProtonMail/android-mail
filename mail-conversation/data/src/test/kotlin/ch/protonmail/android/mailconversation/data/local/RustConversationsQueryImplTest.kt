@@ -33,9 +33,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.ConversationScrollerListUpdate
-import uniffi.proton_mail_uniffi.ConversationScrollerLiveQueryCallback
-import uniffi.proton_mail_uniffi.ConversationScrollerUpdate
+import uniffi.mail_uniffi.ConversationScrollerListUpdate
+import uniffi.mail_uniffi.ConversationScrollerLiveQueryCallback
+import uniffi.mail_uniffi.ConversationScrollerUpdate
 import kotlin.test.assertEquals
 
 class RustConversationsQueryImplTest {

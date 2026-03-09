@@ -21,7 +21,7 @@ package ch.protonmail.android.composer.data.mapper
 import ch.protonmail.android.mailattachments.data.mapper.toAttachmentMetadata
 import ch.protonmail.android.mailattachments.data.mapper.toAttachmentState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
-import uniffi.proton_mail_uniffi.DraftAttachment
+import uniffi.mail_uniffi.DraftAttachment
 
 fun DraftAttachment.toAttachmentMetaDataWithState(): AttachmentMetadataWithState = AttachmentMetadataWithState(
     attachmentState = this.state.toAttachmentState(),

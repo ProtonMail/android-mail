@@ -20,12 +20,12 @@ package ch.protonmail.android.mailtrackingprotection.data.wrapper
 
 import io.mockk.every
 import io.mockk.mockk
-import uniffi.proton_mail_uniffi.PrivacyInfo
-import uniffi.proton_mail_uniffi.StrippedUtmInfo
-import uniffi.proton_mail_uniffi.TrackerDomain
-import uniffi.proton_mail_uniffi.TrackerInfo
-import uniffi.proton_mail_uniffi.TrackerInfoWithStatus
-import uniffi.proton_mail_uniffi.UtmLink
+import uniffi.mail_uniffi.PrivacyInfo
+import uniffi.mail_uniffi.StrippedUtmInfo
+import uniffi.mail_uniffi.TrackerDomain
+import uniffi.mail_uniffi.TrackerInfo
+import uniffi.mail_uniffi.TrackerInfoWithStatus
+import uniffi.mail_uniffi.UtmLink
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

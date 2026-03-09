@@ -25,8 +25,8 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.Message
-import uniffi.proton_mail_uniffi.MessageScrollerStatusUpdate
+import uniffi.mail_uniffi.Message
+import uniffi.mail_uniffi.MessageScrollerStatusUpdate
 
 interface RustMessageListQuery {
     suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<PaginationError, List<Message>>

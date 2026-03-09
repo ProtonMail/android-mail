@@ -36,13 +36,13 @@ import ch.protonmail.android.mailsnooze.domain.model.SnoozeReminder
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AvatarInformation
-import uniffi.proton_mail_uniffi.HiddenMessagesBanner
-import uniffi.proton_mail_uniffi.InlineCustomLabel
-import uniffi.proton_mail_uniffi.LabelColor
-import uniffi.proton_mail_uniffi.MessageRecipient
-import uniffi.proton_mail_uniffi.MessageSender
-import uniffi.proton_mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.HiddenMessagesBanner
+import uniffi.mail_uniffi.InlineCustomLabel
+import uniffi.mail_uniffi.LabelColor
+import uniffi.mail_uniffi.MessageRecipient
+import uniffi.mail_uniffi.MessageSender
+import uniffi.mail_uniffi.SystemLabel
 import kotlin.test.assertEquals
 
 class ConversationMapperTest {

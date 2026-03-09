@@ -31,12 +31,12 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.DeviceEnvironment
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionRegisterDeviceTaskResult
-import uniffi.proton_mail_uniffi.RegisterDeviceTaskHandle
-import uniffi.proton_mail_uniffi.RegisteredDevice
-import uniffi.proton_mail_uniffi.VoidActionResult
+import uniffi.mail_uniffi.DeviceEnvironment
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionRegisterDeviceTaskResult
+import uniffi.mail_uniffi.RegisterDeviceTaskHandle
+import uniffi.mail_uniffi.RegisteredDevice
+import uniffi.mail_uniffi.VoidActionResult
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 

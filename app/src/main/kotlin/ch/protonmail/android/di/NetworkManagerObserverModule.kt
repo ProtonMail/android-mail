@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import uniffi.proton_mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSession
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)

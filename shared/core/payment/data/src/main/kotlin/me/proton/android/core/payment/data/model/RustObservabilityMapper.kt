@@ -19,7 +19,7 @@
 package me.proton.android.core.payment.data.model
 
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
-import uniffi.proton_mail_uniffi.PaymentObservabilityResponse
+import uniffi.mail_uniffi.PaymentObservabilityResponse
 
 fun PaymentObservabilityValue.toExternal(): PaymentObservabilityResponse {
     return when (this) {

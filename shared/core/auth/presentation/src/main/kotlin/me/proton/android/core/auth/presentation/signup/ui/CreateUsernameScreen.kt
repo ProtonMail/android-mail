@@ -96,7 +96,7 @@ import me.proton.core.compose.theme.ProtonDimens.DefaultSpacing
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTypography
 import me.proton.core.compose.theme.defaultSmallWeak
-import uniffi.proton_mail_uniffi.SignupScreenId
+import uniffi.mail_uniffi.SignupScreenId
 
 internal const val USERNAME_FIELD_TAG = "USERNAME_FIELD_TAG"
 internal const val EMAIL_FIELD_TAG = "EMAIL_FIELD_TAG"

@@ -28,7 +28,7 @@ import me.proton.android.core.auth.presentation.secondfactor.fido.keys.SecurityK
 import me.proton.android.core.auth.presentation.secondfactor.fido.keys.SecurityKeysState.Loading
 import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.util.kotlin.CoreLogger
-import uniffi.proton_mail_uniffi.FidoKey
+import uniffi.mail_uniffi.FidoKey
 import javax.inject.Inject
 
 @HiltViewModel

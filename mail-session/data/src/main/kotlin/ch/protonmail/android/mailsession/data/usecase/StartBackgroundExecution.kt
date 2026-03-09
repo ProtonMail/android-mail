@@ -25,9 +25,9 @@ import kotlinx.coroutines.channels.onSuccess
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.BackgroundExecutionCallback
-import uniffi.proton_mail_uniffi.BackgroundExecutionResult
-import uniffi.proton_mail_uniffi.MailSessionStartBackgroundExecutionResult
+import uniffi.mail_uniffi.BackgroundExecutionCallback
+import uniffi.mail_uniffi.BackgroundExecutionResult
+import uniffi.mail_uniffi.MailSessionStartBackgroundExecutionResult
 import javax.inject.Inject
 
 class StartBackgroundExecution @Inject constructor(

@@ -19,7 +19,7 @@
 package me.proton.android.core.auth.presentation.challenge
 
 import me.proton.core.challenge.domain.entity.ChallengeFrameDetails
-import uniffi.proton_account_uniffi.UserBehavior
+import uniffi.mail_account_uniffi.UserBehavior
 
 internal fun ChallengeFrameDetails.toUserBehavior() = UserBehavior(
     timeOnField = focusTime.map { it.toUInt() },

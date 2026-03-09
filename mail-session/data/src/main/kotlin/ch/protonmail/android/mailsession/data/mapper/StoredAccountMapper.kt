@@ -22,8 +22,8 @@ import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountAvatarInfo
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.StoredAccount
-import uniffi.proton_mail_uniffi.StoredAccountState
+import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredAccountState
 
 internal fun StoredAccount.toAccount() = Account(
     userId = UserId(userId()),

@@ -20,7 +20,7 @@ package me.proton.android.core.auth.presentation.passmanagement
 
 import android.content.Context
 import me.proton.android.core.auth.presentation.R
-import uniffi.proton_account_uniffi.PasswordException
+import uniffi.mail_account_uniffi.PasswordException
 
 fun PasswordException.getErrorMessage(context: Context): String = when (this) {
     is PasswordException.Api,

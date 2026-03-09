@@ -25,9 +25,9 @@ import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import org.junit.Test
-import uniffi.proton_mail_uniffi.Id
-import uniffi.proton_mail_uniffi.LabelColor
-import uniffi.proton_mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.LabelColor
+import uniffi.mail_uniffi.SystemLabel
 import kotlin.test.assertEquals
 
 class ExclusiveLocationMapperTest {

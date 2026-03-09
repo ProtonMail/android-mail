@@ -20,11 +20,11 @@ package ch.protonmail.android.testdata.label.rust
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
-import uniffi.proton_mail_uniffi.LabelColor
-import uniffi.proton_mail_uniffi.LabelDescription
-import uniffi.proton_mail_uniffi.SidebarCustomFolder
-import uniffi.proton_mail_uniffi.SidebarCustomLabel
-import uniffi.proton_mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.LabelColor
+import uniffi.mail_uniffi.LabelDescription
+import uniffi.mail_uniffi.SidebarCustomFolder
+import uniffi.mail_uniffi.SidebarCustomLabel
+import uniffi.mail_uniffi.SidebarSystemLabel
 
 object LocalLabelTestData {
     val localSystemLabelWithCount = SidebarSystemLabel(

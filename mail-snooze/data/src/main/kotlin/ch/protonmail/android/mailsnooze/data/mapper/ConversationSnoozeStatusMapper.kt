@@ -22,8 +22,8 @@ import ch.protonmail.android.mailsnooze.domain.model.ConversationSnoozeStatus
 import ch.protonmail.android.mailsnooze.domain.model.NoSnooze
 import ch.protonmail.android.mailsnooze.domain.model.SnoozeReminder
 import ch.protonmail.android.mailsnooze.domain.model.Snoozed
-import uniffi.proton_mail_uniffi.Conversation
-import uniffi.proton_mail_uniffi.Message
+import uniffi.mail_uniffi.Conversation
+import uniffi.mail_uniffi.Message
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 

@@ -22,7 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.flow.Flow
-import uniffi.proton_mail_uniffi.User
+import uniffi.mail_uniffi.User
 
 interface RustUserDataSource {
 

@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.AvatarInformation
 import ch.protonmail.android.mailcontact.domain.model.ContactEmail
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupId
 import ch.protonmail.android.mailcontact.domain.model.ContactId
-import uniffi.proton_mail_uniffi.DeviceContactSuggestion
+import uniffi.mail_uniffi.DeviceContactSuggestion
 
 fun LocalContactId.toContactId(): ContactId = ContactId(this.value.toString())
 fun LocalContactGroupId.toContactGroupId(): ContactGroupId = ContactGroupId(this.value.toString())

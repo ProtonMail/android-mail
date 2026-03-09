@@ -27,8 +27,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import uniffi.proton_mail_uniffi.BackgroundExecutionResult
-import uniffi.proton_mail_uniffi.BackgroundExecutionStatus
+import uniffi.mail_uniffi.BackgroundExecutionResult
+import uniffi.mail_uniffi.BackgroundExecutionStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

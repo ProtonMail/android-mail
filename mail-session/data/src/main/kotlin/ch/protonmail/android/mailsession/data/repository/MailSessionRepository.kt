@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsession.data.repository
 
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
-import uniffi.proton_mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSession
 
 interface MailSessionRepository {
 

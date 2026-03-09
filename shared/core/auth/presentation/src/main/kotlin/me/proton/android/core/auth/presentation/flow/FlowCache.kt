@@ -19,8 +19,8 @@
 package me.proton.android.core.auth.presentation.flow
 
 import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.StoredSession
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.StoredSession
 import javax.inject.Inject
 import javax.inject.Singleton
 

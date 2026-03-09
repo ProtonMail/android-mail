@@ -63,7 +63,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Assert
 import org.junit.Test
-import uniffi.proton_mail_uniffi.Id
+import uniffi.mail_uniffi.Id
 import kotlin.test.assertEquals
 
 internal class RustConversationRepositoryImplTest {

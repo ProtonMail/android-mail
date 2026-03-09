@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.testdata.composer
 
-import uniffi.proton_mail_uniffi.ComposerRecipient
-import uniffi.proton_mail_uniffi.ComposerRecipientSingle
-import uniffi.proton_mail_uniffi.ComposerRecipientValidState
-import uniffi.proton_mail_uniffi.PrivacyLock
+import uniffi.mail_uniffi.ComposerRecipient
+import uniffi.mail_uniffi.ComposerRecipientSingle
+import uniffi.mail_uniffi.ComposerRecipientValidState
+import uniffi.mail_uniffi.PrivacyLock
 
 object LocalComposerRecipientTestData {
 

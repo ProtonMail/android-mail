@@ -26,8 +26,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.AvailableLabelAsActionsForMessagesResult
-import uniffi.proton_mail_uniffi.availableLabelAsActionsForMessages
+import uniffi.mail_uniffi.AvailableLabelAsActionsForMessagesResult
+import uniffi.mail_uniffi.availableLabelAsActionsForMessages
 import javax.inject.Inject
 
 class GetRustMessageLabelAsActions @Inject constructor() {

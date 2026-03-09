@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import me.proton.core.crypto.common.keystore.EncryptedString
-import uniffi.proton_mail_uniffi.OsKeyChainEntryKind
+import uniffi.mail_uniffi.OsKeyChainEntryKind
 import javax.inject.Inject
 
 class KeyChainLocalDataSourceImpl @Inject constructor(

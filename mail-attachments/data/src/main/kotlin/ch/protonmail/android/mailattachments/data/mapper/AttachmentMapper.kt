@@ -33,12 +33,12 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMimeType
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeTypeCategory
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
-import uniffi.proton_mail_uniffi.DraftAttachmentDispositionSwapError
-import uniffi.proton_mail_uniffi.DraftAttachmentDispositionSwapErrorReason
-import uniffi.proton_mail_uniffi.DraftAttachmentError
-import uniffi.proton_mail_uniffi.DraftAttachmentState
-import uniffi.proton_mail_uniffi.DraftAttachmentUploadError
-import uniffi.proton_mail_uniffi.DraftAttachmentUploadErrorReason
+import uniffi.mail_uniffi.DraftAttachmentDispositionSwapError
+import uniffi.mail_uniffi.DraftAttachmentDispositionSwapErrorReason
+import uniffi.mail_uniffi.DraftAttachmentError
+import uniffi.mail_uniffi.DraftAttachmentState
+import uniffi.mail_uniffi.DraftAttachmentUploadError
+import uniffi.mail_uniffi.DraftAttachmentUploadErrorReason
 
 fun LocalAttachmentId.toAttachmentId(): AttachmentId = AttachmentId(this.value.toString())
 fun AttachmentId.toLocalAttachmentId(): LocalAttachmentId = LocalAttachmentId(this.id.toULong())

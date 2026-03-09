@@ -20,7 +20,7 @@ package ch.protonmail.android.mailpinlock.data
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSession
 
 interface AppLockDataSource {
 

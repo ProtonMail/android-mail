@@ -34,13 +34,13 @@ import me.proton.android.core.auth.presentation.passmanagement.PasswordManagemen
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementState.Error
 import me.proton.android.core.auth.presentation.passmanagement.PasswordManagementState.UserInput
 import me.proton.core.passvalidator.domain.entity.PasswordValidatorToken
-import uniffi.proton_account_uniffi.PasswordFlow
-import uniffi.proton_account_uniffi.PasswordFlowChangeMboxPassResult
-import uniffi.proton_account_uniffi.SimplePasswordState.COMPLETE
-import uniffi.proton_account_uniffi.SimplePasswordState.INVALID
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_CHANGE
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_PASS
-import uniffi.proton_account_uniffi.SimplePasswordState.WANT_TFA
+import uniffi.mail_account_uniffi.PasswordFlow
+import uniffi.mail_account_uniffi.PasswordFlowChangeMboxPassResult
+import uniffi.mail_account_uniffi.SimplePasswordState.COMPLETE
+import uniffi.mail_account_uniffi.SimplePasswordState.INVALID
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_CHANGE
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_PASS
+import uniffi.mail_account_uniffi.SimplePasswordState.WANT_TFA
 
 class MailboxPasswordHandler private constructor(
     private val context: Context,

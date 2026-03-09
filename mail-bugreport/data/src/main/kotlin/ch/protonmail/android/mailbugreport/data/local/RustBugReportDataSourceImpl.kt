@@ -26,8 +26,8 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.VoidSessionResult
-import uniffi.proton_mail_uniffi.reportAnIssue
+import uniffi.mail_uniffi.VoidSessionResult
+import uniffi.mail_uniffi.reportAnIssue
 import javax.inject.Inject
 
 class RustBugReportDataSourceImpl @Inject constructor(

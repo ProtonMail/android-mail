@@ -10,8 +10,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.keystore.KeyStoreCrypto
 import org.junit.Test
-import uniffi.proton_mail_uniffi.OsKeyChainEntryKind
-import uniffi.proton_mail_uniffi.OsKeyChainException
+import uniffi.mail_uniffi.OsKeyChainEntryKind
+import uniffi.mail_uniffi.OsKeyChainException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull

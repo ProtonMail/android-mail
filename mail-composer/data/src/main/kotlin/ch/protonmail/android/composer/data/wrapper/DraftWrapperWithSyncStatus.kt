@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.composer.data.wrapper
 
-import uniffi.proton_mail_uniffi.DraftSyncStatus
+import uniffi.mail_uniffi.DraftSyncStatus
 
 data class DraftWrapperWithSyncStatus(
     val draftWrapper: DraftWrapper,

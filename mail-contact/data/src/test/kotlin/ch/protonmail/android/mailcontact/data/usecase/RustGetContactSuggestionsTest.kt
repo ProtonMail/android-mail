@@ -30,13 +30,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import uniffi.proton_mail_uniffi.AvatarInformation
-import uniffi.proton_mail_uniffi.ContactSuggestion
-import uniffi.proton_mail_uniffi.ContactSuggestionKind
-import uniffi.proton_mail_uniffi.ContactSuggestions
-import uniffi.proton_mail_uniffi.ContactSuggestionsResult
-import uniffi.proton_mail_uniffi.DeviceContactSuggestion
-import uniffi.proton_mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.ContactSuggestion
+import uniffi.mail_uniffi.ContactSuggestionKind
+import uniffi.mail_uniffi.ContactSuggestions
+import uniffi.mail_uniffi.ContactSuggestionsResult
+import uniffi.mail_uniffi.DeviceContactSuggestion
+import uniffi.mail_uniffi.MailUserSession
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

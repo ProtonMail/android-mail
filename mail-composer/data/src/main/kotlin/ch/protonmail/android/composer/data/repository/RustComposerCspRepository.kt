@@ -20,7 +20,7 @@ package ch.protonmail.android.composer.data.repository
 
 import ch.protonmail.android.mailcomposer.domain.model.CspNonce
 import ch.protonmail.android.mailcomposer.domain.repository.ComposerCspRepository
-import uniffi.proton_mail_uniffi.generateCspNonce
+import uniffi.mail_uniffi.generateCspNonce
 import javax.inject.Inject
 
 class RustComposerCspRepository @Inject constructor() : ComposerCspRepository {

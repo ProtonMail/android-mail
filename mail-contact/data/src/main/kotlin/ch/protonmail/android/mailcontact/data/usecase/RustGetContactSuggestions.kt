@@ -29,9 +29,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.ContactSuggestion
-import uniffi.proton_mail_uniffi.ContactSuggestions
-import uniffi.proton_mail_uniffi.ContactSuggestionsResult
+import uniffi.mail_uniffi.ContactSuggestion
+import uniffi.mail_uniffi.ContactSuggestions
+import uniffi.mail_uniffi.ContactSuggestionsResult
 import javax.inject.Inject
 
 class RustGetContactSuggestions @Inject constructor(

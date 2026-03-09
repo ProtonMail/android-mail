@@ -20,7 +20,7 @@ package ch.protonmail.android.mailconversation.data.local
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.markConversationsAsRead
+import uniffi.mail_uniffi.markConversationsAsRead
 import javax.inject.Inject
 
 class RustMarkConversationsAsRead @Inject constructor() {

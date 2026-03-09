@@ -26,9 +26,9 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.MoveConversationsResult
-import uniffi.proton_mail_uniffi.Undo
-import uniffi.proton_mail_uniffi.moveConversations
+import uniffi.mail_uniffi.MoveConversationsResult
+import uniffi.mail_uniffi.Undo
+import uniffi.mail_uniffi.moveConversations
 import javax.inject.Inject
 
 class RustMoveConversations @Inject constructor() {

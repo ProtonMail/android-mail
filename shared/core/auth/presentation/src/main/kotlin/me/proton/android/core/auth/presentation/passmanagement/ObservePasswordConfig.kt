@@ -28,10 +28,10 @@ import me.proton.android.core.account.domain.usecase.ObservePrimaryCoreAccount
 import me.proton.android.core.auth.presentation.flow.FlowManager
 import me.proton.android.core.auth.presentation.secondfactor.getAccountById
 import me.proton.android.core.auth.presentation.secondfactor.getSessionsForAccount
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionUserSessionFromStoredSessionResult
-import uniffi.proton_mail_uniffi.MailUserSessionUserSettingsResult
-import uniffi.proton_mail_uniffi.StoredSession
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionUserSessionFromStoredSessionResult
+import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
+import uniffi.mail_uniffi.StoredSession
 import javax.inject.Inject
 
 class ObservePasswordConfig @Inject constructor(

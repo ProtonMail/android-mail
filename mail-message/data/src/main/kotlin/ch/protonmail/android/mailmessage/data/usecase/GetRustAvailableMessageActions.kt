@@ -25,10 +25,10 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.proton_mail_uniffi.AllAvailableMessageActionsForActionSheetResult
-import uniffi.proton_mail_uniffi.MessageActionSheet
-import uniffi.proton_mail_uniffi.ThemeOpts
-import uniffi.proton_mail_uniffi.allAvailableMessageActionsForActionSheet
+import uniffi.mail_uniffi.AllAvailableMessageActionsForActionSheetResult
+import uniffi.mail_uniffi.MessageActionSheet
+import uniffi.mail_uniffi.ThemeOpts
+import uniffi.mail_uniffi.allAvailableMessageActionsForActionSheet
 import javax.inject.Inject
 
 class GetRustAvailableMessageActions @Inject constructor() {

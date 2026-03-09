@@ -28,10 +28,10 @@ import ch.protonmail.android.mailcommon.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailcommon.domain.model.autolock.SetAutoLockPinError
 import ch.protonmail.android.mailcommon.domain.model.autolock.VerifyAutoLockPinError
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.PinAuthError
-import uniffi.proton_mail_uniffi.PinAuthErrorReason
-import uniffi.proton_mail_uniffi.PinSetError
-import uniffi.proton_mail_uniffi.PinSetErrorReason
+import uniffi.mail_uniffi.PinAuthError
+import uniffi.mail_uniffi.PinAuthErrorReason
+import uniffi.mail_uniffi.PinSetError
+import uniffi.mail_uniffi.PinSetErrorReason
 
 fun AutoLockPin.toLocalAutoLockPin(): Either<DataError, LocalAutoLockPin> {
     return if (value.isNotEmpty()) {

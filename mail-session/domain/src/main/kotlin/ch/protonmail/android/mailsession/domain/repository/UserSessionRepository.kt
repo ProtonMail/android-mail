@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
-import uniffi.proton_mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSession
 
 interface UserSessionRepository {
 

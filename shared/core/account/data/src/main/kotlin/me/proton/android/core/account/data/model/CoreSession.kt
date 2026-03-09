@@ -22,8 +22,8 @@ import me.proton.android.core.account.domain.model.CoreSession
 import me.proton.android.core.account.domain.model.CoreSessionId
 import me.proton.android.core.account.domain.model.CoreSessionState
 import me.proton.android.core.account.domain.model.CoreUserId
-import uniffi.proton_mail_uniffi.StoredSession
-import uniffi.proton_mail_uniffi.StoredSessionState
+import uniffi.mail_uniffi.StoredSession
+import uniffi.mail_uniffi.StoredSessionState
 
 internal fun StoredSession.toCoreSession() = CoreSession(
     sessionId = CoreSessionId(sessionId()),

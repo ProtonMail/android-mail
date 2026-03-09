@@ -23,11 +23,11 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalContactId
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeContact
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeGroup
 import ch.protonmail.android.mailcommon.data.mapper.LocalGroupedContacts
-import uniffi.proton_mail_uniffi.AvatarInformation
-import uniffi.proton_mail_uniffi.ContactEmailItem
-import uniffi.proton_mail_uniffi.ContactGroupItem
-import uniffi.proton_mail_uniffi.ContactItem
-import uniffi.proton_mail_uniffi.Id
+import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.ContactEmailItem
+import uniffi.mail_uniffi.ContactGroupItem
+import uniffi.mail_uniffi.ContactItem
+import uniffi.mail_uniffi.Id
 
 object LocalContactTestData {
 

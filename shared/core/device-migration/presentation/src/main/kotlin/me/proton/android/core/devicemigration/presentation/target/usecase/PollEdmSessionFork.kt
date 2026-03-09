@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retryWhen
 import me.proton.android.core.account.domain.model.CoreUserId
-import uniffi.proton_account_uniffi.LoginError
-import uniffi.proton_account_uniffi.LoginFlow
-import uniffi.proton_account_uniffi.LoginFlowCheckHostDeviceConfirmationResult
-import uniffi.proton_account_uniffi.LoginFlowUserIdResult
+import uniffi.mail_account_uniffi.LoginError
+import uniffi.mail_account_uniffi.LoginFlow
+import uniffi.mail_account_uniffi.LoginFlowCheckHostDeviceConfirmationResult
+import uniffi.mail_account_uniffi.LoginFlowUserIdResult
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds

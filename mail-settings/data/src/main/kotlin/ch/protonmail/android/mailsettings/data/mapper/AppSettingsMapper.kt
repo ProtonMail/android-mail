@@ -32,12 +32,12 @@ import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.AppAppearance
-import uniffi.proton_mail_uniffi.AppProtection
-import uniffi.proton_mail_uniffi.AutoLock.Always
-import uniffi.proton_mail_uniffi.AutoLock.Minutes
-import uniffi.proton_mail_uniffi.AutoLock.Never
-import uniffi.proton_mail_uniffi.AppSettingsDiff as LocalAppSettingsDiff
+import uniffi.mail_uniffi.AppAppearance
+import uniffi.mail_uniffi.AppProtection
+import uniffi.mail_uniffi.AutoLock.Always
+import uniffi.mail_uniffi.AutoLock.Minutes
+import uniffi.mail_uniffi.AutoLock.Never
+import uniffi.mail_uniffi.AppSettingsDiff as LocalAppSettingsDiff
 
 fun AppSettingsDiff.toAppDiff(): LocalAppSettingsDiff {
 

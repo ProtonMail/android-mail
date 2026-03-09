@@ -26,12 +26,12 @@ import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.domain.model.LabelWithSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.InlineCustomLabel
-import uniffi.proton_mail_uniffi.LabelDescription
-import uniffi.proton_mail_uniffi.MovableSystemFolder
-import uniffi.proton_mail_uniffi.SidebarCustomFolder
-import uniffi.proton_mail_uniffi.SidebarCustomLabel
-import uniffi.proton_mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.InlineCustomLabel
+import uniffi.mail_uniffi.LabelDescription
+import uniffi.mail_uniffi.MovableSystemFolder
+import uniffi.mail_uniffi.SidebarCustomFolder
+import uniffi.mail_uniffi.SidebarCustomLabel
+import uniffi.mail_uniffi.SidebarSystemLabel
 
 fun LabelId.toLocalLabelId(): LocalLabelId = LocalLabelId(this.id.toULong())
 fun LocalLabelId.toLabelId(): LabelId = LabelId(this.value.toString())

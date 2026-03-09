@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.isActive
 import timber.log.Timber
-import uniffi.proton_mail_uniffi.WatchPrivacyInfoStreamNextAsyncResult
+import uniffi.mail_uniffi.WatchPrivacyInfoStreamNextAsyncResult
 import javax.inject.Inject
 
 class RustPrivacyInfoDataSourceImpl @Inject constructor() : RustPrivacyInfoDataSource {

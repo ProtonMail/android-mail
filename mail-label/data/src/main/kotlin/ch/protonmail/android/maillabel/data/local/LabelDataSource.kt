@@ -24,10 +24,10 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import uniffi.proton_mail_uniffi.SidebarCustomFolder
-import uniffi.proton_mail_uniffi.SidebarCustomLabel
-import uniffi.proton_mail_uniffi.SidebarSystemLabel
-import uniffi.proton_mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.SidebarCustomFolder
+import uniffi.mail_uniffi.SidebarCustomLabel
+import uniffi.mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.SystemLabel
 
 interface LabelDataSource {
 

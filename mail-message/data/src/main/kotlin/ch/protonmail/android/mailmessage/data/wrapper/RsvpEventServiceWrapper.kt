@@ -23,11 +23,11 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.RsvpAnswer
-import uniffi.proton_mail_uniffi.RsvpEvent
-import uniffi.proton_mail_uniffi.RsvpEventGetResult
-import uniffi.proton_mail_uniffi.RsvpEventService
-import uniffi.proton_mail_uniffi.VoidAnswerRsvpResult
+import uniffi.mail_uniffi.RsvpAnswer
+import uniffi.mail_uniffi.RsvpEvent
+import uniffi.mail_uniffi.RsvpEventGetResult
+import uniffi.mail_uniffi.RsvpEventService
+import uniffi.mail_uniffi.VoidAnswerRsvpResult
 
 class RsvpEventServiceWrapper(
     private val rsvpEventService: RsvpEventService

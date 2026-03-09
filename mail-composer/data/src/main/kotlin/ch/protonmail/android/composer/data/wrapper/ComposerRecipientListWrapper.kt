@@ -24,12 +24,12 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.mapper.toSaveDraftError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
-import uniffi.proton_mail_uniffi.AddSingleRecipientError
-import uniffi.proton_mail_uniffi.ComposerRecipient
-import uniffi.proton_mail_uniffi.ComposerRecipientList
-import uniffi.proton_mail_uniffi.ComposerRecipientValidationCallback
-import uniffi.proton_mail_uniffi.RemoveRecipientError
-import uniffi.proton_mail_uniffi.SingleRecipientEntry
+import uniffi.mail_uniffi.AddSingleRecipientError
+import uniffi.mail_uniffi.ComposerRecipient
+import uniffi.mail_uniffi.ComposerRecipientList
+import uniffi.mail_uniffi.ComposerRecipientValidationCallback
+import uniffi.mail_uniffi.RemoveRecipientError
+import uniffi.mail_uniffi.SingleRecipientEntry
 
 class ComposerRecipientListWrapper(private val rustRecipients: ComposerRecipientList) {
 

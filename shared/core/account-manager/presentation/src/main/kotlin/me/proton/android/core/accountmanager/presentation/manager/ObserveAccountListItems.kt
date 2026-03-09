@@ -26,8 +26,8 @@ import me.proton.android.core.accountmanager.domain.usecase.GetAccountAvatarItem
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountItem
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountListItem
 import me.proton.core.util.kotlin.takeIfNotBlank
-import uniffi.proton_mail_uniffi.MailSession
-import uniffi.proton_mail_uniffi.MailSessionGetPrimaryAccountResult
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionGetPrimaryAccountResult
 import javax.inject.Inject
 
 class ObserveAccountListItems @Inject constructor(

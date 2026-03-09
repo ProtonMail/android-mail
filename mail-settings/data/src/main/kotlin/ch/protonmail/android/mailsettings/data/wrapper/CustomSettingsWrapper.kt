@@ -24,12 +24,12 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalMobileSignature
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import uniffi.proton_mail_uniffi.CustomSettings
-import uniffi.proton_mail_uniffi.CustomSettingsMobileSignatureResult
-import uniffi.proton_mail_uniffi.CustomSettingsSetMobileSignatureEnabledResult
-import uniffi.proton_mail_uniffi.CustomSettingsSetMobileSignatureResult
-import uniffi.proton_mail_uniffi.CustomSettingsSetSwipeToAdjacentConversationResult
-import uniffi.proton_mail_uniffi.CustomSettingsSwipeToAdjacentConversationResult
+import uniffi.mail_uniffi.CustomSettings
+import uniffi.mail_uniffi.CustomSettingsMobileSignatureResult
+import uniffi.mail_uniffi.CustomSettingsSetMobileSignatureEnabledResult
+import uniffi.mail_uniffi.CustomSettingsSetMobileSignatureResult
+import uniffi.mail_uniffi.CustomSettingsSetSwipeToAdjacentConversationResult
+import uniffi.mail_uniffi.CustomSettingsSwipeToAdjacentConversationResult
 
 class CustomSettingsWrapper(
     private val customSettings: CustomSettings
