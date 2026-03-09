@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="spotlight_screen_version_text">Versió %s</string>
-  <string name="spotlight_screen_title">Novetats a Proton Mail</string>
+  <string name="spotlight_screen_title">Novetats al Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Icona discreta</string>
-  <string name="spotlight_feature_item_discreet_icon_description">Mantingueu la icona per defecte de Proton Mail o amagueu-la amb una de genèrica per a una major privacitat.</string>
+  <string name="spotlight_feature_item_discreet_icon_description">Mantingueu la icona per defecte del Proton Mail o amagueu-la amb una de genèrica per a una major privacitat.</string>
   <string name="spotlight_feature_item_tracking_protection_title">Protecció contra rastrejadors</string>
   <string name="spotlight_feature_item_tracking_protection_description">Vegeu qui us ha intentat monitoritzar amb píxels amagats i enllaços de seguiment, i quants intents s\'han bloquejat.</string>
   <string name="spotlight_feature_item_encryption_locks_title">Bloquejos de xifratge</string>

@@ -25,10 +25,10 @@
   <string name="padlocks_proton_send_e2ee_verified_recipient_description">Aquest correu electrònic és %s al dispositiu del remitent i només pot ser desxifrat pel destinatari. Proton no pot veure el contingut del correu en cap moment.</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient_description_link_text">xifrat d\'extrem a extrem</string>
   <string name="padlocks_proton_send_sign_only">Correu electrònic signat amb PGP</string>
-  <string name="padlocks_proton_send_sign_only_description">Vostè ha %s aquest correu electrònic, demostrant al destinatari que el seu correu electrònic és genuí i no ha estat manipulat.</string>
+  <string name="padlocks_proton_send_sign_only_description">Heu %s aquest correu electrònic, demostrant al destinatari que el vostre correu electrònic és autèntic i que no s\'ha manipulat.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">signat digitalment</string>
   <string name="padlocks_proton_send_recipient_pgp_signed">Correu electrònic signat amb PGP</string>
-  <string name="padlocks_proton_send_recipient_pgp_signed_description">Vostè ha %s aquest correu electrònic, demostrant al destinatari que el seu correu electrònic és genuí i no ha estat manipulat.</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description">Heu %s aquest correu electrònic, demostrant al destinatari que el vostre correu electrònic és autèntic i que no s\'ha manipulat.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">signat digitalment</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">Xifratge d\'accés zero</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled_description">Aquest destinatari ha desactivat el xifratge d\'extrem a extrem en el seu compte.</string>
@@ -103,7 +103,7 @@
   <string name="padlocks_sender_verification_failed_no_signature_link_text">no s\'ha pogut verificar el remitent</string>
   <string name="padlocks_recipient_verified_contact">El destinatari és un %s les claus de xifratge del qual heu considerat de confiança.</string>
   <string name="padlocks_recipient_verified_contact_link_text">contacte verificat</string>
-  <string name="padlocks_recipients_verified_contacts">Els destinataris són %s en les claus de xifrat dels quals heu confiat.</string>
+  <string name="padlocks_recipients_verified_contacts">Els destinataris són %s les claus de xifratge dels quals heu considerat de confiança.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">contactes verificats</string>
   <string name="padlocks_zero_access_addendum">Aquest correu electrònic s\'emmagatzema als servidors de Proton amb %s. Ni Proton ni ningú més poden llegir-lo.</string>
   <string name="padlocks_zero_access_addendum_link_text">xifratge d\'accés zero</string>

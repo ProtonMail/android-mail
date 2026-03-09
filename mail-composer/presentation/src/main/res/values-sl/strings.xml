@@ -176,5 +176,5 @@
   <string name="composer_expiration_time_learn_more">Več o tem</string>
   <string name="composer_enter_recipient_content_description">Vnesite prejemnika</string>
   <string name="composer_sender_address_description">Izberi naslov pošiljatelja</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_encryption_info_learn_more">Več o tem</string>
 </resources>

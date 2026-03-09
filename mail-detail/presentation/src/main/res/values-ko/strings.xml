@@ -82,8 +82,8 @@
   <string name="message_blocked_sender_button_text">차단 해제</string>
   <string name="message_expiration_banner_text">메시지가 %1$s에 만료됨</string>
   <string name="message_auto_delete_banner_text">메시지가 %1$s에 자동으로 삭제됨</string>
-  <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
-  <string name="message_auth_fail_banner_button">Learn more</string>
+  <string name="message_auth_fail_banner_text">이 이메일은 도메인의 인증 요구 사항을 충족하지 못했습니다. 스푸핑되었거나 잘못 전달되었을 수 있습니다!</string>
+  <string name="message_auth_fail_banner_button">자세히 알아보기</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">앱을 나가고 다음으로 이동하려고 하고 있습니다:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">다시 묻지 않기</string>

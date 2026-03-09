@@ -88,8 +88,8 @@
   <string name="message_blocked_sender_button_text">Odblokiraj</string>
   <string name="message_expiration_banner_text">To sporočilo bo poteklo v %1$s.</string>
   <string name="message_auto_delete_banner_text">To sporočilo bo samodejno izbrisano v %1$s</string>
-  <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
-  <string name="message_auth_fail_banner_button">Learn more</string>
+  <string name="message_auth_fail_banner_text">To e-poštno sporočilo ni izpolnilo zahtev za preverjanje pristnosti domene. Morda je ponarejeno ali nepravilno posredovano!</string>
+  <string name="message_auth_fail_banner_button">Več o tem</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Zapustili boste aplikacijo in se pomaknili do:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ne sprašuj več</string>

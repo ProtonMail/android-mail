@@ -59,7 +59,7 @@
   <string name="message_link_long_click_share">Compartir el enlace</string>
   <string name="message_link_long_click_share_via">Compartir el enlace por</string>
   <!-- Message body image actions -->
-  <string name="message_image_long_click_download">Download image</string>
+  <string name="message_image_long_click_download">Descargar imagen</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copiar la dirección</string>
   <string name="contact_actions_copy_address_description">Copiar la dirección del contacto</string>

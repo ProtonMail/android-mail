@@ -35,7 +35,7 @@
   <string name="mailbox_default_sender">(Sin remitente)</string>
   <string name="mailbox_error_message_offline">No hay conexión. No se pueden recuperar los elementos.</string>
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
-  <string name="mailbox_error_message_user_session">Unable to load session.  Please check your connection and try again.</string>
+  <string name="mailbox_error_message_user_session">No se pudo cargar la sesión. Revisa tu conexión e inténtalo de nuevo.</string>
   <string name="mailbox_error_message_unexpected">Se ha producido un error imprevisto</string>
   <string name="mailbox_is_empty_title">Ningún mensaje</string>
   <string name="trash_is_empty_title">Nada en la papelera</string>

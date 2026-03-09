@@ -17,17 +17,17 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_protection">Tracking protection:</string>
+  <string name="trackers_protection">트래커 보호:</string>
   <string name="show_details">세부 정보 보기</string>
-  <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
+  <string name="trackers_protection_no_trackers_detected">트래커 보호: 발견된 트래커 없음</string>
   <string name="tracking_protection">트래킹 보호</string>
-  <string name="tracking_protection_description">We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message.</string>
-  <string name="tracking_protection_learn_more">Learn more</string>
-  <string name="original">Original</string>
+  <string name="tracking_protection_description">Proton은 스팸 추적으로부터 사용자를 적극적으로 보호하고 있습니다. 여기서 이 메시지에서 차단된 스파이 픽셀과 정리된 추적 링크를 확인할 수 있습니다.</string>
+  <string name="tracking_protection_learn_more">자세히 알아보기</string>
+  <string name="original">원본</string>
   <string name="cleaned">정리됨</string>
-  <string name="open_link">Open link</string>
-  <string name="action_close_dialog_button">Close</string>
-  <string name="got_it">Got it</string>
+  <string name="open_link">링크 열기</string>
+  <string name="action_close_dialog_button">닫기</string>
+  <string name="got_it">확인</string>
   <plurals name="number_of_blocked_trackers">
     <item quantity="other">%s개 트래커 차단됨</item>
   </plurals>

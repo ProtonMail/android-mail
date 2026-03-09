@@ -84,7 +84,7 @@
   <string name="message_blocked_sender_button_text">Desbloqueja</string>
   <string name="message_expiration_banner_text">Aquest missatge expirarà en %1$s</string>
   <string name="message_auto_delete_banner_text">Aquest missatge s\'eliminarà automàticament en %1$s.</string>
-  <string name="message_auth_fail_banner_text">Aquest correu electrònic no ha superat els requisits d\'autenticació del seu domini. Pot ser que s\'hagi suplantat la identitat del remitent o que s\'hagi reenviat incorrectament.</string>
+  <string name="message_auth_fail_banner_text">Aquest correu electrònic no ha complert els requisits d\'autenticació del domini. Pot ser fals o reenviat de manera incorrecta.</string>
   <string name="message_auth_fail_banner_button">Més informació</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Esteu a punt de deixar l\'aplicació i navegar a:</string>
@@ -194,5 +194,5 @@
   <string name="raw_message_data_learn_more_action">Més informació</string>
   <string name="raw_message_data_error">S\'ha produït un error en carregar les dades</string>
   <string name="raw_message_data_successful_download">S\'ha completat la descàrrega</string>
-  <string name="raw_message_data_failed_download">S\'ha produït un error en la descàrrega</string>
+  <string name="raw_message_data_failed_download">Ha fallat la descàrrega</string>
 </resources>
