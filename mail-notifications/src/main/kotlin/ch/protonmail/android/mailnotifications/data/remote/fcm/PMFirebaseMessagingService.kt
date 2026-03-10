@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.proton.core.network.domain.session.SessionId
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,8 +43,20 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var firebaseNotificationsTokenChannel: FirebaseNotificationsTokenChannel
 
+    override fun onCreate() {
+        super.onCreate()
+        Timber.d("Notification: PMFirebaseMessagingService created")
+    }
+
+    override fun onDestroy() {
+        Timber.d("Notification: PMFirebaseMessagingService destroyed")
+        super.onDestroy()
+    }
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        Timber.d("Notification: New token received")
+
         appScope.launch { firebaseNotificationsTokenChannel.sendToken(token) }
     }
 
@@ -52,8 +65,16 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
 
         val uid = remoteMessage.data["UID"]
         val encryptedMessage = remoteMessage.data["encryptedMessage"]
+
         if (uid != null && encryptedMessage != null) {
+            Timber.d("Notification: Push message received for session id=%s", uid)
             appScope.launch { processPushNotificationMessage(SessionId(uid), encryptedMessage) }
+        } else {
+            Timber.w(
+                "Notification: Push payload missing required fields. uid=%s encryptedMessagePresent=%s",
+                uid,
+                encryptedMessage != null
+            )
         }
     }
 }

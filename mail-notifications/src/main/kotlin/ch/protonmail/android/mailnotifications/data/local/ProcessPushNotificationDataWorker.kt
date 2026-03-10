@@ -33,6 +33,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
+import timber.log.Timber
 
 @HiltWorker
 internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
@@ -49,6 +50,11 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         val sessionId = inputData.getString(KeyPushNotificationUid)
         val encryptedNotification = inputData.getString(KeyPushNotificationEncryptedMessage)
 
+        Timber.d(
+            "Notification: Process push notification for userId=%s, sessionId=%s",
+            userId,
+            sessionId
+        )
         return if (userId.isNullOrEmpty() || sessionId.isNullOrEmpty() || encryptedNotification.isNullOrEmpty()) {
             Result.failure(workDataOf(KeyProcessPushNotificationDataError to "Input data is missing"))
         } else {

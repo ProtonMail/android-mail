@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import me.proton.core.network.domain.session.SessionId
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class ProcessPushNotificationMessage @Inject constructor(
@@ -30,7 +31,13 @@ internal class ProcessPushNotificationMessage @Inject constructor(
 ) {
 
     suspend operator fun invoke(sessionId: SessionId, encryptedMessage: String) {
-        val userId = userSessionRepository.getUserId(sessionId) ?: return
+        val userId = userSessionRepository.getUserId(sessionId) ?: run {
+            Timber.w(
+                "Notification: Push received but userId could not be resolved for sessionId=%s",
+                sessionId.id
+            )
+            return
+        }
 
         enqueuer.enqueue<ProcessPushNotificationDataWorker>(
             userId,
