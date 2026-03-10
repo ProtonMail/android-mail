@@ -22,9 +22,12 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +55,9 @@ fun RedirectToWebBottomSheetContent(
     onDismiss: () -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(ProtonDimens.Spacing.ExtraLarge),
+        modifier = Modifier
+            .padding(ProtonDimens.Spacing.ExtraLarge)
+            .windowInsetsPadding(WindowInsets.navigationBars),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
