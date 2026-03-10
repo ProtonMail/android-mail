@@ -20,6 +20,7 @@ package ch.protonmail.android.mailnotifications.data
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,6 +32,7 @@ class FirebaseNotificationsTokenChannel @Inject constructor() {
     val tokenFlow = channel.receiveAsFlow()
 
     suspend fun sendToken(token: String) {
+        Timber.d("Notification: Sending new token to channel")
         channel.send(token)
     }
 }
