@@ -54,6 +54,10 @@ document.getElementById('$EDITOR_ID').addEventListener('paste', function (event)
 });
 
 /* Listen for changes to the body where images are removed and dispatches them to KT */
+// Tracks CIDs with a pending deletion check to avoid scheduling multiple rAF callbacks
+// for the same image (e.g. when hold-backspace fires several mutation batches per frame).
+const _pendingCidDeletionChecks = new Set();
+
 const removeInlineImageObserver = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
         if (mutation.type === 'childList') {
@@ -62,7 +66,26 @@ const removeInlineImageObserver = new MutationObserver(mutations => {
                     const src = node.getAttribute('src');
                     if (src && src.startsWith('cid:')) {
                         const cid = src.substring(4);
-                        $JAVASCRIPT_CALLBACK_INTERFACE_NAME.onInlineImageDeleted(cid)
+                        if (!_pendingCidDeletionChecks.has(cid)) {
+                            _pendingCidDeletionChecks.add(cid);
+                            // Defer the check to the next animation frame so that all
+                            // synchronous DOM restructuring from the current task (block
+                            // splits/merges caused by Enter or backspace near an inline
+                            // image) has fully settled before deciding if the image is
+                            // truly gone. Rapid hold-backspace can produce mutations
+                            // across separate batches within the same frame, so
+                            // document.contains() checked inside the callback is not
+                            // reliable — querying the editor after the frame is.
+                            requestAnimationFrame(() => {
+                                _pendingCidDeletionChecks.delete(cid);
+                                const editor = document.getElementById('$EDITOR_ID');
+                                const imgs = editor ? Array.from(editor.getElementsByTagName('img')) : [];
+                                const stillPresent = imgs.some(img => img.getAttribute('src') === 'cid:' + cid);
+                                if (!stillPresent) {
+                                    $JAVASCRIPT_CALLBACK_INTERFACE_NAME.onInlineImageDeleted(cid);
+                                }
+                            });
+                        }
                     }
                 }
             });
