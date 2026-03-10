@@ -19,6 +19,8 @@
 package ch.protonmail.android.uicomponents.fab
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,13 +53,20 @@ class ProtonFabHostState {
 }
 
 /**
- * Define a Fab that can be used by a @see FabHost in the parent screen skeleton. LazyFab will automatically clean up
- * after itself when the Screen leaves composition
+ * Define a Fab that can be used by a FabHost in the parent screen skeleton.
+ * LazyFab will clean up after itself when the Screen leaves composition.
  */
 @Composable
 fun LazyFab(fabHostState: ProtonFabHostState, fabContent: @Composable (modifier: Modifier) -> Unit) {
-    fabHostState.setFabProvider { modifier: Modifier ->
-        fabContent(modifier)
+    SideEffect {
+        fabHostState.setFabProvider { modifier: Modifier ->
+            fabContent(modifier)
+        }
+    }
+    DisposableEffect(Unit) {
+        onDispose {
+            fabHostState.setFabProvider(ProtonFabHostState.nopFabProvider)
+        }
     }
 }
 
