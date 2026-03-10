@@ -20,8 +20,12 @@ package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -214,6 +218,7 @@ private fun ConversationPager(
     Scaffold(
         modifier = modifier,
         containerColor = ProtonTheme.colors.backgroundNorm,
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
         snackbarHost = {
             DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
