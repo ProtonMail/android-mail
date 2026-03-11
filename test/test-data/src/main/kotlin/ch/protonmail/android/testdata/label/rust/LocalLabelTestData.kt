@@ -35,8 +35,7 @@ object LocalLabelTestData {
         display = false,
         notify = false,
         sticky = false,
-        total = 2.toULong(),
-        unread = 0.toULong()
+        count = 0.toULong()
     )
 
     val localMessageLabelWithCount = SidebarCustomLabel(
@@ -77,7 +76,6 @@ object LocalLabelTestData {
         display = false,
         notify = false,
         sticky = false,
-        total = 2.toULong(),
-        unread = 7.toULong()
+        count = 7.toULong()
     )
 }

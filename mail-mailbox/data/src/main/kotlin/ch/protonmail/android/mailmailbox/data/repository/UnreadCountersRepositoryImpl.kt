@@ -21,13 +21,13 @@ package ch.protonmail.android.mailmailbox.data.repository
 import ch.protonmail.android.mailcommon.domain.annotation.MissingRustApi
 import ch.protonmail.android.maillabel.data.local.LabelDataSource
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
-import ch.protonmail.android.maillabel.domain.model.LabelId
 import javax.inject.Inject
 
 class UnreadCountersRepositoryImpl @Inject constructor(
@@ -63,7 +63,7 @@ class UnreadCountersRepositoryImpl @Inject constructor(
     private fun observeSystemLabelsUnreadCounts(userId: UserId) = labelDataSource.observeSystemLabels(userId)
         .mapLatest { systemLabels ->
             systemLabels.map { system ->
-                LabelIdWithCount(system.id.toLabelId(), system.unread.toInt())
+                LabelIdWithCount(system.id.toLabelId(), system.count.toInt())
             }
         }
 
