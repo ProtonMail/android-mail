@@ -45,7 +45,7 @@ class InMemoryPageInvalidationRepositoryImplTest {
     }
 
     @Test
-    fun `late subscription should still receive events emitted before observing`() = runTest {
+    fun `late subscription should receive latest replayed event`() = runTest {
         // Given
         val event1 = PageInvalidationEvent.ConversationsInvalidated()
         val event2 = PageInvalidationEvent.ConversationsInvalidated()
@@ -54,11 +54,9 @@ class InMemoryPageInvalidationRepositoryImplTest {
         repository.submit(event1)
         repository.submit(event2)
 
-        // Then: subscriber should still receive both in order (channel buffered)
+        // Then: late subscriber should receive only the latest replayed event
         repository.observePageInvalidationEvents().test {
-            assertEquals(event1, awaitItem())
             assertEquals(event2, awaitItem())
-
             cancelAndIgnoreRemainingEvents()
         }
     }

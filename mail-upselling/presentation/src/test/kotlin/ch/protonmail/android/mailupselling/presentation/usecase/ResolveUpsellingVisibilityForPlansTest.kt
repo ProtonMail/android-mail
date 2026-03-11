@@ -20,7 +20,9 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.clearAllMocks
@@ -37,11 +39,15 @@ import kotlin.test.assertEquals
 internal class ResolveUpsellingVisibilityForPlansTest {
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
+    private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private lateinit var resolveUpsellingVisibilityForPlans: ResolveUpsellingVisibilityForPlans
 
     @BeforeTest
     fun setup() {
-        resolveUpsellingVisibilityForPlans = ResolveUpsellingVisibilityForPlans(getCurrentBlackFridayPhase)
+        resolveUpsellingVisibilityForPlans = ResolveUpsellingVisibilityForPlans(
+            getCurrentBlackFridayPhase,
+            getCurrentSpringPromoPhase
+        )
     }
 
     @AfterTest
@@ -102,6 +108,34 @@ internal class ResolveUpsellingVisibilityForPlansTest {
     }
 
     @Test
+    fun `should return spring26 when at least one offer is tagged with spring26`() = runTest {
+        // Given
+        coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.Active.Wave1
+
+        val plans = listOf(mailMonthlyBase, mailYearlySpringPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.SpringPromo.Wave1, actual)
+    }
+
+    @Test
+    fun `should return spring26 when there are both spring26 and intro price offers`() = runTest {
+        // Given
+        coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.Active.Wave2
+
+        val plans = listOf(mailMonthlyIntroPrice, mailYearlySpringPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.SpringPromo.Wave2, actual)
+    }
+
+    @Test
     fun `should return intro pricing when at least one offer is tagged with intro pricing`() = runTest {
         // Given
         val plans = listOf(mailMonthlyIntroPrice, mailYearlyBase)
@@ -157,6 +191,12 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         val mailYearlyIntroPrice = mailYearlyBase.copy(
             offer = mailMonthlyBase.offer.copy(
                 tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.IntroductoryPrice.value))
+            )
+        )
+
+        val mailYearlySpringPrice = mailYearlyBase.copy(
+            offer = mailYearlyBase.offer.copy(
+                tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.SpringOffer.value))
             )
         )
     }

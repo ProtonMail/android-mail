@@ -44,5 +44,15 @@ sealed interface UpsellingVisibility {
             @Serializable
             data object Wave2 : BlackFriday
         }
+
+        @Serializable
+        sealed interface SpringPromo : Promotional {
+
+            @Serializable
+            data object Wave1 : SpringPromo
+
+            @Serializable
+            data object Wave2 : SpringPromo
+        }
     }
 }

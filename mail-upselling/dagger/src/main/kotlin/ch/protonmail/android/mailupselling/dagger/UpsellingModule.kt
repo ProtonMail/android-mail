@@ -20,12 +20,17 @@ package ch.protonmail.android.mailupselling.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.BlackFridayDataStoreProvider
+import ch.protonmail.android.mailupselling.data.SpringPromoDataStoreProvider
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSourceImpl
+import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSource
+import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.repository.BlackFridayRepositoryImpl
+import ch.protonmail.android.mailupselling.data.repository.SpringPromoRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
+import ch.protonmail.android.mailupselling.domain.repository.SpringPromoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -52,6 +57,14 @@ interface UpsellingModule {
     @Singleton
     fun provideBlackFridayDataSource(impl: BlackFridayLocalDataSourceImpl): BlackFridayLocalDataSource
 
+    @Binds
+    @Reusable
+    fun provideSpringPromoRepository(impl: SpringPromoRepositoryImpl): SpringPromoRepository
+
+    @Binds
+    @Singleton
+    fun provideSpringPromoDataSource(impl: SpringPromoLocalDataSourceImpl): SpringPromoLocalDataSource
+
     @Module
     @InstallIn(SingletonComponent::class)
     object UpsellingModuleProvider {
@@ -60,6 +73,11 @@ interface UpsellingModule {
         @Singleton
         fun provideDataStoreProvider(@ApplicationContext context: Context): BlackFridayDataStoreProvider =
             BlackFridayDataStoreProvider(context)
+
+        @Provides
+        @Singleton
+        fun provideSpringPromoDataStoreProvider(@ApplicationContext context: Context): SpringPromoDataStoreProvider =
+            SpringPromoDataStoreProvider(context)
     }
 }
 

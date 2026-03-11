@@ -21,8 +21,11 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySupported
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
@@ -30,7 +33,8 @@ import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import javax.inject.Inject
 
 internal class PlanUpgradeMapper @Inject constructor(
-    private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase
+    private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
+    private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase
 ) {
 
     suspend fun resolveVariant(
@@ -39,10 +43,20 @@ internal class PlanUpgradeMapper @Inject constructor(
         entryPoint: UpsellingEntryPoint
     ): PlanUpgradeVariant {
         val instances = listOfNotNull(monthlyInstance, yearlyInstance)
+        val currentSpringPromoPhase = getCurrentSpringPromoPhase()
         val currentBlackFridayPhase = getCurrentBlackFridayPhase()
 
         return when {
-            // A plan can be tagged as BF + Intro, so the extra checks on the entryPoint/phases are required.
+            // A plan can be tagged as BF + Intro OR Sp26 + intro,
+            // so the extra checks on the entryPoint/phases are required.
+            entryPoint is SpringPromoSupported &&
+                currentSpringPromoPhase is SpringPromoPhase.Active &&
+                instances.containsTag(PlanUpgradeSupportedTags.SpringOffer) ->
+                when (currentSpringPromoPhase) {
+                    SpringPromoPhase.Active.Wave2 -> PlanUpgradeVariant.SpringPromo.Wave2
+                    SpringPromoPhase.Active.Wave1 -> PlanUpgradeVariant.SpringPromo.Wave1
+                }
+
             entryPoint is BlackFridaySupported &&
                 currentBlackFridayPhase is BlackFridayPhase.Active &&
                 instances.containsTag(PlanUpgradeSupportedTags.BlackFriday) ->
@@ -70,6 +84,10 @@ internal class PlanUpgradeMapper @Inject constructor(
 
             variant is PlanUpgradeVariant.BlackFriday -> {
                 PlanUpgradeInstanceListUiModel.Data.BlackFriday(variant, shorterCycleUiModel, longerCycleUiModel)
+            }
+
+            variant is PlanUpgradeVariant.SpringPromo -> {
+                PlanUpgradeInstanceListUiModel.Data.SpringPromo(variant, shorterCycleUiModel, longerCycleUiModel)
             }
 
             shorterCycleUiModel is PlanUpgradeInstanceUiModel.Promotional ||

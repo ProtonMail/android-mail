@@ -20,19 +20,30 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.isTaggedWith
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import javax.inject.Inject
 
 class ResolveUpsellingVisibilityForPlans @Inject constructor(
-    private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase
+    private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
+    private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase
 ) {
 
     suspend operator fun invoke(plans: List<ProductOfferDetail>): UpsellingVisibility {
         val instances = plans.takeIf { it.size == 2 } // We always expect 2 instances (monthly + yearly)
             ?: return UpsellingVisibility.Hidden
+
+        // Only check Spring Promo phase if offers are tagged for it
+        if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.SpringOffer) }) {
+            val phase = getCurrentSpringPromoPhase()
+            if (phase is SpringPromoPhase.Active) {
+                return phase.toUpsellingVisibility()
+            }
+        }
 
         // Only check BF phase if offers are tagged for it
         if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) }) {
@@ -54,5 +65,10 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
     private fun BlackFridayPhase.Active.toUpsellingVisibility() = when (this) {
         BlackFridayPhase.Active.Wave1 -> UpsellingVisibility.Promotional.BlackFriday.Wave1
         BlackFridayPhase.Active.Wave2 -> UpsellingVisibility.Promotional.BlackFriday.Wave2
+    }
+
+    private fun SpringPromoPhase.Active.toUpsellingVisibility() = when (this) {
+        SpringPromoPhase.Active.Wave1 -> UpsellingVisibility.Promotional.SpringPromo.Wave1
+        SpringPromoPhase.Active.Wave2 -> UpsellingVisibility.Promotional.SpringPromo.Wave2
     }
 }

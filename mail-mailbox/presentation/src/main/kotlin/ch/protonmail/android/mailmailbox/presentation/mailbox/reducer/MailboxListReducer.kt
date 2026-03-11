@@ -116,11 +116,11 @@ class MailboxListReducer @Inject constructor(
     ): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                paginatorInvalidationEffect = Effect.of(Unit)
+                paginatorInvalidationEffect = Effect.of(operation.event)
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
-                paginatorInvalidationEffect = Effect.of(Unit)
+                paginatorInvalidationEffect = Effect.of(operation.event)
             )
 
             else -> currentState

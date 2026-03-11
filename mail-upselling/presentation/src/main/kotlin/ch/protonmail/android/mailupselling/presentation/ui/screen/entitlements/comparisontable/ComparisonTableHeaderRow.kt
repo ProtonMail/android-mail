@@ -37,7 +37,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -51,11 +50,11 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.BlackFriday
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.coloredBorderBrush
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
+import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantColors
 
 @Composable
-internal fun ComparisonTableHeaderRow(planUpgradeVariant: PlanUpgradeVariant, onPaidColumnPlaced: (Dp) -> Unit) {
+internal fun ComparisonTableHeaderRow(colors: UpsellingVariantColors, onPaidColumnPlaced: (Dp) -> Unit) {
     var paidColumnWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
 
@@ -82,7 +81,7 @@ internal fun ComparisonTableHeaderRow(planUpgradeVariant: PlanUpgradeVariant, on
                 text = stringResource(R.string.upselling_free_plan),
                 style = ProtonTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = UpsellingLayoutValues.ComparisonTable.textColor,
+                color = colors.tableTextColor,
                 textAlign = TextAlign.Center,
                 fontSize = UpsellingLayoutValues.ComparisonTable.titleColumnSize
             )
@@ -102,7 +101,7 @@ internal fun ComparisonTableHeaderRow(planUpgradeVariant: PlanUpgradeVariant, on
         ) {
             Row {
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
-                PlusBadge(variant = planUpgradeVariant)
+                PlusBadge(colors = colors)
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
             }
         }
@@ -110,18 +109,16 @@ internal fun ComparisonTableHeaderRow(planUpgradeVariant: PlanUpgradeVariant, on
 }
 
 @Composable
-private fun PlusBadge(variant: PlanUpgradeVariant) {
-    val brushColor = if (variant is PlanUpgradeVariant.BlackFriday) BlackFriday.borderBrush else coloredBorderBrush
-
+private fun PlusBadge(colors: UpsellingVariantColors) {
     Surface(
         modifier = Modifier
             .border(
                 width = 2.dp,
-                brush = brushColor,
+                brush = colors.plusBadgeBorderBrush,
                 shape = RoundedCornerShape(8.dp)
             ),
         shape = RoundedCornerShape(8.dp),
-        color = Color.Black.copy(alpha = 0.20f)
+        color = colors.plusBadgeBackground
     ) {
         Text(
             modifier = Modifier
@@ -130,7 +127,7 @@ private fun PlusBadge(variant: PlanUpgradeVariant) {
             text = stringResource(R.string.upselling_plus_plan),
             style = ProtonTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
-            color = UpsellingLayoutValues.ComparisonTable.textColor,
+            color = colors.tableTextColor,
             textAlign = TextAlign.Center,
             fontSize = UpsellingLayoutValues.ComparisonTable.titleColumnSize
         )
@@ -141,6 +138,8 @@ private fun PlusBadge(variant: PlanUpgradeVariant) {
 @Composable
 private fun ComparisonTableHeaderRowPreview() {
     ProtonTheme {
-        ComparisonTableHeaderRow(planUpgradeVariant = PlanUpgradeVariant.IntroductoryPrice) { }
+        ComparisonTableHeaderRow(
+            colors = planUpgradeVariantColors(PlanUpgradeVariant.IntroductoryPrice)
+        ) { }
     }
 }

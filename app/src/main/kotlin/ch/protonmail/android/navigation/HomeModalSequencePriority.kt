@@ -23,6 +23,7 @@ import ch.protonmail.android.mailnotifications.presentation.model.NotificationsP
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
+import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
 
 sealed interface HomeInterstitialPriority {
     data object Loading : HomeInterstitialPriority
@@ -30,6 +31,7 @@ sealed interface HomeInterstitialPriority {
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
     data object FeatureSpotlight : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
+    data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
 
@@ -37,7 +39,8 @@ fun resolveHomeInterstitialPriority(
     onboardingState: OnboardingEligibilityState,
     notificationsState: NotificationsPermissionState,
     featureSpotlightState: FeatureSpotlightState,
-    blackFridayState: BlackFridayModalState
+    blackFridayState: BlackFridayModalState,
+    springSaleState: SpringPromoModalState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
     @Suppress("ComplexCondition")
@@ -56,6 +59,7 @@ fun resolveHomeInterstitialPriority(
 
         featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
         blackFridayState is BlackFridayModalState.Show -> HomeInterstitialPriority.BlackFriday(blackFridayState)
+        springSaleState is SpringPromoModalState.Show -> HomeInterstitialPriority.SpringPromo(springSaleState)
         else -> HomeInterstitialPriority.None
     }
 }

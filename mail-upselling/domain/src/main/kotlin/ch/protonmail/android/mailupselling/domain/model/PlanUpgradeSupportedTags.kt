@@ -24,12 +24,13 @@ import me.proton.android.core.payment.domain.model.ProductOfferDetail
  * Represents the offers (either promotional or base plan) supported by the current app version.
  *
  * Any offer that does not contain the following tags on Play Console won't be picked up by the app,
- * with the exception of the base offer (often untagged).
+ * except the base offer (often untagged).
  */
 sealed class PlanUpgradeSupportedTags(val value: String) {
 
     data object BlackFriday : PlanUpgradeSupportedTags("bf-promo")
     data object IntroductoryPrice : PlanUpgradeSupportedTags("introductory-price")
+    data object SpringOffer : PlanUpgradeSupportedTags("spring26")
 }
 
 fun ProductOfferDetail.isTaggedWith(tag: PlanUpgradeSupportedTags) = offer.tags.value.contains(tag.value)

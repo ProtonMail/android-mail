@@ -321,7 +321,7 @@ class MailboxViewModel @Inject constructor(
 
         observePageInvalidationEvents()
             .onEach { event ->
-                Timber.d("Received page invalidation event with id: ${event.id}")
+                Timber.d("Paginator: Received page invalidation event with id: ${event.id}")
                 emitNewStateFrom(MailboxEvent.PaginatorInvalidated(event))
             }
             .launchIn(viewModelScope)

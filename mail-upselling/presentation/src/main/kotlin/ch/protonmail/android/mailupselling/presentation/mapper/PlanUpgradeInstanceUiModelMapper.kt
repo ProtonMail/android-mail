@@ -74,6 +74,7 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
 
         val promoKind = when {
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) -> PromoKind.BlackFriday
+            productDetail.isTaggedWith(PlanUpgradeSupportedTags.SpringOffer) -> PromoKind.SpringPromo
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.IntroductoryPrice) -> PromoKind.IntroPrice
             productDetail.offer.isBaseOffer -> null
             else -> null
@@ -85,8 +86,10 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
             val promotionalPrice = currentPrice.normalizedPrice(cycle.months)
             val renewalPrice = defaultPrice.normalizedPrice(cycle.months)
 
-            // In case of BF, discount rate is based on monthly pricing, not on original same-cycle pricing.
-            val discountRate = if (promoKind == PromoKind.BlackFriday && cycle == PlanUpgradeCycle.Yearly) {
+            val isSeasonalOffer = promoKind == PromoKind.SpringPromo || promoKind == PromoKind.BlackFriday
+
+            // In case of seasonal offer, discount % is based on monthly pricing, not on original same-cycle pricing.
+            val discountRate = if (isSeasonalOffer && cycle == PlanUpgradeCycle.Yearly) {
                 comparisonPriceInstance?.let { getDiscountRate(it, productDetail) }
             } else {
                 getDiscountRate(promotionalPrice, renewalPrice)
@@ -156,6 +159,7 @@ private fun ProductOfferDetail.getRenewalText(context: Context): String? {
         offer.isBaseOffer -> null
         offer.tags.value.contains("bf-promo") -> getBlackFridayRenewal()
         offer.tags.value.contains("introductory-price") -> getIntroPricingRenewal()
+        offer.tags.value.contains("spring26") -> getBlackFridayRenewal()
         else -> res.getQuantityString(
             R.plurals.payment_welcome_offer_renew_other,
             offer.current.cycle,

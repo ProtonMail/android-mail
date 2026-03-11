@@ -44,6 +44,7 @@ import ch.protonmail.android.mailupselling.presentation.model.comparisontable.Co
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
+import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantColors
 
 @Composable
 internal fun ComparisonTable(
@@ -51,6 +52,7 @@ internal fun ComparisonTable(
     variant: PlanUpgradeVariant,
     modifier: Modifier = Modifier
 ) {
+    val colors = planUpgradeVariantColors(variant)
     var highlightHeight by remember { mutableStateOf(0.dp) }
     var plusCellHeaderWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
@@ -77,12 +79,12 @@ internal fun ComparisonTable(
                     with(localDensity) { highlightHeight = coordinates.size.height.toDp() }
                 }
         ) {
-            ComparisonTableHeaderRow(planUpgradeVariant = variant, onPaidColumnPlaced = { plusCellHeaderWidth = it })
+            ComparisonTableHeaderRow(colors = colors, onPaidColumnPlaced = { plusCellHeaderWidth = it })
 
             entitlementsUiModel.items.forEachIndexed { index, item ->
                 ComparisonTableEntitlement(
                     modifier = Modifier.padding(vertical = ProtonDimens.Spacing.Compact),
-                    variant = variant,
+                    colors = colors,
                     uiModel = item,
                     plusCellWidth = plusCellHeaderWidth
                 )
@@ -93,7 +95,7 @@ internal fun ComparisonTable(
                             .fillMaxWidth()
                             .padding(vertical = ProtonDimens.Spacing.Small)
                             .height(UpsellingLayoutValues.ComparisonTable.spacerHeight)
-                            .background(UpsellingLayoutValues.ComparisonTable.spacerBackgroundColor)
+                            .background(colors.tableDividerColor)
                     )
                 } else {
                     Spacer(

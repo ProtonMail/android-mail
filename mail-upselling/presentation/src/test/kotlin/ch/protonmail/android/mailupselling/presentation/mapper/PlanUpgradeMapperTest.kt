@@ -19,8 +19,10 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.clearAllMocks
@@ -42,11 +44,15 @@ internal class PlanUpgradeMapperTest(
 ) {
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
+    private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private lateinit var planUpgradeMapper: PlanUpgradeMapper
 
     @BeforeTest
     fun setup() {
-        planUpgradeMapper = PlanUpgradeMapper(getCurrentBlackFridayPhase)
+        planUpgradeMapper = PlanUpgradeMapper(
+            getCurrentBlackFridayPhase,
+            getCurrentSpringPromoPhase
+        )
     }
 
     @AfterTest
@@ -58,6 +64,7 @@ internal class PlanUpgradeMapperTest(
     fun `should map to the correct variant`() = runTest {
         // Given
         coEvery { getCurrentBlackFridayPhase() } returns testInput.blackFridayPhase
+        coEvery { getCurrentSpringPromoPhase() } returns testInput.springPromoPhase
 
         // When
         val actual = planUpgradeMapper.resolveVariant(
@@ -77,6 +84,7 @@ internal class PlanUpgradeMapperTest(
             val yearlyInstance: ProductOfferDetail,
             val entryPoint: UpsellingEntryPoint,
             val blackFridayPhase: BlackFridayPhase,
+            val springPromoPhase: SpringPromoPhase,
             val expectedVariant: PlanUpgradeVariant
         )
 
@@ -90,6 +98,7 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.Normal
                 )
             ),
@@ -100,6 +109,7 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.Active.Wave2,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.BlackFriday.Wave2
                 )
             ),
@@ -110,6 +120,7 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Sidebar,
                     blackFridayPhase = BlackFridayPhase.Active.Wave1,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.BlackFriday.Wave1
                 )
             ),
@@ -120,6 +131,7 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.IntroductoryPrice
                 )
             ),
@@ -130,6 +142,7 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.MobileSignature,
                     blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.IntroductoryPrice
                 )
             ),
@@ -140,16 +153,18 @@ internal class PlanUpgradeMapperTest(
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.Active.Wave2,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.IntroductoryPrice
                 )
             ),
             arrayOf(
-                "should return normal variant on BF not active for relevant entrypoints",
+                "should return normal variant on BF and spring promo not active for relevant entrypoints",
                 TestInput(
                     monthlyInstance = UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.Normal
                 )
             )
