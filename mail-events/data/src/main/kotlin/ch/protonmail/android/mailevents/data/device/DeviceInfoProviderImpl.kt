@@ -19,17 +19,17 @@
 package ch.protonmail.android.mailevents.data.device
 
 import android.os.Build
+import ch.protonmail.android.mailcommon.data.mapper.LocalDeviceInfoProvider
 import ch.protonmail.android.mailevents.domain.model.DeviceInfo
 import ch.protonmail.android.mailevents.domain.repository.DeviceInfoProvider
 import javax.inject.Inject
-import uniffi.proton_mail_uniffi.DeviceInfoProvider as UniffiDeviceInfoProvider
 
 class DeviceInfoProviderImpl @Inject constructor(
-    private val uniffiDeviceInfoProvider: UniffiDeviceInfoProvider
+    private val localProvider: LocalDeviceInfoProvider
 ) : DeviceInfoProvider {
 
     override suspend fun getDeviceInfo(): DeviceInfo {
-        val uniffiDeviceInfo = uniffiDeviceInfoProvider.getDeviceInfo()
+        val uniffiDeviceInfo = localProvider.getDeviceInfo()
 
         return DeviceInfo(
             platform = DeviceInfo.PLATFORM_ANDROID,

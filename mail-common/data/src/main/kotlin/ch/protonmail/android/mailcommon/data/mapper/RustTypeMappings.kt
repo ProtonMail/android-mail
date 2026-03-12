@@ -47,6 +47,7 @@ import uniffi.proton_mail_uniffi.ContactSuggestion
 import uniffi.proton_mail_uniffi.Conversation
 import uniffi.proton_mail_uniffi.DecryptedAttachment
 import uniffi.proton_mail_uniffi.DeviceContact
+import uniffi.proton_mail_uniffi.DeviceInfoProvider
 import uniffi.proton_mail_uniffi.Disposition
 import uniffi.proton_mail_uniffi.DraftSendResult
 import uniffi.proton_mail_uniffi.ExclusiveLocation
@@ -252,3 +253,4 @@ typealias LocalPrivacyLock = PrivacyLock
 typealias LocalPrivacyLockColor = PrivacyLockColor
 typealias LocalPrivacyLockIcon = PrivacyLockIcon
 typealias LocalPrivacyLockTooltip = PrivacyLockTooltip
+typealias LocalDeviceInfoProvider = DeviceInfoProvider
