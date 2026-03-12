@@ -25,8 +25,8 @@ import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSourceImpl
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
 import ch.protonmail.android.mailevents.data.referrer.PlayInstallReferrerDataSourceImpl
-import ch.protonmail.android.mailevents.data.remote.EventsRemoteDataSource
-import ch.protonmail.android.mailevents.data.remote.RustEventsRemoteDataSource
+import ch.protonmail.android.mailevents.data.remote.EventsDataSource
+import ch.protonmail.android.mailevents.data.remote.RustEventsDataSource
 import ch.protonmail.android.mailevents.data.repository.AppInstallTimeRepositoryImpl
 import ch.protonmail.android.mailevents.data.repository.EventsRepositoryImpl
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
@@ -69,7 +69,7 @@ object MailEventsModule {
 
         @Binds
         @Reusable
-        fun bindsEventsRemoteDataSource(impl: RustEventsRemoteDataSource): EventsRemoteDataSource
+        fun bindsEventsRemoteDataSource(impl: RustEventsDataSource): EventsDataSource
 
         @Binds
         @Reusable

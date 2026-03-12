@@ -20,7 +20,7 @@ package ch.protonmail.android.mailevents.data.repository
 
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
-import ch.protonmail.android.mailevents.data.remote.EventsRemoteDataSource
+import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
 import ch.protonmail.android.mailevents.domain.repository.DeviceInfoProvider
@@ -36,7 +36,7 @@ internal class EventsRepositoryImplTest {
 
     private val mailEventsDataSource = mockk<MailEventsDataSource>(relaxUnitFun = true)
     private val installReferrerDataSource = mockk<InstallReferrerDataSource>()
-    private val eventsRemoteDataSource = mockk<EventsRemoteDataSource>()
+    private val eventsDataSource = mockk<EventsDataSource>()
     private val appInfoProvider = mockk<AppInfoProvider>()
     private val deviceInfoProvider = mockk<DeviceInfoProvider>()
     private val isNewAppInstall = mockk<IsNewAppInstall>()
@@ -44,7 +44,7 @@ internal class EventsRepositoryImplTest {
     private val repository = EventsRepositoryImpl(
         mailEventsDataSource = mailEventsDataSource,
         installReferrerDataSource = installReferrerDataSource,
-        eventsRemoteDataSource = eventsRemoteDataSource,
+        eventsDataSource = eventsDataSource,
         appInfoProvider = appInfoProvider,
         deviceInfoProvider = deviceInfoProvider,
         isNewAppInstall = isNewAppInstall
@@ -61,6 +61,6 @@ internal class EventsRepositoryImplTest {
 
         // Then
         assertTrue(result.isLeft())
-        coVerify(exactly = 0) { eventsRemoteDataSource.sendEvent(any()) }
+        coVerify(exactly = 0) { eventsDataSource.sendEvent(any()) }
     }
 }

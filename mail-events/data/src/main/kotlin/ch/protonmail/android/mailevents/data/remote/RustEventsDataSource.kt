@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import timber.log.Timber
 import javax.inject.Inject
 
-class RustEventsRemoteDataSource @Inject constructor(
+class RustEventsDataSource @Inject constructor(
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository
-) : EventsRemoteDataSource {
+) : EventsDataSource {
 
     override suspend fun sendEvent(payload: EventPayload): Either<DataError, Unit> {
         val eventType = payload.toMeasurementEventType()

@@ -22,7 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.remote.model.EventPayload
 
-interface EventsRemoteDataSource {
+interface EventsDataSource {
 
     suspend fun sendEvent(payload: EventPayload): Either<DataError, Unit>
 }

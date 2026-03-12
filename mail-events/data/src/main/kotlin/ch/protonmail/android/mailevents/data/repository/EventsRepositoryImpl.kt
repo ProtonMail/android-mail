@@ -24,7 +24,7 @@ import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
-import ch.protonmail.android.mailevents.data.remote.EventsRemoteDataSource
+import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.data.remote.model.EventMetadata
 import ch.protonmail.android.mailevents.data.remote.model.toPayload
 import ch.protonmail.android.mailevents.domain.model.AppEvent
@@ -39,7 +39,7 @@ import javax.inject.Inject
 class EventsRepositoryImpl @Inject constructor(
     private val mailEventsDataSource: MailEventsDataSource,
     private val installReferrerDataSource: InstallReferrerDataSource,
-    private val eventsRemoteDataSource: EventsRemoteDataSource,
+    private val eventsDataSource: EventsDataSource,
     private val appInfoProvider: AppInfoProvider,
     private val deviceInfoProvider: DeviceInfoProvider,
     private val isNewAppInstall: IsNewAppInstall
@@ -64,7 +64,7 @@ class EventsRepositoryImpl @Inject constructor(
                 deviceInfo = deviceInfoProvider.getDeviceInfo()
             )
             val payload = event.toPayload(metadata)
-            eventsRemoteDataSource.sendEvent(payload)
+            eventsDataSource.sendEvent(payload)
         }
     }
 
