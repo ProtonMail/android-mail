@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailevents.data.local
 
 import java.util.UUID
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -63,51 +64,29 @@ class MailEventsDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun hasInstallEventBeenSent(): Boolean {
+    override suspend fun hasInstallEventBeenSent(): Boolean = hasEventBeenSent(installEventSentKey)
+
+    override suspend fun hasFirstMessageSentEventBeenSent(): Boolean = hasEventBeenSent(firstMessageSentKey)
+
+    override suspend fun hasSignupEventBeenSent(): Boolean = hasEventBeenSent(signupEventSentKey)
+
+    override suspend fun markInstallEventSent(): Either<DataError.Local, Unit> = markEventSent(installEventSentKey)
+
+    override suspend fun markSentMessageEventSent(): Either<DataError.Local, Unit> = markEventSent(firstMessageSentKey)
+
+    override suspend fun markSignupEventSent(): Either<DataError.Local, Unit> = markEventSent(signupEventSentKey)
+
+    private suspend fun hasEventBeenSent(key: Preferences.Key<Boolean>): Boolean {
         val prefsEither = dataStoreProvider.eventsDataStore.safeData.first()
         return prefsEither.fold(
             ifLeft = { false },
-            ifRight = { prefs -> prefs[installEventSentKey] ?: false }
+            ifRight = { prefs -> prefs[key] ?: false }
         )
     }
 
-    override suspend fun hasFirstMessageSentEventBeenSent(): Boolean {
-        val prefsEither = dataStoreProvider.eventsDataStore.safeData.first()
-        return prefsEither.fold(
-            ifLeft = { false },
-            ifRight = { prefs -> prefs[firstMessageSentKey] ?: false }
-        )
-    }
-
-    override suspend fun markInstallEventSent(): Either<DataError.Local, Unit> {
+    private suspend fun markEventSent(key: Preferences.Key<Boolean>): Either<DataError.Local, Unit> {
         return dataStoreProvider.eventsDataStore.safeEdit { mutablePrefs ->
-            mutablePrefs[installEventSentKey] = true
-        }.fold(
-            ifLeft = { DataError.Local.Unknown.left() },
-            ifRight = { Unit.right() }
-        )
-    }
-
-    override suspend fun markSentMessageEventSent(): Either<DataError.Local, Unit> {
-        return dataStoreProvider.eventsDataStore.safeEdit { mutablePrefs ->
-            mutablePrefs[firstMessageSentKey] = true
-        }.fold(
-            ifLeft = { DataError.Local.Unknown.left() },
-            ifRight = { Unit.right() }
-        )
-    }
-
-    override suspend fun hasSignupEventBeenSent(): Boolean {
-        val prefsEither = dataStoreProvider.eventsDataStore.safeData.first()
-        return prefsEither.fold(
-            ifLeft = { false },
-            ifRight = { prefs -> prefs[signupEventSentKey] ?: false }
-        )
-    }
-
-    override suspend fun markSignupEventSent(): Either<DataError.Local, Unit> {
-        return dataStoreProvider.eventsDataStore.safeEdit { mutablePrefs ->
-            mutablePrefs[signupEventSentKey] = true
+            mutablePrefs[key] = true
         }.fold(
             ifLeft = { DataError.Local.Unknown.left() },
             ifRight = { Unit.right() }
