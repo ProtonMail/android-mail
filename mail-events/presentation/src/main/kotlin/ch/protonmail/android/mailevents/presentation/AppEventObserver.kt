@@ -41,21 +41,21 @@ class AppEventObserver @Inject constructor(
                 when (event) {
                     is AppEvent.MessageSent -> {
                         trackFirstMessageSentEvent().onLeft { error ->
-                            Timber.e("Failed to track first message sent event: $error")
+                            Timber.d("Failed to track first message sent event: $error")
                         }
                     }
 
                     is AppEvent.SubscriptionPaywallShown,
                     is AppEvent.SubscriptionOnboardingShown -> {
                         eventsRepository.sendEvent(event).onLeft { error ->
-                            Timber.e("Failed to track subscription event: $error")
+                            Timber.d("Failed to track subscription event: $error")
                         }
                     }
 
                     is AppEvent.OfferReceived,
                     is AppEvent.OfferClicked -> {
                         eventsRepository.sendEvent(event).onLeft { error ->
-                            Timber.e("Failed to track offer event: $error")
+                            Timber.d("Failed to track offer event: $error")
                         }
                     }
 
