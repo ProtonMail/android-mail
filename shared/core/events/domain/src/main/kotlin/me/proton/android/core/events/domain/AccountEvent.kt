@@ -18,9 +18,9 @@
 
 package me.proton.android.core.events.domain
 
-sealed class AccountEvent {
+sealed interface AccountEvent {
 
-    data object SignupCompleted : AccountEvent()
+    data object SignupCompleted : AccountEvent
 
     data class PurchaseCompleted(
         val productId: String,
@@ -29,7 +29,7 @@ sealed class AccountEvent {
         val amount: Long,
         val currency: String,
         val orderId: String
-    ) : AccountEvent()
+    ) : AccountEvent
 
-    data object SubscriptionScreenShown : AccountEvent()
+    data object SubscriptionScreenShown : AccountEvent
 }

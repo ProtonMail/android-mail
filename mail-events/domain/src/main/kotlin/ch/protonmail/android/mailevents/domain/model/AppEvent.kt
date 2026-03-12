@@ -18,15 +18,15 @@
 
 package ch.protonmail.android.mailevents.domain.model
 
-sealed class AppEvent {
+sealed interface AppEvent {
 
     data class Install(
         val isReinstall: Boolean,
         val installReceipt: String?,
         val installRef: String?
-    ) : AppEvent()
+    ) : AppEvent
 
-    data class AppOpen(val isNewSession: Boolean) : AppEvent()
+    data class AppOpen(val isNewSession: Boolean) : AppEvent
 
     data class Subscription(
         val contentList: List<String>,
@@ -37,26 +37,26 @@ sealed class AppEvent {
         val transactionId: String?,
         val isFirstPurchase: Boolean,
         val isFreeToPaid: Boolean
-    ) : AppEvent()
+    ) : AppEvent
 
     data class AccountCreated(
         val registrationMethod: String?,
         val referralCode: String?
-    ) : AppEvent()
+    ) : AppEvent
 
-    data object OnboardingCompleted : AppEvent()
+    data object OnboardingCompleted : AppEvent
 
-    data object MessageSent : AppEvent()
+    data object MessageSent : AppEvent
 
-    data object SubscriptionPaywallShown : AppEvent()
+    data object SubscriptionPaywallShown : AppEvent
 
-    data object SubscriptionOnboardingShown : AppEvent()
+    data object SubscriptionOnboardingShown : AppEvent
 
-    data object SubscriptionManualShown : AppEvent()
+    data object SubscriptionManualShown : AppEvent
 
-    data class OfferReceived(val offerId: String) : AppEvent()
+    data class OfferReceived(val offerId: String) : AppEvent
 
-    data class OfferClicked(val offerId: String) : AppEvent()
+    data class OfferClicked(val offerId: String) : AppEvent
 
-    data object OptOut : AppEvent()
+    data object OptOut : AppEvent
 }
