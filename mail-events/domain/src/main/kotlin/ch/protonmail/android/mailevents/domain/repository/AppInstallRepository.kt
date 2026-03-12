@@ -18,8 +18,15 @@
 
 package ch.protonmail.android.mailevents.domain.repository
 
-interface AppInstallTimeRepository {
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+
+interface AppInstallRepository {
 
     fun getFirstInstallTime(): Long
+
     fun getLastUpdateTime(): Long
+
+    suspend fun getInstallReferrer(): Either<DataError, InstallReferrer>
 }

@@ -21,19 +21,16 @@ package ch.protonmail.android.mailevents.domain.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.domain.model.AppEvent
-import ch.protonmail.android.mailevents.domain.model.InstallReferrer
 
 interface EventsRepository {
 
     suspend fun sendEvent(event: AppEvent): Either<DataError, Unit>
 
-    suspend fun getInstallReferrer(): Either<DataError, InstallReferrer>
-
     suspend fun hasInstallEventBeenSent(): Boolean
 
-    suspend fun hasSentMessageEventBeenSent(): Boolean
-
     suspend fun markInstallEventSent()
+
+    suspend fun hasSentMessageEventBeenSent(): Boolean
 
     suspend fun markSentMessageEventSent()
 
