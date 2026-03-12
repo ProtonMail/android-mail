@@ -20,17 +20,18 @@ package me.proton.android.core.events.domain
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AccountEventBroadcasterImpl @Inject constructor() : AccountEventBroadcaster {
 
-    private val channel = Channel<AccountEvent>(capacity = Channel.BUFFERED)
-    override val events: Flow<AccountEvent> = channel.receiveAsFlow()
+    private val _events = MutableSharedFlow<AccountEvent>(extraBufferCapacity = Channel.BUFFERED)
+    override val events: Flow<AccountEvent> = _events.asSharedFlow()
 
     override suspend fun emit(event: AccountEvent) {
-        channel.send(event)
+        _events.emit(event)
     }
 }

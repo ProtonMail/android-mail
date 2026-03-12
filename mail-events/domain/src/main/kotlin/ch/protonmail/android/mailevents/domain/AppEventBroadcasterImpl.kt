@@ -21,17 +21,18 @@ package ch.protonmail.android.mailevents.domain
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppEventBroadcasterImpl @Inject constructor() : AppEventBroadcaster {
 
-    private val channel = Channel<AppEvent>(capacity = Channel.BUFFERED)
-    override val events: Flow<AppEvent> = channel.receiveAsFlow()
+    private val _events = MutableSharedFlow<AppEvent>(extraBufferCapacity = Channel.BUFFERED)
+    override val events: Flow<AppEvent> = _events.asSharedFlow()
 
     override suspend fun emit(event: AppEvent) {
-        channel.send(event)
+        _events.emit(event)
     }
 }
