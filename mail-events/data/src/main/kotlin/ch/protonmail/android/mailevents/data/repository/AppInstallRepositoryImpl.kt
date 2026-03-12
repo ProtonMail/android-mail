@@ -19,13 +19,18 @@
 package ch.protonmail.android.mailevents.data.repository
 
 import android.content.Context
-import ch.protonmail.android.mailevents.domain.repository.AppInstallTimeRepository
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
+import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class AppInstallTimeRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-) : AppInstallTimeRepository {
+class AppInstallRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val installReferrerDataSource: InstallReferrerDataSource
+) : AppInstallRepository {
 
     private val packageInfo by lazy {
         context.packageManager
@@ -35,4 +40,7 @@ class AppInstallTimeRepositoryImpl @Inject constructor(
     override fun getFirstInstallTime(): Long = packageInfo.firstInstallTime
 
     override fun getLastUpdateTime(): Long = packageInfo.lastUpdateTime
+
+    override suspend fun getInstallReferrer(): Either<DataError, InstallReferrer> =
+        installReferrerDataSource.getInstallReferrer()
 }

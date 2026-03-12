@@ -27,11 +27,11 @@ import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
 import ch.protonmail.android.mailevents.data.referrer.PlayInstallReferrerDataSourceImpl
 import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.data.remote.RustEventsDataSource
-import ch.protonmail.android.mailevents.data.repository.AppInstallTimeRepositoryImpl
+import ch.protonmail.android.mailevents.data.repository.AppInstallRepositoryImpl
 import ch.protonmail.android.mailevents.data.repository.EventsRepositoryImpl
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.AppEventBroadcasterImpl
-import ch.protonmail.android.mailevents.domain.repository.AppInstallTimeRepository
+import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import ch.protonmail.android.mailevents.domain.repository.DeviceInfoProvider
 import ch.protonmail.android.mailevents.domain.repository.EventsRepository
 import dagger.Binds
@@ -82,7 +82,7 @@ object MailEventsModule {
 
         @Binds
         @Reusable
-        fun bindsAppInstallTimeRepository(impl: AppInstallTimeRepositoryImpl): AppInstallTimeRepository
+        fun bindsAppInstallRepository(impl: AppInstallRepositoryImpl): AppInstallRepository
     }
 }
 

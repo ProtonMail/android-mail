@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailevents.data.repository
 
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
-import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
 import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
@@ -35,7 +34,6 @@ import kotlin.test.assertTrue
 internal class EventsRepositoryImplTest {
 
     private val mailEventsDataSource = mockk<MailEventsDataSource>(relaxUnitFun = true)
-    private val installReferrerDataSource = mockk<InstallReferrerDataSource>()
     private val eventsDataSource = mockk<EventsDataSource>()
     private val appInfoProvider = mockk<AppInfoProvider>()
     private val deviceInfoProvider = mockk<DeviceInfoProvider>()
@@ -43,7 +41,6 @@ internal class EventsRepositoryImplTest {
 
     private val repository = EventsRepositoryImpl(
         mailEventsDataSource = mailEventsDataSource,
-        installReferrerDataSource = installReferrerDataSource,
         eventsDataSource = eventsDataSource,
         appInfoProvider = appInfoProvider,
         deviceInfoProvider = deviceInfoProvider,

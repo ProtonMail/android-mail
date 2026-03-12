@@ -23,12 +23,10 @@ import arrow.core.flatMap
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
-import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
 import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.data.remote.model.EventMetadata
 import ch.protonmail.android.mailevents.data.remote.model.toPayload
 import ch.protonmail.android.mailevents.domain.model.AppEvent
-import ch.protonmail.android.mailevents.domain.model.InstallReferrer
 import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
 import ch.protonmail.android.mailevents.domain.repository.DeviceInfoProvider
 import ch.protonmail.android.mailevents.domain.repository.EventsRepository
@@ -38,7 +36,6 @@ import javax.inject.Inject
 
 class EventsRepositoryImpl @Inject constructor(
     private val mailEventsDataSource: MailEventsDataSource,
-    private val installReferrerDataSource: InstallReferrerDataSource,
     private val eventsDataSource: EventsDataSource,
     private val appInfoProvider: AppInfoProvider,
     private val deviceInfoProvider: DeviceInfoProvider,
@@ -67,9 +64,6 @@ class EventsRepositoryImpl @Inject constructor(
             eventsDataSource.sendEvent(payload)
         }
     }
-
-    override suspend fun getInstallReferrer(): Either<DataError, InstallReferrer> =
-        installReferrerDataSource.getInstallReferrer()
 
     override suspend fun hasInstallEventBeenSent(): Boolean = mailEventsDataSource.hasInstallEventBeenSent()
 
