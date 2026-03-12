@@ -54,9 +54,7 @@ class AccountEventObserver @Inject constructor(
                             price = event.amount.toDouble() / MICROS_PER_UNIT,
                             currency = event.currency,
                             cycle = event.cycle,
-                            transactionId = event.orderId,
-                            isFirstPurchase = true,
-                            isFreeToPaid = true
+                            transactionId = event.orderId
                         ).onLeft { error ->
                             Timber.e("Failed to track purchase completed event: $error")
                         }

@@ -36,8 +36,8 @@ class TrackSubscriptionEvent @Inject constructor(
         cycle: Int,
         couponCode: String? = null,
         transactionId: String? = null,
-        isFirstPurchase: Boolean,
-        isFreeToPaid: Boolean
+        isFirstPurchase: Boolean = true,
+        isFreeToPaid: Boolean = true
     ): Either<DataError, Unit> {
         val event = AppEvent.Subscription(
             contentList = contentList,
