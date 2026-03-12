@@ -18,14 +18,21 @@
 
 package ch.protonmail.android.mailevents.data.repository
 
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
 import ch.protonmail.android.mailevents.data.remote.EventsDataSource
+import ch.protonmail.android.mailevents.data.remote.model.EventPayload
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailevents.domain.model.AppInfo
+import ch.protonmail.android.mailevents.domain.model.DeviceInfo
 import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
 import ch.protonmail.android.mailevents.domain.repository.DeviceInfoProvider
 import ch.protonmail.android.mailevents.domain.usecase.IsNewAppInstall
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -47,6 +54,21 @@ internal class EventsRepositoryImplTest {
         isNewAppInstall = isNewAppInstall
     )
 
+    private val testAppInfo = AppInfo(
+        packageName = "ch.protonmail.android",
+        identifier = "ch.protonmail.android",
+        version = "1.0.0"
+    )
+
+    private val testDeviceInfo = DeviceInfo(
+        platform = DeviceInfo.PLATFORM_ANDROID,
+        osVersion = "14",
+        locale = "en_US",
+        languageCode = "en",
+        make = "Google",
+        model = "Pixel"
+    )
+
     @Test
     fun `should skip event when not eligible`() = runTest {
         // Given
@@ -59,5 +81,71 @@ internal class EventsRepositoryImplTest {
         // Then
         assertTrue(result.isLeft())
         coVerify(exactly = 0) { eventsDataSource.sendEvent(any()) }
+    }
+
+    @Test
+    fun `should send event when is new app install`() = runTest {
+        // Given
+        coEvery { isNewAppInstall() } returns true
+        coEvery { mailEventsDataSource.getOrCreateAsid() } returns "test-asid".right()
+        every { appInfoProvider.getAppInfo() } returns testAppInfo
+        coEvery { deviceInfoProvider.getDeviceInfo() } returns testDeviceInfo
+        coEvery { eventsDataSource.sendEvent(any()) } returns Unit.right()
+
+        // When
+        val result = repository.sendEvent(AppEvent.AppOpen(isNewSession = true))
+
+        // Then
+        assertTrue(result.isRight())
+        coVerify(exactly = 1) { eventsDataSource.sendEvent(match { it is EventPayload.Open }) }
+    }
+
+    @Test
+    fun `should send event when install event has been sent`() = runTest {
+        // Given
+        coEvery { isNewAppInstall() } returns false
+        coEvery { mailEventsDataSource.hasInstallEventBeenSent() } returns true
+        coEvery { mailEventsDataSource.getOrCreateAsid() } returns "test-asid".right()
+        every { appInfoProvider.getAppInfo() } returns testAppInfo
+        coEvery { deviceInfoProvider.getDeviceInfo() } returns testDeviceInfo
+        coEvery { eventsDataSource.sendEvent(any()) } returns Unit.right()
+
+        // When
+        val result = repository.sendEvent(AppEvent.AppOpen(isNewSession = true))
+
+        // Then
+        assertTrue(result.isRight())
+        coVerify(exactly = 1) { eventsDataSource.sendEvent(match { it is EventPayload.Open }) }
+    }
+
+    @Test
+    fun `should return error when getOrCreateAsid fails`() = runTest {
+        // Given
+        coEvery { isNewAppInstall() } returns true
+        coEvery { mailEventsDataSource.getOrCreateAsid() } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.sendEvent(AppEvent.AppOpen(isNewSession = true))
+
+        // Then
+        assertTrue(result.isLeft())
+        coVerify(exactly = 0) { eventsDataSource.sendEvent(any()) }
+    }
+
+    @Test
+    fun `should return error when sendEvent fails`() = runTest {
+        // Given
+        coEvery { isNewAppInstall() } returns true
+        coEvery { mailEventsDataSource.getOrCreateAsid() } returns "test-asid".right()
+        every { appInfoProvider.getAppInfo() } returns testAppInfo
+        coEvery { deviceInfoProvider.getDeviceInfo() } returns testDeviceInfo
+        coEvery { eventsDataSource.sendEvent(any()) } returns DataError.Remote.Unknown.left()
+
+        // When
+        val result = repository.sendEvent(AppEvent.AppOpen(isNewSession = true))
+
+        // Then
+        assertTrue(result.isLeft())
+        coVerify(exactly = 1) { eventsDataSource.sendEvent(match { it is EventPayload.Open }) }
     }
 }
