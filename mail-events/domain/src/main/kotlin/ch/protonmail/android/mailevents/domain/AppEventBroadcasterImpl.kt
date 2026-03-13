@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailevents.domain
 
 import ch.protonmail.android.mailevents.domain.model.AppEvent
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -29,7 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class AppEventBroadcasterImpl @Inject constructor() : AppEventBroadcaster {
 
-    private val _events = MutableSharedFlow<AppEvent>(extraBufferCapacity = Channel.BUFFERED)
+    private val _events = MutableSharedFlow<AppEvent>(extraBufferCapacity = 64)
     override val events: Flow<AppEvent> = _events.asSharedFlow()
 
     override suspend fun emit(event: AppEvent) {
