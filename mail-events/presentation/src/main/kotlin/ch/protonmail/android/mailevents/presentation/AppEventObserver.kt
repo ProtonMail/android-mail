@@ -59,6 +59,12 @@ class AppEventObserver @Inject constructor(
                         }
                     }
 
+                    is AppEvent.OnboardingCompleted -> {
+                        eventsRepository.sendEvent(event).onLeft { error ->
+                            Timber.d("Failed to track onboarding event: $error")
+                        }
+                    }
+
                     else -> Timber.w("Unhandled app event: $event")
                 }
             }
