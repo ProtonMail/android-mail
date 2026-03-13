@@ -18,6 +18,11 @@
 
 package ch.protonmail.android.mailevents.data.remote.model
 
+import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Common
+import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.FeatureUsage
+import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Install
+import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Signup
+import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Subscription
 import uniffi.proton_mail_uniffi.MeasurementEventType
 import uniffi.proton_mail_uniffi.MeasurementValue
 
@@ -31,36 +36,90 @@ fun EventPayload.toMeasurementEventType(): MeasurementEventType = when (this) {
 }
 
 fun EventPayload.toMeasurementFields(): Map<String, MeasurementValue?> = buildMap {
-    put("open_uri", metadata.openUri?.let { MeasurementValue.String(it) })
+    put(Common.OPEN_URI, metadata.openUri?.let { MeasurementValue.String(it) })
+    put(Common.OS_VERSION, MeasurementValue.String(metadata.osVersion))
+    put(Common.APP_VERSION, MeasurementValue.String(metadata.appVersion))
+    put(Common.LOCALE, MeasurementValue.String(metadata.locale))
+    put(Common.PLATFORM, MeasurementValue.String(metadata.platform))
+    put(Common.MAKE, MeasurementValue.String(metadata.make))
+    put(Common.MODEL, MeasurementValue.String(metadata.model))
+    put(Common.LANGUAGE_CODE, MeasurementValue.String(metadata.languageCode))
+    put(Common.APP_IDENTIFIER, MeasurementValue.String(metadata.appIdentifier))
 
     when (this@toMeasurementFields) {
         is EventPayload.Install -> {
-            put("is_reinstall", MeasurementValue.Bool(isReinstall))
-            put("install_ref", installRef?.let { MeasurementValue.String(it) })
-            put("install_receipt", installReceipt?.let { MeasurementValue.String(it) })
+            put(Install.IS_REINSTALL, MeasurementValue.Bool(isReinstall))
+            put(Install.INSTALL_REF, installRef?.let { MeasurementValue.String(it) })
+            put(Install.INSTALL_RECEIPT, installReceipt?.let { MeasurementValue.String(it) })
         }
 
         is EventPayload.Signup -> {
-            put("registration_method", registrationMethod?.let { MeasurementValue.String(it) })
-            put("referral_code", referralCode?.let { MeasurementValue.String(it) })
+            put(Signup.REGISTRATION_METHOD, registrationMethod?.let { MeasurementValue.String(it) })
+            put(Signup.REFERRAL_CODE, referralCode?.let { MeasurementValue.String(it) })
         }
 
         is EventPayload.Subscription -> {
-            put("content_list", MeasurementValue.String(contentList.joinToString(",")))
-            put("price", MeasurementValue.String(price.toString()))
-            put("currency", MeasurementValue.String(currency))
-            put("cycle", MeasurementValue.String(cycle.toString()))
-            put("coupon_code", couponCode?.let { MeasurementValue.String(it) })
-            put("transaction_id", transactionId?.let { MeasurementValue.String(it) })
-            put("is_first_purchase", MeasurementValue.Bool(isFirstPurchase))
-            put("is_free_to_paid", MeasurementValue.Bool(isFreeToPaid))
+            put(Subscription.CONTENT_LIST, MeasurementValue.String(contentList.joinToString(",")))
+            put(Subscription.PRICE, MeasurementValue.String(price.toString()))
+            put(Subscription.CURRENCY, MeasurementValue.String(currency))
+            put(Subscription.CYCLE, MeasurementValue.String(cycle.toString()))
+            put(Subscription.COUPON_CODE, couponCode?.let { MeasurementValue.String(it) })
+            put(Subscription.TRANSACTION_ID, transactionId?.let { MeasurementValue.String(it) })
+            put(Subscription.IS_FIRST_PURCHASE, MeasurementValue.Bool(isFirstPurchase))
+            put(Subscription.IS_FREE_TO_PAID, MeasurementValue.Bool(isFreeToPaid))
         }
 
         is EventPayload.FeatureUsage -> {
-            put("action", MeasurementValue.String(action))
+            put(FeatureUsage.ACTION, MeasurementValue.String(action))
         }
 
         is EventPayload.Open,
         is EventPayload.OptOut -> Unit
+    }
+}
+
+private object MeasurementFieldKey {
+
+    object Common {
+
+        const val OPEN_URI = "openuri"
+        const val OS_VERSION = "os_version"
+        const val APP_VERSION = "app_version"
+        const val LOCALE = "locale"
+        const val PLATFORM = "platform"
+        const val MAKE = "make"
+        const val MODEL = "model"
+        const val LANGUAGE_CODE = "language_code"
+        const val APP_IDENTIFIER = "app_identifier"
+    }
+
+    object Install {
+
+        const val IS_REINSTALL = "is_reinstall"
+        const val INSTALL_REF = "install_ref"
+        const val INSTALL_RECEIPT = "install_receipt"
+    }
+
+    object Signup {
+
+        const val REGISTRATION_METHOD = "registration_method"
+        const val REFERRAL_CODE = "referral_code"
+    }
+
+    object Subscription {
+
+        const val CONTENT_LIST = "content_list"
+        const val PRICE = "price"
+        const val CURRENCY = "currency"
+        const val CYCLE = "cycle"
+        const val COUPON_CODE = "coupon_code"
+        const val TRANSACTION_ID = "transaction_id"
+        const val IS_FIRST_PURCHASE = "is_first_purchase"
+        const val IS_FREE_TO_PAID = "is_free_to_paid"
+    }
+
+    object FeatureUsage {
+
+        const val ACTION = "action"
     }
 }
