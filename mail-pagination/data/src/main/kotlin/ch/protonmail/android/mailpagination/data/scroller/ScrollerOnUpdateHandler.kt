@@ -77,7 +77,7 @@ class ScrollerOnUpdateHandler<T>(
         snapshot: List<T>,
         onPossibleAppendFollowUp: () -> Unit
     ) {
-        Timber.d("$tag: Received direct response ${update.javaClass.simpleName} for Append request")
+        Timber.d("$tag: Received direct response ${update.debugTypeName()} for Append request")
         when (update) {
             is ScrollerUpdate.Append -> {
                 pending.response.complete(update.items.right())
@@ -109,7 +109,7 @@ class ScrollerOnUpdateHandler<T>(
         update: ScrollerUpdate<T>,
         snapshot: List<T>
     ) {
-        Timber.d("$tag: Received direct response ${update.javaClass.simpleName} for Refresh request")
+        Timber.d("$tag: Received direct response ${update.debugTypeName()} for Refresh request")
         when (update) {
             is ScrollerUpdate.ReplaceFrom -> {
                 if (update.idx == 0) {
@@ -133,7 +133,7 @@ class ScrollerOnUpdateHandler<T>(
         update: ScrollerUpdate<T>,
         snapshot: List<T>
     ) {
-        Timber.d("$tag: Received indirect response ${update.javaClass.simpleName} for ${pending.type} request")
+        Timber.d("$tag: Received indirect response ${update.debugTypeName()} for ${pending.type} request")
 
         when (pending.type) {
             RequestType.Append -> {
@@ -151,7 +151,7 @@ class ScrollerOnUpdateHandler<T>(
     // Any other response is treated as indirect and we return current snapshot
     private fun processAppendNoneFollowUpResponse(pending: PendingRequest<T>, update: ScrollerUpdate<T>) {
         Timber.d(
-            "$tag: Received Append None follow up response ${update.javaClass.simpleName} " +
+            "$tag: Received Append None follow up response ${update.debugTypeName()} " +
                 "for ${pending.type} request"
         )
 
@@ -166,7 +166,7 @@ class ScrollerOnUpdateHandler<T>(
             }
 
             else -> {
-                Timber.w("$tag: Unexpected response ${update.javaClass.simpleName}, predicate failed")
+                Timber.w("$tag: Unexpected response ${update.debugTypeName()}, predicate failed")
                 pending.followUpResponse?.complete(emptyList<T>().right())
             }
         }
@@ -175,12 +175,12 @@ class ScrollerOnUpdateHandler<T>(
     private fun processUpdateWhenNoPendingRequest(update: ScrollerUpdate<T>) {
         if (shouldInvalidateWhenNoPending(update)) {
             Timber.d(
-                "$tag: No pending request, processing ${update.javaClass.simpleName} as invalidation"
+                "$tag: No pending request, processing ${update.debugTypeName()} as invalidation"
             )
             invalidate()
         } else {
             Timber.w(
-                "$tag: No pending request, ignoring ${update.javaClass.simpleName} update"
+                "$tag: No pending request, ignoring ${update.debugTypeName()} update"
             )
         }
     }
