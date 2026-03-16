@@ -69,3 +69,12 @@ fun <T> ScrollerUpdate<T>.itemCount(): Int = when (this) {
     is ScrollerUpdate.ReplaceRange -> items.size
     is ScrollerUpdate.Error -> 0
 }
+
+fun ScrollerUpdate<*>.debugTypeName(): String = when (this) {
+    is ScrollerUpdate.None -> "None"
+    is ScrollerUpdate.Append -> "Append"
+    is ScrollerUpdate.ReplaceFrom -> "ReplaceFrom"
+    is ScrollerUpdate.ReplaceBefore -> "ReplaceBefore"
+    is ScrollerUpdate.ReplaceRange -> "ReplaceRange"
+    is ScrollerUpdate.Error -> "Error"
+}
