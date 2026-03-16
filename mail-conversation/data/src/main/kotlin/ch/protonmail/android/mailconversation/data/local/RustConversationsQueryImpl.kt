@@ -78,6 +78,7 @@ class RustConversationsQueryImpl @Inject constructor(
         userId: UserId,
         pageKey: PageKey.DefaultPageKey
     ): Either<PaginationError, List<LocalConversation>> {
+
         val mailbox = rustMailboxFactory.create(userId).getOrNull()
         if (mailbox == null) {
             Timber.e("rust-conversation-query: trying to load conversation with a null mailbox")
@@ -89,52 +90,54 @@ class RustConversationsQueryImpl @Inject constructor(
 
         val pageDescriptor = pageKey.toPageDescriptor(userId)
 
-        paginatorMutex.withLock {
+        val newPaginatorInitialized = paginatorMutex.withLock {
             if (shouldInitPaginator(pageDescriptor, pageKey)) {
                 initPaginator(pageDescriptor, mailbox)
+                true
+            } else {
+                false
             }
         }
 
         Timber.d("rust-conversation-query: Paging: querying ${pageKey.pageToLoad.name} page for conversation")
 
-        val response = when (pageKey.pageToLoad) {
+        return when (pageKey.pageToLoad) {
             PageToLoad.First,
-            PageToLoad.Next -> {
-                val deferred = setPendingRequest(RequestType.Append)
-                paginatorState?.paginatorWrapper?.nextPage()
-
-                // Wait for immediate Append response
-                deferred.await().let { firstResponse ->
-
-                    // If available wait for follow-up response
-                    val followUp = paginatorState?.pendingRequest?.followUpResponse
-                    followUp?.awaitWithTimeout(NONE_FOLLOWUP_GRACE_MS, firstResponse) {
-                        Timber.d("rust-conversation-query: Follow-up response timed out.")
-
-                        clearPendingRequest()
-                    } ?: firstResponse
-                }
-            }
+            PageToLoad.Next -> loadNextConversationPage()
 
             PageToLoad.All -> {
-                val deferred = setPendingRequest(RequestType.Refresh)
-                paginatorState?.paginatorWrapper?.reload()
-
-                // Wait for immediate Refresh response
-                deferred.await()
+                if (newPaginatorInitialized) {
+                    Timber.d(
+                        "rust-conversation-query: paginator newly created, calling nextPage() " +
+                            "instead of reload() for pageKey: %s",
+                        pageKey
+                    )
+                    loadNextConversationPage()
+                } else {
+                    Timber.d("rust-conversation-query: calling reload() for pageKey: %s", pageKey)
+                    reloadConversations()
+                }
             }
         }
+    }
 
-        response.fold(
-            ifLeft = { error ->
-                Timber.d("rust-conversation-query: Page loading failed with error=%s", error)
-            },
-            ifRight = { conversations ->
-                Timber.d("rust-conversation-query: Page loading completed with %d conversations", conversations.size)
-            }
-        )
+    private suspend fun reloadConversations(): Either<PaginationError, List<LocalConversation>> {
+        val deferred = setPendingRequest(RequestType.Refresh)
+        paginatorState?.paginatorWrapper?.reload()
+        return deferred.await()
+    }
 
-        return response
+    private suspend fun loadNextConversationPage(): Either<PaginationError, List<LocalConversation>> {
+        val deferred = setPendingRequest(RequestType.Append)
+        paginatorState?.paginatorWrapper?.nextPage()
+
+        return deferred.await().let { firstResponse ->
+            val followUp = paginatorState?.pendingRequest?.followUpResponse
+            followUp?.awaitWithTimeout(NONE_FOLLOWUP_GRACE_MS, firstResponse) {
+                Timber.d("rust-conversation-query: Follow-up response timed out.")
+                clearPendingRequest()
+            } ?: firstResponse
+        }
     }
 
     override suspend fun supportsIncludeFilter() = paginatorState?.paginatorWrapper?.supportsIncludeFilter() == true

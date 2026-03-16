@@ -162,32 +162,39 @@ class RustConversationsQueryImplTest {
     }
 
     @Test
-    fun `returns all pages when called with PageToLoad All`() = runTest {
+    fun `returns first page when called with PageToLoad All and paginator is newly created`() = runTest {
         // Given
         val expectedConversations = listOf(LocalConversationTestData.spamConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId, pageToLoad = PageToLoad.All)
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            pageToLoad = PageToLoad.All
+        )
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
+
         val paginator = mockk<ConversationPaginatorWrapper> {
-            launch {
-                delay(100) // Simulate callback delay compared to nextPage invocation
-                callbackSlot.captured.onUpdate(
-                    ConversationScrollerUpdate.List(
-                        ConversationScrollerListUpdate.ReplaceFrom(
-                            idx = 0uL,
-                            items = expectedConversations,
-                            scrollerId = DefaultScrollerId
+            coEvery { nextPage() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.Append(
+                                items = expectedConversations,
+                                scrollerId = DefaultScrollerId
+                            )
                         )
                     )
-                )
+                }
+                Unit.right()
             }
-            coEvery { this@mockk.reload() } returns Unit.right()
-            coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
-            every { this@mockk.getScrollerId() } returns DefaultScrollerId
+            coEvery { reload() } returns Unit.right()
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
         }
+
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
         coEvery {
             createRustConversationPaginator(
@@ -201,6 +208,97 @@ class RustConversationsQueryImplTest {
 
         // Then
         assertEquals(expectedConversations.right(), actual)
+        coVerify(exactly = 1) { paginator.nextPage() }
+        coVerify(exactly = 0) { paginator.reload() }
+    }
+
+    @Test
+    fun `returns all pages when called with PageToLoad All and paginator already exists`() = runTest {
+        // Given
+        val firstPageConversations = listOf(
+            LocalConversationTestData.OctConversation,
+            LocalConversationTestData.AugConversation
+        )
+        val reloadedConversations = listOf(
+            LocalConversationTestData.OctConversation,
+            LocalConversationTestData.AugConversation
+        )
+
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val firstPageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            pageToLoad = PageToLoad.First
+        )
+        val allPageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            pageToLoad = PageToLoad.All
+        )
+
+        val mailbox = mockk<MailboxWrapper>()
+        val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
+
+        val paginator = mockk<ConversationPaginatorWrapper> {
+            coEvery { nextPage() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.Append(
+                                items = firstPageConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { reload() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.ReplaceFrom(
+                                idx = 0uL,
+                                items = reloadedConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
+        }
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+
+        // When
+        val firstResult = rustConversationsQuery.getConversations(userId, firstPageKey)
+        val allResult = rustConversationsQuery.getConversations(userId, allPageKey)
+
+        // Then
+        assertEquals(firstPageConversations.right(), firstResult)
+        assertEquals(reloadedConversations.right(), allResult)
+
+        coVerify(exactly = 1) { paginator.nextPage() }
+        coVerify(exactly = 1) { paginator.reload() }
+        coVerify(exactly = 1) {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                callback = any()
+            )
+        }
     }
 
     @Test
