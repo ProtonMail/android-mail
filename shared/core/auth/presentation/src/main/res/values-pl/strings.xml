@@ -166,7 +166,7 @@
   <string name="settings_password_management_login_success">Hasło logowania zostało zaktualizowane</string>
   <string name="settings_password_management_second_success">Drugie hasło zostało zaktualizowane</string>
   <string name="settings_password_management_start_recovery">Nie pamiętasz obecnego hasła?</string>
-  <string name="settings_password_management_2fa">Logowanie dwustopniowe jest wymagane</string>
+  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Niepoprawny kod drugiego składnika. Spróbuj ponownie.</string>
   <string name="settings_password_error_empty">Hasło nie może być puste.</string>
   <string name="settings_password_error">Nazwa użytkownika lub hasło są niepoprawne. Spróbuj ponownie.</string>

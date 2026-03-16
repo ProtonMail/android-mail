@@ -81,7 +81,7 @@
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Envia de totes maneres</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Afegiu protecció amb contrasenya</string>
   <string name="composer_send_expiring_message_to_external_may_fail">No hem pogut confirmar que tots els destinataris utilitzin el Proton Mail. Només les adreces del Proton permeten la caducitat dels missatge. En aquest cas, suggerim afegir una contrasenya.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Alguns destinataris (%1$s) no admeten la caducitat per defecte. Afegiu una contrasenya per activar la caducitat per als destinataris que no siguin de Proton Mail.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Alguns destinataris (%1$s) no admeten la caducitat per defecte. Afegiu una contrasenya per habilitar la caducitat per als destinataris que no utilitzin el Proton Mail.</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">Cap dels destinataris admet la caducitat per defecte. Afegiu una contrasenya per a activar la caducitat per als destinataris que no utilitzin el Proton Mail.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Avís d\'enviament</string>

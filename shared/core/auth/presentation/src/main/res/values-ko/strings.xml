@@ -157,7 +157,7 @@
   <string name="settings_password_management_login_success">로그인 비밀번호가 변경되었습니다</string>
   <string name="settings_password_management_second_success">두 번째 비밀번호가 업데이트되었습니다.</string>
   <string name="settings_password_management_start_recovery">기존의 비밀번호를 잊으셨습니까?</string>
-  <string name="settings_password_management_2fa">2단계 인증이 필요합니다.</string>
+  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">잘못된 2단계 인증 코드입니다. 다시 시도해 주세요.</string>
   <string name="settings_password_error_empty">비밀번호는 비울 수 없습니다.</string>
   <string name="settings_password_error">사용자 이름 및 비밀번호가 일치하지 않습니다. 다시 시도해 주세요.</string>

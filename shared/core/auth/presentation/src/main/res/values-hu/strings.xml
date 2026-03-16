@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Bejelentkezési jelszó frissítve</string>
   <string name="settings_password_management_second_success">Második jelszó frissítve</string>
   <string name="settings_password_management_start_recovery">Nem tudja a jelenlegi jelszavát?</string>
-  <string name="settings_password_management_2fa">Kétfaktoros hitelesítés szükséges</string>
+  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Érvénytelen kétfaktoros kód. Próbálja újra.</string>
   <string name="settings_password_error_empty">A jelszó nem lehet üres.</string>
   <string name="settings_password_error">Helytelen felhasználónév vagy jelszó. Próbálja meg újra.</string>

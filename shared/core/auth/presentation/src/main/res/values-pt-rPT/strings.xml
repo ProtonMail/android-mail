@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Palavra-passe de início de sessão atualizada</string>
   <string name="settings_password_management_second_success">Segunda palavra-passe atualizada</string>
   <string name="settings_password_management_start_recovery">Não sabe a sua palavra-passe atual?</string>
-  <string name="settings_password_management_2fa">É necessária a 2FA</string>
+  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Código do segundo fator inválido. Tente novamente.</string>
   <string name="settings_password_error_empty">A palavra-passe não pode estar vazia.</string>
   <string name="settings_password_error">A palavra-passe ou o nome de utilizador não é correto. Tente novamente.</string>

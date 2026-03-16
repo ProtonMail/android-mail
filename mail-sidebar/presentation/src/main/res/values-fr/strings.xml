@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">Créer un dossier</string>
   <string name="drawer_upgrade_plus">Je passe à Mail Plus</string>
   <string name="drawer_upgrade_plus_black_friday">Soldes du Black Friday</string>
+  <string name="drawer_upgrade_plus_spring_sale">Soldes de printemps</string>
 </resources>

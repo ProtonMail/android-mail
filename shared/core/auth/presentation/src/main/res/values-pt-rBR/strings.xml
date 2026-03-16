@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Senha de início de sessão atualizada</string>
   <string name="settings_password_management_second_success">Senha secundária atualizada</string>
   <string name="settings_password_management_start_recovery">Não sabe sua senha atual?</string>
-  <string name="settings_password_management_2fa">Autenticação de 2F exigida</string>
+  <string name="settings_password_management_2fa">A2F é necessária</string>
   <string name="settings_password_invalid_2fa">Código de dois fatores inválido. Tente novamente.</string>
   <string name="settings_password_error_empty">A senha não pode estar em branco.</string>
   <string name="settings_password_error">Nome de usuário ou senha incorretos. Tente novamente.</string>

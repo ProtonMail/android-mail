@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Oturum açma parolası güncellendi</string>
   <string name="settings_password_management_second_success">İkinci parola güncellendi</string>
   <string name="settings_password_management_start_recovery">Geçerli parolanızı bilmiyor musunuz?</string>
-  <string name="settings_password_management_2fa">İki adımlı doğrulama gereklidir</string>
+  <string name="settings_password_management_2fa">İki adımlı doğrulama gerekli</string>
   <string name="settings_password_invalid_2fa">İkinci adım kodu geçersiz. Lütfen yeniden deneyin.</string>
   <string name="settings_password_error_empty">Parola boş olamaz.</string>
   <string name="settings_password_error">Kullanıcı adı veya parola yanlış. Lütfen yeniden deneyin.</string>

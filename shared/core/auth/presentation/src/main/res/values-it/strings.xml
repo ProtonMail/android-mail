@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Password principale cambiata</string>
   <string name="settings_password_management_second_success">Password secondaria cambiata</string>
   <string name="settings_password_management_start_recovery">Reimposta la password principale</string>
-  <string name="settings_password_management_2fa">Codice del secondo fattore necessario</string>
+  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Codice del secondo fattore non valido</string>
   <string name="settings_password_error_empty">Password necessaria</string>
   <string name="settings_password_error">Credenziali non valide</string>

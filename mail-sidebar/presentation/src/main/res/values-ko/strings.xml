@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">폴더 생성</string>
   <string name="drawer_upgrade_plus">Mail Plus로 업그레이드</string>
   <string name="drawer_upgrade_plus_black_friday">블랙 프라이데이 세일</string>
+  <string name="drawer_upgrade_plus_spring_sale">Spring Sale</string>
 </resources>

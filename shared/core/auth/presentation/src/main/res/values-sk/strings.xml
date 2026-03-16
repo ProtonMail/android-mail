@@ -166,7 +166,7 @@
   <string name="settings_password_management_login_success">Prihlasovacie heslo bolo aktualizované</string>
   <string name="settings_password_management_second_success">Druhé heslo aktualizované</string>
   <string name="settings_password_management_start_recovery">Nepoznáte svoje aktuálne heslo?</string>
-  <string name="settings_password_management_2fa">Vyžaduje sa 2FA</string>
+  <string name="settings_password_management_2fa">Je potrebná 2FA</string>
   <string name="settings_password_invalid_2fa">Neplatný kód dvojfázového overenia. Skúste to prosím znova.</string>
   <string name="settings_password_error_empty">Heslo nemôže byť prázdne.</string>
   <string name="settings_password_error">Nesprávne používateľské meno alebo heslo. Skúste to znova, prosím.</string>

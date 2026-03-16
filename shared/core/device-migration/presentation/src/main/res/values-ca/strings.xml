@@ -26,7 +26,7 @@
   <string name="intro_origin_sign_in_title">Inicieu la sessió en un altre dispositiu</string>
   <string name="intro_origin_sign_in_subtitle">Com iniciar sessió amb un codi QR</string>
   <string name="intro_origin_sign_in_hint_1">1. Obriu qualsevol aplicació del Proton al dispositiu al qual vulgueu iniciar sessió.</string>
-  <string name="intro_origin_sign_in_hint_2">2. A la pantalla d’inici de sessió, seleccioneu <b> He oblidat la contrasenya </b> o <b> Problemes per iniciar la sessió? </b> (a les aplicacions mòbils, seleccioneu <b> Ajuda</b>).</string>
+  <string name="intro_origin_sign_in_hint_2">2. A la pantalla d\'inici de sessió, seleccioneu <b>He oblidat la contrasenya</b> o <b>Teniu problemes per iniciar la sessió?</b> (a les aplicacions mòbils, seleccioneu <b>Ajuda</b>).</string>
   <string name="intro_origin_sign_in_hint_3">3. Seleccioneu <b>Inicieu la sessió amb un codi QR</b>. Apareixerà un codi QR.</string>
   <string name="intro_origin_sign_in_hint_4">4. En aquest dispositiu, premeu <b>Escaneja el codi QR</b> i escanegeu el codi.</string>
   <string name="intro_origin_sign_in_tips">Consells de seguretat</string>
@@ -46,7 +46,7 @@
   <string name="qr_code_scan_enter_manually">Introduïu el codi manualment</string>
   <string name="target_sign_in_title">Inicia sessió amb un codi QR</string>
   <string name="target_sign_in_scan_code">Com iniciar la sessió amb un altre dispositiu</string>
-  <string name="target_sign_in_instruction_1">1. Busqueu un altre dispositiu que hagi iniciat la sessió al vostre compte de Proton</string>
+  <string name="target_sign_in_instruction_1">1. Cerqueu un altre dispositiu que hagi iniciat la sessió al compte del Proton.</string>
   <string name="target_sign_in_instruction_2">2. En aquest dispositiu, obriu qualsevol aplicació del Proton i seleccioneu <b>Preferències</b></string>
   <string name="target_sign_in_instruction_3">3. Seleccioneu <b>Inicieu la sessió en un altre dispositiu → Escaneja el codi QR</b></string>
   <string name="target_sign_in_instruction_4">4. Escanegeu el codi per a iniciar la sessió</string>

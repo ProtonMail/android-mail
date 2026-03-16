@@ -90,7 +90,7 @@
   <string name="upselling_onboarding_choose_plan_monthly">Ежемесячно</string>
   <string name="upselling_onboarding_choose_plan_yearly">Ежегодно</string>
   <string name="upselling_onboarding_best_value">Лучшая цена</string>
-  <string name="upselling_onboarding_yearly_savings">Платите ежегодно и экономьте %s</string>
+  <string name="upselling_onboarding_yearly_savings">Оплачивайте ежегодно и экономьте %s</string>
   <string name="upselling_onboarding_entitlements_show_more">Show more</string>
   <string name="upselling_onboarding_entitlements_show_less">Show less</string>
   <string name="upselling_onboarding_button_continue_free">Continue with Free plan</string>

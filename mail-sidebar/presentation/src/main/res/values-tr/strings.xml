@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">Klasör oluştur</string>
   <string name="drawer_upgrade_plus">Mail Plus tarifesine yükselt</string>
   <string name="drawer_upgrade_plus_black_friday">Muhteşem Cuma Kampanyası</string>
+  <string name="drawer_upgrade_plus_spring_sale">Bahar indirimi</string>
 </resources>

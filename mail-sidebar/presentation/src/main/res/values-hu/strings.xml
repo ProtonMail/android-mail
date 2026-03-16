@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">Mappa létrehozása</string>
   <string name="drawer_upgrade_plus">Mail Plus előfizetés</string>
   <string name="drawer_upgrade_plus_black_friday">Black Friday akció</string>
+  <string name="drawer_upgrade_plus_spring_sale">Spring Sale</string>
 </resources>

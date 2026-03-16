@@ -166,7 +166,7 @@
   <string name="settings_password_management_login_success">Пароль уваходу абноўлены</string>
   <string name="settings_password_management_second_success">Другі пароль абноўлены</string>
   <string name="settings_password_management_start_recovery">Не ведаеце свой бягучы пароль?</string>
-  <string name="settings_password_management_2fa">Неабходна двухфактарная аўтэнтыфікацыя</string>
+  <string name="settings_password_management_2fa">Неабходна 2ФА</string>
   <string name="settings_password_invalid_2fa">Памылковы код другога фактару. Паспрабуйце яшчэ раз.</string>
   <string name="settings_password_error_empty">Пароль не можа быць пустым.</string>
   <string name="settings_password_error">Няправільнае імя карыстальніка або пароль. Паспрабуйце яшчэ раз.</string>

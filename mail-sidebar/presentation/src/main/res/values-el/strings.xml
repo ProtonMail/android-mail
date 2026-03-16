@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">Δημιουργία φακέλου</string>
   <string name="drawer_upgrade_plus">Αναβαθμίστε στο Mail Plus</string>
   <string name="drawer_upgrade_plus_black_friday">Προσφορά Black Friday</string>
+  <string name="drawer_upgrade_plus_spring_sale">Ανοιξιάτικες Εκπτώσεις</string>
 </resources>

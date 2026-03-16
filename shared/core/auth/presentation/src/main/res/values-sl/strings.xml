@@ -166,7 +166,7 @@
   <string name="settings_password_management_login_success">Prijavno geslo je bilo posodobljeno</string>
   <string name="settings_password_management_second_success">Drugo geslo je posodobljeno.</string>
   <string name="settings_password_management_start_recovery">Ne poznate trenutnega gesla?</string>
-  <string name="settings_password_management_2fa">Potrebna je dvofaktorska avtentikacija.</string>
+  <string name="settings_password_management_2fa">potrebna je 2FA</string>
   <string name="settings_password_invalid_2fa">Neveljavna koda drugega faktorja. Poskusite znova.</string>
   <string name="settings_password_error_empty">Polje za geslo ne more biti prazno.</string>
   <string name="settings_password_error">Napačno uporabniško ime ali geslo. Poskusite znova.</string>

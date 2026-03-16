@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Inloggningslösenord uppdaterat</string>
   <string name="settings_password_management_second_success">Andra lösenord uppdaterad</string>
   <string name="settings_password_management_start_recovery">Vet du inte ditt nuvarande lösenord?</string>
-  <string name="settings_password_management_2fa">2FA krävs</string>
+  <string name="settings_password_management_2fa">2FA behövs</string>
   <string name="settings_password_invalid_2fa">Ogiltig andrafaktorskod. Försök igen.</string>
   <string name="settings_password_error_empty">Lösenord kan inte vara tomt.</string>
   <string name="settings_password_error">Felaktigt användarnamn eller lösenord. Försök igen.</string>

@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Kirjautumissalasana vaihdettiin</string>
   <string name="settings_password_management_second_success">Toinen salasana päivitetty</string>
   <string name="settings_password_management_start_recovery">Etkö tiedä nykyistä salasanaasi?</string>
-  <string name="settings_password_management_2fa">Kaksivaiheinen todennus vaaditaan</string>
+  <string name="settings_password_management_2fa">2FA vaaditaan</string>
   <string name="settings_password_invalid_2fa">Virheellinen toisen vaiheen todennuskoodi. Yritä uudelleen.</string>
   <string name="settings_password_error_empty">Salasana ei voi olla tyhjä.</string>
   <string name="settings_password_error">Virheellinen käyttäjätunnus tai salasana. Yritä uudelleen.</string>

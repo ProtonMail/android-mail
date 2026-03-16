@@ -25,4 +25,5 @@
   <string name="drawer_item_create_folder">新建文件夹</string>
   <string name="drawer_upgrade_plus">升级至 Mail Plus</string>
   <string name="drawer_upgrade_plus_black_friday">黑色星期五特卖</string>
+  <string name="drawer_upgrade_plus_spring_sale">春季特惠</string>
 </resources>
