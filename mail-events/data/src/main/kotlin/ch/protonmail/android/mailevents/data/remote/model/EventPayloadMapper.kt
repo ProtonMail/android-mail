@@ -60,9 +60,9 @@ fun EventPayload.toMeasurementFields(): Map<String, MeasurementValue?> = buildMa
 
         is EventPayload.Subscription -> {
             put(Subscription.CONTENT_LIST, MeasurementValue.String(contentList.joinToString(",")))
-            put(Subscription.PRICE, MeasurementValue.String(price.toString()))
+            put(Subscription.PRICE, MeasurementValue.Float(price))
             put(Subscription.CURRENCY, MeasurementValue.String(currency))
-            put(Subscription.CYCLE, MeasurementValue.String(cycle.toString()))
+            put(Subscription.CYCLE, MeasurementValue.Int(cycle.toULong()))
             put(Subscription.COUPON_CODE, couponCode?.let { MeasurementValue.String(it) })
             put(Subscription.TRANSACTION_ID, transactionId?.let { MeasurementValue.String(it) })
             put(Subscription.IS_FIRST_PURCHASE, MeasurementValue.Bool(isFirstPurchase))
