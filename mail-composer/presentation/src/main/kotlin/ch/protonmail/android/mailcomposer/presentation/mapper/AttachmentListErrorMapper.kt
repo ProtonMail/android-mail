@@ -25,7 +25,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentState
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentAddErrorWithList
 
-object AttachmentListErrorMapper {
+internal object AttachmentListErrorMapper {
 
     fun toAttachmentAddErrorWithList(attachments: List<AttachmentMetadataWithState>): AttachmentAddErrorWithList? {
         val itemsWithError: List<Pair<AttachmentMetadataWithState, AttachmentError>> =
@@ -40,15 +40,18 @@ object AttachmentListErrorMapper {
             return null
         }
 
+        val storageExceeded = itemsWithError.filterStorageExceededError()
         val tooManyAttachmentItems = itemsWithError.filterTooManyAttachmentsError()
-
         val attachmentTooLargeItems = itemsWithError.filterAttachmentsTooLargeError()
-
         val invalidDraftMessageItems = itemsWithError.filterInvalidDraftError()
-
         val encryptionErrorItems = itemsWithError.filterEncryptionErrorError()
 
-        return if (tooManyAttachmentItems.isNotEmpty()) {
+        return if (storageExceeded.isNotEmpty()) {
+            AttachmentAddErrorWithList(
+                AddAttachmentError.StorageQuotaExceeded,
+                storageExceeded.map { it.first }
+            )
+        } else if (tooManyAttachmentItems.isNotEmpty()) {
             AttachmentAddErrorWithList(
                 AddAttachmentError.TooManyAttachments,
                 tooManyAttachmentItems.map { it.first }
@@ -74,6 +77,13 @@ object AttachmentListErrorMapper {
                 itemsWithError.map { it.first }
             )
         }
+    }
+}
+
+private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterStorageExceededError() = this.filter {
+    when (val addAttachment = it.second) {
+        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.StorageQuotaExceeded
+        else -> false
     }
 }
 

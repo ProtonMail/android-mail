@@ -28,7 +28,7 @@ import junit.framework.TestCase.assertNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class AttachmentListErrorMapperTest {
+internal class AttachmentListErrorMapperTest {
 
     private fun createAttachmentWithError(reason: AttachmentError): AttachmentMetadataWithState {
         val item = mockk<AttachmentMetadataWithState>()
@@ -103,19 +103,33 @@ class AttachmentListErrorMapperTest {
     }
 
     @Test
+    fun `returns StorageQuotaExceeded error when present`() {
+        // Given
+        val attachment =
+            createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.StorageQuotaExceeded))
+
+        // When
+        val result = AttachmentListErrorMapper.toAttachmentAddErrorWithList(listOf(attachment))
+
+        // Then
+        assertEquals(AddAttachmentError.StorageQuotaExceeded, result?.error)
+        assertEquals(listOf(attachment), result?.failedAttachments)
+    }
+
+    @Test
     fun `returns highest priority error when multiple errors exist`() {
         // Given
-        val tooManyAttachment =
-            createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.TooManyAttachments))
+        val storageExceeded =
+            createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.StorageQuotaExceeded))
         val encryptionError =
             createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.EncryptionError))
 
         // When
-        val result = AttachmentListErrorMapper.toAttachmentAddErrorWithList(listOf(tooManyAttachment, encryptionError))
+        val result = AttachmentListErrorMapper.toAttachmentAddErrorWithList(listOf(storageExceeded, encryptionError))
 
         // Then
-        assertEquals(AddAttachmentError.TooManyAttachments, result?.error)
-        assertEquals(listOf(tooManyAttachment), result?.failedAttachments)
+        assertEquals(AddAttachmentError.StorageQuotaExceeded, result?.error)
+        assertEquals(listOf(storageExceeded), result?.failedAttachments)
     }
 }
 
