@@ -84,7 +84,8 @@ interface ConversationRepository {
      */
     suspend fun getConversationCursor(
         firstPage: CursorId,
-        userId: UserId
+        userId: UserId,
+        labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor>
 
     suspend fun move(

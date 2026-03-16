@@ -238,10 +238,12 @@ internal class RustConversationRepositoryImplTest {
             coEvery { nextPage() } returns CursorResult.Cursor(ConversationId("300"))
         }
         val firstPage = Id(100.toULong())
+        val labelId = LabelId("2")
         coEvery {
             rustConversationDataSource.getConversationCursor(
                 firstPage = firstPage,
-                userId = userId
+                userId = userId,
+                labelId = labelId
             )
         } returns conversationCursor.right()
 
@@ -249,7 +251,8 @@ internal class RustConversationRepositoryImplTest {
         // When
         val result = rustConversationRepository.getConversationCursor(
             firstPage = CursorId(ConversationId("100"), null),
-            userId = userId
+            userId = userId,
+            labelId = labelId
         )
 
         // Then
@@ -269,24 +272,28 @@ internal class RustConversationRepositoryImplTest {
             coEvery { nextPage() } returns CursorResult.Cursor(ConversationId("300"))
         }
         val firstPage = Id(100.toULong())
+        val labelId = LabelId("1")
         coEvery {
             rustConversationDataSource.getConversationCursor(
                 firstPage = firstPage,
-                userId = userId
+                userId = userId,
+                labelId = labelId
             )
         } returns conversationCursor.right()
 
         // When
         rustConversationRepository.getConversationCursor(
             firstPage = CursorId(ConversationId("100"), null),
-            userId = userId
+            userId = userId,
+            labelId = labelId
         )
 
         // Then
         coVerify(exactly = 1) {
             rustConversationDataSource.getConversationCursor(
                 firstPage = firstPage,
-                userId = userId
+                userId = userId,
+                labelId = labelId
             )
         }
     }

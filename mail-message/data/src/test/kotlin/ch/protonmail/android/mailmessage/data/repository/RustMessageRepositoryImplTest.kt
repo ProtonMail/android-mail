@@ -64,7 +64,7 @@ internal class RustMessageRepositoryImplTest {
 
     private val rustMessageDataSource = mockk<RustMessageDataSource>()
     private val undoRepository = mockk<UndoRepository>()
-
+    private val labelId = LabelIdSample.RustLabel1
     private val userId = UserId("userId")
     private val repository = RustMessageRepositoryImpl(rustMessageDataSource, undoRepository)
 
@@ -188,7 +188,8 @@ internal class RustMessageRepositoryImplTest {
         coEvery {
             rustMessageDataSource.getConversationCursor(
                 firstPage = firstPage,
-                userId = userId
+                userId = userId,
+                labelId = labelId
             )
         } returns conversationCursor.right()
 
@@ -196,7 +197,8 @@ internal class RustMessageRepositoryImplTest {
         // When
         val result = repository.getConversationCursor(
             firstPage = CursorId(ConversationId("100"), null),
-            userId = userId
+            userId = userId,
+            labelId = labelId
         )
 
         // Then

@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.EphemeralMailboxCursorRepository
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,56 +42,74 @@ class SetEphemeralMailboxCursorTest {
     private val mockMessageRepository = mockk<MessageRepository>()
     private val repository = mockk<EphemeralMailboxCursorRepository>(relaxed = true)
     private val conversationCursor = mockk<ConversationCursor>()
-
+    private val labelId = LabelId("0")
     private val userId = UserId("userId")
 
     @Test
     fun `when viewModeIsConversation getCursor from Conversation repository`() = runTest {
-        coEvery { mockConversationRepository.getConversationCursor(any(), any()) } returns conversationCursor.right()
+        coEvery {
+            mockConversationRepository.getConversationCursor(
+                any(),
+                userId,
+                labelId
+            )
+        } returns conversationCursor.right()
 
         SetEphemeralMailboxCursor(mockConversationRepository, mockMessageRepository, repository)
-            .invoke(userId, true, CursorId(ConversationId("conversationID")))
+            .invoke(userId, true, CursorId(ConversationId("conversationID")), labelId)
 
         coVerify(exactly = 1) {
             mockConversationRepository.getConversationCursor(
                 CursorId(ConversationId("conversationID")),
-                userId
+                userId, labelId
             )
         }
-        coVerify(exactly = 0) { mockMessageRepository.getConversationCursor(any(), any()) }
+        coVerify(exactly = 0) { mockMessageRepository.getConversationCursor(any(), userId, labelId) }
         coVerify(exactly = 1) { repository.setEphemeralCursor(conversationCursor) }
     }
 
     @Test
     fun `when viewModeIsConversation false getCursor from MessageRepository repository`() = runTest {
-        coEvery { mockMessageRepository.getConversationCursor(any(), any()) } returns conversationCursor.right()
+        coEvery {
+            mockMessageRepository.getConversationCursor(
+                any(),
+                userId,
+                labelId
+            )
+        } returns conversationCursor.right()
 
         SetEphemeralMailboxCursor(mockConversationRepository, mockMessageRepository, repository)
-            .invoke(userId, false, CursorId(ConversationId("conversationID")))
+            .invoke(userId, false, CursorId(ConversationId("conversationID")), labelId)
 
         coVerify(exactly = 1) {
             mockMessageRepository.getConversationCursor(
                 CursorId(ConversationId("conversationID")),
-                userId
+                userId, labelId
             )
         }
-        coVerify(exactly = 0) { mockConversationRepository.getConversationCursor(any(), any()) }
+        coVerify(exactly = 0) { mockConversationRepository.getConversationCursor(any(), userId, labelId) }
         coVerify(exactly = 1) { repository.setEphemeralCursor(conversationCursor) }
     }
 
     @Test
     fun `when error returned then do not setEphemeralCursor`() = runTest {
-        coEvery { mockMessageRepository.getConversationCursor(any(), any()) } returns ConversationCursorError.Other(
+        coEvery {
+            mockMessageRepository.getConversationCursor(
+                any(),
+                userId,
+                labelId
+            )
+        } returns ConversationCursorError.Other(
             DataError.Local.Unknown
         ).left()
 
         SetEphemeralMailboxCursor(mockConversationRepository, mockMessageRepository, repository)
-            .invoke(userId, false, CursorId(ConversationId("conversationID")))
+            .invoke(userId, false, CursorId(ConversationId("conversationID")), labelId)
 
         coVerify(exactly = 1) {
             mockMessageRepository.getConversationCursor(
                 CursorId(ConversationId("conversationID")),
-                userId
+                userId, labelId
             )
         }
         coVerify(exactly = 0) { repository.setEphemeralCursor(conversationCursor) }

@@ -30,6 +30,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailmessage.data.model.LocalConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -132,6 +133,7 @@ interface RustConversationDataSource {
 
     suspend fun getConversationCursor(
         userId: UserId,
+        labelId: LabelId,
         firstPage: LocalConversationId
     ): Either<ConversationCursorError, ConversationCursor>
 

@@ -39,6 +39,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.model.LocalConversationWithMessages
 import ch.protonmail.android.mailmessage.domain.model.toConversationCursorError
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -338,37 +339,47 @@ class RustConversationDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getConversationCursor(userId: UserId, firstPage: LocalConversationId) =
-        withContext(ioDispatcher) {
-            // we are relying on the exiting pager being open already
-            val result = rustConversationsQuery.getCursor(firstPage)
-                ?: initializeCursor(userId, firstPage).apply {
-                    Timber.d("rust-conversation cursor unable to get cursor, retrieving conversations and retrying")
-                }
+    override suspend fun getConversationCursor(
+        userId: UserId,
+        labelId: LabelId,
+        firstPage: LocalConversationId
+    ) = withContext(ioDispatcher) {
+        Timber.d(
+            "rust-conversation: getting cursor for conversationId=%s in location: %s",
+            firstPage, labelId.id
+        )
+        // we are relying on the exiting pager being open already
+        val result = rustConversationsQuery.getCursor(userId, labelId, firstPage)
+            ?: initializeCursor(userId, labelId, firstPage).apply {
+                Timber.d("rust-conversation cursor unable to get cursor, retrieving conversations and retrying")
+            }
 
-            return@withContext when {
-                result == null -> InvalidState.left()
-                else -> {
-                    result.mapLeft {
-                        it.toConversationCursorError()
-                    }
+        return@withContext when {
+            result == null -> InvalidState.left()
+            else -> {
+                result.mapLeft {
+                    it.toConversationCursorError()
                 }
             }
         }
+    }
 
     override fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus> =
         rustConversationsQuery.observeScrollerFetchNewStatus().map {
             it.toConversationScrollerFetchNewStatus()
         }
 
-    private suspend fun initializeCursor(userId: UserId, firstPage: LocalConversationId) =
-        rustConversationsQuery.getConversations(userId, PageKey.DefaultPageKey())
-            .onLeft {
-                Timber.e("rust-conversation cursor unable to recover and get conversations")
-            }
-            .fold(
-                ifLeft = { null },
-                ifRight = { rustConversationsQuery.getCursor(firstPage) }
-            )
+    private suspend fun initializeCursor(
+        userId: UserId,
+        labelId: LabelId,
+        firstPage: LocalConversationId
+    ) = rustConversationsQuery.getConversations(userId, PageKey.DefaultPageKey().copy(labelId = labelId))
+        .onLeft {
+            Timber.e("rust-conversation cursor unable to recover and get conversations")
+        }
+        .fold(
+            ifLeft = { null },
+            ifRight = { rustConversationsQuery.getCursor(userId, labelId, firstPage) }
+        )
 
 }

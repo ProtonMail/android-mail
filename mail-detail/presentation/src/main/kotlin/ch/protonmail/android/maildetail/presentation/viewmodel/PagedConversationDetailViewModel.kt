@@ -115,11 +115,11 @@ class PagedConversationDetailViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .flatMapLatest { params ->
                     getConversationCursor(
-                        singleMessageMode = requireSingleMessageMode(),
                         conversationId = params.conversationId,
                         userId = params.userId,
                         messageId = getInitialScrollToMessageId()?.id,
-                        viewModeIsConversationMode = requireViewModeModeIsConversation()
+                        viewModeIsConversationMode = requireViewModeModeIsConversation(),
+                        labelId = requireLabelId()
                     ).map { state ->
                         Triple(params.swipeEnabled, params.autoAdvance, state)
                     }

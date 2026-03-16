@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
@@ -38,7 +39,11 @@ interface RustMessageListQuery {
 
     suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
 
-    suspend fun getCursor(conversationId: LocalConversationId): Either<PaginationError, MailMessageCursorWrapper>?
+    suspend fun getCursor(
+        userId: UserId,
+        labelId: LabelId,
+        conversationId: LocalConversationId
+    ): Either<PaginationError, MailMessageCursorWrapper>?
 
     fun observeScrollerFetchNewStatus(): Flow<MessageScrollerStatusUpdate>
 
