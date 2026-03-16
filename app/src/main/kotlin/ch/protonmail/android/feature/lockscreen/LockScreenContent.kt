@@ -35,7 +35,7 @@ import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import io.sentry.compose.withSentryObservableEffect
 
 @Composable
-internal fun LockScreenContent(shouldBlurScreen: Boolean, onClose: () -> Unit) {
+internal fun LockScreenContent(onClose: () -> Unit) {
     ProtonTheme {
         val navController = rememberNavController().withSentryObservableEffect()
         val backgroundColor = ProtonTheme.colors.backgroundNorm
@@ -43,9 +43,7 @@ internal fun LockScreenContent(shouldBlurScreen: Boolean, onClose: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .thenIf(!shouldBlurScreen) {
-                    background(backgroundColor)
-                }
+                .background(backgroundColor)
         ) {
             CompositionLocalProvider(LocalLockScreenEntryPointIsStandalone provides true) {
                 NavHost(
@@ -70,5 +68,3 @@ internal fun LockScreenContent(shouldBlurScreen: Boolean, onClose: () -> Unit) {
         }
     }
 }
-
-private fun Modifier.thenIf(condition: Boolean, block: Modifier.() -> Modifier) = if (condition) this.block() else this

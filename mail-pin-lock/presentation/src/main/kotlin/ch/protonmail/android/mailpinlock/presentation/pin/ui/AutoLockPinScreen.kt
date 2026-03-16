@@ -122,16 +122,10 @@ private fun AutoLockPinScreen(
 
     val isStandalone = LocalLockScreenEntryPointIsStandalone.current
 
-    val containerColor = if (isStandalone) {
-        ProtonTheme.colors.backgroundNorm.copy(alpha = 0.25f)
-    } else {
-        ProtonTheme.colors.backgroundNorm
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = containerColor,
+            containerColor = ProtonTheme.colors.backgroundNorm,
             topBar = {
                 if (!isStandalone && state as? AutoLockPinState.DataLoaded != null) {
                     PinScreenTopBar(

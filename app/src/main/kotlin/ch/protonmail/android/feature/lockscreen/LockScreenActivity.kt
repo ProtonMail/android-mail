@@ -19,9 +19,7 @@
 package ch.protonmail.android.feature.lockscreen
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -61,12 +59,8 @@ internal class LockScreenActivity : AppCompatActivity() {
         setupBackPressBlocking()
         observeUnlockSignal()
 
-        val shouldBlurScreen = setupBlurIfSupported()
-
         setContent {
-            LockScreenContent(shouldBlurScreen) {
-                this@LockScreenActivity.finish()
-            }
+            LockScreenContent(onClose = { this@LockScreenActivity.finish() })
         }
     }
 
@@ -110,25 +104,5 @@ internal class LockScreenActivity : AppCompatActivity() {
                 override fun handleOnBackPressed() = Unit
             }
         )
-    }
-
-    private fun setupBlurIfSupported(): Boolean {
-        val shouldBlur = !deepLinkHandler.hasPending() &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-            window.windowManager.isCrossWindowBlurEnabled
-
-        if (shouldBlur) {
-            applyNativeBlur()
-        }
-
-        return shouldBlur
-    }
-
-    private fun applyNativeBlur() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-
-        @Suppress("MagicNumber")
-        window.setDimAmount(0.1f)
     }
 }
