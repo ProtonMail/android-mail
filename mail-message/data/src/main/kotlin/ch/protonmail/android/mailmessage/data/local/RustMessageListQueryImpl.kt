@@ -84,9 +84,12 @@ class RustMessageListQueryImpl @Inject constructor(
 
         val pageDescriptor = pageKey.toPageDescriptor(userId)
 
-        paginatorMutex.withLock {
+        val newPaginatorInitialized = paginatorMutex.withLock {
             if (shouldInitPaginator(pageDescriptor, pageKey)) {
                 initPaginator(pageDescriptor, mailbox)
+                true
+            } else {
+                false
             }
         }
 
@@ -94,31 +97,41 @@ class RustMessageListQueryImpl @Inject constructor(
 
         return when (pageKey.pageToLoad) {
             PageToLoad.First,
-            PageToLoad.Next -> {
-                val deferred = setPendingRequest(RequestType.Append)
-                paginatorState?.paginatorWrapper?.nextPage()
-
-                // Wait for immediate Append response
-                deferred.await().let { firstResponse ->
-
-                    // If available wait for follow-up response
-                    val followUp = paginatorState?.pendingRequest?.followUpResponse
-                    followUp?.awaitWithTimeout(NONE_FOLLOWUP_GRACE_MS, firstResponse) {
-                        Timber.d("rust-message-query: Follow-up response timed out.")
-
-                        clearPendingRequest()
-                    } ?: firstResponse
-                }
-            }
+            PageToLoad.Next -> loadNextPage()
 
             PageToLoad.All -> {
-                val deferred = setPendingRequest(RequestType.Refresh)
-                paginatorState?.paginatorWrapper?.reload()
-
-                // Wait for immediate Refresh response
-                deferred.await()
+                if (newPaginatorInitialized) {
+                    Timber.d(
+                        "rust-message-query: paginator newly created, calling nextPage() " +
+                            "instead of reload() for pageKey: %s",
+                        pageKey
+                    )
+                    loadNextPage()
+                } else {
+                    Timber.d("rust-message-query: calling reload() for pageKey: %s", pageKey)
+                    reloadMessages()
+                }
             }
         }
+    }
+
+    private suspend fun loadNextPage(): Either<PaginationError, List<Message>> {
+        val deferred = setPendingRequest(RequestType.Append)
+        paginatorState?.paginatorWrapper?.nextPage()
+
+        return deferred.await().let { firstResponse ->
+            val followUp = paginatorState?.pendingRequest?.followUpResponse
+            followUp?.awaitWithTimeout(NONE_FOLLOWUP_GRACE_MS, firstResponse) {
+                Timber.d("rust-message-query: Follow-up response timed out.")
+                clearPendingRequest()
+            } ?: firstResponse
+        }
+    }
+
+    private suspend fun reloadMessages(): Either<PaginationError, List<Message>> {
+        val deferred = setPendingRequest(RequestType.Refresh)
+        paginatorState?.paginatorWrapper?.reload()
+        return deferred.await()
     }
 
     override suspend fun getCursor(
