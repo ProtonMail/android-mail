@@ -194,7 +194,7 @@ class RustMessageDataSourceImpl @Inject constructor(
         userId: UserId,
         labelId: LabelId,
         firstPage: LocalConversationId
-    ) = rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey())
+    ) = rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey().copy(labelId = labelId))
         .onLeft {
             Timber.e("rust-message cursor unable to recover and get conversations")
         }
