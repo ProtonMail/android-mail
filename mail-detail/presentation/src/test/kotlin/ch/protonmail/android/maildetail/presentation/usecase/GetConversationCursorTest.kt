@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.model.EphemeralMailboxCursor
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.EphemeralMailboxCursorRepository
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.SetEphemeralMailboxCursor
 import io.mockk.coVerify
 import io.mockk.every
@@ -43,6 +44,7 @@ internal class GetConversationCursorTest {
     private val userId = UserId("userID")
     private val conversationId = ConversationId("conversationId")
     private val messageId = "messageId"
+    private val labelId = LabelId("1")
 
     @Test
     fun `returns cursor when returned by flow and conversation matches`() = runTest {
@@ -56,12 +58,17 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, false)
+            .invoke(userId, conversationId, messageId, false, labelId)
             .first()
 
         // Then
         assertEquals(expected, result)
-        coVerify(exactly = 0) { setEphemeralMailboxCursor.invoke(any(), any(), any()) }
+        coVerify(exactly = 0) {
+            setEphemeralMailboxCursor.invoke(
+                any(), any(),
+                any(), labelId
+            )
+        }
     }
 
     @Test
@@ -76,11 +83,16 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, false)
+            .invoke(userId, conversationId, messageId, false, labelId)
             .toList()
 
         // Then
-        coVerify { setEphemeralMailboxCursor.invoke(userId, false, CursorId(conversationId, messageId)) }
+        coVerify {
+            setEphemeralMailboxCursor.invoke(
+                userId, false,
+                CursorId(conversationId, messageId), labelId
+            )
+        }
         assertEquals(EphemeralMailboxCursor.Initialising, result.first())
         assertEquals(expected, result[1])
     }
@@ -97,11 +109,16 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, false)
+            .invoke(userId, conversationId, messageId, false, labelId)
             .toList()
 
         // Then
-        coVerify { setEphemeralMailboxCursor.invoke(userId, false, CursorId(conversationId, messageId)) }
+        coVerify {
+            setEphemeralMailboxCursor.invoke(
+                userId, false,
+                CursorId(conversationId, messageId), labelId
+            )
+        }
         assertEquals(EphemeralMailboxCursor.Initialising, result.first())
         assertEquals(expected, result[1])
     }
@@ -126,11 +143,16 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, newConversationId, messageId, false)
+            .invoke(userId, newConversationId, messageId, false, labelId)
             .toList()
 
         // Then
-        coVerify { setEphemeralMailboxCursor.invoke(userId, false, CursorId(newConversationId, messageId)) }
+        coVerify {
+            setEphemeralMailboxCursor.invoke(
+                userId, false,
+                CursorId(newConversationId, messageId), labelId
+            )
+        }
         assertEquals(EphemeralMailboxCursor.Initialising, result.first())
         assertEquals(newData, result[1])
     }
@@ -147,12 +169,17 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, false)
+            .invoke(userId, conversationId, messageId, false, labelId)
             .first()
 
         // Then
         assertEquals(expected, result)
-        coVerify(exactly = 0) { setEphemeralMailboxCursor.invoke(any(), any(), any()) }
+        coVerify(exactly = 0) {
+            setEphemeralMailboxCursor.invoke(
+                any(), any(),
+                any(), labelId
+            )
+        }
     }
 
     @Test
@@ -167,12 +194,17 @@ internal class GetConversationCursorTest {
 
         // When
         val result = GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, false)
+            .invoke(userId, conversationId, messageId, false, labelId)
             .first()
 
         // Then
         assertEquals(expected, result)
-        coVerify(exactly = 0) { setEphemeralMailboxCursor.invoke(any(), any(), any()) }
+        coVerify(exactly = 0) {
+            setEphemeralMailboxCursor.invoke(
+                any(), any(),
+                any(), labelId
+            )
+        }
     }
 
     @Test
@@ -188,7 +220,7 @@ internal class GetConversationCursorTest {
 
         // When
         GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, specificMessageId, false)
+            .invoke(userId, conversationId, specificMessageId, false, labelId)
             .toList()
 
         // Then
@@ -196,7 +228,8 @@ internal class GetConversationCursorTest {
             setEphemeralMailboxCursor.invoke(
                 userId,
                 false,
-                CursorId(conversationId, specificMessageId)
+                CursorId(conversationId, specificMessageId),
+                labelId
             )
         }
     }
@@ -213,7 +246,7 @@ internal class GetConversationCursorTest {
 
         // When
         GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId = null, false)
+            .invoke(userId, conversationId, messageId = null, false, labelId)
             .toList()
 
         // Then
@@ -221,7 +254,7 @@ internal class GetConversationCursorTest {
             setEphemeralMailboxCursor.invoke(
                 userId,
                 false,
-                CursorId(conversationId, null)
+                CursorId(conversationId, null), labelId
             )
         }
     }
@@ -238,7 +271,7 @@ internal class GetConversationCursorTest {
 
         // When
         GetConversationCursor(mockEphemeralMailboxCursorRepository, setEphemeralMailboxCursor)
-            .invoke(userId, false, conversationId, messageId, locationViewModeIsConversation = true)
+            .invoke(userId, conversationId, messageId, locationViewModeIsConversation = true, labelId)
             .toList()
 
         // Then
@@ -246,7 +279,7 @@ internal class GetConversationCursorTest {
             setEphemeralMailboxCursor.invoke(
                 userId,
                 true,
-                CursorId(conversationId, messageId)
+                CursorId(conversationId, messageId), labelId
             )
         }
     }

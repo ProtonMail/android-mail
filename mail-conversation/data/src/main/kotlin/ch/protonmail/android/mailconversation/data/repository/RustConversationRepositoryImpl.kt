@@ -140,10 +140,12 @@ class RustConversationRepositoryImpl @Inject constructor(
 
     override suspend fun getConversationCursor(
         firstPage: CursorId,
-        userId: UserId
+        userId: UserId,
+        labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor> = rustConversationDataSource
         .getConversationCursor(
             userId = userId,
+            labelId = labelId,
             firstPage = firstPage.conversationId.toLocalConversationId()
         )
         .map {

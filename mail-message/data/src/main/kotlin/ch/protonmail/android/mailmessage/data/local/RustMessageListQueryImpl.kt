@@ -23,12 +23,14 @@ import arrow.core.left
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.MessageRustCoroutineScope
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustMessagesPaginator
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustSearchPaginator
 import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
+import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
 import ch.protonmail.android.mailpagination.data.model.scroller.PendingRequest
 import ch.protonmail.android.mailpagination.data.model.scroller.RequestType
@@ -119,8 +121,44 @@ class RustMessageListQueryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCursor(conversationId: LocalConversationId) =
-        paginatorState?.paginatorWrapper?.getCursor(conversationId)
+    override suspend fun getCursor(
+        userId: UserId,
+        labelId: LabelId,
+        conversationId: LocalConversationId
+    ): Either<PaginationError, MailMessageCursorWrapper>? {
+        val pageDescriptor = PageDescriptor.Default(userId = userId, labelId = labelId)
+
+        val initError = paginatorMutex.withLock {
+            if (shouldInitPaginatorForCursor(pageDescriptor)) {
+                Timber.d(
+                    "rust-message-query: Initializing paginator for getCursor with page desc=%s",
+                    pageDescriptor
+                )
+                val mailbox = rustMailboxFactory.create(userId, labelId.toLocalLabelId()).getOrNull()
+                if (mailbox == null) {
+                    Timber.e(
+                        "rust-message-query: Unable to create mailbox for userId=%s and labelId=%s",
+                        userId,
+                        labelId
+                    )
+                    PaginationError.Other(DataError.Local.IllegalStateError).left()
+                } else {
+                    initPaginator(pageDescriptor, mailbox)
+                    null
+                }
+            } else {
+                Timber.d(
+                    "rust-message-query: Reusing existing paginator for getCursor with page desc=%s",
+                    pageDescriptor
+                )
+                null
+            }
+        }
+
+        if (initError != null) return initError
+
+        return paginatorState?.paginatorWrapper?.getCursor(conversationId)
+    }
 
     override fun observeScrollerFetchNewStatus(): Flow<MessageScrollerStatusUpdate> =
         scrollerFetchNewStatusFlow.filterNotNull()
@@ -231,6 +269,9 @@ class RustMessageListQueryImpl @Inject constructor(
     private fun shouldInitPaginator(pageDescriptor: PageDescriptor, pageKey: PageKey) = paginatorState == null ||
         paginatorState?.pageDescriptor != pageDescriptor ||
         pageKey.pageToLoad == PageToLoad.First
+
+    private fun shouldInitPaginatorForCursor(pageDescriptor: PageDescriptor): Boolean =
+        paginatorState == null || paginatorState?.pageDescriptor != pageDescriptor
 
     private fun destroy() {
         if (paginatorState == null) {

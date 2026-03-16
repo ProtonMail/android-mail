@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.repository.EphemeralMailboxCursorRepository
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -40,15 +41,20 @@ class SetEphemeralMailboxCursor @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         viewModeIsConversation: Boolean,
-        cursorId: CursorId
+        cursorId: CursorId,
+        labelId: LabelId
     ) {
         when (viewModeIsConversation) {
             true -> {
-                conversationRepository.getConversationCursor(userId = userId, firstPage = cursorId)
+                conversationRepository.getConversationCursor(
+                    userId = userId,
+                    firstPage = cursorId,
+                    labelId = labelId
+                )
             }
 
             false -> {
-                messageRepository.getConversationCursor(userId = userId, firstPage = cursorId)
+                messageRepository.getConversationCursor(userId = userId, firstPage = cursorId, labelId = labelId)
             }
         }.onLeft {
             Timber.d("conversation-cursor unable to get cursor error $it")

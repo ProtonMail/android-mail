@@ -555,15 +555,16 @@ class MailboxViewModel @Inject constructor(
             // We are leaving mailbox screen, however other screens may still need the cursor in order to navigate
             // messages. For example the paging view detail screen that uses a cursor to swipe messages.  In this case
             // we set an ephemeral cursor (transient/ short lived) that can be joined by the following screen
+            val labelId = getFromLabelIdSearchAware()
             setEphemeralMailboxCursor(
                 userId = user, viewModeIsConversation = viewMode == ViewMode.ConversationGrouping,
                 cursorId = CursorId(
                     item.conversationId, subItemId
-                )
+                ),
+                labelId = labelId
             )
             val isConversationGrouping =
                 getViewModeForCurrentLocation(getSelectedMailLabelId()) == ViewMode.ConversationGrouping
-            val labelId = getFromLabelIdSearchAware()
 
             emitNewStateFrom(
                 MailboxEvent.ItemClicked.ItemDetailsOpened(

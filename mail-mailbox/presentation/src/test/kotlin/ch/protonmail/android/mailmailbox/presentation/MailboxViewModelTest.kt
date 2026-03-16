@@ -1391,7 +1391,8 @@ internal class MailboxViewModelTest {
                 userId, false,
                 CursorId(
                     item.conversationId, item.id
-                )
+                ),
+                labelId
             )
         } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
@@ -1418,7 +1419,8 @@ internal class MailboxViewModelTest {
                     userId, false,
                     CursorId(
                         item.conversationId, item.id
-                    )
+                    ),
+                    labelId
                 )
             }
         }
@@ -1590,7 +1592,8 @@ internal class MailboxViewModelTest {
                 userId, true,
                 CursorId(
                     item.conversationId
-                )
+                ),
+                labelId
             )
         } just runs
         coEvery { getCurrentViewModeForLabel(userId = any(), any()) } returns ConversationGrouping
@@ -1619,7 +1622,8 @@ internal class MailboxViewModelTest {
                     userId, true,
                     CursorId(
                         item.conversationId
-                    )
+                    ),
+                    labelId
                 )
             }
         }
@@ -1775,7 +1779,7 @@ internal class MailboxViewModelTest {
         expectPagerMock(pagingDataFlow = flowOf(pagingData))
         val labelId = initialLocationMailLabelId.labelId
         coEvery {
-            setEphemeralMailboxCursor.invoke(userId, any(), any())
+            setEphemeralMailboxCursor.invoke(userId, any(), any(), any())
         } just runs
         every {
             mailboxReducer.newStateFrom(
@@ -3696,7 +3700,7 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any()) } just runs
+        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3735,7 +3739,7 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any()) } just runs
+        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3763,7 +3767,7 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) } returns almostAllMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any()) } just runs
+        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3792,7 +3796,7 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns stateWithFilterEnabled
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any()) } just runs
+        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3818,7 +3822,7 @@ internal class MailboxViewModelTest {
 
         expectedTrashSpamFilterStateChange(intermediateState)
         expectedSelectedLabelCountStateChange(intermediateState)
-        coEvery { setEphemeralMailboxCursor(userId, any(), any()) } just runs
+        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 

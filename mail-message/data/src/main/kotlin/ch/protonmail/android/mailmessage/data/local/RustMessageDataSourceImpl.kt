@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toMessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.data.mapper.toPreviousScheduleSendTime
@@ -170,11 +171,12 @@ class RustMessageDataSourceImpl @Inject constructor(
 
     override suspend fun getConversationCursor(
         firstPage: LocalConversationId,
-        userId: UserId
+        userId: UserId,
+        labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor> = withContext(ioDispatcher) {
         // we are relying on the exiting pager being open already
-        val result = rustMessageListQuery.getCursor(firstPage)
-            ?: initializeCursor(userId, firstPage).apply {
+        val result = rustMessageListQuery.getCursor(userId = userId, conversationId = firstPage, labelId = labelId)
+            ?: initializeCursor(userId, labelId, firstPage).apply {
                 Timber.d("rust-message cursor unable to get cursor, retrieving conversations and retrying")
             }
 
@@ -188,15 +190,18 @@ class RustMessageDataSourceImpl @Inject constructor(
         }
     }
 
-    private suspend fun initializeCursor(userId: UserId, firstPage: LocalConversationId) =
-        rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey())
-            .onLeft {
-                Timber.e("rust-message cursor unable to recover and get conversations")
-            }
-            .fold(
-                ifLeft = { null },
-                ifRight = { rustMessageListQuery.getCursor(firstPage) }
-            )
+    private suspend fun initializeCursor(
+        userId: UserId,
+        labelId: LabelId,
+        firstPage: LocalConversationId
+    ) = rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey())
+        .onLeft {
+            Timber.e("rust-message cursor unable to recover and get conversations")
+        }
+        .fold(
+            ifLeft = { null },
+            ifRight = { rustMessageListQuery.getCursor(userId, labelId, firstPage) }
+        )
 
 
     override suspend fun getSenderImage(

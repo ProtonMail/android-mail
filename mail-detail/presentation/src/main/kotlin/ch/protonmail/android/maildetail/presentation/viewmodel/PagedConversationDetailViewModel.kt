@@ -121,11 +121,11 @@ class PagedConversationDetailViewModel @Inject constructor(
                     val singleMessageModePreferred = resolveSingleMessageModePreferred(params.userId)
 
                     getConversationCursor(
-                        singleMessageModePreferred = singleMessageModePreferred,
                         conversationId = params.conversationId,
                         userId = params.userId,
                         messageId = getInitialScrollToMessageId()?.id,
-                        locationViewModeIsConversation = requireLocationViewModeModeIsConversation()
+                        locationViewModeIsConversation = requireLocationViewModeModeIsConversation(),
+                        labelId = requireLabelId()
                     ).map { cursorState ->
                         CursorResult(
                             swipeEnabled = params.swipeEnabled,

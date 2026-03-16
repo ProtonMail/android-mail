@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.model.EphemeralMailboxCursor
 import ch.protonmail.android.mailcommon.domain.repository.EphemeralMailboxCursorRepository
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.SetEphemeralMailboxCursor
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
@@ -41,10 +42,10 @@ class GetConversationCursor @Inject constructor(
 
     suspend operator fun invoke(
         userId: UserId,
-        singleMessageModePreferred: Boolean,
         conversationId: ConversationId,
         messageId: String?,
-        locationViewModeIsConversation: Boolean
+        locationViewModeIsConversation: Boolean,
+        labelId: LabelId
     ) = cursorRepository.observeCursor()
         .map { state ->
             val shouldInitializeCursor = state == null ||
@@ -53,8 +54,10 @@ class GetConversationCursor @Inject constructor(
 
             if (shouldInitializeCursor) {
                 setEphemeralMailboxCursor(
-                    userId, locationViewModeIsConversation,
-                    CursorId(conversationId, messageId)
+                    userId = userId,
+                    viewModeIsConversation = locationViewModeIsConversation,
+                    cursorId = CursorId(conversationId, messageId),
+                    labelId = labelId
                 )
                 EphemeralMailboxCursor.Initialising
             } else {
