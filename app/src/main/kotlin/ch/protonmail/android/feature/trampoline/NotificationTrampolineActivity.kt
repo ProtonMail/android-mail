@@ -25,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.feature.lockscreen.LockScreenActivity
 import ch.protonmail.android.feature.lockscreen.LockScreenState
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailpinlock.domain.AutoLockCheckPendingState
 import ch.protonmail.android.mailpinlock.domain.AutoLockRepository
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.usecase.CreateLaunchIntent
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkData
@@ -37,6 +38,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 internal class NotificationTrampolineActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var autoLockCheckPendingState: AutoLockCheckPendingState
 
     @Inject
     lateinit var autoLockRepository: AutoLockRepository
@@ -55,6 +59,11 @@ internal class NotificationTrampolineActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Skip the auto-lock check that AutoLockInitializer will trigger on ON_RESUME.
+        // The Trampoline handles lock screen logic itself and the redundant check
+        // would race with handleNotificationNavigation(), causing a double biometric prompt.
+        autoLockCheckPendingState.skipNextAutoLockCheck()
 
         lifecycleScope.launch {
             handleNotificationNavigation()
