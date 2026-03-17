@@ -185,7 +185,12 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         userId: UserId,
         switchedAccountEmail: String?
     ) {
-        val labelId = message.exclusiveLocation.getLabelId(userId) ?: return
+        val labelId = message.exclusiveLocation.getLabelId(userId)
+        if (labelId == null) {
+            Timber.e("Unable to resolve label for message - Navigating to inbox.")
+            navigateToInbox(userId.id)
+            return
+        }
 
         _state.update {
             if (isShowSingleMessageMode(userId)) {

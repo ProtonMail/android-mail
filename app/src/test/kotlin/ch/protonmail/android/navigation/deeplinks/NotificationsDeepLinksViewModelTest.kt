@@ -298,6 +298,27 @@ internal class NotificationsDeepLinksViewModelTest {
     }
 
     @Test
+    fun `should navigate to inbox when message location and all mail fallback cannot be resolved`() = runTest {
+        // Given
+        val messageId = getRemoteMessageId()
+        val userId = getUserId()
+        val message = AlphaAppQAReport.copy(exclusiveLocation = ExclusiveLocation.NoLocation)
+
+        expectPrimaryId(userId)
+        expectMessage(userId, messageId, message)
+        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns null
+
+        // When
+        val viewModel = viewModel()
+        viewModel.navigateToDetails(messageId.id, userId.id)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(NavigateToInbox.ActiveUser, awaitItem())
+        }
+    }
+
+    @Test
     fun `should navigate to message details when pending deep link is a Message`() = runTest {
         // Given
         val userId = getUserId()
