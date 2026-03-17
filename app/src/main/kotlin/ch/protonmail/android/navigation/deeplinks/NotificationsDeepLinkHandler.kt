@@ -22,10 +22,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.transform
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,11 +36,12 @@ class NotificationsDeepLinkHandler @Inject constructor() {
     private val isUnlocked = MutableStateFlow(false)
     private val hasPending = AtomicBoolean(false)
 
-    val pending: Flow<NotificationsDeepLinkData> = isUnlocked
-        .filter { it }
-        .flatMapLatest {
-            pendingChannel.receiveAsFlow()
-                .onEach { data -> Timber.d("DeepLinkHandler: Emitting pending deep link - $data") }
+    val pending: Flow<NotificationsDeepLinkData> = pendingChannel
+        .receiveAsFlow()
+        .transform { data ->
+            isUnlocked.first { it }
+            Timber.d("DeepLinkHandler: Emitting pending deep link - $data")
+            emit(data)
         }
 
     fun hasPending(): Boolean = hasPending.get()

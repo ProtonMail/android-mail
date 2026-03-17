@@ -29,7 +29,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal class NotificationDeepLinkHandlerTest {
+internal class NotificationsDeepLinkHandlerTest {
 
     private lateinit var handler: NotificationsDeepLinkHandler
 
@@ -201,6 +201,34 @@ internal class NotificationDeepLinkHandlerTest {
 
             // Then - no more emissions after locking
             expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `setPending while locked after prior unlock does not emit until unlocked`() = runTest {
+        // Given - simulate a previous unlock/lock cycle
+        val firstData = mockk<NotificationsDeepLinkData>(name = "first")
+        val secondData = mockk<NotificationsDeepLinkData>(name = "second")
+        handler.setUnlocked()
+
+        handler.pending.test {
+            handler.setPending(firstData)
+            assertEquals(firstData, awaitItem())
+
+            // Lock again (simulates auto-lock timer firing)
+            handler.setLocked()
+
+            // When - new deep link arrives while locked
+            handler.setPending(secondData)
+
+            // Then - should NOT emit while locked
+            expectNoEvents()
+
+            // When - unlock
+            handler.setUnlocked()
+
+            // Then - now it should emit
+            assertEquals(secondData, awaitItem())
         }
     }
 }
