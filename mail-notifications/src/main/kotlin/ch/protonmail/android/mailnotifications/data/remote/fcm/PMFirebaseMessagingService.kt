@@ -66,6 +66,8 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
         val uid = remoteMessage.data["UID"]
         val encryptedMessage = remoteMessage.data["encryptedMessage"]
 
+        logPriorityDiagnostics(remoteMessage, uid)
+
         if (uid != null && encryptedMessage != null) {
             Timber.d("Notification: Push message received for session id=%s", uid)
             appScope.launch { processPushNotificationMessage(SessionId(uid), encryptedMessage) }
@@ -75,6 +77,38 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
                 uid,
                 encryptedMessage != null
             )
+        }
+    }
+
+    override fun onDeletedMessages() {
+        super.onDeletedMessages()
+        Timber.w("Notification: FCM deleted some pending messages!")
+    }
+
+    private fun logPriorityDiagnostics(remoteMessage: RemoteMessage, uid: String?) {
+        val messageId = remoteMessage.messageId
+        val priority = remoteMessage.priority
+        val originalPriority = remoteMessage.originalPriority
+
+        val isPriorityDowngraded =
+            originalPriority == RemoteMessage.PRIORITY_HIGH &&
+                priority != RemoteMessage.PRIORITY_HIGH
+
+        if (isPriorityDowngraded) {
+            Timber.w(
+                "Notification: priority downgraded HIGH to %s messageId=%s uid=%s",
+                priorityToString(priority),
+                messageId,
+                uid
+            )
+        }
+    }
+
+    private fun priorityToString(priority: Int): String {
+        return when (priority) {
+            RemoteMessage.PRIORITY_HIGH -> "HIGH"
+            RemoteMessage.PRIORITY_NORMAL -> "NORMAL"
+            else -> "UNKNOWN"
         }
     }
 }

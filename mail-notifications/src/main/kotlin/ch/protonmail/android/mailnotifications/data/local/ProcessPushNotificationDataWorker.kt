@@ -50,11 +50,6 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         val sessionId = inputData.getString(KeyPushNotificationUid)
         val encryptedNotification = inputData.getString(KeyPushNotificationEncryptedMessage)
 
-        Timber.d(
-            "Notification: Process push notification for userId=%s, sessionId=%s",
-            userId,
-            sessionId
-        )
         return if (userId.isNullOrEmpty() || sessionId.isNullOrEmpty() || encryptedNotification.isNullOrEmpty()) {
             Result.failure(workDataOf(KeyProcessPushNotificationDataError to "Input data is missing"))
         } else {
@@ -73,6 +68,13 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         val decryptedNotification = decryptPushNotificationContent(userId, sessionId, encryptedPayload).getOrElse {
             return Result.failure(workDataOf(KeyProcessPushNotificationDataError to it.message))
         }
+
+        Timber.d(
+            "Notification: Process push notification of type=%s for userId=%s, sessionId=%s",
+            decryptedNotification.typeName(),
+            userId,
+            sessionId
+        )
 
         return when (decryptedNotification) {
             is LocalPushNotification.Message.NewMessage -> processNewMessagePushNotification(decryptedNotification)
@@ -105,4 +107,13 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
             KeyPushNotificationEncryptedMessage to encryptedNotification
         )
     }
+}
+
+internal fun LocalPushNotification.typeName(): String = when (this) {
+    is LocalPushNotification.Message.MessageRead -> "MessageRead"
+    is LocalPushNotification.Message.NewMessage -> "NewMessage"
+    is LocalPushNotification.Message.UnsupportedMessageAction ->
+        "UnsupportedMessageAction"
+
+    is LocalPushNotification.Login -> "Login"
 }
