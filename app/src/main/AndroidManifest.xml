@@ -37,6 +37,7 @@
         <!-- Intent action query to determine whether a file can be opened via quick previews. -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
         </intent>
     </queries>
 
