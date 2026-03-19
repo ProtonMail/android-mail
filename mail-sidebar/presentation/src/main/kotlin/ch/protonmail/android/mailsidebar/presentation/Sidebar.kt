@@ -41,7 +41,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -169,6 +168,7 @@ fun Sidebar(
                     actions.onUpselling(UpsellingEntryPoint.Feature.Sidebar, type)
                 })
             }
+            item { SidebarDivider() }
 
             sidebarSystemLabelItems(viewState.mailLabels.systemLabels, actions.onLabelAction)
             item { SidebarDivider() }
@@ -238,10 +238,6 @@ private fun SidebarHeader(modifier: Modifier = Modifier, hazeState: HazeState) {
             ),
             painter = painterResource(R.drawable.proton_mail_logo),
             contentDescription = null
-        )
-        HorizontalDivider(
-            Modifier.align(Alignment.BottomStart),
-            color = ProtonTheme.colors.sidebarSeparator
         )
     }
 }

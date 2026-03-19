@@ -51,13 +51,13 @@ internal class UpsellingButtonViewModelTest {
         // Given
         every {
             observeVisibilityUseCase(UpsellingEntryPoint.Feature.MobileSignature)
-        } returns flowOf(UpsellingVisibility.Normal)
+        } returns flowOf(UpsellingVisibility.Normal.MailPlus)
         val viewModel = UpsellingButtonViewModel(UpsellingEntryPoint.Feature.MobileSignature, observeVisibilityUseCase)
 
         // When
         viewModel.state.test {
             // Then
-            assertEquals(UpsellingState(UpsellingVisibility.Normal), awaitItem())
+            assertEquals(UpsellingState(UpsellingVisibility.Normal.MailPlus), awaitItem())
         }
     }
 

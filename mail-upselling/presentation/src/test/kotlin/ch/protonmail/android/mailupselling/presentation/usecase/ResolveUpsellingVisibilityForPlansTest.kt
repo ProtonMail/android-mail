@@ -76,7 +76,7 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         val actual = resolveUpsellingVisibilityForPlans(plans)
 
         // Then
-        assertEquals(UpsellingVisibility.Normal, actual)
+        assertEquals(UpsellingVisibility.Normal.MailPlus, actual)
     }
 
     @Test
@@ -170,7 +170,7 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         val actual = resolveUpsellingVisibilityForPlans(plans)
 
         // Then
-        assertEquals(UpsellingVisibility.Normal, actual)
+        assertEquals(UpsellingVisibility.Normal.MailPlus, actual)
     }
 
     private companion object {

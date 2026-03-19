@@ -138,7 +138,7 @@ class WebFoldersAndLabelsViewModelTest {
         every { appSettingsRepository.observeTheme() } returns flowOf(testTheme)
         every {
             observeUpsellingVisibility(UpsellingEntryPoint.Feature.Folders)
-        } returns flowOf(UpsellingVisibility.Normal)
+        } returns flowOf(UpsellingVisibility.Normal.MailPlus)
         val viewModel = buildViewModel()
 
         // When
@@ -147,7 +147,7 @@ class WebFoldersAndLabelsViewModelTest {
             // Then
             val actualState = awaitItem() as WebSettingsState.Data
             assertEquals(testTheme, actualState.theme)
-            assertEquals(UpsellingVisibility.Normal, actualState.upsellingVisibility)
+            assertEquals(UpsellingVisibility.Normal.MailPlus, actualState.upsellingVisibility)
         }
     }
 

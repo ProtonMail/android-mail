@@ -58,7 +58,7 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
             instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.IntroductoryPrice) } ->
                 UpsellingVisibility.Promotional.IntroductoryPrice
 
-            else -> UpsellingVisibility.Normal
+            else -> UpsellingVisibility.Normal.MailPlus
         }
     }
 

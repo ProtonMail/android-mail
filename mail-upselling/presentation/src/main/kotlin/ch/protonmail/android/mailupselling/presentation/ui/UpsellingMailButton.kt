@@ -83,7 +83,11 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
             is UpsellingVisibility.Promotional.SpringPromo ->
                 UpsellingSpringPromoMailButton(modifier = modifier, onButtonClick = { onClick(type) })
 
-            is UpsellingVisibility.Normal -> UpsellingMailButton(modifier = modifier, onButtonClick = { onClick(type) })
+            is UpsellingVisibility.Normal.MailPlus ->
+                UpsellingMailButton(modifier = modifier, onButtonClick = { onClick(type) })
+
+            is UpsellingVisibility.Normal.Unlimited ->
+                UpsellingUnlimitedButton(modifier = modifier, onButtonClick = { onClick(type) })
         }
     }
 }
@@ -119,6 +123,21 @@ private fun UpsellingMailButton(onButtonClick: () -> Unit, modifier: Modifier = 
     }
 }
 
+@Composable
+private fun UpsellingUnlimitedButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
+
+    IconButton(
+        modifier = modifier,
+        onClick = onButtonClick
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_upselling_unlimited),
+            contentDescription = accessibilityDescription,
+            tint = null
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -277,5 +296,14 @@ fun UpsellingSpringPromoMailButtonPreview() {
 fun UpsellingMailButtonPreview_Promo() {
     ProtonTheme {
         UpsellingPromotionalMailButton(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun UpsellingUnlimitedButtonPreview() {
+    ProtonTheme {
+        UpsellingUnlimitedButton(onButtonClick = {})
     }
 }

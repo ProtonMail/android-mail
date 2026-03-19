@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.model.hasSubscription
@@ -26,6 +27,7 @@ import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveMailPlusPlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.ObserveUnlimitedPlanUpgrades
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -38,11 +40,14 @@ import javax.inject.Provider
 
 class ObserveUpsellingVisibility @Inject constructor(
     private val resolveUpsellingVisibilityForPlans: ResolveUpsellingVisibilityForPlans,
+    private val resolveUpsellingVisibilityUnlimitedPlans: ResolveUpsellingVisibilityForUnlimitedPlans,
     private val observeMailPlusPlanUpgrades: ObserveMailPlusPlanUpgrades,
+    private val observeUnlimitedPlanUpgrades: ObserveUnlimitedPlanUpgrades,
     private val observeUser: ObserveUser,
     private val observePrimaryUserId: ObservePrimaryUserId,
     @PlayServicesAvailableValue private val playServicesAvailable: Provider<Boolean>,
-    @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>
+    @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>,
+    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>
 ) {
 
     operator fun invoke(entryPoint: UpsellingEntryPoint.Feature): Flow<UpsellingVisibility> =
@@ -60,15 +65,20 @@ class ObserveUpsellingVisibility @Inject constructor(
 
             combine(
                 observeUser(userId).filterNotNull(),
-                observeMailPlusPlanUpgrades(entryPoint)
-            ) { userEither, plusPlans ->
+                observeMailPlusPlanUpgrades(entryPoint),
+                observeUnlimitedPlanUpgrades()
+            ) { userEither, plusPlans, unlimitedPlans ->
                 val user = userEither.getOrNull() ?: return@combine UpsellingVisibility.Hidden
 
                 if (user.hasSubscription()) { // Need Monthly + Yearly for Upselling flows
                     UpsellingVisibility.Hidden
                 } else {
-                    resolveUpsellingVisibilityForPlans(plusPlans).also {
-                        Timber.d("upsell: resolving entry point to $it")
+                    if (unlimitedPlanPlacementFlag.get()) {
+                        resolveUpsellingVisibilityUnlimitedPlans(unlimitedPlans)
+                    } else {
+                        resolveUpsellingVisibilityForPlans(plusPlans).also {
+                            Timber.d("upsell: resolving entry point to $it")
+                        }
                     }
                 }
             }
