@@ -78,7 +78,8 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
                     SidebarUpsellRowSpringPromo(onButtonClick = { onClick(type) })
 
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
-                is UpsellingVisibility.Normal -> SidebarUpsellRow(onButtonClick = { onClick(type) })
+                is UpsellingVisibility.Normal.MailPlus -> SidebarUpsellRow(onButtonClick = { onClick(type) })
+                is UpsellingVisibility.Normal.Unlimited -> SidebarUnlimitedUpsellRow(onButtonClick = { onClick(type) })
             }
         }
     }
@@ -92,6 +93,17 @@ private fun SidebarUpsellRow(onButtonClick: () -> Unit, modifier: Modifier = Mod
         icon = painterResource(R.drawable.ic_diamond),
         iconTint = Color.Unspecified,
         text = stringResource(R.string.drawer_upgrade_plus),
+        onClick = onButtonClick
+    )
+}
+
+@Composable
+private fun SidebarUnlimitedUpsellRow(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    ProtonSidebarItem(
+        modifier = modifier,
+        icon = painterResource(R.drawable.ic_infinity),
+        iconTint = Color.Unspecified,
+        text = stringResource(R.string.drawer_upgrade_unlimited),
         onClick = onButtonClick
     )
 }
@@ -162,5 +174,14 @@ fun SidebarUpsellRowBlackFridayPreview() {
 fun SidebarUpsellRowSpringPromoPreview() {
     ProtonTheme {
         SidebarUpsellRowSpringPromo(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun SidebarUnlimitedUpsellRowPreview() {
+    ProtonTheme {
+        SidebarUnlimitedUpsellRow(onButtonClick = {})
     }
 }

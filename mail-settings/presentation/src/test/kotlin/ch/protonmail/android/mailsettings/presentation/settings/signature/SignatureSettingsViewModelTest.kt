@@ -78,7 +78,7 @@ class SignatureSettingsViewModelTest {
                     R.string.mail_settings_app_customization_mobile_signature_on
                 )
             ),
-            upsellingVisibility = UpsellingVisibility.Normal
+            upsellingVisibility = UpsellingVisibility.Normal.MailPlus
         )
 
     @Before
@@ -106,7 +106,7 @@ class SignatureSettingsViewModelTest {
 
             // When
             signatureFlow.emit(signatureSettings)
-            upsellingFlow.emit(UpsellingVisibility.Normal)
+            upsellingFlow.emit(UpsellingVisibility.Normal.MailPlus)
 
             // Then
             val actual = awaitItem() as MobileSignatureMenuState.Data
@@ -127,7 +127,7 @@ class SignatureSettingsViewModelTest {
                     status = MobileSignatureStatus.Disabled
                 )
             )
-            upsellingFlow.emit(UpsellingVisibility.Normal)
+            upsellingFlow.emit(UpsellingVisibility.Normal.MailPlus)
 
             // Then
             val actual = awaitItem() as MobileSignatureMenuState.Data

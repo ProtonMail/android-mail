@@ -319,7 +319,7 @@ private fun PreviewMobileSignatureUpselling() {
                 "This is a mobile signature",
                 TextUiModel.TextRes(R.string.mail_settings_app_customization_mobile_signature_off)
             ),
-            upsellingVisibility = UpsellingVisibility.Normal,
+            upsellingVisibility = UpsellingVisibility.Normal.MailPlus,
             actions = SignatureSettingsMenuScreen.Actions.Empty
         )
     }
