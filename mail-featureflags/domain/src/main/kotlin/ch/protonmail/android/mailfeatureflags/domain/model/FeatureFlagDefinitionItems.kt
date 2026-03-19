@@ -153,3 +153,11 @@ data object BgProcessingRelaxedBatteryConstraint : FeatureFlagDefinition(
     description = "When enabled, the periodic background execution worker does not require the battery to be not low.",
     defaultValue = false
 )
+
+data object UnlimitedPlanPlacementExperimentEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7UnlimitedPlanPlacementExperiment",
+    name = "Enable Unlimited Plan placement experiment",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Unlimited Plan placement experiment.",
+    defaultValue = false
+)
