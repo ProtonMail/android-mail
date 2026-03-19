@@ -67,7 +67,7 @@ internal class SpringPromoModalUpsellViewModelTest {
         // Given
         every {
             observeUpsellingVisibility(UpsellingEntryPoint.Feature.Navbar)
-        } returns flowOf(UpsellingVisibility.Normal)
+        } returns flowOf(UpsellingVisibility.Normal.MailPlus)
 
         // When + Then
         viewModel().state.test {

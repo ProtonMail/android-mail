@@ -27,7 +27,14 @@ sealed interface UpsellingVisibility {
     data object Hidden : UpsellingVisibility
 
     @Serializable
-    data object Normal : UpsellingVisibility
+    sealed interface Normal : UpsellingVisibility {
+
+        @Serializable
+        data object MailPlus : Normal
+
+        @Serializable
+        data object Unlimited : Normal
+    }
 
     @Serializable
     sealed interface Promotional : UpsellingVisibility {
