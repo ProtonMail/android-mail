@@ -39,6 +39,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessag
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
@@ -58,6 +59,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebVie
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementExperimentEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellingEnabled
 import dagger.Module
 import dagger.Provides
@@ -254,4 +256,15 @@ object FeatureFlagsModule {
     @Singleton
     fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
+
+    @Provides
+    @Singleton
+    @IsUnlimitedPlanPlacementExperimentEnabled
+    fun provideUnlimitedPlanPlacementExperiment(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = UnlimitedPlanPlacementExperimentEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideUnlimitedPlanPlacementEnabledDef(): FeatureFlagDefinition = UnlimitedPlanPlacementExperimentEnabled
 }
