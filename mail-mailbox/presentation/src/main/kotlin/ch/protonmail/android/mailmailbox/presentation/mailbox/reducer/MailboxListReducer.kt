@@ -297,7 +297,8 @@ class MailboxListReducer @Inject constructor(
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                currentMailLabel = currentMailLabel
+                currentMailLabel = currentMailLabel,
+                downloadingAttachmentId = null
             )
         }
     }
@@ -327,7 +328,8 @@ class MailboxListReducer @Inject constructor(
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
-                scrollToMailboxTop = Effect.of(currentMailLabel.id)
+                scrollToMailboxTop = Effect.of(currentMailLabel.id),
+                downloadingAttachmentId = null
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(

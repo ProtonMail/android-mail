@@ -232,6 +232,7 @@ class MailboxViewModel @Inject constructor(
         observeFolderColorSettings(it).distinctUntilChanged()
     }
     private var refreshJob: Job? = null
+    private var attachmentDownloadJob: Job? = null
 
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
 
@@ -242,6 +243,7 @@ class MailboxViewModel @Inject constructor(
         observeCurrentMailLabel()
             .onEach { currentMailLabel ->
                 currentMailLabel?.let {
+                    cancelAttachmentDownload()
                     emitNewStateFrom(
                         MailboxEvent.SelectedLabelChanged(
                             currentMailLabel
@@ -259,6 +261,7 @@ class MailboxViewModel @Inject constructor(
             }
             .onEach { (currentMailLabel, currentLabelCount, _) ->
                 itemIdsMutex.withLock { itemIds.clear() }
+                cancelAttachmentDownload()
                 emitNewStateFrom(
                     MailboxEvent.NewLabelSelected(
                         currentMailLabel, currentLabelCount
@@ -480,7 +483,7 @@ class MailboxViewModel @Inject constructor(
             return
         }
         emitNewStateFrom(MailboxEvent.AttachmentDownloadStartedEvent(action.attachmentId))
-        viewModelScope.launch {
+        attachmentDownloadJob = viewModelScope.launch {
             val domainAttachmentId = AttachmentId(action.attachmentId.value)
             val attachmentIntentValues =
                 getAttachmentIntentValues(primaryUserId.first(), AttachmentOpenMode.Open, domainAttachmentId)
@@ -488,6 +491,11 @@ class MailboxViewModel @Inject constructor(
 
             emitNewStateFrom(MailboxEvent.AttachmentReadyEvent(attachmentIntentValues))
         }
+    }
+
+    private fun cancelAttachmentDownload() {
+        attachmentDownloadJob?.cancel()
+        attachmentDownloadJob = null
     }
 
     private suspend fun handleNavigateToInbox() {
@@ -642,6 +650,7 @@ class MailboxViewModel @Inject constructor(
         if (state is MailboxListState.Data.ViewMode && state.currentMailLabel.resolveId()
                 .selectionModeEnabledForLabel()
         ) {
+            cancelAttachmentDownload()
             emitNewStateFrom(
                 MailboxEvent.EnterSelectionMode(item)
             )
