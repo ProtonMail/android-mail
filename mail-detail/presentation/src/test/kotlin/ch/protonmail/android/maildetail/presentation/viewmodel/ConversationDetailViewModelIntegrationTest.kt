@@ -1099,7 +1099,7 @@ internal class ConversationDetailViewModelIntegrationTest {
 
     @Test
     fun `verify downloading attachment id is set when attachment is clicked`() = runTest {
-        // given
+        // Given
         val expectedAttachmentCount = 5
         val defaultExpanded = MessageSample.AugWeatherForecast
         val expectedExpanded = MessageSample.Invoice
@@ -1134,13 +1134,88 @@ internal class ConversationDetailViewModelIntegrationTest {
                 )
             )
 
-            // Then - downloadingAttachmentId should be set before download completes
+            // Then
             val downloadStartedState = awaitItem()
             assertEquals(attachmentId, downloadStartedState.downloadingAttachmentId)
 
-            // downloadingAttachmentId is cleared after error
             val errorState = awaitItem()
             assertNull(errorState.downloadingAttachmentId)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify second attachment click is rejected when download is in progress`() = runTest {
+        // Given
+        val expectedAttachmentCount = 5
+        val defaultExpanded = MessageSample.AugWeatherForecast
+        val expectedExpanded = MessageSample.Invoice
+        val messages = nonEmptyListOf(
+            defaultExpanded,
+            expectedExpanded
+        )
+        val expandedMessageId = expectedExpanded.messageId
+        val firstAttachmentId = AttachmentId(0.toString())
+        val secondAttachmentId = AttachmentId(1.toString())
+        val openMode = AttachmentOpenMode.Open
+
+        coEvery { observeConversationMessages(userId, any(), any(), any(), any()) } returns flowOf(
+            ConversationMessages(messages, expandedMessageId).right()
+        )
+        coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
+            DecryptedMessageBody(
+                messageId = expandedMessageId,
+                value = "",
+                mimeType = MimeType.Html,
+                isUnread = false,
+                hasQuotedText = false,
+                hasCalendarInvite = false,
+                banners = emptyList(),
+                attachments = (0 until expectedAttachmentCount).map {
+                    aMessageAttachment(id = it.toString())
+                }
+            ).right()
+
+        // First download never completes, simulates in-progress state
+        coEvery {
+            getAttachmentIntentValues(userId, openMode, firstAttachmentId)
+        } coAnswers {
+            kotlinx.coroutines.awaitCancellation()
+        }
+
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.messageId)))
+            skipItems(1)
+
+            // When
+            viewModel.submit(
+                OnAttachmentClicked(
+                    openMode,
+                    messageIdUiModelMapper.toUiModel(expectedExpanded.messageId),
+                    firstAttachmentId
+                )
+            )
+            val downloadStartedState = awaitItem()
+            assertEquals(firstAttachmentId, downloadStartedState.downloadingAttachmentId)
+
+            viewModel.submit(
+                OnAttachmentClicked(
+                    openMode,
+                    messageIdUiModelMapper.toUiModel(expectedExpanded.messageId),
+                    secondAttachmentId
+                )
+            )
+            val rejectedState = awaitItem()
+
+            // Then
+            assertEquals(firstAttachmentId, rejectedState.downloadingAttachmentId)
+            assertEquals(
+                Effect.of(TextUiModel(R.string.error_attachment_download_in_progress)),
+                rejectedState.error
+            )
             cancelAndIgnoreRemainingEvents()
         }
     }

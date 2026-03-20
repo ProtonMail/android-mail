@@ -86,6 +86,7 @@ class MailboxListReducer @Inject constructor(
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.AvatarImageStatesUpdated -> reduceAvatarImageStatesUpdated(operation, currentState)
             is MailboxEvent.AttachmentDownloadStartedEvent -> reduceAttachmentDownloadStarted(operation, currentState)
+            is MailboxEvent.AttachmentDownloadInProgressEvent -> reduceAttachmentDownloadInProgress(currentState)
             is MailboxEvent.AttachmentReadyEvent -> reduceAttachmentReady(operation, currentState)
             is MailboxEvent.AttachmentErrorEvent -> reduceAttachmentDownloadError(currentState)
             is MailboxEvent.PaginatorInvalidated -> reducePaginatorInvalidated(operation, currentState)
@@ -135,6 +136,17 @@ class MailboxListReducer @Inject constructor(
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 downloadingAttachmentId = event.attachmentId
             )
+            else -> currentState
+        }
+    }
+
+    private fun reduceAttachmentDownloadInProgress(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> {
+                val errorMessage = TextUiModel.TextRes(R.string.mailbox_attachment_download_in_progress)
+                currentState.copy(displayAttachmentError = Effect.of(errorMessage))
+            }
+
             else -> currentState
         }
     }

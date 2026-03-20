@@ -474,6 +474,11 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun handleRequestAttachment(action: MailboxViewAction.RequestAttachment) {
+        val currentListState = state.value.mailboxListState as? MailboxListState.Data.ViewMode
+        if (currentListState?.downloadingAttachmentId != null) {
+            emitNewStateFrom(MailboxEvent.AttachmentDownloadInProgressEvent)
+            return
+        }
         emitNewStateFrom(MailboxEvent.AttachmentDownloadStartedEvent(action.attachmentId))
         viewModelScope.launch {
             val domainAttachmentId = AttachmentId(action.attachmentId.value)

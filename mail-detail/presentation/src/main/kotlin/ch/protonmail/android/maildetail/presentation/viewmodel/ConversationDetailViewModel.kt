@@ -1436,6 +1436,10 @@ class ConversationDetailViewModel @AssistedInject constructor(
         .launchIn(viewModelScope)
 
     private suspend fun onOpenAttachmentClicked(openMode: AttachmentOpenMode, attachmentId: AttachmentId) {
+        if (state.value.downloadingAttachmentId != null) {
+            emitNewStateFrom(ConversationDetailEvent.ErrorAttachmentDownloadInProgress)
+            return
+        }
         emitNewStateFrom(ConversationDetailEvent.AttachmentDownloadStarted(attachmentId))
         withUserId { userId ->
             getAttachmentIntentValues(userId, openMode, attachmentId)

@@ -353,6 +353,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val attachmentId: AttachmentIdUiModel
     ) : MailboxEvent, AffectingMailboxList
 
+    data object AttachmentDownloadInProgressEvent : MailboxEvent, AffectingMailboxList
     data object AttachmentErrorEvent : MailboxEvent, AffectingMailboxList
     data class AttachmentReadyEvent(
         val openAttachmentIntentValues: OpenAttachmentIntentValues

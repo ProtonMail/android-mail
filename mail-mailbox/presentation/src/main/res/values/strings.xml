@@ -116,6 +116,7 @@
     <!-- Attachment download -->
     <string name="mailbox_attachment_download_started">Opening attachment…</string>
     <string name="mailbox_attachment_download_error">Unable to open the attachment. Please try again.</string>
+    <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
 
     <!--    Storage Limit Warning-->
     <string name="storage_limit_warning_dialog_title">Warning</string>
