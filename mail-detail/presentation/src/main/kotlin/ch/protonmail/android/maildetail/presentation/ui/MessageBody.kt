@@ -45,6 +45,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.model.webview.ContentLoadState
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentList
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import ch.protonmail.android.mailmessage.presentation.ui.ZoomableWebView
@@ -56,7 +57,11 @@ fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
-    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
+    onMessageBodyLoaded: (
+        messageId: MessageId,
+        contentLoadState: ContentLoadState,
+        height: Int
+    ) -> Unit = { _, _, _ -> }
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
 

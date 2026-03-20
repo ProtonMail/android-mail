@@ -81,6 +81,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
 import androidx.compose.runtime.derivedStateOf
+import ch.protonmail.android.mailmessage.presentation.model.webview.ContentLoadState
 
 @Composable
 @Suppress("LongParameterList")
@@ -88,7 +89,7 @@ fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
-    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
+    onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
     // we won't bother waiting for the heights to be calculated as we already know, this can happen when you scroll
     // back to an expanded item. We don't want to re-animate the card into view and we don't need to wait for load
     previouslyLoadedHeight: Int? = null,
@@ -151,8 +152,7 @@ private fun ConversationDetailCard(modifier: Modifier = Modifier, content: @Comp
             modifier = modifier
                 .fillMaxWidth()
                 .border(
-                    width = MailDimens.DefaultBorder,
-                    color = ProtonTheme.colors.borderNorm,
+                    width = MailDimens.DefaultBorder, color = ProtonTheme.colors.borderNorm,
                     // attention here, there is a bug in the Card and we cannot use shapes.conversations for now
                     // This bug causes unreactive buttons on long messages (reply, reply all etc do not respond)
                     shape = ProtonTheme.shapes.large
@@ -201,7 +201,7 @@ private fun ConversationDetailExpandingItem(
 private fun ColumnScope.ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
-    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
+    onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
     // we've already seen this card expanded and so we don't want to re-animate the card into view
     cachedWebContentHeight: Int? = null,
     // we need to know when the parent view has finished resizing and scrolling as it calculates and adjusts item
@@ -279,8 +279,12 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     showLoadingSpinner ->
                         ItemState.Loading
 
-                    else ->
-                        ItemState.Visible
+                    else -> {
+                        ItemState.Visible(
+                            previouslyLoaded = viewPreviouslyLoaded,
+                            cachedHeight = cachedWebContentHeight
+                        )
+                    }
                 }
             }
         }
@@ -356,9 +360,9 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     onLoadImagesAfterImageProxyFailure = actions.onLoadImagesAfterImageProxyFailure,
                     onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                 ),
-                onMessageBodyLoaded = { id: MessageId, i: Int ->
+                onMessageBodyLoaded = { id: MessageId, loadState: ContentLoadState, i: Int ->
                     // now that the webview is loaded send the more recent height so it can be cached
-                    onMessageBodyLoadFinished(id, columnHeight.intValue)
+                    onMessageBodyLoadFinished(id, loadState, columnHeight.intValue)
                     isExpanding.value = false
                     isWebViewLoading.value = false
                 }
@@ -386,7 +390,7 @@ fun ConversationDetailItemCollapsedPreview() {
         ConversationDetailMessageUiModelSample.ExpiringInvitation,
         actions = previewActions,
         modifier = Modifier,
-        onMessageBodyLoadFinished = { id: MessageId, i: Int -> },
+        onMessageBodyLoadFinished = { id: MessageId, loadState: ContentLoadState, i: Int -> },
         finishedResizing = true
     )
 }
@@ -398,7 +402,7 @@ fun ConversationDetailItemExpandedPreview() {
         ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
         actions = previewActions,
         modifier = Modifier,
-        onMessageBodyLoadFinished = { id: MessageId, i: Int -> },
+        onMessageBodyLoadFinished = { id: MessageId, loadState: ContentLoadState, i: Int -> },
         finishedResizing = true
     )
 }
@@ -512,11 +516,20 @@ fun Modifier.reveal(
 
         ItemState.Expanding -> lastHeightPx
 
-        ItemState.Visible -> null
+        is ItemState.Visible -> {
+            // WebViews are disposed and recreated during scroll.
+            // Reuse the previously stable height (if available) to prevent
+            // layout jumps caused by height fluctuations while reloading
+            if (itemState.previouslyLoaded && itemState.cachedHeight != null) {
+                itemState.cachedHeight
+            } else {
+                null
+            }
+        }
     }
 
     // Cache height when actually visible
-    val cacheHeightModifier = if (itemState == ItemState.Visible) {
+    val cacheHeightModifier = if (itemState is ItemState.Visible) {
         Modifier.onSizeChanged { size ->
             if (size.height > 0) lastHeightPx = size.height
         }
@@ -540,7 +553,11 @@ fun Modifier.reveal(
 
 sealed class ItemState {
     object Loading : ItemState()
-    object Visible : ItemState()
+    data class Visible(
+        val previouslyLoaded: Boolean = false,
+        val cachedHeight: Int? = null
+    ) : ItemState()
+
     object Expanding : ItemState()
     data class ReLoading(val cachedHeight: Int = 0) : ItemState()
 }
