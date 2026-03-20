@@ -83,6 +83,7 @@ fun MailboxItem(
     actions: ComposeMailboxItem.Actions,
     item: MailboxItemUiModel,
     avatarImageUiModel: AvatarImageUiModel,
+    downloadingAttachmentId: AttachmentIdUiModel? = null,
     selectionMode: Boolean = false,
     isSelected: Boolean = false,
     isSelectable: Boolean = true,
@@ -281,7 +282,8 @@ fun MailboxItem(
                         AttachmentList(
                             attachments = item.attachments,
                             textColor = fontColor,
-                            onAttachmentClicked = actions.onAttachmentClicked
+                            onAttachmentClicked = actions.onAttachmentClicked,
+                            downloadingAttachmentId = downloadingAttachmentId
                         )
                     }
                 }

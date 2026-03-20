@@ -58,20 +58,23 @@ import me.proton.core.presentation.R.drawable
 fun AttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
-    actions: AttachmentList.Actions
+    actions: AttachmentList.Actions,
+    downloadingAttachmentId: AttachmentId? = null
 ) {
     when (messageAttachmentsUiModel.expandCollapseMode) {
 
         AttachmentListExpandCollapseMode.NotApplicable -> DefaultAttachmentList(
             modifier = modifier,
             messageAttachmentsUiModel = messageAttachmentsUiModel,
-            actions = actions
+            actions = actions,
+            downloadingAttachmentId = downloadingAttachmentId
         )
 
         else -> ExpandableAttachmentList(
             modifier = modifier,
             messageAttachmentsUiModel = messageAttachmentsUiModel,
-            actions = actions
+            actions = actions,
+            downloadingAttachmentId = downloadingAttachmentId
         )
     }
 }
@@ -80,7 +83,8 @@ fun AttachmentList(
 fun ExpandableAttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
-    actions: AttachmentList.Actions
+    actions: AttachmentList.Actions,
+    downloadingAttachmentId: AttachmentId? = null
 ) {
     Column(
         modifier = modifier
@@ -110,7 +114,8 @@ fun ExpandableAttachmentList(
                         modifier = Modifier.testTag("${AttachmentListTestTags.Item}$index"),
                         attachmentUiModel = item,
                         onAttachmentItemClicked = actions.onAttachmentClicked,
-                        onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked
+                        onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked,
+                        isDownloading = downloadingAttachmentId?.id == item.id.value
                     )
                 }
             }
@@ -122,7 +127,8 @@ fun ExpandableAttachmentList(
 fun DefaultAttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
-    actions: AttachmentList.Actions
+    actions: AttachmentList.Actions,
+    downloadingAttachmentId: AttachmentId? = null
 ) {
     Column(
         modifier = modifier
@@ -140,7 +146,8 @@ fun DefaultAttachmentList(
                 modifier = Modifier.testTag("${AttachmentListTestTags.Item}$index"),
                 attachmentUiModel = item,
                 onAttachmentItemClicked = actions.onAttachmentClicked,
-                onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked
+                onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked,
+                isDownloading = downloadingAttachmentId?.id == item.id.value
             )
         }
     }

@@ -100,8 +100,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             paginatorInvalidationEffect = Effect.empty(),
             loadingBarState = LoadingBarUiState.Hide,
             displayAttachment = Effect.empty(),
-            displayAttachmentError = Effect.empty(),
-            attachmentOpeningStarted = Effect.empty(),
+            displayAttachmentError = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -129,8 +128,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             paginatorInvalidationEffect = Effect.empty(),
             loadingBarState = LoadingBarUiState.Hide,
             displayAttachment = Effect.empty(),
-            displayAttachmentError = Effect.empty(),
-            attachmentOpeningStarted = Effect.empty(),
+            displayAttachmentError = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -177,8 +175,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     paginatorInvalidationEffect = Effect.empty(),
                     loadingBarState = LoadingBarUiState.Hide,
                     displayAttachment = Effect.empty(),
-                    displayAttachmentError = Effect.empty(),
-                    attachmentOpeningStarted = Effect.empty(),
+                    displayAttachmentError = Effect.empty()
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = systemLabel.text(),

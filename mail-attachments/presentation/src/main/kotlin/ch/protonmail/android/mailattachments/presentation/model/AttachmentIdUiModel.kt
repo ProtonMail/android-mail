@@ -18,4 +18,7 @@
 
 package ch.protonmail.android.mailattachments.presentation.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class AttachmentIdUiModel(val value: String)

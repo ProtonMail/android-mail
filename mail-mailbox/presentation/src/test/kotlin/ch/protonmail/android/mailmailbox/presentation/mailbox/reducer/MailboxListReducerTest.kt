@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.ViewMode
@@ -125,6 +126,8 @@ internal class MailboxListReducerTest(
         )
 
         private const val UNREAD_COUNT = 42
+
+        private val attachmentIdUiModel = AttachmentIdUiModel("attachment-id")
 
         private val attachmentIntentValues = OpenAttachmentIntentValues(
             mimeType = "mimeType",
@@ -689,6 +692,7 @@ internal class MailboxListReducerTest(
                     shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
+                    downloadingAttachmentId = null,
                     displayAttachment = Effect.of(attachmentIntentValues)
                 )
             ),
@@ -717,6 +721,7 @@ internal class MailboxListReducerTest(
                     shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
+                    downloadingAttachmentId = null,
                     displayAttachmentError = Effect.of(TextUiModel.TextRes(R.string.mailbox_attachment_download_error))
                 )
             ),
@@ -733,7 +738,7 @@ internal class MailboxListReducerTest(
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
-                operation = MailboxEvent.AttachmentDownloadOngoingEvent,
+                operation = MailboxEvent.AttachmentDownloadStartedEvent(attachmentIdUiModel),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
@@ -745,9 +750,7 @@ internal class MailboxListReducerTest(
                     shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
-                    attachmentOpeningStarted = Effect.of(
-                        TextUiModel.TextRes(R.string.mailbox_attachment_download_started)
-                    )
+                    downloadingAttachmentId = attachmentIdUiModel
                 )
             ),
             TestInput(

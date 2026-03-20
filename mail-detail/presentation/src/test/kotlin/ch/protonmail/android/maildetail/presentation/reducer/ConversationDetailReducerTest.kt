@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import java.util.UUID
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
@@ -424,6 +425,8 @@ class ConversationDetailReducerTest(
             ) affects listOf(BottomSheet)
         )
 
+        val attachmentId = AttachmentId("test-attachment-id")
+
         val events = listOf(
             ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) affects BottomBar,
             ConversationDetailEvent.ConversationData(
@@ -502,7 +505,8 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.MessageMoved(MailLabelText("String")) affects listOf(BottomSheet, MessageBar),
             ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar),
             ConversationDetailEvent.ErrorUnsnoozing affects listOf(ErrorBar),
-            ConversationDetailViewAction.SnoozeCompleted("String") affects listOf(BottomSheet, MessageBar)
+            ConversationDetailViewAction.SnoozeCompleted("String") affects listOf(BottomSheet, MessageBar),
+            ConversationDetailEvent.AttachmentDownloadStarted(attachmentId) affects listOf()
         )
 
         @JvmStatic

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import androidx.compose.runtime.Stable
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
@@ -40,6 +41,7 @@ data class ConversationDetailState(
     val loadingErrorEffect: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<MessageBodyLink>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
+    val downloadingAttachmentId: AttachmentId? = null,
     val openProtonCalendarIntent: Effect<OpenProtonCalendarIntentValues>,
     val onExitWithNavigateToComposer: Effect<MessageIdUiModel>,
     val scrollToMessageState: ScrollToMessageState,
@@ -66,6 +68,7 @@ data class ConversationDetailState(
             loadingErrorEffect = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
+            downloadingAttachmentId = null,
             openProtonCalendarIntent = Effect.empty(),
             onExitWithNavigateToComposer = Effect.empty(),
             scrollToMessageState = ScrollToMessageState.NoScrollTarget,

@@ -61,7 +61,8 @@ fun AttachmentItem(
     modifier: Modifier = Modifier,
     attachmentUiModel: AttachmentMetadataUiModel,
     onAttachmentItemClicked: (mode: AttachmentOpenMode, attachmentId: AttachmentId) -> Unit,
-    onAttachmentItemDeleteClicked: (attachmentId: AttachmentId) -> Unit
+    onAttachmentItemDeleteClicked: (attachmentId: AttachmentId) -> Unit,
+    isDownloading: Boolean = false
 ) {
     val context = LocalContext.current
     val nameTextColor = if (attachmentUiModel.status == AttachmentState.Uploading) ProtonTheme.colors.textHint else
@@ -85,7 +86,7 @@ fun AttachmentItem(
                 ) else Modifier
             )
             .clip(ProtonTheme.shapes.huge)
-            .clickable {
+            .clickable(enabled = !isDownloading) {
                 if (!attachmentUiModel.deletable) {
                     onAttachmentItemClicked(
                         AttachmentOpenMode.Open,
@@ -150,7 +151,6 @@ fun AttachmentItem(
                         modifier = Modifier
                             .fillMaxSize()
                             .testTag(AttachmentItemTestTags.Loader),
-                        trackColor = ProtonTheme.colors.brandMinus20,
                         color = ProtonTheme.colors.brandNorm,
                         strokeWidth = ProtonDimens.BorderSize.Medium
                     )
@@ -167,22 +167,34 @@ fun AttachmentItem(
             }
         } else {
             Box(
-                modifier = Modifier.size(MailDimens.Attachment.UploadingSpinnerSize)
+                modifier = Modifier
+                    .size(MailDimens.Attachment.UploadingSpinnerSize)
                     .clip(CircleShape)
-                    .clickable {
-                        onAttachmentItemClicked(
-                            AttachmentOpenMode.Download,
-                            AttachmentId(attachmentUiModel.id.value)
-                        )
-                    },
+                    .then(
+                        if (!isDownloading) Modifier.clickable {
+                            onAttachmentItemClicked(
+                                AttachmentOpenMode.Download,
+                                AttachmentId(attachmentUiModel.id.value)
+                            )
+                        } else Modifier
+                    ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    modifier = Modifier
-                        .size(ProtonDimens.IconSize.Medium),
-                    painter = painterResource(id = R.drawable.ic_proton_arrow_down_line),
-                    contentDescription = null
-                )
+                if (isDownloading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag(AttachmentItemTestTags.Loader),
+                        color = ProtonTheme.colors.brandNorm,
+                        strokeWidth = ProtonDimens.BorderSize.Medium
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                        painter = painterResource(id = R.drawable.ic_proton_arrow_down_line),
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

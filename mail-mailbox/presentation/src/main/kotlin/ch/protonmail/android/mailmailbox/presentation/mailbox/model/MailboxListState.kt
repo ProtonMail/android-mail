@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -55,7 +56,7 @@ sealed interface MailboxListState {
             val refreshErrorEffect: Effect<Unit>,
             val displayAttachment: Effect<OpenAttachmentIntentValues> = Effect.empty(),
             val displayAttachmentError: Effect<TextUiModel> = Effect.empty(),
-            val attachmentOpeningStarted: Effect<TextUiModel> = Effect.empty()
+            val downloadingAttachmentId: AttachmentIdUiModel? = null
         ) : Data {
 
             fun isInInboxLabel() = (currentMailLabel as? MailLabel.System)?.systemLabelId == SystemLabelId.Inbox

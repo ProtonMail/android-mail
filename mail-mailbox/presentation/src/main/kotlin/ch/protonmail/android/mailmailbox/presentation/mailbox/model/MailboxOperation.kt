@@ -349,7 +349,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorMoving : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
 
-    data object AttachmentDownloadOngoingEvent : MailboxEvent, AffectingMailboxList
+    data class AttachmentDownloadStartedEvent(
+        val attachmentId: AttachmentIdUiModel
+    ) : MailboxEvent, AffectingMailboxList
+
     data object AttachmentErrorEvent : MailboxEvent, AffectingMailboxList
     data class AttachmentReadyEvent(
         val openAttachmentIntentValues: OpenAttachmentIntentValues

@@ -157,6 +157,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     data class OpenAttachmentEvent(val values: OpenAttachmentIntentValues) : ConversationDetailEvent
 
+    data class AttachmentDownloadStarted(val attachmentId: AttachmentId) : ConversationDetailEvent
+
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
 
     data class MessageMoved(

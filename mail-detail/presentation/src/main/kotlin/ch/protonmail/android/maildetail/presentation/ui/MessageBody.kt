@@ -57,6 +57,7 @@ fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
+    downloadingAttachmentId: AttachmentId? = null,
     onMessageBodyLoaded: (
         messageId: MessageId,
         contentLoadState: ContentLoadState,
@@ -112,7 +113,8 @@ fun MessageBody(
                 onShowAllAttachments = actions.onShowAllAttachments,
                 onAttachmentClicked = actions.onAttachmentClicked,
                 onToggleExpandCollapseMode = actions.onToggleAttachmentsExpandCollapseMode
-            )
+            ),
+            downloadingAttachmentId = downloadingAttachmentId
         )
     }
 

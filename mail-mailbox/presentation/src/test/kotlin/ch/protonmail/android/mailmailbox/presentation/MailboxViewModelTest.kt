@@ -3376,6 +3376,10 @@ internal class MailboxViewModelTest {
 
         // Then
         coVerify(exactly = 1) {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.AttachmentDownloadStartedEvent(attachmentIdUiModel)
+            )
             getAttachmentIntentValues.invoke(userId, openMode, attachmentId)
             mailboxReducer.newStateFrom(
                 any(),
@@ -3400,6 +3404,10 @@ internal class MailboxViewModelTest {
 
         // Then
         coVerify(exactly = 1) {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.AttachmentDownloadStartedEvent(attachmentIdUiModel)
+            )
             getAttachmentIntentValues.invoke(userId, openMode, attachmentId)
             mailboxReducer.newStateFrom(
                 any(),
@@ -3438,7 +3446,7 @@ internal class MailboxViewModelTest {
             getAttachmentIntentValues.invoke(userId, openMode, attachmentId)
             mailboxReducer.newStateFrom(
                 any(),
-                MailboxEvent.AttachmentDownloadOngoingEvent
+                MailboxEvent.AttachmentDownloadStartedEvent(attachmentIdUiModel)
             )
             mailboxReducer.newStateFrom(
                 any(),
@@ -3471,7 +3479,7 @@ internal class MailboxViewModelTest {
             getAttachmentIntentValues.invoke(userId, openMode, attachmentId)
             mailboxReducer.newStateFrom(
                 any(),
-                MailboxEvent.AttachmentDownloadOngoingEvent
+                MailboxEvent.AttachmentDownloadStartedEvent(attachmentIdUiModel)
             )
             mailboxReducer.newStateFrom(
                 any(),

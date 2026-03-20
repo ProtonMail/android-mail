@@ -29,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionResultMapper
 import ch.protonmail.android.maildetail.presentation.model.BlockSenderDialogState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDeleteState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.AttachmentDownloadStarted
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAddStar
@@ -110,6 +111,12 @@ class ConversationDetailReducer @Inject constructor(
             exitScreenActionResult = currentState.toExitWithMessageState(operation),
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
+            downloadingAttachmentId = when (operation) {
+                is AttachmentDownloadStarted -> operation.attachmentId
+                is OpenAttachmentEvent -> null
+                is ErrorGettingAttachment -> null
+                else -> currentState.downloadingAttachmentId
+            },
             openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
             onExitWithNavigateToComposer = currentState.toOpenComposerEffectState(operation),
             scrollToMessageState = currentState.toScrollToMessageState(operation),

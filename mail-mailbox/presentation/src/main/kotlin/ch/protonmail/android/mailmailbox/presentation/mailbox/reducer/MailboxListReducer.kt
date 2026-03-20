@@ -85,7 +85,7 @@ class MailboxListReducer @Inject constructor(
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.AvatarImageStatesUpdated -> reduceAvatarImageStatesUpdated(operation, currentState)
-            is MailboxEvent.AttachmentDownloadOngoingEvent -> reduceAttachmentDownload(currentState)
+            is MailboxEvent.AttachmentDownloadStartedEvent -> reduceAttachmentDownloadStarted(operation, currentState)
             is MailboxEvent.AttachmentReadyEvent -> reduceAttachmentReady(operation, currentState)
             is MailboxEvent.AttachmentErrorEvent -> reduceAttachmentDownloadError(currentState)
             is MailboxEvent.PaginatorInvalidated -> reducePaginatorInvalidated(operation, currentState)
@@ -127,13 +127,14 @@ class MailboxListReducer @Inject constructor(
         }
     }
 
-    private fun reduceAttachmentDownload(currentState: MailboxListState): MailboxListState {
+    private fun reduceAttachmentDownloadStarted(
+        event: MailboxEvent.AttachmentDownloadStartedEvent,
+        currentState: MailboxListState
+    ): MailboxListState {
         return when (currentState) {
-            is MailboxListState.Data.ViewMode -> {
-                val downloadMessage = TextUiModel.TextRes(R.string.mailbox_attachment_download_started)
-                currentState.copy(attachmentOpeningStarted = Effect.of(downloadMessage))
-            }
-
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                downloadingAttachmentId = event.attachmentId
+            )
             else -> currentState
         }
     }
@@ -144,6 +145,7 @@ class MailboxListReducer @Inject constructor(
     ): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
+                downloadingAttachmentId = null,
                 displayAttachment = Effect.of(event.openAttachmentIntentValues)
             )
 
@@ -153,10 +155,10 @@ class MailboxListReducer @Inject constructor(
 
     private fun reduceAttachmentDownloadError(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
-            is MailboxListState.Data.ViewMode -> {
-                val errorMessage = TextUiModel.TextRes(R.string.mailbox_attachment_download_error)
-                currentState.copy(displayAttachmentError = Effect.of(errorMessage))
-            }
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                downloadingAttachmentId = null,
+                displayAttachmentError = Effect.of(TextUiModel.TextRes(R.string.mailbox_attachment_download_error))
+            )
 
             else -> currentState
         }
@@ -273,7 +275,7 @@ class MailboxListReducer @Inject constructor(
                 searchState = MailboxSearchState.NotSearching,
                 shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModel.Empty,
-                attachmentOpeningStarted = Effect.empty(),
+
                 displayAttachment = Effect.empty(),
                 displayAttachmentError = Effect.empty()
             )
@@ -306,7 +308,7 @@ class MailboxListReducer @Inject constructor(
                 searchState = MailboxSearchState.NotSearching,
                 shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModel.Empty,
-                attachmentOpeningStarted = Effect.empty(),
+
                 displayAttachment = Effect.empty(),
                 displayAttachmentError = Effect.empty()
             )
@@ -420,7 +422,6 @@ class MailboxListReducer @Inject constructor(
             searchState = currentState.searchState,
             shouldShowFab = !currentState.searchState.isInSearch(),
             avatarImagesUiModel = currentState.avatarImagesUiModel,
-            attachmentOpeningStarted = Effect.empty(),
             displayAttachment = Effect.empty(),
             displayAttachmentError = Effect.empty()
         )

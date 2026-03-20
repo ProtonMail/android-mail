@@ -26,9 +26,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +63,8 @@ fun AttachmentList(
     modifier: Modifier = Modifier,
     attachments: List<AttachmentMetadataUiModel>,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
-    textColor: Color
+    textColor: Color,
+    downloadingAttachmentId: AttachmentIdUiModel? = null
 ) {
     SubcomposeLayout(
         modifier = modifier
@@ -72,7 +75,8 @@ fun AttachmentList(
             attachments = attachments,
             constraints = constraints,
             textColor = textColor,
-            onAttachmentClicked = onAttachmentClicked
+            onAttachmentClicked = onAttachmentClicked,
+            downloadingAttachmentId = downloadingAttachmentId
         )
 
         layout(
@@ -92,7 +96,8 @@ private fun SubcomposeMeasureScope.measureAttachments(
     attachments: List<AttachmentMetadataUiModel>,
     constraints: Constraints,
     textColor: Color,
-    onAttachmentClicked: (AttachmentIdUiModel) -> Unit
+    onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
+    downloadingAttachmentId: AttachmentIdUiModel? = null
 ): MeasureResult {
 
     val filteredAttachments = attachments.filter { it.includeInPreview }
@@ -104,7 +109,13 @@ private fun SubcomposeMeasureScope.measureAttachments(
 
     val minTruncatedAttachmentWidth = measureMinTruncatedWidth(constraints)
     val attachmentsFullWidth =
-        measureAttachmentsFullWidth(filteredAttachments, textColor, constraints, onAttachmentClicked)
+        measureAttachmentsFullWidth(
+            filteredAttachments,
+            textColor,
+            constraints,
+            onAttachmentClicked,
+            downloadingAttachmentId
+        )
 
     var attachmentsWidth = 0
     var notPlacedCount = attachments.size
@@ -148,7 +159,8 @@ private fun SubcomposeMeasureScope.measureAttachments(
                 minTruncatedAttachmentWidth = minTruncatedAttachmentWidth,
                 maxAttachmentWidth = maxAttachmentWidth,
                 baseNameWidth = maxAttachmentWidth - extensionWidth - iconAndPaddingWidth - externalPadding,
-                onAttachmentClicked = onAttachmentClicked
+                onAttachmentClicked = onAttachmentClicked,
+                isDownloading = downloadingAttachmentId == attachment.id
             )
             attachmentPlaceables.add(truncatedPlaceable)
             attachmentsWidth += truncatedPlaceable.width
@@ -168,7 +180,8 @@ private fun SubcomposeMeasureScope.createTruncatedPlaceable(
     minTruncatedAttachmentWidth: Int,
     maxAttachmentWidth: Int,
     baseNameWidth: Int,
-    onAttachmentClicked: (AttachmentIdUiModel) -> Unit
+    onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
+    isDownloading: Boolean = false
 ): Placeable {
     // Ensure minWidth doesn't exceed maxWidth to prevent constraint errors
     val safeMinWidth = min(minTruncatedAttachmentWidth, maxAttachmentWidth)
@@ -181,7 +194,8 @@ private fun SubcomposeMeasureScope.createTruncatedPlaceable(
             minWidth = safeMinWidth,
             maxWidth = maxAttachmentWidth,
             baseNameWidth = safeBaseNameWidth,
-            onAttachmentClicked = onAttachmentClicked
+            onAttachmentClicked = onAttachmentClicked,
+            isDownloading = isDownloading
         )
     }.single().measure(
         Constraints(
@@ -211,7 +225,8 @@ private fun SubcomposeMeasureScope.measureAttachmentsFullWidth(
     attachments: List<AttachmentMetadataUiModel>,
     textColor: Color,
     constraints: Constraints,
-    onAttachmentClicked: (AttachmentIdUiModel) -> Unit
+    onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
+    downloadingAttachmentId: AttachmentIdUiModel? = null
 ): List<FullWidthAttachmentInfo> {
     val result = mutableListOf<FullWidthAttachmentInfo>()
 
@@ -226,7 +241,8 @@ private fun SubcomposeMeasureScope.measureAttachmentsFullWidth(
                 textColor = textColor,
                 minWidth = 0,
                 maxWidth = constraints.maxWidth,
-                onAttachmentClicked = onAttachmentClicked
+                onAttachmentClicked = onAttachmentClicked,
+                isDownloading = downloadingAttachmentId == attachment.id
             )
         }.single().measure(constraints)
 
@@ -257,13 +273,14 @@ private fun Attachment(
     minWidth: Int,
     maxWidth: Int,
     baseNameWidth: Int? = null,
-    onAttachmentClicked: (AttachmentIdUiModel) -> Unit
+    onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
+    isDownloading: Boolean = false
 ) {
     Box(
         modifier = Modifier
             .background(ProtonTheme.colors.backgroundNorm, shape = ProtonTheme.shapes.huge)
             .clip(ProtonTheme.shapes.huge)
-            .clickable { onAttachmentClicked(attachment.id) }
+            .clickable(enabled = !isDownloading) { onAttachmentClicked(attachment.id) }
             .border(
                 width = ProtonDimens.OutlinedBorderSize,
                 color = ProtonTheme.colors.borderStrong,
@@ -279,11 +296,21 @@ private fun Attachment(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = attachment.icon),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
+            val iconModifier = Modifier.size(ProtonDimens.IconSize.Medium)
+            if (isDownloading) {
+                CircularProgressIndicator(
+                    modifier = iconModifier,
+                    strokeWidth = ProtonDimens.BorderSize.Medium,
+                    color = ProtonTheme.colors.brandNorm
+                )
+            } else {
+                Icon(
+                    modifier = iconModifier,
+                    painter = painterResource(id = attachment.icon),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
             Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Compact))
             val fileName = attachment.name
             val extension = fileName.substringAfterLast('.', "")

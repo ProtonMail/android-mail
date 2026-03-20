@@ -41,7 +41,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.extension.launchWithDelayedCallback
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
@@ -475,13 +474,12 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun handleRequestAttachment(action: MailboxViewAction.RequestAttachment) {
-        viewModelScope.launchWithDelayedCallback(
-            onThresholdExceeded = { emitNewStateFrom(MailboxEvent.AttachmentDownloadOngoingEvent) }
-        ) {
+        emitNewStateFrom(MailboxEvent.AttachmentDownloadStartedEvent(action.attachmentId))
+        viewModelScope.launch {
             val domainAttachmentId = AttachmentId(action.attachmentId.value)
             val attachmentIntentValues =
                 getAttachmentIntentValues(primaryUserId.first(), AttachmentOpenMode.Open, domainAttachmentId)
-                    .getOrElse { return@launchWithDelayedCallback emitNewStateFrom(MailboxEvent.AttachmentErrorEvent) }
+                    .getOrElse { return@launch emitNewStateFrom(MailboxEvent.AttachmentErrorEvent) }
 
             emitNewStateFrom(MailboxEvent.AttachmentReadyEvent(attachmentIntentValues))
         }

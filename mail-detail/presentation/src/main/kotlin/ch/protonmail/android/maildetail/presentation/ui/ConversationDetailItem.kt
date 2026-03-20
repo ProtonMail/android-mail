@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -80,7 +81,6 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
-import androidx.compose.runtime.derivedStateOf
 import ch.protonmail.android.mailmessage.presentation.model.webview.ContentLoadState
 
 @Composable
@@ -89,6 +89,7 @@ fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
+    downloadingAttachmentId: AttachmentId? = null,
     onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
     // we won't bother waiting for the heights to be calculated as we already know, this can happen when you scroll
     // back to an expanded item. We don't want to re-animate the card into view and we don't need to wait for load
@@ -134,6 +135,7 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
+                    downloadingAttachmentId = downloadingAttachmentId,
                     onMessageBodyLoadFinished = onMessageBodyLoadFinished,
                     cachedWebContentHeight = previouslyLoadedHeight,
                     finishedResizing = finishedResizing
@@ -152,7 +154,8 @@ private fun ConversationDetailCard(modifier: Modifier = Modifier, content: @Comp
             modifier = modifier
                 .fillMaxWidth()
                 .border(
-                    width = MailDimens.DefaultBorder, color = ProtonTheme.colors.borderNorm,
+                    width = MailDimens.DefaultBorder,
+                    color = ProtonTheme.colors.borderNorm,
                     // attention here, there is a bug in the Card and we cannot use shapes.conversations for now
                     // This bug causes unreactive buttons on long messages (reply, reply all etc do not respond)
                     shape = ProtonTheme.shapes.large
@@ -201,6 +204,7 @@ private fun ConversationDetailExpandingItem(
 private fun ColumnScope.ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
+    downloadingAttachmentId: AttachmentId? = null,
     onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
     // we've already seen this card expanded and so we don't want to re-animate the card into view
     cachedWebContentHeight: Int? = null,
@@ -335,6 +339,7 @@ private fun ColumnScope.ConversationDetailExpandedItem(
             )
             MessageBody(
                 messageBodyUiModel = uiModel.messageBodyUiModel,
+                downloadingAttachmentId = downloadingAttachmentId,
                 actions = MessageBody.Actions(
                     onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                     onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },

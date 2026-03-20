@@ -613,10 +613,6 @@ fun MailboxScreen(
                 actions.showSnackbar(SnackbarError(refreshErrorText))
             }
 
-            ConsumableTextEffect(mailboxListState.attachmentOpeningStarted) {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            }
-
             ConsumableLaunchedEffect(mailboxListState.displayAttachment) {
                 val fileContent = FileContent(it.name, it.uri, it.mimeType)
 
@@ -875,6 +871,8 @@ private fun MailboxItemsList(
     items: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions
 ) {
+    val downloadingAttachmentId = (state as? MailboxListState.Data.ViewMode)?.downloadingAttachmentId
+
     val itemActions = ComposeMailboxItem.Actions(
         onItemClicked = actions.onItemClicked,
         onItemLongClicked = actions.onItemLongClicked,
@@ -1013,6 +1011,7 @@ private fun MailboxItemsList(
                         item = item,
                         avatarImageUiModel = avatarImageUiModel,
                         actions = itemActions,
+                        downloadingAttachmentId = downloadingAttachmentId,
                         selectionMode = listDataState is MailboxListState.Data.SelectionMode,
                         // See doc 0014
                         isSelected = when (listDataState) {

@@ -943,6 +943,7 @@ private fun ConversationDetailScreen(
                     hiddenMessagesBannerState = state.hiddenMessagesBannerState,
                     scrollToMessageState = state.scrollToMessageState,
                     actions = conversationDetailItemActions,
+                    downloadingAttachmentId = state.downloadingAttachmentId,
                     onHiddenMessagesBannerClick = actions.onHiddenMessagesBannerClick,
                     conversationId = state.conversationId(),
                     isDirectionForwards = isDirectionForwards,
@@ -978,6 +979,7 @@ private fun MessagesContent(
     scrollToMessageState: ScrollToMessageState,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
+    downloadingAttachmentId: AttachmentId? = null,
     onHiddenMessagesBannerClick: () -> Unit,
     conversationId: String,
     isDirectionForwards: () -> Boolean,
@@ -1160,6 +1162,7 @@ private fun MessagesContent(
             ConversationDetailItem(
                 uiModel = uiModel,
                 actions = actions,
+                downloadingAttachmentId = downloadingAttachmentId,
                 modifier = when (uiModel) {
                     is ConversationDetailMessageUiModel.Collapsed,
                     is ConversationDetailMessageUiModel.Expanding -> {

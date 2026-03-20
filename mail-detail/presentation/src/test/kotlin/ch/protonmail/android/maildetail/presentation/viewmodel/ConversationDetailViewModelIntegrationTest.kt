@@ -1084,11 +1084,63 @@ internal class ConversationDetailViewModelIntegrationTest {
                     AttachmentId(0.toString())
                 )
             )
+            val downloadStartedState = awaitItem()
+            assertEquals(AttachmentId(0.toString()), downloadStartedState.downloadingAttachmentId)
+
             val actualState = awaitItem()
 
             // Then
             coVerify { getAttachmentIntentValues(userId, openMode, AttachmentId(0.toString())) }
             assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
+            assertNull(actualState.downloadingAttachmentId)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify downloading attachment id is set when attachment is clicked`() = runTest {
+        // given
+        val expectedAttachmentCount = 5
+        val defaultExpanded = MessageSample.AugWeatherForecast
+        val expectedExpanded = MessageSample.Invoice
+        val messages = nonEmptyListOf(
+            defaultExpanded,
+            expectedExpanded
+        )
+        val expandedMessageId = expectedExpanded.messageId
+        val attachmentId = AttachmentId(0.toString())
+        val openMode = AttachmentOpenMode.Open
+
+        mockAttachmentDownload(
+            messages = messages,
+            expandedMessageId = expandedMessageId,
+            expectedAttachmentCount = expectedAttachmentCount,
+            expectedError = DataError.Local.NoDataCached
+        )
+
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.messageId)))
+            skipItems(1)
+
+            // When
+            viewModel.submit(
+                OnAttachmentClicked(
+                    openMode,
+                    messageIdUiModelMapper.toUiModel(expectedExpanded.messageId),
+                    attachmentId
+                )
+            )
+
+            // Then - downloadingAttachmentId should be set before download completes
+            val downloadStartedState = awaitItem()
+            assertEquals(attachmentId, downloadStartedState.downloadingAttachmentId)
+
+            // downloadingAttachmentId is cleared after error
+            val errorState = awaitItem()
+            assertNull(errorState.downloadingAttachmentId)
             cancelAndIgnoreRemainingEvents()
         }
     }
