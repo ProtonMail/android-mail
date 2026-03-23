@@ -160,7 +160,7 @@
   <string name="settings_password_management_login_success">Login wachtwoord bijgewerkt</string>
   <string name="settings_password_management_second_success">Tweede wachtwoord bijgewerkt</string>
   <string name="settings_password_management_start_recovery">Wachtwoord vergeten?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
+  <string name="settings_password_management_2fa">2FA is nodig</string>
   <string name="settings_password_invalid_2fa">Ongeldige tweefactorcode. Probeer het opnieuw.</string>
   <string name="settings_password_error_empty">Wachtwoord kan niet leeg zijn.</string>
   <string name="settings_password_error">Onjuiste gebruikersnaam of wachtwoord. Probeer het opnieuw.</string>

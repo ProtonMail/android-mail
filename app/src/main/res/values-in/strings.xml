@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_offline">Offline: Pesan diantrekan untuk dikirim</string>
   <string name="mailbox_message_sending_success">Pesan terkirim</string>
   <string name="mailbox_message_sending_error">Masalah dalam mengirim pesan</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">Pergi ke Draf</string>
   <string name="notification_switched_account">Anda telah beralih ke akun %s</string>
   <string name="label_saved">Label disimpan</string>
   <string name="label_deleted">Label dihapus</string>

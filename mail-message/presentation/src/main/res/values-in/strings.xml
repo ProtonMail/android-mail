@@ -71,9 +71,9 @@
   <string name="contact_actions_add_contact_description">Simpan penerima ini sebagai kontak</string>
   <string name="contact_actions_block_contact">Blokir kontak ini</string>
   <string name="contact_actions_block_contact_description">Blokir kontak ini</string>
-  <string name="contact_actions_block_contact_dialog_text">Emails from <xliff:g id="email">%1$s</xliff:g> will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.</string>
-  <string name="contact_actions_block_contact_dialog_button_block">Block</string>
-  <string name="contact_actions_block_contact_dialog_button_cancel">Cancel</string>
+  <string name="contact_actions_block_contact_dialog_text">Email dari <xliff:g id="email">%1$s</xliff:g> tidak akan diterima dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir dalam pengaturan.</string>
+  <string name="contact_actions_block_contact_dialog_button_block">Blokir</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">Batal</string>
   <string name="contact_actions_unblock_contact">Unblock this contact</string>
   <string name="contact_actions_unblock_contact_description">Unblock this contact</string>
   <string name="contact_actions_block_address">Blokir alamat ini</string>

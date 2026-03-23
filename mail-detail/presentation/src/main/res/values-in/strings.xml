@@ -73,7 +73,7 @@
   <string name="message_body_remote_content_banner_text">Konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_images_failed_to_load_banner_text">Some images failed to load with tracker protection.</string>
-  <string name="message_body_images_failed_to_load_banner_button">Load images</string>
+  <string name="message_body_images_failed_to_load_banner_button">Muat gambar</string>
   <string name="message_phishing_banner_text">Pesan ini ditandai sebagai mencurigakan, baik oleh sistem kami maupun oleh Anda. Jika Anda yakin itu aman, tandai sebagai sah.</string>
   <string name="message_phishing_banner_mark_as_legitimate_button">Tandai sebagai sah</string>
   <string name="message_spam_banner_text">Pesan ini telah ditandai sebagai spam, baik itu oleh sistem kami maupun oleh Anda.</string>
@@ -83,7 +83,7 @@
   <string name="message_expiration_banner_text">Pesan ini akan kedaluwarsa dalam %1$s</string>
   <string name="message_auto_delete_banner_text">Pesan ini akan terhapus otomatis dalam %1$s</string>
   <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
-  <string name="message_auth_fail_banner_button">Learn more</string>
+  <string name="message_auth_fail_banner_button">Pelajari lebih lanjut</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Anda akan meninggalkan aplikasi dan mengunjungi:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Jangan tanyakan lagi</string>
@@ -182,14 +182,14 @@
   <string name="error_downloading_image">Gambar gagal diunduh</string>
   <string name="image_downloaded_successfully">Gambar diunduh</string>
   <!-- Raw message data screen -->
-  <string name="raw_message_data_headers_title">Message headers</string>
-  <string name="raw_message_data_html_title">Message HTML</string>
-  <string name="raw_message_data_close_button_content_description">Close</string>
-  <string name="raw_message_data_more_button_content_description">More</string>
-  <string name="raw_message_data_download_action">Download</string>
-  <string name="raw_message_data_copy_action">Copy</string>
-  <string name="raw_message_data_learn_more_action">Learn more</string>
-  <string name="raw_message_data_error">Error loading data</string>
+  <string name="raw_message_data_headers_title">Header pesan</string>
+  <string name="raw_message_data_html_title">HTML Pesan</string>
+  <string name="raw_message_data_close_button_content_description">Tutup</string>
+  <string name="raw_message_data_more_button_content_description">Lainnya</string>
+  <string name="raw_message_data_download_action">Unduh</string>
+  <string name="raw_message_data_copy_action">Salin</string>
+  <string name="raw_message_data_learn_more_action">Pelajari lebih lanjut</string>
+  <string name="raw_message_data_error">Kesalahan memuat data</string>
   <string name="raw_message_data_successful_download">Download completed</string>
-  <string name="raw_message_data_failed_download">Download failed</string>
+  <string name="raw_message_data_failed_download">Unduhan gagal</string>
 </resources>

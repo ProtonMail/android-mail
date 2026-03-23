@@ -35,5 +35,5 @@
   <string name="manage_accounts_on_device">Kelola akun pada perangkat ini</string>
   <string name="add_another_account">Tambah akun lainnya</string>
   <string name="account_switcher_no_initials">N/A</string>
-  <string name="manage_accounts_options">Options</string>
+  <string name="manage_accounts_options">Pilihan</string>
 </resources>

@@ -157,7 +157,7 @@
   <string name="settings_password_management_login_success">Kata sandi masuk diperbarui</string>
   <string name="settings_password_management_second_success">Kata sandi kedua diperbarui</string>
   <string name="settings_password_management_start_recovery">Tidak tahu kata sandi Anda saat ini?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
+  <string name="settings_password_management_2fa">2FA diperlukan</string>
   <string name="settings_password_invalid_2fa">Kode faktor kedua tidak valid. Silakan coba lagi.</string>
   <string name="settings_password_error_empty">Kata sandi tidak boleh kosong.</string>
   <string name="settings_password_error">Nama pengguna atau kata sandi salah. Silakan coba lagi.</string>

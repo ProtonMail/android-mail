@@ -95,9 +95,9 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin ingin menghapus seluruh percakapan dalam folder Spam Anda secara permanen?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Tindakan pembersihan dijadwalkan"</string>
   <string name="mailbox_action_maximum_selection_reached">"Jumlah pilihan maksimum tercapai"</string>
-  <string name="mailbox_talkback_readout_unread">Unread</string>
-  <string name="mailbox_talkback_readout_starred">Unstar</string>
-  <string name="mailbox_talkback_readout_not_starred">Star</string>
+  <string name="mailbox_talkback_readout_unread">Belum dibaca</string>
+  <string name="mailbox_talkback_readout_starred">Hapus bintang</string>
+  <string name="mailbox_talkback_readout_not_starred">Bintangi</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Membuka lampiran…</string>
   <string name="mailbox_attachment_download_error">Gagal membuka lampiran. Silakan coba lagi.</string>

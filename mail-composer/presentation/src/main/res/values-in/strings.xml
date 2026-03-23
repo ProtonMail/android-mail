@@ -171,7 +171,7 @@
   <string name="composer_error_send_draft_too_many_attachments">Draf tidak dapat dikirim - Batas jumlah lampiran tercapai</string>
   <string name="composer_error_send_draft_attachments_crypto_error">Draf tidak dapat dikirim - Enkripsi lampiran gagal.</string>
   <string name="composer_expiration_time_learn_more">Pelajari lebih lanjut</string>
-  <string name="composer_enter_recipient_content_description">Enter a recipient</string>
+  <string name="composer_enter_recipient_content_description">Masukkan penerima</string>
   <string name="composer_sender_address_description">Choose Sender Address</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_encryption_info_learn_more">Pelajari lebih lanjut</string>
 </resources>

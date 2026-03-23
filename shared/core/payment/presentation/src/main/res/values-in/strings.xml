@@ -44,6 +44,6 @@
   <string name="payment_subscription_managed_by_google">Langganan Anda dikelola oleh Google Play.</string>
   <string name="payment_subscription_managed_by_apple">Langganan Anda dikelola oleh Apple Store.</string>
   <string name="payment_subscription_managed_by_other">Langganan Anda tidak dapat dikelola dari aplikasi seluler.</string>
-  <string name="payment_subscription_restricted_access_title">Restricted access</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_title">Akses terbatas</string>
+  <string name="payment_subscription_restricted_access_description">Maaf, Anda tidak memiliki izin untuk mengakses laman ini. Hubungi administrator Anda apabila hal ini tidak seharusnya terjadi.</string>
 </resources>

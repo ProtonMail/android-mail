@@ -80,7 +80,7 @@
   <string name="mail_settings_app_customization_mobile_signature_on">Aktif</string>
   <string name="mail_settings_app_customization_mobile_signature_off">Nonaktif</string>
   <string name="mail_settings_app_customization_mobile_signature_enable">Aktifkan tanda tangan</string>
-  <string name="mail_settings_app_customization_mobile_signature_edit">Edit signature</string>
+  <string name="mail_settings_app_customization_mobile_signature_edit">Edit tanda tangan</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sistem</string>
   <string name="mail_settings_theme_light">Terang</string>
@@ -153,18 +153,18 @@
   <string name="mail_settings_custom_toolbar_save_error">Tindakan toolbar tidak dapat disimpan. Silakan coba lagi.</string>
   <string name="mail_settings_custom_toolbar_read_error">Tindakan toolbar tidak dapat dibaca. Silakan coba lagi.</string>
   <!-- Custom App Icon -->
-  <string name="settings_app_icon_toolbar_title">App icon</string>
-  <string name="settings_app_icon_name_default">Default</string>
-  <string name="settings_app_icon_name_discreet">Discreet</string>
-  <string name="settings_app_icon_title_default">App icon - default</string>
+  <string name="settings_app_icon_toolbar_title">Ikon aplikasi</string>
+  <string name="settings_app_icon_name_default">Bawaan</string>
+  <string name="settings_app_icon_name_discreet">Rahasia</string>
+  <string name="settings_app_icon_title_default">Ikon aplikasi - bawaan</string>
   <string name="settings_app_icon_title_discreet">App icon - discreet</string>
-  <string name="settings_app_icon_description">Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy.\nNotifications will always show the Proton Mail name and icon.</string>
-  <string name="settings_app_icon_learn_more">Learn more…</string>
-  <string name="settings_app_icon_discreet_toggle">Discreet app icon</string>
-  <string name="settings_app_icon_confirmation_title">Change app icon?</string>
-  <string name="settings_app_icon_confirmation_details">This will cause the Proton Mail app to close and all notifications to be dismissed.\n\nTo restart Proton Mail, just tap your new app icon.</string>
-  <string name="settings_app_icon_action_cancel">Cancel</string>
-  <string name="settings_app_icon_change_icon">Change icon</string>
+  <string name="settings_app_icon_description">Pertahankan ikon Proton Mail bawaan, atau samarkan dengan ikon rahasia untuk privasi tambahan.\nNotifikasi akan selalu menampilkan nama dan ikon Proton Mail.</string>
+  <string name="settings_app_icon_learn_more">Pelajari lebih lanjut…</string>
+  <string name="settings_app_icon_discreet_toggle">Ikon aplikasi rahasia</string>
+  <string name="settings_app_icon_confirmation_title">Ubah ikon aplikasi?</string>
+  <string name="settings_app_icon_confirmation_details">Tindakan ini akan menutup aplikasi Proton Mail dan menghapus seluruh notifikasi.\n\nUntuk memulai ulang Proton Mail, cukup ketuk ikon aplikasi baru Anda.</string>
+  <string name="settings_app_icon_action_cancel">Batal</string>
+  <string name="settings_app_icon_change_icon">Ubah ikon</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
 </resources>

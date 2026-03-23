@@ -19,17 +19,17 @@
 <resources>
   <string name="trackers_blocked_links_cleaned_numbers">%s trackers blocked, %s links cleaned</string>
   <string name="trackers_protection">Tracker protection:</string>
-  <string name="show_details">Show details</string>
+  <string name="show_details">Tampilkan rincian</string>
   <string name="trackers_protection_no_trackers_detected">Tracker protection: no trackers detected</string>
   <string name="tracking_protection">Tracking protection</string>
-  <string name="tracking_protection_description">If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details.</string>
-  <string name="tracking_protection_learn_more">Learn  more...</string>
-  <string name="original">original</string>
-  <string name="cleaned">Cleaned</string>
+  <string name="tracking_protection_description">Jika Anda menerima email berisi piksel pelacakan atau tautan pelacakan, Anda akan melihat ikon perisai dalam rincian email.</string>
+  <string name="tracking_protection_learn_more">Pelajari lebih lanjut...</string>
+  <string name="original">asli</string>
+  <string name="cleaned">Dibersihkan</string>
   <plurals name="number_of_blocked_trackers">
     <item quantity="other">%s trackers blocked</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="other">%s tautan dibersihkan</item>
   </plurals>
 </resources>
