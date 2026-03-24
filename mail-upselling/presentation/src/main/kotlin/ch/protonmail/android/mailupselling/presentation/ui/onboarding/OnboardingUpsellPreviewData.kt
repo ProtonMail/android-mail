@@ -33,7 +33,7 @@ internal object OnboardingUpsellPreviewData {
 
     val mailPlusMonthly = OnboardingPlanUpgradeUiModel.Paid(
         PlanUpgradePlanType.MailPlus,
-        variant = PlanUpgradeVariant.Normal,
+        variant = PlanUpgradeVariant.Normal.MailPlus,
         entitlements = baseEntitlements,
         cycle = PlanUpgradeCycle.Monthly,
         NormalList.shorterCycle
@@ -41,7 +41,7 @@ internal object OnboardingUpsellPreviewData {
 
     val mailPlusYearly = OnboardingPlanUpgradeUiModel.Paid(
         PlanUpgradePlanType.MailPlus,
-        variant = PlanUpgradeVariant.Normal,
+        variant = PlanUpgradeVariant.Normal.MailPlus,
         entitlements = baseEntitlements,
         cycle = PlanUpgradeCycle.Yearly,
         NormalList.longerCycle
@@ -49,7 +49,7 @@ internal object OnboardingUpsellPreviewData {
 
     val unlimitedMonthly = OnboardingPlanUpgradeUiModel.Paid(
         PlanUpgradePlanType.Unlimited,
-        variant = PlanUpgradeVariant.Normal,
+        variant = PlanUpgradeVariant.Normal.Unlimited,
         entitlements = baseEntitlements,
         cycle = PlanUpgradeCycle.Monthly,
         NormalList.shorterCycle
@@ -57,7 +57,7 @@ internal object OnboardingUpsellPreviewData {
 
     val unlimitedYearly = OnboardingPlanUpgradeUiModel.Paid(
         PlanUpgradePlanType.Unlimited,
-        variant = PlanUpgradeVariant.Normal,
+        variant = PlanUpgradeVariant.Normal.Unlimited,
         entitlements = baseEntitlements,
         cycle = PlanUpgradeCycle.Yearly,
         NormalList.longerCycle

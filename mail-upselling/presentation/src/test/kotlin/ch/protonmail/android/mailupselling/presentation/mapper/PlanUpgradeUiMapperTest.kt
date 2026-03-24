@@ -168,8 +168,8 @@ internal class PlanUpgradeUiMapperTest {
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = ExpectedEntitlementsUiModel,
-            list = PlanUpgradeInstanceListUiModel.Data.Standard(monthlyExpected, yearlyExpected),
-            variant = PlanUpgradeVariant.Normal
+            list = PlanUpgradeInstanceListUiModel.Data.StandardMailPlus(monthlyExpected, yearlyExpected),
+            variant = PlanUpgradeVariant.Normal.MailPlus
         )
 
         // When
@@ -224,7 +224,7 @@ internal class PlanUpgradeUiMapperTest {
             title = ExpectedTitleUiModelPromo,
             description = ExpectedDescriptionUiModelPromo,
             entitlements = ExpectedEntitlementsUiModel,
-            list = PlanUpgradeInstanceListUiModel.Data.Standard(monthlyExpected, yearlyExpected),
+            list = PlanUpgradeInstanceListUiModel.Data.StandardMailPlus(monthlyExpected, yearlyExpected),
             variant = PlanUpgradeVariant.IntroductoryPrice
         )
 
@@ -266,7 +266,7 @@ internal class PlanUpgradeUiMapperTest {
     }
 
     private fun expectEntitlementsUiModel() {
-        every { entitlementsUiMapper.toTableUiModel() } returns
+        every { entitlementsUiMapper.toTableUiModel(any()) } returns
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ExpectedEntitlementsUiModel.items)
     }
 
@@ -294,7 +294,7 @@ internal class PlanUpgradeUiMapperTest {
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.Text("item"),
                     freeValue = ComparisonTableEntitlement.Free.Value(TextUiModel.Text("")),
-                    paidValue = ComparisonTableEntitlement.Plus.Value(TextUiModel.Text("12"))
+                    paidValue = ComparisonTableEntitlement.Paid.Value(TextUiModel.Text("12"))
                 )
             )
         )

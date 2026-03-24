@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 data class ComparisonTableEntitlementItemUiModel(
     val title: TextUiModel,
     val freeValue: ComparisonTableEntitlement.Free,
-    val paidValue: ComparisonTableEntitlement.Plus
+    val paidValue: ComparisonTableEntitlement.Paid
 )
 
 sealed interface ComparisonTableEntitlement {
@@ -32,8 +32,9 @@ sealed interface ComparisonTableEntitlement {
         data class Value(val text: TextUiModel) : Free
     }
 
-    sealed interface Plus : ComparisonTableEntitlement {
-        data object Present : Plus
-        data class Value(val text: TextUiModel) : Plus
+    sealed interface Paid : ComparisonTableEntitlement {
+        data object Unlimited : Paid
+        data object Present : Paid
+        data class Value(val text: TextUiModel) : Paid
     }
 }

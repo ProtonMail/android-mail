@@ -61,7 +61,7 @@ internal class PlanUpgradeUiMapper @Inject constructor(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint, variant),
             title = titleUiMapper.toUiModel(shorterCycleUiModel.primaryPrice, upsellingEntryPoint, variant),
             description = descriptionUiMapper.toUiModel(monthlyPlan, upsellingEntryPoint, variant),
-            entitlements = entitlementsUiMapper.toTableUiModel(),
+            entitlements = entitlementsUiMapper.toTableUiModel(variant),
             variant = variant,
             list = planUpgradeMapper.resolveListUiModel(shorterCycleUiModel, longerCycleUiModel, variant)
         ).right()

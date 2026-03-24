@@ -29,10 +29,15 @@ sealed interface PlanUpgradeInstanceListUiModel {
         val variant: PlanUpgradeVariant
     ) : PlanUpgradeInstanceListUiModel {
 
-        data class Standard(
+        data class StandardMailPlus(
             override val shorterCycle: PlanUpgradeInstanceUiModel.Standard,
             override val longerCycle: PlanUpgradeInstanceUiModel.Standard
-        ) : Data(shorterCycle, longerCycle, PlanUpgradeVariant.Normal)
+        ) : Data(shorterCycle, longerCycle, PlanUpgradeVariant.Normal.MailPlus)
+
+        data class StandardUnlimited(
+            override val shorterCycle: PlanUpgradeInstanceUiModel.Standard,
+            override val longerCycle: PlanUpgradeInstanceUiModel.Standard
+        ) : Data(shorterCycle, longerCycle, PlanUpgradeVariant.Normal.Unlimited)
 
         class IntroPrice(
             override val shorterCycle: PlanUpgradeInstanceUiModel,

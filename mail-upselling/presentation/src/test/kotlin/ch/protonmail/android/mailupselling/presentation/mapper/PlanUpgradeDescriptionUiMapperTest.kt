@@ -61,12 +61,21 @@ internal class PlanUpgradeDescriptionUiMapperTest(
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> = listOf(
             arrayOf(
-                "mailbox entry point - normal variant",
+                "mailbox entry point - normal MailPlus variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.Navbar,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_mailbox_plus_description_override)
+                )
+            ),
+            arrayOf(
+                "mailbox entry point - normal Unlimited variant",
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.Navbar,
+                PlanUpgradeVariant.Normal.Unlimited,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_unlimited_description_override)
                 )
             ),
             arrayOf(
@@ -89,7 +98,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "contact groups entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.ContactGroups,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_contact_groups_plus_description_override)
                 )
@@ -98,7 +107,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "contact groups entry point - promo variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.ContactGroups,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_contact_groups_plus_description_override)
                 )
@@ -107,7 +116,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "folders entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.Folders,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_folders_plus_description_override)
                 )
@@ -125,7 +134,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "labels entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.Labels,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_labels_plus_description_override)
                 )
@@ -143,7 +152,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "navbar entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.Navbar,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_mailbox_plus_description_override)
                 )
@@ -161,7 +170,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "mobile signature entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.MobileSignature,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_mobile_signature_plus_description_override)
                 )
@@ -179,7 +188,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "auto delete entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.AutoDelete,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_auto_delete_plus_description_override)
                 )
@@ -197,7 +206,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "schedule send entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.ScheduleSend,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_schedule_send_plus_description_override)
                 )
@@ -215,7 +224,7 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 "snooze entry point - normal variant",
                 UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                 UpsellingEntryPoint.Feature.Snooze,
-                PlanUpgradeVariant.Normal,
+                PlanUpgradeVariant.Normal.MailPlus,
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_snooze_plus_description_override)
                 )
