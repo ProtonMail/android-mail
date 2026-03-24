@@ -37,6 +37,10 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
         if (variant == PlanUpgradeVariant.SocialProof)
             return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title_social_proof))
 
+        if (variant == PlanUpgradeVariant.Normal.Unlimited) {
+            return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_unlimited_title))
+        }
+
         val stringResource = when (upsellingEntryPoint) {
             UpsellingEntryPoint.Feature.AutoDelete -> R.string.upselling_auto_delete_plus_title
             UpsellingEntryPoint.Feature.ContactGroups -> R.string.upselling_contact_groups_plus_title

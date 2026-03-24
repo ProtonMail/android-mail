@@ -21,9 +21,10 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Free
-import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Plus
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Paid
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -32,49 +33,112 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
     private val mapper = PlanUpgradeEntitlementsUiMapper()
 
     @Test
-    fun `should return comparison table entitlements when requested `() {
+    fun `should return MailPlus comparison table entitlements when requested `() {
         // Given
         val expected = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
             listOf(
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_storage),
                     freeValue = Free.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)),
-                    paidValue = Plus.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_plus))
+                    paidValue = Paid.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_plus))
                 ),
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses),
                     freeValue = Free.Value(
                         TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_free)
                     ),
-                    paidValue = Plus.Value(
+                    paidValue = Paid.Value(
                         TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_plus)
                     )
                 ),
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
                     freeValue = Free.NotPresent,
-                    paidValue = Plus.Present
+                    paidValue = Paid.Present
                 ),
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
                     freeValue = Free.NotPresent,
-                    paidValue = Plus.Present
+                    paidValue = Paid.Present
                 ),
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_unlimited_folders_labels),
                     freeValue = Free.NotPresent,
-                    paidValue = Plus.Present
+                    paidValue = Paid.Present
                 ),
                 ComparisonTableEntitlementItemUiModel(
                     title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
                     freeValue = Free.NotPresent,
-                    paidValue = Plus.Present
+                    paidValue = Paid.Present
                 )
             )
         )
 
         // When
-        val actual = mapper.toTableUiModel()
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.MailPlus)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return Unlimited comparison table entitlements when requested `() {
+        // Given
+        val expected = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+            listOf(
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_storage),
+                    freeValue = Free.Value(
+                        TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)
+                    ),
+                    paidValue = Paid.Value(
+                        TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_unlimited)
+                    )
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_aliases),
+                    freeValue = Free.Value(
+                        TextUiModel.TextRes(R.string.upselling_comparison_table_aliases_value_free)
+                    ),
+                    paidValue = Paid.Unlimited
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_folders_labels),
+                    freeValue = Free.Value(
+                        TextUiModel.TextRes(R.string.upselling_comparison_table_folders_labels_value_free)
+                    ),
+                    paidValue = Paid.Unlimited
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_premium_products),
+                    freeValue = Free.NotPresent,
+                    paidValue = Paid.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_dark_web_monitoring),
+                    freeValue = Free.NotPresent,
+                    paidValue = Paid.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
+                    freeValue = Free.NotPresent,
+                    paidValue = Paid.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
+                    freeValue = Free.NotPresent,
+                    paidValue = Paid.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
+                    freeValue = Free.NotPresent,
+                    paidValue = Paid.Present
+                )
+            )
+        )
+
+        // When
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.Unlimited)
 
         // Then
         assertEquals(expected, actual)

@@ -92,14 +92,25 @@ internal class PlanUpgradeMapperTest(
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> = listOf(
             arrayOf(
-                "should return normal variant on non-promotional instances",
+                "should return normal MailPlus variant on non-promotional MailPlus instances",
                 TestInput(
                     monthlyInstance = UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
                     yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.None,
                     springPromoPhase = SpringPromoPhase.None,
-                    expectedVariant = PlanUpgradeVariant.Normal
+                    expectedVariant = PlanUpgradeVariant.Normal.MailPlus
+                )
+            ),
+            arrayOf(
+                "should return normal Unlimited variant on non-promotional Unlimited instances",
+                TestInput(
+                    monthlyInstance = UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+                    yearlyInstance = UpsellingTestData.UnlimitedMailProduct.YearlyProductDetail,
+                    entryPoint = UpsellingEntryPoint.Feature.Navbar,
+                    blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
+                    expectedVariant = PlanUpgradeVariant.Normal.Unlimited
                 )
             ),
             arrayOf(
@@ -165,7 +176,7 @@ internal class PlanUpgradeMapperTest(
                     entryPoint = UpsellingEntryPoint.Feature.Navbar,
                     blackFridayPhase = BlackFridayPhase.None,
                     springPromoPhase = SpringPromoPhase.None,
-                    expectedVariant = PlanUpgradeVariant.Normal
+                    expectedVariant = PlanUpgradeVariant.Normal.MailPlus
                 )
             )
         )

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySupported
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoSupported
@@ -68,7 +69,8 @@ internal class PlanUpgradeMapper @Inject constructor(
 
             instances.containsTag(PlanUpgradeSupportedTags.IntroductoryPrice) -> PlanUpgradeVariant.IntroductoryPrice
             entryPoint.supportsHeaderVariants() -> PlanUpgradeVariant.SocialProof
-            else -> PlanUpgradeVariant.Normal
+            instances.areUnlimitedPlans() -> PlanUpgradeVariant.Normal.Unlimited
+            else -> PlanUpgradeVariant.Normal.MailPlus
         }
     }
 
@@ -95,7 +97,14 @@ internal class PlanUpgradeMapper @Inject constructor(
                 PlanUpgradeInstanceListUiModel.Data.IntroPrice(shorterCycleUiModel, longerCycleUiModel)
             }
 
-            else -> PlanUpgradeInstanceListUiModel.Data.Standard(
+            variant is PlanUpgradeVariant.Normal.Unlimited -> {
+                PlanUpgradeInstanceListUiModel.Data.StandardUnlimited(
+                    shorterCycleUiModel as PlanUpgradeInstanceUiModel.Standard,
+                    longerCycleUiModel as PlanUpgradeInstanceUiModel.Standard
+                )
+            }
+
+            else -> PlanUpgradeInstanceListUiModel.Data.StandardMailPlus(
                 shorterCycleUiModel as PlanUpgradeInstanceUiModel.Standard,
                 longerCycleUiModel as PlanUpgradeInstanceUiModel.Standard
             )
@@ -105,6 +114,9 @@ internal class PlanUpgradeMapper @Inject constructor(
 
     private fun List<ProductOfferDetail>.containsTag(tag: PlanUpgradeSupportedTags) =
         any { it.offer.tags.value.contains(tag.value) }
+
+    private fun List<ProductOfferDetail>.areUnlimitedPlans() =
+        any { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
 
     private fun UpsellingEntryPoint.supportsHeaderVariants() = when (this) {
         UpsellingEntryPoint.PostOnboarding,

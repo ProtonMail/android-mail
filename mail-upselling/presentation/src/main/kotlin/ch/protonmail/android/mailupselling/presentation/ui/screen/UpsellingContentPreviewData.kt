@@ -167,7 +167,7 @@ internal object UpsellingContentPreviewData {
         )
     )
 
-    val NormalList = PlanUpgradeInstanceListUiModel.Data.Standard(
+    val NormalList = PlanUpgradeInstanceListUiModel.Data.StandardMailPlus(
         MailPlusPlanModelMonthly,
         MailPlusPlanModelYearly
     )
@@ -210,17 +210,17 @@ internal object UpsellingContentPreviewData {
             ComparisonTableEntitlementItemUiModel(
                 title = TextUiModel.Text("Item 1"),
                 freeValue = ComparisonTableEntitlement.Free.NotPresent,
-                paidValue = ComparisonTableEntitlement.Plus.Present
+                paidValue = ComparisonTableEntitlement.Paid.Present
             ),
             ComparisonTableEntitlementItemUiModel(
                 title = TextUiModel.Text("Item 2"),
                 freeValue = ComparisonTableEntitlement.Free.NotPresent,
-                paidValue = ComparisonTableEntitlement.Plus.Present
+                paidValue = ComparisonTableEntitlement.Paid.Present
             ),
             ComparisonTableEntitlementItemUiModel(
                 title = TextUiModel.Text("Item 3"),
                 freeValue = ComparisonTableEntitlement.Free.NotPresent,
-                paidValue = ComparisonTableEntitlement.Plus.Present
+                paidValue = ComparisonTableEntitlement.Paid.Present
             )
         )
     )
@@ -231,7 +231,7 @@ internal object UpsellingContentPreviewData {
             title = PlanUpgradeTitleUiModel(TextUiModel.Text("Mail Plus")),
             description = PlanUpgradeDescriptionUiModel.Simple(TextUiModel.Text("Description")),
             entitlements = SimpleListEntitlements,
-            variant = PlanUpgradeVariant.Normal,
+            variant = PlanUpgradeVariant.Normal.MailPlus,
             list = NormalList
         )
     )

@@ -91,7 +91,7 @@ internal class OnboardingPlanUpgradeUiMapperTest {
         // Given
         coEvery {
             planUpgradeMapper.resolveVariant(any(), any(), any())
-        } returns PlanUpgradeVariant.Normal
+        } returns PlanUpgradeVariant.Normal.MailPlus
 
         val monthlyMailPlus = UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail
         val yearlyMailPlus = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail
@@ -110,7 +110,7 @@ internal class OnboardingPlanUpgradeUiMapperTest {
         val expectedMonthlyMailUiModel = OnboardingPlanUpgradeUiModel.Paid(
             planType = PlanUpgradePlanType.MailPlus,
             entitlements = mockedMailPlusEntitlements,
-            variant = PlanUpgradeVariant.Normal,
+            variant = PlanUpgradeVariant.Normal.MailPlus,
             cycle = PlanUpgradeCycle.Monthly,
             planInstance = mockedMonthlyMailPlusModel
         )
@@ -118,7 +118,7 @@ internal class OnboardingPlanUpgradeUiMapperTest {
         val expectedYearlyMailUiModel = OnboardingPlanUpgradeUiModel.Paid(
             planType = PlanUpgradePlanType.MailPlus,
             entitlements = mockedMailPlusEntitlements,
-            variant = PlanUpgradeVariant.Normal,
+            variant = PlanUpgradeVariant.Normal.MailPlus,
             cycle = PlanUpgradeCycle.Yearly,
             planInstance = mockedYearlyMailPlusModel
         )
@@ -126,7 +126,7 @@ internal class OnboardingPlanUpgradeUiMapperTest {
         val expectedMonthlyBundleModel = OnboardingPlanUpgradeUiModel.Paid(
             planType = PlanUpgradePlanType.Unlimited,
             entitlements = mockedUnlimitedEntitlements,
-            variant = PlanUpgradeVariant.Normal,
+            variant = PlanUpgradeVariant.Normal.MailPlus,
             cycle = PlanUpgradeCycle.Monthly,
             planInstance = mockedMonthlyUnlimitedModel
         )
@@ -134,7 +134,7 @@ internal class OnboardingPlanUpgradeUiMapperTest {
         val expectedYearlyBundleModel = OnboardingPlanUpgradeUiModel.Paid(
             planType = PlanUpgradePlanType.Unlimited,
             entitlements = mockedUnlimitedEntitlements,
-            variant = PlanUpgradeVariant.Normal,
+            variant = PlanUpgradeVariant.Normal.MailPlus,
             cycle = PlanUpgradeCycle.Yearly,
             planInstance = mockedYearlyUnlimitedModel
         )
