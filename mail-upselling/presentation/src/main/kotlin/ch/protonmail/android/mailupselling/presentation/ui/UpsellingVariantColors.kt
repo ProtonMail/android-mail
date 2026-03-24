@@ -88,8 +88,8 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
     }
 
     else -> UpsellingVariantColors(
-        checkmarkTint = Color.White,
-        checkmarkBackground = Color.Black.copy(alpha = 0.2f),
+        checkmarkTint = Color.Black,
+        checkmarkBackground = Color.White,
         plusBadgeBorderBrush = coloredBorderBrush,
         plusBadgeBackground = Color.Black.copy(alpha = 0.20f),
         tableTextColor = Color.White,

@@ -46,6 +46,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
 import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantColors
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingCheckmark
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingInfinity
 
 @Composable
 internal fun ComparisonTableEntitlement(
@@ -54,7 +55,10 @@ internal fun ComparisonTableEntitlement(
     plusCellWidth: Dp,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier.fillMaxWidth()) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
             modifier = Modifier
                 .weight(1f)
@@ -90,7 +94,11 @@ internal fun ComparisonTableEntitlement(
         Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Large))
 
         when (val paidValue = uiModel.paidValue) {
-            ComparisonTableEntitlement.Paid.Unlimited -> Unit
+            ComparisonTableEntitlement.Paid.Unlimited -> {
+                Box(modifier = Modifier.widthIn(min = plusCellWidth)) {
+                    UpsellingInfinity(modifier = Modifier.align(Alignment.Center))
+                }
+            }
 
             ComparisonTableEntitlement.Paid.Present -> {
                 Box(modifier = Modifier.widthIn(min = plusCellWidth)) {
