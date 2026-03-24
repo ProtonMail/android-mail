@@ -116,7 +116,7 @@ internal fun ComparisonTable(
 private fun ComparisonTablePreview() {
     ProtonTheme {
         ComparisonTable(
-            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ComparisonTableEntitlements.Entitlements),
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ComparisonTableEntitlements.MailPlusEntitlements),
             variant = PlanUpgradeVariant.IntroductoryPrice
         )
     }
@@ -128,7 +128,7 @@ private fun ComparisonTablePreview() {
 private fun ComparisonTablePreviewBlackFriday() {
     ProtonTheme {
         ComparisonTable(
-            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ComparisonTableEntitlements.Entitlements),
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ComparisonTableEntitlements.MailPlusEntitlements),
             variant = PlanUpgradeVariant.BlackFriday.Wave1
         )
     }

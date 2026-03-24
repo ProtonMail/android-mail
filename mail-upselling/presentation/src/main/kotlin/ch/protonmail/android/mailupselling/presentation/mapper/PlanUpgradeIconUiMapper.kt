@@ -39,6 +39,8 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
             PlanUpgradeVariant.SpringPromo.Wave1,
             PlanUpgradeVariant.SpringPromo.Wave2 -> R.drawable.spring_promo_header
 
+            PlanUpgradeVariant.Normal.Unlimited -> R.drawable.illustration_upselling_unlimited
+
             else -> when (upsellingEntryPoint) {
                 UpsellingEntryPoint.Feature.AutoDelete -> R.drawable.illustration_upselling_auto_delete
                 UpsellingEntryPoint.Feature.ContactGroups -> R.drawable.illustration_upselling_contact_groups

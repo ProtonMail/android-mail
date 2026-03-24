@@ -48,6 +48,9 @@ internal class PlanUpgradeIconUiMapperTest {
             UpsellingEntryPoint.Feature.Navbar to PlanUpgradeIconUiModel(
                 iconResId = R.drawable.illustration_upselling_mailbox
             ),
+            UpsellingEntryPoint.Feature.Navbar to PlanUpgradeIconUiModel(
+                iconResId = R.drawable.illustration_upselling_unlimited
+            ),
             UpsellingEntryPoint.Feature.Sidebar to PlanUpgradeIconUiModel(
                 iconResId = R.drawable.illustration_upselling_mailbox
             ),
@@ -63,23 +66,27 @@ internal class PlanUpgradeIconUiMapperTest {
         val actual = mapOf(
             UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Folders,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Labels,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.MobileSignature,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
+            ),
+            UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
+                upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
+                variant = PlanUpgradeVariant.Normal.Unlimited
             ),
             UpsellingEntryPoint.Feature.Sidebar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Sidebar,
@@ -87,7 +94,7 @@ internal class PlanUpgradeIconUiMapperTest {
             ),
             UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,

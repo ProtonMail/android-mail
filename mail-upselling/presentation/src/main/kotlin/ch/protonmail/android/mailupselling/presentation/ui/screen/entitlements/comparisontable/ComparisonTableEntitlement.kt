@@ -90,7 +90,9 @@ internal fun ComparisonTableEntitlement(
         Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Large))
 
         when (val paidValue = uiModel.paidValue) {
-            ComparisonTableEntitlement.Plus.Present -> {
+            ComparisonTableEntitlement.Paid.Unlimited -> Unit
+
+            ComparisonTableEntitlement.Paid.Present -> {
                 Box(modifier = Modifier.widthIn(min = plusCellWidth)) {
                     UpsellingCheckmark(
                         tint = colors.checkmarkTint,
@@ -100,7 +102,7 @@ internal fun ComparisonTableEntitlement(
                 }
             }
 
-            is ComparisonTableEntitlement.Plus.Value -> {
+            is ComparisonTableEntitlement.Paid.Value -> {
                 Text(
                     modifier = Modifier
                         .widthIn(min = plusCellWidth)
@@ -122,7 +124,7 @@ internal fun ComparisonTableEntitlement(
 private fun ComparisonTableEntitlementPreview() {
     ProtonTheme {
         ComparisonTableEntitlement(
-            ComparisonTableEntitlements.Entitlements.last(),
+            ComparisonTableEntitlements.MailPlusEntitlements.last(),
             colors = planUpgradeVariantColors(PlanUpgradeVariant.BlackFriday.Wave1),
             plusCellWidth = 30.dp
         )

@@ -28,9 +28,13 @@ internal data class PlanUpgradeUiModel(
 )
 
 sealed interface PlanUpgradeVariant {
-    data object Normal : PlanUpgradeVariant
     data object IntroductoryPrice : PlanUpgradeVariant
     data object SocialProof : PlanUpgradeVariant
+
+    sealed interface Normal : PlanUpgradeVariant {
+        data object MailPlus : Normal
+        data object Unlimited : Normal
+    }
 
     sealed interface BlackFriday : PlanUpgradeVariant {
         data object Wave1 : BlackFriday
