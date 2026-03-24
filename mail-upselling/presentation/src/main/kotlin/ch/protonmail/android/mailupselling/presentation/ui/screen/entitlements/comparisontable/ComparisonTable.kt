@@ -79,7 +79,11 @@ internal fun ComparisonTable(
                     with(localDensity) { highlightHeight = coordinates.size.height.toDp() }
                 }
         ) {
-            ComparisonTableHeaderRow(colors = colors, onPaidColumnPlaced = { plusCellHeaderWidth = it })
+            ComparisonTableHeaderRow(
+                variant = variant,
+                colors = colors,
+                onPaidColumnPlaced = { plusCellHeaderWidth = it }
+            )
 
             entitlementsUiModel.items.forEachIndexed { index, item ->
                 ComparisonTableEntitlement(
