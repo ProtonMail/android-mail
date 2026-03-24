@@ -20,12 +20,14 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveMailPlusPlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.ObserveUnlimitedPlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
@@ -62,11 +64,15 @@ internal class UpsellingViewModelTest {
 
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val observeMailPlusPlanUpgrades = mockk<ObserveMailPlusPlanUpgrades>()
+    private val observeUnlimitedPlanUpgrades = mockk<ObserveUnlimitedPlanUpgrades>()
     private val upsellingContentReducer = mockk<UpsellingContentReducer>()
     private val eventLoopRepository = mockk<EventLoopRepository>(relaxed = true)
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
     private val resetUpgradeCache = mockk<ResetPlanUpgradesCache>()
     private val appEventBroadcaster = mockk<AppEventBroadcaster>()
+    private val unlimitedPlanPlacementFlag = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns false
+    }
 
     @AfterTest
     fun teardown() {
@@ -132,7 +138,7 @@ internal class UpsellingViewModelTest {
         coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
 
         val expectedModel = mockk<UpsellingScreenContentState.Data> {
-            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
         }
         coEvery {
             upsellingContentReducer.newStateFrom(
@@ -142,6 +148,43 @@ internal class UpsellingViewModelTest {
                 )
             )
         } returns expectedModel
+
+        // When
+        viewModel().state.test {
+            // Then
+            assertEquals(expectedModel, awaitItem())
+        }
+
+        coVerify {
+            upsellingContentReducer.newStateFrom(
+                UpsellingScreenContentEvent.DataLoaded(
+                    plans = expectedList,
+                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar
+                )
+            )
+        }
+        confirmVerified(upsellingContentReducer)
+    }
+
+    @Test
+    fun `should return data state when plans fetching returns a valid list and Unlimited FF is ON`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeUnlimitedPlanUpgrades() } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.Unlimited }
+        }
+        coEvery {
+            upsellingContentReducer.newStateFrom(
+                operation = UpsellingScreenContentEvent.DataLoaded(
+                    plans = expectedList,
+                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar
+                )
+            )
+        } returns expectedModel
+
+        coEvery { unlimitedPlanPlacementFlag.get() } returns true
 
         // When
         viewModel().state.test {
@@ -207,7 +250,7 @@ internal class UpsellingViewModelTest {
         coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
 
         val expectedModel = mockk<UpsellingScreenContentState.Data> {
-            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
         }
         coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
 
@@ -249,7 +292,7 @@ internal class UpsellingViewModelTest {
         coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
 
         val expectedModel = mockk<UpsellingScreenContentState.Data> {
-            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
         }
         coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
 
@@ -267,10 +310,12 @@ internal class UpsellingViewModelTest {
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observeMailPlusPlanUpgrades,
+        observeUnlimitedPlanUpgrades,
         upsellingContentReducer,
         eventLoopRepository,
         observePrimaryUserId,
         resetUpgradeCache,
-        appEventBroadcaster
+        appEventBroadcaster,
+        unlimitedPlanPlacementFlag
     )
 }
