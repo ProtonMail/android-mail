@@ -1,0 +1,84 @@
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="59dp"
+    android:height="32dp"
+    android:viewportWidth="59"
+    android:viewportHeight="32">
+  <group>
+    <clip-path
+        android:pathData="M8,0L51,0A8,8 0,0 1,59 8L59,24A8,8 0,0 1,51 32L8,32A8,8 0,0 1,0 24L0,8A8,8 0,0 1,8 0z"/>
+    <path
+        android:pathData="M0,0H59V32H0V0Z"
+        android:fillColor="#37286D"/>
+    <group>
+      <clip-path
+          android:pathData="M0,0H59V32H0V0Z"/>
+      <path
+          android:pathData="M32.778,0a17.778,32.778 90,1 1,-65.556 0a17.778,32.778 90,1 1,65.556 0z"
+          android:fillColor="#37286D"/>
+      <path
+          android:pathData="M91.778,0a17.778,32.778 90,1 1,-65.556 0a17.778,32.778 90,1 1,65.556 0z"
+          android:fillColor="#37286D"/>
+      <path
+          android:pathData="M32.778,32a17.778,32.778 90,1 1,-65.556 0a17.778,32.778 90,1 1,65.556 0z"
+          android:fillColor="#37286D"/>
+      <path
+          android:pathData="M91.778,32a17.778,32.778 90,1 1,-65.556 0a17.778,32.778 90,1 1,65.556 0z"
+          android:fillColor="#37286D"/>
+    </group>
+    <path
+        android:pathData="M15.396,10.396C12.201,13.591 12.201,18.771 15.396,21.966C18.591,25.161 23.771,25.161 26.966,21.966L30,18.932L33.034,21.966C36.229,25.161 41.409,25.161 44.604,21.966C47.799,18.771 47.799,13.591 44.604,10.396C41.409,7.201 36.229,7.201 33.034,10.396L30,13.43L26.966,10.396C23.771,7.201 18.591,7.201 15.396,10.396ZM18.165,19.197C16.499,17.531 16.499,14.831 18.165,13.165C19.831,11.499 22.531,11.499 24.197,13.165L27.213,16.181L24.197,19.197C22.531,20.863 19.831,20.863 18.165,19.197ZM35.803,19.197C37.469,20.863 40.169,20.863 41.835,19.197C43.501,17.531 43.501,14.831 41.835,13.165C40.169,11.499 37.469,11.499 35.803,13.165L32.787,16.181L35.803,19.197Z"
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"/>
+    <path
+        android:pathData="M19.829,12.134C21.314,11.639 23.017,11.983 24.198,13.164L27.215,16.181L30.021,13.45L30.001,13.43L26.967,10.396C25.992,9.421 24.832,8.743 23.6,8.363L19.829,12.134Z"
+        android:strokeAlpha="0.4"
+        android:fillAlpha="0.4">
+      <aapt:attr name="android:fillColor">
+        <gradient
+            android:startX="24.128"
+            android:startY="11.208"
+            android:endX="28.385"
+            android:endY="15.253"
+            android:type="linear">
+          <item android:offset="0" android:color="#00190080"/>
+          <item android:offset="1" android:color="#FF190080"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+    <path
+        android:pathData="M36.826,24.114L41.266,19.673C39.603,20.841 37.291,20.682 35.803,19.195L32.787,16.179L30,18.929L33.035,21.964C34.121,23.05 35.437,23.767 36.826,24.114Z"
+        android:strokeAlpha="0.4"
+        android:fillAlpha="0.4">
+      <aapt:attr name="android:fillColor">
+        <gradient
+            android:startX="31.469"
+            android:startY="17.569"
+            android:endX="35.384"
+            android:endY="20.995"
+            android:type="linear">
+          <item android:offset="0" android:color="#FF190080"/>
+          <item android:offset="1" android:color="#00190080"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+  </group>
+</vector>

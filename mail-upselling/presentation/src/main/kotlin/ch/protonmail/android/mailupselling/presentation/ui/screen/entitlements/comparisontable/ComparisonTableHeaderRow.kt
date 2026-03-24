@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +49,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
@@ -54,7 +57,11 @@ import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColor
 import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantColors
 
 @Composable
-internal fun ComparisonTableHeaderRow(colors: UpsellingVariantColors, onPaidColumnPlaced: (Dp) -> Unit) {
+internal fun ComparisonTableHeaderRow(
+    variant: PlanUpgradeVariant,
+    colors: UpsellingVariantColors,
+    onPaidColumnPlaced: (Dp) -> Unit
+) {
     var paidColumnWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
 
@@ -101,7 +108,11 @@ internal fun ComparisonTableHeaderRow(colors: UpsellingVariantColors, onPaidColu
         ) {
             Row {
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
-                PlusBadge(colors = colors)
+                if (variant is PlanUpgradeVariant.Normal.Unlimited) {
+                    UnlimitedBadge()
+                } else {
+                    PlusBadge(colors = colors)
+                }
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
             }
         }
@@ -134,11 +145,20 @@ private fun PlusBadge(colors: UpsellingVariantColors) {
     }
 }
 
+@Composable
+private fun UnlimitedBadge() {
+    Image(
+        painter = painterResource(id = R.drawable.illustration_upselling_unlimited_badge),
+        contentDescription = NO_CONTENT_DESCRIPTION
+    )
+}
+
 @Preview
 @Composable
 private fun ComparisonTableHeaderRowPreview() {
     ProtonTheme {
         ComparisonTableHeaderRow(
+            variant = PlanUpgradeVariant.IntroductoryPrice,
             colors = planUpgradeVariantColors(PlanUpgradeVariant.IntroductoryPrice)
         ) { }
     }

@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -184,13 +184,13 @@ internal fun UpsellingScreenContent(
                 Image(
                     modifier = Modifier
                         .height(UpsellingLayoutValues.imageHeight)
-                        .aspectRatio(1f)
                         .padding(horizontal = ProtonDimens.Spacing.Large)
                         .padding(top = ProtonDimens.Spacing.Large)
                         .scale(imageScale.value)
                         .alpha(imageAlpha.value),
                     painter = painterResource(id = plans.icon.iconResId),
-                    contentDescription = NO_CONTENT_DESCRIPTION
+                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    contentScale = ContentScale.Fit
                 )
 
                 Text(
