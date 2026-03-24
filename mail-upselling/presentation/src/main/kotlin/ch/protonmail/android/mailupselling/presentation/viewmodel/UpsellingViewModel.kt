@@ -21,12 +21,15 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.ObserveMailPlusPlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.ObserveUnlimitedPlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation
@@ -51,11 +54,13 @@ import kotlin.time.Duration.Companion.seconds
 internal class UpsellingViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val observeMailPlusPlanUpgrades: ObserveMailPlusPlanUpgrades,
+    private val observeUnlimitedPlanUpgrades: ObserveUnlimitedPlanUpgrades,
     private val upsellingContentReducer: UpsellingContentReducer,
     private val forceEventLoopRepository: EventLoopRepository,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val resetPlanUpgradesCache: ResetPlanUpgradesCache,
-    private val appEventBroadcaster: AppEventBroadcaster
+    private val appEventBroadcaster: AppEventBroadcaster,
+    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<UpsellingScreenContentState>(Loading)
@@ -70,7 +75,11 @@ internal class UpsellingViewModel @Inject constructor(
         viewModelScope.launch {
             val plans = try {
                 withTimeoutOrNull(10.seconds) {
-                    observeMailPlusPlanUpgrades(entryPoint).first { it.isNotEmpty() }
+                    if (unlimitedPlanPlacementFlag.get()) {
+                        observeUnlimitedPlanUpgrades().first { it.isNotEmpty() }
+                    } else {
+                        observeMailPlusPlanUpgrades(entryPoint).first { it.isNotEmpty() }
+                    }
                 }
             } catch (_: NoSuchElementException) {
                 null // Flow completed without non-empty list (e.g., no userId)
