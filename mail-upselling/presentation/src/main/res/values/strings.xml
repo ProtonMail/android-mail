@@ -35,6 +35,9 @@
     <string name="upselling_mailbox_plus_promo_skip">Skip offer</string>
     <string name="upselling_mailbox_plus_promo_renewal">%s for the 1st month, then %s per month</string>
 
+    <!-- Upselling: Unlimited -->
+    <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
+
     <!-- Upselling: Contact Groups -->
     <string name="upselling_contact_groups_plus_description_override">Send group emails with ease. Enjoy this and more with Mail Plus.</string>
     <string name="upselling_contact_groups_plus_title">Group your contacts</string>
@@ -76,6 +79,7 @@
     <string name="upselling_comparison_table_storage">Storage</string>
     <string name="upselling_comparison_table_storage_value_free" translatable="false">1 GB</string>
     <string name="upselling_comparison_table_storage_value_plus" translatable="false">15 GB</string>
+    <string name="upselling_comparison_table_storage_value_unlimited" translatable="false">500 GB</string>
     <string name="upselling_comparison_table_email_addresses">Email addresses</string>
     <string name="upselling_comparison_table_email_addresses_value_free" translatable="false">1</string>
     <string name="upselling_comparison_table_email_addresses_value_plus" translatable="false">10</string>
@@ -83,6 +87,12 @@
     <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
     <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
     <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+    <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
+    <string name="upselling_comparison_table_aliases_value_free" translatable="false">10</string>
+    <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
+    <string name="upselling_comparison_table_folders_labels_value_free" translatable="false">3</string>
+    <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
+    <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
 
     <!-- Rectangular plan buttons -->
     <string name="upselling_select_plan">Choose your plan</string>
@@ -107,7 +117,7 @@
     <string name="upselling_onboarding_free_entitlement_mail">1 email address</string>
 
     <!-- Other UI Items -->
-    <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
+    <string name="upselling_unlimited_description_override">Unlock more storage and premium features</string>
     <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled</string>
     <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s%s unless canceled</string>
     <string name="upselling_auto_renew_text_bfriday">Discounts are based on standard monthly pricing. Auto-renews at %s%s until canceled.</string>

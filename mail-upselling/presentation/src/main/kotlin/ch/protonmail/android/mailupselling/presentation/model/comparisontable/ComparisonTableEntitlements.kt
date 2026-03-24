@@ -23,13 +23,13 @@ import ch.protonmail.android.mailupselling.presentation.R
 
 internal object ComparisonTableEntitlements {
 
-    val Entitlements = listOf(
+    val MailPlusEntitlements = listOf(
         ComparisonTableEntitlementItemUiModel(
             title = TextUiModel.TextRes(R.string.upselling_comparison_table_storage),
             freeValue = ComparisonTableEntitlement.Free.Value(
                 TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)
             ),
-            paidValue = ComparisonTableEntitlement.Plus.Value(
+            paidValue = ComparisonTableEntitlement.Paid.Value(
                 TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_plus)
             )
         ),
@@ -38,29 +38,80 @@ internal object ComparisonTableEntitlements {
             freeValue = ComparisonTableEntitlement.Free.Value(
                 TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_free)
             ),
-            paidValue = ComparisonTableEntitlement.Plus.Value(
+            paidValue = ComparisonTableEntitlement.Paid.Value(
                 TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_plus)
             )
         ),
         ComparisonTableEntitlementItemUiModel(
             title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Plus.Present
+            paidValue = ComparisonTableEntitlement.Paid.Present
         ),
         ComparisonTableEntitlementItemUiModel(
             title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Plus.Present
+            paidValue = ComparisonTableEntitlement.Paid.Present
         ),
         ComparisonTableEntitlementItemUiModel(
             title = TextUiModel.TextRes(R.string.upselling_comparison_table_unlimited_folders_labels),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Plus.Present
+            paidValue = ComparisonTableEntitlement.Paid.Present
         ),
         ComparisonTableEntitlementItemUiModel(
             title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Plus.Present
+            paidValue = ComparisonTableEntitlement.Paid.Present
+        )
+    )
+
+    val UnlimitedEntitlements = listOf(
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_storage),
+            freeValue = ComparisonTableEntitlement.Free.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)
+            ),
+            paidValue = ComparisonTableEntitlement.Paid.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_unlimited)
+            )
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_aliases),
+            freeValue = ComparisonTableEntitlement.Free.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_aliases_value_free)
+            ),
+            paidValue = ComparisonTableEntitlement.Paid.Unlimited
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_folders_labels),
+            freeValue = ComparisonTableEntitlement.Free.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_folders_labels_value_free)
+            ),
+            paidValue = ComparisonTableEntitlement.Paid.Unlimited
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_premium_products),
+            freeValue = ComparisonTableEntitlement.Free.NotPresent,
+            paidValue = ComparisonTableEntitlement.Paid.Present
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_dark_web_monitoring),
+            freeValue = ComparisonTableEntitlement.Free.NotPresent,
+            paidValue = ComparisonTableEntitlement.Paid.Present
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
+            freeValue = ComparisonTableEntitlement.Free.NotPresent,
+            paidValue = ComparisonTableEntitlement.Paid.Present
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
+            freeValue = ComparisonTableEntitlement.Free.NotPresent,
+            paidValue = ComparisonTableEntitlement.Paid.Present
+        ),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
+            freeValue = ComparisonTableEntitlement.Free.NotPresent,
+            paidValue = ComparisonTableEntitlement.Paid.Present
         )
     )
 }

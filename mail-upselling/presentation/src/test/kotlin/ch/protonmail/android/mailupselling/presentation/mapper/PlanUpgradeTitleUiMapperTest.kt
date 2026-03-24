@@ -52,6 +52,9 @@ internal class PlanUpgradeTitleUiMapperTest {
             UpsellingEntryPoint.Feature.Navbar to PlanUpgradeTitleUiModel(
                 TextUiModel(R.string.upselling_mailbox_plus_title)
             ),
+            UpsellingEntryPoint.Feature.Navbar to PlanUpgradeTitleUiModel(
+                TextUiModel(R.string.upselling_unlimited_title)
+            ),
             UpsellingEntryPoint.Feature.AutoDelete to PlanUpgradeTitleUiModel(
                 TextUiModel(R.string.upselling_auto_delete_plus_title)
             ),
@@ -74,32 +77,37 @@ internal class PlanUpgradeTitleUiMapperTest {
             UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Folders,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Labels,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.MobileSignature,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
+            ),
+            UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
+                initialPrice = initialPrice,
+                upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
+                variant = PlanUpgradeVariant.Normal.Unlimited
             ),
             UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 initialPrice = initialPrice,
@@ -109,12 +117,12 @@ internal class PlanUpgradeTitleUiMapperTest {
             UpsellingEntryPoint.Feature.ScheduleSend to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ScheduleSend,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             ),
             UpsellingEntryPoint.Feature.Snooze to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Snooze,
-                variant = PlanUpgradeVariant.Normal
+                variant = PlanUpgradeVariant.Normal.MailPlus
             )
         )
 
