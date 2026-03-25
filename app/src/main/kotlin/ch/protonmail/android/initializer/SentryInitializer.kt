@@ -23,6 +23,7 @@ import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.logging.RustLogsAttachmentProcessor
 import ch.protonmail.android.logging.SentryUserObserver
+import ch.protonmail.android.logging.SentryWebViewInfoProvider
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -62,6 +63,8 @@ class SentryInitializer : Initializer<Unit> {
         entryPoint.observer().start {
             isCrashReportsEnabled.value = it
         }
+
+        entryPoint.webViewInfoProvider().setWebViewTags()
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
@@ -72,5 +75,6 @@ class SentryInitializer : Initializer<Unit> {
 
         fun observer(): SentryUserObserver
         fun rustLogsAttachmentProcessor(): RustLogsAttachmentProcessor
+        fun webViewInfoProvider(): SentryWebViewInfoProvider
     }
 }

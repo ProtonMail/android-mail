@@ -252,6 +252,8 @@ dependencies {
     implementation(libs.play.review.ext)
     implementation(libs.androidx.compose.animation)
 
+    implementation(libs.androidx.webkit)
+
     debugImplementation(libs.bundles.app.debug)
 
     // Environment configuration
