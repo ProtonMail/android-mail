@@ -21,21 +21,16 @@ package me.proton.android.core.auth.presentation.secondfactor
 import me.proton.android.core.account.domain.model.CoreUserId
 import me.proton.android.core.auth.presentation.flow.FlowManager
 import me.proton.android.core.auth.presentation.flow.FlowManager.CurrentFlow
-import me.proton.android.core.auth.presentation.secondfactor.getAccountById
-import me.proton.android.core.auth.presentation.secondfactor.getSessionsForAccount
 import uniffi.mail_account_uniffi.LoginFlowTfaMethodsResult
-import uniffi.mail_uniffi.MailSession
-import uniffi.mail_uniffi.MailSessionUserSessionFromStoredSessionResult
-import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
-import uniffi.mail_uniffi.TfaStatus
+import uniffi.mail_account_uniffi.PasswordFlowHasFidoResult
+import uniffi.mail_account_uniffi.PasswordFlowHasTotpResult
 import javax.inject.Inject
 import javax.inject.Singleton
 import uniffi.mail_account_uniffi.TfaMethods as UniffiTfaMethods
 
 @Singleton
 class GetTfaMethods @Inject constructor(
-    private val flowManager: FlowManager,
-    private val sessionInterface: MailSession
+    private val flowManager: FlowManager
 ) {
 
     suspend operator fun invoke(userId: CoreUserId): TfaMethods? {
@@ -45,19 +40,19 @@ class GetTfaMethods @Inject constructor(
                 is LoginFlowTfaMethodsResult.Ok -> result.v1.toLocalTfaMethods()
             }
             is CurrentFlow.ChangingPassword -> {
-                val session = sessionInterface.getSessionsForAccount(
-                    sessionInterface.getAccountById(userId.id)
-                )?.firstOrNull() ?: return null
-
-                val userSession = when (val result = sessionInterface.userSessionFromStoredSession(session)) {
-                    is MailSessionUserSessionFromStoredSessionResult.Error -> return null
-                    is MailSessionUserSessionFromStoredSessionResult.Ok -> result.v1
+                val hasFido = when (val result = flow.flow.hasFido()) {
+                    is PasswordFlowHasFidoResult.Error -> return null
+                    is PasswordFlowHasFidoResult.Ok -> result.v1
                 }
-
-                when (val settingsResult = userSession.userSettings()) {
-                    is MailUserSessionUserSettingsResult.Error -> null
-                    is MailUserSessionUserSettingsResult.Ok ->
-                        settingsResult.v1.twoFactorAuth.enabled.toLocalTfaMethods()
+                val hasTotp = when (val result = flow.flow.hasTotp()) {
+                    is PasswordFlowHasTotpResult.Error -> return null
+                    is PasswordFlowHasTotpResult.Ok -> result.v1
+                }
+                when {
+                    hasFido && hasTotp -> TfaMethods.TotpAndFido2
+                    hasFido -> TfaMethods.Fido2
+                    hasTotp -> TfaMethods.Totp
+                    else -> null
                 }
             }
         }
@@ -65,14 +60,8 @@ class GetTfaMethods @Inject constructor(
 }
 
 private fun UniffiTfaMethods.toLocalTfaMethods(): TfaMethods = when (this) {
-    UniffiTfaMethods.Totp -> TfaMethods.Totp
-    UniffiTfaMethods.Fido2 -> TfaMethods.Fido2
-    UniffiTfaMethods.TotpAndFido2 -> TfaMethods.TotpAndFido2
+    UniffiTfaMethods.TOTP -> TfaMethods.Totp
+    UniffiTfaMethods.FIDO2 -> TfaMethods.Fido2
+    UniffiTfaMethods.TOTP_AND_FIDO2 -> TfaMethods.TotpAndFido2
 }
 
-private fun TfaStatus.toLocalTfaMethods(): TfaMethods? = when (this) {
-    TfaStatus.TOTP -> TfaMethods.Totp
-    TfaStatus.FIDO2 -> TfaMethods.Fido2
-    TfaStatus.TOTP_OR_FIDO2 -> TfaMethods.TotpAndFido2
-    TfaStatus.NONE -> null
-}
