@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -26,7 +25,7 @@ import me.proton.core.mailsettings.domain.entity.SwipeAction
 
 data class SwipeUiModel(
     val swipeAction: SwipeAction,
-    @DrawableRes val icon: Int,
+    val iconProvider: SwipeIconProvider,
     @StringRes val descriptionRes: Int,
     val getColor: @Composable () -> Color,
     val staysDismissed: Boolean,
@@ -38,7 +37,6 @@ data class SwipeUiModel(
         if (other !is SwipeUiModel) return false
 
         if (swipeAction != other.swipeAction) return false
-        if (icon != other.icon) return false
         if (descriptionRes != other.descriptionRes) return false
         if (staysDismissed != other.staysDismissed) return false
         if (isEnabled != other.isEnabled) return false
@@ -47,8 +45,7 @@ data class SwipeUiModel(
     }
 
     override fun hashCode(): Int {
-        var result = icon
-        result = 31 * result + descriptionRes
+        var result = descriptionRes
         result = 31 * result + staysDismissed.hashCode()
         result = 31 * result + swipeAction.hashCode()
         result = 31 * result + getColor.hashCode()

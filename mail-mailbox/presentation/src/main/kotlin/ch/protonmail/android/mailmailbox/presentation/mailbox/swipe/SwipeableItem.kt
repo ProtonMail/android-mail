@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.Density
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.compose.SwipeThreshold
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -70,6 +71,7 @@ fun SwipeableItem(
     swipeActionsUiModel: SwipeActionsUiModel?,
     swipeActionCallbacks: SwipeActions.Actions,
     swipingEnabled: Boolean = true,
+    item: MailboxItemUiModel,
     content: @Composable () -> Unit
 ) = BoxWithConstraints(modifier) {
     val width = constraints.maxWidth.toFloat()
@@ -217,14 +219,14 @@ fun SwipeableItem(
                 SwipeToDismissBoxValue.StartToEnd -> SwipeActionProperties(
                     swipeActionsUiModel.start.getColor(),
                     Alignment.CenterStart,
-                    swipeActionsUiModel.start.icon,
+                    swipeActionsUiModel.start.iconProvider.resolve(item),
                     swipeActionsUiModel.start.descriptionRes
                 )
 
                 SwipeToDismissBoxValue.EndToStart -> SwipeActionProperties(
                     swipeActionsUiModel.end.getColor(),
                     Alignment.CenterEnd,
-                    swipeActionsUiModel.end.icon,
+                    swipeActionsUiModel.end.iconProvider.resolve(item),
                     swipeActionsUiModel.end.descriptionRes
                 )
 

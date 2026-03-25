@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -26,12 +27,29 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeIconProvider
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeUiModel
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import javax.inject.Inject
 
 class SwipeActionsMapper @Inject constructor() {
+
+    private val markReadIconProvider = SwipeIconProvider { item ->
+        if (item.isRead) {
+            R.drawable.ic_proton_envelope_dot
+        } else {
+            R.drawable.ic_proton_envelope_open
+        }
+    }
+
+    private val starIconProvider = SwipeIconProvider { item ->
+        if (item.isStarred) {
+            R.drawable.ic_proton_star_slash
+        } else {
+            R.drawable.ic_proton_star
+        }
+    }
 
     operator fun invoke(
         currentMailLabel: LabelId,
@@ -45,7 +63,7 @@ class SwipeActionsMapper @Inject constructor() {
         val actionConfig = getActionConfig(swipeAction)
         return SwipeUiModel(
             swipeAction = swipeAction,
-            icon = actionConfig.iconRes,
+            iconProvider = actionConfig.iconProvider,
             descriptionRes = actionConfig.descriptionRes,
             getColor = { actionConfig.color() },
             staysDismissed = isDismissible(swipeAction, currentMailLabel),
@@ -55,49 +73,49 @@ class SwipeActionsMapper @Inject constructor() {
 
     private fun getActionConfig(swipeAction: SwipeAction): ActionConfig = when (swipeAction) {
         SwipeAction.None -> ActionConfig(
-            iconRes = R.drawable.ic_proton_cross_circle,
+            iconProvider = fixedIcon(R.drawable.ic_proton_cross_circle),
             descriptionRes = R.string.mail_settings_swipe_action_none_description,
             color = { ProtonTheme.colors.notificationNorm }
         )
 
         SwipeAction.Trash -> ActionConfig(
-            iconRes = R.drawable.ic_proton_trash,
+            iconProvider = fixedIcon(R.drawable.ic_proton_trash),
             descriptionRes = R.string.mail_settings_swipe_action_trash_description,
             color = { ProtonTheme.colors.notificationError }
         )
 
         SwipeAction.Spam -> ActionConfig(
-            iconRes = R.drawable.ic_proton_fire,
+            iconProvider = fixedIcon(R.drawable.ic_proton_fire),
             descriptionRes = R.string.mail_settings_swipe_action_spam_description,
             color = { ProtonTheme.colors.notificationWarning }
         )
 
         SwipeAction.Star -> ActionConfig(
-            iconRes = R.drawable.ic_proton_star,
+            iconProvider = starIconProvider,
             descriptionRes = R.string.mail_settings_swipe_action_star_description,
             color = { ProtonTheme.colors.starSelected }
         )
 
         SwipeAction.Archive -> ActionConfig(
-            iconRes = R.drawable.ic_proton_archive_box,
+            iconProvider = fixedIcon(R.drawable.ic_proton_archive_box),
             descriptionRes = R.string.mail_settings_swipe_action_archive_description,
             color = { ProtonTheme.colors.notificationSuccess }
         )
 
         SwipeAction.MarkRead -> ActionConfig(
-            iconRes = R.drawable.ic_proton_envelope_dot,
+            iconProvider = markReadIconProvider,
             descriptionRes = R.string.mail_settings_swipe_action_read_description,
             color = { ProtonTheme.colors.brandMinus10 }
         )
 
         SwipeAction.LabelAs -> ActionConfig(
-            iconRes = R.drawable.ic_proton_tag,
+            iconProvider = fixedIcon(R.drawable.ic_proton_tag),
             descriptionRes = R.string.mail_settings_swipe_action_label_as_description,
             color = { ProtonTheme.colors.brandMinus10 }
         )
 
         SwipeAction.MoveTo -> ActionConfig(
-            iconRes = R.drawable.ic_proton_folder_arrow_in,
+            iconProvider = fixedIcon(R.drawable.ic_proton_folder_arrow_in),
             descriptionRes = R.string.mail_settings_swipe_action_move_to_description,
             color = { ProtonTheme.colors.brandMinus10 }
         )
@@ -121,8 +139,11 @@ class SwipeActionsMapper @Inject constructor() {
     } && labelId.isOutbox().not()
 
     private data class ActionConfig(
-        val iconRes: Int,
+        val iconProvider: SwipeIconProvider,
         val descriptionRes: Int,
         val color: @Composable () -> Color
     )
+
+    private fun fixedIcon(@DrawableRes iconRes: Int): SwipeIconProvider = SwipeIconProvider { iconRes }
+
 }

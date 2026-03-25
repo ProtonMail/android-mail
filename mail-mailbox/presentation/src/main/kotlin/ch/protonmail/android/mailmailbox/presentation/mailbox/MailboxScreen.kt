@@ -989,7 +989,8 @@ private fun MailboxItemsList(
                     modifier = Modifier.animateItem(),
                     swipeActionsUiModel = listDataState.swipeActions,
                     swipingEnabled = swipingEnabled,
-                    swipeActionCallbacks = swipeActions
+                    swipeActionCallbacks = swipeActions,
+                    item = item
                 ) {
                     val accessibilitySwipeActions = listDataState.swipeActions?.let {
                         getAccessibilityActionsForTalkback(
