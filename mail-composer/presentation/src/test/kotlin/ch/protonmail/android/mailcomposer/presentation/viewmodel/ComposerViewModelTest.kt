@@ -27,6 +27,7 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
+import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.network.NetworkManager
@@ -1093,6 +1094,62 @@ internal class ComposerViewModelTest {
 
         // Then
         coVerify { deleteAttachment(expectedAttachmentId) }
+    }
+
+    @Test
+    fun `should strip inline attachment from body when inline attachment conversion succeeds`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val contentId = "cid-inline-1"
+        expectNoInputDraftMessageId()
+        expectInputDraftAction { DraftAction.Compose }
+        expectObservedMessageAttachments()
+        expectNoFileShareVia()
+        expectNoRestoredState(savedStateHandle)
+        expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId)
+        expectStoreDraftSubjectSucceeds(Subject(""))
+        expectStoreDraftBodySucceeds(DraftBody(""))
+        ignoreRecipientsUpdates()
+        coEvery { convertInlineImageToAttachment(contentId) } returns Unit.right()
+
+        // When
+        val viewModel = viewModel()
+        viewModel.submit(ComposerAction.ConvertInlineToAttachment(contentId))
+
+        // Then
+        val actual = viewModel.composerStates.value
+        assertEquals(contentId, actual.effects.stripInlineAttachment.consume())
+    }
+
+    @Test
+    fun `should show error and close bottom sheet when inline attachment conversion fails`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val contentId = "cid-inline-1"
+        expectNoInputDraftMessageId()
+        expectInputDraftAction { DraftAction.Compose }
+        expectObservedMessageAttachments()
+        expectNoFileShareVia()
+        expectNoRestoredState(savedStateHandle)
+        expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId)
+        expectStoreDraftSubjectSucceeds(Subject(""))
+        expectStoreDraftBodySucceeds(DraftBody(""))
+        ignoreRecipientsUpdates()
+        coEvery { convertInlineImageToAttachment(contentId) } returns ConvertAttachmentError.Other(
+            error = DataError.Local.Unknown
+        ).left()
+
+        // When
+        val viewModel = viewModel()
+        viewModel.submit(ComposerAction.ConvertInlineToAttachment(contentId))
+
+        // Then
+        val actual = viewModel.composerStates.value
+        assertEquals(false, actual.effects.changeBottomSheetVisibility.consume())
+        assertEquals(
+            TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment),
+            actual.effects.error.consume()
+        )
     }
 
     @Test

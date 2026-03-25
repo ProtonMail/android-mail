@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.reducer.modifications.ef
 
 import androidx.annotation.StringRes
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
+import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentAddErrorWithList
@@ -126,6 +127,21 @@ internal sealed interface RecoverableError : EffectsStateModification {
             AttachmentDeleteError.Unknown ->
                 state.copy(error = Effect.of(TextUiModel(R.string.composer_delete_attachment_error)))
 
+        }
+    }
+
+    data class AttachmentConversion(val error: ConvertAttachmentError) : RecoverableError {
+
+        override fun apply(state: ComposerState.Effects): ComposerState.Effects = when (error) {
+            is ConvertAttachmentError.AttachmentMessageIsNotADraft,
+            is ConvertAttachmentError.AttachmentNotExisting,
+            is ConvertAttachmentError.InvalidState,
+            is ConvertAttachmentError.MessageNotExisting,
+            is ConvertAttachmentError.Noop,
+            is ConvertAttachmentError.Other -> state.copy(
+                changeBottomSheetVisibility = Effect.of(false),
+                error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+            )
         }
     }
 

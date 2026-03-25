@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
+import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -423,6 +424,60 @@ internal class EffectsStateModificationTest(
                             formatArgs = expirationRecipients
                         )
                     )
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (Other)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.Other(DataError.Local.Unknown)),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (InvalidState)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.InvalidState),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (AttachmentNotExisting)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.AttachmentNotExisting),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (MessageNotExisting)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.MessageNotExisting),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (MessageIsNotADraft)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.AttachmentMessageIsNotADraft),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
+                )
+            ),
+            arrayOf(
+                "hides bottom sheet and shows error on inline attachment conversion failure (Noop)",
+                initialState,
+                RecoverableError.AttachmentConversion(ConvertAttachmentError.Noop),
+                initialState.copy(
+                    changeBottomSheetVisibility = Effect.of(false),
+                    error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
                 )
             ),
             arrayOf(

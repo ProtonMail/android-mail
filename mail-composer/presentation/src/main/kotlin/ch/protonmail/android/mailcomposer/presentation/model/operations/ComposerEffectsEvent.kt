@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model.operations
 
+import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentDeleteError
 import ch.protonmail.android.mailcomposer.domain.model.DraftSenderValidationError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
@@ -27,7 +28,16 @@ import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.eff
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.CompletionEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ConfirmationsEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.OnAddAttachmentCameraRequested
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.OnAddAttachmentFileRequested
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.OnAddAttachmentPhotosRequested
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.OnInlineAttachmentRemoved
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.OnInlineAttachmentsAdded
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.AttachmentConversion
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.AttachmentRemove
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.AttachmentsStore
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.LoadingAttachmentsFailed
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.UnrecoverableError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError as DomainAddAttachmentError
@@ -57,18 +67,17 @@ internal sealed interface EffectsEvent : ComposerStateEvent {
 
         override fun toStateModifications(): ComposerStateModifications = ComposerStateModifications(
             effectsModification = when (this) {
-                is AddAttachmentError -> RecoverableError.AttachmentsStore(error)
-                OnAddFileRequest -> ContentEffectsStateModifications.OnAddAttachmentFileRequested
-                OnAddFromCameraRequest -> ContentEffectsStateModifications.OnAddAttachmentCameraRequested
-                OnAddMediaRequest -> ContentEffectsStateModifications.OnAddAttachmentPhotosRequested
-                is InlineAttachmentsAdded -> ContentEffectsStateModifications.OnInlineAttachmentsAdded(contentIds)
-                is StripInlineAttachmentFromBody ->
-                    ContentEffectsStateModifications.OnInlineAttachmentRemoved(contentId)
-
+                is AddAttachmentError -> AttachmentsStore(error)
+                is OnAddFileRequest -> OnAddAttachmentFileRequested
+                is OnAddFromCameraRequest -> OnAddAttachmentCameraRequested
+                is OnAddMediaRequest -> OnAddAttachmentPhotosRequested
+                is InlineAttachmentsAdded -> OnInlineAttachmentsAdded(contentIds)
+                is StripInlineAttachmentFromBody -> OnInlineAttachmentRemoved(contentId)
                 is OnAttachFromOptionsRequest -> BottomSheetEffectsStateModification.ShowBottomSheet
                 is OnInlineImageActionsRequested -> BottomSheetEffectsStateModification.ShowBottomSheet
-                is RemoveAttachmentError -> RecoverableError.AttachmentRemove(error)
-                is OnLoadAttachmentsFailed -> RecoverableError.LoadingAttachmentsFailed
+                is RemoveAttachmentError -> AttachmentRemove(error)
+                is OnLoadAttachmentsFailed -> LoadingAttachmentsFailed
+                is InlineAttachmentConversionFailed -> AttachmentConversion(error)
             }
         )
 
@@ -76,6 +85,7 @@ internal sealed interface EffectsEvent : ComposerStateEvent {
         data class AddAttachmentError(val error: DomainAddAttachmentError) : AttachmentEvent
         data class InlineAttachmentsAdded(val contentIds: List<String>) : AttachmentEvent
         data class StripInlineAttachmentFromBody(val contentId: String) : AttachmentEvent
+        data class InlineAttachmentConversionFailed(val error: ConvertAttachmentError) : AttachmentEvent
 
         data object OnInlineImageActionsRequested : AttachmentEvent
         data object OnAttachFromOptionsRequest : AttachmentEvent

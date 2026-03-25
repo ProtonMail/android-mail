@@ -60,6 +60,7 @@
     <string name="composer_too_many_attachments_error">Maximum number of attachments (100) exceeded.</string>
     <string name="composer_delete_attachment_error">There was an unexpected error while deleting an attachment.</string>
     <string name="composer_unexpected_attachments_error">There was an unexpected error related with attachments.</string>
+    <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
     <string name="composer_storage_quota_exceeded_error">Your storage is full. Please free up space or upgrade to add more.</string>
     <string name="composer_attach_capture_from_camera_error">Capturing an attachment from camera isn\'t possible at this time</string>
     <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>

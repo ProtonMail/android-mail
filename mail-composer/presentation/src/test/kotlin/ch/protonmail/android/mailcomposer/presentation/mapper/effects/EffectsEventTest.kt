@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailcomposer.presentation.mapper.effects
 
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
+import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.presentation.model.operations.EffectsEvent
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.ComposerStateModifications
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.CompletionEffectsStateModification
@@ -187,6 +189,17 @@ internal class EffectsEventTest(
                 EffectsEvent.SendEvent.OnOfflineScheduleSendMessage,
                 ComposerStateModifications(
                     effectsModification = CompletionEffectsStateModification.ScheduleMessage.ScheduleAndExitOffline
+                )
+            ),
+            arrayOf(
+                "InlineAttachmentConversionFailed to modification",
+                EffectsEvent.AttachmentEvent.InlineAttachmentConversionFailed(
+                    ConvertAttachmentError.Other(error = DataError.Local.Unknown)
+                ),
+                ComposerStateModifications(
+                    effectsModification = RecoverableError.AttachmentConversion(
+                        ConvertAttachmentError.Other(error = DataError.Local.Unknown)
+                    )
                 )
             )
         )

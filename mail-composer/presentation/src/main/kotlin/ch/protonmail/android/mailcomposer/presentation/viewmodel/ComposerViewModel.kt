@@ -691,7 +691,10 @@ class ComposerViewModel @AssistedInject constructor(
 
     private suspend fun handleConvertInlineToAttachment(action: ComposerAction.ConvertInlineToAttachment) {
         convertInlineToAttachment(action.contentId)
-            .onLeft { Timber.e("composer: failed to convert inline to attachment") }
+            .onLeft {
+                Timber.e("composer: failed to convert inline to attachment - contentId: ${action.contentId}")
+                emitNewStateFor(EffectsEvent.AttachmentEvent.InlineAttachmentConversionFailed(it))
+            }
             .onRight {
                 Timber.d("composer: inline attachment ${action.contentId} converted to standard")
                 emitNewStateFor(EffectsEvent.AttachmentEvent.StripInlineAttachmentFromBody(action.contentId))
