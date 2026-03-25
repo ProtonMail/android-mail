@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.usecase
 
 import android.content.Context
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -27,7 +28,13 @@ class IsDarkModeEnabled @Inject constructor(
     @ApplicationContext private val applicationContext: Context
 ) {
 
-    operator fun invoke() = applicationContext.resources?.configuration?.isUsingDarkMode() ?: false
+    operator fun invoke(): Boolean {
+        return when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> true
+            AppCompatDelegate.MODE_NIGHT_NO -> false
+            else -> applicationContext.resources.configuration.isUsingDarkMode()
+        }
+    }
 
     private fun Configuration.isUsingDarkMode(): Boolean =
         uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
