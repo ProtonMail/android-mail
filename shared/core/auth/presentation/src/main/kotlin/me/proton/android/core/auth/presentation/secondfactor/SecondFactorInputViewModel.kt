@@ -37,7 +37,6 @@ import me.proton.android.core.auth.presentation.secondfactor.SecondFactorInputSt
 import me.proton.android.core.auth.presentation.secondfactor.SecondFactorInputState.Error
 import me.proton.android.core.auth.presentation.secondfactor.SecondFactorInputState.Idle
 import me.proton.android.core.auth.presentation.secondfactor.SecondFactorInputState.Loading
-import me.proton.android.core.auth.presentation.secondfactor.fido.GetFidoOptions
 import me.proton.core.auth.fido.domain.usecase.PerformTwoFaWithSecurityKey.LaunchResult
 import me.proton.core.compose.viewmodel.BaseViewModel
 import uniffi.mail_uniffi.FidoLaunchResultStatus
@@ -51,7 +50,7 @@ import javax.inject.Inject
 class SecondFactorInputViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val sessionInterface: MailSession,
-    private val getFidoOptions: GetFidoOptions,
+    private val getTfaMethods: GetTfaMethods,
     private val flowManager: FlowManager
 ) : BaseViewModel<SecondFactorInputAction, SecondFactorInputState>(
     initialState = Idle,
@@ -61,7 +60,6 @@ class SecondFactorInputViewModel @Inject constructor(
 
     private val userId by lazy { CoreUserId(savedStateHandle.getUserId()) }
 
-    private val allAvailableTabs = listOf(SecondFactorTab.SecurityKey, SecondFactorTab.Otp)
     private var userAvailableTabs: List<SecondFactorTab> = emptyList()
 
     override suspend fun FlowCollector<SecondFactorInputState>.onError(throwable: Throwable) {
@@ -95,16 +93,11 @@ class SecondFactorInputViewModel @Inject constructor(
         emit(Loading(selectedTab = defaultTab, tabs = userAvailableTabs))
     }
 
-    private suspend fun determineAvailableTabs(): List<SecondFactorTab> {
-        val fido2Options = getFidoOptions.invoke(userId)
-        val securityKeys = fido2Options?.registeredKeys ?: emptyList()
-        val hasSecurityKeys = securityKeys.isNotEmpty()
-
-        return if (hasSecurityKeys) {
-            allAvailableTabs
-        } else {
-            listOf(SecondFactorTab.Otp)
-        }
+    private suspend fun determineAvailableTabs(): List<SecondFactorTab> = when (getTfaMethods(userId)) {
+        TfaMethods.Totp -> listOf(SecondFactorTab.Otp)
+        TfaMethods.Fido2 -> listOf(SecondFactorTab.SecurityKey)
+        TfaMethods.TotpAndFido2 -> listOf(SecondFactorTab.SecurityKey, SecondFactorTab.Otp)
+        null -> listOf(SecondFactorTab.Otp)
     }
 
     private fun getDefaultTab(): SecondFactorTab = if (userAvailableTabs.contains(SecondFactorTab.SecurityKey)) {
