@@ -110,6 +110,8 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.AddAttachment
 import ch.protonmail.android.mailcomposer.presentation.usecase.BuildDraftDisplayBody
 import ch.protonmail.android.mailcomposer.presentation.usecase.GetFormattedScheduleSendOptions
 import ch.protonmail.android.mailcontact.domain.usecase.PreloadContactSuggestions
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
@@ -198,6 +200,7 @@ class ComposerViewModel @AssistedInject constructor(
     private val canSendWithExpirationTime: CanSendWithExpirationTime,
     private val convertInlineToAttachment: ConvertInlineImageToAttachment,
     private val sanitizePastedContent: SanitizePastedContent,
+    private val appEventBroadcaster: AppEventBroadcaster,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -859,6 +862,7 @@ class ComposerViewModel @AssistedInject constructor(
                 emitNewStateFor(EffectsEvent.ErrorEvent.OnSendMessageError(it))
             },
             ifRight = {
+                appEventBroadcaster.emit(AppEvent.MessageSent)
                 if (networkManager.isConnectedToNetwork()) {
                     emitNewStateFor(EffectsEvent.SendEvent.OnSendMessage)
                 } else {

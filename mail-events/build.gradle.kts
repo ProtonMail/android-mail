@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,9 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailspotlight.domain.repository
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    id("app-config-plugin")
+}
 
-interface AppInstallTimeRepository {
+android {
+    namespace = "ch.protonmail.android.mailevents"
+    compileSdk = AppConfiguration.compileSdk.get()
 
-    fun getFirstInstallTime(): Long
+    defaultConfig {
+        minSdk = AppConfiguration.minSdk.get()
+        lint.targetSdk = AppConfiguration.targetSdk.get()
+    }
+}
+
+dependencies {
+    api(project(":mail-events:dagger"))
+    api(project(":mail-events:data"))
+    api(project(":mail-events:domain"))
+    api(project(":mail-events:presentation"))
 }

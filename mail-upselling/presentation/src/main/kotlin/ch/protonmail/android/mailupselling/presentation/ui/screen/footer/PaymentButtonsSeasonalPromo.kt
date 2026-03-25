@@ -67,6 +67,7 @@ internal fun PaymentButtonsSeasonalPromo(
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = instance.product,
+                onPurchaseClicked = actions.onUpgradeAttempt,
                 variant = buttonVariant,
                 onSuccess = { _ -> actions.onSuccess() },
                 onErrorMessage = actions.onError

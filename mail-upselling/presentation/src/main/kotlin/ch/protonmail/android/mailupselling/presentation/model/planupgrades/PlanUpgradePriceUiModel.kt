@@ -24,14 +24,14 @@ import java.util.Currency
 import java.util.Locale
 
 data class PlanUpgradePriceUiModel(
-    private val amount: BigDecimal,
-    private val currencyCode: String
+    val rawAmount: BigDecimal,
+    val currencyCode: String
 ) {
 
     fun getShorthandFormat(): String {
         val symbol = getCurrencySymbol()
         val isOriginal = currencyCode == symbol
-        val formattedAmount = formatAmount(amount)
+        val formattedAmount = formatAmount(rawAmount)
 
         // Not all currencies have symbols, fallback to the full currencyCode in that case
         return if (symbol == null || isOriginal) {
@@ -41,7 +41,7 @@ data class PlanUpgradePriceUiModel(
         }
     }
 
-    fun getFullFormat(): String = "$currencyCode ${formatAmount(amount)}"
+    fun getFullFormat(): String = "$currencyCode ${formatAmount(rawAmount)}"
 
     private fun formatAmount(amount: BigDecimal): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())

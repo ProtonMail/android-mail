@@ -57,8 +57,8 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val monthlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = monthlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("12.00"), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("12.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
             product = monthlyPlan.toProduct(context),
@@ -67,8 +67,8 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val yearlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = yearlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("9.00"), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("108.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("9.00"), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Yearly,
             product = yearlyPlan.toProduct(context),
@@ -93,9 +93,9 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val promoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
             name = monthlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("9.00"), currencyCode = "EUR"),
-            promotionalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("9.00"), currencyCode = "EUR"),
-            renewalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("12.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("9.00"), currencyCode = "EUR"),
+            promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("9.00"), currencyCode = "EUR"),
+            renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Monthly,
             product = monthlyPlan.toProduct(context),
@@ -107,8 +107,8 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val yearlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = yearlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("9.00"), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("108.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("9.00"), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Yearly,
             product = yearlyPlan.toProduct(context),
@@ -133,8 +133,8 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val monthlyExpected = PlanUpgradeInstanceUiModel.Standard(
             name = monthlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("12.00"), currencyCode = "EUR"),
-            totalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("12.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
+            totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
             product = monthlyPlan.toProduct(context),
@@ -143,9 +143,9 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
         val promoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
             name = yearlyPlan.header.title,
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal("4.50"), currencyCode = "EUR"),
-            promotionalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("54.00"), currencyCode = "EUR"),
-            renewalPrice = PlanUpgradePriceUiModel(amount = BigDecimal("108.00"), currencyCode = "EUR"),
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("4.50"), currencyCode = "EUR"),
+            promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("54.00"), currencyCode = "EUR"),
+            renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 50,
             cycle = PlanUpgradeCycle.Yearly,
             product = yearlyPlan.toProduct(context),

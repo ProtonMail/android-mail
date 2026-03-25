@@ -67,7 +67,7 @@ class BlackFridayModalUpsellViewModel @Inject constructor(
             initialValue = BlackFridayModalState.Loading
         )
 
-    fun saveModalSeenTimestamp(visibility: UpsellingVisibility.Promotional.BlackFriday) {
+    fun recordModalSeen(visibility: UpsellingVisibility.Promotional.BlackFriday) {
         viewModelScope.launch {
             saveBlackFridayModalSeen(phase = visibility.toPhase())
         }

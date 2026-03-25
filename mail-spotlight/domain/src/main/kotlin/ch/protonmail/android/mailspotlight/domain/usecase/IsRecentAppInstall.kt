@@ -18,19 +18,19 @@
 
 package ch.protonmail.android.mailspotlight.domain.usecase
 
-import ch.protonmail.android.mailspotlight.domain.repository.AppInstallTimeRepository
+import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 
 class IsRecentAppInstall @Inject constructor(
-    private val appInstallTimeRepository: AppInstallTimeRepository,
+    private val appInstallRepository: AppInstallRepository,
     private val clock: Clock
 ) {
 
     operator fun invoke(threshold: Duration = 1.days): Boolean {
-        val installTime = appInstallTimeRepository.getFirstInstallTime()
+        val installTime = appInstallRepository.getFirstInstallTime()
         val now = clock.now().toEpochMilliseconds()
         return now - installTime < threshold.inWholeMilliseconds
     }

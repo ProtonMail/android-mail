@@ -21,6 +21,8 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -31,6 +33,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState.Loading
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +54,8 @@ internal class UpsellingViewModel @Inject constructor(
     private val upsellingContentReducer: UpsellingContentReducer,
     private val forceEventLoopRepository: EventLoopRepository,
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val resetPlanUpgradesCache: ResetPlanUpgradesCache
+    private val resetPlanUpgradesCache: ResetPlanUpgradesCache,
+    private val appEventBroadcaster: AppEventBroadcaster
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<UpsellingScreenContentState>(Loading)
@@ -78,6 +82,25 @@ internal class UpsellingViewModel @Inject constructor(
             }
 
             emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint))
+            appEventBroadcaster.emit(AppEvent.SubscriptionPaywallShown)
+
+            val currentState = mutableState.value
+            if (currentState is UpsellingScreenContentState.Data) {
+                currentState.plans.variant.toOfferId()?.let { offerId ->
+                    appEventBroadcaster.emit(AppEvent.OfferReceived(offerId))
+                }
+            }
+        }
+    }
+
+    fun onPurchaseClicked() {
+        val currentState = mutableState.value
+        if (currentState is UpsellingScreenContentState.Data) {
+            currentState.plans.variant.toOfferId()?.let { offerId ->
+                viewModelScope.launch {
+                    appEventBroadcaster.emit(AppEvent.OfferClicked(offerId))
+                }
+            }
         }
     }
 
@@ -96,4 +119,14 @@ internal class UpsellingViewModel @Inject constructor(
     private suspend fun emitNewStateFrom(operation: UpsellingScreenContentOperation) {
         mutableState.update { upsellingContentReducer.newStateFrom(operation) }
     }
+}
+
+private fun PlanUpgradeVariant.toOfferId(): String? = when (this) {
+    is PlanUpgradeVariant.IntroductoryPrice -> "intro_price"
+    is PlanUpgradeVariant.BlackFriday.Wave1 -> "black_friday_wave1"
+    is PlanUpgradeVariant.BlackFriday.Wave2 -> "black_friday_wave2"
+    is PlanUpgradeVariant.SpringPromo.Wave1 -> "spring26_wave1"
+    is PlanUpgradeVariant.SpringPromo.Wave2 -> "spring26_wave2"
+    is PlanUpgradeVariant.Normal,
+    is PlanUpgradeVariant.SocialProof -> null
 }

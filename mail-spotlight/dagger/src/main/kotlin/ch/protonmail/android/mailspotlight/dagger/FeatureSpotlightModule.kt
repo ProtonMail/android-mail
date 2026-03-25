@@ -22,9 +22,7 @@ import android.content.Context
 import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvider
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSource
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSourceImpl
-import ch.protonmail.android.mailspotlight.data.repository.AppInstallTimeRepositoryImpl
 import ch.protonmail.android.mailspotlight.data.repository.FeatureSpotlightRepositoryImpl
-import ch.protonmail.android.mailspotlight.domain.repository.AppInstallTimeRepository
 import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRepository
 import dagger.Binds
 import dagger.Module
@@ -57,9 +55,5 @@ object FeatureSpotlightModule {
         @Binds
         @Reusable
         fun bindsFeatureSpotlightRepository(impl: FeatureSpotlightRepositoryImpl): FeatureSpotlightRepository
-
-        @Binds
-        @Reusable
-        fun bindsAppInstallTimeRepository(impl: AppInstallTimeRepositoryImpl): AppInstallTimeRepository
     }
 }

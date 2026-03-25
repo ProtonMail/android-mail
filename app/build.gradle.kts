@@ -226,6 +226,7 @@ dependencies {
     implementation(project(":mail-contact"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-detail"))
+    implementation(project(":mail-events"))
     implementation(project(":mail-featureflags"))
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))

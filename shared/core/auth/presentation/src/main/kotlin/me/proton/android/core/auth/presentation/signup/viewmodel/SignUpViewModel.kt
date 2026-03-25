@@ -49,6 +49,8 @@ import me.proton.android.core.auth.presentation.signup.SignUpState.SignUpError
 import me.proton.android.core.auth.presentation.signup.SignUpState.SignUpSuccess
 import me.proton.android.core.auth.presentation.signup.SignUpState.SigningUp
 import me.proton.android.core.auth.presentation.signup.SignUpState.SignupFlowFailure
+import me.proton.android.core.events.domain.AccountEvent
+import me.proton.android.core.events.domain.AccountEventBroadcaster
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.compose.viewmodel.BaseViewModel
 import me.proton.core.presentation.savedstate.state
@@ -77,7 +79,8 @@ class SignUpViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val savedStateHandle: SavedStateHandle,
     private val requiredAccountType: AccountType,
-    private val sessionInterface: MailSession
+    private val sessionInterface: MailSession,
+    private val accountEventBroadcaster: AccountEventBroadcaster
 ) : BaseViewModel<SignUpAction, SignUpState>(
     initialAction = SignUpAction.InitSignUpFlow,
     initialState = CreateUsernameState.Idle(
@@ -212,6 +215,7 @@ class SignUpViewModel @Inject constructor(
                 val userId = result.v1.userId
                 getSession(getAccount(userId))?.firstOrNull()
                 emit(LoginSuccess(userId))
+                accountEventBroadcaster.emit(AccountEvent.SignupCompleted)
                 clearUp()
             }
         }

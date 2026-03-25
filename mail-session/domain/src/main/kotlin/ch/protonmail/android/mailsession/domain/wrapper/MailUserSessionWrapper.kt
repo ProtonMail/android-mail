@@ -35,6 +35,8 @@ import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
+import uniffi.mail_uniffi.MeasurementEventType
+import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
 
@@ -99,4 +101,11 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
                 result.v1.toDataError().left()
             }
         }
+
+    suspend fun sendMeasurementEvent(
+        eventType: MeasurementEventType,
+        asid: String,
+        appPackageName: String,
+        fields: Map<String, MeasurementValue?>
+    ) = userSession.recordMeasurement(eventType, asid, appPackageName, fields)
 }

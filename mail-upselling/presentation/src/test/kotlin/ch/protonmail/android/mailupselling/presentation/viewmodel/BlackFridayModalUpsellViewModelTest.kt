@@ -131,7 +131,7 @@ internal class BlackFridayModalUpsellViewModelTest {
         coEvery { saveBlackFridayModalSeen(phase) } just runs
 
         // When
-        viewModel().saveModalSeenTimestamp(UpsellingVisibility.Promotional.BlackFriday.Wave2)
+        viewModel().recordModalSeen(UpsellingVisibility.Promotional.BlackFriday.Wave2)
 
         // Then
         coVerify { saveBlackFridayModalSeen(phase) }

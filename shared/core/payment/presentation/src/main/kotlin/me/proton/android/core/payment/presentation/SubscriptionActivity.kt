@@ -20,10 +20,14 @@ package me.proton.android.core.payment.presentation
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import coil.Coil
 import coil.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import me.proton.android.core.events.domain.AccountEvent
+import me.proton.android.core.events.domain.AccountEventBroadcaster
 import me.proton.android.core.payment.domain.IconResourceManager
 import me.proton.android.core.payment.presentation.StartSubscription.UPSELLING_ENABLED_EXTRA_KEY
 import me.proton.android.core.payment.presentation.model.LocalUpsellEnabled
@@ -42,6 +46,9 @@ class SubscriptionActivity : ProtonActivity() {
 
     @Inject
     lateinit var iconResourceManager: IconResourceManager
+
+    @Inject
+    lateinit var accountEventBroadcaster: AccountEventBroadcaster
 
     private var success = false
 
@@ -66,7 +73,12 @@ class SubscriptionActivity : ProtonActivity() {
                     SubscriptionScreen(
                         onClose = { onClose() },
                         onSuccess = { success = true },
-                        onErrorMessage = { onError(it) }
+                        onErrorMessage = { onError(it) },
+                        onUpgradesAvailable = {
+                            lifecycleScope.launch {
+                                accountEventBroadcaster.emit(AccountEvent.SubscriptionScreenShown)
+                            }
+                        }
                     )
                 }
             }

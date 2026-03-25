@@ -56,12 +56,14 @@ import me.proton.android.core.payment.presentation.component.PurchaseButtonViewM
 import me.proton.android.core.payment.presentation.model.Product
 
 // Adaptation of PurchaseButton in me.proton.android.core.payment.presentation.component for Mail.
+@Suppress("UseComposableActions")
 @Composable
 fun MailPurchaseButton(
     product: Product,
     modifier: Modifier = Modifier,
     ctaText: String = stringResource(R.string.payment_purchase_button_get, product.header.title),
     variant: MailPurchaseButtonVariant,
+    onPurchaseClicked: () -> Unit = {},
     onSuccess: (Product) -> Unit = {},
     onErrorMessage: (String) -> Unit = {},
     viewModel: PurchaseButtonViewModel? = hiltViewModelOrNull<PurchaseButtonViewModel>(product.productId)
@@ -86,7 +88,10 @@ fun MailPurchaseButton(
         state = state ?: Idle,
         variant = variant,
         modifier = modifier,
-        onClick = { viewModel?.perform(PurchaseButtonAction.Purchase(product)) }
+        onClick = {
+            onPurchaseClicked()
+            viewModel?.perform(PurchaseButtonAction.Purchase(product))
+        }
     )
 }
 

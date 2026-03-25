@@ -30,6 +30,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +65,7 @@ fun SubscriptionScreen(
     onClose: () -> Unit = {},
     onSuccess: (Product) -> Unit = {},
     onErrorMessage: (String) -> Unit = {},
+    onUpgradesAvailable: () -> Unit = {},
     subscriptionViewModel: SubscriptionListViewModel? = hiltViewModelOrNull(),
     productViewModel: ProductListViewModel? = if (LocalUpsellEnabled.current) hiltViewModelOrNull() else null
 ) {
@@ -77,6 +79,7 @@ fun SubscriptionScreen(
         onClose = onClose,
         onSuccess = onSuccess,
         onErrorMessage = onErrorMessage,
+        onUpgradesAvailable = onUpgradesAvailable,
         onRetryClicked = {
             subscriptionViewModel?.perform(SubscriptionListAction.Load())
             productViewModel?.perform(ProductListAction.Load())
@@ -92,12 +95,18 @@ fun SubscriptionScreen(
     onClose: () -> Unit = {},
     onSuccess: (Product) -> Unit = {},
     onErrorMessage: (String) -> Unit = {},
+    onUpgradesAvailable: () -> Unit = {},
     onRetryClicked: () -> Unit = {},
     subscriptionState: SubscriptionListState,
     productState: ProductListState
 ) {
-    val productList = remember(productState) { (productState as? ProductListState.Data)?.list }
-    val upgradesAvailable = remember(productList) { productList?.isNotEmpty() ?: false }
+    val productList = (productState as? ProductListState.Data)?.list
+    val upgradesAvailable = productList?.isNotEmpty() ?: false
+
+    LaunchedEffect(upgradesAvailable) {
+        if (upgradesAvailable) onUpgradesAvailable()
+    }
+
     val forbiddenToSubscribe = remember(subscriptionState) {
         subscriptionState is SubscriptionListState.Failure.Forbidden
     }

@@ -72,6 +72,7 @@ internal fun PaymentButtonsIntroPricing(
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 ctaText = stringResource(R.string.upselling_mailbox_plus_promo_cta, initialPrice),
                 product = instance.product,
+                onPurchaseClicked = actions.onUpgradeAttempt,
                 variant = MailPurchaseButtonVariant.Default,
                 onSuccess = { _ -> actions.onSuccess() },
                 onErrorMessage = actions.onError

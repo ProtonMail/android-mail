@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
@@ -36,6 +38,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingStepViewModel @Inject constructor(
     private val saveOnboarding: SaveOnboarding,
+    private val appEventBroadcaster: AppEventBroadcaster,
     observeOnboarding: ObserveOnboarding
 ) : ViewModel() {
 
@@ -50,7 +53,10 @@ class OnboardingStepViewModel @Inject constructor(
     fun submit(action: OnboardingStepAction) {
         viewModelScope.launch {
             when (action) {
-                OnboardingStepAction.MarkOnboardingComplete -> saveOnboarding(display = false)
+                OnboardingStepAction.MarkOnboardingComplete -> {
+                    saveOnboarding(display = false)
+                    appEventBroadcaster.emit(AppEvent.OnboardingCompleted)
+                }
             }
         }
     }

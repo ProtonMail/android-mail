@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.flow.transformLatest
+import me.proton.android.core.events.domain.AccountEvent
+import me.proton.android.core.events.domain.AccountEventBroadcaster
 import me.proton.android.core.payment.domain.LogTag
 import me.proton.android.core.payment.domain.PaymentManager
 import me.proton.android.core.payment.domain.SubscriptionManager
@@ -48,7 +50,8 @@ class PurchaseButtonProcessorNative @Inject constructor(
     private val paymentManager: PaymentManager,
     private val subscriptionManager: SubscriptionManager,
     private val purchaseOrchestrator: PurchaseOrchestrator,
-    private val activityProvider: ActivityProvider
+    private val activityProvider: ActivityProvider,
+    private val accountEventBroadcaster: AccountEventBroadcaster
 ) : PurchaseButtonProcessor {
 
     private val res = context.resources
@@ -103,7 +106,7 @@ class PurchaseButtonProcessorNative @Inject constructor(
                     PurchaseStatus.Purchased,
                     PurchaseStatus.Pending -> emitAll(onPending(product, detail, purchase))
 
-                    PurchaseStatus.Acknowledged -> emitAll(onSuccess(product))
+                    PurchaseStatus.Acknowledged -> emitAll(onSuccess(product, detail, purchase))
                 }
 
                 else -> emit(PurchaseButtonState.Idle)
@@ -136,8 +139,23 @@ class PurchaseButtonProcessorNative @Inject constructor(
         emit(PurchaseButtonState.Error(exceptionMessage))
     }
 
-    private fun onSuccess(product: Product) = flow {
+    private fun onSuccess(
+        product: Product,
+        detail: ProductOfferDetail,
+        purchase: Purchase
+    ) = flow {
         CoreLogger.d(LogTag.STORE, "onPurchased: $product")
+        val price = detail.offer.current
+        accountEventBroadcaster.emit(
+            AccountEvent.PurchaseCompleted(
+                productId = product.productId,
+                planName = product.planName,
+                cycle = price.cycle,
+                amount = price.amount,
+                currency = price.currency,
+                orderId = purchase.orderId
+            )
+        )
         emit(PurchaseButtonState.Success(product))
     }
 }

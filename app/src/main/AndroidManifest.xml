@@ -119,6 +119,10 @@
                 android:name="ch.protonmail.android.initializer.RustNetworkObserverInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.EventsStartupInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
 
             <meta-data
                 android:name="me.proton.core.auth.presentation.MissingScopeInitializer"

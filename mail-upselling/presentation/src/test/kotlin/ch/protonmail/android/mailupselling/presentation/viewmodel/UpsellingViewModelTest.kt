@@ -20,6 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -28,13 +30,16 @@ import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -61,6 +66,7 @@ internal class UpsellingViewModelTest {
     private val eventLoopRepository = mockk<EventLoopRepository>(relaxed = true)
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
     private val resetUpgradeCache = mockk<ResetPlanUpgradesCache>()
+    private val appEventBroadcaster = mockk<AppEventBroadcaster>()
 
     @AfterTest
     fun teardown() {
@@ -72,6 +78,7 @@ internal class UpsellingViewModelTest {
         every {
             savedStateHandle.get<String>(UpsellingEntryPointKey)
         } returns Json.encodeToString<UpsellingEntryPoint>(UpsellingEntryPoint.Feature.Navbar)
+        coEvery { appEventBroadcaster.emit(any()) } just runs
     }
 
     @Test
@@ -124,7 +131,9 @@ internal class UpsellingViewModelTest {
         val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
         coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
 
-        val expectedModel = mockk<UpsellingScreenContentState.Data>()
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+        }
         coEvery {
             upsellingContentReducer.newStateFrom(
                 operation = UpsellingScreenContentEvent.DataLoaded(
@@ -151,12 +160,117 @@ internal class UpsellingViewModelTest {
         confirmVerified(upsellingContentReducer)
     }
 
+    @Test
+    fun `should emit OfferReceived when variant is IntroductoryPrice`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.IntroductoryPrice }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        viewModel().state.test {
+            assertEquals(expectedModel, awaitItem())
+        }
+
+        // Then
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OfferReceived("intro_price")) }
+    }
+
+    @Test
+    fun `should emit OfferReceived when variant is BlackFriday Wave1`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.BlackFriday.Wave1 }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        viewModel().state.test {
+            assertEquals(expectedModel, awaitItem())
+        }
+
+        // Then
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OfferReceived("black_friday_wave1")) }
+    }
+
+    @Test
+    fun `should not emit OfferReceived when variant is Normal`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        viewModel().state.test {
+            assertEquals(expectedModel, awaitItem())
+        }
+
+        // Then
+        coVerify(exactly = 0) { appEventBroadcaster.emit(match { it is AppEvent.OfferReceived }) }
+    }
+
+    @Test
+    fun `should emit OfferClicked when purchase clicked with promotional variant`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.IntroductoryPrice }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.state.test {
+            assertEquals(expectedModel, awaitItem())
+        }
+        vm.onPurchaseClicked()
+
+        // Then
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OfferClicked("intro_price")) }
+    }
+
+    @Test
+    fun `should not emit OfferClicked when purchase clicked with normal variant`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observeMailPlusPlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.state.test {
+            assertEquals(expectedModel, awaitItem())
+        }
+        vm.onPurchaseClicked()
+
+        // Then
+        coVerify(exactly = 0) { appEventBroadcaster.emit(match { it is AppEvent.OfferClicked }) }
+    }
+
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observeMailPlusPlanUpgrades,
         upsellingContentReducer,
         eventLoopRepository,
         observePrimaryUserId,
-        resetUpgradeCache
+        resetUpgradeCache,
+        appEventBroadcaster
     )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,18 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailspotlight.data.repository
+package ch.protonmail.android.mailevents.data.remote
 
-import android.content.Context
-import ch.protonmail.android.mailspotlight.domain.repository.AppInstallTimeRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailevents.data.remote.model.EventPayload
 
-class AppInstallTimeRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-) : AppInstallTimeRepository {
+interface EventsDataSource {
 
-    override fun getFirstInstallTime(): Long = context.packageManager
-        .getPackageInfo(context.packageName, 0)
-        .firstInstallTime
+    suspend fun sendEvent(payload: EventPayload): Either<DataError, Unit>
 }

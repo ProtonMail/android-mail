@@ -50,6 +50,11 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         val sessionId = inputData.getString(KeyPushNotificationUid)
         val encryptedNotification = inputData.getString(KeyPushNotificationEncryptedMessage)
 
+        Timber.d(
+            "Notification: Process push notification for userId=%s, sessionId=%s",
+            userId,
+            sessionId
+        )
         return if (userId.isNullOrEmpty() || sessionId.isNullOrEmpty() || encryptedNotification.isNullOrEmpty()) {
             Result.failure(workDataOf(KeyProcessPushNotificationDataError to "Input data is missing"))
         } else {

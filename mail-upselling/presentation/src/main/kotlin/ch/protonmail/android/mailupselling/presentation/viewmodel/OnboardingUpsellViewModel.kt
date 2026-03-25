@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.model.hasSubscription
@@ -42,7 +44,8 @@ internal class OnboardingUpsellViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     private val onboardingUpsellReducer: OnboardingUpsellingReducer,
     private val getOnboardingPlanUpgrades: GetOnboardingPlanUpgrades,
-    @IsOnboardingUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>
+    @IsOnboardingUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>,
+    private val appEventBroadcaster: AppEventBroadcaster
 ) : ViewModel() {
 
     val state: StateFlow<OnboardingUpsellState> = observePrimaryUser()
@@ -70,6 +73,8 @@ internal class OnboardingUpsellViewModel @Inject constructor(
                     OnboardingUpsellEvent.UnsupportedFlow.PlansMismatch
                 )
             }
+
+            appEventBroadcaster.emit(AppEvent.SubscriptionOnboardingShown)
 
             onboardingUpsellReducer.newStateFrom(
                 OnboardingUpsellEvent.DataLoaded(userId, productDetails)

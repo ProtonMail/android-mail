@@ -45,6 +45,8 @@ import uniffi.mail_uniffi.MailSessionUnsetBiometricsAppProtectionResult
 import uniffi.mail_uniffi.MailSessionUserSessionFromStoredSessionResult
 import uniffi.mail_uniffi.MailSessionVerifyPinCodeResult
 import uniffi.mail_uniffi.MailSessionWatchAccountsResult
+import uniffi.mail_uniffi.MeasurementEventType
+import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.StoredAccount
 import uniffi.mail_uniffi.StoredSession
 import uniffi.mail_uniffi.WatchedAccounts
@@ -52,17 +54,6 @@ import uniffi.mail_uniffi.WatchedAccounts
 class MailSessionWrapper(private val mailSession: MailSession) {
 
     fun getRustMailSession() = mailSession
-
-    suspend fun watchAccounts(liveQueryCallback: LiveQueryCallback): Either<DataError, WatchedAccounts> =
-        when (val result = mailSession.watchAccounts(liveQueryCallback)) {
-            is MailSessionWatchAccountsResult.Error -> result.v1.toDataError().left()
-            is MailSessionWatchAccountsResult.Ok -> result.v1.right()
-        }
-
-    suspend fun getAccounts(): Either<DataError, List<StoredAccount>> = when (val result = mailSession.getAccounts()) {
-        is MailSessionGetAccountsResult.Error -> result.v1.toDataError().left()
-        is MailSessionGetAccountsResult.Ok -> result.v1.right()
-    }
 
     suspend fun getAccount(userId: LocalUserId): Either<DataError, StoredAccount> =
         when (val result = mailSession.getAccount(userId)) {
@@ -168,6 +159,13 @@ class MailSessionWrapper(private val mailSession: MailSession) {
      * Used to resume work when the app is brought back to the foreground.
      */
     fun onEnterForeground() = mailSession.onEnterForeground()
+
+    suspend fun sendMeasurementEvent(
+        eventType: MeasurementEventType,
+        asid: String,
+        appPackageName: String,
+        fields: Map<String, MeasurementValue?>
+    ) = mailSession.recordMeasurementPrelogin(eventType, asid, appPackageName, fields)
 
     suspend fun newLoginFlow(): Either<DataError, LoginFlowWrapper> {
         return when (val result = mailSession.newLoginFlow()) {

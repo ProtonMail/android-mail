@@ -94,6 +94,8 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.AddAttachment
 import ch.protonmail.android.mailcomposer.presentation.usecase.BuildDraftDisplayBody
 import ch.protonmail.android.mailcomposer.presentation.usecase.GetFormattedScheduleSendOptions
 import ch.protonmail.android.mailcontact.domain.usecase.PreloadContactSuggestions
+import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
+import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -116,6 +118,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.slot
 import io.mockk.spyk
 import io.mockk.unmockkAll
@@ -207,6 +210,7 @@ internal class ComposerViewModelTest {
         }
     }
     private val sanitizePastedContent = mockk<SanitizePastedContent>()
+    private val appEventBroadcaster = mockk<AppEventBroadcaster>()
     private val reducer = ComposerStateReducer()
 
     @BeforeTest
@@ -260,6 +264,7 @@ internal class ComposerViewModelTest {
         canSendWithExpirationTime,
         convertInlineImageToAttachment,
         sanitizePastedContent,
+        appEventBroadcaster,
         observePrimaryUserIdMock
     )
 
@@ -473,6 +478,7 @@ internal class ComposerViewModelTest {
             )
         }
         expectUpdateRecipientsSucceeds(recipientsTo.value, recipientsCc.value, recipientsBcc.value)
+        expectSendEventEmission()
 
         // When
         val viewModel = viewModel()
@@ -481,6 +487,7 @@ internal class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             sendMessageMock()
+            appEventBroadcaster.emit(AppEvent.MessageSent)
         }
         assertEquals(Effect.of(Unit), viewModel.composerStates.value.effects.closeComposerWithMessageSending)
     }
@@ -599,6 +606,7 @@ internal class ComposerViewModelTest {
         expectObservedMessageAttachments()
         expectNoFileShareVia()
         expectNoRestoredState(savedStateHandle)
+        expectSendEventEmission()
         expectInitComposerWithExistingDraftSuccess(expectedUserId, expectedMessageId) {
             DraftFields(
                 sender = expectedSenderEmail,
@@ -618,6 +626,7 @@ internal class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             sendMessageMock()
+            appEventBroadcaster.emit(AppEvent.MessageSent)
         }
         assertEquals(Effect.of(Unit), viewModel.composerStates.value.effects.closeComposerWithMessageSendingOffline)
     }
@@ -1191,6 +1200,7 @@ internal class ComposerViewModelTest {
         expectNoFileShareVia()
         expectNoRestoredState(savedStateHandle)
         ignoreRecipientsUpdates()
+        expectSendEventEmission()
         expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId) {
             DraftFields(
                 sender = expectedSenderEmail,
@@ -1209,6 +1219,7 @@ internal class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             sendMessageMock()
+            appEventBroadcaster.emit(AppEvent.MessageSent)
         }
     }
 
@@ -1666,6 +1677,10 @@ internal class ComposerViewModelTest {
 
     private fun expectCanSendMessageWithExpiration(result: SendWithExpirationTimeResult) {
         coEvery { canSendWithExpirationTime() } returns result.right()
+    }
+
+    private fun expectSendEventEmission() {
+        coEvery { appEventBroadcaster.emit(AppEvent.MessageSent) } just runs
     }
 
     private fun TestScope.advanceDebounce() {

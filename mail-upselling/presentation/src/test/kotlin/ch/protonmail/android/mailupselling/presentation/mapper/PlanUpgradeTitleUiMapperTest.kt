@@ -127,9 +127,9 @@ internal class PlanUpgradeTitleUiMapperTest {
     private companion object {
 
         val initialPrice = PlanUpgradePriceDisplayUiModel(
-            pricePerCycle = PlanUpgradePriceUiModel(amount = BigDecimal(4.5), currencyCode = "EUR"),
-            highlightedPrice = PlanUpgradePriceUiModel(amount = BigDecimal(54), currencyCode = "EUR"),
-            secondaryPrice = PlanUpgradePriceUiModel(amount = BigDecimal(108), currencyCode = "EUR")
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.5), currencyCode = "EUR"),
+            highlightedPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(54), currencyCode = "EUR"),
+            secondaryPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(108), currencyCode = "EUR")
         )
     }
 }
