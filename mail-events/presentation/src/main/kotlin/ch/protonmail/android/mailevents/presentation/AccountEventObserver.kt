@@ -44,7 +44,7 @@ class AccountEventObserver @Inject constructor(
                 when (event) {
                     is AccountEvent.SignupCompleted -> {
                         trackSignupEvent().onLeft { error ->
-                            Timber.e("Failed to track signup event: $error")
+                            Timber.d("Failed to track signup event: $error")
                         }
                     }
 
@@ -56,13 +56,13 @@ class AccountEventObserver @Inject constructor(
                             cycle = event.cycle,
                             transactionId = event.orderId
                         ).onLeft { error ->
-                            Timber.e("Failed to track purchase completed event: $error")
+                            Timber.d("Failed to track purchase completed event: $error")
                         }
                     }
 
                     is AccountEvent.SubscriptionScreenShown -> {
                         eventsRepository.sendEvent(AppEvent.SubscriptionManualShown).onLeft { error ->
-                            Timber.e("Failed to track subscription manual event: $error")
+                            Timber.d("Failed to track subscription manual event: $error")
                         }
                     }
                 }

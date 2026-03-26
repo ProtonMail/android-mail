@@ -40,7 +40,7 @@ class EventsInitializer @Inject constructor(
     fun initialize(scope: CoroutineScope, isReinstall: Boolean = false) {
         scope.launch {
             trackInstallEvent(isReinstall = isReinstall).onLeft { error ->
-                Timber.e("Failed to track install event: $error")
+                Timber.d("Failed to track install event: $error")
             }
         }
         accountEventObserver.start(scope)

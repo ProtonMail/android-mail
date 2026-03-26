@@ -60,7 +60,7 @@ class AppOpenLifecycleObserver @Inject constructor(
                 // First open ever (pairs with install event)
                 persistentTimestamp == null -> {
                     trackAppOpenEvent(isNewSession = false).onLeft { error ->
-                        Timber.e("Failed to track app open event: $error")
+                        Timber.d("Failed to track app open event: $error")
                     }.onRight {
                         lastTrackedMs = now
                         eventsRepository.saveLastAppOpenTimestamp(now)
@@ -70,7 +70,7 @@ class AppOpenLifecycleObserver @Inject constructor(
                 // Process death within 30 minutes OR cold start after 30+ minutes
                 else -> {
                     trackAppOpenEvent(isNewSession = true).onLeft { error ->
-                        Timber.e("Failed to track app open event: $error")
+                        Timber.d("Failed to track app open event: $error")
                     }.onRight {
                         lastTrackedMs = now
                         eventsRepository.saveLastAppOpenTimestamp(now)
