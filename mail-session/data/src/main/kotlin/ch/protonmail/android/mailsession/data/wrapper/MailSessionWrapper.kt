@@ -28,12 +28,10 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.mapper.toAutoLockPinError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import uniffi.mail_uniffi.BackgroundExecutionCallback
-import uniffi.mail_uniffi.LiveQueryCallback
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionDeletePinCodeResult
 import uniffi.mail_uniffi.MailSessionGetAccountResult
 import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
-import uniffi.mail_uniffi.MailSessionGetAccountsResult
 import uniffi.mail_uniffi.MailSessionGetPrimaryAccountResult
 import uniffi.mail_uniffi.MailSessionGetSessionsResult
 import uniffi.mail_uniffi.MailSessionInitializedUserSessionFromStoredSessionResult
@@ -44,12 +42,10 @@ import uniffi.mail_uniffi.MailSessionSetPinCodeResult
 import uniffi.mail_uniffi.MailSessionUnsetBiometricsAppProtectionResult
 import uniffi.mail_uniffi.MailSessionUserSessionFromStoredSessionResult
 import uniffi.mail_uniffi.MailSessionVerifyPinCodeResult
-import uniffi.mail_uniffi.MailSessionWatchAccountsResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.StoredAccount
 import uniffi.mail_uniffi.StoredSession
-import uniffi.mail_uniffi.WatchedAccounts
 
 class MailSessionWrapper(private val mailSession: MailSession) {
 
