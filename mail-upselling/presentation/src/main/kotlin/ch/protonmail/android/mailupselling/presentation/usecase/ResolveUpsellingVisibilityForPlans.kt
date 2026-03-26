@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.isTaggedWith
@@ -58,6 +59,8 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
             instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.IntroductoryPrice) } ->
                 UpsellingVisibility.Promotional.IntroductoryPrice
 
+            instances.any { it.isUnlimitedPlan() } -> UpsellingVisibility.Normal.Unlimited
+
             else -> UpsellingVisibility.Normal.MailPlus
         }
     }
@@ -71,4 +74,6 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
         SpringPromoPhase.Active.Wave1 -> UpsellingVisibility.Promotional.SpringPromo.Wave1
         SpringPromoPhase.Active.Wave2 -> UpsellingVisibility.Promotional.SpringPromo.Wave2
     }
+
+    private fun ProductOfferDetail.isUnlimitedPlan() = metadata.planName == PlanUpgradeIds.UnlimitedPlanId
 }
