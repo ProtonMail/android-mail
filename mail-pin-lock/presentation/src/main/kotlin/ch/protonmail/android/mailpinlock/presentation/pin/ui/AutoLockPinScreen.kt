@@ -20,18 +20,26 @@ package ch.protonmail.android.mailpinlock.presentation.pin.ui
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.util.DisplayMetrics
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -118,7 +126,9 @@ private fun AutoLockPinScreen(
     signOutActions: AutoLockPinScreen.SignOutActions
 ) {
     val configuration = LocalConfiguration.current
-    val isCompact = configuration.screenHeightDp < 480 || configuration.fontScale > 1.3f
+    val isCompact = configuration.screenHeightDp < 480 ||
+        configuration.fontScale > 1.3f ||
+        configuration.densityDpi > DisplayMetrics.DENSITY_DEVICE_STABLE
 
     val isStandalone = LocalLockScreenEntryPointIsStandalone.current
 
@@ -126,6 +136,7 @@ private fun AutoLockPinScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             containerColor = ProtonTheme.colors.backgroundNorm,
+            contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
             topBar = {
                 if (!isStandalone && state as? AutoLockPinState.DataLoaded != null) {
                     PinScreenTopBar(
@@ -218,15 +229,18 @@ private fun PinScreenContent(
             .fillMaxSize()
             .padding(horizontal = ProtonDimens.Spacing.Large)
     ) {
-        @Suppress("MagicNumber")
-        Spacer(Modifier.weight(.3f))
-
         Column(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .height(ProtonDimens.Spacing.Jumbo)
+            )
+
             AutoLockPinScreenHeader(
                 descriptionUiModel = state.pinInsertionState.descriptionUiModel,
                 isCompact = isCompact
@@ -244,8 +258,7 @@ private fun PinScreenContent(
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
             if (imeHeight > 0.dp) {
-                @Suppress("MagicNumber")
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Jumbo * 3))
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Jumbo))
             }
         }
 
@@ -255,6 +268,17 @@ private fun PinScreenContent(
             if (isCompact && imeHeight == 0.dp) {
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
             }
+
+            val navBarHeight = WindowInsets.navigationBars
+                .only(WindowInsetsSides.Bottom)
+                .asPaddingValues()
+                .calculateBottomPadding()
+
+            val bottomSpacerHeight by animateDpAsState(
+                targetValue = if (imeHeight == 0.dp) navBarHeight else 0.dp,
+                animationSpec = tween(durationMillis = BOTTOM_SPACER_ANIMATION_DURATION),
+                label = "bottomNavBarSpacer"
+            )
 
             PinScreenButton(
                 uiModel = state.confirmButtonState.confirmButtonUiModel,
@@ -266,7 +290,7 @@ private fun PinScreenContent(
 
             AutoLockPinSignOutItem(state = state.signOutButtonState, actions = signOutActions)
 
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Jumbo))
+            Spacer(modifier = Modifier.height(bottomSpacerHeight))
         }
     }
 }
@@ -309,15 +333,15 @@ private fun AutoLockPinScreenHeader(descriptionUiModel: DescriptionUiModel, isCo
             AutoLockIcon()
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
-
-            Text(
-                text = stringResource(descriptionUiModel.titleRes),
-                style = ProtonTheme.typography.titleLargeNorm,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
         }
+
+        Text(
+            text = stringResource(descriptionUiModel.titleRes),
+            style = ProtonTheme.typography.titleLargeNorm,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
 
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -332,6 +356,7 @@ private fun AutoLockPinScreenHeader(descriptionUiModel: DescriptionUiModel, isCo
 }
 
 private const val MAX_PIN_LENGTH = 21
+private const val BOTTOM_SPACER_ANIMATION_DURATION = 200
 
 object AutoLockPinScreen {
     data class Actions(
