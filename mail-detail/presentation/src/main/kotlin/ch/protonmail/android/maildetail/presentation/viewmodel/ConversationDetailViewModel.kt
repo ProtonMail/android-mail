@@ -91,6 +91,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMe
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.RsvpWidgetUiModel
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.usecase.ApplyWebViewDarkModeFallback
 import ch.protonmail.android.maildetail.presentation.usecase.GetMoreActionsBottomSheetData
 import ch.protonmail.android.maildetail.presentation.usecase.LoadImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.MoreConversationActionsBottomSheetDataPayload
@@ -236,7 +237,8 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val toolbarRefreshSignal: ToolbarActionsRefreshSignal,
     private val executeWhenOnline: ExecuteWhenOnline,
     private val resolveSystemLabelId: ResolveSystemLabelId,
-    @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>
+    @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>,
+    private val applyWebViewDarkModeFallback: ApplyWebViewDarkModeFallback
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -1306,9 +1308,15 @@ class ConversationDetailViewModel @AssistedInject constructor(
         val currentTransformations = messageViewStateCache.getTransformations(domainMsgId)
             ?: MessageBodyTransformations.MessageDetailsDefaults
 
-        val newTransformations = MessageBodyTransformationsMapper.applyOverride(currentTransformations, override)
+        val transformationsWithOverride = MessageBodyTransformationsMapper.applyOverride(
+            currentTransformations, override
+        )
 
-        processMessageBody(primaryUserId.first(), domainMsgId, messageId, newTransformations)
+        val transformationsWithDarkModeFallback = applyWebViewDarkModeFallback(transformationsWithOverride)
+        processMessageBody(
+            primaryUserId.first(),
+            domainMsgId, messageId, transformationsWithDarkModeFallback
+        )
     }
 
     private suspend fun processMessageBody(

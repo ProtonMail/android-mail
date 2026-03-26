@@ -92,6 +92,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
+import ch.protonmail.android.maildetail.presentation.usecase.ApplyWebViewDarkModeFallback
 import ch.protonmail.android.maildetail.presentation.usecase.GetMoreActionsBottomSheetData
 import ch.protonmail.android.maildetail.presentation.usecase.LoadImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.ObservePrimaryUserAddress
@@ -360,6 +361,10 @@ internal class ConversationDetailViewModelTest {
         coEvery { this@mockk.get() } returns true
     }
 
+    private val applyWebViewDarkModeFallback = mockk<ApplyWebViewDarkModeFallback> {
+        every { this@mockk(any()) } answers { firstArg() }
+    }
+
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
     }
@@ -423,7 +428,8 @@ internal class ConversationDetailViewModelTest {
             openedFromLocation = labelId,
             isMessageSenderBlocked = isMessageSenderBlocked,
             conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
-            isAutoExpandEnabled = isAutoExpandEnabled
+            isAutoExpandEnabled = isAutoExpandEnabled,
+            applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
         )
 
     @BeforeTest

@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.proton.core.user.domain)
+    implementation(libs.androidx.webkit)
 
     implementation(project(":mail-attachments:domain"))
     implementation(project(":mail-common:domain"))

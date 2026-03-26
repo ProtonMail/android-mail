@@ -190,7 +190,7 @@ fun MessageThemeOptions.toLocalThemeOptions(): ThemeOpts = ThemeOpts(
         // then we cannot tell WebView to render in light mode, so we set this to false.
         false
     } else {
-        true
+        supportsDarkModeViaMediaQuery
     }
 )
 

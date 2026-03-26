@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.domain.model
 
 data class MessageThemeOptions(
     val currentTheme: MessageTheme,
-    val themeOverride: MessageTheme? = null
+    val themeOverride: MessageTheme? = null,
+    val supportsDarkModeViaMediaQuery: Boolean = true
 )
 

@@ -136,6 +136,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.EditScheduledMessag
 import ch.protonmail.android.maildetail.presentation.reducer.HiddenMessagesBannerReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MarkAsLegitimateDialogReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.maildetail.presentation.usecase.ApplyWebViewDarkModeFallback
 import ch.protonmail.android.maildetail.presentation.usecase.FormatRsvpWidgetTime
 import ch.protonmail.android.maildetail.presentation.usecase.FormatScheduleSendTime
 import ch.protonmail.android.maildetail.presentation.usecase.GetMoreActionsBottomSheetData
@@ -383,6 +384,9 @@ internal class ConversationDetailViewModelIntegrationTest {
     private val cancelScheduleSendMessage = mockk<CancelScheduleSendMessage>()
 
     private val executeWhenOnline = mockk<ExecuteWhenOnline>(relaxed = true)
+    private val applyWebViewDarkModeFallback = mockk<ApplyWebViewDarkModeFallback> {
+        every { this@mockk(any()) } answers { firstArg() }
+    }
     // endregion
 
     // region mappers
@@ -2498,7 +2502,8 @@ internal class ConversationDetailViewModelIntegrationTest {
         initialScrollToMessageId = scrollToMessageId?.let { MessageIdUiModel(scrollToMessageId) },
         openedFromLocation = filterByLocationLabelId,
         conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
-        isAutoExpandEnabled = isAutoExpandEnabled
+        isAutoExpandEnabled = isAutoExpandEnabled,
+        applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
     )
 
     private fun aMessageAttachment(id: String): AttachmentMetadata = AttachmentMetadata(
