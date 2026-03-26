@@ -68,7 +68,7 @@ internal class ResolveUpsellingVisibilityForPlansTest {
     }
 
     @Test
-    fun `should return normal when offer is neither BF nor intro price`() = runTest {
+    fun `should return normal mail plus when offer is neither BF nor intro price`() = runTest {
         // Given
         val plans = listOf(mailMonthlyBase, mailYearlyBase)
 
@@ -77,6 +77,21 @@ internal class ResolveUpsellingVisibilityForPlansTest {
 
         // Then
         assertEquals(UpsellingVisibility.Normal.MailPlus, actual)
+    }
+
+    @Test
+    fun `should return normal unlimited when offer is neither BF nor intro price and FF is ON`() = runTest {
+        // Given
+        val plans = listOf(
+            UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+            UpsellingTestData.UnlimitedMailProduct.YearlyProductDetail
+        )
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Normal.Unlimited, actual)
     }
 
     @Test
