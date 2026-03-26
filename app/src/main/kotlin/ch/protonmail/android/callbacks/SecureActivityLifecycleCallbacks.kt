@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.callbacks
 
+import java.lang.ref.WeakReference
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
@@ -46,6 +47,7 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
     @AppScope private val coroutineScope: CoroutineScope
 ) : ActivityLifecycleCallbacks {
 
+    private var currentActivityRef: WeakReference<Activity>? = null
     private var setSecureJob: Job? = null
 
     override fun onActivityResumed(activity: Activity) {
@@ -55,6 +57,8 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
             return
         }
 
+        setSecureJob?.cancel()
+        currentActivityRef = WeakReference(activity)
         setSecureJob = coroutineScope.launch {
             observePreventScreenshotsSetting().collectLatest {
                 val preventTakingScreenshotsPreference = it.getOrElse {
@@ -63,26 +67,37 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
                 }
 
                 withContext(Dispatchers.Main) {
+                    val act = currentActivityRef?.get() ?: return@withContext
                     if (preventTakingScreenshotsPreference.isEnabled) {
-                        setSecureFlags(activity)
+                        setSecureFlags(act)
                     } else {
-                        clearSecureFlags(activity)
+                        clearSecureFlags(act)
                     }
                 }
             }
         }
     }
 
-    override fun onActivityPaused(p0: Activity) {
-        setSecureJob?.cancel()
-        setSecureJob = null
+    override fun onActivityPaused(activity: Activity) {
+        if (currentActivityRef?.get() === activity) {
+            setSecureJob?.cancel()
+            setSecureJob = null
+            currentActivityRef = null
+        }
     }
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) = Unit
     override fun onActivityStarted(p0: Activity) = Unit
     override fun onActivityStopped(p0: Activity) = Unit
     override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) = Unit
-    override fun onActivityDestroyed(p0: Activity) = Unit
+
+    override fun onActivityDestroyed(activity: Activity) {
+        if (currentActivityRef?.get() === activity) {
+            setSecureJob?.cancel()
+            setSecureJob = null
+            currentActivityRef = null
+        }
+    }
 
     private fun setSecureFlags(activity: Activity) {
         activity.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
