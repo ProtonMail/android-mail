@@ -90,6 +90,14 @@ data object ConversationDetailAutoExpandLastMessageEnabled : FeatureFlagDefiniti
     defaultValue = false
 )
 
+data object ConversationDetailWebViewDarkModeFallbackEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7WebViewDarkModeFallback",
+    name = "Apply WebView dark mode fallback for unsupported devices",
+    category = FeatureFlagCategory.Details,
+    description = "Disables CSS media-query-based dark mode rendering if it is not supported (WebView < v100)",
+    defaultValue = false
+)
+
 data object InjectDetailCssOverrideEnabled : FeatureFlagDefinition(
     key = "MailAndroidV7CssHeightOverride",
     name = "Inject CSS override in HTML messages",

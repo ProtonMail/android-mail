@@ -100,6 +100,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.ObservePrimaryUserA
 import ch.protonmail.android.maildetail.presentation.usecase.print.PrintConfiguration
 import ch.protonmail.android.maildetail.presentation.usecase.print.PrintMessage
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -238,6 +239,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val executeWhenOnline: ExecuteWhenOnline,
     private val resolveSystemLabelId: ResolveSystemLabelId,
     @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>,
+    @IsWebViewDarkModeFallbackEnabled private val isWebViewDarkModeFallbackEnabled: FeatureFlag<Boolean>,
     private val applyWebViewDarkModeFallback: ApplyWebViewDarkModeFallback
 ) : ViewModel() {
 
@@ -1312,7 +1314,10 @@ class ConversationDetailViewModel @AssistedInject constructor(
             currentTransformations, override
         )
 
-        val transformationsWithDarkModeFallback = applyWebViewDarkModeFallback(transformationsWithOverride)
+        val transformationsWithDarkModeFallback = if (isWebViewDarkModeFallbackEnabled.get()) {
+            applyWebViewDarkModeFallback(transformationsWithOverride)
+        } else transformationsWithOverride
+
         processMessageBody(
             primaryUserId.first(),
             domainMsgId, messageId, transformationsWithDarkModeFallback

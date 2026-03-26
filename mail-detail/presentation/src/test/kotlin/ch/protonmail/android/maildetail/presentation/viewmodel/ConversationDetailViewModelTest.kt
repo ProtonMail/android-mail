@@ -151,6 +151,7 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -361,6 +362,10 @@ internal class ConversationDetailViewModelTest {
         coEvery { this@mockk.get() } returns true
     }
 
+    private val isWebViewDarkModeFallbackEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns true
+    }
+
     private val applyWebViewDarkModeFallback = mockk<ApplyWebViewDarkModeFallback> {
         every { this@mockk(any()) } answers { firstArg() }
     }
@@ -429,6 +434,7 @@ internal class ConversationDetailViewModelTest {
             isMessageSenderBlocked = isMessageSenderBlocked,
             conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
             isAutoExpandEnabled = isAutoExpandEnabled,
+            isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
             applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
         )
 
@@ -2112,6 +2118,70 @@ internal class ConversationDetailViewModelTest {
 
             coVerify(exactly = 1) {
                 getDecryptedMessageBody(userId, MessageId(messageId.id), expected)
+            }
+            verify(exactly = 1) {
+                applyWebViewDarkModeFallback(any())
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `do not apply webview dark mode fallback when the feature flag is disabled`() = runTest {
+        // Given
+        val messageId = MessageIdSample.Invoice
+        val currentTheme = MessageTheme.Light
+        val overrideTheme = MessageTheme.Dark
+
+        val messages = nonEmptyListOf(InvoiceWithLabelExpanded).toImmutableList()
+        coEvery {
+            conversationMessageMapper.toUiModel(
+                message = any(),
+                avatarImageState = any(),
+                primaryUserAddress = primaryUserAddress,
+                decryptedMessageBody = any(),
+                attachmentListExpandCollapseMode = null,
+                rsvpEventState = null,
+                primaryUserId = userId
+            )
+        } returns messages.first()
+        coEvery {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages)
+        )
+        coEvery { isWebViewDarkModeFallbackEnabled.get() } returns false
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+            advanceUntilIdle()
+
+            viewModel.submit(
+                ConversationDetailViewAction.SwitchViewMode(
+                    messageId = messageId,
+                    currentTheme = currentTheme,
+                    overrideTheme = overrideTheme
+                )
+            )
+            advanceUntilIdle()
+
+            // Then
+            val expected = MessageBodyTransformations.MessageDetailsDefaults.copy(
+                messageThemeOptions = MessageThemeOptions(
+                    currentTheme = currentTheme,
+                    themeOverride = overrideTheme
+                )
+            )
+
+            coVerify(exactly = 1) {
+                getDecryptedMessageBody(userId, MessageId(messageId.id), expected)
+            }
+            verify(exactly = 0) {
+                applyWebViewDarkModeFallback(any())
             }
             cancelAndIgnoreRemainingEvents()
         }

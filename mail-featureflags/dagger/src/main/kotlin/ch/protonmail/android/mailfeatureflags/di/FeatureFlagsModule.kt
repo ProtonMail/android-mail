@@ -38,8 +38,10 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoos
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
@@ -78,6 +80,18 @@ object FeatureFlagsModule {
     @IsLastMessageAutoExpandEnabled
     fun provideAutoExpandLastMessageConvoEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(ConversationDetailAutoExpandLastMessageEnabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsWebViewDarkModeFallbackEnabled
+    fun provideWebViewDarkModeFallbackEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(ConversationDetailWebViewDarkModeFallbackEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideWebViewDarkModeFallbackDefinition(): FeatureFlagDefinition =
+        ConversationDetailWebViewDarkModeFallbackEnabled
 
     @Provides
     @IntoSet

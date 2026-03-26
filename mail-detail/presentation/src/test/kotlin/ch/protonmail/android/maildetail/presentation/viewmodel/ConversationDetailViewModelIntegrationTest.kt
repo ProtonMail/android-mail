@@ -387,6 +387,10 @@ internal class ConversationDetailViewModelIntegrationTest {
     private val applyWebViewDarkModeFallback = mockk<ApplyWebViewDarkModeFallback> {
         every { this@mockk(any()) } answers { firstArg() }
     }
+    private val isWebViewDarkModeFallbackEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns true
+    }
+
     // endregion
 
     // region mappers
@@ -2503,6 +2507,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         openedFromLocation = filterByLocationLabelId,
         conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
         isAutoExpandEnabled = isAutoExpandEnabled,
+        isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
         applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
     )
 
