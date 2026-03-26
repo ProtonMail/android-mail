@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
@@ -34,12 +36,13 @@ import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import me.proton.android.core.payment.domain.model.filterForTags
 import javax.inject.Inject
 
-class ObserveMailPlusPlanUpgrades @Inject constructor(
+class ObservePlanUpgrades @Inject constructor(
     private val cache: AvailableUpgradesCache,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
-    private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion
+    private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
+    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>
 ) {
 
     operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = observePrimaryUserId().flatMapLatest { userId ->
@@ -65,10 +68,20 @@ class ObserveMailPlusPlanUpgrades @Inject constructor(
 
         // Here should be either BF **OR** Intro pricing, never fallback between 2 promo prices
         cache.observe(userId).map { upgrades ->
-            val eligibleOffers = upgrades.filterForTags(primaryTag = offersTag.value)
-            eligibleOffers.filterMailPlus()
+            val hasPromoOffers = upgrades.filterForTags(primaryTag = offersTag.value, fallbackToBaseOffer = false)
+                .isNotEmpty()
+            if (unlimitedPlanPlacementFlag.get() && !hasPromoOffers) {
+                val eligibleOffers = upgrades.filterForTags(primaryTag = null, fallbackToBaseOffer = true)
+                eligibleOffers.filterUnlimited()
+            } else {
+                val eligibleOffers = upgrades.filterForTags(primaryTag = offersTag.value)
+                eligibleOffers.filterMailPlus()
+            }
         }
     }
 
     private fun List<ProductOfferDetail>.filterMailPlus() = filter { it.metadata.planName == PlanUpgradeIds.PlusPlanId }
+
+    private fun List<ProductOfferDetail>.filterUnlimited() =
+        filter { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
 }

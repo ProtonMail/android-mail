@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailupselling.domain
 
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
@@ -26,7 +27,7 @@ import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.IsEligibleForBlackFridayPromotion
-import ch.protonmail.android.mailupselling.domain.usecase.ObserveMailPlusPlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail
@@ -43,7 +44,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class ObserveMailPlusPlanUpgradesTest {
+internal class ObservePlanUpgradesTest {
 
     private val availableUpgradesCache = mockk<AvailableUpgradesCache>()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
@@ -51,21 +52,23 @@ internal class ObserveMailPlusPlanUpgradesTest {
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
+    private val unlimitedPlanPlacementFlag = mockk<FeatureFlag<Boolean>>()
 
     private val userId = UserId("user-id")
-    private lateinit var observeMailPlusPlanUpgrades: ObserveMailPlusPlanUpgrades
+    private lateinit var observePlanUpgrades: ObservePlanUpgrades
 
     @BeforeTest
     fun setup() {
         every { observePrimaryUserId() } returns flowOf(userId)
         coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.None
         coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.None
-        observeMailPlusPlanUpgrades = ObserveMailPlusPlanUpgrades(
+        observePlanUpgrades = ObservePlanUpgrades(
             availableUpgradesCache,
             observePrimaryUserId,
             getCurrentBlackFridayPhase,
             getCurrentSpringPromoPhase,
-            isEligibleForBlackFridayPromotion
+            isEligibleForBlackFridayPromotion,
+            unlimitedPlanPlacementFlag
         )
     }
 
@@ -94,8 +97,42 @@ internal class ObserveMailPlusPlanUpgradesTest {
             }
         )
 
+        coEvery { unlimitedPlanPlacementFlag.get() } returns false
+
         // When
-        val actualPlans = observeMailPlusPlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+
+        // Then
+        assertEquals(expectedOffers, actualPlans)
+    }
+
+    @Test
+    fun `should return filtered plans with unlimited only ids when invoked`() = runTest {
+        // Given
+        val mailPlusPlans = listOf(
+            UpsellingTestData.MailPlusProducts.MonthlyProductOfferList,
+            UpsellingTestData.MailPlusProducts.YearlyProductOfferList
+        )
+
+        val expectedOffers = listOf(
+            UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+            UpsellingTestData.UnlimitedMailProduct.YearlyProductDetail
+        )
+
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns false
+
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(
+            buildList {
+                addAll(mailPlusPlans)
+                add(UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferList)
+                add(UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList)
+            }
+        )
+
+        coEvery { unlimitedPlanPlacementFlag.get() } returns true
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
 
         // Then
         assertEquals(expectedOffers, actualPlans)
