@@ -19,15 +19,11 @@
 package ch.protonmail.android.navigation
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -51,14 +47,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -80,7 +75,6 @@ import ch.protonmail.android.mailcommon.presentation.SnackbarError
 import ch.protonmail.android.mailcommon.presentation.SnackbarNormal
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.SnackbarUndo
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.UndoableOperationSnackbar
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
@@ -149,8 +143,6 @@ import ch.protonmail.android.navigation.route.addWebFolderAndLabelSettings
 import ch.protonmail.android.navigation.route.addWebPrivacyAndSecuritySettings
 import ch.protonmail.android.navigation.route.addWebSpamFilterSettings
 import ch.protonmail.android.navigation.transitions.RouteTransitions
-import ch.protonmail.android.uicomponents.fab.FabHost
-import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import io.sentry.compose.withSentryObservableEffect
 import kotlinx.coroutines.NonCancellable
@@ -178,25 +170,6 @@ fun Home(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = navBackStackEntry?.destination?.route
 
-    val fabVisibleInLocation by remember {
-        derivedStateOf {
-            navBackStackEntry?.destination?.route == Screen.Mailbox.route
-        }
-    }
-    var isBottomBarVisible by remember { mutableStateOf(false) }
-
-    val actionBarPadding by animateDpAsState(
-        targetValue = if (isBottomBarVisible) MailDimens.BottomBarHeight else 0.dp,
-        animationSpec = tween(
-            durationMillis = 300,
-            easing = FastOutSlowInEasing
-        ),
-        label = "actionBarPadding"
-    )
-
-    val updatePadding = { visible: Boolean -> isBottomBarVisible = visible }
-
-    val fabHostState = remember { ProtonFabHostState() }
     val snackbarHost = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.NORM) }
     val isDrawerSwipeGestureEnabled = remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
@@ -602,74 +575,184 @@ fun Home(
             scrimColor = ProtonTheme.colors.blenderNorm,
             gesturesEnabled = currentDestinationRoute == Screen.Mailbox.route && isDrawerSwipeGestureEnabled.value
         ) {
-            Scaffold(
-                containerColor = Color.Transparent,
-                contentWindowInsets = WindowInsets(0),
-                floatingActionButton = {
-                    AnimatedVisibility(fabVisibleInLocation) {
-                        FabHost(fabHostState = fabHostState)
-                    }
-                },
-                snackbarHost = {
-                    DismissableSnackbarHost(
-                        modifier = Modifier.snackbarPadding(actionBarPadding, currentDestinationRoute),
-                        protonSnackbarHostState = snackbarHost
-                    )
-                }
-            ) { contentPadding ->
-                NavHost(
-                    navController = navController,
-                    startDestination = Screen.Mailbox.route,
-                    enterTransition = { RouteTransitions.defaultEnterTransition() },
-                    exitTransition = { RouteTransitions.defaultExitTransition() },
-                    popEnterTransition = { RouteTransitions.defaultPopEnterTransition() },
-                    popExitTransition = { RouteTransitions.defaultPopExitTransition() },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(contentPadding)
-                ) {
-                    // home
-                    addConversationDetail(
-                        actions = ConversationDetail.Actions(
-                            onExit = { notifyUserMessage ->
-                                navController.navigateBack()
-                                notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
-                                viewModel.recordViewOfMailboxScreen()
-                            },
-                            showUndoableOperationSnackbar = { notifyUserMessage ->
-                                notifyUserMessage?.let {
-                                    showUndoableOperationSnackbar(
-                                        it
+            Box(modifier = Modifier.fillMaxSize()) {
+                Scaffold(
+                    containerColor = Color.Transparent,
+                    contentWindowInsets = WindowInsets(0)
+                ) { contentPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.Mailbox.route,
+                        enterTransition = { RouteTransitions.defaultEnterTransition() },
+                        exitTransition = { RouteTransitions.defaultExitTransition() },
+                        popEnterTransition = { RouteTransitions.defaultPopEnterTransition() },
+                        popExitTransition = { RouteTransitions.defaultPopExitTransition() },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(contentPadding)
+                    ) {
+                        // home
+                        addConversationDetail(
+                            isSnackbarVisible = { snackbarHost.snackbarHostState.currentSnackbarData != null },
+                            actions = ConversationDetail.Actions(
+                                onExit = { notifyUserMessage ->
+                                    navController.navigateBack()
+                                    notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
+                                    viewModel.recordViewOfMailboxScreen()
+                                },
+                                showUndoableOperationSnackbar = { notifyUserMessage ->
+                                    notifyUserMessage?.let {
+                                        showUndoableOperationSnackbar(
+                                            it
+                                        )
+                                    }
+                                },
+                                openMessageBodyLink = activityActions.openInActivityInNewTask,
+                                handleProtonCalendarRequest = activityActions.openProtonCalendarIntentValues,
+                                onAddLabel = { navController.navigate(Screen.FolderAndLabelSettings.route) },
+                                onAddFolder = { navController.navigate(Screen.FolderAndLabelSettings.route) },
+                                showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+                                onReply = {
+                                    navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it)))
+                                },
+                                onReplyAll = {
+                                    navController.navigate(
+                                        Screen.MessageActionComposer(
+                                            DraftAction.ReplyAll(it)
+                                        )
+                                    )
+                                },
+                                onForward = {
+                                    navController.navigate(
+                                        Screen.MessageActionComposer(
+                                            DraftAction.Forward(it)
+                                        )
+                                    )
+                                },
+                                onViewContactDetails = { showFeatureMissingSnackbar() },
+                                onAddContact = { _ ->
+                                    showFeatureMissingSnackbar()
+                                },
+                                onComposeNewMessage = {
+                                    navController.navigate(
+                                        Screen.MessageActionComposer(
+                                            DraftAction.ComposeToAddresses(
+                                                listOf(it)
+                                            )
+                                        )
+                                    )
+                                },
+                                openComposerForDraftMessage = { navController.navigate(Screen.EditDraftComposer(it)) },
+                                showSnackbar = { message, type ->
+                                    scope.launch {
+                                        snackbarHost.showSnackbar(
+                                            message = message,
+                                            type = type
+                                        )
+                                    }
+                                },
+                                recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
+                                onExitWithOpenInComposer = {
+                                    val popToMailboxOption = NavOptions.Builder()
+                                        .setPopUpTo(Screen.Mailbox.route, false)
+                                        .build()
+                                    navController.navigate(
+                                        route = Screen.EditDraftComposer(it),
+                                        navOptions = popToMailboxOption
+                                    )
+                                },
+                                onNavigateToUpselling = { entryPoint, type ->
+                                    navController.navigate(Screen.FeatureUpselling(entryPoint, type))
+                                },
+                                onCustomizeToolbar = {
+                                    navController.navigate(Screen.EditToolbarScreen(ToolbarType.Conversation))
+                                },
+                                onCustomizeMessageToolbar = {
+                                    navController.navigate(Screen.EditToolbarScreen(ToolbarType.Message))
+                                },
+                                onViewEntireMessageClicked = { msgId, showInline, showRemote, vmPreference ->
+                                    navController.navigate(
+                                        Screen.EntireMessageBody(
+                                            messageId = msgId,
+                                            shouldShowEmbeddedImages = showInline,
+                                            shouldShowRemoteContent = showRemote,
+                                            viewModePreference = vmPreference
+                                        )
+                                    )
+                                },
+                                onViewMessageHeaders = { messageId ->
+                                    navController.navigate(Screen.RawMessageData(messageId, RawMessageDataType.Headers))
+                                },
+                                onViewMessageHtml = { messageId ->
+                                    navController.navigate(Screen.RawMessageData(messageId, RawMessageDataType.HTML))
+                                }
+                            )
+                        )
+                        addEntireMessageBody(
+                            navController,
+                            onOpenMessageBodyLink = activityActions.openInActivityInNewTask
+                        )
+                        addRawMessageData(
+                            navController
+                        )
+                        addMailbox(
+                            navController,
+                            openDrawerMenu = { scope.launch { drawerState.open() } },
+                            setDrawerEnabled = { isDrawerSwipeGestureEnabled.value = it },
+                            showSnackbar = { showSnackbar(it) },
+                            onEvent = eventHandler,
+                            showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+                            onShowRatingBooster = activityActions.launchRatingBooster,
+                            isSnackbarVisible = { snackbarHost.snackbarHostState.currentSnackbarData != null }
+                        )
+                        addAccountsManager(
+                            navController,
+                            route = Screen.AccountsManager.route,
+                            onCloseClicked = { navController.navigateBack() },
+                            onEvent = eventHandler
+                        )
+                        addComposer(
+                            navController,
+                            activityActions,
+                            showDraftSavedSnackbar = { showDraftSavedSnackbar(it) },
+                            showMessageSendingSnackbar = { showMessageSendingSnackbar() },
+                            showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() },
+                            showMessageSchedulingSnackbar = { showMessageSchedulingSnackbar() },
+                            showMessageSchedulingOfflineSnackbar = { showMessageSchedulingOfflineSnackbar() },
+                            showDraftDiscardedSnackbar = { showDraftDiscardedSnackbar() }
+                        )
+
+                        addSetMessagePassword(navController)
+                        addSignOutAccountDialog(navController)
+                        addRemoveAccountDialog(navController)
+                        addSettings(navController, activityActions)
+                        addAppSettings(navController, showFeatureMissingSnackbar = { showFeatureMissingSnackbar() })
+                        // settings
+                        addWebAccountSettings(navController)
+                        addWebEmailSettings(navController)
+                        addWebFolderAndLabelSettings(navController)
+                        addWebSpamFilterSettings(navController)
+                        addWebPrivacyAndSecuritySettings(navController)
+                        addContacts(
+                            navController,
+                            showErrorSnackbar = { message ->
+                                scope.launch {
+                                    snackbarHost.showSnackbar(
+                                        message = message,
+                                        type = ProtonSnackbarType.ERROR
                                     )
                                 }
                             },
-                            openMessageBodyLink = activityActions.openInActivityInNewTask,
-                            handleProtonCalendarRequest = activityActions.openProtonCalendarIntentValues,
-                            onAddLabel = { navController.navigate(Screen.FolderAndLabelSettings.route) },
-                            onAddFolder = { navController.navigate(Screen.FolderAndLabelSettings.route) },
-                            showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
-                            onReply = {
-                                navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it)))
-                            },
-                            onReplyAll = {
-                                navController.navigate(
-                                    Screen.MessageActionComposer(
-                                        DraftAction.ReplyAll(it)
-                                    )
-                                )
-                            },
-                            onForward = {
-                                navController.navigate(
-                                    Screen.MessageActionComposer(
-                                        DraftAction.Forward(it)
-                                    )
-                                )
-                            },
-                            onViewContactDetails = { showFeatureMissingSnackbar() },
-                            onAddContact = { _ ->
+                            showFeatureMissingSnackbar = {
                                 showFeatureMissingSnackbar()
+                            }
+                        )
+                        addContactDetails(
+                            navController,
+                            onShowErrorSnackbar = {
+                                showErrorSnackbar(it)
                             },
-                            onComposeNewMessage = {
+                            onMessageContact = {
                                 navController.navigate(
                                     Screen.MessageActionComposer(
                                         DraftAction.ComposeToAddresses(
@@ -678,185 +761,72 @@ fun Home(
                                     )
                                 )
                             },
-                            openComposerForDraftMessage = { navController.navigate(Screen.EditDraftComposer(it)) },
-                            showSnackbar = { message, type ->
-                                scope.launch {
-                                    snackbarHost.showSnackbar(
-                                        message = message,
-                                        type = type
-                                    )
-                                }
-                            },
-                            recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
-                            onExitWithOpenInComposer = {
-                                val popToMailboxOption = NavOptions.Builder()
-                                    .setPopUpTo(Screen.Mailbox.route, false)
-                                    .build()
-                                navController.navigate(
-                                    route = Screen.EditDraftComposer(it),
-                                    navOptions = popToMailboxOption
-                                )
-                            },
-                            onNavigateToUpselling = { entryPoint, type ->
-                                navController.navigate(Screen.FeatureUpselling(entryPoint, type))
-                            },
-                            onActionBarVisibilityChanged = updatePadding,
-                            onCustomizeToolbar = {
-                                navController.navigate(Screen.EditToolbarScreen(ToolbarType.Conversation))
-                            },
-                            onCustomizeMessageToolbar = {
-                                navController.navigate(Screen.EditToolbarScreen(ToolbarType.Message))
-                            },
-                            onViewEntireMessageClicked = { msgId, showInline, showRemote, vmPreference ->
-                                navController.navigate(
-                                    Screen.EntireMessageBody(
-                                        messageId = msgId,
-                                        shouldShowEmbeddedImages = showInline,
-                                        shouldShowRemoteContent = showRemote,
-                                        viewModePreference = vmPreference
-                                    )
-                                )
-                            },
-                            onViewMessageHeaders = { messageId ->
-                                navController.navigate(Screen.RawMessageData(messageId, RawMessageDataType.Headers))
-                            },
-                            onViewMessageHtml = { messageId ->
-                                navController.navigate(Screen.RawMessageData(messageId, RawMessageDataType.HTML))
+                            showFeatureMissingSnackbar = {
+                                showFeatureMissingSnackbar()
                             }
                         )
-                    )
-                    addEntireMessageBody(
-                        navController,
-                        onOpenMessageBodyLink = activityActions.openInActivityInNewTask
-                    )
-                    addRawMessageData(
-                        navController
-                    )
-                    addMailbox(
-                        navController,
-                        fabHostState,
-                        openDrawerMenu = { scope.launch { drawerState.open() } },
-                        setDrawerEnabled = { isDrawerSwipeGestureEnabled.value = it },
-                        showSnackbar = { showSnackbar(it) },
-                        onEvent = eventHandler,
-                        showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
-                        onActionBarVisibilityChanged = updatePadding,
-                        onShowRatingBooster = activityActions.launchRatingBooster
-                    )
-                    addAccountsManager(
-                        navController,
-                        route = Screen.AccountsManager.route,
-                        onCloseClicked = { navController.navigateBack() },
-                        onEvent = eventHandler
-                    )
-                    addComposer(
-                        navController,
-                        activityActions,
-                        showDraftSavedSnackbar = { showDraftSavedSnackbar(it) },
-                        showMessageSendingSnackbar = { showMessageSendingSnackbar() },
-                        showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() },
-                        showMessageSchedulingSnackbar = { showMessageSchedulingSnackbar() },
-                        showMessageSchedulingOfflineSnackbar = { showMessageSchedulingOfflineSnackbar() },
-                        showDraftDiscardedSnackbar = { showDraftDiscardedSnackbar() }
-                    )
-
-                    addSetMessagePassword(navController)
-                    addSignOutAccountDialog(navController)
-                    addRemoveAccountDialog(navController)
-                    addSettings(navController, activityActions)
-                    addAppSettings(navController, showFeatureMissingSnackbar = { showFeatureMissingSnackbar() })
-                    // settings
-                    addWebAccountSettings(navController)
-                    addWebEmailSettings(navController)
-                    addWebFolderAndLabelSettings(navController)
-                    addWebSpamFilterSettings(navController)
-                    addWebPrivacyAndSecuritySettings(navController)
-                    addContacts(
-                        navController,
-                        showErrorSnackbar = { message ->
-                            scope.launch {
-                                snackbarHost.showSnackbar(
-                                    message = message,
-                                    type = ProtonSnackbarType.ERROR
-                                )
-                            }
-                        },
-                        showFeatureMissingSnackbar = {
-                            showFeatureMissingSnackbar()
-                        }
-                    )
-                    addContactDetails(
-                        navController,
-                        onShowErrorSnackbar = {
-                            showErrorSnackbar(it)
-                        },
-                        onMessageContact = {
-                            navController.navigate(
-                                Screen.MessageActionComposer(
-                                    DraftAction.ComposeToAddresses(
-                                        listOf(it)
+                        addContactSearch(
+                            navController
+                        )
+                        addContactGroupDetails(
+                            navController,
+                            onShowErrorSnackbar = {
+                                showErrorSnackbar(it)
+                            },
+                            onSendGroupMessage = {
+                                navController.navigate(
+                                    Screen.MessageActionComposer(
+                                        DraftAction.ComposeToAddresses(it)
                                     )
                                 )
-                            )
-                        },
-                        showFeatureMissingSnackbar = {
-                            showFeatureMissingSnackbar()
-                        }
-                    )
-                    addContactSearch(
-                        navController
-                    )
-                    addContactGroupDetails(
-                        navController,
-                        onShowErrorSnackbar = {
-                            showErrorSnackbar(it)
-                        },
-                        onSendGroupMessage = {
-                            navController.navigate(
-                                Screen.MessageActionComposer(
-                                    DraftAction.ComposeToAddresses(it)
-                                )
-                            )
-                        },
-                        onOpenContact = {
-                            navController.navigate(Screen.ContactDetails(it))
-                        },
-                        showFeatureMissingSnackbar = {
-                            showFeatureMissingSnackbar()
-                        }
-                    )
-                    addCombinedContactsSetting(navController)
-                    addEditSwipeActionsSettings(navController)
-                    addLanguageSettings(navController)
-                    addPrivacySettings(navController)
-                    addAutoLockSettings(navController)
-                    addMobileSignatureSettings(navController)
-                    addEmailSignatureSettings(navController)
-                    addSignatureMenuSettings(navController)
-                    addAutoLockPinScreen(
-                        onClose = { navController.navigateBack() },
-                        onShowSuccessSnackbar = { showNormalSnackbar(it) }
-                    )
-                    addAppIconSettings(navController, onLearnMoreClick = activityActions.openInActivityInNewTask)
-                    addPinDialog(navController)
-                    addSwipeActionsSettings(navController)
-                    addThemeSettings(navController)
-                    addAutoLockIntervalSettings(navController)
-                    addNotificationsSettings(navController)
-                    addCustomizeToolbarSettings(navController)
-                    addExportLogsSettings(navController)
-                    addFeatureFlagsOverrides(navController)
-                    addBugReporting(navController, onShowNormalSnackbar = { showNormalSnackbar(it) })
-                    addUpsellingRoutes(
-                        UpsellingScreen.Actions.Empty.copy(
-                            onSuccess = { navController.navigateBack() },
-                            onDismiss = { navController.navigateBack() },
-                            onUpgrade = { message -> scope.launch { showNormalSnackbar(message) } },
-                            onError = { message -> scope.launch { showErrorSnackbar(message) } }
+                            },
+                            onOpenContact = {
+                                navController.navigate(Screen.ContactDetails(it))
+                            },
+                            showFeatureMissingSnackbar = {
+                                showFeatureMissingSnackbar()
+                            }
                         )
-                    )
-                    addFeatureSpotlight(onBack = { navController.navigateBack() })
+                        addCombinedContactsSetting(navController)
+                        addEditSwipeActionsSettings(navController)
+                        addLanguageSettings(navController)
+                        addPrivacySettings(navController)
+                        addAutoLockSettings(navController)
+                        addMobileSignatureSettings(navController)
+                        addEmailSignatureSettings(navController)
+                        addSignatureMenuSettings(navController)
+                        addAutoLockPinScreen(
+                            onClose = { navController.navigateBack() },
+                            onShowSuccessSnackbar = { showNormalSnackbar(it) }
+                        )
+                        addAppIconSettings(navController, onLearnMoreClick = activityActions.openInActivityInNewTask)
+                        addPinDialog(navController)
+                        addSwipeActionsSettings(navController)
+                        addThemeSettings(navController)
+                        addAutoLockIntervalSettings(navController)
+                        addNotificationsSettings(navController)
+                        addCustomizeToolbarSettings(navController)
+                        addExportLogsSettings(navController)
+                        addFeatureFlagsOverrides(navController)
+                        addBugReporting(navController, onShowNormalSnackbar = { showNormalSnackbar(it) })
+                        addUpsellingRoutes(
+                            UpsellingScreen.Actions.Empty.copy(
+                                onSuccess = { navController.navigateBack() },
+                                onDismiss = { navController.navigateBack() },
+                                onUpgrade = { message -> scope.launch { showNormalSnackbar(message) } },
+                                onError = { message -> scope.launch { showErrorSnackbar(message) } }
+                            )
+                        )
+                        addFeatureSpotlight(onBack = { navController.navigateBack() })
+                    }
                 }
+
+                DismissableSnackbarHost(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding(),
+                    protonSnackbarHostState = snackbarHost
+                )
             }
         }
     }
@@ -878,24 +848,3 @@ private sealed interface BottomSheetType {
     data class NotificationsPermissions(val permissionsState: NotificationsPermissionStateType) : BottomSheetType
 }
 
-@Composable
-private fun Modifier.snackbarPadding(
-    actionBarPadding: Dp,
-    currentDestinationRoute: String?,
-    isMailboxRoute: Boolean = currentDestinationRoute == Screen.Mailbox.route
-): Modifier {
-    return this
-        .padding(bottom = actionBarPadding)
-        .then(
-            if (isMailboxRoute) {
-                Modifier // No padding - Snackbar is above FAB in Mailbox
-            } else {
-                Modifier.padding(
-                    bottom = WindowInsets.navigationBars
-                        .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
-                        .asPaddingValues()
-                        .calculateBottomPadding()
-                )
-            }
-        )
-}

@@ -52,7 +52,6 @@ import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScre
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
 import ch.protonmail.android.navigation.transitions.composableWithTransitions
-import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountSwitchEvent
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -76,14 +75,13 @@ internal fun NavGraphBuilder.addConversationDetail(
 @Suppress("LongMethod", "LongParameterList")
 internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
-    fabHostState: ProtonFabHostState,
     openDrawerMenu: () -> Unit,
     setDrawerEnabled: (Boolean) -> Unit,
     onEvent: (AccountSwitchEvent) -> Unit,
     showSnackbar: (type: SnackbarType) -> Unit,
     showFeatureMissingSnackbar: () -> Unit,
-    onActionBarVisibilityChanged: (Boolean) -> Unit,
-    onShowRatingBooster: () -> Unit
+    onShowRatingBooster: () -> Unit,
+    isSnackbarVisible: () -> Boolean = { false }
 ) {
     composableWithTransitions(
         route = Destination.Screen.Mailbox.route,
@@ -124,14 +122,13 @@ internal fun NavGraphBuilder.addMailbox(
                 onExitSearchMode = {
                     setDrawerEnabled(true)
                 },
-                onActionBarVisibilityChanged = onActionBarVisibilityChanged,
                 onCustomizeToolbar = {
                     navController.navigate(Destination.Screen.EditToolbarScreen(ToolbarType.List))
                 },
                 onShowRatingBooster = onShowRatingBooster
             ),
             onEvent = onEvent,
-            fabHostState = fabHostState
+            isSnackbarVisible = isSnackbarVisible()
         )
     }
 }

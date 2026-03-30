@@ -41,7 +41,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.testTag
@@ -70,10 +69,6 @@ fun BottomActionBar(
     modifier: Modifier = Modifier
 ) {
     val isVisible = state !is BottomBarState.Data.Hidden
-
-    LaunchedEffect(state !is BottomBarState.Data.Hidden) {
-        viewActionCallbacks.onActionBarVisibilityChanged(isVisible)
-    }
 
     AnimatedVisibility(
         visible = isVisible,
@@ -220,7 +215,7 @@ private fun BottomBarIcon(
 
 object BottomActionBar {
 
-    internal const val MAX_ACTIONS_COUNT = 5
+    const val MAX_ACTIONS_COUNT = 5
 
     data class Actions(
         val onMarkRead: () -> Unit,
@@ -249,8 +244,7 @@ object BottomActionBar {
         val onSaveAttachments: () -> Unit,
         val onMore: () -> Unit,
         val onCustomizeToolbar: () -> Unit,
-        val onSnooze: () -> Unit,
-        val onActionBarVisibilityChanged: (Boolean) -> Unit
+        val onSnooze: () -> Unit
     ) {
 
         companion object {
@@ -282,8 +276,7 @@ object BottomActionBar {
                 onSaveAttachments = {},
                 onMore = {},
                 onCustomizeToolbar = {},
-                onSnooze = {},
-                onActionBarVisibilityChanged = {}
+                onSnooze = {}
             )
         }
     }
