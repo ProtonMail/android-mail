@@ -65,6 +65,11 @@ include(":mail-bugreport:data")
 include(":mail-bugreport:domain")
 include(":mail-bugreport:presentation")
 
+include(":mail-category-view:dagger")
+include(":mail-category-view:data")
+include(":mail-category-view:domain")
+include(":mail-category-view:presentation")
+
 include(":mail-common:dagger")
 include(":mail-common:data")
 include(":mail-common:domain")
