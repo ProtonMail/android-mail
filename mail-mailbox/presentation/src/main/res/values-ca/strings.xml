@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">S\'està obrint l\'adjunt...</string>
   <string name="mailbox_attachment_download_error">No s\'ha pogut obrir l\'adjunt. Torneu-ho a provar.</string>
+  <string name="mailbox_attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertència</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">L\'emmagatzematge del vostre compte de Proton està ple en més d\'un 80%. Allibereu espai o milloreu el pla per a obtenir més espai d\'emmagatzematge.</string>

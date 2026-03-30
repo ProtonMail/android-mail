@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Maksimalt antall vedlegg (100) er overskredet.</string>
   <string name="composer_delete_attachment_error">Det oppstod en uventet feil under sletting av et vedlegg.</string>
   <string name="composer_unexpected_attachments_error">Det oppstod en uventet feil relatert til vedlegg.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Kunne ikke lagre vedlegget. Sjekk lagringsplassen og prøv på nytt.</string>
   <string name="composer_storage_quota_exceeded_error">Lagringsplassen din er full. Frigjør plass eller oppgrader for å legge til mer.</string>
   <string name="composer_attach_capture_from_camera_error">Det er ikke mulig å ta opp et vedlegg fra kameraet for øyeblikket.</string>
   <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>

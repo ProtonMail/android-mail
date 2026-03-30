@@ -158,11 +158,11 @@
   <string name="settings_app_icon_name_discreet">Discret</string>
   <string name="settings_app_icon_title_default">Icona de l\'aplicació - per defecte</string>
   <string name="settings_app_icon_title_discreet">Icona de l\'aplicació - discreta</string>
-  <string name="settings_app_icon_description">Conserveu la icona per defecte de Proton Mail, o dissimuleu-la amb una de més discreta per a una privacitat addicional.\nLes notificacions sempre mostraran el nom i la icona de Proton Mail.</string>
+  <string name="settings_app_icon_description">Mantingueu la icona per defecte del Proton Mail, o dissimuleu-la amb una de més discreta per a més privadesa.\nLes notificacions sempre mostraran el nom i la icona del Proton Mail.</string>
   <string name="settings_app_icon_learn_more">Més informació</string>
   <string name="settings_app_icon_discreet_toggle">Icona de l\'aplicació discreta</string>
   <string name="settings_app_icon_confirmation_title">Voleu canviar la icona de l\'aplicació?</string>
-  <string name="settings_app_icon_confirmation_details">Això farà que l\'aplicació Proton Mail es tanqui i que es descartin totes les notificacions.\n\nPer reiniciar Proton Mail, només cal que toqueu la nova icona de l\'aplicació.</string>
+  <string name="settings_app_icon_confirmation_details">Això farà que es tanqui l\'aplicació del Proton Mail i que es descartin totes les notificacions.\n\nPer reiniciar el Proton Mail, només cal que toqueu la icona de la nova aplicació.</string>
   <string name="settings_app_icon_action_cancel">Cancel·la</string>
   <string name="settings_app_icon_change_icon">Canvia la icona</string>
   <!-- Error messages -->

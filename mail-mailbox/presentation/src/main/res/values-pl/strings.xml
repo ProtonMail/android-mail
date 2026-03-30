@@ -131,6 +131,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Otwieranie załącznika…</string>
   <string name="mailbox_attachment_download_error">Nie udało się otworzyć załącznika. Spróbuj ponownie.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Ostrzeżenie</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Wykorzystano 80% dostępnej przestrzeni dyskowej konta Proton. Zwolnij część miejsca lub ulepsz konto, aby uzyskać więcej miejsca.</string>

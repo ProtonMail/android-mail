@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Åpner vedlegg…</string>
   <string name="mailbox_attachment_download_error">Kan ikke åpne vedlegget. Prøv igjen.</string>
+  <string name="mailbox_attachment_download_in_progress">Gjeldende nedlasting må fullføres før en ny kan startes.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lagringsplassen til Proton-kontoen din er mer enn 80% full. Frigjør plass eller oppgrader for mer lagringsplass.</string>

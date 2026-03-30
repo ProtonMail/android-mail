@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Maximale Anzahl Anhänge (100) überschritten.</string>
   <string name="composer_delete_attachment_error">Beim Löschen eines Anhangs ist ein unerwarteter Fehler aufgetreten.</string>
   <string name="composer_unexpected_attachments_error">Es gab einen unerwarteten Fehler im Zusammenhang mit Anhängen.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Der Anhang konnte nicht gespeichert werden. Überprüfe deinen Speicherplatz und versuche es erneut.</string>
   <string name="composer_storage_quota_exceeded_error">Dein Speicherplatz ist aufgebraucht. Bitte gib Speicherplatz frei oder führe ein Upgrade durch, um mehr Speicherplatz zu erhalten.</string>
   <string name="composer_attach_capture_from_camera_error">Das Aufnehmen eines Anhangs über die Kamera ist zur Zeit nicht möglich</string>
   <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>

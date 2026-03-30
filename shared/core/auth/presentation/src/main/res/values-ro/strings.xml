@@ -143,14 +143,14 @@
     <item quantity="few">Cel puțin %1$s caractere.</item>
     <item quantity="other">Cel puțin %1$s de caractere.</item>
   </plurals>
-  <string name="settings_password_management_title">Schimbare parolă</string>
+  <string name="settings_password_management_title">Modificare parolă</string>
   <string name="settings_save_second_password">Salvare parolă secundară nouă</string>
   <string name="settings_save_main_password">Salvare parolă principală nouă</string>
   <string name="settings_password_management_tab_main_password">Parola principală</string>
   <string name="settings_password_management_tab_second_password">Parola secundară</string>
   <string name="settings_password_management_change_password_note">Pentru a modifica oricare dintre parole, va trebui să vă cunoașteți parola principală.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Ați uitat parola principală?</string>
-  <string name="settings_password_management_header">Schimbare parolă</string>
+  <string name="settings_password_management_header">Modificare parolă</string>
   <string name="settings_password_management_cannot_change_password">Nu vă puteți schimba parola de rezervă. Contactați-vă administratorul.</string>
   <string name="settings_main_password_hint_current">Parola principală actuală</string>
   <string name="settings_main_password_hint_new">Parola principală nouă</string>

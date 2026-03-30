@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Åbner vedhæftning…</string>
   <string name="mailbox_attachment_download_error">Kunne ikke åbne den vedhæftede fil. Prøv igen.</string>
+  <string name="mailbox_attachment_download_in_progress">Det igangværende download skal afsluttes, før du starter et nyt.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lagerpladsen på din Proton-konto er mere end 80% opbrugt. Frigør plads eller opgrader til mere lagerplads</string>

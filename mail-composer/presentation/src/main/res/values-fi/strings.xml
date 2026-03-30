@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Liitteiden enimmäismäärä (100) on ylitetty.</string>
   <string name="composer_delete_attachment_error">Liitteen poistamisen aikana tapahtui odottamaton virhe.</string>
   <string name="composer_unexpected_attachments_error">Tapahtui liitteisiin liittyvä odottamaton virhe.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Liitettä ei voitu tallentaa. Tarkista tallennustilasi ja yritä uudelleen.</string>
   <string name="composer_storage_quota_exceeded_error">Tallennustilasi on täynnä. Vapauta tilaa tai päivitä tilauksesi hankkiaksesi lisää tilaa.</string>
   <string name="composer_attach_capture_from_camera_error">Liitteen ottaminen kameralla ei ole tällä hetkellä mahdollista</string>
   <string name="composer_warning_local_data_shown">Tämän luonnoksen uusimman version lataus epäonnistui. Kaikki muutokset korvaavat sen sisällön.</string>

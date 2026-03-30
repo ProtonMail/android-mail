@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Maksimalt antal vedhæftninger (100) overskredet.</string>
   <string name="composer_delete_attachment_error">Der opstod en uventet fejl under sletning af en vedhæftning.</string>
   <string name="composer_unexpected_attachments_error">Der opstod en uventet fejl i forbindelse med vedhæftninger.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Vedhæftningen kunne ikke gemmes. Kontrollér din lagerplads og prøv igen.</string>
   <string name="composer_storage_quota_exceeded_error">Din lagerplads er fuld. Frigør noget plads eller opgradér for at tilføje mere.</string>
   <string name="composer_attach_capture_from_camera_error">Det er ikke muligt at optage en vedhæftet fil fra kameraet på nuværende tidspunkt.</string>
   <string name="composer_warning_local_data_shown">Den seneste version af dette udkast kunne ikke indlæses. Enhver ændring vil overskrive dets indhold.</string>

@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Bol prekročený maximálny počet príloh (100).</string>
   <string name="composer_delete_attachment_error">Pri odstraňovaní prílohy sa vyskytla neočakávaná chyba.</string>
   <string name="composer_unexpected_attachments_error">Vyskytla sa neočakávaná chyba súvisiaca s prílohami.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Prílohu nebolo možné uložiť. Skontrolujte voľné miesto v úložisku a skúste to znova.</string>
   <string name="composer_storage_quota_exceeded_error">Vaše úložisko je plné. Uvoľnite miesto alebo si zvýšte úroveň, aby ste mohli pridať viac.</string>
   <string name="composer_attach_capture_from_camera_error">Zachytávanie prílohy z fotoaparátu momentálne nie je možné</string>
   <string name="composer_warning_local_data_shown">Najnovšiu verziu tohto konceptu sa nepodarilo načítať. Akákoľvek zmena prepíše jej obsah.</string>

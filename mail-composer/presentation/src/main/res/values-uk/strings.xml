@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Перевищено максимальну кількість вкладень (100).</string>
   <string name="composer_delete_attachment_error">Сталася неочікувана помилка під час видалення вкладення.</string>
   <string name="composer_unexpected_attachments_error">Виникла неочікувана помилка, пов\'язана з вкладеннями.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Не вдалося зберегти вкладений файл. Перевірте обсяг пам’яті та спробуйте ще раз.</string>
   <string name="composer_storage_quota_exceeded_error">Ваше сховище заповнене. Звільніть місце або покращте, щоби додати більше.</string>
   <string name="composer_attach_capture_from_camera_error">Наразі неможливо зробити знімок для вкладення з камери</string>
   <string name="composer_warning_local_data_shown">Не вдалося завантажити останню версію цієї чернетки. Будь-які зміни перезапишуть її.</string>

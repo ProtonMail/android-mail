@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Se excedió el número máximo de archivos adjuntos (100).</string>
   <string name="composer_delete_attachment_error">Se produjo un error inesperado al eliminar un archivo adjunto.</string>
   <string name="composer_unexpected_attachments_error">Se produjo un error inesperado relacionado con los archivos adjuntos.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">No se pudo guardar el archivo adjunto. Revise su almacenamiento e intente de nuevo.</string>
   <string name="composer_storage_quota_exceeded_error">Su almacenamiento está lleno. Libere espacio o mejore su plan para añadir más espacio.</string>
   <string name="composer_attach_capture_from_camera_error">No es posible capturar un archivo adjunto desde la cámara en este momento.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>

@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">超過附件數量上限 (100)。</string>
   <string name="composer_delete_attachment_error">刪除附件時發生意外錯誤。</string>
   <string name="composer_unexpected_attachments_error">有與附件相關的意外錯誤。</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">您的儲存空間已滿。請騰出空間或升級以新增更多內容。</string>
   <string name="composer_attach_capture_from_camera_error">目前無法從相機拍攝附件</string>
   <string name="composer_warning_local_data_shown">此草稿的最新版本無法載入。任何變更將覆蓋其內容。</string>

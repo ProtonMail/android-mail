@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">S-a depășit numărul maxim de atașamente (100).</string>
   <string name="composer_delete_attachment_error">A apărut o eroare neașteptată în timpul ștergerii unui atașament.</string>
   <string name="composer_unexpected_attachments_error">A apărut o eroare neașteptată legată de atașamente.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Nu s-a putut salva atașamentul. Verificați spațiul de stocare și reîncercați.</string>
   <string name="composer_storage_quota_exceeded_error">Spațiul de stocare este plin. Trebui să eliberați spațiu sau să schimbați planul pentru a avea mai mult.</string>
   <string name="composer_attach_capture_from_camera_error">Capturarea unui atașament de la cameră nu este posibilă în acest moment.</string>
   <string name="composer_warning_local_data_shown">Nu s-a încărcat ultima versiune a acestei ciorne. Orice modificare va anula conținutul acesteia.</string>

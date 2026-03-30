@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Ouverture de la pièce jointe…</string>
   <string name="mailbox_attachment_download_error">La pièce jointe n\'a pas pu être ouverte. Nous vous invitons à réessayer.</string>
+  <string name="mailbox_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Attention</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Votre compte Proton a dépassé les 80 % de votre espace de stockage. Libérez de l\'espace ou changez d\'abonnement pour augmenter votre espace de stockage.</string>

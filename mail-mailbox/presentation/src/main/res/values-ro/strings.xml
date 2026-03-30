@@ -121,6 +121,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Se deschide atașamentul…</string>
   <string name="mailbox_attachment_download_error">Nu se poate deschide atașamentul. Reîncercați.</string>
+  <string name="mailbox_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Avertizare</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Spațiul de stocare al contului Proton este ocupat peste 80%. Eliberați spațiu sau treceți la un plan cu plată pentru a obține mai mult spațiu.</string>

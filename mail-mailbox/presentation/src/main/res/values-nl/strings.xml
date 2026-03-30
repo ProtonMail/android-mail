@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Bijlage openen…</string>
   <string name="mailbox_attachment_download_error">Kan de bijlage niet openen. Probeer het opnieuw.</string>
+  <string name="mailbox_attachment_download_in_progress">Huidige download moet voltooid zijn voordat u een nieuwe start.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Waarschuwing</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Uw Proton-account opslagruimte is meer dan 80% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>

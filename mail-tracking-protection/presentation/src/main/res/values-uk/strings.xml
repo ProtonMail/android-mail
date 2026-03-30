@@ -19,7 +19,7 @@
 <resources>
   <string name="trackers_protection">Захист від відстеження:</string>
   <string name="show_details">Показати деталі</string>
-  <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
+  <string name="trackers_protection_no_trackers_detected">Захист від відстеження: трекерів не виявлено</string>
   <string name="tracking_protection">Захист від відстеження</string>
   <string name="tracking_protection_description">Ми активно захищаємо вас від відстеження. Тут ви можете переглянути шпигунські пікселі, які ми заблокували, а також трекінгові посилання, які ми очистили в цьому повідомленні.</string>
   <string name="tracking_protection_learn_more">Дізнатися більше</string>

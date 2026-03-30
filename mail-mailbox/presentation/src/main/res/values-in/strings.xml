@@ -101,6 +101,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Membuka lampiran…</string>
   <string name="mailbox_attachment_download_error">Gagal membuka lampiran. Silakan coba lagi.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Peringatan</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Ruang penyimpanan akun Proton Anda telah lebih dari 80% penuh. Kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>

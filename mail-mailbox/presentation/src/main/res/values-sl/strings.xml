@@ -131,6 +131,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Odpiranje priponke…</string>
   <string name="mailbox_attachment_download_error">Priponke ni bilo mogoče odpreti. Poskusite znova.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Opozorilo</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Vaša Proton shramba je več kot 80 % zasedena. Sprostite prostor ali nadgradite za več prostora.</string>

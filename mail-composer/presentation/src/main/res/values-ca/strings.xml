@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">S\'ha superat el nombre màxim de fitxers adjunts (100).</string>
   <string name="composer_delete_attachment_error">S\'ha produït un error inesperat en suprimir un fitxer adjunt.</string>
   <string name="composer_unexpected_attachments_error">S\'ha produït un error inesperat relacionat amb els fitxers adjunts.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">No s\'ha pogut desar l\'adjunt. Comproveu l\'emmagatzematge i torneu-ho a provar.</string>
   <string name="composer_storage_quota_exceeded_error">L\'emmagatzematge és ple. Allibereu espai o milloreu de pla per afegir-ne més.</string>
   <string name="composer_attach_capture_from_camera_error">Capturar un adjunt des de la càmera no és possible en aquest moment.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>

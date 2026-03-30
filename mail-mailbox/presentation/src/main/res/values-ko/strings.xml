@@ -101,6 +101,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">첨부 파일 여는 중…</string>
   <string name="mailbox_attachment_download_error">첨부 파일을 열 수 없습니다. 나중에 다시 시도하세요.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">경고</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">사용자의 Proton 계정 저장 공간이 80% 이상 찼습니다. 공간을 비우거나 더 많은 저장 공간을 사용하기 위해 업그레이드 하세요.</string>

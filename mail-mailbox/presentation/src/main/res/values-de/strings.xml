@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Anhang wird geöffnet …</string>
   <string name="mailbox_attachment_download_error">Der Anhang konnte nicht geöffnet werden. Bitte erneut versuchen.</string>
+  <string name="mailbox_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Warnung</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Der Speicherplatz deines Proton-Kontos ist zu mehr als 80% belegt. Gib Speicherplatz frei oder upgrade für mehr Speicherplatz.</string>

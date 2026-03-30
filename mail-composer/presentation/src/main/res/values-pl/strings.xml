@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Limit maksymalnej liczby załączników (100) został osiągnięty.</string>
   <string name="composer_delete_attachment_error">Wystąpił nieoczekiwany błąd podczas usuwania załącznika.</string>
   <string name="composer_unexpected_attachments_error">Wystąpił nieoczekiwany błąd z załącznikami.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Twoje miejsce na dane zostało zapełnione. Zwolnij miejsce lub ulepsz konto, aby dodać więcej.</string>
   <string name="composer_attach_capture_from_camera_error">Przechwytywanie załącznika z aparatu nie jest obecnie możliwe</string>
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>

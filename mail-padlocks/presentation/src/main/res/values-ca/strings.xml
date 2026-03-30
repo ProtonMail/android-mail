@@ -84,7 +84,7 @@
   <string name="padlocks_proton_sent_recipient_pgp_signed_description">Vostè ha %s aquest correu electrònic, demostrant al destinatari que el seu correu electrònic és genuí i no ha estat manipulat.</string>
   <string name="padlocks_proton_sent_recipient_pgp_signed_description_link_text">signat digitalment</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">Xifrat d\'extrem a extrem amb PGP</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Aquest correu electrònic està xifrat d\'extrem a extrem al dispositiu del remitent i només el pot desxifrar el destinatari. Proton no pot veure el contingut del correu en cap moment.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Aquest correu electrònic està xifrat d’extrem a extrem al dispositiu del remitent i només el pot desxifrar el destinatari. Proton no pot veure el contingut del correu electrònic en cap moment.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">xifrat d’extrem a extrem</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Xifrat d\'extrem a extrem per a un destinatari verificat</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Aquest correu electrònic és %s al dispositiu del remitent i només pot ser desxifrat pel destinatari. Proton no pot veure el contingut del correu en cap moment.</string>
@@ -99,7 +99,7 @@
   <string name="padlocks_sender_verified_contact_link_text">contacte verificat</string>
   <string name="padlocks_sender_verification_failed">El %s. Confirmeu l\'autenticitat del correu electrònic amb el vostre contacte.</string>
   <string name="padlocks_sender_verification_failed_link_text">no s\'ha pogut verificar el remitent</string>
-  <string name="padlocks_sender_verification_failed_no_signature">El %s perquè no va ser firmat. Si us plau, confirmeu l\'autenticitat del correu electrònic amb el vostre contacte.</string>
+  <string name="padlocks_sender_verification_failed_no_signature">El %s perquè no s\'ha signat. Confirmeu l\'autenticitat del correu electrònic amb el vostre contacte.</string>
   <string name="padlocks_sender_verification_failed_no_signature_link_text">no s\'ha pogut verificar el remitent</string>
   <string name="padlocks_recipient_verified_contact">El destinatari és un %s les claus de xifratge del qual heu considerat de confiança.</string>
   <string name="padlocks_recipient_verified_contact_link_text">contacte verificat</string>

@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Número máximo de 100 anexos foi excedido.</string>
   <string name="composer_delete_attachment_error">Ocorreu um erro inesperado ao tentar excluir um anexo.</string>
   <string name="composer_unexpected_attachments_error">Ocorreu um erro inesperado relacionado a anexos.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Seu armazenamento está cheio. Por favor, libere espaço ou faça upgrade para adicionar mais.</string>
   <string name="composer_attach_capture_from_camera_error">Capturar um anexo da câmera não é possível neste momento</string>
   <string name="composer_warning_local_data_shown">A versão mais recente deste rascunho não foi carregada. Qualquer alteração substituirá seu conteúdo.</string>

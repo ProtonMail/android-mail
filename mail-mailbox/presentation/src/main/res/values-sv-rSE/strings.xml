@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Öppnar bilaga …</string>
   <string name="mailbox_attachment_download_error">Kan inte öppna bilagan. Försök igen.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Varning</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lagringsutrymmet på ditt Proton-konto är mer än 80 % fullt. Frigör utrymme eller uppgradera för mer lagringsutrymme.</string>

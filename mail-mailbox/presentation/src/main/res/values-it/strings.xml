@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Scaricamento dell\'allegato in corso</string>
   <string name="mailbox_attachment_download_error">Scaricamento del file allegato non riuscito</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Spazio quasi pieno</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre l\'80%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>

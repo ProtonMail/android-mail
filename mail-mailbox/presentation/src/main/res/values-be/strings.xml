@@ -131,6 +131,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Адкрыццё далучэння...</string>
   <string name="mailbox_attachment_download_error">Немагчыма адкрыць далучэнне. Паспрабуйце яшчэ раз.</string>
+  <string name="mailbox_attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Папярэджанне</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 80%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>

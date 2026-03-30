@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Maximum aantal bijlage (100) overschreden.</string>
   <string name="composer_delete_attachment_error">Er is een onverwachte fout opgetreden tijdens het verwijderen van een bijlage.</string>
   <string name="composer_unexpected_attachments_error">Er is een onverwachte fout opgetreden met betrekking tot bijlagen.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Kon de bijlage niet opslaan. Controleer uw opslag en probeer opnieuw.</string>
   <string name="composer_storage_quota_exceeded_error">Uw opslag is vol. Maak ruimte vrij of upgrade om meer toe te voegen.</string>
   <string name="composer_attach_capture_from_camera_error">Het vastleggen van een bijlage met de camera is momenteel niet mogelijk.</string>
   <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>

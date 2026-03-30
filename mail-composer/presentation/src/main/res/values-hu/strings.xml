@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Túllépve a mellékletek maximális száma (100).</string>
   <string name="composer_delete_attachment_error">Váratlan hiba történt egy melléklet törlése közben.</string>
   <string name="composer_unexpected_attachments_error">Váratlan hiba történt a mellékletekkel kapcsolatban.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Your storage is full. Please free up space or upgrade to add more.</string>
   <string name="composer_attach_capture_from_camera_error">Egy melléklet rögzítése kameráról jelenleg nem lehetséges.</string>
   <string name="composer_warning_local_data_shown">A vázlat legutóbbi változatának betöltése nem sikerült. Bármilyen változtatás felülírja a tartalmát.</string>

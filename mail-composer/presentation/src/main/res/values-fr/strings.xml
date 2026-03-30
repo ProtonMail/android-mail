@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Le nombre maximal de pièces jointes (100) est dépassé.</string>
   <string name="composer_delete_attachment_error">Une erreur inattendue s’est produite lors de la suppression d’une pièce jointe.</string>
   <string name="composer_unexpected_attachments_error">Une erreur inattendue s’est produite concernant les pièces jointes.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Impossible d\'enregistrer la pièce jointe. Vérifiez votre espace de stockage et réessayez.</string>
   <string name="composer_storage_quota_exceeded_error">Votre espace de stockage est rempli. Veuillez libérer de l\'espace ou changer d\'abonnement pour en avoir plus.</string>
   <string name="composer_attach_capture_from_camera_error">La capture d\'une pièce jointe depuis l\'appareil photo n\'est pas possible pour l\'instant.</string>
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>

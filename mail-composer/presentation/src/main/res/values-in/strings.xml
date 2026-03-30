@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Jumlah lampiran maksimal (100) terlampaui</string>
   <string name="composer_delete_attachment_error">Terdapat kesalahan yang tidak terduga pada saat menghapus lampiran.</string>
   <string name="composer_unexpected_attachments_error">Terdapat kesalahan yang tidak terduga yang berhubungan dengan lampiran.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Ruang penyimpanan Anda penuh. Silakan kosongkan ruang yang ada atau tingkatkan akun untuk menambahkan lebih banyak ruang.</string>
   <string name="composer_attach_capture_from_camera_error">Mengambil lampiran dari kamera saat ini belum dimungkinkan</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>

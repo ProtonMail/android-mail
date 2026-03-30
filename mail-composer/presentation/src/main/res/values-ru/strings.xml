@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Превышено максимальное количество вложений (100).</string>
   <string name="composer_delete_attachment_error">При удалении вложения произошла непредвиденная ошибка.</string>
   <string name="composer_unexpected_attachments_error">Произошла непредвиденная ошибка, связанная с вложениями.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Your storage is full. Please free up space or upgrade to add more.</string>
   <string name="composer_attach_capture_from_camera_error">В настоящее время невозможно добавить вложение с камеры</string>
   <string name="composer_warning_local_data_shown">Последняя версия этого черновика не загрузилась. Любые изменения заменят его содержимое.</string>

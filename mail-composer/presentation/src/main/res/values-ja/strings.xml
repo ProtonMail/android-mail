@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">添付ファイルの最大数（100個）を超えました。</string>
   <string name="composer_delete_attachment_error">添付ファイルの削除中に予期しないエラーが発生しました。</string>
   <string name="composer_unexpected_attachments_error">添付ファイルに関連して、予期しないエラーが発生しました。</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">ストレージがいっぱいです。スペースを開けるかアップグレードしてさらに追加してください。</string>
   <string name="composer_attach_capture_from_camera_error">現在、カメラからの添付ファイルの取り込みはできません。</string>
   <string name="composer_warning_local_data_shown">この下書きの最新バージョンの読み込みに失敗しました。変更するとコンテンツが上書きされます。</string>

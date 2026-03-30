@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Ek dosya açılıyor…</string>
   <string name="mailbox_attachment_download_error">Ek dosya açılamadı. Lütfen yeniden deneyin.</string>
+  <string name="mailbox_attachment_download_in_progress">Yeni bir indirme başlatmadan önce geçerli indirme tamamlanmalıdır.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Uyarı</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Proton hesabınızın depolama alanı %80 oranında dolu. Alan boşaltabilir ya da daha fazla depolama alanı edinmek için tarifenizi yükseltebilirsiniz.</string>

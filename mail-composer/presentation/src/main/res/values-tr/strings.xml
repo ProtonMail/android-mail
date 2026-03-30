@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">En fazla ek dosya sayısına (100) ulaşıldı.</string>
   <string name="composer_delete_attachment_error">Bir ek dosya silinirken beklenmeyen bir sorun çıktı.</string>
   <string name="composer_unexpected_attachments_error">Ek dosyalarla ilgili beklenmeyen bir sorun çıktı.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Ek dosya kaydedilemedi. Depolama alanınızı denetleyip yeniden deneyin.</string>
   <string name="composer_storage_quota_exceeded_error">Depolama alanınız dolu. Lütfen yer açın veya depolama alanınızı artırmak için tarifenizi yükseltin.</string>
   <string name="composer_attach_capture_from_camera_error">Şu anda kameradan bir ek dosya eklenemez</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>

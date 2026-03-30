@@ -101,6 +101,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">正在開啟附件……</string>
   <string name="mailbox_attachment_download_error">無法開啟附件。請再試一次。</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">注意</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">您的 Proton 帳號儲存空間已超過 80% 滿。清理一下資料，或者升級以獲取更多空間。</string>

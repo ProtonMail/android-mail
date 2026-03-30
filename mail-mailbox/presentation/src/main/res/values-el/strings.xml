@@ -111,6 +111,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Άνοιγμα συνημμένου…</string>
   <string name="mailbox_attachment_download_error">Δεν είναι δυνατό το άνοιγμα του συνημμένου. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="mailbox_attachment_download_in_progress">Η τρέχουσα λήψη πρέπει να ολοκληρωθεί πριν την έναρξη νέας.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Προειδοποίηση</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 80%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>

@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Limite di 100 allegati superato</string>
   <string name="composer_delete_attachment_error">Eliminazione del file allegato non riuscita</string>
   <string name="composer_unexpected_attachments_error">Si è verificato un errore</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">La tua archiviazione è piena. Libera spazio o effettua l\'upgrade per aggiungerne altro.</string>
   <string name="composer_attach_capture_from_camera_error">Scatto della foto non riuscito</string>
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione della bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>

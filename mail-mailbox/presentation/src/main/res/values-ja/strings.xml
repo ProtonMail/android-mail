@@ -101,6 +101,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">添付ファイルを開いています…</string>
   <string name="mailbox_attachment_download_error">添付ファイルを開けませんでした。もう一度お試しください。</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">警告</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Proton アカウントのストレージ使用率が 80% を超えています。容量を解放するか、ストレージ追加のためアップグレードしてください。</string>

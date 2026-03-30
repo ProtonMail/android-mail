@@ -131,6 +131,7 @@
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_started">Открытие вложения…</string>
   <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
+  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Предупреждение</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Хранилище аккаунта Proton заполнено более чем на 80 %. Освободите место или улучшите тариф, чтобы получить больше места.</string>

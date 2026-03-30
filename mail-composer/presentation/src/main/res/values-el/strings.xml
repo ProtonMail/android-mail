@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Υπέρβαση μέγιστου αριθμού συνημμένων (100).</string>
   <string name="composer_delete_attachment_error">Παρουσιάστηκε ένα μη αναμενόμενο σφάλμα κατά τη διαγραφή ενός συνημμένου.</string>
   <string name="composer_unexpected_attachments_error">Παρουσιάστηκε ένα μη αναμενόμενο σφάλμα που σχετίζεται με τα συνημμένα.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Δεν ήταν δυνατή η αποθήκευση του συνημμένου. Ελέγξτε τον χώρο αποθήκευσης σας και προσπαθήστε ξανά.</string>
   <string name="composer_storage_quota_exceeded_error">Ο αποθηκευτικός σας χώρος είναι πλήρης. Παρακαλούμε απελευθερώστε χώρο ή αναβαθμίστε για να προσθέσετε περισσότερο.</string>
   <string name="composer_attach_capture_from_camera_error">Η λήψη συνημμένου από την κάμερα δεν είναι δυνατή αυτή τη στιγμή.</string>
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>

@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Maximalt antal bilagor (100) har överskridits.</string>
   <string name="composer_delete_attachment_error">Ett oväntat fel uppstod när en bilaga togs bort.</string>
   <string name="composer_unexpected_attachments_error">Det uppstod ett oväntat fel relaterat med bilagor.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Ditt lagringsutrymme är fullt. Frigör utrymme eller uppgradera för att lägga till mer.</string>
   <string name="composer_attach_capture_from_camera_error">Det går inte att hämta en bilaga från kameran just nu.</string>
   <string name="composer_warning_local_data_shown">Den senaste versionen av detta utkast misslyckades att laddas. Alla ändringar kommer att åsidosätta dess innehåll.</string>

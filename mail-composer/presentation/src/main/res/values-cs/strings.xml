@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Překročen maximální počet příloh (100).</string>
   <string name="composer_delete_attachment_error">Při mazání přílohy došlo k neočekávané chybě.</string>
   <string name="composer_unexpected_attachments_error">V souvislosti s přílohami došlo k neočekávané chybě.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Přílohu se nepodařilo uložit. Zkontrolujte volné místo v úložišti a zkuste to znovu.</string>
   <string name="composer_storage_quota_exceeded_error">Vaše úložiště je plné. Uvolněte místo nebo proveďte navýšení, abyste získali více.</string>
   <string name="composer_attach_capture_from_camera_error">Nahrávání přílohy z fotoaparátu není v tuto chvíli možné</string>
   <string name="composer_warning_local_data_shown">Nejnovější verzi tohoto návrhu se nepodařilo načíst. Jakákoli změna přepíše její obsah.</string>

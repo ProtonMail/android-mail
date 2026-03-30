@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Prekoračeno je največje število priponk (100).</string>
   <string name="composer_delete_attachment_error">Pri brisanju priponke je prišlo do nepričakovane napake.</string>
   <string name="composer_unexpected_attachments_error">Prišlo je do nepričakovane napake, povezane s priponkami.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Vaša shramba je polna. Lahko sprostite prostor ali nadgradite vaš paket za več prostora.</string>
   <string name="composer_attach_capture_from_camera_error">Trenutno ni mogoče zajeti priponke s kamero</string>
   <string name="composer_warning_local_data_shown">Zadnje različice tega osnutka ni bilo mogoče naložiti. Vsaka sprememba bo vplivala na njeno vsebino.</string>

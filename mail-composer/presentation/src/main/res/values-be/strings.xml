@@ -60,6 +60,7 @@
   <string name="composer_too_many_attachments_error">Перавышана максімальная колькасць далучэнняў (100).</string>
   <string name="composer_delete_attachment_error">Адбылася нечаканая памылка пры выдаленні далучэння.</string>
   <string name="composer_unexpected_attachments_error">Адбылася нечаканая памылка, якая звязана з далучэннямі.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
   <string name="composer_storage_quota_exceeded_error">Ваша сховішча запоўнена. Вызваліце месца або палепшыце свой тарыфны план, каб дадаць больш файлаў.</string>
   <string name="composer_attach_capture_from_camera_error">Захоп далучэння з камеры ў цяперашні час немагчымы</string>
   <string name="composer_warning_local_data_shown">Збой загрузкі апошняй версіі гэтага чарнавіка. Любыя змены перавызначаць яго змесціва.</string>
