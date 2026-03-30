@@ -16,7 +16,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="mailbox_fab_compose_button_title">Compose</string>
     <string name="mailbox_fab_compose_button_content_description">Compose new message</string>
     <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
     <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
