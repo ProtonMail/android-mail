@@ -128,6 +128,7 @@ object MailDimens {
     val OnboardingUpsellButtonHeight = 48.dp
 
     val MailboxFabRadius = 32.dp
+    val SnackbarFabOffset = 56.dp
 
     val MessageBannerIconSize = 20.dp
 

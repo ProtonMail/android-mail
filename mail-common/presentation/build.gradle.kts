@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.module.presentation)
+    implementation(libs.android.material.icons.extended)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":uicomponents"))
