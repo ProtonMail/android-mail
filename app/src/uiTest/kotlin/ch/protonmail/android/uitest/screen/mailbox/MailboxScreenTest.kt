@@ -46,7 +46,6 @@ import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
-import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
@@ -202,7 +201,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             ManagedState(stateManager = stateManager) { mailboxState ->
                 MailboxScreen(
                     mailboxState = mailboxState,
-                    fabHostState = ProtonFabHostState(),
                     mailboxListItems = itemsFlow.collectAsLazyPagingItems(),
                     actions = MailboxScreen.Actions.Empty
                 )
@@ -237,7 +235,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
 
             MailboxScreen(
                 mailboxState = state,
-                fabHostState = ProtonFabHostState(),
                 mailboxListItems = mailboxItems,
                 actions = MailboxScreen.Actions.Empty
             )

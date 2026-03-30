@@ -23,15 +23,8 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -53,15 +46,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -81,7 +68,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -128,9 +114,9 @@ import ch.protonmail.android.mailcommon.presentation.SnackbarError
 import ch.protonmail.android.mailcommon.presentation.SnackbarNormal
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.SnackbarUndo
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.AvatarImageUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
@@ -175,8 +161,6 @@ import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheet
 import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheetScreen
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
-import ch.protonmail.android.uicomponents.fab.LazyFab
-import ch.protonmail.android.uicomponents.fab.ProtonFabHostState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -192,7 +176,7 @@ fun MailboxScreen(
     actions: MailboxScreen.Actions,
     onEvent: (AccountSwitchEvent) -> Unit,
     viewModel: MailboxViewModel = hiltViewModel(),
-    fabHostState: ProtonFabHostState
+    isSnackbarVisible: Boolean = false
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
 
@@ -441,9 +425,9 @@ fun MailboxScreen(
     ) {
         MailboxScreen(
             mailboxState = mailboxState,
-            fabHostState = fabHostState,
             mailboxListItems = mailboxListItems,
             actions = completeActions,
+            isSnackbarVisible = isSnackbarVisible,
             modifier = modifier.semantics { testTagsAsResourceId = true }
         )
     }
@@ -452,9 +436,9 @@ fun MailboxScreen(
 @Composable
 fun MailboxScreen(
     mailboxState: MailboxState,
-    fabHostState: ProtonFabHostState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions,
+    isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -462,12 +446,6 @@ fun MailboxScreen(
     val rememberTopBarHeight = remember { mutableStateOf(0.dp) }
     val refreshErrorText = stringResource(id = R.string.mailbox_error_message_generic)
     val context = LocalContext.current
-
-    val showMinimizedFab by remember {
-        derivedStateOf {
-            lazyListState.firstVisibleItemIndex > 0
-        }
-    }
 
     val stickyHeaderActions = MailboxStickyHeader.Actions(
         onUnreadFilterEnabled = actions.onEnableUnreadFilter,
@@ -497,21 +475,7 @@ fun MailboxScreen(
 
     DeleteDialog(state = mailboxState.clearAllDialogState, actions.onClearAllConfirmed, actions.onClearAllDismissed)
 
-    LazyFab(fabHostState) { modifier ->
-        val mailboxListState = mailboxState.mailboxListState
-
-        if (mailboxListState is MailboxListState.Data && mailboxListState.shouldShowFab) {
-            AnimatedComposeMailFab(
-                modifier = modifier.windowInsetsPadding(
-                    WindowInsets
-                        .safeDrawing
-                        .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
-                ),
-                showMinimized = showMinimizedFab,
-                onComposeClick = actions.navigateToComposer
-            )
-        }
-    }
+    val isInSelectionMode = mailboxState.bottomAppBarState is BottomBarState.Data.Shown
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -559,41 +523,6 @@ fun MailboxScreen(
                     )
                 )
             }
-        },
-        bottomBar = {
-            BottomActionBar(
-                state = mailboxState.bottomAppBarState,
-                viewActionCallbacks = BottomActionBar.Actions(
-                    onMove = actions.onMoveToClicked,
-                    onLabel = actions.onLabelAsClicked,
-                    onTrash = actions.trash,
-                    onDelete = actions.delete,
-                    onArchive = actions.archive,
-                    onSpam = actions.spam,
-                    onMoveToInbox = actions.moveToInbox,
-                    onViewInLightMode = { Timber.d("mailbox onViewInLightMode clicked") },
-                    onViewInDarkMode = { Timber.d("mailbox onViewInDarkMode clicked") },
-                    onPrint = { Timber.d("mailbox onPrint clicked") },
-                    onViewHeaders = { Timber.d("mailbox onViewHeaders clicked") },
-                    onViewHtml = { Timber.d("mailbox onViewHtml clicked") },
-                    onReportPhishing = { Timber.d("mailbox onReportPhishing clicked") },
-                    onRemind = { Timber.d("mailbox onRemind clicked") },
-                    onSavePdf = { Timber.d("mailbox onSavePdf clicked") },
-                    onSenderEmail = { Timber.d("mailbox onSenderEmail clicked") },
-                    onSaveAttachments = { Timber.d("mailbox onSaveAttachments clicked") },
-                    onMore = actions.onMoreClicked,
-                    onMarkRead = actions.markAsRead,
-                    onMarkUnread = actions.markAsUnread,
-                    onStar = actions.star,
-                    onUnstar = actions.unStar,
-                    onCustomizeToolbar = { Timber.d("mailbox onCustomizeToolbar clicked") },
-                    onSnooze = actions.onSnooze,
-                    onActionBarVisibilityChanged = actions.onActionBarVisibilityChanged,
-                    onReply = { Timber.d("mailbox onReply clicked") },
-                    onReplyAll = { Timber.d("mailbox onReplyAll clicked") },
-                    onForward = { Timber.d("mailbox onForward clicked") }
-                )
-            )
         }
     ) { paddingValues ->
 
@@ -629,109 +558,66 @@ fun MailboxScreen(
             }
         }
 
-        MailboxSwipeRefresh(
-            modifier = Modifier.padding(paddingValues),
-            topBarHeight = rememberTopBarHeight.value,
-            items = mailboxListItems,
-            state = mailboxListState,
-            listState = lazyListState,
-            viewState = mailboxListState,
-            unreadFilterState = mailboxState.unreadFilterState,
-            actions = actions
-        )
-    }
-}
+        Box(modifier = Modifier.fillMaxSize()) {
+            MailboxSwipeRefresh(
+                modifier = Modifier.padding(paddingValues),
+                topBarHeight = rememberTopBarHeight.value,
+                items = mailboxListItems,
+                state = mailboxListState,
+                listState = lazyListState,
+                viewState = mailboxListState,
+                unreadFilterState = mailboxState.unreadFilterState,
+                actions = actions
+            )
 
-@Composable
-private fun AnimatedComposeMailFab(
-    showMinimized: Boolean,
-    modifier: Modifier = Modifier,
-    onComposeClick: () -> Unit
-) {
-    AnimatedContent(
-        modifier = modifier
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(MailDimens.MailboxFabRadius),
-                clip = false,
-                ambientColor = ProtonTheme.colors.shadowLifted.copy(alpha = 0.4f),
-                spotColor = ProtonTheme.colors.shadowLifted.copy(alpha = 0.4f)
-            ),
-        targetState = showMinimized,
-        transitionSpec = {
-            (scaleIn(initialScale = 0.8f) + fadeIn())
-                .togetherWith(scaleOut(targetScale = 0.8f) + fadeOut())
+            val bottomBarActions = remember(actions) {
+                BottomActionBar.Actions(
+                    onMove = actions.onMoveToClicked,
+                    onLabel = actions.onLabelAsClicked,
+                    onTrash = actions.trash,
+                    onDelete = actions.delete,
+                    onArchive = actions.archive,
+                    onSpam = actions.spam,
+                    onMoveToInbox = actions.moveToInbox,
+                    onViewInLightMode = { Timber.d("mailbox onViewInLightMode clicked") },
+                    onViewInDarkMode = { Timber.d("mailbox onViewInDarkMode clicked") },
+                    onPrint = { Timber.d("mailbox onPrint clicked") },
+                    onViewHeaders = { Timber.d("mailbox onViewHeaders clicked") },
+                    onViewHtml = { Timber.d("mailbox onViewHtml clicked") },
+                    onReportPhishing = { Timber.d("mailbox onReportPhishing clicked") },
+                    onRemind = { Timber.d("mailbox onRemind clicked") },
+                    onSavePdf = { Timber.d("mailbox onSavePdf clicked") },
+                    onSenderEmail = { Timber.d("mailbox onSenderEmail clicked") },
+                    onSaveAttachments = { Timber.d("mailbox onSaveAttachments clicked") },
+                    onMore = actions.onMoreClicked,
+                    onMarkRead = actions.markAsRead,
+                    onMarkUnread = actions.markAsUnread,
+                    onStar = actions.star,
+                    onUnstar = actions.unStar,
+                    onCustomizeToolbar = { Timber.d("mailbox onCustomizeToolbar clicked") },
+                    onSnooze = actions.onSnooze,
+                    onReply = { Timber.d("mailbox onReply clicked") },
+                    onReplyAll = { Timber.d("mailbox onReplyAll clicked") },
+                    onForward = { Timber.d("mailbox onForward clicked") }
+                )
+            }
+
+            MailboxFabToolbarMorph(
+                isInSelectionMode = isInSelectionMode,
+                bottomBarState = mailboxState.bottomAppBarState,
+                bottomBarActions = bottomBarActions,
+                onComposeClick = actions.navigateToComposer,
+                isSnackbarVisible = isSnackbarVisible,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing
+                            .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
+                    )
+                    .padding(horizontal = ProtonDimens.Spacing.Large)
+                    .padding(bottom = ProtonDimens.Spacing.Large)
+            )
         }
-    ) { minimized ->
-        if (minimized) {
-            IconOnlyComposeMailFab(onComposeClick)
-        } else {
-            ComposeMailFab(onComposeClick)
-        }
-    }
-}
-
-@Composable
-fun ComposeMailFab(onComposeClick: () -> Unit) {
-    ExtendedFloatingActionButton(
-        onClick = { onComposeClick() },
-        icon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                contentDescription = stringResource(id = R.string.mailbox_fab_compose_button_content_description),
-                tint = ProtonTheme.colors.iconNorm
-            )
-        },
-        text = {
-            Text(
-                text = stringResource(id = R.string.mailbox_fab_compose_button_title),
-                color = ProtonTheme.colors.textNorm,
-                style = ProtonTheme.typography.titleMedium
-            )
-        },
-        modifier = Modifier
-            .border(
-                ProtonDimens.OutlinedBorderSize,
-                ProtonTheme.colors.borderLight, RoundedCornerShape(MailDimens.MailboxFabRadius)
-            )
-            .background(
-                color = ProtonTheme.colors.interactionFabNorm,
-                shape = RoundedCornerShape(MailDimens.MailboxFabRadius)
-            ),
-        expanded = true,
-        shape = RoundedCornerShape(MailDimens.MailboxFabRadius),
-        containerColor = ProtonTheme.colors.interactionFabNorm,
-        contentColor = ProtonTheme.colors.iconNorm,
-        elevation = FloatingActionButtonDefaults.elevation(
-            defaultElevation = 0.dp,
-            pressedElevation = 0.dp
-        )
-    )
-}
-
-@Composable
-fun IconOnlyComposeMailFab(onComposeClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = { onComposeClick() },
-        modifier = Modifier
-            .border(
-                width = 1.dp,
-                color = ProtonTheme.colors.borderLight,
-                shape = CircleShape
-            ),
-        shape = RoundedCornerShape(MailDimens.MailboxFabRadius),
-        containerColor = ProtonTheme.colors.interactionFabNorm,
-        contentColor = ProtonTheme.colors.iconNorm,
-        elevation = FloatingActionButtonDefaults.elevation(
-            defaultElevation = 0.dp,
-            pressedElevation = 0.dp
-        )
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_proton_pen_square),
-            contentDescription = stringResource(id = R.string.mailbox_fab_compose_button_content_description),
-            tint = ProtonTheme.colors.iconNorm
-        )
     }
 }
 
@@ -1306,7 +1192,6 @@ object MailboxScreen {
         val onClearAllConfirmed: () -> Unit,
         val onClearAllDismissed: () -> Unit,
         val onSnooze: () -> Unit,
-        val onActionBarVisibilityChanged: (Boolean) -> Unit,
         val onCustomizeToolbar: () -> Unit,
         val validateUserSession: () -> Unit,
         val onShowRatingBooster: () -> Unit
@@ -1372,7 +1257,6 @@ object MailboxScreen {
                 onNavigateToUpselling = { _, _ -> },
                 onSnooze = {},
                 onCustomizeToolbar = {},
-                onActionBarVisibilityChanged = {},
                 validateUserSession = {},
                 onShowRatingBooster = {}
             )
@@ -1392,7 +1276,6 @@ private fun MailboxScreenPreview(@PreviewParameter(MailboxPreviewProvider::class
         MailboxScreen(
             mailboxListItems = mailboxPreview.items.collectAsLazyPagingItems(),
             mailboxState = mailboxPreview.state,
-            fabHostState = ProtonFabHostState(),
             actions = MailboxScreen.Actions.Empty
         )
     }
@@ -1459,6 +1342,7 @@ private fun MailboxAppendErrorPreview() {
         AppendError(message = stringResource(id = R.string.mailbox_error_message_offline), onClick = {})
     }
 }
+
 
 object MailboxScreenTestTags {
 
