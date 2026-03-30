@@ -42,20 +42,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonHorizontallyCenteredProgress
-import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
 import ch.protonmail.android.design.compose.component.ProtonSnackbarType
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maildetail.presentation.model.ConversationTopBarState
 import ch.protonmail.android.maildetail.presentation.model.DynamicViewPagerState
 import ch.protonmail.android.maildetail.presentation.model.Error
@@ -64,7 +61,6 @@ import ch.protonmail.android.maildetail.presentation.model.Page
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState
 import ch.protonmail.android.maildetail.presentation.viewmodel.PagedConversationDetailViewModel
-import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -76,6 +72,7 @@ import timber.log.Timber
 fun PagedConversationDetailScreen(
     modifier: Modifier = Modifier,
     actions: ConversationDetail.Actions,
+    isSnackbarVisible: Boolean = false,
     viewModel: PagedConversationDetailViewModel = hiltViewModel()
 ) {
 
@@ -109,7 +106,8 @@ fun PagedConversationDetailScreen(
                 conversationDetailActions = actions,
                 state = currentState,
                 showUndoableOperationSnackbar = { action -> actions.showUndoableOperationSnackbar(action) },
-                onPagerAction = { viewModel.submit(it) }
+                onPagerAction = { viewModel.submit(it) },
+                isSnackbarVisible = isSnackbarVisible
             )
         }
     }
@@ -121,7 +119,8 @@ private fun PagedConversationDetailScreen(
     conversationDetailActions: ConversationDetail.Actions,
     state: PagedConversationDetailState.Ready,
     showUndoableOperationSnackbar: (notifyUserMessage: ActionResult?) -> Unit,
-    onPagerAction: (PagedConversationDetailAction) -> Unit
+    onPagerAction: (PagedConversationDetailAction) -> Unit,
+    isSnackbarVisible: Boolean = false
 ) {
     val onTopbarBackClicked = { conversationDetailActions.onExit(null) }
     val actions = state.settings.autoAdvanceEnabled.takeIf { it }?.let {
@@ -153,7 +152,8 @@ private fun PagedConversationDetailScreen(
         swipeEnabled = state.settings.swipeEnabled,
         conversationDetailScreenNavArgs = conversationDetailScreenArgs,
         onPagerAction = onPagerAction,
-        onTopBarExit = onTopbarBackClicked
+        onTopBarExit = onTopbarBackClicked,
+        isSnackbarVisible = isSnackbarVisible
     )
 }
 
@@ -166,7 +166,8 @@ private fun ConversationPager(
     state: DynamicViewPagerState,
     swipeEnabled: Boolean,
     onPagerAction: (PagedConversationDetailAction) -> Unit,
-    onTopBarExit: () -> Unit
+    onTopBarExit: () -> Unit,
+    isSnackbarVisible: Boolean = false
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPageIndex ?: 0,
@@ -208,8 +209,6 @@ private fun ConversationPager(
         }
     }
 
-    val snackbarHostState = remember { ProtonSnackbarHostState() }
-
     var currentTopBarState by remember { mutableStateOf(ConversationTopBarState()) }
     val onTopBarStateUpdated = { state: ConversationTopBarState ->
         currentTopBarState = state
@@ -219,12 +218,6 @@ private fun ConversationPager(
         modifier = modifier,
         containerColor = ProtonTheme.colors.backgroundNorm,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
-        snackbarHost = {
-            DismissableSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
-                protonSnackbarHostState = snackbarHostState
-            )
-        },
         topBar = {
             DetailScreenTopBar(
                 title = currentTopBarState.title.value,
@@ -248,7 +241,8 @@ private fun ConversationPager(
             conversationDetailNavigationArgs = conversationDetailScreenNavArgs,
             onTopBarStateUpdated = onTopBarStateUpdated,
             canScroll = state.userScrollEnabled && swipeEnabled,
-            isDirectionForwards = { pagerState.lastScrolledForward }
+            isDirectionForwards = { pagerState.lastScrolledForward },
+            isSnackbarVisible = isSnackbarVisible
         )
     }
 
@@ -264,7 +258,8 @@ private fun Pager(
     pages: ImmutableList<Page>,
     canScroll: Boolean,
     onTopBarStateUpdated: (ConversationTopBarState) -> Unit,
-    isDirectionForwards: () -> Boolean
+    isDirectionForwards: () -> Boolean,
+    isSnackbarVisible: Boolean = false
 ) {
     HorizontalPager(
         modifier = modifier,
@@ -294,7 +289,8 @@ private fun Pager(
                         initialScrollToMessageId = item.cursorId.messageId?.let { MessageIdUiModel(it) }
                     ),
                     conversationId = item.cursorId.conversationId,
-                    isDirectionForwards = isDirectionForwards
+                    isDirectionForwards = isDirectionForwards,
+                    isSnackbarVisible = isSnackbarVisible
                 )
             }
 
@@ -324,14 +320,16 @@ private fun PageUpdated(
     conversationActions: ConversationDetail.Actions,
     navigationArgs: ConversationDetail.NavigationArgs,
     conversationId: ConversationId,
-    isDirectionForwards: () -> Boolean
+    isDirectionForwards: () -> Boolean,
+    isSnackbarVisible: Boolean = false
 ) {
     ConversationDetailScreen(
         actions = conversationActions,
         conversationId = conversationId,
         navigationArgs = navigationArgs,
         topBarState = topBarHostState,
-        isDirectionForwards = isDirectionForwards
+        isDirectionForwards = isDirectionForwards,
+        isSnackbarVisible = isSnackbarVisible
     )
 }
 

@@ -76,6 +76,7 @@ object ProtonDimens {
 
     object ShadowElevation {
 
+        val Mini = 2.dp
         val Soft = 4.dp
         val Raised = 8.dp
         val Lifted = 16.dp

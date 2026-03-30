@@ -24,13 +24,20 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.AnimationConstants
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -53,6 +60,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
@@ -89,11 +97,11 @@ import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.FloatingBottomToolbar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
@@ -167,7 +175,8 @@ fun ConversationDetailScreen(
     conversationId: ConversationId,
     navigationArgs: ConversationDetail.NavigationArgs,
     topBarState: ConversationTopBarState,
-    isDirectionForwards: () -> Boolean
+    isDirectionForwards: () -> Boolean,
+    isSnackbarVisible: Boolean = false
 ) {
     val viewModel = hiltViewModel<ConversationDetailViewModel, ConversationDetailViewModel.Factory>(
         key = conversationId.id + navigationArgs.initialScrollToMessageId + navigationArgs.singleMessageMode
@@ -542,6 +551,7 @@ fun ConversationDetailScreen(
                 state = state,
                 topBarState = topBarState,
                 isDirectionForwards = isDirectionForwards,
+                isSnackbarVisible = isSnackbarVisible,
                 actions = ConversationDetailScreen.Actions(
                     onExit = actions.onExit,
                     onExitWithError = {
@@ -682,7 +692,6 @@ fun ConversationDetailScreen(
                         viewModel.submit(ConversationDetailViewAction.OnUnsnoozeConversationRequested)
                     },
                     onSnooze = { viewModel.submit(ConversationDetailViewAction.RequestSnoozeBottomSheet) },
-                    onActionBarVisibilityChanged = actions.onActionBarVisibilityChanged,
                     onUnsubscribeFromNewsletter = {
                         viewModel.submit(ConversationDetailViewAction.UnsubscribeFromNewsletter(MessageId(it.id)))
                     },
@@ -720,9 +729,16 @@ private fun ConversationDetailScreen(
     actions: ConversationDetailScreen.Actions,
     modifier: Modifier = Modifier,
     topBarState: ConversationTopBarState,
-    isDirectionForwards: () -> Boolean
+    isDirectionForwards: () -> Boolean,
+    isSnackbarVisible: Boolean = false
 ) {
     val snackbarHostState = remember { ProtonSnackbarHostState() }
+    val isSnackbarVisible = isSnackbarVisible || snackbarHostState.snackbarHostState.currentSnackbarData != null
+    val snackbarOffset by animateDpAsState(
+        targetValue = if (isSnackbarVisible) MailDimens.SnackbarFabOffset else 0.dp,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "snackbarOffset"
+    )
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
     val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
@@ -834,135 +850,141 @@ private fun ConversationDetailScreen(
         }
     }
 
-    Scaffold(
-        modifier = modifier
-            .testTag(ConversationDetailScreenTestTags.RootItem),
-        containerColor = ProtonTheme.colors.backgroundNorm,
-        snackbarHost = {
-            DismissableSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
-                protonSnackbarHostState = snackbarHostState
-            )
-        },
-        bottomBar = {
-            if (state.bottomBarState is BottomBarState.Data.Shown) {
-                BottomActionBar(
-                    state = state.bottomBarState,
-                    viewActionCallbacks = BottomActionBar.Actions(
-                        onMarkRead = actions.onReadClick,
-                        onMarkUnread = actions.onUnreadClick,
-                        onStar = actions.onStarClick,
-                        onUnstar = actions.onUnStarClick,
-                        onMove = actions.onMoveToClick,
-                        onLabel = actions.onLabelAsClick,
-                        onTrash = actions.onTrashClick,
-                        onDelete = actions.onDeleteClick,
-                        onArchive = actions.onArchiveClick,
-                        onSpam = actions.onSpamClick,
-                        onMoveToInbox = actions.onMoveToInboxClick,
-                        onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
-                        onViewInDarkMode = { Timber.d("conversation onViewInDarkMode clicked") },
-                        onPrint = { rawId -> actions.onPrint(MessageId(rawId)) },
-                        onViewHeaders = actions.showFeatureMissingSnackbar,
-                        onViewHtml = actions.showFeatureMissingSnackbar,
-                        onReportPhishing = { rawId -> actions.onReportPhishing(MessageId(rawId)) },
-                        onRemind = { Timber.d("conversation onRemind clicked") },
-                        onSavePdf = { Timber.d("conversation onSavePdf clicked") },
-                        onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
-                        onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") },
-                        onMore = actions.onMoreActionsClick,
-                        onCustomizeToolbar = { Timber.d("conversation onCustomizeToolbar clicked") },
-                        onSnooze = actions.onSnooze,
-                        onActionBarVisibilityChanged = actions.onActionBarVisibilityChanged,
-                        onReply = { rawId -> actions.onReply(MessageId(rawId)) },
-                        onReplyAll = { rawId -> actions.onReplyAll(MessageId(rawId)) },
-                        onForward = { rawId -> actions.onForward(MessageId(rawId)) }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            modifier = modifier
+                .testTag(ConversationDetailScreenTestTags.RootItem),
+            containerColor = ProtonTheme.colors.backgroundNorm,
+            bottomBar = { }
+        ) { innerPadding ->
+            when (state.messagesState) {
+                is ConversationDetailsMessagesState.Data -> {
+                    val conversationDetailItemActions = ConversationDetailItem.Actions(
+                        onExpand = actions.onExpandMessage,
+                        onCollapse = actions.onCollapseMessage,
+                        onOpenComposer = actions.onOpenComposer,
+                        onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                        onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
+                        onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
+                        onAttachmentClicked = actions.onAttachmentClicked,
+                        onToggleAttachmentsExpandCollapseMode = actions.onToggleAttachmentsExpandCollapseMode,
+                        showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                        loadImage = actions.loadImage,
+                        onReply = actions.onReply,
+                        onReplyAll = actions.onReplyAll,
+                        onForward = actions.onForward,
+                        onScrollRequestCompleted = actions.onScrollRequestCompleted,
+                        onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
+                        onMoreMessageActionsClick = actions.onMoreMessageActionsClick,
+                        onLoadRemoteContent = actions.onLoadRemoteContent,
+                        onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
+                        onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
+                        onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
+                        onPrint = actions.onPrint,
+                        onAvatarClicked = actions.onAvatarClicked,
+                        onAvatarImageLoadRequested = actions.onAvatarImageLoadRequested,
+                        onParticipantClicked = actions.onParticipantClicked,
+                        onMarkMessageAsLegitimate = actions.onMarkMessageAsLegitimate,
+                        onUnblockSender = actions.onUnblockSender,
+                        onEditScheduleSendMessage = actions.onEditScheduleSendMessage,
+                        onRetryRsvpEventLoading = actions.onRetryRsvpEventLoading,
+                        onAnswerRsvpEvent = actions.onAnswerRsvpEvent,
+                        onMessage = actions.onMessage,
+                        onUnsnoozeMessage = actions.onUnsnoozeMessage,
+                        onUnsubscribeFromNewsletter = actions.onUnsubscribeFromNewsletter,
+                        onDownloadImage = { messageId, imageUrl ->
+                            bodyImageSaver(BodyImageUiModel(imageUrl, messageId))
+                        },
+                        onLoadImagesAfterImageProxyFailure = actions.onLoadImagesAfterImageProxyFailure,
+                        onViewEntireMessageClicked = actions.onViewEntireMessageClicked,
+                        onBlockedTrackersClick = actions.onBlockedTrackersClick,
+                        onEncryptionInfoClick = actions.onEncryptionInfoClick
                     )
+                    val uiModel =
+                        (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel
+
+                    val layoutDirection = LocalLayoutDirection.current
+
+                    MessagesContent(
+                        modifier = Modifier.padding(
+                            start = innerPadding.calculateStartPadding(layoutDirection),
+                            top = (innerPadding.calculateTopPadding() - MailDimens.SingleLineTopAppBarHeight)
+                                .coerceAtLeast(0f.dp),
+                            end = innerPadding.calculateEndPadding(layoutDirection),
+                            bottom = (innerPadding.calculateBottomPadding() - ProtonDimens.Spacing.Tiny)
+                                .coerceAtLeast(0f.dp)
+                        ),
+                        uiModels = state.messagesState.messages,
+                        subject = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
+                        hiddenMessagesBannerState = state.hiddenMessagesBannerState,
+                        scrollToMessageState = state.scrollToMessageState,
+                        actions = conversationDetailItemActions,
+                        downloadingAttachmentId = state.downloadingAttachmentId,
+                        onHiddenMessagesBannerClick = actions.onHiddenMessagesBannerClick,
+                        conversationId = state.conversationId(),
+                        isDirectionForwards = isDirectionForwards,
+                        onSubjectScrolled = { alpha ->
+                            topBarState.updateSubjectAlpha(alpha)
+                        }
+                    )
+                }
+
+                is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
+                    modifier = Modifier.padding(innerPadding),
+                    errorMessage = state.messagesState.message.string()
+                )
+
+                is ConversationDetailsMessagesState.Loading,
+                is ConversationDetailsMessagesState.Offline -> ProtonCenteredProgress(
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
         }
-    ) { innerPadding ->
-        when (state.messagesState) {
-            is ConversationDetailsMessagesState.Data -> {
-                val conversationDetailItemActions = ConversationDetailItem.Actions(
-                    onExpand = actions.onExpandMessage,
-                    onCollapse = actions.onCollapseMessage,
-                    onOpenComposer = actions.onOpenComposer,
-                    onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                    onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
-                    onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
-                    onAttachmentClicked = actions.onAttachmentClicked,
-                    onToggleAttachmentsExpandCollapseMode = actions.onToggleAttachmentsExpandCollapseMode,
-                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                    loadImage = actions.loadImage,
-                    onReply = actions.onReply,
-                    onReplyAll = actions.onReplyAll,
-                    onForward = actions.onForward,
-                    onScrollRequestCompleted = actions.onScrollRequestCompleted,
-                    onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
-                    onMoreMessageActionsClick = actions.onMoreMessageActionsClick,
-                    onLoadRemoteContent = actions.onLoadRemoteContent,
-                    onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
-                    onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
-                    onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
-                    onPrint = actions.onPrint,
-                    onAvatarClicked = actions.onAvatarClicked,
-                    onAvatarImageLoadRequested = actions.onAvatarImageLoadRequested,
-                    onParticipantClicked = actions.onParticipantClicked,
-                    onMarkMessageAsLegitimate = actions.onMarkMessageAsLegitimate,
-                    onUnblockSender = actions.onUnblockSender,
-                    onEditScheduleSendMessage = actions.onEditScheduleSendMessage,
-                    onRetryRsvpEventLoading = actions.onRetryRsvpEventLoading,
-                    onAnswerRsvpEvent = actions.onAnswerRsvpEvent,
-                    onMessage = actions.onMessage,
-                    onUnsnoozeMessage = actions.onUnsnoozeMessage,
-                    onUnsubscribeFromNewsletter = actions.onUnsubscribeFromNewsletter,
-                    onDownloadImage = { messageId, imageUrl ->
-                        bodyImageSaver(BodyImageUiModel(imageUrl, messageId))
-                    },
-                    onLoadImagesAfterImageProxyFailure = actions.onLoadImagesAfterImageProxyFailure,
-                    onViewEntireMessageClicked = actions.onViewEntireMessageClicked,
-                    onBlockedTrackersClick = actions.onBlockedTrackersClick,
-                    onEncryptionInfoClick = actions.onEncryptionInfoClick
-                )
-                val uiModel = (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel
 
-                val layoutDirection = LocalLayoutDirection.current
-
-                MessagesContent(
-                    modifier = Modifier.padding(
-                        start = innerPadding.calculateStartPadding(layoutDirection),
-                        top = (innerPadding.calculateTopPadding() - MailDimens.SingleLineTopAppBarHeight)
-                            .coerceAtLeast(0f.dp),
-                        end = innerPadding.calculateEndPadding(layoutDirection),
-                        bottom = (innerPadding.calculateBottomPadding() - ProtonDimens.Spacing.Tiny)
-                            .coerceAtLeast(0f.dp)
-                    ),
-                    uiModels = state.messagesState.messages,
-                    subject = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
-                    hiddenMessagesBannerState = state.hiddenMessagesBannerState,
-                    scrollToMessageState = state.scrollToMessageState,
-                    actions = conversationDetailItemActions,
-                    downloadingAttachmentId = state.downloadingAttachmentId,
-                    onHiddenMessagesBannerClick = actions.onHiddenMessagesBannerClick,
-                    conversationId = state.conversationId(),
-                    isDirectionForwards = isDirectionForwards,
-                    onSubjectScrolled = { alpha ->
-                        topBarState.updateSubjectAlpha(alpha)
-                    }
-                )
-            }
-
-            is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
-                modifier = Modifier.padding(innerPadding),
-                errorMessage = state.messagesState.message.string()
+        FloatingBottomToolbar(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = ProtonDimens.Spacing.ExtraLarge + snackbarOffset)
+                .navigationBarsPadding(),
+            state = state.bottomBarState,
+            viewActionCallbacks = BottomActionBar.Actions(
+                onMarkRead = actions.onReadClick,
+                onMarkUnread = actions.onUnreadClick,
+                onStar = actions.onStarClick,
+                onUnstar = actions.onUnStarClick,
+                onMove = actions.onMoveToClick,
+                onLabel = actions.onLabelAsClick,
+                onTrash = actions.onTrashClick,
+                onDelete = actions.onDeleteClick,
+                onArchive = actions.onArchiveClick,
+                onSpam = actions.onSpamClick,
+                onMoveToInbox = actions.onMoveToInboxClick,
+                onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
+                onViewInDarkMode = { Timber.d("conversation onViewInDarkMode clicked") },
+                onPrint = { rawId -> actions.onPrint(MessageId(rawId)) },
+                onViewHeaders = actions.showFeatureMissingSnackbar,
+                onViewHtml = actions.showFeatureMissingSnackbar,
+                onReportPhishing = { rawId -> actions.onReportPhishing(MessageId(rawId)) },
+                onRemind = { Timber.d("conversation onRemind clicked") },
+                onSavePdf = { Timber.d("conversation onSavePdf clicked") },
+                onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
+                onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") },
+                onMore = actions.onMoreActionsClick,
+                onCustomizeToolbar = { Timber.d("conversation onCustomizeToolbar clicked") },
+                onSnooze = actions.onSnooze,
+                onReply = { rawId -> actions.onReply(MessageId(rawId)) },
+                onReplyAll = { rawId -> actions.onReplyAll(MessageId(rawId)) },
+                onForward = { rawId -> actions.onForward(MessageId(rawId)) }
             )
+        )
 
-            is ConversationDetailsMessagesState.Loading,
-            is ConversationDetailsMessagesState.Offline -> ProtonCenteredProgress(
-                modifier = Modifier.padding(innerPadding)
-            )
-        }
+        DismissableSnackbarHost(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
+                .testTag(CommonTestTags.SnackbarHost),
+            protonSnackbarHostState = snackbarHostState
+        )
     }
 }
 
@@ -1121,7 +1143,8 @@ private fun MessagesContent(
                 false // Allow the event to propagate
             },
         verticalArrangement = Arrangement.spacedBy(-MailDimens.ConversationCollapseHeaderOverlapHeight),
-        state = listState
+        state = listState,
+        contentPadding = PaddingValues(bottom = 100.dp)
     ) {
         item(key = "subject_header") {
             ConversationSubjectHeader(
@@ -1228,7 +1251,6 @@ object ConversationDetail {
         val recordMailboxScreenView: () -> Unit,
         val onExitWithOpenInComposer: (MessageId) -> Unit,
         val onNavigateToUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
-        val onActionBarVisibilityChanged: (Boolean) -> Unit,
         val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit,
         val onViewMessageHeaders: (MessageId) -> Unit,
         val onViewMessageHtml: (MessageId) -> Unit
@@ -1306,7 +1328,6 @@ object ConversationDetailScreen {
         val onMessage: (String) -> Unit,
         val onUnsnoozeMessage: () -> Unit,
         val onSnooze: () -> Unit,
-        val onActionBarVisibilityChanged: (Boolean) -> Unit,
         val onUnsubscribeFromNewsletter: (MessageIdUiModel) -> Unit,
         val onReportPhishing: (MessageId) -> Unit,
         val onLoadImagesAfterImageProxyFailure: (MessageId) -> Unit,
@@ -1368,7 +1389,6 @@ object ConversationDetailScreen {
                 onMessage = {},
                 onUnsnoozeMessage = {},
                 onSnooze = {},
-                onActionBarVisibilityChanged = {},
                 onUnsubscribeFromNewsletter = {},
                 onReportPhishing = {},
                 onLoadImagesAfterImageProxyFailure = {},

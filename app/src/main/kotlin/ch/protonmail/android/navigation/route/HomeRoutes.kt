@@ -58,14 +58,17 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 @SuppressWarnings("LongMethod")
-internal fun NavGraphBuilder.addConversationDetail(actions: ConversationDetail.Actions) {
-
+internal fun NavGraphBuilder.addConversationDetail(
+    actions: ConversationDetail.Actions,
+    isSnackbarVisible: () -> Boolean = { false }
+) {
     composableWithTransitions(
         route = Destination.Screen.Conversation.route,
         transitions = RouteTransitionSpec.Conversation
     ) {
         PagedConversationDetailScreen(
-            actions = actions
+            actions = actions,
+            isSnackbarVisible = isSnackbarVisible()
         )
     }
 }
