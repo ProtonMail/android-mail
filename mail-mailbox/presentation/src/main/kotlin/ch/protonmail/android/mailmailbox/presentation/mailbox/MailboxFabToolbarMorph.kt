@@ -23,6 +23,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -55,13 +56,19 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.FloatingToolbarActionIcons
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
+@Suppress("UseComposableActions")
 @Composable
 internal fun MailboxFabToolbarMorph(
     isInSelectionMode: Boolean,
+    isInSearch: Boolean,
+    unreadFilterState: UnreadFilterState,
     bottomBarState: BottomBarState,
     bottomBarActions: BottomActionBar.Actions,
     onComposeClick: () -> Unit,
+    onUnreadFilterEnabled: () -> Unit,
+    onUnreadFilterDisabled: () -> Unit,
     isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -79,7 +86,7 @@ internal fun MailboxFabToolbarMorph(
     val transition = updateTransition(targetState = isInSelectionMode, label = "fabToolbarMorph")
 
     val actionCount = (lastShownState.value?.actions?.size ?: 0)
-        .coerceAtMost(BottomActionBar.MAX_ACTIONS_COUNT + 1) // Additional item is "More" (3 dots)
+        .coerceAtMost(BottomActionBar.MAX_ACTIONS_COUNT + 1)
     val expandedWidth = (actionCount * ICON_BUTTON_SIZE).dp + ToolbarHorizontalPadding * 2
 
     val containerWidth by transition.animateDp(
@@ -112,49 +119,77 @@ internal fun MailboxFabToolbarMorph(
     Box(
         modifier = modifier
             .padding(bottom = snackbarOffset)
-            .fillMaxWidth(),
-        contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
+            .fillMaxWidth()
     ) {
-        Surface(
-            modifier = Modifier
-                .width(containerWidth)
-                .height(FabSize),
-            shape = RoundedCornerShape(percent = 50),
-            shadowElevation = ProtonDimens.ShadowElevation.Mini,
-            color = surfaceColor
-        ) {
+        val showUnreadFilter = !isInSelectionMode && !isInSearch
+        val unreadAlpha by animateFloatAsState(
+            targetValue = if (showUnreadFilter) 1f else 0f,
+            animationSpec = tween(UNREAD_ANIMATION_DURATION),
+            label = "unreadAlpha"
+        )
+        if (showUnreadFilter || unreadAlpha > 0f) {
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .graphicsLayer { alpha = unreadAlpha }
+                    .padding(ShadowClipGuard)
             ) {
-                // FAB icon
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                    contentDescription = stringResource(
-                        id = R.string.mailbox_fab_compose_button_content_description
-                    ),
-                    tint = ProtonTheme.colors.textNorm,
-                    modifier = Modifier.graphicsLayer { alpha = fabAlpha }
+                BottomUnreadFilterButton(
+                    state = unreadFilterState,
+                    onFilterEnabled = onUnreadFilterEnabled,
+                    onFilterDisabled = onUnreadFilterDisabled
                 )
+            }
+        }
 
-                // Toolbar actions – keep in composition while animating, remove once done
-                // so invisible IconButtons don't steal hits from the FAB.
-                val shownData = lastShownState.value
-                val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
-                if (shownData != null && isToolbarActive) {
-                    Row(
-                        modifier = Modifier
-                            .graphicsLayer { alpha = toolbarAlpha }
-                            .fillMaxWidth()
-                            .padding(horizontal = ToolbarHorizontalPadding),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        FloatingToolbarActionIcons(
-                            actions = shownData.actions,
-                            target = shownData.target,
-                            viewActionCallbacks = bottomBarActions
-                        )
+        // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ShadowClipGuard),
+            contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
+        ) {
+            Surface(
+                modifier = Modifier
+                    .width(containerWidth)
+                    .height(FabSize),
+                shape = RoundedCornerShape(percent = 50),
+                shadowElevation = ProtonDimens.ShadowElevation.Mini,
+                color = surfaceColor
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
+                ) {
+                    // FAB icon
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                        contentDescription = stringResource(
+                            id = R.string.mailbox_fab_compose_button_content_description
+                        ),
+                        tint = ProtonTheme.colors.textNorm,
+                        modifier = Modifier.graphicsLayer { alpha = fabAlpha }
+                    )
+
+                    // Toolbar actions – keep in composition while animating, remove once done
+                    // so invisible IconButtons don't steal hits from the FAB.
+                    val shownData = lastShownState.value
+                    val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
+                    if (shownData != null && isToolbarActive) {
+                        Row(
+                            modifier = Modifier
+                                .graphicsLayer { alpha = toolbarAlpha }
+                                .fillMaxWidth()
+                                .padding(horizontal = ToolbarHorizontalPadding),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            FloatingToolbarActionIcons(
+                                actions = shownData.actions,
+                                target = shownData.target,
+                                viewActionCallbacks = bottomBarActions
+                            )
+                        }
                     }
                 }
             }
@@ -165,3 +200,5 @@ internal fun MailboxFabToolbarMorph(
 private val FabSize = 56.dp
 private val ToolbarHorizontalPadding = 12.dp
 private const val ICON_BUTTON_SIZE = 48
+private const val UNREAD_ANIMATION_DURATION = 200
+private val ShadowClipGuard = 6.dp

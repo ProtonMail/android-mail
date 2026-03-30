@@ -602,11 +602,20 @@ fun MailboxScreen(
                 )
             }
 
+            val isInSearch = (mailboxState.mailboxListState as? MailboxListState.Data)
+                ?.searchState
+                ?.isInSearch()
+                ?: false
+
             MailboxFabToolbarMorph(
                 isInSelectionMode = isInSelectionMode,
+                isInSearch = isInSearch,
+                unreadFilterState = mailboxState.unreadFilterState,
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,
                 onComposeClick = actions.navigateToComposer,
+                onUnreadFilterEnabled = actions.onEnableUnreadFilter,
+                onUnreadFilterDisabled = actions.onDisableUnreadFilter,
                 isSnackbarVisible = isSnackbarVisible,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

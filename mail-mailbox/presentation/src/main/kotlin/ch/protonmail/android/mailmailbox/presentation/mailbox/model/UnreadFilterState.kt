@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
+import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 
+@Stable
 sealed interface UnreadFilterState {
 
     data class Data(
