@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -823,6 +824,7 @@ private fun MailboxItemsList(
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
+        contentPadding = PaddingValues(bottom = MailboxListBottomPadding),
         modifier = Modifier
             .testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
@@ -1373,3 +1375,6 @@ object MailboxScreenTestTags {
     const val MailboxEmptySubtitle = "MailboxEmptySubtitle"
     const val Root = "MailboxScreen"
 }
+
+// Extra space at the bottom of the list so the last item isn't covered by the FAB / unread button.
+private val MailboxListBottomPadding = 80.dp
