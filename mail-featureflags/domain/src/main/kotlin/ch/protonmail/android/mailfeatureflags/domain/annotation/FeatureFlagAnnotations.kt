@@ -75,3 +75,7 @@ annotation class IsShowRatingBoosterEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsFeatureSpotlightEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsCategoryViewEnabled

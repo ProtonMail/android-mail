@@ -179,6 +179,7 @@ fun MailboxScreen(
     isSnackbarVisible: Boolean = false
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
+    val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
 
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -427,6 +428,7 @@ fun MailboxScreen(
             mailboxState = mailboxState,
             mailboxListItems = mailboxListItems,
             actions = completeActions,
+            isCategoryViewEnabled = isCategoryViewEnabled,
             isSnackbarVisible = isSnackbarVisible,
             modifier = modifier.semantics { testTagsAsResourceId = true }
         )
@@ -437,6 +439,7 @@ fun MailboxScreen(
 fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
+    isCategoryViewEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
@@ -610,6 +613,7 @@ fun MailboxScreen(
             MailboxFabToolbarMorph(
                 isInSelectionMode = isInSelectionMode,
                 isInSearch = isInSearch,
+                showBottomUnreadFilter = isCategoryViewEnabled,
                 unreadFilterState = mailboxState.unreadFilterState,
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,

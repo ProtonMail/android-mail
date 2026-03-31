@@ -63,6 +63,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 internal fun MailboxFabToolbarMorph(
     isInSelectionMode: Boolean,
     isInSearch: Boolean,
+    showBottomUnreadFilter: Boolean,
     unreadFilterState: UnreadFilterState,
     bottomBarState: BottomBarState,
     bottomBarActions: BottomActionBar.Actions,
@@ -121,7 +122,7 @@ internal fun MailboxFabToolbarMorph(
             .padding(bottom = snackbarOffset)
             .fillMaxWidth()
     ) {
-        val showUnreadFilter = !isInSelectionMode && !isInSearch
+        val showUnreadFilter = showBottomUnreadFilter && !isInSelectionMode && !isInSearch
         val unreadAlpha by animateFloatAsState(
             targetValue = if (showUnreadFilter) 1f else 0f,
             animationSpec = tween(UNREAD_ANIMATION_DURATION),

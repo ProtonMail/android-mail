@@ -53,6 +53,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -348,6 +349,10 @@ internal class MailboxViewModelTest {
     private val updateUnreadFilter = mockk<UpdateUnreadFilter>()
     private val updateShowSpamTrashFilter = mockk<UpdateShowSpamTrashFilter>()
 
+    private val isCategoryViewEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns false
+    }
+
     private val scope = TestScope(UnconfinedTestDispatcher())
 
     private val mailboxViewModel by lazy {
@@ -403,7 +408,8 @@ internal class MailboxViewModelTest {
             loadingBarControllerFactory = loadingBarControllerFactory,
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,
-            recordRatingBoosterTriggered = recordRatingBoosterTriggered
+            recordRatingBoosterTriggered = recordRatingBoosterTriggered,
+            categoryViewEnabled = isCategoryViewEnabled
         )
     }
 

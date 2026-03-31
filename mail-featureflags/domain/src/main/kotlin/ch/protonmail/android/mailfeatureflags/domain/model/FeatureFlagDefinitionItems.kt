@@ -129,3 +129,11 @@ data object FeatureSpotlight : FeatureFlagDefinition(
     description = "Show a what's new screen on startup when available.",
     defaultValue = false
 )
+
+data object CategoryView : FeatureFlagDefinition(
+    key = "MailAndroidV7CategoryView",
+    name = "Enable category view",
+    category = FeatureFlagCategory.Mailbox,
+    description = "Enables category view",
+    defaultValue = false
+)

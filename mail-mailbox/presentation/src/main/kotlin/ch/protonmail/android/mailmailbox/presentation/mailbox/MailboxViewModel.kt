@@ -55,6 +55,8 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -136,6 +138,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
@@ -148,12 +151,14 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -218,7 +223,8 @@ class MailboxViewModel @Inject constructor(
     private val observeValidSenderAddress: ObserveValidSenderAddress,
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
-    private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered
+    private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
+    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
@@ -232,6 +238,9 @@ class MailboxViewModel @Inject constructor(
     private var attachmentDownloadJob: Job? = null
 
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
+
+    val isCategoryViewEnabled: StateFlow<Boolean> = flow { emit(categoryViewEnabled.get()) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)

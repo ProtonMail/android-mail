@@ -27,6 +27,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoColl
 import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer202
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
@@ -215,4 +217,14 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideFeatureSpotlightEnabledDef(): FeatureFlagDefinition = FeatureSpotlight
+
+    @Provides
+    @Singleton
+    @IsCategoryViewEnabled
+    fun provideCategoryViewEnabled(factory: BooleanFeatureFlagFactory) = factory.create(CategoryView.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideCategoryViewEnabledDef(): FeatureFlagDefinition = CategoryView
 }
