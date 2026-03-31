@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingActions
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingViewModel
 
@@ -36,13 +37,21 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
     val viewModel = hiltViewModel<UpsellingViewModel>()
 
     val actions = upsellingActions.copy(
-        onUpgradeAttempt = {
+        onUpgradeAttempt = { upsellingTelemetryPayload ->
             viewModel.onPurchaseClicked()
-            upsellingActions.onUpgradeAttempt()
+            upsellingActions.onUpgradeAttempt(upsellingTelemetryPayload)
+            viewModel.recordUpgradeAttempt(upsellingTelemetryPayload)
         },
-        onSuccess = {
+        onSuccess = { upsellingTelemetryPayload ->
             viewModel.overrideUpsellingVisibility()
-            upsellingActions.onSuccess()
+            upsellingActions.onSuccess(upsellingTelemetryPayload)
+            viewModel.recordUpgradeSuccess(upsellingTelemetryPayload)
+        },
+        onUpgradeErrored = { upsellingTelemetryPayload ->
+            viewModel.recordUpgradeError(upsellingTelemetryPayload)
+        },
+        onUpgradeCancelled = { upsellingTelemetryPayload ->
+            viewModel.recordUpgradeCancelledByUser(upsellingTelemetryPayload)
         }
     )
 
@@ -64,10 +73,10 @@ object UpsellingScreen {
 
     data class Actions(
         override val onError: (String) -> Unit,
-        override val onUpgradeAttempt: () -> Unit,
-        override val onUpgradeCancelled: () -> Unit,
-        override val onUpgradeErrored: () -> Unit,
-        override val onSuccess: () -> Unit,
+        override val onUpgradeAttempt: (UpsellingTelemetryPayload) -> Unit,
+        override val onUpgradeCancelled: (UpsellingTelemetryPayload) -> Unit,
+        override val onUpgradeErrored: (UpsellingTelemetryPayload) -> Unit,
+        override val onSuccess: (UpsellingTelemetryPayload) -> Unit,
         override val onUpgrade: (String) -> Unit,
         override val onDismiss: () -> Unit,
         val onDisplayed: suspend () -> Unit

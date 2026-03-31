@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
+import ch.protonmail.android.mailupselling.presentation.extension.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
@@ -62,15 +64,23 @@ internal fun PaymentButtonsSeasonalPromo(
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
         Box(modifier = Modifier.fillMaxWidth()) {
+            val upsellingTelemetryPayload = instance.toTelemetryPayload(
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                upsellIsPromotional = true,
+                isIntroOffer = false
+            )
             MailPurchaseButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = instance.product,
-                onPurchaseClicked = actions.onUpgradeAttempt,
+                onPurchaseClicked = { actions.onUpgradeAttempt(upsellingTelemetryPayload) },
                 variant = buttonVariant,
-                onSuccess = { _ -> actions.onSuccess() },
-                onErrorMessage = actions.onError
+                onSuccess = { _ -> actions.onSuccess(upsellingTelemetryPayload) },
+                onErrorMessage = {
+                    actions.onUpgradeErrored(upsellingTelemetryPayload)
+                    actions.onError(it)
+                }
             )
         }
 

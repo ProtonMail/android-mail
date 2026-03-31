@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ package ch.protonmail.android.mailupselling.presentation.model
 interface UpsellingActions {
 
     val onError: (String) -> Unit
-    val onUpgradeAttempt: () -> Unit
-    val onUpgradeCancelled: () -> Unit
-    val onUpgradeErrored: () -> Unit
-    val onSuccess: () -> Unit
+    val onUpgradeAttempt: (UpsellingTelemetryPayload) -> Unit
+    val onUpgradeCancelled: (UpsellingTelemetryPayload) -> Unit
+    val onUpgradeErrored: (UpsellingTelemetryPayload) -> Unit
+    val onSuccess: (UpsellingTelemetryPayload) -> Unit
     val onUpgrade: (String) -> Unit
     val onDismiss: () -> Unit
 }
