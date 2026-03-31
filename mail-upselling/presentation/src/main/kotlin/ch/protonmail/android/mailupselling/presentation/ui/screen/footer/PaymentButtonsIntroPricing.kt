@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -37,7 +37,9 @@ import ch.protonmail.android.design.compose.component.ProtonSolidButton
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.extension.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
@@ -66,16 +68,24 @@ internal fun PaymentButtonsIntroPricing(
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
+            val upsellingTelemetryPayload = instance.toTelemetryPayload(
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                upsellIsPromotional = true,
+                isIntroOffer = true
+            )
             MailPurchaseButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 ctaText = stringResource(R.string.upselling_mailbox_plus_promo_cta, initialPrice),
                 product = instance.product,
-                onPurchaseClicked = actions.onUpgradeAttempt,
+                onPurchaseClicked = { actions.onUpgradeAttempt(upsellingTelemetryPayload) },
                 variant = MailPurchaseButtonVariant.Default,
-                onSuccess = { _ -> actions.onSuccess() },
-                onErrorMessage = actions.onError
+                onSuccess = { _ -> actions.onSuccess(upsellingTelemetryPayload) },
+                onErrorMessage = {
+                    actions.onUpgradeErrored(upsellingTelemetryPayload)
+                    actions.onError(it)
+                }
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
