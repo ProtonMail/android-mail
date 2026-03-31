@@ -45,6 +45,8 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailsidebar.presentation.R
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
@@ -62,6 +64,14 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
     val state = viewModel.state.collectAsStateWithLifecycle()
     val type = state.value.visibility
 
+    val onButtonClick: (UpsellModalVariant) -> Unit = { variant ->
+        onClick(type)
+        viewModel.recordUpsellButtonTapped(
+            upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
+            modalVariant = variant
+        )
+    }
+
     // Set min to 1.dp to allow lazyColumns to render it.
     Box(modifier = modifier.heightIn(min = 1.dp)) {
         AnimatedVisibility(
@@ -72,14 +82,23 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
             when (val visibility = state.value.visibility) {
                 is UpsellingVisibility.Hidden -> Unit
                 is UpsellingVisibility.Promotional.BlackFriday ->
-                    SidebarUpsellRowBlackFriday(visibility, onButtonClick = { onClick(type) })
+                    SidebarUpsellRowBlackFriday(
+                        visibility,
+                        onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
+                    )
 
                 is UpsellingVisibility.Promotional.SpringPromo ->
-                    SidebarUpsellRowSpringPromo(onButtonClick = { onClick(type) })
+                    SidebarUpsellRowSpringPromo(
+                        onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
+                    )
 
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
-                is UpsellingVisibility.Normal.MailPlus -> SidebarUpsellRow(onButtonClick = { onClick(type) })
-                is UpsellingVisibility.Normal.Unlimited -> SidebarUnlimitedUpsellRow(onButtonClick = { onClick(type) })
+                is UpsellingVisibility.Normal.MailPlus -> SidebarUpsellRow(
+                    onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
+                )
+                is UpsellingVisibility.Normal.Unlimited -> SidebarUnlimitedUpsellRow(
+                    onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_UNLIMITED) }
+                )
             }
         }
     }

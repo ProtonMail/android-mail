@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -50,6 +50,8 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -67,6 +69,14 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
     // For now type is not propagated as it will be needed for telemetry purposes in a later story.
     val type = state.value.visibility
 
+    val onButtonClick: (UpsellEntryPoint, UpsellModalVariant) -> Unit = { entryPoint, variant ->
+        onClick(type)
+        viewModel.recordUpsellButtonTapped(
+            upsellEntryPoint = entryPoint,
+            modalVariant = variant
+        )
+    }
+
     AnimatedVisibility(
         visible = state.value.isShown,
         enter = scaleIn(),
@@ -75,19 +85,45 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
         when (val visibility = state.value.visibility) {
             is UpsellingVisibility.Hidden -> Unit
             is UpsellingVisibility.Promotional.IntroductoryPrice ->
-                UpsellingPromotionalMailButton(modifier = modifier, onButtonClick = { onClick(type) })
+                UpsellingPromotionalMailButton(
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, UpsellModalVariant.COMPARISON_PLUS)
+                    }
+                )
 
             is UpsellingVisibility.Promotional.BlackFriday ->
-                UpsellingBlackFridayMailButton(visibility, modifier = modifier, onButtonClick = { onClick(type) })
+                UpsellingBlackFridayMailButton(
+                    visibility,
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, UpsellModalVariant.COMPARISON_PLUS)
+                    }
+                )
 
             is UpsellingVisibility.Promotional.SpringPromo ->
-                UpsellingSpringPromoMailButton(modifier = modifier, onButtonClick = { onClick(type) })
+                UpsellingSpringPromoMailButton(
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, UpsellModalVariant.COMPARISON_PLUS)
+                    }
+                )
 
             is UpsellingVisibility.Normal.MailPlus ->
-                UpsellingMailButton(modifier = modifier, onButtonClick = { onClick(type) })
+                UpsellingMailButton(
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR, UpsellModalVariant.COMPARISON_PLUS)
+                    }
+                )
 
             is UpsellingVisibility.Normal.Unlimited ->
-                UpsellingUnlimitedButton(modifier = modifier, onButtonClick = { onClick(type) })
+                UpsellingUnlimitedButton(
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR, UpsellModalVariant.COMPARISON_UNLIMITED)
+                    }
+                )
         }
     }
 }
