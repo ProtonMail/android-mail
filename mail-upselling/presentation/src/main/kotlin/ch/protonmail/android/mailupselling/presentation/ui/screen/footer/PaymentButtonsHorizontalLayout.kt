@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -41,6 +41,8 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.extension.toTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.extension.toUpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
@@ -85,15 +87,23 @@ internal fun PaymentButtonsHorizontalLayout(
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
         Box(modifier = Modifier.fillMaxWidth()) {
+            val upsellingTelemetryPayload = selectedPlan.toTelemetryPayload(
+                modalVariant = plans.variant.toUpsellModalVariant(),
+                upsellIsPromotional = false,
+                isIntroOffer = false
+            )
             MailPurchaseButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.Spacing.Large),
                 product = selectedPlan.product,
                 variant = MailPurchaseButtonVariant.Default,
-                onPurchaseClicked = actions.onUpgradeAttempt,
-                onSuccess = { _ -> actions.onSuccess() },
-                onErrorMessage = actions.onError
+                onPurchaseClicked = { actions.onUpgradeAttempt(upsellingTelemetryPayload) },
+                onSuccess = { _ -> actions.onSuccess(upsellingTelemetryPayload) },
+                onErrorMessage = {
+                    actions.onUpgradeErrored(upsellingTelemetryPayload)
+                    actions.onError(it)
+                }
             )
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -24,15 +24,26 @@ import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
+import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
+import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelledByUser
+import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
+import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -64,9 +75,15 @@ internal class UpsellingViewModelTest {
     private val observePlanUpgrades = mockk<ObservePlanUpgrades>()
     private val upsellingContentReducer = mockk<UpsellingContentReducer>()
     private val eventLoopRepository = mockk<EventLoopRepository>(relaxed = true)
-    private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        coEvery { this@mockk() } returns flowOf(UserIdTestData.userId)
+    }
     private val resetUpgradeCache = mockk<ResetPlanUpgradesCache>()
     private val appEventBroadcaster = mockk<AppEventBroadcaster>()
+    private val recordUpgradeAttempt = mockk<RecordUpgradeAttempt>(relaxUnitFun = true)
+    private val recordUpgradeCancelledByUser = mockk<RecordUpgradeCancelledByUser>(relaxUnitFun = true)
+    private val recordUpgradeError = mockk<RecordUpgradeError>(relaxUnitFun = true)
+    private val recordUpgradeSuccess = mockk<RecordUpgradeSuccess>(relaxUnitFun = true)
 
     @AfterTest
     fun teardown() {
@@ -264,6 +281,182 @@ internal class UpsellingViewModelTest {
         coVerify(exactly = 0) { appEventBroadcaster.emit(match { it is AppEvent.OfferClicked }) }
     }
 
+    @Test
+    fun `should record upgrade attempt`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.recordUpgradeAttempt(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // Then
+        coVerify(exactly = 1) {
+            recordUpgradeAttempt(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
+                    planBeforeUpgrade = "Free plan",
+                    modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                    upsellFeatureFlags = UpsellFeatureFlags(
+                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
+                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
+                    )
+                ),
+                planSpecificDimensions = PlanSpecificDimensions(
+                    selectedPlan = "Mail Plus",
+                    selectedCycle = "Monthly",
+                    upsellIsPromotional = false
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `should record upgrade cancelled by user`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.recordUpgradeCancelledByUser(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // Then
+        coVerify(exactly = 1) {
+            recordUpgradeCancelledByUser(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
+                    planBeforeUpgrade = "Free plan",
+                    modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                    upsellFeatureFlags = UpsellFeatureFlags(
+                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
+                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
+                    )
+                ),
+                planSpecificDimensions = PlanSpecificDimensions(
+                    selectedPlan = "Mail Plus",
+                    selectedCycle = "Monthly",
+                    upsellIsPromotional = false
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `should record upgrade error`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.recordUpgradeError(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // Then
+        coVerify(exactly = 1) {
+            recordUpgradeError(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
+                    planBeforeUpgrade = "Free plan",
+                    modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                    upsellFeatureFlags = UpsellFeatureFlags(
+                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
+                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
+                    )
+                ),
+                planSpecificDimensions = PlanSpecificDimensions(
+                    selectedPlan = "Mail Plus",
+                    selectedCycle = "Monthly",
+                    upsellIsPromotional = false
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `should record upgrade success`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.recordUpgradeSuccess(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // Then
+        coVerify(exactly = 1) {
+            recordUpgradeSuccess(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
+                    planBeforeUpgrade = "Free plan",
+                    modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                    upsellFeatureFlags = UpsellFeatureFlags(
+                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
+                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
+                    )
+                ),
+                planSpecificDimensions = PlanSpecificDimensions(
+                    selectedPlan = "Mail Plus",
+                    selectedCycle = "Monthly",
+                    upsellIsPromotional = false
+                )
+            )
+        }
+    }
+
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observePlanUpgrades,
@@ -271,6 +464,10 @@ internal class UpsellingViewModelTest {
         eventLoopRepository,
         observePrimaryUserId,
         resetUpgradeCache,
-        appEventBroadcaster
+        appEventBroadcaster,
+        recordUpgradeAttempt,
+        recordUpgradeCancelledByUser,
+        recordUpgradeError,
+        recordUpgradeSuccess
     )
 }

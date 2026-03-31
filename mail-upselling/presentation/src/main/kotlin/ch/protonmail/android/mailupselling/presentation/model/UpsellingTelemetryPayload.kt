@@ -18,13 +18,12 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
-interface UpsellingActions {
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 
-    val onError: (String) -> Unit
-    val onUpgradeAttempt: (UpsellingTelemetryPayload) -> Unit
-    val onUpgradeCancelled: (UpsellingTelemetryPayload) -> Unit
-    val onUpgradeErrored: (UpsellingTelemetryPayload) -> Unit
-    val onSuccess: (UpsellingTelemetryPayload) -> Unit
-    val onUpgrade: (String) -> Unit
-    val onDismiss: () -> Unit
-}
+data class UpsellingTelemetryPayload(
+    val selectedPlan: String,
+    val selectedCycle: String,
+    val upsellIsPromotional: Boolean,
+    val modalVariant: UpsellModalVariant,
+    val isIntroOffer: Boolean
+)
