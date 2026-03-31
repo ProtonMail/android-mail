@@ -176,6 +176,10 @@ include(":mail-crash-record:dagger")
 include(":mail-crash-record:data")
 include(":mail-crash-record:domain")
 
+include(":mail-telemetry:dagger")
+include(":mail-telemetry:data")
+include(":mail-telemetry:domain")
+
 include(":uicomponents")
 include(":design-system")
 include(":presentation-compose")

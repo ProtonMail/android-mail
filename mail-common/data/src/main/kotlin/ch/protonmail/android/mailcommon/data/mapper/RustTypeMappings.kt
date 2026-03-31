@@ -53,6 +53,7 @@ import uniffi.mail_uniffi.DraftSendResult
 import uniffi.mail_uniffi.ExclusiveLocation
 import uniffi.mail_uniffi.ExtendedName
 import uniffi.mail_uniffi.GenderKind
+import uniffi.mail_uniffi.GeneralDimensions
 import uniffi.mail_uniffi.GroupedContacts
 import uniffi.mail_uniffi.HiddenMessagesBanner
 import uniffi.mail_uniffi.Id
@@ -72,6 +73,7 @@ import uniffi.mail_uniffi.MobileSignatureStatus
 import uniffi.mail_uniffi.NonDefaultWeekStart
 import uniffi.mail_uniffi.PartialDate
 import uniffi.mail_uniffi.PgpScheme
+import uniffi.mail_uniffi.PlanSpecificDimensions
 import uniffi.mail_uniffi.PmSignature
 import uniffi.mail_uniffi.PrivacyLock
 import uniffi.mail_uniffi.PrivacyLockColor
@@ -94,6 +96,9 @@ import uniffi.mail_uniffi.ShowMoved
 import uniffi.mail_uniffi.SpamOrTrash
 import uniffi.mail_uniffi.SwipeAction
 import uniffi.mail_uniffi.SystemLabel
+import uniffi.mail_uniffi.UpsellEntryPoint
+import uniffi.mail_uniffi.UpsellFeatureFlags
+import uniffi.mail_uniffi.UpsellModalVariant
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.UserSettings
 import uniffi.mail_uniffi.VCardUrl
@@ -255,3 +260,8 @@ typealias LocalPrivacyLockColor = PrivacyLockColor
 typealias LocalPrivacyLockIcon = PrivacyLockIcon
 typealias LocalPrivacyLockTooltip = PrivacyLockTooltip
 typealias LocalDeviceInfoProvider = DeviceInfoProvider
+typealias LocalGeneralDimensions = GeneralDimensions
+typealias LocalPlanSpecificDimensions = PlanSpecificDimensions
+typealias LocalUpsellEntryPoint = UpsellEntryPoint
+typealias LocalUpsellModalVariant = UpsellModalVariant
+typealias LocalUpsellFeatureFlags = UpsellFeatureFlags
