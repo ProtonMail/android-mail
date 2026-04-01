@@ -22,7 +22,10 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.NextMessageOnMove
 import javax.inject.Inject
@@ -40,5 +43,13 @@ class AutoAdvanceDataSourceImpl @Inject constructor(
             ?.let { it.nextMessageOnMove == NextMessageOnMove.ENABLED_EXPLICIT }
             ?.right()
             ?: DataError.Local.NoDataCached.left()
+    }
+
+    override fun observeAutoAdvance(userId: UserId): Flow<Boolean> {
+        return mailSettingsDataSource.observeMailSettings(userId)
+            .map { settings ->
+                settings.nextMessageOnMove == NextMessageOnMove.ENABLED_EXPLICIT
+            }
+            .distinctUntilChanged()
     }
 }

@@ -27,6 +27,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
@@ -94,6 +95,31 @@ internal class AutoAdvanceDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `observeAutoAdvance emits true when setting is enabled`() = runTest {
+        // Given
+        coEvery { mailSettingsDataSource.observeMailSettings(userId) } returns flowOf(mockSettings)
+
+        // When
+        val result = dataSource.observeAutoAdvance(userId).toList()
+
+        // Then
+        assertEquals(listOf(true), result)
+    }
+
+    @Test
+    fun `observeAutoAdvance emits false when setting is disabled`() = runTest {
+        // Given
+        every { mockSettings.nextMessageOnMove } returns NextMessageOnMove.DISABLED_EXPLICIT
+        coEvery { mailSettingsDataSource.observeMailSettings(userId) } returns flowOf(mockSettings)
+
+        // When
+        val result = dataSource.observeAutoAdvance(userId).toList()
+
+        // Then
+        assertEquals(listOf(false), result)
     }
 
     private companion object {
