@@ -26,6 +26,7 @@ import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSe
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,30 +50,37 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         )
     )
 
-    val features = listOf(
+    // ET-6044 - missing Rust wiring for B2B/B2C detection
+    val userType: SpotlightUserType = SpotlightUserType.B2C
+
+    val overviewFeatures = listOf(
         FeatureItem(
-            icon = R.drawable.ic_palette,
-            title = TextUiModel.TextRes(R.string.spotlight_feature_item_discreet_icon_title),
-            description = TextUiModel.TextRes(R.string.spotlight_feature_item_discreet_icon_description)
+            icon = R.drawable.ic_proton_paint_roller,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_lock,
-            title = TextUiModel.TextRes(R.string.spotlight_feature_item_encryption_locks_title),
-            description = TextUiModel.TextRes(R.string.spotlight_feature_item_encryption_locks_description)
+            icon = R.drawable.ic_proton_lines_long_to_small,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_shield_check,
-            title = TextUiModel.TextRes(R.string.spotlight_feature_item_tracking_protection_title),
-            description = TextUiModel.TextRes(R.string.spotlight_feature_item_tracking_protection_description)
-        ),
-        FeatureItem(
-            icon = R.drawable.ic_code,
-            title = TextUiModel.TextRes(R.string.spotlight_feature_item_headers_html_title),
-            description = TextUiModel.TextRes(R.string.spotlight_feature_item_headers_html_description)
+            icon = R.drawable.ic_proton_filing_cabinet,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
         )
     ).toImmutableList()
 
-    fun saveScreenShown() {
+    // ET-6044 missing Rust wiring for Categories toggling
+    fun onTryCategories() {
+        viewModelScope.launch {
+            markFeatureSpotlightSeen()
+            _closeScreenEvent.emit(Unit)
+        }
+    }
+
+    // ET-6044 missing Rust wiring for Categories toggling
+    fun onDismissWithoutCategories() {
         viewModelScope.launch {
             markFeatureSpotlightSeen()
             _closeScreenEvent.emit(Unit)

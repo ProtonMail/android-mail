@@ -16,10 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailspotlight.data.local
+package ch.protonmail.android.mailspotlight.presentation.ui
 
-internal object FeatureSpotlightVersions {
+internal object SpotlightScreenMetadata {
 
-    const val PRIVACY_BUNDLE = 1
-    const val CATEGORY_VIEW = 2
+    const val VISIBLE_PAGE_COUNT = 3
+    const val TOTAL_PAGE_COUNT = VISIBLE_PAGE_COUNT + 1
+    const val BOUNCE_DAMPING_RATIO = 0.65f
+    const val BOUNCE_STIFFNESS = 300f
 }

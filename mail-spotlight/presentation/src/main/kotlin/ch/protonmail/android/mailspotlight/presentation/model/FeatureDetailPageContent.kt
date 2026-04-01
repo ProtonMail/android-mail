@@ -16,10 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailspotlight.data.local
+package ch.protonmail.android.mailspotlight.presentation.model
 
-internal object FeatureSpotlightVersions {
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
-    const val PRIVACY_BUNDLE = 1
-    const val CATEGORY_VIEW = 2
-}
+internal data class FeatureDetailPageContent(
+    @DrawableRes val illustrationRes: Int,
+    @StringRes val titleRes: Int,
+    @StringRes val subtitleRes: Int
+)

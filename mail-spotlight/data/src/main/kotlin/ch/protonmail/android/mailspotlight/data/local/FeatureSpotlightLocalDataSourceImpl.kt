@@ -57,6 +57,6 @@ class FeatureSpotlightLocalDataSourceImpl @Inject constructor(
         const val DEFAULT_VALUE = 0
 
         // Update this when releasing a new Feature Spotlight
-        const val CURRENT_SPOTLIGHT_VERSION = FeatureSpotlightVersions.PRIVACY_BUNDLE
+        const val CURRENT_SPOTLIGHT_VERSION = FeatureSpotlightVersions.CATEGORY_VIEW
     }
 }

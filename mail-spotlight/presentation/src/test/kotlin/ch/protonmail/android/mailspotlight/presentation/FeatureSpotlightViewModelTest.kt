@@ -23,6 +23,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
@@ -62,7 +63,6 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `appVersion contains correct text resource with version name`() {
-        // When + Then
         val appVersion = viewModel.appVersion
         val textModel = appVersion.text as TextUiModel.TextResWithArgs
         assertEquals(R.string.spotlight_screen_version_text, textModel.value)
@@ -70,92 +70,76 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `features list contains exactly four items`() {
-        // Then
-        assertEquals(4, viewModel.features.size)
+    fun `overviewFeatures list contains exactly three items`() {
+        assertEquals(3, viewModel.overviewFeatures.size)
     }
 
     @Test
-    fun `features list contains discreet icon feature as first item`() {
-        // When + Then
-        val firstFeature = viewModel.features[0]
-        assertEquals(R.drawable.ic_palette, firstFeature.icon)
+    fun `overviewFeatures list contains UI enhancements as first item`() {
+        val firstFeature = viewModel.overviewFeatures[0]
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_discreet_icon_title),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
             firstFeature.title
         )
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_discreet_icon_description),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
             firstFeature.description
         )
     }
 
     @Test
-    fun `features list contains encryption locks feature as second item`() {
-        // When + Then
-        val secondFeature = viewModel.features[1]
-        assertEquals(R.drawable.ic_lock, secondFeature.icon)
+    fun `overviewFeatures list contains unread filter as second item`() {
+        val secondFeature = viewModel.overviewFeatures[1]
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_encryption_locks_title),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
             secondFeature.title
         )
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_encryption_locks_description),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle),
             secondFeature.description
         )
     }
 
     @Test
-    fun `features list contains tracking protection feature as third item`() {
-        // When + Then
-        val thirdFeature = viewModel.features[2]
-        assertEquals(R.drawable.ic_shield_check, thirdFeature.icon)
+    fun `overviewFeatures list contains categories as third item`() {
+        val thirdFeature = viewModel.overviewFeatures[2]
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_tracking_protection_title),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
             thirdFeature.title
         )
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_tracking_protection_description),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle),
             thirdFeature.description
         )
     }
 
     @Test
-    fun `features list contains headers html feature as fourth item`() {
-        // When + Then
-        val fourthFeature = viewModel.features[3]
-        assertEquals(R.drawable.ic_code, fourthFeature.icon)
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_headers_html_title),
-            fourthFeature.title
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_feature_item_headers_html_description),
-            fourthFeature.description
-        )
+    fun `userType defaults to B2C`() {
+        assertEquals(SpotlightUserType.B2C, viewModel.userType)
     }
 
     @Test
-    fun `saveScreenShown calls markFeatureSpotlightSeen`() = runTest {
-        // Given
+    fun `onTryCategories calls markFeatureSpotlightSeen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
 
-        // When
-        viewModel.saveScreenShown()
+        viewModel.closeScreenEvent.test {
+            viewModel.onTryCategories()
+            assertEquals(Unit, awaitItem())
+        }
 
-        // Then
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
 
     @Test
-    fun `saveScreenShown emits closeScreenEvent after marking seen`() = runTest {
-        // Given
+    fun `onDismissWithoutCategories calls markFeatureSpotlightSeen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
 
-        // When + Then
         viewModel.closeScreenEvent.test {
-            viewModel.saveScreenShown()
+            viewModel.onDismissWithoutCategories()
             assertEquals(Unit, awaitItem())
         }
+
+        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
+
 }

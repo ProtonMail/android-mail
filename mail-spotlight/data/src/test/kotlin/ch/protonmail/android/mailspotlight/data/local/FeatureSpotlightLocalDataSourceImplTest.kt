@@ -62,7 +62,7 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
     @Test
     fun `observe returns shouldShow false when stored version equals current`() = runTest {
         // Given
-        val preferences = preferencesOf(prefKey to FeatureSpotlightVersions.PRIVACY_BUNDLE)
+        val preferences = preferencesOf(prefKey to FeatureSpotlightVersions.CATEGORY_VIEW)
         every { dataStore.data } returns flowOf(preferences)
 
         // When & Then

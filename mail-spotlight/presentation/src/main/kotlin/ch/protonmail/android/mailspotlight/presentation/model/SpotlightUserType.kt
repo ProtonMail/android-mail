@@ -16,10 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailspotlight.data.local
+package ch.protonmail.android.mailspotlight.presentation.model
 
-internal object FeatureSpotlightVersions {
-
-    const val PRIVACY_BUNDLE = 1
-    const val CATEGORY_VIEW = 2
+internal enum class SpotlightUserType {
+    B2C,
+    B2B
 }
