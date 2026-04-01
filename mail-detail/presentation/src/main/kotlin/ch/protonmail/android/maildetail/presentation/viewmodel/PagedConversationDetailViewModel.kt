@@ -21,9 +21,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.EphemeralMailboxCursor
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
@@ -39,15 +37,17 @@ import ch.protonmail.android.maildetail.presentation.model.PagedConversationDeta
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailEvent.UpdatePage
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationEffects
+import ch.protonmail.android.maildetail.presentation.model.PagerSettings
 import ch.protonmail.android.maildetail.presentation.reducer.PagedConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetConversationCursor
+import ch.protonmail.android.maildetail.presentation.usecase.ObserveAutoAdvanceSetting
+import ch.protonmail.android.maildetail.presentation.usecase.ObserveSwipeNextPreference
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailsettings.domain.repository.AutoAdvanceRepository
-import ch.protonmail.android.mailsettings.domain.repository.SwipeNextRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,7 +56,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -68,9 +69,9 @@ import ch.protonmail.android.maildetail.presentation.model.Error as UiError
 
 @HiltViewModel
 class PagedConversationDetailViewModel @Inject constructor(
-    private val autoAdvanceRepository: AutoAdvanceRepository,
+    private val observeAutoAdvanceSetting: ObserveAutoAdvanceSetting,
     private val getConversationCursor: GetConversationCursor,
-    private val swipeNextRepository: SwipeNextRepository,
+    private val observeSwipeNextPreference: ObserveSwipeNextPreference,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val observeIsSingleMessageViewModePreferred: ObserveIsSingleMessageViewModePreferred,
     private val savedStateHandle: SavedStateHandle,
@@ -83,64 +84,89 @@ class PagedConversationDetailViewModel @Inject constructor(
     private var conversationCursor: ConversationCursor? = null
     private val cursorMutex = Mutex()
 
-    private val conversationId = savedStateHandle.getStateFlow(
-        ConversationDetailScreen.ConversationIdKey,
-        requireConversationId().id
-    ).map { ConversationId(it) }
-
     private val mutableState = MutableStateFlow<PagedConversationDetailState>(PagedConversationDetailState.Loading)
 
     val state: StateFlow<PagedConversationDetailState> = mutableState.asStateFlow()
 
-    private val cursorParamsFlow = combine(
-        observePrimaryUserId().filterNotNull(),
-        conversationId
-    ) { userId, convId ->
-        Pair(userId, convId)
-    }
-        .flatMapLatest { (userId, convId) ->
-            swipeNextRepository.observeSwipeNext(userId)
-                .map { swipeEnabledResult ->
-                    val swipeEnabled = swipeEnabledResult.getOrNull()?.enabled ?: false
-                    val autoAdvance = getAutoAdvance(userId)
-
-                    CursorParams(
-                        userId = userId,
-                        conversationId = convId,
-                        swipeEnabled = swipeEnabled,
-                        autoAdvance = autoAdvance
-                    )
-                }
-        }
-
     init {
+        initializeConversationCursor()
+
+        observePagerSettings().onEach {
+            emitNewStateFor(PagedConversationDetailEvent.SettingsUpdated(it))
+        }.launchIn(viewModelScope)
+
+    }
+
+    private fun observePagerSettings(): Flow<PagerSettings> = observePrimaryUserId()
+        .filterNotNull()
+        .distinctUntilChanged()
+        .flatMapLatest { userId ->
+            combine(
+                observeSwipeNextPreference(userId),
+                observeAutoAdvanceSetting(userId)
+            ) { swipeEnabled, autoAdvanceEnabled ->
+                PagerSettings(
+                    swipeEnabled = swipeEnabled,
+                    autoAdvanceEnabled = autoAdvanceEnabled
+                )
+            }
+        }
+        .distinctUntilChanged()
+
+    private fun observeCursorInitializationParams(): Flow<CursorInitializationParams> = combine(
+        observePrimaryUserId().filterNotNull().distinctUntilChanged(),
+        observePagerSettings()
+    ) { userId, settings ->
+        CursorInitializationParams(
+            userId = userId,
+            conversationId = requireConversationId(),
+            pagerSettings = settings
+        )
+    }.distinctUntilChanged()
+
+
+    private fun initializeConversationCursor() {
         viewModelScope.launch {
-            cursorParamsFlow
-                .distinctUntilChanged()
-                .flatMapLatest { params ->
+            observeCursorInitializationParams()
+                .first()
+                .let { params ->
+
                     val singleMessageModePreferred = resolveSingleMessageModePreferred(params.userId)
 
                     getConversationCursor(
-                        conversationId = params.conversationId,
                         userId = params.userId,
+                        conversationId = params.conversationId,
                         messageId = getInitialScrollToMessageId()?.id,
                         locationViewModeIsConversation = requireLocationViewModeModeIsConversation(),
                         labelId = requireLabelId()
-                    ).map { cursorState ->
-                        CursorResult(
-                            swipeEnabled = params.swipeEnabled,
-                            autoAdvance = params.autoAdvance,
-                            singleMessageModePreferred = singleMessageModePreferred,
-                            cursorState = cursorState
-                        )
-                    }
-                }
-                .collect { result ->
-                    onCursor(
-                        swipeEnabled = result.swipeEnabled,
-                        autoAdvance = result.autoAdvance,
-                        singleMessageModePreferred = result.singleMessageModePreferred,
-                        cursorState = result.cursorState
+                    ).fold(
+                        ifLeft = { error ->
+                            Timber.e(
+                                "Failed to get conversation cursor for conversation " +
+                                    "${params.conversationId} with error $error"
+                            )
+                            emitNewStateFor(PagedConversationDetailEvent.Error(error))
+                            _effects.value = PagedConversationEffects(Effect.of(UiError.OTHER))
+                        },
+                        ifRight = { cursor ->
+                            cursorMutex.withLock {
+                                conversationCursor = cursor
+                            }
+
+                            emitNewStateFor(
+                                PagedConversationDetailEvent.Ready(
+                                    pagerSettings = params.pagerSettings,
+                                    currentItem = cursor.current.toPage(),
+                                    nextItem = cursor.next.toPage(),
+                                    previousItem = cursor.previous.toPage(),
+                                    navigationArgs = NavigationArgs(
+                                        openedFromLocation = requireLabelId(),
+                                        singleMessageMode = singleMessageModePreferred,
+                                        conversationEntryPoint = getEntryPoint()
+                                    )
+                                )
+                            )
+                        }
                     )
                 }
         }
@@ -151,50 +177,6 @@ class PagedConversationDetailViewModel @Inject constructor(
             ConversationOpenMode.Message -> true
             ConversationOpenMode.Conversation -> false
             ConversationOpenMode.UseUserPreference -> observeIsSingleMessageViewModePreferred(userId).first()
-        }
-    }
-
-    private suspend fun onCursor(
-        swipeEnabled: Boolean,
-        autoAdvance: Boolean,
-        singleMessageModePreferred: Boolean,
-        cursorState: EphemeralMailboxCursor?
-    ) {
-        when (cursorState) {
-            null,
-            is EphemeralMailboxCursor.CursorDead,
-            is EphemeralMailboxCursor.NotInitalised -> {
-                emitNewStateFor(
-                    PagedConversationDetailEvent.Error(ConversationCursorError.InvalidState)
-                )
-                _effects.value =
-                    PagedConversationEffects(Effect.of(UiError.OTHER))
-            }
-
-            is EphemeralMailboxCursor.Data -> {
-                val cursor = cursorState.cursor
-
-                cursorMutex.withLock {
-                    conversationCursor = cursor
-                }
-
-                emitNewStateFor(
-                    PagedConversationDetailEvent.Ready(
-                        swipeEnabled = swipeEnabled,
-                        autoAdvance = autoAdvance,
-                        cursor.current.toPage(),
-                        cursor.next.toPage(),
-                        cursor.previous.toPage(),
-                        navigationArgs = NavigationArgs(
-                            openedFromLocation = requireLabelId(),
-                            singleMessageMode = singleMessageModePreferred,
-                            conversationEntryPoint = getEntryPoint()
-                        )
-                    )
-                )
-            }
-
-            EphemeralMailboxCursor.Initialising -> {}
         }
     }
 
@@ -254,18 +236,9 @@ class PagedConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAutoAdvance(userId: UserId) = autoAdvanceRepository.getAutoAdvance(userId)
-        .fold(
-            ifLeft = {
-                Timber.e("Error getting Auto Advance Settings for user: $userId")
-                false
-            },
-            ifRight = { autoAdvanceEnabled ->
-                autoAdvanceEnabled
-            }
-        )
-
     override fun onCleared() {
+        Timber.d("ViewModel cleared, clearing conversation cursor for conversation ${requireConversationId()}")
+
         viewModelScope.launch {
             cursorMutex.withLock {
                 conversationCursor = null
@@ -324,17 +297,9 @@ class PagedConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private data class CursorParams(
+    private data class CursorInitializationParams(
         val userId: UserId,
         val conversationId: ConversationId,
-        val swipeEnabled: Boolean,
-        val autoAdvance: Boolean
-    )
-
-    private data class CursorResult(
-        val swipeEnabled: Boolean,
-        val autoAdvance: Boolean,
-        val singleMessageModePreferred: Boolean,
-        val cursorState: EphemeralMailboxCursor?
+        val pagerSettings: PagerSettings
     )
 }
