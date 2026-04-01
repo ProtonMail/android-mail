@@ -27,6 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.NavigationArgs
 import ch.protonmail.android.maildetail.presentation.model.Page
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.PagerSettings
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.runner.RunWith
@@ -52,9 +53,11 @@ class PagedConversationDetailReducerTest(
     companion object {
 
         private val readyState = PagedConversationDetailState.Ready(
-            swipeEnabled = true,
-            autoAdvanceEnabled = true,
-            DynamicViewPagerState(
+            settings = PagerSettings(
+                swipeEnabled = true,
+                autoAdvanceEnabled = true
+            ),
+            dynamicViewPagerState = DynamicViewPagerState(
                 currentPageIndex = 1,
                 focusPageIndex = 1,
                 pages = listOf(
@@ -63,7 +66,7 @@ class PagedConversationDetailReducerTest(
                     Page.Conversation(CursorId(ConversationId("200")))
                 ).toImmutableList()
             ),
-            NavigationArgs(
+            navigationArgs = NavigationArgs(
                 singleMessageMode = false,
                 LabelId("1"),
                 ConversationDetailEntryPoint.Mailbox
@@ -76,8 +79,10 @@ class PagedConversationDetailReducerTest(
                 TestParams.TestInput(
                     currentState = PagedConversationDetailState.Loading,
                     event = PagedConversationDetailEvent.Ready(
-                        swipeEnabled = true,
-                        autoAdvance = true,
+                        pagerSettings = PagerSettings(
+                            swipeEnabled = true,
+                            autoAdvanceEnabled = true
+                        ),
                         currentItem = Page.Conversation(CursorId(ConversationId("300"))),
                         nextItem = Page.Conversation(CursorId(ConversationId("400"))),
                         previousItem = Page.Conversation(CursorId(ConversationId("200"))),
@@ -88,9 +93,11 @@ class PagedConversationDetailReducerTest(
                         )
                     ),
                     expectedState = PagedConversationDetailState.Ready(
-                        swipeEnabled = true,
-                        autoAdvanceEnabled = true,
-                        DynamicViewPagerState(
+                        settings = PagerSettings(
+                            swipeEnabled = true,
+                            autoAdvanceEnabled = true
+                        ),
+                        dynamicViewPagerState = DynamicViewPagerState(
                             currentPageIndex = 1,
                             focusPageIndex = 1,
                             pages = listOf(
@@ -112,8 +119,10 @@ class PagedConversationDetailReducerTest(
                 TestParams.TestInput(
                     currentState = PagedConversationDetailState.Loading,
                     event = PagedConversationDetailEvent.Ready(
-                        swipeEnabled = false,
-                        autoAdvance = true,
+                        pagerSettings = PagerSettings(
+                            swipeEnabled = false,
+                            autoAdvanceEnabled = true
+                        ),
                         currentItem = Page.Conversation(CursorId(ConversationId("300"))),
                         nextItem = Page.Conversation(CursorId(ConversationId("400"))),
                         previousItem = Page.Conversation(CursorId(ConversationId("200"))),
@@ -124,9 +133,11 @@ class PagedConversationDetailReducerTest(
                         )
                     ),
                     expectedState = PagedConversationDetailState.Ready(
-                        swipeEnabled = false,
-                        autoAdvanceEnabled = true,
-                        DynamicViewPagerState(
+                        settings = PagerSettings(
+                            swipeEnabled = false,
+                            autoAdvanceEnabled = true
+                        ),
+                        dynamicViewPagerState = DynamicViewPagerState(
                             currentPageIndex = 1,
                             focusPageIndex = 1,
                             pages = listOf(
