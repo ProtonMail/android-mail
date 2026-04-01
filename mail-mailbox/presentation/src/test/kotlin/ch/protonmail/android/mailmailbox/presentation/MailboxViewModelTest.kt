@@ -32,7 +32,6 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiMo
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -83,7 +82,6 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.domain.usecase.SetEphemeralMailboxCursor
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarControllerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarStateController
@@ -324,8 +322,6 @@ internal class MailboxViewModelTest {
     }
     private val eventLoopRepository = mockk<EventLoopRepository>()
 
-    private val setEphemeralMailboxCursor = mockk<SetEphemeralMailboxCursor>()
-
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>()
 
     private val observeMailboxFetchNewStatus = mockk<ObserveMailboxFetchNewStatus> {
@@ -403,7 +399,6 @@ internal class MailboxViewModelTest {
             eventLoopRepository = eventLoopRepository,
             updateUnreadFilter = updateUnreadFilter,
             updateShowSpamTrashFilter = updateShowSpamTrashFilter,
-            setEphemeralMailboxCursor = setEphemeralMailboxCursor,
             observeMailboxFetchNewStatus = observeMailboxFetchNewStatus,
             loadingBarControllerFactory = loadingBarControllerFactory,
             observeValidSenderAddress = observeValidSenderAddress,
@@ -1386,15 +1381,6 @@ internal class MailboxViewModelTest {
                 )
             )
         )
-        coEvery {
-            setEphemeralMailboxCursor.invoke(
-                userId, false,
-                CursorId(
-                    item.conversationId, item.id
-                ),
-                labelId
-            )
-        } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectedTrashSpamFilterStateChange(intermediateState)
         expectedSelectedLabelCountStateChange(intermediateState)
@@ -1414,15 +1400,6 @@ internal class MailboxViewModelTest {
         mailboxViewModel.state.test {
             // Then
             assertEquals(expectedState, awaitItem())
-            coVerify(exactly = 1) {
-                setEphemeralMailboxCursor.invoke(
-                    userId, false,
-                    CursorId(
-                        item.conversationId, item.id
-                    ),
-                    labelId
-                )
-            }
         }
     }
 
@@ -1587,15 +1564,6 @@ internal class MailboxViewModelTest {
             )
         )
 
-        coEvery {
-            setEphemeralMailboxCursor.invoke(
-                userId, true,
-                CursorId(
-                    item.conversationId
-                ),
-                labelId
-            )
-        } just runs
         coEvery { getCurrentViewModeForLabel(userId = any(), any()) } returns ConversationGrouping
 
         expectedTrashSpamFilterStateChange(intermediateState)
@@ -1617,15 +1585,6 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
 
-            coVerify(exactly = 1) {
-                setEphemeralMailboxCursor.invoke(
-                    userId, true,
-                    CursorId(
-                        item.conversationId
-                    ),
-                    labelId
-                )
-            }
         }
     }
 
@@ -1778,9 +1737,6 @@ internal class MailboxViewModelTest {
         val pagingData = PagingData.from(listOf(unreadMailboxItem))
         expectPagerMock(pagingDataFlow = flowOf(pagingData))
         val labelId = initialLocationMailLabelId.labelId
-        coEvery {
-            setEphemeralMailboxCursor.invoke(userId, any(), any(), any())
-        } just runs
         every {
             mailboxReducer.newStateFrom(
                 expectedMailBoxState,
@@ -3708,7 +3664,6 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3747,7 +3702,6 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3775,7 +3729,6 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) } returns almostAllMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3804,7 +3757,6 @@ internal class MailboxViewModelTest {
 
         every { mailboxReducer.newStateFrom(any(), any()) } returns stateWithFilterEnabled
         coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
@@ -3830,7 +3782,6 @@ internal class MailboxViewModelTest {
 
         expectedTrashSpamFilterStateChange(intermediateState)
         expectedSelectedLabelCountStateChange(intermediateState)
-        coEvery { setEphemeralMailboxCursor(userId, any(), any(), any()) } just runs
         expectViewModeForCurrentLocation(NoConversationGrouping)
         expectPagerMock()
 
