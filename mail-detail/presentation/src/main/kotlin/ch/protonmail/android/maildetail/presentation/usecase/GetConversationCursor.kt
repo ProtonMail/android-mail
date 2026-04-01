@@ -18,59 +18,42 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
-import ch.protonmail.android.mailcommon.domain.model.CursorResult
-import ch.protonmail.android.mailcommon.domain.model.EphemeralMailboxCursor
-import ch.protonmail.android.mailcommon.domain.repository.EphemeralMailboxCursorRepository
+import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.model.LabelId
-import ch.protonmail.android.mailmailbox.domain.usecase.SetEphemeralMailboxCursor
-import kotlinx.coroutines.flow.map
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-/**
- * Relies on the owner of a scroller such as Mailbox having called [SetEphemeralMailboxCursor] before its lifecycle
- * was completed.  The new screen can use this command to access the cursor.  If no Cursor has been set (in the case
- * of notifications) then the command will try to self recover by retriving and setting a cursor itself which should not
- * be problematic in the case of notifications since we do not need scroller state such as next pages
- */
 class GetConversationCursor @Inject constructor(
-    private var cursorRepository: EphemeralMailboxCursorRepository,
-    private var setEphemeralMailboxCursor: SetEphemeralMailboxCursor
+    private val conversationRepository: ConversationRepository,
+    private val messageRepository: MessageRepository
 ) {
-
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId,
         messageId: String?,
         locationViewModeIsConversation: Boolean,
         labelId: LabelId
-    ) = cursorRepository.observeCursor()
-        .map { state ->
-            val shouldInitializeCursor = state == null ||
-                state == EphemeralMailboxCursor.NotInitalised ||
-                isCursorForDifferentConversation(state, conversationId)
+    ): Either<ConversationCursorError, ConversationCursor> {
+        val cursorId = CursorId(conversationId, messageId)
 
-            if (shouldInitializeCursor) {
-                setEphemeralMailboxCursor(
-                    userId = userId,
-                    viewModeIsConversation = locationViewModeIsConversation,
-                    cursorId = CursorId(conversationId, messageId),
-                    labelId = labelId
-                )
-                EphemeralMailboxCursor.Initialising
-            } else {
-                state
-            }
+        return if (locationViewModeIsConversation) {
+            conversationRepository.getConversationCursor(
+                userId = userId,
+                firstPage = cursorId,
+                labelId = labelId
+            )
+        } else {
+            messageRepository.getConversationCursor(
+                userId = userId,
+                firstPage = cursorId,
+                labelId = labelId
+            )
         }
-
-    private fun isCursorForDifferentConversation(
-        state: EphemeralMailboxCursor,
-        newConversationId: ConversationId
-    ): Boolean {
-        return state is EphemeralMailboxCursor.Data &&
-            state.cursor.current is CursorResult.Cursor &&
-            (state.cursor.current as CursorResult.Cursor).conversationId != newConversationId
     }
 }
