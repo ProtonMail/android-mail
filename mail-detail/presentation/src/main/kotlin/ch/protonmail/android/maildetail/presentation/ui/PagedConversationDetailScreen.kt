@@ -124,10 +124,10 @@ private fun PagedConversationDetailScreen(
     onPagerAction: (PagedConversationDetailAction) -> Unit
 ) {
     val onTopbarBackClicked = { conversationDetailActions.onExit(null) }
-    val actions = state.autoAdvanceEnabled.takeIf { it }?.let {
+    val actions = state.settings.autoAdvanceEnabled.takeIf { it }?.let {
         conversationDetailActions.copy(
             onExit = {
-                if (state.autoAdvanceEnabled) {
+                if (state.settings.autoAdvanceEnabled) {
                     showUndoableOperationSnackbar(it)
                     onPagerAction(PagedConversationDetailAction.AutoAdvance)
                 } else {
@@ -150,7 +150,7 @@ private fun PagedConversationDetailScreen(
         modifier = modifier,
         conversationActions = actions,
         state = state.dynamicViewPagerState,
-        swipeEnabled = state.swipeEnabled,
+        swipeEnabled = state.settings.swipeEnabled,
         conversationDetailScreenNavArgs = conversationDetailScreenArgs,
         onPagerAction = onPagerAction,
         onTopBarExit = onTopbarBackClicked

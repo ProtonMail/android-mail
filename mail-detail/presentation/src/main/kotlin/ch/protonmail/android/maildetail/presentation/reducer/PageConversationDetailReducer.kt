@@ -23,7 +23,7 @@ import ch.protonmail.android.maildetail.presentation.model.DynamicViewPagerState
 import ch.protonmail.android.maildetail.presentation.model.Page
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState.Ready
+import ch.protonmail.android.maildetail.presentation.model.PagerSettings
 import ch.protonmail.android.maildetail.presentation.model.addPage
 import ch.protonmail.android.maildetail.presentation.model.currentPage
 import ch.protonmail.android.maildetail.presentation.model.exists
@@ -43,39 +43,65 @@ class PagedConversationDetailReducer @Inject constructor() {
                 PagedConversationDetailState.Error
             }
 
-            is PagedConversationDetailEvent.Ready -> Ready(
-                event.swipeEnabled,
-                event.autoAdvance,
-                DynamicViewPagerState(
-                    pages = mutableListOf<Page>()
-                        .addPage(event.previousItem)
-                        .addPage(event.currentItem)
-                        .addPage(event.nextItem)
-                        .toImmutableList()
-                ).setFocusIndexes(event.previousItem.exists()),
-                navigationArgs = event.navigationArgs
-            )
-
-            is PagedConversationDetailEvent.UpdatePage -> reducePagerState(currentState) {
-                reduceUpdatePage(
-                    it,
-                    event
+            is PagedConversationDetailEvent.Ready -> {
+                PagedConversationDetailState.Ready(
+                    settings = event.pagerSettings,
+                    dynamicViewPagerState = DynamicViewPagerState(
+                        pages = mutableListOf<Page>()
+                            .addPage(event.previousItem)
+                            .addPage(event.currentItem)
+                            .addPage(event.nextItem)
+                            .toImmutableList()
+                    ).setFocusIndexes(event.previousItem.exists()),
+                    navigationArgs = event.navigationArgs
                 )
             }
 
-            PagedConversationDetailEvent.PageChanging -> reducePagerState(currentState) {
-                it.copy(userScrollEnabled = false)
+            is PagedConversationDetailEvent.SettingsUpdated -> {
+                reduceSettingsUpdated(currentState, event.pagerSettings)
             }
 
-            PagedConversationDetailEvent.ClearFocusPage -> reducePagerState(currentState) {
-                it.copy(focusPageIndex = null).apply {
-                    Timber.d("conversation-pager reducer clear focus page ${it.focusPageIndex}")
+            is PagedConversationDetailEvent.UpdatePage -> {
+                reducePagerState(currentState) {
+                    reduceUpdatePage(it, event)
                 }
             }
 
-            PagedConversationDetailEvent.AutoAdvanceRequested -> reducePagerState(currentState) {
-                reduceAutoAdvanceRequested(it)
+            PagedConversationDetailEvent.PageChanging -> {
+                reducePagerState(currentState) {
+                    it.copy(userScrollEnabled = false)
+                }
             }
+
+            PagedConversationDetailEvent.ClearFocusPage -> {
+                reducePagerState(currentState) {
+                    it.copy(focusPageIndex = null).apply {
+                        Timber.d("conversation-pager reducer clear focus page ${it.focusPageIndex}")
+                    }
+                }
+            }
+
+            PagedConversationDetailEvent.AutoAdvanceRequested -> {
+                reducePagerState(currentState) {
+                    reduceAutoAdvanceRequested(it)
+                }
+            }
+        }
+    }
+}
+
+private fun reduceSettingsUpdated(
+    currentState: PagedConversationDetailState,
+    pagerSettings: PagerSettings
+): PagedConversationDetailState {
+    return when (currentState) {
+        is PagedConversationDetailState.Ready -> {
+            currentState.copy(settings = pagerSettings)
+        }
+
+        PagedConversationDetailState.Loading,
+        PagedConversationDetailState.Error -> {
+            currentState
         }
     }
 }
@@ -111,7 +137,7 @@ private fun reducePagerState(
     currentState: PagedConversationDetailState,
     block: (currentPagerState: DynamicViewPagerState) -> DynamicViewPagerState
 ) = when (currentState) {
-    is Ready ->
+    is PagedConversationDetailState.Ready ->
         currentState.copy(dynamicViewPagerState = block(currentState.dynamicViewPagerState))
 
     else -> {
