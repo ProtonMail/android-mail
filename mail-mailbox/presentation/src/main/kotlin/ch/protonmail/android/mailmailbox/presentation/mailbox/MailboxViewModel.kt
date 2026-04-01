@@ -38,7 +38,6 @@ import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentV
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -83,7 +82,6 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.domain.usecase.SetEphemeralMailboxCursor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState
@@ -216,7 +214,6 @@ class MailboxViewModel @Inject constructor(
     private val eventLoopRepository: EventLoopRepository,
     private val updateUnreadFilter: UpdateUnreadFilter,
     private val updateShowSpamTrashFilter: UpdateShowSpamTrashFilter,
-    private val setEphemeralMailboxCursor: SetEphemeralMailboxCursor,
     private val observeMailboxFetchNewStatus: ObserveMailboxFetchNewStatus,
     private val observeValidSenderAddress: ObserveValidSenderAddress,
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
@@ -563,17 +560,7 @@ class MailboxViewModel @Inject constructor(
             } else {
                 null
             }
-            // We are leaving mailbox screen, however other screens may still need the cursor in order to navigate
-            // messages. For example the paging view detail screen that uses a cursor to swipe messages.  In this case
-            // we set an ephemeral cursor (transient/ short lived) that can be joined by the following screen
             val labelId = getFromLabelIdSearchAware()
-            setEphemeralMailboxCursor(
-                userId = user, viewModeIsConversation = viewMode == ViewMode.ConversationGrouping,
-                cursorId = CursorId(
-                    item.conversationId, subItemId
-                ),
-                labelId = labelId
-            )
             val isConversationGrouping =
                 getViewModeForCurrentLocation(getSelectedMailLabelId()) == ViewMode.ConversationGrouping
 
