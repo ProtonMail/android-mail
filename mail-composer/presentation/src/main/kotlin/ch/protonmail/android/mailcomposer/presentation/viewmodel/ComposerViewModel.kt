@@ -43,7 +43,6 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftFieldsWithSyncStatus
 import ch.protonmail.android.mailcomposer.domain.model.DraftHead
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
-import ch.protonmail.android.mailcomposer.domain.model.DraftRecipient
 import ch.protonmail.android.mailcomposer.domain.model.OpenDraftError
 import ch.protonmail.android.mailcomposer.domain.model.PasteMimeType
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
@@ -53,7 +52,6 @@ import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
 import ch.protonmail.android.mailcomposer.domain.model.SendWithExpirationTimeResult
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.model.ValidatedRecipients
 import ch.protonmail.android.mailcomposer.domain.model.hasAnyRecipient
 import ch.protonmail.android.mailcomposer.domain.model.haveBlankRecipients
 import ch.protonmail.android.mailcomposer.domain.model.haveBlankSubject
@@ -112,8 +110,6 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.GetFormattedSched
 import ch.protonmail.android.mailcontact.domain.usecase.PreloadContactSuggestions
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.Compose
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.ComposeToAddresses
@@ -124,7 +120,6 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction.Reply
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.ReplyAll
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailpadlocks.domain.PrivacyLock
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -133,7 +128,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -192,7 +186,6 @@ class ComposerViewModel @AssistedInject constructor(
     private val observeMessagePasswordChanged: ObserveMessagePasswordChanged,
     private val isMessagePasswordSet: IsMessagePasswordSet,
     private val observeRecipientsValidation: ObserveRecipientsValidation,
-    @IsPrivacyBundle2601Enabled private val showEncryptionInfoFeatureFlag: FeatureFlag<Boolean>,
     private val getDraftSenderValidationError: GetDraftSenderValidationError,
     private val preloadContactSuggestions: PreloadContactSuggestions,
     private val saveMessageExpirationTime: SaveMessageExpirationTime,
@@ -229,7 +222,6 @@ class ComposerViewModel @AssistedInject constructor(
     private var pendingStoreDraftJob: Job? = null
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
-    private val isEncryptionInfoEnabled = viewModelScope.async { showEncryptionInfoFeatureFlag.get() }
     private val composerActionsChannel = Channel<ComposerAction>(Channel.BUFFERED)
 
     private val mutableComposerStates = MutableStateFlow(
@@ -372,28 +364,10 @@ class ComposerViewModel @AssistedInject constructor(
 
     private fun observeValidatedRecipients() {
         observeRecipientsValidation()
-            .mapLatest { validated ->
-                if (isEncryptionInfoEnabled.await()) validated else validated.withoutPrivacyLocks()
-            }
             .onEach {
                 recipientsStateManager.setFromDraftRecipients(it.toRecipients, it.ccRecipients, it.bccRecipients)
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun ValidatedRecipients.withoutPrivacyLocks() = ValidatedRecipients(
-        toRecipients = toRecipients.stripPrivacyLocks(),
-        ccRecipients = ccRecipients.stripPrivacyLocks(),
-        bccRecipients = bccRecipients.stripPrivacyLocks()
-    )
-
-    private fun List<DraftRecipient>.stripPrivacyLocks() = map { recipient ->
-        when (recipient) {
-            is DraftRecipient.SingleRecipient -> recipient.copy(privacyLock = PrivacyLock.None)
-            is DraftRecipient.GroupRecipient -> recipient.copy(
-                recipients = recipient.recipients.map { it.copy(privacyLock = PrivacyLock.None) }
-            )
-        }
     }
 
     private fun observeMessagePassword() {

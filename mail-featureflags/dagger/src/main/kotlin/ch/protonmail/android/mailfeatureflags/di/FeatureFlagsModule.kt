@@ -32,7 +32,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlig
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
@@ -49,7 +48,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverri
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.PrivacyBundle2601
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
@@ -207,18 +205,6 @@ object FeatureFlagsModule {
     @IsShowRatingBoosterEnabled
     fun provideIsShowRatingBoosterEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = ShowRatingBoosterEnabled.key, false)
-
-    @Provides
-    @Singleton
-    @IsPrivacyBundle2601Enabled
-    fun providePrivacyBundle2601Enabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(PrivacyBundle2601.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun providePrivacyBundle2601EnabledDef(): FeatureFlagDefinition = PrivacyBundle2601
-
 
     @Provides
     @Singleton

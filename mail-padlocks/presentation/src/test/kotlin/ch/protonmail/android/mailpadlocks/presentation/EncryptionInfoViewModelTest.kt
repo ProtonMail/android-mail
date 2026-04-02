@@ -22,7 +22,6 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailpadlocks.domain.PrivacyLock
 import ch.protonmail.android.mailpadlocks.domain.PrivacyLockColor
@@ -51,9 +50,6 @@ internal class EncryptionInfoViewModelTest {
     private val testUserId = UserId("test-user-id")
     private val testMessageId = MessageId("123")
 
-    private val mockFeatureFlag = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns true
-    }
     private val mockGetPrivacyLockForMessage = mockk<GetPrivacyLockForMessage>()
     private val mockObservePrimaryUserId = mockk<ObservePrimaryUserId>()
 
@@ -71,7 +67,6 @@ internal class EncryptionInfoViewModelTest {
         val viewModel = EncryptionInfoViewModel(
             observePrimaryUserId = mockObservePrimaryUserId,
             getPrivacyLockForMessage = mockGetPrivacyLockForMessage,
-            showEncryptionInfoFeatureFlag = mockFeatureFlag,
             messageId = testMessageId
         )
 
@@ -92,7 +87,6 @@ internal class EncryptionInfoViewModelTest {
         val viewModel = EncryptionInfoViewModel(
             observePrimaryUserId = mockObservePrimaryUserId,
             getPrivacyLockForMessage = mockGetPrivacyLockForMessage,
-            showEncryptionInfoFeatureFlag = mockFeatureFlag,
             messageId = testMessageId
         )
 
@@ -105,26 +99,6 @@ internal class EncryptionInfoViewModelTest {
     }
 
     @Test
-    fun `state emits Disabled when feature flag is disabled`() = runTest {
-        // Given
-        coEvery { mockFeatureFlag.get() } returns false
-        every { mockObservePrimaryUserId() } returns flowOf(testUserId)
-
-        val viewModel = EncryptionInfoViewModel(
-            observePrimaryUserId = mockObservePrimaryUserId,
-            getPrivacyLockForMessage = mockGetPrivacyLockForMessage,
-            showEncryptionInfoFeatureFlag = mockFeatureFlag,
-            messageId = testMessageId
-        )
-
-        // When/Then
-        viewModel.state.test {
-            val state = awaitItem()
-            assertTrue(state is EncryptionInfoState.Disabled)
-        }
-    }
-
-    @Test
     fun `state emits Disabled when use case returns error`() = runTest {
         // Given
         every { mockObservePrimaryUserId() } returns flowOf(testUserId)
@@ -133,7 +107,6 @@ internal class EncryptionInfoViewModelTest {
         val viewModel = EncryptionInfoViewModel(
             observePrimaryUserId = mockObservePrimaryUserId,
             getPrivacyLockForMessage = mockGetPrivacyLockForMessage,
-            showEncryptionInfoFeatureFlag = mockFeatureFlag,
             messageId = testMessageId
         )
 

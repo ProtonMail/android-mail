@@ -21,8 +21,6 @@ package ch.protonmail.android.mailtrackingprotection.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtrackingprotection.domain.model.PrivacyItemsResult
@@ -37,7 +35,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 
@@ -45,17 +42,12 @@ import kotlinx.coroutines.flow.stateIn
 internal class BlockedTrackersViewModel @AssistedInject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val privacyInfoRepository: PrivacyInfoRepository,
-    @IsPrivacyBundle2601Enabled private val showBlockedTrackersFeatureFlag: FeatureFlag<Boolean>,
     @Assisted private val messageId: MessageId
 ) : ViewModel() {
 
     val state: StateFlow<BlockedElementsState> = observePrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
-            if (!showBlockedTrackersFeatureFlag.get()) {
-                return@flatMapLatest flowOf(BlockedElementsState.Disabled)
-            }
-
             privacyInfoRepository.observePrivacyItemsForMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { BlockedElementsState.Disabled },

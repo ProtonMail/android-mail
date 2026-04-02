@@ -122,14 +122,6 @@ data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object PrivacyBundle2601 : FeatureFlagDefinition(
-    key = "MailAndroidV7PrivacyBundle2601",
-    name = "Enable Privacy bundle v1",
-    category = FeatureFlagCategory.Details,
-    description = "Enable padlocks + blocked trackers in details/composer.",
-    defaultValue = false
-)
-
 data object FeatureSpotlight : FeatureFlagDefinition(
     key = "MailAndroidV7FeatureSpotlight",
     name = "Enable the feature spotlight",
