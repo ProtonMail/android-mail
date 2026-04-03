@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">Odesílání zprávy…</string>
   <string name="mailbox_message_sending_offline">Offline: zpráva je ve frontě k odeslání</string>
   <string name="mailbox_message_sending_success">Zpráva odeslána</string>
-  <string name="mailbox_message_sending_error">Chyba při odesílání zprávy</string>
-  <string name="mailbox_message_sending_error_action">Přejít na Koncept</string>
+    <string name="mailbox_message_sending_error_action">Přejít na Koncept</string>
   <string name="notification_switched_account">Přepnuto na účet %s</string>
-  <string name="label_saved">Štítek uložen</string>
-  <string name="label_deleted">Štítek smazán</string>
-  <string name="app_locked">Aplikace uzamčena</string>
-  <string name="use_pin_instead">Použít raději PIN</string>
-  <string name="mailbox_message_scheduling">Plánování zprávy…</string>
+    <string name="mailbox_message_scheduling">Plánování zprávy…</string>
   <string name="mailbox_message_scheduling_offline">Offline: zpráva je ve frontě k naplánování</string>
   <string name="mailbox_message_scheduled_for_sending_success">Tato zpráva bude odeslána %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Uživatel je již přihlášen</string>

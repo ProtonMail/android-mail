@@ -32,8 +32,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Uusiutuu automaattisesti hintaan %1$s/kk.</string>
   <string name="payment_bf_renew_annually">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Uusiutuu automaattisesti hintaan %1$s/vuosi.</string>
-  <string name="payment_bf_renew_biennially">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Uusiutuu automaattisesti hintaan %1$s joka toinen vuosi.</string>
-  <string name="payment_welcome_offer_renew_monthly">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/kuukausi</string>
+    <string name="payment_welcome_offer_renew_monthly">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/kuukausi</string>
   <string name="payment_welcome_offer_renew_annually">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/vuosi</string>
   <string name="payment_welcome_offer_renew_biennially">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/2 vuotta</string>
   <plurals name="payment_welcome_offer_renew_other">

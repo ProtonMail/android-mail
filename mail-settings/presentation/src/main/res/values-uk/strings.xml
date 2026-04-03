@@ -28,45 +28,32 @@
   <string name="mail_settings_preferences">Параметри</string>
   <string name="mail_settings_app">Персоналізація застосунку</string>
   <string name="mail_settings_mailbox">Параметри поштової скриньки</string>
-  <string name="mail_settings_email_hint">Налаштування пошти й поштової скриньки</string>
-  <string name="mail_settings_folders_labels">Теки та мітки</string>
-  <string name="mail_settings_folders_labels_hint">Організація поштової скриньки</string>
-  <string name="mail_settings_spam_and_custom_filters">Спам і фільтри</string>
-  <string name="mail_settings_spam_and_custom_filters_hint">Автоматичні дії та сортування</string>
-  <string name="mail_settings_privacy_and_security">Приватність і безпека</string>
+    <string name="mail_settings_folders_labels">Теки та мітки</string>
+    <string name="mail_settings_spam_and_custom_filters">Спам і фільтри</string>
+    <string name="mail_settings_privacy_and_security">Приватність і безпека</string>
   <string name="mail_settings_fido_keys">Ключі безпеки</string>
   <string name="mail_settings_change_password">Керування паролями</string>
   <string name="mail_settings_signature">Підпис</string>
   <string name="mail_settings_storage_quota">%1$d%% з %2$s</string>
-  <string name="mail_settings_privacy_and_security_hint">Захист від стеження за поштою</string>
-  <string name="mail_settings_app_hint">Налаштування мобільного застосунку</string>
-  <string name="mail_settings_theme">Тема</string>
-  <string name="mail_settings_auto_lock">Автоблокування</string>
-  <string name="mail_settings_app_icon">Піктограма застосунку</string>
+    <string name="mail_settings_theme">Тема</string>
+    <string name="mail_settings_app_icon">Піктограма застосунку</string>
   <string name="mail_settings_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_app_language_sys_default">Як у системі</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
   <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх ваших під\'єднаних облікових записів.</string>
-  <string name="mail_settings_alternative_routing_hint">У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем: Радимо ввімкнути цей параметр для кращої надійності.</string>
-  <!-- App customization settings-->
+    <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">Персоналізація застосунку</string>
   <string name="mail_settings_app_customization_notification">Сповіщення</string>
   <string name="mail_settings_app_customization_language">Мова</string>
   <string name="mail_settings_app_customization_appearance">Вигляд</string>
   <string name="mail_settings_app_customization_protection">Блокування застосунку</string>
-  <string name="mail_settings_app_customization_mobile_signature">Мобільний підпис</string>
-  <string name="mail_settings_app_customization_email_signature">Поштовий підпис</string>
-  <string name="mail_settings_app_customization_protection_enabled_description">Автоблокування ввімкнено</string>
+    <string name="mail_settings_app_customization_protection_enabled_description">Автоблокування ввімкнено</string>
   <string name="mail_settings_app_customization_protection_disabled_description">Автоблокування вимкнено</string>
-  <string name="mail_settings_app_customization_use_device_contacts">Використовувати контакти пристрою</string>
-  <string name="mail_settings_app_customization_use_device_contacts_hint">Автозаповнення поштових адрес за допомогою контактів із вашого пристрою.</string>
-  <string name="mail_settings_app_customization_swipe_to_next_email">Проведіть, щоби перейти до наступного листа</string>
+    <string name="mail_settings_app_customization_swipe_to_next_email">Проведіть, щоби перейти до наступного листа</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Швидко переходьте до наступного або попереднього повідомлення у вашій скриньці.</string>
-  <string name="mail_settings_app_customization_swipe_action">Жест проведення</string>
-  <string name="mail_settings_app_customization_swipe_action_hint">Налаштуйте швидкі дії, такі як видалення або архівування, коли ви проводите ліворуч або праворуч.</string>
-  <string name="mail_settings_app_customization_customize_toolbar">Налаштувати панелі інструментів</string>
+    <string name="mail_settings_app_customization_customize_toolbar">Налаштувати панелі інструментів</string>
   <string name="mail_settings_app_customization_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Обхід мережевого екрана або мережевих проблем у разі блокування сайтів Proton.</string>
   <string name="mail_settings_app_customization_view_application_logs">Переглянути журнал застосунку</string>
@@ -88,9 +75,7 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Немає доступних відомостей</string>
   <string name="mail_settings_account">Обліковий запис</string>
-  <string name="mail_settings_not_set">Не встановлено</string>
-  <string name="mail_settings_conversation_mode_hint">Групуйте електронні листи в одній розмові або переглядайте їх окремо</string>
-  <!-- Privacy settings -->
+    <!-- Privacy settings -->
   <string name="mail_settings_privacy">Приватність</string>
   <string name="mail_settings_privacy_auto_show_remote_content">Автопоказ зовнішнього вмісту</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Автопоказ вбудованих зображень</string>

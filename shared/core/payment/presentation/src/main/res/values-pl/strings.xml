@@ -34,8 +34,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Zniżki są obliczane na podstawie standardowej ceny miesięcznej. Subskrypcja odnawia się automatycznie w cenie %1$s/miesiąc</string>
   <string name="payment_bf_renew_annually">Zniżki są obliczane na podstawie standardowej ceny miesięcznej. Subskrypcja odnawia się automatycznie w cenie %1$s/rok</string>
-  <string name="payment_bf_renew_biennially">Zniżki są obliczane na podstawie standardowej ceny miesięcznej. Subskrypcja odnawia się automatycznie w cenie %1$s co 2 lata</string>
-  <string name="payment_welcome_offer_renew_monthly">Oferta powitalna. Automatyczne odnowienie w kwocie %1$s miesięcznie</string>
+    <string name="payment_welcome_offer_renew_monthly">Oferta powitalna. Automatyczne odnowienie w kwocie %1$s miesięcznie</string>
   <string name="payment_welcome_offer_renew_annually">Oferta powitana. Automatyczne odnowienie w kwocie %1$s rocznie</string>
   <string name="payment_welcome_offer_renew_biennially">Oferta powitana. Automatyczne odnowienie w kwocie %1$s co 2 lata</string>
   <plurals name="payment_welcome_offer_renew_other">

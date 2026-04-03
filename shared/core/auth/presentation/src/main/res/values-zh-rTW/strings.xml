@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">關閉</string>
-  <string name="login_help_title">我們可以提供什麼協助？</string>
+    <string name="login_help_title">我們可以提供什麼協助？</string>
   <string name="login_help_forgot_username">忘記使用者名稱</string>
   <string name="login_help_forgot_password">忘記密碼</string>
   <string name="login_help_other_issues">其他登入問題</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Username or email</string>
   <string name="auth_email">電子郵件</string>
   <string name="auth_password">密碼</string>
-  <string name="auth_username_placeholder">使用者名稱或電子郵件</string>
-  <string name="auth_password_placeholder">密碼</string>
-  <string name="auth_login_assistive_text">請輸入您的 Proton 電子郵件或使用者名稱。</string>
+    <string name="auth_login_assistive_text">請輸入您的 Proton 電子郵件或使用者名稱。</string>
   <string name="auth_account_details">輸入您的 Proton 帳號詳細資訊。</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">登入時發生問題。請再試一次。</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">需要真人驗證。</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">登入憑證錯誤。請再試一次。</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">不支援的雙重驗證。</string>
-  <string name="auth_login_general_error">出現錯誤</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">登入憑證錯誤。請再試一次。</string>
+    <string name="auth_login_general_error">出現錯誤</string>
   <string name="auth_second_factor_title">雙重身分驗證</string>
   <string name="auth_second_factor_subtitle">您的帳號設定了多種雙因子驗證機制。請挑選您想要確認身份的方式。</string>
   <string name="auth_second_factor_tab_security_key">安全金鑰</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">密碼不能為空</string>
   <string name="auth_signup_title">建立您的 Proton 帳號</string>
   <string name="auth_signup_subtitle">一個帳號即可使用所有 Proton 服務</string>
-  <string name="auth_signup_username_assistive_text">使用者名稱不能為空。</string>
-  <string name="auth_signup_email_assistive_text">電子郵件不能為空。</string>
-  <string name="auth_signup_next">下一步</string>
+    <string name="auth_signup_next">下一步</string>
   <string name="auth_signup_username">Username</string>
   <string name="auth_signup_create_password">建立您的密碼</string>
   <string name="auth_signup_password">密碼</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">略過</string>
   <string name="auth_signup_recovery_title">設定復原方式（選擇性）</string>
   <string name="auth_signup_recovery_subtitle">若您的帳號被鎖定，我們會傳送復原說明到此電子郵件地址或電話號碼。</string>
-  <string name="auth_signup_recovery_email">電子郵件</string>
-  <string name="auth_signup_recovery_phone">電話</string>
-  <string name="auth_signup_recovery_email_hint">復原電子郵件</string>
-  <string name="auth_signup_recovery_phone_hint">復原電話號碼</string>
-  <string name="auth_signup_recovery_select_country">選擇國家</string>
+    <string name="auth_signup_recovery_select_country">選擇國家</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">略過復原方式？</string>
   <string name="auth_signup_skip_recovery_description">復原方法可協助您存取您的帳號，以防您忘記您的密碼或被鎖在帳號之外。</string>
@@ -128,8 +117,7 @@
   <string name="auth_fido_config_error">Error retrieving stored keys.</string>
   <string name="auth_fido_reading_key_error">Error reading security key.</string>
   <string name="auth_fido_submit_key_error">Error submitting key data.</string>
-  <string name="auth_fido_reading_key_progress">Reading security key.</string>
-  <string name="auth_fido_authenticating_in_progress">Authenticating with security key.</string>
+    <string name="auth_fido_authenticating_in_progress">Authenticating with security key.</string>
   <string name="auth_fido_security_key">安全金鑰</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="other">密碼至少必須包含 %1$s 個字元</item>
@@ -144,21 +132,15 @@
   <string name="settings_password_management_tab_second_password">第二密碼</string>
   <string name="settings_password_management_change_password_note">To change either of your passwords, you\'ll need to know your main password.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Forgot your main password?</string>
-  <string name="settings_password_management_header">變更密碼</string>
-  <string name="settings_password_management_cannot_change_password">您不能自行變更備份密碼。請洽詢管理員。</string>
-  <string name="settings_main_password_hint_current">目前的主密碼</string>
+    <string name="settings_main_password_hint_current">目前的主密碼</string>
   <string name="settings_main_password_hint_new">新的主密碼</string>
   <string name="settings_main_password_hint_new_confirm">確認新的主密碼</string>
   <string name="settings_second_password_hint_current_main_password">目前的主密碼</string>
   <string name="settings_second_password_hint_new">新的第二密碼</string>
   <string name="settings_second_password_hint_new_confirm">確認新的第二密碼</string>
-  <string name="settings_change_password_error">變更密碼時出現錯誤</string>
-  <string name="settings_recovery_email_success">復原電子郵件位址已更新</string>
-  <string name="settings_password_management_login_success">已更新登入密碼</string>
+    <string name="settings_password_management_login_success">已更新登入密碼</string>
   <string name="settings_password_management_second_success">Second password updated</string>
-  <string name="settings_password_management_start_recovery">忘記或想不起您的密碼？</string>
-  <string name="settings_password_management_2fa">需要雙重驗證</string>
-  <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
+    <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
   <string name="settings_password_error_empty">密碼不能為空.</string>
   <string name="settings_password_error">帳號或密碼不正確，請再檢查一下</string>
   <string name="settings_password_error_invalid_recovery">Incorrect 2FA code. Please try again.</string>

@@ -56,25 +56,7 @@
   <string name="upselling_button_hint">완전한 유연성을 위한 업그레이드</string>
   <string name="upselling_upgrade_plan_generic">이 기능을 사용하려면 유료 Proton Mail 구독이 필요합니다.</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">프리미엄 가치 포함됨</string>
-  <string name="upselling_onboarding_feature_e2e">종단간 암호화</string>
-  <string name="upselling_onboarding_feature_folders_labels">무제한 폴더 및 라벨</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB 스토리지 및 1개 이메일 주소</string>
-  <string name="upselling_onboarding_plus_feature_storage">15GB 저장공간</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">회원님을 위한 10개의 추가 이메일 주소</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">1개의 커스텀 이메일 도메인 지원</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10개의 hide-my-email 별칭</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">우선 고객 지원</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500GB 저장공간</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">회원님을 위한 15개의 추가 이메일 주소</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">3개의 커스텀 이메일 도메인 지원</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">무제한 hide-my-email 별칭</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">전담 고객 지원</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">매우 빠른 비공개 VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">사진 및 문서에 대한 암호화된 클라우드 스토리지</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">향상된 계정 보호</string>
-  <!-- Comparison Table -->
+    <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">저장 공간</string>
   <string name="upselling_comparison_table_email_addresses">이메일 주소</string>
   <string name="upselling_comparison_table_custom_email_domain">사용자 지정 이메일 도메인</string>
@@ -109,20 +91,11 @@
   <string name="upselling_auto_renew_text_standard">취소 전까지 %s%s(으)로 갱신됩니다</string>
   <string name="upselling_social_proof_reviews">2천개 이상의 리뷰</string>
   <string name="upselling_description_social_proof">수백만 명의 구독자가 극찬하는 경험을 위해 업그레이드하세요.</string>
-  <string name="upselling_discount_tag">%s%% 절약</string>
-  <string name="upselling_month">/월</string>
+    <string name="upselling_month">/월</string>
   <string name="upselling_month_only">오직 %s/월</string>
   <string name="upselling_year">/연간</string>
-  <string name="upselling_get_button">%s 받기</string>
-  <plurals name="upselling_month">
-    <item quantity="other">%d개월</item>
-  </plurals>
-  <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">업그레이드 옵션을 불러올 수 없습니다.</string>
-  <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>
+    <!-- Errors -->
+    <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>
   <string name="upselling_snackbar_error_no_subscriptions">구독을 가져올 수 없습니다.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">구독을 업그레이드 중입니다…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">구독을 업그레이드하던 중 오류가 발생했습니다.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">오류가 발생했습니다. 다시 시도해 주십시오.</string>
 </resources>

@@ -34,8 +34,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %1$s/месяц</string>
   <string name="payment_bf_renew_annually">Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %1$s/год</string>
-  <string name="payment_bf_renew_biennially">Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %1$s кожныя 2 гады</string>
-  <string name="payment_welcome_offer_renew_monthly">Вітальная прапанова. Аўтаматычнае падаўжэнне за %1$s/месяц</string>
+    <string name="payment_welcome_offer_renew_monthly">Вітальная прапанова. Аўтаматычнае падаўжэнне за %1$s/месяц</string>
   <string name="payment_welcome_offer_renew_annually">Вітальная прапанова. Аўтаматычнае падаўжэнне за %1$s/год</string>
   <string name="payment_welcome_offer_renew_biennially">Вітальная прапанова. Аўтаматычна падаўжэнне за %1$s кожныя 2 гады</string>
   <plurals name="payment_welcome_offer_renew_other">

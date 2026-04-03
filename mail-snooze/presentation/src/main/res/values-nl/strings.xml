@@ -24,8 +24,7 @@
   <string name="snooze_sheet_option_this_weekend">Dit weekend</string>
   <string name="snooze_sheet_option_custom">Aangepast</string>
   <string name="snooze_sheet_option_custom_detail">Selecteer datum en tijd</string>
-  <string name="snooze_sheet_option_upsell_detail">Functie tegen betaling</string>
-  <string name="snooze_sheet_snooze_title">Snooze tot</string>
+    <string name="snooze_sheet_snooze_title">Snooze tot</string>
   <string name="snooze_sheet_option_unsnooze">Ontsnoozen</string>
   <string name="snooze_sheet_error_unable_to_snooze">Sorry, er is een onbekende fout opgetreden bij het snoozen van dit gesprek</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Er is een onbekende fout opgetreden bij het uitzetten van de sluimerstand van het gesprek.</string>

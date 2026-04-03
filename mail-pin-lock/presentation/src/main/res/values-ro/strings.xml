@@ -17,8 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Înapoi</string>
-  <!-- Auto lock -->
+    <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Blocare aplicație</string>
   <string name="mail_pinlock_settings_no_lock">Fără blocare</string>
   <string name="mail_pinlock_settings_with_pin">Securizare cu PIN</string>
@@ -63,13 +62,9 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nu</string>
   <string name="mail_settings_pin_insertion_created_success">Codul PIN a fost creat.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Codul PIN a fost modificat.</string>
-  <!-- Error messages -->
+    <!-- Error messages -->
   <string name="mail_settings_generic_error_message">A apărut o eroare. Mai încercați.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">A apărut o eroare. Mai încercați.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Prea multe încercări greșite.</string>
-  <string name="mail_settings_pin_verify_wrong_pin">PIN incorect</string>
-  <string name="mail_settings_biometrics_unable_to_set">A apărut o eroare la setarea preferințelor biometrice.</string>
+    <string name="mail_settings_biometrics_unable_to_set">A apărut o eroare la setarea preferințelor biometrice.</string>
   <string name="mail_settings_biometrics_unable_to_unset">A apărut o eroare la setarea preferințelor biometrice.</string>
   <string name="mail_settings_biometrics_unknown_lock">A apărut o eroare în timpul preluării politicii de blocare curente.</string>
   <!-- Auto lock dialog -->

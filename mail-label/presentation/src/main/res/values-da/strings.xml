@@ -28,13 +28,11 @@
   <string name="label_title_all_mail">Alle e-mails</string>
   <string name="label_title_all_scheduled">Planlagt</string>
   <string name="label_title_snoozed">Udsat</string>
-  <string name="label_title_folders">Mapper</string>
-  <string name="label_title_create_label">Opret etiket</string>
+    <string name="label_title_create_label">Opret etiket</string>
   <string name="label_title_create_folder">Opret mappe</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flyt til…</string>
-  <string name="bottom_sheet_done_action">Udført</string>
-  <string name="bottom_sheet_save_action">Gem</string>
+    <string name="bottom_sheet_save_action">Gem</string>
   <string name="bottom_sheet_archive_action">Arkivér også?</string>
   <string name="bottom_sheet_label_as_title">Tilføj etiket</string>
   <string name="bottom_sheet_label_as_error_fetch">Kunne ikke hente etiketter.</string>

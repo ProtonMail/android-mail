@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">メッセージを送信中…</string>
   <string name="mailbox_message_sending_offline">オフライン: メッセージを送信待ちにしました</string>
   <string name="mailbox_message_sending_success">メッセージが送信されました</string>
-  <string name="mailbox_message_sending_error">メッセージ送信エラー</string>
-  <string name="mailbox_message_sending_error_action">下書きを開く</string>
+    <string name="mailbox_message_sending_error_action">下書きを開く</string>
   <string name="notification_switched_account">アカウント %sに切り替えました</string>
-  <string name="label_saved">ラベルが保存されました</string>
-  <string name="label_deleted">ラベルが削除されました</string>
-  <string name="app_locked">アプリがロックされました</string>
-  <string name="use_pin_instead">代わりにPINコードを使用する</string>
-  <string name="mailbox_message_scheduling">メッセージを送信予約中…</string>
+    <string name="mailbox_message_scheduling">メッセージを送信予約中…</string>
   <string name="mailbox_message_scheduling_offline">オフライン: メッセージをスケジュール設定待ちにしました</string>
   <string name="mailbox_message_scheduled_for_sending_success">このメッセージは %1$s に送信されます</string>
   <string name="launcher_alert_duplicate_account_description">ユーザーは既にサインインしています</string>

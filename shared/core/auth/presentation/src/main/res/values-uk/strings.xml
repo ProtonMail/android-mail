@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Закрити</string>
-  <string name="login_help_title">Як ми можемо допомогти?</string>
+    <string name="login_help_title">Як ми можемо допомогти?</string>
   <string name="login_help_forgot_username">Забули ім\'я користувача</string>
   <string name="login_help_forgot_password">Забули пароль</string>
   <string name="login_help_other_issues">Інші проблеми з входом</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Ім\'я користувача або пошта</string>
   <string name="auth_email">Пошта</string>
   <string name="auth_password">Пароль</string>
-  <string name="auth_username_placeholder">Ім\'я користувача або пошта</string>
-  <string name="auth_password_placeholder">Пароль</string>
-  <string name="auth_login_assistive_text">Введіть свою поштову адресу або ім\'я користувача Proton.</string>
+    <string name="auth_login_assistive_text">Введіть свою поштову адресу або ім\'я користувача Proton.</string>
   <string name="auth_account_details">Введіть дані свого облікового запису Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Проблема із входом у систему. Спробуйте знову.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Необхідна перевірка «Я не робот».</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Неправильні облікові дані. Спробуйте ще раз.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Двоетапна перевірка не підтримується.</string>
-  <string name="auth_login_general_error">Сталася помилка.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Неправильні облікові дані. Спробуйте ще раз.</string>
+    <string name="auth_login_general_error">Сталася помилка.</string>
   <string name="auth_second_factor_title">Двоетапна перевірка</string>
   <string name="auth_second_factor_subtitle">У вашому обліковому записі налаштовано декілька способів 2ЕП. Виберіть, як ви хочете підтвердити свою особу.</string>
   <string name="auth_second_factor_tab_security_key">Ключ безпеки</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">Потрібно ввести пароль</string>
   <string name="auth_signup_title">Створіть свій обліковий запис Proton</string>
   <string name="auth_signup_subtitle">Один обліковий запис для всіх сервісів Proton</string>
-  <string name="auth_signup_username_assistive_text">Поле з ім\'ям користувача не повинно бути порожнім.</string>
-  <string name="auth_signup_email_assistive_text">Поштова адреса не може бути порожньою.</string>
-  <string name="auth_signup_next">Далі</string>
+    <string name="auth_signup_next">Далі</string>
   <string name="auth_signup_username">Ім\'я користувача</string>
   <string name="auth_signup_create_password">Створити пароль</string>
   <string name="auth_signup_password">Пароль</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Пропустити</string>
   <string name="auth_signup_recovery_title">Встановити спосіб відновлення (необов\'язково)</string>
   <string name="auth_signup_recovery_subtitle">Ми надішлемо інструкції з відновлення на цю адресу або номер телефону, якщо ви заблокуєте свій обліковий запис.</string>
-  <string name="auth_signup_recovery_email">Пошта</string>
-  <string name="auth_signup_recovery_phone">Телефон</string>
-  <string name="auth_signup_recovery_email_hint">Резервна пошта</string>
-  <string name="auth_signup_recovery_phone_hint">Номер телефону для відновлення</string>
-  <string name="auth_signup_recovery_select_country">Виберіть країну</string>
+    <string name="auth_signup_recovery_select_country">Виберіть країну</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Не додавати спосіб відновлення?</string>
   <string name="auth_signup_skip_recovery_description">Спосіб відновлення допоможе вам відновити доступ до свого облікового запису у випадку втрати пароля чи втрати доступу до облікового запису.</string>
@@ -131,8 +120,7 @@
   <string name="auth_fido_config_error">Помилка отримання збережених ключів.</string>
   <string name="auth_fido_reading_key_error">Помилка читання ключа безпеки.</string>
   <string name="auth_fido_submit_key_error">Помилка надсилання даних ключа.</string>
-  <string name="auth_fido_reading_key_progress">Зчитування ключа безпеки.</string>
-  <string name="auth_fido_authenticating_in_progress">Автентифікація з ключем безпеки.</string>
+    <string name="auth_fido_authenticating_in_progress">Автентифікація з ключем безпеки.</string>
   <string name="auth_fido_security_key">Ключ безпеки</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Пароль повинен містити принаймні 1 символ</item>
@@ -153,21 +141,15 @@
   <string name="settings_password_management_tab_second_password">Другий пароль</string>
   <string name="settings_password_management_change_password_note">Щоб змінити будь-який зі своїх паролів, вам потрібно знати свій основний пароль. </string>
   <string name="settings_password_management_forgot_main_password">Забули основний пароль?</string>
-  <string name="settings_password_management_header">Змінити пароль</string>
-  <string name="settings_password_management_cannot_change_password">Ви не можете змінити свій резервний пароль. Зверніться до свого адміністратора.</string>
-  <string name="settings_main_password_hint_current">Поточний основний пароль</string>
+    <string name="settings_main_password_hint_current">Поточний основний пароль</string>
   <string name="settings_main_password_hint_new">Новий основний пароль</string>
   <string name="settings_main_password_hint_new_confirm">Підтвердити новий основний пароль</string>
   <string name="settings_second_password_hint_current_main_password">Поточний основний пароль</string>
   <string name="settings_second_password_hint_new">Новий другий пароль</string>
   <string name="settings_second_password_hint_new_confirm">Підтвердити новий другий пароль</string>
-  <string name="settings_change_password_error">Сталася помилка зміни пароля.</string>
-  <string name="settings_recovery_email_success">Адресу резервної електронної пошти оновлено</string>
-  <string name="settings_password_management_login_success">Пароль входу оновлено</string>
+    <string name="settings_password_management_login_success">Пароль входу оновлено</string>
   <string name="settings_password_management_second_success">Другий пароль оновлено</string>
-  <string name="settings_password_management_start_recovery">Не знаєте свій поточний пароль?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
-  <string name="settings_password_invalid_2fa">Неправильний код другого фактора. Повторіть спробу.</string>
+    <string name="settings_password_invalid_2fa">Неправильний код другого фактора. Повторіть спробу.</string>
   <string name="settings_password_error_empty">Потрібно ввести пароль.</string>
   <string name="settings_password_error">Неправильне ім\'я користувача або пароль. Спробуйте ще раз.</string>
   <string name="settings_password_error_invalid_recovery">Неправильний код 2FA. Повторіть спробу.</string>

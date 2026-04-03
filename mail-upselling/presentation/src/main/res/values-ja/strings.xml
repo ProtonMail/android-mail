@@ -56,25 +56,7 @@
   <string name="upselling_button_hint">最大限の柔軟性を得るためのアップグレード</string>
   <string name="upselling_upgrade_plan_generic">この機能にアクセスするには、有料のProton Mailサブスクリプションが必要です</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">プレミアムな価値が含まれています</string>
-  <string name="upselling_onboarding_feature_e2e">エンドツーエンド暗号化</string>
-  <string name="upselling_onboarding_feature_folders_labels">無制限のフォルダーとラベル</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB のストレージと 1 つのメールアドレス</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 GB のストレージ</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 個の追加のメールアドレス</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">1 つのカスタムメールドメインをサポート</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 個の 非ide-my-email表示メールエイリアス</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">優先カスタマーサポート</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GB のストレージ</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 個の追加のメールアドレス</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">3 つのカスタムメールドメインをサポート</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">無制限のメール非表示ide-my-emailエイリアス</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">専用カスタマーサポート</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">超高速でプライベートな VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">暗号化されたパスワードマネージャー</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">写真や文書のための暗号化クラウドストレージ</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">高度なアカウント保護</string>
-  <!-- Comparison Table -->
+    <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">容量</string>
   <string name="upselling_comparison_table_email_addresses">メールアドレス</string>
   <string name="upselling_comparison_table_custom_email_domain">カスタムメールドメイン</string>
@@ -109,20 +91,11 @@
   <string name="upselling_auto_renew_text_standard">キャンセルしない限り、%s%s で自動更新します。</string>
   <string name="upselling_social_proof_reviews">2000以上のレビュー</string>
   <string name="upselling_description_social_proof">数百万人の加入者が絶賛する体験にアップグレードしてください。</string>
-  <string name="upselling_discount_tag">%s%%節約</string>
-  <string name="upselling_month">/月</string>
+    <string name="upselling_month">/月</string>
   <string name="upselling_month_only">月額%sのみ</string>
   <string name="upselling_year">/ 年間</string>
-  <string name="upselling_get_button">%sを入手</string>
-  <plurals name="upselling_month">
-    <item quantity="other">%d ヶ月</item>
-  </plurals>
-  <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">アップグレードオプションを取得できませんでした。</string>
-  <string name="upselling_snackbar_error_no_user_id">エラーが発生しました。</string>
+    <!-- Errors -->
+    <string name="upselling_snackbar_error_no_user_id">エラーが発生しました。</string>
   <string name="upselling_snackbar_error_no_subscriptions">サブスクリプションを取得できませんでした。</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">サブスクリプションのアップグレードを進めています…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">サブスクリプションのアップグレード中にエラーが発生しました。</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">エラーが発生しました。もう一度お試しください。</string>
 </resources>

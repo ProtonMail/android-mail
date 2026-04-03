@@ -32,8 +32,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$s/maand</string>
   <string name="payment_bf_renew_annually">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$s/jaar</string>
-  <string name="payment_bf_renew_biennially">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$s per 2 jaar</string>
-  <string name="payment_welcome_offer_renew_monthly">Welkomstaanbieding. Wordt automatisch verlengd voor %1$s per maand</string>
+    <string name="payment_welcome_offer_renew_monthly">Welkomstaanbieding. Wordt automatisch verlengd voor %1$s per maand</string>
   <string name="payment_welcome_offer_renew_annually">Welkomstaanbieding. Wordt automatisch verlengd voor %1$s per jaar</string>
   <string name="payment_welcome_offer_renew_biennially">Welkomstaanbieding. Wordt automatisch om de 2 jaar verlengd voor %1$s</string>
   <plurals name="payment_welcome_offer_renew_other">

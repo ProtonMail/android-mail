@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Zapri</string>
-  <string name="login_help_title">Kako lahko pomagamo?</string>
+    <string name="login_help_title">Kako lahko pomagamo?</string>
   <string name="login_help_forgot_username">Pozabljeno uporabniško ime</string>
   <string name="login_help_forgot_password">Pozabljeno geslo</string>
   <string name="login_help_other_issues">Druge težave z vpisom</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Uporabniško ime ali e-pošta</string>
   <string name="auth_email">E-pošta</string>
   <string name="auth_password">Geslo</string>
-  <string name="auth_username_placeholder">Uporabniško ime ali e-pošta</string>
-  <string name="auth_password_placeholder">Geslo</string>
-  <string name="auth_login_assistive_text">Vnesite e-poštni naslov ali uporabniško ime za vaš Proton račun.</string>
+    <string name="auth_login_assistive_text">Vnesite e-poštni naslov ali uporabniško ime za vaš Proton račun.</string>
   <string name="auth_account_details">Vnesite podrobnosti o Proton računu.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Prišlo je do težave pri prijavi. Poskusite znova.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Potrebna je človeška potrditev.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Napačne poverilnice za prijavo. Poskusite znova.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Nepodprta dvostopenjska avtentikacija.</string>
-  <string name="auth_login_general_error">Prišlo je do napake.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Napačne poverilnice za prijavo. Poskusite znova.</string>
+    <string name="auth_login_general_error">Prišlo je do napake.</string>
   <string name="auth_second_factor_title">Dvojno preverjanje pristnosti</string>
   <string name="auth_second_factor_subtitle">V vašem računu je nastavljenih več 2FA mehanizmov. Izberite, s katerim želite potrditi svojo identiteto.</string>
   <string name="auth_second_factor_tab_security_key">Varnostni ključ</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">Polje za geslo ne more biti prazno</string>
   <string name="auth_signup_title">Ustvarite vaš Proton račun</string>
   <string name="auth_signup_subtitle">En račun za vse storitve Proton</string>
-  <string name="auth_signup_username_assistive_text">Uporabniško ime ne sme biti prazno.</string>
-  <string name="auth_signup_email_assistive_text">E-pošta ne sme biti prazna.</string>
-  <string name="auth_signup_next">Naprej</string>
+    <string name="auth_signup_next">Naprej</string>
   <string name="auth_signup_username">Uporabniško ime</string>
   <string name="auth_signup_create_password">Ustvarite geslo</string>
   <string name="auth_signup_password">Geslo</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Preskoči</string>
   <string name="auth_signup_recovery_title">Nastavitev načina obnovitve (izbirno)</string>
   <string name="auth_signup_recovery_subtitle">Na ta e-poštni naslov ali telefonsko številko vam bomo poslali navodila za obnovitev, če bo vaš račun zaklenjen.</string>
-  <string name="auth_signup_recovery_email">E-pošta</string>
-  <string name="auth_signup_recovery_phone">Telefon</string>
-  <string name="auth_signup_recovery_email_hint">E-poštni naslov za obnovitev</string>
-  <string name="auth_signup_recovery_phone_hint">Telefonska številka za obnovitev</string>
-  <string name="auth_signup_recovery_select_country">Izberite državo</string>
+    <string name="auth_signup_recovery_select_country">Izberite državo</string>
   <string name="auth_signup_phone_placeholder">+XXX XX XXX XXX</string>
   <string name="auth_signup_skip_recovery_title">Preskoči način za obnovitev?</string>
   <string name="auth_signup_skip_recovery_description">Način obnovitve vam pomaga dostopati do računa, če pozabite geslo ali če je vaš račun zaklenjen.</string>
@@ -131,8 +120,7 @@
   <string name="auth_fido_config_error">Napaka pri pridobivanju shranjenih ključev.</string>
   <string name="auth_fido_reading_key_error">Napaka pri branju varnostnega ključa.</string>
   <string name="auth_fido_submit_key_error">Napaka pri pošiljanju podatkov o ključu.</string>
-  <string name="auth_fido_reading_key_progress">Branje varnostnega ključa.</string>
-  <string name="auth_fido_authenticating_in_progress">Preverjanje pristnosti z varnostnim ključem.</string>
+    <string name="auth_fido_authenticating_in_progress">Preverjanje pristnosti z varnostnim ključem.</string>
   <string name="auth_fido_security_key">Varnostni ključ</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Geslo mora vsebovati vsaj 1 znak</item>
@@ -153,21 +141,15 @@
   <string name="settings_password_management_tab_second_password">Drugo geslo</string>
   <string name="settings_password_management_change_password_note">Če želite spremeniti katero koli od svojih gesel, morate poznati svoje glavno geslo.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Ste pozabili svoje glavno geslo?</string>
-  <string name="settings_password_management_header">Spremeni geslo</string>
-  <string name="settings_password_management_cannot_change_password">Ne morete spremeniti svojega varnostnega gesla. Obrnite se na svojega skrbnika.</string>
-  <string name="settings_main_password_hint_current">Trenutno glavno geslo</string>
+    <string name="settings_main_password_hint_current">Trenutno glavno geslo</string>
   <string name="settings_main_password_hint_new">Novo glavno geslo</string>
   <string name="settings_main_password_hint_new_confirm">Potrdite novo glavno geslo</string>
   <string name="settings_second_password_hint_current_main_password">Trenutno glavno geslo</string>
   <string name="settings_second_password_hint_new">Novo drugo geslo</string>
   <string name="settings_second_password_hint_new_confirm">Potrdite novo drugo geslo</string>
-  <string name="settings_change_password_error">Pri spremembi gesla je prišlo do napake.</string>
-  <string name="settings_recovery_email_success">E-poštni naslov za obnovitev je posodobljen</string>
-  <string name="settings_password_management_login_success">Prijavno geslo je bilo posodobljeno</string>
+    <string name="settings_password_management_login_success">Prijavno geslo je bilo posodobljeno</string>
   <string name="settings_password_management_second_success">Drugo geslo je posodobljeno.</string>
-  <string name="settings_password_management_start_recovery">Ne poznate trenutnega gesla?</string>
-  <string name="settings_password_management_2fa">potrebna je 2FA</string>
-  <string name="settings_password_invalid_2fa">Neveljavna koda drugega faktorja. Poskusite znova.</string>
+    <string name="settings_password_invalid_2fa">Neveljavna koda drugega faktorja. Poskusite znova.</string>
   <string name="settings_password_error_empty">Polje za geslo ne more biti prazno.</string>
   <string name="settings_password_error">Napačno uporabniško ime ali geslo. Poskusite znova.</string>
   <string name="settings_password_error_invalid_recovery">Napačna koda 2FA. Poskusite znova.</string>

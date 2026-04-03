@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Esborra d\'aquest dispositiu</string>
   <string name="account_switcher_switch_to">Canvia a</string>
   <string name="manage_accounts_title">Gestiona els comptes</string>
-  <string name="manage_accounts_signed_in">S\'ha iniciat la sessió.</string>
-  <string name="manage_accounts_signed_out">S\'ha tancat la sessió.</string>
-  <string name="manage_accounts_add_account">Afegeix un compte</string>
+    <string name="manage_accounts_add_account">Afegeix un compte</string>
   <string name="manage_accounts_switch_to">Canvia a</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Canvieu a un compte amb la sessió iniciada</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Canvieu a un compte amb la sessió tancada</string>

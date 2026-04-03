@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Poista tältä laitteelta</string>
   <string name="account_switcher_switch_to">Vaihda tiliin</string>
   <string name="manage_accounts_title">Hallitse tilejä</string>
-  <string name="manage_accounts_signed_in">Sisäänkirjautunut</string>
-  <string name="manage_accounts_signed_out">Uloskirjautunut</string>
-  <string name="manage_accounts_add_account">Lisää tili</string>
+    <string name="manage_accounts_add_account">Lisää tili</string>
   <string name="manage_accounts_switch_to">Vaihda tiliin</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Vaihda kirjautuneeseen tiliin</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Vaihda uloskirjautuneeseen tiliin</string>

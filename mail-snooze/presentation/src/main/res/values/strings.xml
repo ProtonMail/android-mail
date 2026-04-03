@@ -24,7 +24,6 @@
     <string name="snooze_sheet_option_this_weekend">This weekend</string>
     <string name="snooze_sheet_option_custom">Custom</string>
     <string name="snooze_sheet_option_custom_detail">Pick date and time</string>
-    <string name="snooze_sheet_option_upsell_detail">Paid feature</string>
     <string name="snooze_sheet_snooze_title">Snooze until</string>
     <string name="snooze_sheet_option_unsnooze">Unsnooze</string>
     <string name="snooze_sheet_error_unable_to_snooze">Sorry, we encountered an unknown error snoozing this conversation</string>

@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Cerrar</string>
-  <string name="login_help_title">¿Cómo podemos ayudarle?</string>
+    <string name="login_help_title">¿Cómo podemos ayudarle?</string>
   <string name="login_help_forgot_username">¿Olvidó su nombre de usuario?</string>
   <string name="login_help_forgot_password">¿Olvidó la contraseña?</string>
   <string name="login_help_other_issues">Otros problemas de inicio de sesión</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Nombre de usuario o correo electrónico</string>
   <string name="auth_email">Correo electrónico</string>
   <string name="auth_password">Contraseña</string>
-  <string name="auth_username_placeholder">Nombre de usuario o correo electrónico</string>
-  <string name="auth_password_placeholder">Contraseña</string>
-  <string name="auth_login_assistive_text">Ingrese el correo electrónico o nombre de usuario de Proton.</string>
+    <string name="auth_login_assistive_text">Ingrese el correo electrónico o nombre de usuario de Proton.</string>
   <string name="auth_account_details">Ingrese los datos de la cuenta de Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problema al iniciar sesión. Inténtelo de nuevo.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Se necesita verificación humana.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Credenciales de acceso incorrectas. Intente de nuevo.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Doble factor no soportado.</string>
-  <string name="auth_login_general_error">Ocurrió un error.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Credenciales de acceso incorrectas. Intente de nuevo.</string>
+    <string name="auth_login_general_error">Ocurrió un error.</string>
   <string name="auth_second_factor_title">Autenticación de dos factores</string>
   <string name="auth_second_factor_subtitle">Su cuenta tiene varios mecanismos de 2FA configurados. Elija cómo desea confirmar su identidad.</string>
   <string name="auth_second_factor_tab_security_key">Clave de seguridad</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">La contraseña no puede estar vacía.</string>
   <string name="auth_signup_title">Cree su cuenta de Proton</string>
   <string name="auth_signup_subtitle">Una cuenta para todos los servicios de Proton</string>
-  <string name="auth_signup_username_assistive_text">El nombre de usuario no puede estar vacío.</string>
-  <string name="auth_signup_email_assistive_text">El correo electrónico no puede estar vacío.</string>
-  <string name="auth_signup_next">Siguiente</string>
+    <string name="auth_signup_next">Siguiente</string>
   <string name="auth_signup_username">Nombre de usuario</string>
   <string name="auth_signup_create_password">Cree su contraseña</string>
   <string name="auth_signup_password">Contraseña</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Omitir</string>
   <string name="auth_signup_recovery_title">Establecer método de recuperación (opcional)</string>
   <string name="auth_signup_recovery_subtitle">Enviaremos instrucciones de recuperación a este correo electrónico o número de teléfono si no puede entrar en la cuenta.</string>
-  <string name="auth_signup_recovery_email">Correo electrónico</string>
-  <string name="auth_signup_recovery_phone">Teléfono</string>
-  <string name="auth_signup_recovery_email_hint">Correo electrónico de recuperación</string>
-  <string name="auth_signup_recovery_phone_hint">Número telefónico de recuperación</string>
-  <string name="auth_signup_recovery_select_country">Seleccionar un país</string>
+    <string name="auth_signup_recovery_select_country">Seleccionar un país</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">¿Omitir el método de recuperación?</string>
   <string name="auth_signup_skip_recovery_description">Un método de recuperación le ayudará a acceder a la cuenta en caso de que olvide la contraseña o no pueda entrar en la cuenta.</string>
@@ -129,8 +118,7 @@
   <string name="auth_fido_config_error">Error al recuperar claves almacenadas.</string>
   <string name="auth_fido_reading_key_error">Error al leer la clave de seguridad.</string>
   <string name="auth_fido_submit_key_error">Error al enviar datos clave.</string>
-  <string name="auth_fido_reading_key_progress">Leyendo clave de seguridad.</string>
-  <string name="auth_fido_authenticating_in_progress">Autenticando con clave de seguridad.</string>
+    <string name="auth_fido_authenticating_in_progress">Autenticando con clave de seguridad.</string>
   <string name="auth_fido_security_key">Clave de seguridad</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">La contraseña debe tener al menos 1 caracter</item>
@@ -147,21 +135,15 @@
   <string name="settings_password_management_tab_second_password">Segunda contraseña</string>
   <string name="settings_password_management_change_password_note">Para cambiar cualquiera de sus contraseñas, necesita conocer la contraseña principal.\u0020</string>
   <string name="settings_password_management_forgot_main_password">¿Olvidó su contraseña principal?</string>
-  <string name="settings_password_management_header">Cambiar la contraseña</string>
-  <string name="settings_password_management_cannot_change_password">No puede cambiar la contraseña de respaldo. Contáctese con el administrador.</string>
-  <string name="settings_main_password_hint_current">Contraseña principal actual</string>
+    <string name="settings_main_password_hint_current">Contraseña principal actual</string>
   <string name="settings_main_password_hint_new">Contraseña principal nueva</string>
   <string name="settings_main_password_hint_new_confirm">Confirmar contraseña principal nueva</string>
   <string name="settings_second_password_hint_current_main_password">Contraseña principal actual</string>
   <string name="settings_second_password_hint_new">Segunda contraseña nueva</string>
   <string name="settings_second_password_hint_new_confirm">Confirmar segunda contraseña nueva</string>
-  <string name="settings_change_password_error">Ocurrió un error al cambiar la contraseña.</string>
-  <string name="settings_recovery_email_success">La dirección de correo de recuperación fue actualizada.</string>
-  <string name="settings_password_management_login_success">Contraseña de inicio de sesión actualizada</string>
+    <string name="settings_password_management_login_success">Contraseña de inicio de sesión actualizada</string>
   <string name="settings_password_management_second_success">Segunda contraseña actualizada</string>
-  <string name="settings_password_management_start_recovery">¿No recuerda la contraseña?</string>
-  <string name="settings_password_management_2fa">Se necesita 2FA</string>
-  <string name="settings_password_invalid_2fa">Código de segundo factor inválido. Intente de nuevo.</string>
+    <string name="settings_password_invalid_2fa">Código de segundo factor inválido. Intente de nuevo.</string>
   <string name="settings_password_error_empty">La contraseña no puede estar vacía.</string>
   <string name="settings_password_error">Nombre de usuario o contraseña incorrectos. Inténtelo nuevamente.</string>
   <string name="settings_password_error_invalid_recovery">Código 2FA incorrecto. Inténtelo de nuevo.</string>

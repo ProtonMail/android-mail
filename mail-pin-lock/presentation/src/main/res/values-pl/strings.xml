@@ -17,8 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Wstecz</string>
-  <!-- Auto lock -->
+    <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Blokada aplikacji</string>
   <string name="mail_pinlock_settings_no_lock">Nie blokuj</string>
   <string name="mail_pinlock_settings_with_pin">Zabezpiecz za pomocą kodu PIN</string>
@@ -64,13 +63,9 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Tak</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nie</string>
   <string name="mail_settings_pin_insertion_created_success">Kod PIN został utworzony.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Kod PIN został zmieniony.</string>
-  <!-- Error messages -->
+    <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Zbyt wiele nieudanych prób</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Kod PIN jest nieprawidłowy</string>
-  <string name="mail_settings_biometrics_unable_to_set">Wystąpił błąd podczas konfigurowania biometrii.</string>
+    <string name="mail_settings_biometrics_unable_to_set">Wystąpił błąd podczas konfigurowania biometrii.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Wystąpił błąd podczas resetowania biometrii.</string>
   <string name="mail_settings_biometrics_unknown_lock">Wystąpił błąd podczas pobierania zasady blokowania aplikacji.</string>
   <!-- Auto lock dialog -->

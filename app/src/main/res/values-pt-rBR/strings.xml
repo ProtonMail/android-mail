@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">Enviando mensagem…</string>
   <string name="mailbox_message_sending_offline">Off-line: mensagem na fila para o envio</string>
   <string name="mailbox_message_sending_success">Mensagem enviada</string>
-  <string name="mailbox_message_sending_error">Erro no envio da mensagem</string>
-  <string name="mailbox_message_sending_error_action">Ir para Rascunho</string>
+    <string name="mailbox_message_sending_error_action">Ir para Rascunho</string>
   <string name="notification_switched_account">Conta alterada para: %s</string>
-  <string name="label_saved">Marcador salvo</string>
-  <string name="label_deleted">Marcador excluído</string>
-  <string name="app_locked">Aplicativo bloqueado</string>
-  <string name="use_pin_instead">Usar PIN</string>
-  <string name="mailbox_message_scheduling">Agendando mensagem...</string>
+    <string name="mailbox_message_scheduling">Agendando mensagem...</string>
   <string name="mailbox_message_scheduling_offline">Off-line: mensagem na fila para agendamento</string>
   <string name="mailbox_message_scheduled_for_sending_success">Esta mensagem será enviada em %1$s</string>
   <string name="launcher_alert_duplicate_account_description">O usuário já iniciou sessão</string>

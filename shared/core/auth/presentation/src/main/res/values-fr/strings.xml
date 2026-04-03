@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Fermer</string>
-  <string name="login_help_title">Comment pouvons-nous vous aider ?</string>
+    <string name="login_help_title">Comment pouvons-nous vous aider ?</string>
   <string name="login_help_forgot_username">Nom d\'utilisateur oublié</string>
   <string name="login_help_forgot_password">Mot de passe oublié</string>
   <string name="login_help_other_issues">Autres problèmes de connexion</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Nom d\'utilisateur ou adresse e-mail</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Mot de passe</string>
-  <string name="auth_username_placeholder">Nom d\'utilisateur ou adresse e-mail</string>
-  <string name="auth_password_placeholder">Mot de passe</string>
-  <string name="auth_login_assistive_text">Saisissez votre adresse e-mail Proton ou votre nom d\'utilisateur.</string>
+    <string name="auth_login_assistive_text">Saisissez votre adresse e-mail Proton ou votre nom d\'utilisateur.</string>
   <string name="auth_account_details">Saisissez les informations de votre compte Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Un problème est survenu lors de votre connexion. Nous vous invitons à réessayer.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Une vérification humaine est nécessaire.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Les identifiants de connexion ne sont pas corrects. Nous vous invitons à réessayer.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Authentification à deux facteurs non prise en charge.</string>
-  <string name="auth_login_general_error">Une erreur s’est produite.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Les identifiants de connexion ne sont pas corrects. Nous vous invitons à réessayer.</string>
+    <string name="auth_login_general_error">Une erreur s’est produite.</string>
   <string name="auth_second_factor_title">Authentification à deux facteurs</string>
   <string name="auth_second_factor_subtitle">Plusieurs mécanismes A2F sont configurés sur votre compte. Choisissez la manière dont vous voulez confirmer votre identité.</string>
   <string name="auth_second_factor_tab_security_key">Clé de sécurité</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">Le mot de passe ne peut pas être vide.</string>
   <string name="auth_signup_title">Créez votre compte Proton</string>
   <string name="auth_signup_subtitle">Un seul compte pour tous les services Proton</string>
-  <string name="auth_signup_username_assistive_text">Le nom d\'utilisateur ne doit pas être vide.</string>
-  <string name="auth_signup_email_assistive_text">L\'adresse e-mail ne doit pas être vide.</string>
-  <string name="auth_signup_next">Suivant</string>
+    <string name="auth_signup_next">Suivant</string>
   <string name="auth_signup_username">Nom d\'utilisateur</string>
   <string name="auth_signup_create_password">Créez votre mot de passe</string>
   <string name="auth_signup_password">Mot de passe</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Ignorer</string>
   <string name="auth_signup_recovery_title">Définir la méthode de récupération (facultatif)</string>
   <string name="auth_signup_recovery_subtitle">Nous enverrons des instructions de récupération à cette adresse e-mail ou à ce numéro de téléphone si vous n\'avez plus accès à votre compte.</string>
-  <string name="auth_signup_recovery_email">E-mail</string>
-  <string name="auth_signup_recovery_phone">Téléphone</string>
-  <string name="auth_signup_recovery_email_hint">E-mail de récupération</string>
-  <string name="auth_signup_recovery_phone_hint">Numéro de téléphone de récupération</string>
-  <string name="auth_signup_recovery_select_country">Sélectionner un pays</string>
+    <string name="auth_signup_recovery_select_country">Sélectionner un pays</string>
   <string name="auth_signup_phone_placeholder">XX XX XX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Ne pas définir de méthode de récupération ?</string>
   <string name="auth_signup_skip_recovery_description">Une méthode de récupération vous aidera à accéder à votre compte en cas d\'oubli de votre mot de passe ou de blocage de votre compte.</string>
@@ -129,8 +118,7 @@
   <string name="auth_fido_config_error">Erreur lors de la récupération des clés enregistrées.</string>
   <string name="auth_fido_reading_key_error">Erreur de lecture de la clé de sécurité.</string>
   <string name="auth_fido_submit_key_error">Erreur lors de la soumission des données de clé.</string>
-  <string name="auth_fido_reading_key_progress">Lecture de la clé de sécurité.</string>
-  <string name="auth_fido_authenticating_in_progress">Authentification avec la clé de sécurité.</string>
+    <string name="auth_fido_authenticating_in_progress">Authentification avec la clé de sécurité.</string>
   <string name="auth_fido_security_key">Clé de sécurité</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Le mot de passe doit contenir au moins 1 caractère.</item>
@@ -147,21 +135,15 @@
   <string name="settings_password_management_tab_second_password">Second mot de passe</string>
   <string name="settings_password_management_change_password_note">Pour modifier l\'un de vos mots de passe, vous devez connaître votre mot de passe principal.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Avez-vous oublié votre mot de passe principal ?</string>
-  <string name="settings_password_management_header">Modifier le mot de passe</string>
-  <string name="settings_password_management_cannot_change_password">Vous ne pouvez pas modifier votre mot de passe de secours. Veuillez contacter votre administrateur.</string>
-  <string name="settings_main_password_hint_current">Mot de passe principal actuel</string>
+    <string name="settings_main_password_hint_current">Mot de passe principal actuel</string>
   <string name="settings_main_password_hint_new">Nouveau mot de passe principal</string>
   <string name="settings_main_password_hint_new_confirm">Confirmer le nouveau mot de passe principal</string>
   <string name="settings_second_password_hint_current_main_password">Mot de passe principal actuel</string>
   <string name="settings_second_password_hint_new">Nouveau second mot de passe</string>
   <string name="settings_second_password_hint_new_confirm">Confirmer le nouveau second mot de passe</string>
-  <string name="settings_change_password_error">Une erreur s\'est produite pendant le changement du mot de passe.</string>
-  <string name="settings_recovery_email_success">L\'adresse e-mail de récupération a été mise à jour.</string>
-  <string name="settings_password_management_login_success">Le mot de passe de connexion a été mis à jour.</string>
+    <string name="settings_password_management_login_success">Le mot de passe de connexion a été mis à jour.</string>
   <string name="settings_password_management_second_success">Le second mot de passe a été mis à jour.</string>
-  <string name="settings_password_management_start_recovery">Vous ne connaissez pas votre mot de passe actuel ?</string>
-  <string name="settings_password_management_2fa">L\'A2F est nécessaire</string>
-  <string name="settings_password_invalid_2fa">Le code de deuxième facteur n\'est pas valide. Veuillez réessayer.</string>
+    <string name="settings_password_invalid_2fa">Le code de deuxième facteur n\'est pas valide. Veuillez réessayer.</string>
   <string name="settings_password_error_empty">Le mot de passe ne peut pas être vide.</string>
   <string name="settings_password_error">Le nom d\'utilisateur ou le mot de passe n\'est pas correct. Veuillez réessayer.</string>
   <string name="settings_password_error_invalid_recovery">Le code A2F n\'est pas correct. Nous vous invitons à réessayer.</string>

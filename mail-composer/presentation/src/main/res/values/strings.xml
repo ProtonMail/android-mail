@@ -25,16 +25,10 @@
     <string name="compose_message_placeholder">Compose email</string>
     <string name="close_composer_content_description">Close composer</string>
     <string name="send_button_title">Send</string>
-    <string name="send_message_content_description">Send message</string>
     <string name="composer_expand_recipients_button">Show other recipients</string>
     <string name="composer_error_invalid_email">Email address is invalid or does not exist</string>
-    <string name="change_sender_button_content_description">Change sender</string>
     <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
-    <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-    <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
     <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
-    <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
-    <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
     <string name="composer_error_store_draft_address_disabled">Unable to save draft - This sender address is disabled</string>
     <string name="composer_error_store_draft_address_pk_missing">Unable to save draft - This sender address does not have a primary key</string>
     <string name="composer_error_store_draft_attachment_too_large">Unable to save draft - Attachments exceed the size limit</string>
@@ -51,8 +45,6 @@
     <string name="composer_add_attachments_bottom_sheet_from_photos">From your photo library</string>
     <string name="composer_add_attachments_bottom_sheet_from_camera">Take a new photo</string>
     <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-    <string name="composer_original_message_quote">Original Message</string>
-    <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
     <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
     <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
     <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
@@ -68,12 +60,10 @@
     <string name="composer_button_discard_draft">Discard draft</string>
     <string name="composer_button_set_expiration">Set expiration time</string>
     <string name="composer_expiration_time_bottom_sheet_title">Message expiration</string>
-    <string name="composer_expiration_time_bottom_sheet_done">Set</string>
     <string name="composer_bottom_bar_expiration_time_none">Never expires</string>
     <string name="composer_bottom_bar_expiration_time_one_hour">After 1 hour</string>
     <string name="composer_bottom_bar_expiration_time_one_day">After 1 day</string>
     <string name="composer_bottom_bar_expiration_time_three_days">After 3 days</string>
-    <string name="composer_bottom_bar_expiration_time_one_week">After 1 week</string>
     <string name="composer_bottom_bar_expiration_time_custom">On specific date</string>
     <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
     <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
     <string name="message_sending_error_dialog_header">Sending error</string>
     <string name="message_sending_error_dialog_button_dismiss">Close</string>
     <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
-    <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-    <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
     <string name="set_message_password_title">Set Password</string>
     <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail recipients.</string>
     <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
@@ -107,18 +95,10 @@
     <string name="set_message_password_label_hint">Password hint (optional)</string>
     <string name="set_message_password_supporting_text">Minimum 8 characters required.</string>
     <string name="set_message_password_supporting_error_text">The password must be between 8 and 21 characters</string>
-    <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-    <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
     <string name="set_message_password_button_show">Show password</string>
     <string name="set_message_password_button_hide">Hide password</string>
     <string name="set_message_password_button_save_changes">Save</string>
     <string name="set_message_password_button_remove_password">Remove password</string>
-    <string name="respondInline">Respond in-line</string>
-    <string name="subject_placeholder">Subject</string>
-    <plurals name="composer_recipient_suggestion_contacts">
-        <item quantity="one">%d member</item>
-        <item quantity="other">%d members</item>
-    </plurals>
     <string name="composer_recipient_suggestion_device">Show device contacts</string>
     <!-- Discard draft dialog -->
     <string name="discard_draft_dialog_title">Discard this message?</string>
@@ -139,10 +119,6 @@
     <string name="composer_schedule_send_custom_upsell_title">Custom date and time</string>
     <string name="composer_schedule_send_custom_description">Pick time and date</string>
     <string name="composer_schedule_send_previously_set">Previously set</string>
-    <string name="composer_schedule_send_custom_time_label">Time</string>
-    <string name="composer_schedule_send_custom_date_label">Date</string>
-    <string name="composer_schedule_send_dialog_ok">Ok</string>
-    <string name="composer_schedule_send_dialog_enter_time">Enter time</string>
     <string name="composer_change_sender_title">From</string>
     <string name="composer_error_change_sender_failed_getting_addresses">Cannot change sender as getting user\'s addresses failed. Try again.</string>
     <string name="composer_change_sender_invalid_address">The selected address can not be used for sending</string>

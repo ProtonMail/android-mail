@@ -25,17 +25,11 @@
   <string name="compose_message_placeholder">Escrever e-mail</string>
   <string name="close_composer_content_description">Fechar compositor</string>
   <string name="send_button_title">Enviar</string>
-  <string name="send_message_content_description">Enviar mensagem</string>
-  <string name="composer_expand_recipients_button">Mostrar outros destinatários</string>
+    <string name="composer_expand_recipients_button">Mostrar outros destinatários</string>
   <string name="composer_error_invalid_email">O endereço de e-mail não é válido ou não existe</string>
-  <string name="change_sender_button_content_description">Alterar o remetente</string>
-  <string name="composer_change_sender_paid_feature">Faça upgrade para um plano pago para alterar o endereço do remetente</string>
-  <string name="composer_error_store_draft_sender_address">O endereço do remetente não foi salvo</string>
-  <string name="composer_error_store_draft_body">O corpo do e-mail de rascunho não foi salvo</string>
-  <string name="composer_error_duplicate_recipient">As duplicações do destinatário foram removidas</string>
-  <string name="composer_error_store_draft_subject">O assunto não foi salvo</string>
-  <string name="composer_error_store_draft_recipients">Erro ao salvar os destinatários deste rascunho</string>
-  <string name="composer_error_store_draft_address_disabled">Não foi possível salvar o rascunho - Endereço do remetente desativado</string>
+    <string name="composer_change_sender_paid_feature">Faça upgrade para um plano pago para alterar o endereço do remetente</string>
+    <string name="composer_error_duplicate_recipient">As duplicações do destinatário foram removidas</string>
+    <string name="composer_error_store_draft_address_disabled">Não foi possível salvar o rascunho - Endereço do remetente desativado</string>
   <string name="composer_error_store_draft_address_pk_missing">Não foi possível salvar o rascunho - O remetente não tem uma chave primária</string>
   <string name="composer_error_store_draft_attachment_too_large">Não foi possível salvar o rascunho - Os anexos excedem o limite de tamanho</string>
   <string name="composer_error_store_draft_too_many_attachments">Não foi possível salvar o rascunho – Limite de anexos atingido</string>
@@ -51,9 +45,7 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Da sua biblioteca de fotos</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Tirar uma nova foto</string>
   <string name="composer_error_loading_parent_message">Não foi possível carregar a informação da mensagem</string>
-  <string name="composer_original_message_quote">Mensagem original</string>
-  <string name="composer_sender_quote">Em %s, %s &lt;%s&gt; escreveu:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de anexos alcançado</string>
   <string name="composer_attachment_size_exceeded_dialog_message">O limite de tamanho para anexos é de %1$s</string>
   <string name="composer_attachment_encryption_failed_message">A criptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
@@ -68,13 +60,11 @@
   <string name="composer_button_discard_draft">Descartar rascunho</string>
   <string name="composer_button_set_expiration">Definir a data de expiração</string>
   <string name="composer_expiration_time_bottom_sheet_title">Expiração de mensagem</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Definir</string>
-  <string name="composer_bottom_bar_expiration_time_none">Nunca expira</string>
+    <string name="composer_bottom_bar_expiration_time_none">Nunca expira</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Após 1 hora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Após 1 dia</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Após 3 dias</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Após 1 semana</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Em uma data específica</string>
+    <string name="composer_bottom_bar_expiration_time_custom">Em uma data específica</string>
   <string name="composer_error_setting_expiration_time">Falha ao configurar o tempo de expiração</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Adicionar senha para usar a expiração</string>
@@ -98,28 +88,18 @@
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
   <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o endereço inserido pelo seguinte motivo:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves de confiança: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">O endereço não existe: %s</string>
-  <string name="set_message_password_title">Definir senha</string>
+    <string name="set_message_password_title">Definir senha</string>
   <string name="set_message_password_info_message">Defina uma senha para criptografar esta mensagem para destinatários que não usam Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Saiba mais</a></string>
   <string name="set_message_password_label">Senha da mensagem</string>
   <string name="set_message_password_label_hint">Dica de senha (opcional)</string>
   <string name="set_message_password_supporting_text">Mínimo de 8 caracteres exigidos.</string>
   <string name="set_message_password_supporting_error_text">A senha precisa ter entre 8 e 21 caracteres</string>
-  <string name="set_message_password_supporting_text_repeat">As senhas devem ser iguais.</string>
-  <string name="set_message_password_supporting_error_text_repeat">Senhas não correspondem</string>
-  <string name="set_message_password_button_show">Mostrar senha</string>
+    <string name="set_message_password_button_show">Mostrar senha</string>
   <string name="set_message_password_button_hide">Ocultar senha</string>
   <string name="set_message_password_button_save_changes">Salvar</string>
   <string name="set_message_password_button_remove_password">Remover senha</string>
-  <string name="respondInline">Responder no corpo</string>
-  <string name="subject_placeholder">Assunto</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d membro</item>
-    <item quantity="other">%d membros</item>
-  </plurals>
-  <string name="composer_recipient_suggestion_device">Mostrar os contatos do dispositivo</string>
+    <string name="composer_recipient_suggestion_device">Mostrar os contatos do dispositivo</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Descartar esta mensagem?</string>
   <string name="discard_draft_dialog_text">Seu rascunho não será salvo.</string>
@@ -139,11 +119,7 @@
   <string name="composer_schedule_send_custom_upsell_title">Data e hora personalizadas</string>
   <string name="composer_schedule_send_custom_description">Selecionar hora e data</string>
   <string name="composer_schedule_send_previously_set">Definido anteriormente</string>
-  <string name="composer_schedule_send_custom_time_label">Hora</string>
-  <string name="composer_schedule_send_custom_date_label">Data</string>
-  <string name="composer_schedule_send_dialog_ok">OK</string>
-  <string name="composer_schedule_send_dialog_enter_time">Inserir hora</string>
-  <string name="composer_change_sender_title">De</string>
+    <string name="composer_change_sender_title">De</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Não é possível alterar o remetente, pois houve uma falha ao obter os endereços de usuários. Tente novamente.</string>
   <string name="composer_change_sender_invalid_address">O endereço selecionado não pode ser usado para envio</string>
   <string name="composer_change_sender_unexpected_failure">Algo deu errado ao mudar o remetente. Tente novamente.</string>

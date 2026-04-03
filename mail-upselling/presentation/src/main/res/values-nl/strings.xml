@@ -56,25 +56,7 @@
   <string name="upselling_button_hint">Upgraden voor volledige flexibiliteit</string>
   <string name="upselling_upgrade_plan_generic">U hebt een betaald Proton Mail-abonnement nodig om toegang te krijgen tot deze functie.</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Producten inbegrepen</string>
-  <string name="upselling_onboarding_feature_e2e">End-to-end versleuteling</string>
-  <string name="upselling_onboarding_feature_folders_labels">Onbeperkte mappen en labels</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB opslagruimte en 1 e-mailadres</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 GB opslagruimte</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra e-mailadressen voor u</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Ondersteuning voor 1 aangepast e-maildomein</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-aliassen</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Klantondersteuning met hoge prioriteit</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GB opslagruimte</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra e-mailadressen voor u</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Ondersteuning voor 3 aangepaste e-maildomeinen</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Onbeperkt aantal hide-my-email-aliassen</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Toegewijde klantondersteuning</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Ultrasnelle en privé VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Versleutelde cloudopslag voor foto\'s en documenten</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Geavanceerde accountbeveiliging</string>
-  <!-- Comparison Table -->
+    <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Opslag</string>
   <string name="upselling_comparison_table_email_addresses">E-mailadressen</string>
   <string name="upselling_comparison_table_custom_email_domain">Aangepast e-maildomein</string>
@@ -109,21 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Automatisch verlengen op %s%s tenzij u annuleert</string>
   <string name="upselling_social_proof_reviews">2k+ RECENSIES</string>
   <string name="upselling_description_social_proof">Upgrade naar de ervaring waar miljoenen abonnees enthousiast over zijn.</string>
-  <string name="upselling_discount_tag">BESPAAR %s%%</string>
-  <string name="upselling_month">/maand</string>
+    <string name="upselling_month">/maand</string>
   <string name="upselling_month_only">slechts %s /maand</string>
   <string name="upselling_year">/jaar</string>
-  <string name="upselling_get_button">Kies %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d maand</item>
-    <item quantity="other">%d maanden</item>
-  </plurals>
-  <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Kan upgrade opties niet ophalen.</string>
-  <string name="upselling_snackbar_error_no_user_id">Er is iets fout gegaan.</string>
+    <!-- Errors -->
+    <string name="upselling_snackbar_error_no_user_id">Er is iets fout gegaan.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Abonnementen kunnen niet worden opgehaald.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Abonnement upgrade is bezig…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Er is een fout opgetreden tijdens het bijwerken van uw abonnement.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Er is een fout opgetreden. Probeer het nog eens.</string>
 </resources>

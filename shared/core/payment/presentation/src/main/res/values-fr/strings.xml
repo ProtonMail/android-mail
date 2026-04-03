@@ -32,8 +32,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Les réductions sont basées sur la tarification mensuelle standard. Le renouvellement automatique sera à %1$s/mois</string>
   <string name="payment_bf_renew_annually">Les réductions sont établies à partir de la tarification mensuelle standard. Le renouvellement automatique sera à %1$s par an.</string>
-  <string name="payment_bf_renew_biennially">Les réductions sont établies à partir de la tarification mensuelle standard. Le renouvellement automatique sera à %1$s tous les 2 ans</string>
-  <string name="payment_welcome_offer_renew_monthly">Offre de bienvenue. Renouvellement automatique à %1$s par mois.</string>
+    <string name="payment_welcome_offer_renew_monthly">Offre de bienvenue. Renouvellement automatique à %1$s par mois.</string>
   <string name="payment_welcome_offer_renew_annually">Offre de bienvenue. Renouvellement automatique à %1$s par an.</string>
   <string name="payment_welcome_offer_renew_biennially">Offre de bienvenue. Renouvellement automatique à %1$s tous les 2 ans</string>
   <plurals name="payment_welcome_offer_renew_other">

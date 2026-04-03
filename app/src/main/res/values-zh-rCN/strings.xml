@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">正在发送邮件…</string>
   <string name="mailbox_message_sending_offline">网络离线：邮件将稍后发送</string>
   <string name="mailbox_message_sending_success">邮件已发送</string>
-  <string name="mailbox_message_sending_error">发送信息时出错</string>
-  <string name="mailbox_message_sending_error_action">转至草稿</string>
+    <string name="mailbox_message_sending_error_action">转至草稿</string>
   <string name="notification_switched_account">已切换至账户：%s</string>
-  <string name="label_saved">标签已保存</string>
-  <string name="label_deleted">标签已删除</string>
-  <string name="app_locked">程序已锁定</string>
-  <string name="use_pin_instead">输入 PIN 码</string>
-  <string name="mailbox_message_scheduling">定时发送邮件中…</string>
+    <string name="mailbox_message_scheduling">定时发送邮件中…</string>
   <string name="mailbox_message_scheduling_offline">网络离线：邮件将稍后发送</string>
   <string name="mailbox_message_scheduled_for_sending_success">邮件将于 %1$s 发送</string>
   <string name="launcher_alert_duplicate_account_description">用户已登录</string>

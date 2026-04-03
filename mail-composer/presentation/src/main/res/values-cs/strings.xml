@@ -25,17 +25,11 @@
   <string name="compose_message_placeholder">Napsat e-mail</string>
   <string name="close_composer_content_description">Zavřít editor</string>
   <string name="send_button_title">Odeslat</string>
-  <string name="send_message_content_description">Odeslat zprávu</string>
-  <string name="composer_expand_recipients_button">Zobrazit ostatní příjemce</string>
+    <string name="composer_expand_recipients_button">Zobrazit ostatní příjemce</string>
   <string name="composer_error_invalid_email">Zadaná e-mailová adresa je neplatná nebo neexistuje</string>
-  <string name="change_sender_button_content_description">Změnit odesílatele</string>
-  <string name="composer_change_sender_paid_feature">Pro změnu adresy odesílatele přejděte na placený tarif</string>
-  <string name="composer_error_store_draft_sender_address">Selhalo uložení adresy odesílatele</string>
-  <string name="composer_error_store_draft_body">Selhalo uložení konceptu těla e-mailu</string>
-  <string name="composer_error_duplicate_recipient">Duplicitní příjemci odebráni</string>
-  <string name="composer_error_store_draft_subject">Selhalo uložení předmětu</string>
-  <string name="composer_error_store_draft_recipients">Uložení příjemců tohoto konceptu selhalo</string>
-  <string name="composer_error_store_draft_address_disabled">Koncept nelze uložit - tato adresa odesílatele je deaktivována</string>
+    <string name="composer_change_sender_paid_feature">Pro změnu adresy odesílatele přejděte na placený tarif</string>
+    <string name="composer_error_duplicate_recipient">Duplicitní příjemci odebráni</string>
+    <string name="composer_error_store_draft_address_disabled">Koncept nelze uložit - tato adresa odesílatele je deaktivována</string>
   <string name="composer_error_store_draft_address_pk_missing">Koncept nelze uložit - Tato adresa odesílatele nemá primární klíč</string>
   <string name="composer_error_store_draft_attachment_too_large">Koncept nelze uložit - Přílohy překračují limit velikosti</string>
   <string name="composer_error_store_draft_too_many_attachments">Koncept nelze uložit - Dosažen limit počtu příloh</string>
@@ -51,9 +45,7 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z vaší knihovny fotek</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Pořídit novou fotku</string>
   <string name="composer_error_loading_parent_message">Nelze načíst informace zprávy</string>
-  <string name="composer_original_message_quote">Původní zpráva</string>
-  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napsal/a:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Byl dosažen limit velikosti příloh</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Velikost příloh je omezena na %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Šifrování přílohy selhalo. Z bezpečnostních důvodů byly všechny přílohy odebrány.</string>
@@ -68,13 +60,11 @@
   <string name="composer_button_discard_draft">Zahodit koncept</string>
   <string name="composer_button_set_expiration">Nastavit dobu platnosti</string>
   <string name="composer_expiration_time_bottom_sheet_title">Vypršení zprávy</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Nastavit</string>
-  <string name="composer_bottom_bar_expiration_time_none">Nikdy nevyprší</string>
+    <string name="composer_bottom_bar_expiration_time_none">Nikdy nevyprší</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Po 1 hodině</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Po 1 dnu</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Po 3 dnech</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Po 1 týdnu</string>
-  <string name="composer_bottom_bar_expiration_time_custom">V konkrétní datum</string>
+    <string name="composer_bottom_bar_expiration_time_custom">V konkrétní datum</string>
   <string name="composer_error_setting_expiration_time">Nastavení doby platnosti selhalo</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Přidat heslo pro použití vypršení platnosti</string>
@@ -98,30 +88,18 @@
   <string name="message_sending_error_dialog_header">Chyba při odesílání</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavřít</string>
   <string name="message_sending_error_dialog_text_error">Váš e-mail nemůže být odeslán na zadanou e-mailovou adresu z následujícího důvodu:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Neexistují žádné důvěryhodné klíče: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
-  <string name="set_message_password_title">Nastavit heslo</string>
+    <string name="set_message_password_title">Nastavit heslo</string>
   <string name="set_message_password_info_message">Nastavte heslo pro šifrování této zprávy pro příjemce mimo Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Více informací</a></string>
   <string name="set_message_password_label">Heslo zprávy</string>
   <string name="set_message_password_label_hint">Nápověda k heslu (nepovinné)</string>
   <string name="set_message_password_supporting_text">Je vyžadováno minimálně 8 znaků.</string>
   <string name="set_message_password_supporting_error_text">Heslo musí mít délku 8 až 21 znaků</string>
-  <string name="set_message_password_supporting_text_repeat">Hesla se musí shodovat</string>
-  <string name="set_message_password_supporting_error_text_repeat">Hesla se neshodují</string>
-  <string name="set_message_password_button_show">Zobrazit heslo</string>
+    <string name="set_message_password_button_show">Zobrazit heslo</string>
   <string name="set_message_password_button_hide">Skrýt heslo</string>
   <string name="set_message_password_button_save_changes">Uložit</string>
   <string name="set_message_password_button_remove_password">Odebrat heslo</string>
-  <string name="respondInline">Odpovědět v řádku</string>
-  <string name="subject_placeholder">Předmět</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d člen</item>
-    <item quantity="few">%d členové</item>
-    <item quantity="many">%d členů</item>
-    <item quantity="other">%d členů</item>
-  </plurals>
-  <string name="composer_recipient_suggestion_device">Zobrazit kontakty ze zařízení</string>
+    <string name="composer_recipient_suggestion_device">Zobrazit kontakty ze zařízení</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Zahodit tuto zprávu?</string>
   <string name="discard_draft_dialog_text">Váš koncept nebude uložen</string>
@@ -141,11 +119,7 @@
   <string name="composer_schedule_send_custom_upsell_title">Vlastní datum a čas</string>
   <string name="composer_schedule_send_custom_description">Vyberte čas a datum</string>
   <string name="composer_schedule_send_previously_set">Dříve nastavené</string>
-  <string name="composer_schedule_send_custom_time_label">Čas</string>
-  <string name="composer_schedule_send_custom_date_label">Datum</string>
-  <string name="composer_schedule_send_dialog_ok">Ok</string>
-  <string name="composer_schedule_send_dialog_enter_time">Zadejte čas</string>
-  <string name="composer_change_sender_title">Od</string>
+    <string name="composer_change_sender_title">Od</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Nelze změnit odesílatele, protože selhalo získání adresy uživatele. Zkuste to znovu.</string>
   <string name="composer_change_sender_invalid_address">Vybranou adresu nelze použít pro odesílání</string>
   <string name="composer_change_sender_unexpected_failure">Při změně odesílatele se něco nepovedlo. Zkuste to prosím znovu.</string>

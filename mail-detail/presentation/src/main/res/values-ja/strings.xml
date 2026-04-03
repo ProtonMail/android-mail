@@ -25,8 +25,7 @@
   <string name="quick_reply_button_content_description">返信</string>
   <string name="quick_reply_all_button_content_description">全員に返信</string>
   <string name="more_button_content_description">もっと見る</string>
-  <string name="subject">件名:</string>
-  <string name="from">差出人：</string>
+    <string name="from">差出人：</string>
   <string name="to">宛先:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
@@ -34,21 +33,17 @@
   <plurals name="attachment">
     <item quantity="other">%d個の添付ファイル</item>
   </plurals>
-  <string name="hide_details">詳細を非表示</string>
-  <string name="undisclosed_recipients">…</string>
+    <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(下書き)</string>
   <string name="error_mark_as_read_failed">既読に失敗しました。もう一度やり直してください。</string>
   <string name="error_mark_as_unread_failed">未読にする操作に失敗しました。もう一度試してください。</string>
   <string name="error_star_operation_failed">スターの追加に失敗しました。再度お試しください。</string>
   <string name="error_unstar_operation_failed">スターの削除に失敗しました。再度お試しください。</string>
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
-  <string name="message_moved">メッセージは移動しました</string>
-  <string name="message_moved_to">メッセージが %s に移動されました</string>
-  <string name="message_moved_to_trash">メッセージをごみ箱に移動しました</string>
-  <string name="message_moved_to_archive">メッセージをアーカイブに移動しました</string>
+    <string name="message_moved_to">メッセージが %s に移動されました</string>
+    <string name="message_moved_to_archive">メッセージをアーカイブに移動しました</string>
   <string name="error_move_to_archive_failed">アーカイブへの移動に失敗しました。再度お試しください。</string>
-  <string name="message_moved_to_spam">メッセージはスパムに移動されました</string>
-  <string name="error_move_to_spam_failed">スパムへの移動に失敗しました。再度お試しください。</string>
+    <string name="error_move_to_spam_failed">スパムへの移動に失敗しました。再度お試しください。</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再度お試しください。</string>
   <string name="conversation_moved_to_trash">会話をごみ箱に移動しました</string>
@@ -63,9 +58,7 @@
   <string name="error_attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了させる必要があります。</string>
   <string name="error_get_attachment_not_enough_memory">メモリ不足のため添付ファイルの取得に失敗しました</string>
   <string name="error_relabel_message_failed">メッセージのラベル付けに失敗しました。再度お試しください。</string>
-  <string name="error_relabel_conversation_failed">会話のラベル付けに失敗しました。再度お試しください。</string>
-  <string name="please_go_back_online_to_load_messages">オフラインです。オンラインに戻ってメッセージを読み込んでください</string>
-  <string name="decryption_error">メッセージの復号に失敗しました。</string>
+    <string name="decryption_error">メッセージの復号に失敗しました。</string>
   <string name="detail_error_retrieving_message_body">メッセージの取得ができません。</string>
   <string name="message_body_error_no_webview">このメッセージの内容を表示するには、WebView をインストールする必要があります。</string>
   <!-- Banners -->
@@ -116,9 +109,7 @@
   <string name="message_report_phishing_dialog_message">フィッシング詐欺としてこのメッセージを報告すると、私たちにこのメッセージが送信され、私たちはこのメッセージを分析してフィルターを改善することができます。メッセージを報告すると、このメッセージのすべての内容を私たちが閲覧可能になります。</string>
   <string name="message_report_phishing_dialog_confim_button">確認</string>
   <string name="message_report_phishing_dialog_cancel_button">キャンセル</string>
-  <string name="open_on_protoncalendar_banner_title">Proton Calendar で開く</string>
-  <string name="open_on_protoncalendar_banner_description">安全で暗号化されたカレンダー</string>
-  <string name="trashed_messages_banner">この会話のごみ箱にあるメッセージを表示。</string>
+    <string name="trashed_messages_banner">この会話のごみ箱にあるメッセージを表示。</string>
   <string name="non_trashed_messages_banner">この会話内の削除済みではないメッセージを表示。</string>
   <string name="recipient_me">私</string>
   <string name="message_details_header_from">差出人</string>
@@ -179,9 +170,7 @@
   <string name="already_unsubscribed_banner_message">このメーリングリストの登録は解除されました。</string>
   <string name="error_unsubscribe_newsletter">ニュースレターの登録解除に失敗しました</string>
   <string name="detail_error_loading_single_message">メッセージの読み込みに失敗しました</string>
-  <string name="error_downloading_image">画像をダウンロードできませんでした</string>
-  <string name="image_downloaded_successfully">画像をダウンロードしました</string>
-  <!-- Raw message data screen -->
+    <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">メッセージヘッダー</string>
   <string name="raw_message_data_html_title">HTMLメッセージ</string>
   <string name="raw_message_data_close_button_content_description">閉じる</string>

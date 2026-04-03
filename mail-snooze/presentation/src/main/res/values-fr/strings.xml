@@ -24,8 +24,7 @@
   <string name="snooze_sheet_option_this_weekend">Ce week-end</string>
   <string name="snooze_sheet_option_custom">Personnalisé</string>
   <string name="snooze_sheet_option_custom_detail">Sélectionner la date et l\'heure</string>
-  <string name="snooze_sheet_option_upsell_detail">Fonctionnalité payante</string>
-  <string name="snooze_sheet_snooze_title">Mise en attente jusqu\'à</string>
+    <string name="snooze_sheet_snooze_title">Mise en attente jusqu\'à</string>
   <string name="snooze_sheet_option_unsnooze">Arrêter la mise en attente</string>
   <string name="snooze_sheet_error_unable_to_snooze">Désolé, nous avons rencontré une erreur inconnue lors de la mise en attente de cette conversation</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Une erreur inconnue s\'est produite lors de l\'arrêt de la mise en attente de la conversation.</string>

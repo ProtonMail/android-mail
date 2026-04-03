@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Stäng</string>
-  <string name="login_help_title">Hur kan vi hjälpa dig?</string>
+    <string name="login_help_title">Hur kan vi hjälpa dig?</string>
   <string name="login_help_forgot_username">Glömt användarnamn</string>
   <string name="login_help_forgot_password">Glömt lösenord</string>
   <string name="login_help_other_issues">Andra inloggningsproblem</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Användarnamn eller e-post</string>
   <string name="auth_email">E-post</string>
   <string name="auth_password">Lösenord</string>
-  <string name="auth_username_placeholder">Användarnamn eller e-postadress</string>
-  <string name="auth_password_placeholder">Lösenord</string>
-  <string name="auth_login_assistive_text">Ange din e-postadress eller användarnamn för Proton.</string>
+    <string name="auth_login_assistive_text">Ange din e-postadress eller användarnamn för Proton.</string>
   <string name="auth_account_details">Ange dina kontodetaljer för Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problem att logga in dig. Försök igen.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Mänsklig verifiering krävs.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Felaktiga inloggningsuppgifter. Försök igen.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Tvåfaktorsautentisering stöds inte.</string>
-  <string name="auth_login_general_error">Ett fel uppstod.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Felaktiga inloggningsuppgifter. Försök igen.</string>
+    <string name="auth_login_general_error">Ett fel uppstod.</string>
   <string name="auth_second_factor_title">Tvåfaktorsautentisering</string>
   <string name="auth_second_factor_subtitle">Ditt konto har flera 2FA-mekanismer konfigurerade. Välj hur du vill bekräfta din identitet.</string>
   <string name="auth_second_factor_tab_security_key">Säkerhetsnyckel</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">Fältet för lösenord får inte vara tomt</string>
   <string name="auth_signup_title">Skapa ett Proton-konto</string>
   <string name="auth_signup_subtitle">Ett konto för alla Proton-tjänster</string>
-  <string name="auth_signup_username_assistive_text">Fältet för användarnamn får inte vara tomt.</string>
-  <string name="auth_signup_email_assistive_text">Fältet för e-postadress får inte vara tomt.</string>
-  <string name="auth_signup_next">Nästa</string>
+    <string name="auth_signup_next">Nästa</string>
   <string name="auth_signup_username">Användarnamn</string>
   <string name="auth_signup_create_password">Skapa ett lösenord</string>
   <string name="auth_signup_password">Lösenord</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Hoppa över</string>
   <string name="auth_signup_recovery_title">Ställ in återställningsmetod (valfritt)</string>
   <string name="auth_signup_recovery_subtitle">Vi skickar återställningsinstruktioner till denna e-postadress eller telefonnummer om du blir utelåst från ditt konto.</string>
-  <string name="auth_signup_recovery_email">E-postadress</string>
-  <string name="auth_signup_recovery_phone">Telefon</string>
-  <string name="auth_signup_recovery_email_hint">E-postadress för återställning</string>
-  <string name="auth_signup_recovery_phone_hint">Telefonnummer för återställning</string>
-  <string name="auth_signup_recovery_select_country">Välj land</string>
+    <string name="auth_signup_recovery_select_country">Välj land</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Hoppa över återställningsmetod?</string>
   <string name="auth_signup_skip_recovery_description">En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.</string>
@@ -129,8 +118,7 @@
   <string name="auth_fido_config_error">Fel vid hämtning av lagrade nycklar.</string>
   <string name="auth_fido_reading_key_error">Fel vid läsning av säkerhetsnyckel.</string>
   <string name="auth_fido_submit_key_error">Fel vid skickande av nyckeldata.</string>
-  <string name="auth_fido_reading_key_progress">Läser säkerhetsnyckel.</string>
-  <string name="auth_fido_authenticating_in_progress">Autentiserar med säkerhetsnyckel.</string>
+    <string name="auth_fido_authenticating_in_progress">Autentiserar med säkerhetsnyckel.</string>
   <string name="auth_fido_security_key">Säkerhetsnyckel</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Lösenord måste innehålla minst 1 tecken</item>
@@ -147,21 +135,15 @@
   <string name="settings_password_management_tab_second_password">Andra lösenord</string>
   <string name="settings_password_management_change_password_note">För att ändra något av dina lösenord måste du kunna ditt huvudlösenord. </string>
   <string name="settings_password_management_forgot_main_password">Glömt ditt huvudlösenord?</string>
-  <string name="settings_password_management_header">Ändra lösenord</string>
-  <string name="settings_password_management_cannot_change_password">Du kan inte ändra ditt reservlösenord. Kontakta din administratör.</string>
-  <string name="settings_main_password_hint_current">Nuvarande huvudlösenord</string>
+    <string name="settings_main_password_hint_current">Nuvarande huvudlösenord</string>
   <string name="settings_main_password_hint_new">Nytt huvudlösenord</string>
   <string name="settings_main_password_hint_new_confirm">Bekräfta nytt huvudlösenord</string>
   <string name="settings_second_password_hint_current_main_password">Nuvarande huvudlösenord</string>
   <string name="settings_second_password_hint_new">Nytt andra lösenord</string>
   <string name="settings_second_password_hint_new_confirm">Bekräfta nytt andra lösenord</string>
-  <string name="settings_change_password_error">Ett fel uppstod vid ändring av lösenord.</string>
-  <string name="settings_recovery_email_success">E-postadress för återställning uppdaterad</string>
-  <string name="settings_password_management_login_success">Inloggningslösenord uppdaterat</string>
+    <string name="settings_password_management_login_success">Inloggningslösenord uppdaterat</string>
   <string name="settings_password_management_second_success">Andra lösenord uppdaterad</string>
-  <string name="settings_password_management_start_recovery">Vet du inte ditt nuvarande lösenord?</string>
-  <string name="settings_password_management_2fa">2FA behövs</string>
-  <string name="settings_password_invalid_2fa">Ogiltig andrafaktorskod. Försök igen.</string>
+    <string name="settings_password_invalid_2fa">Ogiltig andrafaktorskod. Försök igen.</string>
   <string name="settings_password_error_empty">Lösenord kan inte vara tomt.</string>
   <string name="settings_password_error">Felaktigt användarnamn eller lösenord. Försök igen.</string>
   <string name="settings_password_error_invalid_recovery">Felaktig 2FA-kod. Försök igen.</string>

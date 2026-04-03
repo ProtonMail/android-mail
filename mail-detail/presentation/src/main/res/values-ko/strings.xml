@@ -25,8 +25,7 @@
   <string name="quick_reply_button_content_description">답장</string>
   <string name="quick_reply_all_button_content_description">전체 답장</string>
   <string name="more_button_content_description">더보기</string>
-  <string name="subject">제목:</string>
-  <string name="from">보낸 이:</string>
+    <string name="from">보낸 이:</string>
   <string name="to">받는 사람:</string>
   <string name="cc">참조:</string>
   <string name="bcc">숨은참조:</string>
@@ -34,21 +33,17 @@
   <plurals name="attachment">
     <item quantity="other">%d 첨부파일</item>
   </plurals>
-  <string name="hide_details">세부 정보 숨기기</string>
-  <string name="undisclosed_recipients">…</string>
+    <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(초안)</string>
   <string name="error_mark_as_read_failed">읽음으로 표시 처리 실패. 다시 시도하세요.</string>
   <string name="error_mark_as_unread_failed">읽지 않음으로 표시하는 데 실패했습니다. 다시 시도해 주세요.</string>
   <string name="error_star_operation_failed">별표 표시 중 문제가 발생했습니다. 다시 시도해 주세요.</string>
   <string name="error_unstar_operation_failed">별표 표시를 제거하는 중 문제가 발생했습니다. 다시 시도해 주세요.</string>
   <string name="error_move_to_trash_failed">휴지통으로 이동하는 중 문제가 발생했습니다. 다시 시도해 주세요.</string>
-  <string name="message_moved">메시지를 이동했습니다.</string>
-  <string name="message_moved_to">메시지가 %s로 이동됨</string>
-  <string name="message_moved_to_trash">메시지가 휴지통으로 이동됨</string>
-  <string name="message_moved_to_archive">메시지가 보관함으로 이동함</string>
+    <string name="message_moved_to">메시지가 %s로 이동됨</string>
+    <string name="message_moved_to_archive">메시지가 보관함으로 이동함</string>
   <string name="error_move_to_archive_failed">보관함 이동 실패. 재시도 하십시오.</string>
-  <string name="message_moved_to_spam">메시지를 스팸으로 옮겼습니다</string>
-  <string name="error_move_to_spam_failed">스팸 이동 실패. 다시 시도하십시오.</string>
+    <string name="error_move_to_spam_failed">스팸 이동 실패. 다시 시도하십시오.</string>
   <string name="message_moved_to_selected_destination">메시지가 %1$s로 이동됨</string>
   <string name="error_move_message_failed">메시지 이동에 실패하였습니다. 다시 시도해 주세요.</string>
   <string name="conversation_moved_to_trash">대화가 휴지통으로 이동됨</string>
@@ -63,9 +58,7 @@
   <string name="error_attachment_download_in_progress">다운로드를 시작하기 전에 현재 다운로드를 완료해야 합니다.</string>
   <string name="error_get_attachment_not_enough_memory">메모리가 부족하여 첨부 파일을 받을 수 없습니다</string>
   <string name="error_relabel_message_failed">메시지를 다시 라벨링하는 데 실패했습니다. 다시 시도해주세요.</string>
-  <string name="error_relabel_conversation_failed">대화를 다시 라벨링하는 데 실패했습니다. 다시 시도해주세요.</string>
-  <string name="please_go_back_online_to_load_messages">오프라인 입니다. 메시지를 불러오려면 온라인으로 돌아가세요</string>
-  <string name="decryption_error">메시지 복호화 실패함.</string>
+    <string name="decryption_error">메시지 복호화 실패함.</string>
   <string name="detail_error_retrieving_message_body">메시지를 불러올 수 없습니다</string>
   <string name="message_body_error_no_webview">이 메시지의 내용을 보려면 WebView를 설치해야 합니다.</string>
   <!-- Banners -->
@@ -116,9 +109,7 @@
   <string name="message_report_phishing_dialog_message">피싱 시도로 메시지를 보고하면 메시지를 분석하여 필터를 개선할 수 있습니다. 다만, 분석을 위해 Proton에서 메시지의 내용을 전반적으로 확인할 수 있습니다.</string>
   <string name="message_report_phishing_dialog_confim_button">확인</string>
   <string name="message_report_phishing_dialog_cancel_button">취소</string>
-  <string name="open_on_protoncalendar_banner_title">Proton Calendar에서 열기</string>
-  <string name="open_on_protoncalendar_banner_description">안전하게 암호화된 캘린더</string>
-  <string name="trashed_messages_banner">이 대화에서 휴지통에 들어간 메시지 보기.</string>
+    <string name="trashed_messages_banner">이 대화에서 휴지통에 들어간 메시지 보기.</string>
   <string name="non_trashed_messages_banner">이 대화에서 휴지통에 없는 메시지 보기.</string>
   <string name="recipient_me">나</string>
   <string name="message_details_header_from">보낸 사람</string>
@@ -179,9 +170,7 @@
   <string name="already_unsubscribed_banner_message">이 메일리스트에서 구독이 취소되었습니다.</string>
   <string name="error_unsubscribe_newsletter">뉴스레터 구독 해지에 실패했습니다.</string>
   <string name="detail_error_loading_single_message">메시지 불러오기 실패</string>
-  <string name="error_downloading_image">이미지 다운로드 실패</string>
-  <string name="image_downloaded_successfully">이미지 다운로드됨</string>
-  <!-- Raw message data screen -->
+    <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">메시지 헤더</string>
   <string name="raw_message_data_html_title">메시지 HTML</string>
   <string name="raw_message_data_close_button_content_description">닫기</string>

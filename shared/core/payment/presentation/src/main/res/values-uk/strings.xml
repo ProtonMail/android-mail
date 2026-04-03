@@ -34,8 +34,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Знижки розраховано на основі стандартної місячної ціни. Автоматичне поновлення: %1$s на місяць.</string>
   <string name="payment_bf_renew_annually">Знижки розраховано на основі стандартної місячної ціни. Автоматичне поновлення: %1$s на рік.</string>
-  <string name="payment_bf_renew_biennially">Знижки розраховано на основі стандартної місячної ціни. Автоматичне поновлення: %1$s кожні 2 роки.</string>
-  <string name="payment_welcome_offer_renew_monthly">Вітальна пропозиція. Автоматично поновлюється за %1$s / місяць</string>
+    <string name="payment_welcome_offer_renew_monthly">Вітальна пропозиція. Автоматично поновлюється за %1$s / місяць</string>
   <string name="payment_welcome_offer_renew_annually">Вітальна пропозиція. Автоматично поновлюється за %1$s / рік</string>
   <string name="payment_welcome_offer_renew_biennially">Вітальна пропозиція. Автоматично поновлюється за %1$s кожні 2 роки</string>
   <plurals name="payment_welcome_offer_renew_other">

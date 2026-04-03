@@ -17,8 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Takaisin</string>
-  <!-- Auto lock -->
+    <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Sovelluksen lukitus</string>
   <string name="mail_pinlock_settings_no_lock">Älä lukitse</string>
   <string name="mail_pinlock_settings_with_pin">Suojaa PIN-koodilla</string>
@@ -62,13 +61,9 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Kyllä</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">En</string>
   <string name="mail_settings_pin_insertion_created_success">PIN-koodi luotiin.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN-koodi vaihdettiin.</string>
-  <!-- Error messages -->
+    <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Tapahtui virhe. Yritä uudelleen.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Tapahtui virhe. Yritä uudelleen.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Liian monta epäonnistunutta yritystä</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Virheellinen PIN-koodi</string>
-  <string name="mail_settings_biometrics_unable_to_set">Virhe asetettaessa biometrisiä asetuksia.</string>
+    <string name="mail_settings_biometrics_unable_to_set">Virhe asetettaessa biometrisiä asetuksia.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Tapahtui virhe biometristen asetusten palauttamisessa</string>
   <string name="mail_settings_biometrics_unknown_lock">Virhe ilmeni nykyistä lukituskäytäntöä noudettaessa.</string>
   <!-- Auto lock dialog -->

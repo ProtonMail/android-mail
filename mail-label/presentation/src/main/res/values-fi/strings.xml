@@ -28,13 +28,11 @@
   <string name="label_title_all_mail">Kaikki viestit</string>
   <string name="label_title_all_scheduled">Ajoitetut</string>
   <string name="label_title_snoozed">Torkutettu</string>
-  <string name="label_title_folders">Kansiot</string>
-  <string name="label_title_create_label">Luo tunniste</string>
+    <string name="label_title_create_label">Luo tunniste</string>
   <string name="label_title_create_folder">Luo kansio</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Siirrä kohteeseen…</string>
-  <string name="bottom_sheet_done_action">Valmis</string>
-  <string name="bottom_sheet_save_action">Tallenna</string>
+    <string name="bottom_sheet_save_action">Tallenna</string>
   <string name="bottom_sheet_archive_action">Arkistoidaanko samalla?</string>
   <string name="bottom_sheet_label_as_title">Merkitse tunnisteella</string>
   <string name="bottom_sheet_label_as_error_fetch">Tunnisteiden nouto epäonnistui.</string>

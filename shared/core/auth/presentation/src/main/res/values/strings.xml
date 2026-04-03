@@ -17,7 +17,6 @@
 
 <resources>
     <string name="app_name_mail">Proton Mail</string>
-    <string name="login_help_close">Close</string>
     <string name="login_help_title">How can we help?</string>
     <string name="login_help_forgot_username">Forgot username</string>
     <string name="login_help_forgot_password">Forgot password</string>
@@ -36,15 +35,11 @@
     <string name="auth_login_username">Username or email</string>
     <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
-    <string name="auth_username_placeholder">Username or email</string>
-    <string name="auth_password_placeholder">Password</string>
     <string name="auth_login_assistive_text">Please enter your Proton email or username.</string>
     <string name="auth_account_details">Enter your Proton Account details.</string>
 
     <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problem signing you in. Please try again.</string>
-    <string name="auth_login_error_invalid_action_human_verification_challenge">A human verification is needed.</string>
     <string name="auth_login_error_invalid_action_invalid_credentials">Incorrect login credentials. Please try again.</string>
-    <string name="auth_login_error_invalid_action_unsupported_tfa">Unsupported two factor.</string>
     <string name="auth_login_general_error">An error occurred.</string>
 
     <string name="auth_second_factor_title">Two-factor authentication</string>
@@ -69,8 +64,6 @@
 
     <string name="auth_signup_title">Create your Proton Account</string>
     <string name="auth_signup_subtitle">One account for all Proton services</string>
-    <string name="auth_signup_username_assistive_text">Username must not be blank.</string>
-    <string name="auth_signup_email_assistive_text">Email must not be blank.</string>
     <string name="auth_signup_next">Next</string>
     <string name="auth_signup_username">Username</string>
     <string name="auth_signup_create_password">Create your password</string>
@@ -87,10 +80,6 @@
     <string name="auth_signup_recovery_skip">Skip</string>
     <string name="auth_signup_recovery_title">Set recovery method (optional)</string>
     <string name="auth_signup_recovery_subtitle">We will send recovery instructions to this email or phone number if you get locked out of your account.</string>
-    <string name="auth_signup_recovery_email">Email</string>
-    <string name="auth_signup_recovery_phone">Phone</string>
-    <string name="auth_signup_recovery_email_hint">Recovery email</string>
-    <string name="auth_signup_recovery_phone_hint">Recovery phone number</string>
     <string name="auth_signup_recovery_select_country">Select Country</string>
     <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
 
@@ -140,7 +129,6 @@
     <string name="auth_fido_config_error">Error retrieving stored keys.</string>
     <string name="auth_fido_reading_key_error">Error reading security key.</string>
     <string name="auth_fido_submit_key_error">Error submitting key data.</string>
-    <string name="auth_fido_reading_key_progress">Reading security key.</string>
     <string name="auth_fido_authenticating_in_progress">Authenticating with security key.</string>
     <string name="auth_fido_security_key">Security Key</string>
 
@@ -160,20 +148,14 @@
     <string name="settings_password_management_tab_second_password">Second password</string>
     <string name="settings_password_management_change_password_note">To change either of your passwords, you\'ll need to know your main password.\u0020</string>
     <string name="settings_password_management_forgot_main_password">Forgot your main password?</string>
-    <string name="settings_password_management_header">Change password</string>
-    <string name="settings_password_management_cannot_change_password">You can\'t change your backup password. Please contact your administrator.</string>
     <string name="settings_main_password_hint_current">Current main password</string>
     <string name="settings_main_password_hint_new">New main password</string>
     <string name="settings_main_password_hint_new_confirm">Confirm new main password</string>
     <string name="settings_second_password_hint_current_main_password">Current main password</string>
     <string name="settings_second_password_hint_new">New second password</string>
     <string name="settings_second_password_hint_new_confirm">Confirm new second password</string>
-    <string name="settings_change_password_error">A change password error has occurred.</string>
-    <string name="settings_recovery_email_success">Recovery email address updated</string>
     <string name="settings_password_management_login_success">Login password updated</string>
     <string name="settings_password_management_second_success">Second password updated</string>
-    <string name="settings_password_management_start_recovery">Don\'t know your current password?</string>
-    <string name="settings_password_management_2fa">2FA is needed</string>
     <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
     <string name="settings_password_error_empty">Password cannot be empty.</string>
     <string name="settings_password_error">Incorrect username or password. Please try again.</string>

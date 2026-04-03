@@ -33,8 +33,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Reduceri se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$s/lună.</string>
   <string name="payment_bf_renew_annually">Reducerile se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$s/an.</string>
-  <string name="payment_bf_renew_biennially">Reducerile se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$s la fiecare 2 ani.</string>
-  <string name="payment_welcome_offer_renew_monthly">Ofertă de bun venit. Autoreînnoire cu %1$s/lună.</string>
+    <string name="payment_welcome_offer_renew_monthly">Ofertă de bun venit. Autoreînnoire cu %1$s/lună.</string>
   <string name="payment_welcome_offer_renew_annually">Ofertă de bun venit. Autoreînnoire cu %1$s/an.</string>
   <string name="payment_welcome_offer_renew_biennially">Ofertă de bun venit. Autoreînnoire cu %1$s la doi ani.</string>
   <plurals name="payment_welcome_offer_renew_other">

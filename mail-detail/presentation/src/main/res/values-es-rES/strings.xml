@@ -26,8 +26,7 @@
   <string name="quick_reply_button_content_description">Responder</string>
   <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Más</string>
-  <string name="subject">Asunto:</string>
-  <string name="from">De:</string>
+    <string name="from">De:</string>
   <string name="to">Para:</string>
   <string name="cc">CC:</string>
   <string name="bcc">Cco:</string>
@@ -36,21 +35,17 @@
     <item quantity="one">%d archivo adjunto</item>
     <item quantity="other">%d archivos adjuntos</item>
   </plurals>
-  <string name="hide_details">Ocultar detalles</string>
-  <string name="undisclosed_recipients">…</string>
+    <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Borrador)</string>
   <string name="error_mark_as_read_failed">Error al marcar como leído. Inténtalo de nuevo.</string>
   <string name="error_mark_as_unread_failed">Error al marcar como no leído. Inténtalo de nuevo.</string>
   <string name="error_star_operation_failed">Error al marcar como Destacado. Inténtalo de nuevo.</string>
   <string name="error_unstar_operation_failed">Error al eliminar el destacado. Inténtalo de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
-  <string name="message_moved">Se ha movido el mensaje.</string>
-  <string name="message_moved_to">Se ha movido el mensaje a %s.</string>
-  <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
-  <string name="message_moved_to_archive">Mensaje movido al archivo</string>
+    <string name="message_moved_to">Se ha movido el mensaje a %s.</string>
+    <string name="message_moved_to_archive">Mensaje movido al archivo</string>
   <string name="error_move_to_archive_failed">Error al mover al archivo. Inténtalo de nuevo.</string>
-  <string name="message_moved_to_spam">Se ha movido el mensaje a la carpeta Spam.</string>
-  <string name="error_move_to_spam_failed">Error al mover a la carpeta Spam. Intenta de nuevo.</string>
+    <string name="error_move_to_spam_failed">Error al mover a la carpeta Spam. Intenta de nuevo.</string>
   <string name="message_moved_to_selected_destination">Se ha movido el mensaje a %1$s.</string>
   <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
@@ -65,9 +60,7 @@
   <string name="error_attachment_download_in_progress">La descarga actual debe completarse antes de iniciar una nueva.</string>
   <string name="error_get_attachment_not_enough_memory">Error al obtener el adjunto por falta de memoria</string>
   <string name="error_relabel_message_failed">Error al etiquetar de nuevo el mensaje. Inténtalo de nuevo.</string>
-  <string name="error_relabel_conversation_failed">Error al reetiquetar la conversación. Vuelve a intentarlo</string>
-  <string name="please_go_back_online_to_load_messages">Estás desconectado. Vuelve a conectarte para cargar los mensajes.</string>
-  <string name="decryption_error">Error al descifrar el mensaje.</string>
+    <string name="decryption_error">Error al descifrar el mensaje.</string>
   <string name="detail_error_retrieving_message_body">No se ha podido recuperar el mensaje</string>
   <string name="message_body_error_no_webview">Necesitas instalar una aplicación WebView para ver el contenido de este mensaje.</string>
   <!-- Banners -->
@@ -118,9 +111,7 @@
   <string name="message_report_phishing_dialog_message">Al reportar un mensaje como suplantación de identidad, enviarás una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmar</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
-  <string name="open_on_protoncalendar_banner_title">Abrir en Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Calendario seguro y cifrado</string>
-  <string name="trashed_messages_banner">Mostrar mensajes eliminados en esta conversación.</string>
+    <string name="trashed_messages_banner">Mostrar mensajes eliminados en esta conversación.</string>
   <string name="non_trashed_messages_banner">Mostrar mensajes no eliminados en esta conversación.</string>
   <string name="recipient_me">mi</string>
   <string name="message_details_header_from">De</string>
@@ -182,9 +173,7 @@
   <string name="already_unsubscribed_banner_message">Has sido dado de baja de esta lista de correo</string>
   <string name="error_unsubscribe_newsletter">Error al cancelar la suscripción al boletín</string>
   <string name="detail_error_loading_single_message">Error al cargar los mensajes</string>
-  <string name="error_downloading_image">Error al descargar la imagen</string>
-  <string name="image_downloaded_successfully">Imagen descargada</string>
-  <!-- Raw message data screen -->
+    <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Encabezados del mensaje</string>
   <string name="raw_message_data_html_title">HTML del mensaje</string>
   <string name="raw_message_data_close_button_content_description">Cerrar</string>

@@ -26,8 +26,7 @@
   <string name="quick_reply_button_content_description">Válasz</string>
   <string name="quick_reply_all_button_content_description">Válasz mindenkinek</string>
   <string name="more_button_content_description">Több</string>
-  <string name="subject">Tárgy:</string>
-  <string name="from">Feladó:</string>
+    <string name="from">Feladó:</string>
   <string name="to">Címzett:</string>
   <string name="cc">Másolatot kap:</string>
   <string name="bcc">Titkos másolat:</string>
@@ -36,21 +35,17 @@
     <item quantity="one">%d Melléklet</item>
     <item quantity="other">%d Mellékletek</item>
   </plurals>
-  <string name="hide_details">Részletek elrejtése</string>
-  <string name="undisclosed_recipients">…</string>
+    <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Piszkozat)</string>
   <string name="error_mark_as_read_failed">Olvasottnak megjelölés művelet sikertelen. Kérjük, próbálja újra.</string>
   <string name="error_mark_as_unread_failed">Olvasatlanként megjelölés sikertelen. Próbálja újra.</string>
   <string name="error_star_operation_failed">Megcsillagozás sikertelen. Próbálja újra.</string>
   <string name="error_unstar_operation_failed">Csillag visszavonása sikertelen. Próbálja újra.</string>
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
-  <string name="message_moved">Levél áthelyezve</string>
-  <string name="message_moved_to">Üzenet áthelyezve a %s mappába</string>
-  <string name="message_moved_to_trash">Üzenet áthelyezve a lomtárba</string>
-  <string name="message_moved_to_archive">Üzenet áthelyezve az archívumba</string>
+    <string name="message_moved_to">Üzenet áthelyezve a %s mappába</string>
+    <string name="message_moved_to_archive">Üzenet áthelyezve az archívumba</string>
   <string name="error_move_to_archive_failed">Az archívumba való áthelyezés sikertelen. Próbálja meg újra.</string>
-  <string name="message_moved_to_spam">Üzenet a levélszemét mappába áthelyezve</string>
-  <string name="error_move_to_spam_failed">Az üzenet levélszemét mappába helyezése sikertelen. Próbálja újra.</string>
+    <string name="error_move_to_spam_failed">Az üzenet levélszemét mappába helyezése sikertelen. Próbálja újra.</string>
   <string name="message_moved_to_selected_destination">Üzenet áthelyezve a %1$s mappába</string>
   <string name="error_move_message_failed">Az üzenet áthelyezése sikertelen. Próbálja újra.</string>
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
@@ -65,9 +60,7 @@
   <string name="error_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie az új letöltés megkezdése előtt.</string>
   <string name="error_get_attachment_not_enough_memory">Elégtelen memória miatt a melléklet letöltése sikertelen</string>
   <string name="error_relabel_message_failed">Az üzenet címkéinek frissítése nem sikerült. Próbálja meg újra</string>
-  <string name="error_relabel_conversation_failed">A beszélgetés címkéinek frissítése nem sikerült. Próbálja meg újra</string>
-  <string name="please_go_back_online_to_load_messages">Ön jelenleg offline. Kérjük csatlakozzon újra internethez az üzenetek betöltéséhez</string>
-  <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
+    <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
   <string name="detail_error_retrieving_message_body">Az üzenet betöltése sikertelen</string>
   <string name="message_body_error_no_webview">Az üzenet a megjelenítéséhez az Android System WebView telepítve kell, hogy legyen.</string>
   <!-- Banners -->
@@ -118,9 +111,7 @@
   <string name="message_report_phishing_dialog_message">Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.</string>
   <string name="message_report_phishing_dialog_confim_button">Jóváhagyás</string>
   <string name="message_report_phishing_dialog_cancel_button">Mégsem</string>
-  <string name="open_on_protoncalendar_banner_title">Megnyitás a Proton Calendarban</string>
-  <string name="open_on_protoncalendar_banner_description">Biztonságos, titkosított naptár</string>
-  <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
+    <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
   <string name="non_trashed_messages_banner">Show non-trashed messages in this conversation.</string>
   <string name="recipient_me">én</string>
   <string name="message_details_header_from">Feladó</string>
@@ -182,9 +173,7 @@
   <string name="already_unsubscribed_banner_message">You are unsubscribed from this mailing list.</string>
   <string name="error_unsubscribe_newsletter">Failed to unsubscribe from newsletter</string>
   <string name="detail_error_loading_single_message">Failed loading message</string>
-  <string name="error_downloading_image">Failed to download image</string>
-  <string name="image_downloaded_successfully">Image downloaded</string>
-  <!-- Raw message data screen -->
+    <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Message headers</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Close</string>

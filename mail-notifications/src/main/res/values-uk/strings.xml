@@ -19,8 +19,7 @@
 <resources>
   <string name="notification_summary_text_new_messages">Нові повідомлення</string>
   <string name="notification_summary_text_new_login_alerts">Сповіщення про новий вхід</string>
-  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
-  <string name="notification_title_text_new_message_fallback">Нове повідомлення</string>
+    <string name="notification_title_text_new_message_fallback">Нове повідомлення</string>
   <string name="notification_actions_archive_description">Архів</string>
   <string name="notification_actions_trash_description">Смітник</string>
   <string name="notification_actions_mark_as_read_description">Позначити прочитаним</string>

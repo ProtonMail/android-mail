@@ -24,8 +24,7 @@
   <string name="snooze_sheet_option_this_weekend">Denne helgen</string>
   <string name="snooze_sheet_option_custom">Tilpasset</string>
   <string name="snooze_sheet_option_custom_detail">Velg dato og klokkeslett</string>
-  <string name="snooze_sheet_option_upsell_detail">Betalt funksjon</string>
-  <string name="snooze_sheet_snooze_title">Slumre til</string>
+    <string name="snooze_sheet_snooze_title">Slumre til</string>
   <string name="snooze_sheet_option_unsnooze">Slumring av</string>
   <string name="snooze_sheet_error_unable_to_snooze">Beklager, vi støtte på en ukjent feil under slumring av denne samtalen.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">En ukjent feil oppstod under avslumring av samtalen</string>

@@ -22,10 +22,8 @@
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Skúsiť znova</string>
-  <string name="toolbar_back_content_description">Späť na predošlú obrazovku</string>
-  <string name="x_error_not_logged_in">Nie ste prihlásený</string>
-  <string name="action_customize_toolbar">Prispôsobiť panel nástrojov</string>
-  <string name="action_customize_toolbar_description">Prispôsobiť panel nástrojov</string>
+    <string name="x_error_not_logged_in">Nie ste prihlásený</string>
+    <string name="action_customize_toolbar_description">Prispôsobiť panel nástrojov</string>
   <string name="action_customize_toolbar_content_description">Prispôsobiť panel nástrojov</string>
   <string name="action_reply">Odpovedať</string>
   <string name="action_reply_all">Odpovedať všetkým</string>
@@ -59,8 +57,7 @@
   <string name="action_pin_description">Pripnúť</string>
   <string name="action_unpin_description">Odopnúť</string>
   <string name="action_reply_content_description">Odpovedať</string>
-  <string name="action_reply_to_content_description">Odpovedať na %s</string>
-  <string name="action_reply_all_content_description">Odpovedať všetkým</string>
+    <string name="action_reply_all_content_description">Odpovedať všetkým</string>
   <string name="action_forward_content_description">Preposlať</string>
   <string name="action_mark_read_content_description">Označiť ako prečítané</string>
   <string name="action_mark_unread_content_description">Označiť ako neprečítané</string>
@@ -91,16 +88,13 @@
   <string name="common_error_loading_actions">Načítanie akcií zlyhalo</string>
   <string name="yesterday">Včera</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Prílohy</string>
-  <string name="attachment_download_notification_channel_description">Notifikácie sťahovania príloh</string>
-  <string name="email_notification_channel_name">Emaily</string>
+    <string name="email_notification_channel_name">Emaily</string>
   <string name="login_notification_channel_name">Upozornenia na prihlásenie</string>
   <string name="email_notification_channel_description">Notifikácie prichádzajúcich emailov</string>
   <string name="login_notification_channel_description">Notifikácie o novom prihlásení</string>
   <string name="auth_badge_official">Oficiálny</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Pre spracovanie tejto akcie sa nenašla žiadna aplikácia</string>
-  <string name="action_copied_to_clipboard">Skopírované do schránky</string>
-  <string name="mailbox_action_delete_dialog_button_cancel">Zrušiť</string>
+    <string name="mailbox_action_delete_dialog_button_cancel">Zrušiť</string>
   <string name="mailbox_action_delete_dialog_button_delete">Vymazať</string>
   <string name="picker_dialog_cancel">Zrušiť</string>
   <string name="color_purple">Fialová</string>

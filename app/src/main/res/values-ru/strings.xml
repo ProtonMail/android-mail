@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">Отправка сообщения…</string>
   <string name="mailbox_message_sending_offline">Нет подключения к сети: сообщение поставлено в очередь на отправку</string>
   <string name="mailbox_message_sending_success">Сообщение отправлено</string>
-  <string name="mailbox_message_sending_error">Ошибка при отправке сообщения</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+    <string name="mailbox_message_sending_error_action">Go to Draft</string>
   <string name="notification_switched_account">Вы перешли в аккаунт %s</string>
-  <string name="label_saved">Ярлык сохранён</string>
-  <string name="label_deleted">Ярлык удалён</string>
-  <string name="app_locked">Приложение заблокировано</string>
-  <string name="use_pin_instead">Использовать PIN-код вместо этого</string>
-  <string name="mailbox_message_scheduling">Планирование сообщения…</string>
+    <string name="mailbox_message_scheduling">Планирование сообщения…</string>
   <string name="mailbox_message_scheduling_offline">Офлайн: сообщение в очереди на планирование</string>
   <string name="mailbox_message_scheduled_for_sending_success">Это сообщение будет отправлено %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Пользователь уже вошёл</string>

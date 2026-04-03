@@ -17,10 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Více</string>
-  <string name="drawer_title_contacts">Kontakty</string>
-  <string name="drawer_title_subscription">Předplatné</string>
-  <string name="drawer_title_bug_report">Nahlásit problém</string>
+    <string name="drawer_title_contacts">Kontakty</string>
+    <string name="drawer_title_bug_report">Nahlásit problém</string>
   <string name="drawer_item_create_label">Vytvořit štítek</string>
   <string name="drawer_item_create_folder">Vytvořit složku</string>
   <string name="drawer_upgrade_plus">Navýšit na Mail Plus</string>

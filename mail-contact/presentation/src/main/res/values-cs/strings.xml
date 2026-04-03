@@ -31,13 +31,7 @@
     <item quantity="many">%1$d členů</item>
     <item quantity="other">%1$d členů</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Člen (%1$d)</item>
-    <item quantity="few">Členů (%1$d)</item>
-    <item quantity="many">Členů (%1$d)</item>
-    <item quantity="other">Členů (%1$d)</item>
-  </plurals>
-  <string name="search_contacts_description">Vyhledat kontakty</string>
+    <string name="search_contacts_description">Vyhledat kontakty</string>
   <string name="contact_search_no_results">Nebyly nalezeny žádné výsledky.</string>
   <string name="contact_search_placeholder">Hledat kontakt či skupinu</string>
   <string name="contact_search_content_description">Hledat kontakt či skupinu</string>
@@ -71,9 +65,7 @@
   <string name="contact_type_voice">Hlas</string>
   <string name="contact_property_birthday">Narozeniny</string>
   <string name="contact_property_note">Poznámka</string>
-  <string name="contact_property_photo">Fotky</string>
-  <string name="contact_property_logo">Logo</string>
-  <string name="contact_property_organization">Organizace</string>
+    <string name="contact_property_organization">Organizace</string>
   <string name="contact_property_anniversary">Výročí</string>
   <string name="contact_property_title">Název</string>
   <string name="contact_property_role">Role</string>

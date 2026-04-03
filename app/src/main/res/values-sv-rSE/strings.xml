@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">Skickar meddelande…</string>
   <string name="mailbox_message_sending_offline">Offline: meddelande köat för sändning</string>
   <string name="mailbox_message_sending_success">Meddelande skickat</string>
-  <string name="mailbox_message_sending_error">Det gick inte att skicka meddelandet</string>
-  <string name="mailbox_message_sending_error_action">Gå till utkast</string>
+    <string name="mailbox_message_sending_error_action">Gå till utkast</string>
   <string name="notification_switched_account">Bytte till kontot %s</string>
-  <string name="label_saved">Etikett sparad</string>
-  <string name="label_deleted">Etikett borttagen</string>
-  <string name="app_locked">Appen är låst</string>
-  <string name="use_pin_instead">Använd PIN-kod istället</string>
-  <string name="mailbox_message_scheduling">Schemalägger meddelande …</string>
+    <string name="mailbox_message_scheduling">Schemalägger meddelande …</string>
   <string name="mailbox_message_scheduling_offline">Offline: meddelande köat för schemaläggning</string>
   <string name="mailbox_message_scheduled_for_sending_success">Detta meddelande kommer att skickas den %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Användaren är redan inloggad</string>

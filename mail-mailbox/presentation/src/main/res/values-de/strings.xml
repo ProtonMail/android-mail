@@ -24,8 +24,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Suche</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Suchmodus beenden</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Suchanfrage löschen</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Suchanfrage eingeben</string>
-  <string name="filter_unread_button_text">Ungelesen</string>
+    <string name="filter_unread_button_text">Ungelesen</string>
   <string name="include_spam_trash_text">Spam/Papierkorb einschließen</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d ausgewählt</item>
@@ -44,11 +43,7 @@
   <string name="mailbox_is_empty_folder_description">Dieser Ordner ist leer</string>
   <string name="mailbox_is_empty_spam_description">Dein Spam-Ordner ist leer</string>
   <string name="mailbox_is_empty_trash_description">Hier sieht es leer aus</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Nachricht in den Papierkorb verschoben</item>
-    <item quantity="other">%d Nachrichten in den Papierkorb verschoben</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Unterhaltung löschen</item>
     <item quantity="other">%d Unterhaltungen löschen</item>
   </plurals>
@@ -77,8 +72,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Fehler beim Laden der Farbeinstellungen.</string>
   <string name="mailbox_action_no_sender_addresses">Keine E-Mail-Adresse mit Sendeberechtigungen</string>
   <string name="mailbox_action_move_messages_failed">Fehler beim Verschieben.</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Fehler beim Laden der Ordner.</string>
-  <string name="mailbox_action_trash_message">Nachricht in den Papierkorb verschoben</string>
+    <string name="mailbox_action_trash_message">Nachricht in den Papierkorb verschoben</string>
   <string name="mailbox_action_archive_message">Nachricht ins Archiv verschoben</string>
   <string name="mailbox_action_spam_message">Nachricht in Spam verschoben</string>
   <string name="mailbox_search_placeholder_text">Nachrichten durchsuchen</string>
@@ -102,27 +96,16 @@
   <string name="mailbox_action_clear_spam_dialog_title">Spam-Ordner leeren</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Bist du sicher, dass du alle Nachrichten in deinem Papierkorb dauerhaft löschen willst?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Bist du sicher, dass du alle Nachrichten in deinem Spam-Ordner dauerhaft löschen willst?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Bist du sicher, dass du alle Nachrichten in deinem Spam-Ordner dauerhaft löschen willst?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Lösche geplante Aufgabe"</string>
-  <string name="mailbox_action_maximum_selection_reached">"Maximale Auswahl erreicht"</string>
+    <string name="mailbox_action_maximum_selection_reached">"Maximale Auswahl erreicht"</string>
   <string name="mailbox_talkback_readout_unread">Ungelesen</string>
   <string name="mailbox_talkback_readout_starred">Kennzeichnung entfernen</string>
   <string name="mailbox_talkback_readout_not_starred">Kennzeichnen</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Anhang wird geöffnet …</string>
-  <string name="mailbox_attachment_download_error">Der Anhang konnte nicht geöffnet werden. Bitte erneut versuchen.</string>
+    <string name="mailbox_attachment_download_error">Der Anhang konnte nicht geöffnet werden. Bitte erneut versuchen.</string>
   <string name="mailbox_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warnung</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Der Speicherplatz deines Proton-Kontos ist zu mehr als 80% belegt. Gib Speicherplatz frei oder upgrade für mehr Speicherplatz.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Der Speicherplatz deines Proton-Kontos ist zu mehr als 90% belegt. Gib Speicherplatz frei oder upgrade für mehr Speicherplatz.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Nicht erneut erinnern</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
-  <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warnung</string>
-  <string name="storage_quota_over_dialog_text">Der Speicherplatz deines Proton-Kontos ist zu 100% belegt. Du kannst keine E-Mails mehr senden oder empfangen, es sei denn, du löschst einige E-Mails endgültig oder upgradest für mehr Speicherplatz.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
-  <string name="mailbox_action_delete_failed">Nachricht konnte nicht gelöscht werden</string>
+    <!--    Storage Quota Over Warning-->
+    <string name="mailbox_action_delete_failed">Nachricht konnte nicht gelöscht werden</string>
   <string name="select_all">Alle auswählen</string>
   <string name="deselect_all">Alle abwählen</string>
   <!--    Expiry messages-->
@@ -142,16 +125,4 @@
   <string name="schedule_send_tomorrow">Morgen, %1$s</string>
   <string name="schedule_send_today">Heute, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Bis morgen zurückgestellt</item>
-    <item quantity="other">Für %d Tage zurückgestellt</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Für %d Stunde zurückgestellt</item>
-    <item quantity="other">Für %d Stunden zurückgestellt</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Für %d Minute zurückgestellt</item>
-    <item quantity="other">Für %d Minuten zurückgestellt</item>
-  </plurals>
 </resources>

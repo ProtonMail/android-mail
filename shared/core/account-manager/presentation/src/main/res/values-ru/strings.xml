@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Удалить с этого устройства</string>
   <string name="account_switcher_switch_to">Перейти к</string>
   <string name="manage_accounts_title">Управление аккаунтами</string>
-  <string name="manage_accounts_signed_in">Выполнен вход</string>
-  <string name="manage_accounts_signed_out">Вы вышли</string>
-  <string name="manage_accounts_add_account">Добавить аккаунт</string>
+    <string name="manage_accounts_add_account">Добавить аккаунт</string>
   <string name="manage_accounts_switch_to">Перейти к</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Switch to a signed in account</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Switch to a signed out account</string>

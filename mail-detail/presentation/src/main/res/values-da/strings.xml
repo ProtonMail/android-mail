@@ -26,8 +26,7 @@
   <string name="quick_reply_button_content_description">Svar</string>
   <string name="quick_reply_all_button_content_description">Svar alle</string>
   <string name="more_button_content_description">Mere</string>
-  <string name="subject">Emne:</string>
-  <string name="from">Fra:</string>
+    <string name="from">Fra:</string>
   <string name="to">Til:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
@@ -36,22 +35,18 @@
     <item quantity="one">%d Vedhæftning</item>
     <item quantity="other">%d Vedhæftninger</item>
   </plurals>
-  <string name="hide_details">Skjul detaljer</string>
-  <string name="undisclosed_recipients">…</string>
+    <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Udkast)</string>
   <string name="error_mark_as_read_failed">Markering som læst mislykkedes. Prøv igen.</string>
   <string name="error_mark_as_unread_failed">Markering som ulæst mislykkedes. Prøv igen.</string>
   <string name="error_star_operation_failed">Tilføjelse af stjerne mislykkedes. Prøv igen.</string>
   <string name="error_unstar_operation_failed">Fjernelse af stjerne mislykkedes. Prøv igen.</string>
   <string name="error_move_to_trash_failed">Flytning til papirkurv mislykkedes. Prøv igen.</string>
-  <string name="message_moved">Besked flyttet</string>
-  <string name="message_moved_to">Besked flyttet til %s</string>
-  <string name="message_moved_to_trash">Besked flyttet til Papirkurv</string>
-  <string name="message_moved_to_archive">Besked flyttet til arkiv</string>
+    <string name="message_moved_to">Besked flyttet til %s</string>
+    <string name="message_moved_to_archive">Besked flyttet til arkiv</string>
   <string name="error_move_to_archive_failed">Flyt til arkiv mislykkedes. Prøv
 igen.</string>
-  <string name="message_moved_to_spam">Besked flyttet til spam</string>
-  <string name="error_move_to_spam_failed">Flyt til spam mislykkedes. Prøv igen.</string>
+    <string name="error_move_to_spam_failed">Flyt til spam mislykkedes. Prøv igen.</string>
   <string name="message_moved_to_selected_destination">Besked flyttet til %1$s</string>
   <string name="error_move_message_failed">Flytning af besked mislykkedes. Prøv igen.</string>
   <string name="conversation_moved_to_trash">Samtale flyttet til Papirkurv</string>
@@ -66,9 +61,7 @@ igen.</string>
   <string name="error_attachment_download_in_progress">Nuværende download skal afsluttes, før du starter et nyt.</string>
   <string name="error_get_attachment_not_enough_memory">Kunne ikke hente vedhæftet fil på grund af utilstrækkelig hukommelse</string>
   <string name="error_relabel_message_failed">Det lykkedes ikke at ændre beskedens etiket. Prøv igen.</string>
-  <string name="error_relabel_conversation_failed">Det lykkedes ikke at ændre samtalens etiket. Prøv igen.</string>
-  <string name="please_go_back_online_to_load_messages">Du er offline. Sørg for at være online igen for at indlæse beskeder</string>
-  <string name="decryption_error">Dekryptering af besked mislykkedes.</string>
+    <string name="decryption_error">Dekryptering af besked mislykkedes.</string>
   <string name="detail_error_retrieving_message_body">Kan ikke hente besked</string>
   <string name="message_body_error_no_webview">Du skal have WebView installeret for at se denne beskeds indhold</string>
   <!-- Banners -->
@@ -119,9 +112,7 @@ igen.</string>
   <string name="message_report_phishing_dialog_message">En besked, der rapporteres som et phishing-forsøg, videresendes til os så vi kan analysere den og forbedre vore filtre. Det betyder, at vi vil kunne se hele beskedindholdet.</string>
   <string name="message_report_phishing_dialog_confim_button">Bekræft</string>
   <string name="message_report_phishing_dialog_cancel_button">Annullér</string>
-  <string name="open_on_protoncalendar_banner_title">Åbn i Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Sikker krypteret kalender</string>
-  <string name="trashed_messages_banner">Vis beskeder i papirkurven i denne samtale.</string>
+    <string name="trashed_messages_banner">Vis beskeder i papirkurven i denne samtale.</string>
   <string name="non_trashed_messages_banner">Vis ikke-slettede beskeder i denne samtale.</string>
   <string name="recipient_me">mig</string>
   <string name="message_details_header_from">Fra</string>
@@ -183,9 +174,7 @@ igen.</string>
   <string name="already_unsubscribed_banner_message">Du er afmeldt denne mailingliste.</string>
   <string name="error_unsubscribe_newsletter">Kunne ikke afmelde nyhedsbrev</string>
   <string name="detail_error_loading_single_message">Indlæsning af besked mislykkedes</string>
-  <string name="error_downloading_image">Kunne ikke downloade billede</string>
-  <string name="image_downloaded_successfully">Billede downloadet</string>
-  <!-- Raw message data screen -->
+    <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Beskedoverskrifter</string>
   <string name="raw_message_data_html_title">Besked-HTML</string>
   <string name="raw_message_data_close_button_content_description">Luk</string>

@@ -28,8 +28,7 @@
     <item quantity="other">Atașamente: %d</item>
   </plurals>
   <string name="attachments">atașamente</string>
-  <string name="attachment_show_more_label">+ încă %1$d</string>
-  <string name="attachment_type_description">Fișier %1$s</string>
+    <string name="attachment_type_description">Fișier %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">arhivă</string>
   <string name="attachment_type_image">Imagine</string>
@@ -38,8 +37,7 @@
   <string name="attachment_type_unknown">necunoscut</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">text</string>
-  <string name="attachment_type_document">document</string>
-  <string name="attachment_type_spreadsheet">foaie de calcul</string>
+    <string name="attachment_type_spreadsheet">foaie de calcul</string>
   <string name="attachment_type_presentation">prezentare</string>
   <string name="attachment_type_calendar">Calendar</string>
   <string name="attachment_type_code">Cod</string>
@@ -51,11 +49,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mutare în...</string>
-  <string name="bottom_sheet_done_action">Gata</string>
-  <string name="bottom_sheet_archive_action">Și arhivare?</string>
+    <string name="bottom_sheet_archive_action">Și arhivare?</string>
   <string name="bottom_sheet_label_as_title">Etichetare cu</string>
-  <string name="bottom_sheet_more_header_message_from">Mesaj de la %s</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Copiere legătură web</string>
   <string name="message_link_long_click_copy_description">Text copiat din Proton Mail</string>
   <string name="message_link_long_click_share">Partajare legătură web</string>
@@ -84,8 +80,6 @@
   <string name="contact_actions_block_address_description">Blocați această adresă</string>
   <string name="contact_actions_unblock_address">Deblocare această adresă</string>
   <string name="contact_actions_unblock_address_description">Deblocare această adresă</string>
-  <string name="contact_actions_view_contact_details">Afișare detalii contact</string>
-  <string name="contact_actions_view_contact_details_description">Afișare detalii contact.</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">Afișare mesaj întreg</string>
 </resources>

@@ -29,11 +29,7 @@
     <item quantity="one">%1$d μέλος</item>
     <item quantity="other">%1$d μέλη</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Μέλος (%1$d)</item>
-    <item quantity="other">Μέλη (%1$d)</item>
-  </plurals>
-  <string name="search_contacts_description">Αναζήτηση επαφών</string>
+    <string name="search_contacts_description">Αναζήτηση επαφών</string>
   <string name="contact_search_no_results">Δεν βρέθηκαν αποτελέσματα.</string>
   <string name="contact_search_placeholder">Αναζήτηση επαφής ή ομάδας</string>
   <string name="contact_search_content_description">Αναζήτηση επαφής ή ομάδας</string>
@@ -67,9 +63,7 @@
   <string name="contact_type_voice">Φωνή</string>
   <string name="contact_property_birthday">Γενέθλια</string>
   <string name="contact_property_note">Σημείωση</string>
-  <string name="contact_property_photo">Φωτογραφία</string>
-  <string name="contact_property_logo">Λογότυπο</string>
-  <string name="contact_property_organization">Οργανισμός</string>
+    <string name="contact_property_organization">Οργανισμός</string>
   <string name="contact_property_anniversary">Επέτειος</string>
   <string name="contact_property_title">Τίτλος</string>
   <string name="contact_property_role">Ρόλος</string>

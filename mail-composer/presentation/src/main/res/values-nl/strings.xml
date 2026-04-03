@@ -25,17 +25,11 @@
   <string name="compose_message_placeholder">E-mail opstellen</string>
   <string name="close_composer_content_description">Opstelvenster sluiten</string>
   <string name="send_button_title">Verzenden</string>
-  <string name="send_message_content_description">Verzend bericht</string>
-  <string name="composer_expand_recipients_button">Andere ontvangers weergeven</string>
+    <string name="composer_expand_recipients_button">Andere ontvangers weergeven</string>
   <string name="composer_error_invalid_email">Het opgegeven adres is niet geldig of bestaat niet</string>
-  <string name="change_sender_button_content_description">Verander afzender</string>
-  <string name="composer_change_sender_paid_feature">Upgrade naar een betaald abonnement om het adres van de afzender te veranderen</string>
-  <string name="composer_error_store_draft_sender_address">Adres van de afzender werd niet bewaard</string>
-  <string name="composer_error_store_draft_body">Concept e-mail bericht is niet opgeslagen</string>
-  <string name="composer_error_duplicate_recipient">Dubbele ontvanger(s) verwijderd</string>
-  <string name="composer_error_store_draft_subject">Onderwerp lijn is niet opgeslagen</string>
-  <string name="composer_error_store_draft_recipients">Opslaan van de ontvangers van dit concept is mislukt</string>
-  <string name="composer_error_store_draft_address_disabled">Kan concept niet opslaan - Dit afzenderadres is uitgeschakeld</string>
+    <string name="composer_change_sender_paid_feature">Upgrade naar een betaald abonnement om het adres van de afzender te veranderen</string>
+    <string name="composer_error_duplicate_recipient">Dubbele ontvanger(s) verwijderd</string>
+    <string name="composer_error_store_draft_address_disabled">Kan concept niet opslaan - Dit afzenderadres is uitgeschakeld</string>
   <string name="composer_error_store_draft_address_pk_missing">Kan concept niet opslaan - Dit afzenderadres heeft geen primaire sleutel</string>
   <string name="composer_error_store_draft_attachment_too_large">Kan concept niet opslaan - Bijlagen overschrijden de maximale grootte</string>
   <string name="composer_error_store_draft_too_many_attachments">Kan concept niet opslaan - Bijlagelimiet bereikt</string>
@@ -51,9 +45,7 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Uit uw fotobibliotheek</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Neem een nieuwe foto</string>
   <string name="composer_error_loading_parent_message">Kon de informatie van het bericht niet laden</string>
-  <string name="composer_original_message_quote">Oorspronkelijk bericht</string>
-  <string name="composer_sender_quote">Op %s, schreef %s &lt;%s&gt;:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
   <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Versleuteling van de bijlage is mislukt. Om veiligheidsredenen zijn alle bijlagen verwijderd.</string>
@@ -68,13 +60,11 @@
   <string name="composer_button_discard_draft">Concept verwijderen</string>
   <string name="composer_button_set_expiration">Stel vervaltijd in</string>
   <string name="composer_expiration_time_bottom_sheet_title">Vervaldatum bericht</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Instellen</string>
-  <string name="composer_bottom_bar_expiration_time_none">Vervalt nooit</string>
+    <string name="composer_bottom_bar_expiration_time_none">Vervalt nooit</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Na 1 uur</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Na 1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Na 3 dagen</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Na 1 week</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Op een specifieke datum</string>
+    <string name="composer_bottom_bar_expiration_time_custom">Op een specifieke datum</string>
   <string name="composer_error_setting_expiration_time">Vervaltijd instellen mislukt</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Wachtwoord toevoegen om vervaltijd te gebruiken</string>
@@ -98,28 +88,18 @@
   <string name="message_sending_error_dialog_header">Fout bij verzenden</string>
   <string name="message_sending_error_dialog_button_dismiss">Sluiten</string>
   <string name="message_sending_error_dialog_text_error">Uw e-mail kan niet worden verzonden naar het e-mailadres om de volgende reden:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Er zijn geen vertrouwde sleutels: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bestaat niet: %s</string>
-  <string name="set_message_password_title">Stel wachtwoord in</string>
+    <string name="set_message_password_title">Stel wachtwoord in</string>
   <string name="set_message_password_info_message">Voer een wachtwoord in om dit bericht te versleutelen voor niet-Proton Mail-ontvangers.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Meer informatie</a></string>
   <string name="set_message_password_label">Wachtwoord van bericht</string>
   <string name="set_message_password_label_hint">Wachtwoordhint (Optioneel)</string>
   <string name="set_message_password_supporting_text">Minimaal 8 tekens vereist.</string>
   <string name="set_message_password_supporting_error_text">Het wachtwoord moet tussen de 8 en 21 tekens lang zijn</string>
-  <string name="set_message_password_supporting_text_repeat">Wachtwoorden moeten overeenkomen</string>
-  <string name="set_message_password_supporting_error_text_repeat">De wachtwoorden komen niet overeen.</string>
-  <string name="set_message_password_button_show">Toon wachtwoord</string>
+    <string name="set_message_password_button_show">Toon wachtwoord</string>
   <string name="set_message_password_button_hide">Wachtwoord verbergen</string>
   <string name="set_message_password_button_save_changes">Opslaan</string>
   <string name="set_message_password_button_remove_password">Verwijder wachtwoord</string>
-  <string name="respondInline">Inline reageren</string>
-  <string name="subject_placeholder">Onderwerp</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d lid</item>
-    <item quantity="other">%d leden</item>
-  </plurals>
-  <string name="composer_recipient_suggestion_device">Toon apparaat contacten</string>
+    <string name="composer_recipient_suggestion_device">Toon apparaat contacten</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Dit bericht weggooien?</string>
   <string name="discard_draft_dialog_text">Uw concept wordt niet opgeslagen</string>
@@ -139,11 +119,7 @@
   <string name="composer_schedule_send_custom_upsell_title">Aangepaste datum en tijd</string>
   <string name="composer_schedule_send_custom_description">Kies tijd en datum</string>
   <string name="composer_schedule_send_previously_set">Eerder ingesteld</string>
-  <string name="composer_schedule_send_custom_time_label">Tijd</string>
-  <string name="composer_schedule_send_custom_date_label">Datum</string>
-  <string name="composer_schedule_send_dialog_ok">OK</string>
-  <string name="composer_schedule_send_dialog_enter_time">Tijd invoeren</string>
-  <string name="composer_change_sender_title">Van</string>
+    <string name="composer_change_sender_title">Van</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Kan de afzender niet wijzigen omdat het ophalen van de adressen van de gebruiker is mislukt. Probeer het nog eens.</string>
   <string name="composer_change_sender_invalid_address">Het geselecteerde adres kan niet voor verzenden worden gebruikt.</string>
   <string name="composer_change_sender_unexpected_failure">Er is iets fout gegaan bij het wijzigen van de afzender. Probeer het opnieuw.</string>

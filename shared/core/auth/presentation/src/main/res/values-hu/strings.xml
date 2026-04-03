@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Bezárás</string>
-  <string name="login_help_title">Miben segíthetünk?</string>
+    <string name="login_help_title">Miben segíthetünk?</string>
   <string name="login_help_forgot_username">Elfelejtett felhasználónév</string>
   <string name="login_help_forgot_password">Elfelejtett jelszó</string>
   <string name="login_help_other_issues">Egyéb bejelentkezési problémák</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">Felhasználónév vagy e-mail cím</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Jelszó</string>
-  <string name="auth_username_placeholder">Felhasználónév vagy e-mail cím</string>
-  <string name="auth_password_placeholder">Jelszó</string>
-  <string name="auth_login_assistive_text">Kérem, adja meg a Proton e-mail címét vagy felhasználónevét.</string>
+    <string name="auth_login_assistive_text">Kérem, adja meg a Proton e-mail címét vagy felhasználónevét.</string>
   <string name="auth_account_details">Kérem, adja meg Proton fiókja részleteit.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Probléma a bejelentkezéskor. Próbálja újra.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Emberi ellenőrzés szükséges.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Helytelen bejelentkezési adatok. Kérem, próbálja újra.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Az azonosítás második lépcsője nem támogatott.</string>
-  <string name="auth_login_general_error">Hiba történt.</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">Helytelen bejelentkezési adatok. Kérem, próbálja újra.</string>
+    <string name="auth_login_general_error">Hiba történt.</string>
   <string name="auth_second_factor_title">Kétlépcsős hitelesítés</string>
   <string name="auth_second_factor_subtitle">Többféle kétlépcsős hitelesítést is beállított. Válassza ki, hogyan szeretné folytatni a hitelesítést.</string>
   <string name="auth_second_factor_tab_security_key">Hitelesítési kulcs</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">A jelszó nem lehet üres</string>
   <string name="auth_signup_title">Hozzon létre egy Proton fiókot</string>
   <string name="auth_signup_subtitle">Egy egységes fiók az összes Proton szolgáltatáshoz</string>
-  <string name="auth_signup_username_assistive_text">A felhasználónév nem lehet üres.</string>
-  <string name="auth_signup_email_assistive_text">Az e-mail nem lehet üres.</string>
-  <string name="auth_signup_next">Következő</string>
+    <string name="auth_signup_next">Következő</string>
   <string name="auth_signup_username">Felhasználónév</string>
   <string name="auth_signup_create_password">Hozza létre jelszavát</string>
   <string name="auth_signup_password">Jelszó</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">Kihagyás</string>
   <string name="auth_signup_recovery_title">Helyreállítási mód beállítása (opcionális)</string>
   <string name="auth_signup_recovery_subtitle">Ha kizárja magát a fiókjából, erre az e-mail címre vagy telefonszámra küldünk helyreállítási utasításokat.</string>
-  <string name="auth_signup_recovery_email">E-mail</string>
-  <string name="auth_signup_recovery_phone">Telefonszám</string>
-  <string name="auth_signup_recovery_email_hint">Helyreállítási e-mail cím</string>
-  <string name="auth_signup_recovery_phone_hint">Telefonszám a helyreállításhoz</string>
-  <string name="auth_signup_recovery_select_country">Ország kiválasztása</string>
+    <string name="auth_signup_recovery_select_country">Ország kiválasztása</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Helyreállítási módszer átugrása?</string>
   <string name="auth_signup_skip_recovery_description">Egy helyreállítási módszer segít hozzáférni a fiókjához arra az esetre, ha elfelejtené a jelszavát vagy kizárják a fiókjából.</string>
@@ -129,8 +118,7 @@
   <string name="auth_fido_config_error">Hiba a tárolt kulcsok lekérésekor.</string>
   <string name="auth_fido_reading_key_error">Hiba a biztonsági kulcs olvasásakor.</string>
   <string name="auth_fido_submit_key_error">Hiba a kulcsadatok küldésekor.</string>
-  <string name="auth_fido_reading_key_progress">Biztonsági kulcs olvasása.</string>
-  <string name="auth_fido_authenticating_in_progress">Hitelesítés biztonsági kulccsal.</string>
+    <string name="auth_fido_authenticating_in_progress">Hitelesítés biztonsági kulccsal.</string>
   <string name="auth_fido_security_key">Hitelesítési kulcs</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">A jelszónak tartalmaznia kell legalább 1 karaktert</item>
@@ -147,21 +135,15 @@
   <string name="settings_password_management_tab_second_password">Második jelszó</string>
   <string name="settings_password_management_change_password_note">Bármelyik jelszavának megváltoztatásához ismernie kell a fő jelszavát.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Elfelejtette a fő jelszavát?</string>
-  <string name="settings_password_management_header">Jelszó módosítása</string>
-  <string name="settings_password_management_cannot_change_password">Nem tudja megváltoztatni a biztonsági jelszavát. Vegye fel a kapcsolatot az ön adminisztrátorával.</string>
-  <string name="settings_main_password_hint_current">Jelenlegi fő jelszó</string>
+    <string name="settings_main_password_hint_current">Jelenlegi fő jelszó</string>
   <string name="settings_main_password_hint_new">Új fő jelszó</string>
   <string name="settings_main_password_hint_new_confirm">Erősítse meg az új fő jelszavát</string>
   <string name="settings_second_password_hint_current_main_password">Jelenlegi fő jelszó</string>
   <string name="settings_second_password_hint_new">Új második jelszó</string>
   <string name="settings_second_password_hint_new_confirm">Erősítse meg új második jelszavát</string>
-  <string name="settings_change_password_error">Hiba történt a jelszó megváltoztatása közben.</string>
-  <string name="settings_recovery_email_success">Helyreállítási e-mail cím frissítve</string>
-  <string name="settings_password_management_login_success">Bejelentkezési jelszó frissítve</string>
+    <string name="settings_password_management_login_success">Bejelentkezési jelszó frissítve</string>
   <string name="settings_password_management_second_success">Második jelszó frissítve</string>
-  <string name="settings_password_management_start_recovery">Nem tudja a jelenlegi jelszavát?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
-  <string name="settings_password_invalid_2fa">Érvénytelen kétfaktoros kód. Próbálja újra.</string>
+    <string name="settings_password_invalid_2fa">Érvénytelen kétfaktoros kód. Próbálja újra.</string>
   <string name="settings_password_error_empty">A jelszó nem lehet üres.</string>
   <string name="settings_password_error">Helytelen felhasználónév vagy jelszó. Próbálja meg újra.</string>
   <string name="settings_password_error_invalid_recovery">Hibás kétfaktoros kód. Próbálja újra.</string>

@@ -26,8 +26,7 @@
     <item quantity="other">%d melléklet</item>
   </plurals>
   <string name="attachments">mellékletek</string>
-  <string name="attachment_show_more_label">+%1$d több</string>
-  <string name="attachment_type_description">%1$s fájl</string>
+    <string name="attachment_type_description">%1$s fájl</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archívum</string>
   <string name="attachment_type_image">Kép</string>
@@ -36,8 +35,7 @@
   <string name="attachment_type_unknown">Ismeretlen</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Szöveg</string>
-  <string name="attachment_type_document">Dokumentum</string>
-  <string name="attachment_type_spreadsheet">Munkafüzet</string>
+    <string name="attachment_type_spreadsheet">Munkafüzet</string>
   <string name="attachment_type_presentation">Prezentáció</string>
   <string name="attachment_type_calendar">Naptár</string>
   <string name="attachment_type_code">Kód</string>
@@ -49,11 +47,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Áthelyezés...</string>
-  <string name="bottom_sheet_done_action">Kész</string>
-  <string name="bottom_sheet_archive_action">Archiválás is?</string>
+    <string name="bottom_sheet_archive_action">Archiválás is?</string>
   <string name="bottom_sheet_label_as_title">Címkézés mint</string>
-  <string name="bottom_sheet_more_header_message_from">Üzenetek tőle: %s</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Hivatkozás másolása</string>
   <string name="message_link_long_click_copy_description">Szöveg Proton Mailről másolva</string>
   <string name="message_link_long_click_share">Link megosztása</string>
@@ -82,8 +78,6 @@
   <string name="contact_actions_block_address_description">Block this address</string>
   <string name="contact_actions_unblock_address">Unblock this address</string>
   <string name="contact_actions_unblock_address_description">Unblock this address</string>
-  <string name="contact_actions_view_contact_details">Névjegy részletei</string>
-  <string name="contact_actions_view_contact_details_description">Névjegy részleteinek megtekintése</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">Teljes üzenet megtekintése</string>
 </resources>

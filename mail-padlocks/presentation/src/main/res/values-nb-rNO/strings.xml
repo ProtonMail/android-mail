@@ -27,8 +27,7 @@
   <string name="padlocks_proton_send_sign_only">PGP-signert e-post</string>
   <string name="padlocks_proton_send_sign_only_description">Du har %s denne e-posten, noe som beviser for mottakeren at e-posten din er ekte og ikke har blitt tuklet med.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">digitalt signert</string>
-  <string name="padlocks_proton_send_recipient_pgp_signed">PGP-signert e-post</string>
-  <string name="padlocks_proton_send_recipient_pgp_signed_description">Du har %s denne e-posten, noe som beviser for mottakeren at e-posten din er ekte og ikke har blitt tuklet med.</string>
+    <string name="padlocks_proton_send_recipient_pgp_signed_description">Du har %s denne e-posten, noe som beviser for mottakeren at e-posten din er ekte og ikke har blitt tuklet med.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">digitalt signert</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">Nulltilgangskryptert</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled_description">Denne mottakeren har deaktivert ende-til-ende-kryptering på kontoen sin.</string>
@@ -58,8 +57,7 @@
   <string name="padlocks_proton_zero_access_description">Denne e-posten er lagret på Proton-tjenere med %s. Verken Proton eller noen andre kan lese den.</string>
   <string name="padlocks_proton_zero_access_description_link_text">nulltilgangskryptering</string>
   <string name="padlocks_proton_sent_e2ee_verified_recipients">Ende-til-ende-kryptert til verifiserte mottakere</string>
-  <string name="padlocks_proton_sent_e2ee_verified_recipients_description">Denne e-posten er kryptert på avsenderens enhet og kan kun dekrypteres av mottakeren. Proton kan ikke se innholdet i e-posten til enhver tid.</string>
-  <string name="padlocks_proton_sent_proton_verified_recipients">Nulltilgangskryptert med verifiserte mottakere</string>
+    <string name="padlocks_proton_sent_proton_verified_recipients">Nulltilgangskryptert med verifiserte mottakere</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description">Denne e-posten er lagret på Proton-tjenere med %s. Verken Proton eller noen andre kan lese den.</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description_link">nulltilgangskryptering</string>
   <string name="padlocks_proton_sent_e2ee">Ende-til-ende-kryptert</string>
@@ -81,18 +79,14 @@
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">Denne e-posten er lagret på Proton-tjenere med %s. Verken Proton eller noen andre kan lese den.</string>
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">nulltilgangskryptering</string>
   <string name="padlocks_proton_sent_recipient_pgp_signed">PGP-signert e-post</string>
-  <string name="padlocks_proton_sent_recipient_pgp_signed_description">Du har %s denne e-posten, noe som beviser for mottakeren at e-posten din er ekte og ikke har blitt tuklet med.</string>
-  <string name="padlocks_proton_sent_recipient_pgp_signed_description_link_text">digitalt signert</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">PGP ende-til-ende-kryptert</string>
+    <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">PGP ende-til-ende-kryptert</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Denne e-posten er ende-til-ende-kryptert på avsenderens enhet, og kan bare dekrypteres av mottakeren. Proton kan ikke se innholdet i e-posten til enhver tid.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">ende-til-ende-kryptert</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Ende-til-ende-kryptert til verifisert mottaker</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Denne e-posten er %s på avsenderens enhet og kan kun dekrypteres av mottakeren. Proton kan ikke se innholdet i e-posten til enhver tid.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">ende-til-ende-kryptert</string>
   <string name="padlocks_proton_sent_recipient_e2ee">Ende-til-ende-kryptert</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_descripton">Denne e-posten er %s på avsenderens enhet og kan kun dekrypteres av mottakeren. Proton kan ikke se innholdet i e-posten til enhver tid.</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_description_link_text">ende-til-ende-kryptert</string>
-  <!-- Additional descriptions -->
+    <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">E-poster som utveksles mellom Proton-brukere er automatisk ende-til-ende-kryptert.</string>
   <string name="padlocks_non_encrypted_copy">Imidlertid kan en avsender eller mottaker som ikke bruker Proton Mail ha en ukryptert kopi lagret på sin e-posttjener.</string>
   <string name="padlocks_sender_verified_contact">Avsenderen er en %s hvis krypteringsnøkler du har klarert.</string>

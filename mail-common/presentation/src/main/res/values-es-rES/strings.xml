@@ -22,10 +22,8 @@
   <string name="expiration_hours_arg">%d h</string>
   <string name="expiration_minutes_arg">%d m</string>
   <string name="retry">Reintentar</string>
-  <string name="toolbar_back_content_description">Volver a la pantalla anterior</string>
-  <string name="x_error_not_logged_in">No se ha iniciado sesión.</string>
-  <string name="action_customize_toolbar">Personalizar la barra de herramientas</string>
-  <string name="action_customize_toolbar_description">Personalizar la barra de herramientas</string>
+    <string name="x_error_not_logged_in">No se ha iniciado sesión.</string>
+    <string name="action_customize_toolbar_description">Personalizar la barra de herramientas</string>
   <string name="action_customize_toolbar_content_description">Personalizar la barra de herramientas</string>
   <string name="action_reply">Responder</string>
   <string name="action_reply_all">Responder a todos</string>
@@ -59,8 +57,7 @@
   <string name="action_pin_description">Anclar</string>
   <string name="action_unpin_description">Desanclar</string>
   <string name="action_reply_content_description">Responder</string>
-  <string name="action_reply_to_content_description">Responder a %s</string>
-  <string name="action_reply_all_content_description">Responder a todos</string>
+    <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reenviar</string>
   <string name="action_mark_read_content_description">Marcar como leído</string>
   <string name="action_mark_unread_content_description">Marcar como no leído</string>
@@ -91,16 +88,13 @@
   <string name="common_error_loading_actions">Error al cargar las acciones</string>
   <string name="yesterday">Ayer</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Archivos adjuntos</string>
-  <string name="attachment_download_notification_channel_description">Notificaciones de descargas de archivos adjuntos</string>
-  <string name="email_notification_channel_name">Correos electrónicos</string>
+    <string name="email_notification_channel_name">Correos electrónicos</string>
   <string name="login_notification_channel_name">Alertas de inicio de sesión</string>
   <string name="email_notification_channel_description">Notificaciones de correo electrónico entrante</string>
   <string name="login_notification_channel_description">Notificaciones de nuevos inicios de sesión</string>
   <string name="auth_badge_official">Oficial</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">No se ha encontrado una aplicación para ejecutar esta acción.</string>
-  <string name="action_copied_to_clipboard">Copiado al portapapeles</string>
-  <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
+    <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
   <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
   <string name="picker_dialog_cancel">Cancelar</string>
   <string name="color_purple">Púrpura</string>

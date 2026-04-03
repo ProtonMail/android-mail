@@ -32,8 +32,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$s/μήνα</string>
   <string name="payment_bf_renew_annually">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$s ετησίως</string>
-  <string name="payment_bf_renew_biennially">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$s κάθε 2 χρόνια</string>
-  <string name="payment_welcome_offer_renew_monthly">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %1$s/μήνα</string>
+    <string name="payment_welcome_offer_renew_monthly">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %1$s/μήνα</string>
   <string name="payment_welcome_offer_renew_annually">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %1$s/χρόνο</string>
   <string name="payment_welcome_offer_renew_biennially">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %1$s κάθε 2 χρόνια</string>
   <plurals name="payment_welcome_offer_renew_other">

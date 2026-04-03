@@ -17,8 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Vissza</string>
-  <!-- Auto lock -->
+    <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Alkalmazászár</string>
   <string name="mail_pinlock_settings_no_lock">Ne zárolja</string>
   <string name="mail_pinlock_settings_with_pin">Biztonság PIN kóddal</string>
@@ -62,13 +61,9 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Igen</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nem</string>
   <string name="mail_settings_pin_insertion_created_success">PIN kód sikeresen létrehozva.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN-kód sikeresen megváltoztatva.</string>
-  <!-- Error messages -->
+    <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Hiba történt. Próbálja újra.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Hiba történt. Próbálja újra.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Túl sok hibás próbálkozás</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Hibás PIN kód</string>
-  <string name="mail_settings_biometrics_unable_to_set">Hiba történt a Biometrikus beállítások megadásakor.</string>
+    <string name="mail_settings_biometrics_unable_to_set">Hiba történt a Biometrikus beállítások megadásakor.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Hiba történt a biometrikus beállítások visszaállítása közben.</string>
   <string name="mail_settings_biometrics_unknown_lock">Hiba történt az aktuális zárolási házirend lekérése közben.</string>
   <!-- Auto lock dialog -->

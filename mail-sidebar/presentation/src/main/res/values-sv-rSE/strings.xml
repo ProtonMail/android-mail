@@ -17,10 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Mer</string>
-  <string name="drawer_title_contacts">Kontakter</string>
-  <string name="drawer_title_subscription">Prenumeration</string>
-  <string name="drawer_title_bug_report">Rapportera ett problem</string>
+    <string name="drawer_title_contacts">Kontakter</string>
+    <string name="drawer_title_bug_report">Rapportera ett problem</string>
   <string name="drawer_item_create_label">Skapa etikett</string>
   <string name="drawer_item_create_folder">Skapa mapp</string>
   <string name="drawer_upgrade_plus">Uppgradera till Mail Plus</string>

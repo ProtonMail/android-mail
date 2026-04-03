@@ -35,14 +35,9 @@
   <string name="mailbox_message_sending">Pošiljanje sporočila …</string>
   <string name="mailbox_message_sending_offline">Ni povezave: sporočilo je uvrščeno v pošiljanje</string>
   <string name="mailbox_message_sending_success">Sporočilo poslano</string>
-  <string name="mailbox_message_sending_error">Napaka pri pošiljanju sporočila</string>
-  <string name="mailbox_message_sending_error_action">Pojdi v mapo Osnutki</string>
+    <string name="mailbox_message_sending_error_action">Pojdi v mapo Osnutki</string>
   <string name="notification_switched_account">Preklopili ste na račun %s</string>
-  <string name="label_saved">Oznaka shranjena</string>
-  <string name="label_deleted">Oznaka izbrisana</string>
-  <string name="app_locked">Aplikacija zaklenjena</string>
-  <string name="use_pin_instead">Namesto tega uporabi kodo PIN</string>
-  <string name="mailbox_message_scheduling">Načrtovanje sporočila …</string>
+    <string name="mailbox_message_scheduling">Načrtovanje sporočila …</string>
   <string name="mailbox_message_scheduling_offline">Ni povezave: sporočilo čaka na načrtovanje</string>
   <string name="mailbox_message_scheduled_for_sending_success">To sporočilo bo poslano %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Uporabnik je že prijavljen</string>

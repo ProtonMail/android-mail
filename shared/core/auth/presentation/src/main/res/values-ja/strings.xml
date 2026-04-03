@@ -17,8 +17,7 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">閉じる</string>
-  <string name="login_help_title">お困りですか？</string>
+    <string name="login_help_title">お困りですか？</string>
   <string name="login_help_forgot_username">ユーザー名を忘れた</string>
   <string name="login_help_forgot_password">パスワードを忘れた</string>
   <string name="login_help_other_issues">その他のサインインに関する問題</string>
@@ -36,15 +35,11 @@
   <string name="auth_login_username">ユーザー名もしくはメールアドレス</string>
   <string name="auth_email">メール</string>
   <string name="auth_password">パスワード</string>
-  <string name="auth_username_placeholder">ユーザー名もしくはメールアドレス</string>
-  <string name="auth_password_placeholder">パスワード</string>
-  <string name="auth_login_assistive_text">Proton のメールアドレスまたはユーザー名を入力してください。</string>
+    <string name="auth_login_assistive_text">Proton のメールアドレスまたはユーザー名を入力してください。</string>
   <string name="auth_account_details">Proton アカウントの詳細を入力してください。</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">サインインに問題があります。もう一度やり直してください。</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">人間であることの検証が必要です。</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">ログイン情報が正しくありません。もう一度やり直してください。</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">サポートされていない2要素認証。</string>
-  <string name="auth_login_general_error">エラーが発生しました。</string>
+    <string name="auth_login_error_invalid_action_invalid_credentials">ログイン情報が正しくありません。もう一度やり直してください。</string>
+    <string name="auth_login_general_error">エラーが発生しました。</string>
   <string name="auth_second_factor_title">2要素認証</string>
   <string name="auth_second_factor_subtitle">お客様のアカウントには複数の2要素認証メカニズムが設定されています。本人確認の方法を選択してください。</string>
   <string name="auth_second_factor_tab_security_key">セキュリティキー</string>
@@ -66,9 +61,7 @@
   <string name="auth_two_pass_input_empty">パスワードは空にできません</string>
   <string name="auth_signup_title">Proton アカウントを作成</string>
   <string name="auth_signup_subtitle">すべての Proton サービスのための1つのアカウント</string>
-  <string name="auth_signup_username_assistive_text">ユーザー名を空白にすることはできません。</string>
-  <string name="auth_signup_email_assistive_text">メールを空白にすることはできません。</string>
-  <string name="auth_signup_next">次へ</string>
+    <string name="auth_signup_next">次へ</string>
   <string name="auth_signup_username">ユーザー名</string>
   <string name="auth_signup_create_password">パスワードを作成</string>
   <string name="auth_signup_password">パスワード</string>
@@ -83,11 +76,7 @@
   <string name="auth_signup_recovery_skip">スキップ</string>
   <string name="auth_signup_recovery_title">回復手段を設定 (任意)</string>
   <string name="auth_signup_recovery_subtitle">アカウントにアクセスできなくなった場合に、回復手順をメールまたは電話に送信します。</string>
-  <string name="auth_signup_recovery_email">メール</string>
-  <string name="auth_signup_recovery_phone">電話</string>
-  <string name="auth_signup_recovery_email_hint">回復用メールアドレス</string>
-  <string name="auth_signup_recovery_phone_hint">回復用の電話番号</string>
-  <string name="auth_signup_recovery_select_country">国を選択</string>
+    <string name="auth_signup_recovery_select_country">国を選択</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">回復手段の設定をスキップしますか?</string>
   <string name="auth_signup_skip_recovery_description">パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。</string>
@@ -128,8 +117,7 @@
   <string name="auth_fido_config_error">保管されたキーの取得中にエラーが発生しました。</string>
   <string name="auth_fido_reading_key_error">セキュリティキーの読み取り中にエラーが発生しました。</string>
   <string name="auth_fido_submit_key_error">キーデータの送信中にエラーが発生しました。</string>
-  <string name="auth_fido_reading_key_progress">セキュリティキーを読み込み中。</string>
-  <string name="auth_fido_authenticating_in_progress">セキュリティキーで認証中。</string>
+    <string name="auth_fido_authenticating_in_progress">セキュリティキーで認証中。</string>
   <string name="auth_fido_security_key">セキュリティキー</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="other">パスワードは少なくとも %1$s 文字以上必要です</item>
@@ -144,21 +132,15 @@
   <string name="settings_password_management_tab_second_password">セカンドパスワード</string>
   <string name="settings_password_management_change_password_note">いずれかのパスワードを変更するには、メインパスワードが必要です。\u0020</string>
   <string name="settings_password_management_forgot_main_password">メインパスワードを忘れましたか？</string>
-  <string name="settings_password_management_header">パスワードを変更する</string>
-  <string name="settings_password_management_cannot_change_password">バックアップパスワードは変更することができません。管理者にお問い合わせください。</string>
-  <string name="settings_main_password_hint_current">現在のメインパスワード</string>
+    <string name="settings_main_password_hint_current">現在のメインパスワード</string>
   <string name="settings_main_password_hint_new">新しいメインパスワード</string>
   <string name="settings_main_password_hint_new_confirm">新しいメインパスワードを確認</string>
   <string name="settings_second_password_hint_current_main_password">現在のメインパスワード</string>
   <string name="settings_second_password_hint_new">新しいセカンドパスワード</string>
   <string name="settings_second_password_hint_new_confirm">新しいセカンドパスワードを確認</string>
-  <string name="settings_change_password_error">パスワード変更に失敗しました。</string>
-  <string name="settings_recovery_email_success">回復用メールアドレスが更新されました</string>
-  <string name="settings_password_management_login_success">ログインパスワードが更新されました</string>
+    <string name="settings_password_management_login_success">ログインパスワードが更新されました</string>
   <string name="settings_password_management_second_success">セカンドパスワードが更新されました</string>
-  <string name="settings_password_management_start_recovery">現在のパスワードがわかりませんか?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
-  <string name="settings_password_invalid_2fa">無効な2段階認証コードです。再度お試しください。</string>
+    <string name="settings_password_invalid_2fa">無効な2段階認証コードです。再度お試しください。</string>
   <string name="settings_password_error_empty">パスワードは空にできません。</string>
   <string name="settings_password_error">ユーザー名かパスワードが正しくありません。再度お試しください。</string>
   <string name="settings_password_error_invalid_recovery">無効な2要素認証コードです。再度お試しください。</string>

@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Odebrat z tohoto zařízení</string>
   <string name="account_switcher_switch_to">Přepnout na</string>
   <string name="manage_accounts_title">Spravovat účty</string>
-  <string name="manage_accounts_signed_in">Přihlášen(a)</string>
-  <string name="manage_accounts_signed_out">Odhlášen(a)</string>
-  <string name="manage_accounts_add_account">Přidat účet</string>
+    <string name="manage_accounts_add_account">Přidat účet</string>
   <string name="manage_accounts_switch_to">Přepnout na</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Přepnout na přihlášený účet</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Přepnout na odhlášený účet</string>

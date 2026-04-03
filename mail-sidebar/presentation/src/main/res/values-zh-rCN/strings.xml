@@ -17,10 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">更多</string>
-  <string name="drawer_title_contacts">联系人</string>
-  <string name="drawer_title_subscription">订阅</string>
-  <string name="drawer_title_bug_report">报告问题</string>
+    <string name="drawer_title_contacts">联系人</string>
+    <string name="drawer_title_bug_report">报告问题</string>
   <string name="drawer_item_create_label">创建标签</string>
   <string name="drawer_item_create_folder">新建文件夹</string>
   <string name="drawer_upgrade_plus">升级至 Mail Plus</string>

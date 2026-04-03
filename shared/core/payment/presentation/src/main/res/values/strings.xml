@@ -35,7 +35,6 @@
 
     <string name="payment_bf_renew_monthly">Discounts are based on standard monthly pricing. Auto renews at %1$s/month</string>
     <string name="payment_bf_renew_annually">Discounts are based on standard monthly pricing. Auto renews at %1$s/year</string>
-    <string name="payment_bf_renew_biennially">Discounts are based on standard monthly pricing. Auto renews at %1$s every 2 years</string>
     <string name="payment_welcome_offer_renew_monthly">Welcome offer. Auto renews at %1$s/month</string>
     <string name="payment_welcome_offer_renew_annually">Welcome offer. Auto renews at %1$s/year</string>
     <string name="payment_welcome_offer_renew_biennially">Welcome offer. Auto renews at %1$s every 2 years</string>

@@ -28,13 +28,11 @@
   <string name="label_title_all_mail">모든 메일</string>
   <string name="label_title_all_scheduled">예약됨</string>
   <string name="label_title_snoozed">방해 금지 상태</string>
-  <string name="label_title_folders">폴더</string>
-  <string name="label_title_create_label">라벨 생성</string>
+    <string name="label_title_create_label">라벨 생성</string>
   <string name="label_title_create_folder">폴더 생성</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">다음으로 이동…</string>
-  <string name="bottom_sheet_done_action">완료</string>
-  <string name="bottom_sheet_save_action">저장</string>
+    <string name="bottom_sheet_save_action">저장</string>
   <string name="bottom_sheet_archive_action">보관함에 옮길까요?</string>
   <string name="bottom_sheet_label_as_title">라벨 추가</string>
   <string name="bottom_sheet_label_as_error_fetch">라벨 가져오기에 실패했습니다.</string>

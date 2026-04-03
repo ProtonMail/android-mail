@@ -34,8 +34,7 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$s/měsíc</string>
   <string name="payment_bf_renew_annually">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$s/rok</string>
-  <string name="payment_bf_renew_biennially">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$s/každé 2 roky</string>
-  <string name="payment_welcome_offer_renew_monthly">Uvítací nabídka. Obnovuje se automaticky za %1$s/měsíc</string>
+    <string name="payment_welcome_offer_renew_monthly">Uvítací nabídka. Obnovuje se automaticky za %1$s/měsíc</string>
   <string name="payment_welcome_offer_renew_annually">Uvítací nabídka. Obnovuje se automaticky za %1$s/rok</string>
   <string name="payment_welcome_offer_renew_biennially">Uvítací nabídka. Obnovuje se automaticky za %1$s každé 2 roky</string>
   <plurals name="payment_welcome_offer_renew_other">

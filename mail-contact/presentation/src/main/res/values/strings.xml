@@ -31,10 +31,6 @@
         <item quantity="one">%1$d member</item>
         <item quantity="other">%1$d members</item>
     </plurals>
-    <plurals name="contact_group_form_member_count">
-        <item quantity="one">Member (%1$d)</item>
-        <item quantity="other">Members (%1$d)</item>
-    </plurals>
 
     <string name="search_contacts_description">Search contacts</string>
     <string name="contact_search_no_results">No results found.</string>
@@ -73,8 +69,6 @@
     <string name="contact_type_voice">Voice</string>
     <string name="contact_property_birthday">Birthday</string>
     <string name="contact_property_note">Note</string>
-    <string name="contact_property_photo">Photo</string>
-    <string name="contact_property_logo">Logo</string>
     <string name="contact_property_organization">Organization</string>
     <string name="contact_property_anniversary">Anniversary</string>
     <string name="contact_property_title">Title</string>

@@ -56,25 +56,7 @@
   <string name="upselling_button_hint">Päivitä saadaksesi täyden joustavuuden</string>
   <string name="upselling_upgrade_plan_generic">Tarvitset maksullisen Proton Mail -tilauksen käyttääksesi tätä ominaisuutta</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premium-arvo sisältyy</string>
-  <string name="upselling_onboarding_feature_e2e">Päästä päähän -salaus</string>
-  <string name="upselling_onboarding_feature_folders_labels">Rajattomasti kansioita ja tunnisteita</string>
-  <string name="upselling_onboarding_free_feature_storage">1 Gt tallennustilaa ja yksi sähköpostiosoite</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 Gt tallennustilaa</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 lisäosoitetta sinulle</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Tuki yhdelle omalle sähköpostiverkkotunnukselle</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 Hide-my-email-aliasta</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Ensisijainen asiakastuki</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 Gt tallennustilaa</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 lisäosoitetta sinulle</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Tuki kolmelle omalle sähköpostiverkkotunnukselle</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Rajattomasti Hide-my-email-aliaksia</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Oma asiakaspalvelu</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Huippunopea ja yksityinen VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Salattu salasanahallinta</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Salattu pilvitallennustila kuville ja dokumenteille</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Edistynyt tilin suojaus</string>
-  <!-- Comparison Table -->
+    <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Tallennustila</string>
   <string name="upselling_comparison_table_email_addresses">Sähköpostiosoitteet</string>
   <string name="upselling_comparison_table_custom_email_domain">Omat verkkotunnukset</string>
@@ -109,21 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Uusiutuu automaattisesti hintaan %s%s, ellei peruuteta</string>
   <string name="upselling_social_proof_reviews">2 000 + arvostelua</string>
   <string name="upselling_description_social_proof">Päivitä kokemukseen, josta miljoonat tilaajat ovat innoissaan.</string>
-  <string name="upselling_discount_tag">SÄÄSTÄ %s %%</string>
-  <string name="upselling_month">/kuukausi</string>
+    <string name="upselling_month">/kuukausi</string>
   <string name="upselling_month_only">vain %s /kk</string>
   <string name="upselling_year">/vuosi</string>
-  <string name="upselling_get_button">Hanki %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d kuukausi</item>
-    <item quantity="other">%d kuukautta</item>
-  </plurals>
-  <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Päivitysvaihtoehtojen nouto ei onnistu.</string>
-  <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>
+    <!-- Errors -->
+    <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Tilausten nouto ei onnistu.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Tilauspäivitys on käynnissä…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Virhe päivitettässä tilaustasi.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Tapahtui virhe. Yritä uudelleen.</string>
 </resources>

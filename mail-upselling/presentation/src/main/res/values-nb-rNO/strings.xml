@@ -56,25 +56,7 @@
   <string name="upselling_button_hint">Oppgrader for full fleksibilitet</string>
   <string name="upselling_upgrade_plan_generic">Du trenger et betalt Proton Mail-abonnement for å bruke denne funksjonen</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premiumverdi inkludert</string>
-  <string name="upselling_onboarding_feature_e2e">Ende-til-ende-kryptering</string>
-  <string name="upselling_onboarding_feature_folders_labels">Ubegrenset antall mapper og etiketter</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB lagring og 1 e-postadresse</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 GB lagring</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 ekstra e-postadresser for deg</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Støtte for 1 egendefinert e-postdomene</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-aliaser</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Prioritert kundestøtte</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GB lagring</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 ekstra e-postadresser for deg</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Støtte for 3 egendefinerte e-postdomener</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Ubegrenset antall hide-my-email-aliaser</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikert kundestøtte</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Superrask og privat VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Kryptert passordbehandler</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Kryptert skylagring for bilder og dokumenter</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Avansert kontobeskyttelse</string>
-  <!-- Comparison Table -->
+    <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Lagring</string>
   <string name="upselling_comparison_table_email_addresses">E-postadresser</string>
   <string name="upselling_comparison_table_custom_email_domain">Egendefinert e-postdomene</string>
@@ -109,21 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s med mindre oppsigelse</string>
   <string name="upselling_social_proof_reviews">2k+ ANMELDELSER</string>
   <string name="upselling_description_social_proof">Oppgrader til opplevelsen som millioner av abonnenter elsker.</string>
-  <string name="upselling_discount_tag">Spar %s%%</string>
-  <string name="upselling_month">/måned</string>
+    <string name="upselling_month">/måned</string>
   <string name="upselling_month_only">kun %s/måned</string>
   <string name="upselling_year">/år</string>
-  <string name="upselling_get_button">Skaff deg %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d måned</item>
-    <item quantity="other">%d måneder</item>
-  </plurals>
-  <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Kan ikke hente oppgraderingsalternativer.</string>
-  <string name="upselling_snackbar_error_no_user_id">En feil oppstod.</string>
+    <!-- Errors -->
+    <string name="upselling_snackbar_error_no_user_id">En feil oppstod.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Kan ikke hente abonnementer.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Abonnementsoppgradering pågår…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Det oppstod en feil under oppgradering av abonnementet ditt.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">En feil oppstod. Prøv igjen.</string>
 </resources>

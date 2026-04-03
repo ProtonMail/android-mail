@@ -28,14 +28,12 @@
     <string name="label_title_all_mail">All mail</string>
     <string name="label_title_all_scheduled">Scheduled</string>
     <string name="label_title_snoozed">Snoozed</string>
-    <string name="label_title_folders">Folders</string>
 
     <string name="label_title_create_label">Create label</string>
     <string name="label_title_create_folder">Create folder</string>
 
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_move_to_title">Move to…</string>
-    <string name="bottom_sheet_done_action">Done</string>
     <string name="bottom_sheet_save_action">Save</string>
     <string name="bottom_sheet_archive_action">Also archive?</string>
     <string name="bottom_sheet_label_as_title">Label as</string>

@@ -26,8 +26,7 @@
     <item quantity="other">%d vedhæftninger</item>
   </plurals>
   <string name="attachments">vedhæftninger</string>
-  <string name="attachment_show_more_label">+%1$d mere</string>
-  <string name="attachment_type_description">%1$s fil</string>
+    <string name="attachment_type_description">%1$s fil</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arkiv</string>
   <string name="attachment_type_image">Billede</string>
@@ -36,8 +35,7 @@
   <string name="attachment_type_unknown">Ukendt</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Tekst</string>
-  <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Regneark</string>
+    <string name="attachment_type_spreadsheet">Regneark</string>
   <string name="attachment_type_presentation">Præsentation</string>
   <string name="attachment_type_calendar">Calendar</string>
   <string name="attachment_type_code">Kode</string>
@@ -49,11 +47,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flyt til...</string>
-  <string name="bottom_sheet_done_action">Udført</string>
-  <string name="bottom_sheet_archive_action">Arkivér også?</string>
+    <string name="bottom_sheet_archive_action">Arkivér også?</string>
   <string name="bottom_sheet_label_as_title">Tilføj etiket</string>
-  <string name="bottom_sheet_more_header_message_from">Besked fra %s</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopiér link</string>
   <string name="message_link_long_click_copy_description">Tekst kopieret fra Proton Mail</string>
   <string name="message_link_long_click_share">Del link</string>
@@ -82,8 +78,6 @@
   <string name="contact_actions_block_address_description">Blokér denne adresse</string>
   <string name="contact_actions_unblock_address">Fjern blokering af denne adresse</string>
   <string name="contact_actions_unblock_address_description">Fjern blokering af denne adresse</string>
-  <string name="contact_actions_view_contact_details">Vis kontaktoplysninger</string>
-  <string name="contact_actions_view_contact_details_description">Vis detaljer om kontaktpersonen</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">Vis hele beskeden</string>
 </resources>

@@ -24,8 +24,7 @@
     <item quantity="other">%d 个附件</item>
   </plurals>
   <string name="attachments">附件</string>
-  <string name="attachment_show_more_label">+还有 %1$d 项</string>
-  <string name="attachment_type_description">%1$s文件</string>
+    <string name="attachment_type_description">%1$s文件</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">归档</string>
   <string name="attachment_type_image">图像</string>
@@ -34,8 +33,7 @@
   <string name="attachment_type_unknown">未知</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">文本</string>
-  <string name="attachment_type_document">文档</string>
-  <string name="attachment_type_spreadsheet">电子表格</string>
+    <string name="attachment_type_spreadsheet">电子表格</string>
   <string name="attachment_type_presentation">演示文稿</string>
   <string name="attachment_type_calendar">日历</string>
   <string name="attachment_type_code">代码</string>
@@ -47,11 +45,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
-  <string name="bottom_sheet_done_action">完成</string>
-  <string name="bottom_sheet_archive_action">同时归档？</string>
+    <string name="bottom_sheet_archive_action">同时归档？</string>
   <string name="bottom_sheet_label_as_title">加标签</string>
-  <string name="bottom_sheet_more_header_message_from">来自 %s 的邮件</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">复制链接</string>
   <string name="message_link_long_click_copy_description">从 Proton Mail 复制的文本</string>
   <string name="message_link_long_click_share">共享链接</string>
@@ -80,8 +76,6 @@
   <string name="contact_actions_block_address_description">屏蔽此地址</string>
   <string name="contact_actions_unblock_address">取消屏蔽此地址</string>
   <string name="contact_actions_unblock_address_description">取消屏蔽此地址</string>
-  <string name="contact_actions_view_contact_details">查看联系人详情</string>
-  <string name="contact_actions_view_contact_details_description">查看联系人详情</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">查看完整信息</string>
 </resources>

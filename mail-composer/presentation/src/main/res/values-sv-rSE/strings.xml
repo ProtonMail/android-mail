@@ -25,17 +25,11 @@
   <string name="compose_message_placeholder">Skriv e-post</string>
   <string name="close_composer_content_description">Stäng redigeringsfönstret</string>
   <string name="send_button_title">Skicka</string>
-  <string name="send_message_content_description">Skicka meddelande</string>
-  <string name="composer_expand_recipients_button">Visa andra mottagare</string>
+    <string name="composer_expand_recipients_button">Visa andra mottagare</string>
   <string name="composer_error_invalid_email">E-postadress är ogiltig eller finns inte</string>
-  <string name="change_sender_button_content_description">Ändra avsändare</string>
-  <string name="composer_change_sender_paid_feature">Uppgradera till ett betalt paket för att ändra avsändaradressen</string>
-  <string name="composer_error_store_draft_sender_address">Avsändaradress sparades inte</string>
-  <string name="composer_error_store_draft_body">Utkast till e-posttext sparades inte</string>
-  <string name="composer_error_duplicate_recipient">Duplicerad mottagare borttagen</string>
-  <string name="composer_error_store_draft_subject">Ämnesrad sparades inte</string>
-  <string name="composer_error_store_draft_recipients">Det gick inte att lagra utkastets mottagare</string>
-  <string name="composer_error_store_draft_address_disabled">Kan inte spara utkast - denna avsändaradress är inaktiverad</string>
+    <string name="composer_change_sender_paid_feature">Uppgradera till ett betalt paket för att ändra avsändaradressen</string>
+    <string name="composer_error_duplicate_recipient">Duplicerad mottagare borttagen</string>
+    <string name="composer_error_store_draft_address_disabled">Kan inte spara utkast - denna avsändaradress är inaktiverad</string>
   <string name="composer_error_store_draft_address_pk_missing">Kan inte spara utkast - denna avsändaradress har inte en primär nyckel</string>
   <string name="composer_error_store_draft_attachment_too_large">Kan inte spara utkast - bilagor överskrider storleksgränsen</string>
   <string name="composer_error_store_draft_too_many_attachments">Unable to save draft - Attachment limit reached</string>
@@ -51,9 +45,7 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Från ditt fotobibliotek</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Ta ett nytt foto</string>
   <string name="composer_error_loading_parent_message">Kunde inte ladda meddelandets information</string>
-  <string name="composer_original_message_quote">Ursprungligt meddelande</string>
-  <string name="composer_sender_quote">Den %s, %s &lt;%s&gt; skrev:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Övre gräns för bilagor har uppnåtts</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Storleksgränsen för bilagor är %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Kryptering av bilagan misslyckades. Av säkerhetsskäl togs alla bilagor bort.</string>
@@ -68,13 +60,11 @@
   <string name="composer_button_discard_draft">Kasta utkast</string>
   <string name="composer_button_set_expiration">Ställ in utgångstid</string>
   <string name="composer_expiration_time_bottom_sheet_title">När meddelandet löper ut</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Ställ in</string>
-  <string name="composer_bottom_bar_expiration_time_none">Löper aldrig ut</string>
+    <string name="composer_bottom_bar_expiration_time_none">Löper aldrig ut</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Efter 1 timme</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Efter 1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Efter 3 dagar</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Efter 1 vecka</string>
-  <string name="composer_bottom_bar_expiration_time_custom">På specifikt datum</string>
+    <string name="composer_bottom_bar_expiration_time_custom">På specifikt datum</string>
   <string name="composer_error_setting_expiration_time">Misslyckades ställa in utgångstid</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Lägg till lösenord för att använda utgångstid</string>
@@ -98,28 +88,18 @@
   <string name="message_sending_error_dialog_header">Sändningsfel</string>
   <string name="message_sending_error_dialog_button_dismiss">Stäng</string>
   <string name="message_sending_error_dialog_text_error">Din e-post kan inte skickas till den angivna adressen av följande anledning:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Det finns inga betrodda nycklar: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Adress finns inte: %s</string>
-  <string name="set_message_password_title">Ställ in lösenord</string>
+    <string name="set_message_password_title">Ställ in lösenord</string>
   <string name="set_message_password_info_message">Ange ett lösenord för att kryptera det här meddelandet för mottagare som inte använder Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Lär dig mer</a></string>
   <string name="set_message_password_label">Meddelandelösenord</string>
   <string name="set_message_password_label_hint">Lösenordsledtråd (valfritt)</string>
   <string name="set_message_password_supporting_text">Minst 8 tecken krävs.</string>
   <string name="set_message_password_supporting_error_text">Lösenordet måste vara mellan 8 och 21 tecken</string>
-  <string name="set_message_password_supporting_text_repeat">Lösenorden måste matcha</string>
-  <string name="set_message_password_supporting_error_text_repeat">Lösenorden matchar inte</string>
-  <string name="set_message_password_button_show">Visa lösenord</string>
+    <string name="set_message_password_button_show">Visa lösenord</string>
   <string name="set_message_password_button_hide">Dölj lösenord</string>
   <string name="set_message_password_button_save_changes">Spara</string>
   <string name="set_message_password_button_remove_password">Ta bort lösenord</string>
-  <string name="respondInline">Svara i tråd</string>
-  <string name="subject_placeholder">Ämne</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d medlem</item>
-    <item quantity="other">%d medlemmar</item>
-  </plurals>
-  <string name="composer_recipient_suggestion_device">Visa enhetens kontakter</string>
+    <string name="composer_recipient_suggestion_device">Visa enhetens kontakter</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Kasta detta meddelande?</string>
   <string name="discard_draft_dialog_text">Ditt utkast kommer inte att sparas</string>
@@ -139,11 +119,7 @@
   <string name="composer_schedule_send_custom_upsell_title">Anpassat datum och tid</string>
   <string name="composer_schedule_send_custom_description">Välj tid och datum</string>
   <string name="composer_schedule_send_previously_set">Tidigare inställt</string>
-  <string name="composer_schedule_send_custom_time_label">Tid</string>
-  <string name="composer_schedule_send_custom_date_label">Datum</string>
-  <string name="composer_schedule_send_dialog_ok">Ok</string>
-  <string name="composer_schedule_send_dialog_enter_time">Ange tid</string>
-  <string name="composer_change_sender_title">Från</string>
+    <string name="composer_change_sender_title">Från</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Det går inte att byta avsändare eftersom det inte gick att hämta användarens e-postadresser. Försök igen.</string>
   <string name="composer_change_sender_invalid_address">Den valda adressen kan inte användas för att skicka</string>
   <string name="composer_change_sender_unexpected_failure">Något gick fel vid byte av avsändare. Försök igen.</string>

@@ -26,8 +26,7 @@
     <item quantity="other">%d συνημμένα</item>
   </plurals>
   <string name="attachments">συνημμένα</string>
-  <string name="attachment_show_more_label">+%1$d επιπλέον</string>
-  <string name="attachment_type_description">%1$s αρχείο</string>
+    <string name="attachment_type_description">%1$s αρχείο</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Αρχειοθετημένα</string>
   <string name="attachment_type_image">Εικόνα</string>
@@ -36,8 +35,7 @@
   <string name="attachment_type_unknown">Άγνωστο</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Κείμενο</string>
-  <string name="attachment_type_document">Έγγραφο</string>
-  <string name="attachment_type_spreadsheet">Υπολογιστικό φύλλο</string>
+    <string name="attachment_type_spreadsheet">Υπολογιστικό φύλλο</string>
   <string name="attachment_type_presentation">Παρουσίαση</string>
   <string name="attachment_type_calendar">Calendar</string>
   <string name="attachment_type_code">Κώδικας</string>
@@ -49,11 +47,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
-  <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
-  <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
+    <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
   <string name="bottom_sheet_label_as_title">Σήμανση με ετικέτα ως</string>
-  <string name="bottom_sheet_more_header_message_from">Μήνυμα από %s</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Αντιγραφή συνδέσμου</string>
   <string name="message_link_long_click_copy_description">Το κείμενο αντιγράφηκε από το Proton Mail</string>
   <string name="message_link_long_click_share">Κοινοποίηση συνδέσμου</string>
@@ -82,8 +78,6 @@
   <string name="contact_actions_block_address_description">Αποκλεισμός αυτής της διεύθυνσης</string>
   <string name="contact_actions_unblock_address">Ξεμπλοκάρισμα αυτής της διεύθυνσης</string>
   <string name="contact_actions_unblock_address_description">Ξεμπλοκάρισμα αυτής της διεύθυνσης</string>
-  <string name="contact_actions_view_contact_details">Προβολή στοιχείων επαφής</string>
-  <string name="contact_actions_view_contact_details_description">Προβολή λεπτομερειών της επαφής</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">Προβολή ολόκληρου του μηνύματος</string>
 </resources>

@@ -30,8 +30,7 @@
     <item quantity="other">%d вкладення</item>
   </plurals>
   <string name="attachments">вкладення</string>
-  <string name="attachment_show_more_label">+ ще %1$d</string>
-  <string name="attachment_type_description">Файл %1$s</string>
+    <string name="attachment_type_description">Файл %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Архів</string>
   <string name="attachment_type_image">Зображення</string>
@@ -40,8 +39,7 @@
   <string name="attachment_type_unknown">Невідомий тип файлу</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Текст</string>
-  <string name="attachment_type_document">Документ</string>
-  <string name="attachment_type_spreadsheet">Електронна таблиця</string>
+    <string name="attachment_type_spreadsheet">Електронна таблиця</string>
   <string name="attachment_type_presentation">Презентація</string>
   <string name="attachment_type_calendar">Календар</string>
   <string name="attachment_type_code">Код</string>
@@ -53,11 +51,9 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перемістити...</string>
-  <string name="bottom_sheet_done_action">Готово</string>
-  <string name="bottom_sheet_archive_action">Також архівувати?</string>
+    <string name="bottom_sheet_archive_action">Також архівувати?</string>
   <string name="bottom_sheet_label_as_title">Позначити міткою</string>
-  <string name="bottom_sheet_more_header_message_from">Повідомлення від %s</string>
-  <!-- Message body link actions -->
+    <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Копіювати посилання</string>
   <string name="message_link_long_click_copy_description">Текст скопійовано з Proton Mail</string>
   <string name="message_link_long_click_share">Поділитись посиланням</string>
@@ -86,8 +82,6 @@
   <string name="contact_actions_block_address_description">Заблокувати цю адресу</string>
   <string name="contact_actions_unblock_address">Розблокувати цю адресу</string>
   <string name="contact_actions_unblock_address_description">Розблокувати цю адресу</string>
-  <string name="contact_actions_view_contact_details">Подробиці контакту</string>
-  <string name="contact_actions_view_contact_details_description">Переглянути інформацію про контакт</string>
-  <!-- View entire message button -->
+    <!-- View entire message button -->
   <string name="button_view_entire_message">Переглянути повідомлення цілком</string>
 </resources>

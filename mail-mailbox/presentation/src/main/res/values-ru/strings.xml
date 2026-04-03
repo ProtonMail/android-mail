@@ -24,8 +24,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Выйти из режима поиска</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковый запрос</string>
-  <string name="filter_unread_button_text">Unread</string>
+    <string name="filter_unread_button_text">Unread</string>
   <string name="include_spam_trash_text">Include Spam/Trash</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Выбран</item>
@@ -46,13 +45,7 @@
   <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
   <string name="mailbox_is_empty_spam_description">Папка «Спам» пуста</string>
   <string name="mailbox_is_empty_trash_description">Здесь пусто</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Сообщение перемещено в корзину</item>
-    <item quantity="few">%d сообщения перемещены в корзину</item>
-    <item quantity="many">%d сообщений перемещены в корзину</item>
-    <item quantity="other">%d сообщений перемещены в корзину</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Удалить цепочку писем</item>
     <item quantity="few">Удалить %d цепочки писем</item>
     <item quantity="many">Удалить %d цепочек писем</item>
@@ -93,8 +86,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
   <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
+    <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
   <string name="mailbox_action_archive_message">Сообщение перемещено в архив</string>
   <string name="mailbox_action_spam_message">Сообщение перемещено в спам</string>
   <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
@@ -122,27 +114,16 @@
   <string name="mailbox_action_clear_spam_dialog_title">Очистить папку «Спам»</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из корзины?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из папки «Спам»?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы уверены, что хотите безвозвратно удалить все цепочки писем из папки «Спам»?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Очистка запланирована"</string>
-  <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
+    <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
   <string name="mailbox_talkback_readout_unread">Unread</string>
   <string name="mailbox_talkback_readout_starred">Unstar</string>
   <string name="mailbox_talkback_readout_not_starred">Star</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Открытие вложения…</string>
-  <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
+    <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
   <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Предупреждение</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Хранилище аккаунта Proton заполнено более чем на 80 %. Освободите место или улучшите тариф, чтобы получить больше места.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Хранилище аккаунта Proton заполнено более чем на 90 %. Освободите место или улучшите тариф, чтобы получить больше места.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Больше не напоминать</string>
-  <string name="storage_limit_warning_dialog_confirm_button">Да</string>
-  <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Предупреждение</string>
-  <string name="storage_quota_over_dialog_text">Хранилище аккаунта Proton заполнено на 100 %. Вы не сможете получать и отправлять почту, пока не удалите безвозвратно часть писем или не улучшите тариф, чтобы получить больше места.</string>
-  <string name="storage_quota_over_dialog_confirm_button">Да</string>
-  <string name="mailbox_action_delete_failed">Не удалось удалить сообщение</string>
+    <!--    Storage Quota Over Warning-->
+    <string name="mailbox_action_delete_failed">Не удалось удалить сообщение</string>
   <string name="select_all">Выбрать всё</string>
   <string name="deselect_all">Снять выделение со всех</string>
   <!--    Expiry messages-->
@@ -168,22 +149,4 @@
   <string name="schedule_send_tomorrow">Завтра, %1$s</string>
   <string name="schedule_send_today">Сегодня, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Отложено до завтра</item>
-    <item quantity="few">Отложено на %d дня</item>
-    <item quantity="many">Отложено на %d дней</item>
-    <item quantity="other">Отложено на %d дней</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Отложено на %d час</item>
-    <item quantity="few">Отложено на %d часа</item>
-    <item quantity="many">Отложено на %d часов</item>
-    <item quantity="other">Отложено на %d часов</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Отложено на %d минуту</item>
-    <item quantity="few">Отложено на %d минуты</item>
-    <item quantity="many">Отложено на %d минут</item>
-    <item quantity="other">Отложено на %d минут</item>
-  </plurals>
 </resources>

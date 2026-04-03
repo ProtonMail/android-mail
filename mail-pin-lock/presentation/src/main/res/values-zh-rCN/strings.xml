@@ -17,8 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">返回</string>
-  <!-- Auto lock -->
+    <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">应用锁</string>
   <string name="mail_pinlock_settings_no_lock">不锁定</string>
   <string name="mail_pinlock_settings_with_pin">使用 PIN 码保护</string>
@@ -61,13 +60,9 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">是</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">否</string>
   <string name="mail_settings_pin_insertion_created_success">PIN 码创建成功。</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN 码更改成功。</string>
-  <!-- Error messages -->
+    <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
-  <string name="mail_settings_pin_verify_generic_error_message">出错了，请重试。</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">尝试失败次数过多</string>
-  <string name="mail_settings_pin_verify_wrong_pin">PIN 码错误</string>
-  <string name="mail_settings_biometrics_unable_to_set">在设置生物识别偏好設定时发生了一个错误。</string>
+    <string name="mail_settings_biometrics_unable_to_set">在设置生物识别偏好設定时发生了一个错误。</string>
   <string name="mail_settings_biometrics_unable_to_unset">重置生物识别偏好設定时发生错误。</string>
   <string name="mail_settings_biometrics_unknown_lock">获取当前锁定策略时发生错误。</string>
   <!-- Auto lock dialog -->

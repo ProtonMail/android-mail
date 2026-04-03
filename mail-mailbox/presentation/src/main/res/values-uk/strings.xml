@@ -24,8 +24,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Вийти з режиму пошуку</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введіть пошуковий запит</string>
-  <string name="filter_unread_button_text">Непрочитані</string>
+    <string name="filter_unread_button_text">Непрочитані</string>
   <string name="include_spam_trash_text">Включити Спам / Смітник</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Вибрано %d</item>
@@ -46,13 +45,7 @@
   <string name="mailbox_is_empty_folder_description">Ця тека порожня</string>
   <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
   <string name="mailbox_is_empty_trash_description">Тут порожньо</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Повідомлення переміщено до смітника</item>
-    <item quantity="few">%d повідомлення переміщено до смітника</item>
-    <item quantity="many">%d повідомлень переміщено до смітника</item>
-    <item quantity="other">%d повідомлень переміщено до смітника</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Видалити розмову</item>
     <item quantity="few">Видалити %d розмови</item>
     <item quantity="many">Видалити %d розмов</item>
@@ -93,8 +86,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Не вдалося отримати налаштування кольору</string>
   <string name="mailbox_action_no_sender_addresses">Немає адреси з правами на відправлення</string>
   <string name="mailbox_action_move_messages_failed">Помилка операції переміщення</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не вдалося отримати теки</string>
-  <string name="mailbox_action_trash_message">Повідомлення переміщено до смітника</string>
+    <string name="mailbox_action_trash_message">Повідомлення переміщено до смітника</string>
   <string name="mailbox_action_archive_message">Повідомлення переміщено до архіву</string>
   <string name="mailbox_action_spam_message">Повідомлення переміщено до спаму</string>
   <string name="mailbox_search_placeholder_text">Пошук повідомлень</string>
@@ -122,27 +114,16 @@
   <string name="mailbox_action_clear_spam_dialog_title">Очистити теку спаму</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Ви дійсно хочете остаточно видалити всі повідомлення в теці «Смітник»?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Ви дійсно хочете остаточно видалити всі повідомлення у теці «Спам»?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ви дійсно хочете остаточно видалити всі розмови у теці «Спам»?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Заплановано операцію з очищення"</string>
-  <string name="mailbox_action_maximum_selection_reached">"Вибрано максимальну кількість"</string>
+    <string name="mailbox_action_maximum_selection_reached">"Вибрано максимальну кількість"</string>
   <string name="mailbox_talkback_readout_unread">Непрочитані</string>
   <string name="mailbox_talkback_readout_starred">Прибрати зірочку</string>
   <string name="mailbox_talkback_readout_not_starred">Позначити зірочкою</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Відкриття вкладення…</string>
-  <string name="mailbox_attachment_download_error">Не вдалося відкрити вкладення. Спробуйте ще раз.</string>
+    <string name="mailbox_attachment_download_error">Не вдалося відкрити вкладення. Спробуйте ще раз.</string>
   <string name="mailbox_attachment_download_in_progress">Поточне завантаження має бути завершене, перш ніж розпочати нове.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Попередження</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Сховище вашого облікового запису Proton заповнене більш ніж на 80%. Звільніть простір, або покращте тарифний план для отримання більшого сховища.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Сховище вашого облікового запису Proton заповнене більш ніж на 90%. Звільніть простір, або покращте тарифний план для отримання більшого сховища.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Більше не нагадувати</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
-  <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Попередження</string>
-  <string name="storage_quota_over_dialog_text">Сховище вашого облікового запису Proton заповнене на 100%. Ви не зможете надсилати або отримувати електронні листи допоки ви назавжди не видалите деякі з них, або покращте тарифний план для отримання більшого сховища.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
-  <string name="mailbox_action_delete_failed">Не вдалося видалити повідомлення</string>
+    <!--    Storage Quota Over Warning-->
+    <string name="mailbox_action_delete_failed">Не вдалося видалити повідомлення</string>
   <string name="select_all">Вибрати все</string>
   <string name="deselect_all">Скасувати вибір</string>
   <!--    Expiry messages-->
@@ -168,22 +149,4 @@
   <string name="schedule_send_tomorrow">Завтра о %1$s</string>
   <string name="schedule_send_today">Сьогодні о %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Відкладено до завтра</item>
-    <item quantity="few">Відкладено на %d дні</item>
-    <item quantity="many">Відкладено на %d днів</item>
-    <item quantity="other">Відкладено на %d днів</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Відкладено на %d годину</item>
-    <item quantity="few">Відкладено на %d години</item>
-    <item quantity="many">Відкладено на %d годин</item>
-    <item quantity="other">Відкладено на %d годин</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Відкладено на %d хвилину</item>
-    <item quantity="few">Відкладено на %d хвилини</item>
-    <item quantity="many">Відкладено на %d хвилин</item>
-    <item quantity="other">Відкладено на %d хвилин</item>
-  </plurals>
 </resources>

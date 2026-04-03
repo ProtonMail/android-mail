@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Выдаліць з гэтай прылады</string>
   <string name="account_switcher_switch_to">Пераключыцца на</string>
   <string name="manage_accounts_title">Кіраванне ўліковымі запісамі</string>
-  <string name="manage_accounts_signed_in">Уваход выкананы</string>
-  <string name="manage_accounts_signed_out">Выхад выкананы</string>
-  <string name="manage_accounts_add_account">Дадаць уліковы запіс</string>
+    <string name="manage_accounts_add_account">Дадаць уліковы запіс</string>
   <string name="manage_accounts_switch_to">Пераключыцца на</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Пераключыцца на ўліковы запіс аўтарызаваны ў сістэме</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Пераключыцца на ўліковы запіс не аўтарызаваны ў сістэме</string>

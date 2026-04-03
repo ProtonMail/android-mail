@@ -28,45 +28,32 @@
   <string name="mail_settings_preferences">Προτιμήσεις</string>
   <string name="mail_settings_app">Προσαρμογές εφαρμογής</string>
   <string name="mail_settings_mailbox">Προτιμήσεις γραμματοκιβωτίου</string>
-  <string name="mail_settings_email_hint">Ρυθμίσεις ηλεκτρονικού ταχυδρομείου και γραμματοκιβωτίου</string>
-  <string name="mail_settings_folders_labels">Φάκελοι και ετικέτες</string>
-  <string name="mail_settings_folders_labels_hint">Οργάνωση γραμματοκιβωτίου</string>
-  <string name="mail_settings_spam_and_custom_filters">Ενοχλητικά και φίλτρα</string>
-  <string name="mail_settings_spam_and_custom_filters_hint">Αυτόματες ενέργειες και ταξινόμηση</string>
-  <string name="mail_settings_privacy_and_security">Απόρρητο και ασφάλεια</string>
+    <string name="mail_settings_folders_labels">Φάκελοι και ετικέτες</string>
+    <string name="mail_settings_spam_and_custom_filters">Ενοχλητικά και φίλτρα</string>
+    <string name="mail_settings_privacy_and_security">Απόρρητο και ασφάλεια</string>
   <string name="mail_settings_fido_keys">Κλειδιά ασφαλείας</string>
   <string name="mail_settings_change_password">Διαχείριση κωδικών πρόσβασης</string>
   <string name="mail_settings_signature">Υπογραφή</string>
   <string name="mail_settings_storage_quota">%1$d%% από %2$s</string>
-  <string name="mail_settings_privacy_and_security_hint">Προστασία ιχνηλασίας μηνυμάτων</string>
-  <string name="mail_settings_app_hint">Προσαρμογές εφαρμογής για κινητά</string>
-  <string name="mail_settings_theme">Θέμα</string>
-  <string name="mail_settings_auto_lock">Αυτόματο κλείδωμα</string>
-  <string name="mail_settings_app_icon">Εικονίδιο εφαρμογής</string>
+    <string name="mail_settings_theme">Θέμα</string>
+    <string name="mail_settings_app_icon">Εικονίδιο εφαρμογής</string>
   <string name="mail_settings_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_language">Γλώσσα εφαρμογής</string>
   <string name="mail_settings_app_language_sys_default">Προεπιλογή συστήματος</string>
   <string name="mail_settings_combined_contacts">Συνδυασμένες επαφές</string>
   <string name="mail_settings_swipe_actions">Ενέργειες ολίσθησης</string>
   <string name="mail_settings_combined_contacts_hint">Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τα E-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.</string>
-  <string name="mail_settings_alternative_routing_hint">Σε περίπτωση φραγής των ιστοσελίδων της Proton, αυτή η ρύθμιση επιτρέπει στην εφαρμογή να επιχειρήσει εναλλακτική δρομολόγηση δικτύου προκειμένου να φτάσει στην Proton, κάτι που μπορεί να φανεί χρήσιμο στην παράκαμψη τοίχων προστασίας ή προβλημάτων του δικτύου: Συνιστούμε τη διατήρηση αυτής της ρύθμισης για μεγαλύτερη αξιοπιστία.</string>
-  <!-- App customization settings-->
+    <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">Προσαρμογές εφαρμογής</string>
   <string name="mail_settings_app_customization_notification">Ειδοποιήσεις</string>
   <string name="mail_settings_app_customization_language">Γλώσσα</string>
   <string name="mail_settings_app_customization_appearance">Εμφάνιση</string>
   <string name="mail_settings_app_customization_protection">Κλείδωμα εφαρμογής</string>
-  <string name="mail_settings_app_customization_mobile_signature">Υπογραφή κινητού</string>
-  <string name="mail_settings_app_customization_email_signature">Υπογραφή email</string>
-  <string name="mail_settings_app_customization_protection_enabled_description">Αυτόματο κλείδωμα ενεργοποιημένο</string>
+    <string name="mail_settings_app_customization_protection_enabled_description">Αυτόματο κλείδωμα ενεργοποιημένο</string>
   <string name="mail_settings_app_customization_protection_disabled_description">Αυτόματο κλείδωμα απενεργοποιημένο</string>
-  <string name="mail_settings_app_customization_use_device_contacts">Χρήση επαφών συσκευής</string>
-  <string name="mail_settings_app_customization_use_device_contacts_hint">Αυτόματη συμπλήρωση διευθύνσεων ηλεκτρονικού ταχυδρομείου χρησιμοποιώντας επαφές από τη συσκευή σας.</string>
-  <string name="mail_settings_app_customization_swipe_to_next_email">Σύρετε για το επόμενο μήνυμα</string>
+    <string name="mail_settings_app_customization_swipe_to_next_email">Σύρετε για το επόμενο μήνυμα</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Μεταβείτε γρήγορα στο επόμενο ή στο προηγούμενο μήνυμα στα εισερχόμενά σας.</string>
-  <string name="mail_settings_app_customization_swipe_action">Ενέργεια ολίσθησης</string>
-  <string name="mail_settings_app_customization_swipe_action_hint">Ορίστε γρήγορες ενέργειες, όπως διαγραφή ή αρχειοθέτηση, όταν σύρετε αριστερά ή δεξιά.</string>
-  <string name="mail_settings_app_customization_customize_toolbar">Προσαρμογή γραμμών εργαλείων</string>
+    <string name="mail_settings_app_customization_customize_toolbar">Προσαρμογή γραμμών εργαλείων</string>
   <string name="mail_settings_app_customization_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Παρακάμψτε προβλήματα τείχους προστασίας ή δικτύου σε περίπτωση οι ιστότοποι του Proton είναι αποκλεισμένοι.</string>
   <string name="mail_settings_app_customization_view_application_logs">Προβολή καταγραφών εφαρμογών</string>
@@ -88,9 +75,7 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Δεν υπάρχουν διαθέσιμες πληροφορίες</string>
   <string name="mail_settings_account">Λογαριασμός</string>
-  <string name="mail_settings_not_set">Μη ορισμένο</string>
-  <string name="mail_settings_conversation_mode_hint">Ομαδοποιήστε τα μηνύματα της ίδιας συνομιλίας στα εισερχόμενά σας ή εμφανίστε τα ξεχωριστά</string>
-  <!-- Privacy settings -->
+    <!-- Privacy settings -->
   <string name="mail_settings_privacy">Απόρρητο</string>
   <string name="mail_settings_privacy_auto_show_remote_content">Αυτόματη εμφάνιση απομακρυσμένου περιεχομένου</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Αυτόματη εμφάνιση ενσωματωμένων εικόνων</string>

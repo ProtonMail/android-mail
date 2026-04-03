@@ -24,8 +24,7 @@
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜索模式</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜索关键词</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">输入搜索关键词</string>
-  <string name="filter_unread_button_text">未读</string>
+    <string name="filter_unread_button_text">未读</string>
   <string name="include_spam_trash_text">包含垃圾邮件和回收站中的搜索结果</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
@@ -43,10 +42,7 @@
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
   <string name="mailbox_is_empty_trash_description">这里空空如也</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">%d 封邮件已移至回收站</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">删除 %d 项会话</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
@@ -69,8 +65,7 @@
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_no_sender_addresses">没有发送权限的地址</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <string name="mailbox_action_trash_message">邮件已移至回收站</string>
+    <string name="mailbox_action_trash_message">邮件已移至回收站</string>
   <string name="mailbox_action_archive_message">邮件已归档</string>
   <string name="mailbox_action_spam_message">邮件已移至垃圾邮件</string>
   <string name="mailbox_search_placeholder_text">搜索邮件</string>
@@ -92,27 +87,16 @@
   <string name="mailbox_action_clear_spam_dialog_title">清空垃圾邮件</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">确定要永久删除回收站中的所有邮件吗？</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">确定要永久删除垃圾文件夹中的所有邮件吗？</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">确定要永久删除垃圾文件夹中的所有会话吗？</string>
-  <string name="mailbox_action_clear_operation_scheduled">"清除操作已经安排"</string>
-  <string name="mailbox_action_maximum_selection_reached">"已达到最大选择数量"</string>
+    <string name="mailbox_action_maximum_selection_reached">"已达到最大选择数量"</string>
   <string name="mailbox_talkback_readout_unread">未读</string>
   <string name="mailbox_talkback_readout_starred">无星标</string>
   <string name="mailbox_talkback_readout_not_starred">星标</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">正在打开附件…</string>
-  <string name="mailbox_attachment_download_error">无法打开附件，请重试。</string>
+    <string name="mailbox_attachment_download_error">无法打开附件，请重试。</string>
   <string name="mailbox_attachment_download_in_progress">当前下载必须完成后才能开始新的下载！</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">警告</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">您的 Proton 账户存储空间已使用超过80%。请清理无用资料释放空间或升级以获取更多存储空间。</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">您的 Proton 账户存储空间已使用超过90%。请清理无用资料释放空间或升级以获取更多存储空间。</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">不再提示</string>
-  <string name="storage_limit_warning_dialog_confirm_button">好的</string>
-  <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">警告</string>
-  <string name="storage_quota_over_dialog_text">您的 Proton 账户存储空间已满。请清理无用资料释放空间或升级以获取更多存储空间。</string>
-  <string name="storage_quota_over_dialog_confirm_button">好的</string>
-  <string name="mailbox_action_delete_failed">删除邮件失败</string>
+    <!--    Storage Quota Over Warning-->
+    <string name="mailbox_action_delete_failed">删除邮件失败</string>
   <string name="select_all">全选</string>
   <string name="deselect_all">取消全选</string>
   <!--    Expiry messages-->
@@ -129,13 +113,4 @@
   <string name="schedule_send_tomorrow">明天 %1$s</string>
   <string name="schedule_send_today">今天 %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="other">延后 %d 天</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="other">延后 %d 小时</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="other">延后 %d 分钟</item>
-  </plurals>
 </resources>

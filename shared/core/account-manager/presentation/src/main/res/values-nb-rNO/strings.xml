@@ -25,9 +25,7 @@
   <string name="account_switcher_remove_from_device">Fjern fra denne enheten</string>
   <string name="account_switcher_switch_to">Bytt til</string>
   <string name="manage_accounts_title">Administrer kontoer</string>
-  <string name="manage_accounts_signed_in">Logget på</string>
-  <string name="manage_accounts_signed_out">Logget av</string>
-  <string name="manage_accounts_add_account">Legg til konto</string>
+    <string name="manage_accounts_add_account">Legg til konto</string>
   <string name="manage_accounts_switch_to">Bytt til</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Bytt til en pålogget konto</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Bytt til en avlogget konto</string>
