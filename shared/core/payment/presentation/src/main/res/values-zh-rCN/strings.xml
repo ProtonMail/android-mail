@@ -31,7 +31,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">优惠基于标准月度价格。将以每月 %1$s 的价格自动续订。</string>
   <string name="payment_bf_renew_annually">优惠基于标准月度价格。将以每年 %1$s 的价格自动续订。</string>
-    <string name="payment_welcome_offer_renew_monthly">首期优惠价，到期后自动续费，每月 %1$s</string>
+  <string name="payment_bf_renew_biennially">优惠基于标准月度价格。将以每 2 年 %1$s 的价格自动续订。</string>
+  <string name="payment_welcome_offer_renew_monthly">首期优惠价，到期后自动续费，每月 %1$s</string>
   <string name="payment_welcome_offer_renew_annually">首期优惠价，到期后自动续费，每年 %1$s</string>
   <string name="payment_welcome_offer_renew_biennially">首期优惠价，到期后自动续费，每 2 年 %1$s</string>
   <plurals name="payment_welcome_offer_renew_other">

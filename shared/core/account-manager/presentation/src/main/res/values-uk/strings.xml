@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Видалити з цього пристрою</string>
   <string name="account_switcher_switch_to">Перейти до</string>
   <string name="manage_accounts_title">Керування обліковими записами</string>
-    <string name="manage_accounts_add_account">Додати обліковий запис</string>
+  <string name="manage_accounts_signed_in">Виконано вхід</string>
+  <string name="manage_accounts_signed_out">Виконано вихід</string>
+  <string name="manage_accounts_add_account">Додати обліковий запис</string>
   <string name="manage_accounts_switch_to">Перейти до</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Перейти до облікового запису, в який виконано вхід</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Перейти до облікового запису, з якого вийшли</string>

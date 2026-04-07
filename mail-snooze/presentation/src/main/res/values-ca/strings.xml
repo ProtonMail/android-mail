@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Aquest cap de setmana</string>
   <string name="snooze_sheet_option_custom">Personalitza</string>
   <string name="snooze_sheet_option_custom_detail">Trieu la data i l\'hora</string>
-    <string name="snooze_sheet_snooze_title">Ajorna fins a</string>
+  <string name="snooze_sheet_option_upsell_detail">Característica de pagament</string>
+  <string name="snooze_sheet_snooze_title">Ajorna fins a</string>
   <string name="snooze_sheet_option_unsnooze">Deixa d\'ajornar</string>
   <string name="snooze_sheet_error_unable_to_snooze">S\'ha produït un error desconegut en ajornar aquesta conversa.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">S\'ha produït un error desconegut en desfer l\'ajornament de la conversa.</string>

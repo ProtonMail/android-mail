@@ -30,4 +30,5 @@
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_get_started">入門指南</string>
   <string name="onboarding_illustration_content_description">入門指南</string>
+  <string name="onboarding_close_content_description">關閉</string>
 </resources>

@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Vsa pošta</string>
   <string name="label_title_all_scheduled">Načrtovano</string>
   <string name="label_title_snoozed">Dremež</string>
-    <string name="label_title_create_label">Ustvari oznako</string>
+  <string name="label_title_folders">Mape</string>
+  <string name="label_title_create_label">Ustvari oznako</string>
   <string name="label_title_create_folder">Ustvari mapo</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Premakni v …</string>
-    <string name="bottom_sheet_save_action">Shrani</string>
+  <string name="bottom_sheet_done_action">Končano</string>
+  <string name="bottom_sheet_save_action">Shrani</string>
   <string name="bottom_sheet_archive_action">Tudi arhiviraj?</string>
   <string name="bottom_sheet_label_as_title">Označi kot</string>
   <string name="bottom_sheet_label_as_error_fetch">Oznak ni bilo mogoče pridobiti.</string>

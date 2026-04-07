@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">Changer d\'abonnement pour une flexibilité totale</string>
   <string name="upselling_upgrade_plan_generic">Vous devez disposer d\'un abonnement payant à Proton Mail pour accéder à cette fonctionnalité</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">Fonctionnalités premium incluses</string>
+  <string name="upselling_onboarding_feature_e2e">Chiffrement de bout en bout</string>
+  <string name="upselling_onboarding_feature_folders_labels">Nombre illimité de dossiers et de labels</string>
+  <string name="upselling_onboarding_free_feature_storage">1 Go d\'espace de stockage et 1 adresse e-mail</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 Go d\'espace de stockage</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 adresses e-mail supplémentaires pour vous</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Prise en charge d\'un domaine de messagerie personnalisé</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 alias « hide-my-email »</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Service client prioritaire</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 Go d\'espace de stockage</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 adresses e-mail supplémentaires pour vous</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Prise en charge de 3 domaines de messagerie personnalisés</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Nombre illimité d\'alias « hide-my-email »</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Support client dédié</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Un VPN ultra-rapide et privé</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Gestionnaire de mots de passe chiffré</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Stockage cloud chiffré de photos et documents.</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Protection avancée des comptes</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Espace de stockage</string>
   <string name="upselling_comparison_table_email_addresses">Adresses e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Domaine de messagerie personnalisé</string>
@@ -91,11 +109,21 @@
   <string name="upselling_auto_renew_text_standard">Renouvellement automatique à %s%s sauf annulation.</string>
   <string name="upselling_social_proof_reviews">Plus de 2 000 avis.</string>
   <string name="upselling_description_social_proof">Passez à l\'expérience dont des millions d\'abonnés raffolent.</string>
-    <string name="upselling_month">/mois</string>
+  <string name="upselling_discount_tag">ÉCONOMISEZ %s %%</string>
+  <string name="upselling_month">/mois</string>
   <string name="upselling_month_only">seulement %s /mois</string>
   <string name="upselling_year">/an</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">Une erreur s’est produite.</string>
+  <string name="upselling_get_button">Obtenir %s</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d mois</item>
+    <item quantity="other">%d mois</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Les options d\'amélioration de l\'abonnement n\'ont pas pu être récupérées.</string>
+  <string name="upselling_snackbar_error_no_user_id">Une erreur s’est produite.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Les abonnements n\'ont pas pu être récupérés.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Amélioration de l\'abonnement en cours…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Une erreur est survenue lors de l\'amélioration de votre abonnement.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Une erreur s\'est produite. Veuillez réessayer.</string>
 </resources>

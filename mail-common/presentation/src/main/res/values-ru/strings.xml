@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%d ч</string>
   <string name="expiration_minutes_arg">%d мин</string>
   <string name="retry">Повторить</string>
-    <string name="x_error_not_logged_in">Вход не выполнен</string>
-    <string name="action_customize_toolbar_description">Настроить панель инструментов</string>
+  <string name="toolbar_back_content_description">Обратно к предыдущему экрану</string>
+  <string name="x_error_not_logged_in">Вход не выполнен</string>
+  <string name="action_customize_toolbar">Настроить панель инструментов</string>
+  <string name="action_customize_toolbar_description">Настроить панель инструментов</string>
   <string name="action_customize_toolbar_content_description">Настроить панель инструментов</string>
   <string name="action_reply">Ответить</string>
   <string name="action_reply_all">Ответить всем</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Закрепить</string>
   <string name="action_unpin_description">Открепить</string>
   <string name="action_reply_content_description">Ответить</string>
-    <string name="action_reply_all_content_description">Ответить всем</string>
+  <string name="action_reply_to_content_description">Ответить %s</string>
+  <string name="action_reply_all_content_description">Ответить всем</string>
   <string name="action_forward_content_description">Переслать</string>
   <string name="action_mark_read_content_description">Отметить как прочитанное</string>
   <string name="action_mark_unread_content_description">Отметить как непрочитанное</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Неудачные действия при скачивании</string>
   <string name="yesterday">Вчера</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">Электронные письма</string>
+  <string name="attachment_download_notification_channel_name">Вложения</string>
+  <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>
+  <string name="email_notification_channel_name">Электронные письма</string>
   <string name="login_notification_channel_name">Оповещения о входе в систему</string>
   <string name="email_notification_channel_description">Уведомления о входящей электронной почте</string>
   <string name="login_notification_channel_description">Уведомления о новых входах в систему</string>
   <string name="auth_badge_official">Официальный</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Не найдено ни одного приложения для обработки данного действия</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Отменить</string>
+  <string name="action_copied_to_clipboard">Скопировано в буфер обмена</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Отменить</string>
   <string name="mailbox_action_delete_dialog_button_delete">Удалить</string>
   <string name="picker_dialog_cancel">Отменить</string>
   <string name="color_purple">Фиолетовый</string>

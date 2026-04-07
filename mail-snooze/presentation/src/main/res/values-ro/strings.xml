@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">În acest weekend</string>
   <string name="snooze_sheet_option_custom">Personal</string>
   <string name="snooze_sheet_option_custom_detail">Selectare dată și oră</string>
-    <string name="snooze_sheet_snooze_title">Amânare până</string>
+  <string name="snooze_sheet_option_upsell_detail">Funcție cu plată</string>
+  <string name="snooze_sheet_snooze_title">Amânare până</string>
   <string name="snooze_sheet_option_unsnooze">Anulare amânare</string>
   <string name="snooze_sheet_error_unable_to_snooze">Ne pare rău, am întâmpinat o eroare necunoscută la amânarea acestei conversații.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">A apărut o eroare necunoscută la reactivarea conversației.</string>

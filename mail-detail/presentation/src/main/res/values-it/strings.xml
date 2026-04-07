@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Rispondi</string>
   <string name="quick_reply_all_button_content_description">Rispondi a tutti</string>
   <string name="more_button_content_description">Altro</string>
-    <string name="from">Da:</string>
+  <string name="subject">Oggetto:</string>
+  <string name="from">Da:</string>
   <string name="to">A:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Ccn:</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d file allegato</item>
     <item quantity="other">%d file allegati</item>
   </plurals>
-    <string name="undisclosed_recipients">...</string>
+  <string name="hide_details">Nascondi i dettagli</string>
+  <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(Bozza)</string>
   <string name="error_mark_as_read_failed">Contrassegnazione come letto non riuscita</string>
   <string name="error_mark_as_unread_failed">Contrassegnazione come non letto non riuscita</string>
   <string name="error_star_operation_failed">Contrassegnazione come importante non riuscita</string>
   <string name="error_unstar_operation_failed">Contrassegnazione come non importante non riuscita</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito</string>
-    <string name="message_moved_to">Messaggio spostato in %s</string>
-    <string name="message_moved_to_archive">Messaggio spostato nell\'archivio</string>
+  <string name="message_moved">Messaggio spostato</string>
+  <string name="message_moved_to">Messaggio spostato in %s</string>
+  <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
+  <string name="message_moved_to_archive">Messaggio spostato nell\'archivio</string>
   <string name="error_move_to_archive_failed">Spostamento nell\'archivio non riuscito</string>
-    <string name="error_move_to_spam_failed">Spostamento nella cartella spam non riuscito</string>
+  <string name="message_moved_to_spam">Messaggio spostato in spam</string>
+  <string name="error_move_to_spam_failed">Spostamento nella cartella spam non riuscito</string>
   <string name="message_moved_to_selected_destination">Messaggio spostato in %1$s</string>
   <string name="error_move_message_failed">Spostamento del messaggio non riuscito</string>
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Memoria non sufficiente. Caricamento dell\'allegato non riuscito.</string>
   <string name="error_relabel_message_failed">Nuova etichettatura del messaggio non riuscita</string>
-    <string name="decryption_error">Decrittografia del messaggio non riuscita</string>
+  <string name="error_relabel_conversation_failed">Nuova etichettatura della conversazione non riuscita</string>
+  <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi.</string>
+  <string name="decryption_error">Decrittografia del messaggio non riuscita</string>
   <string name="detail_error_retrieving_message_body">Caricamento del messaggio non riuscito</string>
   <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto del messaggio</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>
   <string name="message_report_phishing_dialog_confim_button">Segnala</string>
   <string name="message_report_phishing_dialog_cancel_button">Annulla</string>
-    <string name="trashed_messages_banner">Mostra messaggi eliminati presenti nel cestino</string>
+  <string name="open_on_protoncalendar_banner_title">Apri in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Calendario crittografato sicuro</string>
+  <string name="trashed_messages_banner">Mostra messaggi eliminati presenti nel cestino</string>
   <string name="non_trashed_messages_banner">Mostra messaggi non eliminati</string>
   <string name="recipient_me">me</string>
   <string name="message_details_header_from">Da</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">Iscrizione alla newsletter cancellata</string>
   <string name="error_unsubscribe_newsletter">Cancellazione dell\'iscrizione non riuscita</string>
   <string name="detail_error_loading_single_message">Caricamento del messaggio non riuscito</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Impossibile scaricare l\'immagine</string>
+  <string name="image_downloaded_successfully">Immagine scaricata</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Intestazioni del messaggio</string>
   <string name="raw_message_data_html_title">Messaggio HTML</string>
   <string name="raw_message_data_close_button_content_description">Chiudi</string>

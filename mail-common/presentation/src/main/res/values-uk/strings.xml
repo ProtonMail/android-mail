@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%d год</string>
   <string name="expiration_minutes_arg">%d хв</string>
   <string name="retry">Повторити</string>
-    <string name="x_error_not_logged_in">Ви не увійшли</string>
-    <string name="action_customize_toolbar_description">Налаштування панелі інструментів</string>
+  <string name="toolbar_back_content_description">Повернутися на попередній екран</string>
+  <string name="x_error_not_logged_in">Ви не увійшли</string>
+  <string name="action_customize_toolbar">Налаштувати панель інструментів</string>
+  <string name="action_customize_toolbar_description">Налаштування панелі інструментів</string>
   <string name="action_customize_toolbar_content_description">Налаштувати панель інструментів</string>
   <string name="action_reply">Відповісти</string>
   <string name="action_reply_all">Відповісти всім</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Прикріпити</string>
   <string name="action_unpin_description">Відкріпити</string>
   <string name="action_reply_content_description">Відповісти</string>
-    <string name="action_reply_all_content_description">Відповісти всім</string>
+  <string name="action_reply_to_content_description">Відповісти %s</string>
+  <string name="action_reply_all_content_description">Відповісти всім</string>
   <string name="action_forward_content_description">Переслати</string>
   <string name="action_mark_read_content_description">Позначити прочитаним</string>
   <string name="action_mark_unread_content_description">Позначити непрочитаним</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Не вдалося завантажити дії</string>
   <string name="yesterday">Учора</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">Листи</string>
+  <string name="attachment_download_notification_channel_name">Вкладення</string>
+  <string name="attachment_download_notification_channel_description">Сповіщення про завантаження вкладень</string>
+  <string name="email_notification_channel_name">Листи</string>
   <string name="login_notification_channel_name">Сповіщення про вхід</string>
   <string name="email_notification_channel_description">Сповіщення про вхідну пошту</string>
   <string name="login_notification_channel_description">Сповіщення про новий вхід</string>
   <string name="auth_badge_official">Офіційний</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Не знайдено програми для обробки цієї дії</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
+  <string name="action_copied_to_clipboard">Скопійовано до буфера обміну</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
   <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
   <string name="picker_dialog_cancel">Скасувати</string>
   <string name="color_purple">Бузковий</string>

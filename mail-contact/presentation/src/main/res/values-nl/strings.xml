@@ -29,7 +29,11 @@
     <item quantity="one">%1$d lid</item>
     <item quantity="other">%1$d leden</item>
   </plurals>
-    <string name="search_contacts_description">Doorzoek contacten</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Lid (%1$d)</item>
+    <item quantity="other">Leden (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">Doorzoek contacten</string>
   <string name="contact_search_no_results">Geen resultaten gevonden.</string>
   <string name="contact_search_placeholder">Zoeken naar contact of groep</string>
   <string name="contact_search_content_description">Zoeken naar contact of groep</string>
@@ -63,7 +67,9 @@
   <string name="contact_type_voice">Spraak</string>
   <string name="contact_property_birthday">Geboortedatum</string>
   <string name="contact_property_note">Notitie</string>
-    <string name="contact_property_organization">Organisatie</string>
+  <string name="contact_property_photo">Foto</string>
+  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_organization">Organisatie</string>
   <string name="contact_property_anniversary">Verjaardag</string>
   <string name="contact_property_title">Titel</string>
   <string name="contact_property_role">Rol</string>

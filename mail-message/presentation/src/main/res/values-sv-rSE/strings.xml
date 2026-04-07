@@ -26,7 +26,8 @@
     <item quantity="other">%d bilagor</item>
   </plurals>
   <string name="attachments">bilagor</string>
-    <string name="attachment_type_description">%1$s-fil</string>
+  <string name="attachment_show_more_label">+%1$d till</string>
+  <string name="attachment_type_description">%1$s-fil</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arkiv</string>
   <string name="attachment_type_image">Bild</string>
@@ -35,7 +36,8 @@
   <string name="attachment_type_unknown">Okänd</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Text</string>
-    <string name="attachment_type_spreadsheet">Kalkylblad</string>
+  <string name="attachment_type_document">Dokument</string>
+  <string name="attachment_type_spreadsheet">Kalkylblad</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_calendar">Kalender</string>
   <string name="attachment_type_code">Kod</string>
@@ -47,9 +49,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytta till...</string>
-    <string name="bottom_sheet_archive_action">Arkivera också?</string>
+  <string name="bottom_sheet_done_action">Klar</string>
+  <string name="bottom_sheet_archive_action">Arkivera också?</string>
   <string name="bottom_sheet_label_as_title">Märk som</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">Meddelande från %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopiera länk</string>
   <string name="message_link_long_click_copy_description">Text kopierat från Proton Mail</string>
   <string name="message_link_long_click_share">Dela länk</string>
@@ -78,6 +82,8 @@
   <string name="contact_actions_block_address_description">Blockera denna adress</string>
   <string name="contact_actions_unblock_address">Avblockera denna adress</string>
   <string name="contact_actions_unblock_address_description">Avblockera denna adress</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">Visa kontaktdetaljer</string>
+  <string name="contact_actions_view_contact_details_description">Visa detaljer om kontakten</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">Visa hela meddelandet</string>
 </resources>

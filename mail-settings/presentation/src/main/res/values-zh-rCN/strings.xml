@@ -28,32 +28,45 @@
   <string name="mail_settings_preferences">偏好设置</string>
   <string name="mail_settings_app">个性化设置</string>
   <string name="mail_settings_mailbox">邮箱偏好设置</string>
-    <string name="mail_settings_folders_labels">文件夹和标签</string>
-    <string name="mail_settings_spam_and_custom_filters">垃圾邮件和过滤器</string>
-    <string name="mail_settings_privacy_and_security">隐私和安全</string>
+  <string name="mail_settings_email_hint">电子邮件和邮箱首选项</string>
+  <string name="mail_settings_folders_labels">文件夹和标签</string>
+  <string name="mail_settings_folders_labels_hint">邮箱管理</string>
+  <string name="mail_settings_spam_and_custom_filters">垃圾邮件和过滤器</string>
+  <string name="mail_settings_spam_and_custom_filters_hint">自动操作和排序</string>
+  <string name="mail_settings_privacy_and_security">隐私和安全</string>
   <string name="mail_settings_fido_keys">安全密钥</string>
   <string name="mail_settings_change_password">密码管理</string>
   <string name="mail_settings_signature">签名</string>
   <string name="mail_settings_storage_quota">已使用 %1$d%%，共 %2$s</string>
-    <string name="mail_settings_theme">主题</string>
-    <string name="mail_settings_app_icon">应用图标</string>
+  <string name="mail_settings_privacy_and_security_hint">邮件追踪防护</string>
+  <string name="mail_settings_app_hint">移动应用自定义设置</string>
+  <string name="mail_settings_theme">主题</string>
+  <string name="mail_settings_auto_lock">自动锁定</string>
+  <string name="mail_settings_app_icon">应用图标</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
   <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_app_language_sys_default">跟随系统</string>
   <string name="mail_settings_combined_contacts">合并联系人</string>
   <string name="mail_settings_swipe_actions">滑动操作</string>
   <string name="mail_settings_combined_contacts_hint">开启此功能后，您登录的所有账户通讯录的邮箱地址都可以自动补全。</string>
-    <!-- App customization settings-->
+  <string name="mail_settings_alternative_routing_hint">当 Proton 网站遭到封禁时，此设置允许该应用程序改用其他网络路由连接 Proton，这能有助于绕过防火墙或解决网络问题：推荐开启此设置，以提高可靠性。</string>
+  <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">个性化设置</string>
   <string name="mail_settings_app_customization_notification">通知</string>
   <string name="mail_settings_app_customization_language">语言</string>
   <string name="mail_settings_app_customization_appearance">外观</string>
   <string name="mail_settings_app_customization_protection">应用锁</string>
-    <string name="mail_settings_app_customization_protection_enabled_description">自动锁定已启用</string>
+  <string name="mail_settings_app_customization_mobile_signature">移动设备标识</string>
+  <string name="mail_settings_app_customization_email_signature">电子邮件签名</string>
+  <string name="mail_settings_app_customization_protection_enabled_description">自动锁定已启用</string>
   <string name="mail_settings_app_customization_protection_disabled_description">自动锁定已禁用</string>
-    <string name="mail_settings_app_customization_swipe_to_next_email">轻扫至下一封邮件</string>
+  <string name="mail_settings_app_customization_use_device_contacts">使用本机通讯录</string>
+  <string name="mail_settings_app_customization_use_device_contacts_hint">使用设备上的联系人自动填充其邮箱地址。</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email">轻扫至下一封邮件</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">快速移动到收件箱中的下一封或上一封邮件。</string>
-    <string name="mail_settings_app_customization_customize_toolbar">自定义工具栏</string>
+  <string name="mail_settings_app_customization_swipe_action">滑动操作</string>
+  <string name="mail_settings_app_customization_swipe_action_hint">设置左右滑动时的快捷操作，例如删除或归档。</string>
+  <string name="mail_settings_app_customization_customize_toolbar">自定义工具栏</string>
   <string name="mail_settings_app_customization_alternative_routing">备用线路</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">绕过防火墙或网络问题，以防 Proton 网站被屏蔽。</string>
   <string name="mail_settings_app_customization_view_application_logs">查看应用日志</string>
@@ -75,7 +88,9 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">无可用信息</string>
   <string name="mail_settings_account">账户</string>
-    <!-- Privacy settings -->
+  <string name="mail_settings_not_set">未设置</string>
+  <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
+  <!-- Privacy settings -->
   <string name="mail_settings_privacy">隐私</string>
   <string name="mail_settings_privacy_auto_show_remote_content">自动显示外链内容</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">自动显示嵌入的图像</string>

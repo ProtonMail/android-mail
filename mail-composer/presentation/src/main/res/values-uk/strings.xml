@@ -25,11 +25,17 @@
   <string name="compose_message_placeholder">Написати електронний лист</string>
   <string name="close_composer_content_description">Закрити редактор</string>
   <string name="send_button_title">Надіслати</string>
-    <string name="composer_expand_recipients_button">Показати інших отримувачів</string>
+  <string name="send_message_content_description">Надіслати повідомлення</string>
+  <string name="composer_expand_recipients_button">Показати інших отримувачів</string>
   <string name="composer_error_invalid_email">Вказана адреса не дійсна або не існує</string>
-    <string name="composer_change_sender_paid_feature">Перейдіть на платний тариф, щоби змінити адресу відправника</string>
-    <string name="composer_error_duplicate_recipient">Вилучено дублікати отримувачів</string>
-    <string name="composer_error_store_draft_address_disabled">Неможливо зберегти чернетку: ця адреса відправника вимкнена</string>
+  <string name="change_sender_button_content_description">Змінити відправника</string>
+  <string name="composer_change_sender_paid_feature">Перейдіть на платний тариф, щоби змінити адресу відправника</string>
+  <string name="composer_error_store_draft_sender_address">Адресу відправника не збережено</string>
+  <string name="composer_error_store_draft_body">Вміст чернетки листа не збережено</string>
+  <string name="composer_error_duplicate_recipient">Вилучено дублікати отримувачів</string>
+  <string name="composer_error_store_draft_subject">Рядок теми не збережено</string>
+  <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
+  <string name="composer_error_store_draft_address_disabled">Неможливо зберегти чернетку: ця адреса відправника вимкнена</string>
   <string name="composer_error_store_draft_address_pk_missing">Не вдалося зберегти чернетку: ця адреса відправника не має основного ключа</string>
   <string name="composer_error_store_draft_attachment_too_large">Не вдалося зберегти чернетку: вкладення перевищують ліміт розміру</string>
   <string name="composer_error_store_draft_too_many_attachments">Неможливо зберегти чернетку: досягнуто ліміту вкладень</string>
@@ -45,7 +51,9 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">З бібліотеки фотографій</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Зробити нове фото</string>
   <string name="composer_error_loading_parent_message">Неможливо завантажити інформацію про повідомлення</string>
-    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_original_message_quote">Оригінальне повідомлення</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; пише:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Досягнуто обмеження для вкладень</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень – %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Збій шифрування вкладення. З міркувань безпеки всі вкладення вилучено.</string>
@@ -60,11 +68,13 @@
   <string name="composer_button_discard_draft">Відкинути чернетку</string>
   <string name="composer_button_set_expiration">Вказати термін дії</string>
   <string name="composer_expiration_time_bottom_sheet_title">Термін дії повідомлення</string>
-    <string name="composer_bottom_bar_expiration_time_none">Без терміну дії</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Встановити</string>
+  <string name="composer_bottom_bar_expiration_time_none">Без терміну дії</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Через 1 годину</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Через 1 день</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Через 3 дні</string>
-    <string name="composer_bottom_bar_expiration_time_custom">У вказану дату</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">Через 1 тиждень</string>
+  <string name="composer_bottom_bar_expiration_time_custom">У вказану дату</string>
   <string name="composer_error_setting_expiration_time">Не вдалося встановити термін дії</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Додати пароль для використання терміну дії</string>
@@ -88,18 +98,30 @@
   <string name="message_sending_error_dialog_header">Надсилання звіту про помилку</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>
   <string name="message_sending_error_dialog_text_error">Вашого листа неможливо надіслати на вказану адресу з такої причини:</string>
-    <string name="set_message_password_title">Встановити пароль</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Немає довірених ключів: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Адреса %s не існує</string>
+  <string name="set_message_password_title">Встановити пароль</string>
   <string name="set_message_password_info_message">Установіть пароль, щоб зашифрувати це повідомлення для одержувачів, які не користуються Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Докладніше</a></string>
   <string name="set_message_password_label">Пароль повідомлення</string>
   <string name="set_message_password_label_hint">Підказка до пароля (необов\'язково)</string>
   <string name="set_message_password_supporting_text">Мінімум 8 символів.</string>
   <string name="set_message_password_supporting_error_text">Пароль повинен мати від 8 до 21 символів</string>
-    <string name="set_message_password_button_show">Показати пароль</string>
+  <string name="set_message_password_supporting_text_repeat">Паролі повинні збігатися</string>
+  <string name="set_message_password_supporting_error_text_repeat">Паролі відрізняються</string>
+  <string name="set_message_password_button_show">Показати пароль</string>
   <string name="set_message_password_button_hide">Приховати пароль</string>
   <string name="set_message_password_button_save_changes">Зберегти</string>
   <string name="set_message_password_button_remove_password">Вилучити пароль</string>
-    <string name="composer_recipient_suggestion_device">Показати контакти пристрою</string>
+  <string name="respondInline">Відповісти всередині тексту</string>
+  <string name="subject_placeholder">Тема</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d учасник</item>
+    <item quantity="few">%d учасники</item>
+    <item quantity="many">%d учасників</item>
+    <item quantity="other">%d учасників</item>
+  </plurals>
+  <string name="composer_recipient_suggestion_device">Показати контакти пристрою</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Відхилити це повідомлення?</string>
   <string name="discard_draft_dialog_text">Чернетку не буде збережено</string>
@@ -119,7 +141,11 @@
   <string name="composer_schedule_send_custom_upsell_title">Власні дата й час</string>
   <string name="composer_schedule_send_custom_description">Виберіть час та дату</string>
   <string name="composer_schedule_send_previously_set">Раніше встановлено</string>
-    <string name="composer_change_sender_title">Від</string>
+  <string name="composer_schedule_send_custom_time_label">Час</string>
+  <string name="composer_schedule_send_custom_date_label">Дата</string>
+  <string name="composer_schedule_send_dialog_ok">Гаразд</string>
+  <string name="composer_schedule_send_dialog_enter_time">Введіть час</string>
+  <string name="composer_change_sender_title">Від</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Неможливо змінити відправника, оскільки не вдалося отримати адреси користувача. Спробуйте ще раз.</string>
   <string name="composer_change_sender_invalid_address">Вибрана адреса не може бути використана для надсилання.</string>
   <string name="composer_change_sender_unexpected_failure">Щось пішло не так під час зміни відправника. Спробуйте знову.</string>

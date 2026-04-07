@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Tänä viikonloppuna</string>
   <string name="snooze_sheet_option_custom">Mukautettu</string>
   <string name="snooze_sheet_option_custom_detail">Valitse päivämäärä ja aika</string>
-    <string name="snooze_sheet_snooze_title">Torkuta</string>
+  <string name="snooze_sheet_option_upsell_detail">Maksullinen ominaisuus</string>
+  <string name="snooze_sheet_snooze_title">Torkuta</string>
   <string name="snooze_sheet_option_unsnooze">Peru torkutus</string>
   <string name="snooze_sheet_error_unable_to_snooze">Anteeksi, tuntematon virhe ilmeni tätä keskustelua torkuttaessa.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Ilmeni tuntematon virhe keskustelun torkkutilasta poistettaessa.</string>

@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">이 기기에서 제거</string>
   <string name="account_switcher_switch_to">다음으로 전환:</string>
   <string name="manage_accounts_title">계정 관리</string>
-    <string name="manage_accounts_add_account">계정 생성</string>
+  <string name="manage_accounts_signed_in">로그인 완료</string>
+  <string name="manage_accounts_signed_out">로그아웃 완료</string>
+  <string name="manage_accounts_add_account">계정 생성</string>
   <string name="manage_accounts_switch_to">다음으로 전환:</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">로그인된 계정으로 전환</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">로그아웃된 계정으로 전환</string>

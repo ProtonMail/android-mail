@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Dieses Wochenende</string>
   <string name="snooze_sheet_option_custom">Benutzerdefiniert</string>
   <string name="snooze_sheet_option_custom_detail">Datum und Uhrzeit auswählen</string>
-    <string name="snooze_sheet_snooze_title">Zurückstellen bis</string>
+  <string name="snooze_sheet_option_upsell_detail">Kostenpflichtige Funktion</string>
+  <string name="snooze_sheet_snooze_title">Zurückstellen bis</string>
   <string name="snooze_sheet_option_unsnooze">„Zurückstellen“ aufheben</string>
   <string name="snooze_sheet_error_unable_to_snooze">Leider ist beim „Zurückstellen“ dieser Unterhaltung ein unbekannter Fehler aufgetreten.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Beim Aufheben der Funktion „Zurückstellen” der Unterhaltung ist ein unbekannter Fehler aufgetreten.</string>

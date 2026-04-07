@@ -30,4 +30,5 @@
   <string name="onboarding_next">Naprej</string>
   <string name="onboarding_get_started">Začnite</string>
   <string name="onboarding_illustration_content_description">Ilustracija upravljalske plošče</string>
+  <string name="onboarding_close_content_description">Zapri</string>
 </resources>

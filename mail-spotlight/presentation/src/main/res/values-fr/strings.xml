@@ -28,4 +28,23 @@
   <string name="spotlight_feature_item_headers_html_title">Voir les en-têtes et le HTML</string>
   <string name="spotlight_feature_item_headers_html_description">Inspectez les messages suspects pour confirmer leur authenticité et découvrir les éléments de suivis cachés.</string>
   <string name="spotlight_screen_got_it">J\'ai compris</string>
+  <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Découvrez les nouveautés dans Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Améliorations de l\'interface</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Défilement fluide, mise en page actualisée et bien plus.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Filtre non lu</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nouvelle apparence et nouvel emplacement pour y accéder plus facilement.</string>
+  <string name="spotlight_screen_category_view_categories_title">Catégories de messages</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Tri automatique du courrier entrant.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Découvrez les nouveautés.\nIgnorez le reste.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Mettez l’accent sur les messages non lus. Ou pas. Il suffit d\'un simple clic pour basculer entre tous les e-mails et uniquement ceux non lus.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Restez au courant des nouveaux e-mails et ceux non lus</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Le filtre non lu est désormais plus visible et à portée de main, vous permettant d\'analyser et d\'agir rapidement sur les e-mails non lus.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Dites bonjour à votre boite de réception mieux organisée</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Avec les nouvelles catégories de messages, seuls les messages importants et urgents arrivent dans votre boite de réception principale. Tout le reste est organisé en catégories.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Bonjour les catégories.\nAu revoir les distractions.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Ne vous laissez plus distraire par les newsletters, les mises à jour et les messages non urgents. Avec les nouvelles catégories de messages, seuls les messages importants arrivent dans votre boite de réception principale.</string>
+  <string name="spotlight_screen_category_view_button_continue">Bonjour les catégories.\nAu revoir les distractions.</string>
+  <string name="spotlight_screen_category_view_button_try">Essayer les catégories</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Continuer sans catégories</string>
 </resources>

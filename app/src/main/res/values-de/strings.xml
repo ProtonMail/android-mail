@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">Nachricht wird gesendet…</string>
   <string name="mailbox_message_sending_offline">Offline: Nachricht in der Warteschlange bereit zum Senden</string>
   <string name="mailbox_message_sending_success">Nachricht gesendet</string>
-    <string name="mailbox_message_sending_error_action">Zu den Entwürfen</string>
+  <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
+  <string name="mailbox_message_sending_error_action">Zu den Entwürfen</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
-    <string name="mailbox_message_scheduling">Nachricht wird geplant …</string>
+  <string name="label_saved">Kategorie gespeichert</string>
+  <string name="label_deleted">Kategorie gelöscht</string>
+  <string name="app_locked">App gesperrt</string>
+  <string name="use_pin_instead">Stattdessen PIN verwenden</string>
+  <string name="mailbox_message_scheduling">Nachricht wird geplant …</string>
   <string name="mailbox_message_scheduling_offline">Offline: Nachricht in der Warteschlange für die Zeitplanung</string>
   <string name="mailbox_message_scheduled_for_sending_success">Diese Nachricht wird am %1$s gesendet</string>
   <string name="launcher_alert_duplicate_account_description">Der Benutzer ist bereits angemeldet</string>

@@ -17,8 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="drawer_title_contacts">Contactos</string>
-    <string name="drawer_title_bug_report">Notificar un problema</string>
+  <string name="drawer_title_more">Más</string>
+  <string name="drawer_title_contacts">Contactos</string>
+  <string name="drawer_title_subscription">Suscripción</string>
+  <string name="drawer_title_bug_report">Notificar un problema</string>
   <string name="drawer_item_create_label">Crear una etiqueta</string>
   <string name="drawer_item_create_folder">Crear una carpeta</string>
   <string name="drawer_upgrade_plus">Mejorar a Mail Plus</string>

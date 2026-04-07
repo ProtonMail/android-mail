@@ -27,7 +27,8 @@
   <string name="padlocks_proton_send_sign_only">PGP ile imzalanmış e-posta</string>
   <string name="padlocks_proton_send_sign_only_description">Bu e-posta sizin tarafınızdan %s. Bu, alıcıya e-postanızın gerçek olduğunu ve üzerinde oynanmadığını kanıtlar.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">dijital olarak imzalanmış</string>
-    <string name="padlocks_proton_send_recipient_pgp_signed_description">Bu e-posta sizin tarafınızdan %s. Bu, alıcıya e-postanızın gerçek olduğunu ve üzerinde oynanmadığını kanıtlar.</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed">PGP ile imzalanmış e-posta</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description">Bu e-posta sizin tarafınızdan %s. Bu, alıcıya e-postanızın gerçek olduğunu ve üzerinde oynanmadığını kanıtlar.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">dijital olarak imzalanmış</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">Sıfır erişim şifrelemeli</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled_description">Bu alıcı hesabında uçtan uca şifrelemeyi kapatmış.</string>
@@ -57,7 +58,8 @@
   <string name="padlocks_proton_zero_access_description">Bu e-posta Proton sunucularında %s ile tutuluyor. Ne Proton ne de başka biri onu okuyabilir.</string>
   <string name="padlocks_proton_zero_access_description_link_text">sıfır erişim şifrelemesi</string>
   <string name="padlocks_proton_sent_e2ee_verified_recipients">Doğrulanmış alıcılara uçtan uca şifrelenmiş</string>
-    <string name="padlocks_proton_sent_proton_verified_recipients">Doğrulanmış alıcılarla sıfır erişim şifrelemeli</string>
+  <string name="padlocks_proton_sent_e2ee_verified_recipients_description">Bu e-posta gönderenin aygıtında şifrelenmiştir ve şifresi yalnızca alıcı tarafından çözülebilir. Proton hiçbir zaman e-postanın içeriğini göremez.</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients">Doğrulanmış alıcılarla sıfır erişim şifrelemeli</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description">Bu e-posta Proton sunucularında %s ile tutuluyor. Ne Proton ne de başka biri onu okuyabilir.</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description_link">sıfır erişim şifrelemesi</string>
   <string name="padlocks_proton_sent_e2ee">Uçtan uca şifrelenmiş</string>
@@ -79,14 +81,18 @@
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">Bu e-posta Proton sunucularında %s ile tutuluyor. Ne Proton ne de başka biri onu okuyabilir.</string>
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">sıfır erişim şifrelemesi</string>
   <string name="padlocks_proton_sent_recipient_pgp_signed">PGP ile imzalanmış e-posta</string>
-    <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">PGP ile uçtan uca şifrelenmiş</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed_description">Bu e-posta sizin tarafınızdan %s. Bu, alıcıya e-postanızın gerçek olduğunu ve üzerinde oynanmadığını kanıtlar.</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed_description_link_text">dijital olarak imzalanmış</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">PGP ile uçtan uca şifrelenmiş</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Bu e-posta gönderenin aygıtında uçtan uca şifrelenmiş ve şifresi yalnızca alıcı tarafından çözülebilir. Proton hiçbir zaman e-postanın içeriğini göremez.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">uçtan uca şifrelenmiş</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Doğrulanmış alıcıya uçtan uca şifrelenmiş</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Bu e-posta gönderenin aygıtında %s olarak bulunur ve şifresi yalnızca alıcı tarafından çözülebilir. Proton hiçbir zaman e-postanın içeriğini göremez.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">uçtan uca şifrelenmiş</string>
   <string name="padlocks_proton_sent_recipient_e2ee">Uçtan uca şifrelenmiş</string>
-    <!-- Additional descriptions -->
+  <string name="padlocks_proton_sent_recipient_e2ee_descripton">Bu e-posta gönderenin aygıtında %s olarak bulunur ve şifresi yalnızca alıcı tarafından çözülebilir. Proton hiçbir zaman e-postanın içeriğini göremez.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_description_link_text">uçtan uca şifrelenmiş</string>
+  <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">Proton kullanıcıları arasında gönderilen e-postalar otomatik olarak uçtan uca şifrelenir.</string>
   <string name="padlocks_non_encrypted_copy">Ancak, Proton Mail kullanmayan bir gönderici veya alıcı, e-posta sunucusunda şifrelenmemiş bir kopyasını saklıyor olabilir.</string>
   <string name="padlocks_sender_verified_contact">Gönderici, şifreleme anahtarlarına güvendiğiniz %s türünde bir kişidir.</string>

@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">L\'envoi du message est en cours.</string>
   <string name="mailbox_message_sending_offline">Vous êtes hors ligne. Le message est en file d\'attente pour l\'envoi.</string>
   <string name="mailbox_message_sending_success">Le message a été envoyé.</string>
-    <string name="mailbox_message_sending_error_action">Aller aux Brouillons</string>
+  <string name="mailbox_message_sending_error">Une erreur s\'est produite lors de l\'envoi du message.</string>
+  <string name="mailbox_message_sending_error_action">Aller aux Brouillons</string>
   <string name="notification_switched_account">Basculé sur le compte %s</string>
-    <string name="mailbox_message_scheduling">Planification du message…</string>
+  <string name="label_saved">Le label a été enregistré.</string>
+  <string name="label_deleted">Le label a été supprimé.</string>
+  <string name="app_locked">Application verrouillée</string>
+  <string name="use_pin_instead">Utiliser le code PIN à la place</string>
+  <string name="mailbox_message_scheduling">Planification du message…</string>
   <string name="mailbox_message_scheduling_offline">Hors ligne : message en file d\'attente pour la planification</string>
   <string name="mailbox_message_scheduled_for_sending_success">Ce message sera envoyé le %1$s</string>
   <string name="launcher_alert_duplicate_account_description">L\'utilisateur est déjà connecté.</string>

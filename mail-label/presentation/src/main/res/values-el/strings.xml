@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Όλα τα μηνύματα</string>
   <string name="label_title_all_scheduled">Προγραμματισμένα</string>
   <string name="label_title_snoozed">Σε αναβολή</string>
-    <string name="label_title_create_label">Δημιουργία ετικέτας</string>
+  <string name="label_title_folders">Φάκελοι</string>
+  <string name="label_title_create_label">Δημιουργία ετικέτας</string>
   <string name="label_title_create_folder">Δημιουργία φακέλου</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε…</string>
-    <string name="bottom_sheet_save_action">Αποθήκευση</string>
+  <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
+  <string name="bottom_sheet_save_action">Αποθήκευση</string>
   <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
   <string name="bottom_sheet_label_as_title">Σήμανση με ετικέτα ως</string>
   <string name="bottom_sheet_label_as_error_fetch">Αποτυχία ανάκτησης ετικετών.</string>

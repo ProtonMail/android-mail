@@ -26,7 +26,8 @@
     <item quantity="other">%d anexos</item>
   </plurals>
   <string name="attachments">anexos</string>
-    <string name="attachment_type_description">Categoria de arquivo: %1$s</string>
+  <string name="attachment_show_more_label">+%1$d mais</string>
+  <string name="attachment_type_description">Categoria de arquivo: %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arquivo</string>
   <string name="attachment_type_image">Imagem</string>
@@ -35,7 +36,8 @@
   <string name="attachment_type_unknown">Desconhecido</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Texto</string>
-    <string name="attachment_type_spreadsheet">Planilha</string>
+  <string name="attachment_type_document">Documento</string>
+  <string name="attachment_type_spreadsheet">Planilha</string>
   <string name="attachment_type_presentation">Apresentação</string>
   <string name="attachment_type_calendar">Calendário</string>
   <string name="attachment_type_code">Código</string>
@@ -47,9 +49,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
-    <string name="bottom_sheet_archive_action">Também arquivar?</string>
+  <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_archive_action">Também arquivar?</string>
   <string name="bottom_sheet_label_as_title">Marcar como</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">Mensagem de %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Copiar link</string>
   <string name="message_link_long_click_copy_description">Texto copiado do Proton Mail</string>
   <string name="message_link_long_click_share">Compartilhar link</string>
@@ -78,6 +82,8 @@
   <string name="contact_actions_block_address_description">Bloquear este endereço</string>
   <string name="contact_actions_unblock_address">Desbloquear este endereço</string>
   <string name="contact_actions_unblock_address_description">Desbloquear este endereço</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">Ver detalhes do contato</string>
+  <string name="contact_actions_view_contact_details_description">Ver detalhes do contato</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">Mostrar a mensagem inteira</string>
 </resources>

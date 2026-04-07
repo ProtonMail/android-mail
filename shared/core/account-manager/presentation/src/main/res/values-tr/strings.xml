@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Bu aygıttan kaldır</string>
   <string name="account_switcher_switch_to">Şuna geç</string>
   <string name="manage_accounts_title">Hesap yönetimi</string>
-    <string name="manage_accounts_add_account">Hesap ekle</string>
+  <string name="manage_accounts_signed_in">Oturum açıldı</string>
+  <string name="manage_accounts_signed_out">Oturum kapatıldı</string>
+  <string name="manage_accounts_add_account">Hesap ekle</string>
   <string name="manage_accounts_switch_to">Şuna geç</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Oturum açılmış bir hesaba geç</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Oturumu kapatılmış bir hesaba geç</string>

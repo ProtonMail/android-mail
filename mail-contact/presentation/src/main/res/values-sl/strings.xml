@@ -31,7 +31,13 @@
     <item quantity="few">%1$d člani</item>
     <item quantity="other">%1$d članov</item>
   </plurals>
-    <string name="search_contacts_description">Išči stike</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Član (%1$d)</item>
+    <item quantity="two">Člana (%1$d)</item>
+    <item quantity="few">Člani (%1$d)</item>
+    <item quantity="other">Člani (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">Išči stike</string>
   <string name="contact_search_no_results">Ni najdenih rezultatov.</string>
   <string name="contact_search_placeholder">Iskanje stika ali skupine</string>
   <string name="contact_search_content_description">Iskanje stika ali skupine</string>
@@ -65,7 +71,9 @@
   <string name="contact_type_voice">Glas</string>
   <string name="contact_property_birthday">Rojstni dan</string>
   <string name="contact_property_note">Opomba</string>
-    <string name="contact_property_organization">Organizacija</string>
+  <string name="contact_property_photo">Fotografija</string>
+  <string name="contact_property_logo">Logotip</string>
+  <string name="contact_property_organization">Organizacija</string>
   <string name="contact_property_anniversary">Obletnica</string>
   <string name="contact_property_title">Naslov</string>
   <string name="contact_property_role">Vloga</string>

@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Эти выходные</string>
   <string name="snooze_sheet_option_custom">Пользовательский</string>
   <string name="snooze_sheet_option_custom_detail">Выберите дату и время</string>
-    <string name="snooze_sheet_snooze_title">Отложить до</string>
+  <string name="snooze_sheet_option_upsell_detail">Платная функция</string>
+  <string name="snooze_sheet_snooze_title">Отложить до</string>
   <string name="snooze_sheet_option_unsnooze">Не откладывать</string>
   <string name="snooze_sheet_error_unable_to_snooze">К сожалению, при попытке отложить эту цепочку писем произошла неизвестная ошибка</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">При возвращении цепочки писем из отложенных произошла неизвестная ошибка</string>

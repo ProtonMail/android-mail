@@ -30,4 +30,5 @@
   <string name="onboarding_next">Далі</string>
   <string name="onboarding_get_started">Розпочати</string>
   <string name="onboarding_illustration_content_description">Ознайомча ілюстрація</string>
+  <string name="onboarding_close_content_description">Закрити</string>
 </resources>

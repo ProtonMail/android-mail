@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">Invio del messaggio in corso</string>
   <string name="mailbox_message_sending_offline">Nessuna connessione a Internet. Invio del messaggio sospeso.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
-    <string name="mailbox_message_sending_error_action">Vai alle bozze</string>
+  <string name="mailbox_message_sending_error">Invio del messaggio non riuscito</string>
+  <string name="mailbox_message_sending_error_action">Vai alle bozze</string>
   <string name="notification_switched_account">Account attuale: %s</string>
-    <string name="mailbox_message_scheduling">Programmazione dell\'invio in corso</string>
+  <string name="label_saved">Etichetta salvata</string>
+  <string name="label_deleted">Etichetta eliminata</string>
+  <string name="app_locked">App bloccata</string>
+  <string name="use_pin_instead">Usa invece il PIN</string>
+  <string name="mailbox_message_scheduling">Programmazione dell\'invio in corso</string>
   <string name="mailbox_message_scheduling_offline">Nessuna connessione a Internet. Programmazione dell\'invio sospesa.</string>
   <string name="mailbox_message_scheduled_for_sending_success">Invio programmato per il %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Account aggiunto in precedenza</string>

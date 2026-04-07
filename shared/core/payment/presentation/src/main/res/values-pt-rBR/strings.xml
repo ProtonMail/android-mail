@@ -32,7 +32,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Os descontos são baseados no preço mensal padrão. Renovação automática por %1$s/mês</string>
   <string name="payment_bf_renew_annually">Os descontos são baseados no preço mensal padrão. Renovação automática por %1$s/ano</string>
-    <string name="payment_welcome_offer_renew_monthly">Oferta de boas-vindas. Renovação automática por %1$s/mês</string>
+  <string name="payment_bf_renew_biennially">Os descontos são baseados no preço mensal padrão. Renovação automática por %1$s a cada 2 anos</string>
+  <string name="payment_welcome_offer_renew_monthly">Oferta de boas-vindas. Renovação automática por %1$s/mês</string>
   <string name="payment_welcome_offer_renew_annually">Oferta de boas-vindas. Renovação automática por %1$s/ano</string>
   <string name="payment_welcome_offer_renew_biennially">Oferta de boas-vindas. Renovação automática por %1$s a cada 2 anos</string>
   <plurals name="payment_welcome_offer_renew_other">

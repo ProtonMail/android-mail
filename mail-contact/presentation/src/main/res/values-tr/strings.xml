@@ -29,7 +29,11 @@
     <item quantity="one">%1$d üye</item>
     <item quantity="other">%1$d üye</item>
   </plurals>
-    <string name="search_contacts_description">Kişi ara</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Üye (%1$d)</item>
+    <item quantity="other">Üyeler (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">Kişi ara</string>
   <string name="contact_search_no_results">Herhangi bir sonuç bulunamadı.</string>
   <string name="contact_search_placeholder">Kişi ya da grup ara</string>
   <string name="contact_search_content_description">Kişi ya da grup ara</string>
@@ -63,7 +67,9 @@
   <string name="contact_type_voice">Ses</string>
   <string name="contact_property_birthday">Doğum günü</string>
   <string name="contact_property_note">Not</string>
-    <string name="contact_property_organization">Kuruluş</string>
+  <string name="contact_property_photo">Fotoğraf</string>
+  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_organization">Kuruluş</string>
   <string name="contact_property_anniversary">Yıl dönümü</string>
   <string name="contact_property_title">Unvan</string>
   <string name="contact_property_role">Rol</string>

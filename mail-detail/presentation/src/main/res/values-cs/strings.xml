@@ -28,7 +28,8 @@
   <string name="quick_reply_button_content_description">Odpovědět</string>
   <string name="quick_reply_all_button_content_description">Odpovědět všem</string>
   <string name="more_button_content_description">Více</string>
-    <string name="from">Od:</string>
+  <string name="subject">Předmět:</string>
+  <string name="from">Od:</string>
   <string name="to">Komu:</string>
   <string name="cc">Kopie:</string>
   <string name="bcc">Skrytá kopie:</string>
@@ -39,17 +40,21 @@
     <item quantity="many">%d příloh</item>
     <item quantity="other">%d příloh</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Skrýt detaily</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Koncept)</string>
   <string name="error_mark_as_read_failed">Nelze označit jako přečtené. Zkuste to znovu.</string>
   <string name="error_mark_as_unread_failed">Nelze označit jako nepřečtené. Zkuste to znovu.</string>
   <string name="error_star_operation_failed">Operace přidání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
   <string name="error_unstar_operation_failed">Operace odebrání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
   <string name="error_move_to_trash_failed">Přesunutí do koše se nezdařilo. Zkuste to znovu.</string>
-    <string name="message_moved_to">Zpráva přesunuta do %s</string>
-    <string name="message_moved_to_archive">Zpráva přesunuta do Archivu</string>
+  <string name="message_moved">Zpráva přesunuta</string>
+  <string name="message_moved_to">Zpráva přesunuta do %s</string>
+  <string name="message_moved_to_trash">Zpráva přesunuta do Koše</string>
+  <string name="message_moved_to_archive">Zpráva přesunuta do Archivu</string>
   <string name="error_move_to_archive_failed">Přesunutí do archivu se nezdařilo. Zkuste to znovu.</string>
-    <string name="error_move_to_spam_failed">Přesunutí do spamu se nezdařilo. Zkuste to znovu.</string>
+  <string name="message_moved_to_spam">Zpráva přesunuta do spamu</string>
+  <string name="error_move_to_spam_failed">Přesunutí do spamu se nezdařilo. Zkuste to znovu.</string>
   <string name="message_moved_to_selected_destination">Zpráva přesunuta do %1$s</string>
   <string name="error_move_message_failed">Přesunutí zprávy se nezdařilo. Zkuste to znovu.</string>
   <string name="conversation_moved_to_trash">Konverzace přesunuta do Koše</string>
@@ -64,7 +69,9 @@
   <string name="error_attachment_download_in_progress">Před zahájením nového stahování je třeba dokončit stávající stahování.</string>
   <string name="error_get_attachment_not_enough_memory">Nepodařilo se načíst přílohu z důvodu nedostatku paměti</string>
   <string name="error_relabel_message_failed">Nepodařilo se přeznačit zprávu. Zkuste to prosím znovu</string>
-    <string name="decryption_error">Dešifrování zprávy se nezdařilo.</string>
+  <string name="error_relabel_conversation_failed">Nepodařilo se přeznačit konverzaci. Zkuste to prosím znovu</string>
+  <string name="please_go_back_online_to_load_messages">Jste odpojeni (offline). Pro načtení zpráv se prosím znovu připojte</string>
+  <string name="decryption_error">Dešifrování zprávy se nezdařilo.</string>
   <string name="detail_error_retrieving_message_body">Nelze načíst zprávu</string>
   <string name="message_body_error_no_webview">Pro zobrazení obsahu této zprávy musíte mít nainstalovanu součást WebView.</string>
   <!-- Banners -->
@@ -115,7 +122,9 @@
   <string name="message_report_phishing_dialog_message">Nahlášení této zprávy jako pokusu o phishing odešle tuto zprávu nám, abychom ji mohli analyzovat a zlepšit tím naše filtry. To znamená, že uvidíme kompletně celý obsah této zprávy.</string>
   <string name="message_report_phishing_dialog_confim_button">Potvrdit</string>
   <string name="message_report_phishing_dialog_cancel_button">Zrušit</string>
-    <string name="trashed_messages_banner">Zobrazit v této konverzaci zprávy, které jsou v koši.</string>
+  <string name="open_on_protoncalendar_banner_title">Otevřít v Proton kalendáři</string>
+  <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný kalendář</string>
+  <string name="trashed_messages_banner">Zobrazit v této konverzaci zprávy, které jsou v koši.</string>
   <string name="non_trashed_messages_banner">Zobrazit v této konverzaci zprávy, které nejsou v koši.</string>
   <string name="recipient_me">já</string>
   <string name="message_details_header_from">Od</string>
@@ -179,7 +188,9 @@
   <string name="already_unsubscribed_banner_message">Jste odhlášeni z tohoto e-mailového seznamu.</string>
   <string name="error_unsubscribe_newsletter">Nepodařilo se odhlásit z odběru novinek</string>
   <string name="detail_error_loading_single_message">Načtení zprávy selhalo</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Stahování obrázku selhalo</string>
+  <string name="image_downloaded_successfully">Obrázek stažen</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Hlavičky zprávy</string>
   <string name="raw_message_data_html_title">HTML kód zprávy</string>
   <string name="raw_message_data_close_button_content_description">Zavřít</string>

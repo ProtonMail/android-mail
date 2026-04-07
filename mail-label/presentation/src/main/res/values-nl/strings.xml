@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Alle e-mails</string>
   <string name="label_title_all_scheduled">Gepland</string>
   <string name="label_title_snoozed">Gesnoozed</string>
-    <string name="label_title_create_label">Maak label</string>
+  <string name="label_title_folders">Mappen</string>
+  <string name="label_title_create_label">Maak label</string>
   <string name="label_title_create_folder">Maak map</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verplaats naar…</string>
-    <string name="bottom_sheet_save_action">Opslaan</string>
+  <string name="bottom_sheet_done_action">Klaar</string>
+  <string name="bottom_sheet_save_action">Opslaan</string>
   <string name="bottom_sheet_archive_action">Ook archiveren?</string>
   <string name="bottom_sheet_label_as_title">Label als</string>
   <string name="bottom_sheet_label_as_error_fetch">Labels ophalen is mislukt.</string>

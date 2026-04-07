@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Semua surat</string>
   <string name="label_title_all_scheduled">Terjadwal</string>
   <string name="label_title_snoozed">Ditunda</string>
-    <string name="label_title_create_label">Buat label</string>
+  <string name="label_title_folders">Folder</string>
+  <string name="label_title_create_label">Buat label</string>
   <string name="label_title_create_folder">Buat folder</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke…</string>
-    <string name="bottom_sheet_save_action">Simpan</string>
+  <string name="bottom_sheet_done_action">Selesai</string>
+  <string name="bottom_sheet_save_action">Simpan</string>
   <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
   <string name="bottom_sheet_label_as_title">Labeli sebagai</string>
   <string name="bottom_sheet_label_as_error_fetch">Label gagal diperoleh.</string>

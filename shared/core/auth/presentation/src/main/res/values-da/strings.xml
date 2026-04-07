@@ -17,7 +17,8 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-    <string name="login_help_title">Hvordan kan vi hjælpe?</string>
+  <string name="login_help_close">Luk</string>
+  <string name="login_help_title">Hvordan kan vi hjælpe?</string>
   <string name="login_help_forgot_username">Glemt brugernavn</string>
   <string name="login_help_forgot_password">Glemt adgangskode</string>
   <string name="login_help_other_issues">Andre problemer med login</string>
@@ -35,11 +36,15 @@
   <string name="auth_login_username">Brugernavn eller e-mail</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Adgangskode</string>
-    <string name="auth_login_assistive_text">Indtast din Proton e-mailadresse eller dit brugernavn.</string>
+  <string name="auth_username_placeholder">Brugernavn eller e-mail</string>
+  <string name="auth_password_placeholder">Adgangskode</string>
+  <string name="auth_login_assistive_text">Indtast din Proton e-mailadresse eller dit brugernavn.</string>
   <string name="auth_account_details">Indtast dine Proton-kontodetaljer.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problem med at logge dig ind. Prøv igen.</string>
-    <string name="auth_login_error_invalid_action_invalid_credentials">Forkerte loginoplysninger. Prøv igen.</string>
-    <string name="auth_login_general_error">Der opstod en fejl.</string>
+  <string name="auth_login_error_invalid_action_human_verification_challenge">Menneskelig bekræftelse er nødvendig.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Forkerte loginoplysninger. Prøv igen.</string>
+  <string name="auth_login_error_invalid_action_unsupported_tfa">Ikke-understøttet to-faktor.</string>
+  <string name="auth_login_general_error">Der opstod en fejl.</string>
   <string name="auth_second_factor_title">To-faktor-godkendelse</string>
   <string name="auth_second_factor_subtitle">Din konto har flere 2FA-mekanismer konfigureret. Vælg, hvordan du vil bekræfte din identitet.</string>
   <string name="auth_second_factor_tab_security_key">Sikkerhedsnøgle</string>
@@ -61,7 +66,9 @@
   <string name="auth_two_pass_input_empty">Adgangskoden må ikke være tom</string>
   <string name="auth_signup_title">Opret din Proton-konto</string>
   <string name="auth_signup_subtitle">Én konto til alle Proton-tjenester</string>
-    <string name="auth_signup_next">Næste</string>
+  <string name="auth_signup_username_assistive_text">Brugernavn må ikke være tomt.</string>
+  <string name="auth_signup_email_assistive_text">E-mailadresse må ikke være tom.</string>
+  <string name="auth_signup_next">Næste</string>
   <string name="auth_signup_username">Brugernavn</string>
   <string name="auth_signup_create_password">Opret din adgangskode</string>
   <string name="auth_signup_password">Adgangskode</string>
@@ -76,7 +83,11 @@
   <string name="auth_signup_recovery_skip">Spring over</string>
   <string name="auth_signup_recovery_title">Angiv gendannelsesmetode (valgfrit)</string>
   <string name="auth_signup_recovery_subtitle">Vi sender genoprettelsesinstruktioner til denne e-mailadresse eller dette telefonnummer, hvis du bliver låst ude af din konto.</string>
-    <string name="auth_signup_recovery_select_country">Vælg land</string>
+  <string name="auth_signup_recovery_email">E-mail</string>
+  <string name="auth_signup_recovery_phone">Telefon</string>
+  <string name="auth_signup_recovery_email_hint">Gendannelses-e-mail</string>
+  <string name="auth_signup_recovery_phone_hint">Telefonnummer til gendannelse</string>
+  <string name="auth_signup_recovery_select_country">Vælg land</string>
   <string name="auth_signup_phone_placeholder">XX XX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Spring gendannelsesmetode over?</string>
   <string name="auth_signup_skip_recovery_description">En gendannelsesmetode kan hjælpe dig med at få adgang til din konto, hvis du glemmer din adgangskode eller bliver låst ude.</string>
@@ -118,7 +129,8 @@
   <string name="auth_fido_config_error">Fejl ved hentning af lagrede nøgler.</string>
   <string name="auth_fido_reading_key_error">Fejl ved læsning af sikkerhedsnøgle.</string>
   <string name="auth_fido_submit_key_error">Fejl ved indsendelse af nøgledata.</string>
-    <string name="auth_fido_authenticating_in_progress">Autentificerer med sikkerhedsnøgle.</string>
+  <string name="auth_fido_reading_key_progress">Læser sikkerhedsnøgle.</string>
+  <string name="auth_fido_authenticating_in_progress">Autentificerer med sikkerhedsnøgle.</string>
   <string name="auth_fido_security_key">Sikkerhedsnøgle</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Adgangskode skal indeholde mindst 1 tegn</item>
@@ -135,15 +147,21 @@
   <string name="settings_password_management_tab_second_password">Anden adgangskode</string>
   <string name="settings_password_management_change_password_note">For at ændre en af dine adgangskoder skal du kende din primære adgangskode.</string>
   <string name="settings_password_management_forgot_main_password">Har du glemt din primære adgangskode?</string>
-    <string name="settings_main_password_hint_current">Nuværende hovedadgangskode</string>
+  <string name="settings_password_management_header">Ændr adgangskode</string>
+  <string name="settings_password_management_cannot_change_password">Du kan ikke ændre din backup-adgangskode. Kontakt din administrator.</string>
+  <string name="settings_main_password_hint_current">Nuværende hovedadgangskode</string>
   <string name="settings_main_password_hint_new">Ny hovedadgangskode</string>
   <string name="settings_main_password_hint_new_confirm">Bekræft ny hovedadgangskode</string>
   <string name="settings_second_password_hint_current_main_password">Nuværende hovedadgangskode</string>
   <string name="settings_second_password_hint_new">Ny anden adgangskode</string>
   <string name="settings_second_password_hint_new_confirm">Bekræft ny anden adgangskode</string>
-    <string name="settings_password_management_login_success">Login-adgangskode opdateret</string>
+  <string name="settings_change_password_error">En fejl opstod ved ændring af adgangskode.</string>
+  <string name="settings_recovery_email_success">E-mail-adresse til gendannelse opdateret</string>
+  <string name="settings_password_management_login_success">Login-adgangskode opdateret</string>
   <string name="settings_password_management_second_success">Sekundær adgangskode opdateret</string>
-    <string name="settings_password_invalid_2fa">Ugyldig sekundær faktorkode. Prøv igen.</string>
+  <string name="settings_password_management_start_recovery">Kender du ikke din adgangskode?</string>
+  <string name="settings_password_management_2fa">2FA er påkrævet</string>
+  <string name="settings_password_invalid_2fa">Ugyldig sekundær faktorkode. Prøv igen.</string>
   <string name="settings_password_error_empty">Adgangskode må ikke være tom.</string>
   <string name="settings_password_error">Forkert brugernavn eller adgangskode. Prøv igen.</string>
   <string name="settings_password_error_invalid_recovery">Forkert 2FA-kode. Prøv igen.</string>

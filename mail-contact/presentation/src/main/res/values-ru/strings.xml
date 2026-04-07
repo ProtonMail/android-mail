@@ -31,7 +31,13 @@
     <item quantity="many">%1$d участников</item>
     <item quantity="other">%1$d участника</item>
   </plurals>
-    <string name="search_contacts_description">Поиск контактов</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Участник (%1$d)</item>
+    <item quantity="few">Участника (%1$d)</item>
+    <item quantity="many">Участников (%1$d)</item>
+    <item quantity="other">Участников (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">Поиск контактов</string>
   <string name="contact_search_no_results">Результаты не найдены.</string>
   <string name="contact_search_placeholder">Поиск контакта или группы</string>
   <string name="contact_search_content_description">Поиск контакта или группы</string>
@@ -65,7 +71,9 @@
   <string name="contact_type_voice">Голосовой</string>
   <string name="contact_property_birthday">День рождения</string>
   <string name="contact_property_note">Заметка</string>
-    <string name="contact_property_organization">Организация</string>
+  <string name="contact_property_photo">Фото</string>
+  <string name="contact_property_logo">Логотип</string>
+  <string name="contact_property_organization">Организация</string>
   <string name="contact_property_anniversary">Годовщина</string>
   <string name="contact_property_title">Заголовок</string>
   <string name="contact_property_role">Должность</string>

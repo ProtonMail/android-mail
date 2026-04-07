@@ -28,4 +28,23 @@
   <string name="spotlight_feature_item_headers_html_title">Паглядзець загалоўкі і HTML</string>
   <string name="spotlight_feature_item_headers_html_description">Праверце падазроныя паведамленні, каб пацвердзіць іх сапраўднасць і выявіць любыя схаваныя элементы сачэння.</string>
   <string name="spotlight_screen_got_it">Зразумела</string>
+  <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Даведайцеся, што новага ў Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Паляпшэнні інтэрфейсу</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Плаўная прагортка, абноўлены дызайн і многае іншае.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Непрачытаны фільтр</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Новы выгляд і размяшчэнне для больш зручнага доступу.</string>
+  <string name="spotlight_screen_category_view_categories_title">Катэгорыі электроннай пошты</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Аўтаматычнае сартаванне ўваходнай пошты.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Паглядзець, што новага.\nПрапусціць астатняе.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Сканцэнтруйцеся на непрачытаных паведамленнях. Або не рабіце гэтага. Дастаткова аднаго націску, каб пераключыцца паміж усімі лістамі і толькі непрачытанымі.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Будзьце ў курсе новых і непрачытаных лістоў</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Фільтр непрачытаных паведамленняў цяпер больш заўважны і знаходзіцца ў даступным месцы. Дазваляючы хутка праглядаць і прымаць дзеянні для непрачытаных лістоў.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Сустракайце вашу больш упарадкаваную паштовую скрыню</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">З новымі катэгорыямі электроннай пошты толькі важныя і тэрміновыя паведамленні трапляюць у асноўную паштовую скрыню. Усё астатняе размяркоўваецца па катэгорыях.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Сустракайце катэгорыі і\nразвітайцеся з адцягваннем увагі.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Перастаньце адцягваць увагу на рассылкі, абнаўленні і нетэрміновыя электронныя лісты. Дзякуючы новым катэгорыям электроннай пошты толькі важныя паведамленні трапляюць у вашу асноўную паштовую скрыню.</string>
+  <string name="spotlight_screen_category_view_button_continue">Сустракайце катэгорыі і\nразвітайцеся з адцягваннем увагі.</string>
+  <string name="spotlight_screen_category_view_button_try">Паспрабуйце катэгорыі</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Працягнуць без катэгорый</string>
 </resources>

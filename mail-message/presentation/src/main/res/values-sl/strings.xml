@@ -30,7 +30,8 @@
     <item quantity="other">%d priponk</item>
   </plurals>
   <string name="attachments">priponke</string>
-    <string name="attachment_type_description">Datoteka %1$s</string>
+  <string name="attachment_show_more_label">in še %1$d</string>
+  <string name="attachment_type_description">Datoteka %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arhiv</string>
   <string name="attachment_type_image">Slika</string>
@@ -39,7 +40,8 @@
   <string name="attachment_type_unknown">Neznano</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Besedilo</string>
-    <string name="attachment_type_spreadsheet">Preglednica</string>
+  <string name="attachment_type_document">Dokument</string>
+  <string name="attachment_type_spreadsheet">Preglednica</string>
   <string name="attachment_type_presentation">Predstavitev</string>
   <string name="attachment_type_calendar">Koledar</string>
   <string name="attachment_type_code">Koda</string>
@@ -51,9 +53,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Premakni v …</string>
-    <string name="bottom_sheet_archive_action">Tudi arhiviraj?</string>
+  <string name="bottom_sheet_done_action">Končano</string>
+  <string name="bottom_sheet_archive_action">Tudi arhiviraj?</string>
   <string name="bottom_sheet_label_as_title">Označi kot</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">Sporočilo od %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopiraj povezavo</string>
   <string name="message_link_long_click_copy_description">Besedilo kopirano iz Proton Mail</string>
   <string name="message_link_long_click_share">Deli povezavo</string>
@@ -82,6 +86,8 @@
   <string name="contact_actions_block_address_description">Blokiraj ta naslov</string>
   <string name="contact_actions_unblock_address">Odblokiraj ta naslov</string>
   <string name="contact_actions_unblock_address_description">Odblokiraj ta naslov</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">Ogled podrobnosti stika</string>
+  <string name="contact_actions_view_contact_details_description">Oglejte si podrobnosti stika</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">Prikaži celotno sporočilo</string>
 </resources>

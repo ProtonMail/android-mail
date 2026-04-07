@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_scheduled">Ütemezett</string>
   <string name="label_title_snoozed">Elhalasztott</string>
-    <string name="label_title_create_label">Címke létrehozása</string>
+  <string name="label_title_folders">Mappák</string>
+  <string name="label_title_create_label">Címke létrehozása</string>
   <string name="label_title_create_folder">Mappa létrehozása</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Áthelyezés…</string>
-    <string name="bottom_sheet_save_action">Mentés</string>
+  <string name="bottom_sheet_done_action">Kész</string>
+  <string name="bottom_sheet_save_action">Mentés</string>
   <string name="bottom_sheet_archive_action">Archiválás is?</string>
   <string name="bottom_sheet_label_as_title">Címkézés mint</string>
   <string name="bottom_sheet_label_as_error_fetch">Címkék lekérése sikertelen.</string>

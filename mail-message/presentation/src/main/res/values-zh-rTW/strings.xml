@@ -24,7 +24,8 @@
     <item quantity="other">%d 個附件</item>
   </plurals>
   <string name="attachments">附件</string>
-    <string name="attachment_type_description">%1$s 個檔案</string>
+  <string name="attachment_show_more_label">+%1$d 更多</string>
+  <string name="attachment_type_description">%1$s 個檔案</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">封存檔</string>
   <string name="attachment_type_image">圖像</string>
@@ -33,7 +34,8 @@
   <string name="attachment_type_unknown">未知</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">文字</string>
-    <string name="attachment_type_spreadsheet">試算表</string>
+  <string name="attachment_type_document">文件</string>
+  <string name="attachment_type_spreadsheet">試算表</string>
   <string name="attachment_type_presentation">簡報</string>
   <string name="attachment_type_calendar">行事曆</string>
   <string name="attachment_type_code">程式碼</string>
@@ -45,9 +47,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
-    <string name="bottom_sheet_archive_action">同時封存?</string>
+  <string name="bottom_sheet_done_action">完成</string>
+  <string name="bottom_sheet_archive_action">同時封存?</string>
   <string name="bottom_sheet_label_as_title">加上標籤</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">郵件出處 %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">複製連結</string>
   <string name="message_link_long_click_copy_description">從Proton Mail複製文字</string>
   <string name="message_link_long_click_share">分享連結</string>
@@ -76,6 +80,8 @@
   <string name="contact_actions_block_address_description">Block this address</string>
   <string name="contact_actions_unblock_address">Unblock this address</string>
   <string name="contact_actions_unblock_address_description">Unblock this address</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">檢視聯絡人詳細資料</string>
+  <string name="contact_actions_view_contact_details_description">瀏覽聯絡人詳細資料</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">檢視完整訊息</string>
 </resources>

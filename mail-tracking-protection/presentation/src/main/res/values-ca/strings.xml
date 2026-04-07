@@ -25,7 +25,7 @@
   <string name="tracking_protection_learn_more">Més informació</string>
   <string name="original">Original</string>
   <string name="cleaned">S\'ha netejat</string>
-  <string name="open_link">Obriu l\'enllaç</string>
+  <string name="open_link">Obre l\'enllaç</string>
   <string name="action_close_dialog_button">Tanca</string>
   <string name="got_it">D\'acord</string>
   <plurals name="number_of_blocked_trackers">

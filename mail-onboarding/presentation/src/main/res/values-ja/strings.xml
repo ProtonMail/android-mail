@@ -30,4 +30,5 @@
   <string name="onboarding_next">次へ</string>
   <string name="onboarding_get_started">はじめましょう</string>
   <string name="onboarding_illustration_content_description">解説イラスト</string>
+  <string name="onboarding_close_content_description">閉じる</string>
 </resources>

@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">所有郵件</string>
   <string name="label_title_all_scheduled">已排程</string>
   <string name="label_title_snoozed">已延後</string>
-    <string name="label_title_create_label">創建標籤</string>
+  <string name="label_title_folders">資料夾</string>
+  <string name="label_title_create_label">創建標籤</string>
   <string name="label_title_create_folder">創建資料夾</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至……</string>
-    <string name="bottom_sheet_save_action">儲存</string>
+  <string name="bottom_sheet_done_action">完成</string>
+  <string name="bottom_sheet_save_action">儲存</string>
   <string name="bottom_sheet_archive_action">同時封存?</string>
   <string name="bottom_sheet_label_as_title">加上標籤</string>
   <string name="bottom_sheet_label_as_error_fetch">擷取標籤失敗。</string>

@@ -17,7 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!-- Auto lock -->
+  <string name="mail_pin_lock_toolbar_button_content_description">Назад</string>
+  <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Блокування застосунку</string>
   <string name="mail_pinlock_settings_no_lock">Не блокувати</string>
   <string name="mail_pinlock_settings_with_pin">Захистити за допомогою PIN-коду</string>
@@ -63,9 +64,13 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Так</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ні</string>
   <string name="mail_settings_pin_insertion_created_success">PIN-код успішно створено.</string>
-    <!-- Error messages -->
+  <string name="mail_settings_pin_insertion_changed_success">PIN-код успішно змінено.</string>
+  <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Сталася помилка. Спробуйте знову.</string>
-    <string name="mail_settings_biometrics_unable_to_set">Сталася помилка під час налаштування параметрів біометрії.</string>
+  <string name="mail_settings_pin_verify_generic_error_message">Сталася помилка. Спробуйте знову.</string>
+  <string name="mail_settings_pin_verify_too_many_attempts">Забагато неправильних спроб</string>
+  <string name="mail_settings_pin_verify_wrong_pin">Неправильний PIN-код</string>
+  <string name="mail_settings_biometrics_unable_to_set">Сталася помилка під час налаштування параметрів біометрії.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Виникла помилка під час скидання параметрів біометрії.</string>
   <string name="mail_settings_biometrics_unknown_lock">Сталася помилка під час отримання поточної політики блокування.</string>
   <!-- Auto lock dialog -->

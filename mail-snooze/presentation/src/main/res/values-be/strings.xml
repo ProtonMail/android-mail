@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">На гэтых выхадных</string>
   <string name="snooze_sheet_option_custom">Карыстальніцкае</string>
   <string name="snooze_sheet_option_custom_detail">Выберыце дату і час</string>
-    <string name="snooze_sheet_snooze_title">Адкласці да</string>
+  <string name="snooze_sheet_option_upsell_detail">Платная функцыя</string>
+  <string name="snooze_sheet_snooze_title">Адкласці да</string>
   <string name="snooze_sheet_option_unsnooze">Скасаваць адкладанне</string>
   <string name="snooze_sheet_error_unable_to_snooze">Адбылася невядомая памылка пры адкладанні гэтай размовы</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Адбылася невядомая памылка пры скасаванні адкладання размовы</string>

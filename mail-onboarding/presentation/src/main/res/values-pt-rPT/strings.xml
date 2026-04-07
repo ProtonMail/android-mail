@@ -30,4 +30,5 @@
   <string name="onboarding_next">Seguinte</string>
   <string name="onboarding_get_started">Começar</string>
   <string name="onboarding_illustration_content_description">Ilustração \'onboarding\'</string>
+  <string name="onboarding_close_content_description">Fechar</string>
 </resources>

@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">Mengirim pesan…</string>
   <string name="mailbox_message_sending_offline">Offline: Pesan diantrekan untuk dikirim</string>
   <string name="mailbox_message_sending_success">Pesan terkirim</string>
-    <string name="mailbox_message_sending_error_action">Pergi ke Draf</string>
+  <string name="mailbox_message_sending_error">Masalah dalam mengirim pesan</string>
+  <string name="mailbox_message_sending_error_action">Pergi ke Draf</string>
   <string name="notification_switched_account">Anda telah beralih ke akun %s</string>
-    <string name="mailbox_message_scheduling">Menjadwalkan pesan…</string>
+  <string name="label_saved">Label disimpan</string>
+  <string name="label_deleted">Label dihapus</string>
+  <string name="app_locked">Aplikasi terkunci</string>
+  <string name="use_pin_instead">Gunakan PIN sebagai gantinya</string>
+  <string name="mailbox_message_scheduling">Menjadwalkan pesan…</string>
   <string name="mailbox_message_scheduling_offline">Offline: Pesan diantrekan untuk dijadwalkan</string>
   <string name="mailbox_message_scheduled_for_sending_success">Pesan ini akan dikirim pada %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Pengguna ini telah terhubung masuk</string>

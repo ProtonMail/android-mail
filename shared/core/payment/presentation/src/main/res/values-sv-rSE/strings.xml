@@ -32,7 +32,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %1$s/månad</string>
   <string name="payment_bf_renew_annually">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %1$s/år</string>
-    <string name="payment_welcome_offer_renew_monthly">Välkomsterbjudande. Förnyas automatiskt med %1$s/månad</string>
+  <string name="payment_bf_renew_biennially">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %1$s vartannat år</string>
+  <string name="payment_welcome_offer_renew_monthly">Välkomsterbjudande. Förnyas automatiskt med %1$s/månad</string>
   <string name="payment_welcome_offer_renew_annually">Välkomsterbjudande. Förnyas automatiskt med %1$s/år</string>
   <string name="payment_welcome_offer_renew_biennially">Välkomsterbjudande. Förnyas automatiskt med %1$s vartannat år</string>
   <plurals name="payment_welcome_offer_renew_other">

@@ -17,8 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="drawer_title_contacts">Кантакты</string>
-    <string name="drawer_title_bug_report">Паведаміць аб праблеме</string>
+  <string name="drawer_title_more">Больш</string>
+  <string name="drawer_title_contacts">Кантакты</string>
+  <string name="drawer_title_subscription">Падпіска</string>
+  <string name="drawer_title_bug_report">Паведаміць аб праблеме</string>
   <string name="drawer_item_create_label">Стварыць метку</string>
   <string name="drawer_item_create_folder">Стварыць папку</string>
   <string name="drawer_upgrade_plus">Палепшыць да Mail Plus</string>

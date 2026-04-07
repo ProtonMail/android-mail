@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Este fim de semana</string>
   <string name="snooze_sheet_option_custom">Personalizar</string>
   <string name="snooze_sheet_option_custom_detail">Selecionar data e hora</string>
-    <string name="snooze_sheet_snooze_title">Adiar até</string>
+  <string name="snooze_sheet_option_upsell_detail">Funcionalidade paga</string>
+  <string name="snooze_sheet_snooze_title">Adiar até</string>
   <string name="snooze_sheet_option_unsnooze">Retomar</string>
   <string name="snooze_sheet_error_unable_to_snooze">Lamentamos, ocorreu um erro desconhecido ao adiar esta conversa</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Ocorreu um erro desconhecido ao cancelar o adiamento da conversa</string>

@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%dt</string>
   <string name="expiration_minutes_arg">%dmin</string>
   <string name="retry">Yritä uudelleen</string>
-    <string name="x_error_not_logged_in">Ei kirjautuneena</string>
-    <string name="action_customize_toolbar_description">Mukauta työkalupalkkia</string>
+  <string name="toolbar_back_content_description">Palaa edelliselle ruudulle</string>
+  <string name="x_error_not_logged_in">Ei kirjautuneena</string>
+  <string name="action_customize_toolbar">Mukauta työkalupalkkia</string>
+  <string name="action_customize_toolbar_description">Mukauta työkalupalkkia</string>
   <string name="action_customize_toolbar_content_description">Mukauta työkalupalkkia</string>
   <string name="action_reply">Vastaa</string>
   <string name="action_reply_all">Vastaa kaikille</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Kiinnitä</string>
   <string name="action_unpin_description">Irrota</string>
   <string name="action_reply_content_description">Vastaa</string>
-    <string name="action_reply_all_content_description">Vastaa kaikille</string>
+  <string name="action_reply_to_content_description">Vastaa käyttäjälle %s</string>
+  <string name="action_reply_all_content_description">Vastaa kaikille</string>
   <string name="action_forward_content_description">Välitä</string>
   <string name="action_mark_read_content_description">Merkitse luetuksi</string>
   <string name="action_mark_unread_content_description">Merkitse lukemattomaksi</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Toimintojen lataus epäonnistui</string>
   <string name="yesterday">Eilen</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">Viestit</string>
+  <string name="attachment_download_notification_channel_name">Liitteet</string>
+  <string name="attachment_download_notification_channel_description">Ilmoitukset liitetiedostojen latauksista</string>
+  <string name="email_notification_channel_name">Viestit</string>
   <string name="login_notification_channel_name">Kirjautumishälytykset</string>
   <string name="email_notification_channel_description">Ilmoitukset saapuneista viesteistä</string>
   <string name="login_notification_channel_description">Ilmoitukset uusista kirjautumisista</string>
   <string name="auth_badge_official">Virallinen</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Toiminnon suorittamiseen sopivaa sovellusta ei löytynyt</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Peruuta</string>
+  <string name="action_copied_to_clipboard">Kopioitiin leikepöydälle</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Peruuta</string>
   <string name="mailbox_action_delete_dialog_button_delete">Poista</string>
   <string name="picker_dialog_cancel">Peruuta</string>
   <string name="color_purple">Violetti</string>

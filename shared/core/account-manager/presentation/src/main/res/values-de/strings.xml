@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Von diesem Gerät entfernen</string>
   <string name="account_switcher_switch_to">Wechseln zu</string>
   <string name="manage_accounts_title">Konten verwalten</string>
-    <string name="manage_accounts_add_account">Konto hinzufügen</string>
+  <string name="manage_accounts_signed_in">Angemeldet</string>
+  <string name="manage_accounts_signed_out">Abgemeldet</string>
+  <string name="manage_accounts_add_account">Konto hinzufügen</string>
   <string name="manage_accounts_switch_to">Wechseln zu</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Zu einem angemeldeten Konto wechseln</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Zu einem abgemeldeten Konto wechseln</string>

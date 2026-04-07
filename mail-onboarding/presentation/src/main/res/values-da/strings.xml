@@ -30,4 +30,5 @@
   <string name="onboarding_next">Næste</string>
   <string name="onboarding_get_started">Kom godt i gang</string>
   <string name="onboarding_illustration_content_description">Introduktionsillustration</string>
+  <string name="onboarding_close_content_description">Luk</string>
 </resources>

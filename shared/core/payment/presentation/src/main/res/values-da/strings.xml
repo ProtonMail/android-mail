@@ -32,7 +32,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$s/måned</string>
   <string name="payment_bf_renew_annually">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$s/år</string>
-    <string name="payment_welcome_offer_renew_monthly">Velkomsttilbud. Fornyes automatisk til %1$s/måned</string>
+  <string name="payment_bf_renew_biennially">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$s hvert 2. år</string>
+  <string name="payment_welcome_offer_renew_monthly">Velkomsttilbud. Fornyes automatisk til %1$s/måned</string>
   <string name="payment_welcome_offer_renew_annually">Velkomsttilbud. Fornyes automatisk til %1$s pr. år.</string>
   <string name="payment_welcome_offer_renew_biennially">Velkomsttilbud. Fornyes automatisk til %1$s hvert 2. år</string>
   <plurals name="payment_welcome_offer_renew_other">

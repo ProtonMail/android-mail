@@ -30,4 +30,5 @@
   <string name="onboarding_next">Selanjutnya</string>
   <string name="onboarding_get_started">Mulai</string>
   <string name="onboarding_illustration_content_description">Ilustrasi pengenalan</string>
+  <string name="onboarding_close_content_description">Tutup</string>
 </resources>

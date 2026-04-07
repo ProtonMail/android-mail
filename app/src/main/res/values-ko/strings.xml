@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">메시지를 보내는중…</string>
   <string name="mailbox_message_sending_offline">오프라인: 메시지 보내기 대기 중</string>
   <string name="mailbox_message_sending_success">메시지 보냄</string>
-    <string name="mailbox_message_sending_error_action">임시 보관함으로 이동</string>
+  <string name="mailbox_message_sending_error">메시지 전송 오류</string>
+  <string name="mailbox_message_sending_error_action">임시 보관함으로 이동</string>
   <string name="notification_switched_account">계정 %s(으)로 전환됨</string>
-    <string name="mailbox_message_scheduling">메시지 예약 중…</string>
+  <string name="label_saved">라벨을 저장했습니다.</string>
+  <string name="label_deleted">라벨을 삭제했습니다.</string>
+  <string name="app_locked">앱 잠김</string>
+  <string name="use_pin_instead">대신 PIN 사용하기</string>
+  <string name="mailbox_message_scheduling">메시지 예약 중…</string>
   <string name="mailbox_message_scheduling_offline">오프라인: 메시지 예약 대기 중</string>
   <string name="mailbox_message_scheduled_for_sending_success">이 메시지는 %1$s에 전송됩니다</string>
   <string name="launcher_alert_duplicate_account_description">이미 로그인된 사용자입니다.</string>

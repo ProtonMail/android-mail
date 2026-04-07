@@ -34,7 +34,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Popusti temeljijo na standardni mesečni ceni. Samodejno se podaljša po ceni %1$s/mesec.</string>
   <string name="payment_bf_renew_annually">Popusti temeljijo na standardni mesečni ceni. Samodejno se podaljša po ceni %1$s/leto.</string>
-    <string name="payment_welcome_offer_renew_monthly">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/mesec</string>
+  <string name="payment_bf_renew_biennially">Popusti temeljijo na standardni mesečni ceni. Samodejno se podaljša po ceni %1$s vsaki 2 leti.</string>
+  <string name="payment_welcome_offer_renew_monthly">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/mesec</string>
   <string name="payment_welcome_offer_renew_annually">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/leto</string>
   <string name="payment_welcome_offer_renew_biennially">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s vsaki 2 leti</string>
   <plurals name="payment_welcome_offer_renew_other">

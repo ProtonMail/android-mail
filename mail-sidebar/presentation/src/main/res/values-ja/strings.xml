@@ -17,8 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="drawer_title_contacts">連絡先</string>
-    <string name="drawer_title_bug_report">問題を報告</string>
+  <string name="drawer_title_more">さらに表示</string>
+  <string name="drawer_title_contacts">連絡先</string>
+  <string name="drawer_title_subscription">サブスクリプション</string>
+  <string name="drawer_title_bug_report">問題を報告</string>
   <string name="drawer_item_create_label">ラベルを作成</string>
   <string name="drawer_item_create_folder">フォルダを作成</string>
   <string name="drawer_upgrade_plus">Mail Plus にアップグレード</string>

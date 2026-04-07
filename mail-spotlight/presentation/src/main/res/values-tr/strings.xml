@@ -28,4 +28,23 @@
   <string name="spotlight_feature_item_headers_html_title">Üst bilgilere ve HTML koduna bakın</string>
   <string name="spotlight_feature_item_headers_html_description">Şüpheli iletileri inceleyerek gerçekliklerini doğrulayın ve gizli izleme ögelerini ortaya çıkarın.</string>
   <string name="spotlight_screen_got_it">Anladım</string>
+  <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Proton Mail yeniliklerini öğrenin</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Kullanıcı arayüzü iyileştirmeleri</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Akıcı kaydırma, yenilenmiş yerleşim ve diğer şeyler.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Okunmamış süzgeci</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Daha kolay erişim için yeni görünüm ve konum.</string>
+  <string name="spotlight_screen_category_view_categories_title">E-posta kategorileri</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Gelen postaların otomatik olarak sıralanması.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Yeniliklere bakın.\nGeri kalanını atla.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Okunmamış iletilere odaklanın. Ya da odaklanmayın. Tüm e-postalar ile yalnızca okunmamış olanlar arasında tek dokunuşla geçiş yapın.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Yeni ve okunmamış e-postaları yakalayın</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Artık \"Okunmamış\" süzgeci daha belirgin ve parmaklarınızın ucunda. Böylece okunmamış e-postaları hızlıca görüp gerekli işlemleri yapabilirsiniz.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Daha düzenli gelen kutunuzla tanışın</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Yeni e-posta kategorileri ile yalnızca önemli ve acil iletiler birincil gelen kutunuzda görünür. Diğer tüm iletiler kategorilere ayrılır.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Merhaba kategoriler.\nElveda dikkat dağınıklığı.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Duyurular, güncellemeler ve acil olmayan e-postalar yüzünden dikkatinizin dağılmasını önleyin. Yeni e-posta kategorileri ile yalnızca önemli iletiler birincil gelen kutunuza düşer.</string>
+  <string name="spotlight_screen_category_view_button_continue">Merhaba kategoriler.\nElveda dikkat dağınıklığı.</string>
+  <string name="spotlight_screen_category_view_button_try">Kategorileri deneyin</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Kategoriler kullanılmasın</string>
 </resources>

@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Yanıtla</string>
   <string name="quick_reply_all_button_content_description">Tümünü yanıtla</string>
   <string name="more_button_content_description">Diğer</string>
-    <string name="from">Kimden:</string>
+  <string name="subject">Konu:</string>
+  <string name="from">Kimden:</string>
   <string name="to">Kime:</string>
   <string name="cc">Kopya:</string>
   <string name="bcc">Gizli kopya:</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d ek dosya</item>
     <item quantity="other">%d ek dosya</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Bilgileri gizle</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Taslak)</string>
   <string name="error_mark_as_read_failed">Okunmuş olarak işaretlenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_mark_as_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöpe atılamadı. Lütfen yeniden deneyin.</string>
-    <string name="message_moved_to">İleti %s klasörüne taşındı</string>
-    <string name="message_moved_to_archive">İleti arşivlendi</string>
+  <string name="message_moved">İleti taşındı</string>
+  <string name="message_moved_to">İleti %s klasörüne taşındı</string>
+  <string name="message_moved_to_trash">İleti çöpe atıldı</string>
+  <string name="message_moved_to_archive">İleti arşivlendi</string>
   <string name="error_move_to_archive_failed">Arşive taşınamadı. Lütfen yeniden deneyin.</string>
-    <string name="error_move_to_spam_failed">İstenmeyen ileti kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
+  <string name="message_moved_to_spam">İleti İstenmeyen kutusuna taşındı</string>
+  <string name="error_move_to_spam_failed">İstenmeyen ileti kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="message_moved_to_selected_destination">İleti %1$s klasörüne taşındı</string>
   <string name="error_move_message_failed">İleti taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">Yeni bir indirme başlatılmadan önce süren indirme tamamlanmalıdır.</string>
   <string name="error_get_attachment_not_enough_memory">Ek dosya yetersiz bellek nedeniyle alınamadı</string>
   <string name="error_relabel_message_failed">İleti yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
-    <string name="decryption_error">İletinin kodu çözülemedi.</string>
+  <string name="error_relabel_conversation_failed">Yazışma yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
+  <string name="please_go_back_online_to_load_messages">Çevrim dışısınız. İletilerin yüklenmesi için lütfen çevrim içi olun</string>
+  <string name="decryption_error">İletinin kodu çözülemedi.</string>
   <string name="detail_error_retrieving_message_body">İletiler alınamadı</string>
   <string name="message_body_error_no_webview">Bu iletinin içeriğini görebilmek için WebView kurulu olmalıdır.</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimiz anlamına gelir.</string>
   <string name="message_report_phishing_dialog_confim_button">Onayla</string>
   <string name="message_report_phishing_dialog_cancel_button">İptal</string>
-    <string name="trashed_messages_banner">Bu yazışmada çöp kutusundaki iletileri görüntüler.</string>
+  <string name="open_on_protoncalendar_banner_title">Proton Calendar ile aç</string>
+  <string name="open_on_protoncalendar_banner_description">Güvenli şifrelenmiş takvim</string>
+  <string name="trashed_messages_banner">Bu yazışmada çöp kutusundaki iletileri görüntüler.</string>
   <string name="non_trashed_messages_banner">Bu yazışmada çöp kutusunda olmayan iletileri görüntüler.</string>
   <string name="recipient_me">ben</string>
   <string name="message_details_header_from">Kimden</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">Bu e-posta listesindeki aboneliğiniz sonlandırıldı.</string>
   <string name="error_unsubscribe_newsletter">Duyuru aboneliği sonlandırılamadı</string>
   <string name="detail_error_loading_single_message">İleti yüklenemedi</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Görsel indirilemedi</string>
+  <string name="image_downloaded_successfully">Görsel indirildi</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">İleti üst bilgileri</string>
   <string name="raw_message_data_html_title">İleti HTML kodu</string>
   <string name="raw_message_data_close_button_content_description">Kapat</string>

@@ -32,7 +32,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$s/mes</string>
   <string name="payment_bf_renew_annually">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$s/any</string>
-    <string name="payment_welcome_offer_renew_monthly">Oferta de benvinguda. Es renova automàticament a %1$s/mes.</string>
+  <string name="payment_bf_renew_biennially">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$s cada 2 anys</string>
+  <string name="payment_welcome_offer_renew_monthly">Oferta de benvinguda. Es renova automàticament a %1$s/mes.</string>
   <string name="payment_welcome_offer_renew_annually">Oferta de benvinguda. Es renova automàticament a %1$s/any.</string>
   <string name="payment_welcome_offer_renew_biennially">Oferta de benvinguda. Es renova automàticament a %1$s cada 2 anys.</string>
   <plurals name="payment_welcome_offer_renew_other">

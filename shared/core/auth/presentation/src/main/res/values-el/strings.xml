@@ -17,7 +17,8 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-    <string name="login_help_title">Πώς μπορούμε να βοηθήσουμε;</string>
+  <string name="login_help_close">Κλείσιμο</string>
+  <string name="login_help_title">Πώς μπορούμε να βοηθήσουμε;</string>
   <string name="login_help_forgot_username">Ξέχασα το όνομα χρήστη μου</string>
   <string name="login_help_forgot_password">Ξέχασα τον κωδικό πρόσβασης</string>
   <string name="login_help_other_issues">Άλλα προβλήματα εισόδου</string>
@@ -35,11 +36,15 @@
   <string name="auth_login_username">Όνομα χρήστη ή email</string>
   <string name="auth_email">Email</string>
   <string name="auth_password">Κωδικός πρόσβασης</string>
-    <string name="auth_login_assistive_text">Παρακαλούμε εισάγετε το Proton email ή το όνομα χρήστη σας.</string>
+  <string name="auth_username_placeholder">Όνομα χρήστη ή email</string>
+  <string name="auth_password_placeholder">Κωδικός πρόσβασης</string>
+  <string name="auth_login_assistive_text">Παρακαλούμε εισάγετε το Proton email ή το όνομα χρήστη σας.</string>
   <string name="auth_account_details">Εισαγάγετε τα στοιχεία του λογαριασμού σας Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Πρόβλημα σύνδεσης. Παρακαλούμε προσπαθήστε ξανά.</string>
-    <string name="auth_login_error_invalid_action_invalid_credentials">Εσφαλμένα διαπιστευτήρια σύνδεσης. Παρακαλούμε προσπαθήστε ξανά.</string>
-    <string name="auth_login_general_error">Παρουσιάστηκε σφάλμα.</string>
+  <string name="auth_login_error_invalid_action_human_verification_challenge">Απαιτείται ανθρώπινη επαλήθευση.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Εσφαλμένα διαπιστευτήρια σύνδεσης. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="auth_login_error_invalid_action_unsupported_tfa">Μη υποστηριζόμενοι δύο παράγοντες. (2FA)</string>
+  <string name="auth_login_general_error">Παρουσιάστηκε σφάλμα.</string>
   <string name="auth_second_factor_title">Ταυτοποίηση δύο παραγόντων</string>
   <string name="auth_second_factor_subtitle">Ο λογαριασμός σας έχει διαμορφώσει αρκετούς μηχανισμούς 2FA. Επιλέξτε πώς θέλετε να επιβεβαιώσετε την ταυτότητά σας.</string>
   <string name="auth_second_factor_tab_security_key">Κλειδί Ασφαλείας</string>
@@ -61,7 +66,9 @@
   <string name="auth_two_pass_input_empty">Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός</string>
   <string name="auth_signup_title">Δημιουργήστε τον λογαριασμό σας Proton</string>
   <string name="auth_signup_subtitle">Ένας λογαριασμός για όλες τις υπηρεσίες Proton</string>
-    <string name="auth_signup_next">Επόμενο</string>
+  <string name="auth_signup_username_assistive_text">Το Όνομα Χρήστη δεν πρέπει να είναι κενό.</string>
+  <string name="auth_signup_email_assistive_text">Το Email δεν πρέπει να είναι κενό.</string>
+  <string name="auth_signup_next">Επόμενο</string>
   <string name="auth_signup_username">Όνομα χρήστη</string>
   <string name="auth_signup_create_password">Δημιουργήστε τον κωδικό πρόσβασής σας</string>
   <string name="auth_signup_password">Κωδικός πρόσβασης</string>
@@ -76,7 +83,11 @@
   <string name="auth_signup_recovery_skip">Παράλειψη</string>
   <string name="auth_signup_recovery_title">Ορισμός μεθόδου ανάκτησης (προαιρετικά)</string>
   <string name="auth_signup_recovery_subtitle">Θα στείλουμε οδηγίες ανάκτησης σε αυτήν τη διεύθυνση ηλεκτρονικού ταχυδρομείου ή τηλέφωνο αν κλειδωθείτε έξω από τον λογαριασμό σας.</string>
-    <string name="auth_signup_recovery_select_country">Επιλέξτε χώρα</string>
+  <string name="auth_signup_recovery_email">Email</string>
+  <string name="auth_signup_recovery_phone">Τηλέφωνο</string>
+  <string name="auth_signup_recovery_email_hint">Διεύθυνση ανάκτησης</string>
+  <string name="auth_signup_recovery_phone_hint">Αριθμός τηλεφώνου ανάκτησης</string>
+  <string name="auth_signup_recovery_select_country">Επιλέξτε χώρα</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Παράλειψη μεθόδου ανάκτησης;</string>
   <string name="auth_signup_skip_recovery_description">Μια μέθοδος ανάκτησης θα σας βοηθήσει να αποκτήσετε πρόσβαση στον λογαριασμό σας σε περίπτωση που ξεχάσετε τον κωδικό πρόσβασης ή κλειδωθείτε από τον λογαριασμό σας.</string>
@@ -118,7 +129,8 @@
   <string name="auth_fido_config_error">Σφάλμα ανάκτησης αποθηκευμένων κλειδιών.</string>
   <string name="auth_fido_reading_key_error">Σφάλμα κατά την ανάγνωση του κλειδιού ασφαλείας.</string>
   <string name="auth_fido_submit_key_error">Σφάλμα υποβολής δεδομένων κλειδιού.</string>
-    <string name="auth_fido_authenticating_in_progress">Πραγματοποιείται ταυτοποίηση με κλειδί ασφαλείας.</string>
+  <string name="auth_fido_reading_key_progress">Ανάγνωση κλειδιού ασφαλείας.</string>
+  <string name="auth_fido_authenticating_in_progress">Πραγματοποιείται ταυτοποίηση με κλειδί ασφαλείας.</string>
   <string name="auth_fido_security_key">Κλειδί Ασφαλείας</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Ο κωδικός πρέπει να περιέχει τουλάχιστον 1 χαρακτήρα</item>
@@ -135,15 +147,21 @@
   <string name="settings_password_management_tab_second_password">Δεύτερος κωδικός πρόσβασης</string>
   <string name="settings_password_management_change_password_note">Για να αλλάξετε οποιονδήποτε από τους κωδικούς πρόσβασής σας, θα πρέπει να γνωρίζετε τον κύριο κωδικό πρόσβασής σας.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Ξεχάσατε τον κύριο κωδικό σας;</string>
-    <string name="settings_main_password_hint_current">Τρέχων κύριος κωδικός πρόσβασης</string>
+  <string name="settings_password_management_header">Αλλαγή κωδικού πρόσβασης</string>
+  <string name="settings_password_management_cannot_change_password">Δεν μπορείτε να αλλάξετε τον εφεδρικό κωδικό πρόσβασης. Παρακαλούμε επικοινωνήστε με το διαχειριστή σας.</string>
+  <string name="settings_main_password_hint_current">Τρέχων κύριος κωδικός πρόσβασης</string>
   <string name="settings_main_password_hint_new">Νέος κύριος κωδικός πρόσβασης</string>
   <string name="settings_main_password_hint_new_confirm">Επιβεβαίωση νέου κυρίου κωδικού πρόσβασης</string>
   <string name="settings_second_password_hint_current_main_password">Τρέχων κύριος κωδικός πρόσβασης</string>
   <string name="settings_second_password_hint_new">Νέος δεύτερος κωδικός πρόσβασης</string>
   <string name="settings_second_password_hint_new_confirm">Επιβεβαίωση νέου δεύτερου κωδικού πρόσβασης</string>
-    <string name="settings_password_management_login_success">Ο κωδικός πρόσβασης σύνδεσης ενημερώθηκε</string>
+  <string name="settings_change_password_error">Παρουσιάστηκε σφάλμα στην αλλαγή κωδικού πρόσβασης.</string>
+  <string name="settings_recovery_email_success">Η διεύθυνση ηλεκτρονικού ταχυδρομείου ανάκτησης ενημερώθηκε</string>
+  <string name="settings_password_management_login_success">Ο κωδικός πρόσβασης σύνδεσης ενημερώθηκε</string>
   <string name="settings_password_management_second_success">Ο δεύτερος κωδικός πρόσβασης ενημερώθηκε</string>
-    <string name="settings_password_invalid_2fa">Μη έγκυρος κωδικός δεύτερου παράγοντα. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="settings_password_management_start_recovery">Δεν γνωρίζετε τον τρέχοντα κωδικό πρόσβασής σας;</string>
+  <string name="settings_password_management_2fa">Απαιτείται έλεγχος ταυτότητας δύο παραγόντων (2FA)</string>
+  <string name="settings_password_invalid_2fa">Μη έγκυρος κωδικός δεύτερου παράγοντα. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="settings_password_error_empty">Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός.</string>
   <string name="settings_password_error">Λανθασμένο όνομα χρήστη ή κωδικός πρόσβασης. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="settings_password_error_invalid_recovery">Λανθασμένος κωδικός πιστοποίησης δύο παραγόντων (2FA). Παρακαλούμε προσπαθήστε ξανά.</string>

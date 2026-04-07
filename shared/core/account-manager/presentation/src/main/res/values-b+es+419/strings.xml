@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Borrar de este dispositivo</string>
   <string name="account_switcher_switch_to">Cambiar a</string>
   <string name="manage_accounts_title">Gestionar las cuentas</string>
-    <string name="manage_accounts_add_account">Agregar cuenta</string>
+  <string name="manage_accounts_signed_in">Sesión iniciada</string>
+  <string name="manage_accounts_signed_out">Sesión cerrada</string>
+  <string name="manage_accounts_add_account">Agregar cuenta</string>
   <string name="manage_accounts_switch_to">Cambiar a</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Cambiar a otra cuenta con la sesión iniciada</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Cambiar a otra cuenta con la sesión cerrada</string>

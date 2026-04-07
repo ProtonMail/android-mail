@@ -17,7 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!-- Auto lock -->
+  <string name="mail_pin_lock_toolbar_button_content_description">Torna</string>
+  <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Bloqueig de l\'aplicació</string>
   <string name="mail_pinlock_settings_no_lock">No bloquis</string>
   <string name="mail_pinlock_settings_with_pin">Protegeix amb codi PIN</string>
@@ -61,9 +62,13 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
   <string name="mail_settings_pin_insertion_created_success">S\'ha creat el codi PIN.</string>
-    <!-- Error messages -->
+  <string name="mail_settings_pin_insertion_changed_success">S\'ha canviat el codi PIN.</string>
+  <!-- Error messages -->
   <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
-    <string name="mail_settings_biometrics_unable_to_set">S\'ha produït un error en establir les preferències de la biometria.</string>
+  <string name="mail_settings_pin_verify_generic_error_message">S\'ha produït un error. Torneu-ho a provar.</string>
+  <string name="mail_settings_pin_verify_too_many_attempts">Massa intents incorrectes</string>
+  <string name="mail_settings_pin_verify_wrong_pin">Codi PIN incorrecte</string>
+  <string name="mail_settings_biometrics_unable_to_set">S\'ha produït un error en establir les preferències de la biometria.</string>
   <string name="mail_settings_biometrics_unable_to_unset">S\'ha produït un error en restablir les preferències de la biometria.</string>
   <string name="mail_settings_biometrics_unknown_lock">S\'ha produït un error en recuperar la política de bloqueig actual.</string>
   <!-- Auto lock dialog -->

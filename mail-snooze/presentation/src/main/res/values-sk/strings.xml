@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Tento víkend</string>
   <string name="snooze_sheet_option_custom">Vlastná</string>
   <string name="snooze_sheet_option_custom_detail">Vybrať dátum a čas</string>
-    <string name="snooze_sheet_snooze_title">Odložiť až do</string>
+  <string name="snooze_sheet_option_upsell_detail">Platená funkcia</string>
+  <string name="snooze_sheet_snooze_title">Odložiť až do</string>
   <string name="snooze_sheet_option_unsnooze">Zrušiť odloženie</string>
   <string name="snooze_sheet_error_unable_to_snooze">Ospravedlňujeme sa, pri odložení tejto konverzácie došlo k neznámej chybe</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Pri zrušení odloženia konverzácie došlo k neznámej chybe</string>

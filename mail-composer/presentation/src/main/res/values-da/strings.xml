@@ -25,11 +25,17 @@
   <string name="compose_message_placeholder">Skriv e-mail</string>
   <string name="close_composer_content_description">Luk skrivevinduet</string>
   <string name="send_button_title">Send</string>
-    <string name="composer_expand_recipients_button">Vis andre modtagere</string>
+  <string name="send_message_content_description">Send besked</string>
+  <string name="composer_expand_recipients_button">Vis andre modtagere</string>
   <string name="composer_error_invalid_email">E-mailadresse er ugyldig eller findes ikke</string>
-    <string name="composer_change_sender_paid_feature">Opgradér til et betalt abonnement for at ændre afsenderadressen</string>
-    <string name="composer_error_duplicate_recipient">Dublet-modtager(e) fjernet</string>
-    <string name="composer_error_store_draft_address_disabled">Kan ikke gemme udkast - Denne afsenderadresse er deaktiveret</string>
+  <string name="change_sender_button_content_description">Skift afsender</string>
+  <string name="composer_change_sender_paid_feature">Opgradér til et betalt abonnement for at ændre afsenderadressen</string>
+  <string name="composer_error_store_draft_sender_address">Afsenderadresse blev ikke gemt</string>
+  <string name="composer_error_store_draft_body">Udkast til e-mail-tekst blev ikke gemt</string>
+  <string name="composer_error_duplicate_recipient">Dublet-modtager(e) fjernet</string>
+  <string name="composer_error_store_draft_subject">Emnelinje blev ikke gemt</string>
+  <string name="composer_error_store_draft_recipients">Lagring af dette udkasts modtagere mislykkedes</string>
+  <string name="composer_error_store_draft_address_disabled">Kan ikke gemme udkast - Denne afsenderadresse er deaktiveret</string>
   <string name="composer_error_store_draft_address_pk_missing">Kan ikke gemme udkast - Denne afsenderadresse har ikke en primærnøgle</string>
   <string name="composer_error_store_draft_attachment_too_large">Kan ikke gemme udkast - Vedhæftninger overskrider størrelsesgrænsen</string>
   <string name="composer_error_store_draft_too_many_attachments">Kan ikke gemme udkast - Vedhæftningsgrænse nået</string>
@@ -45,7 +51,9 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Fra dit fotogalleri</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Tag et nyt foto</string>
   <string name="composer_error_loading_parent_message">Kunne ikke indlæse beskedens oplysninger</string>
-    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_original_message_quote">Oprindelig besked</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; skrev:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Grænse for vedhæftning nået</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrænsen for vedhæftede filer er %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Kryptering af vedhæftning mislykkedes. Af sikkerhedsmæssige årsager blev alle vedhæftninger fjernet.</string>
@@ -60,11 +68,13 @@
   <string name="composer_button_discard_draft">Kassér udkast</string>
   <string name="composer_button_set_expiration">Indstil udløbstidspunkt</string>
   <string name="composer_expiration_time_bottom_sheet_title">Beskedudløb</string>
-    <string name="composer_bottom_bar_expiration_time_none">Udløber aldrig</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Indstil</string>
+  <string name="composer_bottom_bar_expiration_time_none">Udløber aldrig</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Efter 1 time</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Efter 1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Efter 3 dage</string>
-    <string name="composer_bottom_bar_expiration_time_custom">På en bestemt dato</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">Efter 1 uge</string>
+  <string name="composer_bottom_bar_expiration_time_custom">På en bestemt dato</string>
   <string name="composer_error_setting_expiration_time">Indstilling af udløbstid mislykkedes</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Tilføj adgangskode for at bruge udløb</string>
@@ -88,18 +98,28 @@
   <string name="message_sending_error_dialog_header">Afsendelsesfejl</string>
   <string name="message_sending_error_dialog_button_dismiss">Luk</string>
   <string name="message_sending_error_dialog_text_error">Din e-mail kan ikke sendes til den indtastede adresse af følgende grund:</string>
-    <string name="set_message_password_title">Indstil adgangskode</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Der er ingen betroede nøgler: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse findes ikke: %s</string>
+  <string name="set_message_password_title">Indstil adgangskode</string>
   <string name="set_message_password_info_message">Angiv en adgangskode for at kryptere denne besked til ikke-Proton Mail-modtagere.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Få mere at vide</a></string>
   <string name="set_message_password_label">Beskedadgangskode</string>
   <string name="set_message_password_label_hint">Adgangskodetip (valgfrit)</string>
   <string name="set_message_password_supporting_text">Mindst 8 tegn påkrævet.</string>
   <string name="set_message_password_supporting_error_text">Adgangskoden skal være mellem 8 og 21 tegn lang</string>
-    <string name="set_message_password_button_show">Vis adgangskode</string>
+  <string name="set_message_password_supporting_text_repeat">Adgangskoder skal være ens</string>
+  <string name="set_message_password_supporting_error_text_repeat">Adgangskoder matcher ikke</string>
+  <string name="set_message_password_button_show">Vis adgangskode</string>
   <string name="set_message_password_button_hide">Skjul adgangskode</string>
   <string name="set_message_password_button_save_changes">Gem</string>
   <string name="set_message_password_button_remove_password">Fjern adgangskode</string>
-    <string name="composer_recipient_suggestion_device">Vis enhedskontakter</string>
+  <string name="respondInline">Besvar in-line</string>
+  <string name="subject_placeholder">Emne</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d medlem</item>
+    <item quantity="other">%d medlemmer</item>
+  </plurals>
+  <string name="composer_recipient_suggestion_device">Vis enhedskontakter</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Kasser denne besked?</string>
   <string name="discard_draft_dialog_text">Dit udkast vil ikke blive gemt.</string>
@@ -119,7 +139,11 @@
   <string name="composer_schedule_send_custom_upsell_title">Brugerdefineret dato og tid</string>
   <string name="composer_schedule_send_custom_description">Vælg tid og dato</string>
   <string name="composer_schedule_send_previously_set">Tidligere konfigureret</string>
-    <string name="composer_change_sender_title">Fra</string>
+  <string name="composer_schedule_send_custom_time_label">Tidspunkt</string>
+  <string name="composer_schedule_send_custom_date_label">Dato</string>
+  <string name="composer_schedule_send_dialog_ok">Ok</string>
+  <string name="composer_schedule_send_dialog_enter_time">Indtast tid</string>
+  <string name="composer_change_sender_title">Fra</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Kan ikke ændre afsender, da hentning af brugerens adresser mislykkedes. Prøv igen.</string>
   <string name="composer_change_sender_invalid_address">Den valgte adresse kan ikke bruges til afsendelse</string>
   <string name="composer_change_sender_unexpected_failure">Noget gik galt ved ændring af afsenderen. Prøv igen.</string>

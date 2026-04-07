@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Antwoord</string>
   <string name="quick_reply_all_button_content_description">Allen beantwoorden</string>
   <string name="more_button_content_description">Meer</string>
-    <string name="from">Van:</string>
+  <string name="subject">Onderwerp:</string>
+  <string name="from">Van:</string>
   <string name="to">Aan:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Bcc:</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d bijlage</item>
     <item quantity="other">%d bijlagen</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Details verbergen</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Concept)</string>
   <string name="error_mark_as_read_failed">Markeren als ongelezen mislukt. Probeer opnieuw.</string>
   <string name="error_mark_as_unread_failed">Markeren als ongelezen mislukt. Probeer opnieuw.</string>
   <string name="error_star_operation_failed">Ster toevoegen is mislukt. Probeer opnieuw.</string>
   <string name="error_unstar_operation_failed">Ster verwijderen is mislukt. Probeer opnieuw.</string>
   <string name="error_move_to_trash_failed">Verplaatsen naar prullenbak is mislukt. Probeer opnieuw.</string>
-    <string name="message_moved_to">Bericht verplaatst naar %s</string>
-    <string name="message_moved_to_archive">Bericht verplaatst naar archief</string>
+  <string name="message_moved">Bericht verplaatst</string>
+  <string name="message_moved_to">Bericht verplaatst naar %s</string>
+  <string name="message_moved_to_trash">Bericht verplaatst naar de prullenbak</string>
+  <string name="message_moved_to_archive">Bericht verplaatst naar archief</string>
   <string name="error_move_to_archive_failed">Verplaatsen naar archief mislukt. Probeer het opnieuw.</string>
-    <string name="error_move_to_spam_failed">Verplaatsen naar spam mislukt. Probeer het opnieuw.</string>
+  <string name="message_moved_to_spam">Bericht verplaatst naar Spam</string>
+  <string name="error_move_to_spam_failed">Verplaatsen naar spam mislukt. Probeer het opnieuw.</string>
   <string name="message_moved_to_selected_destination">Bericht verplaatst naar %1$s</string>
   <string name="error_move_message_failed">Bericht verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">Huidige download moet voltooid zijn voordat u een nieuwe start.</string>
   <string name="error_get_attachment_not_enough_memory">Kan bijlage niet ophalen vanwege onvoldoende geheugen</string>
   <string name="error_relabel_message_failed">Kon het bericht niet opnieuw labelen. Probeer opnieuw.</string>
-    <string name="decryption_error">Decoderen van bericht mislukt.</string>
+  <string name="error_relabel_conversation_failed">Kon het gesprek niet opnieuw labelen. Probeer opnieuw.</string>
+  <string name="please_go_back_online_to_load_messages">U bent offline. Ga terug online om berichten te laden</string>
+  <string name="decryption_error">Decoderen van bericht mislukt.</string>
   <string name="detail_error_retrieving_message_body">Kan bericht niet ophalen</string>
   <string name="message_body_error_no_webview">U moet een WebView hebben geïnstalleerd om de inhoud van dit bericht te zien.</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.</string>
   <string name="message_report_phishing_dialog_confim_button">Bevestigen</string>
   <string name="message_report_phishing_dialog_cancel_button">Annuleren</string>
-    <string name="trashed_messages_banner">Toon berichten in de Prullenbak in dit gesprek.</string>
+  <string name="open_on_protoncalendar_banner_title">Openen in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Veilig versleutelde agenda</string>
+  <string name="trashed_messages_banner">Toon berichten in de Prullenbak in dit gesprek.</string>
   <string name="non_trashed_messages_banner">Toon niet-verwijderde berichten in dit gesprek.</string>
   <string name="recipient_me">ik</string>
   <string name="message_details_header_from">Van</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">U bent afgemeld van deze mailinglijst.</string>
   <string name="error_unsubscribe_newsletter">Niet gelukt om u af te melden voor de nieuwsbrief</string>
   <string name="detail_error_loading_single_message">Laden van bericht is mislukt</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Downloaden van afbeelding mislukt</string>
+  <string name="image_downloaded_successfully">Afbeelding gedownload</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Berichtkoppen</string>
   <string name="raw_message_data_html_title">Bericht-HTML</string>
   <string name="raw_message_data_close_button_content_description">Sluiten</string>

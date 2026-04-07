@@ -26,7 +26,8 @@
     <item quantity="other">%d liitettä</item>
   </plurals>
   <string name="attachments">liitteet</string>
-    <string name="attachment_type_description">Tiedostotyyppi: %1$s</string>
+  <string name="attachment_show_more_label">+%1$d lisää</string>
+  <string name="attachment_type_description">Tiedostotyyppi: %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Pakattu</string>
   <string name="attachment_type_image">Kuva</string>
@@ -35,7 +36,8 @@
   <string name="attachment_type_unknown">Tuntematon</string>
   <string name="attachment_type_pdf">PDF-dokumentti</string>
   <string name="attachment_type_text">Teksti</string>
-    <string name="attachment_type_spreadsheet">Laskentataulukko</string>
+  <string name="attachment_type_document">Dokumentti</string>
+  <string name="attachment_type_spreadsheet">Laskentataulukko</string>
   <string name="attachment_type_presentation">Esitys</string>
   <string name="attachment_type_calendar">Kalenteri</string>
   <string name="attachment_type_code">Koodi</string>
@@ -47,9 +49,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Siirrä kohteeseen...</string>
-    <string name="bottom_sheet_archive_action">Arkistoidaanko samalla?</string>
+  <string name="bottom_sheet_done_action">Valmis</string>
+  <string name="bottom_sheet_archive_action">Arkistoidaanko samalla?</string>
   <string name="bottom_sheet_label_as_title">Merkitse tunnisteella</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">Viesti lähettäjältä %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopioi linkki</string>
   <string name="message_link_long_click_copy_description">Proton Mailista kopioitiin tekstiä</string>
   <string name="message_link_long_click_share">Jaa linkki</string>
@@ -78,6 +82,8 @@
   <string name="contact_actions_block_address_description">Estä tämä osoite</string>
   <string name="contact_actions_unblock_address">Poista tämän osoitteen esto</string>
   <string name="contact_actions_unblock_address_description">Poista tämän osoitteen esto</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">Näytä yhteystieto</string>
+  <string name="contact_actions_view_contact_details_description">Näytä yhteystiedon tiedot</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">Näytä koko viesti</string>
 </resources>

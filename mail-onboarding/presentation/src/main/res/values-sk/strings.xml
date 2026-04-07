@@ -30,4 +30,5 @@
   <string name="onboarding_next">Ďalej</string>
   <string name="onboarding_get_started">Začať</string>
   <string name="onboarding_illustration_content_description">Ukážka privítania</string>
+  <string name="onboarding_close_content_description">Zavrieť</string>
 </resources>

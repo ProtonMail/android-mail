@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Répondre</string>
   <string name="quick_reply_all_button_content_description">Répondre à tous</string>
   <string name="more_button_content_description">Plus</string>
-    <string name="from">De :</string>
+  <string name="subject">Objet :</string>
+  <string name="from">De :</string>
   <string name="to">À :</string>
   <string name="cc">Cc :</string>
   <string name="bcc">Cci :</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d pièce jointe</item>
     <item quantity="other">%d pièces jointes</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Masquer les détails</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Brouillons)</string>
   <string name="error_mark_as_read_failed">Le marquage comme lu n\'a pas abouti. Nous vous invitons à réessayer.</string>
   <string name="error_mark_as_unread_failed">Le marquage comme non lu n\'a pas abouti. Nous vous invitons à réessayer.</string>
   <string name="error_star_operation_failed">Le marquage comme favori n\'a pas abouti. Nous vous invitons à réessayer.</string>
   <string name="error_unstar_operation_failed">Le marquage comme favori n\'a pas pu être retiré. Nous vous invitons à réessayer.</string>
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille n\'a pas abouti. Veuillez réessayer.</string>
-    <string name="message_moved_to">Le message a été déplacé vers %s.</string>
-    <string name="message_moved_to_archive">Le message a été déplacé dans le dossier Archives.</string>
+  <string name="message_moved">Le message a été déplacé.</string>
+  <string name="message_moved_to">Le message a été déplacé vers %s.</string>
+  <string name="message_moved_to_trash">Le message a été déplacé dans le dossier Corbeille.</string>
+  <string name="message_moved_to_archive">Le message a été déplacé dans le dossier Archives.</string>
   <string name="error_move_to_archive_failed">Le message n\'a pas pu être déplacé dans les archives. Merci de réessayer.</string>
-    <string name="error_move_to_spam_failed">Le message n\'a pas pu être déplacé dans le dossier Indésirables/spam. Merci de réessayer.</string>
+  <string name="message_moved_to_spam">Le message a été déplacé dans le dossier Indésirables/spam.</string>
+  <string name="error_move_to_spam_failed">Le message n\'a pas pu être déplacé dans le dossier Indésirables/spam. Merci de réessayer.</string>
   <string name="message_moved_to_selected_destination">Le message a été déplacé vers %1$s.</string>
   <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
   <string name="error_get_attachment_not_enough_memory">La pièce jointe n\'a pu être obtenue par manque de mémoire.</string>
   <string name="error_relabel_message_failed">Le nouveau label n\'a pas pu être appliqué au message. Réessayez.</string>
-    <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
+  <string name="error_relabel_conversation_failed">Le nouveau label n\'a pas pu être appliqué à la conversation. Réessayez.</string>
+  <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
+  <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
   <string name="detail_error_retrieving_message_body">Le message ne peut pas être récupéré.</string>
   <string name="message_body_error_no_webview">Vous devez installer une application WebView pour voir le contenu de ce message.</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Signaler un message comme une tentative de phishing/hameçonnage nous enverra le message afin que nous puissions l\'analyser et améliorer nos filtres. Cela signifie que nous serons en mesure de voir le contenu du message dans son intégralité.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmer</string>
   <string name="message_report_phishing_dialog_cancel_button">Annuler</string>
-    <string name="trashed_messages_banner">Montrer les messages mis à la corbeille dans cette conversation.</string>
+  <string name="open_on_protoncalendar_banner_title">Ouvrir dans Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Calendrier chiffré et sécurisé</string>
+  <string name="trashed_messages_banner">Montrer les messages mis à la corbeille dans cette conversation.</string>
   <string name="non_trashed_messages_banner">Montrer les messages non supprimés dans cette conversation.</string>
   <string name="recipient_me">moi</string>
   <string name="message_details_header_from">De</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">Vous êtes désabonné de cette liste de diffusion.</string>
   <string name="error_unsubscribe_newsletter">La désinscription à la newsletter n\'a pas abouti.</string>
   <string name="detail_error_loading_single_message">Le message n\'a pas pu être chargé.</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">L\'image n\'a pas pu être téléchargée.</string>
+  <string name="image_downloaded_successfully">L\'image a été téléchargée</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">En-têtes du message</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Fermer</string>

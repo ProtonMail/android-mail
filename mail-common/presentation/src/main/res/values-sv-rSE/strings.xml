@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%dt</string>
   <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Försök igen</string>
-    <string name="x_error_not_logged_in">Inte inloggad</string>
-    <string name="action_customize_toolbar_description">Anpassa verktygsfält</string>
+  <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
+  <string name="x_error_not_logged_in">Inte inloggad</string>
+  <string name="action_customize_toolbar">Anpassa verktygsfält</string>
+  <string name="action_customize_toolbar_description">Anpassa verktygsfält</string>
   <string name="action_customize_toolbar_content_description">Anpassa verktygsfält</string>
   <string name="action_reply">Svara</string>
   <string name="action_reply_all">Svara alla</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Fäst</string>
   <string name="action_unpin_description">Lossa</string>
   <string name="action_reply_content_description">Svara</string>
-    <string name="action_reply_all_content_description">Svara alla</string>
+  <string name="action_reply_to_content_description">Svara %s</string>
+  <string name="action_reply_all_content_description">Svara alla</string>
   <string name="action_forward_content_description">Vidarebefordra</string>
   <string name="action_mark_read_content_description">Markera som läst</string>
   <string name="action_mark_unread_content_description">Markera som oläst</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">E-post</string>
+  <string name="attachment_download_notification_channel_name">Bilagor</string>
+  <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>
+  <string name="email_notification_channel_name">E-post</string>
   <string name="login_notification_channel_name">Inloggningsvarningar</string>
   <string name="email_notification_channel_description">Inkommande e-postaviseringar</string>
   <string name="login_notification_channel_description">Nya inloggningsaviseringar</string>
   <string name="auth_badge_official">Officiell</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app hittades för att hantera denna åtgärd</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
+  <string name="action_copied_to_clipboard">Kopierat till urklipp</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
   <string name="mailbox_action_delete_dialog_button_delete">Ta bort</string>
   <string name="picker_dialog_cancel">Avbryt</string>
   <string name="color_purple">Lila</string>

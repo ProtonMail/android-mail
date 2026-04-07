@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">Enviando mensaje…</string>
   <string name="mailbox_message_sending_offline">No hay conexión. El mensaje se ha añadido a la cola de envío.</string>
   <string name="mailbox_message_sending_success">Mensaje enviado</string>
-    <string name="mailbox_message_sending_error_action">Ir a Borradores</string>
+  <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
+  <string name="mailbox_message_sending_error_action">Ir a Borradores</string>
   <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
-    <string name="mailbox_message_scheduling">Programando mensaje…</string>
+  <string name="label_saved">Etiqueta guardada</string>
+  <string name="label_deleted">Etiqueta eliminada</string>
+  <string name="app_locked">Aplicación bloqueada</string>
+  <string name="use_pin_instead">Use el código PIN en su lugar.</string>
+  <string name="mailbox_message_scheduling">Programando mensaje…</string>
   <string name="mailbox_message_scheduling_offline">Sin conexión: mensaje en cola para programar</string>
   <string name="mailbox_message_scheduled_for_sending_success">Este mensaje se enviará el %1$s</string>
   <string name="launcher_alert_duplicate_account_description">El usuario ya ha iniciado sesión</string>

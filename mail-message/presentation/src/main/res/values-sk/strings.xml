@@ -30,7 +30,8 @@
     <item quantity="other">%d príloh</item>
   </plurals>
   <string name="attachments">prílohy</string>
-    <string name="attachment_type_description">Súbor %1$s</string>
+  <string name="attachment_show_more_label">+%1$d viac</string>
+  <string name="attachment_type_description">Súbor %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archív</string>
   <string name="attachment_type_image">Obrázok</string>
@@ -39,7 +40,8 @@
   <string name="attachment_type_unknown">Neznámy</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Text</string>
-    <string name="attachment_type_spreadsheet">Tabuľka</string>
+  <string name="attachment_type_document">Dokument</string>
+  <string name="attachment_type_spreadsheet">Tabuľka</string>
   <string name="attachment_type_presentation">Prezentácia</string>
   <string name="attachment_type_calendar">Kalendár</string>
   <string name="attachment_type_code">Kód</string>
@@ -51,9 +53,11 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Presunúť do...</string>
-    <string name="bottom_sheet_archive_action">Aj archivované?</string>
+  <string name="bottom_sheet_done_action">Hotovo</string>
+  <string name="bottom_sheet_archive_action">Aj archivované?</string>
   <string name="bottom_sheet_label_as_title">Označiť ako</string>
-    <!-- Message body link actions -->
+  <string name="bottom_sheet_more_header_message_from">Správa od %s</string>
+  <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopírovať odkaz</string>
   <string name="message_link_long_click_copy_description">Text skopírovaný z Proton Mail</string>
   <string name="message_link_long_click_share">Zdieľať odkaz</string>
@@ -82,6 +86,8 @@
   <string name="contact_actions_block_address_description">Zablokovať túto adresu</string>
   <string name="contact_actions_unblock_address">Odblokovať túto adresu</string>
   <string name="contact_actions_unblock_address_description">Odblokovať túto adresu</string>
-    <!-- View entire message button -->
+  <string name="contact_actions_view_contact_details">Zobraziť detaily kontaktu</string>
+  <string name="contact_actions_view_contact_details_description">Zobraziť podrobnosti o kontakte</string>
+  <!-- View entire message button -->
   <string name="button_view_entire_message">Zobraziť celú správu</string>
 </resources>

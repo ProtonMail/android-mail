@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Ezen a hétvégén</string>
   <string name="snooze_sheet_option_custom">Egyéni</string>
   <string name="snooze_sheet_option_custom_detail">Válasszon dátumot és időpontot</string>
-    <string name="snooze_sheet_snooze_title">Halasztás eddig</string>
+  <string name="snooze_sheet_option_upsell_detail">Fizetős szolgáltatás</string>
+  <string name="snooze_sheet_snooze_title">Halasztás eddig</string>
   <string name="snooze_sheet_option_unsnooze">Szüneteltetés megszüntetése</string>
   <string name="snooze_sheet_error_unable_to_snooze">Ismeretlen hiba történt a beszélgetés halasztásakor</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Ismeretlen hiba történt a beszélgetés halasztásának visszavonásakor</string>

@@ -17,7 +17,8 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-    <string name="login_help_title">Ako môžeme pomôcť?</string>
+  <string name="login_help_close">Zavrieť</string>
+  <string name="login_help_title">Ako môžeme pomôcť?</string>
   <string name="login_help_forgot_username">Zabudnuté používateľské meno</string>
   <string name="login_help_forgot_password">Zabudnuté heslo</string>
   <string name="login_help_other_issues">Iné problémy s prihlásením</string>
@@ -35,11 +36,15 @@
   <string name="auth_login_username">Používateľské meno alebo email</string>
   <string name="auth_email">Email</string>
   <string name="auth_password">Heslo</string>
-    <string name="auth_login_assistive_text">Zadajte svoj Proton email alebo používateľské meno.</string>
+  <string name="auth_username_placeholder">Používateľské meno alebo email</string>
+  <string name="auth_password_placeholder">Heslo</string>
+  <string name="auth_login_assistive_text">Zadajte svoj Proton email alebo používateľské meno.</string>
   <string name="auth_account_details">Zadajte podrobnosti o svojom Proton účte.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problém pri prihlasovaní. Skúste to znova, prosím.</string>
-    <string name="auth_login_error_invalid_action_invalid_credentials">Nesprávne prihlasovacie údaje. Skúste to znova, prosím.</string>
-    <string name="auth_login_general_error">Vyskytla sa chyba.</string>
+  <string name="auth_login_error_invalid_action_human_verification_challenge">Je potrebné overenie ľudským faktorom.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Nesprávne prihlasovacie údaje. Skúste to znova, prosím.</string>
+  <string name="auth_login_error_invalid_action_unsupported_tfa">Nepodporované dvojfázové overenie.</string>
+  <string name="auth_login_general_error">Vyskytla sa chyba.</string>
   <string name="auth_second_factor_title">Dvojstupňové overenie</string>
   <string name="auth_second_factor_subtitle">Váš účet má nakonfigurovaných niekoľko mechanizmov 2FA. Vyberte si, ako chcete potvrdiť svoju totožnosť.</string>
   <string name="auth_second_factor_tab_security_key">Bezpečnostný kľúč</string>
@@ -61,7 +66,9 @@
   <string name="auth_two_pass_input_empty">Heslo nemôže byť prázdne</string>
   <string name="auth_signup_title">Vytvorte si Váš Proton účet</string>
   <string name="auth_signup_subtitle">Jeden účet pre všetky Proton služby</string>
-    <string name="auth_signup_next">Ďalej</string>
+  <string name="auth_signup_username_assistive_text">Používateľské meno nesmie byť prázdne.</string>
+  <string name="auth_signup_email_assistive_text">Email nesmie byť prázdny.</string>
+  <string name="auth_signup_next">Ďalej</string>
   <string name="auth_signup_username">Používateľské meno</string>
   <string name="auth_signup_create_password">Vytvorte si heslo</string>
   <string name="auth_signup_password">Heslo</string>
@@ -76,7 +83,11 @@
   <string name="auth_signup_recovery_skip">Preskočiť</string>
   <string name="auth_signup_recovery_title">Nastaviť spôsob obnovenia (voliteľné)</string>
   <string name="auth_signup_recovery_subtitle">Na tento email alebo telefónne číslo vám odošleme pokyny na obnovenie, ak stratíte prístup k svojmu účtu.</string>
-    <string name="auth_signup_recovery_select_country">Vyberte krajinu</string>
+  <string name="auth_signup_recovery_email">Email</string>
+  <string name="auth_signup_recovery_phone">Telefón</string>
+  <string name="auth_signup_recovery_email_hint">Email na obnovenie</string>
+  <string name="auth_signup_recovery_phone_hint">Telefónne číslo pre obnovenie</string>
+  <string name="auth_signup_recovery_select_country">Vyberte krajinu</string>
   <string name="auth_signup_phone_placeholder">+XXX XXX XXX XXX</string>
   <string name="auth_signup_skip_recovery_title">Preskočiť spôsob obnovy?</string>
   <string name="auth_signup_skip_recovery_description">Spôsob obnovenia vám pomôže získať prístup k vášmu účtu v prípade, že zabudnete heslo alebo si uzamknete účet.</string>
@@ -120,7 +131,8 @@
   <string name="auth_fido_config_error">Chyba pri načítaní uložených kľúčov.</string>
   <string name="auth_fido_reading_key_error">Chyba pri čítaní bezpečnostného kľúča.</string>
   <string name="auth_fido_submit_key_error">Chyba odosielania údajov kľúča.</string>
-    <string name="auth_fido_authenticating_in_progress">Overovanie pomocou bezpečnostného kľúča.</string>
+  <string name="auth_fido_reading_key_progress">Načítanie bezpečnostného kľúča.</string>
+  <string name="auth_fido_authenticating_in_progress">Overovanie pomocou bezpečnostného kľúča.</string>
   <string name="auth_fido_security_key">Bezpečnostný kľúč</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="one">Heslo musí obsahovať aspoň 1 znak</item>
@@ -141,15 +153,21 @@
   <string name="settings_password_management_tab_second_password">Druhé heslo</string>
   <string name="settings_password_management_change_password_note">Pre zmenu ktoréhokoľvek z vašich hesiel potrebujete poznať vaše hlavné heslo.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Zabudli ste vaše hlavné heslo?</string>
-    <string name="settings_main_password_hint_current">Aktuálne hlavné heslo</string>
+  <string name="settings_password_management_header">Zmeniť heslo</string>
+  <string name="settings_password_management_cannot_change_password">Záložné heslo nie je možné zmeniť. Obráťte sa na vášho správcu.</string>
+  <string name="settings_main_password_hint_current">Aktuálne hlavné heslo</string>
   <string name="settings_main_password_hint_new">Nové hlavné heslo</string>
   <string name="settings_main_password_hint_new_confirm">Potvrďte nové hlavné heslo</string>
   <string name="settings_second_password_hint_current_main_password">Aktuálne hlavné heslo</string>
   <string name="settings_second_password_hint_new">Nové druhé heslo</string>
   <string name="settings_second_password_hint_new_confirm">Potvrďte nové druhé heslo</string>
-    <string name="settings_password_management_login_success">Prihlasovacie heslo bolo aktualizované</string>
+  <string name="settings_change_password_error">Pri zmene hesla došlo k chybe.</string>
+  <string name="settings_recovery_email_success">Email na obnovenie bol aktualizovaný</string>
+  <string name="settings_password_management_login_success">Prihlasovacie heslo bolo aktualizované</string>
   <string name="settings_password_management_second_success">Druhé heslo aktualizované</string>
-    <string name="settings_password_invalid_2fa">Neplatný kód dvojfázového overenia. Skúste to prosím znova.</string>
+  <string name="settings_password_management_start_recovery">Nepoznáte svoje aktuálne heslo?</string>
+  <string name="settings_password_management_2fa">Je potrebná 2FA</string>
+  <string name="settings_password_invalid_2fa">Neplatný kód dvojfázového overenia. Skúste to prosím znova.</string>
   <string name="settings_password_error_empty">Heslo nemôže byť prázdne.</string>
   <string name="settings_password_error">Nesprávne používateľské meno alebo heslo. Skúste to znova, prosím.</string>
   <string name="settings_password_error_invalid_recovery">Nesprávny 2FA kód. Skúste to znova, prosím.</string>

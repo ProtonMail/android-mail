@@ -28,7 +28,10 @@
   <plurals name="contact_group_details_member_count">
     <item quantity="other">メンバー %1$d人</item>
   </plurals>
-    <string name="search_contacts_description">連絡先の検索</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="other">メンバー (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">連絡先の検索</string>
   <string name="contact_search_no_results">該当する結果が見つかりませんでした。</string>
   <string name="contact_search_placeholder">連絡先やグループを検索</string>
   <string name="contact_search_content_description">連絡先やグループを検索</string>
@@ -62,7 +65,9 @@
   <string name="contact_type_voice">音声</string>
   <string name="contact_property_birthday">誕生日</string>
   <string name="contact_property_note">メモ</string>
-    <string name="contact_property_organization">組織</string>
+  <string name="contact_property_photo">写真</string>
+  <string name="contact_property_logo">ロゴ</string>
+  <string name="contact_property_organization">組織</string>
   <string name="contact_property_anniversary">記念日</string>
   <string name="contact_property_title">タイトル</string>
   <string name="contact_property_role">ロール</string>

@@ -31,7 +31,8 @@
   </plurals>
   <string name="payment_bf_renew_monthly">할인은 표준 월간 요금을 기준으로 합니다. 매월 %1$s에 자동 갱신됩니다.</string>
   <string name="payment_bf_renew_annually">할인은 표준 월간 요금을 기준으로 합니다. 매년 %1$s에 자동 갱신됩니다.</string>
-    <string name="payment_welcome_offer_renew_monthly">환영 할인. 매월 %1$s(으)로 갱신됩니다.</string>
+  <string name="payment_bf_renew_biennially">할인은 표준 월간 요금을 기준으로 합니다. 2년마다 %1$s에 자동 갱신됩니다.</string>
+  <string name="payment_welcome_offer_renew_monthly">환영 할인. 매월 %1$s(으)로 갱신됩니다.</string>
   <string name="payment_welcome_offer_renew_annually">환영 할인. 매월 %1$s(으)로 갱신됩니다.</string>
   <string name="payment_welcome_offer_renew_biennially">환영 할인. 2년마다 %1$s(으)로 갱신됩니다.</string>
   <plurals name="payment_welcome_offer_renew_other">

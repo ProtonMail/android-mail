@@ -25,7 +25,8 @@
   <string name="quick_reply_button_content_description">回覆</string>
   <string name="quick_reply_all_button_content_description">回覆全部</string>
   <string name="more_button_content_description">更多詳情</string>
-    <string name="from">寄件者:</string>
+  <string name="subject">主旨:</string>
+  <string name="from">寄件者:</string>
   <string name="to">收件者：</string>
   <string name="cc">副本抄送：</string>
   <string name="bcc">密件副本：</string>
@@ -33,17 +34,21 @@
   <plurals name="attachment">
     <item quantity="other">%d 個附件</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">隱藏詳細資料</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(草稿)</string>
   <string name="error_mark_as_read_failed">標記為已讀的操作失敗。請重試。</string>
   <string name="error_mark_as_unread_failed">標記為未讀的操作失敗。請重試。</string>
   <string name="error_star_operation_failed">加上星號操作失敗。請重試。</string>
   <string name="error_unstar_operation_failed">移除星號操作失敗。請重試。</string>
   <string name="error_move_to_trash_failed">郵件扔進垃圾桶失敗。請再試一次。</string>
-    <string name="message_moved_to">訊息已移至 %s</string>
-    <string name="message_moved_to_archive">郵件訊息已移至封存檔</string>
+  <string name="message_moved">郵件已移動</string>
+  <string name="message_moved_to">訊息已移至 %s</string>
+  <string name="message_moved_to_trash">郵件已移至垃圾桶</string>
+  <string name="message_moved_to_archive">郵件訊息已移至封存檔</string>
   <string name="error_move_to_archive_failed">郵件移至封存失敗。請再試一次。</string>
-    <string name="error_move_to_spam_failed">郵件扔進垃圾訊息失敗。請再試一次。</string>
+  <string name="message_moved_to_spam">訊息移至垃圾郵件</string>
+  <string name="error_move_to_spam_failed">郵件扔進垃圾訊息失敗。請再試一次。</string>
   <string name="message_moved_to_selected_destination">訊息已移至 %1$s</string>
   <string name="error_move_message_failed">無法移動郵件。請再試一次。</string>
   <string name="conversation_moved_to_trash">無法將往來對話訊息丟進垃圾桶</string>
@@ -58,7 +63,9 @@
   <string name="error_attachment_download_in_progress">在開始新的下載之前，必須先完成目前的。</string>
   <string name="error_get_attachment_not_enough_memory">因為儲存空間不足，無法取得附件</string>
   <string name="error_relabel_message_failed">無法重新在郵件加上標籤。請再試試</string>
-    <string name="decryption_error">訊息解密失敗。</string>
+  <string name="error_relabel_conversation_failed">無法重新在往來對話加上標籤。請再試試</string>
+  <string name="please_go_back_online_to_load_messages">您目前是離線狀態。請重新連線以載入訊息</string>
+  <string name="decryption_error">訊息解密失敗。</string>
   <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
   <string name="message_body_error_no_webview">您必須安裝一個 Android System WebView 才能查看此訊息的內容。</string>
   <!-- Banners -->
@@ -109,7 +116,9 @@
   <string name="message_report_phishing_dialog_message">檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。</string>
   <string name="message_report_phishing_dialog_confim_button">確認</string>
   <string name="message_report_phishing_dialog_cancel_button">取消</string>
-    <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
+  <string name="open_on_protoncalendar_banner_title">在 Proton 行事曆開啟</string>
+  <string name="open_on_protoncalendar_banner_description">安全加密行事曆</string>
+  <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
   <string name="non_trashed_messages_banner">Show non-trashed messages in this conversation.</string>
   <string name="recipient_me">我</string>
   <string name="message_details_header_from">寄件者</string>
@@ -170,7 +179,9 @@
   <string name="already_unsubscribed_banner_message">You are unsubscribed from this mailing list.</string>
   <string name="error_unsubscribe_newsletter">Failed to unsubscribe from newsletter</string>
   <string name="detail_error_loading_single_message">Failed loading message</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Failed to download image</string>
+  <string name="image_downloaded_successfully">Image downloaded</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Message headers</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Close</string>

@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Αφαίρεση από αυτήν τη συσκευή</string>
   <string name="account_switcher_switch_to">Αλλαγή σε</string>
   <string name="manage_accounts_title">Διαχείριση λογαριασμών</string>
-    <string name="manage_accounts_add_account">Προσθήκη λογαριασμού</string>
+  <string name="manage_accounts_signed_in">Συνδεδεμένος</string>
+  <string name="manage_accounts_signed_out">Αποσυνδεδεμένος</string>
+  <string name="manage_accounts_add_account">Προσθήκη λογαριασμού</string>
   <string name="manage_accounts_switch_to">Αλλαγή σε</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Εναλλαγή σε συνδεδεμένο λογαριασμό</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Εναλλαγή σε αποσυνδεδεμένο λογαριασμό</string>

@@ -28,32 +28,45 @@
   <string name="mail_settings_preferences">Préférences</string>
   <string name="mail_settings_app">Personnalisations de l\'application</string>
   <string name="mail_settings_mailbox">Préférences de messagerie</string>
-    <string name="mail_settings_folders_labels">Dossiers et labels</string>
-    <string name="mail_settings_spam_and_custom_filters">Indésirables/spam et filtres</string>
-    <string name="mail_settings_privacy_and_security">Vie privée et sécurité</string>
+  <string name="mail_settings_email_hint">Préférences pour la messagerie et les e-mails</string>
+  <string name="mail_settings_folders_labels">Dossiers et labels</string>
+  <string name="mail_settings_folders_labels_hint">Organisation de la messagerie</string>
+  <string name="mail_settings_spam_and_custom_filters">Indésirables/spam et filtres</string>
+  <string name="mail_settings_spam_and_custom_filters_hint">Actions et tris automatiques</string>
+  <string name="mail_settings_privacy_and_security">Vie privée et sécurité</string>
   <string name="mail_settings_fido_keys">Clés de sécurité</string>
   <string name="mail_settings_change_password">Gestion des mots de passe</string>
   <string name="mail_settings_signature">Signature</string>
   <string name="mail_settings_storage_quota">%1$d%% sur %2$s</string>
-    <string name="mail_settings_theme">Thème</string>
-    <string name="mail_settings_app_icon">Icône de l\'application</string>
+  <string name="mail_settings_privacy_and_security_hint">Protection contre le suivi des e-mails</string>
+  <string name="mail_settings_app_hint">Personnalisations de l\'application mobile</string>
+  <string name="mail_settings_theme">Thème</string>
+  <string name="mail_settings_auto_lock">Verrouillage automatique</string>
+  <string name="mail_settings_app_icon">Icône de l\'application</string>
   <string name="mail_settings_alternative_routing">Routage alternatif</string>
   <string name="mail_settings_app_language">Langue de l\'application</string>
   <string name="mail_settings_app_language_sys_default">Identique au système</string>
   <string name="mail_settings_combined_contacts">Contacts combinés</string>
   <string name="mail_settings_swipe_actions">Actions de balayage</string>
   <string name="mail_settings_combined_contacts_hint">Activez cette fonctionnalité pour compléter automatiquement les adresses e-mail en utilisant les contacts de tous vos comptes connectés.</string>
-    <!-- App customization settings-->
+  <string name="mail_settings_alternative_routing_hint">En cas de blocage des sites Proton, ce paramètre permet à l\'application d\'essayer un routage réseau alternatif pour atteindre Proton, ce qui peut être utile pour contourner les pare-feux ou les problèmes de réseau : nous vous recommandons de conserver ce paramètre activé pour plus de fiabilité.</string>
+  <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">Personnalisation de l\'application</string>
   <string name="mail_settings_app_customization_notification">Notifications</string>
   <string name="mail_settings_app_customization_language">Langue</string>
   <string name="mail_settings_app_customization_appearance">Apparence</string>
   <string name="mail_settings_app_customization_protection">Verrouillage de l\'application</string>
-    <string name="mail_settings_app_customization_protection_enabled_description">Le verrouillage automatique a été activé.</string>
+  <string name="mail_settings_app_customization_mobile_signature">Signature mobile</string>
+  <string name="mail_settings_app_customization_email_signature">Signature de message</string>
+  <string name="mail_settings_app_customization_protection_enabled_description">Le verrouillage automatique a été activé.</string>
   <string name="mail_settings_app_customization_protection_disabled_description">Le verrouillage automatique a été désactivé.</string>
-    <string name="mail_settings_app_customization_swipe_to_next_email">Passer à l\'e-mail suivant</string>
+  <string name="mail_settings_app_customization_use_device_contacts">Utiliser les contacts de l\'appareil</string>
+  <string name="mail_settings_app_customization_use_device_contacts_hint">Saisissez automatiquement vos adresses e-mail depuis les contacts de votre appareil.</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email">Passer à l\'e-mail suivant</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Passez rapidement au message suivant ou précédent dans votre boîte de réception.</string>
-    <string name="mail_settings_app_customization_customize_toolbar">Personnaliser les barres d\'outils</string>
+  <string name="mail_settings_app_customization_swipe_action">Action de balayage</string>
+  <string name="mail_settings_app_customization_swipe_action_hint">Définissez des actions rapides, comme la suppression ou l\'archivage, lorsque vous balayez vers la gauche ou la droite.</string>
+  <string name="mail_settings_app_customization_customize_toolbar">Personnaliser les barres d\'outils</string>
   <string name="mail_settings_app_customization_alternative_routing">Routage alternatif</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Contournez les pare-feu ou les problèmes de réseau au cas où les sites Proton seraient bloqués.</string>
   <string name="mail_settings_app_customization_view_application_logs">Afficher les journaux de l\'application</string>
@@ -75,7 +88,9 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Aucune information disponible</string>
   <string name="mail_settings_account">Compte</string>
-    <!-- Privacy settings -->
+  <string name="mail_settings_not_set">Non défini</string>
+  <string name="mail_settings_conversation_mode_hint">Regroupez les messages d\'une même conversation dans votre boite de réception ou affichez-les séparément.</string>
+  <!-- Privacy settings -->
   <string name="mail_settings_privacy">Confidentialité</string>
   <string name="mail_settings_privacy_auto_show_remote_content">Afficher automatiquement le contenu distant</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Afficher automatiquement les images intégrées</string>

@@ -28,7 +28,8 @@
   <string name="quick_reply_button_content_description">Odpowiedz</string>
   <string name="quick_reply_all_button_content_description">Odpowiedz wszystkim</string>
   <string name="more_button_content_description">Więcej</string>
-    <string name="from">Od:</string>
+  <string name="subject">Temat:</string>
+  <string name="from">Od:</string>
   <string name="to">Do:</string>
   <string name="cc">Dw:</string>
   <string name="bcc">Udw:</string>
@@ -39,17 +40,21 @@
     <item quantity="many">%d załączników</item>
     <item quantity="other">%d załączników</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Ukryj szczegóły</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(szkic)</string>
   <string name="error_mark_as_read_failed">Operacja oznaczania jako przeczytane nie powiodła się. Spróbuj ponownie.</string>
   <string name="error_mark_as_unread_failed">Oznaczenie jako nieprzeczytane nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_star_operation_failed">Oznaczenie gwiazdką nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_unstar_operation_failed">Usunięcie gwiazdki nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_move_to_trash_failed">Przeniesienie do kosza nie powiodło się. Spróbuj ponownie.</string>
-    <string name="message_moved_to">Wiadomość została przeniesiona do folderu %s</string>
-    <string name="message_moved_to_archive">Wiadomość została przeniesiona do archiwum</string>
+  <string name="message_moved">Wiadomość została przeniesiona</string>
+  <string name="message_moved_to">Wiadomość została przeniesiona do folderu %s</string>
+  <string name="message_moved_to_trash">Wiadomość została przeniesiona do kosza</string>
+  <string name="message_moved_to_archive">Wiadomość została przeniesiona do archiwum</string>
   <string name="error_move_to_archive_failed">Przenoszenie do archiwum nie powiodło się. Spróbuj ponownie.</string>
-    <string name="error_move_to_spam_failed">Przeniesienie do spamu nie powiodło się. Spróbuj ponownie.</string>
+  <string name="message_moved_to_spam">Wiadomość została przeniesiona do spamu</string>
+  <string name="error_move_to_spam_failed">Przeniesienie do spamu nie powiodło się. Spróbuj ponownie.</string>
   <string name="message_moved_to_selected_destination">Wiadomość została przeniesiona do folderu %1$s</string>
   <string name="error_move_message_failed">Przenoszenie wiadomości nie powiodło się. Spróbuj ponownie.</string>
   <string name="conversation_moved_to_trash">Wątek został przeniesiony do kosza</string>
@@ -64,7 +69,9 @@
   <string name="error_attachment_download_in_progress">Przed rozpoczęciem nowego pobierania obecne musi zostać zakończone.</string>
   <string name="error_get_attachment_not_enough_memory">Nie udało się pobrać załącznika z powodu braku dostępu do pamięci wewnętrznej</string>
   <string name="error_relabel_message_failed">Nie udało się zmienić etykiet wiadomości. Spróbuj ponownie</string>
-    <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
+  <string name="error_relabel_conversation_failed">Nie udało się zmienić etykiet wątku. Spróbuj ponownie</string>
+  <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
+  <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
   <string name="detail_error_retrieving_message_body">Nie można pobrać wiadomości</string>
   <string name="message_body_error_no_webview">Musisz zainstalować WebView, aby zobaczyć zawartość wiadomości.</string>
   <!-- Banners -->
@@ -115,7 +122,9 @@
   <string name="message_report_phishing_dialog_message">Zgłoszenie wiadomości jako próby wyłudzenia informacji spowoduje wysłanie jej do nas w celu analizy i ulepszania filtrów antyspamowych. Oznacza to, że będziemy mogli zobaczyć pełną treść wiadomości.</string>
   <string name="message_report_phishing_dialog_confim_button">Potwierdź</string>
   <string name="message_report_phishing_dialog_cancel_button">Anuluj</string>
-    <string name="trashed_messages_banner">Pokaż usunięte wiadomości w tym wątku.</string>
+  <string name="open_on_protoncalendar_banner_title">Otwórz w Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Bezpieczny szyfrowany kalendarz</string>
+  <string name="trashed_messages_banner">Pokaż usunięte wiadomości w tym wątku.</string>
   <string name="non_trashed_messages_banner">Show non-trashed messages in this conversation.</string>
   <string name="recipient_me">ja</string>
   <string name="message_details_header_from">Od</string>
@@ -179,7 +188,9 @@
   <string name="already_unsubscribed_banner_message">Anulowano subskrypcję listy mailingowej.</string>
   <string name="error_unsubscribe_newsletter">Nie udało się anulować subskrypcji</string>
   <string name="detail_error_loading_single_message">Ładowanie wiadomość nie powiodło się</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Failed to download image</string>
+  <string name="image_downloaded_successfully">Image downloaded</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Message headers</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Close</string>

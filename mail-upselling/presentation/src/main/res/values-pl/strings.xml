@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">Ulepsz konto dla pełnej elastyczności</string>
   <string name="upselling_upgrade_plan_generic">Do korzystania z funkcji wymagana jest płatna subskrypcja Proton Mail</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">Zawiera funkcje premium</string>
+  <string name="upselling_onboarding_feature_e2e">Szyfrowanie end-to-end</string>
+  <string name="upselling_onboarding_feature_folders_labels">Nieograniczona liczba folderów i etykiet</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB przestrzeni dyskowej i 1 adres e-mail</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB przestrzeni dyskowej</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 dodatkowych adresów e-mail dla Ciebie</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Wsparcie dla 1 niestandardowej domeny</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 aliasów hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Priorytetowe wsparcie klienta</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB przestrzeni dyskowej</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 dodatkowych adresów e-mail dla Ciebie</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Wsparcie dla 3 niestandardowych domen</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Nieograniczona liczba aliasów hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedykowane wsparcie klienta</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Bardzo szybka i prywatna usługa VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Szyfrowany menedżer haseł</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Szyfrowana przestrzeń dyskowa w chmurze na zdjęcia i dokumenty</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Zaawansowana ochrona konta</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Przestrzeń dyskowa</string>
   <string name="upselling_comparison_table_email_addresses">Adresy e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Niestandardowa domena</string>
@@ -91,11 +109,23 @@
   <string name="upselling_auto_renew_text_standard">Automatyczne odnowienie za %s%s, chyba że zostanie anulowane</string>
   <string name="upselling_social_proof_reviews">PONAD 2000 OPINII</string>
   <string name="upselling_description_social_proof">Ulepsz konto do planu, który zachwyca miliony subskrybentów.</string>
-    <string name="upselling_month">/ miesiąc</string>
+  <string name="upselling_discount_tag">ZAOSZCZĘDŹ %s%%</string>
+  <string name="upselling_month">/ miesiąc</string>
   <string name="upselling_month_only">tylko %s / miesiąc</string>
   <string name="upselling_year"> / rok</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">Wystąpił błąd.</string>
+  <string name="upselling_get_button">Wybierz plan %s</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d miesiąc</item>
+    <item quantity="few">%d miesiące</item>
+    <item quantity="many">%d miesięcy</item>
+    <item quantity="other">%d miesięcy</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Nie można pobrać opcji ulepszenia.</string>
+  <string name="upselling_snackbar_error_no_user_id">Wystąpił błąd.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Nie można pobrać subskrypcji.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Ulepszanie subskrypcji w toku…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Wystąpił błąd podczas ulepszania subskrypcji.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Wystąpił błąd. Spróbuj ponownie.</string>
 </resources>

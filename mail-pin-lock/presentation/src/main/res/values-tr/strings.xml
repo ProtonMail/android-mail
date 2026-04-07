@@ -17,7 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!-- Auto lock -->
+  <string name="mail_pin_lock_toolbar_button_content_description">Geri</string>
+  <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Uygulama kilidi</string>
   <string name="mail_pinlock_settings_no_lock">Kilitleme</string>
   <string name="mail_pinlock_settings_with_pin">PIN kodu ile kilitle</string>
@@ -61,9 +62,13 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Evet</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Hayır</string>
   <string name="mail_settings_pin_insertion_created_success">PIN kodu oluşturuldu.</string>
-    <!-- Error messages -->
+  <string name="mail_settings_pin_insertion_changed_success">PIN kodu değiştirildi.</string>
+  <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
-    <string name="mail_settings_biometrics_unable_to_set">Biyometrik ayarları yapılırken bir sorun çıktı.</string>
+  <string name="mail_settings_pin_verify_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
+  <string name="mail_settings_pin_verify_too_many_attempts">Çok fazla yanlış deneme yapıldı</string>
+  <string name="mail_settings_pin_verify_wrong_pin">PIN kodu yanlış</string>
+  <string name="mail_settings_biometrics_unable_to_set">Biyometrik ayarları yapılırken bir sorun çıktı.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Biyometrik ayarları sıfırlanırken bir sorun çıktı.</string>
   <string name="mail_settings_biometrics_unknown_lock">Geçerli kilit ilkesi alınırken bir sorun çıktı.</string>
   <!-- Auto lock dialog -->

@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">Upgrade for full flexibility</string>
   <string name="upselling_upgrade_plan_generic">You need a paid Proton Mail subscription to access this feature</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">包含進階值</string>
+  <string name="upselling_onboarding_feature_e2e">端對端加密</string>
+  <string name="upselling_onboarding_feature_folders_labels">無限的資料夾 / 標籤</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB 儲存空間與 1 個電子郵件地址</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB 儲存空間</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">為您提供 10 個額外的電子郵件地址</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">支援 1 個自訂電子郵件網域</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 個 hide-my-email 別名</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">優先客戶專屬支援</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB 儲存空間</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">為您提供 15 個額外的電子郵件地址</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">支援 3 組自訂電子郵件網域</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">無限制的 hide-my-email別名</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">專屬的客服</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">超快與私有的VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">加密密碼管理</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">加密雲端儲存給予照片和文件</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">進階的帳號保護</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">儲存空間</string>
   <string name="upselling_comparison_table_email_addresses">電郵位址</string>
   <string name="upselling_comparison_table_custom_email_domain">自訂電子郵件網域名稱電郵網域名稱</string>
@@ -91,11 +109,20 @@
   <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled</string>
   <string name="upselling_social_proof_reviews">2k+ REVIEWS</string>
   <string name="upselling_description_social_proof">Upgrade to the experience that millions subscribers are raving about.</string>
-    <string name="upselling_month">/月</string>
+  <string name="upselling_discount_tag">儲存 %s%%</string>
+  <string name="upselling_month">/月</string>
   <string name="upselling_month_only">僅 %s /月</string>
   <string name="upselling_year">/年</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">出現錯誤</string>
+  <string name="upselling_get_button">選用 %s</string>
+  <plurals name="upselling_month">
+    <item quantity="other">%d個月</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">無法擷取升級選項。</string>
+  <string name="upselling_snackbar_error_no_user_id">出現錯誤</string>
   <string name="upselling_snackbar_error_no_subscriptions">無法擷取訂閱。</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">訂閱升級進行中……</string>
+  <string name="upselling_snackbar_upgrade_error_generic">升級您的訂閱時發生錯誤。</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">發生錯誤。請再試一次。</string>
 </resources>

@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">Frissítés a teljes rugalmasságért</string>
   <string name="upselling_upgrade_plan_generic">A funkció eléréséhez fizetős Proton Mail-előfizetésre van szüksége</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">Prémium érték tartalom</string>
+  <string name="upselling_onboarding_feature_e2e">Végpontok közti titkosítás</string>
+  <string name="upselling_onboarding_feature_folders_labels">Korlátlan mappák és címkék</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB tárhely és 1 e-mail cím</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB tárhely</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra e-mail címet az Ön számára</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Egy saját e-mail domain név használata</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email álnevek</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Elsőbbségi felhasználói támogatás</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB tárhely</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra e-mail címet az Ön számára</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">3 saját e-mail domain név támogatása</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Korlátlan számú hide-my-email álnév</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Kiemelt ügyfélszolgálat</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultragyors és privát VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Titkosított jelszókezelő</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Titkosított felhő tárhely fotókhoz és dokumentumokhoz</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Fejlett fiókvédelem</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Tárhely</string>
   <string name="upselling_comparison_table_email_addresses">E-mail címek</string>
   <string name="upselling_comparison_table_custom_email_domain">Saját e-mail domén</string>
@@ -91,11 +109,21 @@
   <string name="upselling_auto_renew_text_standard">Automatikusan megújul %s%s áron, hacsak nem mondja le</string>
   <string name="upselling_social_proof_reviews">2000+ ÉRTÉKELÉS</string>
   <string name="upselling_description_social_proof">Frissítsen arra az élményre, amelyért előfizetők milliói rajonganak.</string>
-    <string name="upselling_month">/hó</string>
+  <string name="upselling_discount_tag">%s%% kedvezmény</string>
+  <string name="upselling_month">/hó</string>
   <string name="upselling_month_only">csak %s/hó</string>
   <string name="upselling_year">/év</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">Hiba történt.</string>
+  <string name="upselling_get_button">%s beszerzése</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d hónap</item>
+    <item quantity="other">%d hónap</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">A verziófrissítési lehetőségek lekérése sikertelen.</string>
+  <string name="upselling_snackbar_error_no_user_id">Hiba történt.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Az előfizetések lekérése sikertelen.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Az előfizetés verziófrissítése folyamatban…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Hiba történt az előfizetés verziófrissítése során.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Hiba történt, próbálja meg újra.</string>
 </resources>

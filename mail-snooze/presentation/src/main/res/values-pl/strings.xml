@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Ten weekend</string>
   <string name="snooze_sheet_option_custom">Niestandardowe</string>
   <string name="snooze_sheet_option_custom_detail">Wybierz datę i godzinę</string>
-    <string name="snooze_sheet_snooze_title">Odłóż do</string>
+  <string name="snooze_sheet_option_upsell_detail">Płatna funkcja</string>
+  <string name="snooze_sheet_snooze_title">Odłóż do</string>
   <string name="snooze_sheet_option_unsnooze">Anuluj odłożenie</string>
   <string name="snooze_sheet_error_unable_to_snooze">Napotkaliśmy nieznany błąd podczas odkładania wątku</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Wystąpił nieznany błąd podczas anulowania odłożenia wątku</string>

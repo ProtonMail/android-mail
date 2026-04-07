@@ -24,7 +24,8 @@
   <string name="mailbox_toolbar_search_button_content_description">Iskanje</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Zapustite način iskanja</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Počisti iskalno poizvedbo</string>
-    <string name="filter_unread_button_text">Neprebrano</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Vnesite iskalno poizvedbo</string>
+  <string name="filter_unread_button_text">Neprebrano</string>
   <string name="include_spam_trash_text">Vključi neželeno pošto in smetnjak</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d izbran</item>
@@ -45,7 +46,13 @@
   <string name="mailbox_is_empty_folder_description">Ta mapa je prazna</string>
   <string name="mailbox_is_empty_spam_description">Mapa z neželeno pošto je prazna</string>
   <string name="mailbox_is_empty_trash_description">Tukaj ni videti ničesar.</string>
-    <plurals name="mailbox_action_delete_conversation_dialog_title">
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Sporočilo premaknjeno v smeti</item>
+    <item quantity="two">%d sporočili premaknjeni v smeti</item>
+    <item quantity="few">%d sporočila premaknjena v smetnjak</item>
+    <item quantity="other">%d sporočil premaknjenih v smetnjak</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Izbriši pogovor</item>
     <item quantity="two">Izbriši %d pogovora</item>
     <item quantity="few">Izbriši %d pogovore</item>
@@ -86,7 +93,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nastavitev barv ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_no_sender_addresses">Ni naslova z dovoljenji za pošiljanje</string>
   <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
-    <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
+  <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
   <string name="mailbox_action_archive_message">Sporočilo premaknjeno v arhiv</string>
   <string name="mailbox_action_spam_message">Sporočilo premaknjeno v neželeno pošto.</string>
   <string name="mailbox_search_placeholder_text">Išči sporočila</string>
@@ -114,16 +122,27 @@
   <string name="mailbox_action_clear_spam_dialog_title">Izprazni mapo Neželena pošta</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v smetnjaku?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v mapi neželene pošte?</string>
-    <string name="mailbox_action_maximum_selection_reached">"Dosežen je največji dovoljen izbor"</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v mapi neželene pošte?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Načrtovana je operacija za čiščenje"</string>
+  <string name="mailbox_action_maximum_selection_reached">"Dosežen je največji dovoljen izbor"</string>
   <string name="mailbox_talkback_readout_unread">Neprebrano</string>
   <string name="mailbox_talkback_readout_starred">Odstrani zvezdico</string>
   <string name="mailbox_talkback_readout_not_starred">Označi z zvezdico</string>
   <!-- Attachment download -->
-    <string name="mailbox_attachment_download_error">Priponke ni bilo mogoče odpreti. Poskusite znova.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_started">Odpiranje priponke…</string>
+  <string name="mailbox_attachment_download_error">Priponke ni bilo mogoče odpreti. Poskusite znova.</string>
+  <string name="mailbox_attachment_download_in_progress">Pred začetkom novega prenosa se mora dokončati trenutni.</string>
   <!--    Storage Limit Warning-->
-    <!--    Storage Quota Over Warning-->
-    <string name="mailbox_action_delete_failed">Brisanje sporočila ni uspelo</string>
+  <string name="storage_limit_warning_dialog_title">Opozorilo</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Vaša Proton shramba je več kot 80 % zasedena. Sprostite prostor ali nadgradite za več prostora.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Vaša Proton shramba je več kot 90 % zasedena. Sprostite prostor ali nadgradite za več prostora.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Ne opominjaj me več</string>
+  <string name="storage_limit_warning_dialog_confirm_button">V redu</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Opozorilo</string>
+  <string name="storage_quota_over_dialog_text">Vaša Proton shramba je 100 % zasedena. Dokler ne sprostite nekaj prostora ali nadgradite paket, bo prejemanje novih sporočil in pošiljanje onemogočeno.</string>
+  <string name="storage_quota_over_dialog_confirm_button">V redu</string>
+  <string name="mailbox_action_delete_failed">Brisanje sporočila ni uspelo</string>
   <string name="select_all">Izberi vse</string>
   <string name="deselect_all">Odznači vse</string>
   <!--    Expiry messages-->
@@ -149,4 +168,22 @@
   <string name="schedule_send_tomorrow">Jutri, %1$s</string>
   <string name="schedule_send_today">Danes, %1$s</string>
   <!--    Snooze messages-->
+  <plurals name="snoozed_in_days">
+    <item quantity="one">V dremežu do jutri</item>
+    <item quantity="two">V dremežu za %d dneva</item>
+    <item quantity="few">V dremežu za %d dni</item>
+    <item quantity="other">V dremežu za %d dni</item>
+  </plurals>
+  <plurals name="snooze_in_hours">
+    <item quantity="one">V dremežu za %d uro</item>
+    <item quantity="two">V dremežu za %d uri</item>
+    <item quantity="few">V dremežu za %d ure</item>
+    <item quantity="other">V dremežu za %d ur</item>
+  </plurals>
+  <plurals name="snooze_in_minutes">
+    <item quantity="one">V dremežu za %d minuto</item>
+    <item quantity="two">V dremežu za %d minuti</item>
+    <item quantity="few">V dremežu za %d minute</item>
+    <item quantity="other">V dremežu za %d minut</item>
+  </plurals>
 </resources>

@@ -31,7 +31,13 @@
     <item quantity="many">%1$d członków</item>
     <item quantity="other">%1$d członków</item>
   </plurals>
-    <string name="search_contacts_description">Szukaj kontaktów</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">%1$d członek</item>
+    <item quantity="few">%1$d członków</item>
+    <item quantity="many">%1$d członków</item>
+    <item quantity="other">%1$d członków</item>
+  </plurals>
+  <string name="search_contacts_description">Szukaj kontaktów</string>
   <string name="contact_search_no_results">Nie znaleziono żadnych wyników.</string>
   <string name="contact_search_placeholder">Szukaj kontaktu lub grupy</string>
   <string name="contact_search_content_description">Szukaj kontaktu lub grupy</string>
@@ -65,7 +71,9 @@
   <string name="contact_type_voice">Połączenie głosowe</string>
   <string name="contact_property_birthday">Urodziny</string>
   <string name="contact_property_note">Notatki</string>
-    <string name="contact_property_organization">Organizacja</string>
+  <string name="contact_property_photo">Zdjęcie</string>
+  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_organization">Organizacja</string>
   <string name="contact_property_anniversary">Rocznica</string>
   <string name="contact_property_title">Tytuł</string>
   <string name="contact_property_role">Stanowisko</string>

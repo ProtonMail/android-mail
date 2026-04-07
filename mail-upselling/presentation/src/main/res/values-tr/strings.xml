@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">Tam esneklik için tarifenizi yükseltin</string>
   <string name="upselling_upgrade_plan_generic">Bu özelliğe erişmek için ücretli bir Proton Mail aboneliğiniz olmalıdır</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">Ücretli özelliklerle birlikte</string>
+  <string name="upselling_onboarding_feature_e2e">Uçtan uca şifreleme</string>
+  <string name="upselling_onboarding_feature_folders_labels">Sınırsız sayıda klasör ve etiket</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB depolama alanı ve 1 e-posta adresi</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB depolama alanı</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">Sizin için 10 ek e-posta adresi</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">1 özel e-posta etki alanı desteği</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email takma adı</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Öncelikli müşteri desteği</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB depolama alanı</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">Sizin için 15 ek e-posta adresi</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">3 özel e-posta etki alanı desteği</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Sınırsız hide-my-email takma adı</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Özel müşteri desteği</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Süper hızlı ve güvenli VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Şifrelenmiş parola yöneticisi</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Fotoğraf ve belgeler için şifrelenmiş bulut depolama alanı</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Gelişmiş hesap koruması</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Depolama alanı</string>
   <string name="upselling_comparison_table_email_addresses">E-posta adresleri</string>
   <string name="upselling_comparison_table_custom_email_domain">Özel e-posta etki alanı</string>
@@ -91,11 +109,21 @@
   <string name="upselling_auto_renew_text_standard">İptal edilmedikçe %s%s zamanında otomatik olarak yenilenir</string>
   <string name="upselling_social_proof_reviews">2 bin üzerinde YORUM</string>
   <string name="upselling_description_social_proof">Milyonlarca abonenin severek kullandığı deneyime yükseltin.</string>
-    <string name="upselling_month">/ay</string>
+  <string name="upselling_discount_tag">%s%% indirim</string>
+  <string name="upselling_month">/ay</string>
   <string name="upselling_month_only">yalnızca %s / ay</string>
   <string name="upselling_year">/yıl</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">Bir sorun çıktı.</string>
+  <string name="upselling_get_button">%s alın</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d ay</item>
+    <item quantity="other">%d ay</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Yükseltme seçenekleri alınamadı.</string>
+  <string name="upselling_snackbar_error_no_user_id">Bir sorun çıktı.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Abonelikler alınamadı.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Abonelik yükseltme işlemi sürüyor...</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Aboneliğiniz yükseltilirken bir sorun çıktı.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
 </resources>

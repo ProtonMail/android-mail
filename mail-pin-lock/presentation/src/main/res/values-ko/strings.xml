@@ -17,7 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!-- Auto lock -->
+  <string name="mail_pin_lock_toolbar_button_content_description">돌아가기</string>
+  <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">앱 잠금</string>
   <string name="mail_pinlock_settings_no_lock">잠그지 않기</string>
   <string name="mail_pinlock_settings_with_pin">PIN으로 잠금</string>
@@ -60,9 +61,13 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">예</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">아니오</string>
   <string name="mail_settings_pin_insertion_created_success">PIN 코드를 성공적으로 생성했습니다.</string>
-    <!-- Error messages -->
+  <string name="mail_settings_pin_insertion_changed_success">PIN 코드를 성공적으로 변경했습니다.</string>
+  <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
-    <string name="mail_settings_biometrics_unable_to_set">생체 인식 설정 등록 중 오류가 발생했습니다.</string>
+  <string name="mail_settings_pin_verify_generic_error_message">오류가 발생했습니다. 다시 시도해 주십시오.</string>
+  <string name="mail_settings_pin_verify_too_many_attempts">잘못된 시도가 너무 많습니다</string>
+  <string name="mail_settings_pin_verify_wrong_pin">PIN 오류</string>
+  <string name="mail_settings_biometrics_unable_to_set">생체 인식 설정 등록 중 오류가 발생했습니다.</string>
   <string name="mail_settings_biometrics_unable_to_unset">생체 인식 설정 초기화 중 오류가 발생했습니다.</string>
   <string name="mail_settings_biometrics_unknown_lock">현재 잠금 설정을 가져오는 중 오류가 발생했습니다.</string>
   <!-- Auto lock dialog -->

@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%d Stunde(n)</string>
   <string name="expiration_minutes_arg">%d Minute(n)</string>
   <string name="retry">Wiederholen</string>
-    <string name="x_error_not_logged_in">Nicht angemeldet</string>
-    <string name="action_customize_toolbar_description">Symbolleiste anpassen</string>
+  <string name="toolbar_back_content_description">Zurück zum vorherigen Bildschirm</string>
+  <string name="x_error_not_logged_in">Nicht angemeldet</string>
+  <string name="action_customize_toolbar">Symbolleiste anpassen</string>
+  <string name="action_customize_toolbar_description">Symbolleiste anpassen</string>
   <string name="action_customize_toolbar_content_description">Symbolleiste anpassen</string>
   <string name="action_reply">Antworten</string>
   <string name="action_reply_all">Allen antworten</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Anheften</string>
   <string name="action_unpin_description">Loslösen</string>
   <string name="action_reply_content_description">Antworten</string>
-    <string name="action_reply_all_content_description">Allen antworten</string>
+  <string name="action_reply_to_content_description">Antwort auf %s</string>
+  <string name="action_reply_all_content_description">Allen antworten</string>
   <string name="action_forward_content_description">Weiterleiten</string>
   <string name="action_mark_read_content_description">Als gelesen markieren</string>
   <string name="action_mark_unread_content_description">Als ungelesen markieren</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Aktionen konnten nicht geladen werden</string>
   <string name="yesterday">Gestern</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">E-Mails</string>
+  <string name="attachment_download_notification_channel_name">Anhänge</string>
+  <string name="attachment_download_notification_channel_description">Benachrichtigungen für Anhang-Downloads</string>
+  <string name="email_notification_channel_name">E-Mails</string>
   <string name="login_notification_channel_name">Login-Warnungen</string>
   <string name="email_notification_channel_description">Benachrichtigungen über eingehende Nachrichten</string>
   <string name="login_notification_channel_description">Benachrichtigungen zu neuen Anmeldungen</string>
   <string name="auth_badge_official">Offiziell</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Keine App verfügbar, um diese Aktion auszuführen</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Abbrechen</string>
+  <string name="action_copied_to_clipboard">In die Zwischenablage kopiert</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Abbrechen</string>
   <string name="mailbox_action_delete_dialog_button_delete">Löschen</string>
   <string name="picker_dialog_cancel">Abbrechen</string>
   <string name="color_purple">Violett</string>

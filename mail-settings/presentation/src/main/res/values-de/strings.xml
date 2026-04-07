@@ -28,32 +28,45 @@
   <string name="mail_settings_preferences">Einstellungen</string>
   <string name="mail_settings_app">App-Anpassungen</string>
   <string name="mail_settings_mailbox">Postfach-Einstellungen</string>
-    <string name="mail_settings_folders_labels">Ordner und Kategorien</string>
-    <string name="mail_settings_spam_and_custom_filters">Spam und Filter</string>
-    <string name="mail_settings_privacy_and_security">Datenschutz und Sicherheit</string>
+  <string name="mail_settings_email_hint">E-Mail- und Postfach-Einstellungen</string>
+  <string name="mail_settings_folders_labels">Ordner und Kategorien</string>
+  <string name="mail_settings_folders_labels_hint">Postfachverwaltung</string>
+  <string name="mail_settings_spam_and_custom_filters">Spam und Filter</string>
+  <string name="mail_settings_spam_and_custom_filters_hint">Automatische Aktionen und Sortierung</string>
+  <string name="mail_settings_privacy_and_security">Datenschutz und Sicherheit</string>
   <string name="mail_settings_fido_keys">Sicherheitsschlüssel</string>
   <string name="mail_settings_change_password">Passwortverwaltung</string>
   <string name="mail_settings_signature">Signatur</string>
   <string name="mail_settings_storage_quota">%1$d%% von %2$s</string>
-    <string name="mail_settings_theme">Farbschema</string>
-    <string name="mail_settings_app_icon">App-Symbol</string>
+  <string name="mail_settings_privacy_and_security_hint">Schutz vor E-Mail-Trackern</string>
+  <string name="mail_settings_app_hint">Anpassung der mobilen App</string>
+  <string name="mail_settings_theme">Farbschema</string>
+  <string name="mail_settings_auto_lock">Automatisch sperren</string>
+  <string name="mail_settings_app_icon">App-Symbol</string>
   <string name="mail_settings_alternative_routing">Alternatives Routing</string>
   <string name="mail_settings_app_language">Sprache der App</string>
   <string name="mail_settings_app_language_sys_default">Systemstandard</string>
   <string name="mail_settings_combined_contacts">Zusammengeführte Kontakte</string>
   <string name="mail_settings_swipe_actions">Wischgesten</string>
   <string name="mail_settings_combined_contacts_hint">Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.</string>
-    <!-- App customization settings-->
+  <string name="mail_settings_alternative_routing_hint">Für den Fall, dass die Websites von Proton gesperrt sind, kann die App mit dieser Einstellung versuchen, Proton über ein alternatives Netzwerk-Routing zu erreichen, was nützlich sein kann, um Firewalls oder Netzwerkprobleme zu umgehen: Wir empfehlen, diese Einstellung zu aktivieren, um die Zuverlässigkeit zu erhöhen.</string>
+  <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">App-Anpassungen</string>
   <string name="mail_settings_app_customization_notification">Benachrichtigungen</string>
   <string name="mail_settings_app_customization_language">Sprache</string>
   <string name="mail_settings_app_customization_appearance">Erscheinungsbild</string>
   <string name="mail_settings_app_customization_protection">App-Sperre</string>
-    <string name="mail_settings_app_customization_protection_enabled_description">Automatische Sperre aktiviert</string>
+  <string name="mail_settings_app_customization_mobile_signature">Mobile Signatur</string>
+  <string name="mail_settings_app_customization_email_signature">E-Mail-Signatur</string>
+  <string name="mail_settings_app_customization_protection_enabled_description">Automatische Sperre aktiviert</string>
   <string name="mail_settings_app_customization_protection_disabled_description">Automatische Sperre deaktiviert</string>
-    <string name="mail_settings_app_customization_swipe_to_next_email">Zur nächsten E-Mail wischen</string>
+  <string name="mail_settings_app_customization_use_device_contacts">Kontakte des Geräts verwenden</string>
+  <string name="mail_settings_app_customization_use_device_contacts_hint">E-Mail-Adressen automatisch mit Kontakten von deinem Gerät vervollständigen.</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email">Zur nächsten E-Mail wischen</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Schneller Wechsel zur nächsten oder vorherigen Nachricht im Posteingang.</string>
-    <string name="mail_settings_app_customization_customize_toolbar">Symbolleisten anpassen</string>
+  <string name="mail_settings_app_customization_swipe_action">Wischgeste</string>
+  <string name="mail_settings_app_customization_swipe_action_hint">Lege Schnellaktionen fest, wie zum Beispiel Löschen oder Archivieren, wenn du nach links oder rechts wischst.</string>
+  <string name="mail_settings_app_customization_customize_toolbar">Symbolleisten anpassen</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatives Routing</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Umgehung von Firewalls oder Netzwerkproblemen, falls Proton-Websites geblockt werden.</string>
   <string name="mail_settings_app_customization_view_application_logs">Anwendungsprotokolle anzeigen</string>
@@ -75,7 +88,9 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Keine Informationen verfügbar</string>
   <string name="mail_settings_account">Konto</string>
-    <!-- Privacy settings -->
+  <string name="mail_settings_not_set">Nicht festgelegt</string>
+  <string name="mail_settings_conversation_mode_hint">Gruppiere E-Mails zum gleichen Thema in deinem Posteingang oder zeige diese getrennt an</string>
+  <!-- Privacy settings -->
   <string name="mail_settings_privacy">Datenschutz</string>
   <string name="mail_settings_privacy_auto_show_remote_content">Inhalte aus externen Quellen automatisch anzeigen</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Eingebettete Bilder automatisch anzeigen</string>

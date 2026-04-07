@@ -25,11 +25,17 @@
   <string name="compose_message_placeholder">이메일 작성</string>
   <string name="close_composer_content_description">작성기 닫기</string>
   <string name="send_button_title">보내기</string>
-    <string name="composer_expand_recipients_button">다른 수신인 보기</string>
+  <string name="send_message_content_description">메시지 보내기</string>
+  <string name="composer_expand_recipients_button">다른 수신인 보기</string>
   <string name="composer_error_invalid_email">이메일 주소가 유효하지 않거나 존재하지 않습니다</string>
-    <string name="composer_change_sender_paid_feature">보낸 사람의 주소를 변경하려면 유료 플랜으로 업그레이드하세요</string>
-    <string name="composer_error_duplicate_recipient">중복된 참가자 삭제됨</string>
-    <string name="composer_error_store_draft_address_disabled">초안 저장 불가 - 이 보낸 사람의 주소가 비활성화되었습니다</string>
+  <string name="change_sender_button_content_description">보낸 사람 변경</string>
+  <string name="composer_change_sender_paid_feature">보낸 사람의 주소를 변경하려면 유료 플랜으로 업그레이드하세요</string>
+  <string name="composer_error_store_draft_sender_address">이 초안의 발신자 주소를 저장하는 데 실패했습니다.</string>
+  <string name="composer_error_store_draft_body">이 초안의 본문을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_duplicate_recipient">중복된 참가자 삭제됨</string>
+  <string name="composer_error_store_draft_subject">이 초안의 제목을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_store_draft_recipients">이 초안의 수신자를 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_store_draft_address_disabled">초안 저장 불가 - 이 보낸 사람의 주소가 비활성화되었습니다</string>
   <string name="composer_error_store_draft_address_pk_missing">초안을 저장할 수 없음 - 이 보낸 사람 주소에 기본 키가 없습니다</string>
   <string name="composer_error_store_draft_attachment_too_large">초안을 저장할 수 없음 - 첨부 파일이 크기 제한을 초과했습니다.</string>
   <string name="composer_error_store_draft_too_many_attachments">초안을 저장할 수 없음 - 첨부 파일 제한에 도달했습니다</string>
@@ -45,7 +51,9 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">사진 앨범에서 선택</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">새 사진 촬영</string>
   <string name="composer_error_loading_parent_message">메시지 정보를 불러올 수 없습니다.</string>
-    <string name="composer_attachment_size_exceeded_dialog_confirm_button">확인</string>
+  <string name="composer_original_message_quote">원본 메시지</string>
+  <string name="composer_sender_quote">%s에 %s &lt; %s&gt; 님이 작성함:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">확인</string>
   <string name="composer_attachment_size_exceeded_dialog_title">첨부파일 한도 도달</string>
   <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
   <string name="composer_attachment_encryption_failed_message">첨부 파일 암호화에 실패했습니다. 보안상의 이유로 모든 첨부 파일이 삭제되었습니다.</string>
@@ -60,11 +68,13 @@
   <string name="composer_button_discard_draft">임시 저장됨 취소됨</string>
   <string name="composer_button_set_expiration">만료 시간 설정</string>
   <string name="composer_expiration_time_bottom_sheet_title">메시지 유효기간</string>
-    <string name="composer_bottom_bar_expiration_time_none">만료 안함</string>
+  <string name="composer_expiration_time_bottom_sheet_done">설정하기</string>
+  <string name="composer_bottom_bar_expiration_time_none">만료 안함</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1시간 후</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1일 후</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3일 후</string>
-    <string name="composer_bottom_bar_expiration_time_custom">특정 날짜에</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1주 후</string>
+  <string name="composer_bottom_bar_expiration_time_custom">특정 날짜에</string>
   <string name="composer_error_setting_expiration_time">만료 시간 설정 실패</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">유효기간 사용을 위한 비밀번호 추가</string>
@@ -88,18 +98,27 @@
   <string name="message_sending_error_dialog_header">발송 실패</string>
   <string name="message_sending_error_dialog_button_dismiss">닫기</string>
   <string name="message_sending_error_dialog_text_error">다음 이유로 인해 입력한 주소로 이메일이 전송되지 못했습니다:</string>
-    <string name="set_message_password_title">비밀번호 설정</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">신뢰 키가 없습니다: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">주소가 존재하지 않습니다: %s</string>
+  <string name="set_message_password_title">비밀번호 설정</string>
   <string name="set_message_password_info_message">Proton Mail을 사용하지 않는 수신자를 위해 비밀번호를 설정하여 이 메시지를 암호화하세요.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">더 알아보기</a></string>
   <string name="set_message_password_label">메시지 비밀번호</string>
   <string name="set_message_password_label_hint">비밀번호 힌트 (선택 사항)</string>
   <string name="set_message_password_supporting_text">최소 8자 이상이어야 합니다.</string>
   <string name="set_message_password_supporting_error_text">비밀번호는 8자에서 21자 여야 합니다.</string>
-    <string name="set_message_password_button_show">비밀번호 표시</string>
+  <string name="set_message_password_supporting_text_repeat">비밀번호가 일치해야 합니다</string>
+  <string name="set_message_password_supporting_error_text_repeat">비밀번호가 일치하지 않습니다</string>
+  <string name="set_message_password_button_show">비밀번호 표시</string>
   <string name="set_message_password_button_hide">비밀번호 숨김</string>
   <string name="set_message_password_button_save_changes">저장</string>
   <string name="set_message_password_button_remove_password">비밀번호 제거</string>
-    <string name="composer_recipient_suggestion_device">기기 연락처 보기</string>
+  <string name="respondInline">본문 포함 회신</string>
+  <string name="subject_placeholder">제목</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="other">%d명 회원</item>
+  </plurals>
+  <string name="composer_recipient_suggestion_device">기기 연락처 보기</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">이 메시지를 폐기하시겠어요?</string>
   <string name="discard_draft_dialog_text">임시 저장된 메시지는 저장되지 않습니다.</string>
@@ -119,7 +138,11 @@
   <string name="composer_schedule_send_custom_upsell_title">날짜 및 시간 선택</string>
   <string name="composer_schedule_send_custom_description">시간 및 날짜 선택</string>
   <string name="composer_schedule_send_previously_set">이전에 설정됨</string>
-    <string name="composer_change_sender_title">보낸 사람</string>
+  <string name="composer_schedule_send_custom_time_label">시간</string>
+  <string name="composer_schedule_send_custom_date_label">날짜</string>
+  <string name="composer_schedule_send_dialog_ok">확인</string>
+  <string name="composer_schedule_send_dialog_enter_time">시간 입력</string>
+  <string name="composer_change_sender_title">보낸 사람</string>
   <string name="composer_error_change_sender_failed_getting_addresses">사용자의 주소를 가져오는데 실패하여 발신자 변경이 불가능합니다. 다시 시도하십시오.</string>
   <string name="composer_change_sender_invalid_address">선택된 주소를 메시지 전송에 사용할 수 없습니다.</string>
   <string name="composer_change_sender_unexpected_failure">보낸 사람 변경 중 오류가 발생했습니다. 다시 시도하십시오.</string>

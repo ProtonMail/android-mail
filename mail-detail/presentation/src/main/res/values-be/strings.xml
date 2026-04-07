@@ -28,7 +28,8 @@
   <string name="quick_reply_button_content_description">Адказаць</string>
   <string name="quick_reply_all_button_content_description">Адказаць усім</string>
   <string name="more_button_content_description">Больш</string>
-    <string name="from">Ад:</string>
+  <string name="subject">Тэма:</string>
+  <string name="from">Ад:</string>
   <string name="to">Каму:</string>
   <string name="cc">Копія:</string>
   <string name="bcc">Схаваная копія:</string>
@@ -39,17 +40,21 @@
     <item quantity="many">%d далучэнняў</item>
     <item quantity="other">%d далучэнняў</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Схаваць падрабязнасці</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(чарнавік)</string>
   <string name="error_mark_as_read_failed">Не ўдалося пазначыць як прачытанае. Паўтарыце спробу.</string>
   <string name="error_mark_as_unread_failed">Не ўдалося пазначыць як непрачытанае. Паўтарыце спробу.</string>
   <string name="error_star_operation_failed">Не ўдалося дадаць зорачку. Паўтарыце спробу.</string>
   <string name="error_unstar_operation_failed">Не ўдалося выдаліць зорачку. Паўтарыце спробу.</string>
   <string name="error_move_to_trash_failed">Не ўдалося перамясціць у сметніцу. Паўтарыце спробу.</string>
-    <string name="message_moved_to">Паведамленне перамешчана ў %s</string>
-    <string name="message_moved_to_archive">Паведамленне перамешчана ў архіў</string>
+  <string name="message_moved">Паведамленне перамешчана</string>
+  <string name="message_moved_to">Паведамленне перамешчана ў %s</string>
+  <string name="message_moved_to_trash">Паведамленне перамешчана ў сметніцу</string>
+  <string name="message_moved_to_archive">Паведамленне перамешчана ў архіў</string>
   <string name="error_move_to_archive_failed">Збой пры перамяшчэнні ў архіў. Паўтарыце спробу.</string>
-    <string name="error_move_to_spam_failed">Збой пры перамяшчэнні ў спам. Паўтарыце спробу.</string>
+  <string name="message_moved_to_spam">Паведамленне перамешчана ў спам</string>
+  <string name="error_move_to_spam_failed">Збой пры перамяшчэнні ў спам. Паўтарыце спробу.</string>
   <string name="message_moved_to_selected_destination">Паведамленне перамешчана ў %1$s</string>
   <string name="error_move_message_failed">Не ўдалося перамясціць паведамленне. Паўтарыце спробу.</string>
   <string name="conversation_moved_to_trash">Размова перамешчана ў сметніцу</string>
@@ -64,7 +69,9 @@
   <string name="error_attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
   <string name="error_get_attachment_not_enough_memory">Не ўдалося атрымаць далучэнне з прычыны недахопу памяці</string>
   <string name="error_relabel_message_failed">Не ўдалося змяніць метку паведамлення. Паўтарыце спробу</string>
-    <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
+  <string name="error_relabel_conversation_failed">Не ўдалося змяніць метку размовы. Паўтарыце спробу</string>
+  <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна падключэнне да інтэрнэту</string>
+  <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
   <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
   <string name="message_body_error_no_webview">Вам неабходна ўсталяваць WebView, каб бачыць змесціва гэтага паведамлення.</string>
   <!-- Banners -->
@@ -115,7 +122,9 @@
   <string name="message_report_phishing_dialog_message">Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.</string>
   <string name="message_report_phishing_dialog_confim_button">Пацвердзіць</string>
   <string name="message_report_phishing_dialog_cancel_button">Скасаваць</string>
-    <string name="trashed_messages_banner">Паказаць выдаленыя паведамленні ў гэтай размове.</string>
+  <string name="open_on_protoncalendar_banner_title">Адкрыць у Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Бяспечны зашыфраваны каляндар</string>
+  <string name="trashed_messages_banner">Паказаць выдаленыя паведамленні ў гэтай размове.</string>
   <string name="non_trashed_messages_banner">Паказаць невыдаленыя паведамленні ў гэтай размове.</string>
   <string name="recipient_me">я</string>
   <string name="message_details_header_from">Ад</string>
@@ -179,7 +188,9 @@
   <string name="already_unsubscribed_banner_message">Вы скасавалі падпіску на гэты спіс рассылкі.</string>
   <string name="error_unsubscribe_newsletter">Не ўдалося адпісацца ад рассылкі</string>
   <string name="detail_error_loading_single_message">Не ўдалося загрузіць паведамленне</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Не ўдалося спампаваць відарыс</string>
+  <string name="image_downloaded_successfully">Відарыс спампаваны</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Загалоўкі паведамлення</string>
   <string name="raw_message_data_html_title">Паведамленне HTML</string>
   <string name="raw_message_data_close_button_content_description">Закрыць</string>

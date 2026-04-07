@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%dt</string>
   <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Forsøg igen</string>
-    <string name="x_error_not_logged_in">Ikke logget ind</string>
-    <string name="action_customize_toolbar_description">Tilpas værktøjslinje</string>
+  <string name="toolbar_back_content_description">Tilbage til forrige skærm</string>
+  <string name="x_error_not_logged_in">Ikke logget ind</string>
+  <string name="action_customize_toolbar">Tilpas værktøjslinje</string>
+  <string name="action_customize_toolbar_description">Tilpas værktøjslinje</string>
   <string name="action_customize_toolbar_content_description">Tilpas værktøjslinje</string>
   <string name="action_reply">Svar</string>
   <string name="action_reply_all">Svar alle</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Fastgør</string>
   <string name="action_unpin_description">Frigør</string>
   <string name="action_reply_content_description">Svar</string>
-    <string name="action_reply_all_content_description">Svar alle</string>
+  <string name="action_reply_to_content_description">Svar til %s</string>
+  <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
   <string name="action_mark_read_content_description">Markér som læst</string>
   <string name="action_mark_unread_content_description">Markér som ulæst</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Kunne ikke indlæse handlinger</string>
   <string name="yesterday">I går</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">E-mails</string>
+  <string name="attachment_download_notification_channel_name">Vedhæftninger</string>
+  <string name="attachment_download_notification_channel_description">Notifikationer ved download af vedhæftninger</string>
+  <string name="email_notification_channel_name">E-mails</string>
   <string name="login_notification_channel_name">Login-advarsler</string>
   <string name="email_notification_channel_description">Indkommende e-mail-notifikationer</string>
   <string name="login_notification_channel_description">Notifikationer om nye logins</string>
   <string name="auth_badge_official">Officiel</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app til håndtering af denne handling fundet</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Annullér</string>
+  <string name="action_copied_to_clipboard">Kopieret til udklipsholder</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annullér</string>
   <string name="mailbox_action_delete_dialog_button_delete">Slet</string>
   <string name="picker_dialog_cancel">Annullér</string>
   <string name="color_purple">Lilla</string>

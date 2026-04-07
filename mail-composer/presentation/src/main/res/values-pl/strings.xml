@@ -25,11 +25,17 @@
   <string name="compose_message_placeholder">Napisz wiadomość</string>
   <string name="close_composer_content_description">Zamknij edytor</string>
   <string name="send_button_title">Wyślij</string>
-    <string name="composer_expand_recipients_button">Pokaż innych odbiorców</string>
+  <string name="send_message_content_description">Wyślij wiadomość</string>
+  <string name="composer_expand_recipients_button">Pokaż innych odbiorców</string>
   <string name="composer_error_invalid_email">Adres e-mail nie jest prawidłowy lub nie istnieje</string>
-    <string name="composer_change_sender_paid_feature">Ulepsz do płatnego planu, aby zmienić adres nadawcy</string>
-    <string name="composer_error_duplicate_recipient">Zduplikowani odbiorcy zostali usunięci</string>
-    <string name="composer_error_store_draft_address_disabled">Nie można zapisać szkicu. Adres nadawcy jest wyłączony</string>
+  <string name="change_sender_button_content_description">Zmień nadawcę</string>
+  <string name="composer_change_sender_paid_feature">Ulepsz do płatnego planu, aby zmienić adres nadawcy</string>
+  <string name="composer_error_store_draft_sender_address">Adres nadawcy nie został zapisany</string>
+  <string name="composer_error_store_draft_body">Treść szkicu nie została zapisana</string>
+  <string name="composer_error_duplicate_recipient">Zduplikowani odbiorcy zostali usunięci</string>
+  <string name="composer_error_store_draft_subject">Temat nie został zapisany</string>
+  <string name="composer_error_store_draft_recipients">Zapisanie odbiorców szkicu nie powiodło się</string>
+  <string name="composer_error_store_draft_address_disabled">Nie można zapisać szkicu. Adres nadawcy jest wyłączony</string>
   <string name="composer_error_store_draft_address_pk_missing">Nie można zapisać szkicu. Adres nadawcy nie ma klucza głównego</string>
   <string name="composer_error_store_draft_attachment_too_large">Nie można zapisać szkicu. Przekroczono maksymalny rozmiar załączników</string>
   <string name="composer_error_store_draft_too_many_attachments">Nie można zapisać szkicu. Przekroczono limit załączników</string>
@@ -45,7 +51,9 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z biblioteki zdjęć</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Zrób nowe zdjęcie</string>
   <string name="composer_error_loading_parent_message">Nie można załadować danych wiadomości</string>
-    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_original_message_quote">Oryginalna wiadomość</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napisał(a):</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limit załączników został osiągnięty</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Maksymalny rozmiar załączników wynosi %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Szyfrowanie załącznika nie powiodło się. Ze względów bezpieczeństwa wszystkie załączniki zostały usunięte.</string>
@@ -60,11 +68,13 @@
   <string name="composer_button_discard_draft">Odrzuć szkic</string>
   <string name="composer_button_set_expiration">Ustaw czas wygaśnięcia</string>
   <string name="composer_expiration_time_bottom_sheet_title">Wygaśniecie wiadomości</string>
-    <string name="composer_bottom_bar_expiration_time_none">Nigdy nie wygasa</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Ustaw</string>
+  <string name="composer_bottom_bar_expiration_time_none">Nigdy nie wygasa</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Po 1 godzinie</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Po 1 dniu</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Po 3 dniach</string>
-    <string name="composer_bottom_bar_expiration_time_custom">W określonym dniu</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">Po 1 tygodniu</string>
+  <string name="composer_bottom_bar_expiration_time_custom">W określonym dniu</string>
   <string name="composer_error_setting_expiration_time">Ustawienie czasu wygaśnięcia nie powiodło się</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Dodaj hasło, aby użyć wygasania</string>
@@ -88,18 +98,30 @@
   <string name="message_sending_error_dialog_header">Błąd wysyłania</string>
   <string name="message_sending_error_dialog_button_dismiss">Zamknij</string>
   <string name="message_sending_error_dialog_text_error">Wiadomość e-mail nie może zostać wysłana na podany adres z następującego powodu:</string>
-    <string name="set_message_password_title">Ustaw hasło</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Brak zaufanych kluczy: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Adres nie istnieje: %s</string>
+  <string name="set_message_password_title">Ustaw hasło</string>
   <string name="set_message_password_info_message">Ustaw hasło, aby zaszyfrować tę wiadomość dla odbiorców spoza Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Dowiedz się więcej</a></string>
   <string name="set_message_password_label">Hasło wiadomości</string>
   <string name="set_message_password_label_hint">Podpowiedź do hasła (opcjonalnie)</string>
   <string name="set_message_password_supporting_text">Wymagane jest minimum 8 znaków.</string>
   <string name="set_message_password_supporting_error_text">Hasło musi zawierać od 8 do 21 znaków</string>
-    <string name="set_message_password_button_show">Pokaż hasło</string>
+  <string name="set_message_password_supporting_text_repeat">Hasła muszą pasować do siebie</string>
+  <string name="set_message_password_supporting_error_text_repeat">Hasła nie pasują do siebie</string>
+  <string name="set_message_password_button_show">Pokaż hasło</string>
   <string name="set_message_password_button_hide">Ukryj hasło</string>
   <string name="set_message_password_button_save_changes">Zapisz</string>
   <string name="set_message_password_button_remove_password">Usuń hasło</string>
-    <string name="composer_recipient_suggestion_device">Pokaż kontakty urządzenia</string>
+  <string name="respondInline">Odpowiedz w linii</string>
+  <string name="subject_placeholder">Temat</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d członek</item>
+    <item quantity="few">%d użytkowników</item>
+    <item quantity="many">%d użytkowników</item>
+    <item quantity="other">%d użytkowników</item>
+  </plurals>
+  <string name="composer_recipient_suggestion_device">Pokaż kontakty urządzenia</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Odrzucić wiadomość?</string>
   <string name="discard_draft_dialog_text">Szkic nie zostanie zapisany</string>
@@ -119,7 +141,11 @@
   <string name="composer_schedule_send_custom_upsell_title">Niestandardowa data i godzina</string>
   <string name="composer_schedule_send_custom_description">Wybierz datę i godzinę</string>
   <string name="composer_schedule_send_previously_set">Ustawiono wcześniej</string>
-    <string name="composer_change_sender_title">Od</string>
+  <string name="composer_schedule_send_custom_time_label">Czas</string>
+  <string name="composer_schedule_send_custom_date_label">Data</string>
+  <string name="composer_schedule_send_dialog_ok">Ok</string>
+  <string name="composer_schedule_send_dialog_enter_time">Wpisz czas</string>
+  <string name="composer_change_sender_title">Od</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Nie można zmienić nadawcy, ponieważ pobieranie adresów użytkowników nie powiodło się. Spróbuj ponownie.</string>
   <string name="composer_change_sender_invalid_address">Wybrany adres nie może być używany do wysyłania</string>
   <string name="composer_change_sender_unexpected_failure">Coś poszło nie tak podczas zmiany nadawcy. Spróbuj ponownie.</string>

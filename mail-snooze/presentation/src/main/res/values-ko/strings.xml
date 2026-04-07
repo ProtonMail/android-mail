@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">이번 주말</string>
   <string name="snooze_sheet_option_custom">사용자 지정</string>
   <string name="snooze_sheet_option_custom_detail">날짜 및 시간 선택</string>
-    <string name="snooze_sheet_snooze_title">다음 기간까지 방해 금지</string>
+  <string name="snooze_sheet_option_upsell_detail">유료 기능</string>
+  <string name="snooze_sheet_snooze_title">다음 기간까지 방해 금지</string>
   <string name="snooze_sheet_option_unsnooze">방해 금지 해제</string>
   <string name="snooze_sheet_error_unable_to_snooze">죄송합니다. 이 대화를 방해금지하는 중에 알 수 없는 오류가 발생했습니다.</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">대화의 방해금지를 해제하는 중에 알 수 없는 오류가 발생했습니다.</string>

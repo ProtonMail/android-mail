@@ -27,7 +27,8 @@
   <string name="padlocks_proton_send_sign_only">PGP-podepsaný e-mail</string>
   <string name="padlocks_proton_send_sign_only_description">Tento e-mail jste %s, čímž příjemci prokážete, že váš e-mail je pravý a nebyl bez dovolení pozměněn.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">digitálně podepsali</string>
-    <string name="padlocks_proton_send_recipient_pgp_signed_description">Tento e-mail jste %s, čímž příjemci prokážete, že váš e-mail je pravý a nebyl bez dovolení pozměněn.</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed">PGP-podepsaný e-mail</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description">Tento e-mail jste %s, čímž příjemci prokážete, že váš e-mail je pravý a nebyl bez dovolení pozměněn.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">digitálně podepsali</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">Šifrováno s nulovým přístupem</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled_description">Tento příjemce ve svém účtu deaktivoval koncové šifrování.</string>
@@ -57,7 +58,8 @@
   <string name="padlocks_proton_zero_access_description">Tento e-mail je uložen na serverech Proton s %s. Nemůže jej číst ani Proton, ani nikdo jiný.</string>
   <string name="padlocks_proton_zero_access_description_link_text">šifrováním s nulovým přístupem</string>
   <string name="padlocks_proton_sent_e2ee_verified_recipients">Koncově šifrováno pro ověřené příjemce</string>
-    <string name="padlocks_proton_sent_proton_verified_recipients">S ověřenými příjemci a šifrováním s nulovým přístupem</string>
+  <string name="padlocks_proton_sent_e2ee_verified_recipients_description">Tento e-mail je šifrován na zařízení odesílatele a může být dešifrován pouze příjemcem. Proton nemůže obsah e-mailu nikdy vidět.</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients">S ověřenými příjemci a šifrováním s nulovým přístupem</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description">Tento e-mail je uložen na serverech Proton s %s. Nemůže jej číst ani Proton, ani nikdo jiný.</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description_link">šifrováním s nulovým přístupem</string>
   <string name="padlocks_proton_sent_e2ee">Koncově šifrováno</string>
@@ -79,14 +81,18 @@
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">Tento e-mail je uložen na serverech Proton s %s. Nemůže jej číst ani Proton, ani nikdo jiný.</string>
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">šifrováním s nulovým přístupem</string>
   <string name="padlocks_proton_sent_recipient_pgp_signed">PGP-podepsaný e-mail</string>
-    <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">Koncově šifrováno pomocí PGP</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed_description">Tento e-mail jste %s, čímž příjemci prokážete, že váš e-mail je pravý a nebyl bez dovolení pozměněn.</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed_description_link_text">digitálně podepsali</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">Koncově šifrováno pomocí PGP</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Tento e-mail je koncově šifrován na zařízení odesílatele a může být dešifrován pouze příjemcem. Proton nemůže obsah e-mailu nikdy vidět.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">koncově šifrován</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Koncově šifrováno ověřenému příjemci</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Tento e-mail je %s na zařízení odesílatele a může být dešifrován pouze příjemcem. Proton nemůže obsah e-mailu nikdy vidět.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">koncově šifrován</string>
   <string name="padlocks_proton_sent_recipient_e2ee">Koncově šifrováno</string>
-    <!-- Additional descriptions -->
+  <string name="padlocks_proton_sent_recipient_e2ee_descripton">Tento e-mail je %s na zařízení odesílatele a může být dešifrován pouze příjemcem. Proton nemůže obsah e-mailu nikdy vidět.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_description_link_text">koncově šifrován</string>
+  <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">E-maily mezi uživateli Proton jsou automaticky koncově šifrované.</string>
   <string name="padlocks_non_encrypted_copy">Odesílatel nebo příjemce, který nepoužívá Proton Mail, však může mít na svém e-mailovém serveru uloženou nešifrovanou kopii.</string>
   <string name="padlocks_sender_verified_contact">Odesílatel je %s, jehož šifrovací klíče jste ověřili jako důvěryhodné.</string>

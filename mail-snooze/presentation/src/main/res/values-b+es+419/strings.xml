@@ -24,7 +24,8 @@
   <string name="snooze_sheet_option_this_weekend">Este fin de semana</string>
   <string name="snooze_sheet_option_custom">Personalizar</string>
   <string name="snooze_sheet_option_custom_detail">Seleccionar fecha y hora</string>
-    <string name="snooze_sheet_snooze_title">Pausar hasta</string>
+  <string name="snooze_sheet_option_upsell_detail">Función de pago</string>
+  <string name="snooze_sheet_snooze_title">Pausar hasta</string>
   <string name="snooze_sheet_option_unsnooze">Desactivar la pausa</string>
   <string name="snooze_sheet_error_unable_to_snooze">Lo sentimos, encontramos un error desconocido al pausar esta conversación</string>
   <string name="snooze_sheet_error_unable_to_unsnooze">Ocurrió un error desconocido al dejar de pausar esta conversación</string>

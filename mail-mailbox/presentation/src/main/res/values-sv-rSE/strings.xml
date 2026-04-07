@@ -24,7 +24,8 @@
   <string name="mailbox_toolbar_search_button_content_description">Sök</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Avsluta sökläge</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Rensa sökfråga</string>
-    <string name="filter_unread_button_text">Oläst</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ange sökfråga</string>
+  <string name="filter_unread_button_text">Oläst</string>
   <string name="include_spam_trash_text">Inkludera skräppost/papperskorg</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d valt</item>
@@ -43,7 +44,11 @@
   <string name="mailbox_is_empty_folder_description">Denna mapp är tom</string>
   <string name="mailbox_is_empty_spam_description">Din skräppostmapp är tom</string>
   <string name="mailbox_is_empty_trash_description">Ser tomt ut här</string>
-    <plurals name="mailbox_action_delete_conversation_dialog_title">
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Meddelandet flyttades till papperskorgen</item>
+    <item quantity="other">%d meddelanden flyttades till papperskorgen</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Ta bort konversation</item>
     <item quantity="other">Ta bort %d konversationer</item>
   </plurals>
@@ -72,7 +77,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
   <string name="mailbox_action_no_sender_addresses">Ingen adress med behörighet att skicka</string>
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
-    <string name="mailbox_action_trash_message">Meddelandet flyttades till papperskorgen</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
+  <string name="mailbox_action_trash_message">Meddelandet flyttades till papperskorgen</string>
   <string name="mailbox_action_archive_message">Meddelande flyttades till arkiv</string>
   <string name="mailbox_action_spam_message">Meddelandet flyttades till skräppost</string>
   <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
@@ -96,16 +102,27 @@
   <string name="mailbox_action_clear_spam_dialog_title">Töm skräppostmapp</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din skräppostmapp?</string>
-    <string name="mailbox_action_maximum_selection_reached">"Maximalt antal val uppnått"</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Är du säker på att du vill ta bort alla konversationer permanent i din skräppostmapp?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Rensningsåtgärd är schemalagd"</string>
+  <string name="mailbox_action_maximum_selection_reached">"Maximalt antal val uppnått"</string>
   <string name="mailbox_talkback_readout_unread">Oläst</string>
   <string name="mailbox_talkback_readout_starred">Ta bort stjärnmärkning</string>
   <string name="mailbox_talkback_readout_not_starred">Stjärnmärk</string>
   <!-- Attachment download -->
-    <string name="mailbox_attachment_download_error">Kan inte öppna bilagan. Försök igen.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_started">Öppnar bilaga …</string>
+  <string name="mailbox_attachment_download_error">Kan inte öppna bilagan. Försök igen.</string>
+  <string name="mailbox_attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
   <!--    Storage Limit Warning-->
-    <!--    Storage Quota Over Warning-->
-    <string name="mailbox_action_delete_failed">Det gick inte att ta bort meddelandet</string>
+  <string name="storage_limit_warning_dialog_title">Varning</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lagringsutrymmet på ditt Proton-konto är mer än 80 % fullt. Frigör utrymme eller uppgradera för mer lagringsutrymme.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lagringsutrymmet på ditt Proton-konto är mer än 90 % fullt. Frigör utrymme eller uppgradera för mer lagringsutrymme.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Påminn mig inte igen</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Varning</string>
+  <string name="storage_quota_over_dialog_text">Lagringsutrymmet för ditt Proton-konto är 100 % fullt. Du kommer inte att kunna skicka eller ta emot e-postmeddelanden om du inte permanent tar bort några e-postmeddelanden eller uppgraderar för mer lagringsutrymme.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="mailbox_action_delete_failed">Det gick inte att ta bort meddelandet</string>
   <string name="select_all">Markera alla</string>
   <string name="deselect_all">Avmarkera alla</string>
   <!--    Expiry messages-->
@@ -125,4 +142,16 @@
   <string name="schedule_send_tomorrow">Imorgon, %1$s</string>
   <string name="schedule_send_today">Idag, %1$s</string>
   <!--    Snooze messages-->
+  <plurals name="snoozed_in_days">
+    <item quantity="one">Snoozad till imorgon</item>
+    <item quantity="other">Snoozad i %d dagar</item>
+  </plurals>
+  <plurals name="snooze_in_hours">
+    <item quantity="one">Snoozad i %d timme</item>
+    <item quantity="other">Snoozad i %d timmar</item>
+  </plurals>
+  <plurals name="snooze_in_minutes">
+    <item quantity="one">Snoozad i %d minut</item>
+    <item quantity="other">Snoozad i %d minuter</item>
+  </plurals>
 </resources>

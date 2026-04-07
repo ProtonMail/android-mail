@@ -28,7 +28,10 @@
   <plurals name="contact_group_details_member_count">
     <item quantity="other">%1$d 位成员</item>
   </plurals>
-    <string name="search_contacts_description">搜索联系人</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="other">成员 (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">搜索联系人</string>
   <string name="contact_search_no_results">未找到结果</string>
   <string name="contact_search_placeholder">搜索联系人或群组</string>
   <string name="contact_search_content_description">搜索联系人或群组</string>
@@ -62,7 +65,9 @@
   <string name="contact_type_voice">语音通话</string>
   <string name="contact_property_birthday">生日</string>
   <string name="contact_property_note">备注</string>
-    <string name="contact_property_organization">组织</string>
+  <string name="contact_property_photo">照片</string>
+  <string name="contact_property_logo">图标</string>
+  <string name="contact_property_organization">组织</string>
   <string name="contact_property_anniversary">周年纪念日</string>
   <string name="contact_property_title">头衔</string>
   <string name="contact_property_role">角色</string>

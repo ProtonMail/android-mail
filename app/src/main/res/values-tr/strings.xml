@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">İleti gönderiliyor…</string>
   <string name="mailbox_message_sending_offline">Çevrim dışı: İleti gönderilmek üzere sıraya alındı</string>
   <string name="mailbox_message_sending_success">İleti gönderildi</string>
-    <string name="mailbox_message_sending_error_action">Taslağa git</string>
+  <string name="mailbox_message_sending_error">İleti gönderilirken sorun çıktı</string>
+  <string name="mailbox_message_sending_error_action">Taslağa git</string>
   <string name="notification_switched_account">%s hesabına geçildi</string>
-    <string name="mailbox_message_scheduling">İleti zamanlanıyor…</string>
+  <string name="label_saved">Etiket kaydedldi</string>
+  <string name="label_deleted">Etiket silindi</string>
+  <string name="app_locked">Uygulama kilitlendi</string>
+  <string name="use_pin_instead">Bunun yerine PIN kodu kullanın</string>
+  <string name="mailbox_message_scheduling">İleti zamanlanıyor…</string>
   <string name="mailbox_message_scheduling_offline">Çevrim dışı: İleti zamanlanmak üzere sıraya alındı</string>
   <string name="mailbox_message_scheduled_for_sending_success">Bu ileti %1$s zamanında gönderilecek</string>
   <string name="launcher_alert_duplicate_account_description">Kullanıcı zaten oturum açmış</string>

@@ -17,7 +17,8 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-    <string name="login_help_title">Bagaimana kami dapat membantu Anda?</string>
+  <string name="login_help_close">Tutup</string>
+  <string name="login_help_title">Bagaimana kami dapat membantu Anda?</string>
   <string name="login_help_forgot_username">Lupa nama pengguna</string>
   <string name="login_help_forgot_password">Lupa kata sandi</string>
   <string name="login_help_other_issues">Masalah masuk lainnya</string>
@@ -35,11 +36,15 @@
   <string name="auth_login_username">Nama pengguna atau email</string>
   <string name="auth_email">Email</string>
   <string name="auth_password">Kata sandi</string>
-    <string name="auth_login_assistive_text">Silakan masukkan alamat email atau nama pengguna Proton Anda.</string>
+  <string name="auth_username_placeholder">Nama pengguna atau email</string>
+  <string name="auth_password_placeholder">Kata sandi</string>
+  <string name="auth_login_assistive_text">Silakan masukkan alamat email atau nama pengguna Proton Anda.</string>
   <string name="auth_account_details">Masukkan rincian Akun Proton Anda.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Terdapat masalah saat Anda masuk. Silakan coba lagi.</string>
-    <string name="auth_login_error_invalid_action_invalid_credentials">Kredensial masuk salah. Silakan coba lagi.</string>
-    <string name="auth_login_general_error">Terdapat suatu kesalahan.</string>
+  <string name="auth_login_error_invalid_action_human_verification_challenge">Verifikasi manusia dibutuhkan.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Kredensial masuk salah. Silakan coba lagi.</string>
+  <string name="auth_login_error_invalid_action_unsupported_tfa">Kode dua faktor tidak didukung</string>
+  <string name="auth_login_general_error">Terdapat suatu kesalahan.</string>
   <string name="auth_second_factor_title">Autentikasi dua-faktor</string>
   <string name="auth_second_factor_subtitle">Akun Anda memiliki beberapa mekanisme 2FA yang terpasang. Silakan tentukan bagaimana Anda ingin mengonfirmasi identitas Anda.</string>
   <string name="auth_second_factor_tab_security_key">Kunci Keamanan</string>
@@ -61,7 +66,9 @@
   <string name="auth_two_pass_input_empty">Kata sandi tidak boleh kosong</string>
   <string name="auth_signup_title">Buat Akun Proton Anda</string>
   <string name="auth_signup_subtitle">Satu akun untuk seluruh layanan Proton</string>
-    <string name="auth_signup_next">Selanjutnya</string>
+  <string name="auth_signup_username_assistive_text">Nama pengguna tidak boleh kosong.</string>
+  <string name="auth_signup_email_assistive_text">Email tidak boleh kosong.</string>
+  <string name="auth_signup_next">Selanjutnya</string>
   <string name="auth_signup_username">Nama pengguna</string>
   <string name="auth_signup_create_password">Buat kata sandi Anda</string>
   <string name="auth_signup_password">Kata sandi</string>
@@ -76,7 +83,11 @@
   <string name="auth_signup_recovery_skip">Lewati</string>
   <string name="auth_signup_recovery_title">Atur metode pemulihan (opsional)</string>
   <string name="auth_signup_recovery_subtitle">Apabila Anda terkunci dari akun Anda, kami akan mengirimkan instruksi pemulihan kepada alamat email atau nomor telepon ini.</string>
-    <string name="auth_signup_recovery_select_country">Pilih Negara</string>
+  <string name="auth_signup_recovery_email">Email</string>
+  <string name="auth_signup_recovery_phone">Telepon</string>
+  <string name="auth_signup_recovery_email_hint">Email pemulihan</string>
+  <string name="auth_signup_recovery_phone_hint">Nomor telepon pemulihan</string>
+  <string name="auth_signup_recovery_select_country">Pilih Negara</string>
   <string name="auth_signup_phone_placeholder">XXX-XXXXXXX</string>
   <string name="auth_signup_skip_recovery_title">Lewati metode pemulihan?</string>
   <string name="auth_signup_skip_recovery_description">Metode pemulihan akan membantu Anda untuk mengakses akun Anda seandainya Anda lupa kata sandi atau terkunci dari akun Anda.</string>
@@ -117,7 +128,8 @@
   <string name="auth_fido_config_error">Kesalahan saat mengambil kunci yang tersimpan.</string>
   <string name="auth_fido_reading_key_error">Kesalahan saat membaca kunci keamanan.</string>
   <string name="auth_fido_submit_key_error">Kesalahan saat mengirimkan data kunci.</string>
-    <string name="auth_fido_authenticating_in_progress">Mengautentikasi dengan kunci keamanan.</string>
+  <string name="auth_fido_reading_key_progress">Membaca kunci keamanan.</string>
+  <string name="auth_fido_authenticating_in_progress">Mengautentikasi dengan kunci keamanan.</string>
   <string name="auth_fido_security_key">Kunci Keamanan</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="other">Kata sandi harus mengandung minimal %1$s karakter</item>
@@ -132,15 +144,21 @@
   <string name="settings_password_management_tab_second_password">Kata sandi kedua</string>
   <string name="settings_password_management_change_password_note">Untuk mengubah salah satu kata sandi Anda, Anda harus mengetahui kata sandi utama Anda. </string>
   <string name="settings_password_management_forgot_main_password">Lupa kata sandi utama Anda?</string>
-    <string name="settings_main_password_hint_current">Kata sandi utama saat ini</string>
+  <string name="settings_password_management_header">Ubah kata sandi</string>
+  <string name="settings_password_management_cannot_change_password">Anda tidak dapat mengubah kata sandi cadangan Anda. Silakan hubungi administrator Anda.</string>
+  <string name="settings_main_password_hint_current">Kata sandi utama saat ini</string>
   <string name="settings_main_password_hint_new">Kata sandi utama baru</string>
   <string name="settings_main_password_hint_new_confirm">Konfirmasi kata sandi utama baru</string>
   <string name="settings_second_password_hint_current_main_password">Kata sandi utama saat ini</string>
   <string name="settings_second_password_hint_new">Kata sandi kedua baru</string>
   <string name="settings_second_password_hint_new_confirm">Konfirmasi kata sandi kedua baru</string>
-    <string name="settings_password_management_login_success">Kata sandi masuk diperbarui</string>
+  <string name="settings_change_password_error">Terdapat kesalahan dalam pengubahan kata sandi.</string>
+  <string name="settings_recovery_email_success">Alamat email pemulihan diperbarui</string>
+  <string name="settings_password_management_login_success">Kata sandi masuk diperbarui</string>
   <string name="settings_password_management_second_success">Kata sandi kedua diperbarui</string>
-    <string name="settings_password_invalid_2fa">Kode faktor kedua tidak valid. Silakan coba lagi.</string>
+  <string name="settings_password_management_start_recovery">Tidak tahu kata sandi Anda saat ini?</string>
+  <string name="settings_password_management_2fa">2FA diperlukan</string>
+  <string name="settings_password_invalid_2fa">Kode faktor kedua tidak valid. Silakan coba lagi.</string>
   <string name="settings_password_error_empty">Kata sandi tidak boleh kosong.</string>
   <string name="settings_password_error">Nama pengguna atau kata sandi salah. Silakan coba lagi.</string>
   <string name="settings_password_error_invalid_recovery">Kode 2FA salah. Silakan coba lagi.</string>

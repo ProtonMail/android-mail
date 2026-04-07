@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Odstrani iz te naprave</string>
   <string name="account_switcher_switch_to">Preklopite na</string>
   <string name="manage_accounts_title">Uredi račune</string>
-    <string name="manage_accounts_add_account">Dodaj račun</string>
+  <string name="manage_accounts_signed_in">Prijava uspela</string>
+  <string name="manage_accounts_signed_out">Odjavljeni ste</string>
+  <string name="manage_accounts_add_account">Dodaj račun</string>
   <string name="manage_accounts_switch_to">Preklopite na</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Preklopi na prijavljen račun</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Preklopi na odjavljen račun</string>

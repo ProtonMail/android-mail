@@ -56,7 +56,25 @@
   <string name="upselling_button_hint">升级以获取更多选项</string>
   <string name="upselling_upgrade_plan_generic">您需要付费订阅 Proton Mail 才能使用此功能</string>
   <!-- Onboarding Upselling -->
-    <!-- Comparison Table -->
+  <string name="upselling_onboarding_premium_value_included">包括高级功能</string>
+  <string name="upselling_onboarding_feature_e2e">端到端加密</string>
+  <string name="upselling_onboarding_feature_folders_labels">无限文件夹和标签</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB 储存和 1 个邮箱地址</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB 存储空间</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">为您提供额外 10 个邮箱地址</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">支持 1 个自定义邮箱域名</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 个 Hide-my-email 别名</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">优先客户支持</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB 存储空间</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">为您提供额外 15 个邮箱地址</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">支持 3 个自定义邮箱域名</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">无限 Hide-my-email 别名</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">专属客户支持</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">超快且私有的 VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">加密的密码管理器</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">用于照片和文档的加密云存储</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">高级账户保护</string>
+  <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">存储空间</string>
   <string name="upselling_comparison_table_email_addresses">邮箱地址</string>
   <string name="upselling_comparison_table_custom_email_domain">自定义邮箱域名</string>
@@ -91,11 +109,20 @@
   <string name="upselling_auto_renew_text_standard">除非手动取消，否则将在 %s%s 时自动续订</string>
   <string name="upselling_social_proof_reviews">2k+ 评论</string>
   <string name="upselling_description_social_proof">升級到数百万订阅者赞不绝口的体验。</string>
-    <string name="upselling_month">/月</string>
+  <string name="upselling_discount_tag">立省 %s%%</string>
+  <string name="upselling_month">/月</string>
   <string name="upselling_month_only">仅 %s/月</string>
   <string name="upselling_year">/年</string>
-    <!-- Errors -->
-    <string name="upselling_snackbar_error_no_user_id">出错了。</string>
+  <string name="upselling_get_button">开通 %s</string>
+  <plurals name="upselling_month">
+    <item quantity="other">%d 月</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">无法获取升级选项。</string>
+  <string name="upselling_snackbar_error_no_user_id">出错了。</string>
   <string name="upselling_snackbar_error_no_subscriptions">无法获取订阅。</string>
   <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">订阅升级进行中…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">升级您的订阅时发生错误。</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">发生错误，请重试。</string>
 </resources>

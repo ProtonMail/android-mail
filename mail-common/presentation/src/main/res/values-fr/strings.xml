@@ -22,8 +22,10 @@
   <string name="expiration_hours_arg">%d h</string>
   <string name="expiration_minutes_arg">%d m</string>
   <string name="retry">Réessayer</string>
-    <string name="x_error_not_logged_in">Non connecté</string>
-    <string name="action_customize_toolbar_description">Personnaliser la barre d\'outils</string>
+  <string name="toolbar_back_content_description">Retour à l\'écran précédent</string>
+  <string name="x_error_not_logged_in">Non connecté</string>
+  <string name="action_customize_toolbar">Personnaliser la barre d\'outils</string>
+  <string name="action_customize_toolbar_description">Personnaliser la barre d\'outils</string>
   <string name="action_customize_toolbar_content_description">Personnaliser la barre d\'outils</string>
   <string name="action_reply">Répondre</string>
   <string name="action_reply_all">Répondre à tous</string>
@@ -57,7 +59,8 @@
   <string name="action_pin_description">Épingler</string>
   <string name="action_unpin_description">Désépingler</string>
   <string name="action_reply_content_description">Répondre</string>
-    <string name="action_reply_all_content_description">Répondre à tous</string>
+  <string name="action_reply_to_content_description">Répondre à %s</string>
+  <string name="action_reply_all_content_description">Répondre à tous</string>
   <string name="action_forward_content_description">Transférer</string>
   <string name="action_mark_read_content_description">Marquer comme lu</string>
   <string name="action_mark_unread_content_description">Marquer comme non lu</string>
@@ -88,13 +91,16 @@
   <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
   <!-- notification channels -->
-    <string name="email_notification_channel_name">Messages</string>
+  <string name="attachment_download_notification_channel_name">Pièces jointes</string>
+  <string name="attachment_download_notification_channel_description">Notifications pour les téléchargements de pièces jointes</string>
+  <string name="email_notification_channel_name">Messages</string>
   <string name="login_notification_channel_name">Alertes de connexion</string>
   <string name="email_notification_channel_description">Notifications de réception de messages</string>
   <string name="login_notification_channel_description">Notifications de nouvelles connexions</string>
   <string name="auth_badge_official">Officiel</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Aucune application n’a été trouvée pour gérer cette action.</string>
-    <string name="mailbox_action_delete_dialog_button_cancel">Annuler</string>
+  <string name="action_copied_to_clipboard">Copié dans le presse-papiers</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annuler</string>
   <string name="mailbox_action_delete_dialog_button_delete">Supprimer</string>
   <string name="picker_dialog_cancel">Annuler</string>
   <string name="color_purple">Violet</string>

@@ -28,7 +28,8 @@
   <string name="quick_reply_button_content_description">Ответить</string>
   <string name="quick_reply_all_button_content_description">Ответить всем</string>
   <string name="more_button_content_description">Больше</string>
-    <string name="from">От:</string>
+  <string name="subject">Тема:</string>
+  <string name="from">От:</string>
   <string name="to">Кому:</string>
   <string name="cc">Копия:</string>
   <string name="bcc">Скрытая копия:</string>
@@ -39,17 +40,21 @@
     <item quantity="many">%d Вложений</item>
     <item quantity="other">%d Вложения</item>
   </plurals>
-    <string name="undisclosed_recipients">…</string>
+  <string name="hide_details">Скрыть подробности</string>
+  <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Черновик)</string>
   <string name="error_mark_as_read_failed">Не удалось отметить как прочитанное. Повторите попытку.</string>
   <string name="error_mark_as_unread_failed">Не удалось пометить как непрочитанное. Попробуйте еще раз.</string>
   <string name="error_star_operation_failed">Не удалось отметить звездочкой. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_unstar_operation_failed">Не удалось снять звёздочку. Попробуйте еще раз.</string>
   <string name="error_move_to_trash_failed">Не удалось переместить в корзину. Пожалуйста, попробуйте еще раз.</string>
-    <string name="message_moved_to">Сообщение перемещено в %s</string>
-    <string name="message_moved_to_archive">Сообщение помещено в Архив</string>
+  <string name="message_moved">Сообщение перемещено</string>
+  <string name="message_moved_to">Сообщение перемещено в %s</string>
+  <string name="message_moved_to_trash">Сообщение помещено в Корзину</string>
+  <string name="message_moved_to_archive">Сообщение помещено в Архив</string>
   <string name="error_move_to_archive_failed">Перемещение в архив не удалось. Повторите попытку.</string>
-    <string name="error_move_to_spam_failed">Перемещение в спам не удалось. Повторите попытку.</string>
+  <string name="message_moved_to_spam">Сообщение перемещено в Спам</string>
+  <string name="error_move_to_spam_failed">Перемещение в спам не удалось. Повторите попытку.</string>
   <string name="message_moved_to_selected_destination">Сообщение перемещено в %1$s</string>
   <string name="error_move_message_failed">Не удалось переместить сообщение. Пожалуйста, повторите попытку.</string>
   <string name="conversation_moved_to_trash">Цепочка писем помещена в Корзину</string>
@@ -64,7 +69,9 @@
   <string name="error_attachment_download_in_progress">Текущее скачивание должно быть завершено до начала нового.</string>
   <string name="error_get_attachment_not_enough_memory">Не удалось получить вложение из-за недостатка памяти</string>
   <string name="error_relabel_message_failed">Не удалось изменить ярлык сообщения. Пожалуйста, повторите попытку</string>
-    <string name="decryption_error">Дешифрование сообщения не удалось.</string>
+  <string name="error_relabel_conversation_failed">Не удалось изменить ярлык цепочки писем. Повторите попытку</string>
+  <string name="please_go_back_online_to_load_messages">Вы офлайн. Чтобы загружать сообщения, перейдите обратно в режим онлайн</string>
+  <string name="decryption_error">Дешифрование сообщения не удалось.</string>
   <string name="detail_error_retrieving_message_body">Не удалось получить сообщение</string>
   <string name="message_body_error_no_webview">Чтобы вы могли увидеть содержимое этого сообщения, у вас должен быть установлен WebView.</string>
   <!-- Banners -->
@@ -115,7 +122,9 @@
   <string name="message_report_phishing_dialog_message">Мы проанализируем сообщение о попытке фишинга и улучшим наши фильтры. Это означает, что мы будем способны увидеть содержимое сообщения полностью.</string>
   <string name="message_report_phishing_dialog_confim_button">Подтвердить</string>
   <string name="message_report_phishing_dialog_cancel_button">Отменить</string>
-    <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
+  <string name="open_on_protoncalendar_banner_title">Открыть в Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Защищённый зашифрованный календарь</string>
+  <string name="trashed_messages_banner">Show trashed messages in this conversation.</string>
   <string name="non_trashed_messages_banner">Show non-trashed messages in this conversation.</string>
   <string name="recipient_me">я</string>
   <string name="message_details_header_from">От</string>
@@ -179,7 +188,9 @@
   <string name="already_unsubscribed_banner_message">You are unsubscribed from this mailing list.</string>
   <string name="error_unsubscribe_newsletter">Failed to unsubscribe from newsletter</string>
   <string name="detail_error_loading_single_message">Failed loading message</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Failed to download image</string>
+  <string name="image_downloaded_successfully">Image downloaded</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Message headers</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Close</string>

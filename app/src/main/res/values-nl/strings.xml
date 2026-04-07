@@ -35,9 +35,14 @@
   <string name="mailbox_message_sending">Bericht wordt verzonden…</string>
   <string name="mailbox_message_sending_offline">Offline: bericht staat in de wachtrij voor verzending</string>
   <string name="mailbox_message_sending_success">Bericht verzonden</string>
-    <string name="mailbox_message_sending_error_action">Ga naar Drive</string>
+  <string name="mailbox_message_sending_error">Fout bij verzenden bericht</string>
+  <string name="mailbox_message_sending_error_action">Ga naar Drive</string>
   <string name="notification_switched_account">Overgeschakeld naar account %s</string>
-    <string name="mailbox_message_scheduling">Bericht plannen…</string>
+  <string name="label_saved">Label opgeslagen</string>
+  <string name="label_deleted">Label verwijderd</string>
+  <string name="app_locked">App vergrendeld</string>
+  <string name="use_pin_instead">Gebruik PIN in de plaats</string>
+  <string name="mailbox_message_scheduling">Bericht plannen…</string>
   <string name="mailbox_message_scheduling_offline">Offline: bericht staat in de wachtrij voor planning</string>
   <string name="mailbox_message_scheduled_for_sending_success">Dit bericht zal worden verzonden op %1$s om</string>
   <string name="launcher_alert_duplicate_account_description">De gebruiker is al ingelogd.</string>

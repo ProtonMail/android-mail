@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Responder</string>
   <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Mais</string>
-    <string name="from">De:</string>
+  <string name="subject">Assunto:</string>
+  <string name="from">De:</string>
   <string name="to">Para:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Cco:</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d anexo</item>
     <item quantity="other">%d anexos</item>
   </plurals>
-    <string name="undisclosed_recipients">...</string>
+  <string name="hide_details">Ocultar detalhes</string>
+  <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(Rascunho)</string>
   <string name="error_mark_as_read_failed">Erro ao marcar como lido. Tente novamente.</string>
   <string name="error_mark_as_unread_failed">Erro ao marcar como lido. Tente novamente.</string>
   <string name="error_star_operation_failed">Erro ao adicionar favorito. Tente novamente.</string>
   <string name="error_unstar_operation_failed">Erro ao remover o favorito. Tente novamente.</string>
   <string name="error_move_to_trash_failed">Erro ao mover para a lixeira. Tente novamente.</string>
-    <string name="message_moved_to">Mensagem movida para %s</string>
-    <string name="message_moved_to_archive">Mensagem movida para o arquivo</string>
+  <string name="message_moved">Mensagem movida</string>
+  <string name="message_moved_to">Mensagem movida para %s</string>
+  <string name="message_moved_to_trash">Mensagem movida para a lixeira</string>
+  <string name="message_moved_to_archive">Mensagem movida para o arquivo</string>
   <string name="error_move_to_archive_failed">Erro ao mover para o arquivo. Tente novamente.</string>
-    <string name="error_move_to_spam_failed">Erro ao mover para spam. Tente novamente.</string>
+  <string name="message_moved_to_spam">Mensagem movida para Spam</string>
+  <string name="error_move_to_spam_failed">Erro ao mover para spam. Tente novamente.</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Erro ao mover a mensagem. Tente novamente.</string>
   <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">O download atual deve ser concluído antes de iniciar um novo.</string>
   <string name="error_get_attachment_not_enough_memory">Erro ao obter o anexo devido à memória insuficiente</string>
   <string name="error_relabel_message_failed">Erro ao rotular novamente a mensagem. Tente novamente.</string>
-    <string name="decryption_error">Não foi possível descriptografar a mensagem.</string>
+  <string name="error_relabel_conversation_failed">Erro ao rotular novamente a conversa. Tente novamente.</string>
+  <string name="please_go_back_online_to_load_messages">Você está desconectado. Volte a se conectar para carregar as mensagens</string>
+  <string name="decryption_error">Não foi possível descriptografar a mensagem.</string>
   <string name="detail_error_retrieving_message_body">Não é possível recuperar mensagem</string>
   <string name="message_body_error_no_webview">Você precisa ter um WebView instalado para ver o conteúdo desta mensagem.</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing enviará a mensagem para nós, para podermos analisá-la e aprimorar nossos filtros. Isso significa que conseguiremos ver todo o conteúdo da mensagem.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmar</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
-    <string name="trashed_messages_banner">Mostrar mensagens na Lixeira nesta conversa.</string>
+  <string name="open_on_protoncalendar_banner_title">Abrir no Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Calendário criptografado seguro</string>
+  <string name="trashed_messages_banner">Mostrar mensagens na Lixeira nesta conversa.</string>
   <string name="non_trashed_messages_banner">Mostrar mensagens não excluídas nesta conversa.</string>
   <string name="recipient_me">Eu</string>
   <string name="message_details_header_from">De</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">Você já está descadastrado desta lista de e-mails.</string>
   <string name="error_unsubscribe_newsletter">Não foi possível cancelar a assinatura da lista de e-mails.</string>
   <string name="detail_error_loading_single_message">Erro ao carregar mensagem</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Erro ao baixar a imagem</string>
+  <string name="image_downloaded_successfully">Imagem baixada</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Cabeçalho da mensagem</string>
   <string name="raw_message_data_html_title">HTML da mensagem</string>
   <string name="raw_message_data_close_button_content_description">Fechar</string>

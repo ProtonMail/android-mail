@@ -28,11 +28,13 @@
   <string name="label_title_all_mail">Todos os e-mails</string>
   <string name="label_title_all_scheduled">Agendado</string>
   <string name="label_title_snoozed">Adiado</string>
-    <string name="label_title_create_label">Criar marcador</string>
+  <string name="label_title_folders">Pastas</string>
+  <string name="label_title_create_label">Criar marcador</string>
   <string name="label_title_create_folder">Criar pasta</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para…</string>
-    <string name="bottom_sheet_save_action">Salvar</string>
+  <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_save_action">Salvar</string>
   <string name="bottom_sheet_archive_action">Também arquivar?</string>
   <string name="bottom_sheet_label_as_title">Marcar como</string>
   <string name="bottom_sheet_label_as_error_fetch">Falha ao obter marcadores.</string>

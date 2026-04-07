@@ -29,7 +29,11 @@
     <item quantity="one">%1$d membre</item>
     <item quantity="other">%1$d membres</item>
   </plurals>
-    <string name="search_contacts_description">Rechercher des contacts</string>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Membre (%1$d)</item>
+    <item quantity="other">Membres (%1$d)</item>
+  </plurals>
+  <string name="search_contacts_description">Rechercher des contacts</string>
   <string name="contact_search_no_results">Aucun résultat n\'a été trouvé.</string>
   <string name="contact_search_placeholder">Rechercher un groupe ou contact</string>
   <string name="contact_search_content_description">Rechercher un groupe ou contact</string>
@@ -63,7 +67,9 @@
   <string name="contact_type_voice">Voix</string>
   <string name="contact_property_birthday">Date de naissance</string>
   <string name="contact_property_note">Note</string>
-    <string name="contact_property_organization">Entreprise</string>
+  <string name="contact_property_photo">Photo</string>
+  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_organization">Entreprise</string>
   <string name="contact_property_anniversary">Anniversaire</string>
   <string name="contact_property_title">Fonction/Profession</string>
   <string name="contact_property_role">Rôle</string>

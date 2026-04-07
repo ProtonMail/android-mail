@@ -25,7 +25,9 @@
   <string name="account_switcher_remove_from_device">Verwijderen van dit apparaat</string>
   <string name="account_switcher_switch_to">Wisselen naar</string>
   <string name="manage_accounts_title">Accounts beheren</string>
-    <string name="manage_accounts_add_account">Account toevoegen</string>
+  <string name="manage_accounts_signed_in">Aangemeld</string>
+  <string name="manage_accounts_signed_out">Uitgelogd</string>
+  <string name="manage_accounts_add_account">Account toevoegen</string>
   <string name="manage_accounts_switch_to">Wisselen naar</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Schakel over naar een ingelogd account</string>
   <string name="manage_accounts_switch_to_signed_out_content_desc">Schakel over naar een uitgelogd account</string>

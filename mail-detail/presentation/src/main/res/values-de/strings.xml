@@ -26,7 +26,8 @@
   <string name="quick_reply_button_content_description">Antworten</string>
   <string name="quick_reply_all_button_content_description">Allen antworten</string>
   <string name="more_button_content_description">Mehr</string>
-    <string name="from">Von:</string>
+  <string name="subject">Betreff:</string>
+  <string name="from">Von:</string>
   <string name="to">An:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
@@ -35,17 +36,21 @@
     <item quantity="one">%d Anhang</item>
     <item quantity="other">%d Anhänge</item>
   </plurals>
-    <string name="undisclosed_recipients"> …</string>
+  <string name="hide_details">Details ausblenden</string>
+  <string name="undisclosed_recipients"> …</string>
   <string name="collapsed_header_draft">(Entwurf)</string>
   <string name="error_mark_as_read_failed">Der Vorgang „Als gelesen markieren“ ist fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_mark_as_unread_failed">Der Vorgang „Als ungelesen markieren“ ist fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_star_operation_failed">Der Vorgang „Markierung hinzufügen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
   <string name="error_unstar_operation_failed">Der Vorgang „Markierung entfernen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
   <string name="error_move_to_trash_failed">Verschieben in den Papierkorb fehlgeschlagen. Bitte versuche es erneut.</string>
-    <string name="message_moved_to">Nachricht verschoben nach %s</string>
-    <string name="message_moved_to_archive">Nachricht ins Archiv verschoben</string>
+  <string name="message_moved">Nachricht verschoben</string>
+  <string name="message_moved_to">Nachricht verschoben nach %s</string>
+  <string name="message_moved_to_trash">Nachricht in den Papierkorb verschoben</string>
+  <string name="message_moved_to_archive">Nachricht ins Archiv verschoben</string>
   <string name="error_move_to_archive_failed">Verschieben ins Archiv fehlgeschlagen. Bitte versuche es erneut.</string>
-    <string name="error_move_to_spam_failed">Verschieben in Spam fehlgeschlagen. Bitte versuche es erneut.</string>
+  <string name="message_moved_to_spam">Nachricht in Spam verschoben</string>
+  <string name="error_move_to_spam_failed">Verschieben in Spam fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="message_moved_to_selected_destination">Nachricht verschoben nach %1$s</string>
   <string name="error_move_message_failed">Verschieben der Nachricht fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="conversation_moved_to_trash">Unterhaltung in den Papierkorb verschoben</string>
@@ -60,7 +65,9 @@
   <string name="error_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
   <string name="error_get_attachment_not_enough_memory">Abruf des Anhangs fehlgeschlagen, da der Speicher nicht ausreicht</string>
   <string name="error_relabel_message_failed">Fehler beim Ändern der Kategorie. Bitte versuche es erneut.</string>
-    <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
+  <string name="error_relabel_conversation_failed">Unterhaltung konnte nicht neu kategorisiert werden. Bitte versuche es erneut.</string>
+  <string name="please_go_back_online_to_load_messages">Du bist offline. Bitte gehe wieder online, um Nachrichten zu laden.</string>
+  <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
   <string name="detail_error_retrieving_message_body">Fehler beim Abrufen der Nachricht</string>
   <string name="message_body_error_no_webview">Du musst eine WebView-App installiert haben, um den Inhalt dieser Nachricht zu sehen.</string>
   <!-- Banners -->
@@ -111,7 +118,9 @@
   <string name="message_report_phishing_dialog_message">Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.</string>
   <string name="message_report_phishing_dialog_confim_button">Bestätigen</string>
   <string name="message_report_phishing_dialog_cancel_button">Abbrechen</string>
-    <string name="trashed_messages_banner">Gelöschte Nachrichten in dieser Unterhaltung anzeigen.</string>
+  <string name="open_on_protoncalendar_banner_title">In Proton Calendar öffnen</string>
+  <string name="open_on_protoncalendar_banner_description">Sicherer und verschlüsselter Kalender</string>
+  <string name="trashed_messages_banner">Gelöschte Nachrichten in dieser Unterhaltung anzeigen.</string>
   <string name="non_trashed_messages_banner">Nicht gelöschte Nachrichten in dieser Unterhaltung anzeigen.</string>
   <string name="recipient_me">ich</string>
   <string name="message_details_header_from">Von</string>
@@ -173,7 +182,9 @@
   <string name="already_unsubscribed_banner_message">Du wurdest aus dieser Verteilerliste ausgetragen.</string>
   <string name="error_unsubscribe_newsletter">Fehler beim Abbestellen des Newsletters</string>
   <string name="detail_error_loading_single_message">Fehler beim Laden der Nachricht</string>
-    <!-- Raw message data screen -->
+  <string name="error_downloading_image">Fehler beim Herunterladen der Grafik</string>
+  <string name="image_downloaded_successfully">Grafik heruntergeladen</string>
+  <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Nachrichtenkopfzeilen</string>
   <string name="raw_message_data_html_title">Nachrichten-HTML</string>
   <string name="raw_message_data_close_button_content_description">Schließen</string>
