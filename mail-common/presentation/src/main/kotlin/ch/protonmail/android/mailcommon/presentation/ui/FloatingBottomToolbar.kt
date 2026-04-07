@@ -67,7 +67,7 @@ fun FloatingBottomToolbar(
     val shownData = lastShownState.value ?: return
 
     val surfaceColor by animateColorAsState(
-        targetValue = if (isVisible) ProtonTheme.colors.backgroundNorm else Color.Transparent,
+        targetValue = if (isVisible) ProtonTheme.colors.interactionFabNorm else Color.Transparent,
         animationSpec = tween(ANIMATION_DURATION),
         label = "surfaceColor"
     )

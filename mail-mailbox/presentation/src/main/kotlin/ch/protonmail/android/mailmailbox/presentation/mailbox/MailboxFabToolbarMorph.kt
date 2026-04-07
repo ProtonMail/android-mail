@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
@@ -112,13 +111,6 @@ internal fun MailboxFabToolbarMorph(
         label = "horizontalBias"
     ) { inSelection -> if (inSelection) 0f else 1f }
 
-    val surfaceColor by transition.animateColor(
-        transitionSpec = { spring(stiffness = Spring.StiffnessMediumLow) },
-        label = "surfaceColor"
-    ) { inSelection ->
-        if (inSelection) ProtonTheme.colors.backgroundNorm else ProtonTheme.colors.interactionFabNorm
-    }
-
     Box(
         modifier = modifier
             .padding(bottom = snackbarOffset)
@@ -182,7 +174,7 @@ internal fun MailboxFabToolbarMorph(
                     .height(FabSize),
                 shape = RoundedCornerShape(percent = 50),
                 shadowElevation = ProtonDimens.ShadowElevation.Mini,
-                color = surfaceColor
+                color = ProtonTheme.colors.interactionFabNorm
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
