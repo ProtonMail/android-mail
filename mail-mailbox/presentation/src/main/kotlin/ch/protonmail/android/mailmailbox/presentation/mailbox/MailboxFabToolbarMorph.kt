@@ -39,9 +39,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -122,17 +124,41 @@ internal fun MailboxFabToolbarMorph(
             .padding(bottom = snackbarOffset)
             .fillMaxWidth()
     ) {
-        val showUnreadFilter = showBottomUnreadFilter && !isInSelectionMode && !isInSearch
+        val wantsUnreadFilter = showBottomUnreadFilter && !isInSelectionMode && !isInSearch
+        var showUnreadFilter by remember { mutableStateOf(false) }
+        LaunchedEffect(wantsUnreadFilter) {
+            showUnreadFilter = wantsUnreadFilter
+        }
+
+        val unreadSpring = spring<Float>(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMediumLow
+        )
         val unreadAlpha by animateFloatAsState(
             targetValue = if (showUnreadFilter) 1f else 0f,
-            animationSpec = tween(UNREAD_ANIMATION_DURATION),
+            animationSpec = unreadSpring,
             label = "unreadAlpha"
+        )
+        val unreadScale by animateFloatAsState(
+            targetValue = if (showUnreadFilter) 1f else 0.6f,
+            animationSpec = unreadSpring,
+            label = "unreadScale"
+        )
+        val unreadTranslationY by animateFloatAsState(
+            targetValue = if (showUnreadFilter) 0f else 40f,
+            animationSpec = unreadSpring,
+            label = "unreadTranslationY"
         )
         if (showUnreadFilter || unreadAlpha > 0f) {
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .graphicsLayer { alpha = unreadAlpha }
+                    .graphicsLayer {
+                        alpha = unreadAlpha
+                        scaleX = unreadScale
+                        scaleY = unreadScale
+                        translationY = unreadTranslationY
+                    }
                     .padding(ShadowClipGuard)
             ) {
                 BottomUnreadFilterButton(
@@ -201,5 +227,4 @@ internal fun MailboxFabToolbarMorph(
 private val FabSize = 56.dp
 private val ToolbarHorizontalPadding = 12.dp
 private const val ICON_BUTTON_SIZE = 48
-private const val UNREAD_ANIMATION_DURATION = 200
 private val ShadowClipGuard = 6.dp
