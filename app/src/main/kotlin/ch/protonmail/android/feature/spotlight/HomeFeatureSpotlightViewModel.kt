@@ -20,6 +20,7 @@ package ch.protonmail.android.feature.spotlight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
@@ -39,12 +40,14 @@ import javax.inject.Inject
 class HomeFeatureSpotlightViewModel @Inject constructor(
     observeFeatureSpotlightDisplay: ObserveFeatureSpotlightDisplay,
     @IsFeatureSpotlightEnabled private val isEnabled: FeatureFlag<Boolean>,
+    // Temporarily couple the 2 FFs as the new feature spotlight depends on the Category View impl in 7.10+
+    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
     private val isRecentAppInstall: IsRecentAppInstall,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
 
     val state: StateFlow<FeatureSpotlightState> = flow {
-        if (!isEnabled.get()) {
+        if (!isEnabled.get() || !categoryViewEnabled.get()) {
             emit(FeatureSpotlightState.Hide)
         } else if (isRecentAppInstall()) {
             markFeatureSpotlightSeen()

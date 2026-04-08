@@ -45,6 +45,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val mockFeatureFlag = mockk<FeatureFlag<Boolean>>()
+    private val mockCategoryViewFlag = mockk<FeatureFlag<Boolean>>()
     private val mockObserveFeatureSpotlightDisplay = mockk<ObserveFeatureSpotlightDisplay>()
     private val mockIsRecentAppInstall = mockk<IsRecentAppInstall>()
     private val mockMarkFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen> {
@@ -52,9 +53,25 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `should emit Hide when feature flag is disabled`() = runTest {
+    fun `should emit Hide when feature spotlight flag is disabled`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns false
+        coEvery { mockCategoryViewFlag.get() } returns true
+
+        val viewModel = buildViewModel()
+
+        // When/Then
+        viewModel.state.test {
+            assertEquals(FeatureSpotlightState.Hide, awaitItem())
+        }
+        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
+    }
+
+    @Test
+    fun `should emit Hide when category view flag is disabled`() = runTest {
+        // Given
+        coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns false
 
         val viewModel = buildViewModel()
 
@@ -69,6 +86,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Show when feature flag is enabled and preference is show`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
 
@@ -85,6 +103,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when feature flag is enabled and preference is hide`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
 
@@ -100,6 +119,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when feature flag is enabled and preference returns error`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(PreferencesError.left())
 
@@ -115,6 +135,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide and mark seen when feature flag is enabled and app is recent install`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns true
 
         val viewModel = buildViewModel()
@@ -130,6 +151,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should observe spotlight display when feature flag enabled and not recent install`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
 
@@ -145,6 +167,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     private fun buildViewModel() = HomeFeatureSpotlightViewModel(
         observeFeatureSpotlightDisplay = mockObserveFeatureSpotlightDisplay,
         isEnabled = mockFeatureFlag,
+        categoryViewEnabled = mockCategoryViewFlag,
         isRecentAppInstall = mockIsRecentAppInstall,
         markFeatureSpotlightSeen = mockMarkFeatureSpotlightSeen
     )
