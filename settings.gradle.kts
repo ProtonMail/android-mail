@@ -180,6 +180,7 @@ include(":uicomponents")
 include(":design-system")
 include(":presentation-compose")
 
+include(":e2e")
 include(":test:annotations")
 include(":test:network-mocks")
 include(":test:robot:core")

@@ -47,6 +47,7 @@ androidx-webkit = "1.15.0"
 androidx-work = "2.11.2"
 arrow-core = "2.2.0" # 2.2.1.1 has KT 2.3.0 as base
 cash-turbine = "1.2.1"
+cucumber = "7.18.1"
 coil = "2.7.0"
 dagger = "2.57.2"
 detekt = "1.23.8"
@@ -243,6 +244,8 @@ proton-core-testAndroid = { module = "me.proton.core:test-android", version.ref 
 proton-core-testKotlin = { module = "me.proton.core:test-kotlin", version.ref = "proton-core" }
 proton-core-testAndroidInstrumented = { module = "me.proton.core:test-android-instrumented", version.ref = "proton-core" }
 proton-rust-core = { module = "me.proton.mail.common:lib", version.ref = "proton-rust-core" }
+cucumber-android = { module = "io.cucumber:cucumber-android", version.ref = "cucumber" }
+cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
 
 [bundles]
 appLibs = [

@@ -1,0 +1,4 @@
+## Test user credentials template.
+## Copy this to test-users.properties and fill in real values.
+bob.username=your-test-user@proton.me
+bob.password=your-test-password

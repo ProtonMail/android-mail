@@ -47,6 +47,7 @@ sentry.properties
 **/users.json
 **/internal_api.json
 **/internal_apis.json
+e2e/src/main/assets/test-users.properties
 
 # UI Tests Assets backup lockfile
 scripts/uitests/AssetsFile.lock.bak
