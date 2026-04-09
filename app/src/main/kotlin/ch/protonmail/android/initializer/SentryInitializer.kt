@@ -42,7 +42,6 @@ class SentryInitializer : Initializer<Unit> {
             context.applicationContext,
             SentryInitializerEntryPoint::class.java
         )
-        val isCrashReportsEnabled = MutableStateFlow(true)
 
         SentryAndroid.init(context.applicationContext) { options: SentryOptions ->
             options.dsn = BuildConfig.SENTRY_DSN
@@ -60,10 +59,6 @@ class SentryInitializer : Initializer<Unit> {
             }
         }
 
-        entryPoint.observer().start {
-            isCrashReportsEnabled.value = it
-        }
-
         entryPoint.webViewInfoProvider().setWebViewTags()
     }
 
@@ -76,5 +71,24 @@ class SentryInitializer : Initializer<Unit> {
         fun observer(): SentryUserObserver
         fun rustLogsAttachmentProcessor(): RustLogsAttachmentProcessor
         fun webViewInfoProvider(): SentryWebViewInfoProvider
+    }
+
+    companion object {
+
+        private val isCrashReportsEnabled = MutableStateFlow(true)
+
+        /**
+         * Starts the observer that sets Sentry user and respects crash report opt-out.
+         * Must be called after the Rust session is initialized.
+         */
+        fun startObserver(context: Context) {
+            val entryPoint = EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                SentryInitializerEntryPoint::class.java
+            )
+            entryPoint.observer().start {
+                isCrashReportsEnabled.value = it
+            }
+        }
     }
 }

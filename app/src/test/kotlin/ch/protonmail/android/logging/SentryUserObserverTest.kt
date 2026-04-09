@@ -21,30 +21,30 @@ package ch.protonmail.android.logging
 import java.util.UUID
 import ch.protonmail.android.mailsession.domain.model.UserSettings
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.slot
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import io.sentry.Sentry
 import io.sentry.protocol.User
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
-import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class SentryUserObserverTest {
+internal class SentryUserObserverTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val sessionRepository = mockk<UserSessionRepository> {
         coEvery { this@mockk.observePrimaryUserId() } returns flowOf(UserIdTestData.userId)
@@ -54,7 +54,6 @@ class SentryUserObserverTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(TestDispatcherProvider().Main)
         mockkStatic(Sentry::class)
         sentryUserObserver = SentryUserObserver(
             scopeProvider = TestCoroutineScopeProvider(),
@@ -64,18 +63,19 @@ class SentryUserObserverTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkStatic(Sentry::class)
     }
 
     @Test
-    fun `register userId in Sentry for valid primary account`() = runTest {
+    fun `register temporary UUID immediately then real userId once session is ready`() = runTest {
         // When
         sentryUserObserver.start(onCrashReportSettingChange = {}).join()
         // Then
-        val sentryUserSlot = slot<User>()
-        verify { Sentry.setUser(capture(sentryUserSlot)) }
-        assertEquals(UserIdTestData.userId.id, sentryUserSlot.captured.id)
+        val sentryUsers = mutableListOf<User>()
+        verify(exactly = 2) { Sentry.setUser(capture(sentryUsers)) }
+        val temporaryId = UUID.fromString(sentryUsers[0].id)
+        assertTrue(temporaryId.toString().isNotBlank())
+        assertEquals(UserIdTestData.userId.id, sentryUsers[1].id)
     }
 
     @Test
@@ -85,10 +85,10 @@ class SentryUserObserverTest {
         // When
         sentryUserObserver.start(onCrashReportSettingChange = {}).join()
         // Then
-        val sentryUserSlot = slot<User>()
-        verify { Sentry.setUser(capture(sentryUserSlot)) }
-        val actual = UUID.fromString(sentryUserSlot.captured.id)
-        assertTrue(actual.toString().isNotBlank())
+        val sentryUsers = mutableListOf<User>()
+        verify(exactly = 2) { Sentry.setUser(capture(sentryUsers)) }
+        assertTrue(UUID.fromString(sentryUsers[0].id).toString().isNotBlank())
+        assertTrue(UUID.fromString(sentryUsers[1].id).toString().isNotBlank())
     }
 
     @Test
