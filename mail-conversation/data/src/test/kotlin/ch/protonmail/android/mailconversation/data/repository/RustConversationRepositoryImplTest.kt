@@ -21,8 +21,7 @@ package ch.protonmail.android.mailconversation.data.repository
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
+import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.CursorResult
@@ -35,6 +34,7 @@ import ch.protonmail.android.mailconversation.data.mapper.toConversationMessages
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
+import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelWithSystemLabelId
@@ -63,13 +63,13 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Assert
 import org.junit.Test
-import uniffi.mail_uniffi.Id
 import kotlin.test.assertEquals
 
 internal class RustConversationRepositoryImplTest {
 
     private val rustConversationDataSource = mockk<RustConversationDataSource>()
     private val undoRepository = mockk<UndoRepository>()
+    private val conversationCursorRepository = mockk<ConversationCursorRepository>()
 
     private val userId = UserId("test_user")
     private val labelWithSystemLabelId = LabelWithSystemLabelId(
@@ -77,7 +77,8 @@ internal class RustConversationRepositoryImplTest {
     )
     private val rustConversationRepository = RustConversationRepositoryImpl(
         rustConversationDataSource,
-        undoRepository
+        undoRepository,
+        conversationCursorRepository
     )
 
     @Test
@@ -234,68 +235,38 @@ internal class RustConversationRepositoryImplTest {
     fun `when getConversationCursor returns a cursor with the first conversationId`() = runTest {
         // Given
         val conversationCursor = mockk<ConversationCursor> {
-            every { previousPage() } returns CursorResult.Cursor(ConversationId("200"))
-            coEvery { nextPage() } returns CursorResult.Cursor(ConversationId("300"))
+            every { current } returns CursorResult.Cursor(ConversationId("100"))
+            every { previous } returns CursorResult.Cursor(ConversationId("200"))
+            every { next } returns CursorResult.Cursor(ConversationId("300"))
+            coEvery { moveForward() } just Runs
+            coEvery { moveBackward() } just Runs
+            coEvery { invalidatePrevious() } just Runs
+            every { close() } just Runs
         }
-        val firstPage = Id(100.toULong())
+        val firstPage = CursorId(ConversationId("100"), null)
         val labelId = LabelId("2")
+
         coEvery {
-            rustConversationDataSource.getConversationCursor(
+            conversationCursorRepository.getCursor(
                 firstPage = firstPage,
                 userId = userId,
                 labelId = labelId
             )
         } returns conversationCursor.right()
 
-
         // When
         val result = rustConversationRepository.getConversationCursor(
-            firstPage = CursorId(ConversationId("100"), null),
+            firstPage = firstPage,
             userId = userId,
             labelId = labelId
         )
 
         // Then
         Assert.assertTrue(result.isRight())
-        Assert.assertTrue(result.getOrNull() is RustConversationCursorImpl)
         Assert.assertEquals(
             ConversationId("100"),
             (result.getOrNull()?.current as? CursorResult.Cursor)?.conversationId
         )
-    }
-
-    @Test
-    fun `when unreadFilterEnabled is true then getConversationCursor returns a cursor for unread messages`() = runTest {
-        // Given
-        val conversationCursor = mockk<ConversationCursor> {
-            every { previousPage() } returns CursorResult.Cursor(ConversationId("200"))
-            coEvery { nextPage() } returns CursorResult.Cursor(ConversationId("300"))
-        }
-        val firstPage = Id(100.toULong())
-        val labelId = LabelId("1")
-        coEvery {
-            rustConversationDataSource.getConversationCursor(
-                firstPage = firstPage,
-                userId = userId,
-                labelId = labelId
-            )
-        } returns conversationCursor.right()
-
-        // When
-        rustConversationRepository.getConversationCursor(
-            firstPage = CursorId(ConversationId("100"), null),
-            userId = userId,
-            labelId = labelId
-        )
-
-        // Then
-        coVerify(exactly = 1) {
-            rustConversationDataSource.getConversationCursor(
-                firstPage = firstPage,
-                userId = userId,
-                labelId = labelId
-            )
-        }
     }
 
     @Test

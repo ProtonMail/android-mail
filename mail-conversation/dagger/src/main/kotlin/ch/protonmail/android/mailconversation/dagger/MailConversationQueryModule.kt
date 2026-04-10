@@ -21,6 +21,8 @@ package ch.protonmail.android.mailconversation.dagger
 import ch.protonmail.android.mailconversation.data.ConversationQueryCoroutineScope
 import ch.protonmail.android.mailconversation.data.local.RustConversationsQuery
 import ch.protonmail.android.mailconversation.data.local.RustConversationsQueryImpl
+import ch.protonmail.android.mailconversation.data.repository.ConversationCursorRepositoryImpl
+import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -44,5 +46,9 @@ object MailConversationQueryModule {
 
         @Binds
         fun bindsRustConversationsQuery(impl: RustConversationsQueryImpl): RustConversationsQuery
+
+        @Binds
+        fun bindsConversationCursorRepository(impl: ConversationCursorRepositoryImpl): ConversationCursorRepository
+
     }
 }

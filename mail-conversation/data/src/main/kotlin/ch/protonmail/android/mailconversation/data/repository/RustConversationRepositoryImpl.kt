@@ -21,7 +21,6 @@ package ch.protonmail.android.mailconversation.data.repository
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -36,6 +35,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
+import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -51,7 +51,8 @@ import javax.inject.Inject
 
 class RustConversationRepositoryImpl @Inject constructor(
     private val rustConversationDataSource: RustConversationDataSource,
-    private val undoRepository: UndoRepository
+    private val undoRepository: UndoRepository,
+    private val conversationCursorRepository: ConversationCursorRepository
 ) : ConversationRepository {
 
     override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
@@ -142,15 +143,11 @@ class RustConversationRepositoryImpl @Inject constructor(
         firstPage: CursorId,
         userId: UserId,
         labelId: LabelId
-    ): Either<ConversationCursorError, ConversationCursor> = rustConversationDataSource
-        .getConversationCursor(
-            userId = userId,
-            labelId = labelId,
-            firstPage = firstPage.conversationId.toLocalConversationId()
-        )
-        .map {
-            RustConversationCursorImpl(firstPage, it)
-        }
+    ): Either<ConversationCursorError, ConversationCursor> = conversationCursorRepository.getCursor(
+        firstPage,
+        userId,
+        labelId
+    )
 
     override suspend fun move(
         userId: UserId,

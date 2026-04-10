@@ -44,10 +44,10 @@ interface RustConversationsQuery {
 
     suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
 
-    suspend fun getCursor(
+    suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
-        conversationId: LocalConversationId
+        firstPage: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>?
 
     fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerStatusUpdate>
