@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,13 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.model
+package ch.protonmail.android.mailconversation.data.model
 
-import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
+import ch.protonmail.android.maillabel.domain.model.LabelId
+import me.proton.core.domain.entity.UserId
 
-sealed interface EphemeralMailboxCursor {
-    data class Data(val cursor: ConversationCursor) : EphemeralMailboxCursor
-    data object NotInitalised : EphemeralMailboxCursor
-    data object CursorDead : EphemeralMailboxCursor
-    data object Initialising : EphemeralMailboxCursor
-}
+data class PageDescriptor(
+    val userId: UserId,
+    val labelId: LabelId
+)
