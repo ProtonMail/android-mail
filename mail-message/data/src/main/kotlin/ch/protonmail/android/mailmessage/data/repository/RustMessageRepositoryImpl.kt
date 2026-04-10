@@ -20,8 +20,6 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import java.io.File
 import arrow.core.Either
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
-import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -31,7 +29,6 @@ import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageDataSource
-import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toMessage
 import ch.protonmail.android.mailmessage.data.mapper.toRemoteMessageId
@@ -41,6 +38,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewSta
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
+import ch.protonmail.android.mailmessage.domain.repository.MessageCursorRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
@@ -55,7 +53,8 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 class RustMessageRepositoryImpl @Inject constructor(
     private val rustMessageDataSource: RustMessageDataSource,
-    private val undoRepository: UndoRepository
+    private val undoRepository: UndoRepository,
+    private val messageCursorRepository: MessageCursorRepository
 ) : MessageRepository {
 
     override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
@@ -110,16 +109,8 @@ class RustMessageRepositoryImpl @Inject constructor(
         firstPage: CursorId,
         userId: UserId,
         labelId: LabelId
-    ): Either<ConversationCursorError, ConversationCursor> = rustMessageDataSource
-        .getConversationCursor(
-            firstPage = firstPage.messageId?.toLocalConversationId()
-                ?: firstPage.conversationId.toLocalConversationId(),
-            userId = userId,
-            labelId = labelId
-        )
-        .map {
-            RustConversationCursorImpl(firstPage, it)
-        }
+    ): Either<ConversationCursorError, ConversationCursor> =
+        messageCursorRepository.getCursor(firstPage, userId, labelId)
 
     override suspend fun moveTo(
         userId: UserId,
@@ -193,8 +184,6 @@ class RustMessageRepositoryImpl @Inject constructor(
 
     override suspend fun blockSender(userId: UserId, email: String): Either<DataError, Unit> =
         rustMessageDataSource.blockSender(userId, email)
-
-    private fun String.toLocalConversationId() = LocalConversationId(this.toULong())
 
     override suspend fun isMessageSenderBlocked(userId: UserId, messageId: MessageId): Either<DataError, Boolean> =
         rustMessageDataSource.isMessageSenderBlocked(userId, messageId.toLocalMessageId())

@@ -19,18 +19,14 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelAsAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
-import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
-import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
@@ -62,12 +58,6 @@ interface RustMessageDataSource {
     suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<PaginationError, List<Message>>
 
     suspend fun observeMessage(userId: UserId, messageId: LocalMessageId): Flow<Either<DataError, LocalMessageMetadata>>
-
-    suspend fun getConversationCursor(
-        firstPage: LocalConversationId,
-        userId: UserId,
-        labelId: LabelId
-    ): Either<ConversationCursorError, ConversationCursor>
 
     suspend fun getSenderImage(
         userId: UserId,

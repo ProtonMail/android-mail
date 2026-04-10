@@ -20,22 +20,17 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import arrow.core.left
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelAsAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.annotation.MissingRustApi
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
-import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
-import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError.InvalidState
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
-import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toMessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.data.mapper.toPreviousScheduleSendTime
@@ -62,7 +57,6 @@ import ch.protonmail.android.mailmessage.data.usecase.RustUnstarMessages
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
-import ch.protonmail.android.mailmessage.domain.model.toConversationCursorError
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
@@ -168,41 +162,6 @@ class RustMessageDataSourceImpl @Inject constructor(
 
         return rustMessageQuery.observeMessage(session, messageId).flowOn(ioDispatcher)
     }
-
-    override suspend fun getConversationCursor(
-        firstPage: LocalConversationId,
-        userId: UserId,
-        labelId: LabelId
-    ): Either<ConversationCursorError, ConversationCursor> = withContext(ioDispatcher) {
-        // we are relying on the exiting pager being open already
-        val result = rustMessageListQuery.getCursor(userId = userId, conversationId = firstPage, labelId = labelId)
-            ?: initializeCursor(userId, labelId, firstPage).apply {
-                Timber.d("rust-message cursor unable to get cursor, retrieving conversations and retrying")
-            }
-
-        return@withContext when {
-            result == null -> InvalidState.left()
-            else -> {
-                result.mapLeft {
-                    it.toConversationCursorError()
-                }
-            }
-        }
-    }
-
-    private suspend fun initializeCursor(
-        userId: UserId,
-        labelId: LabelId,
-        firstPage: LocalConversationId
-    ) = rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey().copy(labelId = labelId))
-        .onLeft {
-            Timber.e("rust-message cursor unable to recover and get conversations")
-        }
-        .fold(
-            ifLeft = { null },
-            ifRight = { rustMessageListQuery.getCursor(userId, labelId, firstPage) }
-        )
-
 
     override suspend fun getSenderImage(
         userId: UserId,

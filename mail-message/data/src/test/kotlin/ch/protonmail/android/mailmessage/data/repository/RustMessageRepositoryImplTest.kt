@@ -23,13 +23,12 @@ import app.cash.turbine.test
 import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
+import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -40,11 +39,13 @@ import ch.protonmail.android.mailmessage.data.mapper.toMessage
 import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toRemoteMessageId
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
+import ch.protonmail.android.mailmessage.domain.repository.MessageCursorRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.rust.LocalMessageIdSample
 import ch.protonmail.android.testdata.message.rust.LocalMessageTestData
 import ch.protonmail.android.testdata.message.rust.RemoteMessageIdSample
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -55,7 +56,6 @@ import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import uniffi.mail_uniffi.Id
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -64,9 +64,10 @@ internal class RustMessageRepositoryImplTest {
 
     private val rustMessageDataSource = mockk<RustMessageDataSource>()
     private val undoRepository = mockk<UndoRepository>()
+    private val messageCursorRepository = mockk<MessageCursorRepository>()
     private val labelId = LabelIdSample.RustLabel1
     private val userId = UserId("userId")
-    private val repository = RustMessageRepositoryImpl(rustMessageDataSource, undoRepository)
+    private val repository = RustMessageRepositoryImpl(rustMessageDataSource, undoRepository, messageCursorRepository)
 
     @Test
     fun `getLocalMessages should return list of messages`() = runTest {
@@ -181,12 +182,17 @@ internal class RustMessageRepositoryImplTest {
     fun `when getConversationCursor returns a cursor with the first messsageId`() = runTest {
         // Given
         val conversationCursor = mockk<ConversationCursor> {
-            every { previousPage() } returns CursorResult.Cursor(ConversationId("200"))
-            coEvery { nextPage() } returns CursorResult.Cursor(ConversationId("300"))
+            every { current } returns CursorResult.Cursor(ConversationId("100"))
+            every { previous } returns CursorResult.Cursor(ConversationId("200"))
+            every { next } returns CursorResult.Cursor(ConversationId("300"))
+            coEvery { moveForward() } just Runs
+            coEvery { moveBackward() } just Runs
+            coEvery { invalidatePrevious() } just Runs
+            every { close() } just Runs
         }
-        val firstPage = Id(100.toULong())
+        val firstPage = CursorId(conversationId = ConversationId("99"), messageId = "100")
         coEvery {
-            rustMessageDataSource.getConversationCursor(
+            messageCursorRepository.getCursor(
                 firstPage = firstPage,
                 userId = userId,
                 labelId = labelId
@@ -196,14 +202,14 @@ internal class RustMessageRepositoryImplTest {
 
         // When
         val result = repository.getConversationCursor(
-            firstPage = CursorId(ConversationId("100"), null),
+            firstPage = firstPage,
             userId = userId,
             labelId = labelId
         )
 
         // Then
         assertTrue(result.isRight())
-        assertTrue(result.getOrNull() is RustConversationCursorImpl)
+        assertTrue(result.getOrNull() is ConversationCursor)
         assertEquals("100", (result.getOrNull()?.current as? CursorResult.Cursor)?.conversationId?.id)
     }
 
