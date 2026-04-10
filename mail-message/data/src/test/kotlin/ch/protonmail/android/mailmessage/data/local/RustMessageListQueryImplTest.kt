@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
-import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQueryImpl.Companion.NONE_FOLLOWUP_GRACE_MS
@@ -621,14 +620,12 @@ class RustMessageListQueryImplTest {
     }
 
     @Test
-    fun `getCursor returns cursor from existing paginator without reinitializing`() = runTest {
+    fun `getCursorFromActivePaginator returns cursor from existing paginator without reinitializing`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
         val conversationId = ConversationId("111").toLocalConversationId()
         val expectedCursor = mockk<MailMessageCursorWrapper>()
 
-        val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
         val paginator = mockk<MessagePaginatorWrapper> {
             coEvery { nextPage() } coAnswers {
@@ -656,7 +653,6 @@ class RustMessageListQueryImplTest {
             )
         } returns paginator.right()
 
-        // Initialize paginator first so getCursor can reuse it
         rustMessageListQuery.getMessages(
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
@@ -666,10 +662,10 @@ class RustMessageListQueryImplTest {
         )
 
         // When
-        val actual = rustMessageListQuery.getCursor(
+        val actual = rustMessageListQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
-            conversationId = conversationId
+            firstPage = conversationId
         )
 
         // Then
@@ -681,7 +677,76 @@ class RustMessageListQueryImplTest {
                 callback = any()
             )
         }
-        coVerify(exactly = 0) { rustMailboxFactory.create(userId, labelId.toLocalLabelId()) }
+    }
+
+    @Test
+    fun `getCursorFromActivePaginator returns null when there is no active paginator`() = runTest {
+        // Given
+        val labelId = SystemLabelId.Inbox.labelId
+        val conversationId = ConversationId("111").toLocalConversationId()
+
+        // When
+        val actual = rustMessageListQuery.getCursorFromActivePaginator(
+            userId = userId,
+            labelId = labelId,
+            firstPage = conversationId
+        )
+
+        // Then
+        assertEquals(null, actual)
+    }
+
+    @Test
+    fun `getCursorFromActivePaginator returns null when active paginator label does not match`() = runTest {
+        // Given
+        val activeLabelId = SystemLabelId.Inbox.labelId
+        val requestedLabelId = SystemLabelId.Archive.labelId
+        val conversationId = ConversationId("111").toLocalConversationId()
+
+        val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } coAnswers {
+                callbackSlot.captured.onUpdate(
+                    MessageScrollerUpdate.List(
+                        MessageScrollerListUpdate.Append(
+                            items = expectedMessages,
+                            scrollerId = DefaultScrollerId
+                        )
+                    )
+                )
+                Unit.right()
+            }
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
+        }
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+
+        rustMessageListQuery.getMessages(
+            userId = userId,
+            pageKey = PageKey.DefaultPageKey(
+                labelId = activeLabelId,
+                pageToLoad = PageToLoad.First
+            )
+        )
+
+        // When
+        val actual = rustMessageListQuery.getCursorFromActivePaginator(
+            userId = userId,
+            labelId = requestedLabelId,
+            firstPage = conversationId
+        )
+
+        // Then
+        assertEquals(null, actual)
+        coVerify(exactly = 0) { paginator.getCursor(any()) }
     }
 
     companion object {
