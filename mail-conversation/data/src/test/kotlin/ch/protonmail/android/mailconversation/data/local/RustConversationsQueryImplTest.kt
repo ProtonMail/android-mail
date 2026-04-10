@@ -11,7 +11,6 @@ import ch.protonmail.android.mailconversation.data.usecase.CreateRustConversatio
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
-import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
@@ -792,7 +791,7 @@ class RustConversationsQueryImplTest {
     }
 
     @Test
-    fun `getCursor returns cursor from existing paginator without reinitializing`() = runTest {
+    fun `getCursorFromActivePaginator returns cursor from existing paginator without reinitializing`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
@@ -827,7 +826,6 @@ class RustConversationsQueryImplTest {
             )
         } returns paginator.right()
 
-        // Initialize paginator first so getCursor can reuse it
         rustConversationsQuery.getConversations(
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
@@ -837,10 +835,10 @@ class RustConversationsQueryImplTest {
         )
 
         // When
-        val actual = rustConversationsQuery.getCursor(
+        val actual = rustConversationsQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
-            conversationId = conversationId
+            firstPage = conversationId
         )
 
         // Then
@@ -852,30 +850,54 @@ class RustConversationsQueryImplTest {
                 callback = any()
             )
         }
-        coVerify(exactly = 0) { rustMailboxFactory.create(userId, labelId.toLocalLabelId()) }
     }
 
     @Test
-    fun `getCursor initializes paginator when needed and returns cursor`() = runTest {
+    fun `getCursorFromActivePaginator returns null when there is no active paginator`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
         val conversationId = ConversationId("111").toLocalConversationId()
-        val expectedCursor = mockk<ConversationCursorWrapper>()
+
+        // When
+        val actual = rustConversationsQuery.getCursorFromActivePaginator(
+            userId = userId,
+            labelId = labelId,
+            firstPage = conversationId
+        )
+
+        // Then
+        assertEquals(null, actual)
+    }
+
+    @Test
+    fun `getCursorFromActivePaginator returns null when active paginator label does not match`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val activeLabelId = SystemLabelId.Inbox.labelId
+        val requestedLabelId = SystemLabelId.Archive.labelId
+        val conversationId = ConversationId("111").toLocalConversationId()
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
         val paginator = mockk<ConversationPaginatorWrapper> {
+            coEvery { nextPage() } coAnswers {
+                callbackSlot.captured.onUpdate(
+                    ConversationScrollerUpdate.List(
+                        ConversationScrollerListUpdate.Append(
+                            items = listOf(LocalConversationTestData.AugConversation),
+                            scrollerId = DefaultScrollerId
+                        )
+                    )
+                )
+                Unit.right()
+            }
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
-            coEvery { getCursor(conversationId) } returns expectedCursor.right()
         }
 
-        coEvery {
-            rustMailboxFactory.create(userId, labelId.toLocalLabelId())
-        } returns mailbox.right()
-
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
@@ -883,25 +905,24 @@ class RustConversationsQueryImplTest {
             )
         } returns paginator.right()
 
-        // When
-        val actual = rustConversationsQuery.getCursor(
+        rustConversationsQuery.getConversations(
             userId = userId,
-            labelId = labelId,
-            conversationId = conversationId
+            pageKey = PageKey.DefaultPageKey(
+                labelId = activeLabelId,
+                pageToLoad = PageToLoad.First
+            )
+        )
+
+        // When
+        val actual = rustConversationsQuery.getCursorFromActivePaginator(
+            userId = userId,
+            labelId = requestedLabelId,
+            firstPage = conversationId
         )
 
         // Then
-        assertEquals(expectedCursor.right(), actual)
-        coVerify(exactly = 1) {
-            rustMailboxFactory.create(userId, labelId.toLocalLabelId())
-        }
-        coVerify(exactly = 1) {
-            createRustConversationPaginator(
-                mailbox = mailbox,
-                callback = any()
-            )
-        }
-        coVerify(exactly = 1) { paginator.getCursor(conversationId) }
+        assertEquals(null, actual)
+        coVerify(exactly = 0) { paginator.getCursor(any()) }
     }
 
     private fun expectConversationsInvalidatedSubmit() {

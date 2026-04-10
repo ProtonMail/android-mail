@@ -22,15 +22,12 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
-import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor
-import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.data.model.LocalConversationWithMessages
-import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -130,12 +127,6 @@ interface RustConversationDataSource {
         partiallySelectedLabelIds: List<LocalLabelId>,
         shouldArchive: Boolean
     ): Either<DataError, UndoableOperation>
-
-    suspend fun getConversationCursor(
-        userId: UserId,
-        labelId: LabelId,
-        firstPage: LocalConversationId
-    ): Either<ConversationCursorError, ConversationCursor>
 
     fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus>
 }

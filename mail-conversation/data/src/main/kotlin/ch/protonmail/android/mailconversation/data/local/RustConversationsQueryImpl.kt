@@ -24,11 +24,11 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.ConversationQueryCoroutineScope
+import ch.protonmail.android.mailconversation.data.model.PageDescriptor
 import ch.protonmail.android.mailconversation.data.usecase.CreateRustConversationPaginator
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
-import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
@@ -247,47 +247,39 @@ class RustConversationsQueryImpl @Inject constructor(
             paginatorState?.pageDescriptor != pageDescriptor ||
             pageKey.pageToLoad == PageToLoad.First
 
-
-    private fun shouldInitPaginatorForCursor(pageDescriptor: PageDescriptor): Boolean =
-        paginatorState == null || paginatorState?.pageDescriptor != pageDescriptor
-
-    override suspend fun getCursor(
+    override suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
-        conversationId: LocalConversationId
+        firstPage: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>? {
-
         val pageDescriptor = PageDescriptor(userId, labelId)
-        val initError = paginatorMutex.withLock {
-            if (shouldInitPaginatorForCursor(pageDescriptor)) {
-                Timber.d(
-                    "rust-conversation-query: Initializing paginator for getCursor with page desc=%s",
-                    pageDescriptor
-                )
-                val mailbox = rustMailboxFactory.create(userId, labelId.toLocalLabelId()).getOrNull()
-                if (mailbox == null) {
-                    Timber.e(
-                        "rust-conversation-query: Unable to create mailbox for userId=%s and labelId=%s",
-                        userId,
-                        labelId
-                    )
-                    PaginationError.Other(DataError.Local.IllegalStateError).left()
-                } else {
-                    initPaginator(pageDescriptor, mailbox)
+
+        return paginatorMutex.withLock {
+            val state = paginatorState
+            when {
+                state == null -> {
+                    Timber.d("rust-conversation-query: No active paginator to reuse for cursor")
                     null
                 }
-            } else {
-                Timber.d(
-                    "rust-conversation-query: Reusing existing paginator for getCursor with page desc=%s",
-                    pageDescriptor
-                )
-                null
+
+                state.pageDescriptor != pageDescriptor -> {
+                    Timber.d(
+                        "rust-conversation-query: Active paginator cannot be reused for cursor. active=%s requested=%s",
+                        state.pageDescriptor,
+                        pageDescriptor
+                    )
+                    null
+                }
+
+                else -> {
+                    Timber.d(
+                        "rust-conversation-query: Reusing active mailbox paginator for cursor, scrollerId=%s",
+                        state.paginatorWrapper.getScrollerId()
+                    )
+                    state.paginatorWrapper.getCursor(firstPage)
+                }
             }
         }
-
-        if (initError != null) return initError
-
-        return paginatorState?.paginatorWrapper?.getCursor(conversationId)
     }
 
     override fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerStatusUpdate> =
@@ -342,11 +334,6 @@ class RustConversationsQueryImpl @Inject constructor(
         val pageDescriptor: PageDescriptor,
         val scrollerCache: ScrollerCache<LocalConversation>,
         val pendingRequest: PendingRequest<LocalConversation>? = null
-    )
-
-    private data class PageDescriptor(
-        val userId: UserId,
-        val labelId: LabelId
     )
 
     private fun PageKey.DefaultPageKey.toPageDescriptor(userId: UserId): PageDescriptor =
