@@ -56,24 +56,6 @@
   <string name="upselling_button_hint">Покращте для повної гнучкості</string>
   <string name="upselling_upgrade_plan_generic">Потрібна платна підписка Proton Mail, щоб отримати доступ до цієї функції</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Усі переваги преміум</string>
-  <string name="upselling_onboarding_feature_e2e">Наскрізне шифрування</string>
-  <string name="upselling_onboarding_feature_folders_labels">Необмежена кількість тек і міток</string>
-  <string name="upselling_onboarding_free_feature_storage">1 ГБ сховища й 1 адреса електронної пошти</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 ГБ сховища</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 додаткових адрес електронної пошти</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Підтримка 1 власного домену електронної пошти</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 псевдонімів Hide-my-email</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Пріоритетна підтримка клієнтів</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 ГБ сховища</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 додаткових адрес електронної пошти</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Підтримка 3 власних доменів електронної пошти</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Необмежена кількість псевдонімів Hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Спеціалізована клієнтська підтримка</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Ультра швидка та приватна VPN</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Зашифрований менеджер паролів</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Зашифроване хмарне сховище для фотографій і документів</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Розширений захист облікового запису</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Сховище</string>
   <string name="upselling_comparison_table_email_addresses">Адреси електронної пошти</string>
@@ -109,23 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Автопоновлення через %s%s, якщо не скасовано</string>
   <string name="upselling_social_proof_reviews">ПОНАД 2 ТИС. ВІДГУКІВ</string>
   <string name="upselling_description_social_proof">Отримайте покращений досвід, яким захоплюються мільйони підписників.</string>
-  <string name="upselling_discount_tag">ЗАОЩАДЬТЕ %s%%</string>
   <string name="upselling_month">/місяць</string>
   <string name="upselling_month_only">лише %s /міс.</string>
   <string name="upselling_year">/рік</string>
-  <string name="upselling_get_button">Отримати %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d місяць</item>
-    <item quantity="few">%d місяці</item>
-    <item quantity="many">%d місяців</item>
-    <item quantity="other">%d місяців</item>
-  </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Не вдалося отримати параметри покращення.</string>
   <string name="upselling_snackbar_error_no_user_id">Сталася помилка.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Не вдається отримати інформацію про передплати.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Триває оновлення передплати…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Під час оновлення передплати сталася помилка.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Виникла помилка. Спробуйте ще раз.</string>
 </resources>

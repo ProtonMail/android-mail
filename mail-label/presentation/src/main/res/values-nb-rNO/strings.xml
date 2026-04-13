@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">All e-post</string>
   <string name="label_title_all_scheduled">Planlagt</string>
   <string name="label_title_snoozed">Slumret</string>
-  <string name="label_title_folders">Mapper</string>
   <string name="label_title_create_label">Opprett etikett</string>
   <string name="label_title_create_folder">Opprett mappe</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytt til…</string>
-  <string name="bottom_sheet_done_action">Utført</string>
   <string name="bottom_sheet_save_action">Lagre</string>
   <string name="bottom_sheet_archive_action">Arkivere også?</string>
   <string name="bottom_sheet_label_as_title">Merk som</string>

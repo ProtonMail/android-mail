@@ -56,24 +56,6 @@
   <string name="upselling_button_hint">Modificați planul pentru flexibilitate completă</string>
   <string name="upselling_upgrade_plan_generic">Aveți nevoie de un abonament cu plată Proton Mail pentru a accesa această funcție.</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Funcții premium incluse</string>
-  <string name="upselling_onboarding_feature_e2e">Criptare bilaterală</string>
-  <string name="upselling_onboarding_feature_folders_labels">Foldere și etichete nelimitate</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GiB spațiu de stocare și o adresă de e-mail</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 GiB spațiu de stocare</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 adrese de e-mail suplimentare pentru tine</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Suport pentru un domeniu personal de e-mail</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 aliasuri hide-my-email</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Asistență clienți prioritară</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GiB spațiu de stocare</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 adrese de e-mail suplimentare pentru tine</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Suport pentru 3 domenii personale de e-mail</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Aliasuri nelimitate hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Asistență dedicată clienți</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">VPN rapid și privat</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Manager de parole criptat</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Stocare în cloud criptată pentru fotografii și documente</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Protecție avansată a contului</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Spațiu de stocare</string>
   <string name="upselling_comparison_table_email_addresses">Adrese de e-mail</string>
@@ -109,22 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s dacă nu e anulată.</string>
   <string name="upselling_social_proof_reviews">Peste 2.000 de RECENZII</string>
   <string name="upselling_description_social_proof">Treceți la experiența de care sunt încântați milioane de abonați.</string>
-  <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>
   <string name="upselling_month_only">doar %s/lună</string>
   <string name="upselling_year">/an</string>
-  <string name="upselling_get_button">Obțineți %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d lună</item>
-    <item quantity="few">%d luni</item>
-    <item quantity="other">%d de luni</item>
-  </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Imposibil de preluat opțiunile de modificare a planului.</string>
   <string name="upselling_snackbar_error_no_user_id">A apărut o eroare.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Imposibil de preluat abonamentele.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Modificarea abonamentului este în desfășurare…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">A apărut o eroare în timpul modificării abonamentului.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">A apărut o eroare. Mai încercați.</string>
 </resources>

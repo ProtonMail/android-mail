@@ -34,7 +34,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %1$s /месяц.</string>
   <string name="payment_bf_renew_annually">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %1$s /год.</string>
-  <string name="payment_bf_renew_biennially">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %1$s каждые 2 года.</string>
   <string name="payment_welcome_offer_renew_monthly">Приветственное предложение. Автоматическое продление по цене %1$s за месяц</string>
   <string name="payment_welcome_offer_renew_annually">Приветственное предложение. Автоматическое продление по цене %1$s за год</string>
   <string name="payment_welcome_offer_renew_biennially">Приветственное предложение. Автоматическое продление по цене %1$s за каждые 2 года</string>

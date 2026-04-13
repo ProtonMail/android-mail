@@ -29,10 +29,6 @@
     <item quantity="one">%1$d medlem</item>
     <item quantity="other">%1$d medlemmar</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Medlem (%1$d)</item>
-    <item quantity="other">Medlemmar (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Sök kontakter</string>
   <string name="contact_search_no_results">Inga resultat hittades.</string>
   <string name="contact_search_placeholder">Sök efter kontakt eller grupp</string>
@@ -67,8 +63,6 @@
   <string name="contact_type_voice">Röst</string>
   <string name="contact_property_birthday">Födelsedag</string>
   <string name="contact_property_note">Anteckning</string>
-  <string name="contact_property_photo">Foto</string>
-  <string name="contact_property_logo">Logga</string>
   <string name="contact_property_organization">Organisation</string>
   <string name="contact_property_anniversary">Årsdag</string>
   <string name="contact_property_title">Titel</string>

@@ -31,12 +31,6 @@
     <item quantity="many">%1$d удзельнікаў</item>
     <item quantity="other">%1$d удзельнікаў</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Удзельнік (%1$d)</item>
-    <item quantity="few">Удзельнікаў (%1$d)</item>
-    <item quantity="many">Удзельнікаў (%1$d)</item>
-    <item quantity="other">Удзельнікаў (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Пошук кантактаў</string>
   <string name="contact_search_no_results">Нічога не знойдзена</string>
   <string name="contact_search_placeholder">Пошук кантакту або групы</string>
@@ -71,8 +65,6 @@
   <string name="contact_type_voice">Голас</string>
   <string name="contact_property_birthday">Дзень нараджэння</string>
   <string name="contact_property_note">Нататка</string>
-  <string name="contact_property_photo">Фатаграфія</string>
-  <string name="contact_property_logo">Лагатып</string>
   <string name="contact_property_organization">Арганізацыя</string>
   <string name="contact_property_anniversary">Гадавіна</string>
   <string name="contact_property_title">Назва</string>

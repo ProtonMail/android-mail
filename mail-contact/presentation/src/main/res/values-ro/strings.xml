@@ -30,11 +30,6 @@
     <item quantity="few">%1$d membri</item>
     <item quantity="other">%1$d de membri</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Membri (%1$d)</item>
-    <item quantity="few">Membri (%1$d)</item>
-    <item quantity="other">Membri (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Căutare contacte</string>
   <string name="contact_search_no_results">Nu s-au găsit rezultate.</string>
   <string name="contact_search_placeholder">Căutare contacte sau grupuri</string>
@@ -69,8 +64,6 @@
   <string name="contact_type_voice">Voce</string>
   <string name="contact_property_birthday">Data nașterii</string>
   <string name="contact_property_note">Notiță</string>
-  <string name="contact_property_photo">Fotografie</string>
-  <string name="contact_property_logo">Siglă</string>
   <string name="contact_property_organization">Organizația</string>
   <string name="contact_property_anniversary">Aniversare</string>
   <string name="contact_property_title">Titulatură</string>

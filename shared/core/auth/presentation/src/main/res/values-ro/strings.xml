@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Închidere</string>
   <string name="login_help_title">Cum vă putem ajuta?</string>
   <string name="login_help_forgot_username">Am uitat numele de utilizator</string>
   <string name="login_help_forgot_password">Am uitat parola</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Utilizator sau e-mail</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Parola</string>
-  <string name="auth_username_placeholder">Utilizator sau e-mail</string>
-  <string name="auth_password_placeholder">Parola</string>
   <string name="auth_login_assistive_text">Introduceți adresa de e-mail Proton sau numele de utilizator.</string>
   <string name="auth_account_details">Introduceți detaliile contului Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problema la autentificare. Mai încercați.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Este necesară verificarea ca persoană.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Date de conectare incorecte. Reîncercați.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Autentificare cu doi factori nesuportată.</string>
   <string name="auth_login_general_error">A apărut o eroare.</string>
   <string name="auth_second_factor_title">Autentificare cu doi factori</string>
   <string name="auth_second_factor_subtitle">Contul are mai multe mecanisme de A2F. Alegeți cum doriți să vă confirmați identitatea.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Parola nu poate fi goală.</string>
   <string name="auth_signup_title">Creare cont Proton</string>
   <string name="auth_signup_subtitle">Un singur cont pentru toate serviciile Proton</string>
-  <string name="auth_signup_username_assistive_text">Numele de utilizator nu poate fi gol.</string>
-  <string name="auth_signup_email_assistive_text">Adresa de e-mail nu poate fi goală.</string>
   <string name="auth_signup_next">Înainte</string>
   <string name="auth_signup_username">Nume de utilizator</string>
   <string name="auth_signup_create_password">Creare parolă</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Omitere</string>
   <string name="auth_signup_recovery_title">Setare metodă de recuperare (opțional)</string>
   <string name="auth_signup_recovery_subtitle">Vă vom trimite instrucțiunile de recuperare la acest e-mail sau număr de telefon dacă nu vă puteți conecta la cont.</string>
-  <string name="auth_signup_recovery_email">E-mail</string>
-  <string name="auth_signup_recovery_phone">Telefon</string>
-  <string name="auth_signup_recovery_email_hint">E-mail de recuperare</string>
-  <string name="auth_signup_recovery_phone_hint">Număr de telefon de recuperare</string>
   <string name="auth_signup_recovery_select_country">Selectați țara</string>
   <string name="auth_signup_phone_placeholder">XXX XX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Omiteți metoda de recuperare?</string>
@@ -130,7 +119,6 @@
   <string name="auth_fido_config_error">Eroare la preluarea cheilor stocate.</string>
   <string name="auth_fido_reading_key_error">Eroare la citirea cheii de securitate.</string>
   <string name="auth_fido_submit_key_error">Eroare la trimiterea datelor cheii.</string>
-  <string name="auth_fido_reading_key_progress">Se citește cheia de securitate.</string>
   <string name="auth_fido_authenticating_in_progress">Se autentifică cu cheia de securitate.</string>
   <string name="auth_fido_security_key">Cheie de securitate</string>
   <plurals name="password_validator_min_length_error">
@@ -150,20 +138,14 @@
   <string name="settings_password_management_tab_second_password">Parola secundară</string>
   <string name="settings_password_management_change_password_note">Pentru a modifica oricare dintre parole, va trebui să vă cunoașteți parola principală.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Ați uitat parola principală?</string>
-  <string name="settings_password_management_header">Modificare parolă</string>
-  <string name="settings_password_management_cannot_change_password">Nu vă puteți schimba parola de rezervă. Contactați-vă administratorul.</string>
   <string name="settings_main_password_hint_current">Parola principală actuală</string>
   <string name="settings_main_password_hint_new">Parola principală nouă</string>
   <string name="settings_main_password_hint_new_confirm">Confirmare parolă principală nouă</string>
   <string name="settings_second_password_hint_current_main_password">Parola principală actuală</string>
   <string name="settings_second_password_hint_new">Parola secundară nouă</string>
   <string name="settings_second_password_hint_new_confirm">Confirmare parolă secundară nouă</string>
-  <string name="settings_change_password_error">A apărut o eroare la schimbarea parolei.</string>
-  <string name="settings_recovery_email_success">Adresă de e-mail de recuperare s-a actualizat.</string>
   <string name="settings_password_management_login_success">Parola de conectare s-a actualizat.</string>
   <string name="settings_password_management_second_success">Parola secundară s-a actualizat.</string>
-  <string name="settings_password_management_start_recovery">Nu vă amintiți parola de conectare?</string>
-  <string name="settings_password_management_2fa">Este necesară autentificarea cu doi factori</string>
   <string name="settings_password_invalid_2fa">Codul pentru autentificarea cu doi factori nu este valid. Mai încercați.</string>
   <string name="settings_password_error_empty">Parola nu poate fi goală.</string>
   <string name="settings_password_error">Nume de utilizator sau parolă incorectă. Reîncercați.</string>

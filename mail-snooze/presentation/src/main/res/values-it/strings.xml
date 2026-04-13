@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Questo fine settimana</string>
   <string name="snooze_sheet_option_custom">Personalizzata</string>
   <string name="snooze_sheet_option_custom_detail">Seleziona la data e l\'orario</string>
-  <string name="snooze_sheet_option_upsell_detail">Funzionalità a pagamento</string>
   <string name="snooze_sheet_snooze_title">Posticipa a</string>
   <string name="snooze_sheet_option_unsnooze">Non posticipare</string>
   <string name="snooze_sheet_error_unable_to_snooze">Posticipazione della conversazione non riuscita</string>

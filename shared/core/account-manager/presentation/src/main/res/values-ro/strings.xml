@@ -25,8 +25,6 @@
   <string name="account_switcher_remove_from_device">Eliminare de pe acest dispozitiv</string>
   <string name="account_switcher_switch_to">Comutare la</string>
   <string name="manage_accounts_title">Gestionare conturi</string>
-  <string name="manage_accounts_signed_in">Conectat</string>
-  <string name="manage_accounts_signed_out">Deconectat</string>
   <string name="manage_accounts_add_account">Adăugare cont</string>
   <string name="manage_accounts_switch_to">Comutare la</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Comutați la un cont conectat</string>

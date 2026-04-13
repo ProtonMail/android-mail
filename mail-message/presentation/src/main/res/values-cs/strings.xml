@@ -30,7 +30,6 @@
     <item quantity="other">%d příloh</item>
   </plurals>
   <string name="attachments">přílohy</string>
-  <string name="attachment_show_more_label">+%1$d další(ch)</string>
   <string name="attachment_type_description">%1$s soubor</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archiv</string>
@@ -40,7 +39,6 @@
   <string name="attachment_type_unknown">Neznámý</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_spreadsheet">Tabulka</string>
   <string name="attachment_type_presentation">Prezentace</string>
   <string name="attachment_type_calendar">Kalendář</string>
@@ -53,10 +51,8 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Přesunout do...</string>
-  <string name="bottom_sheet_done_action">Hotovo</string>
   <string name="bottom_sheet_archive_action">Také archivovat?</string>
   <string name="bottom_sheet_label_as_title">Označit jako</string>
-  <string name="bottom_sheet_more_header_message_from">Zpráva od %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Kopírovat odkaz</string>
   <string name="message_link_long_click_copy_description">Text zkopírován z Proton Mail</string>
@@ -86,8 +82,6 @@
   <string name="contact_actions_block_address_description">Zablokovat tuto adresu</string>
   <string name="contact_actions_unblock_address">Odblokovat tuto adresu</string>
   <string name="contact_actions_unblock_address_description">Odblokovat tuto adresu</string>
-  <string name="contact_actions_view_contact_details">Zobrazit detaily kontaktu</string>
-  <string name="contact_actions_view_contact_details_description">Zobrazit detaily kontaktu</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">Zobrazit celou zprávu</string>
 </resources>

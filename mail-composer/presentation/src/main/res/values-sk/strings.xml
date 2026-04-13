@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">Napísať e-mail</string>
   <string name="close_composer_content_description">Zatvoriť editor</string>
   <string name="send_button_title">Odoslať</string>
-  <string name="send_message_content_description">Odoslať správu</string>
   <string name="composer_expand_recipients_button">Zobraziť ostatných príjemcov</string>
   <string name="composer_error_invalid_email">Emailová adresa nie je platná alebo neexistuje</string>
-  <string name="change_sender_button_content_description">Zmeniť odosielateľa</string>
   <string name="composer_change_sender_paid_feature">Na zmenu adresy odosielateľa prejdite na platený plán</string>
-  <string name="composer_error_store_draft_sender_address">Adresa odosielateľa nebola uložená</string>
-  <string name="composer_error_store_draft_body">Koncept emailu nebol uložený</string>
   <string name="composer_error_duplicate_recipient">Duplicitní príjemcovia odstránení</string>
-  <string name="composer_error_store_draft_subject">Riadok predmetu nebol uložený</string>
-  <string name="composer_error_store_draft_recipients">Uloženie príjemcov tohto konceptu zlyhalo</string>
   <string name="composer_error_store_draft_address_disabled">Koncept nie je možné uložiť – táto adresa odosielateľa je deaktivovaná.</string>
   <string name="composer_error_store_draft_address_pk_missing">Koncept nie je možné uložiť – táto adresa odosielateľa nemá primárny kľúč.</string>
   <string name="composer_error_store_draft_attachment_too_large">Koncept nie je možné uložiť – prílohy prekračujú limit veľkosti</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z vašej knižnice fotografií</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Urobiť novú fotografiu</string>
   <string name="composer_error_loading_parent_message">Nebolo možné načítať informácie o správe</string>
-  <string name="composer_original_message_quote">Pôvodná správa</string>
-  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napísal/a:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Bol dosiahnutý limit príloh</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Limit veľkosti príloh je %1$s</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">Zahodiť koncept</string>
   <string name="composer_button_set_expiration">Nastaviť čas pre vypršanie platnosti</string>
   <string name="composer_expiration_time_bottom_sheet_title">Platnosť správy</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Nastaviť</string>
   <string name="composer_bottom_bar_expiration_time_none">Neobmedzená platnosť</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Po 1 hodine</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Po 1 dni</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Po 3 dňoch</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Po 1 týždni</string>
   <string name="composer_bottom_bar_expiration_time_custom">V konkrétny dátum</string>
   <string name="composer_error_setting_expiration_time">Nastavenie doby platnosti zlyhalo</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">Chyba pri odosielaní</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavrieť</string>
   <string name="message_sending_error_dialog_text_error">Váš email nemôže byť odoslaný na zadanú adresu z nasledujúceho dôvodu:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Žiadne dôveryhodné kľúče: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
   <string name="set_message_password_title">Nastaviť heslo</string>
   <string name="set_message_password_info_message">Nastavte heslo na zašifrovanie tejto správy pre príjemcov, ktorí nepoužívajú Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Zistiť viac</a></string>
@@ -107,20 +95,10 @@
   <string name="set_message_password_label_hint">Nápoveda k heslu (voliteľné)</string>
   <string name="set_message_password_supporting_text">Vyžaduje sa minimálne 8 znakov.</string>
   <string name="set_message_password_supporting_error_text">Heslo musí mať dĺžku 8 až 21 znakov</string>
-  <string name="set_message_password_supporting_text_repeat">Heslá sa musia zhodovať</string>
-  <string name="set_message_password_supporting_error_text_repeat">Heslá sa nezhodujú</string>
   <string name="set_message_password_button_show">Zobraziť heslo</string>
   <string name="set_message_password_button_hide">Skryť heslo</string>
   <string name="set_message_password_button_save_changes">Uložiť</string>
   <string name="set_message_password_button_remove_password">Odstrániť heslo</string>
-  <string name="respondInline">Odpovedať v riadku</string>
-  <string name="subject_placeholder">Predmet</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d člen</item>
-    <item quantity="few">%d členovia</item>
-    <item quantity="many">%d členov</item>
-    <item quantity="other">%d členov</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">Zobraziť kontakty zo zariadenia</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Zahodiť túto správu?</string>
@@ -141,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">Vlastný dátum a čas</string>
   <string name="composer_schedule_send_custom_description">Vyberte čas a dátum</string>
   <string name="composer_schedule_send_previously_set">Predtým nastavené</string>
-  <string name="composer_schedule_send_custom_time_label">Čas</string>
-  <string name="composer_schedule_send_custom_date_label">Dátum</string>
-  <string name="composer_schedule_send_dialog_ok">OK</string>
-  <string name="composer_schedule_send_dialog_enter_time">Zadajte čas</string>
   <string name="composer_change_sender_title">Od</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Nepodarilo sa zmeniť odosielateľa, pretože získanie adries používateľa zlyhalo. Skúste znova.</string>
   <string name="composer_change_sender_invalid_address">Vybratá adresa sa nedá použiť na odosielanie</string>

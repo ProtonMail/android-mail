@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Lukk</string>
   <string name="login_help_title">Hvordan kan vi hjelpe?</string>
   <string name="login_help_forgot_username">Glemt brukernavn</string>
   <string name="login_help_forgot_password">Glemt passord</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Brukernavn eller e-post</string>
   <string name="auth_email">E-post</string>
   <string name="auth_password">Passord</string>
-  <string name="auth_username_placeholder">Brukernavn eller e-post</string>
-  <string name="auth_password_placeholder">Passord</string>
   <string name="auth_login_assistive_text">Skriv inn din Proton e-postadresse eller brukernavn.</string>
   <string name="auth_account_details">Skriv inn Proton-kontoopplysningene dine.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problem med å logge deg på. Prøv igjen.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">En menneskelig verifisering er nødvendig.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Feil påloggingslegitimasjon. Prøv på nytt.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Tofaktorautentisering støttes ikke.</string>
   <string name="auth_login_general_error">En feil oppstod.</string>
   <string name="auth_second_factor_title">Tofaktorautentisering</string>
   <string name="auth_second_factor_subtitle">Kontoen din har flere 2FA-mekanismer konfigurert. Velg hvordan du vil bekrefte identiteten din.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Passord kan ikke være tomt</string>
   <string name="auth_signup_title">Opprett din Proton-konto</string>
   <string name="auth_signup_subtitle">Én konto for alle Proton-tjenester</string>
-  <string name="auth_signup_username_assistive_text">Brukernavn kan ikke være tomt.</string>
-  <string name="auth_signup_email_assistive_text">E-post kan ikke være tomt.</string>
   <string name="auth_signup_next">Neste</string>
   <string name="auth_signup_username">Brukernavn</string>
   <string name="auth_signup_create_password">Opprett passordet ditt</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Hopp over</string>
   <string name="auth_signup_recovery_title">Angi gjenopprettingsmetode (valgfritt)</string>
   <string name="auth_signup_recovery_subtitle">Vi sender gjenopprettingsinstruksjoner til denne e-postadressen eller dette telefonnummeret hvis du blir utestengt fra kontoen din.</string>
-  <string name="auth_signup_recovery_email">E-post</string>
-  <string name="auth_signup_recovery_phone">Telefon</string>
-  <string name="auth_signup_recovery_email_hint">E-post for gjenoppretting</string>
-  <string name="auth_signup_recovery_phone_hint">Telefonnummer for gjenoppretting</string>
   <string name="auth_signup_recovery_select_country">Velg land</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XXX</string>
   <string name="auth_signup_skip_recovery_title">Hoppe over gjenopprettingsmetode?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Feil ved henting av lagrede nøkler.</string>
   <string name="auth_fido_reading_key_error">Feil under lesing av sikkerhetsnøkkel.</string>
   <string name="auth_fido_submit_key_error">Feil ved innsending av nøkkeldata.</string>
-  <string name="auth_fido_reading_key_progress">Leser sikkerhetsnøkkel.</string>
   <string name="auth_fido_authenticating_in_progress">Autentiserer med sikkerhetsnøkkel.</string>
   <string name="auth_fido_security_key">Sikkerhetsnøkkel</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Andre passord</string>
   <string name="settings_password_management_change_password_note">Hvis du vil endre et av passordene dine, må du vite hovedpassordet ditt. \u0020</string>
   <string name="settings_password_management_forgot_main_password">Glemt hovedpassordet ditt?</string>
-  <string name="settings_password_management_header">Endre passord</string>
-  <string name="settings_password_management_cannot_change_password">Du kan ikke endre reservepassordet. Ta kontakt med administratoren din.</string>
   <string name="settings_main_password_hint_current">Gjeldende hovedpassord</string>
   <string name="settings_main_password_hint_new">Nytt hovedpassord</string>
   <string name="settings_main_password_hint_new_confirm">Bekreft nytt hovedpassord</string>
   <string name="settings_second_password_hint_current_main_password">Gjeldende hovedpassord</string>
   <string name="settings_second_password_hint_new">Nytt andre passord</string>
   <string name="settings_second_password_hint_new_confirm">Bekreft nytt andre passord</string>
-  <string name="settings_change_password_error">Det har oppstått en feil ved endring av passord.</string>
-  <string name="settings_recovery_email_success">Gjennopprettings-e-postadressen oppdatert</string>
   <string name="settings_password_management_login_success">Påloggingpassord oppdatert</string>
   <string name="settings_password_management_second_success">Andre passord oppdatert</string>
-  <string name="settings_password_management_start_recovery">Vet du ikke hva ditt nåværende passord er?</string>
-  <string name="settings_password_management_2fa">2FA er nødvendig</string>
   <string name="settings_password_invalid_2fa">Ugyldig tofaktorkode. Prøv på nytt.</string>
   <string name="settings_password_error_empty">Passord kan ikke være tomt.</string>
   <string name="settings_password_error">Feil brukernavn eller passord. Prøv igjen.</string>

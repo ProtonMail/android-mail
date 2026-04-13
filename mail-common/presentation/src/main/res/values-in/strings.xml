@@ -22,9 +22,7 @@
   <string name="expiration_hours_arg">%dj</string>
   <string name="expiration_minutes_arg">%dmnt</string>
   <string name="retry">Coba lagi</string>
-  <string name="toolbar_back_content_description">Kembali ke layar sebelumnya</string>
   <string name="x_error_not_logged_in">Tidak terhubung masuk</string>
-  <string name="action_customize_toolbar">Sesuaikan toolbar</string>
   <string name="action_customize_toolbar_description">Sesuaikan toolbar</string>
   <string name="action_customize_toolbar_content_description">Sesuaikan toolbar</string>
   <string name="action_reply">Balas</string>
@@ -59,7 +57,6 @@
   <string name="action_pin_description">Sematkan</string>
   <string name="action_unpin_description">Lepas sematan</string>
   <string name="action_reply_content_description">Balas</string>
-  <string name="action_reply_to_content_description">Balas ke %s</string>
   <string name="action_reply_all_content_description">Balas semua</string>
   <string name="action_forward_content_description">Teruskan</string>
   <string name="action_mark_read_content_description">Tandai telah dibaca</string>
@@ -91,15 +88,12 @@
   <string name="common_error_loading_actions">Tindakan gagal dimuat</string>
   <string name="yesterday">Kemarin</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Lampiran</string>
-  <string name="attachment_download_notification_channel_description">Notifikasi untuk unduhan lampiran</string>
   <string name="email_notification_channel_name">Email</string>
   <string name="login_notification_channel_name">Peringatan Entri Masuk</string>
   <string name="email_notification_channel_description">Notifikasi email masuk</string>
   <string name="login_notification_channel_description">Notifikasi entri masuk baru</string>
   <string name="auth_badge_official">Resmi</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Tidak ada aplikasi yang ditemukan untuk menangani tindakan ini</string>
-  <string name="action_copied_to_clipboard">Disalin ke papan klip</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Batal</string>
   <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>
   <string name="picker_dialog_cancel">Batal</string>

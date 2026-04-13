@@ -22,9 +22,7 @@
   <string name="expiration_hours_arg">%d시간</string>
   <string name="expiration_minutes_arg">%d분</string>
   <string name="retry">재시도</string>
-  <string name="toolbar_back_content_description">이전 화면으로 돌아가기</string>
   <string name="x_error_not_logged_in">로그인하지 않음</string>
-  <string name="action_customize_toolbar">도구바 사용자화</string>
   <string name="action_customize_toolbar_description">도구 모음 사용자화</string>
   <string name="action_customize_toolbar_content_description">도구 모음 사용자화</string>
   <string name="action_reply">회신</string>
@@ -59,7 +57,6 @@
   <string name="action_pin_description">고정</string>
   <string name="action_unpin_description">고정 해제</string>
   <string name="action_reply_content_description">답장</string>
-  <string name="action_reply_to_content_description">%s에 답장</string>
   <string name="action_reply_all_content_description">전체 답장</string>
   <string name="action_forward_content_description">전달</string>
   <string name="action_mark_read_content_description">읽음으로 표시</string>
@@ -91,15 +88,12 @@
   <string name="common_error_loading_actions">동작을 불러오는 데 실패했습니다</string>
   <string name="yesterday">어제</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">첨부파일</string>
-  <string name="attachment_download_notification_channel_description">첨부파일 다운로드 알림</string>
   <string name="email_notification_channel_name">이메일</string>
   <string name="login_notification_channel_name">로그인 알림</string>
   <string name="email_notification_channel_description">수신 이메일 알림</string>
   <string name="login_notification_channel_description">새로운 로그인 알림</string>
   <string name="auth_badge_official">공식</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">이 작업을 처리하는 앱을 찾을 수 없습니다</string>
-  <string name="action_copied_to_clipboard">클립보드로 복사함</string>
   <string name="mailbox_action_delete_dialog_button_cancel">취소</string>
   <string name="mailbox_action_delete_dialog_button_delete">삭제</string>
   <string name="picker_dialog_cancel">취소</string>

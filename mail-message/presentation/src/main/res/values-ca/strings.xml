@@ -26,7 +26,6 @@
     <item quantity="other">%d adjunts</item>
   </plurals>
   <string name="attachments">adjunts</string>
-  <string name="attachment_show_more_label">%1$d més</string>
   <string name="attachment_type_description">%1$s fitxer</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arxiu</string>
@@ -36,7 +35,6 @@
   <string name="attachment_type_unknown">Desconegut</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
   <string name="attachment_type_spreadsheet">Full de càlcul</string>
   <string name="attachment_type_presentation">Presentació</string>
   <string name="attachment_type_calendar">Calendari</string>
@@ -49,10 +47,8 @@
   <string name="attachment_type_word">Word</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mou a...</string>
-  <string name="bottom_sheet_done_action">Fet</string>
   <string name="bottom_sheet_archive_action">Voleu arxivar també?</string>
   <string name="bottom_sheet_label_as_title">Etiqueta com a</string>
-  <string name="bottom_sheet_more_header_message_from">Missatge de %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Copia l\'enllaç</string>
   <string name="message_link_long_click_copy_description">Text copiat de Proton Mail</string>
@@ -82,8 +78,6 @@
   <string name="contact_actions_block_address_description">Bloca aquesta adreça</string>
   <string name="contact_actions_unblock_address">Desbloqueja aquesta adreça</string>
   <string name="contact_actions_unblock_address_description">Desbloqueja aquesta adreça</string>
-  <string name="contact_actions_view_contact_details">Mostra el detalls del contacte</string>
-  <string name="contact_actions_view_contact_details_description">Visualitza els detalls del contacte</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">Mostra tot el missatge</string>
 </resources>

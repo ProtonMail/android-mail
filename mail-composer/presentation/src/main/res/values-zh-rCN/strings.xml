@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">撰写邮件</string>
   <string name="close_composer_content_description">关闭编辑器</string>
   <string name="send_button_title">发送</string>
-  <string name="send_message_content_description">发送邮件</string>
   <string name="composer_expand_recipients_button">显示其他收件人</string>
   <string name="composer_error_invalid_email">邮箱地址无效或不存在</string>
-  <string name="change_sender_button_content_description">更改发件地址</string>
   <string name="composer_change_sender_paid_feature">升级到付费方案即可更改发件人地址</string>
-  <string name="composer_error_store_draft_sender_address">无法存储此草稿的发件人地址</string>
-  <string name="composer_error_store_draft_body">无法存储此草稿正文</string>
   <string name="composer_error_duplicate_recipient">已移除重复收件人</string>
-  <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
-  <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
   <string name="composer_error_store_draft_address_disabled">无法保存草稿 - 发件人地址已被禁用</string>
   <string name="composer_error_store_draft_address_pk_missing">无法保存草稿 - 此发件人地址没有主密钥</string>
   <string name="composer_error_store_draft_attachment_too_large">无法保存草稿 - 附件超出大小限制</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">从相册选择</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">拍摄新照片</string>
   <string name="composer_error_loading_parent_message">无法加载信件信息</string>
-  <string name="composer_original_message_quote">原始信息</string>
-  <string name="composer_sender_quote">在 %s，%s &lt;%s&gt; 写道：</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">确定</string>
   <string name="composer_attachment_size_exceeded_dialog_title">附件大小已达上限</string>
   <string name="composer_attachment_size_exceeded_dialog_message">附件大小限制为 %1$s</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">放弃草稿</string>
   <string name="composer_button_set_expiration">设置有效期</string>
   <string name="composer_expiration_time_bottom_sheet_title">邮件有效期</string>
-  <string name="composer_expiration_time_bottom_sheet_done">设置</string>
   <string name="composer_bottom_bar_expiration_time_none">永不过期</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 小时后过期</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 天后过期</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 天后过期</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1 周后过期</string>
   <string name="composer_bottom_bar_expiration_time_custom">在指定日期</string>
   <string name="composer_error_setting_expiration_time">设置有效期失败</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">发送时出错</string>
   <string name="message_sending_error_dialog_button_dismiss">关闭</string>
   <string name="message_sending_error_dialog_text_error">由于以下原因，您的电子邮件无法发送到所输入的地址：</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">没有受信任的密钥：%s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在：%s</string>
   <string name="set_message_password_title">设置密码</string>
   <string name="set_message_password_info_message">为加密此邮件内容（非 Proton Mail 用户），请设置密码。</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">了解详情</a></string>
@@ -107,17 +95,10 @@
   <string name="set_message_password_label_hint">密码提示（可选）</string>
   <string name="set_message_password_supporting_text">密码需至少 8 位字符。</string>
   <string name="set_message_password_supporting_error_text">密码必须介于 8 到 21 个字符之间</string>
-  <string name="set_message_password_supporting_text_repeat">两次输入的密码必须一致</string>
-  <string name="set_message_password_supporting_error_text_repeat">密码不一致</string>
   <string name="set_message_password_button_show">显示密码</string>
   <string name="set_message_password_button_hide">隐藏密码</string>
   <string name="set_message_password_button_save_changes">保存</string>
   <string name="set_message_password_button_remove_password">移除密码</string>
-  <string name="respondInline">纯文本引用</string>
-  <string name="subject_placeholder">主题</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="other">%d 位成员</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">显示本机通讯录</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">确定要丢弃此草稿吗？</string>
@@ -138,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">自定义日期与时间</string>
   <string name="composer_schedule_send_custom_description">选取时间和日期</string>
   <string name="composer_schedule_send_previously_set">先前设定</string>
-  <string name="composer_schedule_send_custom_time_label">时间</string>
-  <string name="composer_schedule_send_custom_date_label">日期</string>
-  <string name="composer_schedule_send_dialog_ok">确定</string>
-  <string name="composer_schedule_send_dialog_enter_time">时间录入</string>
   <string name="composer_change_sender_title">发件人</string>
   <string name="composer_error_change_sender_failed_getting_addresses">无法更改发件人，系统未能获取用户地址。请重试。</string>
   <string name="composer_change_sender_invalid_address">所选地址无法用于发送</string>

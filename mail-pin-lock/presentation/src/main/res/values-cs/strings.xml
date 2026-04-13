@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Zpět</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Zámek aplikace</string>
   <string name="mail_pinlock_settings_no_lock">Nezamykat</string>
@@ -64,12 +63,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ano</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>
   <string name="mail_settings_pin_insertion_created_success">PIN kód úspěšně vytvořen.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN kód úspěšně změněn.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Příliš mnoho nesprávných pokusů</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Nesprávný PIN</string>
   <string name="mail_settings_biometrics_unable_to_set">Při nastavování předvoleb biometriky došlo k chybě.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Při resetování předvoleb biometriky došlo k chybě.</string>
   <string name="mail_settings_biometrics_unknown_lock">Při získávání aktuálních zásad uzamčení došlo k chybě.</string>

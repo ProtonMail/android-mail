@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Denna helg</string>
   <string name="snooze_sheet_option_custom">Anpassad</string>
   <string name="snooze_sheet_option_custom_detail">Välj datum och tid</string>
-  <string name="snooze_sheet_option_upsell_detail">Betald funktion</string>
   <string name="snooze_sheet_snooze_title">Snooza till</string>
   <string name="snooze_sheet_option_unsnooze">Stäng av snooze</string>
   <string name="snooze_sheet_error_unable_to_snooze">Tyvärr uppstod ett okänt fel när den här konversationen sköts upp.</string>

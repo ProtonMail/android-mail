@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Terug</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Appvergrendeling</string>
   <string name="mail_pinlock_settings_no_lock">Niet vergrendelen</string>
@@ -62,12 +61,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ja</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nee</string>
   <string name="mail_settings_pin_insertion_created_success">Pincode succesvol aangemaakt!</string>
-  <string name="mail_settings_pin_insertion_changed_success">Pincode succesvol gewijzigd.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Er ging iets fout. Probeer opnieuw.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Er ging iets fout. Probeer het opnieuw.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Te veel verkeerde pogingen</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Onjuiste pincode</string>
   <string name="mail_settings_biometrics_unable_to_set">Er is een fout opgetreden bij het instellen van de biometrische voorkeuren.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Er is een fout opgetreden bij het resetten van de biometrische voorkeuren.</string>
   <string name="mail_settings_biometrics_unknown_lock">Er is een fout opgetreden tijdens het ophalen van het huidige vergrendelingsbeleid.</string>

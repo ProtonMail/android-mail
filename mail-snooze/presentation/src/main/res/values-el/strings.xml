@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Αυτό το σαββατοκύριακο</string>
   <string name="snooze_sheet_option_custom">Προσαρμοσμένο</string>
   <string name="snooze_sheet_option_custom_detail">Επιλέξτε ημερομηνία και ώρα</string>
-  <string name="snooze_sheet_option_upsell_detail">Λειτουργία επί πληρωμής</string>
   <string name="snooze_sheet_snooze_title">Αναβολή μέχρι</string>
   <string name="snooze_sheet_option_unsnooze">Αφαίρεση αναβολής</string>
   <string name="snooze_sheet_error_unable_to_snooze">Συγγνώμη, αντιμετωπίσαμε ένα άγνωστο σφάλμα κατά την αναβολή αυτής της συνομιλίας</string>

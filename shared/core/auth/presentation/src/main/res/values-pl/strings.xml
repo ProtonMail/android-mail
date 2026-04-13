@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Zamknij</string>
   <string name="login_help_title">Jak możemy pomóc?</string>
   <string name="login_help_forgot_username">Przypomnij nazwę użytkownika</string>
   <string name="login_help_forgot_password">Przypomnij hasło</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Nazwa użytkownika lub adres e-mail</string>
   <string name="auth_email">Adres e-mail</string>
   <string name="auth_password">Hasło</string>
-  <string name="auth_username_placeholder">Nazwa użytkownika lub adres e-mail</string>
-  <string name="auth_password_placeholder">Hasło</string>
   <string name="auth_login_assistive_text">Wpisz adres e-mail Proton lub nazwę użytkownika.</string>
   <string name="auth_account_details">Wpisz szczegóły konta Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Wystąpił problem z logowaniem. Spróbuj ponownie.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Wymagana jest weryfikacja antyspamowa.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Dane logowania są niepoprawne. Spróbuj ponownie.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Uwierzytelnianie dwustopniowe jest nieobsługiwane.</string>
   <string name="auth_login_general_error">Wystąpił błąd.</string>
   <string name="auth_second_factor_title">Uwierzytelnianie dwustopniowe</string>
   <string name="auth_second_factor_subtitle">Na koncie masz skonfigurowane wiele metod uwierzytelniania dwustopniowego. Wybierz metodę potwierdzenia tożsamości.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Hasło nie może być puste</string>
   <string name="auth_signup_title">Utwórz konto Proton</string>
   <string name="auth_signup_subtitle">Jedno konto do wszystkich usług Proton</string>
-  <string name="auth_signup_username_assistive_text">Nazwa użytkownika nie może być pusta.</string>
-  <string name="auth_signup_email_assistive_text">Adres e-mail nie może być pusty.</string>
   <string name="auth_signup_next">Dalej</string>
   <string name="auth_signup_username">Nazwa użytkownika</string>
   <string name="auth_signup_create_password">Utwórz hasło</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Pomiń</string>
   <string name="auth_signup_recovery_title">Ustaw metodę odzyskiwania (opcjonalnie)</string>
   <string name="auth_signup_recovery_subtitle">Jeśli zablokujesz konto, wyślemy instrukcję odzyskiwania na ten adres e-mail lub numer telefonu.</string>
-  <string name="auth_signup_recovery_email">Adres e-mail</string>
-  <string name="auth_signup_recovery_phone">Numer telefonu</string>
-  <string name="auth_signup_recovery_email_hint">Adres pomocniczy</string>
-  <string name="auth_signup_recovery_phone_hint">Numer pomocniczy</string>
   <string name="auth_signup_recovery_select_country">Wybierz kraj</string>
   <string name="auth_signup_phone_placeholder">XXX XXX XXX</string>
   <string name="auth_signup_skip_recovery_title">Pominąć metodę odzyskiwania?</string>
@@ -131,7 +120,6 @@
   <string name="auth_fido_config_error">Wystąpił błąd podczas pobierania przechowywanych kluczy.</string>
   <string name="auth_fido_reading_key_error">Wystąpił błąd podczas odczytywania klucza bezpieczeństwa.</string>
   <string name="auth_fido_submit_key_error">Wystąpił błąd podczas przesyłania danych klucza.</string>
-  <string name="auth_fido_reading_key_progress">Odczytywanie klucza bezpieczeństwa.</string>
   <string name="auth_fido_authenticating_in_progress">Uwierzytelnianie kluczem bezpieczeństwa.</string>
   <string name="auth_fido_security_key">Klucz bezpieczeństwa</string>
   <plurals name="password_validator_min_length_error">
@@ -153,20 +141,14 @@
   <string name="settings_password_management_tab_second_password">Drugie hasło</string>
   <string name="settings_password_management_change_password_note">Aby zmienić którekolwiek z haseł, musisz znać swoje główne hasło.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Nie pamiętasz hasła głównego?</string>
-  <string name="settings_password_management_header">Zmień hasło</string>
-  <string name="settings_password_management_cannot_change_password">Nie możesz zmienić hasła zapasowego. Skontaktuj się z administratorem.</string>
   <string name="settings_main_password_hint_current">Obecne główne hasło</string>
   <string name="settings_main_password_hint_new">Nowe główne hasło</string>
   <string name="settings_main_password_hint_new_confirm">Potwierdź nowe główne hasło</string>
   <string name="settings_second_password_hint_current_main_password">Obecne główne hasło</string>
   <string name="settings_second_password_hint_new">Nowe drugie hasło</string>
   <string name="settings_second_password_hint_new_confirm">Potwierdź nowe drugie hasło</string>
-  <string name="settings_change_password_error">Wystąpił błąd podczas zmiany hasła.</string>
-  <string name="settings_recovery_email_success">Adres pomocniczy został zaktualizowany</string>
   <string name="settings_password_management_login_success">Hasło logowania zostało zaktualizowane</string>
   <string name="settings_password_management_second_success">Drugie hasło zostało zaktualizowane</string>
-  <string name="settings_password_management_start_recovery">Nie pamiętasz obecnego hasła?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Niepoprawny kod drugiego składnika. Spróbuj ponownie.</string>
   <string name="settings_password_error_empty">Hasło nie może być puste.</string>
   <string name="settings_password_error">Nazwa użytkownika lub hasło są niepoprawne. Spróbuj ponownie.</string>

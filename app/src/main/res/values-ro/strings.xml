@@ -35,13 +35,8 @@
   <string name="mailbox_message_sending">Se trimite mesajul…</string>
   <string name="mailbox_message_sending_offline">Deconectat: mesajul va fi trimis ulterior.</string>
   <string name="mailbox_message_sending_success">Mesaj trimis</string>
-  <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
   <string name="mailbox_message_sending_error_action">Accesați ciorna</string>
   <string name="notification_switched_account">S-a comutat la contul %s</string>
-  <string name="label_saved">Etichetă a fost salvată.</string>
-  <string name="label_deleted">Etichetă a fost ștearsă.</string>
-  <string name="app_locked">Aplicație blocată</string>
-  <string name="use_pin_instead">Folosiți PIN</string>
   <string name="mailbox_message_scheduling">Se programează mesajul…</string>
   <string name="mailbox_message_scheduling_offline">Deconectat: mesaj pus în lista pentru programare</string>
   <string name="mailbox_message_scheduled_for_sending_success">Acest mesaj va fi trimis la data de %1$s</string>

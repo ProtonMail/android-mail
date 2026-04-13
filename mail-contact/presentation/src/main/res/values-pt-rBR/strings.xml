@@ -29,10 +29,6 @@
     <item quantity="one">%1$d membro</item>
     <item quantity="other">%1$d membros</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Membro (%1$d)</item>
-    <item quantity="other">Membros (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Pesquisar contatos</string>
   <string name="contact_search_no_results">Nenhum resultado encontrado.</string>
   <string name="contact_search_placeholder">Pesquisa por contato ou grupo</string>
@@ -67,8 +63,6 @@
   <string name="contact_type_voice">Voz</string>
   <string name="contact_property_birthday">Data de nascimento</string>
   <string name="contact_property_note">Nota</string>
-  <string name="contact_property_photo">Foto</string>
-  <string name="contact_property_logo">Logotipo</string>
   <string name="contact_property_organization">Organização</string>
   <string name="contact_property_anniversary">Aniversário</string>
   <string name="contact_property_title">Título</string>

@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Ta konec tedna</string>
   <string name="snooze_sheet_option_custom">Po meri</string>
   <string name="snooze_sheet_option_custom_detail">Izberite datum in čas</string>
-  <string name="snooze_sheet_option_upsell_detail">Plačljiva funkcija</string>
   <string name="snooze_sheet_snooze_title">Dremež do</string>
   <string name="snooze_sheet_option_unsnooze">Prekliči dremež</string>
   <string name="snooze_sheet_error_unable_to_snooze">Oprostite, pri dremežu tega pogovora je prišlo do neznane napake</string>

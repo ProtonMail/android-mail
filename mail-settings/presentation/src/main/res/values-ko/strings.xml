@@ -28,20 +28,14 @@
   <string name="mail_settings_preferences">환경 설정</string>
   <string name="mail_settings_app">앱 사용자화</string>
   <string name="mail_settings_mailbox">메일함 설정</string>
-  <string name="mail_settings_email_hint">이메일 및 메일함 환경 설정</string>
   <string name="mail_settings_folders_labels">폴더 및 라벨</string>
-  <string name="mail_settings_folders_labels_hint">메일함 정리</string>
   <string name="mail_settings_spam_and_custom_filters">스팸 및 필터</string>
-  <string name="mail_settings_spam_and_custom_filters_hint">자동화 및 분류</string>
   <string name="mail_settings_privacy_and_security">개인정보 및 보안</string>
   <string name="mail_settings_fido_keys">보안 키</string>
   <string name="mail_settings_change_password">비밀번호 관리</string>
   <string name="mail_settings_signature">서명</string>
   <string name="mail_settings_storage_quota">%2$s 중 %1$d%%</string>
-  <string name="mail_settings_privacy_and_security_hint">이메일 트래킹 보호</string>
-  <string name="mail_settings_app_hint">모바일 앱 사용자화</string>
   <string name="mail_settings_theme">테마</string>
-  <string name="mail_settings_auto_lock">자동 잠금</string>
   <string name="mail_settings_app_icon">앱 아이콘</string>
   <string name="mail_settings_alternative_routing">대체 라우팅</string>
   <string name="mail_settings_app_language">앱 언어</string>
@@ -49,23 +43,16 @@
   <string name="mail_settings_combined_contacts">병합된 연락처</string>
   <string name="mail_settings_swipe_actions">스와이프 동작</string>
   <string name="mail_settings_combined_contacts_hint">로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.</string>
-  <string name="mail_settings_alternative_routing_hint">Proton 사이트가 차단되었을 경우 이 설정을 통한 대체 네트워크 라우팅으로 방화벽을 우회하거나 네트워크 문제가 발생했을 때 Proton에 접근할 수 있습니다. 더 나은 신뢰성을 위해 이 설정을 계속 켜두는 것을 권장합니다.</string>
   <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">앱 사용자화</string>
   <string name="mail_settings_app_customization_notification">알림</string>
   <string name="mail_settings_app_customization_language">언어</string>
   <string name="mail_settings_app_customization_appearance">외관</string>
   <string name="mail_settings_app_customization_protection">앱 잠금</string>
-  <string name="mail_settings_app_customization_mobile_signature">모바일 서명</string>
-  <string name="mail_settings_app_customization_email_signature">이메일 서명</string>
   <string name="mail_settings_app_customization_protection_enabled_description">자동 잠금 켬</string>
   <string name="mail_settings_app_customization_protection_disabled_description">자동 잠금 끔</string>
-  <string name="mail_settings_app_customization_use_device_contacts">기기 연락처 사용</string>
-  <string name="mail_settings_app_customization_use_device_contacts_hint">기기 연락처를 사용하여 이메일 주소를 자동 완성합니다.</string>
   <string name="mail_settings_app_customization_swipe_to_next_email">다음 이메일로 쓸어넘기기</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">받은 편지함의 다음 또는 이전 메시지로 빠르게 이동합니다.</string>
-  <string name="mail_settings_app_customization_swipe_action">스와이프 동작</string>
-  <string name="mail_settings_app_customization_swipe_action_hint">삭제나 보관과 같은 간편 작업을 좌우 스와이프 동작에 설정하세요.</string>
   <string name="mail_settings_app_customization_customize_toolbar">도구 모음 사용자화</string>
   <string name="mail_settings_app_customization_alternative_routing">대체 라우팅</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Proton 사이트가 차단된 경우 방화벽이나 네트워크 문제를 우회합니다.</string>
@@ -88,8 +75,6 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">사용 가능한 정보 없음</string>
   <string name="mail_settings_account">계정</string>
-  <string name="mail_settings_not_set">미설정</string>
-  <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy">개인정보 보호</string>
   <string name="mail_settings_privacy_auto_show_remote_content">자동으로 외부 콘텐츠 불러오기</string>

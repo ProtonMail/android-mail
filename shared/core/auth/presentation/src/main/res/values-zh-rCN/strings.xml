@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">关闭</string>
   <string name="login_help_title">我们如何帮助您？</string>
   <string name="login_help_forgot_username">忘记用户名</string>
   <string name="login_help_forgot_password">忘记密码</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">用户名或邮箱</string>
   <string name="auth_email">邮箱</string>
   <string name="auth_password">密码</string>
-  <string name="auth_username_placeholder">用户名或邮箱</string>
-  <string name="auth_password_placeholder">密码</string>
   <string name="auth_login_assistive_text">请输入您的 Proton 邮箱或用户名。</string>
   <string name="auth_account_details">请输入您的 Proton 账户信息。</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">登录失败，请重试。</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">需要您进行人工验证。</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">登录信息错误，请重新尝试。</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">不支持双因素身份验证。</string>
   <string name="auth_login_general_error">出错了。</string>
   <string name="auth_second_factor_title">双因素身份验证</string>
   <string name="auth_second_factor_subtitle">您的账户配置了多种 2FA 机制。请选择确认身份的方式。</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">密码不能为空</string>
   <string name="auth_signup_title">创建您的 Proton 账户</string>
   <string name="auth_signup_subtitle">一个账户畅享所有 Proton 服务</string>
-  <string name="auth_signup_username_assistive_text">用户名不能为空。</string>
-  <string name="auth_signup_email_assistive_text">邮箱地址不能为空。</string>
   <string name="auth_signup_next">下一步</string>
   <string name="auth_signup_username">用户名</string>
   <string name="auth_signup_create_password">创建密码</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">跳过</string>
   <string name="auth_signup_recovery_title">设置恢复方式（非必需）</string>
   <string name="auth_signup_recovery_subtitle">假如以后您忘记用户名或密码无法登录，我们将通过这个邮箱或电话号码帮助您恢复账户。</string>
-  <string name="auth_signup_recovery_email">辅助邮箱</string>
-  <string name="auth_signup_recovery_phone">辅助电话</string>
-  <string name="auth_signup_recovery_email_hint">恢复邮箱</string>
-  <string name="auth_signup_recovery_phone_hint">恢复电话号码</string>
   <string name="auth_signup_recovery_select_country">选择国家/地区</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">跳过设置恢复方法？</string>
@@ -128,7 +117,6 @@
   <string name="auth_fido_config_error">检索存储的密钥时出错。</string>
   <string name="auth_fido_reading_key_error">读取安全密钥时出错。</string>
   <string name="auth_fido_submit_key_error">提交密钥数据错误。</string>
-  <string name="auth_fido_reading_key_progress">正在读取安全密钥。</string>
   <string name="auth_fido_authenticating_in_progress">正在使用安全密钥进行身份验证。</string>
   <string name="auth_fido_security_key">安全密钥</string>
   <plurals name="password_validator_min_length_error">
@@ -144,20 +132,14 @@
   <string name="settings_password_management_tab_second_password">二级密码</string>
   <string name="settings_password_management_change_password_note">要更改任意密码，您需要知道您的主密码。\u0020</string>
   <string name="settings_password_management_forgot_main_password">忘记主密码？</string>
-  <string name="settings_password_management_header">更改密码</string>
-  <string name="settings_password_management_cannot_change_password">您无法更改备份密码。请联系您的管理员。</string>
   <string name="settings_main_password_hint_current">当前主密码</string>
   <string name="settings_main_password_hint_new">新主密码</string>
   <string name="settings_main_password_hint_new_confirm">确认新主密码</string>
   <string name="settings_second_password_hint_current_main_password">当前主密码</string>
   <string name="settings_second_password_hint_new">新的二级密码</string>
   <string name="settings_second_password_hint_new_confirm">确认新的二级密码</string>
-  <string name="settings_change_password_error">密码更改失败。</string>
-  <string name="settings_recovery_email_success">密保邮箱地址已更新</string>
   <string name="settings_password_management_login_success">登录密码已更改</string>
   <string name="settings_password_management_second_success">二级密码已更新</string>
-  <string name="settings_password_management_start_recovery">忘记了你的密码？</string>
-  <string name="settings_password_management_2fa">需要 2FA</string>
   <string name="settings_password_invalid_2fa">双重认证码无效，请重试。</string>
   <string name="settings_password_error_empty">密码不能为空.</string>
   <string name="settings_password_error">用户名或密码不正确，请重试。</string>

@@ -35,13 +35,8 @@
   <string name="mailbox_message_sending">Lähetetään viestiä…</string>
   <string name="mailbox_message_sending_offline">Ei yhteyttä: viesti merkittiin lähetettäväksi myöhemmin.</string>
   <string name="mailbox_message_sending_success">Viesti lähetettiin</string>
-  <string name="mailbox_message_sending_error">Virhe lähetettäessä viestiä</string>
   <string name="mailbox_message_sending_error_action">Avaa luonnokset</string>
   <string name="notification_switched_account">Vaihdettiin tiliin %s</string>
-  <string name="label_saved">Tunniste tallennettiin</string>
-  <string name="label_deleted">Tunniste poistettiin</string>
-  <string name="app_locked">Sovellus on lukittu</string>
-  <string name="use_pin_instead">Käytä sen sijaan PIN-koodia</string>
   <string name="mailbox_message_scheduling">Ajoitetaan viestiä…</string>
   <string name="mailbox_message_scheduling_offline">Ei yhteyttä: viesti merkittiin ajoitettavaksi myöhemmin.</string>
   <string name="mailbox_message_scheduled_for_sending_success">Viesti lähetetään %1$s</string>

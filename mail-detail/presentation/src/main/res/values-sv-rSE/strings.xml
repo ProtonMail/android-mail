@@ -26,7 +26,6 @@
   <string name="quick_reply_button_content_description">Svara</string>
   <string name="quick_reply_all_button_content_description">Svara alla</string>
   <string name="more_button_content_description">Mer</string>
-  <string name="subject">Ämne:</string>
   <string name="from">Från:</string>
   <string name="to">Till:</string>
   <string name="cc">Kopia:</string>
@@ -36,7 +35,6 @@
     <item quantity="one">%d bilaga</item>
     <item quantity="other">%d bilagor</item>
   </plurals>
-  <string name="hide_details">Dölj detaljer</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Utkast)</string>
   <string name="error_mark_as_read_failed">Åtgärden Markera som läst misslyckades. Försök igen.</string>
@@ -44,12 +42,9 @@
   <string name="error_star_operation_failed">Det gick inte att stjärnmärka. Försök igen.</string>
   <string name="error_unstar_operation_failed">Det gick inte att ta bort stjärnmarkeringen. Försök igen.</string>
   <string name="error_move_to_trash_failed">Flytt till papperskorg misslyckades. Försök igen.</string>
-  <string name="message_moved">Meddelande flyttat</string>
   <string name="message_moved_to">Meddelandet flyttat till %s</string>
-  <string name="message_moved_to_trash">Meddelande flyttat till papperskorg</string>
   <string name="message_moved_to_archive">Meddelande flyttat till arkiv</string>
   <string name="error_move_to_archive_failed">Misslyckades att flytta till arkiv. Försök igen.</string>
-  <string name="message_moved_to_spam">Meddelande flyttat till skräppost</string>
   <string name="error_move_to_spam_failed">Flytt till skräppost misslyckades. Försök igen.</string>
   <string name="message_moved_to_selected_destination">Meddelandet flyttades till %1$s</string>
   <string name="error_move_message_failed">Misslyckades att flytta meddelande. Försök igen.</string>
@@ -65,8 +60,6 @@
   <string name="error_attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
   <string name="error_get_attachment_not_enough_memory">Misslyckades att hämta bilaga på grund av otillräckligt minne</string>
   <string name="error_relabel_message_failed">Misslyckades att märka om meddelande. Försök igen</string>
-  <string name="error_relabel_conversation_failed">Misslyckades att märka om konversation. Försök igen</string>
-  <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
   <string name="detail_error_retrieving_message_body">Kan inte hämta meddelande</string>
   <string name="message_body_error_no_webview">Du måste ha ett WebView installerat för att se innehållet i detta meddelande.</string>
@@ -118,8 +111,6 @@
   <string name="message_report_phishing_dialog_message">Att rapportera ett meddelande som ett nätfiskeförsök kommer skicka meddelandet till oss så att vi kan analysera det och förbättra våra filter. Detta innebär att vi kommer kunna se innehållet i meddelandet i sin helhet.</string>
   <string name="message_report_phishing_dialog_confim_button">Bekräfta</string>
   <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
-  <string name="open_on_protoncalendar_banner_title">Öppna i Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Säker krypterad kalender</string>
   <string name="trashed_messages_banner">Visa kastade meddelanden i denna konversation.</string>
   <string name="non_trashed_messages_banner">Visa ej kastade meddelanden i denna konversation.</string>
   <string name="recipient_me">jag</string>
@@ -182,8 +173,6 @@
   <string name="already_unsubscribed_banner_message">Du har avslutat prenumeration från denna e-postlista.</string>
   <string name="error_unsubscribe_newsletter">Misslyckades att avsluta prenumeration på nyhetsbrev</string>
   <string name="detail_error_loading_single_message">Misslyckades ladda meddelande</string>
-  <string name="error_downloading_image">Misslyckades att ladda ner bild</string>
-  <string name="image_downloaded_successfully">Bild nedladdad</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Meddelanderubriker</string>
   <string name="raw_message_data_html_title">Meddelande-HTML</string>

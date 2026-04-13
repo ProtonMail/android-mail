@@ -29,22 +29,4 @@
   <string name="spotlight_feature_item_headers_html_description">Inspecciona mensajes sospechosos para confirmar su autenticidad y descubrir cualquier elemento de rastreo oculto.</string>
   <string name="spotlight_screen_got_it">Entendido</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">Descubre las novedades de Proton Mail</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_title">Mejoras en la interfaz</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Desplazamiento fluido, diseño renovado y mucho más.</string>
-  <string name="spotlight_screen_category_view_unread_filter_title">Filtro de no leídos</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nuevo aspecto y ubicación para facilitar el acceso.</string>
-  <string name="spotlight_screen_category_view_categories_title">Categorías de correo electrónico</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Clasificación automática del correo entrante.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Descubre lo nuevo.\nSáltate lo demás.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Céntrate en los mensajes no leídos. O no. Solo necesitas un toque para alternar entre todos tus correos y los que tienes pendientes.</string>
-  <string name="spotlight_screen_category_view_main_b2b_title">Mantente al día con tus correos nuevos y no leídos</string>
-  <string name="spotlight_screen_category_view_main_b2b_subtitle">El filtro de no leídos está ahora más a la vista y a mano para que revises y gestiones tus mensajes pendientes rápidamente.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Te presentamos tu bandeja de entrada más organizada</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Gracias a las nuevas categorías de correo, solo los mensajes importantes y urgentes llegarán a tu bandeja principal. El resto se organiza automáticamente.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_title">Bienvenidas las categorías.\nAdiós a las distracciones.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Olvídate de las distracciones de boletines, actualizaciones y correos no urgentes. Con las nuevas categorías, solo los mensajes importantes llegarán a tu bandeja principal.</string>
-  <string name="spotlight_screen_category_view_button_continue">Bienvenidas las categorías.\nAdiós a las distracciones.</string>
-  <string name="spotlight_screen_category_view_button_try">Prueba las categorías</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continuar sin categorías</string>
 </resources>

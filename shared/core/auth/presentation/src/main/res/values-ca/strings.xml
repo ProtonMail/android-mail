@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Tanca</string>
   <string name="login_help_title">Com us podem ajudar?</string>
   <string name="login_help_forgot_username">He oblidat el nom d\'usuari.</string>
   <string name="login_help_forgot_password">He oblidat la contrasenya</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Nom d\'usuari o correu electrònic</string>
   <string name="auth_email">Correu electrònic</string>
   <string name="auth_password">Contrasenya</string>
-  <string name="auth_username_placeholder">Nom d\'usuari o correu electrònic</string>
-  <string name="auth_password_placeholder">Contrasenya</string>
   <string name="auth_login_assistive_text">Introduïu el correu electrònic o el nom d\'usuari del Proton.</string>
   <string name="auth_account_details">Introduïu els detalls del compte de Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problema en iniciar la sessió. Torneu-ho a provar.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Es necessita una verificació humana.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Credencials d\'inici de sessió incorrectes. Torneu-ho a provar.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">No s\'admet l\'autenticació de doble factor.</string>
   <string name="auth_login_general_error">S\'ha produït un error.</string>
   <string name="auth_second_factor_title">Autenticació de doble factor</string>
   <string name="auth_second_factor_subtitle">El compte té diversos mecanismes 2FA configurats. Trieu com voleu confirmar la identitat.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">La contrasenya no pot estar buida.</string>
   <string name="auth_signup_title">Creeu el compte del Proton</string>
   <string name="auth_signup_subtitle">Un compte per a tots els serveis de Proton</string>
-  <string name="auth_signup_username_assistive_text">El nom d\'usuari no pot estar en blanc.</string>
-  <string name="auth_signup_email_assistive_text">El correu electrònic no pot estar en blanc.</string>
   <string name="auth_signup_next">Següent</string>
   <string name="auth_signup_username">Nom d\'usuari</string>
   <string name="auth_signup_create_password">Creeu la contrasenya</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Omet</string>
   <string name="auth_signup_recovery_title">Establiu el mètode de recuperació (opcional)</string>
   <string name="auth_signup_recovery_subtitle">Us enviarem instruccions de recuperació a aquest correu electrònic o número de telèfon si us quedeu sense accés al compte.</string>
-  <string name="auth_signup_recovery_email">Correu electrònic</string>
-  <string name="auth_signup_recovery_phone">Telèfon</string>
-  <string name="auth_signup_recovery_email_hint">Correu electrònic de recuperació</string>
-  <string name="auth_signup_recovery_phone_hint">Número de telèfon de recuperació</string>
   <string name="auth_signup_recovery_select_country">Selecciona un país</string>
   <string name="auth_signup_phone_placeholder">XXX XX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Voleu ometre el mètode de recuperació?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">S\'ha produït un error en recuperar les claus emmagatzemades.</string>
   <string name="auth_fido_reading_key_error">S\'ha produït un error en llegir la clau de seguretat.</string>
   <string name="auth_fido_submit_key_error">S\'ha produït un error en enviar les dades de la clau.</string>
-  <string name="auth_fido_reading_key_progress">S\'està llegint la clau de seguretat.</string>
   <string name="auth_fido_authenticating_in_progress">S\'està autenticant amb la clau de seguretat.</string>
   <string name="auth_fido_security_key">Clau de seguretat</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Segona contrasenya</string>
   <string name="settings_password_management_change_password_note">Per a canviar qualsevol de les contrasenyes, haureu de conèixer la contrasenya principal.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Heu oblidat la contrasenya principal?</string>
-  <string name="settings_password_management_header">Canvia la contrasenya</string>
-  <string name="settings_password_management_cannot_change_password">No podeu canviar la contrasenya de recuperació. Poseu-vos en contacte amb l\'administrador.</string>
   <string name="settings_main_password_hint_current">Contrasenya principal actual</string>
   <string name="settings_main_password_hint_new">Nova contrasenya principal</string>
   <string name="settings_main_password_hint_new_confirm">Confirmeu la nova contrasenya principal</string>
   <string name="settings_second_password_hint_current_main_password">Contrasenya principal actual</string>
   <string name="settings_second_password_hint_new">Nova segona contrasenya</string>
   <string name="settings_second_password_hint_new_confirm">Confirmeu la nova segona contrasenya</string>
-  <string name="settings_change_password_error">S\'ha produït un error amb el canvi de contrasenya.</string>
-  <string name="settings_recovery_email_success">S\'ha actualitzat l\'adreça del correu de recuperació</string>
   <string name="settings_password_management_login_success">S\'ha actualitzat la contrasenya d\'inici de sessió</string>
   <string name="settings_password_management_second_success">S\'ha actualitzat la segona contrasenya</string>
-  <string name="settings_password_management_start_recovery">No sabeu la contrasenya actual?</string>
-  <string name="settings_password_management_2fa">Cal 2FA</string>
   <string name="settings_password_invalid_2fa">Codi de segon factor no vàlid. Torneu-ho a provar.</string>
   <string name="settings_password_error_empty">La contrasenya no pot estar buida.</string>
   <string name="settings_password_error">Nom d\'usuari o contrasenya incorrectes. Torneu-ho a provar.</string>

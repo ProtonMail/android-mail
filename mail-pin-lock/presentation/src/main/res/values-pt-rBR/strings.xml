@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Voltar</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Bloqueio de app</string>
   <string name="mail_pinlock_settings_no_lock">Não bloquear</string>
@@ -62,12 +61,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
   <string name="mail_settings_pin_insertion_created_success">O código PIN foi criado.</string>
-  <string name="mail_settings_pin_insertion_changed_success">O código PIN foi alterado.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ocorreu um erro. Tente novamente.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Ocorreu um erro. Tente novamente.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Muitas tentativas incorretas</string>
-  <string name="mail_settings_pin_verify_wrong_pin">PIN incorreto</string>
   <string name="mail_settings_biometrics_unable_to_set">Ocorreu um erro ao definir as preferências de biometria.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Ocorreu um erro ao redefinir as preferências de biometria.</string>
   <string name="mail_settings_biometrics_unknown_lock">Ocorreu um erro ao obter a política de bloqueio atual.</string>

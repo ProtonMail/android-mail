@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">Kirjoita viesti</string>
   <string name="close_composer_content_description">Sulje viestin kirjoitus</string>
   <string name="send_button_title">Lähetä</string>
-  <string name="send_message_content_description">Lähetä viesti</string>
   <string name="composer_expand_recipients_button">Näytä muut vastaanottajat</string>
   <string name="composer_error_invalid_email">Annettu sähköpostiosoite ei ole kelvollinen tai sitä ei ole olemassa</string>
-  <string name="change_sender_button_content_description">Vaihda lähettäjä</string>
   <string name="composer_change_sender_paid_feature">Päivitä maksulliseen tilaukseen muuttaaksesi lähettäjän osoitetta</string>
-  <string name="composer_error_store_draft_sender_address">Luonnoksen lähetysosoitteen tallennus epäonnistui</string>
-  <string name="composer_error_store_draft_body">Luonnoksen sisällön tallennus epäonnistui</string>
   <string name="composer_error_duplicate_recipient">Vastaanottajien kaksoiskappaleet poistettiin</string>
-  <string name="composer_error_store_draft_subject">Luonnoksen otsikon tallennus epäonnistui</string>
-  <string name="composer_error_store_draft_recipients">Luonnoksen vastaanottajien tallennus epäonnistui</string>
   <string name="composer_error_store_draft_address_disabled">Luonnosta ei voi tallentaa – Tämä lähettäjän osoite on poistettu käytöstä</string>
   <string name="composer_error_store_draft_address_pk_missing">Luonnosta ei voi tallentaa – Tällä lähettäjän osoitteella ei ole ensisijaista avainta</string>
   <string name="composer_error_store_draft_attachment_too_large">Luonnosta ei voi tallentaa – Liitteet ylittävät kokorajan</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Kuvakirjastostasi</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Ota uusi kuva</string>
   <string name="composer_error_loading_parent_message">Viestin tietoja ei voitu ladata</string>
-  <string name="composer_original_message_quote">Alkuperäinen viesti</string>
-  <string name="composer_sender_quote">%s, %s &lt;%s&gt; kirjoitti:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Liiterajoitus on saavutettu</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Liitteiden enimmäiskoko on %1$s</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">Hylkää luonnos</string>
   <string name="composer_button_set_expiration">Aseta tuhoutumisaika</string>
   <string name="composer_expiration_time_bottom_sheet_title">Viestin tuhoutuminen</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Aseta</string>
   <string name="composer_bottom_bar_expiration_time_none">Ei eräänny koskaan</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">Tunnin kuluttua</string>
   <string name="composer_bottom_bar_expiration_time_one_day">Päivän kuluttua</string>
   <string name="composer_bottom_bar_expiration_time_three_days">Kolmen päivän kuluttua</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">Viikon kuluttua</string>
   <string name="composer_bottom_bar_expiration_time_custom">Tiettynä päivämääränä</string>
   <string name="composer_error_setting_expiration_time">Tuhoutumisajan asettaminen epäonnistui</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">Lähetysvirhe</string>
   <string name="message_sending_error_dialog_button_dismiss">Sulje</string>
   <string name="message_sending_error_dialog_text_error">Viestiäsi ei voida lähettää annettuun osoitteeseen seuraavasta syystä:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Luotettuja avaimia ei ole: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Osoitetta ei ole olemassa: %s</string>
   <string name="set_message_password_title">Aseta salasana</string>
   <string name="set_message_password_info_message">Aseta salasana tämän viestin salaamiseksi vastaanottajille, jotka eivät käytä Proton Mailia.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Lue lisää</a></string>
@@ -107,18 +95,10 @@
   <string name="set_message_password_label_hint">Salasanavihje (valinnainen)</string>
   <string name="set_message_password_supporting_text">Vähintään 8 merkkiä vaaditaan.</string>
   <string name="set_message_password_supporting_error_text">Salasanan on oltava 8–21 merkkiä</string>
-  <string name="set_message_password_supporting_text_repeat">Salasanojen on täsmättävä</string>
-  <string name="set_message_password_supporting_error_text_repeat">Salasanat eivät täsmää</string>
   <string name="set_message_password_button_show">Näytä salasana</string>
   <string name="set_message_password_button_hide">Piilota salasana</string>
   <string name="set_message_password_button_save_changes">Tallenna</string>
   <string name="set_message_password_button_remove_password">Poista salasana</string>
-  <string name="respondInline">Vastaa rivihuomautuksella</string>
-  <string name="subject_placeholder">Aihe</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d jäsen</item>
-    <item quantity="other">%d jäsentä</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">Näytä laitteen yhteystiedot</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Hylätäänkö tämä viesti?</string>
@@ -139,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">Mukautettu päivämäärä ja aika</string>
   <string name="composer_schedule_send_custom_description">Valitse aika ja päivämäärä</string>
   <string name="composer_schedule_send_previously_set">Aiemmin asetettu</string>
-  <string name="composer_schedule_send_custom_time_label">Aika</string>
-  <string name="composer_schedule_send_custom_date_label">Päiväys</string>
-  <string name="composer_schedule_send_dialog_ok">Ok</string>
-  <string name="composer_schedule_send_dialog_enter_time">Syötä aika</string>
   <string name="composer_change_sender_title">Lähettäjä</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Lähettäjän vaihtaminen ei onnistu, koska käyttäjän osoitteiden noutaminen epäonnistui. Yritä uudelleen.</string>
   <string name="composer_change_sender_invalid_address">Valittua osoitetta ei voi käyttää lähettämiseen.</string>

@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Tulis</string>
   <string name="mailbox_fab_compose_button_content_description">Tulis pesan baru</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Keluar mode pemilihan</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cari</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Keluar dari mode pencarian</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Hapus kueri pencarian</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Masukkan kueri pencarian</string>
   <string name="filter_unread_button_text">Belum dibaca</string>
   <string name="include_spam_trash_text">Sertakan Spam/Sampah</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -43,9 +41,6 @@
   <string name="mailbox_is_empty_folder_description">Folder ini kosong</string>
   <string name="mailbox_is_empty_spam_description">Folder spam Anda kosong</string>
   <string name="mailbox_is_empty_trash_description">Sepertinya tidak ada apa-apa di sini</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">%d pesan dipindahkan ke Sampah</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">Hapus %d percakapan</item>
   </plurals>
@@ -69,7 +64,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Pengaturan warna gagal diperoleh</string>
   <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal dilangsungkan</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Folder gagal diperoleh</string>
   <string name="mailbox_action_trash_message">Pesan dipindahkan ke sampah</string>
   <string name="mailbox_action_archive_message">Pesan dipindahkan ke arsip</string>
   <string name="mailbox_action_spam_message">Pesan dipindahkan ke spam</string>
@@ -92,26 +86,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Kosongkan folder Spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam folder Sampah Anda secara permanen?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam folder Spam Anda secara permanen?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin ingin menghapus seluruh percakapan dalam folder Spam Anda secara permanen?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Tindakan pembersihan dijadwalkan"</string>
   <string name="mailbox_action_maximum_selection_reached">"Jumlah pilihan maksimum tercapai"</string>
   <string name="mailbox_talkback_readout_unread">Belum dibaca</string>
   <string name="mailbox_talkback_readout_starred">Hapus bintang</string>
   <string name="mailbox_talkback_readout_not_starred">Bintangi</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Membuka lampiran…</string>
   <string name="mailbox_attachment_download_error">Gagal membuka lampiran. Silakan coba lagi.</string>
   <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Peringatan</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Ruang penyimpanan akun Proton Anda telah lebih dari 80% penuh. Kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Ruang penyimpanan akun Proton Anda telah lebih dari 90% penuh. Kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Jangan ingatkan saya lagi</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Peringatan</string>
-  <string name="storage_quota_over_dialog_text">Ruang penyimpanan akun Proton Anda telah 100% penuh. Anda tidak akan dapat mengirim atau menerima email baru kecuali Anda menghapus beberapa email secara permanen atau meningkatkan akun untuk ruang penyimpanan yang lebih.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Pesan gagal dihapus</string>
   <string name="select_all">Pilih Semua</string>
   <string name="deselect_all">Lepas Semua Pilihan</string>
@@ -129,13 +112,4 @@
   <string name="schedule_send_tomorrow">Besok, %1$s</string>
   <string name="schedule_send_today">Hari ini, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="other">Ditunda selama %d hari</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="other">Ditunda selama %d jam</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="other">Ditunda selama %d menit</item>
-  </plurals>
 </resources>

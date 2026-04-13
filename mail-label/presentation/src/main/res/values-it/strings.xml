@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">Tutta la posta</string>
   <string name="label_title_all_scheduled">Programmata</string>
   <string name="label_title_snoozed">Posticipata</string>
-  <string name="label_title_folders">Cartelle</string>
   <string name="label_title_create_label">Crea un\'etichetta</string>
   <string name="label_title_create_folder">Crea una cartella</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta l\'elemento</string>
-  <string name="bottom_sheet_done_action">Salva</string>
   <string name="bottom_sheet_save_action">Salva</string>
   <string name="bottom_sheet_archive_action">Sposta nell\'archivio</string>
   <string name="bottom_sheet_label_as_title">Etichetta l\'elemento</string>

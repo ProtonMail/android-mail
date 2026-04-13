@@ -25,8 +25,6 @@
   <string name="account_switcher_remove_from_device">從此裝置移除</string>
   <string name="account_switcher_switch_to">切換至</string>
   <string name="manage_accounts_title">管理帳號</string>
-  <string name="manage_accounts_signed_in">已登入</string>
-  <string name="manage_accounts_signed_out">已登出</string>
   <string name="manage_accounts_add_account">新增帳號</string>
   <string name="manage_accounts_switch_to">切換至</string>
   <string name="manage_accounts_switch_to_signed_in_content_desc">Switch to a signed in account</string>

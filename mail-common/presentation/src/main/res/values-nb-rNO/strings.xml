@@ -22,9 +22,7 @@
   <string name="expiration_hours_arg">%d t</string>
   <string name="expiration_minutes_arg">%d m</string>
   <string name="retry">Prøv på nytt</string>
-  <string name="toolbar_back_content_description">Tilbake til forrige skjerm</string>
   <string name="x_error_not_logged_in">Ikke pålogget</string>
-  <string name="action_customize_toolbar">Tilpass verktøylinjen</string>
   <string name="action_customize_toolbar_description">Tilpass verktøylinjen</string>
   <string name="action_customize_toolbar_content_description">Tilpass verktøylinjen</string>
   <string name="action_reply">Svar</string>
@@ -59,7 +57,6 @@
   <string name="action_pin_description">Fest</string>
   <string name="action_unpin_description">Løsne</string>
   <string name="action_reply_content_description">Svar</string>
-  <string name="action_reply_to_content_description">Svar på %s</string>
   <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
   <string name="action_mark_read_content_description">Merk som lest</string>
@@ -91,15 +88,12 @@
   <string name="common_error_loading_actions">Feil ved henting av handlinger</string>
   <string name="yesterday">I går</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Vedlegg</string>
-  <string name="attachment_download_notification_channel_description">Varsler for nedlasting av vedlegg</string>
   <string name="email_notification_channel_name">E-poster</string>
   <string name="login_notification_channel_name">Varsler om pålogging</string>
   <string name="email_notification_channel_description">Inkommende e-postvarsler</string>
   <string name="login_notification_channel_description">Varsler om nye pålogginger</string>
   <string name="auth_badge_official">Offisiell</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app ble funnet til å håndtere denne handlingen.</string>
-  <string name="action_copied_to_clipboard">Kopiert til utklippstavlen</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
   <string name="mailbox_action_delete_dialog_button_delete">Slett</string>
   <string name="picker_dialog_cancel">Avbryt</string>

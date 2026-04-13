@@ -28,7 +28,6 @@
   <string name="quick_reply_button_content_description">Відповісти</string>
   <string name="quick_reply_all_button_content_description">Відповісти всім</string>
   <string name="more_button_content_description">Докладніше</string>
-  <string name="subject">Тема:</string>
   <string name="from">Від:</string>
   <string name="to">Кому:</string>
   <string name="cc">Копія:</string>
@@ -40,7 +39,6 @@
     <item quantity="many">%d вкладень</item>
     <item quantity="other">%d вкладень</item>
   </plurals>
-  <string name="hide_details">Сховати подробиці</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Чернетка)</string>
   <string name="error_mark_as_read_failed">Не вдалося позначити прочитаним. Повторіть спробу.</string>
@@ -48,12 +46,9 @@
   <string name="error_star_operation_failed">Не вдалося додати зірочку. Повторіть спробу.</string>
   <string name="error_unstar_operation_failed">Не вдалося вилучити зірочку. Повторіть спробу.</string>
   <string name="error_move_to_trash_failed">Не вдалося перемістити до смітника. Повторіть спробу.</string>
-  <string name="message_moved">Повідомлення переміщено</string>
   <string name="message_moved_to">Повідомлення переміщено до %s</string>
-  <string name="message_moved_to_trash">Повідомлення переміщено до смітника</string>
   <string name="message_moved_to_archive">Повідомлення переміщено до архіву</string>
   <string name="error_move_to_archive_failed">Не вдалося перемістити до архіву. Повторіть спробу.</string>
-  <string name="message_moved_to_spam">Повідомлення переміщено до спаму</string>
   <string name="error_move_to_spam_failed">Не вдалося перемістити до спаму. Повторіть спробу.</string>
   <string name="message_moved_to_selected_destination">Повідомлення переміщено до %1$s</string>
   <string name="error_move_message_failed">Не вдалося перемістити повідомлення. Повторіть спробу.</string>
@@ -69,8 +64,6 @@
   <string name="error_attachment_download_in_progress">Необхідно завершити поточне завантаження, перш ніж розпочати нове</string>
   <string name="error_get_attachment_not_enough_memory">Не вдалося отримати вкладення через брак пам\'яті</string>
   <string name="error_relabel_message_failed">Не вдалося змінити мітку повідомлення. Спробуйте ще раз</string>
-  <string name="error_relabel_conversation_failed">Не вдалося змінити мітку розмови. Спробуйте ще раз</string>
-  <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
   <string name="decryption_error">Не вдалося розшифрувати повідомлення.</string>
   <string name="detail_error_retrieving_message_body">Не вдалося отримати повідомлення</string>
   <string name="message_body_error_no_webview">Вам потрібно встановити WebView, щоб побачити вміст цього повідомлення.</string>
@@ -122,8 +115,6 @@
   <string name="message_report_phishing_dialog_message">Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.</string>
   <string name="message_report_phishing_dialog_confim_button">Підтвердити</string>
   <string name="message_report_phishing_dialog_cancel_button">Скасувати</string>
-  <string name="open_on_protoncalendar_banner_title">Відкрити у Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Захищений шифруванням календар</string>
   <string name="trashed_messages_banner">Показати видалені повідомлення у цій розмові.</string>
   <string name="non_trashed_messages_banner">Показати не видалені повідомлення у цій розмові.</string>
   <string name="recipient_me">мені</string>
@@ -188,8 +179,6 @@
   <string name="already_unsubscribed_banner_message">Ви відписалися від цього списку розсилки.</string>
   <string name="error_unsubscribe_newsletter">Не вдалося відписатися від розсилки</string>
   <string name="detail_error_loading_single_message">Не вдалося завантажити повідомлення</string>
-  <string name="error_downloading_image">Не вдалося завантажити зображення</string>
-  <string name="image_downloaded_successfully">Зображення завантажено</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Заголовки повідомлень</string>
   <string name="raw_message_data_html_title">HTML-файл повідомлення</string>

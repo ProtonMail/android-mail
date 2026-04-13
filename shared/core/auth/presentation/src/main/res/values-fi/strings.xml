@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Sulje</string>
   <string name="login_help_title">Miten voimme auttaa?</string>
   <string name="login_help_forgot_username">Unohtunut käyttäjätunnus</string>
   <string name="login_help_forgot_password">Unohtunut salasana</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Käyttäjätunnus tai sähköpostiosoite</string>
   <string name="auth_email">Sähköpostiosoite</string>
   <string name="auth_password">Salasana</string>
-  <string name="auth_username_placeholder">Käyttäjätunnus tai sähköpostiosoite</string>
-  <string name="auth_password_placeholder">Salasana</string>
   <string name="auth_login_assistive_text">Syötä Proton-sähköpostiosoitteesi tai -käyttäjätunnuksesi.</string>
   <string name="auth_account_details">Syötä Proton-tilisi tiedot.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Ongelma sisäänkirjautumisessa. Yritä uudelleen.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Ihmisvahvistus vaaidtaan.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Virheelliset kirjautumistiedot. Yritä uudelleen.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Ei tuettu kaksivaiheinen tunnistautuminen.</string>
   <string name="auth_login_general_error">Tapahtui virhe.</string>
   <string name="auth_second_factor_title">Kaksivaiheinen tunnistautuminen</string>
   <string name="auth_second_factor_subtitle">Tilillesi on määritetty useita lisävahvistustapoja. Valitse identiteettisi vahvistustapa.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Salasana ei voi olla tyhjä</string>
   <string name="auth_signup_title">Luo Proton-tilisi</string>
   <string name="auth_signup_subtitle">Yksi tili kaikille Proton-palveluille</string>
-  <string name="auth_signup_username_assistive_text">Käyttäjätunnus ei voi olla tyhjä.</string>
-  <string name="auth_signup_email_assistive_text">Sähköpostiosoite ei voi olla tyhjä.</string>
   <string name="auth_signup_next">Seuraava</string>
   <string name="auth_signup_username">Käyttäjätunnus</string>
   <string name="auth_signup_create_password">Luo salasanasi</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Ohita</string>
   <string name="auth_signup_recovery_title">Aseta palautustapa (valinnainen)</string>
   <string name="auth_signup_recovery_subtitle">Lähetämme palautusohjeet tähän sähköpostiosoitteeseen tai puhelinnumeroon mikäli menetät pääsyn tilillesi.</string>
-  <string name="auth_signup_recovery_email">Sähköposti</string>
-  <string name="auth_signup_recovery_phone">Puhelin</string>
-  <string name="auth_signup_recovery_email_hint">Palautussähköposti</string>
-  <string name="auth_signup_recovery_phone_hint">Palautunumero</string>
   <string name="auth_signup_recovery_select_country">Valitse maa</string>
   <string name="auth_signup_phone_placeholder">XXX XXX XXXX</string>
   <string name="auth_signup_skip_recovery_title">Ohitetaanko palautustapa?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Virhe noudettaessa tallennettuja avaimia.</string>
   <string name="auth_fido_reading_key_error">Virhe luettaessa suojausavainta.</string>
   <string name="auth_fido_submit_key_error">Virhe avaintietojen lähettämisessä.</string>
-  <string name="auth_fido_reading_key_progress">Luetaan suojausavainta.</string>
   <string name="auth_fido_authenticating_in_progress">Tunnistaudutaan turva-avaimella.</string>
   <string name="auth_fido_security_key">Suojausavain</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Toinen salasana</string>
   <string name="settings_password_management_change_password_note">Jotta voit vaihtaa kumman tahansa salasanasi, sinun on tiedettävä pääsalasanasi.</string>
   <string name="settings_password_management_forgot_main_password">Unohditko pääsalasanasi?</string>
-  <string name="settings_password_management_header">Vaihda salasana</string>
-  <string name="settings_password_management_cannot_change_password">Et voi vaihtaa varasalasanaasi. Ota yhteyttä ylläpitoosi.</string>
   <string name="settings_main_password_hint_current">Nykyinen pääsalasana</string>
   <string name="settings_main_password_hint_new">Uusi pääsalasana</string>
   <string name="settings_main_password_hint_new_confirm">Vahvista uusi pääsalasana</string>
   <string name="settings_second_password_hint_current_main_password">Nykyinen pääsalasana</string>
   <string name="settings_second_password_hint_new">Uusi toinen salasana</string>
   <string name="settings_second_password_hint_new_confirm">Vahvista uusi toinen salasana</string>
-  <string name="settings_change_password_error">Salasanan vaihdossa tapahtui virhe.</string>
-  <string name="settings_recovery_email_success">Palautusosoite vaihdettiin</string>
   <string name="settings_password_management_login_success">Kirjautumissalasana vaihdettiin</string>
   <string name="settings_password_management_second_success">Toinen salasana päivitetty</string>
-  <string name="settings_password_management_start_recovery">Etkö tiedä nykyistä salasanaasi?</string>
-  <string name="settings_password_management_2fa">2FA vaaditaan</string>
   <string name="settings_password_invalid_2fa">Virheellinen toisen vaiheen todennuskoodi. Yritä uudelleen.</string>
   <string name="settings_password_error_empty">Salasana ei voi olla tyhjä.</string>
   <string name="settings_password_error">Virheellinen käyttäjätunnus tai salasana. Yritä uudelleen.</string>

@@ -27,7 +27,6 @@
   <string name="padlocks_proton_send_sign_only">E-pošta, podpisana s PGP</string>
   <string name="padlocks_proton_send_sign_only_description">To e-pošto ste %s, s čimer prejemniku dokazujete, da je vaša e-pošta pristna in ni bila spremenjena brez dovoljenja.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">digitalno podpisali</string>
-  <string name="padlocks_proton_send_recipient_pgp_signed">E-pošta, podpisana s PGP</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description">To e-pošto ste %s, s čimer prejemniku dokazujete, da je vaša e-pošta pristna in ni bila spremenjena brez dovoljenja.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">digitalno podpisali</string>
   <string name="padlocks_proton_send_zero_access_encryption_disabled">Šifrirano brez dostopa</string>
@@ -58,7 +57,6 @@
   <string name="padlocks_proton_zero_access_description">Ta e-pošta je na strežnikih Proton shranjena s %s. Niti Proton niti kdor koli drug je ne more prebrati.</string>
   <string name="padlocks_proton_zero_access_description_link_text">šifriranjem na strani odjemalca</string>
   <string name="padlocks_proton_sent_e2ee_verified_recipients">Šifrirano od konca do konca za preverjene prejemnike</string>
-  <string name="padlocks_proton_sent_e2ee_verified_recipients_description">Ta e-pošta je šifrirana na napravi pošiljatelja in jo lahko dešifrira le prejemnik. Proton v nobenem trenutku ne more videti vsebine e-pošte.</string>
   <string name="padlocks_proton_sent_proton_verified_recipients">Šifrirano brez dostopa za preverjene prejemnike</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description">Ta e-pošta je na strežnikih Proton shranjena s %s. Niti Proton niti kdor koli drug je ne more prebrati.</string>
   <string name="padlocks_proton_sent_proton_verified_recipients_description_link">šifriranjem brez dostopa</string>
@@ -81,8 +79,6 @@
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">Ta e-pošta je na strežnikih Proton shranjena s %s. Niti Proton niti kdor koli drug je ne more prebrati.</string>
   <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">šifriranjem brez dostopa</string>
   <string name="padlocks_proton_sent_recipient_pgp_signed">E-pošta, podpisana s PGP</string>
-  <string name="padlocks_proton_sent_recipient_pgp_signed_description">To e-pošto ste %s, s čimer prejemniku dokazujete, da je vaša e-pošta pristna in ni bila spremenjena brez dovoljenja.</string>
-  <string name="padlocks_proton_sent_recipient_pgp_signed_description_link_text">digitalno podpisali</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">Šifrirano od konca do konca s PGP</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Ta e-pošta je na napravi pošiljatelja šifrirana od konca do konca in jo lahko dešifrira le prejemnik. Proton v nobenem trenutku ne more videti vsebine e-pošte.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">šifrirano od konca do konca</string>
@@ -90,8 +86,6 @@
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Ta e-pošta je na napravi pošiljatelja %s in jo lahko dešifrira le prejemnik. Proton v nobenem trenutku ne more videti vsebine e-pošte.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">šifrirano od konca do konca</string>
   <string name="padlocks_proton_sent_recipient_e2ee">Šifrirano od konca do konca</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_descripton">Ta e-pošta je na napravi pošiljatelja %s in jo lahko dešifrira le prejemnik. Proton v nobenem trenutku ne more videti vsebine e-pošte.</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_description_link_text">šifrirano od konca do konca</string>
   <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">E-poštna sporočila, izmenjana med uporabniki Protona, so samodejno šifrirana od konca do konca.</string>
   <string name="padlocks_non_encrypted_copy">Vendar pa ima lahko pošiljatelj ali prejemnik, ki ne uporablja storitve Proton Mail, na svojem poštnem strežniku shranjeno nešifrirano kopijo.</string>

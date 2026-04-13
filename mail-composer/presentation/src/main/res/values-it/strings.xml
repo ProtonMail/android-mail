@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">Scrivi un messaggio</string>
   <string name="close_composer_content_description">Chiudi il compositore</string>
   <string name="send_button_title">Invia</string>
-  <string name="send_message_content_description">Invia il messaggio</string>
   <string name="composer_expand_recipients_button">Mostra gli altri destinatari</string>
   <string name="composer_error_invalid_email">Indirizzo email non valido</string>
-  <string name="change_sender_button_content_description">Cambia il mittente</string>
   <string name="composer_change_sender_paid_feature">Passa a un piano a pagamento per cambiare l\'indirizzo mittente</string>
-  <string name="composer_error_store_draft_sender_address">Salvataggio del mittente della bozza non riuscito</string>
-  <string name="composer_error_store_draft_body">Salvataggio del contenuto della bozza non riuscito</string>
   <string name="composer_error_duplicate_recipient">Destinatari duplicati rimossi</string>
-  <string name="composer_error_store_draft_subject">Salvataggio dell\'oggetto della bozza non riuscito</string>
-  <string name="composer_error_store_draft_recipients">Salvataggio dei destinatari della bozza non riuscito</string>
   <string name="composer_error_store_draft_address_disabled">Salvataggio della bozza non riuscito. Indirizzo mittente attuale non attivo.</string>
   <string name="composer_error_store_draft_address_pk_missing">Salvataggio della bozza non riuscito. Chiave principale del mittente mancante.</string>
   <string name="composer_error_store_draft_attachment_too_large">Salvataggio della bozza non riuscito. Limite di dimensione degli allegati superato.</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">Carica dalla galleria</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Scatta una nuova foto</string>
   <string name="composer_error_loading_parent_message">Caricamento delle informazioni del messaggio non riuscito</string>
-  <string name="composer_original_message_quote">Messaggio originale</string>
-  <string name="composer_sender_quote">%s, %s &lt;%s&gt; ha scritto:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limite degli allegati raggiunto</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Il limite di dimensione per gli allegati è %1$s</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">Scarta</string>
   <string name="composer_button_set_expiration">Imposta una scadenza</string>
   <string name="composer_expiration_time_bottom_sheet_title">Imposta una scadenza</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Salva</string>
   <string name="composer_bottom_bar_expiration_time_none">Nessuna scadenza</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 giorni</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1 settimana</string>
   <string name="composer_bottom_bar_expiration_time_custom">Data esatta</string>
   <string name="composer_error_setting_expiration_time">Impostazione della scadenza non riuscita</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">Invio del messaggio non riuscito</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
   <string name="message_sending_error_dialog_text_error">Invio del messaggio all\'indirizzo inserito non riuscito a causa del seguente motivo:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Nessuna chiave attendibile: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Indirizzo non esistente: %s</string>
   <string name="set_message_password_title">Imposta una password</string>
   <string name="set_message_password_info_message">Imposta una password per crittografare questo messaggio per gli utenti che non usano Proton Mail</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Scopri di più</a></string>
@@ -107,18 +95,10 @@
   <string name="set_message_password_label_hint">Suggerimento per la password (opzionale)</string>
   <string name="set_message_password_supporting_text">Inserisci una password lunga almeno 8 caratteri</string>
   <string name="set_message_password_supporting_error_text">Inserisci una password compresa tra 8 e 21 caratteri</string>
-  <string name="set_message_password_supporting_text_repeat">Password confermata</string>
-  <string name="set_message_password_supporting_error_text_repeat">Conferma correttamente la password</string>
   <string name="set_message_password_button_show">Mostra la password</string>
   <string name="set_message_password_button_hide">Nascondi la password</string>
   <string name="set_message_password_button_save_changes">Salva</string>
   <string name="set_message_password_button_remove_password">Rimuovi</string>
-  <string name="respondInline">Rispondi in linea</string>
-  <string name="subject_placeholder">Oggetto</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d membro</item>
-    <item quantity="other">%d membri</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">Mostra i contatti del dispositivo</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Scarta la bozza</string>
@@ -139,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">Data e orario personalizzato</string>
   <string name="composer_schedule_send_custom_description">Scegli la data e l\'orario</string>
   <string name="composer_schedule_send_previously_set">Impostato precedentemente</string>
-  <string name="composer_schedule_send_custom_time_label">Orario</string>
-  <string name="composer_schedule_send_custom_date_label">Data</string>
-  <string name="composer_schedule_send_dialog_ok">Invia</string>
-  <string name="composer_schedule_send_dialog_enter_time">Inserisci l\'orario</string>
   <string name="composer_change_sender_title">Da</string>
   <string name="composer_error_change_sender_failed_getting_addresses">Caricamento degli indirizzi email non riuscito. Cambio dell\'indirizzo mittente non riuscito.</string>
   <string name="composer_change_sender_invalid_address">Invio con l\'indirizzo email attuale non valido</string>

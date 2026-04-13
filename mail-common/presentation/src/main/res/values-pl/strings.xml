@@ -22,9 +22,7 @@
   <string name="expiration_hours_arg">%d godz.</string>
   <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Spróbuj ponownie</string>
-  <string name="toolbar_back_content_description">Powrót do poprzedniego ekranu</string>
   <string name="x_error_not_logged_in">Niezalogowano</string>
-  <string name="action_customize_toolbar">Dostosuj pasek narzędzi</string>
   <string name="action_customize_toolbar_description">Dostosuj pasek narzędzi</string>
   <string name="action_customize_toolbar_content_description">Dostosuj pasek narzędzi</string>
   <string name="action_reply">Odpowiedz</string>
@@ -59,7 +57,6 @@
   <string name="action_pin_description">Przypnij</string>
   <string name="action_unpin_description">Odepnij</string>
   <string name="action_reply_content_description">Odpowiedz</string>
-  <string name="action_reply_to_content_description">Odpowiedz %s</string>
   <string name="action_reply_all_content_description">Odpowiedz wszystkim</string>
   <string name="action_forward_content_description">Przekaż dalej</string>
   <string name="action_mark_read_content_description">Oznacz jako przeczytane</string>
@@ -91,15 +88,12 @@
   <string name="common_error_loading_actions">Ładowanie akcji nie powiodło się</string>
   <string name="yesterday">Wczoraj</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Załączniki</string>
-  <string name="attachment_download_notification_channel_description">Powiadomienia o pobieraniu załączników</string>
   <string name="email_notification_channel_name">Wiadomości</string>
   <string name="login_notification_channel_name">Alerty logowania</string>
   <string name="email_notification_channel_description">Powiadomienia wiadomości przychodzących</string>
   <string name="login_notification_channel_description">Powiadomienia o nowych logowaniach</string>
   <string name="auth_badge_official">Oficjalna</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nie znaleziono aplikacji do obsługi tego działania</string>
-  <string name="action_copied_to_clipboard">Skopiowano do schowka</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Anuluj</string>
   <string name="mailbox_action_delete_dialog_button_delete">Usuń</string>
   <string name="picker_dialog_cancel">Anuluj</string>

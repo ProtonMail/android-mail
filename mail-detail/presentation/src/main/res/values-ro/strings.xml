@@ -27,7 +27,6 @@
   <string name="quick_reply_button_content_description">Răspuns</string>
   <string name="quick_reply_all_button_content_description">Răspuns tuturor</string>
   <string name="more_button_content_description">Mai multe</string>
-  <string name="subject">Subiect:</string>
   <string name="from">De la:</string>
   <string name="to">Către:</string>
   <string name="cc">C:</string>
@@ -38,7 +37,6 @@
     <item quantity="few">Fișiere atașate: %d</item>
     <item quantity="other">Fișiere atașate: %d</item>
   </plurals>
-  <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Ciornă)</string>
   <string name="error_mark_as_read_failed">Operația de marcare ca mesaj citit a eșuat. Reîncercați.</string>
@@ -46,12 +44,9 @@
   <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Reîncercați.</string>
   <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Reîncercați.</string>
   <string name="error_move_to_trash_failed">Mutarea în gunoi a eșuat. Reîncercați.</string>
-  <string name="message_moved">Mesajul a fost mutat.</string>
   <string name="message_moved_to">Mesajul a fost mutat în «%s».</string>
-  <string name="message_moved_to_trash">Mesajul a fost mutat în «Gunoi».</string>
   <string name="message_moved_to_archive">Mesajul a fost mutat în «Arhivă».</string>
   <string name="error_move_to_archive_failed">Mutarea în arhivă a eșuat. Reîncercați.</string>
-  <string name="message_moved_to_spam">Mesaj mutat în «Nedorite».</string>
   <string name="error_move_to_spam_failed">Mutarea în mesaje nedorite a eșuat. Reîncercați.</string>
   <string name="message_moved_to_selected_destination">Mesajul a fost mutat în «%1$s».</string>
   <string name="error_move_message_failed">Mutarea mesajului a eșuat. Reîncercați.</string>
@@ -67,8 +62,6 @@
   <string name="error_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
   <string name="error_get_attachment_not_enough_memory">Nu s-a reușit obținerea atașamentului datorită memoriei insuficiente.</string>
   <string name="error_relabel_message_failed">Nu s-a reușit reetichetarea mesajului. Reîncercați.</string>
-  <string name="error_relabel_conversation_failed">Nu s-a reușit reetichetarea mesajului. Reîncercați.</string>
-  <string name="please_go_back_online_to_load_messages">Nu aveți conexiune. Reconectați-vă pentru a se încărca mesajele.</string>
   <string name="decryption_error">Decriptarea mesajului a eșuat.</string>
   <string name="detail_error_retrieving_message_body">Nu s-a putut prelua mesajul.</string>
   <string name="message_body_error_no_webview">Trebuie să aveți instalat WebView pentru a vedea conținutul acestui mesaj.</string>
@@ -120,8 +113,6 @@
   <string name="message_report_phishing_dialog_message">Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și a îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmare</string>
   <string name="message_report_phishing_dialog_cancel_button">Anulare</string>
-  <string name="open_on_protoncalendar_banner_title">Deschidere în Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Calendar securizat și criptat</string>
   <string name="trashed_messages_banner">Afișare mesaje șterse în această conversație.</string>
   <string name="non_trashed_messages_banner">Afișare mesaje neșterse în această conversație.</string>
   <string name="recipient_me">eu</string>
@@ -185,8 +176,6 @@
   <string name="already_unsubscribed_banner_message">V-ați dezabonat de la această listă de corespondență.</string>
   <string name="error_unsubscribe_newsletter">Nu s-a putut dezabona de la buletinul informativ.</string>
   <string name="detail_error_loading_single_message">Încărcarea mesajului a eșuat.</string>
-  <string name="error_downloading_image">Eșuare descărcare imagine</string>
-  <string name="image_downloaded_successfully">Imagine descărcată</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Antete mesaj</string>
   <string name="raw_message_data_html_title">Mesaj HTML</string>

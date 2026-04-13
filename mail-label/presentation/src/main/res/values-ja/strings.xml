@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">すべてのメール</string>
   <string name="label_title_all_scheduled">スケジュール済み</string>
   <string name="label_title_snoozed">スヌーズ</string>
-  <string name="label_title_folders">フォルダー</string>
   <string name="label_title_create_label">ラベルを作成</string>
   <string name="label_title_create_folder">フォルダーを作成</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移動…</string>
-  <string name="bottom_sheet_done_action">完了</string>
   <string name="bottom_sheet_save_action">保存</string>
   <string name="bottom_sheet_archive_action">同時にアーカイブしますか？</string>
   <string name="bottom_sheet_label_as_title">ラベル付け</string>

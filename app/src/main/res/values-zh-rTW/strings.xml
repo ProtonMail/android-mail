@@ -35,13 +35,8 @@
   <string name="mailbox_message_sending">傳送郵件訊息...</string>
   <string name="mailbox_message_sending_offline">未連線：郵件佇列等候傳送</string>
   <string name="mailbox_message_sending_success">郵件已傳送</string>
-  <string name="mailbox_message_sending_error">傳送郵件時發生錯誤</string>
   <string name="mailbox_message_sending_error_action">Go to Draft</string>
   <string name="notification_switched_account">已切換至帳號 %s</string>
-  <string name="label_saved">已儲存標籤</string>
-  <string name="label_deleted">已刪除標籤</string>
-  <string name="app_locked">應用程式已鎖定</string>
-  <string name="use_pin_instead">改為使用 PIN 碼</string>
   <string name="mailbox_message_scheduling">正在排程訊息…</string>
   <string name="mailbox_message_scheduling_offline">離線：訊息已排入佇列以供排程</string>
   <string name="mailbox_message_scheduled_for_sending_success">此郵件將在 %1$s 時送出</string>

@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">У вихідні</string>
   <string name="snooze_sheet_option_custom">Власний</string>
   <string name="snooze_sheet_option_custom_detail">Виберіть дату й час</string>
-  <string name="snooze_sheet_option_upsell_detail">Платна функція</string>
   <string name="snooze_sheet_snooze_title">Відкласти до</string>
   <string name="snooze_sheet_option_unsnooze">Скасувати відкладення</string>
   <string name="snooze_sheet_error_unable_to_snooze">Вибачте, сталася невідома помилка під час відкладення цієї розмови.</string>

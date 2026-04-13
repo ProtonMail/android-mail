@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">작성</string>
   <string name="mailbox_fab_compose_button_content_description">새 메시지 작성하기</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">선택 모드 나가기</string>
   <string name="mailbox_toolbar_menu_button_content_description">메뉴</string>
   <string name="mailbox_toolbar_search_button_content_description">검색</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">검색 모드 나가기</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">검색 쿼리 삭제</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">검색 쿼리 입력</string>
   <string name="filter_unread_button_text">읽지 않음</string>
   <string name="include_spam_trash_text">스팸 및 휴지통 포함</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -43,9 +41,6 @@
   <string name="mailbox_is_empty_folder_description">폴더가 비어있음</string>
   <string name="mailbox_is_empty_spam_description">스팸 폴더가 비어있음</string>
   <string name="mailbox_is_empty_trash_description">이곳은 비어 있는 것 같네요</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">%d개 메시지가 휴지통으로 이동됨</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">%d개의 대화 삭제</item>
   </plurals>
@@ -69,7 +64,6 @@
   <string name="mailbox_action_failed_retrieving_colors">색상 설정 불러오기를 실패했습니다.</string>
   <string name="mailbox_action_no_sender_addresses">발신 권한이 있는 주소가 없음</string>
   <string name="mailbox_action_move_messages_failed">이동 작업에 실패했습니다</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 불러오기에 실패했습니다</string>
   <string name="mailbox_action_trash_message">메시지가 휴지통으로 이동되었습니다</string>
   <string name="mailbox_action_archive_message">메시지가 보관함으로 이동되었습니다</string>
   <string name="mailbox_action_spam_message">메시지가 스팸함으로 이동되었습니다</string>
@@ -92,26 +86,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">스팸 폴더 비우기</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">휴지통 내에 있는 모든 메시지를 완전히 삭제하시겠어요?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">스팸함 내에 있는 모든 메시지를 완전히 삭제하시겠어요?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">스팸함 내에 있는 모든 대화를 완전히 삭제하시겠어요?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"삭제 작업이 예약되어 있습니다."</string>
   <string name="mailbox_action_maximum_selection_reached">"최대 선택 개수 도달"</string>
   <string name="mailbox_talkback_readout_unread">읽지 않음</string>
   <string name="mailbox_talkback_readout_starred">별표 삭제</string>
   <string name="mailbox_talkback_readout_not_starred">별표</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">첨부 파일 여는 중…</string>
   <string name="mailbox_attachment_download_error">첨부 파일을 열 수 없습니다. 나중에 다시 시도하세요.</string>
   <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">경고</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">사용자의 Proton 계정 저장 공간이 80% 이상 찼습니다. 공간을 비우거나 더 많은 저장 공간을 사용하기 위해 업그레이드 하세요.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">사용자의 Proton 계정 저장 공간이 90% 이상 찼습니다. 공간을 비우거나 더 많은 저장 공간을 사용하기 위해 업그레이드 하세요.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">다시 보지 않기</string>
-  <string name="storage_limit_warning_dialog_confirm_button">확인</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">경고</string>
-  <string name="storage_quota_over_dialog_text">사용자의 Proton 계정 저장 공간이 100% 가득 찼습니다. 몇 개의 필요 없는 이메일을 지우거나 스토리지 확장을 위해 업그레이드 하기 전 까진 이메일 수발신이 불가합니다.</string>
-  <string name="storage_quota_over_dialog_confirm_button">확인</string>
   <string name="mailbox_action_delete_failed">메시지 삭제 실패</string>
   <string name="select_all">전체 선택</string>
   <string name="deselect_all">모두 선택 해제</string>
@@ -129,13 +112,4 @@
   <string name="schedule_send_tomorrow">내일, %1$s</string>
   <string name="schedule_send_today">오늘, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="other">%d일 이후 다시 알림 설정됨</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="other">%d시간 이후 다시 알림 설정됨</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="other">%d분 이후 다시 알림 설정됨</item>
-  </plurals>
 </resources>

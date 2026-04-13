@@ -29,22 +29,4 @@
   <string name="spotlight_feature_item_headers_html_description">Skontrolujte podozrivé správy, aby ste overili ich pravosť a odhalili skryté sledovacie prvky.</string>
   <string name="spotlight_screen_got_it">Rozumiem</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">Zistite, čo je nové v Proton Mail</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_title">Vylepšenia používateľského rozhrania</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Plynulé skrolovanie, nový dizajn a ďalšie vylepšenia.</string>
-  <string name="spotlight_screen_category_view_unread_filter_title">Filter neprečítaných správ</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nový vzhľad a nové umiestnenie pre ľahší prístup.</string>
-  <string name="spotlight_screen_category_view_categories_title">Kategórie emailov</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatické triedenie prichádzajúcej pošty.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Pozrite sa, čo je nové.\nPreskočiť zvyšok.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Sústreďte sa na neprečítané správy. Alebo aj nie. Stačí jedno jednoduché ťuknutie a môžete prepínať medzi všetkými emailmi a len tými neprečítanými.</string>
-  <string name="spotlight_screen_category_view_main_b2b_title">Majte prehľad o nových a neprečítaných emailoch</string>
-  <string name="spotlight_screen_category_view_main_b2b_subtitle">Filter neprečítaných správ je teraz lepšie viditeľný a máte ho na dosah ruky, vďaka čomu môžete rýchlo prehliadať neprečítané emaily a reagovať na ne.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Privítajte svoju prehľadnejšiu doručenú poštu</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Vďaka novým kategóriám emailov sa do vašej hlavnej doručenej pošty dostanú len dôležité a naliehavé správy. Všetko ostatné je roztriedené do kategórií.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_title">Ahoj, kategórie.\nZbohom, rozptyľovanie.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Nenechajte sa už rozptyľovať newslettermi, aktualizáciami a nepodstatnými emailmi. Vďaka novým kategóriám emailov sa do vašej hlavnej doručenej pošty dostanú len dôležité správy.</string>
-  <string name="spotlight_screen_category_view_button_continue">Ahoj, kategórie.\nZbohom, rozptyľovanie.</string>
-  <string name="spotlight_screen_category_view_button_try">Vyskúšajte kategórie</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Pokračovať bez kategórií</string>
 </resources>

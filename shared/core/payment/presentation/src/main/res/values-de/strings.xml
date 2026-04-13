@@ -32,7 +32,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung für %1$s/Monat</string>
   <string name="payment_bf_renew_annually">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung für %1$s/Jahr</string>
-  <string name="payment_bf_renew_biennially">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung für %1$s aller 2 Jahre</string>
   <string name="payment_welcome_offer_renew_monthly">Willkommensangebot. Verlängert sich automatisch für %1$s/Monat</string>
   <string name="payment_welcome_offer_renew_annually">Willkommensangebot. Verlängert sich automatisch für %1$s/Jahr</string>
   <string name="payment_welcome_offer_renew_biennially">Willkommensangebot. Verlängert sich automatisch für %1$s/2 Jahre</string>

@@ -32,7 +32,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">A kedvezmények az alap havi díjszabáson alapulnak. Automatikusan megújul %1$s/hó áron.</string>
   <string name="payment_bf_renew_annually">A kedvezmények az alap havi díjszabáson alapulnak. Automatikusan megújul %1$s/év áron.</string>
-  <string name="payment_bf_renew_biennially">A kedvezmények az alap havi díjszabáson alapulnak. 2 évente automatikusan megújul %1$s áron.</string>
   <string name="payment_welcome_offer_renew_monthly">Üdvözlő ajánlat. Automatikusan megújul %1$s/hónap áron.</string>
   <string name="payment_welcome_offer_renew_annually">Üdvözlő ajánlat. Automatikusan megújul %1$s/év áron</string>
   <string name="payment_welcome_offer_renew_biennially">Üdvözlő ajánlat. Automatikusan megújul %1$s / 2 év áron</string>

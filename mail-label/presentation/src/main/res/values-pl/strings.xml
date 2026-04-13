@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">Wszystkie wiadomości</string>
   <string name="label_title_all_scheduled">Zaplanowane</string>
   <string name="label_title_snoozed">Odłożone</string>
-  <string name="label_title_folders">Foldery</string>
   <string name="label_title_create_label">Utwórz etykietę</string>
   <string name="label_title_create_folder">Utwórz folder</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Przenieś do…</string>
-  <string name="bottom_sheet_done_action">Gotowe</string>
   <string name="bottom_sheet_save_action">Zapisz</string>
   <string name="bottom_sheet_archive_action">Również archiwizuj?</string>
   <string name="bottom_sheet_label_as_title">Oznacz jako</string>

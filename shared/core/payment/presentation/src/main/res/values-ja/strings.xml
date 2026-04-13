@@ -31,7 +31,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">割引は標準月額料金に基づいています。月額%1$sにて自動更新されます。</string>
   <string name="payment_bf_renew_annually">割引は標準月額料金に基づいています。年額%1$sにて自動更新されます。</string>
-  <string name="payment_bf_renew_biennially">割引は標準月額料金に基づいています。%1$sにて2年ごとに自動更新されます。</string>
   <string name="payment_welcome_offer_renew_monthly">歓迎オファー。%1$s/月で自動更新</string>
   <string name="payment_welcome_offer_renew_annually">歓迎オファー。%1$s/年で自動更新</string>
   <string name="payment_welcome_offer_renew_biennially">歓迎オファー。%1$s/毎 2 年で自動更新</string>

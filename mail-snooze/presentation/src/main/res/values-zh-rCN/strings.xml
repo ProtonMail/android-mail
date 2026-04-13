@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">本周末</string>
   <string name="snooze_sheet_option_custom">自定义</string>
   <string name="snooze_sheet_option_custom_detail">请选择日期与时间</string>
-  <string name="snooze_sheet_option_upsell_detail">收费功能</string>
   <string name="snooze_sheet_snooze_title">待办至</string>
   <string name="snooze_sheet_option_unsnooze">取消延迟通知</string>
   <string name="snooze_sheet_error_unable_to_snooze">抱歉，我们在延后会话时遇到了一个未知错误。</string>

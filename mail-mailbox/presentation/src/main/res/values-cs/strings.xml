@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Nová zpráva</string>
   <string name="mailbox_fab_compose_button_content_description">Napsat novou zprávu</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončit režim výběru</string>
   <string name="mailbox_toolbar_menu_button_content_description">Nabídka</string>
   <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Ukončit režim vyhledávání</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vyčistit vyhledávací dotaz</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadejte vyhledávací dotaz</string>
   <string name="filter_unread_button_text">Nepřečtené</string>
   <string name="include_spam_trash_text">Zahrnout spam/koš</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -46,12 +44,6 @@
   <string name="mailbox_is_empty_folder_description">Tato složka je prázdná</string>
   <string name="mailbox_is_empty_spam_description">Vaše složka spamu je prázdná</string>
   <string name="mailbox_is_empty_trash_description">Vypadá to tu prázdně</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Zpráva přesunuta do koše</item>
-    <item quantity="few">%d zprávy přesunuty do koše</item>
-    <item quantity="many">%d zpráv přesunuto do koše</item>
-    <item quantity="other">%d zpráv přesunuto do koše</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Smazat konverzaci</item>
     <item quantity="few">Smazat %d konverzace</item>
@@ -93,7 +85,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodařilo se získat nastavení barev</string>
   <string name="mailbox_action_no_sender_addresses">Žádná adresa s oprávněním odesílat</string>
   <string name="mailbox_action_move_messages_failed">Operace přesunu se nezdařila</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodařilo se získat složky</string>
   <string name="mailbox_action_trash_message">Zpráva přesunuta do koše</string>
   <string name="mailbox_action_archive_message">Zpráva přesunuta do archivu</string>
   <string name="mailbox_action_spam_message">Zpráva přesunuta do spamu</string>
@@ -122,26 +113,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Vyprázdnit složku spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Opravdu chcete trvale smazat všechny zprávy v koši?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Opravdu chcete trvale smazat všechny zprávy ve spamu?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Opravdu chcete trvale smazat všechny konverzace ve spamu?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Operace vyčištění je naplánována"</string>
   <string name="mailbox_action_maximum_selection_reached">"Dosažen maximální výběr"</string>
   <string name="mailbox_talkback_readout_unread">Nepřečtené</string>
   <string name="mailbox_talkback_readout_starred">Odebrat hvězdičku</string>
   <string name="mailbox_talkback_readout_not_starred">Označit hvězdičkou</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Otevírání přílohy…</string>
   <string name="mailbox_attachment_download_error">Nelze otevřít přílohu. Zkuste to prosím znovu.</string>
   <string name="mailbox_attachment_download_in_progress">Před zahájením nového stahování je třeba dokončit stávající stahování.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Varování</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 80 %. Uvolněte místo nebo navyšte na tarif s větším úložištěm.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 90 %. Uvolněte místo nebo navyšte na tarif s větším úložištěm.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Znovu nepřípomínat</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Varování</string>
-  <string name="storage_quota_over_dialog_text">Úložiště vašeho účtu Proton je na 100 % zaplněno. Nebudete moci odesílat ani přijímat e-maily, dokud trvale nesmažete některé e-maily nebo neprovedete navýšení na tarif s větším úložištěm.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Smazání zprávy selhalo</string>
   <string name="select_all">Vybrat vše</string>
   <string name="deselect_all">Zrušit výběr všeho</string>
@@ -168,22 +148,4 @@
   <string name="schedule_send_tomorrow">Zítra, %1$s</string>
   <string name="schedule_send_today">Dnes, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Odloženo do zítřka</item>
-    <item quantity="few">Odloženo na %d dny</item>
-    <item quantity="many">Odloženo na %d dnů</item>
-    <item quantity="other">Odloženo na %d dnů</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Odloženo na %d hodinu</item>
-    <item quantity="few">Odloženo na %d hodiny</item>
-    <item quantity="many">Odloženo na %d hodin</item>
-    <item quantity="other">Odloženo na %d hodin</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Odloženo na %d minutu</item>
-    <item quantity="few">Odloženo na %d minuty</item>
-    <item quantity="many">Odloženo na %d minut</item>
-    <item quantity="other">Odloženo na %d minut</item>
-  </plurals>
 </resources>

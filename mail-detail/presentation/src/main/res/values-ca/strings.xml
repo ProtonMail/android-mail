@@ -26,7 +26,6 @@
   <string name="quick_reply_button_content_description">Respon</string>
   <string name="quick_reply_all_button_content_description">Respon a tothom</string>
   <string name="more_button_content_description">Més</string>
-  <string name="subject">Assumpte:</string>
   <string name="from">De:</string>
   <string name="to">Per a:</string>
   <string name="cc">CC:</string>
@@ -36,7 +35,6 @@
     <item quantity="one">%d adjunt</item>
     <item quantity="other">%d adjunts</item>
   </plurals>
-  <string name="hide_details">Amaga els detalls</string>
   <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(Esborrany)</string>
   <string name="error_mark_as_read_failed">No s\'ha pogut marcar com a llegit. Torneu-ho a provar.</string>
@@ -44,12 +42,9 @@
   <string name="error_star_operation_failed">No s\'ha pogut destacar. Torneu-ho a provar.</string>
   <string name="error_unstar_operation_failed">No s\'ha pogut esborrar dels destacats. Torneu-ho a provar.</string>
   <string name="error_move_to_trash_failed">No s\'ha pogut moure el missatge a la paperera. Proveu de nou.</string>
-  <string name="message_moved">S’ha mogut el missatge.</string>
   <string name="message_moved_to">S\'ha mogut el missatge a %s.</string>
-  <string name="message_moved_to_trash">El missatge s\'ha mogut a la paperera.</string>
   <string name="message_moved_to_archive">El missatge s\'ha mogut a l\'arxiu.</string>
   <string name="error_move_to_archive_failed">No s\'ha pogut moure a l\'arxiu. Proveu de nou.</string>
-  <string name="message_moved_to_spam">S\'ha mogut el missatge al correu brossa.</string>
   <string name="error_move_to_spam_failed">No s\'ha pogut moure a correu brossa. Torneu-ho a provar.</string>
   <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s.</string>
   <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Proveu de nou.</string>
@@ -65,8 +60,6 @@
   <string name="error_attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
   <string name="error_get_attachment_not_enough_memory">No s\'ha pogut obtenir l\'adjunt a causa de memòria insuficient</string>
   <string name="error_relabel_message_failed">No s\'ha pogut tornar a etiquetar el missatge. Torneu-ho a provar</string>
-  <string name="error_relabel_conversation_failed">No s\'ha pogut tornar a etiquetar la conversa. Torneu-ho a provar</string>
-  <string name="please_go_back_online_to_load_messages">Esteu fora de línia. Torneu a connectar-vos per carregar els missatges</string>
   <string name="decryption_error">No s\'ha pogut desxifrar el missatge.</string>
   <string name="detail_error_retrieving_message_body">No s\'ha pogut recuperar el missatge</string>
   <string name="message_body_error_no_webview">Cal que tingueu WebView instal·lat per a veure el contingut d\'aquest missatge.</string>
@@ -118,8 +111,6 @@
   <string name="message_report_phishing_dialog_message">Informar d\'un missatge com a intent de pesca ens l\'enviarà a nosaltres per a poder analitzar-lo i millorar els nostres filtres. Això significa que podrem veure el contingut complet del missatge.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirma</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancel·la</string>
-  <string name="open_on_protoncalendar_banner_title">Obre a Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Calendari segur xifrat</string>
   <string name="trashed_messages_banner">Mostra els missatges esborrats en aquesta conversa.</string>
   <string name="non_trashed_messages_banner">Mostra els missatges no esborrats en aquesta conversa.</string>
   <string name="recipient_me">jo</string>
@@ -182,8 +173,6 @@
   <string name="already_unsubscribed_banner_message">Us heu donat de baixa d\'aquesta llista de correu.</string>
   <string name="error_unsubscribe_newsletter">No s\'ha pogut cancel·lar la subscripció al butlletí</string>
   <string name="detail_error_loading_single_message">No s\'ha pogut carregar el missatge</string>
-  <string name="error_downloading_image">No s\'ha pogut descarregar la imatge</string>
-  <string name="image_downloaded_successfully">S\'ha descarregat la imatge</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Capçaleres del missatge</string>
   <string name="raw_message_data_html_title">HTML del missatge</string>

@@ -26,7 +26,6 @@
   <string name="quick_reply_button_content_description">Vastaa</string>
   <string name="quick_reply_all_button_content_description">Vastaa kaikille</string>
   <string name="more_button_content_description">Lisää</string>
-  <string name="subject">Aihe:</string>
   <string name="from">Lähettäjä:</string>
   <string name="to">Vastaanottaja:</string>
   <string name="cc">Kopio:</string>
@@ -36,7 +35,6 @@
     <item quantity="one">%d Liite</item>
     <item quantity="other">%d Liitettä</item>
   </plurals>
-  <string name="hide_details">Piilota tiedot</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Luonnos)</string>
   <string name="error_mark_as_read_failed">Lukemattomaksi merkitseminen epäonnistui. Yritä uudelleen.</string>
@@ -44,12 +42,9 @@
   <string name="error_star_operation_failed">Merkintä tähdellä epäonnistui. Yritä uudelleen.</string>
   <string name="error_unstar_operation_failed">Tähtimerkinnän poisto epäonnistui. Yritä uudelleen.</string>
   <string name="error_move_to_trash_failed">Siirto roskakoriin epäonnistui. Yritä uudelleen.</string>
-  <string name="message_moved">Viesti siirrettiin</string>
   <string name="message_moved_to">Viesti siirrettiin kohteeseen %s</string>
-  <string name="message_moved_to_trash">Viesti siirrettiin roskakoriin</string>
   <string name="message_moved_to_archive">Viesti siirrettiin arkistoon</string>
   <string name="error_move_to_archive_failed">Siirto arkistoon epäonnistui. Yritä uudelleen.</string>
-  <string name="message_moved_to_spam">Viesti siirretiin roskapostiin</string>
   <string name="error_move_to_spam_failed">Siirto roskapostiin epäonnistui. Yritä uudelleen.</string>
   <string name="message_moved_to_selected_destination">Viesti siirrettiin kohteeseen %1$s</string>
   <string name="error_move_message_failed">Viestin siirto epäonnistui. Yritä uudelleen.</string>
@@ -65,8 +60,6 @@
   <string name="error_attachment_download_in_progress">Nykyisen latauksen on valmistuttava ennen uuden aloitusta.</string>
   <string name="error_get_attachment_not_enough_memory">Liitetiedostoa ei voitu ladata riittämättömän tallennustilan vuoksi</string>
   <string name="error_relabel_message_failed">Viestin tunnistemuutos ei onnistunut. Yritä uudelleen</string>
-  <string name="error_relabel_conversation_failed">Keskustelun tunnistemuutos ei onnistunut. Yritä uudelleen</string>
-  <string name="please_go_back_online_to_load_messages">Ei yhteyttä. Palauta yhteys viestien lataamiseksi.</string>
   <string name="decryption_error">Viestin salauksen purku epäonnistui.</string>
   <string name="detail_error_retrieving_message_body">Viestin nouto epäonnistui</string>
   <string name="message_body_error_no_webview">Viestin sisällön esitys edellyttää, että WebView on asennettu laitteeseen.</string>
@@ -118,8 +111,6 @@
   <string name="message_report_phishing_dialog_message">Viestin raportointi tietokalasteluyritykseksi lähettää sen meille, jotta voimme analysoida sen ja parantaa suodattimiamme. Huomioi, että näemme lähettämäsi viestin sisällön.</string>
   <string name="message_report_phishing_dialog_confim_button">Vahvista</string>
   <string name="message_report_phishing_dialog_cancel_button">Peru</string>
-  <string name="open_on_protoncalendar_banner_title">Avaa Proton Calendarissa</string>
-  <string name="open_on_protoncalendar_banner_description">Turvallinen salattu kalenteri</string>
   <string name="trashed_messages_banner">Näytä tämän keskustelun roskakoriin siirretyt viestit.</string>
   <string name="non_trashed_messages_banner">Näytä keskustelun ei roskakorissa olevat viestit.</string>
   <string name="recipient_me">minä</string>
@@ -182,8 +173,6 @@
   <string name="already_unsubscribed_banner_message">Tilauksesi on poistettu tältä postituslistalta.</string>
   <string name="error_unsubscribe_newsletter">Uutiskirjeen tilauksen peruutus epäonnistui.</string>
   <string name="detail_error_loading_single_message">Viestin lataus epäonnistui</string>
-  <string name="error_downloading_image">Kuvan lataus epäonnistui</string>
-  <string name="image_downloaded_successfully">Kuva ladattiin</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Viestin otsakkeet</string>
   <string name="raw_message_data_html_title">Viestin HTML</string>

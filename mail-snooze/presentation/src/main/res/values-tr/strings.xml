@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Bu hafta sonu</string>
   <string name="snooze_sheet_option_custom">Özel</string>
   <string name="snooze_sheet_option_custom_detail">Tarih ve saat seçin</string>
-  <string name="snooze_sheet_option_upsell_detail">Ücretli özellik</string>
   <string name="snooze_sheet_snooze_title">Şu zamana ertele</string>
   <string name="snooze_sheet_option_unsnooze">Ertelemeyi kaldır</string>
   <string name="snooze_sheet_error_unable_to_snooze">Ne yazık ki, bu yazışma ertelenirken bilinmeyen bir sorun çıktı.</string>

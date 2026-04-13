@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">levélírás</string>
   <string name="mailbox_fab_compose_button_content_description">Új üzenet</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Kiválasztás módból kilépés</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Kilépés keresés módból</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Kereső kifejezés törlése</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Kereső kifejezés</string>
   <string name="filter_unread_button_text">Olvasatlan</string>
   <string name="include_spam_trash_text">A levélszemétből és lomtárból is</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -44,10 +42,6 @@
   <string name="mailbox_is_empty_folder_description">Ez a mappa üres</string>
   <string name="mailbox_is_empty_spam_description">A kéretlen üzenetek mappája üres</string>
   <string name="mailbox_is_empty_trash_description">Ez üresnek tűnik</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Üzenet áthelyezve a lomtárba</item>
-    <item quantity="other">%d üzenet áthelyezve a lomtárba</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Beszélgetés törlése</item>
     <item quantity="other">%d beszélgetés törlése</item>
@@ -77,7 +71,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nem sikerült betölteni a szín beállításokat</string>
   <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
   <string name="mailbox_action_move_messages_failed">Áthelyezés művelet sikertelen</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Nem sikerült betölteni a mappákat</string>
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
   <string name="mailbox_action_spam_message">Üzenet áthelyezve a levélszemétbe</string>
@@ -102,26 +95,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Levélszemét mappa ürítése</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Biztos, hogy örökre törölni akarja az összes üzenetet a Lomtárban?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Biztos, hogy örökre törölni akarja az összes üzenetet a Levélszemét mappában?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Biztosan szeretné véglegesen törölni minden beszélgetést a Levélszemét mappában?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Ürítési művelet ütemezve"</string>
   <string name="mailbox_action_maximum_selection_reached">"Maximális kijelölés elérve"</string>
   <string name="mailbox_talkback_readout_unread">Unread</string>
   <string name="mailbox_talkback_readout_starred">Unstar</string>
   <string name="mailbox_talkback_readout_not_starred">Star</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Melléklet megnyitása…</string>
   <string name="mailbox_attachment_download_error">Nem sikerült megnyitni a mellékletet. Próbálja meg újra.</string>
   <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Figyelmeztetés</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">A Proton fiók tárhelye már több mint 80%-ban foglalt. Szabadítson fel helyet, vagy váltson nagyobb csomagra több tárhelyhez.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">A Proton fiók tárhelye már több mint 90%-ban foglalt. Szabadítson fel helyet, vagy váltson nagyobb csomagra több tárhelyhez.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Ne emlékeztessen újra</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Figyelmeztetés</string>
-  <string name="storage_quota_over_dialog_text">A Proton fiók tárhelye 100%-ban megtelt. Nem fog tudni további üzeneteket küldeni és fogadni, hacsak nem véglegesen töröl néhány e-mailt, vagy nagyobb csomagra vált.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Nem sikerült törölni az üzenetet</string>
   <string name="select_all">Összes kiválasztása</string>
   <string name="deselect_all">Összes kijelölés megszüntetése</string>
@@ -142,16 +124,4 @@
   <string name="schedule_send_tomorrow">Holnap, %1$s</string>
   <string name="schedule_send_today">Ma, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Holnapig halasztva</item>
-    <item quantity="other">Halasztva %d napra</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Halasztva %d órára</item>
-    <item quantity="other">Halasztva %d órára</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Halasztva %d percre</item>
-    <item quantity="other">Halasztva %d percre</item>
-  </plurals>
 </resources>

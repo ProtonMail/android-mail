@@ -29,10 +29,6 @@
     <item quantity="one">%1$d jäsen</item>
     <item quantity="other">%1$d jäsentä</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Jäsen (%1$d)</item>
-    <item quantity="other">Jäsenet (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Etsi yhteystiedoista</string>
   <string name="contact_search_no_results">Tuloksia ei löytynyt.</string>
   <string name="contact_search_placeholder">Etsi yhteystietoa tai ryhmää</string>
@@ -67,8 +63,6 @@
   <string name="contact_type_voice">Ääni</string>
   <string name="contact_property_birthday">Syntymäpäivä</string>
   <string name="contact_property_note">Muistiinpano</string>
-  <string name="contact_property_photo">Kuva</string>
-  <string name="contact_property_logo">Logo</string>
   <string name="contact_property_organization">Organisaatio</string>
   <string name="contact_property_anniversary">Merkkipäivä</string>
   <string name="contact_property_title">Nimike</string>

@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Назад</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Блокировка приложения</string>
   <string name="mail_pinlock_settings_no_lock">Не блокировать</string>
@@ -64,12 +63,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Да</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Нет</string>
   <string name="mail_settings_pin_insertion_created_success">PIN-код создан</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN-код изменён</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Слишком много неверных попыток</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Неверный PIN</string>
   <string name="mail_settings_biometrics_unable_to_set">Произошла ошибка при установке биометрических настроек.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Произошла ошибка при сбросе биометрических настроек.</string>
   <string name="mail_settings_biometrics_unknown_lock">Произошла ошибка при получении текущей политики блокировки.</string>

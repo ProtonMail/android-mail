@@ -28,7 +28,6 @@
   <string name="quick_reply_button_content_description">Odgovori</string>
   <string name="quick_reply_all_button_content_description">Odgovori vsem</string>
   <string name="more_button_content_description">Več</string>
-  <string name="subject">Zadeva:</string>
   <string name="from">Od:</string>
   <string name="to">Za:</string>
   <string name="cc">Kp:</string>
@@ -40,7 +39,6 @@
     <item quantity="few">%d Priponke</item>
     <item quantity="other">%d Priponk</item>
   </plurals>
-  <string name="hide_details">Skrij podrobnosti</string>
   <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(osnutek)</string>
   <string name="error_mark_as_read_failed">Označevanje kot prebrano ni uspelo. Poskusite znova.</string>
@@ -48,12 +46,9 @@
   <string name="error_star_operation_failed">Označevanje z zvezdico ni uspelo. Poskusite znova.</string>
   <string name="error_unstar_operation_failed">Odstranjevanje zvezdice ni uspelo. Poskusite znova.</string>
   <string name="error_move_to_trash_failed">Premikanje v smeti ni uspelo. Poskusite znova.</string>
-  <string name="message_moved">Sporočilo premaknjeno</string>
   <string name="message_moved_to">Sporočilo je premaknjeno v mapo %s</string>
-  <string name="message_moved_to_trash">Sporočilo je premaknjeno v smetnjak</string>
   <string name="message_moved_to_archive">Sporočilo je premaknjeno v arhiv</string>
   <string name="error_move_to_archive_failed">Premikanje v arhiv ni uspelo. Poskusite znova.</string>
-  <string name="message_moved_to_spam">Sporočilo premaknjeno v neželeno pošto.</string>
   <string name="error_move_to_spam_failed">Premikanje v neželeno pošto ni uspelo. Poskusite znova.</string>
   <string name="message_moved_to_selected_destination">Sporočilo je premaknjeno v mapo %1$s</string>
   <string name="error_move_message_failed">Premikanje sporočila ni uspelo. Poskusite znova.</string>
@@ -69,8 +64,6 @@
   <string name="error_attachment_download_in_progress">Trenutni prenos se mora dokončati, preden se lahko začne naslednji.</string>
   <string name="error_get_attachment_not_enough_memory">Priponke ni bilo mogoče prenesti zaradi nezadostne količine pomnilnika</string>
   <string name="error_relabel_message_failed">Napaka pri spreminjanju kategorije. Poskusite znova</string>
-  <string name="error_relabel_conversation_failed">Napaka pri spreminjanju pogovora. Poskusite znova</string>
-  <string name="please_go_back_online_to_load_messages">Nimate povezave. Za prenos sporočil se povežite v splet</string>
   <string name="decryption_error">Dešifriranje sporočila ni uspelo.</string>
   <string name="detail_error_retrieving_message_body">Sporočila ni mogoče prenesti</string>
   <string name="message_body_error_no_webview">Za ogled vsebine tega sporočila morate imeti nameščen WebView.</string>
@@ -122,8 +115,6 @@
   <string name="message_report_phishing_dialog_message">S prijavo lažnega predstavljanja nam boste poslali sporočilo v analizo, s katero bomo izboljšali svoje filtre. To pomeni, da nam bo vsebina sporočila v celoti vidna.</string>
   <string name="message_report_phishing_dialog_confim_button">Potrdi</string>
   <string name="message_report_phishing_dialog_cancel_button">Prekliči</string>
-  <string name="open_on_protoncalendar_banner_title">Odpri v Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Varen šifriran koledar</string>
   <string name="trashed_messages_banner">Pokaži sporočila, ki so v smetnjaku, v tem pogovoru.</string>
   <string name="non_trashed_messages_banner">Pokaži sporočila, ki niso v smetnjaku, v tem pogovoru.</string>
   <string name="recipient_me">jaz</string>
@@ -188,8 +179,6 @@
   <string name="already_unsubscribed_banner_message">Odjavili ste se s tega e-poštnega seznama.</string>
   <string name="error_unsubscribe_newsletter">Odjava od glasila ni uspela.</string>
   <string name="detail_error_loading_single_message">Nalaganje sporočila ni uspelo</string>
-  <string name="error_downloading_image">Prenos slike ni uspel</string>
-  <string name="image_downloaded_successfully">Slika prenesena</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Glave sporočil</string>
   <string name="raw_message_data_html_title">HTML sporočila</string>

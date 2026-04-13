@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Scrivi</string>
   <string name="mailbox_fab_compose_button_content_description">Scrivi un messaggio</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Chiudi la modalità di selezione</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Chiudi la modalità di ricerca</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserisci una parola chiave</string>
   <string name="filter_unread_button_text">Non letto</string>
   <string name="include_spam_trash_text">Includi spam/cestino</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -44,10 +42,6 @@
   <string name="mailbox_is_empty_folder_description">Questa cartella è vuota</string>
   <string name="mailbox_is_empty_spam_description">La cartella spam è vuota</string>
   <string name="mailbox_is_empty_trash_description">Tutto pulito</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Messaggio spostato nel cestino</item>
-    <item quantity="other">%d messaggi spostati nel cestino</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Elimina 1 conversazione</item>
     <item quantity="other">Elimina %d conversazioni</item>
@@ -77,7 +71,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
   <string name="mailbox_action_no_sender_addresses">Nessun indirizzo con autorizzazioni di invio</string>
   <string name="mailbox_action_move_messages_failed">Spostamento non riuscito</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Caricamento delle cartelle non riuscito</string>
   <string name="mailbox_action_trash_message">Messaggio spostato nel cestino</string>
   <string name="mailbox_action_archive_message">Messaggio spostato nell\'archivio</string>
   <string name="mailbox_action_spam_message">Messaggio spostato in spam</string>
@@ -102,26 +95,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Svuota la cartella spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nel cestino?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nella cartella spam?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nella cartella spam?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Lo svuotamento è programmato"</string>
   <string name="mailbox_action_maximum_selection_reached">"Limite di elementi selezionati raggiunto"</string>
   <string name="mailbox_talkback_readout_unread">Non letto</string>
   <string name="mailbox_talkback_readout_starred">Segna come non importante</string>
   <string name="mailbox_talkback_readout_not_starred">Segna come importante</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Scaricamento dell\'allegato in corso</string>
   <string name="mailbox_attachment_download_error">Scaricamento del file allegato non riuscito</string>
   <string name="mailbox_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Spazio quasi pieno</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre l\'80%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre il 90%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Non ricordarmelo di nuovo</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Spazio esaurito</string>
-  <string name="storage_quota_over_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno al 100%. Non potrai inviare o ricevere email finché non elimini definitivamente alcune email o effettui l\'upgrade per avere più spazio di archiviazione.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Eliminazione del messaggio non riuscita</string>
   <string name="select_all">Seleziona tutto</string>
   <string name="deselect_all">Deseleziona tutto</string>
@@ -142,16 +124,4 @@
   <string name="schedule_send_tomorrow">Domani, %1$s</string>
   <string name="schedule_send_today">Oggi, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Posticipato a domani</item>
-    <item quantity="other">Posticipato per %d giorni</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Posticipato per %d ora</item>
-    <item quantity="other">Posticipato per %d ore</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Posticipato per %d minuto</item>
-    <item quantity="other">Posticipato per %d minuti</item>
-  </plurals>
 </resources>

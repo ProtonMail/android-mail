@@ -32,7 +32,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">İndirimler standart aylık ücretlere göre belirlenir. %1$s/ay ile otomatik olarak yenilenir</string>
   <string name="payment_bf_renew_annually">İndirimler standart aylık ücretlere göre belirlenir. %1$s/yıl ile otomatik olarak yenilenir</string>
-  <string name="payment_bf_renew_biennially">İndirimler standart aylık ücretlere göre belirlenir. Her iki yılda bir %1$s ile otomatik olarak yenilenir</string>
   <string name="payment_welcome_offer_renew_monthly">Hoş geldiniz teklifi. Her ay %1$s tutar ile otomatik olarak yenilenir</string>
   <string name="payment_welcome_offer_renew_annually">Hoş geldiniz teklifi. Her yıl %1$s tutar ile otomatik olarak yenilenir</string>
   <string name="payment_welcome_offer_renew_biennially">Hoş geldiniz teklifi. Her iki yılda bir %1$s tutar ile otomatik olarak yenilenir.</string>

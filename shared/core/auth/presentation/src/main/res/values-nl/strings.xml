@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Sluiten</string>
   <string name="login_help_title">Hoe kunnen we helpen?</string>
   <string name="login_help_forgot_username">Gebruikersnaam vergeten</string>
   <string name="login_help_forgot_password">Wachtwoord vergeten</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Gebruikersnaam of e-mailadres</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Wachtwoord</string>
-  <string name="auth_username_placeholder">Gebruikersnaam of e-mailadres</string>
-  <string name="auth_password_placeholder">Wachtwoord</string>
   <string name="auth_login_assistive_text">Voer uw Proton e-mailadres of gebruikersnaam in.</string>
   <string name="auth_account_details">Vul uw Proton-accountgegevens in.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Probleem bij uw aanmelding. Probeer het opnieuw.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Er is menselijke verificatie nodig.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Onjuiste inloggegevens. Probeer het opnieuw.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Niet-ondersteunde tweestapsverificatie.</string>
   <string name="auth_login_general_error">Er is iets fout gegaan.</string>
   <string name="auth_second_factor_title">Tweestapsverificatie</string>
   <string name="auth_second_factor_subtitle">Uw account heeft meerdere 2FA mechanismen geconfigureerd. Selecteer hoe u uw identiteit wilt bevestigen.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Wachtwoord kan niet leeg zijn</string>
   <string name="auth_signup_title">Maak uw Proton-account aan</string>
   <string name="auth_signup_subtitle">Één account voor alle Proton diensten</string>
-  <string name="auth_signup_username_assistive_text">De gebruikersnaam mag niet leeg zijn.</string>
-  <string name="auth_signup_email_assistive_text">E-mail mag niet leeg zijn.</string>
   <string name="auth_signup_next">Volgende</string>
   <string name="auth_signup_username">Gebruikersnaam</string>
   <string name="auth_signup_create_password">Maak uw wachtwoord</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Overslaan</string>
   <string name="auth_signup_recovery_title">Herstelmethode instellen (optioneel)</string>
   <string name="auth_signup_recovery_subtitle">Wij sturen herstelinstructies naar dit e-mailadres of telefoonnummer als u van uw account wordt afgesloten.</string>
-  <string name="auth_signup_recovery_email">E-mail</string>
-  <string name="auth_signup_recovery_phone">Telefoon</string>
-  <string name="auth_signup_recovery_email_hint">Herstel-e-mailadres</string>
-  <string name="auth_signup_recovery_phone_hint">Herstel-telefoonnummer</string>
   <string name="auth_signup_recovery_select_country">Selecteer land</string>
   <string name="auth_signup_phone_placeholder">XXXXXXXXXX</string>
   <string name="auth_signup_skip_recovery_title">Herstelmethode overslaan?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Fout bij het ophalen van opgeslagen sleutels.</string>
   <string name="auth_fido_reading_key_error">Fout bij het uitlezen van de beveiligingssleutel.</string>
   <string name="auth_fido_submit_key_error">Fout bij het verzenden van sleutelgegevens.</string>
-  <string name="auth_fido_reading_key_progress">Beveiligingssleutel wordt uitgelezen.</string>
   <string name="auth_fido_authenticating_in_progress">Authenticatie met beveiligingssleutel...</string>
   <string name="auth_fido_security_key">Beveiligingssleutel</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Tweede wachtwoord</string>
   <string name="settings_password_management_change_password_note">Om een van uw wachtwoorden te veranderen, moet u uw hoofdwachtwoord weten.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Hoofdwachtwoord vergeten?</string>
-  <string name="settings_password_management_header">Wachtwoord wijzigen</string>
-  <string name="settings_password_management_cannot_change_password">U kunt uw back-up wachtwoord niet wijzigen. Neem contact op met uw beheerder.</string>
   <string name="settings_main_password_hint_current">Huidig hoofdwachtwoord</string>
   <string name="settings_main_password_hint_new">Nieuw hoofdwachtwoord</string>
   <string name="settings_main_password_hint_new_confirm">Bevestig nieuw hoofdwachtwoord</string>
   <string name="settings_second_password_hint_current_main_password">Huidig hoofdwachtwoord</string>
   <string name="settings_second_password_hint_new">Nieuw tweede wachtwoord</string>
   <string name="settings_second_password_hint_new_confirm">Bevestig nieuw tweede wachtwoord</string>
-  <string name="settings_change_password_error">Er is een fout opgetreden bij het wijzigen van het wachtwoord.</string>
-  <string name="settings_recovery_email_success">Herstel-e-mailadres bijgewerkt</string>
   <string name="settings_password_management_login_success">Login wachtwoord bijgewerkt</string>
   <string name="settings_password_management_second_success">Tweede wachtwoord bijgewerkt</string>
-  <string name="settings_password_management_start_recovery">Wachtwoord vergeten?</string>
-  <string name="settings_password_management_2fa">2FA is nodig</string>
   <string name="settings_password_invalid_2fa">Ongeldige tweefactorcode. Probeer het opnieuw.</string>
   <string name="settings_password_error_empty">Wachtwoord kan niet leeg zijn.</string>
   <string name="settings_password_error">Onjuiste gebruikersnaam of wachtwoord. Probeer het opnieuw.</string>

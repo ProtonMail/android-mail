@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">今週末</string>
   <string name="snooze_sheet_option_custom">カスタム</string>
   <string name="snooze_sheet_option_custom_detail">日時を選択</string>
-  <string name="snooze_sheet_option_upsell_detail">有料機能</string>
   <string name="snooze_sheet_snooze_title">までスヌーズ</string>
   <string name="snooze_sheet_option_unsnooze">スヌーズを解除</string>
   <string name="snooze_sheet_error_unable_to_snooze">申し訳ありません、この会話をスヌーズする際に不明なエラーが発生しました</string>

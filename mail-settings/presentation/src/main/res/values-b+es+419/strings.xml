@@ -28,20 +28,14 @@
   <string name="mail_settings_preferences">Preferencias</string>
   <string name="mail_settings_app">Personalizaciones de la aplicación</string>
   <string name="mail_settings_mailbox">Preferencias de buzón</string>
-  <string name="mail_settings_email_hint">Preferencias de buzón y correo electrónico</string>
   <string name="mail_settings_folders_labels">Carpetas y etiquetas</string>
-  <string name="mail_settings_folders_labels_hint">Organización del buzón</string>
   <string name="mail_settings_spam_and_custom_filters">Spam y filtros</string>
-  <string name="mail_settings_spam_and_custom_filters_hint">Acciones automáticas y clasificación</string>
   <string name="mail_settings_privacy_and_security">Privacidad y seguridad</string>
   <string name="mail_settings_fido_keys">Claves de seguridad</string>
   <string name="mail_settings_change_password">Gestión de contraseñas</string>
   <string name="mail_settings_signature">Firma</string>
   <string name="mail_settings_storage_quota">%1$d%% de %2$s</string>
-  <string name="mail_settings_privacy_and_security_hint">Protección contra rastreos de correos electrónicos</string>
-  <string name="mail_settings_app_hint">Personalización de la aplicación móvil</string>
   <string name="mail_settings_theme">Tema</string>
-  <string name="mail_settings_auto_lock">Bloqueo automático</string>
   <string name="mail_settings_app_icon">Ícono de la aplicación</string>
   <string name="mail_settings_alternative_routing">Ruta alternativa</string>
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
@@ -49,23 +43,16 @@
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_swipe_actions">Acciones de deslizamiento</string>
   <string name="mail_settings_combined_contacts_hint">Active esta función para completar automáticamente las direcciones usando los contactos de todas las cuentas conectadas.</string>
-  <string name="mail_settings_alternative_routing_hint">En caso de que los sitios de Proton estén bloqueados, este ajuste permite a la aplicación probar rutas alternativas para llegar a Proton, lo que puede ser útil para evitar problemas de red o firewalls. Recomendamos mantener este ajuste activado para mayor confiabilidad.</string>
   <!-- App customization settings-->
   <string name="mail_settings_app_customization_title">Personalizaciones de la aplicación</string>
   <string name="mail_settings_app_customization_notification">Notificaciones</string>
   <string name="mail_settings_app_customization_language">Idioma</string>
   <string name="mail_settings_app_customization_appearance">Apariencia</string>
   <string name="mail_settings_app_customization_protection">Bloqueo de la aplicación</string>
-  <string name="mail_settings_app_customization_mobile_signature">Firma móvil</string>
-  <string name="mail_settings_app_customization_email_signature">Firma de correo electrónico</string>
   <string name="mail_settings_app_customization_protection_enabled_description">El bloqueo automático está activado.</string>
   <string name="mail_settings_app_customization_protection_disabled_description">El bloqueo automático está desactivado.</string>
-  <string name="mail_settings_app_customization_use_device_contacts">Usar los contactos del dispositivo</string>
-  <string name="mail_settings_app_customization_use_device_contacts_hint">Complete automáticamente las direcciones de correo electrónico usando los contactos de su dispositivo.</string>
   <string name="mail_settings_app_customization_swipe_to_next_email">Deslizar al correo electrónico siguiente</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Vaya rápidamente al siguiente o al mensaje anterior en su bandeja de entrada.</string>
-  <string name="mail_settings_app_customization_swipe_action">Gestos de deslizamiento</string>
-  <string name="mail_settings_app_customization_swipe_action_hint">Configure acciones rápidas, como eliminar o archivar, cuando deslice a la izquierda o a la derecha.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Personalizar las barras de herramientas</string>
   <string name="mail_settings_app_customization_alternative_routing">Enrutamiento alternativo</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Elude el firewall o problemas de red en caso de que los sitios de Proton estén bloqueados.</string>
@@ -88,8 +75,6 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Sin información disponible</string>
   <string name="mail_settings_account">Cuenta</string>
-  <string name="mail_settings_not_set">No definido</string>
-  <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en la bandeja de entrada o los muestra por separado</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy">Privacidad</string>
   <string name="mail_settings_privacy_auto_show_remote_content">Mostrar contenido remoto automáticamente</string>

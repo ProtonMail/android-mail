@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">戻る</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">アプリロック</string>
   <string name="mail_pinlock_settings_no_lock">ロックしない</string>
@@ -61,12 +60,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">はい</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">いいえ</string>
   <string name="mail_settings_pin_insertion_created_success">PIN コードが正常に作成されました。</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN コードが正常に変更されました。</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
-  <string name="mail_settings_pin_verify_generic_error_message">エラーが発生しました。再度お試しください。</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">不正な試行回数が多すぎます</string>
-  <string name="mail_settings_pin_verify_wrong_pin">PIN コードが正しくありません。</string>
   <string name="mail_settings_biometrics_unable_to_set">生体認証の設定中にエラーが発生しました。</string>
   <string name="mail_settings_biometrics_unable_to_unset">生体認証設定のリセット中にエラーが発生しました。</string>
   <string name="mail_settings_biometrics_unknown_lock">現在のロックポリシーを取得中にエラーが発生しました。</string>

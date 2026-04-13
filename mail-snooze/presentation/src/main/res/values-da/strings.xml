@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Denne weekend</string>
   <string name="snooze_sheet_option_custom">Brugerdefineret</string>
   <string name="snooze_sheet_option_custom_detail">Vælg dato og tid</string>
-  <string name="snooze_sheet_option_upsell_detail">Betalt funktion</string>
   <string name="snooze_sheet_snooze_title">Udsæt indtil</string>
   <string name="snooze_sheet_option_unsnooze">Annullér udsættelse</string>
   <string name="snooze_sheet_error_unable_to_snooze">Beklager, der opstod en ukendt fejl ved udsættelse af denne samtale.</string>

@@ -35,13 +35,8 @@
   <string name="mailbox_message_sending">Sender besked…</string>
   <string name="mailbox_message_sending_offline">Offline: besked sat i kø til afsendelse</string>
   <string name="mailbox_message_sending_success">Besked sendt</string>
-  <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
   <string name="mailbox_message_sending_error_action">Gå til udkast</string>
   <string name="notification_switched_account">Skiftet til konto %s</string>
-  <string name="label_saved">Etiket gemt</string>
-  <string name="label_deleted">Etiket slettet</string>
-  <string name="app_locked">App er låst</string>
-  <string name="use_pin_instead">Brug i stedet pinkode</string>
   <string name="mailbox_message_scheduling">Planlægger besked…</string>
   <string name="mailbox_message_scheduling_offline">Offline: besked sat i kø til planlægning</string>
   <string name="mailbox_message_scheduled_for_sending_success">Denne besked vil blive sendt %1$s</string>

@@ -28,7 +28,6 @@
   <string name="quick_reply_button_content_description">Odpovedať</string>
   <string name="quick_reply_all_button_content_description">Odpovedať všetkým</string>
   <string name="more_button_content_description">Viac</string>
-  <string name="subject">Predmet:</string>
   <string name="from">Od:</string>
   <string name="to">Komu:</string>
   <string name="cc">Kópia:</string>
@@ -40,7 +39,6 @@
     <item quantity="many">%d príloh</item>
     <item quantity="other">%d príloh</item>
   </plurals>
-  <string name="hide_details">Skryť detaily</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Koncept)</string>
   <string name="error_mark_as_read_failed">Operácia označenia ako prečítaná zlyhala. Skúste to znova, prosím.</string>
@@ -48,12 +46,9 @@
   <string name="error_star_operation_failed">Pridanie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
   <string name="error_unstar_operation_failed">Odobratie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
   <string name="error_move_to_trash_failed">Presun do koša zlyhal. Skúste to znova.</string>
-  <string name="message_moved">Správa presunutá</string>
   <string name="message_moved_to">Správa presunutá do %s</string>
-  <string name="message_moved_to_trash">Správa bola presunutá do koša</string>
   <string name="message_moved_to_archive">Správa bola presunutá do archívu</string>
   <string name="error_move_to_archive_failed">Presun do archívu zlyhal. Skúste to znova, prosím.</string>
-  <string name="message_moved_to_spam">Správa presunutá do spamu</string>
   <string name="error_move_to_spam_failed">Presun do spamu zlyhal. Skúste to znova, prosím.</string>
   <string name="message_moved_to_selected_destination">Správa presunutá do %1$s</string>
   <string name="error_move_message_failed">Presun správy zlyhal. Skúste to znova.</string>
@@ -69,8 +64,6 @@
   <string name="error_attachment_download_in_progress">Prebiehajúce sťahovanie musí byť dokončené pred začatím nového.</string>
   <string name="error_get_attachment_not_enough_memory">Prílohu sa nepodarilo získať pre nedostatok pamäte</string>
   <string name="error_relabel_message_failed">Nepodarilo sa zmeniť označenie správy. Skúste znovu, prosím</string>
-  <string name="error_relabel_conversation_failed">Nepodarilo sa zmeniť označenie konverzácie. Skúste znovu, prosím</string>
-  <string name="please_go_back_online_to_load_messages">Nie ste pripojení. Na načítanie správ sa znovu pripojte, prosím</string>
   <string name="decryption_error">Dešifrovanie správy zlyhalo.</string>
   <string name="detail_error_retrieving_message_body">Nepodarilo sa načítať správy</string>
   <string name="message_body_error_no_webview">Pre zobrazenie obsahu tejto správy musíte mať nainštalovaný WebView.</string>
@@ -122,8 +115,6 @@
   <string name="message_report_phishing_dialog_message">Nahlásenie tejto správy ako pokusu o phishing odošle túto správu Nám, aby sme ju mohli analyzovať a zlepšiť tým Naše filtre. To znamená, že uvidíme kompletne celý obsah tejto správy.</string>
   <string name="message_report_phishing_dialog_confim_button">Potvrdiť</string>
   <string name="message_report_phishing_dialog_cancel_button">Zrušiť</string>
-  <string name="open_on_protoncalendar_banner_title">Otvoriť v Proton kalendári</string>
-  <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný kalendár</string>
   <string name="trashed_messages_banner">Zobraziť správy z Koša v tejto konverzácii.</string>
   <string name="non_trashed_messages_banner">Zobraziť správy, ktoré nie sú v koši, v tejto konverzácii.</string>
   <string name="recipient_me">ja</string>
@@ -188,8 +179,6 @@
   <string name="already_unsubscribed_banner_message">Odhlásili ste sa z tohto mailingového zoznamu.</string>
   <string name="error_unsubscribe_newsletter">Nepodarilo sa odhlásiť odber z newslettera</string>
   <string name="detail_error_loading_single_message">Načítanie správy zlyhalo</string>
-  <string name="error_downloading_image">Stiahnutie obrázku zlyhalo</string>
-  <string name="image_downloaded_successfully">Obrázok stiahnutý</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Hlavičky správ</string>
   <string name="raw_message_data_html_title">HTML správy</string>

@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Напісаць</string>
   <string name="mailbox_fab_compose_button_content_description">Напісаць новае паведамленне</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выйсці з меню выбару</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Выхад з рэжыму пошуку</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Ачысціць пошукавы запыт</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Увядзіце пошукавы запыт</string>
   <string name="filter_unread_button_text">Непрачытаныя</string>
   <string name="include_spam_trash_text">Уключыць папкі Сметніца або Спам</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -46,12 +44,6 @@
   <string name="mailbox_is_empty_folder_description">Гэта папка пустая</string>
   <string name="mailbox_is_empty_spam_description">Ваша папка са спамам пустая</string>
   <string name="mailbox_is_empty_trash_description">Здаецца, што тут нічога няма</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Паведамленне перамешчана ў сметніцу</item>
-    <item quantity="few">%d паведамленні перамешчаны ў сметніцу</item>
-    <item quantity="many">%d паведамленняў перамешчаны ў сметніцу</item>
-    <item quantity="other">%d паведамленняў перамешчаны ў сметніцу</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Выдаліць размову</item>
     <item quantity="few">Выдаліць %d размовы</item>
@@ -93,7 +85,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_no_sender_addresses">Адсутнічае адрас з дазволамі на адпраўку</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
   <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
   <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>
@@ -122,26 +113,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Ачысціць папку са спамам</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі Сметніца?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі Спам?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы сапраўды хочаце незваротна выдаліць усе размовы з папкі Спам?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Запланавана аперацыя па ачыстцы"</string>
   <string name="mailbox_action_maximum_selection_reached">"Дасягнуты максімум выбраных паведамленняў"</string>
   <string name="mailbox_talkback_readout_unread">Непрачытаныя</string>
   <string name="mailbox_talkback_readout_starred">Прыбраць зорачку</string>
   <string name="mailbox_talkback_readout_not_starred">Пазначыць зорачкай</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Адкрыццё далучэння...</string>
   <string name="mailbox_attachment_download_error">Немагчыма адкрыць далучэнне. Паспрабуйце яшчэ раз.</string>
   <string name="mailbox_attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Папярэджанне</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 80%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 90%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Больш не нагадваць</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Папярэджанне</string>
-  <string name="storage_quota_over_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена на 100%. Цяпер вы не можаце адпраўляць і атрымліваць электронныя лісты, пакуль некаторыя з іх не будуць незваротна выдалены. У вас таксама ёсць магчымасць перайсці на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Не ўдалося выдаліць паведамленне.</string>
   <string name="select_all">Выбраць усе</string>
   <string name="deselect_all">Зняць выбар з усіх</string>
@@ -168,22 +148,4 @@
   <string name="schedule_send_tomorrow">Заўтра ў %1$s</string>
   <string name="schedule_send_today">Сёння ў %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Адкладзена на заўтра</item>
-    <item quantity="few">Адкладзена на %d дні</item>
-    <item quantity="many">Адкладзена на %d дзён</item>
-    <item quantity="other">Адкладзена на %d дзён</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Адкладзена на %d гадзіну</item>
-    <item quantity="few">Адкладзена на %d гадзіны</item>
-    <item quantity="many">Адкладзена на %d гадзін</item>
-    <item quantity="other">Адкладзена на %d гадзін</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Адкладзена на %d хвіліну</item>
-    <item quantity="few">Адкладзена на %d хвіліны</item>
-    <item quantity="many">Адкладзена на %d хвілін</item>
-    <item quantity="other">Адкладзена на %d хвілін</item>
-  </plurals>
 </resources>

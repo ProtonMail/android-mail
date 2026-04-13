@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Napísať správu</string>
   <string name="mailbox_fab_compose_button_content_description">Napísať novú správu</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Opustiť režim vyhľadávania</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadajte vyhľadávací reťazec</string>
   <string name="filter_unread_button_text">Neprečítané</string>
   <string name="include_spam_trash_text">Zahrnúť Spam/Kôš</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -46,12 +44,6 @@
   <string name="mailbox_is_empty_folder_description">Tento priečinok je prázdny</string>
   <string name="mailbox_is_empty_spam_description">Váš priečinok so spamom je prázdny</string>
   <string name="mailbox_is_empty_trash_description">Tu to vyzerá prázdne</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Správa bola presunutá do koša</item>
-    <item quantity="few">%d správy boli presunuté do koša</item>
-    <item quantity="many">%d správ bolo presunutých do koša</item>
-    <item quantity="other">%d správ bolo presunutých do koša</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Vymazať konverzáciu</item>
     <item quantity="few">Vymazať %d konverzácie</item>
@@ -93,7 +85,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
   <string name="mailbox_action_no_sender_addresses">Žiadna adresa s oprávneniami na odosielanie</string>
   <string name="mailbox_action_move_messages_failed">Presunutie zlyhalo</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
   <string name="mailbox_action_archive_message">Správa presunutá do archívu</string>
   <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
@@ -122,26 +113,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Vyprázdniť priečinok Spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v priečinku Kôš?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v priečinku Spam?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Naozaj chcete natrvalo odstrániť všetky konverzácie v priečinku Spam?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Operácia vyčistenia je naplánovaná"</string>
   <string name="mailbox_action_maximum_selection_reached">"Bol dosiahnutý maximálny počet výberov"</string>
   <string name="mailbox_talkback_readout_unread">Neprečítané</string>
   <string name="mailbox_talkback_readout_starred">Odstrániť hviezdičku</string>
   <string name="mailbox_talkback_readout_not_starred">Označiť hviezdičkou</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Otváranie prílohy…</string>
   <string name="mailbox_attachment_download_error">Nie je možné otvoriť prílohu. Skúste to znova, prosím.</string>
   <string name="mailbox_attachment_download_in_progress">Prebiehajúce sťahovanie musí byť dokončené pred začatím nového.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Upozornenie</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložisko vášho Proton účtu je zaplnené na viac ako 80%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložisko vášho Proton účtu je zaplnené na viac ako 90%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Už nepripomínať</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Upozornenie</string>
-  <string name="storage_quota_over_dialog_text">Úložisko vášho účtu Proton je na 100% zaplnené. Nebudete môcť odosielať ani prijímať emaily, pokiaľ trvalo neodstránite niektoré emaily alebo nevykonáte upgrade na väčšie úložisko.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Nepodarilo sa vymazať správu</string>
   <string name="select_all">Vybrať všetko</string>
   <string name="deselect_all">Odznačiť všetko</string>
@@ -168,22 +148,4 @@
   <string name="schedule_send_tomorrow">Zajtra, %1$s</string>
   <string name="schedule_send_today">Dnes, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Odložené do zajtra</item>
-    <item quantity="few">Odložené o %d dni</item>
-    <item quantity="many">Odložené o %d dní</item>
-    <item quantity="other">Odložené o %d dní</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Odložené o %d hodinu</item>
-    <item quantity="few">Odložené o %d hodiny</item>
-    <item quantity="many">Odložené o %d hodín</item>
-    <item quantity="other">Odložené o %d hodín</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Odložené o %d minútu</item>
-    <item quantity="few">Odložené o %d minúty</item>
-    <item quantity="many">Odložené o %d minút</item>
-    <item quantity="other">Odložené o %d minút</item>
-  </plurals>
 </resources>

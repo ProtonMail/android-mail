@@ -24,7 +24,6 @@
   <string name="snooze_sheet_option_this_weekend">Akhir pekan ini</string>
   <string name="snooze_sheet_option_custom">Sesuaikan</string>
   <string name="snooze_sheet_option_custom_detail">Pilih tanggal dan waktu</string>
-  <string name="snooze_sheet_option_upsell_detail">Fitur berbayar</string>
   <string name="snooze_sheet_snooze_title">Tunda hingga</string>
   <string name="snooze_sheet_option_unsnooze">Batalkan penundaan</string>
   <string name="snooze_sheet_error_unable_to_snooze">Maaf, kami mengalami kesalahan yang tidak diketahui saat menunda percakapan ini</string>

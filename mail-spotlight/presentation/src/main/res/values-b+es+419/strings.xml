@@ -29,22 +29,4 @@
   <string name="spotlight_feature_item_headers_html_description">Inspeccione mensajes sospechosos para confirmar su autenticidad y descubrir cualquier elemento de rastreo oculto.</string>
   <string name="spotlight_screen_got_it">Entendido</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">Descubra las novedades en Proton Mail</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_title">Mejoras en la interfaz de usuario</string>
-  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Desplazamiento fluido, diseño actualizado y más.</string>
-  <string name="spotlight_screen_category_view_unread_filter_title">Filtro de mensajes sin leer</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nueva apariencia y ubicación para acceder más fácilmente.</string>
-  <string name="spotlight_screen_category_view_categories_title">Categorías de correo electrónico</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Clasificación automática del correo entrante.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Vea las novedades.\nOmita el resto.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Enfóquese en mensajes sin leer. O no. A un solo toque de distancia para cambiar entre todos los correos o solo los sin leer.</string>
-  <string name="spotlight_screen_category_view_main_b2b_title">Manténgase al tanto de los correos electrónicos nuevos y sin leer</string>
-  <string name="spotlight_screen_category_view_main_b2b_subtitle">El filtro de mensajes sin leer ahora es más visible y está a su alcance, lo que le permite escanear rápidamente y tomar medidas sobre los correos electrónicos sin leer.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Dele la bienvenida a su bandeja de entrada más organizada</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Con las nuevas categorías de correo electrónico, solo los mensajes importantes y urgentes llegan a su bandeja de entrada principal. Todo lo demás se organiza en categorías.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_title">Hola categorías.\nAdiós distracciones.</string>
-  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Deje de distraerse con boletines, actualizaciones y correos electrónicos no urgentes. Con las nuevas categorías de correo electrónico, solo los mensajes importantes llegan a su bandeja de entrada principal.</string>
-  <string name="spotlight_screen_category_view_button_continue">Hola categorías.\nAdiós distracciones.</string>
-  <string name="spotlight_screen_category_view_button_try">Pruebe las categorías</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continuar sin categorías</string>
 </resources>

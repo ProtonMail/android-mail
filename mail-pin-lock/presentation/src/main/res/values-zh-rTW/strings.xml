@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">返回</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">應用程式鎖</string>
   <string name="mail_pinlock_settings_no_lock">不要鎖定</string>
@@ -61,12 +60,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">是</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">否</string>
   <string name="mail_settings_pin_insertion_created_success">PIN 碼成功創建。</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN 碼變更成功。</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">發生錯誤，請再試一次。</string>
-  <string name="mail_settings_pin_verify_generic_error_message">發生錯誤。請再試一次。</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">錯誤嘗試次數過多</string>
-  <string name="mail_settings_pin_verify_wrong_pin">個人識別號碼不正確</string>
   <string name="mail_settings_biometrics_unable_to_set">設定生物辨識偏好設定時發生錯誤。</string>
   <string name="mail_settings_biometrics_unable_to_unset">重設生物辨識偏好設定時發生錯誤。</string>
   <string name="mail_settings_biometrics_unknown_lock">擷取目前鎖定政策時發生錯誤。</string>

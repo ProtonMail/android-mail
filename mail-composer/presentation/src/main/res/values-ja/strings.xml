@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">メールの作成</string>
   <string name="close_composer_content_description">閉じる</string>
   <string name="send_button_title">送信</string>
-  <string name="send_message_content_description">メッセージを送信</string>
   <string name="composer_expand_recipients_button">他の受信者を表示する</string>
   <string name="composer_error_invalid_email">メールアドレスが無効または存在しません</string>
-  <string name="change_sender_button_content_description">送信者を変更</string>
   <string name="composer_change_sender_paid_feature">送信者アドレスを変更するには有料プランへのアップグレードが必要です</string>
-  <string name="composer_error_store_draft_sender_address">下書きの送信元アドレスの保存に失敗しました</string>
-  <string name="composer_error_store_draft_body">下書き本文の保存に失敗しました</string>
   <string name="composer_error_duplicate_recipient">重複した受取人(たち)が削除されました</string>
-  <string name="composer_error_store_draft_subject">件名の保存に失敗しました</string>
-  <string name="composer_error_store_draft_recipients">下書きの宛先の保存に失敗しました</string>
   <string name="composer_error_store_draft_address_disabled">下書きを保存できません - この差出人アドレスは無効です</string>
   <string name="composer_error_store_draft_address_pk_missing">下書きを保存できません - この差出人アドレスにはプライマリー キーがありません</string>
   <string name="composer_error_store_draft_attachment_too_large">下書きを保存できません - 添付ファイルがサイズ制限を超過しています</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">写真ライブラリから</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">新しい写真を撮る</string>
   <string name="composer_error_loading_parent_message">メッセージの情報を読み込めませんでした</string>
-  <string name="composer_original_message_quote">元のメッセージ</string>
-  <string name="composer_sender_quote">%s、%s &lt;%s&gt; 書きました：</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">添付ファイルの制限に達しました。</string>
   <string name="composer_attachment_size_exceeded_dialog_message">添付ファイルのサイズ制限は%1$sです。</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">下書きを破棄する</string>
   <string name="composer_button_set_expiration">有効期限を設定</string>
   <string name="composer_expiration_time_bottom_sheet_title">メッセージの有効期限</string>
-  <string name="composer_expiration_time_bottom_sheet_done">設定する</string>
   <string name="composer_bottom_bar_expiration_time_none">有効期限なし</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 時間後</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1日後</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3日後</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1週間後</string>
   <string name="composer_bottom_bar_expiration_time_custom">特定の日付</string>
   <string name="composer_error_setting_expiration_time">有効期限の設定に失敗しました</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">送信エラー</string>
   <string name="message_sending_error_dialog_button_dismiss">閉じる</string>
   <string name="message_sending_error_dialog_text_error">次の理由により入力されたメールアドレスにメールを送信することができません:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">信頼済みのキーがありません:%s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">メールアドレスが存在しません:%s</string>
   <string name="set_message_password_title">パスワードを設定</string>
   <string name="set_message_password_info_message">Proton Mail以外の宛先にこのメッセージを暗号化するためのパスワードを設定します。</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">より詳しく</a></string>
@@ -107,17 +95,10 @@
   <string name="set_message_password_label_hint">パスワードのヒント(任意)</string>
   <string name="set_message_password_supporting_text">最低8文字が必要です。</string>
   <string name="set_message_password_supporting_error_text">パスワードは8文字以上21文字以下で入力してください</string>
-  <string name="set_message_password_supporting_text_repeat">パスワードが一致する必要があります</string>
-  <string name="set_message_password_supporting_error_text_repeat">パスワードが一致しません</string>
   <string name="set_message_password_button_show">パスワードを表示</string>
   <string name="set_message_password_button_hide">パスワードを非表示</string>
   <string name="set_message_password_button_save_changes">保存</string>
   <string name="set_message_password_button_remove_password">パスワードを削除</string>
-  <string name="respondInline">インラインで返信</string>
-  <string name="subject_placeholder">件名</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="other">%d 人のメンバー</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">デバイスの連絡先を表示</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">メッセージを破棄しますか？</string>
@@ -138,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">カスタム日時</string>
   <string name="composer_schedule_send_custom_description">時間と日付を選択</string>
   <string name="composer_schedule_send_previously_set">以前の設定</string>
-  <string name="composer_schedule_send_custom_time_label">時間</string>
-  <string name="composer_schedule_send_custom_date_label">日付</string>
-  <string name="composer_schedule_send_dialog_ok">OK</string>
-  <string name="composer_schedule_send_dialog_enter_time">時刻を入力</string>
   <string name="composer_change_sender_title">差出人</string>
   <string name="composer_error_change_sender_failed_getting_addresses">お客様のアドレスの取得に失敗したため、差出人を変更できません。もう一度お試しください。</string>
   <string name="composer_change_sender_invalid_address">選択されたアドレスは送信者として使用することはできません</string>

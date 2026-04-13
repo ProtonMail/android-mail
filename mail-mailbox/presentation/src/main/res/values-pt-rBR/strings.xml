@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Escrever</string>
   <string name="mailbox_fab_compose_button_content_description">Escrever nova mensagem</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Sair do modo de pesquisa</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Limpar consulta de pesquisa</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Digite a palavra que quer pesquisar</string>
   <string name="filter_unread_button_text">Não lido</string>
   <string name="include_spam_trash_text">Incluir Spam/Lixeira</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -44,10 +42,6 @@
   <string name="mailbox_is_empty_folder_description">Esta pasta está vazia</string>
   <string name="mailbox_is_empty_spam_description">Sua pasta de spam está vazia</string>
   <string name="mailbox_is_empty_trash_description">Parece vazio por aqui</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensagem movida para Lixeira</item>
-    <item quantity="other">%d mensagens movidas para Lixeira</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Excluir conversa</item>
     <item quantity="other">Excluir %d conversas</item>
@@ -77,7 +71,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Falha ao obter configurações de cores</string>
   <string name="mailbox_action_no_sender_addresses">Nenhum endereço com permissões de envio</string>
   <string name="mailbox_action_move_messages_failed">Falha ao mover</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Falha ao obter pastas</string>
   <string name="mailbox_action_trash_message">Mensagem movida para a lixeira</string>
   <string name="mailbox_action_archive_message">Mensagem movida para arquivo</string>
   <string name="mailbox_action_spam_message">Mensagem movida para spam</string>
@@ -102,26 +95,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar pasta de spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Você tem certeza de que deseja excluir permanentemente todas as mensagens da pasta Lixeira?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Você tem certeza de que deseja excluir permanentemente todas as mensagens da pasta Spam?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Você tem certeza de que deseja excluir permanentemente todas as conversas da pasta Spam?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está programada"</string>
   <string name="mailbox_action_maximum_selection_reached">"Seleção máxima alcançada"</string>
   <string name="mailbox_talkback_readout_unread">Não lido</string>
   <string name="mailbox_talkback_readout_starred">Remover favorito</string>
   <string name="mailbox_talkback_readout_not_starred">Favoritar</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Abrindo anexo…</string>
   <string name="mailbox_attachment_download_error">Não foi possível abir o anexo. Tente novamente.</string>
   <string name="mailbox_attachment_download_in_progress">O download atual deve ser concluído antes de iniciar um novo.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Aviso</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">O armazenamento da sua conta da Proton está mais de 80% cheio. Libere espaço ou faça upgrade para obter mais armazenamento.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">O armazenamento da sua conta daProton está mais de 90% cheio. Libere espaço ou aça upgrade para obter mais armazenamento.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Não lembrar novamente</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Aviso</string>
-  <string name="storage_quota_over_dialog_text">O armazenamento da sua conta da Proton está 100% cheio. Você não poderá enviar ou receber e-mails, a menos que exclua permanentemente alguns e-mails ou faça upgrade para obter mais armazenamento.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Falha ao excluir mensagem</string>
   <string name="select_all">Selecionar tudo</string>
   <string name="deselect_all">Desmarcar todos</string>
@@ -142,16 +124,4 @@
   <string name="schedule_send_tomorrow">Amanhã, %1$s</string>
   <string name="schedule_send_today">Hoje, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Adiado até amanhã</item>
-    <item quantity="other">Adiado por %d dias</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Adiado por %d hora</item>
-    <item quantity="other">Adiado por %d horas</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Adiado por %d minuto</item>
-    <item quantity="other">Adiado por %d minutos</item>
-  </plurals>
 </resources>

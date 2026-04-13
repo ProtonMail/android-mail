@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Cerrar</string>
   <string name="login_help_title">¿Cómo podemos ayudarte?</string>
   <string name="login_help_forgot_username">He olvidado mi nombre de usuario</string>
   <string name="login_help_forgot_password">He olvidado mi contraseña</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Nombre de usuario o correo electrónico</string>
   <string name="auth_email">Correo electrónico</string>
   <string name="auth_password">Contraseña</string>
-  <string name="auth_username_placeholder">Nombre de usuario o correo electrónico</string>
-  <string name="auth_password_placeholder">Contraseña</string>
   <string name="auth_login_assistive_text">Introduce tu correo electrónico o nombre de usuario de Proton.</string>
   <string name="auth_account_details">Introduce los datos de tu cuenta de Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Problema al iniciar sesión. Inténtalo de nuevo.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Se necesita verificación humana.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Credenciales de acceso incorrectas. Inténtalo de nuevo.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Doble factor no soportado.</string>
   <string name="auth_login_general_error">Se ha producido un error.</string>
   <string name="auth_second_factor_title">Autenticación de dos factores</string>
   <string name="auth_second_factor_subtitle">Tu cuenta tiene varios mecanismos de 2FA configurados. Elige cómo deseas confirmar tu identidad.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">La contraseña no puede estar vacía.</string>
   <string name="auth_signup_title">Crea tu cuenta Proton</string>
   <string name="auth_signup_subtitle">Una cuenta para todos los servicios de Proton</string>
-  <string name="auth_signup_username_assistive_text">El nombre de usuario no puede estar vacío.</string>
-  <string name="auth_signup_email_assistive_text">El correo electrónico no puede estar vacío.</string>
   <string name="auth_signup_next">Siguiente</string>
   <string name="auth_signup_username">Nombre de usuario</string>
   <string name="auth_signup_create_password">Crea tu contraseña</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Omitir</string>
   <string name="auth_signup_recovery_title">Establecer un método de recuperación (opcional)</string>
   <string name="auth_signup_recovery_subtitle">Enviaremos instrucciones de recuperación a este correo electrónico o número telefónico si se bloquea el acceso a tu cuenta.</string>
-  <string name="auth_signup_recovery_email">Correo electrónico</string>
-  <string name="auth_signup_recovery_phone">Teléfono</string>
-  <string name="auth_signup_recovery_email_hint">Correo electrónico de recuperación</string>
-  <string name="auth_signup_recovery_phone_hint">Número de teléfono de recuperación</string>
   <string name="auth_signup_recovery_select_country">Seleccionar un país</string>
   <string name="auth_signup_phone_placeholder">XXX XX XX XX</string>
   <string name="auth_signup_skip_recovery_title">¿Omitir el método de recuperación?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Error al recuperar las claves almacenadas.</string>
   <string name="auth_fido_reading_key_error">Error al leer la clave de seguridad.</string>
   <string name="auth_fido_submit_key_error">Error al enviar los datos de la clave.</string>
-  <string name="auth_fido_reading_key_progress">Leyendo la clave de seguridad.</string>
   <string name="auth_fido_authenticating_in_progress">Autenticando con la clave de seguridad.</string>
   <string name="auth_fido_security_key">Clave de seguridad</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Segunda contraseña</string>
   <string name="settings_password_management_change_password_note">Para cambiar cualquiera de tus contraseñas, necesitas conocer tu contraseña principal.\u0020</string>
   <string name="settings_password_management_forgot_main_password">¿Olvidaste tu contraseña principal?</string>
-  <string name="settings_password_management_header">Cambiar la contraseña</string>
-  <string name="settings_password_management_cannot_change_password">No puedes cambiar tu contraseña de respaldo. Comunícate con tu administrador.</string>
   <string name="settings_main_password_hint_current">Contraseña principal actual</string>
   <string name="settings_main_password_hint_new">Nueva contraseña principal</string>
   <string name="settings_main_password_hint_new_confirm">Confirmar la nueva contraseña principal</string>
   <string name="settings_second_password_hint_current_main_password">Contraseña principal actual</string>
   <string name="settings_second_password_hint_new">Segunda contraseña nueva</string>
   <string name="settings_second_password_hint_new_confirm">Confirmar la nueva segunda contraseña</string>
-  <string name="settings_change_password_error">Se ha producido un error al cambiar la contraseña.</string>
-  <string name="settings_recovery_email_success">La dirección de correo electrónico de recuperación ha sido actualizada</string>
   <string name="settings_password_management_login_success">Contraseña de inicio de sesión actualizada</string>
   <string name="settings_password_management_second_success">Se ha actualizado la segunda contraseña</string>
-  <string name="settings_password_management_start_recovery">¿No recuerdas tu contraseña?</string>
-  <string name="settings_password_management_2fa">Se necesita 2FA</string>
   <string name="settings_password_invalid_2fa">El código de segundo factor no es válido. Inténtalo de nuevo.</string>
   <string name="settings_password_error_empty">La contraseña no puede estar vacía.</string>
   <string name="settings_password_error">Usuario o contraseña incorrectos. Inténtalo de nuevo.</string>

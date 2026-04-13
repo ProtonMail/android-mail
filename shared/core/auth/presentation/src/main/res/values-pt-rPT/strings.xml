@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Fechar</string>
   <string name="login_help_title">Como podemos ajudar?</string>
   <string name="login_help_forgot_username">Esqueci-me do nome de utilizador</string>
   <string name="login_help_forgot_password">Esqueci-me da palavra-passe</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Username or email</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Palavra-passe</string>
-  <string name="auth_username_placeholder">Nome de utilizador ou e-mail</string>
-  <string name="auth_password_placeholder">Palavra-passe</string>
   <string name="auth_login_assistive_text">Introduza o seu e-mail ou nome de utilizador Proton.</string>
   <string name="auth_account_details">Introduza os detalhes da sua conta da Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Erro ao iniciar a sua sessão. Tente de novo.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">É necessária uma verificação humana.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">As credenciais de início de sessão estão incorretas. Tente novamente.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Autenticação de dois fatores não suportada.</string>
   <string name="auth_login_general_error">Ocorreu um erro.</string>
   <string name="auth_second_factor_title">Autenticação de dois fatores</string>
   <string name="auth_second_factor_subtitle">A sua conta tem vários métodos de autenticação de 2 fatores configurados. Por favor, escolha como deseja confirmar a sua identidade.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">A palavra-passe não pode estar vazia.</string>
   <string name="auth_signup_title">Criar a sua conta da Proton</string>
   <string name="auth_signup_subtitle">Uma conta para todos os serviços Proton</string>
-  <string name="auth_signup_username_assistive_text">O nome de utilizador não pode estar em branco.</string>
-  <string name="auth_signup_email_assistive_text">O e-mail não pode estar em branco.</string>
   <string name="auth_signup_next">Seguinte</string>
   <string name="auth_signup_username">Username</string>
   <string name="auth_signup_create_password">Crie a sua palavra-passe</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Ignorar</string>
   <string name="auth_signup_recovery_title">Definir um método de recuperação (opcional)</string>
   <string name="auth_signup_recovery_subtitle">Enviaremos instruções de recuperação para este e-mail ou número de telefone caso a sua conta seja bloqueada.</string>
-  <string name="auth_signup_recovery_email">E-mail</string>
-  <string name="auth_signup_recovery_phone">Telefone</string>
-  <string name="auth_signup_recovery_email_hint">Endereço de recuperação</string>
-  <string name="auth_signup_recovery_phone_hint">Número de telefone de recuperação</string>
   <string name="auth_signup_recovery_select_country">Selecione um país</string>
   <string name="auth_signup_phone_placeholder">XXX XXX XXXX</string>
   <string name="auth_signup_skip_recovery_title">Ignorar o método de recuperação?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Erro ao obter as chaves guardadas.</string>
   <string name="auth_fido_reading_key_error">Erro ao ler a chave de segurança.</string>
   <string name="auth_fido_submit_key_error">Erro ao enviar os dados da chave.</string>
-  <string name="auth_fido_reading_key_progress">A ler a chave de segurança.</string>
   <string name="auth_fido_authenticating_in_progress">A autenticar com a chave de segurança.</string>
   <string name="auth_fido_security_key">Chave de segurança</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">Segunda palavra-passe</string>
   <string name="settings_password_management_change_password_note">Para alterar qualquer uma das suas palavras-passe, terá de saber a sua palavra-passe principal. </string>
   <string name="settings_password_management_forgot_main_password">Esqueceu-se da sua palavra-passe principal?</string>
-  <string name="settings_password_management_header">Alterar a palavra-passe</string>
-  <string name="settings_password_management_cannot_change_password">Não pode alterar a sua palavra-passe de backup. Contacte o administrador.</string>
   <string name="settings_main_password_hint_current">Palavra passe principal atual</string>
   <string name="settings_main_password_hint_new">Nova palavra-passe principal</string>
   <string name="settings_main_password_hint_new_confirm">Confirmar a nova palavra-passe principal</string>
   <string name="settings_second_password_hint_current_main_password">Palavra passe principal atual</string>
   <string name="settings_second_password_hint_new">Nova segunda palavra-passe</string>
   <string name="settings_second_password_hint_new_confirm">Confirmar a nova segunda palavra-passe</string>
-  <string name="settings_change_password_error">Ocorreu um erro na troca da palavra-passe.</string>
-  <string name="settings_recovery_email_success">Endereço de e-mail de recuperação alterado</string>
   <string name="settings_password_management_login_success">Palavra-passe de início de sessão atualizada</string>
   <string name="settings_password_management_second_success">Segunda palavra-passe atualizada</string>
-  <string name="settings_password_management_start_recovery">Não sabe a sua palavra-passe atual?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Código do segundo fator inválido. Tente novamente.</string>
   <string name="settings_password_error_empty">A palavra-passe não pode estar vazia.</string>
   <string name="settings_password_error">A palavra-passe ou o nome de utilizador não é correto. Tente novamente.</string>

@@ -17,14 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_fab_compose_button_title">Opstellen</string>
   <string name="mailbox_fab_compose_button_content_description">Nieuw bericht opstellen</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Verlaat selectiemodus</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Zoeken</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Zoekmodus verlaten</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Zoekopdracht wissen</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zoekopdracht invoeren</string>
   <string name="filter_unread_button_text">Ongelezen</string>
   <string name="include_spam_trash_text">Inclusief Spam/Prullenbak</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -44,10 +42,6 @@
   <string name="mailbox_is_empty_folder_description">Deze map is leeg</string>
   <string name="mailbox_is_empty_spam_description">Uw spam map is leeg</string>
   <string name="mailbox_is_empty_trash_description">Het ziet er hier leeg uit</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Bericht verplaatst naar Prullenbak</item>
-    <item quantity="other">%d berichten verplaatst naar Prullenbak</item>
-  </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Gesprek verwijderen</item>
     <item quantity="other">%d gesprekken verwijderen</item>
@@ -77,7 +71,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Kan geen kleurinstellingen ophalen</string>
   <string name="mailbox_action_no_sender_addresses">Geen adres met verzendmachtiging.</string>
   <string name="mailbox_action_move_messages_failed">Verplaatsactie mislukt</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Kan geen mappen ophalen</string>
   <string name="mailbox_action_trash_message">Bericht verplaatst naar prullenbak</string>
   <string name="mailbox_action_archive_message">Bericht verplaatst naar archief</string>
   <string name="mailbox_action_spam_message">Bericht verplaatst naar spam</string>
@@ -102,26 +95,15 @@
   <string name="mailbox_action_clear_spam_dialog_title">Spam-map leegmaken</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Weet u zeker dat u alle berichten in de prullenbak definitief wilt verwijderen?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Weet u zeker dat u alle berichten in de spam map definitief wilt verwijderen</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Weet u zeker dat u alle gesprekken in de spam map definitief wilt verwijderen?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Optie om op te ruimen is gepland"</string>
   <string name="mailbox_action_maximum_selection_reached">"Maximum selecteren bereikt"</string>
   <string name="mailbox_talkback_readout_unread">Ongelezen</string>
   <string name="mailbox_talkback_readout_starred">Ster verwijderen</string>
   <string name="mailbox_talkback_readout_not_starred">Ster</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_started">Bijlage openen…</string>
   <string name="mailbox_attachment_download_error">Kan de bijlage niet openen. Probeer het opnieuw.</string>
   <string name="mailbox_attachment_download_in_progress">Huidige download moet voltooid zijn voordat u een nieuwe start.</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Waarschuwing</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Uw Proton-account opslagruimte is meer dan 80% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Uw Proton-account opslagruimte is meer dan 90% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Niet opnieuw herinneren</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Waarschuwing</string>
-  <string name="storage_quota_over_dialog_text">Uw Proton account opslag is 100% vol. U kunt niet langer mail versturen of ontvangen tenzij u een aantal mail berichten definitief verwijderd of upgrade voor meer opslagruimte.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
   <string name="mailbox_action_delete_failed">Het bericht verwijderen is mislukt</string>
   <string name="select_all">Alles selecteren</string>
   <string name="deselect_all">Alles deselecteren</string>
@@ -142,16 +124,4 @@
   <string name="schedule_send_tomorrow">Morgen, %1$s</string>
   <string name="schedule_send_today">Vandaag, %1$s</string>
   <!--    Snooze messages-->
-  <plurals name="snoozed_in_days">
-    <item quantity="one">Gesnoozed tot morgen</item>
-    <item quantity="other">Gesnoozed voor %d dagen</item>
-  </plurals>
-  <plurals name="snooze_in_hours">
-    <item quantity="one">Gesnoozed voor %d uur</item>
-    <item quantity="other">Gesnoozed voor %d uren</item>
-  </plurals>
-  <plurals name="snooze_in_minutes">
-    <item quantity="one">Gesnoozed voor %d minuut</item>
-    <item quantity="other">Gesnoozed voor %d minuten</item>
-  </plurals>
 </resources>

@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">All e-post</string>
   <string name="label_title_all_scheduled">Schemalagt</string>
   <string name="label_title_snoozed">Snoozad</string>
-  <string name="label_title_folders">Mappar</string>
   <string name="label_title_create_label">Skapa etikett</string>
   <string name="label_title_create_folder">Skapa mapp</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytta till…</string>
-  <string name="bottom_sheet_done_action">Klar</string>
   <string name="bottom_sheet_save_action">Spara</string>
   <string name="bottom_sheet_archive_action">Arkivera också?</string>
   <string name="bottom_sheet_label_as_title">Märk som</string>

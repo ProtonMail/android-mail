@@ -28,12 +28,10 @@
   <string name="label_title_all_mail">Вся почта</string>
   <string name="label_title_all_scheduled">Запланировано</string>
   <string name="label_title_snoozed">Отложенные</string>
-  <string name="label_title_folders">Папки</string>
   <string name="label_title_create_label">Создать ярлык</string>
   <string name="label_title_create_folder">Создать папку</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в…</string>
-  <string name="bottom_sheet_done_action">Готово</string>
   <string name="bottom_sheet_save_action">Сохранить</string>
   <string name="bottom_sheet_archive_action">Тоже архивировать?</string>
   <string name="bottom_sheet_label_as_title">Как метка</string>

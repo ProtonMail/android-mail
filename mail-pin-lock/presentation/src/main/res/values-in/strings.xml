@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Kembali</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Kunci aplikasi</string>
   <string name="mail_pinlock_settings_no_lock">Jangan kunci</string>
@@ -61,12 +60,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ya</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Tidak</string>
   <string name="mail_settings_pin_insertion_created_success">Kode PIN berhasil dibuat.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Kode PIN berhasil diubah.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Terjadi kesalahan. Coba lagi.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Terlalu banyak percobaan yang salah</string>
-  <string name="mail_settings_pin_verify_wrong_pin">PIN salah</string>
   <string name="mail_settings_biometrics_unable_to_set">Terjadi kesalahan saat mengatur preferensi Biometrik.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Terjadi kesalahan saat mengatur ulang preferensi Biometrik.</string>
   <string name="mail_settings_biometrics_unknown_lock">Terjadi kesalahan saat mengambil kebijakan kunci saat ini.</string>

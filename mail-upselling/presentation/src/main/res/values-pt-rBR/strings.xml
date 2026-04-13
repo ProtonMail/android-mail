@@ -56,24 +56,6 @@
   <string name="upselling_button_hint">Faça upgrade para ter flexibilidade total</string>
   <string name="upselling_upgrade_plan_generic">Você precisa de uma assinatura paga do Proton Mail para acessar este recurso</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Valor premium incluído</string>
-  <string name="upselling_onboarding_feature_e2e">Criptografia de ponta a ponta</string>
-  <string name="upselling_onboarding_feature_folders_labels">Pastas e marcadores ilimitados</string>
-  <string name="upselling_onboarding_free_feature_storage">1 GB de armazenamento e 1 endereço de e-mail</string>
-  <string name="upselling_onboarding_plus_feature_storage">15 GB de armazenamento</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 endereços de e-mail extras para você</string>
-  <string name="upselling_onboarding_plus_feature_email_domains">Suporte para 1 domínio de e-mail personalizado</string>
-  <string name="upselling_onboarding_plus_feature_aliases">10 aliases do hide-my-email</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Suporte prioritário ao cliente</string>
-  <string name="upselling_onboarding_unlimited_feature_storage">500 GB de armazenamento</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 endereços de e-mail extras para você</string>
-  <string name="upselling_onboarding_unlimited_feature_email_domains">Suporte para 3 domínios de e-mail personalizados</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Aliases ilimitados do hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Suporte dedicado ao cliente</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">VPN privada ultrarrápida</string>
-  <string name="upselling_onboarding_unlimited_feature_pass">Gerenciador de senhas criptografado</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Armazenamento em nuvem criptografado para fotos e documentos</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Proteção avançada de conta</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Armazenamento</string>
   <string name="upselling_comparison_table_email_addresses">Endereços de e-mail</string>
@@ -109,21 +91,11 @@
   <string name="upselling_auto_renew_text_standard">Renovação automática em %s%s, a menos que você cancele o plano</string>
   <string name="upselling_social_proof_reviews">+ DE 2 MIL AVALIAÇÕES</string>
   <string name="upselling_description_social_proof">Faça upgrade para a experiência que milhões de assinantes já amam.</string>
-  <string name="upselling_discount_tag">ECONOMIZE %s%%</string>
   <string name="upselling_month">/mês</string>
   <string name="upselling_month_only">somente %s /mês</string>
   <string name="upselling_year">/ano</string>
-  <string name="upselling_get_button">Obter %s</string>
-  <plurals name="upselling_month">
-    <item quantity="one">%d mês</item>
-    <item quantity="other">%d meses</item>
-  </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Não foi possível recuperar as opções de upgrade.</string>
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Não é possível obter as assinaturas.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Upgrade da assinatura em andamento…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Ocorreu um erro ao fazer upgrade da sua assinatura.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Ocorreu um erro. Tente novamente.</string>
 </resources>

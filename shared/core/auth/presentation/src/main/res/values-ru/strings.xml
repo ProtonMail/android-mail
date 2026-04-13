@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Закрыть</string>
   <string name="login_help_title">Чем мы можем помочь?</string>
   <string name="login_help_forgot_username">Забыли имя пользователя</string>
   <string name="login_help_forgot_password">Забыли пароль</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Имя пользователя или эл. почта</string>
   <string name="auth_email">Электронная почта</string>
   <string name="auth_password">Пароль</string>
-  <string name="auth_username_placeholder">Имя пользователя или эл. почта</string>
-  <string name="auth_password_placeholder">Пароль</string>
   <string name="auth_login_assistive_text">Введите свой адрес электронной почты или имя пользователя Proton.</string>
   <string name="auth_account_details">Введите данные своего аккаунта Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Ошибка входа. Попробуйте ещё раз.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">Требуется проверка пользователя.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Неверные учётные данные. Попробуйте еще раз.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">Неподдерживаемый двухфакторный метод.</string>
   <string name="auth_login_general_error">Произошла ошибка.</string>
   <string name="auth_second_factor_title">Двухфакторная аутентификация</string>
   <string name="auth_second_factor_subtitle">В вашем аккаунте настроено несколько способов двухфакторной аутентификации. Выберите, как вы хотите подтвердить свою личность.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Пароль не может быть пустым</string>
   <string name="auth_signup_title">Создайте аккаунт Proton</string>
   <string name="auth_signup_subtitle">Одна учетная запись для всех сервисов Proton</string>
-  <string name="auth_signup_username_assistive_text">Имя пользователя не должно быть пустым.</string>
-  <string name="auth_signup_email_assistive_text">Адрес электронной почты не должен быть пустым.</string>
   <string name="auth_signup_next">Далее</string>
   <string name="auth_signup_username">Имя пользователя</string>
   <string name="auth_signup_create_password">Создайте свой пароль</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Пропустить</string>
   <string name="auth_signup_recovery_title">Установить способ восстановления (необязательно)</string>
   <string name="auth_signup_recovery_subtitle">Мы отправим инструкции по восстановлению на этот адрес электронной почты или номер телефона, если вы не сможете войти в свой аккаунт.</string>
-  <string name="auth_signup_recovery_email">Электронная почта</string>
-  <string name="auth_signup_recovery_phone">Телефон</string>
-  <string name="auth_signup_recovery_email_hint">Электронная почта для восстановления</string>
-  <string name="auth_signup_recovery_phone_hint">Номер телефона для восстановления</string>
   <string name="auth_signup_recovery_select_country">Выберите страну</string>
   <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
   <string name="auth_signup_skip_recovery_title">Пропустить метод восстановления?</string>
@@ -131,7 +120,6 @@
   <string name="auth_fido_config_error">Ошибка при получении сохранённых ключей.</string>
   <string name="auth_fido_reading_key_error">Ошибка чтения ключа безопасности.</string>
   <string name="auth_fido_submit_key_error">Ошибка при отправке данных ключа.</string>
-  <string name="auth_fido_reading_key_progress">Чтение ключа безопасности.</string>
   <string name="auth_fido_authenticating_in_progress">Аутентификация с помощью ключа безопасности.</string>
   <string name="auth_fido_security_key">Ключ безопасности</string>
   <plurals name="password_validator_min_length_error">
@@ -153,20 +141,14 @@
   <string name="settings_password_management_tab_second_password">Второй пароль</string>
   <string name="settings_password_management_change_password_note">Чтобы изменить любой из ваших паролей, вам потребуется знать свой основной пароль.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Забыли свой основной пароль?</string>
-  <string name="settings_password_management_header">Изменить пароль</string>
-  <string name="settings_password_management_cannot_change_password">Вы не можете менять свой резервный пароль. Обратитесь к своему администратору.</string>
   <string name="settings_main_password_hint_current">Текущий основной пароль</string>
   <string name="settings_main_password_hint_new">Новый основной пароль</string>
   <string name="settings_main_password_hint_new_confirm">Подтвердить новый основной пароль</string>
   <string name="settings_second_password_hint_current_main_password">Текущий основной пароль</string>
   <string name="settings_second_password_hint_new">Новый второй пароль</string>
   <string name="settings_second_password_hint_new_confirm">Подтвердить новый второй пароль</string>
-  <string name="settings_change_password_error">Произошла ошибка при смене пароля.</string>
-  <string name="settings_recovery_email_success">Резервный адрес электронной почты обновлён</string>
   <string name="settings_password_management_login_success">Пароль для входа обновлен</string>
   <string name="settings_password_management_second_success">Второй пароль обновлён.</string>
-  <string name="settings_password_management_start_recovery">Не знаете свой текущий пароль?</string>
-  <string name="settings_password_management_2fa">2FA is needed</string>
   <string name="settings_password_invalid_2fa">Неверный код второго фактора. Попробуйте ещё раз.</string>
   <string name="settings_password_error_empty">Пароль не может быть пустым.</string>
   <string name="settings_password_error">Неправильное имя пользователя или пароль. Повторите попытку.</string>

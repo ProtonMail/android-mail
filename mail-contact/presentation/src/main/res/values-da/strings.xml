@@ -29,10 +29,6 @@
     <item quantity="one">%1$d medlem</item>
     <item quantity="other">%1$d medlemmer</item>
   </plurals>
-  <plurals name="contact_group_form_member_count">
-    <item quantity="one">Medlem (%1$d)</item>
-    <item quantity="other">Medlemmer (%1$d)</item>
-  </plurals>
   <string name="search_contacts_description">Søg i kontakter</string>
   <string name="contact_search_no_results">Ingen resultater fundet.</string>
   <string name="contact_search_placeholder">Søg efter kontakt eller gruppe</string>
@@ -67,8 +63,6 @@
   <string name="contact_type_voice">Stemme</string>
   <string name="contact_property_birthday">Fødselsdag</string>
   <string name="contact_property_note">Note</string>
-  <string name="contact_property_photo">Foto</string>
-  <string name="contact_property_logo">Logo</string>
   <string name="contact_property_organization">Organisation</string>
   <string name="contact_property_anniversary">Årsdag</string>
   <string name="contact_property_title">Titel</string>

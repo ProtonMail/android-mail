@@ -17,7 +17,6 @@
   -->
 <resources>
   <string name="app_name_mail">Proton Mail</string>
-  <string name="login_help_close">Kapat</string>
   <string name="login_help_title">Nasıl yardımcı olabiliriz?</string>
   <string name="login_help_forgot_username">Kullanıcı adımı unuttum</string>
   <string name="login_help_forgot_password">Parolamı unuttum</string>
@@ -36,14 +35,10 @@
   <string name="auth_login_username">Kullanıcı adı ya da e-postan adresi</string>
   <string name="auth_email">E-posta</string>
   <string name="auth_password">Parola</string>
-  <string name="auth_username_placeholder">Kullanıcı adı ya da e-posta</string>
-  <string name="auth_password_placeholder">Parola</string>
   <string name="auth_login_assistive_text">Lütfen Proton e-posta adresinizi ya da kullanıcı adınızı yazın.</string>
   <string name="auth_account_details">Proton hesabınızın bilgilerini yazın.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Oturum açılırken sorun çıktı. Lütfen yeniden deneyin.</string>
-  <string name="auth_login_error_invalid_action_human_verification_challenge">İnsan doğrulaması gerekli.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">Oturum açma bilgileri yanlış. Lütfen yeniden deneyin.</string>
-  <string name="auth_login_error_invalid_action_unsupported_tfa">İkinci adım desteklenmiyor.</string>
   <string name="auth_login_general_error">Bir sorun çıktı.</string>
   <string name="auth_second_factor_title">İki adımlı doğrulama</string>
   <string name="auth_second_factor_subtitle">Hesabınızda yapılandırılmış birkaç iki adımlı doğrulama yöntemi var. Lütfen kimliğinizi nasıl doğrulamak istediğinizi seçin.</string>
@@ -66,8 +61,6 @@
   <string name="auth_two_pass_input_empty">Parola boş olamaz</string>
   <string name="auth_signup_title">Proton hesabınızı açın</string>
   <string name="auth_signup_subtitle">Tüm Proton hizmetleri için tek hesap</string>
-  <string name="auth_signup_username_assistive_text">Kullanıcı adı boş olamaz</string>
-  <string name="auth_signup_email_assistive_text">E-posta adresi boş olamaz</string>
   <string name="auth_signup_next">Sonraki</string>
   <string name="auth_signup_username">Kullanıcı adı</string>
   <string name="auth_signup_create_password">Parolanızı oluşturun</string>
@@ -83,10 +76,6 @@
   <string name="auth_signup_recovery_skip">Atla</string>
   <string name="auth_signup_recovery_title">Kurtarma yöntemini ayarla (isteğe bağlı)</string>
   <string name="auth_signup_recovery_subtitle">Hesabınız kilitlenirse bu e-posta adresine veya telefon numarasına kurtarma yönergesi göndereceğiz.</string>
-  <string name="auth_signup_recovery_email">E-posta adresi</string>
-  <string name="auth_signup_recovery_phone">Telefon</string>
-  <string name="auth_signup_recovery_email_hint">Kurtarma e-posta adresi</string>
-  <string name="auth_signup_recovery_phone_hint">Kurtarma telefonu numarası</string>
   <string name="auth_signup_recovery_select_country">Ülke seçin</string>
   <string name="auth_signup_phone_placeholder">XX XXX XXXXXXX</string>
   <string name="auth_signup_skip_recovery_title">Kurtarma yöntemi atlansın mı?</string>
@@ -129,7 +118,6 @@
   <string name="auth_fido_config_error">Kaydedilmiş anahtarlar alınırken sorun çıktı.</string>
   <string name="auth_fido_reading_key_error">Güvenlik anahtarı okunurken sorun çıktı.</string>
   <string name="auth_fido_submit_key_error">Anahtar verileri gönderilirken sorun çıktı.</string>
-  <string name="auth_fido_reading_key_progress">Güvenlik anahtarı okunuyor.</string>
   <string name="auth_fido_authenticating_in_progress">Güvenlik anahtarıyla kimlik doğrulanıyor.</string>
   <string name="auth_fido_security_key">Güvenlik anahtarı</string>
   <plurals name="password_validator_min_length_error">
@@ -147,20 +135,14 @@
   <string name="settings_password_management_tab_second_password">İkinci parola</string>
   <string name="settings_password_management_change_password_note">Parolalarınızın birini değiştirebilmek için ana parolanızı bilmelisiniz.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Ana parolanızı mı unuttunuz?</string>
-  <string name="settings_password_management_header">Parolayı değiştir</string>
-  <string name="settings_password_management_cannot_change_password">Yedek parolanızı değiştiremezsiniz. Lütfen yöneticiniz ile görüşün.</string>
   <string name="settings_main_password_hint_current">Geçerli ana parola</string>
   <string name="settings_main_password_hint_new">Yeni ana parola</string>
   <string name="settings_main_password_hint_new_confirm">Yeni ana parola onayı</string>
   <string name="settings_second_password_hint_current_main_password">Geçerli ana parola</string>
   <string name="settings_second_password_hint_new">Yeni ikinci parola</string>
   <string name="settings_second_password_hint_new_confirm">Yeni ikinci parola onayı</string>
-  <string name="settings_change_password_error">Parola değiştirilirken bir sorun çıktı.</string>
-  <string name="settings_recovery_email_success">Kurtarma e-postası adresi güncellendi</string>
   <string name="settings_password_management_login_success">Oturum açma parolası güncellendi</string>
   <string name="settings_password_management_second_success">İkinci parola güncellendi</string>
-  <string name="settings_password_management_start_recovery">Geçerli parolanızı bilmiyor musunuz?</string>
-  <string name="settings_password_management_2fa">İki adımlı doğrulama gerekli</string>
   <string name="settings_password_invalid_2fa">İkinci adım kodu geçersiz. Lütfen yeniden deneyin.</string>
   <string name="settings_password_error_empty">Parola boş olamaz.</string>
   <string name="settings_password_error">Kullanıcı adı veya parola yanlış. Lütfen yeniden deneyin.</string>

@@ -22,9 +22,7 @@
   <string name="expiration_hours_arg">%d 時間</string>
   <string name="expiration_minutes_arg">%d分</string>
   <string name="retry">再試行</string>
-  <string name="toolbar_back_content_description">前の画面に戻る</string>
   <string name="x_error_not_logged_in">サインインしていません</string>
-  <string name="action_customize_toolbar">ツールバーを編集</string>
   <string name="action_customize_toolbar_description">ツールバーを編集</string>
   <string name="action_customize_toolbar_content_description">ツールバーを編集</string>
   <string name="action_reply">返信</string>
@@ -59,7 +57,6 @@
   <string name="action_pin_description">ピン留め</string>
   <string name="action_unpin_description">ピン留めを解除</string>
   <string name="action_reply_content_description">返信</string>
-  <string name="action_reply_to_content_description">%s に返信</string>
   <string name="action_reply_all_content_description">全員に返信</string>
   <string name="action_forward_content_description">転送</string>
   <string name="action_mark_read_content_description">既読にする</string>
@@ -91,15 +88,12 @@
   <string name="common_error_loading_actions">動作の読み込みに失敗</string>
   <string name="yesterday">昨日</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">添付ファイル</string>
-  <string name="attachment_download_notification_channel_description">添付ファイルのダウンロードに関する通知</string>
   <string name="email_notification_channel_name">メール</string>
   <string name="login_notification_channel_name">ログインアラート</string>
   <string name="email_notification_channel_description">受信メール通知</string>
   <string name="login_notification_channel_description">新しいログイン通知</string>
   <string name="auth_badge_official">公式</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">この操作を処理するアプリが見つかりませんでした。</string>
-  <string name="action_copied_to_clipboard">クリップボードにコピーされました</string>
   <string name="mailbox_action_delete_dialog_button_cancel">キャンセル</string>
   <string name="mailbox_action_delete_dialog_button_delete">削除</string>
   <string name="picker_dialog_cancel">キャンセル</string>

@@ -26,7 +26,6 @@
   <string name="quick_reply_button_content_description">Svar</string>
   <string name="quick_reply_all_button_content_description">Svar alle</string>
   <string name="more_button_content_description">Mer</string>
-  <string name="subject">Emne:</string>
   <string name="from">Fra:</string>
   <string name="to">Til:</string>
   <string name="cc">Kopi:</string>
@@ -36,7 +35,6 @@
     <item quantity="one">%d vedlegg</item>
     <item quantity="other">%d vedlegg</item>
   </plurals>
-  <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Utkast)</string>
   <string name="error_mark_as_read_failed">Kunne ikke merke som lest. Prøv på nytt.</string>
@@ -44,12 +42,9 @@
   <string name="error_star_operation_failed">Kunne ikke legge til stjernemerke. Prøv på nytt.</string>
   <string name="error_unstar_operation_failed">Kunne ikke fjerne stjernemerking. Prøv på nytt.</string>
   <string name="error_move_to_trash_failed">Kunne ikke flytte til papirkurven. Prøv på nytt.</string>
-  <string name="message_moved">Meldingen er flyttet</string>
   <string name="message_moved_to">Meldingen flyttet til %s</string>
-  <string name="message_moved_to_trash">Melding flyttet til papirkurven</string>
   <string name="message_moved_to_archive">Melding flyttet til arkiv</string>
   <string name="error_move_to_archive_failed">Flytting til arkiv mislyktes. Prøv på nytt.</string>
-  <string name="message_moved_to_spam">Melding flyttet til søppelpost</string>
   <string name="error_move_to_spam_failed">Flytt til søppelpost mislyktes. Prøv på nytt.</string>
   <string name="message_moved_to_selected_destination">Meldingen flyttet til %1$s</string>
   <string name="error_move_message_failed">Kunne ikke flytte melding. Prøv på nytt.</string>
@@ -65,8 +60,6 @@
   <string name="error_attachment_download_in_progress">Gjeldende nedlasting må fullføres før du kan starte en ny.</string>
   <string name="error_get_attachment_not_enough_memory">Kunne ikke hente vedlegg på grunn av utilstrekkelig minne.</string>
   <string name="error_relabel_message_failed">Kunne ikke endre merking av melding. Prøv på nytt.</string>
-  <string name="error_relabel_conversation_failed">Kunne ikke endre merking av samtale. Prøv på nytt.</string>
-  <string name="please_go_back_online_to_load_messages">Du er frakoblet. Koble til internett for å laste inn meldinger.</string>
   <string name="decryption_error">Kunne ikke dekryptere melding</string>
   <string name="detail_error_retrieving_message_body">Kan ikke hente melding</string>
   <string name="message_body_error_no_webview">Du må ha en WebView installert for å se innholdet i denne meldingen.</string>
@@ -118,8 +111,6 @@
   <string name="message_report_phishing_dialog_message">Hvis du rapporterer en melding som et forsøk på nettfisking, sendes meldingen til oss, slik at vi kan analysere den og forbedre filtrene våre. Dette betyr at vi vil kunne se innholdet i meldingen i sin helhet.</string>
   <string name="message_report_phishing_dialog_confim_button">Bekreft</string>
   <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
-  <string name="open_on_protoncalendar_banner_title">Åpne i Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Sikker kryptert kalender</string>
   <string name="trashed_messages_banner">Vis meldinger i papirkurven i denne samtalen.</string>
   <string name="non_trashed_messages_banner">Vis meldinger som ikke er i søppelkurven i denne samtalen.</string>
   <string name="recipient_me">meg</string>
@@ -182,8 +173,6 @@
   <string name="already_unsubscribed_banner_message">Du er avmeldt fra denne e-postlisten.</string>
   <string name="error_unsubscribe_newsletter">Mislyktes å avslutte abonnement på nyhetsbrev</string>
   <string name="detail_error_loading_single_message">Kunne ikke laste inn meldingen</string>
-  <string name="error_downloading_image">Kunne ikke laste ned bildet</string>
-  <string name="image_downloaded_successfully">Bilde lastet ned</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Meldingsoverskrifter</string>
   <string name="raw_message_data_html_title">Meldings-HTML</string>

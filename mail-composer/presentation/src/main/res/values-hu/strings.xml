@@ -25,16 +25,10 @@
   <string name="compose_message_placeholder">E-mail írása</string>
   <string name="close_composer_content_description">Szerkesztő bezárása</string>
   <string name="send_button_title">Küldés</string>
-  <string name="send_message_content_description">Üzenet küldése</string>
   <string name="composer_expand_recipients_button">Más címzettek megjelenítése</string>
   <string name="composer_error_invalid_email">Az e-mail cím érvénytelen vagy nem létezik.</string>
-  <string name="change_sender_button_content_description">Feladó módosítása</string>
   <string name="composer_change_sender_paid_feature">Váltson előfizetéses csomagra a feladó címének megváltoztatásához</string>
-  <string name="composer_error_store_draft_sender_address">A feladó címe nem lett elmentve</string>
-  <string name="composer_error_store_draft_body">Az e-mail vázlat nem lett elmentve</string>
   <string name="composer_error_duplicate_recipient">Duplikált címzett(ek) eltávolítva</string>
-  <string name="composer_error_store_draft_subject">A tárgysor nem lett elmentve</string>
-  <string name="composer_error_store_draft_recipients">A vázlat címzetteinek tárolása nem sikerült</string>
   <string name="composer_error_store_draft_address_disabled">Unable to save draft - This sender address is disabled</string>
   <string name="composer_error_store_draft_address_pk_missing">Unable to save draft - This sender address does not have a primary key</string>
   <string name="composer_error_store_draft_attachment_too_large">Unable to save draft - Attachments exceed the size limit</string>
@@ -51,8 +45,6 @@
   <string name="composer_add_attachments_bottom_sheet_from_photos">A saját fotókönyvtárból</string>
   <string name="composer_add_attachments_bottom_sheet_from_camera">Új fotó készítése</string>
   <string name="composer_error_loading_parent_message">Az üzenet adatainak betöltése nem sikerült</string>
-  <string name="composer_original_message_quote">Eredeti üzenet</string>
-  <string name="composer_sender_quote">%s-kor, %s&lt;%s&gt; ezt írta:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Elérte a mellékletekre vonatkozó korlátot</string>
   <string name="composer_attachment_size_exceeded_dialog_message">A mellékletek maximális mérete %1$s</string>
@@ -68,12 +60,10 @@
   <string name="composer_button_discard_draft">Piszkozat elvetése</string>
   <string name="composer_button_set_expiration">Időkorlát megadása</string>
   <string name="composer_expiration_time_bottom_sheet_title">Időkorlátos üzenet</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Beállítás</string>
   <string name="composer_bottom_bar_expiration_time_none">Never expires</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">After 1 hour</string>
   <string name="composer_bottom_bar_expiration_time_one_day">After 1 day</string>
   <string name="composer_bottom_bar_expiration_time_three_days">After 3 days</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">After 1 week</string>
   <string name="composer_bottom_bar_expiration_time_custom">Meghatározott időpontban</string>
   <string name="composer_error_setting_expiration_time">Az időkorlát beállítása nem sikerült</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -98,8 +88,6 @@
   <string name="message_sending_error_dialog_header">Hiba a küldés közben</string>
   <string name="message_sending_error_dialog_button_dismiss">Bezárás</string>
   <string name="message_sending_error_dialog_text_error">A megadott címre a következő ok miatt nem lehet elküldeni az e-mailt:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Nincs megbízható kulcs: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Cím nem létezik: %s</string>
   <string name="set_message_password_title">Jelszó beállítása</string>
   <string name="set_message_password_info_message">Állítson be jelszót az üzenet titkosításához a nem Proton Mail-fiókkal rendelkező címzettek számára.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">További információk</a></string>
@@ -107,18 +95,10 @@
   <string name="set_message_password_label_hint">Jelszó emlékeztető (nem kötelező)</string>
   <string name="set_message_password_supporting_text">Legalább 8 karakter szükséges.</string>
   <string name="set_message_password_supporting_error_text">A jelszónak legalább 8, és legfeljebb 21 karakter hosszúnak kell lennie</string>
-  <string name="set_message_password_supporting_text_repeat">A jelszavaknak egyezniük kell</string>
-  <string name="set_message_password_supporting_error_text_repeat">A jelszavak nem egyeznek</string>
   <string name="set_message_password_button_show">Jelszó megjelenítése</string>
   <string name="set_message_password_button_hide">Jelszó elrejtése</string>
   <string name="set_message_password_button_save_changes">Mentés</string>
   <string name="set_message_password_button_remove_password">Jelszó eltávolítása</string>
-  <string name="respondInline">Válaszolás az eredeti levélben</string>
-  <string name="subject_placeholder">Tárgy</string>
-  <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d tag</item>
-    <item quantity="other">%d tag</item>
-  </plurals>
   <string name="composer_recipient_suggestion_device">Eszköz névjegyek megjelenítése</string>
   <!-- Discard draft dialog -->
   <string name="discard_draft_dialog_title">Elveti ezt az üzenetet?</string>
@@ -139,10 +119,6 @@
   <string name="composer_schedule_send_custom_upsell_title">Egyéni dátum és idő</string>
   <string name="composer_schedule_send_custom_description">Válasszon időt és dátumot</string>
   <string name="composer_schedule_send_previously_set">Korábban beállítva</string>
-  <string name="composer_schedule_send_custom_time_label">Idő</string>
-  <string name="composer_schedule_send_custom_date_label">Dátum</string>
-  <string name="composer_schedule_send_dialog_ok">OK</string>
-  <string name="composer_schedule_send_dialog_enter_time">Adja meg az időt</string>
   <string name="composer_change_sender_title">Feladó</string>
   <string name="composer_error_change_sender_failed_getting_addresses">A feladó nem változtatható meg, mert a felhasználó címeinek betöltése nem sikerült. Próbálja újra.</string>
   <string name="composer_change_sender_invalid_address">A kiválasztott cím nem használható küldésre</string>

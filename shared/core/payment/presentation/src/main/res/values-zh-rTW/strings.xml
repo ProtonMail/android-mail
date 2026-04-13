@@ -31,7 +31,6 @@
   </plurals>
   <string name="payment_bf_renew_monthly">折扣以標準月費計算。將以每月 %1$s 自動續訂。</string>
   <string name="payment_bf_renew_annually">折扣以標準月費計算。將以每年 %1$s 自動續訂。</string>
-  <string name="payment_bf_renew_biennially">折扣以標準月費計算。將以每 2 年 %1$s 自動續訂。</string>
   <string name="payment_welcome_offer_renew_monthly">歡迎優惠。自動續約為每月 %1$s</string>
   <string name="payment_welcome_offer_renew_annually">歡迎優惠。自動續約為每年 %1$s</string>
   <string name="payment_welcome_offer_renew_biennially">歡迎優惠。自動續約為每兩年 %1$s</string>

@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_pin_lock_toolbar_button_content_description">Назад</string>
   <!-- Auto lock -->
   <string name="mail_pinlock_settings_title">Блакіроўка праграмы</string>
   <string name="mail_pinlock_settings_no_lock">Не блакіраваць</string>
@@ -64,12 +63,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Так</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Не</string>
   <string name="mail_settings_pin_insertion_created_success">PIN-код паспяхова створаны.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN-код паспяхова зменены.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
-  <string name="mail_settings_pin_verify_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
-  <string name="mail_settings_pin_verify_too_many_attempts">Занадта шмат няправільных спроб</string>
-  <string name="mail_settings_pin_verify_wrong_pin">Няправільны PIN</string>
   <string name="mail_settings_biometrics_unable_to_set">Адбылася памылка пры наладжванні біяметрычных параметраў.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Адбылася памылка падчас скідання біяметрычных параметраў.</string>
   <string name="mail_settings_biometrics_unknown_lock">Адбылася памылка падчас атрымання бягучай палітыкі блакіравання.</string>
