@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.suspendCancellableCoroutine
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -35,10 +36,18 @@ class FirebaseMessagingProxy @Inject constructor(
 
     private suspend fun fetchFirebaseToken(): Either<DataError.Remote, String> {
         return suspendCancellableCoroutine { continuation ->
-            firebaseMessaging.token.addOnCompleteListener {
-                val token = if (it.isSuccessful) it.result.right() else DataError.Remote.Unknown.left()
+            firebaseMessaging.token.addOnCompleteListener { task ->
+                val token = if (task.isSuccessful) {
+                    task.result.right()
+                } else {
+                    val exception = task.exception
+                    Timber.tag("FCM Token")
+                        .e(exception, "Failed to fetch FCM token. isCanceled=%s", task.isCanceled)
+                    DataError.Remote.Unknown.left()
+                }
                 continuation.resume(token)
             }
         }
     }
+
 }
