@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -38,6 +37,7 @@ import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -89,20 +89,20 @@ internal class MessageCursorRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val firstPage = CursorId(ConversationId("100"), "102")
-        val messageId = LocalConversationId("102".toULong())
+        val anchorItem = CursorId(ConversationId("100"), "102")
+        val anchorMessageId = LocalItemId("102".toULong())
 
         coEvery {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = messageId
+                anchorItemId = anchorMessageId
             )
         } returns cursorWrapper.right()
 
         // When
         val actual = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = anchorItem,
             userId = userId,
             labelId = labelId
         )
@@ -117,7 +117,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = messageId
+                anchorItemId = anchorMessageId
             )
         }
         coVerify(exactly = 0) { rustMailboxFactory.create(any(), any()) }
@@ -129,8 +129,8 @@ internal class MessageCursorRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val firstPage = CursorId(ConversationId("100"), null)
-        val conversationId = firstPage.conversationId.toLocalConversationId()
+        val anchorItem = CursorId(ConversationId("100"), null)
+        val conversationId = anchorItem.conversationId.toLocalConversationId()
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
@@ -144,7 +144,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = conversationId
+                anchorItemId = conversationId
             )
         } returns null
 
@@ -161,7 +161,7 @@ internal class MessageCursorRepositoryImplTest {
 
         // When
         val actual = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = anchorItem,
             userId = userId,
             labelId = labelId
         )
@@ -189,8 +189,8 @@ internal class MessageCursorRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val firstPage = CursorId(ConversationId("100"), null)
-        val conversationId = firstPage.conversationId.toLocalConversationId()
+        val anchorItem = CursorId(ConversationId("100"), null)
+        val conversationId = anchorItem.conversationId.toLocalConversationId()
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
@@ -204,7 +204,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = conversationId
+                anchorItemId = conversationId
             )
         } returns PaginationError.Other(DataError.Local.IllegalStateError).left()
 
@@ -221,7 +221,7 @@ internal class MessageCursorRepositoryImplTest {
 
         // When
         val actual = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = anchorItem,
             userId = userId,
             labelId = labelId
         )
@@ -239,14 +239,14 @@ internal class MessageCursorRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val firstPage = CursorId(ConversationId("100"), null)
-        val conversationId = firstPage.conversationId.toLocalConversationId()
+        val anchorItem = CursorId(ConversationId("100"), null)
+        val conversationId = anchorItem.conversationId.toLocalConversationId()
 
         coEvery {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = conversationId
+                anchorItemId = conversationId
             )
         } returns null
 
@@ -256,7 +256,7 @@ internal class MessageCursorRepositoryImplTest {
 
         // When
         val actual = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = anchorItem,
             userId = userId,
             labelId = labelId
         )
@@ -271,10 +271,10 @@ internal class MessageCursorRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val firstPage = CursorId(ConversationId("100"), null)
-        val secondPage = CursorId(ConversationId("200"), null)
-        val firstConversationId = firstPage.conversationId.toLocalConversationId()
-        val secondConversationId = secondPage.conversationId.toLocalConversationId()
+        val firstAnchorItem = CursorId(ConversationId("100"), null)
+        val secondAnchorItem = CursorId(ConversationId("200"), null)
+        val firstConversationId = firstAnchorItem.conversationId.toLocalConversationId()
+        val secondConversationId = secondAnchorItem.conversationId.toLocalConversationId()
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
@@ -289,7 +289,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = any()
+                anchorItemId = any()
             )
         } returns null
 
@@ -306,12 +306,12 @@ internal class MessageCursorRepositoryImplTest {
 
         // When
         val firstResult = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = firstAnchorItem,
             userId = userId,
             labelId = labelId
         )
         val secondResult = repository.getCursor(
-            firstPage = secondPage,
+            anchorItemId = secondAnchorItem,
             userId = userId,
             labelId = labelId
         )
@@ -335,10 +335,10 @@ internal class MessageCursorRepositoryImplTest {
         val userId = UserIdSample.Primary
         val firstLabelId = SystemLabelId.Inbox.labelId
         val secondLabelId = SystemLabelId.Archive.labelId
-        val firstPage = CursorId(ConversationId("100"), null)
-        val secondPage = CursorId(ConversationId("200"), null)
-        val firstConversationId = firstPage.conversationId.toLocalConversationId()
-        val secondConversationId = secondPage.conversationId.toLocalConversationId()
+        val firstAnchorItem = CursorId(ConversationId("100"), null)
+        val secondAnchorItem = CursorId(ConversationId("200"), null)
+        val firstConversationId = firstAnchorItem.conversationId.toLocalConversationId()
+        val secondConversationId = secondAnchorItem.conversationId.toLocalConversationId()
 
         val firstMailbox = mockk<MailboxWrapper>()
         val secondMailbox = mockk<MailboxWrapper>()
@@ -361,7 +361,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = any(),
-                firstPage = any()
+                anchorItemId = any()
             )
         } returns null
 
@@ -387,12 +387,12 @@ internal class MessageCursorRepositoryImplTest {
 
         // When
         val firstResult = repository.getCursor(
-            firstPage = firstPage,
+            anchorItemId = firstAnchorItem,
             userId = userId,
             labelId = firstLabelId
         )
         val secondResult = repository.getCursor(
-            firstPage = secondPage,
+            anchorItemId = secondAnchorItem,
             userId = userId,
             labelId = secondLabelId
         )

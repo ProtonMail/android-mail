@@ -52,7 +52,7 @@ internal class GetConversationCursorTest {
         coEvery {
             conversationRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         } returns expected.right()
@@ -74,7 +74,7 @@ internal class GetConversationCursorTest {
         coVerify(exactly = 1) {
             conversationRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         }
@@ -90,7 +90,7 @@ internal class GetConversationCursorTest {
         coEvery {
             messageRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         } returns expected.right()
@@ -112,7 +112,7 @@ internal class GetConversationCursorTest {
         coVerify(exactly = 1) {
             messageRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         }
@@ -128,7 +128,7 @@ internal class GetConversationCursorTest {
         coEvery {
             conversationRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         } returns expected.left()
@@ -150,7 +150,7 @@ internal class GetConversationCursorTest {
         coVerify(exactly = 1) {
             conversationRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         }
@@ -163,7 +163,7 @@ internal class GetConversationCursorTest {
         coEvery {
             messageRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         } returns expected.left()
@@ -185,7 +185,7 @@ internal class GetConversationCursorTest {
         coVerify(exactly = 1) {
             messageRepository.getConversationCursor(
                 userId = userId,
-                firstPage = CursorId(conversationId, messageId),
+                anchorItemId = CursorId(conversationId, messageId),
                 labelId = labelId
             )
         }

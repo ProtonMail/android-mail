@@ -106,6 +106,7 @@ typealias LocalUser = User
 typealias LocalUserId = String
 typealias LocalConversation = Conversation
 typealias LocalConversationId = Id
+typealias LocalItemId = Id
 typealias LocalLabelId = Id
 typealias LocalViewMode = ViewMode
 typealias LocalMessageId = Id

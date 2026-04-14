@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.repository
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -57,19 +58,19 @@ class MessageCursorRepositoryImpl @Inject constructor(
     private val cursorPaginatorMutex = Mutex()
 
     override suspend fun getCursor(
-        firstPage: CursorId,
+        anchorItemId: CursorId,
         userId: UserId,
         labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor> {
-        val firstPageId = firstPage.messageId?.toLocalConversationId()
-            ?: firstPage.conversationId.toLocalConversationId()
+        val itemId = anchorItemId.messageId?.toLocalConversationId()
+            ?: anchorItemId.conversationId.toLocalConversationId()
 
         return getCursorWrapper(
             userId = userId,
             labelId = labelId,
-            firstPage = firstPageId
+            anchorItemId = itemId
         ).map { cursorWrapper ->
-            RustConversationCursorImpl(firstPage, cursorWrapper)
+            RustConversationCursorImpl(anchorItemId, cursorWrapper)
         }
     }
 
@@ -83,13 +84,13 @@ class MessageCursorRepositoryImpl @Inject constructor(
     private suspend fun getCursorWrapper(
         userId: UserId,
         labelId: LabelId,
-        firstPage: LocalConversationId
+        anchorItemId: LocalItemId
     ): Either<ConversationCursorError, MailMessageCursorWrapper> {
         when (
             val mailboxCursorResult = rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
-                firstPage = firstPage
+                anchorItemId = anchorItemId
             )
         ) {
             null -> {
@@ -100,7 +101,9 @@ class MessageCursorRepositoryImpl @Inject constructor(
 
             is Either.Right -> {
                 Timber.d("message-cursor-repository: Reused mailbox paginator cursor")
-                if (hasCursorPaginator()) destroyCursorPaginator()
+                cursorPaginatorMutex.withLock {
+                    if (hasCursorPaginator()) destroyCursorPaginator()
+                }
                 return mailboxCursorResult
             }
 
@@ -116,59 +119,55 @@ class MessageCursorRepositoryImpl @Inject constructor(
         return getCursorFromCursorPaginator(
             userId = userId,
             labelId = labelId,
-            firstPage = firstPage
+            anchorItemId = anchorItemId
         )
     }
 
     private suspend fun getCursorFromCursorPaginator(
         userId: UserId,
         labelId: LabelId,
-        firstPage: LocalConversationId
-    ): Either<ConversationCursorError, MailMessageCursorWrapper> {
+        anchorItemId: LocalItemId
+    ): Either<ConversationCursorError, MailMessageCursorWrapper> = cursorPaginatorMutex.withLock {
         val pageDescriptor = PageDescriptor(userId = userId, labelId = labelId)
+        val state = cursorPaginatorState
 
-        val initError = cursorPaginatorMutex.withLock {
-            val state = cursorPaginatorState
-            if (state == null || state.pageDescriptor != pageDescriptor) {
-                Timber.d(
-                    "message-cursor-repository: Initializing cursor paginator for pageDescriptor=%s",
-                    pageDescriptor
-                )
+        if (state == null || state.pageDescriptor != pageDescriptor) {
+            Timber.d(
+                "message-cursor-repository: Initializing cursor paginator for pageDescriptor=%s",
+                pageDescriptor
+            )
 
-                val mailbox = rustMailboxFactory.create(userId, labelId.toLocalLabelId()).getOrNull()
-                if (mailbox == null) {
-                    Timber.e(
-                        "message-cursor-repository: Unable to create mailbox for userId=%s and labelId=%s",
-                        userId,
-                        labelId
-                    )
-                    ConversationCursorError.InvalidState
-                } else {
-                    initCursorPaginator(pageDescriptor, mailbox)
-                }
-            } else {
-                Timber.d(
-                    "message-cursor-repository: Reusing existing cursor paginator, scrollerId=%s",
-                    state.paginatorWrapper.getScrollerId()
+            val mailbox = rustMailboxFactory.create(userId, labelId.toLocalLabelId()).getOrNull()
+            if (mailbox == null) {
+                Timber.e(
+                    "message-cursor-repository: Unable to create mailbox for userId=%s and labelId=%s",
+                    userId,
+                    labelId
                 )
-                null
+                return@withLock ConversationCursorError.InvalidState.left()
             }
+
+            val initError = initCursorPaginator(pageDescriptor, mailbox)
+            if (initError != null) {
+                return@withLock initError.left()
+            }
+        } else {
+            Timber.d(
+                "message-cursor-repository: Reusing existing cursor paginator, scrollerId=%s",
+                state.paginatorWrapper.getScrollerId()
+            )
         }
 
-        if (initError != null) return initError.left()
-
-        return cursorPaginatorMutex.withLock {
-            cursorPaginatorState?.paginatorWrapper?.getCursor(firstPage)?.mapLeft {
-                it.toConversationCursorError()
-            } ?: ConversationCursorError.InvalidState.left()
-        }
+        cursorPaginatorState?.paginatorWrapper?.getCursor(anchorItemId)?.mapLeft {
+            it.toConversationCursorError()
+        } ?: ConversationCursorError.InvalidState.left()
     }
 
     private suspend fun initCursorPaginator(
         pageDescriptor: PageDescriptor,
         mailbox: MailboxWrapper
     ): ConversationCursorError? {
-        destroyCursorPaginator()
+        if (hasCursorPaginator()) destroyCursorPaginator()
 
         return createRustMessagesPaginator(
             mailbox = mailbox,
