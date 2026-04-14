@@ -250,7 +250,7 @@ class RustConversationsQueryImpl @Inject constructor(
     override suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
-        firstPage: LocalConversationId
+        anchorConversationId: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>? {
         val pageDescriptor = PageDescriptor(userId, labelId)
 
@@ -276,7 +276,7 @@ class RustConversationsQueryImpl @Inject constructor(
                         "rust-conversation-query: Reusing active mailbox paginator for cursor, scrollerId=%s",
                         state.paginatorWrapper.getScrollerId()
                     )
-                    state.paginatorWrapper.getCursor(firstPage)
+                    state.paginatorWrapper.getCursor(anchorConversationId)
                 }
             }
         }

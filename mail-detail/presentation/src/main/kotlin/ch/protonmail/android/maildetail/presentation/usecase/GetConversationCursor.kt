@@ -45,13 +45,13 @@ class GetConversationCursor @Inject constructor(
         return if (locationViewModeIsConversation) {
             conversationRepository.getConversationCursor(
                 userId = userId,
-                firstPage = cursorId,
+                anchorItemId = cursorId,
                 labelId = labelId
             )
         } else {
             messageRepository.getConversationCursor(
                 userId = userId,
-                firstPage = cursorId,
+                anchorItemId = cursorId,
                 labelId = labelId
             )
         }

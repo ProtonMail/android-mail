@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.wrapper
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
@@ -55,11 +55,14 @@ class MailboxMessagePaginatorWrapper(
         is MessageScrollerGetItemsResult.Ok -> Unit.right()
     }
 
-    override suspend fun getCursor(conversationId: LocalConversationId) =
-        when (val result = rustPaginator.cursor(conversationId)) {
-            is MessageScrollerCursorResult.Error -> result.v1.toPaginationError().left()
-            is MessageScrollerCursorResult.Ok -> MailMessageCursorWrapper(result.v1).right()
-        }
+    override suspend fun getCursor(anchorItemId: LocalItemId) = when (
+        val result = rustPaginator.cursor(
+            anchorItemId
+        )
+    ) {
+        is MessageScrollerCursorResult.Error -> result.v1.toPaginationError().left()
+        is MessageScrollerCursorResult.Ok -> MailMessageCursorWrapper(result.v1).right()
+    }
 
     override fun disconnect() {
         Timber.d("message-paginator: Disconnecting paginator with id=%s", rustPaginator.id())

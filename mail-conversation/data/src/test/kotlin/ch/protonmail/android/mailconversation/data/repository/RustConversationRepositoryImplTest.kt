@@ -243,12 +243,12 @@ internal class RustConversationRepositoryImplTest {
             coEvery { invalidatePrevious() } just Runs
             every { close() } just Runs
         }
-        val firstPage = CursorId(ConversationId("100"), null)
+        val anchorItemId = CursorId(ConversationId("100"), null)
         val labelId = LabelId("2")
 
         coEvery {
             conversationCursorRepository.getCursor(
-                firstPage = firstPage,
+                anchorItemId = anchorItemId,
                 userId = userId,
                 labelId = labelId
             )
@@ -256,7 +256,7 @@ internal class RustConversationRepositoryImplTest {
 
         // When
         val result = rustConversationRepository.getConversationCursor(
-            firstPage = firstPage,
+            anchorItemId = anchorItemId,
             userId = userId,
             labelId = labelId
         )
