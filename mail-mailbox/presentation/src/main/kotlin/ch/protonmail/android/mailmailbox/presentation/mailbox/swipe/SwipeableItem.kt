@@ -138,10 +138,10 @@ fun SwipeableItem(
 
     // Swiping -> Threshold reached
     if (lifecycle is SwipeLifecycleState.Swiping && swipingEnabled) {
-        LaunchedEffect(width) {
+        val swipingDirection = lifecycle.direction
+        LaunchedEffect(width, swipingDirection) {
 
-            val direction = lifecycle.direction
-            if (lifecycle.direction == SwipeToDismissBoxValue.Settled) return@LaunchedEffect
+            if (swipingDirection == SwipeToDismissBoxValue.Settled) return@LaunchedEffect
 
             // dismissState.requireOffset() is the only available API to calculate the swipe fraction.
             // However, early reading of dismissState.requireOffset may cause exception. Therefore we call it only after
@@ -153,7 +153,7 @@ fun SwipeableItem(
                     fraction >= threshold
                 }
 
-            dispatch(SwipeLifecycleEvent.ThresholdReached(direction))
+            dispatch(SwipeLifecycleEvent.ThresholdReached(swipingDirection))
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
         }
     }
