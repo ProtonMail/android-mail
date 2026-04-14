@@ -838,7 +838,7 @@ class RustConversationsQueryImplTest {
         val actual = rustConversationsQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
-            firstPage = conversationId
+            anchorConversationId = conversationId
         )
 
         // Then
@@ -863,7 +863,7 @@ class RustConversationsQueryImplTest {
         val actual = rustConversationsQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
-            firstPage = conversationId
+            anchorConversationId = conversationId
         )
 
         // Then
@@ -917,7 +917,7 @@ class RustConversationsQueryImplTest {
         val actual = rustConversationsQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = requestedLabelId,
-            firstPage = conversationId
+            anchorConversationId = conversationId
         )
 
         // Then

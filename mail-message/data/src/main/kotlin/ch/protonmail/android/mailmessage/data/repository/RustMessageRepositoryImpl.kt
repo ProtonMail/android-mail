@@ -106,11 +106,11 @@ class RustMessageRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getConversationCursor(
-        firstPage: CursorId,
+        anchorItemId: CursorId,
         userId: UserId,
         labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor> =
-        messageCursorRepository.getCursor(firstPage, userId, labelId)
+        messageCursorRepository.getCursor(anchorItemId, userId, labelId)
 
     override suspend fun moveTo(
         userId: UserId,

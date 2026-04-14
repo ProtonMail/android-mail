@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.wrapper
 
 import arrow.core.Either
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 
 interface MessagePaginatorWrapper {
@@ -30,7 +30,7 @@ interface MessagePaginatorWrapper {
 
     suspend fun reload(): Either<PaginationError, Unit>
 
-    suspend fun getCursor(conversationId: LocalConversationId): Either<PaginationError, MailMessageCursorWrapper>
+    suspend fun getCursor(anchorItemId: LocalItemId): Either<PaginationError, MailMessageCursorWrapper>
 
     fun disconnect()
 

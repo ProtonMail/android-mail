@@ -47,7 +47,7 @@ interface RustConversationsQuery {
     suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
-        firstPage: LocalConversationId
+        anchorConversationId: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>?
 
     fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerStatusUpdate>

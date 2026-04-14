@@ -140,11 +140,11 @@ class RustConversationRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getConversationCursor(
-        firstPage: CursorId,
+        anchorItemId: CursorId,
         userId: UserId,
         labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor> = conversationCursorRepository.getCursor(
-        firstPage,
+        anchorItemId,
         userId,
         labelId
     )

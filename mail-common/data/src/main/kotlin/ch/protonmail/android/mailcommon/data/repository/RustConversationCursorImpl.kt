@@ -31,7 +31,7 @@ import ch.protonmail.android.mailcommon.data.wrapper.ConversationCursor as Conve
  * Maintains a cursor position allowing sequential based access to Conversations, maintains a position allowing
  * forwards and backwards navigation through a conversationList.  The cursor is stateful and must be closed after use
  *
- * End indicates there there are no more entries available in this direction.
+ * End indicates there are no more entries available in this direction.
  *
  * [moveForward] and [moveBackward]  should be called asyncryonously to move the cursor forwards and backwards in
  * response to UI events. but the UI can use [next] and [previous] to update the page immediately and then call the
@@ -180,10 +180,10 @@ class RustConversationCursorImpl private constructor(
     companion object {
 
         suspend operator fun invoke(
-            firstPage: CursorId,
+            anchorItemId: CursorId,
             conversationCursorWrapper: ConversationCursorWrapper
         ): RustConversationCursorImpl {
-            val current = CursorResult.Cursor(firstPage.conversationId, firstPage.messageId)
+            val current = CursorResult.Cursor(anchorItemId.conversationId, anchorItemId.messageId)
             val previous = conversationCursorWrapper.previousPage()
             val next = conversationCursorWrapper.nextPage()
             return RustConversationCursorImpl(

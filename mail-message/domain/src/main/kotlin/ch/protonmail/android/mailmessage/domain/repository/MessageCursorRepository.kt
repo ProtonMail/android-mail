@@ -27,7 +27,7 @@ import me.proton.core.domain.entity.UserId
 
 interface MessageCursorRepository {
     suspend fun getCursor(
-        firstPage: CursorId,
+        anchorItemId: CursorId,
         userId: UserId,
         labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor>

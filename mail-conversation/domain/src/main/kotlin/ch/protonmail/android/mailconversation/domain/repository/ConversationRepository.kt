@@ -83,7 +83,7 @@ interface ConversationRepository {
      * Used to JIT swipe through conversations/ pages with methods exposed to get next and get previous and move to next
      */
     suspend fun getConversationCursor(
-        firstPage: CursorId,
+        anchorItemId: CursorId,
         userId: UserId,
         labelId: LabelId
     ): Either<ConversationCursorError, ConversationCursor>
