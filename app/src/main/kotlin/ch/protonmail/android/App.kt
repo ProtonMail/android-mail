@@ -21,7 +21,6 @@ package ch.protonmail.android
 import android.app.Application
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.ExperimentalComposeRuntimeApi
-import androidx.compose.runtime.tooling.ComposeStackTraceMode.Companion.SourceInformation
 import androidx.lifecycle.ProcessLifecycleOwner
 import ch.protonmail.android.callbacks.SecureActivityLifecycleCallbacks
 import ch.protonmail.android.initializer.MainInitializer
@@ -71,7 +70,7 @@ internal class App : Application() {
         super.onCreate()
 
         // Richer Compose-related stack traces. Does not work on prod builds, nor it is recommended to do so there.
-        if (BuildConfig.DEBUG) Composer.setDiagnosticStackTraceMode(SourceInformation)
+        Composer.setDiagnosticStackTraceEnabled(BuildConfig.DEBUG)
 
         benchmarkTracer.begin("proton-app-init")
 
