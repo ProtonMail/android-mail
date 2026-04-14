@@ -43,6 +43,8 @@ class WorkManagerInitializer : Initializer<WorkManager> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>?>> = listOf(
+        // RustMailCommonInitializer is already initialized before the WorkManager, this is just a safety
+        // net since Startup will deduplicate if already init.
         RustMailCommonInitializer::class.java
     )
 

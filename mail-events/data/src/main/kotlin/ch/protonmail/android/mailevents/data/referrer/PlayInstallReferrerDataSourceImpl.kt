@@ -62,19 +62,19 @@ class PlayInstallReferrerDataSourceImpl @Inject constructor(
                         }
 
                         InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
-                            Timber.w("Install referrer not supported on this device")
+                            Timber.d("Install referrer not supported on this device")
                             continuation.resume(DataError.Local.Unknown.left())
                             referrerClient.endConnection()
                         }
 
                         InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
-                            Timber.w("Install referrer service unavailable")
+                            Timber.d("Install referrer service unavailable")
                             continuation.resume(DataError.Local.Unknown.left())
                             referrerClient.endConnection()
                         }
 
                         else -> {
-                            Timber.w("Unknown install referrer response code: $responseCode")
+                            Timber.d("Unknown install referrer response code: $responseCode")
                             continuation.resume(DataError.Local.Unknown.left())
                             referrerClient.endConnection()
                         }

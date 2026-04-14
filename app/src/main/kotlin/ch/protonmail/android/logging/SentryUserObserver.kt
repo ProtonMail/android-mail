@@ -22,6 +22,7 @@ import java.util.UUID
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import io.sentry.Sentry
 import io.sentry.protocol.User
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.proton.core.domain.entity.UserId
@@ -35,12 +36,17 @@ class SentryUserObserver @Inject constructor(
     private val sessionRepository: UserSessionRepository
 ) {
 
-    fun start(onCrashReportSettingChange: (enabled: Boolean) -> Unit) = sessionRepository.observePrimaryUserId()
-        .onEach { userId ->
-            assignSentryUser(userId)
-            onCrashReportSettingChange(isCrashReportsEnabled(userId))
-        }
-        .launchIn(scopeProvider.GlobalDefaultSupervisedScope)
+    // The returning Job can be ignored in prod as it's a fire and forget call, it's only needed in tests.
+    fun start(onCrashReportSettingChange: (enabled: Boolean) -> Unit): Job {
+        assignSentryUser(userId = null)
+
+        return sessionRepository.observePrimaryUserId()
+            .onEach { userId ->
+                assignSentryUser(userId)
+                onCrashReportSettingChange(isCrashReportsEnabled(userId))
+            }
+            .launchIn(scopeProvider.GlobalDefaultSupervisedScope)
+    }
 
     private fun assignSentryUser(userId: UserId?) {
         val user = User().apply { id = userId?.id ?: UUID.randomUUID().toString() }
