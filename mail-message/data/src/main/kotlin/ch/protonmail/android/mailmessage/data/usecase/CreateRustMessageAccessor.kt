@@ -19,21 +19,19 @@
 package ch.protonmail.android.mailmessage.data.usecase
 
 import arrow.core.Either
-import arrow.core.getOrElse
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
-import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import uniffi.mail_uniffi.MessageResult
-import uniffi.mail_uniffi.ResolveMessageIdResult
+import uniffi.mail_uniffi.ResolveMessageFromPushNotificationResult
 import uniffi.mail_uniffi.message
-import uniffi.mail_uniffi.resolveMessageId
+import uniffi.mail_uniffi.resolveMessageFromPushNotification
 import javax.inject.Inject
 
 class CreateRustMessageAccessor @Inject constructor() {
@@ -52,20 +50,15 @@ class CreateRustMessageAccessor @Inject constructor() {
     suspend operator fun invoke(
         session: MailUserSessionWrapper,
         remoteMessageId: RemoteMessageId
-    ): Either<DataError, LocalMessageMetadata> {
-        val messageId = when (val result = resolveMessageId(session.getRustUserSession(), remoteMessageId)) {
-            is ResolveMessageIdResult.Error -> result.v1.toDataError().left()
-            is ResolveMessageIdResult.Ok -> result.v1.toMessageId().right()
-        }.getOrElse {
-            return DataError.Local.NotFound.left()
-        }
-
-        return when (val result = message(session.getRustUserSession(), messageId.toLocalMessageId())) {
-            is MessageResult.Error -> result.v1.toDataError().left()
-            is MessageResult.Ok -> when (val message = result.v1) {
-                null -> DataError.Local.NotFound.left()
-                else -> message.right()
-            }
+    ): Either<DataError, LocalMessageMetadata> = either {
+        when (
+            val result = resolveMessageFromPushNotification(
+                session = session.getRustUserSession(),
+                remoteId = remoteMessageId
+            )
+        ) {
+            is ResolveMessageFromPushNotificationResult.Error -> raise(result.v1.toDataError())
+            is ResolveMessageFromPushNotificationResult.Ok -> result.v1
         }
     }
 }
