@@ -28,7 +28,6 @@ import ch.protonmail.android.testdata.message.rust.RemoteMessageIdSample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -45,7 +44,7 @@ class GetMessageByRemoteIdTest {
         val userId = UserIdSample.Primary
         val message = MessageSample.SepWeatherForecast
         val remoteId = RemoteMessageIdSample.SepWeatherForecast
-        coEvery { repository.observeMessage(userId, remoteId) } returns flowOf(message.right())
+        coEvery { repository.getMessageByRemoteId(userId, remoteId) } returns message.right()
 
         // When
         val actual = getMessage(userId, remoteId)
@@ -60,14 +59,14 @@ class GetMessageByRemoteIdTest {
         val userId = UserIdSample.Primary
         val error = DataError.Local.NoDataCached
         val remoteId = RemoteMessageIdSample.SepWeatherForecast
-        coEvery { repository.observeMessage(userId, remoteId) } returns flowOf(error.left())
+        coEvery { repository.getMessageByRemoteId(userId, remoteId) } returns error.left()
 
         // When
         val actual = getMessage(userId, remoteId)
 
         // Then
         assertEquals(error.left(), actual)
-        coVerify(exactly = 3) { repository.observeMessage(userId, remoteId) }
+        coVerify(exactly = 3) { repository.getMessageByRemoteId(userId, remoteId) }
     }
 
 }
