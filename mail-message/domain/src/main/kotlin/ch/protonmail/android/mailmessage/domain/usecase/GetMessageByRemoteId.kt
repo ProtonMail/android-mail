@@ -23,7 +23,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -53,7 +52,7 @@ class GetMessageByRemoteId @Inject constructor(
     }
 
     private suspend fun getByRemoteId(userId: UserId, messageId: RemoteMessageId): Either<DataError, Message> =
-        messageRepository.observeMessage(userId, messageId).first()
+        messageRepository.getMessageByRemoteId(userId, messageId)
 }
 
 private const val MAX_RETRY_ATTEMPTS = 3

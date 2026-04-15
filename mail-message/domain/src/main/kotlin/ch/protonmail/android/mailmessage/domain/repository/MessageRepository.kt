@@ -76,7 +76,7 @@ interface MessageRepository {
      * Gets a [Message] metadata for [userId] from the local storage from a [RemoteMessageId].
      * @return either the [Message] or a [DataError.Local]
      */
-    fun observeMessage(userId: UserId, remoteMessageId: RemoteMessageId): Flow<Either<DataError, Message>>
+    suspend fun getMessageByRemoteId(userId: UserId, remoteMessageId: RemoteMessageId): Either<DataError, Message>
 
     /**
      * Used to JIT swipe through conversations/ pages with methods exposed to get next and get previous and move to next

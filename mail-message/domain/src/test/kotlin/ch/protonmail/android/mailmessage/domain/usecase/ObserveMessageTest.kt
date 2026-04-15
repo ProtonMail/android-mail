@@ -28,7 +28,6 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -38,9 +37,9 @@ import kotlin.test.assertEquals
 internal class ObserveMessageTest {
 
     private val repository = mockk<MessageRepository> {
-        every {
-            this@mockk.observeMessage(userId, any<RemoteMessageId>())
-        } returns flowOf(DataError.Local.NoDataCached.left())
+        coEvery {
+            this@mockk.getMessageByRemoteId(userId, any<RemoteMessageId>())
+        } returns DataError.Local.NoDataCached.left()
 
         coEvery {
             this@mockk.observeMessage(userId, any<MessageId>())

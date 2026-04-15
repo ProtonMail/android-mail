@@ -126,15 +126,11 @@ internal class RustMessageRepositoryImplTest {
         } returns LocalMessageTestData.AugWeatherForecast.right()
 
         // When
-        repository.observeMessage(userId, messageId.toRemoteMessageId()).test {
-            val result = awaitItem().getOrElse { null }
+        val result = repository.getMessageByRemoteId(userId, messageId.toRemoteMessageId()).getOrElse { null }
 
-            // Then
-            assertEquals(expectedMessage, result)
-            coVerify { rustMessageDataSource.getMessage(userId, messageId) }
-
-            awaitComplete()
-        }
+        // Then
+        assertEquals(expectedMessage, result)
+        coVerify { rustMessageDataSource.getMessage(userId, messageId) }
     }
 
     @Test
@@ -167,19 +163,16 @@ internal class RustMessageRepositoryImplTest {
             DataError.Local.NoDataCached.left()
 
         // When
-        repository.observeMessage(userId, messageId).test {
-            val result = awaitItem()
+        val result = repository.getMessageByRemoteId(userId, messageId)
 
-            // Then
-            coVerify { rustMessageDataSource.getMessage(userId, messageId.toRemoteMessageId()) }
-            assert(result.isLeft())
-            assertEquals(DataError.Local.NoDataCached, result.swap().getOrElse { null })
-            awaitComplete()
-        }
+        // Then
+        coVerify { rustMessageDataSource.getMessage(userId, messageId.toRemoteMessageId()) }
+        assert(result.isLeft())
+        assertEquals(DataError.Local.NoDataCached, result.swap().getOrElse { null })
     }
 
     @Test
-    fun `when getConversationCursor returns a cursor with the first messsageId`() = runTest {
+    fun `when getConversationCursor returns a cursor with the first messageId`() = runTest {
         // Given
         val conversationCursor = mockk<ConversationCursor> {
             every { current } returns CursorResult.Cursor(ConversationId("100"))

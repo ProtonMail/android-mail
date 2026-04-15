@@ -43,7 +43,6 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
@@ -93,17 +92,12 @@ class RustMessageRepositoryImpl @Inject constructor(
         rustMessageDataSource.observeMessage(userId, messageId.toLocalMessageId())
             .map { either -> either.map { it.toMessage() } }
 
-    @Deprecated(
-        message = "Observing is faked! This won't reflect changes to the message after the first emission",
-        replaceWith = ReplaceWith("getMessage(userId, messageId)")
-    )
-    override fun observeMessage(userId: UserId, remoteMessageId: RemoteMessageId): Flow<Either<DataError, Message>> =
-        flow {
-            val message = rustMessageDataSource.getMessage(userId, remoteMessageId.toRemoteMessageId())
-                .map { it.toMessage() }
+    override suspend fun getMessageByRemoteId(
+        userId: UserId,
+        remoteMessageId: RemoteMessageId
+    ): Either<DataError, Message> = rustMessageDataSource.getMessage(userId, remoteMessageId.toRemoteMessageId())
+        .map { it.toMessage() }
 
-            emit(message)
-        }
 
     override suspend fun getConversationCursor(
         anchorItemId: CursorId,
