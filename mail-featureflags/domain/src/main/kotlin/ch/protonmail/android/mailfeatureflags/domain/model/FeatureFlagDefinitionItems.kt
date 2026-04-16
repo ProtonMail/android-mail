@@ -137,3 +137,11 @@ data object CategoryView : FeatureFlagDefinition(
     description = "Enables category view",
     defaultValue = false
 )
+
+data object PushProcessingWithoutWorker : FeatureFlagDefinition(
+    key = "MailAndroidV7PushProcessing",
+    name = "Enable push processing without worker",
+    category = FeatureFlagCategory.Notifications,
+    description = "Do not schedule a worker to process notifications, but process them directly when received.",
+    defaultValue = false
+)
