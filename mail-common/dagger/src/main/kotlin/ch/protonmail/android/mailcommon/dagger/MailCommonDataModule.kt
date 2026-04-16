@@ -23,13 +23,15 @@ import ch.protonmail.android.mailcommon.data.repository.UndoRepositoryImpl
 import ch.protonmail.android.mailcommon.data.system.BuildVersionProviderImpl
 import ch.protonmail.android.mailcommon.data.system.ContentValuesProviderImpl
 import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl
-import ch.protonmail.android.mailcommon.data.system.SenderImageModeProviderImpl
+import ch.protonmail.android.mailcommon.data.system.SenderImageThemeProviderImpl
+import ch.protonmail.android.mailcommon.data.usecase.IsDarkModeEnabledImpl
 import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
 import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
-import ch.protonmail.android.mailcommon.domain.usecase.SenderImageModeProvider
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
+import ch.protonmail.android.mailcommon.domain.usecase.SenderImageThemeProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -59,7 +61,10 @@ object MailCommonDataModule {
         fun bindUndoRepository(impl: UndoRepositoryImpl): UndoRepository
 
         @Binds
-        fun bindSenderImageModeProvider(impl: SenderImageModeProviderImpl): SenderImageModeProvider
+        fun bindIsDarkModeEnabled(impl: IsDarkModeEnabledImpl): IsDarkModeEnabled
+
+        @Binds
+        fun bindSenderImageModeProvider(impl: SenderImageThemeProviderImpl): SenderImageThemeProvider
 
     }
 }
