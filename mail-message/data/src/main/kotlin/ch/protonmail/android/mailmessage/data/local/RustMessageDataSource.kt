@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -62,7 +63,8 @@ interface RustMessageDataSource {
     suspend fun getSenderImage(
         userId: UserId,
         address: String,
-        bimi: String?
+        bimi: String?,
+        mode: SenderImageTheme
     ): String?
 
     suspend fun markRead(userId: UserId, messages: List<LocalMessageId>): Either<DataError, Unit>

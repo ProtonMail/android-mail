@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -49,7 +50,8 @@ interface MessageRepository {
     suspend fun getSenderImage(
         userId: UserId,
         address: String,
-        bimi: String?
+        bimi: String?,
+        mode: SenderImageTheme
     ): SenderImage?
 
     /**
