@@ -33,6 +33,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverr
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPrivacyBundle2601Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
@@ -48,6 +49,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025En
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.PrivacyBundle2601
+import ch.protonmail.android.mailfeatureflags.domain.model.PushProcessingWithoutWorker
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
@@ -215,4 +217,16 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideFeatureSpotlightEnabledDef(): FeatureFlagDefinition = FeatureSpotlight
+
+    @Provides
+    @Singleton
+    @IsPushProcessingWithoutWorkerEnabled
+    fun providePushProcessingWithoutWorker(factory: BooleanFeatureFlagFactory) =
+        factory.create(PushProcessingWithoutWorker.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun providePushProcessingWithoutWorkerDef(): FeatureFlagDefinition = PushProcessingWithoutWorker
+
 }

@@ -25,6 +25,7 @@ sealed class FeatureFlagCategory(val name: String) {
     data object Settings : FeatureFlagCategory("Settings")
     data object Upselling : FeatureFlagCategory("Upselling")
     data object Rating : FeatureFlagCategory("Rating")
+    data object Notifications : FeatureFlagCategory("Notifications")
 
     // Unused, only available in tests.
     data object Test : FeatureFlagCategory("Test")

@@ -75,3 +75,7 @@ annotation class IsPrivacyBundle2601Enabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsFeatureSpotlightEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsPushProcessingWithoutWorkerEnabled
