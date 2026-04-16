@@ -31,6 +31,11 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -41,7 +46,6 @@ internal class ExternalAttachmentsHandlerImplTest {
 
     private val context = mockk<Context>()
     private lateinit var contentResolver: ContentResolver
-
     private lateinit var attachmentsHandler: ExternalAttachmentsHandlerImpl
 
     private val generateUniqueFileName = mockk<GenerateUniqueFileName> {
@@ -50,9 +54,9 @@ internal class ExternalAttachmentsHandlerImplTest {
 
     @BeforeTest
     fun setup() {
-        attachmentsHandler = ExternalAttachmentsHandlerImpl(context, generateUniqueFileName)
         contentResolver = mockk(relaxed = true)
         every { context.contentResolver } returns contentResolver
+        attachmentsHandler = ExternalAttachmentsHandlerImpl(context, Dispatchers.Unconfined, generateUniqueFileName)
     }
 
     @AfterTest
@@ -152,5 +156,34 @@ internal class ExternalAttachmentsHandlerImplTest {
         assertEquals(ExternalAttachmentErrorResult.UnableToCopy.left(), actual)
         verify(exactly = 1) { contentResolver.openOutputStream(destinationUri) }
         confirmVerified(contentResolver)
+    }
+
+    @Test
+    fun `copyUriToDestination should complete even when coroutine is cancelled`() = runTest {
+        // Given
+        val handler = ExternalAttachmentsHandlerImpl(
+            context, StandardTestDispatcher(testScheduler), generateUniqueFileName
+        )
+        val sourceUri = mockk<Uri>()
+        val destinationUri = mockk<Uri>()
+        val content = "test content".toByteArray()
+        val outputStream = ByteArrayOutputStream()
+
+        val inputStream = ByteArrayInputStream(content)
+
+        every { contentResolver.openInputStream(sourceUri) } returns inputStream
+        every { contentResolver.openOutputStream(destinationUri) } returns outputStream
+
+        // When
+        // CoroutineStart.UNDISPATCHED lets the coroutine run until it suspends at withContext(ioDispatcher),
+        // then we cancel the parent job before the IO block is dispatched
+        val job = launch(start = CoroutineStart.UNDISPATCHED) {
+            handler.copyUriToDestination(sourceUri, destinationUri)
+        }
+        job.cancel()
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(content.toList(), outputStream.toByteArray().toList())
     }
 }

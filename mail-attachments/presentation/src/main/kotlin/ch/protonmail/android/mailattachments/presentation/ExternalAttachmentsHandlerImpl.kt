@@ -27,13 +27,16 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.usecase.GenerateUniqueFileName
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ExternalAttachmentsHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val generateUniqueFileName: GenerateUniqueFileName
 ) : ExternalAttachmentsHandler {
 
@@ -41,7 +44,7 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
         sourceUri: Uri,
         destinationUri: Uri
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher + NonCancellable) {
             context.contentResolver.openInputStream(sourceUri)?.use { inputStream ->
                 context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
                     inputStream.copyTo(outputStream, bufferSize = 8 * 1024)
@@ -53,7 +56,7 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
     override suspend fun saveFileToDownloadsFolder(
         fileContent: FileContent
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher + NonCancellable) {
             val values = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, generateUniqueFileName(fileContent.name))
                 put(MediaStore.Downloads.MIME_TYPE, fileContent.mimeType)
@@ -75,7 +78,7 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
         mimeType: String,
         data: ByteArray
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher + NonCancellable) {
             try {
                 context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
                     outputStream.write(data)
@@ -91,12 +94,11 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
         mimeType: String,
         data: ByteArray
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher + NonCancellable) {
             val values = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, fileName)
                 put(MediaStore.Downloads.MIME_TYPE, mimeType)
             }
-
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
                 ?: raise(ExternalAttachmentErrorResult.UnableToCreateUri)
             try {

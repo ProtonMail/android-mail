@@ -34,6 +34,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -47,7 +48,6 @@ import kotlin.test.assertEquals
 internal class ExternalAttachmentsHandlerImplSaveTest {
 
     private lateinit var context: Context
-
     private lateinit var attachmentsHandler: ExternalAttachmentsHandlerImpl
 
     private val generateUniqueFileName = mockk<GenerateUniqueFileName> {
@@ -57,7 +57,7 @@ internal class ExternalAttachmentsHandlerImplSaveTest {
     @BeforeTest
     fun setup() {
         context = spyk(RuntimeEnvironment.getApplication().applicationContext)
-        attachmentsHandler = ExternalAttachmentsHandlerImpl(context, generateUniqueFileName)
+        attachmentsHandler = ExternalAttachmentsHandlerImpl(context, Dispatchers.Unconfined, generateUniqueFileName)
     }
 
     @AfterTest

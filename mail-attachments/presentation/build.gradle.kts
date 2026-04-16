@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.bundles.module.presentation)
     implementation(project(":mail-attachments:domain"))
+    implementation(project(":mail-common:domain"))
 
     testImplementation(libs.bundles.test)
     testImplementation(libs.androidx.test.core)
