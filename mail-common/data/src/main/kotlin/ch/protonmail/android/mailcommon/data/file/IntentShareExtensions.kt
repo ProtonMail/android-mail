@@ -49,9 +49,13 @@ fun Intent.isExternal(): Boolean = getBooleanExtra(IntentExtraKeys.EXTRA_EXTERNA
 fun Intent.isMailToIntent(): Boolean = this.scheme == MAILTO_SCHEME
 
 private fun Intent.getShareInfoForSingleSendAction(): IntentShareInfo {
-    val fileUriList = getFileUriForActionSend()?.let {
-        listOf(it.toString())
-    } ?: emptyList()
+    val fileUriList = if (type == MIME_TYPE_TEXT_PLAIN) {
+        emptyList()
+    } else {
+        getFileUriForActionSend()?.let {
+            listOf(it.toString())
+        } ?: emptyList()
+    }
 
     return IntentShareInfo(
         attachmentUris = fileUriList,
@@ -146,3 +150,4 @@ private fun Intent.getEmailBody(): String? = getStringExtra(Intent.EXTRA_TEXT)
  * Intent data can be a [Uri] with a mailto scheme instead of a shared file.
  */
 private const val MAILTO_SCHEME = "mailto"
+private const val MIME_TYPE_TEXT_PLAIN = "text/plain"

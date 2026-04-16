@@ -184,6 +184,7 @@ class IntentMapperTest {
 
     private fun mockIntent(
         action: String = "",
+        type: String? = null,
         data: Uri? = null,
         scheme: String = "",
         categories: Set<String> = emptySet(),
@@ -199,6 +200,7 @@ class IntentMapperTest {
     ): Intent {
         return mockk {
             every { this@mockk.action } returns action
+            every { this@mockk.type } returns type
             every { this@mockk.data } returns data
             every { this@mockk.scheme } returns scheme
             every { this@mockk.clipData } returns clipData

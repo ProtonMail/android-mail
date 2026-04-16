@@ -260,6 +260,51 @@ class IntentExtensionsTest {
     }
 
     @Test
+    fun `should not attach file uri when action is send and type is text plain`() {
+        // Given
+        every { uri1.toString() } returns "content://com.android.test.FileProvider/images/screenshot/test.png"
+        val clipData = mockk<ClipData> {
+            every { itemCount } returns 1
+            every { getItemAt(0) } returns mockk { every { uri } returns uri1 }
+        }
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            type = "text/plain",
+            clipData = clipData,
+            extraText = "https://example.com"
+        )
+        val expected = IntentShareInfo.Empty.copy(emailBody = "https://example.com")
+
+        // When
+        val fileShareInfo = intent.getShareInfo()
+
+        // Then
+        assertEquals(expected, fileShareInfo)
+    }
+
+    @Test
+    fun `should attach file uri when action is send and type is not text plain`() {
+        // Given
+        every { uri1.toString() } returns "content://test1"
+        val clipData = mockk<ClipData> {
+            every { itemCount } returns 1
+            every { getItemAt(0) } returns mockk { every { uri } returns uri1 }
+        }
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            type = "image/png",
+            clipData = clipData
+        )
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
+
+        // When
+        val fileShareInfo = intent.getShareInfo()
+
+        // Then
+        assertEquals(expected, fileShareInfo)
+    }
+
+    @Test
     fun `should ignore null uri when parsing attachments`() {
         // Given
         val clipData = mockk<ClipData> {
@@ -277,6 +322,7 @@ class IntentExtensionsTest {
 
     private fun mockIntent(
         action: String = "",
+        type: String? = null,
         data: Uri? = null,
         clipData: ClipData? = null,
         extraStreamUri: Uri? = null,
@@ -290,6 +336,7 @@ class IntentExtensionsTest {
     ): Intent {
         return mockk {
             every { this@mockk.action } returns action
+            every { this@mockk.type } returns type
             every { this@mockk.data } returns data
             every { this@mockk.clipData } returns clipData
             every { this@mockk.getParcelableExtra<Uri>(Intent.EXTRA_STREAM) } returns extraStreamUri
