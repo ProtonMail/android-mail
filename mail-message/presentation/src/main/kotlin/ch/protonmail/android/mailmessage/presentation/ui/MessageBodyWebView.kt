@@ -87,9 +87,7 @@ import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
-import ch.protonmail.android.mailmessage.presentation.model.webview.ContentLoadState
 import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
-import ch.protonmail.android.mailmessage.presentation.model.webview.isReadyToShow
 import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -106,11 +104,7 @@ fun MessageBodyWebView(
     webViewActions: MessageBodyWebView.Actions,
     onBuildWebView: (Context) -> ZoomableWebView,
     shouldAllowViewingEntireMessage: Boolean = true,
-    onMessageBodyLoaded: (
-        messageId: MessageId,
-        contentLoadState: ContentLoadState,
-        height: Int
-    ) -> Unit = { _, _, _ -> },
+    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -150,9 +144,10 @@ fun MessageBodyWebView(
         onDismissed = { longClickDialogState.value = false }
     )
 
+
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
-    val contentLoadState = remember(messageId) { mutableStateOf(ContentLoadState.Initial) }
+    val contentLoaded = remember(messageId) { mutableStateOf(false) }
 
     val client = remember(messageId) {
         object : WebViewClient() {
@@ -180,10 +175,6 @@ fun MessageBodyWebView(
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 Timber.d("message-webview: onPageFinished")
-
-                contentLoadState.value = contentLoadState.value.copy(
-                    isPageFinished = true
-                )
             }
 
             // Using onPageCommitVisible improves perceived loading time since
@@ -192,10 +183,7 @@ fun MessageBodyWebView(
             override fun onPageCommitVisible(view: WebView?, url: String?) {
                 super.onPageCommitVisible(view, url)
                 Timber.d("message-webview: onPageCommitVisible")
-
-                contentLoadState.value = contentLoadState.value.copy(
-                    isPageCommitVisible = true
-                )
+                contentLoaded.value = true
             }
         }
     }
@@ -217,16 +205,15 @@ fun MessageBodyWebView(
                 // allow measuring passes and webview to settle
                 .debounce(timeoutMillis = WEB_PAGE_CONTENT_LOAD_TIMEOUT),
             // also listen for changes in content loaded, there can be multiple calls to this
-            snapshotFlow { contentLoadState.value }
-                .filter { it.isReadyToShow() }
-        ) { measuredHeight, loadState ->
+            snapshotFlow { contentLoaded.value }
+                .filter { it }
+        ) { measuredHeight, isLoaded ->
             // in order to get the settled height after the webpage has loaded
             // For empty messages, we can get 0 height
-            loadState to measuredHeight
+            measuredHeight
+        }.collectLatest { height ->
+            onMessageBodyLoaded(messageId, height)
         }
-            .collectLatest { (loadState, height) ->
-                onMessageBodyLoaded(messageId, loadState, height)
-            }
     }
 
     DisposableEffect(messageId) {
