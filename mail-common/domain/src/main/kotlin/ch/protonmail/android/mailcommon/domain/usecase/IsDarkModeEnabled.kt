@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2025 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -18,9 +18,7 @@
 
 package ch.protonmail.android.mailcommon.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
+interface IsDarkModeEnabled {
 
-interface SenderImageModeProvider {
-
-    operator fun invoke(): SenderImageTheme
+    operator fun invoke(): Boolean
 }

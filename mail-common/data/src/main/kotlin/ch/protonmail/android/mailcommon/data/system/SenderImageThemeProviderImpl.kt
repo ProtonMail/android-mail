@@ -18,26 +18,15 @@
 
 package ch.protonmail.android.mailcommon.data.system
 
-import android.content.Context
-import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatDelegate
 import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
-import ch.protonmail.android.mailcommon.domain.usecase.SenderImageModeProvider
-import dagger.hilt.android.qualifiers.ApplicationContext
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
+import ch.protonmail.android.mailcommon.domain.usecase.SenderImageThemeProvider
 import javax.inject.Inject
 
-class SenderImageModeProviderImpl @Inject constructor(
-    @ApplicationContext private val applicationContext: Context
-) : SenderImageModeProvider {
+class SenderImageThemeProviderImpl @Inject constructor(
+    private val isDarkModeEnabled: IsDarkModeEnabled
+) : SenderImageThemeProvider {
 
-    override operator fun invoke(): SenderImageTheme {
-        val isDark = when (AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.MODE_NIGHT_YES -> true
-            AppCompatDelegate.MODE_NIGHT_NO -> false
-            else -> applicationContext.resources.configuration.let {
-                it.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-            }
-        }
-        return if (isDark) SenderImageTheme.Dark else SenderImageTheme.Light
-    }
+    override operator fun invoke(): SenderImageTheme =
+        if (isDarkModeEnabled()) SenderImageTheme.Dark else SenderImageTheme.Light
 }
