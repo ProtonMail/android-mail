@@ -37,6 +37,7 @@ import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
+import uniffi.mail_uniffi.SenderImageSize
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
 
@@ -64,7 +65,7 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
         address,
         bimi,
         true,
-        128u,
+        SenderImageSize.S128,
         null,
         "png"
     )
