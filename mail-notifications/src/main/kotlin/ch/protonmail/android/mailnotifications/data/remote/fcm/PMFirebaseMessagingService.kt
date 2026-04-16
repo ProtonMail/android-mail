@@ -20,7 +20,7 @@ package ch.protonmail.android.mailnotifications.data.remote.fcm
 
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailnotifications.data.FirebaseNotificationsTokenChannel
-import ch.protonmail.android.mailnotifications.domain.usecase.content.ProcessPushNotificationMessage
+import ch.protonmail.android.mailnotifications.domain.usecase.content.HandlePushNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +34,7 @@ import javax.inject.Inject
 internal class PMFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var processPushNotificationMessage: ProcessPushNotificationMessage
+    lateinit var handlePushNotification: HandlePushNotification
 
     @Inject
     @AppScope
@@ -70,7 +70,7 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
 
         if (uid != null && encryptedMessage != null) {
             Timber.d("Notification: Push message received for session id=%s", uid)
-            appScope.launch { processPushNotificationMessage(SessionId(uid), encryptedMessage) }
+            appScope.launch { handlePushNotification(SessionId(uid), encryptedMessage) }
         } else {
             Timber.w(
                 "Notification: Push payload missing required fields. uid=%s encryptedMessagePresent=%s",

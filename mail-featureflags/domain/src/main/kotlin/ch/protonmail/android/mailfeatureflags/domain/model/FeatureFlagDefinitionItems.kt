@@ -129,3 +129,11 @@ data object FeatureSpotlight : FeatureFlagDefinition(
     description = "Show a what's new screen on startup when available.",
     defaultValue = false
 )
+
+data object PushProcessingWithoutWorker : FeatureFlagDefinition(
+    key = "MailAndroidV7PushProcessing",
+    name = "Enable push processing without worker",
+    category = FeatureFlagCategory.Notifications,
+    description = "Do not schedule a worker to process notifications, but process them directly when received.",
+    defaultValue = false
+)

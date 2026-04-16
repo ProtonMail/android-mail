@@ -20,14 +20,19 @@ package ch.protonmail.android.mailnotifications.domain.usecase.content
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessPushNotification
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import me.proton.core.network.domain.session.SessionId
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class ProcessPushNotificationMessage @Inject constructor(
+internal class HandlePushNotification @Inject constructor(
     private val enqueuer: Enqueuer,
-    private val userSessionRepository: UserSessionRepository
+    private val userSessionRepository: UserSessionRepository,
+    private val processPushNotification: ProcessPushNotification,
+    @IsPushProcessingWithoutWorkerEnabled private val processingWithoutWorkerEnabled: FeatureFlag<Boolean>
 ) {
 
     suspend operator fun invoke(sessionId: SessionId, encryptedMessage: String) {
@@ -39,9 +44,18 @@ internal class ProcessPushNotificationMessage @Inject constructor(
             return
         }
 
-        enqueuer.enqueue<ProcessPushNotificationDataWorker>(
-            userId,
-            ProcessPushNotificationDataWorker.params(userId.id, sessionId.id, encryptedMessage)
-        )
+        if (processingWithoutWorkerEnabled.get()) {
+            processPushNotification(
+                userId,
+                sessionId,
+                encryptedMessage
+            )
+        } else {
+            enqueuer.enqueue<ProcessPushNotificationDataWorker>(
+                userId,
+                ProcessPushNotificationDataWorker.params(userId.id, sessionId.id, encryptedMessage)
+            )
+
+        }
     }
 }
