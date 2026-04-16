@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
 import ch.protonmail.android.mailcommon.domain.annotation.MissingRustApi
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
@@ -166,7 +167,8 @@ class RustMessageDataSourceImpl @Inject constructor(
     override suspend fun getSenderImage(
         userId: UserId,
         address: String,
-        bimi: String?
+        bimi: String?,
+        mode: SenderImageTheme
     ): String? = withContext(ioDispatcher) {
         val session = userSessionRepository.getUserSession(userId)
         if (session == null) {
@@ -174,7 +176,7 @@ class RustMessageDataSourceImpl @Inject constructor(
             return@withContext null
         }
 
-        return@withContext getRustSenderImage(session, address, bimi)
+        return@withContext getRustSenderImage(session, address, bimi, mode)
             .onLeft { Timber.d("rust-message: Failed to get sender image $it") }
             .getOrNull()
     }

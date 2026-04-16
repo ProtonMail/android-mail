@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailsession.domain.mapper.toEventLoopError
 import ch.protonmail.android.mailsession.domain.model.EventLoopError
 import timber.log.Timber
@@ -33,6 +34,7 @@ import uniffi.mail_uniffi.ExecuteWhenOnlineCallbackAsync
 import uniffi.mail_uniffi.Fork
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionForkResult
+import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
@@ -61,14 +63,20 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
             VoidEventResult.Ok -> Unit.right()
         }
 
-    suspend fun imageForSender(address: String, bimi: String?) = userSession.imageForSender(
-        address,
-        bimi,
-        true,
-        SenderImageSize.S128,
-        null,
-        "png"
-    )
+    suspend fun imageForSender(
+        address: String,
+        bimi: String?,
+        mode: SenderImageTheme
+    ): MailUserSessionImageForSenderResult {
+        return userSession.imageForSender(
+            address,
+            bimi,
+            true,
+            SenderImageSize.S128,
+            mode.value,
+            "png"
+        )
+    }
 
     suspend fun getAttachment(attachmentId: LocalAttachmentId) = userSession.getAttachment(attachmentId)
 

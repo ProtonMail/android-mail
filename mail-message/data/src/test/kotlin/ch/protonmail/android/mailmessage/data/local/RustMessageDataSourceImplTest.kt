@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
@@ -213,16 +214,17 @@ internal class RustMessageDataSourceImplTest {
         val mailSession = mockk<MailUserSessionWrapper>()
         val address = "test@example.com"
         val bimi = "bimiSelector"
+        val mode = SenderImageTheme.Light
         val expectedImage = "image.png"
 
         coEvery { userSessionRepository.getUserSession(userId) } returns mailSession
-        coEvery { getRustSenderImage(mailSession, address, bimi) } returns expectedImage.right()
+        coEvery { getRustSenderImage(mailSession, address, bimi, mode) } returns expectedImage.right()
 
         // When
-        val result = dataSource.getSenderImage(userId, address, bimi)
+        val result = dataSource.getSenderImage(userId, address, bimi, mode)
 
         // Then
-        coVerify { getRustSenderImage(mailSession, address, bimi) }
+        coVerify { getRustSenderImage(mailSession, address, bimi, mode) }
         assertEquals(expectedImage, result)
     }
 
@@ -232,14 +234,15 @@ internal class RustMessageDataSourceImplTest {
         val userId = UserIdTestData.userId
         val address = "test@example.com"
         val bimi = "bimiSelector"
+        val mode = SenderImageTheme.Light
 
         coEvery { userSessionRepository.getUserSession(userId) } returns null
 
         // When
-        val result = dataSource.getSenderImage(userId, address, bimi)
+        val result = dataSource.getSenderImage(userId, address, bimi, mode)
 
         // Then
-        coVerify(exactly = 0) { getRustSenderImage(any(), any(), any()) }
+        coVerify(exactly = 0) { getRustSenderImage(any(), any(), any(), any()) }
         assertNull(result)
     }
 
@@ -250,18 +253,20 @@ internal class RustMessageDataSourceImplTest {
         val mailSession = mockk<MailUserSessionWrapper>()
         val address = "test@example.com"
         val bimi = "bimiSelector"
+        val mode = SenderImageTheme.Light
 
         coEvery { userSessionRepository.getUserSession(userId) } returns mailSession
         coEvery {
             getRustSenderImage(
                 mailSession,
                 address,
-                bimi
+                bimi,
+                mode
             )
         } returns DataError.Local.CryptoError.left()
 
         // When
-        val result = dataSource.getSenderImage(userId, address, bimi)
+        val result = dataSource.getSenderImage(userId, address, bimi, mode)
 
         // Then
         assertNull(result)

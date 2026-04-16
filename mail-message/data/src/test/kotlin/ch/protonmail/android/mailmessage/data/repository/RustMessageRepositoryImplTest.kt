@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
@@ -240,16 +241,17 @@ internal class RustMessageRepositoryImplTest {
         val userId = UserIdTestData.userId
         val address = "test@example.com"
         val bimi = "bimiSelector"
+        val mode = SenderImageTheme.Light
         val imagePath = "image.png"
         val expectedSenderImage = SenderImage(File(imagePath))
 
-        coEvery { rustMessageDataSource.getSenderImage(userId, address, bimi) } returns imagePath
+        coEvery { rustMessageDataSource.getSenderImage(userId, address, bimi, mode) } returns imagePath
 
         // When
-        val result = repository.getSenderImage(userId, address, bimi)
+        val result = repository.getSenderImage(userId, address, bimi, mode)
 
         // Then
-        coVerify { rustMessageDataSource.getSenderImage(userId, address, bimi) }
+        coVerify { rustMessageDataSource.getSenderImage(userId, address, bimi, mode) }
         assertEquals(expectedSenderImage, result)
     }
 
@@ -259,14 +261,15 @@ internal class RustMessageRepositoryImplTest {
         val userId = UserIdTestData.userId
         val address = "test@example.com"
         val bimi = "bimiSelector"
+        val mode = SenderImageTheme.Light
 
-        coEvery { rustMessageDataSource.getSenderImage(userId, address, bimi) } returns null
+        coEvery { rustMessageDataSource.getSenderImage(userId, address, bimi, mode) } returns null
 
         // When
-        val result = repository.getSenderImage(userId, address, bimi)
+        val result = repository.getSenderImage(userId, address, bimi, mode)
 
         // Then
-        coVerify { rustMessageDataSource.getSenderImage(userId, address, bimi) }
+        coVerify { rustMessageDataSource.getSenderImage(userId, address, bimi, mode) }
         assertNull(result)
     }
 

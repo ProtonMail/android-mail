@@ -23,6 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import javax.inject.Inject
@@ -32,8 +33,9 @@ class GetRustSenderImage @Inject constructor() {
     suspend operator fun invoke(
         mailUserSession: MailUserSessionWrapper,
         address: String,
-        bimi: String?
-    ): Either<DataError, String> = when (val result = mailUserSession.imageForSender(address, bimi)) {
+        bimi: String?,
+        mode: SenderImageTheme
+    ): Either<DataError, String> = when (val result = mailUserSession.imageForSender(address, bimi, mode)) {
         is MailUserSessionImageForSenderResult.Error -> result.v1.toDataError().left()
         is MailUserSessionImageForSenderResult.Ok -> {
             when (val image = result.v1) {
