@@ -24,13 +24,13 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyAction
 import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
-import ch.protonmail.android.maildetail.presentation.usecase.IsDarkModeEnabled
 import ch.protonmail.android.maildetail.presentation.usecase.LoadImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.viewmodel.EntireMessageBodyViewModelTest.TestData.InputData
 import ch.protonmail.android.maildetail.presentation.viewmodel.EntireMessageBodyViewModelTest.TestData.MESSAGE_ID

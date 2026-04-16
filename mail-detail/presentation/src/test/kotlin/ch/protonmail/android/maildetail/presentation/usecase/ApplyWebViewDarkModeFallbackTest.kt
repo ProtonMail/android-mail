@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase
 
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyTransformations
 import ch.protonmail.android.mailmessage.domain.model.MessageTheme
 import ch.protonmail.android.mailmessage.domain.model.MessageThemeOptions

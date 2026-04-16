@@ -16,19 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.usecase
+package ch.protonmail.android.mailcommon.data.usecase
 
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class IsDarkModeEnabled @Inject constructor(
+class IsDarkModeEnabledImpl @Inject constructor(
     @ApplicationContext private val applicationContext: Context
-) {
+) : IsDarkModeEnabled {
 
-    operator fun invoke(): Boolean {
+    override operator fun invoke(): Boolean {
         return when (AppCompatDelegate.getDefaultNightMode()) {
             AppCompatDelegate.MODE_NIGHT_YES -> true
             AppCompatDelegate.MODE_NIGHT_NO -> false

@@ -22,13 +22,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
+import ch.protonmail.android.mailcommon.domain.usecase.IsDarkModeEnabled
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyAction
 import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
-import ch.protonmail.android.maildetail.presentation.usecase.IsDarkModeEnabled
 import ch.protonmail.android.maildetail.presentation.usecase.LoadImageAvoidDuplicatedExecution
 import ch.protonmail.android.mailmessage.domain.model.GetMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageBanner
