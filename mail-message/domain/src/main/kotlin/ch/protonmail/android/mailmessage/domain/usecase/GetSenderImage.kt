@@ -18,19 +18,22 @@
 
 package ch.protonmail.android.mailmessage.domain.usecase
 
-import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.usecase.SenderImageModeProvider
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class GetSenderImage @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val messageRepository: MessageRepository
+    private val messageRepository: MessageRepository,
+    private val senderImageModeProvider: SenderImageModeProvider
 ) {
     suspend operator fun invoke(address: String, bimiSelector: String?): SenderImage? {
+        val mode = senderImageModeProvider()
         return observePrimaryUserId().firstOrNull()?.let { userId ->
-            messageRepository.getSenderImage(userId, address, bimiSelector)
+            messageRepository.getSenderImage(userId, address, bimiSelector, mode)
         }
     }
 }
