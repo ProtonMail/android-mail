@@ -30,6 +30,17 @@ internal class DangerZoneViewModel @Inject constructor() : ViewModel() {
     fun crashApp() = Integer.parseInt("notInteger")
 
     fun crashWebViewLike() {
-        throw IllegalStateException("Unable to create layer")
+        // Mirror the real crash shape: the native WebView throws
+        // IllegalStateException("Unable to create layer ...") which reaches the uncaught
+        // handler wrapped in Chromium's JniAndroid$UncaughtExceptionException. Wrapping
+        // here exercises the cause-chain walk in WebViewCrashExceptionHandlerInitializer.
+        val rootCause = IllegalStateException(
+            "Unable to create layer for c0, size 1088x16384 max size 16383"
+        )
+        val jniWrapper = RuntimeException(
+            $$"Simulated JniAndroid$UncaughtExceptionException",
+            rootCause
+        )
+        throw jniWrapper
     }
 }
