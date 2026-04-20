@@ -36,6 +36,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -62,6 +63,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -104,6 +106,7 @@ fun MessageBodyWebView(
     webViewActions: MessageBodyWebView.Actions,
     onBuildWebView: (Context) -> ZoomableWebView,
     shouldAllowViewingEntireMessage: Boolean = true,
+    fillContainerHeight: Boolean = false,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
@@ -194,9 +197,29 @@ fun MessageBodyWebView(
         webView.reload()
     }
 
-    LaunchedEffect(messageId, messageBodyUiModel.messageBody, messageBodyUiModel.viewModePreference) {
+    val shouldRestrictHeight = messageBodyUiModel.shouldRestrictWebViewHeight && shouldAllowViewingEntireMessage
+
+    // Convert the safe physical cap into CSS pixels for the injected style. Lower-density devices
+    // end up with a larger preview window while high-density devices stay under the GPU texture
+    // limit. physical_px = css_px * density, so css_px = physical_px / density.
+    val density = LocalDensity.current.density
+    val restrictedCssMaxHeightPx = (WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX / density).toInt()
+
+    val messageBodyHtml = if (shouldRestrictHeight) {
+        heightRestrictionStyle(restrictedCssMaxHeightPx) + messageBodyUiModel.messageBody
+    } else {
+        messageBodyUiModel.messageBody
+    }
+
+    LaunchedEffect(
+        messageId,
+        messageBodyUiModel.messageBody,
+        messageBodyUiModel.viewModePreference,
+        shouldRestrictHeight,
+        restrictedCssMaxHeightPx
+    ) {
         Timber.d("message-webview: setting initial value on webview ${webView.hashCode()} ($messageId)")
-        webView.loadDataWithBaseURL(null, messageBodyUiModel.messageBody, MimeType.Html.value, "utf-8", null)
+        webView.loadDataWithBaseURL(null, messageBodyHtml, MimeType.Html.value, "utf-8", null)
     }
 
     LaunchedEffect(messageId) {
@@ -223,13 +246,15 @@ fun MessageBodyWebView(
     }
 
     Column(modifier) {
-        val webViewMaxHeight = if (messageBodyUiModel.shouldRestrictWebViewHeight) {
-            WEB_VIEW_FIXED_MAX_HEIGHT_RESTRICTED
+        val webViewMaxHeight = if (shouldRestrictHeight) {
+            // Physical-px cap matches the CSS cap so the View clamp and the DOM clamp agree,
+            // which keeps the existing "View entire message" trigger logic accurate.
+            WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX
         } else {
             WEB_VIEW_FIXED_MAX_HEIGHT
         }
 
-        Box {
+        Box(modifier = if (fillContainerHeight) Modifier.fillMaxSize() else Modifier) {
             AndroidView(
                 factory = { context ->
                     FrameLayout(context).apply {
@@ -237,7 +262,7 @@ fun MessageBodyWebView(
                             webView,
                             FrameLayout.LayoutParams(
                                 LayoutParams.MATCH_PARENT,
-                                LayoutParams.WRAP_CONTENT
+                                if (fillContainerHeight) LayoutParams.MATCH_PARENT else LayoutParams.WRAP_CONTENT
                             )
                         )
                     }
@@ -253,11 +278,15 @@ fun MessageBodyWebView(
                     webview.settings.allowFileAccess = false
                     webview.settings.loadWithOverviewMode = true
                     webview.settings.useWideViewPort = true
-                    webview.isVerticalScrollBarEnabled = false
+                    webview.isVerticalScrollBarEnabled = fillContainerHeight
                     webview.webViewClient = client
 
-                    // Set max height restriction directly on the WebView
-                    webview.maxHeight = webViewMaxHeight
+                    // Set max height restriction directly on the WebView. This is skipped when the WebView
+                    // fills its container: it scrolls internally, so Chromium tiles the DOM and
+                    // only GPU-backs visible tiles.
+                    if (!fillContainerHeight) {
+                        webview.maxHeight = webViewMaxHeight
+                    }
 
                     configureDarkLightMode(webview, isSystemInDarkTheme, messageBodyUiModel.viewModePreference)
                     configureLongClick(
@@ -269,7 +298,7 @@ fun MessageBodyWebView(
                 },
                 modifier = Modifier
                     .testTag(MessageBodyWebViewTestTags.WebView)
-                    .fillMaxWidth()
+                    .then(if (fillContainerHeight) Modifier.fillMaxSize() else Modifier.fillMaxWidth())
                     .onSizeChanged {
                         lastMeasuredWebViewHeight = it.height
                         shouldShowViewEntireMessageButton.value = shouldAllowViewingEntireMessage &&
@@ -277,7 +306,7 @@ fun MessageBodyWebView(
                     }
             )
 
-            if (shouldShowViewEntireMessageButton.value && messageBodyUiModel.shouldRestrictWebViewHeight) {
+            if (shouldShowViewEntireMessageButton.value && shouldRestrictHeight) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -303,7 +332,7 @@ fun MessageBodyWebView(
             )
         }
 
-        if (shouldShowViewEntireMessageButton.value && messageBodyUiModel.shouldRestrictWebViewHeight) {
+        if (shouldShowViewEntireMessageButton.value && shouldRestrictHeight) {
             ViewEntireMessageButton(
                 onClick = {
                     actions.onViewEntireMessageClicked(
@@ -491,4 +520,15 @@ private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 // than this value, we will not fix the height of the WebView or it will crash.
 // (Limit set in androidx.compose.ui.unit.Constraints)
 private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
-private const val WEB_VIEW_FIXED_MAX_HEIGHT_RESTRICTED = 16_383
+
+// Safe upper bound for the WebView's physical measured height. Leaves ~2400px of headroom below
+// the 16383 GL_MAX_TEXTURE_SIZE reported by most Adreno/Mali GPUs, so the Chromium compositor
+// doesn't try to allocate a single HW layer above the limit (the crash path). Per-device CSS cap
+// derives from this via density so lower-DPI devices get a larger preview.
+private const val WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX = 14_000
+
+// Scoped to `body` only: overflow:hidden on `html` makes Android WebView report a measured height
+// of 0 (it uses documentElement for its scroll range), which then suppresses the page-ready signal
+// so the message card never reveals.
+private fun heightRestrictionStyle(cssMaxHeightPx: Int): String =
+    "<style>body{max-height:${cssMaxHeightPx}px !important;overflow:hidden !important;}</style>"

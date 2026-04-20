@@ -23,6 +23,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -146,7 +147,9 @@ fun EntireMessageBodyScreen(
         when (val messageBodyState = state.messageBodyState) {
             is MessageBodyState.Loading -> ProtonCenteredProgress()
             is MessageBodyState.Data -> EntireMessageBodyWebView(
-                modifier = Modifier.padding(padding),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
                 messageBodyUiModel = messageBodyState.messageBodyUiModel,
                 actions = EntireMessageBodyWebView.Actions(
                     onMessageBodyLinkClicked = {
@@ -161,7 +164,9 @@ fun EntireMessageBodyScreen(
                 )
             )
             is MessageBodyState.Error.Decryption -> EntireMessageBodyWebView(
-                modifier = Modifier.padding(padding),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
                 messageBodyUiModel = messageBodyState.encryptedMessageBody,
                 actions = EntireMessageBodyWebView.Actions(
                     onMessageBodyLinkClicked = {
@@ -204,6 +209,10 @@ private fun EntireMessageBodyWebView(
             onViewEntireMessageClicked = { _, _, _, _ -> } // Button won't be shown
         ),
         shouldAllowViewingEntireMessage = false,
+        // The entry point for this screen is the "View entire message" button, which only shows
+        // when the inline cap is active (FF on + prior crash), so the screen itself is only
+        // reached in that state.
+        fillContainerHeight = true,
         onBuildWebView = onBuildWebView(webViewCache)
     )
 }
