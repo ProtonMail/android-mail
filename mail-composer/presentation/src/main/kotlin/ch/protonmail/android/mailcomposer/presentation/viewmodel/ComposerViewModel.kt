@@ -128,6 +128,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -221,6 +222,9 @@ class ComposerViewModel @AssistedInject constructor(
 
     private var pendingStoreDraftJob: Job? = null
 
+    @Volatile
+    private var draftSavesBlocked: Boolean = false
+
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val composerActionsChannel = Channel<ComposerAction>(Channel.BUFFERED)
 
@@ -263,6 +267,7 @@ class ComposerViewModel @AssistedInject constructor(
     }
 
     @OptIn(FlowPreview::class)
+    @Suppress("LongMethod")
     private fun observeComposerFields() {
         val combinedFlow = combine(
             composerStates.map { it.main.sender }.distinctUntilChanged(),
@@ -289,6 +294,12 @@ class ComposerViewModel @AssistedInject constructor(
         combinedFlow.debounce(timeout = 1.seconds).onEach {
             if (!isComposerActive()) {
                 Timber.d("Skipping draft save - composer is not active")
+                return@onEach
+            }
+
+            pendingStoreDraftJob?.cancelAndJoin()
+            if (draftSavesBlocked) {
+                Timber.d("Skipping draft save - send or close in progress")
                 return@onEach
             }
 
@@ -777,7 +788,8 @@ class ComposerViewModel @AssistedInject constructor(
 
     private suspend fun onCloseComposer() {
         emitNewStateFor(MainEvent.CoreLoadingToggled)
-        pendingStoreDraftJob?.cancel()
+        draftSavesBlocked = true
+        pendingStoreDraftJob?.cancelAndJoin()
 
         val draftFields = currentDraftFields()
 
@@ -785,6 +797,7 @@ class ComposerViewModel @AssistedInject constructor(
             forceDraftSave(draftFields).onLeft { saveError ->
                 emitNewStateFor(MainEvent.LoadingDismissed)
                 emitNewStateFor(EffectsEvent.ErrorEvent.OnFinalSaveError(saveError))
+                draftSavesBlocked = false
                 return
             }
         }
@@ -825,11 +838,14 @@ class ComposerViewModel @AssistedInject constructor(
     }
 
     private suspend fun onSendMessage() {
-        pendingStoreDraftJob?.cancel()
+        emitNewStateFor(MainEvent.CoreLoadingToggled)
+        draftSavesBlocked = true
+        pendingStoreDraftJob?.cancelAndJoin()
 
         forceDraftSave(currentDraftFields()).onLeft { saveError ->
             emitNewStateFor(MainEvent.LoadingDismissed)
             emitNewStateFor(EffectsEvent.ErrorEvent.OnFinalSaveError(saveError))
+            draftSavesBlocked = false
             return
         }
 
@@ -837,6 +853,7 @@ class ComposerViewModel @AssistedInject constructor(
             ifLeft = {
                 Timber.w("composer: Send message failed. Error: $it")
                 emitNewStateFor(EffectsEvent.ErrorEvent.OnSendMessageError(it))
+                draftSavesBlocked = false
             },
             ifRight = {
                 appEventBroadcaster.emit(AppEvent.MessageSent)

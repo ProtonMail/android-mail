@@ -1276,6 +1276,52 @@ internal class ComposerViewModelTest {
     }
 
     @Test
+    fun `should show core loading overlay when confirming send with no subject`() = runTest {
+        // Given
+        val expectedSubject = Subject("")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftHead = DraftHead("Draft head of this draft")
+        val expectedDraftBody = DraftBody("I am plaintext")
+        val expectedBodyFields = BodyFields(expectedDraftHead, expectedDraftBody)
+        val recipientsTo = RecipientsTo(listOf(DraftRecipientTestData.MailToRecipient))
+        val recipientsCc = RecipientsCc(emptyList())
+        val recipientsBcc = RecipientsBcc(emptyList())
+        val expectedMessageId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        expectNetworkManagerIsConnected()
+        expectNoInputDraftAction()
+        expectStoreDraftSubjectSucceeds(expectedSubject)
+        expectStoreDraftBodySucceeds(expectedDraftBody)
+        expectSendMessageSucceeds()
+        expectObservedMessageAttachments()
+        expectNoFileShareVia()
+        expectNoRestoredState(savedStateHandle)
+        ignoreRecipientsUpdates()
+        expectSendEventEmission()
+        expectInitComposerWithExistingDraftSuccess(expectedUserId, expectedMessageId) {
+            DraftFields(
+                sender = expectedSenderEmail,
+                subject = expectedSubject,
+                bodyFields = expectedBodyFields,
+                mimeType = DraftMimeType.Html,
+                recipientsTo = recipientsTo,
+                recipientsCc = recipientsCc,
+                recipientsBcc = recipientsBcc
+            )
+        }
+
+        // When
+        val viewModel = viewModel()
+        viewModel.submit(ComposerAction.ConfirmSendWithNoSubject)
+
+        // Then
+        assertEquals(
+            ComposerState.LoadingType.Save,
+            viewModel.composerStates.value.main.loadingType
+        )
+    }
+
+    @Test
     fun `should show confirmation dialog when discarding a draft`() = runTest {
         // Given
         val expectedMessageId = MessageIdSample.EmptyDraft
