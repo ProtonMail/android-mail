@@ -29,4 +29,22 @@
   <string name="spotlight_feature_item_headers_html_description">疑わしいメッセージを検査して、その正当性を確認し、隠されたトラッキング要素を明らかにします。</string>
   <string name="spotlight_screen_got_it">分かりました</string>
   <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Discover what’s new\nin Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">UI enhancements</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Fluid scrolling, refreshed layout, and more.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Unread filter</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">New look and location for easier access.</string>
+  <string name="spotlight_screen_category_view_categories_title">Email categories</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Automatic sorting of incoming mail.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">See what’s new.\nSkip the rest.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Put the focus on unread messages. Or not. It’s just a simple tap away to switch between all emails and only the unread ones.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Stay on top of new and\nunread emails</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">The unread filter is now more visible and at your fingertips, letting you quickly scan and take action on unread emails.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Say hello to your more organized inbox</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">With new email categories, only important and urgent messages land in your primary inbox. Everything else is organized into categories.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Hello categories.\nGoodbye distractions.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Stop getting distracted by newsletters, updates, and non-urgent emails. With new email categories, only important messages land in your primary inbox.</string>
+  <string name="spotlight_screen_category_view_button_continue">Continue</string>
+  <string name="spotlight_screen_category_view_button_try">Try categories</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Continue without categories</string>
 </resources>

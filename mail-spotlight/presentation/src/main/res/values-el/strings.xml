@@ -29,4 +29,22 @@
   <string name="spotlight_feature_item_headers_html_description">Ελέγξτε τα ύποπτα μηνύματα για να επιβεβαιώσετε την αυθεντικότητά τους και να εντοπίσετε τυχόν κρυφά στοιχεία παρακολούθησης.</string>
   <string name="spotlight_screen_got_it">Το κατάλαβα</string>
   <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Ανακαλύψτε τι νέο υπάρχει\nστο Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Βελτιώσεις διεπαφής χρήστη</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Ομαλή κύλιση, ανανεωμένη διάταξη και άλλα.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Φίλτρο μη αναγνωσμένων</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Νέα εμφάνιση και τοποθεσία για ευκολότερη πρόσβαση.</string>
+  <string name="spotlight_screen_category_view_categories_title">Κατηγορίες ηλεκτρονικών μηνυμάτων</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Αυτόματη ταξινόμηση των εισερχόμενων μηνυμάτων.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Δείτε τι νέο υπάρχει.\nΠαράβλεψε τα υπόλοιπα.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Βάλτε την προσοχή σας στα αδιάβαστα μηνύματα. Ή όχι. Είναι μόνο ένα απλό πάτημα για να εναλλάσσετε μεταξύ όλων των ηλεκτρονικών μηνυμάτων και μόνο αυτών που δεν έχουν διαβαστεί.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Μείνε ενημερωμένοι για νέα και \nαδιάβαστα μηνύματα ηλεκτρονικού ταχυδρομείου</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Το φίλτρο των μη αναγνωσμένων μηνυμάτων είναι πλέον πιο ορατό και εύκολα προσβάσιμο, επιτρέποντάς σας να σαρώσετε γρήγορα και να αναλάβετε δράση στα μη αναγνωσμένα μηνύματα ηλεκτρονικού ταχυδρομείου.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Καλώς ορίστε τα πιο οργανωμένα εισερχόμενά σας</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Με τις νέες κατηγορίες ηλεκτρονικών μηνυμάτων, μόνο τα σημαντικά και επείγοντα μηνύματα καταλήγουν στον κύριο φάκελο εισερχομένων σας. Όλα τα άλλα οργανώνονται σε κατηγορίες.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Γεια στις κατηγορίες.\nΑντίο στους περισπασμούς</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Σταματήστε να αποσπάτε την προσοχή σας από ενημερωτικά δελτία, ενημερώσεις και μη επείγοντα μηνύματα ηλεκτρονικού ταχυδρομείου. Με νέες κατηγορίες μηνυμάτων, μόνο τα σημαντικά μηνύματα καταλήγουν στα κύρια εισερχόμενά σας.</string>
+  <string name="spotlight_screen_category_view_button_continue">Συνέχεια</string>
+  <string name="spotlight_screen_category_view_button_try">Δοκιμάστε τις κατηγορίες</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Συνεχίστε χωρίς κατηγορίες</string>
 </resources>

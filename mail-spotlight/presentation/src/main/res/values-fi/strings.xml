@@ -29,4 +29,22 @@
   <string name="spotlight_feature_item_headers_html_description">Tarkista epäilyttävät viestit niiden aitouden varmistamiseksi ja piilotettujen seurantaelementtien paljastamiseksi.</string>
   <string name="spotlight_screen_got_it">Selvä</string>
   <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Tutustu Proton Mailin\nuutuuksiin</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Käyttöliittymän parannukset</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Sujuva vieritys, uudistettu ulkoasu ja paljon muuta.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Lukemattomat-suodatin</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Uusi ilme ja sijainti, joka helpottaa käyttöä.</string>
+  <string name="spotlight_screen_category_view_categories_title">Sähköpostiluokat</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Saapuvan postin automaattinen lajittelu.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Katso uutuudet.\nOhita loput.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Keskity lukemattomiin viesteihin. Tai älä. Voit vaihtaa kaikkien sähköpostien ja vain lukemattomien viestien välillä yhdellä napautuksella.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Pysy ajan tasalla uusista ja\nlukemattomista sähköposteista</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Lukemattomien viestien suodatin on nyt entistä näkyvämmin esillä ja helposti käytettävissä, joten voit nopeasti selata lukemattomia sähköposteja ja ryhtyä tarvittaviin toimenpiteisiin.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Tervetuloa entistä järjestyksellisempään postilaatikkoon</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Uusien sähköpostiluokkien ansiosta vain tärkeät ja kiireelliset viestit päätyvät ensisijaiseen saapuneet-kansioon. Kaikki muu järjestetään luokkiin.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Hei, kategoriat.\nHyvästi, häiriötekijät.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Älä enää anna uutiskirjeiden, päivitysten ja kiireettömien sähköpostien häiritä sinua. Uusien sähköpostiluokkien ansiosta vain tärkeät viestit päätyvät pääsähköpostilaatikkoosi.</string>
+  <string name="spotlight_screen_category_view_button_continue">Jatka</string>
+  <string name="spotlight_screen_category_view_button_try">Kokeile luokkia</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Jatka ilman luokkia</string>
 </resources>

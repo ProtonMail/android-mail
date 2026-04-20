@@ -42,7 +42,7 @@
   <string name="new_contact">Новый контакт</string>
   <string name="new_group">Новая группа</string>
   <string name="import_contact">Загрузить контакты с устройства</string>
-  <string name="contact_deleted">Contact deleted</string>
+  <string name="contact_deleted">Контакт удалён</string>
   <string name="contact_delete_dialog_title">Удалить %1$s?</string>
   <string name="contact_delete_dialog_text">Этот контакт будет удален из вашего списка контактов.</string>
   <string name="contact_delete_dialog_cancel_button">Отмена</string>
@@ -96,7 +96,7 @@
     <item quantity="other">%1$d контактов</item>
   </plurals>
   <string name="contact_bottom_sheet_redirect_to_web_title">Available on web</string>
-  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Dismiss</string>
+  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Отклонить</string>
   <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.</string>
   <string name="edit_contact_bottom_sheet_redirect_to_web_description">Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device.</string>
   <string name="contact_bottom_sheet_redirect_to_web_button">Continue on web</string>

@@ -29,4 +29,22 @@
   <string name="spotlight_feature_item_headers_html_description">Inspecione mensagens suspeitas para confirmar a autenticidade delas e descobrir quaisquer elementos de rastreamento ocultos.</string>
   <string name="spotlight_screen_got_it">Entendi</string>
   <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Descubra as novidades \ndo Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Melhorias na interface do usuário</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Rolagem fluida, layout atualizado e muito mais.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Filtro de não lido</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Novo visual e localização para facilitar o acesso.</string>
+  <string name="spotlight_screen_category_view_categories_title">Categorias de e-mail</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Classificação automática das mensagens recebidas.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Veja as novidades.\nPule o resto.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Put the focus on unread messages. Or not. It’s just a simple tap away to switch between all emails and only the unread ones.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Fique por dentro dos e-mails novos e\nnão lidos</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">The unread filter is now more visible and at your fingertips, letting you quickly scan and take action on unread emails.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Dê as boas-vindas à sua caixa de entrada mais organizada</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Com as novas categorias de e-mail, apenas mensagens importantes e urgentes chegam à sua caixa de entrada principal. Todo o resto é organizado em categorias.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Olá, categorias.\nAdeus, distrações.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Pare de se distrair com boletins informativos, atualizações e e-mails não urgentes. Com as novas categorias de e-mail, apenas mensagens importantes chegam à sua caixa de entrada principal.</string>
+  <string name="spotlight_screen_category_view_button_continue">Continuar</string>
+  <string name="spotlight_screen_category_view_button_try">Experimente as categorias</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Continuar sem categorias</string>
 </resources>

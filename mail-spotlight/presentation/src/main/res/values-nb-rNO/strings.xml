@@ -29,4 +29,22 @@
   <string name="spotlight_feature_item_headers_html_description">Inspiser mistenkelige meldinger for å bekrefte deres ekthet og avsløre eventuelle skjulte sporingskomponenter.</string>
   <string name="spotlight_screen_got_it">Skjønner</string>
   <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">Oppdag hva som er nytt\ni Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">Forbedringer av brukergrensesnittet</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Flytende rulling, oppdatert utforming og mer.</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">Ulest-filter</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nytt utseende og plassering for enklere tilgang.</string>
+  <string name="spotlight_screen_category_view_categories_title">E-postkategorier</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Automatisk sortering av innkommende e-post.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Se hva som er nytt.\nHopp over resten.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Sett fokuset på uleste meldinger. Eller ikke. Det er bare et enkelt trykk unna for å bytte mellom alle e-poster og bare de uleste.</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">Hold deg oppdatert på nye og\nuleste e-poster</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">Ulestfilteret er nå mer synlig og lett tilgjengelig, slik at du raskt kan skanne og iverksette tiltak på uleste e-poster.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Hils på den mer organiserte innboksen din</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Med nye e-postkategorier havner bare viktige og hastermeldinger i den primære innboksen din. Alt annet er organisert i kategorier.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">Hallo kategorier.\nHa det distraksjoner.</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Slutt å bli distrahert av nyhetsbrev, oppdateringer og ikke-haster e-poster. Med nye e-postkategorier havner bare viktige meldinger i den primære innboksen din.</string>
+  <string name="spotlight_screen_category_view_button_continue">Fortsett</string>
+  <string name="spotlight_screen_category_view_button_try">Prøv kategorier</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Fortsett uten kategorier</string>
 </resources>
