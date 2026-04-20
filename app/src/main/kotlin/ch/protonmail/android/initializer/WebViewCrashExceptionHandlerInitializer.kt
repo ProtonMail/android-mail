@@ -26,6 +26,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 class WebViewCrashExceptionHandlerInitializer : Initializer<Unit> {
 
@@ -34,18 +35,19 @@ class WebViewCrashExceptionHandlerInitializer : Initializer<Unit> {
         val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
 
         Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-            // Detect the WebView crash
-            val isWebViewLayerCrash = throwable is IllegalStateException &&
-                throwable.message?.contains("Unable to create layer") == true
+            // The layer-allocation crash is thrown from native WebView code and reaches the
+            // uncaught handler wrapped in a Chromium exception (e.g. JniAndroid$UncaughtExceptionException),
+            // so we walk the cause chain instead of checking only the top-level type.
+            val layerCrash = throwable.findLayerCrash()
 
-            // Record the WebView crash if it happens
-            if (isWebViewLayerCrash) {
+            if (layerCrash != null) {
                 runBlocking {
                     EntryPointAccessors.fromApplication(
                         context.applicationContext,
                         WebViewCrashExceptionHandlerEntryPoint::class.java
                     ).saveMessageBodyWebViewCrash().invoke()
                 }
+                Timber.e(layerCrash, "WebView layer crash captured")
             }
 
             // Pass the exception onward so the app still crashes as normal
@@ -53,11 +55,19 @@ class WebViewCrashExceptionHandlerInitializer : Initializer<Unit> {
         }
     }
 
+    private fun Throwable.findLayerCrash(): Throwable? = generateSequence(this) { it.cause }
+        .firstOrNull { it.message?.contains(LAYER_CRASH_MARKER) == true }
+
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface WebViewCrashExceptionHandlerEntryPoint {
         fun saveMessageBodyWebViewCrash(): SaveMessageBodyWebViewCrash
+    }
+
+    private companion object {
+
+        const val LAYER_CRASH_MARKER = "Unable to create layer"
     }
 }
