@@ -240,5 +240,4 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun providePushProcessingWithoutWorkerDef(): FeatureFlagDefinition = PushProcessingWithoutWorker
-
 }
