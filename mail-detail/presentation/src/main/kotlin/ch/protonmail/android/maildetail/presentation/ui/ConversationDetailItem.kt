@@ -81,7 +81,6 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
-import ch.protonmail.android.mailmessage.presentation.model.webview.ContentLoadState
 
 @Composable
 @Suppress("LongParameterList")
@@ -90,7 +89,7 @@ fun ConversationDetailItem(
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
     downloadingAttachmentId: AttachmentId? = null,
-    onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
+    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
     // we won't bother waiting for the heights to be calculated as we already know, this can happen when you scroll
     // back to an expanded item. We don't want to re-animate the card into view and we don't need to wait for load
     previouslyLoadedHeight: Int? = null,
@@ -205,7 +204,7 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
     downloadingAttachmentId: AttachmentId? = null,
-    onMessageBodyLoadFinished: (messageId: MessageId, loadState: ContentLoadState, height: Int) -> Unit,
+    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
     // we've already seen this card expanded and so we don't want to re-animate the card into view
     cachedWebContentHeight: Int? = null,
     // we need to know when the parent view has finished resizing and scrolling as it calculates and adjusts item
@@ -283,12 +282,8 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     showLoadingSpinner ->
                         ItemState.Loading
 
-                    else -> {
-                        ItemState.Visible(
-                            previouslyLoaded = viewPreviouslyLoaded,
-                            cachedHeight = cachedWebContentHeight
-                        )
-                    }
+                    else ->
+                        ItemState.Visible
                 }
             }
         }
@@ -365,9 +360,9 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     onLoadImagesAfterImageProxyFailure = actions.onLoadImagesAfterImageProxyFailure,
                     onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                 ),
-                onMessageBodyLoaded = { id: MessageId, loadState: ContentLoadState, i: Int ->
+                onMessageBodyLoaded = { id: MessageId, i: Int ->
                     // now that the webview is loaded send the more recent height so it can be cached
-                    onMessageBodyLoadFinished(id, loadState, columnHeight.intValue)
+                    onMessageBodyLoadFinished(id, columnHeight.intValue)
                     isExpanding.value = false
                     isWebViewLoading.value = false
                 }
@@ -395,7 +390,7 @@ fun ConversationDetailItemCollapsedPreview() {
         ConversationDetailMessageUiModelSample.ExpiringInvitation,
         actions = previewActions,
         modifier = Modifier,
-        onMessageBodyLoadFinished = { id: MessageId, loadState: ContentLoadState, i: Int -> },
+        onMessageBodyLoadFinished = { id: MessageId, i: Int -> },
         finishedResizing = true
     )
 }
@@ -407,7 +402,7 @@ fun ConversationDetailItemExpandedPreview() {
         ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
         actions = previewActions,
         modifier = Modifier,
-        onMessageBodyLoadFinished = { id: MessageId, loadState: ContentLoadState, i: Int -> },
+        onMessageBodyLoadFinished = { id: MessageId, i: Int -> },
         finishedResizing = true
     )
 }
@@ -521,20 +516,11 @@ fun Modifier.reveal(
 
         ItemState.Expanding -> lastHeightPx
 
-        is ItemState.Visible -> {
-            // WebViews are disposed and recreated during scroll.
-            // Reuse the previously stable height (if available) to prevent
-            // layout jumps caused by height fluctuations while reloading
-            if (itemState.previouslyLoaded && itemState.cachedHeight != null) {
-                itemState.cachedHeight
-            } else {
-                null
-            }
-        }
+        ItemState.Visible -> null
     }
 
     // Cache height when actually visible
-    val cacheHeightModifier = if (itemState is ItemState.Visible) {
+    val cacheHeightModifier = if (itemState == ItemState.Visible) {
         Modifier.onSizeChanged { size ->
             if (size.height > 0) lastHeightPx = size.height
         }
@@ -558,11 +544,7 @@ fun Modifier.reveal(
 
 sealed class ItemState {
     object Loading : ItemState()
-    data class Visible(
-        val previouslyLoaded: Boolean = false,
-        val cachedHeight: Int? = null
-    ) : ItemState()
-
+    object Visible : ItemState()
     object Expanding : ItemState()
     data class ReLoading(val cachedHeight: Int = 0) : ItemState()
 }

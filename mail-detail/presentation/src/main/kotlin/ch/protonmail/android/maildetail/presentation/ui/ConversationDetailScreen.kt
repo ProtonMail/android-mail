@@ -1008,10 +1008,7 @@ private fun MessagesContent(
     onSubjectScrolled: (Float) -> Unit
 ) {
     val listState = rememberLazyListState()
-    // This is updated as items are loaded and measured
     val loadedItemsHeight = remember(conversationId) { mutableStateMapOf<String, Int>() }
-    // This is updated when page is completely loaded and stable
-    val itemsStableHeight = remember(conversationId) { mutableStateMapOf<String, Int>() }
 
     // Map of item heights in LazyColumn (Row index -> height)
     // We will use this map to calculate total height of first non-draft message + any draft messages below it
@@ -1179,7 +1176,7 @@ private fun MessagesContent(
             key = { _, uiModel -> uiModel.messageId.id }
         ) { index, uiModel ->
             val isLastItem = index == uiModels.size - 1
-            val rememberCachedHeight = remember(conversationId) { itemsStableHeight[uiModel.messageId.id] }
+            val rememberCachedHeight = remember(conversationId) { loadedItemsHeight[uiModel.messageId.id] }
             val itemFinishedResizing = finishedResizingOperations && loadedItemsHeight.contains(uiModel.messageId.id)
 
             ConversationDetailItem(
@@ -1209,12 +1206,7 @@ private fun MessagesContent(
                     }
                     itemsHeight[adjustedIndex] = it.height
                 },
-                onMessageBodyLoadFinished = { messageId, loadState, height ->
-                    // When the page reaches a stable final state, cache its height
-                    // so it can be reused on reload and prevent layout jumps
-                    if (loadState.isPageFinished) {
-                        itemsStableHeight[messageId.id] = height
-                    }
+                onMessageBodyLoadFinished = { messageId, height ->
                     loadedItemsHeight[messageId.id] = height
                     val scrollToMessageId = scrollToMessageState.getScrollTargetMessageIdOrNull()
                     if (messageId.id == scrollToMessageId || scrollToMessageId == null) {
