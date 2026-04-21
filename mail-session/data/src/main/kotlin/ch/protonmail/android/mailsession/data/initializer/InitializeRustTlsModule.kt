@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsession.data.initializer
 
-import uniffi.proton_mail_uniffi.RustInit
+import uniffi.mail_uniffi.RustInit
 import javax.inject.Inject
 
 class InitializeRustTlsModule @Inject constructor() {

@@ -115,8 +115,10 @@ fun LocalSystemLabel.toSystemLabel() = when (this) {
     LocalSystemLabel.SNOOZED -> SystemLabelId.Snoozed
     LocalSystemLabel.CATEGORY_SOCIAL,
     LocalSystemLabel.CATEGORY_PROMOTIONS,
-    LocalSystemLabel.CATERGORY_UPDATES,
     LocalSystemLabel.CATEGORY_FORUMS,
+    LocalSystemLabel.CATEGORY_UPDATES,
+    LocalSystemLabel.CATEGORY_NEWSLETTER,
+    LocalSystemLabel.CATEGORY_TRANSACTIONS,
     LocalSystemLabel.BLOCKED,
     LocalSystemLabel.PINNED,
     LocalSystemLabel.CATEGORY_DEFAULT -> {

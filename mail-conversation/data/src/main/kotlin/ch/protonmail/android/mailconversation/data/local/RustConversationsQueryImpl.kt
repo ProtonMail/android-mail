@@ -202,6 +202,10 @@ class RustConversationsQueryImpl @Inject constructor(
                             is ConversationScrollerUpdate.List -> update.toScrollerUpdate()
 
                             is ConversationScrollerUpdate.Error -> update.toScrollerUpdate()
+                            is ConversationScrollerUpdate.CategoryViewChanged -> {
+                                Timber.d("rust-conversation-query: Category view update received")
+                                return@withLock
+                            }
                         }
 
                         Timber.d(
@@ -393,6 +397,7 @@ fun ConversationScrollerUpdate.debugTypeName(): String = when (this) {
     is ConversationScrollerUpdate.List -> this.v1.debugTypeName()
     is ConversationScrollerUpdate.Status -> this.v1.debugTypeName()
     is ConversationScrollerUpdate.Error -> "Error"
+    is ConversationScrollerUpdate.CategoryViewChanged -> "CategoryViewChanged"
 }
 
 fun ConversationScrollerListUpdate.debugTypeName(): String = when (this) {

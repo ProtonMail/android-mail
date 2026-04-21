@@ -239,6 +239,10 @@ class RustMessageListQueryImpl @Inject constructor(
                             is MessageScrollerUpdate.List -> update.toScrollerUpdate()
 
                             is MessageScrollerUpdate.Error -> update.toScrollerUpdate()
+                            is MessageScrollerUpdate.CategoryViewChanged -> {
+                                Timber.d("rust-message-query: Category view update received")
+                                return@withLock
+                            }
                         }
 
                         Timber.d(
@@ -402,6 +406,7 @@ fun MessageScrollerUpdate.debugTypeName(): String = when (this) {
     is MessageScrollerUpdate.List -> this.v1.debugTypeName()
     is MessageScrollerUpdate.Status -> this.v1.debugTypeName()
     is MessageScrollerUpdate.Error -> "Error"
+    is MessageScrollerUpdate.CategoryViewChanged -> "CategoryViewChanged"
 }
 
 fun MessageScrollerListUpdate.debugTypeName(): String = when (this) {
