@@ -181,6 +181,33 @@ class IntentMapperTest {
         assertTrue(result is HomeNavigationEvent.UnknownIntentReceived)
     }
 
+    @Test
+    fun `map external image share intent with category default`() {
+        // Given
+        val streamUri = mockk<Uri> {
+            every { scheme } returns "content"
+        }
+        every { streamUri.toString() } returns "content://media/1"
+
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            type = "image/jpeg",
+            data = null,
+            externalBoolean = true,
+            categories = setOf(Intent.CATEGORY_DEFAULT),
+            extraSubject = sampleShareInfoExternal.emailSubject,
+            extraRecipientTo = sampleShareInfoExternal.emailRecipientTo.toTypedArray(),
+            extraText = sampleShareInfoExternal.emailBody,
+            extraStreamUri = streamUri
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then
+        assertIs<HomeNavigationEvent.ExternalShareIntentReceived>(result)
+        assertEquals(sampleShareInfoExternal, result.shareInfo)
+    }
 
     private fun mockIntent(
         action: String = "",

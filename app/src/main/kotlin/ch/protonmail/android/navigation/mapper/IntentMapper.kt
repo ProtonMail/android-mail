@@ -61,8 +61,10 @@ class IntentMapper @Inject constructor() {
     }
 
     private fun Intent.isLauncherIntent(): Boolean = action == Intent.ACTION_MAIN &&
-        categories?.contains(Intent.CATEGORY_LAUNCHER) == true ||
-        categories?.contains(Intent.CATEGORY_DEFAULT) == true
+        (
+            categories?.contains(Intent.CATEGORY_LAUNCHER) == true ||
+                categories?.contains(Intent.CATEGORY_DEFAULT) == true
+            )
 
     private fun Intent.isShareIntent(): Boolean = action == Intent.ACTION_SEND ||
         action == Intent.ACTION_SEND_MULTIPLE ||
