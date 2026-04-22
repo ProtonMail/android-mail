@@ -191,7 +191,6 @@ class IntentMapperTest {
 
         val intent = mockIntent(
             action = Intent.ACTION_SEND,
-            type = "image/jpeg",
             data = null,
             externalBoolean = true,
             categories = setOf(Intent.CATEGORY_DEFAULT),
