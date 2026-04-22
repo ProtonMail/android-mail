@@ -36,7 +36,7 @@ import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ContactDetailsUiModelMapperTest {
+internal class ContactDetailsUiModelMapperTest {
 
     private val colorMapper = mockk<ColorMapper> {
         every { toColor(any()) } returns Color.Blue.right()
@@ -243,6 +243,37 @@ class ContactDetailsUiModelMapperTest {
             )
         )
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should deduplicate repeated contact groups when mapping email groups (as badges)`() {
+        // Given
+        val duplicatedGroup = ContactGroup(name = "group", color = "color")
+        val expectedBadges = listOf(ContactDetailsItemBadgeUiModel(name = "group", color = Color.Blue))
+        val contactDetailCard = ContactDetailCard(
+            id = ContactIdTestData.contactId1,
+            remoteId = "id",
+            avatarInformation = AvatarInformation(initials = "P", color = "color"),
+            extendedName = ExtendedName(last = "Mail", first = "Proton"),
+            fields = listOf(
+                ContactField.Emails(
+                    list = listOf(
+                        ContactDetailEmail(
+                            email = "pm@pm.me",
+                            emailType = listOf(VCardPropType.Home),
+                            groups = listOf(duplicatedGroup, duplicatedGroup, duplicatedGroup)
+                        )
+                    )
+                )
+            )
+        )
+
+        // When
+        val result = mapper.toUiModel(contactDetailCard)
+
+        // Then
+        val emailItem = result.contactDetailsItemGroupUiModels.first().contactDetailsItemUiModels.first()
+        assertEquals(expectedBadges, emailItem.badges)
     }
 
     private fun getMonthName(month: Int): String = Month.of(month).getDisplayName(TextStyle.FULL, Locale.US)
