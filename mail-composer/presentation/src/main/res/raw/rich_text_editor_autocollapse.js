@@ -293,11 +293,39 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+// Cached non-collapsed selection so that Kotlin-invoked operations
+// (e.g. clearSelectionFormatting) can still find a range to operate on
+// after the ActionMode has dismissed and cleared the live selection.
+// Invalidated from Kotlin via __protonInvalidateSelectionCache() whenever
+// an ActionMode dismisses for any reason other than Clear formatting.
+let lastNonEmptyRange = null;
+
+function __protonInvalidateSelectionCache() {
+    lastNonEmptyRange = null;
+}
+
+// Called by Kotlin from ActionMode lifecycle hooks. Android WebView doesn't
+// reliably emit selectionchange during touch-drag selection, so we explicitly
+// capture the current range at the moment the floating toolbar is shown/refreshed.
+function __protonCaptureSelection() {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    const range = selection.getRangeAt(0);
+    if (!range.collapsed) {
+        lastNonEmptyRange = range.cloneRange();
+    }
+}
+
 // Handle selection changes (prevents from auto-expanding and glitching)
 document.addEventListener('selectionchange', function () {
     const selection = window.getSelection();
     if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
+
+        if (!range.collapsed) {
+            lastNonEmptyRange = range.cloneRange();
+        }
+
         const container = range.commonAncestorContainer;
         let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
 
@@ -362,6 +390,80 @@ function injectInlineImage(contentId) {
         selection.addRange(range);
     }
     // Dispatch an input updated event to ensure body is saved
+    editor.dispatchEvent(new Event('input'));
+}
+
+function clearSelectionFormatting() {
+    const editor = document.getElementById('$EDITOR_ID');
+    if (!editor) return;
+
+    const selection = window.getSelection();
+    const liveRangeCount = selection ? selection.rangeCount : 0;
+    const liveCollapsed = liveRangeCount > 0 ? selection.getRangeAt(0).collapsed : true;
+
+    let range = null;
+    if (selection && liveRangeCount > 0 && !liveCollapsed) {
+        // Live selection is still intact — use it as-is. Calling editor.focus()
+        // here would collapse it on some WebView builds, which is why we only
+        // focus when we actually need to restore from cache.
+        range = selection.getRangeAt(0);
+    } else if (lastNonEmptyRange && editor.contains(lastNonEmptyRange.commonAncestorContainer)) {
+        // Live selection is gone (ActionMode dismissal cleared it); restore
+        // from the cache so execCommand has something to act on.
+        editor.focus();
+        selection.removeAllRanges();
+        selection.addRange(lastNonEmptyRange);
+        range = lastNonEmptyRange;
+    }
+
+    if (!range || !editor.contains(range.commonAncestorContainer)) return;
+
+    // Snapshot the range before execCommand runs — removeFormat can collapse
+    // or shrink the live selection as a side-effect of unwrapping inline
+    // tags, which would cause the secondary pass below to miss outer blocks.
+    const rangeForWalker = range.cloneRange();
+
+    // Remove inline formatting wrappers (<font>, <span style>, <b>, <i>, <u>, ...)
+    document.execCommand('removeFormat', false, null);
+
+    // removeFormat doesn't touch inline styles on block elements, which is
+    // where the merge/size artifacts from Blink's contentEditable end up.
+    // Strip typography and color/background from any element that intersects
+    // the original selection, and drop Proton's dark-mode backup attribute
+    // so toggling themes can't restore what the user just cleared.
+    const stripProps = [
+        'font-family', 'font-size', 'line-height',
+        'color', 'background-color', 'background'
+    ];
+    const blockTags = ['DIV', 'P', 'LI', 'BLOCKQUOTE', 'TD', 'TH', 'PRE'];
+    const editorStyle = window.getComputedStyle(editor);
+    const walker = document.createTreeWalker(editor, NodeFilter.SHOW_ELEMENT, {
+        acceptNode(node) {
+            return rangeForWalker.intersectsNode(node)
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_SKIP;
+        }
+    });
+    let n;
+    while ((n = walker.nextNode())) {
+        if (n.style) {
+            stripProps.forEach(p => n.style.removeProperty(p));
+        }
+        if (n.hasAttribute('data-proton-original-style')) {
+            n.removeAttribute('data-proton-original-style');
+        }
+        // If a block still inherits a non-default typography from an
+        // ancestor outside the selection, pin it to the editor's computed
+        // values so the cleared text matches the composer's defaults.
+        if (blockTags.indexOf(n.tagName) !== -1) {
+            const cs = window.getComputedStyle(n);
+            if (cs.fontSize !== editorStyle.fontSize) n.style.fontSize = editorStyle.fontSize;
+            if (cs.fontFamily !== editorStyle.fontFamily) n.style.fontFamily = editorStyle.fontFamily;
+            if (cs.lineHeight !== editorStyle.lineHeight) n.style.lineHeight = editorStyle.lineHeight;
+        }
+        if (n.getAttribute('style') === '') n.removeAttribute('style');
+    }
+
     editor.dispatchEvent(new Event('input'));
 }
 

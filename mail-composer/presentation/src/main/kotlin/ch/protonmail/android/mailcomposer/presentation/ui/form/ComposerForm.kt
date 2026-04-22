@@ -20,6 +20,10 @@ package ch.protonmail.android.mailcomposer.presentation.ui.form
 
 import android.content.Context
 import android.net.Uri
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.webkit.WebView
@@ -53,6 +57,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.FocusableForm
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
+import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.DraftDisplayBodyUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientsStateManager
@@ -261,6 +266,13 @@ private fun onBuildWebView(editorWebView: MutableState<WebView?>, onMediaAdded: 
                 EditorInfoCompat.setContentMimeTypes(outAttrs!!, EditableMessageBodyWebView.contentMimeTypes)
                 return InputConnectionCompat.createWrapper(this, inputConnection, outAttrs)
             }
+
+            override fun startActionMode(callback: ActionMode.Callback, type: Int): ActionMode? =
+                if (type == ActionMode.TYPE_FLOATING) {
+                    super.startActionMode(ClearFormattingActionModeCallback(this, callback), type)
+                } else {
+                    super.startActionMode(callback, type)
+                }
         }
 
         ViewCompat.setOnReceiveContentListener(
@@ -283,6 +295,79 @@ private fun onBuildWebView(editorWebView: MutableState<WebView?>, onMediaAdded: 
 
     Timber.d("editor-webview: factory returning editor webview")
     editorWebView.value ?: throw IllegalStateException("Editor WebView wasn't initialized.")
+}
+
+private class ClearFormattingActionModeCallback(
+    private val webView: WebView,
+    private val wrapped: ActionMode.Callback
+) : ActionMode.Callback2() {
+
+    private var clearFormattingRequested = false
+
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        val created = wrapped.onCreateActionMode(mode, menu)
+        addClearFormattingItem(menu)
+        // Android WebView doesn't reliably emit selectionchange during touch
+        // drag selection, so we explicitly snapshot the live range now — the
+        // floating toolbar is only shown when a non-collapsed selection exists.
+        webView.evaluateJavascript("__protonCaptureSelection();", null)
+        return created
+    }
+
+    // Chromium's WebView callback clears the menu in onPrepareActionMode and
+    // re-populates it from scratch on every selection change, so we must
+    // re-inject our item here, or it disappears.
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+        wrapped.onPrepareActionMode(mode, menu)
+        addClearFormattingItem(menu)
+        // Keep the cache in sync if Chromium refreshes the toolbar because
+        // the user adjusted the selection handles.
+        webView.evaluateJavascript("__protonCaptureSelection();", null)
+        return true
+    }
+
+    private fun addClearFormattingItem(menu: Menu) {
+        if (menu.findItem(MENU_ITEM_ID) != null) return
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_ID,
+            Menu.NONE,
+            webView.context.getString(R.string.composer_action_clear_formatting)
+        )
+    }
+
+    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+        if (item.itemId == MENU_ITEM_ID) {
+            clearFormattingRequested = true
+            webView.evaluateJavascript("clearSelectionFormatting();", null)
+            mode.finish()
+            return true
+        }
+        return wrapped.onActionItemClicked(mode, item)
+    }
+
+    // Invalidate the JS-side selection cache when the action mode dismisses
+    // for any reason other than our own item firing — otherwise a future
+    // ActionMode could resurrect a stale range and clear it.
+    override fun onDestroyActionMode(mode: ActionMode) {
+        wrapped.onDestroyActionMode(mode)
+        if (!clearFormattingRequested) {
+            webView.evaluateJavascript("__protonInvalidateSelectionCache();", null)
+        }
+    }
+
+    override fun onGetContentRect(mode: ActionMode?, view: View?, outRect: android.graphics.Rect?) {
+        if (wrapped is ActionMode.Callback2) {
+            wrapped.onGetContentRect(mode, view, outRect)
+        } else {
+            super.onGetContentRect(mode, view, outRect)
+        }
+    }
+
+    private companion object {
+
+        private const val MENU_ITEM_ID = 0x0FFF0001
+    }
 }
 
 internal object ComposerForm {
