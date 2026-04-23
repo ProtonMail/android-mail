@@ -22,8 +22,6 @@ import java.io.IOException
 import android.content.Context
 import android.content.res.Resources
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoCollapseQuotedTextEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,19 +29,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GetCustomCss @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @ComposerAutoCollapseQuotedTextEnabled private val loadAlternativeCss: FeatureFlag<Boolean>
+    @ApplicationContext private val context: Context
 ) {
 
     suspend operator fun invoke(): String = withContext(Dispatchers.IO) {
         try {
-            val rawRes = if (loadAlternativeCss.get()) {
-                R.raw.css_reset_with_custom_props_autocollapse
-            } else {
-                R.raw.css_reset_with_custom_props
-            }
-
-            context.resources.openRawResource(rawRes).use {
+            context.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse).use {
                 it.readBytes().decodeToString()
             }
         } catch (notFoundException: Resources.NotFoundException) {

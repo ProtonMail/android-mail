@@ -23,7 +23,6 @@ import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValue
 import ch.protonmail.android.mailfeatureflags.data.local.UnleashFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureFlagFactory
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoCollapseQuotedTextEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
@@ -46,7 +45,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
-import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
@@ -153,17 +151,6 @@ object FeatureFlagsModule {
     @IsSpringOffer2026Wave2Enabled
     fun provideSpringOffer2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = SpringOffer2026Wave2Enabled.key, false)
-
-    @Provides
-    @Singleton
-    @ComposerAutoCollapseQuotedTextEnabled
-    fun provideComposerAutoCollapseText(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = ComposerAutoCollapseQuotedText.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideComposerAutoCollapseTextDef(): FeatureFlagDefinition = ComposerAutoCollapseQuotedText
 
     @Provides
     @Singleton

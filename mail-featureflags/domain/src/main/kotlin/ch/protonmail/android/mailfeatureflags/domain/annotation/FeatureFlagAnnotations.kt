@@ -46,10 +46,6 @@ annotation class IsSpringOffer2026Wave2Enabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class ComposerAutoCollapseQuotedTextEnabled
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class IsComposerFormatMenuEnabled
 
 @Qualifier

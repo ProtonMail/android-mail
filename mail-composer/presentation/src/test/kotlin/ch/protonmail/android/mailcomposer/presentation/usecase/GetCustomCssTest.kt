@@ -20,9 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import android.content.Context
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import io.mockk.clearAllMocks
-import io.mockk.coEvery
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -34,11 +32,8 @@ import kotlin.test.AfterTest
 internal class GetCustomCssTest {
 
     private val mockContext = mockk<Context>()
-    private val mockFeatureFlag = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns false
-    }
 
-    private val getCustomCss = GetCustomCss(mockContext, mockFeatureFlag)
+    private val getCustomCss = GetCustomCss(mockContext)
 
     @AfterTest
     fun teardown() {
@@ -46,9 +41,8 @@ internal class GetCustomCssTest {
     }
 
     @Test
-    fun `loads the correct resource based on the FF (true)`() = runTest {
+    fun `loads the css reset raw resource`() = runTest {
         // Given
-        coEvery { mockFeatureFlag.get() } returns true
         every {
             mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse)
         } returns "".byteInputStream()
@@ -58,22 +52,6 @@ internal class GetCustomCssTest {
 
         // Then
         verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse) }
-        confirmVerified(mockContext.resources)
-    }
-
-    @Test
-    fun `loads the correct resource based on the FF (false)`() = runTest {
-        // Given
-        coEvery { mockFeatureFlag.get() } returns false
-        every {
-            mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props)
-        } returns "".byteInputStream()
-
-        // When
-        getCustomCss()
-
-        // Then
-        verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props) }
         confirmVerified(mockContext.resources)
     }
 }

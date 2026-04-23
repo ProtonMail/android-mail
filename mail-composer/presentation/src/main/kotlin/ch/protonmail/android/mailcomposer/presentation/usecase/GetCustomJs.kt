@@ -24,8 +24,6 @@ import android.content.res.Resources
 import ch.protonmail.android.mailcomposer.domain.model.ComposerValues.EDITOR_ID
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.ui.JAVASCRIPT_CALLBACK_INTERFACE_NAME
-import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoCollapseQuotedTextEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,23 +31,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GetCustomJs @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @ComposerAutoCollapseQuotedTextEnabled private val loadAlternativeJs: FeatureFlag<Boolean>
+    @ApplicationContext private val context: Context
 ) {
 
     suspend operator fun invoke(): String = withContext(Dispatchers.IO) {
         try {
-            val rawRes = if (loadAlternativeJs.get()) {
-                R.raw.rich_text_editor_autocollapse
-            } else {
-                R.raw.rich_text_editor
-            }
-
-            context.resources.openRawResource(rawRes)
+            context.resources.openRawResource(R.raw.rich_text_editor_autocollapse)
                 .use { it.readBytes().decodeToString() }
                 .replace("\$EDITOR_ID", EDITOR_ID)
                 .replace("\$JAVASCRIPT_CALLBACK_INTERFACE_NAME", JAVASCRIPT_CALLBACK_INTERFACE_NAME)
-
         } catch (notFoundException: Resources.NotFoundException) {
             Timber.e(notFoundException, "Raw js resource is not found")
             ""
