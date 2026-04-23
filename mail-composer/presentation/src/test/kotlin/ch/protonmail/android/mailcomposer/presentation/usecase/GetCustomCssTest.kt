@@ -44,14 +44,14 @@ internal class GetCustomCssTest {
     fun `loads the css reset raw resource`() = runTest {
         // Given
         every {
-            mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse)
+            mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props)
         } returns "".byteInputStream()
 
         // When
         getCustomCss()
 
         // Then
-        verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse) }
+        verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.css_reset_with_custom_props) }
         confirmVerified(mockContext.resources)
     }
 }
