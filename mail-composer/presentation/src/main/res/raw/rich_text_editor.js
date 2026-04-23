@@ -433,7 +433,8 @@ function clearSelectionFormatting() {
     // so toggling themes can't restore what the user just cleared.
     const stripProps = [
         'font-family', 'font-size', 'line-height',
-        'color', 'background-color', 'background'
+        'color', 'background-color', 'background',
+        'text-align'
     ];
     const blockTags = ['DIV', 'P', 'LI', 'BLOCKQUOTE', 'TD', 'TH', 'PRE'];
     const editorStyle = window.getComputedStyle(editor);
@@ -444,11 +445,18 @@ function clearSelectionFormatting() {
                 : NodeFilter.FILTER_SKIP;
         }
     });
+    // Legacy presentational attributes that removeFormat and stripProps miss
+    // because they're HTML attributes, not CSS. `align="center"` on a <div>
+    // is the common one, `bgcolor="..."` rounds out the set.
+    const stripAttrs = ['align', 'bgcolor'];
     let n;
     while ((n = walker.nextNode())) {
         if (n.style) {
             stripProps.forEach(p => n.style.removeProperty(p));
         }
+        stripAttrs.forEach(a => {
+            if (n.hasAttribute(a)) n.removeAttribute(a);
+        });
         if (n.hasAttribute('data-proton-original-style')) {
             n.removeAttribute('data-proton-original-style');
         }
@@ -463,6 +471,69 @@ function clearSelectionFormatting() {
         }
         if (n.getAttribute('style') === '') n.removeAttribute('style');
     }
+
+    // Flatten any heading or paragraph the selection touches to a plain <div>.
+    // Clear-formatting is the manual recovery path for blocks whose tag carries
+    // visible styling like headings (size/weight) and paragraphs (1.5em vertical
+    // margin from the stylesheet). Converting to <div> both wipes the current
+    // block's tag-based styling and ensures subsequent Enter presses produce
+    // more <div>s instead of reintroducing that margin.
+    // All attributes are dropped — anything a class/id contributed styling-
+    // wise would defeat the point of clearing formatting.
+    const flattenTags = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'CENTER']);
+    const flattenWalker = document.createTreeWalker(editor, NodeFilter.SHOW_ELEMENT, {
+        acceptNode(node) {
+            if (!flattenTags.has(node.tagName)) return NodeFilter.FILTER_SKIP;
+            return rangeForWalker.intersectsNode(node)
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_SKIP;
+        }
+    });
+    const blocksToFlatten = [];
+    let flat;
+    while ((flat = flattenWalker.nextNode())) blocksToFlatten.push(flat);
+
+    // Replace in reverse so a nested block (rare but legal in contentEditable)
+    // is handled before its ancestor gets detached from the tree.
+    for (let i = blocksToFlatten.length - 1; i >= 0; i--) {
+        const original = blocksToFlatten[i];
+        const replacement = document.createElement('div');
+        while (original.firstChild) replacement.appendChild(original.firstChild);
+        if (original.parentNode) original.parentNode.replaceChild(replacement, original);
+    }
+
+    // Unwrap any <ul>/<ol> whose items the selection touches - flatten each
+    // list item into a <div> and drop the enclosing list. Matches common
+    // "clear formatting" semantics: one cleared item takes the whole list
+    // with it, avoiding awkward split-list states.
+    const listsToUnwrap = new Set();
+    const listItemWalker = document.createTreeWalker(editor, NodeFilter.SHOW_ELEMENT, {
+        acceptNode(node) {
+            if (node.tagName !== 'LI') return NodeFilter.FILTER_SKIP;
+            return rangeForWalker.intersectsNode(node)
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_SKIP;
+        }
+    });
+    let li;
+    while ((li = listItemWalker.nextNode())) {
+        const list = li.closest('ul, ol');
+        if (list && editor.contains(list)) listsToUnwrap.add(list);
+    }
+
+    listsToUnwrap.forEach(list => {
+        const parent = list.parentNode;
+        if (!parent) return;
+        const fragment = document.createDocumentFragment();
+        // Direct-child li's only - nested lists keep their structure until
+        // the user clears them explicitly at their own level.
+        list.querySelectorAll(':scope > li').forEach(item => {
+            const div = document.createElement('div');
+            while (item.firstChild) div.appendChild(item.firstChild);
+            fragment.appendChild(div);
+        });
+        parent.replaceChild(fragment, list);
+    });
 
     editor.dispatchEvent(new Event('input'));
 }
