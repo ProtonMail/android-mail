@@ -146,6 +146,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
 
     val displayBody by viewModel.displayBody.collectAsStateWithLifecycle()
     val bodyTextFieldState = viewModel.bodyTextField
+    val formatMenuEnabled by viewModel.formatMenuEnabled.collectAsStateWithLifecycle()
 
     fun dismissBottomSheet(continuation: () -> Unit = {}) {
         scope.launch { bottomSheetState.hide() }
@@ -441,7 +442,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
                         injectInlineAttachments = effectsState.injectInlineAttachments,
                         stripInlineAttachment = effectsState.stripInlineAttachment,
                         refreshBody = effectsState.refreshBody,
-                        viewportCoordinateAlignmentEnabled = viewportCoordinateAlignmentEnabled
+                        viewportCoordinateAlignmentEnabled = viewportCoordinateAlignmentEnabled,
+                        formatMenuEnabled = formatMenuEnabled
                     )
                 }
             }

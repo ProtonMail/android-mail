@@ -110,6 +110,8 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.GetFormattedSched
 import ch.protonmail.android.mailcontact.domain.usecase.PreloadContactSuggestions
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.Compose
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.ComposeToAddresses
@@ -141,6 +143,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -196,6 +199,7 @@ class ComposerViewModel @AssistedInject constructor(
     private val convertInlineToAttachment: ConvertInlineImageToAttachment,
     private val sanitizePastedContent: SanitizePastedContent,
     private val appEventBroadcaster: AppEventBroadcaster,
+    @IsComposerFormatMenuEnabled private val isFormatMenuEnabled: FeatureFlag<Boolean>,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -207,6 +211,14 @@ class ComposerViewModel @AssistedInject constructor(
 
     // This is what we're going to display in the Webview, keep it separate from other flows
     // as this can't be debounced (or webview recompositions won't receive the updated value)
+    internal val formatMenuEnabled: StateFlow<Boolean> = flow {
+        emit(isFormatMenuEnabled.get())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = false
+    )
+
     internal val displayBody: StateFlow<DraftDisplayBodyUiModel> =
         combine(
             snapshotFlow { bodyTextField.text },
