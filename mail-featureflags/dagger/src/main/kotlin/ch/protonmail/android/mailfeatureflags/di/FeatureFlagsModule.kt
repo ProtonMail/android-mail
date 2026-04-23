@@ -29,6 +29,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
@@ -46,6 +47,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkMod
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
+import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
@@ -162,6 +164,17 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideComposerAutoCollapseTextDef(): FeatureFlagDefinition = ComposerAutoCollapseQuotedText
+
+    @Provides
+    @Singleton
+    @IsComposerFormatMenuEnabled
+    fun provideComposerFormatMenuEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = ComposerFormatMenu.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideComposerFormatMenuDef(): FeatureFlagDefinition = ComposerFormatMenu
 
     @Provides
     @IntoSet

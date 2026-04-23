@@ -82,6 +82,14 @@ data object ComposerAutoCollapseQuotedText : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object ComposerFormatMenu : FeatureFlagDefinition(
+    key = "MailAndroidV7ComposerFormatMenu",
+    name = "Composer format menu",
+    category = FeatureFlagCategory.Composer,
+    description = "Show format actions (e.g. clear formatting) in the text selection toolbar in Composer",
+    defaultValue = false
+)
+
 data object ConversationDetailAutoExpandLastMessageEnabled : FeatureFlagDefinition(
     key = "MailAndroidV7LastMessageAutoExpand",
     name = "Auto expand last message in convo details",

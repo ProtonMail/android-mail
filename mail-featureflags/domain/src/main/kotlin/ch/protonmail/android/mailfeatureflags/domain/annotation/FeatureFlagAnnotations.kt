@@ -50,6 +50,10 @@ annotation class ComposerAutoCollapseQuotedTextEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsComposerFormatMenuEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsDebugInspectDbEnabled
 
 @Qualifier

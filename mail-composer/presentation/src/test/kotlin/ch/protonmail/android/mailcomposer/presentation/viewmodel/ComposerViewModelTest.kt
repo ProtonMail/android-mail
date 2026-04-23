@@ -97,6 +97,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.GetFormattedSched
 import ch.protonmail.android.mailcontact.domain.usecase.PreloadContactSuggestions
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -208,6 +209,9 @@ internal class ComposerViewModelTest {
     }
     private val sanitizePastedContent = mockk<SanitizePastedContent>()
     private val appEventBroadcaster = mockk<AppEventBroadcaster>()
+    private val isFormatMenuEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
     private val reducer = ComposerStateReducer()
 
     @BeforeTest
@@ -261,6 +265,7 @@ internal class ComposerViewModelTest {
         convertInlineImageToAttachment,
         sanitizePastedContent,
         appEventBroadcaster,
+        isFormatMenuEnabled,
         observePrimaryUserIdMock
     )
 
