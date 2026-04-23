@@ -36,7 +36,7 @@ class GetCustomJs @Inject constructor(
 
     suspend operator fun invoke(): String = withContext(Dispatchers.IO) {
         try {
-            context.resources.openRawResource(R.raw.rich_text_editor_autocollapse)
+            context.resources.openRawResource(R.raw.rich_text_editor)
                 .use { it.readBytes().decodeToString() }
                 .replace("\$EDITOR_ID", EDITOR_ID)
                 .replace("\$JAVASCRIPT_CALLBACK_INTERFACE_NAME", JAVASCRIPT_CALLBACK_INTERFACE_NAME)

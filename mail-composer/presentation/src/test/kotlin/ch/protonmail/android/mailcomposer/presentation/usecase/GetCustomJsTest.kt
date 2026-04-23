@@ -29,7 +29,7 @@ internal class GetCustomJsTest {
     fun `replace editor id constant with actual value`() = runTest {
         // Given
         every {
-            mockContext.resources.openRawResource(R.raw.rich_text_editor_autocollapse)
+            mockContext.resources.openRawResource(R.raw.rich_text_editor)
         } returns "js \$EDITOR_ID more js \$EDITOR_ID".byteInputStream()
         val expected = "js $EDITOR_ID more js $EDITOR_ID"
 
@@ -44,7 +44,7 @@ internal class GetCustomJsTest {
     fun `replace javascript callback constant with actual value`() = runTest {
         // Given
         every {
-            mockContext.resources.openRawResource(R.raw.rich_text_editor_autocollapse)
+            mockContext.resources.openRawResource(R.raw.rich_text_editor)
         } returns $$"js $JAVASCRIPT_CALLBACK_INTERFACE_NAME more js".byteInputStream()
         val expected = "js $JAVASCRIPT_CALLBACK_INTERFACE_NAME more js"
 
@@ -59,14 +59,14 @@ internal class GetCustomJsTest {
     fun `loads the rich text editor raw resource`() = runTest {
         // Given
         every {
-            mockContext.resources.openRawResource(R.raw.rich_text_editor_autocollapse)
+            mockContext.resources.openRawResource(R.raw.rich_text_editor)
         } returns "".byteInputStream()
 
         // When
         getCustomJs()
 
         // Then
-        verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.rich_text_editor_autocollapse) }
+        verify(exactly = 1) { mockContext.resources.openRawResource(R.raw.rich_text_editor) }
         confirmVerified(mockContext.resources)
     }
 }

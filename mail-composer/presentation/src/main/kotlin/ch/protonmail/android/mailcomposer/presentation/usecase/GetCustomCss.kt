@@ -34,7 +34,7 @@ class GetCustomCss @Inject constructor(
 
     suspend operator fun invoke(): String = withContext(Dispatchers.IO) {
         try {
-            context.resources.openRawResource(R.raw.css_reset_with_custom_props_autocollapse).use {
+            context.resources.openRawResource(R.raw.css_reset_with_custom_props).use {
                 it.readBytes().decodeToString()
             }
         } catch (notFoundException: Resources.NotFoundException) {
