@@ -74,14 +74,6 @@ data object SpringOffer2026Wave2Enabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object ComposerAutoCollapseQuotedText : FeatureFlagDefinition(
-    key = "MailAndroidV7ComposerAutoCollapsedText",
-    name = "Auto collapse composer quoted text",
-    category = FeatureFlagCategory.Composer,
-    description = "Inject CSS to auto-collapse quoted text in Composer",
-    defaultValue = false
-)
-
 data object ComposerFormatMenu : FeatureFlagDefinition(
     key = "MailAndroidV7ComposerFormatMenu",
     name = "Composer format menu",
