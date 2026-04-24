@@ -18,9 +18,12 @@
 
 package ch.protonmail.android.mailsession.data.background
 
+import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import ch.protonmail.android.mailcommon.data.worker.CancelWorkManagerWork
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,19 +37,23 @@ internal class BackgroundExecutionWorkSchedulerTest {
 
     private val enqueuer = mockk<Enqueuer>()
     private val cancelWorkManagerWork = mockk<CancelWorkManagerWork>()
+    private val bgProcessingNewConstraintEnabled = mockk<FeatureFlag<Boolean>>()
     private val backgroundScheduler = BackgroundExecutionWorkScheduler(
         enqueuer,
-        cancelWorkManagerWork
+        cancelWorkManagerWork,
+        bgProcessingNewConstraintEnabled
     )
 
     @Test
-    fun `should enqueue the periodic work once requested`() = runTest {
+    fun `should enqueue periodic work requiring battery not low when FF is off`() = runTest {
         // Given
+        coEvery { bgProcessingNewConstraintEnabled.get() } returns false
         coEvery {
             enqueuer.enqueueUniquePeriodicWork(
                 workerId = any(),
                 tag = BACKGROUND_WORK_TAG,
                 worker = BackgroundExecutionWorker::class.java,
+                constraints = any(),
                 existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
             )
         } just runs
@@ -60,6 +67,38 @@ internal class BackgroundExecutionWorkSchedulerTest {
                 workerId = DEFAULT_WORKER_ID,
                 tag = BACKGROUND_WORK_TAG,
                 worker = BackgroundExecutionWorker::class.java,
+                constraints = expectedConstraints(requiresBatteryNotLow = true),
+                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+            )
+
+            cancelWorkManagerWork wasNot called
+        }
+    }
+
+    @Test
+    fun `should enqueue periodic work ignoring battery not low when FF is on`() = runTest {
+        // Given
+        coEvery { bgProcessingNewConstraintEnabled.get() } returns true
+        coEvery {
+            enqueuer.enqueueUniquePeriodicWork(
+                workerId = any(),
+                tag = BACKGROUND_WORK_TAG,
+                worker = BackgroundExecutionWorker::class.java,
+                constraints = any(),
+                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+            )
+        } just runs
+
+        // When
+        backgroundScheduler.scheduleWork()
+
+        // Then
+        coVerify(exactly = 1) {
+            enqueuer.enqueueUniquePeriodicWork(
+                workerId = DEFAULT_WORKER_ID,
+                tag = BACKGROUND_WORK_TAG,
+                worker = BackgroundExecutionWorker::class.java,
+                constraints = expectedConstraints(requiresBatteryNotLow = false),
                 existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
             )
 
@@ -81,6 +120,11 @@ internal class BackgroundExecutionWorkSchedulerTest {
             cancelWorkManagerWork.cancelAllWorkByTag(BACKGROUND_WORK_TAG)
         }
     }
+
+    private fun expectedConstraints(requiresBatteryNotLow: Boolean): Constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresBatteryNotLow(requiresBatteryNotLow)
+        .build()
 
     private companion object {
 
