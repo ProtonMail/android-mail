@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.mailsession.data.background.BackgroundExecutionWorkScheduler
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class RustWorkLifecycleObserver @Inject constructor(
@@ -35,12 +36,14 @@ class RustWorkLifecycleObserver @Inject constructor(
         owner.lifecycleScope.launch {
             backgroundExecutionWorkScheduler.cancelPendingWork()
             onRustEnterForeground()
+            Timber.d("onStart finished - pending work canceled + onEnterForeground")
         }
     }
 
     override fun onStop(owner: LifecycleOwner) {
         onRustExitForeground()
         backgroundExecutionWorkScheduler.scheduleWork()
+        Timber.d("onStop finished - onExitForeground + schedule work called")
     }
 
     private fun onRustExitForeground() {
