@@ -41,9 +41,11 @@ class RustWorkLifecycleObserver @Inject constructor(
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        onRustExitForeground()
-        backgroundExecutionWorkScheduler.scheduleWork()
-        Timber.d("onStop finished - onExitForeground + schedule work called")
+        owner.lifecycleScope.launch {
+            backgroundExecutionWorkScheduler.scheduleWork()
+            onRustExitForeground()
+            Timber.d("onStop finished - schedule work called + onExitForeground")
+        }
     }
 
     private fun onRustExitForeground() {
