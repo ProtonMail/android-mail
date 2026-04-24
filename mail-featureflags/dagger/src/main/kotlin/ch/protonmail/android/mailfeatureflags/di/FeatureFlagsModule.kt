@@ -25,6 +25,7 @@ import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureF
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoCollapseQuotedTextEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingNewConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
@@ -39,6 +40,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoos
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingNewConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
@@ -228,5 +230,16 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun providePushProcessingWithoutWorkerDef(): FeatureFlagDefinition = PushProcessingWithoutWorker
+
+    @Provides
+    @Singleton
+    @IsBgProcessingNewConstraintEnabled
+    fun provideBgProcessingNewConstraintEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(BgProcessingNewConstraint.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingNewConstraint
 
 }

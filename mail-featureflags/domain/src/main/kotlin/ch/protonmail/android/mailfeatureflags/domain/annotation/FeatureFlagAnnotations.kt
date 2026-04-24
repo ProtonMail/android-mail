@@ -79,3 +79,7 @@ annotation class IsFeatureSpotlightEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsPushProcessingWithoutWorkerEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsBgProcessingNewConstraintEnabled
