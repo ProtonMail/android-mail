@@ -83,3 +83,7 @@ annotation class IsCategoryViewEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsPushProcessingWithoutWorkerEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsBgProcessingNewConstraintEnabled
