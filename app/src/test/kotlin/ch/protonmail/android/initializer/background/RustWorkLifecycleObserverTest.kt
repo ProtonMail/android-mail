@@ -30,6 +30,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.test.kotlin.TestDispatcherProvider
@@ -67,7 +68,7 @@ internal class RustWorkLifecycleObserverTest {
     @Test
     fun `should schedule background execution and pause work when onStop is triggered`() = runTest {
         // Given
-        coEvery { scheduler.scheduleWork() } just runs
+        every { scheduler.scheduleWork() } just runs
         every { mailSessionRepository.getMailSession().onExitForeground() } just runs
         val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.CREATED, dispatcher)
 
@@ -76,7 +77,7 @@ internal class RustWorkLifecycleObserverTest {
         advanceUntilIdle()
 
         // Then
-        coVerify(exactly = 1) { scheduler.scheduleWork() }
+        verify(exactly = 1) { scheduler.scheduleWork() }
         coVerify(exactly = 1) { mailSessionRepository.getMailSession().onExitForeground() }
         confirmVerified(mailSessionRepository, scheduler)
     }

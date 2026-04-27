@@ -18,18 +18,16 @@
 
 package ch.protonmail.android.mailsession.data.background
 
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
+import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.mailcommon.data.worker.CancelWorkManagerWork
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
-import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -37,24 +35,19 @@ internal class BackgroundExecutionWorkSchedulerTest {
 
     private val enqueuer = mockk<Enqueuer>()
     private val cancelWorkManagerWork = mockk<CancelWorkManagerWork>()
-    private val bgProcessingNewConstraintEnabled = mockk<FeatureFlag<Boolean>>()
     private val backgroundScheduler = BackgroundExecutionWorkScheduler(
         enqueuer,
-        cancelWorkManagerWork,
-        bgProcessingNewConstraintEnabled
+        cancelWorkManagerWork
     )
 
     @Test
-    fun `should enqueue periodic work requiring battery not low when FF is off`() = runTest {
+    fun `should enqueue scheduler worker with replace policy`() {
         // Given
-        coEvery { bgProcessingNewConstraintEnabled.get() } returns false
-        coEvery {
-            enqueuer.enqueueUniquePeriodicWork(
-                workerId = any(),
-                tag = BACKGROUND_WORK_TAG,
-                worker = BackgroundExecutionWorker::class.java,
-                constraints = any(),
-                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+        every {
+            enqueuer.enqueueUniqueWork(
+                workerId = SCHEDULER_WORKER_ID,
+                worker = ScheduleBackgroundExecutionWorker::class.java,
+                existingWorkPolicy = ExistingWorkPolicy.REPLACE
             )
         } just runs
 
@@ -62,73 +55,32 @@ internal class BackgroundExecutionWorkSchedulerTest {
         backgroundScheduler.scheduleWork()
 
         // Then
-        coVerify(exactly = 1) {
-            enqueuer.enqueueUniquePeriodicWork(
-                workerId = DEFAULT_WORKER_ID,
-                tag = BACKGROUND_WORK_TAG,
-                worker = BackgroundExecutionWorker::class.java,
-                constraints = expectedConstraints(requiresBatteryNotLow = true),
-                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+        verify(exactly = 1) {
+            enqueuer.enqueueUniqueWork(
+                workerId = SCHEDULER_WORKER_ID,
+                worker = ScheduleBackgroundExecutionWorker::class.java,
+                existingWorkPolicy = ExistingWorkPolicy.REPLACE
             )
-
-            cancelWorkManagerWork wasNot called
         }
     }
 
     @Test
-    fun `should enqueue periodic work ignoring battery not low when FF is on`() = runTest {
+    fun `should cancel both scheduler and periodic work when requested`() = runTest {
         // Given
-        coEvery { bgProcessingNewConstraintEnabled.get() } returns true
-        coEvery {
-            enqueuer.enqueueUniquePeriodicWork(
-                workerId = any(),
-                tag = BACKGROUND_WORK_TAG,
-                worker = BackgroundExecutionWorker::class.java,
-                constraints = any(),
-                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
-            )
-        } just runs
-
-        // When
-        backgroundScheduler.scheduleWork()
-
-        // Then
-        coVerify(exactly = 1) {
-            enqueuer.enqueueUniquePeriodicWork(
-                workerId = DEFAULT_WORKER_ID,
-                tag = BACKGROUND_WORK_TAG,
-                worker = BackgroundExecutionWorker::class.java,
-                constraints = expectedConstraints(requiresBatteryNotLow = false),
-                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
-            )
-
-            cancelWorkManagerWork wasNot called
-        }
-    }
-
-    @Test
-    fun `should cancel periodic work when requested`() = runTest {
-        // Given
-        coEvery { cancelWorkManagerWork.cancelAllWorkByTag(any()) } just runs
+        every { enqueuer.cancelWork(SCHEDULER_WORKER_ID) } just runs
+        coEvery { cancelWorkManagerWork.cancelAllWorkByTag(BACKGROUND_WORK_TAG) } just runs
 
         // When
         backgroundScheduler.cancelPendingWork()
 
         // Then
-        coVerify(exactly = 1) {
-            enqueuer wasNot called
-            cancelWorkManagerWork.cancelAllWorkByTag(BACKGROUND_WORK_TAG)
-        }
+        verify(exactly = 1) { enqueuer.cancelWork(SCHEDULER_WORKER_ID) }
+        coVerify(exactly = 1) { cancelWorkManagerWork.cancelAllWorkByTag(BACKGROUND_WORK_TAG) }
     }
-
-    private fun expectedConstraints(requiresBatteryNotLow: Boolean): Constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresBatteryNotLow(requiresBatteryNotLow)
-        .build()
 
     private companion object {
 
         const val BACKGROUND_WORK_TAG = "background_work_execution"
-        const val DEFAULT_WORKER_ID = "background_work_execution_task"
+        const val SCHEDULER_WORKER_ID = "schedule_background_execution"
     }
 }
