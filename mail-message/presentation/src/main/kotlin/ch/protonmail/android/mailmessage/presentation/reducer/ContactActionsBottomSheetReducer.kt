@@ -80,7 +80,8 @@ class ContactActionsBottomSheetReducer @Inject constructor() {
                     secondActionGroup,
                     thirdActionGroup
                 ),
-                origin = origin
+                origin = origin,
+                avatarImageUiModel = avatarImageUiModel
             ),
             bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
         )

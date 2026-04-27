@@ -39,14 +39,15 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyLargeNorm
 import ch.protonmail.android.design.compose.theme.titleLargeNorm
-import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.AvatarImageUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.model.ContactActionUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.uicomponents.BottomNavigationBarSpacer
 import kotlinx.collections.immutable.toImmutableList
 
@@ -77,7 +78,7 @@ fun ContactActionsBottomSheetContent(
             .verticalScroll(rememberScrollState())
     ) {
         ContactActionsBottomSheetHeader(
-            dataState.participant, dataState.avatarUiModel
+            dataState.participant, dataState.avatarUiModel, dataState.avatarImageUiModel
         )
 
         ActionGroup(
@@ -145,18 +146,22 @@ private fun callbackForActions(
 }
 
 @Composable
-fun ContactActionsBottomSheetHeader(participant: Participant, avatarUiModel: AvatarUiModel?) {
+fun ContactActionsBottomSheetHeader(
+    participant: Participant,
+    avatarUiModel: AvatarUiModel?,
+    avatarImageUiModel: AvatarImageUiModel = AvatarImageUiModel.NoImageAvailable
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         if (avatarUiModel != null) {
-            Avatar(
+            ParticipantAvatar(
                 modifier = Modifier
                     .testTag(ContactActionsBottomSheetTestTags.Avatar)
                     .padding(ProtonDimens.Spacing.Large)
                     .align(Alignment.CenterHorizontally),
                 avatarUiModel = avatarUiModel,
-                onClick = { },
+                avatarImageUiModel = avatarImageUiModel,
                 clickable = false,
                 outerContainerSize = MailDimens.Contacts.AvatarSize,
                 avatarSize = MailDimens.Contacts.AvatarSize,

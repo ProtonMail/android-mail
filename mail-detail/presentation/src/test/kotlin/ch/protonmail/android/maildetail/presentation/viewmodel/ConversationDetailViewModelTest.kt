@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.AvatarImageUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetState
@@ -123,6 +124,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
+import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
 import ch.protonmail.android.mailpadlocks.presentation.EncryptionInfoBottomSheetEvent
@@ -330,6 +332,7 @@ internal class ConversationDetailViewModelTest {
     private val observeAvatarImageStates = mockk<ObserveAvatarImageStates> {
         every { this@mockk() } returns flowOf(AvatarImageStatesTestData.SampleData1)
     }
+    private val avatarImageUiModelMapper = AvatarImageUiModelMapper()
     private val markMessageAsLegitimate = mockk<MarkMessageAsLegitimate>()
     private val unblockSender = mockk<UnblockSender>()
     private val blockSender = mockk<BlockSender>()
@@ -415,6 +418,7 @@ internal class ConversationDetailViewModelTest {
             observePrimaryUserAddress = observePrimaryUserAddress,
             loadAvatarImage = loadAvatarImage,
             observeAvatarImageStates = observeAvatarImageStates,
+            avatarImageUiModelMapper = avatarImageUiModelMapper,
             markMessageAsLegitimate = markMessageAsLegitimate,
             unblockSender = unblockSender,
             blockSender = blockSender,
@@ -1859,7 +1863,8 @@ internal class ConversationDetailViewModelTest {
             contactId = ContactSample.Stefano.id,
             origin = sheetOrigin,
             isSenderBlocked = false,
-            isPrimaryUserAddress = false
+            isPrimaryUserAddress = false,
+            avatarImageUiModel = AvatarImageUiModel.NotLoaded
         )
 
         val expectedResult = ConversationDetailState.Loading.copy(

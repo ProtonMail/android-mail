@@ -22,6 +22,7 @@ import androidx.compose.runtime.Immutable
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AvailableActions
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.AvatarImageUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetContentState
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
@@ -157,7 +158,8 @@ sealed interface ContactActionsBottomSheetState : BottomSheetContentState {
         val participant: Participant,
         val avatarUiModel: AvatarUiModel?,
         val actions: ContactActionsGroups,
-        val origin: Origin
+        val origin: Origin,
+        val avatarImageUiModel: AvatarImageUiModel = AvatarImageUiModel.NoImageAvailable
     ) : ContactActionsBottomSheetState
 
     data object Loading : ContactActionsBottomSheetState
@@ -171,7 +173,8 @@ sealed interface ContactActionsBottomSheetState : BottomSheetContentState {
             val contactId: ContactId?,
             val origin: Origin,
             val isSenderBlocked: Boolean,
-            val isPrimaryUserAddress: Boolean
+            val isPrimaryUserAddress: Boolean,
+            val avatarImageUiModel: AvatarImageUiModel = AvatarImageUiModel.NoImageAvailable
         ) : ContactActionsBottomSheetEvent
     }
 }
