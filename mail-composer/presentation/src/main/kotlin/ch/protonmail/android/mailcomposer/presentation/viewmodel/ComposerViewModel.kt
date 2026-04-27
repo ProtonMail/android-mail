@@ -117,6 +117,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.Compose
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.ComposeToAddresses
+import ch.protonmail.android.mailmessage.domain.model.DraftAction.ComposeToContactGroup
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.Forward
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.MailTo
 import ch.protonmail.android.mailmessage.domain.model.DraftAction.PrefillForShare
@@ -520,6 +521,12 @@ class ComposerViewModel @AssistedInject constructor(
             is ComposeToAddresses -> {
                 prefillForNewDraft().onRight {
                     prefillForComposeToAction(draftAction.extractRecipients())
+                }
+            }
+
+            is ComposeToContactGroup -> {
+                prefillForNewDraft().onRight {
+                    prefillForComposeToAction(listOf(draftAction.toGroupRecipient()))
                 }
             }
 
@@ -997,6 +1004,9 @@ class ComposerViewModel @AssistedInject constructor(
             }
         }
     }
+
+    private fun ComposeToContactGroup.toGroupRecipient(): RecipientUiModel.Group =
+        RecipientUiModel.Group(name = name, members = members, color = "")
 
     private fun String.stripNewLines() = this.replace("[\n\r]".toRegex(), " ")
 
