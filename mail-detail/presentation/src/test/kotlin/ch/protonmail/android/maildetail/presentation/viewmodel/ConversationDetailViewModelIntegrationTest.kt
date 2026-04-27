@@ -2488,6 +2488,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         observePrimaryUserAddress = observePrimaryUserAddress,
         loadAvatarImage = loadAvatarImg,
         observeAvatarImageStates = observeAvatarImgStates,
+        avatarImageUiModelMapper = avatarImageUiModelMapper,
         markMessageAsLegitimate = markMessageAsLegitimate,
         unblockSender = unblockSender,
         blockSender = blockSender,

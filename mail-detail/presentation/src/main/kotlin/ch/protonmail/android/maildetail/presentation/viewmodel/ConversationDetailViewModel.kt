@@ -135,6 +135,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
+import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.attachment.isExpandable
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -225,6 +226,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val observePrimaryUserAddress: ObservePrimaryUserAddress,
     private val loadAvatarImage: LoadAvatarImage,
     private val observeAvatarImageStates: ObserveAvatarImageStates,
+    private val avatarImageUiModelMapper: AvatarImageUiModelMapper,
     private val markMessageAsLegitimate: MarkMessageAsLegitimate,
     private val unblockSender: UnblockSender,
     private val blockSender: BlockSender,
@@ -904,6 +906,9 @@ class ConversationDetailViewModel @AssistedInject constructor(
 
         val senderBlocked = action.messageId?.let { isMessageSenderBlocked(userId, MessageId(it.id)) } ?: false
 
+        val avatarImageState = observeAvatarImageStates().first()
+            .getStateForAddress(action.participant.participantAddress)
+
         val event = ConversationDetailEvent.ConversationBottomSheetEvent(
             ContactActionsBottomSheetState.ContactActionsBottomSheetEvent.ActionData(
                 participant = Participant(
@@ -918,7 +923,8 @@ class ConversationDetailViewModel @AssistedInject constructor(
                     )
                 } ?: ContactActionsBottomSheetState.Origin.Unknown,
                 isSenderBlocked = senderBlocked,
-                isPrimaryUserAddress = isPrimaryUserAddress
+                isPrimaryUserAddress = isPrimaryUserAddress,
+                avatarImageUiModel = avatarImageUiModelMapper.toUiModel(avatarImageState)
             )
         )
         emitNewStateFrom(event)
