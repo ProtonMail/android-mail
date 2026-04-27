@@ -811,10 +811,10 @@ fun Home(
                         onShowErrorSnackbar = {
                             showErrorSnackbar(it)
                         },
-                        onSendGroupMessage = {
+                        onSendGroupMessage = { groupName, members ->
                             navController.navigate(
                                 Screen.MessageActionComposer(
-                                    DraftAction.ComposeToAddresses(it)
+                                    DraftAction.ComposeToContactGroup(groupName, members)
                                 )
                             )
                         },

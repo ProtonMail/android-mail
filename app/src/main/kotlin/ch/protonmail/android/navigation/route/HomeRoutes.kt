@@ -426,7 +426,7 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
 internal fun NavGraphBuilder.addContactGroupDetails(
     navController: NavHostController,
     onShowErrorSnackbar: (String) -> Unit,
-    onSendGroupMessage: (List<String>) -> Unit,
+    onSendGroupMessage: (groupName: String, members: List<String>) -> Unit,
     onOpenContact: (ContactId) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
