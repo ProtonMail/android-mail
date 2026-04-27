@@ -195,6 +195,19 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         )
     }
 
+    fun enqueueUniqueWork(
+        workerId: String,
+        worker: Class<out ListenableWorker>,
+        existingWorkPolicy: ExistingWorkPolicy = ExistingWorkPolicy.REPLACE,
+        constraints: Constraints? = null
+    ) {
+        val request = OneTimeWorkRequest.Builder(worker).apply {
+            if (constraints != null) setConstraints(constraints)
+        }.build()
+
+        workManager.enqueueUniqueWork(workerId, existingWorkPolicy, request)
+    }
+
     fun enqueueUniquePeriodicWork(
         workerId: String,
         worker: Class<out ListenableWorker>,
