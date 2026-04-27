@@ -82,4 +82,4 @@ annotation class IsPushProcessingWithoutWorkerEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IsBgProcessingNewConstraintEnabled
+annotation class IsBgProcessingRelaxedBatteryConstraintEnabled

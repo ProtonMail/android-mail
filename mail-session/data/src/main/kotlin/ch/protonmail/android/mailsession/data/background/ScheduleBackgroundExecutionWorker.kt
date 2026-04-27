@@ -26,7 +26,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingNewConstraintEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -37,7 +37,7 @@ internal class ScheduleBackgroundExecutionWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val enqueuer: Enqueuer,
-    @IsBgProcessingNewConstraintEnabled private val bgProcessingNewConstraintEnabled: FeatureFlag<Boolean>
+    @IsBgProcessingRelaxedBatteryConstraintEnabled private val bgProcessingNewConstraintEnabled: FeatureFlag<Boolean>
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = runCatching {

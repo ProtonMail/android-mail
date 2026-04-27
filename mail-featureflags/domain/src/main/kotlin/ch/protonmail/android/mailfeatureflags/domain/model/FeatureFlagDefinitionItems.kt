@@ -138,8 +138,8 @@ data object PushProcessingWithoutWorker : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object BgProcessingNewConstraint : FeatureFlagDefinition(
-    key = "MailAndroidV7BgProcessingNewConstraint",
+data object BgProcessingRelaxedBatteryConstraint : FeatureFlagDefinition(
+    key = "MailAndroidV7BgProcessingRelaxedConstraints",
     name = "Relax battery-not-low constraint for background processing",
     category = FeatureFlagCategory.Global,
     description = "When enabled, the periodic background execution worker does not require the battery to be not low.",
