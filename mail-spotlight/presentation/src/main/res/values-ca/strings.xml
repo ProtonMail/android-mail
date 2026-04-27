@@ -33,7 +33,7 @@
   <string name="spotlight_screen_category_view_ui_enhancements_title">Millores de la interfície</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Desplaçament fluid, disseny actualitzat i més.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtre de missatges no llegits</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nova imatge i ubicació per un accés més fàcil.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nova imatge i ubicació per a un accés més fàcil.</string>
   <string name="spotlight_screen_category_view_categories_title">Categories de correu electrònic</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Classificació automàtica del correu entrant.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Vegeu les novetats.\nIgnoreu la resta.</string>
@@ -45,6 +45,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hola, categories.\nAdeu, distraccions.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Deixeu de distreure-us amb butlletins, actualitzacions i correus no urgents. Amb les noves categories de correu electrònic, només els missatges importants arriben a la vostra safata d\'entrada principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continua</string>
-  <string name="spotlight_screen_category_view_button_try">Provar les categories</string>
+  <string name="spotlight_screen_category_view_button_try">Prova les categories</string>
   <string name="spotlight_screen_category_view_button_dismiss">Continua sense categories</string>
 </resources>
