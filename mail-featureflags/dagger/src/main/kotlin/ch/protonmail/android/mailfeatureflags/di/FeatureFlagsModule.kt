@@ -25,7 +25,7 @@ import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureF
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.ComposerAutoCollapseQuotedTextEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingNewConstraintEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
@@ -41,8 +41,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer202
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
-import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingNewConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerAutoCollapseQuotedText
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
@@ -245,13 +245,13 @@ object FeatureFlagsModule {
 
     @Provides
     @Singleton
-    @IsBgProcessingNewConstraintEnabled
+    @IsBgProcessingRelaxedBatteryConstraintEnabled
     fun provideBgProcessingNewConstraintEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(BgProcessingNewConstraint.key, false)
+        factory.create(BgProcessingRelaxedBatteryConstraint.key, false)
 
     @Provides
     @IntoSet
     @Singleton
-    fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingNewConstraint
+    fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
 }
