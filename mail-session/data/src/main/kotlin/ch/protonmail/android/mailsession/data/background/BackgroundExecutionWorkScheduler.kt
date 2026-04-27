@@ -18,47 +18,33 @@
 
 package ch.protonmail.android.mailsession.data.background
 
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
+import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.mailcommon.data.worker.CancelWorkManagerWork
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingNewConstraintEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import timber.log.Timber
 import javax.inject.Inject
 
 class BackgroundExecutionWorkScheduler @Inject constructor(
     private val enqueuer: Enqueuer,
-    private val cancelWorkManagerWork: CancelWorkManagerWork,
-    @IsBgProcessingNewConstraintEnabled private val bgProcessingNewConstraintEnabled: FeatureFlag<Boolean>
+    private val cancelWorkManagerWork: CancelWorkManagerWork
 ) {
 
-    suspend fun scheduleWork() {
-        val requiresBatteryNotLow = !bgProcessingNewConstraintEnabled.get()
-        Timber.d("Scheduling background work with requiresBatteryNotLow=$requiresBatteryNotLow")
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(requiresBatteryNotLow)
-            .build()
-
-        enqueuer.enqueueUniquePeriodicWork(
-            workerId = WORKER_ID,
-            tag = BACKGROUND_WORK_TAG,
-            worker = BackgroundExecutionWorker::class.java,
-            constraints = constraints,
-            existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+    fun scheduleWork() {
+        enqueuer.enqueueUniqueWork(
+            workerId = ScheduleBackgroundExecutionWorker.WORKER_ID,
+            worker = ScheduleBackgroundExecutionWorker::class.java,
+            existingWorkPolicy = ExistingWorkPolicy.REPLACE
         )
 
-        Timber.d("Background periodic work scheduled.")
+        Timber.d("Schedule background execution worker enqueued.")
     }
 
     suspend fun cancelPendingWork() {
+        enqueuer.cancelWork(ScheduleBackgroundExecutionWorker.WORKER_ID)
         cancelWorkManagerWork.cancelAllWorkByTag(BACKGROUND_WORK_TAG)
     }
 
-    private companion object {
+    internal companion object {
 
         const val BACKGROUND_WORK_TAG = "background_work_execution"
         const val WORKER_ID = "background_work_execution_task"
