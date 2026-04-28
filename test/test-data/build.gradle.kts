@@ -68,5 +68,6 @@ dependencies {
     implementation(project(":mail-padlocks"))
     implementation(project(":mail-session"))
     implementation(project(":mail-snooze"))
+    implementation(project(":mail-category-view:domain"))
     implementation(project(":shared:core:payment:domain"))
 }

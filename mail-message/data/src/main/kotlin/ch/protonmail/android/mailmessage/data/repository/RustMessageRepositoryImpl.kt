@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import java.io.File
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -156,6 +157,9 @@ class RustMessageRepositoryImpl @Inject constructor(
 
     override fun observeScrollerFetchNewStatus(): Flow<MessageScrollerFetchNewStatus> =
         rustMessageDataSource.observeScrollerFetchNewStatus()
+
+    override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
+        rustMessageDataSource.observeCategoryViewStatus()
 
     override suspend fun deleteMessages(
         userId: UserId,

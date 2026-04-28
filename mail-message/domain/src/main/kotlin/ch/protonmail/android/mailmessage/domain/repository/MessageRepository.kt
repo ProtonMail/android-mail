@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -166,4 +167,5 @@ interface MessageRepository {
 
     fun observeScrollerFetchNewStatus(): Flow<MessageScrollerFetchNewStatus>
 
+    fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.wrapper
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 
@@ -41,4 +42,6 @@ interface MessagePaginatorWrapper {
     fun updateKeyword(keyword: String)
 
     fun getScrollerId(): String
+
+    suspend fun getCategoryViewStatus(): CategoryViewStatus
 }
