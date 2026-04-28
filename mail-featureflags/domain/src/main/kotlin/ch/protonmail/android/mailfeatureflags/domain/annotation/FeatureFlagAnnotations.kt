@@ -87,3 +87,7 @@ annotation class IsBgProcessingRelaxedBatteryConstraintEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsUnlimitedPlanPlacementExperimentEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsUnlimitedPlanPlacementRegionsEnabled

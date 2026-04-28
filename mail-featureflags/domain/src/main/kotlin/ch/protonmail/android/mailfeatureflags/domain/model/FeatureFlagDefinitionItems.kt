@@ -153,3 +153,11 @@ data object UnlimitedPlanPlacementExperimentEnabled : FeatureFlagDefinition(
     description = "Enables Unlimited Plan placement experiment.",
     defaultValue = false
 )
+
+data object UnlimitedPlanPlacementRegions : FeatureFlagDefinition(
+    key = "MailAndroidV7UnlimitedPlanPlacementRegions",
+    name = "Unlimited plan placement regions",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables unlimited plan placement regions",
+    defaultValue = false
+)
