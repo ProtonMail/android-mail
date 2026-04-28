@@ -36,6 +36,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
@@ -104,6 +105,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCat
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -228,6 +230,7 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
+    private val setActiveCategoryLabel: SetActiveCategoryLabel,
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -469,7 +472,27 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.SignalLabelAsCompleted -> handleLabelAsCompleted(viewAction)
                 is MailboxViewAction.ValidateUserSession -> handleValidateUserSession()
                 is MailboxViewAction.NavigateToComposer -> handleNavigateToComposer()
+                is MailboxViewAction.OnCategoryItemClicked -> handleCategoryItemClicked(viewAction)
             }
+        }
+    }
+
+    private suspend fun handleCategoryItemClicked(viewAction: MailboxViewAction.OnCategoryItemClicked) {
+        val categoryItem = viewAction.categoryItem
+
+        if (categoryItem.isActive) {
+            Timber.d("Category ${categoryItem.id} is already active, ignoring click")
+            return
+        }
+
+        val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
+
+        setActiveCategoryLabel(
+            categoryLabelId = categoryItem.id.toDomainModel(),
+            viewMode = viewMode
+        ).onLeft { error ->
+            Timber.e("Failed to set active category label: $error")
+            emitNewStateFrom(MailboxEvent.ErrorChangingCategory)
         }
     }
 

@@ -23,12 +23,14 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
 import uniffi.mail_uniffi.IncludeSwitch
 import uniffi.mail_uniffi.MessageScroller
+import uniffi.mail_uniffi.MessageScrollerChangeCategoryViewResult
 import uniffi.mail_uniffi.MessageScrollerCursorResult
 import uniffi.mail_uniffi.MessageScrollerFetchMoreResult
 import uniffi.mail_uniffi.MessageScrollerGetItemsResult
@@ -93,5 +95,11 @@ class MailboxMessagePaginatorWrapper(
 
     override suspend fun getCategoryViewStatus(): CategoryViewStatus =
         rustPaginator.categoryView().toCategoryViewStatus()
+
+    override fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+        when (val result = rustPaginator.changeCategoryView(categoryLabelId)) {
+            is MessageScrollerChangeCategoryViewResult.Error -> result.v1.toPaginationError().left()
+            is MessageScrollerChangeCategoryViewResult.Ok -> Unit.right()
+        }
 
 }

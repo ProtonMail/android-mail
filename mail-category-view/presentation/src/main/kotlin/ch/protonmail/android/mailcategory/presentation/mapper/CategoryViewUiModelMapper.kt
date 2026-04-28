@@ -49,3 +49,5 @@ fun CategoryLabel.toUiModel(): CategoryItemUiModel {
 }
 
 fun CategoryLabelId.toUiModel(): CategoryLabelIdUiModel = CategoryLabelIdUiModel(id = id)
+
+fun CategoryLabelIdUiModel.toDomainModel(): CategoryLabelId = CategoryLabelId(id = id)

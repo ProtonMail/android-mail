@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.local
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelAsAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
@@ -455,5 +456,8 @@ class RustMessageDataSourceImpl @Inject constructor(
 
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
         rustMessageListQuery.observeCategoryViewStatus()
+
+    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+        rustMessageListQuery.setActiveCategoryLabel(categoryLabelId)
 
 }

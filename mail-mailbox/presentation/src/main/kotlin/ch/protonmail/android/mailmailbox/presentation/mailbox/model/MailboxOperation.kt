@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -182,6 +183,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         AffectingBottomAppBar
 
     object ValidateUserSession : MailboxViewAction
+
+    data class OnCategoryItemClicked(val categoryItem: CategoryItemUiModel) : MailboxViewAction
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -351,6 +354,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorRetrievingFolderColorSettings : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     object ErrorMoving : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
+    object ErrorChangingCategory : MailboxEvent, AffectingErrorBar
 
     data class AttachmentDownloadStartedEvent(
         val attachmentId: AttachmentIdUiModel

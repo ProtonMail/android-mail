@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -297,6 +298,10 @@ class RustConversationsQueryImpl @Inject constructor(
         scrollerFetchNewStatusFlow.filterNotNull()
 
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> = categoryViewStatusFlow.filterNotNull()
+
+    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+        paginatorState?.paginatorWrapper?.changeCategoryView(categoryLabelId)
+            ?: PaginationError.Other(DataError.Local.IllegalStateError).left()
 
     private fun destroy() {
         if (paginatorState == null) {

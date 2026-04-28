@@ -51,6 +51,8 @@ fun LocalCategoryLabel.toCategoryLabel(): CategoryLabel {
 
 fun LocalCategoryLabelId.toCategoryLabelId(): CategoryLabelId = CategoryLabelId(this.value.toString())
 
+fun CategoryLabelId.toLocalCategoryLabelId(): LocalCategoryLabelId = LocalCategoryLabelId(this.id.toULong())
+
 fun ConversationScrollerCategoryViewResult.toCategoryViewStatus(): CategoryViewStatus = when (this) {
     is ConversationScrollerCategoryViewResult.Ok -> {
         v1.toCategoryViewStatus()

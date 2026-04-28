@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.domain.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -124,4 +125,6 @@ interface ConversationRepository {
     fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus>
 
     fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
+
+    fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit>
 }

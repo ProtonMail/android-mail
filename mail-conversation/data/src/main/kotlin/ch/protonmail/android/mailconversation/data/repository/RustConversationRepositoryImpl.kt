@@ -21,6 +21,8 @@ package ch.protonmail.android.mailconversation.data.repository
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
+import ch.protonmail.android.mailcategory.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -245,4 +247,7 @@ class RustConversationRepositoryImpl @Inject constructor(
 
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
         rustConversationDataSource.observeCategoryViewStatus()
+
+    override fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit> =
+        rustConversationDataSource.setActiveCategoryLabel(categoryLabelId.toLocalCategoryLabelId())
 }

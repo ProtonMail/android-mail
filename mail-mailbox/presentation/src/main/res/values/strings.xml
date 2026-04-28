@@ -112,6 +112,8 @@
 
     <!--    Storage Quota Over Warning-->
     <string name="mailbox_action_delete_failed">Failed to delete message</string>
+    <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+
 
     <string name="select_all">Select All</string>
     <string name="deselect_all">Deselect All</string>

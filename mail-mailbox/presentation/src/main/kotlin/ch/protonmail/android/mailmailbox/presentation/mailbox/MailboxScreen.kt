@@ -107,6 +107,7 @@ import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
+import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -288,7 +289,8 @@ fun MailboxScreen(
         onClearAllConfirmed = { viewModel.submit(MailboxViewAction.ClearAllConfirmed) },
         onClearAllDismissed = { viewModel.submit(MailboxViewAction.ClearAllDismissed) },
         onSnooze = { viewModel.submit(MailboxViewAction.RequestSnoozeBottomSheet) },
-        validateUserSession = { viewModel.submit(MailboxViewAction.ValidateUserSession) }
+        validateUserSession = { viewModel.submit(MailboxViewAction.ValidateUserSession) },
+        onCategoryItemClicked = { viewModel.submit(MailboxViewAction.OnCategoryItemClicked(it)) }
     )
 
     val lifecycle = LocalLifecycleOwner.current
@@ -458,7 +460,7 @@ fun MailboxScreen(
         onSpamTrashFilterDisabled = actions.onDisableSpamTrashFilter,
         onSelectAllClicked = actions.onSelectAllClicked,
         onDeselectAllClicked = actions.onDeselectAllClicked,
-        onCategoryItemClicked = {}
+        onCategoryItemClicked = actions.onCategoryItemClicked
     )
 
     val fileSaver = fileSaver(
@@ -1211,7 +1213,8 @@ object MailboxScreen {
         val onSnooze: () -> Unit,
         val onCustomizeToolbar: () -> Unit,
         val validateUserSession: () -> Unit,
-        val onShowRatingBooster: () -> Unit
+        val onShowRatingBooster: () -> Unit,
+        val onCategoryItemClicked: (CategoryItemUiModel) -> Unit
     ) {
 
         companion object {
@@ -1275,7 +1278,8 @@ object MailboxScreen {
                 onSnooze = {},
                 onCustomizeToolbar = {},
                 validateUserSession = {},
-                onShowRatingBooster = {}
+                onShowRatingBooster = {},
+                onCategoryItemClicked = {}
             )
         }
     }

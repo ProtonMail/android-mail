@@ -30,7 +30,9 @@ import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentVa
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -44,6 +46,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetState
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -111,6 +114,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCat
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -130,6 +134,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
@@ -364,6 +369,8 @@ internal class MailboxViewModelTest {
         } returns categoryViewStatusFlow
     }
 
+    private val setActiveCategoryLabel = mockk<SetActiveCategoryLabel>()
+
     private val scope = TestScope(UnconfinedTestDispatcher())
 
     private val mailboxViewModel by lazy {
@@ -421,7 +428,8 @@ internal class MailboxViewModelTest {
             shouldShowRatingBooster = shouldShowRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
             categoryViewEnabled = isCategoryViewEnabled,
-            observeCategoryViewStatus = observeCategoryViewStatus
+            observeCategoryViewStatus = observeCategoryViewStatus,
+            setActiveCategoryLabel = setActiveCategoryLabel
         )
     }
 
@@ -3875,6 +3883,97 @@ internal class MailboxViewModelTest {
                         categoryViewStatus = categoryViewStatus
                     )
                 )
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when inactive category item is clicked, active category is changed`() = runTest {
+        // Given
+        val categoryItem = CategoryItemUiModelSample.social
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+
+        every {
+            setActiveCategoryLabel(
+                categoryLabelId = categoryItem.id.toDomainModel(),
+                viewMode = NoConversationGrouping
+            )
+        } returns Unit.right()
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.OnCategoryItemClicked(categoryItem))
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 1) {
+            setActiveCategoryLabel(
+                categoryLabelId = categoryItem.id.toDomainModel(),
+                viewMode = NoConversationGrouping
+            )
+        }
+
+        verify(exactly = 0) {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
+        }
+    }
+
+    @Test
+    fun `when active category item is clicked, the request is ignored`() = runTest {
+        // Given
+        val categoryItem = CategoryItemUiModelSample.primary.copy(isActive = true)
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.OnCategoryItemClicked(categoryItem))
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 0) {
+            setActiveCategoryLabel(any(), any())
+        }
+
+        verify(exactly = 0) {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
+        }
+    }
+
+    @Test
+    fun `when changing active category fails, error event is emitted`() = runTest {
+        // Given
+        val categoryItem = CategoryItemUiModelSample.social
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            error = Effect.of(TextUiModel(R.string.mailbox_action_change_category_failed))
+        )
+
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+
+        every {
+            setActiveCategoryLabel(
+                categoryLabelId = categoryItem.id.toDomainModel(),
+                viewMode = NoConversationGrouping
+            )
+        } returns PaginationError.Other(DataError.Local.IllegalStateError).left()
+
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.ErrorChangingCategory
+            )
+        } returns expectedState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnCategoryItemClicked(categoryItem))
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
             }
 
             cancelAndIgnoreRemainingEvents()

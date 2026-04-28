@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
@@ -187,6 +188,12 @@ class RustMessageListQueryImpl @Inject constructor(
     }
 
     override suspend fun supportsIncludeFilter() = paginatorState?.paginatorWrapper?.supportsIncludeFilter() == true
+
+    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+        paginatorState?.paginatorWrapper?.changeCategoryView(categoryLabelId) ?: run {
+            Timber.w("rust-message-query: No paginator to change category view")
+            PaginationError.Other(DataError.Local.IllegalStateError).left()
+        }
 
     override suspend fun updateUnreadFilter(filterUnread: Boolean) {
         paginatorState?.paginatorWrapper?.filterUnread(filterUnread)
