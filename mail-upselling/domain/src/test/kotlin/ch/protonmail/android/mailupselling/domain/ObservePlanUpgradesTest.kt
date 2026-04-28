@@ -53,6 +53,7 @@ internal class ObservePlanUpgradesTest {
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val unlimitedPlanPlacementFlag = mockk<FeatureFlag<Boolean>>()
+    private val unlimitedPlanPlacementRegionsFlag = mockk<FeatureFlag<Boolean>>()
 
     private val userId = UserId("user-id")
     private lateinit var observePlanUpgrades: ObservePlanUpgrades
@@ -68,7 +69,8 @@ internal class ObservePlanUpgradesTest {
             getCurrentBlackFridayPhase,
             getCurrentSpringPromoPhase,
             isEligibleForBlackFridayPromotion,
-            unlimitedPlanPlacementFlag
+            unlimitedPlanPlacementFlag,
+            unlimitedPlanPlacementRegionsFlag
         )
     }
 
@@ -98,6 +100,7 @@ internal class ObservePlanUpgradesTest {
         )
 
         coEvery { unlimitedPlanPlacementFlag.get() } returns false
+        coEvery { unlimitedPlanPlacementRegionsFlag.get() } returns false
 
         // When
         val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
@@ -130,6 +133,34 @@ internal class ObservePlanUpgradesTest {
         )
 
         coEvery { unlimitedPlanPlacementFlag.get() } returns true
+        coEvery { unlimitedPlanPlacementRegionsFlag.get() } returns true
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+
+        // Then
+        assertEquals(expectedOffers, actualPlans)
+    }
+
+    @Test
+    fun `should return filtered plans with mail plus only ids when regions flag is disabled`() = runTest {
+        // Given
+        val mailPlusPlans = listOf(
+            UpsellingTestData.MailPlusProducts.MonthlyProductOfferList,
+            UpsellingTestData.MailPlusProducts.YearlyProductOfferList
+        )
+        val expectedOffers = listOf(MonthlyProductOfferDetail, YearlyProductOfferDetail)
+
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns false
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(
+            buildList {
+                addAll(mailPlusPlans)
+                add(UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferList)
+                add(UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList)
+            }
+        )
+        coEvery { unlimitedPlanPlacementFlag.get() } returns true
+        coEvery { unlimitedPlanPlacementRegionsFlag.get() } returns false
 
         // When
         val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
