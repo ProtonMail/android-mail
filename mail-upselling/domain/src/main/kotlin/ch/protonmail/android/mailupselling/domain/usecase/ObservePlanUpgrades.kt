@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.domain.usecase
 
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementRegionsEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
@@ -42,7 +43,8 @@ class ObservePlanUpgrades @Inject constructor(
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
-    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>
+    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>,
+    @IsUnlimitedPlanPlacementRegionsEnabled private val unlimitedPlanPlacementRegionsFlag: FeatureFlag<Boolean>
 ) {
 
     operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = observePrimaryUserId().flatMapLatest { userId ->
@@ -70,7 +72,7 @@ class ObservePlanUpgrades @Inject constructor(
         cache.observe(userId).map { upgrades ->
             val hasPromoOffers = upgrades.filterForTags(primaryTag = offersTag.value, fallbackToBaseOffer = false)
                 .isNotEmpty()
-            if (unlimitedPlanPlacementFlag.get() && !hasPromoOffers) {
+            if (!hasPromoOffers && unlimitedPlanPlacementRegionsFlag.get() && unlimitedPlanPlacementFlag.get()) {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = null, fallbackToBaseOffer = true)
                 eligibleOffers.filterUnlimited()
             } else {
