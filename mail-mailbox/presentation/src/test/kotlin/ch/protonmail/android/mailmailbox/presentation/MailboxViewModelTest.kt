@@ -29,6 +29,8 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -105,6 +107,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
@@ -139,6 +142,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPref
 import ch.protonmail.android.mailsnooze.presentation.model.SnoozeConversationId
 import ch.protonmail.android.testdata.avatar.AvatarImageStatesTestData
 import ch.protonmail.android.testdata.avatar.AvatarImagesUiModelTestData
+import ch.protonmail.android.testdata.category.CategoryLabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.draftMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
@@ -353,6 +357,13 @@ internal class MailboxViewModelTest {
         coEvery { this@mockk.get() } returns false
     }
 
+    val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
+    private val observeCategoryViewStatus = mockk<ObserveCategoryViewStatus> {
+        coEvery {
+            this@mockk.invoke(any())
+        } returns categoryViewStatusFlow
+    }
+
     private val scope = TestScope(UnconfinedTestDispatcher())
 
     private val mailboxViewModel by lazy {
@@ -409,7 +420,8 @@ internal class MailboxViewModelTest {
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
-            categoryViewEnabled = isCategoryViewEnabled
+            categoryViewEnabled = isCategoryViewEnabled,
+            observeCategoryViewStatus = observeCategoryViewStatus
         )
     }
 
@@ -442,6 +454,7 @@ internal class MailboxViewModelTest {
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
+                categoryViewState = CategoryViewState.Available.Loading,
                 showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(
                     BottomBarTarget.Mailbox, emptyList<ActionUiModel>().toImmutableList()
@@ -1081,6 +1094,7 @@ internal class MailboxViewModelTest {
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
+                categoryViewState = CategoryViewState.Available.Loading,
                 showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(
                     BottomBarTarget.Mailbox,
@@ -1118,6 +1132,7 @@ internal class MailboxViewModelTest {
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
+                categoryViewState = CategoryViewState.Available.Loading,
                 showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(
                     target = BottomBarTarget.Mailbox,
@@ -3815,6 +3830,53 @@ internal class MailboxViewModelTest {
                     MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id)
                 )
             }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when category view status changes, event is emitted with unread count`() = runTest {
+        // Given
+        val expectedUnreadCount = 42
+        val categoryViewStatus = CategoryViewStatus.Available(
+            categories = listOf(CategoryLabelTestData.primary)
+        )
+
+        val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
+        val unreadCountersFlow = MutableStateFlow(
+            UnreadCountersTestData.systemUnreadCounters
+                .update(initialLocationMailLabelId.labelId, expectedUnreadCount)
+        )
+
+        coEvery { observeUnreadCounters(userId) } returns unreadCountersFlow
+        every { observeCategoryViewStatus(any()) } returns categoryViewStatusFlow
+
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.CategoryViewStatusChanged(
+                    categoryViewStatus = categoryViewStatus
+                )
+            )
+        } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(categoryViewStatus)
+            advanceUntilIdle()
+
+            // Then
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.CategoryViewStatusChanged(
+                        categoryViewStatus = categoryViewStatus
+                    )
+                )
+            }
+
             cancelAndIgnoreRemainingEvents()
         }
     }

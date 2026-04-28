@@ -457,7 +457,8 @@ fun MailboxScreen(
         onSpamTrashFilterEnabled = actions.onEnableSpamTrashFilter,
         onSpamTrashFilterDisabled = actions.onDisableSpamTrashFilter,
         onSelectAllClicked = actions.onSelectAllClicked,
-        onDeselectAllClicked = actions.onDeselectAllClicked
+        onDeselectAllClicked = actions.onDeselectAllClicked,
+        onCategoryItemClicked = {}
     )
 
     val fileSaver = fileSaver(
@@ -515,7 +516,8 @@ fun MailboxScreen(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                     ),
                     state = mailboxState,
-                    actions = stickyHeaderActions
+                    actions = stickyHeaderActions,
+                    isCategoryViewEnabled = isCategoryViewEnabled
                 )
 
                 val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -42,6 +43,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingCategoryView
 import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
@@ -56,6 +58,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingDeleteDialog
     sealed interface AffectingClearAllDialog
     sealed interface AffectingBottomSheet
+    sealed interface AffectingCategoryView
 
     sealed interface AffectingComposer
     sealed interface AffectingErrorBar
@@ -367,6 +370,9 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object HideSpamTrashFilter : MailboxEvent, AffectingShowSpamTrashFilter
     object RefreshCompleted : MailboxEvent, AffectingMailboxList
 
+    data class CategoryViewStatusChanged(
+        val categoryViewStatus: CategoryViewStatus
+    ) : MailboxEvent, AffectingCategoryView
 }
 
 

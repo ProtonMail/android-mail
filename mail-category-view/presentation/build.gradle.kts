@@ -66,10 +66,12 @@ dependencies {
 
     implementation(libs.proton.core.domain)
 
-
     implementation(project(":design-system"))
     implementation(project(":uicomponents"))
     implementation(project(":presentation-compose"))
+    implementation(project(":mail-label:domain"))
+    implementation(project(":mail-category-view:domain"))
+    implementation(project(":mail-common:presentation"))
 
     testImplementation(libs.bundles.test)
     testImplementation(libs.proton.rust.core)

@@ -160,4 +160,9 @@ object MailDimens {
 
     val RsvpButtonHeight = 56.dp
     val RsvpCalendarLogoSize = 58.dp
+
+    object CategoryView {
+        val ItemHeight = 40.dp
+        val IconSize = 20.dp
+    }
 }
