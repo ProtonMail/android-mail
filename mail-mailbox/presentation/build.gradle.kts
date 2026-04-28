@@ -95,6 +95,9 @@ dependencies {
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":mail-snooze:presentation"))
     implementation(project(":mail-snooze:domain"))
+    implementation(project(":mail-category-view:domain"))
+    implementation(project(":mail-category-view:presentation"))
+
     implementation(project(":uicomponents"))
     implementation(project(":design-system"))
     implementation(project(":mail-featureflags:domain"))

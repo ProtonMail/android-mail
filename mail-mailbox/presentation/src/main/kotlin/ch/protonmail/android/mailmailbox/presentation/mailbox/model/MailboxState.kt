@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -31,6 +32,7 @@ data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
     val unreadFilterState: UnreadFilterState,
+    val categoryViewState: CategoryViewState,
     val showSpamTrashIncludeFilterState: ShowSpamTrashIncludeFilterState,
     val bottomAppBarState: BottomBarState,
     val deleteDialogState: DeleteDialogState,

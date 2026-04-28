@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
@@ -89,10 +91,16 @@ internal class MailboxReducerTest(
     private val bottomSheetReducer: BottomSheetReducer = mockk {
         every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
     }
+
+    private val categoryViewReducer: MailboxCategoryViewReducer = mockk {
+        every { newStateFrom(any()) } returns reducedState.categoryViewState
+    }
+
     private val mailboxReducer = MailboxReducer(
         mailboxListReducer,
         topAppBarReducer,
         unreadFilterReducer,
+        categoryViewReducer,
         showSpamTrashFilterReducer,
         bottomAppBarReducer,
         actionMessageReducer,
@@ -212,6 +220,9 @@ internal class MailboxReducerTest(
             unreadFilterState = UnreadFilterState.Data(
                 unreadCount = CappedNumberUiModel.Exact(42),
                 isFilterEnabled = false
+            ),
+            categoryViewState = CategoryViewState.Available.Data(
+                categories = CategoryItemUiModelSample.all
             ),
             showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Hidden,
             bottomAppBarState = BottomBarState.Loading,

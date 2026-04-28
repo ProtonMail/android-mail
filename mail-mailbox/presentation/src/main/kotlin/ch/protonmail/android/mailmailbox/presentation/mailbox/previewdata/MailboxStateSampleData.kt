@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
@@ -70,6 +72,7 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
+        categoryViewState = CategoryViewState.Available.Loading,
         showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
         actionResult = Effect.empty(),
@@ -104,6 +107,9 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             unreadCount = CappedNumberUiModel.Exact(1)
+        ),
+        categoryViewState = CategoryViewState.Available.Data(
+            categories = CategoryItemUiModelSample.all
         ),
         showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(
             enabled = false
@@ -145,6 +151,7 @@ object MailboxStateSampleData {
             isFilterEnabled = false,
             unreadCount = CappedNumberUiModel.Exact(1)
         ),
+        categoryViewState = CategoryViewState.NotAvailable,
         showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(
             enabled = false
         ),
@@ -200,6 +207,7 @@ object MailboxStateSampleData {
             isFilterEnabled = false,
             unreadCount = CappedNumberUiModel.Exact(1)
         ),
+        categoryViewState = CategoryViewState.NotAvailable,
         showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Hidden,
         bottomAppBarState = BottomBarState.Data.Hidden(
             target = BottomBarTarget.Mailbox,

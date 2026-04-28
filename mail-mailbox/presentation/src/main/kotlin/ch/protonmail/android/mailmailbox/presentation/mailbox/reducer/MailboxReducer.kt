@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
@@ -46,6 +47,7 @@ class MailboxReducer @Inject constructor(
     private val mailboxListReducer: MailboxListReducer,
     private val topAppBarReducer: MailboxTopAppBarReducer,
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
+    private val categoryViewReducer: MailboxCategoryViewReducer,
     private val showSpamTrashFilterReducer: MailboxShowSpamTrashFilterReducer,
     private val bottomAppBarReducer: BottomBarReducer,
     private val actionMessageReducer: MailboxActionMessageReducer,
@@ -59,6 +61,7 @@ class MailboxReducer @Inject constructor(
             mailboxListState = currentState.toNewMailboxListStateFrom(operation),
             topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
+            categoryViewState = currentState.toNewCategoryViewStateFrom(operation),
             showSpamTrashIncludeFilterState = currentState.toNewShowSpamTrashFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
@@ -69,6 +72,15 @@ class MailboxReducer @Inject constructor(
             error = currentState.toNewErrorBarState(operation),
             showRatingBooster = currentState.toNewShowRatingBoosterState(operation)
         )
+
+    private fun MailboxState.toNewCategoryViewStateFrom(operation: MailboxOperation): CategoryViewState {
+
+        return if (operation is MailboxOperation.AffectingCategoryView) {
+            categoryViewReducer.newStateFrom(operation)
+        } else {
+            categoryViewState
+        }
+    }
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
         return if (operation is MailboxOperation.AffectingMailboxList) {

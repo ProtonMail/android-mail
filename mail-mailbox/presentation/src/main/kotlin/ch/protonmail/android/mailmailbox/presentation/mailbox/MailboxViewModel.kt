@@ -35,6 +35,8 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -98,6 +100,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
@@ -224,6 +227,7 @@ class MailboxViewModel @Inject constructor(
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
+    private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -307,6 +311,16 @@ class MailboxViewModel @Inject constructor(
         }
             .distinctUntilChanged()
             .onEach { emitNewStateFrom(it) }
+            .launchIn(viewModelScope)
+
+        observeCategoryViewStatusUpdates()
+            .onEach { categoryViewStatus ->
+                Timber.d("Received category view status update: $categoryViewStatus")
+
+                emitNewStateFrom(
+                    MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
+                )
+            }
             .launchIn(viewModelScope)
 
         observeUnreadCounters()
@@ -1446,12 +1460,25 @@ class MailboxViewModel @Inject constructor(
     private fun isSpamTrashFilterEnabled() =
         (state.value.showSpamTrashIncludeFilterState as? ShowSpamTrashIncludeFilterState.Data.Shown)?.enabled == true
 
+    private fun observeCategoryViewStatusUpdates(): Flow<CategoryViewStatus> {
+        return observeLoadedMailLabelId()
+            .mapLatest {
+                val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
+                viewMode
+            }
+            .distinctUntilChanged()
+            .flatMapLatest { viewMode ->
+                observeCategoryViewStatus(viewMode)
+            }
+    }
+
     companion object {
 
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
+            categoryViewState = CategoryViewState.Available.Loading,
             showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(
                 BottomBarTarget.Mailbox,
