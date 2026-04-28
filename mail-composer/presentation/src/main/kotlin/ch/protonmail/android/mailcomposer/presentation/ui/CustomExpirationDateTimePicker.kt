@@ -104,14 +104,16 @@ fun CustomExpirationDateTimePicker(
                 val instant = Instant.fromEpochMilliseconds(utcTimeMillis)
 
                 val today = Clock.System.now().toLocalDateTime(timeZone).date
-                val twentySixDaysFromNow = today.plus(26, DateTimeUnit.DAY)
+                val maxDate = today.plus(MAX_EXPIRATION_DAYS, DateTimeUnit.DAY)
                 val dateOfTimestamp = instant.toLocalDateTime(timeZone).date
-                return dateOfTimestamp in today..twentySixDaysFromNow
+                return dateOfTimestamp in today..maxDate
             }
 
             override fun isSelectableYear(year: Int): Boolean {
                 val timeZone = TimeZone.currentSystemDefault()
-                return year == Clock.System.now().toLocalDateTime(timeZone).year
+                val today = Clock.System.now().toLocalDateTime(timeZone).date
+                val maxDate = today.plus(MAX_EXPIRATION_DAYS, DateTimeUnit.DAY)
+                return year in today.year..maxDate.year
             }
         }
     )
@@ -348,6 +350,8 @@ private fun ExpirationTimePickerDialog(
 
     }
 }
+
+private const val MAX_EXPIRATION_DAYS = 28
 
 private enum class DialogType {
     SelectDate,
