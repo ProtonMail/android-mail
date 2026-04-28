@@ -66,6 +66,8 @@ dependencies {
     implementation(project(":mail-session:data"))
     implementation(project(":mail-snooze:domain"))
     implementation(project(":mail-snooze:data"))
+    implementation(project(":mail-category-view:domain"))
+    implementation(project(":mail-category-view:data"))
 
     testImplementation(project(":test:utils"))
     testImplementation(project(":test:test-data"))

@@ -30,6 +30,8 @@ import uniffi.mail_uniffi.AutoDeleteBanner
 import uniffi.mail_uniffi.AutoDeleteState
 import uniffi.mail_uniffi.AutoLock
 import uniffi.mail_uniffi.AvatarInformation
+import uniffi.mail_uniffi.CategoryLabel
+import uniffi.mail_uniffi.CategoryView
 import uniffi.mail_uniffi.ComposerDirection
 import uniffi.mail_uniffi.ComposerMode
 import uniffi.mail_uniffi.ComposerRecipient
@@ -265,3 +267,6 @@ typealias LocalPlanSpecificDimensions = PlanSpecificDimensions
 typealias LocalUpsellEntryPoint = UpsellEntryPoint
 typealias LocalUpsellModalVariant = UpsellModalVariant
 typealias LocalUpsellFeatureFlags = UpsellFeatureFlags
+typealias LocalCategoryView = CategoryView
+typealias LocalCategoryLabel = CategoryLabel
+typealias LocalCategoryLabelId = Id

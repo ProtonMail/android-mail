@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelAsAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
@@ -451,5 +452,8 @@ class RustMessageDataSourceImpl @Inject constructor(
         rustMessageListQuery.observeScrollerFetchNewStatus().map {
             it.toMessageScrollerFetchNewStatus()
         }
+
+    override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
+        rustMessageListQuery.observeCategoryViewStatus()
 
 }

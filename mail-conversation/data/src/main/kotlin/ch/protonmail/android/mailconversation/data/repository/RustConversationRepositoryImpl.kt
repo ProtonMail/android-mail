@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.repository
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -241,4 +242,7 @@ class RustConversationRepositoryImpl @Inject constructor(
 
     override fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus> =
         rustConversationDataSource.observeScrollerFetchNewStatus()
+
+    override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
+        rustConversationDataSource.observeCategoryViewStatus()
 }

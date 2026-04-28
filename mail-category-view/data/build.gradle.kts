@@ -44,3 +44,17 @@ android {
         }
     }
 }
+
+
+dependencies {
+    compileOnly(libs.proton.rust.core)
+    implementation(libs.bundles.module.data)
+    
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-label:data"))
+    implementation(project(":mail-label:domain"))
+    implementation(project(":mail-pagination:data"))
+    implementation(project(":mail-pagination:domain"))
+    implementation(project(":mail-category-view:domain"))
+
+}

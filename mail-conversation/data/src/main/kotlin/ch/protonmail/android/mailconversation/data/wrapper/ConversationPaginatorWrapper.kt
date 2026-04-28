@@ -21,6 +21,8 @@ package ch.protonmail.android.mailconversation.data.wrapper
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
@@ -79,4 +81,6 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
     }
 
     fun getScrollerId(): String = rustPaginator.id()
+
+    suspend fun getCategoryViewStatus(): CategoryViewStatus = rustPaginator.categoryView().toCategoryViewStatus()
 }

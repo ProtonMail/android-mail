@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
@@ -129,4 +130,6 @@ interface RustConversationDataSource {
     ): Either<DataError, UndoableOperation>
 
     fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus>
+
+    fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
 }

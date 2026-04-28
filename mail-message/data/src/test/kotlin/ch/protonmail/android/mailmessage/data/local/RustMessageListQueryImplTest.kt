@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -112,6 +113,8 @@ class RustMessageListQueryImplTest {
         coEvery { filterUnread(filterUnread) } just Runs
         coEvery { showSpamAndTrash(showSpamTrash) } just Runs
         every { getScrollerId() } returns DefaultScrollerId
+        coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+
     }
 
     @Test
@@ -202,6 +205,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
@@ -279,6 +283,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
@@ -547,6 +552,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
@@ -597,6 +603,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
         coEvery {
             invalidationRepository.submit(
@@ -642,6 +649,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
             coEvery { getCursor(conversationId) } returns expectedCursor.right()
         }
 
@@ -719,6 +727,7 @@ class RustMessageListQueryImplTest {
             coEvery { filterUnread(false) } just Runs
             coEvery { showSpamAndTrash(false) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()

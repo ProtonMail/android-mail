@@ -20,6 +20,8 @@ package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -73,6 +75,7 @@ class RustConversationsQueryImpl @Inject constructor(
     private val paginatorMutex = Mutex()
 
     private val scrollerFetchNewStatusFlow = MutableStateFlow<ConversationScrollerStatusUpdate?>(null)
+    private val categoryViewStatusFlow = MutableStateFlow<CategoryViewStatus?>(null)
 
     override suspend fun getConversations(
         userId: UserId,
@@ -184,6 +187,10 @@ class RustConversationsQueryImpl @Inject constructor(
                     pageDescriptor = pageDescriptor,
                     scrollerCache = ScrollerCache()
                 )
+
+                // Get initial category view status
+                categoryViewStatusFlow.value = it.getCategoryViewStatus()
+                Timber.d("rust-conversation-query: Initial category view state: %s", categoryViewStatusFlow.value)
             }
     }
 
@@ -203,7 +210,7 @@ class RustConversationsQueryImpl @Inject constructor(
 
                             is ConversationScrollerUpdate.Error -> update.toScrollerUpdate()
                             is ConversationScrollerUpdate.CategoryViewChanged -> {
-                                Timber.d("rust-conversation-query: Category view update received")
+                                categoryViewStatusFlow.value = update.categoryView.toCategoryViewStatus()
                                 return@withLock
                             }
                         }
@@ -288,6 +295,8 @@ class RustConversationsQueryImpl @Inject constructor(
 
     override fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerStatusUpdate> =
         scrollerFetchNewStatusFlow.filterNotNull()
+
+    override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> = categoryViewStatusFlow.filterNotNull()
 
     private fun destroy() {
         if (paginatorState == null) {

@@ -44,3 +44,9 @@ android {
         }
     }
 }
+
+dependencies {
+    implementation(project(":mail-label:domain"))
+    implementation(project(":mail-pagination:domain"))
+
+}

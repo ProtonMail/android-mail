@@ -20,6 +20,8 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
@@ -72,6 +74,7 @@ class RustMessageListQueryImpl @Inject constructor(
     private val paginatorMutex = Mutex()
 
     private val scrollerFetchNewStatusFlow = MutableStateFlow<MessageScrollerStatusUpdate?>(null)
+    private val categoryViewStatusFlow = MutableStateFlow<CategoryViewStatus?>(null)
 
     override suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<PaginationError, List<Message>> {
 
@@ -171,6 +174,8 @@ class RustMessageListQueryImpl @Inject constructor(
     override fun observeScrollerFetchNewStatus(): Flow<MessageScrollerStatusUpdate> =
         scrollerFetchNewStatusFlow.filterNotNull()
 
+    override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> = categoryViewStatusFlow.filterNotNull()
+
     override suspend fun terminatePaginator(userId: UserId) {
         if (paginatorState?.pageDescriptor?.userId == userId) {
             paginatorMutex.withLock {
@@ -221,6 +226,11 @@ class RustMessageListQueryImpl @Inject constructor(
                 pageDescriptor = pageDescriptor,
                 scrollerCache = ScrollerCache()
             )
+
+            // Get initial category view status
+            categoryViewStatusFlow.value = wrapper.getCategoryViewStatus()
+            Timber.d("rust-message-query: Initial category view state: %s", categoryViewStatusFlow.value)
+
         }
     }
 
@@ -240,7 +250,11 @@ class RustMessageListQueryImpl @Inject constructor(
 
                             is MessageScrollerUpdate.Error -> update.toScrollerUpdate()
                             is MessageScrollerUpdate.CategoryViewChanged -> {
-                                Timber.d("rust-message-query: Category view update received")
+                                Timber.d(
+                                    "rust-message-query: Category view update received: " +
+                                        "${update.categoryView.available}"
+                                )
+                                categoryViewStatusFlow.value = update.categoryView.toCategoryViewStatus()
                                 return@withLock
                             }
                         }
