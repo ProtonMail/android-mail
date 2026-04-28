@@ -20,6 +20,8 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import java.io.File
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
+import ch.protonmail.android.mailcategory.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -187,4 +189,8 @@ class RustMessageRepositoryImpl @Inject constructor(
 
     override suspend fun isMessageSenderBlocked(userId: UserId, messageId: MessageId): Either<DataError, Boolean> =
         rustMessageDataSource.isMessageSenderBlocked(userId, messageId.toLocalMessageId())
+
+    override fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit> =
+        rustMessageDataSource.setActiveCategoryLabel(categoryLabelId.toLocalCategoryLabelId())
+
 }

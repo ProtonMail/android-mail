@@ -210,6 +210,7 @@ class MailboxReducer @Inject constructor(
 
                 is MailboxEvent.ErrorDeleting -> R.string.mailbox_action_delete_failed
                 is MailboxEvent.ErrorComposing -> R.string.mailbox_action_no_sender_addresses
+                is MailboxEvent.ErrorChangingCategory -> R.string.mailbox_action_change_category_failed
             }
             Effect.of(TextUiModel(textResource))
         } else {
