@@ -20,23 +20,19 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
-import me.proton.core.domain.type.IntEnum
-import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class ObserveViewModeChanged @Inject constructor(
     private val observeMailSettings: ObserveMailSettings
 ) {
 
-    private var viewModeCache: Pair<UserId, IntEnum<ViewMode>?>? = null
-
     operator fun invoke(userId: UserId): Flow<Unit> = observeMailSettings(userId)
-        .filter { Pair(userId, it?.viewMode) != viewModeCache }
-        .mapLatest {
-            viewModeCache = Pair(userId, it?.viewMode)
+        .map { it?.viewMode }
+        .distinctUntilChanged()
+        .map {
+            // We only care about the change, the actual value is not important for this use case.
         }
-
 }
