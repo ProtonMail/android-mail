@@ -1484,14 +1484,17 @@ class MailboxViewModel @Inject constructor(
         (state.value.showSpamTrashIncludeFilterState as? ShowSpamTrashIncludeFilterState.Data.Shown)?.enabled == true
 
     private fun observeCategoryViewStatusUpdates(): Flow<CategoryViewStatus> {
-        return observeLoadedMailLabelId()
-            .mapLatest {
-                val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-                viewMode
-            }
-            .distinctUntilChanged()
-            .flatMapLatest { viewMode ->
-                observeCategoryViewStatus(viewMode)
+        return primaryUserId
+            .flatMapLatest { userId ->
+                combine(
+                    observeLoadedMailLabelId().distinctUntilChanged(),
+                    observeViewModeChanged(userId)
+                ) { loadedMailLabelId, _ ->
+                    getViewModeForCurrentLocation(loadedMailLabelId)
+                }
+                    .flatMapLatest { viewMode ->
+                        observeCategoryViewStatus(viewMode)
+                    }
             }
     }
 
