@@ -88,7 +88,8 @@ class RustLabelRepository @Inject constructor(
         labelId: LabelId,
         isExpanded: Boolean
     ) {
-        TODO("Not yet implemented")
+        if (type != LabelType.MessageFolder) return
+        labelDataSource.updateFolderIsExpanded(userId, labelId.toLocalLabelId(), isExpanded)
     }
 
     override suspend fun deleteLabel(

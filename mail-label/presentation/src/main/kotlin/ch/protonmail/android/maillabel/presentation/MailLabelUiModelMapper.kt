@@ -20,11 +20,11 @@ package ch.protonmail.android.maillabel.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.mailcommon.presentation.model.NullCountPolicy
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.ZeroCountPolicy
+import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -69,10 +69,11 @@ fun MailLabel.Custom.toCustomUiModel(counters: Map<LabelId, Int?>, selected: Mai
         text = text() as TextUiModel.Text,
         icon = iconRes(),
         iconTint = iconTintColor(),
-        isVisible = parent == null || parent?.isExpanded == true,
+        isVisible = generateSequence(parent) { it.parent }.all { it.isExpanded },
         isExpanded = isExpanded,
         isSelected = id.labelId == selected?.labelId,
         iconPaddingStart = ProtonDimens.Spacing.Large * level,
+        hasChildren = children.isNotEmpty(),
         count = counters[id.labelId].toCappedNumberUiModel(
             nullPolicy = NullCountPolicy.Empty,
             zeroPolicy = ZeroCountPolicy.Empty

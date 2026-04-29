@@ -56,7 +56,8 @@ sealed interface MailLabelUiModel {
         override val count: CappedNumberUiModel,
         val isVisible: Boolean,
         val isExpanded: Boolean,
-        val iconPaddingStart: Dp
+        val iconPaddingStart: Dp,
+        val hasChildren: Boolean = false
     ) : MailLabelUiModel
 }
 

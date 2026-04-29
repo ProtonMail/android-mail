@@ -122,7 +122,6 @@ class RustLabelDataSource @Inject constructor(
                         sidebar?.destroy()
                         sidebar = null
                         Timber.d("rust-label: watcher for labels destroyed")
-
                     }
                 }
             }
@@ -185,6 +184,20 @@ class RustLabelDataSource @Inject constructor(
             }
 
             rustGetLabelIdBySystemLabel(session, systemLabel)
+        }
+    }
+
+    override suspend fun updateFolderIsExpanded(
+        userId: UserId,
+        labelId: LocalLabelId,
+        isExpanded: Boolean
+    ): Either<DataError, Unit> = withContext(ioDispatcher) {
+        val sidebar = getRustSidebarInstance(userId)
+            ?: return@withContext DataError.Local.NoUserSession.left()
+        try {
+            if (isExpanded) sidebar.expandFolder(labelId) else sidebar.collapseFolder(labelId)
+        } finally {
+            sidebar.destroy()
         }
     }
 }

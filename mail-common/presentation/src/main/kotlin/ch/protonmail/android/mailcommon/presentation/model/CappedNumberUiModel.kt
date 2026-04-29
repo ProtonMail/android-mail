@@ -18,8 +18,11 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
+import androidx.compose.runtime.Stable
+
 private const val DEFAULT_CAP = 999
 
+@Stable
 sealed interface CappedNumberUiModel {
 
     data object Empty : CappedNumberUiModel

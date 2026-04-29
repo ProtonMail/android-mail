@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import android.graphics.Color
 import app.cash.turbine.test
+import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.domain.repository.LabelRepository
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
@@ -33,11 +34,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import ch.protonmail.android.maillabel.domain.model.LabelType
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ObserveMailLabelsTest {
 
@@ -67,13 +69,13 @@ class ObserveMailLabelsTest {
             labelRepository = labelRepository
         )
 
-    @Before
+    @BeforeTest
     fun setUp() {
         mockkStatic(Color::parseColor)
         every { Color.parseColor(any()) } returns 0
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         unmockkStatic(Color::parseColor)
     }
@@ -175,6 +177,24 @@ class ObserveMailLabelsTest {
                 expected = listOf(f0, f00, f01, f1, f2),
                 actual = item.folders
             )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `propagates the persisted isExpanded value from the repository`() = runTest {
+        every { labelRepository.observeCustomFolders(any()) } returns flowOf(
+            listOf(
+                buildLabel(id = "id0", type = LabelType.MessageFolder, order = 0, isExpanded = false),
+                buildLabel(id = "id1", type = LabelType.MessageFolder, order = 1, isExpanded = true)
+            )
+        )
+
+        observeMailLabels.invoke(userId).test {
+            val item = awaitItem()
+
+            assertFalse(item.folders.single { it.id.labelId.id == "id0" }.isExpanded)
+            assertTrue(item.folders.single { it.id.labelId.id == "id1" }.isExpanded)
             cancelAndIgnoreRemainingEvents()
         }
     }
