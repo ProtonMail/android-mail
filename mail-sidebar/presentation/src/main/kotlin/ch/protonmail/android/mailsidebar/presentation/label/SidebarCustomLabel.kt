@@ -35,23 +35,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
-import ch.protonmail.android.mailcommon.presentation.extension.tintColor
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
-import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Add
-import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Select
-import ch.protonmail.android.maillabel.presentation.testTag
-import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
-import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarLazy
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.extension.tintColor
+import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.domain.model.LabelType.MessageFolder
 import ch.protonmail.android.maillabel.domain.model.LabelType.MessageLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.testTag
 import ch.protonmail.android.mailsidebar.presentation.R
+import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
+import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarLazy
+import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Add
+import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Collapse
+import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Expand
+import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Select
 
 fun LazyListScope.sidebarLabelItems(items: List<MailLabelUiModel.Custom>, onLabelAction: (SidebarLabelAction) -> Unit) =
     sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
@@ -97,6 +99,11 @@ private fun LazyItemScope.SidebarCustomLabel(
         iconTint = item.iconTint ?: ProtonTheme.colors.iconWeak,
         isSelected = item.isSelected,
         count = item.count,
+        showChevron = item.hasChildren,
+        isExpanded = item.isExpanded,
+        onChevronClick = {
+            onLabelAction(if (item.isExpanded) Collapse(item.id) else Expand(item.id))
+        },
         onClick = { onLabelAction(Select(item.id)) }
     )
 }

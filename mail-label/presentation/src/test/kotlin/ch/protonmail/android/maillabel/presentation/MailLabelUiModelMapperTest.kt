@@ -21,12 +21,12 @@ package ch.protonmail.android.maillabel.presentation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
-import ch.protonmail.android.design.compose.theme.ProtonDimens
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -61,7 +61,8 @@ class MailLabelUiModelMapperTest {
                 count = CappedNumberUiModel.Empty,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = 0.0.dp
+                iconPaddingStart = 0.0.dp,
+                hasChildren = true
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.1")),
@@ -83,7 +84,8 @@ class MailLabelUiModelMapperTest {
                 count = CappedNumberUiModel.Empty,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.Spacing.Large
+                iconPaddingStart = ProtonDimens.Spacing.Large,
+                hasChildren = true
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.1")),
@@ -196,7 +198,8 @@ class MailLabelUiModelMapperTest {
             count = CappedNumberUiModel.Empty,
             isVisible = true,
             isExpanded = true,
-            iconPaddingStart = 0.0.dp
+            iconPaddingStart = 0.0.dp,
+            hasChildren = true
         )
         assertEquals(expected, actual)
     }

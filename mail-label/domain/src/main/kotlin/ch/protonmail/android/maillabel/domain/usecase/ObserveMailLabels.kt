@@ -53,18 +53,10 @@ class ObserveMailLabels @Inject constructor(
         .flowOn(dispatcher)
 
     private fun observeCustomFolders(userId: UserId) = labelRepository.observeCustomFolders(userId)
-        .mapLatest { list ->
-            list
-                .sortedBy { it.order }
-                .map { it.copy(isExpanded = true) } // Temporary fix until folder hierarchy is supported
-        }
+        .mapLatest { list -> list.sortedBy { it.order } }
         .flowOn(dispatcher)
 
     private fun observeCustomLabels(userId: UserId) = labelRepository.observeCustomLabels(userId)
-        .mapLatest { list ->
-            list
-                .sortedBy { it.order }
-                .map { it.copy(isExpanded = true) } // Temporary fix until folder hierarchy is supported
-        }
+        .mapLatest { list -> list.sortedBy { it.order } }
         .flowOn(dispatcher)
 }

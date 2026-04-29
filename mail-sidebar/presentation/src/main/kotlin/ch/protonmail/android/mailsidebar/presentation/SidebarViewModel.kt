@@ -99,7 +99,6 @@ class SidebarViewModel @Inject constructor(
             is SidebarLabelAction.Collapse -> onUpdateLabelExpandedState(action.labelId, false)
             is SidebarLabelAction.Expand -> onUpdateLabelExpandedState(action.labelId, true)
             is SidebarLabelAction.Select -> selectMailLabelId(action.labelId)
-
         }
     }
 

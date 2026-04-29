@@ -309,7 +309,9 @@ object Sidebar {
             },
             onLabelAction = { action ->
                 onLabelAction(action)
-                close()
+                if (action !is SidebarLabelAction.Collapse && action !is SidebarLabelAction.Expand) {
+                    close()
+                }
             },
             onSubscription = {
                 onSubscription()

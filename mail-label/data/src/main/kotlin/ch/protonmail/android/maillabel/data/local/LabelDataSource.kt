@@ -42,4 +42,10 @@ interface LabelDataSource {
     suspend fun resolveSystemLabelByLocalId(userId: UserId, labelId: LocalLabelId): Either<DataError, LocalSystemLabel>
 
     suspend fun resolveLocalIdBySystemLabel(userId: UserId, systemLabel: SystemLabel): Either<DataError, LocalLabelId>
+
+    suspend fun updateFolderIsExpanded(
+        userId: UserId,
+        labelId: LocalLabelId,
+        isExpanded: Boolean
+    ): Either<DataError, Unit>
 }

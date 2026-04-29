@@ -83,6 +83,8 @@ object ProtonDimens {
     }
 
     object IconSize {
+
+        val Tiny = 8.dp
         val ExtraSmall = 12.dp
         val Small = 16.dp
         val Medium = 20.dp

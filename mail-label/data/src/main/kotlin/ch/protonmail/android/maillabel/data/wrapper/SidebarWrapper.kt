@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.data.wrapper
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import uniffi.mail_uniffi.LiveQueryCallback
@@ -32,6 +33,7 @@ import uniffi.mail_uniffi.SidebarCustomLabelsResult
 import uniffi.mail_uniffi.SidebarSystemLabel
 import uniffi.mail_uniffi.SidebarSystemLabelsResult
 import uniffi.mail_uniffi.SidebarWatchLabelsResult
+import uniffi.mail_uniffi.VoidActionResult
 import uniffi.mail_uniffi.WatchHandle
 
 class SidebarWrapper(private val sidebar: Sidebar) {
@@ -58,6 +60,18 @@ class SidebarWrapper(private val sidebar: Sidebar) {
         when (val result = sidebar.allCustomFolders()) {
             is SidebarAllCustomFoldersResult.Error -> result.v1.toDataError().left()
             is SidebarAllCustomFoldersResult.Ok -> result.v1.right()
+        }
+
+    suspend fun expandFolder(localId: LocalLabelId): Either<DataError, Unit> =
+        when (val result = sidebar.expandFolder(localId)) {
+            is VoidActionResult.Error -> result.v1.toDataError().left()
+            VoidActionResult.Ok -> Unit.right()
+        }
+
+    suspend fun collapseFolder(localId: LocalLabelId): Either<DataError, Unit> =
+        when (val result = sidebar.collapseFolder(localId)) {
+            is VoidActionResult.Error -> result.v1.toDataError().left()
+            VoidActionResult.Ok -> Unit.right()
         }
 
     fun destroy() {
