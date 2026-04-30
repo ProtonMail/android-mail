@@ -38,10 +38,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.titleMediumNorm
+import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
+import ch.protonmail.android.mailcommon.presentation.model.isEmpty
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -83,7 +86,14 @@ internal fun BottomUnreadFilterButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.filter_unread_button_text),
+                text = buildAnnotatedString {
+                    append(stringResource(R.string.filter_unread_button_text))
+
+                    if (!state.unreadCount.isEmpty()) {
+                        append(" ")
+                        append(state.unreadCount.asDisplayText())
+                    }
+                },
                 style = ProtonTheme.typography.titleMediumNorm,
                 color = contentColor
             )
