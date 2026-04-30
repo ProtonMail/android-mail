@@ -26,13 +26,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,7 +70,11 @@ fun UpsellBannerButton(
             is UpsellingVisibility.Promotional,
             is UpsellingVisibility.Normal ->
                 UpsellBannerButtonContent(modifier = modifier, onClick = { onClick(type) }) {
-                    Text(text = ctaText, style = ProtonTheme.typography.bodyMediumNorm)
+                    Text(
+                        text = ctaText,
+                        style = ProtonTheme.typography.bodyMediumNorm,
+                        textAlign = TextAlign.Center
+                    )
                 }
         }
     }
@@ -85,13 +91,14 @@ private fun UpsellBannerButtonContent(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(ProtonDimens.Spacing.Massive)
+            .heightIn(min = ProtonDimens.Spacing.Massive)
             .border(UpsellingLayoutValues.UpsellCards.outlineBorderStoke, shape)
             .clip(shape)
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(horizontal = ProtonDimens.Spacing.Large, vertical = ProtonDimens.Spacing.Small),
         contentAlignment = Alignment.Center
     ) {
-        Box { content() }
+        content()
     }
 }
 
