@@ -38,7 +38,7 @@ internal class AppIconManager @Inject constructor(
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy
 ) {
 
-    val currentIconData by lazy { MutableStateFlow(getCurrentIconData()) }
+    private val currentIconState by lazy { MutableStateFlow(getCurrentIconData()) }
 
     fun setNewAppIcon(desiredAppIcon: AppIconData) {
         // Dismiss all notifications
@@ -62,7 +62,7 @@ internal class AppIconManager @Inject constructor(
             PackageManager.DONT_KILL_APP
         )
 
-        currentIconData.value = desiredAppIcon
+        currentIconState.value = desiredAppIcon
         createLaunchIntent.invalidateCache()
     }
 
