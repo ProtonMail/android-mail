@@ -110,7 +110,7 @@ fun CategoryPill(
 
 @Preview
 @Composable
-fun ActiveCategoryPillPreview() {
+private fun ActiveCategoryPillPreview() {
     ProtonTheme {
         CategoryPill(
             item = CategoryItemUiModelSample.primary,
@@ -121,7 +121,7 @@ fun ActiveCategoryPillPreview() {
 
 @Preview
 @Composable
-fun InactiveCategoryPillPreview() {
+private fun InactiveCategoryPillPreview() {
     ProtonTheme {
         CategoryPill(
             item = CategoryItemUiModelSample.primary.copy(isActive = false),

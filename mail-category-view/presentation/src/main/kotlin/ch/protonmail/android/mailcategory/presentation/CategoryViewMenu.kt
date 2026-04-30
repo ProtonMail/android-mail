@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
@@ -39,8 +40,10 @@ fun CategoryViewMenu(
     Row(
         modifier = modifier
             .padding(
-                vertical = ProtonDimens.Spacing.Small,
-                horizontal = ProtonDimens.Spacing.ModeratelyLarge
+                top = 0.dp,
+                bottom = 0.dp,
+                start = ProtonDimens.Spacing.ModeratelyLarge,
+                end = ProtonDimens.Spacing.ModeratelyLarge
             ),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
         verticalAlignment = Alignment.CenterVertically

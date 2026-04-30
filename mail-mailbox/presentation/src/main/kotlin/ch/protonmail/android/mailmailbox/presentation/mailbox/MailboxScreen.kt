@@ -522,6 +522,8 @@ fun MailboxScreen(
                     isCategoryViewEnabled = isCategoryViewEnabled
                 )
 
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+
                 val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState
                     ?: LoadingBarUiState.Hide
                 MailboxLoadingBar(
