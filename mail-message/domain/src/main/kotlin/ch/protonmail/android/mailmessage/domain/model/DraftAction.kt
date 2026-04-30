@@ -40,6 +40,9 @@ sealed interface DraftAction {
     data class ComposeToAddresses(val recipients: List<String>) : DraftAction
 
     @Serializable
+    data class ComposeToContactGroup(val name: String, val members: List<String>) : DraftAction
+
+    @Serializable
     data class PrefillForShare(val intentShareInfo: IntentShareInfo) : DraftAction
 
     @Serializable

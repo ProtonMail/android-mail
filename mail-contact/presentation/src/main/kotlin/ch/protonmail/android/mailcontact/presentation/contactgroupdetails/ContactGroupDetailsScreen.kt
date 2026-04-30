@@ -143,7 +143,12 @@ private fun ContactGroupDetails(
 
         SendGroupMessageAction(
             memberCount = uiModel.memberCount,
-            onClick = { actions.onSendGroupMessage(uiModel.members.map { it.emailAddress }) }
+            onClick = {
+                actions.onSendGroupMessage(
+                    uiModel.name,
+                    uiModel.members.map { it.emailAddress }
+                )
+            }
         )
 
         Column(
@@ -274,7 +279,7 @@ fun ContactGroupDetailsScreenPreview() {
         actions = ContactGroupDetailsScreen.Actions(
             onBack = {},
             onShowErrorSnackbar = {},
-            onSendGroupMessage = {},
+            onSendGroupMessage = { _, _ -> },
             onOpenContact = {},
             showFeatureMissingSnackbar = {}
         )
@@ -287,7 +292,7 @@ object ContactGroupDetailsScreen {
     data class Actions(
         val onBack: () -> Unit,
         val onShowErrorSnackbar: (String) -> Unit,
-        val onSendGroupMessage: (List<String>) -> Unit,
+        val onSendGroupMessage: (groupName: String, members: List<String>) -> Unit,
         val onOpenContact: (ContactId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )

@@ -1179,6 +1179,48 @@ internal class ComposerViewModelTest {
     }
 
     @Test
+    fun `should set group recipient to state when contact group was given as an input`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val groupName = "Friends"
+        val groupMembers = listOf("alice@example.com", "bob@example.com")
+        val expectedAction = DraftAction.ComposeToContactGroup(groupName, groupMembers)
+        val expectedDraftGroupRecipient = DraftRecipient.GroupRecipient(
+            name = groupName,
+            recipients = groupMembers.map { address ->
+                DraftRecipient.SingleRecipient(
+                    name = "",
+                    address = address,
+                    validity = DraftRecipientValidity.Validating,
+                    privacyLock = PrivacyLock.None
+                )
+            }
+        )
+
+        expectNoInputDraftMessageId()
+        expectInputDraftAction { expectedAction }
+        expectStoreDraftSubjectSucceeds(Subject(""))
+        expectStoreDraftBodySucceeds(DraftBody(""))
+        expectUpdateRecipientsSucceeds(listOf(expectedDraftGroupRecipient), emptyList(), emptyList())
+        expectObservedMessageAttachments()
+        expectNoRestoredState(savedStateHandle)
+        expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId) {
+            DraftFieldsTestData.EmptyDraftWithPrimarySender
+        }
+
+        // When
+        val viewModel = viewModel()
+        viewModel.composerStates.test {
+            // Then
+            assertEquals(
+                RecipientUiModel.Group(name = groupName, members = groupMembers, color = ""),
+                recipientsStateManager.recipients.value.toRecipients.firstOrNull()
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `should show warning when send button is clicked with expiration set and external recipients`() = runTest {
         // Given
         val expectedSubject = Subject("Subject")
