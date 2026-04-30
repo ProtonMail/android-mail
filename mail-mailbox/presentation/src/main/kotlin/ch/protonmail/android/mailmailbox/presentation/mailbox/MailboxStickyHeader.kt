@@ -50,10 +50,23 @@ fun MailboxStickyHeader(
     actions: MailboxStickyHeader.Actions,
     isCategoryViewEnabled: Boolean
 ) {
-    val horizontalPadding = if (isCategoryViewEnabled) {
+
+    val isCategoryViewVisible =
+        isCategoryViewEnabled &&
+            state.categoryViewState is CategoryViewState.Available &&
+            state.topAppBarState !is MailboxTopAppBarState.Data.SearchMode &&
+            state.mailboxListState !is MailboxListState.Data.SelectionMode
+
+    val horizontalPadding = if (isCategoryViewVisible) {
         0.dp
     } else {
         ProtonDimens.Spacing.Large
+    }
+
+    val bottomPadding = if (isCategoryViewVisible) {
+        0.dp
+    } else {
+        ProtonDimens.Spacing.Small
     }
 
     Row(
@@ -62,7 +75,7 @@ fun MailboxStickyHeader(
             .padding(
                 start = horizontalPadding,
                 end = horizontalPadding,
-                bottom = ProtonDimens.Spacing.Small,
+                bottom = bottomPadding,
                 top = 0.dp
             )
             .horizontalScroll(rememberScrollState()),
