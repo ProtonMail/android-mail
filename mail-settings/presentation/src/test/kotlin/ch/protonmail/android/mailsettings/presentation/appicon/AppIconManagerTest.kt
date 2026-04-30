@@ -29,7 +29,6 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -88,7 +87,7 @@ internal class AppIconManagerTest {
         appIconManager.setNewAppIcon(NEW_ICON)
 
         // Then
-        val updatedIcon = appIconManager.currentIconData.first()
+        val updatedIcon = appIconManager.getCurrentIconData()
         assert(updatedIcon == NEW_ICON)
         verify { mockNotificationManager.dismissAllNotifications() }
         verify { mockCreateLaunchIntent.invalidateCache() }
