@@ -57,6 +57,7 @@ fun FloatingBottomToolbar(
     viewActionCallbacks: BottomActionBar.Actions,
     modifier: Modifier = Modifier
 ) {
+    val hasWindowFocus by rememberWindowFocusState()
     val isVisible = state is BottomBarState.Data.Shown
 
     val lastShownState = remember { mutableStateOf<BottomBarState.Data.Shown?>(null) }
@@ -81,6 +82,11 @@ fun FloatingBottomToolbar(
         animationSpec = tween(ANIMATION_DURATION),
         label = "contentAlpha"
     )
+
+    // Skip the whole surface while the window is unfocused so an OEM extended
+    // screenshot can't capture the toolbar. A normal hide (e.g. selection cleared)
+    // still goes through the existing fade-out via isVisible.
+    if (!hasWindowFocus) return
 
     Surface(
         modifier = modifier.height(FloatingToolbarHeight),

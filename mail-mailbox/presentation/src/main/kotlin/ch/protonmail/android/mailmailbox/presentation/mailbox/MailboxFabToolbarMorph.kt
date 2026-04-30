@@ -56,6 +56,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.FloatingToolbarActionIcons
+import ch.protonmail.android.mailcommon.presentation.ui.rememberWindowFocusState
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -111,6 +112,8 @@ internal fun MailboxFabToolbarMorph(
         label = "horizontalBias"
     ) { inSelection -> if (inSelection) 0f else 1f }
 
+    val hasWindowFocus by rememberWindowFocusState()
+
     Box(
         modifier = modifier
             .padding(bottom = snackbarOffset)
@@ -141,7 +144,9 @@ internal fun MailboxFabToolbarMorph(
             animationSpec = unreadSpring,
             label = "unreadTranslationY"
         )
-        if (showUnreadFilter || unreadAlpha > 0f) {
+        // Skip drawing the floating overlays as soon as the window loses focus,
+        // so an OEM extended screenshot can't capture them.
+        if (hasWindowFocus && (showUnreadFilter || unreadAlpha > 0f)) {
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
@@ -162,52 +167,54 @@ internal fun MailboxFabToolbarMorph(
         }
 
         // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ShadowClipGuard),
-            contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
-        ) {
-            Surface(
+        if (hasWindowFocus) {
+            Box(
                 modifier = Modifier
-                    .width(containerWidth)
-                    .height(FabSize),
-                shape = RoundedCornerShape(percent = 50),
-                shadowElevation = ProtonDimens.ShadowElevation.Mini,
-                color = ProtonTheme.colors.interactionFabNorm
+                    .fillMaxWidth()
+                    .padding(ShadowClipGuard),
+                contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
+                Surface(
+                    modifier = Modifier
+                        .width(containerWidth)
+                        .height(FabSize),
+                    shape = RoundedCornerShape(percent = 50),
+                    shadowElevation = ProtonDimens.ShadowElevation.Mini,
+                    color = ProtonTheme.colors.interactionFabNorm
                 ) {
-                    // FAB icon
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                        contentDescription = stringResource(
-                            id = R.string.mailbox_fab_compose_button_content_description
-                        ),
-                        tint = ProtonTheme.colors.textNorm,
-                        modifier = Modifier.graphicsLayer { alpha = fabAlpha }
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
+                    ) {
+                        // FAB icon
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                            contentDescription = stringResource(
+                                id = R.string.mailbox_fab_compose_button_content_description
+                            ),
+                            tint = ProtonTheme.colors.textNorm,
+                            modifier = Modifier.graphicsLayer { alpha = fabAlpha }
+                        )
 
-                    // Toolbar actions – keep in composition while animating, remove once done
-                    // so invisible IconButtons don't steal hits from the FAB.
-                    val shownData = lastShownState.value
-                    val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
-                    if (shownData != null && isToolbarActive) {
-                        Row(
-                            modifier = Modifier
-                                .graphicsLayer { alpha = toolbarAlpha }
-                                .fillMaxWidth()
-                                .padding(horizontal = ToolbarHorizontalPadding),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            FloatingToolbarActionIcons(
-                                actions = shownData.actions,
-                                target = shownData.target,
-                                viewActionCallbacks = bottomBarActions
-                            )
+                        // Toolbar actions – keep in composition while animating, remove once done
+                        // so invisible IconButtons don't steal hits from the FAB.
+                        val shownData = lastShownState.value
+                        val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
+                        if (shownData != null && isToolbarActive) {
+                            Row(
+                                modifier = Modifier
+                                    .graphicsLayer { alpha = toolbarAlpha }
+                                    .fillMaxWidth()
+                                    .padding(horizontal = ToolbarHorizontalPadding),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                FloatingToolbarActionIcons(
+                                    actions = shownData.actions,
+                                    target = shownData.target,
+                                    viewActionCallbacks = bottomBarActions
+                                )
+                            }
                         }
                     }
                 }
