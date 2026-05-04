@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Koncept nelze uložit - Došlo k obecné chybě</string>
   <string name="composer_error_create_draft">Něco se pokazilo. Nelze vytvořit nový koncept.</string>
   <string name="composer_error_loading_draft">Obsah tohoto konceptu není v tuto chvíli k dispozici, úprava není možná.</string>
+  <string name="composer_action_clear_formatting">Odebrat formátování</string>
   <string name="composer_add_attachments_content_description">Přidat přílohy</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importovat z…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z vaší knihovny fotek</string>

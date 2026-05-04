@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Luonnosta ei voi tallentaa – Yleinen virhe</string>
   <string name="composer_error_create_draft">Jotain meni vikaan. Uutta luonnosta ei voitu luoda.</string>
   <string name="composer_error_loading_draft">Tämän luonnoksen sisältö ei ole tällä hetkellä saatavilla, joten muokkaaminen ei ole mahdollista.</string>
+  <string name="composer_action_clear_formatting">Poista muotoilu</string>
   <string name="composer_add_attachments_content_description">Lisää liitteitä</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Tuo lähteestä…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Kuvakirjastostasi</string>

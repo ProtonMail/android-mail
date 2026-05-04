@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Draf tidak dapat disimpan - Terjadi suatu kesalahan umum</string>
   <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia saat ini, penyuntingan tidak dimungkinkan.</string>
+  <string name="composer_action_clear_formatting">Clear formatting</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Impor dari…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Dari pustaka foto Anda</string>

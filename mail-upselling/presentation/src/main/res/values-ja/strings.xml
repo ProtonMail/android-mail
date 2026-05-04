@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">%s で 1 ヶ月分獲得</string>
   <string name="upselling_mailbox_plus_promo_skip">オファーをスキップ</string>
   <string name="upselling_mailbox_plus_promo_renewal">最初の1ヶ月間%s、その後は月額%s</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">グループメールを簡単に送信できます。Mail Plusで、これらやその他の機能をお楽しみください。</string>
   <string name="upselling_contact_groups_plus_title">連絡先をグループ化する</string>
@@ -63,8 +65,12 @@
   <string name="upselling_comparison_table_desktop_app">デスクトップアプリへアクセス</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">無制限のフォルダとラベル</string>
   <string name="upselling_comparison_table_priority_support">優先的なカスタマーサポート</string>
+  <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
+  <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
+  <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">プランを選択</string>
+  <string name="upselling_select_plan">Choose subscription</string>
   <string name="upselling_select_plan_year">12ヶ月</string>
   <string name="upselling_select_plan_month">1 ヶ月</string>
   <!-- Onboarding upsell -->
@@ -83,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB ストレージ</string>
   <string name="upselling_onboarding_free_entitlement_mail">1個のメールアドレス</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">オールインワンプレミアムサブスクリプション</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features</string>
   <string name="upselling_auto_renew_text">キャンセルするまで同じ金額、同じ期間で自動更新</string>
   <string name="upselling_auto_renew_text_promo">ウェルカムオファー。キャンセルしない限り、%s%s で自動更新します。</string>
   <string name="upselling_auto_renew_text_bfriday">割引は標準月額料金に基づいています。キャンセルされるまで%s%sにて自動更新されます。</string>

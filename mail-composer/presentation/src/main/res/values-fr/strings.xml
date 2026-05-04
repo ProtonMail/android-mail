@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">L\'enregistrement du brouillon n\'a pas abouti. Une erreur générique s\'est produite</string>
   <string name="composer_error_create_draft">Une erreur s\'est produite. Impossible de créer un nouveau brouillon.</string>
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. La modification n\'est pas possible.</string>
+  <string name="composer_action_clear_formatting">Effacer la mise en forme</string>
   <string name="composer_add_attachments_content_description">Ajouter des pièces jointes</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importer depuis…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Depuis votre bibliothèque de photos</string>

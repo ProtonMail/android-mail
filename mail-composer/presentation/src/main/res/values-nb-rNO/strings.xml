@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Kan ikke lagre utkast – det oppstod en generell feil</string>
   <string name="composer_error_create_draft">Noe gikk galt. Kan ikke opprette et nytt utkast.</string>
   <string name="composer_error_loading_draft">Innholdet i dette utkastet er ikke tilgjengelig på dette tidspunktet, redigering er ikke mulig.</string>
+  <string name="composer_action_clear_formatting">Fjern formatering</string>
   <string name="composer_add_attachments_content_description">Legg til vedlegg</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importer fra…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Fra bildebiblioteket ditt</string>

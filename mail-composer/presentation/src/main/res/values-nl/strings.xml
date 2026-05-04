@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Kan concept niet opslaan - Er is een algemene fout opgetreden</string>
   <string name="composer_error_create_draft">Er ging iets mis. Kan geen nieuw concept aanmaken.</string>
   <string name="composer_error_loading_draft">De inhoud van dit concept is op dit moment niet beschikbaar, bewerken is niet mogelijk.</string>
+  <string name="composer_action_clear_formatting">Opmaak wissen</string>
   <string name="composer_add_attachments_content_description">Bestanden toevoegen</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importeren van…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Uit uw fotobibliotheek</string>

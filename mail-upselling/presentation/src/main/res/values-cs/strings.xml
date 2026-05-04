@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Získejte 1 měsíc za %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Přeskočit nabídku</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s za 1. měsíc, poté %s měsíčně</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Přejděte na Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Snadné odesílání skupinových e-mailů. To a mnohem více si můžete užít s aplikací Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Seskupujte své kontakty</string>
@@ -63,8 +65,12 @@
   <string name="upselling_comparison_table_desktop_app">Přístup k desktopové aplikaci</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Neomezený počet složek a štítků</string>
   <string name="upselling_comparison_table_priority_support">Prioritní zákaznická podpora</string>
+  <string name="upselling_comparison_table_aliases">Aliasy Hide-my-email</string>
+  <string name="upselling_comparison_table_folders_labels">Složky a štítky</string>
+  <string name="upselling_comparison_table_premium_products">Prémiová VPN, správce hesel a cloudové úložiště</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Sledování Dark webu</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Vyberte svůj tarif</string>
+  <string name="upselling_select_plan">Zvolte předplatné</string>
   <string name="upselling_select_plan_year">12 měsíců</string>
   <string name="upselling_select_plan_month">1 měsíc</string>
   <!-- Onboarding upsell -->
@@ -83,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB prostoru</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-mailová adresa</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Vaše prémiové předplatné obsahující vše v jednom</string>
+  <string name="upselling_unlimited_description_override">Pro odemknutí většího úložného prostoru a prémiových funkcí</string>
   <string name="upselling_auto_renew_text">Automatické obnovení za stejnou cenu a za stejných podmínek, pokud není zrušeno</string>
   <string name="upselling_auto_renew_text_promo">Uvítací nabídka. Automaticky se obnoví %s%s, pokud nebude zrušena</string>
   <string name="upselling_auto_renew_text_bfriday">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %s%s až do zrušení.</string>

@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Kan ikke gemme udkastet - Der opstod en generisk fejl</string>
   <string name="composer_error_create_draft">Noget gik galt. Et nyt udkast blev ikke oprettet.</string>
   <string name="composer_error_loading_draft">Indholdet af dette udkast er ikke tilgængelig på nuværende tidspunkt, og det er ikke muligt at redigere det.</string>
+  <string name="composer_action_clear_formatting">Ryd formatering</string>
   <string name="composer_add_attachments_content_description">Tilføj vedhæftninger</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importér fra…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Fra dit fotogalleri</string>

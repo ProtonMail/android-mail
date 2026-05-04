@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">No s\'ha pogut desar l\'esborrany - S\'ha produït un error genèric</string>
   <string name="composer_error_create_draft">Alguna cosa ha anat malament. No s\'ha pogut crear un esborrany nou.</string>
   <string name="composer_error_loading_draft">El contingut d\'aquest esborrany no està disponible en aquest moment, no es pot editar.</string>
+  <string name="composer_action_clear_formatting">Neteja el format</string>
   <string name="composer_add_attachments_content_description">Afegiu fitxers adjunts</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar des de…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Des de la biblioteca de fotos</string>

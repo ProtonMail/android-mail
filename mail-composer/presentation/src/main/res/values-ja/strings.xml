@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">下書きを保存できませんでした - 一般的なエラーが発生しました。</string>
   <string name="composer_error_create_draft">何か問題が発生しました。新しい下書きの作成ができませんでした。</string>
   <string name="composer_error_loading_draft">この下書きの内容は現時点では利用できません、編集はできません。</string>
+  <string name="composer_action_clear_formatting">Clear formatting</string>
   <string name="composer_add_attachments_content_description">添付ファイルの追加</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">インポート...</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">写真ライブラリから</string>

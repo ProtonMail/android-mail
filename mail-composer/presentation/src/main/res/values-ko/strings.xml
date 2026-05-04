@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">초안을 저장할 수 없음 - 일반적인 오류가 발생했습니다</string>
   <string name="composer_error_create_draft">문제가 발생하여 새 초안을 만들 수 없습니다.</string>
   <string name="composer_error_loading_draft">해당 초안의 내용은 현재 사용 불가하며 편집할 수 없습니다.</string>
+  <string name="composer_action_clear_formatting">Clear formatting</string>
   <string name="composer_add_attachments_content_description">첨부 파일 추가</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">다음에서 가져오기…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">사진 앨범에서 선택</string>
