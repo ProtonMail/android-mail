@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Unable to save draft - A generic error occurred</string>
   <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição não é possível.</string>
+  <string name="composer_action_clear_formatting">Clear formatting</string>
   <string name="composer_add_attachments_content_description">Adicionar anexos</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar de…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Da sua biblioteca de fotografias</string>

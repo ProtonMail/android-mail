@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">No se puede guardar el borrador - Ocurrió un error genérico</string>
   <string name="composer_error_create_draft">Algo salió mal. No se puede crear el borrador.</string>
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento, no es posible editarlo.</string>
+  <string name="composer_action_clear_formatting">Borrar el formato</string>
   <string name="composer_add_attachments_content_description">Agregar archivo adjunto</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar desde…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Desde su biblioteca de fotos</string>

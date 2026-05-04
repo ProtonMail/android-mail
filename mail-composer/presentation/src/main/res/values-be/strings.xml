@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Немагчыма захаваць чарнавік. Адбылася агульная памылка</string>
   <string name="composer_error_create_draft">Нешта пайшло не так. Немагчыма стварыць новы чарнавік.</string>
   <string name="composer_error_loading_draft">Змесціва гэтага чарнавіка недаступна ў цяперашні час. Рэдагаванне немагчыма.</string>
+  <string name="composer_action_clear_formatting">Clear formatting</string>
   <string name="composer_add_attachments_content_description">Дадаць далучэнні</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпартаваць з…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">З вашай фотатэкі</string>

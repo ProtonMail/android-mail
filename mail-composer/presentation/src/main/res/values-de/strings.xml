@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Entwurf konnte nicht gespeichert werden – Ein allgemeiner Fehler ist aufgetreten</string>
   <string name="composer_error_create_draft">Ein Problem ist aufgetreten. Neuer Entwurf konnte nicht erstellt werden.</string>
   <string name="composer_error_loading_draft">Der Inhalt dieses Entwurfs ist zu diesem Zeitpunkt nicht verfügbar, eine Bearbeitung ist daher nicht möglich.</string>
+  <string name="composer_action_clear_formatting">Formatierung zurücksetzen</string>
   <string name="composer_add_attachments_content_description">Anhänge hinzufügen</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importieren aus…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Aus deiner Fotobibliothek</string>

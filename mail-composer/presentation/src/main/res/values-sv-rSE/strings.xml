@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Kunde inte spara utkast - ett generiskt fel uppstod</string>
   <string name="composer_error_create_draft">Något gick fel. Kunde inte skapa ett nytt utkast.</string>
   <string name="composer_error_loading_draft">Innehållet i detta utkast är inte tillgängligt för närvarande, redigering är inte möjlig.</string>
+  <string name="composer_action_clear_formatting">Rensa formatering</string>
   <string name="composer_add_attachments_content_description">Lägg till bilagor</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importera från…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Från ditt fotobibliotek</string>

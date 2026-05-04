@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Salvataggio della bozza non riuscito. Si è verificato un errore.</string>
   <string name="composer_error_create_draft">Si è verificato un errore. Impossibile creare una nuova bozza.</string>
   <string name="composer_error_loading_draft">Caricamento del contenuto della bozza non riuscito. Modifica non disponibile.</string>
+  <string name="composer_action_clear_formatting">Cancella formattazione</string>
   <string name="composer_add_attachments_content_description">Aggiungi degli allegati</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importa da...</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Carica dalla galleria</string>

@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Não foi possível salvar o rascunho - Erro genérico</string>
   <string name="composer_error_create_draft">Algo deu errado. Não foi possível criar um rascunho.</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. Não é possível editar.</string>
+  <string name="composer_action_clear_formatting">Limpar formatação</string>
   <string name="composer_add_attachments_content_description">Adicionar anexos</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar de…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Da sua biblioteca de fotos</string>

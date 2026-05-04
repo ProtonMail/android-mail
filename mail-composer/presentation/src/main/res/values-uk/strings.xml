@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Не вдалося зберегти чернетку: сталася загальна помилка</string>
   <string name="composer_error_create_draft">Щось пішло не так. Не вдалося створити нову чернетку.</string>
   <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний, редагування неможливе.</string>
+  <string name="composer_action_clear_formatting">Очистити форматування</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпортувати з…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">З бібліотеки фотографій</string>
@@ -151,5 +152,5 @@
   <string name="composer_expiration_time_learn_more">Докладніше</string>
   <string name="composer_enter_recipient_content_description">Введіть отримувача</string>
   <string name="composer_sender_address_description">Виберіть адресу відправника</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_encryption_info_learn_more">Докладніше</string>
 </resources>

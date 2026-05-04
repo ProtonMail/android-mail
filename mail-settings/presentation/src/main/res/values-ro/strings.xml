@@ -103,7 +103,7 @@
   <string name="mail_settings_swipe_action_read_description">Marcare ca citit/necitit</string>
   <string name="mail_settings_swipe_action_spam_description">Mutare în «Nedorite»</string>
   <string name="mail_settings_swipe_action_star_description">Cu stea/Fără stea</string>
-  <string name="mail_settings_swipe_action_trash_description">Mutare în «Gunoi»</string>
+  <string name="mail_settings_swipe_action_trash_description">Mutare în „Gunoi”</string>
   <string name="mail_settings_swipe_action_label_as_description">Etichetare cu…</string>
   <string name="mail_settings_swipe_action_move_to_description">Mutare în…</string>
   <!-- Notification settings -->

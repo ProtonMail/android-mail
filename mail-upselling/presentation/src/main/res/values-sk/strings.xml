@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Získajte 1 mesiac za %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Preskočiť ponuku</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s za 1. mesiac, potom %s za mesiac</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Navýšiť na Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Posielajte skupinové emails s ľahkosťou. Vychutnajte si toto a ešte viac s Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Zoskupujte svoje kontakty</string>
@@ -63,8 +65,12 @@
   <string name="upselling_comparison_table_desktop_app">Prístup k desktopovej aplikácii</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Neobmedzené množstvo priečinkov a štítkov</string>
   <string name="upselling_comparison_table_priority_support">Prioritná zákaznícka podpora</string>
+  <string name="upselling_comparison_table_aliases">Hide My Email aliasy</string>
+  <string name="upselling_comparison_table_folders_labels">Priečinky a štítky</string>
+  <string name="upselling_comparison_table_premium_products">Prémiová VPN, správca hesiel a cloudové úložisko</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Monitorovanie Dark Webu</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Vyberte svoj plán</string>
+  <string name="upselling_select_plan">Vyberte predplatné</string>
   <string name="upselling_select_plan_year">12 mesiacov</string>
   <string name="upselling_select_plan_month">1 mesiac</string>
   <!-- Onboarding upsell -->
@@ -83,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB úložisko</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 emailová adresa</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Vaše komplexné prémiové predplatné</string>
+  <string name="upselling_unlimited_description_override">Na odomknutie väčšieho úložiska a prémiových funkcií</string>
   <string name="upselling_auto_renew_text">Automatické obnovenie za rovnakú cenu a za rovnakých podmienok až pokým nedôjde k zrušeniu</string>
   <string name="upselling_auto_renew_text_promo">Uvítacia ponuka. Automaticky sa obnoví za %s%s, pokiaľ ju nezrušíte.</string>
   <string name="upselling_auto_renew_text_bfriday">Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %s%s, kým nebude zrušené.</string>

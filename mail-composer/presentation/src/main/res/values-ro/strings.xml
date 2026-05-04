@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Ciorna nu se poate salva - A apărut o eroare generică.</string>
   <string name="composer_error_create_draft">A apărut o problemă. Nu s-a putut crea o nouă ciornă.</string>
   <string name="composer_error_loading_draft">Conținutul acestei ciorne nu este disponibil momentan. Editarea nu este posibilă.</string>
+  <string name="composer_action_clear_formatting">Eliminare formatare</string>
   <string name="composer_add_attachments_content_description">Adăugare atașamente</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importare din…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Din galeria de imagini</string>

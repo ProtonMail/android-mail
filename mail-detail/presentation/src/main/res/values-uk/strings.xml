@@ -81,8 +81,8 @@
   <string name="message_blocked_sender_button_text">Розблокувати</string>
   <string name="message_expiration_banner_text">Термін дії цього повідомлення завершиться через %1$s</string>
   <string name="message_auto_delete_banner_text">Це повідомлення автоматично видалиться через %1$s</string>
-  <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
-  <string name="message_auth_fail_banner_button">Learn more</string>
+  <string name="message_auth_fail_banner_text">Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!</string>
+  <string name="message_auth_fail_banner_button">Докладніше</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Ви збираєтеся вийти з програми та перейти до:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Не питати знову</string>

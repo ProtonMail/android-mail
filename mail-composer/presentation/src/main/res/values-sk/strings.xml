@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Koncept nie je možné uložiť – došlo k všeobecnej chybe</string>
   <string name="composer_error_create_draft">Niečo sa pokazilo. Nie je možné vytvoriť nový koncept.</string>
   <string name="composer_error_loading_draft">Obsah tohto konceptu nie je momentálne dostupný, úprava nie je možná.</string>
+  <string name="composer_action_clear_formatting">Vymazať formátovanie</string>
   <string name="composer_add_attachments_content_description">Pripojiť prílohy</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importovať z…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z vašej knižnice fotografií</string>

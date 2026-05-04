@@ -40,6 +40,7 @@
   <string name="composer_error_store_draft_generic">Αδυναμία αποθήκευσης πρόχειρου - Προέκυψε ένα γενικό σφάλμα</string>
   <string name="composer_error_create_draft">Κάτι πήγε στραβά. Δεν είναι δυνατή η δημιουργία νέου πρόχειρου.</string>
   <string name="composer_error_loading_draft">Το περιεχόμενο αυτού του πρόχειρου δεν είναι διαθέσιμο προς το παρόν, η επεξεργασία δεν είναι εφικτή.</string>
+  <string name="composer_action_clear_formatting">Εκκαθάριση μορφοποίησης</string>
   <string name="composer_add_attachments_content_description">Προσθήκη συνημμένων</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Εισαγωγή από…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Από τη βιβλιοθήκη φωτογραφιών σας</string>

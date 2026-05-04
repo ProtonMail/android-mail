@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Отримайте 1 місяць за %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Пропустити пропозицію</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s за 1-й місяць, потім %s щомісяця</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Надсилайте групові листи з легкістю. Насолоджуйтесь цим та багатьом іншим із Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Створюйте групи контактів</string>
@@ -63,8 +65,12 @@
   <string name="upselling_comparison_table_desktop_app">Програма для комп\'ютера</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Необмежена кількість тек і міток</string>
   <string name="upselling_comparison_table_priority_support">Пріоритетна підтримка клієнтів</string>
+  <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
+  <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
+  <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Виберіть тарифний план</string>
+  <string name="upselling_select_plan">Choose subscription</string>
   <string name="upselling_select_plan_year">12 місяців</string>
   <string name="upselling_select_plan_month">1 місяць</string>
   <!-- Onboarding upsell -->
@@ -83,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 ГБ сховища</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 поштова адреса</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Преміальна передплата з усіма можливостями</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features</string>
   <string name="upselling_auto_renew_text">Автопоновлення за тією ж ціною та умовами доки не буде скасовано</string>
   <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автопоновлення через %s%s, якщо не скасовано</string>
   <string name="upselling_auto_renew_text_bfriday">Знижки розраховуються на основі стандартної місячної ціни. Автоматичне поновлення за %s%s до скасування.</string>
