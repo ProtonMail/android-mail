@@ -51,7 +51,9 @@ dependencies {
     kapt(libs.bundles.app.annotationProcessors)
     implementation(libs.dagger.hilt.android)
 
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-events:data"))
     implementation(project(":mail-events:domain"))
     implementation(project(":shared:core:events:domain"))
+    implementation(libs.kotlin.coroutines.core)
 }
