@@ -54,11 +54,6 @@ object MailEventsModule {
     fun provideEventsDataStoreProvider(@ApplicationContext context: Context): EventsDataStoreProvider =
         EventsDataStoreProvider(context)
 
-    @Provides
-    @Singleton
-    fun provideInstallReferrerDataSource(@ApplicationContext context: Context): InstallReferrerDataSource =
-        PlayInstallReferrerDataSourceImpl(context)
-
     @Module
     @InstallIn(SingletonComponent::class)
     internal interface BindsModule {
@@ -79,10 +74,13 @@ object MailEventsModule {
         @Reusable
         fun bindsDeviceInfoProvider(impl: DeviceInfoProviderImpl): DeviceInfoProvider
 
-
         @Binds
         @Reusable
         fun bindsAppInstallRepository(impl: AppInstallRepositoryImpl): AppInstallRepository
+
+        @Binds
+        @Singleton
+        fun bindsInstallReferrerDataSource(impl: PlayInstallReferrerDataSourceImpl): InstallReferrerDataSource
     }
 }
 
