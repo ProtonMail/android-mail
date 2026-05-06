@@ -23,7 +23,6 @@ import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValue
 import ch.protonmail.android.mailfeatureflags.data.local.UnleashFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureFlagFactory
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
@@ -68,9 +67,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -111,11 +107,6 @@ object FeatureFlagsModule {
     @IsInjectCssOverrideEnabled
     fun provideDetailCssOverrideEnabledOverride(factory: BooleanFeatureFlagFactory) =
         factory.create(InjectDetailCssOverrideEnabled.key, false)
-
-    @Provides
-    @Singleton
-    @FeatureFlagsCoroutineScope
-    fun provideFeatureFlagsCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Provides
     @Singleton

@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailfeatureflags.data.local
 
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagProviderPriority
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
 import dagger.Lazy
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -34,17 +34,17 @@ import javax.inject.Singleton
 @Singleton
 class UnleashFeatureFlagValueProvider @Inject constructor(
     private val sessionFacade: Lazy<SessionFacade>,
-    @FeatureFlagsCoroutineScope private val coroutineScope: CoroutineScope
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : FeatureFlagValueProvider {
 
     override val priority: Int = FeatureFlagProviderPriority.UnleashProvider
 
     override val name: String = "Unleash FF provider"
 
-    override suspend fun getFeatureFlagValue(key: String): Boolean? = withContext(coroutineScope.coroutineContext) {
-        // needs to be lazy because of initialisation steps
+    override suspend fun getFeatureFlagValue(key: String): Boolean? = withContext(ioDispatcher) {
+        // needs to be lazy because of initialization steps
         val session = sessionFacade.get()
-        // For feature flags that are used in the app initialisation
+        // For feature flags that are used in the app initialization
         if (session.isMailSessionInitialised().not()) {
             Timber.w(
                 "Getting FeatureFlag:: MailSession is not initialized yet. " +

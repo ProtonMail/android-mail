@@ -25,7 +25,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -45,7 +44,7 @@ class UnleashFeatureFlagValueProviderTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-    private val scope = CoroutineScope(mainDispatcherRule.testDispatcher)
+    private val testDispatcher = mainDispatcherRule.testDispatcher
     private val sessionFacade: SessionFacade = mockk()
     private val sessionLazy: Lazy<SessionFacade> = mockk()
 
@@ -64,7 +63,7 @@ class UnleashFeatureFlagValueProviderTest {
 
         provider = UnleashFeatureFlagValueProvider(
             sessionLazy,
-            scope
+            testDispatcher
         )
 
         coEvery { sessionFacade.getIsMailSessionFeatureEnabled(testFeatureFlagKey) } returns
