@@ -19,43 +19,55 @@
 package ch.protonmail.android.mailnotifications.domain.usecase.content
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessPushNotification
-import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailsession.data.mapper.toUserId
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.repository.runInRustBackground
+import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
+import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import timber.log.Timber
 import javax.inject.Inject
 
 internal class HandlePushNotification @Inject constructor(
     private val enqueuer: Enqueuer,
-    private val userSessionRepository: UserSessionRepository,
     private val processPushNotification: ProcessPushNotification,
+    private val mailSessionRepository: MailSessionRepository,
     @IsPushProcessingWithoutWorkerEnabled private val processingWithoutWorkerEnabled: FeatureFlag<Boolean>
 ) {
 
     suspend operator fun invoke(sessionId: SessionId, encryptedMessage: String) {
-        val userId = userSessionRepository.getUserId(sessionId) ?: run {
-            Timber.w(
-                "Notification: Push received but userId could not be resolved for sessionId=%s",
-                sessionId.id
-            )
-            return
-        }
+        mailSessionRepository.runInRustBackground { mailSession ->
+            val userId = resolveUserId(mailSession, sessionId) ?: run {
+                Timber.w(
+                    "Notification: Push received but userId could not be resolved for sessionId=%s",
+                    sessionId.id
+                )
+                return@runInRustBackground
+            }
 
-        if (processingWithoutWorkerEnabled.get()) {
-            processPushNotification(
-                userId,
-                sessionId,
-                encryptedMessage
-            )
-        } else {
-            enqueuer.enqueue<ProcessPushNotificationDataWorker>(
-                userId,
-                ProcessPushNotificationDataWorker.params(userId.id, sessionId.id, encryptedMessage)
-            )
+            Timber.d("Notification: Resolved userId for the given session")
 
+            if (processingWithoutWorkerEnabled.get()) {
+                processPushNotification(
+                    userId,
+                    sessionId,
+                    encryptedMessage
+                )
+            } else {
+                enqueuer.enqueue<ProcessPushNotificationDataWorker>(
+                    userId,
+                    ProcessPushNotificationDataWorker.params(userId.id, sessionId.id, encryptedMessage)
+                )
+            }
         }
     }
+
+    private suspend fun resolveUserId(mailSession: MailSessionWrapper, sessionId: SessionId): UserId? =
+        mailSession.getSessionById(sessionId).getOrNull()
+            ?.userId()
+            ?.toUserId()
 }

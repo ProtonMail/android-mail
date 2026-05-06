@@ -25,6 +25,7 @@ import ch.protonmail.android.mailnotifications.data.model.QuickActionPayloadData
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailsession.data.mapper.toLocalUserId
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import uniffi.mail_uniffi.MailSession
@@ -39,25 +40,28 @@ internal class ExecutePushNotificationAction @Inject constructor(
     private val mailSessionRepository: MailSessionRepository
 ) {
 
-    suspend operator fun invoke(payload: QuickActionPayloadData) = either {
-        val mailSession = mailSessionRepository.getMailSession().getRustMailSession()
+    suspend operator fun invoke(payload: QuickActionPayloadData) =
+        mailSessionRepository.runInRustBackground { mailSession ->
+            either {
+                val mailSession = mailSession.getRustMailSession()
 
-        val remoteId = RemoteId(payload.remoteId)
+                val remoteId = RemoteId(payload.remoteId)
 
-        val action = when (payload.action) {
-            LocalNotificationAction.MarkAsRead -> PushNotificationQuickAction.MarkAsRead(remoteId)
-            LocalNotificationAction.MoveTo.Archive -> PushNotificationQuickAction.MoveToArchive(remoteId)
-            LocalNotificationAction.MoveTo.Trash -> PushNotificationQuickAction.MoveToTrash(remoteId)
+                val action = when (payload.action) {
+                    LocalNotificationAction.MarkAsRead -> PushNotificationQuickAction.MarkAsRead(remoteId)
+                    LocalNotificationAction.MoveTo.Archive -> PushNotificationQuickAction.MoveToArchive(remoteId)
+                    LocalNotificationAction.MoveTo.Trash -> PushNotificationQuickAction.MoveToTrash(remoteId)
+                }
+
+                val session = getStoredSessionForUser(mailSession, payload.userId)
+                    ?: raise(QuickActionPushError.NoMailSession)
+
+                when (val result = mailSession.executeNotificationQuickAction(session, action, timeLeftMs = null)) {
+                    is VoidActionResult.Error -> raise(QuickActionPushError.Error(result.v1.toDataError()))
+                    VoidActionResult.Ok -> Unit
+                }
+            }
         }
-
-        val session = getStoredSessionForUser(mailSession, payload.userId)
-            ?: raise(QuickActionPushError.NoMailSession)
-
-        when (val result = mailSession.executeNotificationQuickAction(session, action, timeLeftMs = null)) {
-            is VoidActionResult.Error -> raise(QuickActionPushError.Error(result.v1.toDataError()))
-            VoidActionResult.Ok -> Unit
-        }
-    }
 
     private suspend fun getStoredSessionForUser(mailSession: MailSession, userId: UserId): StoredSession? =
         when (val result = mailSession.getSessions()) {
@@ -65,6 +69,7 @@ internal class ExecutePushNotificationAction @Inject constructor(
                 Timber.e("execute-push-action failed due to no user session. Error: $result")
                 null
             }
+
             is MailSessionGetSessionsResult.Ok -> result.v1.firstOrNull { it.userId() == userId.toLocalUserId() }
         }
 }
