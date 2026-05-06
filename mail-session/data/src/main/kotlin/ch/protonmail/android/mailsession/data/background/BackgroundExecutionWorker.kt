@@ -28,6 +28,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import uniffi.mail_uniffi.BackgroundExecutionStatus
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltWorker
 internal class BackgroundExecutionWorker @AssistedInject constructor(
@@ -36,7 +37,12 @@ internal class BackgroundExecutionWorker @AssistedInject constructor(
     private val startBackgroundExecution: StartBackgroundExecution
 ) : CoroutineWorker(context, params) {
 
-    override suspend fun doWork(): Result = triggerBackgroundExecution()
+    override suspend fun doWork(): Result = try {
+        triggerBackgroundExecution()
+    } catch (e: CancellationException) {
+        Timber.tag("BackgroundExecutionWorker").d("work stopped; skipping - $e")
+        Result.success()
+    }
 
     private suspend fun triggerBackgroundExecution(): Result {
         Timber.tag("BackgroundExecutionWorker").d("Triggering background execution...")
