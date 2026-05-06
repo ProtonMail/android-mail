@@ -18,36 +18,45 @@
 
 package ch.protonmail.android.mailfeatureflags.domain
 
-import ch.protonmail.android.mailfeatureflags.domain.annotation.FeatureFlagsCoroutineScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FeatureFlagResolver @Inject constructor(
-    private val providers: Set<@JvmSuppressWildcards FeatureFlagValueProvider>,
-    @FeatureFlagsCoroutineScope private val coroutineScope: CoroutineScope
+    private val providers: Set<@JvmSuppressWildcards FeatureFlagValueProvider>
 ) {
+
+    private val lastLogged = ConcurrentHashMap<String, Pair<Boolean, String>>()
 
     /**
      * Gets the value of a feature flag by its key, taking provider priorities into account.
      */
+    @Suppress("TooGenericExceptionCaught")
     suspend fun getFeatureFlag(key: String, defaultValue: Boolean): Boolean {
-        return withContext(coroutineScope.coroutineContext) {
-            providers
-                .filter { it.isEnabled() }
-                .sortedByDescending { it.priority }
-                .firstNotNullOfOrNull { provider ->
-                    val value = runCatching {
-                        provider.getFeatureFlagValue(key)
-                    }.getOrNull()
-
-                    Timber.d("'${provider.name}' - Resolved FF '$key': $value")
-                    value
+        val match = providers
+            .filter { it.isEnabled() }
+            .sortedByDescending { it.priority }
+            .firstNotNullOfOrNull { provider ->
+                val value = try {
+                    provider.getFeatureFlagValue(key)
+                } catch (c: CancellationException) {
+                    throw c
+                } catch (t: Throwable) {
+                    Timber.w(t, "FF provider '${provider.name}' failed for '$key'")
+                    null
                 }
-                ?: defaultValue
+                value?.let { provider.name to it }
+            }
+
+        val resolved = match?.second ?: defaultValue
+        val source = match?.first ?: "default"
+        val current = resolved to source
+        if (lastLogged.put(key, current) != current) {
+            Timber.d("Resolved FF '$key' = $resolved (via $source)")
         }
+        return resolved
     }
 }

@@ -18,30 +18,21 @@
 
 package ch.protonmail.android.mailfeatureflags.domain
 
-import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class FeatureFlagResolverTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    private val coroutineScope = CoroutineScope(mainDispatcherRule.testDispatcher)
-
-
     @Test
     fun `should default to the default value when no providers are present`() = runTest {
         // Given
-        val resolver = FeatureFlagResolver(emptySet(), coroutineScope)
+        val resolver = FeatureFlagResolver(emptySet())
 
         // When + Then
         val actual = resolver.getFeatureFlag(FeatureFlagKey, false)
@@ -64,7 +55,7 @@ internal class FeatureFlagResolverTest {
             every { priority } returns 10
             every { isEnabled() } returns false
         }
-        val resolver = FeatureFlagResolver(setOf(notEnabledProvider1, notEnabledProvider2), coroutineScope)
+        val resolver = FeatureFlagResolver(setOf(notEnabledProvider1, notEnabledProvider2))
 
         // When
         val actual = resolver.getFeatureFlag(FeatureFlagKey, false)
@@ -91,7 +82,7 @@ internal class FeatureFlagResolverTest {
             every { priority } returns 10
             every { isEnabled() } returns false
         }
-        val resolver = FeatureFlagResolver(setOf(enabledProvider, notEnabledProvider), coroutineScope)
+        val resolver = FeatureFlagResolver(setOf(enabledProvider, notEnabledProvider))
 
         // When + Then
         val actual = resolver.getFeatureFlag(FeatureFlagKey, false)
@@ -110,7 +101,7 @@ internal class FeatureFlagResolverTest {
             every { priority } returns 0
             every { isEnabled() } returns true
         }
-        val resolver = FeatureFlagResolver(setOf(provider), coroutineScope)
+        val resolver = FeatureFlagResolver(setOf(provider))
 
         // When
         val actual = resolver.getFeatureFlag(FeatureFlagKey, false)
@@ -137,7 +128,7 @@ internal class FeatureFlagResolverTest {
             every { isEnabled() } returns true
         }
 
-        val resolver = FeatureFlagResolver(setOf(lowPriorityProvider, topPriorityProvider), coroutineScope)
+        val resolver = FeatureFlagResolver(setOf(lowPriorityProvider, topPriorityProvider))
 
         // When
         val actual = resolver.getFeatureFlag(FeatureFlagKey, false)
