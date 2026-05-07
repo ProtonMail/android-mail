@@ -20,7 +20,8 @@ package ch.protonmail.android.maillabel.domain.model
 
 data class MailLabelIdWithLocationChangeStatus(
     val mailLabelId: MailLabelId,
-    val locationChangeStatus: LocationChangeStatus
+    val locationChangeStatus: LocationChangeStatus,
+    val categoryLabelId: CategoryLabelId? = null
 )
 
 fun MailLabelIdWithLocationChangeStatus.isRequested(): Boolean =
@@ -32,4 +33,11 @@ fun MailLabelIdWithLocationChangeStatus.isLoaded(): Boolean =
 fun MailLabelId.asLocationRequested() =
     MailLabelIdWithLocationChangeStatus(this, LocationChangeStatus.LocationRequested)
 
-fun MailLabelId.asLocationLoaded() = MailLabelIdWithLocationChangeStatus(this, LocationChangeStatus.LocationLoaded)
+fun CategoryLabelId.asLocationRequested(mailLabelId: MailLabelId) =
+    MailLabelIdWithLocationChangeStatus(mailLabelId, LocationChangeStatus.LocationRequested, this)
+
+fun MailLabelIdWithCategory.asLocationLoaded() = MailLabelIdWithLocationChangeStatus(
+    this.mailLabelId,
+    LocationChangeStatus.LocationLoaded,
+    this.categoryLabelId
+)

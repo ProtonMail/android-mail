@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.local
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
@@ -176,6 +177,7 @@ class RustConversationsQueryImpl @Inject constructor(
 
         createRustConversationPaginator(
             mailbox = mailbox,
+            enabledCategoryId = pageDescriptor.categoryLabelId?.toLocalCategoryLabelId(),
             callback = conversationsUpdatedCallback(scrollerOnUpdateHandler)
         )
             .onRight {
@@ -191,7 +193,10 @@ class RustConversationsQueryImpl @Inject constructor(
 
                 // Get initial category view status
                 categoryViewStatusFlow.value = it.getCategoryViewStatus()
-                Timber.d("rust-conversation-query: Initial category view state: %s", categoryViewStatusFlow.value)
+                Timber.d(
+                    "rust-conversation-query: Initial category view state: %s",
+                    categoryViewStatusFlow.value
+                )
             }
     }
 
@@ -354,8 +359,11 @@ class RustConversationsQueryImpl @Inject constructor(
         val pendingRequest: PendingRequest<LocalConversation>? = null
     )
 
-    private fun PageKey.DefaultPageKey.toPageDescriptor(userId: UserId): PageDescriptor =
-        PageDescriptor(userId = userId, labelId = this.labelId)
+    private fun PageKey.DefaultPageKey.toPageDescriptor(userId: UserId): PageDescriptor = PageDescriptor(
+        userId = userId,
+        labelId = this.labelId,
+        categoryLabelId = this.categoryLabelId
+    )
 
     private fun PaginatorState.withFollowUpResponse(): PaginatorState {
         val currentPending = this.pendingRequest

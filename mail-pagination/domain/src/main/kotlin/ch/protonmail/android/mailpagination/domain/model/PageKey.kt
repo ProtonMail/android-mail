@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailpagination.domain.model
 
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus.All
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus.Read
@@ -32,6 +33,7 @@ sealed interface PageKey {
 
     data class DefaultPageKey(
         val labelId: LabelId = LabelId("0"),
+        val categoryLabelId: CategoryLabelId? = null,
         override val pageToLoad: PageToLoad = PageToLoad.First
     ) : PageKey
 

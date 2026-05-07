@@ -18,11 +18,19 @@
 
 package ch.protonmail.android.maillabel.domain.repository
 
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface SelectedMailLabelIdRepository {
+
+
+    /**
+     * Updates the selected category label
+     */
+    fun selectCategory(categoryLabelId: CategoryLabelId)
 
     /**
      * Updates the selected mail label
@@ -30,9 +38,9 @@ interface SelectedMailLabelIdRepository {
     fun selectLocation(mailLabelId: MailLabelId)
 
     /**
-     * Updates the selected mail label status as Loaded
+     * Updates the selected mail label + category status as Loaded
      */
-    fun setLocationAsLoaded(mailLabelId: MailLabelId)
+    fun setLocationAsLoaded(mailLabelIdWithCategory: MailLabelIdWithCategory)
 
     /**
      * Returns the currently selected MailLabelId synchronously.
@@ -45,9 +53,20 @@ interface SelectedMailLabelIdRepository {
     fun observeLoadedMailLabelId(): Flow<MailLabelId>
 
     /**
+     * Emits new MailLabelId + Category values only when the corresponding
+     * location & category has been loaded.
+     */
+    fun observeLoadedLabelWithCategory(): Flow<MailLabelIdWithCategory>
+
+    /**
      * Emits new MailLabelId values when a location change is requested.
      */
     fun observeSelectedMailLabelId(): Flow<MailLabelId>
+
+    /**
+     * Emits new MailLabelId + Category values when a location & category change is requested.
+     */
+    fun observeSelectedLabelWithCategory(): Flow<MailLabelIdWithCategory>
 
     /**
      * Updates the selected mail label to Inbox

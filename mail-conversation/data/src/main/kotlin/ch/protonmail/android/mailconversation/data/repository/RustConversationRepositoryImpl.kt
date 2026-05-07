@@ -22,7 +22,7 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
 import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
-import ch.protonmail.android.mailcategory.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId

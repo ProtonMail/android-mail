@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.testdata.maillabel
 
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -37,6 +40,32 @@ object MailLabelTestData {
     val allDraftsSystemLabel = buildDynamicLabelId(SystemLabelId.AllDrafts)
     val allSentSystemLabel = buildDynamicLabelId(SystemLabelId.AllSent)
     val outboxSystemLabel = buildDynamicLabelId(SystemLabelId.Outbox)
+
+    val inboxSystemLabelWithCategory = MailLabelIdWithCategory(inboxSystemLabel.id)
+    val archiveSystemLabelWithCategory = MailLabelIdWithCategory(archiveSystemLabel.id)
+    val spamSystemLabelWithCategory = MailLabelIdWithCategory(spamSystemLabel.id)
+    val draftsSystemLabelWithCategory = MailLabelIdWithCategory(draftsSystemLabel.id)
+    val trashSystemLabelWithCategory = MailLabelIdWithCategory(trashSystemLabel.id)
+    val allMailSystemLabelWithCategory = MailLabelIdWithCategory(allMailSystemLabel.id)
+    val almostAllMailSystemLabelWithCategory = MailLabelIdWithCategory(almostAllMailSystemLabel.id)
+    val sentSystemLabelWithCategory = MailLabelIdWithCategory(sentSystemLabel.id)
+    val starredSystemLabelWithCategory = MailLabelIdWithCategory(starredSystemLabel.id)
+    val allDraftsSystemLabelWithCategory = MailLabelIdWithCategory(allDraftsSystemLabel.id)
+    val allSentSystemLabelWithCategory = MailLabelIdWithCategory(allSentSystemLabel.id)
+    val outboxSystemLabelWithCategory = MailLabelIdWithCategory(outboxSystemLabel.id)
+
+    val primaryCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Primary.labelId.id)
+    val socialCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
+    val promotionsCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Promotions.labelId.id)
+    val updatesCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Updates.labelId.id)
+    val forumsCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Forums.labelId.id)
+    val newsletterCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Newsletter.labelId.id)
+    val transactionsCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Transactions.labelId.id)
+
+    val inboxPrimarySystemLabelWithCategory = MailLabelIdWithCategory(inboxSystemLabel.id, primaryCategoryLabelId)
+    val inboxSocialSystemLabelWithCategory = MailLabelIdWithCategory(inboxSystemLabel.id, socialCategoryLabelId)
+    val inboxPromotionsSystemLabelWithCategory =
+        MailLabelIdWithCategory(inboxSystemLabel.id, promotionsCategoryLabelId)
 
     val dynamicSystemLabels = listOf(
         inboxSystemLabel,
@@ -140,5 +169,15 @@ object MailLabelTestData {
         systemLabelId,
         0
     )
+
+    fun withCategory(mailLabelId: MailLabelId) = MailLabelIdWithCategory(mailLabelId)
+
+    fun withCategory(mailLabel: MailLabel) = MailLabelIdWithCategory(mailLabel.id)
+
+    fun withCategory(mailLabelId: MailLabelId, categorySystemLabelId: CategorySystemLabelId) =
+        MailLabelIdWithCategory(mailLabelId, CategoryLabelId(categorySystemLabelId.labelId.id))
+
+    fun withCategory(mailLabel: MailLabel, categorySystemLabelId: CategorySystemLabelId) =
+        MailLabelIdWithCategory(mailLabel.id, CategoryLabelId(categorySystemLabelId.labelId.id))
 
 }

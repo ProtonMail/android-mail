@@ -20,12 +20,15 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQueryImpl.Companion.NONE_FOLLOWUP_GRACE_MS
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
@@ -91,6 +94,10 @@ class RustMessageListQueryImplTest {
 
     private val userId = UserIdSample.Primary
     private val inboxLabelId = SystemLabelId.Inbox.labelId
+    private val primaryCategoryId = CategoryLabelId(CategorySystemLabelId.Primary.labelId.id)
+    private val socialCategoryId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
+    private val primaryLocalCategoryId = primaryCategoryId.toLocalCategoryLabelId()
+    private val socialLocalCategoryId = socialCategoryId.toLocalCategoryLabelId()
 
     private fun paginatorWrapperWithNextEmitting(
         callback: CapturingSlot<MessageScrollerLiveQueryCallback>,
@@ -144,6 +151,7 @@ class RustMessageListQueryImplTest {
         coEvery {
             createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = null,
                 callback = capture(callback)
             )
         } returns paginator.right()
@@ -367,6 +375,54 @@ class RustMessageListQueryImplTest {
         coVerify(exactly = 2) {
             createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = null,
+                callback = any()
+            )
+        }
+        coVerify { paginator.disconnect() }
+    }
+
+    @Test
+    fun `reinitialises paginator when categoryId changes`() = runTest {
+        // Given
+        val firstKey = PageKey.DefaultPageKey(labelId = inboxLabelId, categoryLabelId = primaryCategoryId)
+        val secondKey = PageKey.DefaultPageKey(labelId = inboxLabelId, categoryLabelId = socialCategoryId)
+
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = capture(callback)
+            )
+        } returns paginator.right()
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = socialLocalCategoryId,
+                callback = capture(callback)
+            )
+        } returns paginator.right()
+
+        // When
+        rustMessageListQuery.getMessages(userId, firstKey)
+        rustMessageListQuery.getMessages(userId, secondKey)
+
+        // Then
+        coVerify(exactly = 1) {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = any()
+            )
+        }
+        coVerify(exactly = 1) {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = socialLocalCategoryId,
                 callback = any()
             )
         }
@@ -657,6 +713,7 @@ class RustMessageListQueryImplTest {
         coEvery {
             createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -665,6 +722,7 @@ class RustMessageListQueryImplTest {
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
                 labelId = labelId,
+                categoryLabelId = primaryCategoryId,
                 pageToLoad = PageToLoad.First
             )
         )
@@ -682,6 +740,7 @@ class RustMessageListQueryImplTest {
         coVerify(exactly = 1) {
             createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -734,6 +793,7 @@ class RustMessageListQueryImplTest {
         coEvery {
             createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -742,6 +802,7 @@ class RustMessageListQueryImplTest {
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
                 labelId = activeLabelId,
+                categoryLabelId = primaryCategoryId,
                 pageToLoad = PageToLoad.First
             )
         )

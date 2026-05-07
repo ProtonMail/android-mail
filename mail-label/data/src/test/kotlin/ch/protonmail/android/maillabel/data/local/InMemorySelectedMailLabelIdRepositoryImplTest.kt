@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.repository.InMemorySelectedMailLabelIdRepositoryImpl
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -90,7 +91,7 @@ class InMemorySelectedMailLabelIdRepositoryImplTest {
 
         // When
         repository.observeLoadedMailLabelId().test {
-            repository.setLocationAsLoaded(MailLabelTestData.draftsSystemLabel.id)
+            repository.setLocationAsLoaded(MailLabelIdWithCategory(MailLabelTestData.draftsSystemLabel.id))
 
             // Then
             assertEquals(MailLabelTestData.draftsSystemLabel.id, awaitItem())
@@ -161,7 +162,7 @@ class InMemorySelectedMailLabelIdRepositoryImplTest {
             repository.selectLocation(MailLabelTestData.draftsSystemLabel.id)
             assertEquals(MailLabelTestData.draftsSystemLabel.id, awaitItem())
 
-            repository.setLocationAsLoaded(MailLabelTestData.archiveSystemLabel.id)
+            repository.setLocationAsLoaded(MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id))
 
             // Then
             expectNoEvents()

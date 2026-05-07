@@ -19,7 +19,9 @@
 package ch.protonmail.android.maillabel.data.repository
 
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithLocationChangeStatus
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.asLocationLoaded
@@ -63,16 +65,16 @@ class InMemorySelectedMailLabelIdRepositoryImpl @Inject constructor(
 
     private val baseFlowOfAllLabelChanges: StateFlow<MailLabelIdWithLocationChangeStatus?> = mutableFlow.asStateFlow()
 
-    private val loadedFlow: Flow<MailLabelId> = baseFlowOfAllLabelChanges
+    private val loadedFlow: Flow<MailLabelIdWithCategory> = baseFlowOfAllLabelChanges
         .filterNotNull()
         .filter { it.isLoaded() }
-        .map { it.mailLabelId }
+        .map { MailLabelIdWithCategory(it.mailLabelId, it.categoryLabelId) }
         .distinctUntilChanged()
 
-    private val requestedFlow: Flow<MailLabelId> = baseFlowOfAllLabelChanges
+    private val requestedFlow: Flow<MailLabelIdWithCategory> = baseFlowOfAllLabelChanges
         .filterNotNull()
         .filter { it.isRequested() }
-        .map { it.mailLabelId }
+        .map { MailLabelIdWithCategory(it.mailLabelId, it.categoryLabelId) }
         .distinctUntilChanged()
         .shareIn(
             scope = appScope,
@@ -97,18 +99,33 @@ class InMemorySelectedMailLabelIdRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun setLocationAsLoaded(mailLabelId: MailLabelId) {
+    override fun selectCategory(categoryLabelId: CategoryLabelId) {
         appScope.launch {
-            mutableFlow.emit(mailLabelId.asLocationLoaded())
+            mutableFlow.emit(categoryLabelId.asLocationRequested(getSelectedMailLabelId()))
+        }
+    }
+
+    override fun setLocationAsLoaded(mailLabelIdWithCategory: MailLabelIdWithCategory) {
+        appScope.launch {
+            mutableFlow.emit(mailLabelIdWithCategory.asLocationLoaded())
         }
     }
 
     override suspend fun getSelectedMailLabelId(): MailLabelId =
         baseFlowOfAllLabelChanges.filterNotNull().first().mailLabelId
 
-    override fun observeLoadedMailLabelId(): Flow<MailLabelId> = loadedFlow
+    override fun observeLoadedMailLabelId(): Flow<MailLabelId> = loadedFlow.map {
+        it.mailLabelId
+    }
 
-    override fun observeSelectedMailLabelId(): Flow<MailLabelId> = requestedFlow
+    override fun observeLoadedLabelWithCategory(): Flow<MailLabelIdWithCategory> = loadedFlow
+
+    override fun observeSelectedMailLabelId(): Flow<MailLabelId> = requestedFlow.map {
+        it.mailLabelId
+    }
+
+    override fun observeSelectedLabelWithCategory(): Flow<MailLabelIdWithCategory> = requestedFlow
+
 
     override suspend fun selectInitialLocationIfNeeded(userId: UserId, mailLabelIds: Set<MailLabelId>) {
         if (isInitialLocationSelected.load().not() || getSelectedMailLabelId() !in mailLabelIds) {

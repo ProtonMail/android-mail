@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
@@ -218,6 +219,7 @@ class RustMessageListQueryImpl @Inject constructor(
         when (pageDescriptor) {
             is PageDescriptor.Default -> createRustMessagesPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = pageDescriptor.categoryLabelId?.toLocalCategoryLabelId(),
                 callback = messagesUpdatedCallback(scrollerOnUpdateHandler)
             )
 

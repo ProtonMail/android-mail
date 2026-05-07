@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailconversation.data.model
 
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import me.proton.core.domain.entity.UserId
 
 data class PageDescriptor(
     val userId: UserId,
-    val labelId: LabelId
+    val labelId: LabelId,
+    val categoryLabelId: CategoryLabelId? = null
 )

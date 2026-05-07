@@ -48,6 +48,8 @@ android {
 dependencies {
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-common:domain"))
+    implementation(project(":mail-category-view:domain"))
+
     implementation(libs.bundles.module.domain)
     implementation(libs.proton.core.user.domain)
 
