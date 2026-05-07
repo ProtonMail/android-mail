@@ -95,7 +95,7 @@ internal class PMFirebaseMessagingService : FirebaseMessagingService() {
                 priority != RemoteMessage.PRIORITY_HIGH
 
         if (isPriorityDowngraded) {
-            Timber.w(
+            Timber.d(
                 "Notification: priority downgraded HIGH to %s messageId=%s uid=%s",
                 priorityToString(priority),
                 messageId,
