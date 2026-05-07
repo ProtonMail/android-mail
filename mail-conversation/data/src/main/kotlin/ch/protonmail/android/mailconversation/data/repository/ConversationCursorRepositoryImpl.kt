@@ -22,6 +22,7 @@ import javax.inject.Singleton
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
@@ -171,6 +172,7 @@ class ConversationCursorRepositoryImpl @Inject constructor(
 
         return createRustConversationPaginator(
             mailbox = mailbox,
+            enabledCategoryId = pageDescriptor.categoryLabelId?.toLocalCategoryLabelId(),
             callback = object : ConversationScrollerLiveQueryCallback {
                 override fun onUpdate(update: ConversationScrollerUpdate) {
                     Timber.d(

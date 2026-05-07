@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 Proton Technologies AG
+ * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,12 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcategory.domain.model
+package ch.protonmail.android.maillabel.domain.usecase
 
-import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.repository.SelectedMailLabelIdRepository
+import javax.inject.Inject
 
-data class CategoryLabel(
-    val id: CategoryLabelId,
-    val isActive: Boolean,
-    val systemLabel: CategorySystemLabelId
-)
+class ObserveSelectedLabelWithCategory @Inject constructor(
+    private val selectedMailLabelIdRepository: SelectedMailLabelIdRepository
+) {
+
+    operator fun invoke() = selectedMailLabelIdRepository.observeSelectedLabelWithCategory()
+
+}

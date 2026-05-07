@@ -64,6 +64,7 @@ import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
@@ -71,7 +72,8 @@ import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetSelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedMailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
-import ch.protonmail.android.maillabel.domain.usecase.ObserveSelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveSelectedLabelWithCategory
+import ch.protonmail.android.maillabel.domain.usecase.SelectCategory
 import ch.protonmail.android.maillabel.domain.usecase.SelectMailLabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsItemId
@@ -105,7 +107,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCat
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -185,7 +186,7 @@ class MailboxViewModel @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
     private val getUserHasValidSession: HasValidUserSession,
     private val observeSwipeActionsPreference: ObserveSwipeActionsPreference,
-    private val observeSelectedMailLabelId: ObserveSelectedMailLabelId,
+    private val observeSelectedLabelWithCategory: ObserveSelectedLabelWithCategory,
     private val observeLoadedMailLabelId: ObserveLoadedMailLabelId,
     private val getSelectedMailLabelId: GetSelectedMailLabelId,
     private val selectMailLabelId: SelectMailLabelId,
@@ -231,7 +232,7 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
-    private val setActiveCategoryLabel: SetActiveCategoryLabel,
+    private val selectCategory: SelectCategory,
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -478,7 +479,7 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleCategoryItemClicked(viewAction: MailboxViewAction.OnCategoryItemClicked) {
+    private fun handleCategoryItemClicked(viewAction: MailboxViewAction.OnCategoryItemClicked) {
         val categoryItem = viewAction.categoryItem
 
         if (categoryItem.isActive) {
@@ -486,15 +487,7 @@ class MailboxViewModel @Inject constructor(
             return
         }
 
-        val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-
-        setActiveCategoryLabel(
-            categoryLabelId = categoryItem.id.toDomainModel(),
-            viewMode = viewMode
-        ).onLeft { error ->
-            Timber.e("Failed to set active category label: $error")
-            emitNewStateFrom(MailboxEvent.ErrorChangingCategory)
-        }
+        selectCategory(categoryItem.id.toDomainModel())
     }
 
     private fun handleNavigateToComposer() {
@@ -708,13 +701,13 @@ class MailboxViewModel @Inject constructor(
     @Suppress("LongMethod")
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> {
         val pagingDataFlow = MutableStateFlow<PagingData<MailboxItemUiModel>>(PagingData.empty())
-        var currentMailLabel: MailLabel? = null
+        var currentMailLabelWithCategory: MailLabelIdWithCategory? = null
         var currentSearchModeState: Boolean? = null
 
         primaryUserId.filterNotNull().flatMapLatest { userId ->
 
             // Reset state and emit empty data when userId changes
-            currentMailLabel = null
+            currentMailLabelWithCategory = null
             currentSearchModeState = null
             pagingDataFlow.tryEmit(
                 PagingData.empty(
@@ -725,27 +718,29 @@ class MailboxViewModel @Inject constructor(
             // Create new pager when mail label, search mode or view mode changes. Changes in
             // search query, unread filter and showSpamTrash will be handled by the existing pager.
             combine(
-                observeMailLabelChangeRequests(),
+                observeSelectedLabelWithCategory(),
                 state.observeSearchQuery(),
                 observeViewModeChanged(userId)
-            ) { selectedMailLabel, query, _ ->
+            ) { selectedLabelWithCategory, query, _ ->
 
                 val isInSearchMode = state.value.isInSearchMode()
-                if (selectedMailLabel != currentMailLabel || currentSearchModeState != isInSearchMode) {
+                if (selectedLabelWithCategory != currentMailLabelWithCategory ||
+                    currentSearchModeState != isInSearchMode
+                ) {
                     pagingDataFlow.emit(
                         PagingData.empty(
                             LoadStates(LoadState.Loading, LoadState.Loading, LoadState.Loading)
                         )
                     )
-                    currentMailLabel = selectedMailLabel
+                    currentMailLabelWithCategory = selectedLabelWithCategory
                     currentSearchModeState = isInSearchMode
                 }
 
-                val viewMode = getViewModeForCurrentLocation(selectedMailLabel.id)
+                val viewMode = getViewModeForCurrentLocation(selectedLabelWithCategory.mailLabelId)
 
                 mailboxPagerFactory.create(
                     userId = userId,
-                    selectedMailLabelId = selectedMailLabel.id,
+                    selectedLabelWithCategory = selectedLabelWithCategory,
                     type = if (!isInSearchMode) viewMode.toMailboxItemType() else MailboxItemType.Message,
                     searchQuery = query
                 ) to (query to viewMode)
@@ -755,8 +750,11 @@ class MailboxViewModel @Inject constructor(
 
                     channelFlow {
                         Timber.d(
-                            "New Pager created for label=${currentMailLabel?.id?.labelId?.id} " +
-                                "query=$query viewMode=$viewMode"
+                            "New Pager created for label=%s category: %s searchQuery='%s' viewMode=%s",
+                            currentMailLabelWithCategory?.mailLabelId?.labelId?.id,
+                            currentMailLabelWithCategory?.categoryLabelId?.id,
+                            query,
+                            viewMode
                         )
 
                         // Start paging immediately and send items downstream.
@@ -770,9 +768,9 @@ class MailboxViewModel @Inject constructor(
                                         emittedOnce = true
                                         firstPageArrived.complete(Unit)
 
-                                        currentMailLabel?.let { labelLoaded ->
-                                            Timber.d("Setting loaded label id to: ${labelLoaded.id}")
-                                            selectMailLabelId.setLocationAsLoaded(labelLoaded.id)
+                                        currentMailLabelWithCategory?.let { labelLoaded ->
+                                            Timber.d("Setting loaded label to: $labelLoaded")
+                                            selectMailLabelId.setLocationAsLoaded(labelLoaded)
                                         }
 
                                         Timber.d("First page arrived for label=${getSelectedMailLabelId()}")
@@ -1438,7 +1436,8 @@ class MailboxViewModel @Inject constructor(
             .map { (it as? ShowSpamTrashIncludeFilterState.Data.Shown)?.enabled ?: false }
             .distinctUntilChanged()
 
-    private fun observeMailLabelChangeRequests(): Flow<MailLabel> = observeSelectedMailLabelId()
+    private fun observeMailLabelChangeRequests(): Flow<MailLabel> = observeSelectedLabelWithCategory()
+        .map { it.mailLabelId }
         .mapToExistingLabel()
         .distinctUntilChangedBy { it.id }
 

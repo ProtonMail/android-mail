@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailcategory.domain.model
 
-import ch.protonmail.android.mailpagination.domain.model.PaginationError
-
 sealed interface CategoryViewStatus {
 
     data class Available(
@@ -28,7 +26,5 @@ sealed interface CategoryViewStatus {
 
     data object NotAvailable : CategoryViewStatus
 
-    data class Error(
-        val cause: PaginationError
-    ) : CategoryViewStatus
+    data object Error : CategoryViewStatus
 }

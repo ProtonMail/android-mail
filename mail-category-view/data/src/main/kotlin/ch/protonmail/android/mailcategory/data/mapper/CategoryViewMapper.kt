@@ -19,14 +19,13 @@
 package ch.protonmail.android.mailcategory.data.mapper
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryLabel
-import ch.protonmail.android.mailcategory.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabel
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryView
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
-import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import timber.log.Timber
 import uniffi.mail_uniffi.ConversationScrollerCategoryViewResult
 import uniffi.mail_uniffi.MessageScrollerCategoryViewResult
@@ -59,7 +58,7 @@ fun ConversationScrollerCategoryViewResult.toCategoryViewStatus(): CategoryViewS
     }
 
     is ConversationScrollerCategoryViewResult.Error -> {
-        CategoryViewStatus.Error(v1.toPaginationError())
+        CategoryViewStatus.Error
     }
 }
 
@@ -69,10 +68,9 @@ fun MessageScrollerCategoryViewResult.toCategoryViewStatus(): CategoryViewStatus
     }
 
     is MessageScrollerCategoryViewResult.Error -> {
-        CategoryViewStatus.Error(v1.toPaginationError())
+        CategoryViewStatus.Error
     }
 }
-
 
 fun LocalSystemLabel.toCategorySystemLabel() = when (this) {
     LocalSystemLabel.CATEGORY_SOCIAL -> CategorySystemLabelId.Social

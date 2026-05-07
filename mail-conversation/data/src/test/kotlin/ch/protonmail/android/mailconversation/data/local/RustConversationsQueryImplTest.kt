@@ -2,6 +2,8 @@ package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -13,6 +15,7 @@ import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWra
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
@@ -59,6 +62,11 @@ class RustConversationsQueryImplTest {
         invalidationRepository
     )
 
+    private val primaryCategoryId = CategoryLabelId(CategorySystemLabelId.Primary.labelId.id)
+    private val socialCategoryId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
+    private val primaryLocalCategoryId = primaryCategoryId.toLocalCategoryLabelId()
+    private val socialLocalCategoryId = socialCategoryId.toLocalCategoryLabelId()
+
     @Test
     fun `returns IllegalStateError when mailbox is null`() = runTest {
         // Given
@@ -80,7 +88,7 @@ class RustConversationsQueryImplTest {
         val expectedConversations = listOf(LocalConversationTestData.AugConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
         val paginator = mockk<ConversationPaginatorWrapper> {
@@ -108,6 +116,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -125,7 +134,10 @@ class RustConversationsQueryImplTest {
         val expectedConversations = listOf(LocalConversationTestData.OctConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId, pageToLoad = PageToLoad.Next)
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId, pageToLoad = PageToLoad.Next
+        )
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
         val paginator = mockk<ConversationPaginatorWrapper> {
@@ -153,6 +165,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 capture(callbackSlot)
             )
         } returns paginator.right()
@@ -173,6 +186,7 @@ class RustConversationsQueryImplTest {
         val labelId = SystemLabelId.Inbox.labelId
         val pageKey = PageKey.DefaultPageKey(
             labelId = labelId,
+            categoryLabelId = primaryCategoryId,
             pageToLoad = PageToLoad.All
         )
         val mailbox = mockk<MailboxWrapper>()
@@ -204,6 +218,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -233,10 +248,12 @@ class RustConversationsQueryImplTest {
         val labelId = SystemLabelId.Inbox.labelId
         val firstPageKey = PageKey.DefaultPageKey(
             labelId = labelId,
+            categoryLabelId = primaryCategoryId,
             pageToLoad = PageToLoad.First
         )
         val allPageKey = PageKey.DefaultPageKey(
             labelId = labelId,
+            categoryLabelId = primaryCategoryId,
             pageToLoad = PageToLoad.All
         )
 
@@ -285,6 +302,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -302,6 +320,7 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 1) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -314,7 +333,7 @@ class RustConversationsQueryImplTest {
         val nextPage = listOf(LocalConversationTestData.OctConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
         val nextPageKey = pageKey.copy(pageToLoad = PageToLoad.Next)
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -349,6 +368,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -361,6 +381,7 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 1) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -373,7 +394,7 @@ class RustConversationsQueryImplTest {
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
         val newLabelId = SystemLabelId.Archive.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
         val newPageKey = pageKey.copy(newLabelId)
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -403,6 +424,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -415,10 +437,80 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 2) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
 
+        coVerify { paginator.disconnect() }
+    }
+
+    @Test
+    fun `re initialises paginator when categoryId changes`() = runTest {
+        // Given
+        val firstPage = listOf(LocalConversationTestData.AugConversation)
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
+        val newPageKey = pageKey.copy(categoryLabelId = socialCategoryId)
+        val mailbox = mockk<MailboxWrapper>()
+        val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
+        val paginator = mockk<ConversationPaginatorWrapper> {
+            coEvery { this@mockk.nextPage() } answers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.Append(
+                                items = firstPage,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+            coEvery { this@mockk.disconnect() } just Runs
+            coEvery { this@mockk.filterUnread(false) } just Runs
+            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            every { this@mockk.getScrollerId() } returns DefaultScrollerId
+            coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+        }
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+        coEvery {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = socialLocalCategoryId,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+
+        // When
+        rustConversationsQuery.getConversations(userId, pageKey)
+        rustConversationsQuery.getConversations(userId, newPageKey)
+
+        // Then
+        coVerify(exactly = 1) {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = any()
+            )
+        }
+        coVerify(exactly = 1) {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = socialLocalCategoryId,
+                callback = any()
+            )
+        }
         coVerify { paginator.disconnect() }
     }
 
@@ -428,7 +520,7 @@ class RustConversationsQueryImplTest {
         val firstPage = listOf(LocalConversationTestData.AugConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
         val paginator = mockk<ConversationPaginatorWrapper> {
@@ -456,6 +548,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 capture(callbackSlot)
             )
         } returns paginator.right()
@@ -468,6 +561,7 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 1) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -479,7 +573,7 @@ class RustConversationsQueryImplTest {
         val firstPage = listOf(LocalConversationTestData.AugConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
         val paginator = mockk<ConversationPaginatorWrapper> {
@@ -508,6 +602,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 capture(callbackSlot)
             )
         } returns paginator.right()
@@ -520,6 +615,7 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 1) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -531,7 +627,7 @@ class RustConversationsQueryImplTest {
         val firstPage = listOf(LocalConversationTestData.AugConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -561,6 +657,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -589,7 +686,7 @@ class RustConversationsQueryImplTest {
         val firstPage = listOf(LocalConversationTestData.AugConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId)
+        val pageKey = PageKey.DefaultPageKey(labelId = labelId, categoryLabelId = primaryCategoryId)
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -619,6 +716,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -646,7 +744,10 @@ class RustConversationsQueryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId, pageToLoad = PageToLoad.First)
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId, pageToLoad = PageToLoad.First
+        )
 
         val expectedFollowUp = listOf(LocalConversationTestData.OctConversation)
 
@@ -686,6 +787,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -702,7 +804,10 @@ class RustConversationsQueryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId, pageToLoad = PageToLoad.First)
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId, pageToLoad = PageToLoad.First
+        )
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -740,6 +845,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -756,7 +862,10 @@ class RustConversationsQueryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
-        val pageKey = PageKey.DefaultPageKey(labelId = labelId, pageToLoad = PageToLoad.First)
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId, pageToLoad = PageToLoad.First
+        )
 
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
@@ -796,6 +905,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -848,6 +958,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -856,6 +967,7 @@ class RustConversationsQueryImplTest {
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
                 labelId = labelId,
+                categoryLabelId = primaryCategoryId,
                 pageToLoad = PageToLoad.First
             )
         )
@@ -873,6 +985,7 @@ class RustConversationsQueryImplTest {
         coVerify(exactly = 1) {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = any()
             )
         }
@@ -928,6 +1041,7 @@ class RustConversationsQueryImplTest {
         coEvery {
             createRustConversationPaginator(
                 mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
                 callback = capture(callbackSlot)
             )
         } returns paginator.right()
@@ -936,6 +1050,7 @@ class RustConversationsQueryImplTest {
             userId = userId,
             pageKey = PageKey.DefaultPageKey(
                 labelId = activeLabelId,
+                categoryLabelId = primaryCategoryId,
                 pageToLoad = PageToLoad.First
             )
         )

@@ -20,13 +20,14 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
 class MailboxPagerFactory @Inject constructor(
@@ -36,11 +37,11 @@ class MailboxPagerFactory @Inject constructor(
     @Suppress("LongParameterList")
     fun create(
         userId: UserId,
-        selectedMailLabelId: MailLabelId,
+        selectedLabelWithCategory: MailLabelIdWithCategory,
         type: MailboxItemType,
         searchQuery: String
     ): Pager<MailboxPageKey, MailboxItem> {
-        Timber.d("Paging: creating new paginator for label: ${selectedMailLabelId.labelId}")
+
         val mailboxPageKey = if (searchQuery.isNotEmpty()) {
             buildSearchPageKey(
                 userId = userId,
@@ -48,8 +49,9 @@ class MailboxPagerFactory @Inject constructor(
             )
         } else {
             buildDefaultPageKey(
-                selectedMailLabelId = selectedMailLabelId,
-                userId = userId
+                selectedMailLabelId = selectedLabelWithCategory.mailLabelId,
+                userId = userId,
+                categoryLabelId = selectedLabelWithCategory.categoryLabelId
             )
         }
         return Pager(
@@ -58,8 +60,15 @@ class MailboxPagerFactory @Inject constructor(
         )
     }
 
-    private fun buildDefaultPageKey(selectedMailLabelId: MailLabelId, userId: UserId): MailboxPageKey {
-        val pageKey = PageKey.DefaultPageKey(labelId = selectedMailLabelId.labelId)
+    private fun buildDefaultPageKey(
+        selectedMailLabelId: MailLabelId,
+        userId: UserId,
+        categoryLabelId: CategoryLabelId?
+    ): MailboxPageKey {
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = selectedMailLabelId.labelId,
+            categoryLabelId = categoryLabelId
+        )
 
         return MailboxPageKey(
             userId = userId,

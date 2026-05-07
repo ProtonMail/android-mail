@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.paging
 
 import app.cash.turbine.test
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -50,7 +51,7 @@ class MailboxPagerFactoryTest {
         // When
         val pager = mailboxPagerFactory.create(
             userId = userId,
-            selectedMailLabelId = selectedMailLabelId,
+            selectedLabelWithCategory = MailLabelIdWithCategory(selectedMailLabelId),
             type = type,
             searchQuery = ""
         )

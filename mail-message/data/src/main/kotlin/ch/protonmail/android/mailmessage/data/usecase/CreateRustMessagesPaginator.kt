@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.usecase
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
@@ -35,9 +36,10 @@ class CreateRustMessagesPaginator @Inject constructor() {
 
     suspend operator fun invoke(
         mailbox: MailboxWrapper,
+        enabledCategoryId: LocalCategoryLabelId? = null,
         callback: MessageScrollerLiveQueryCallback
     ): Either<DataError, MessagePaginatorWrapper> = when (
-        val result = scrollMessagesForLabel(mailbox.getRustMailbox(), null, callback)
+        val result = scrollMessagesForLabel(mailbox.getRustMailbox(), enabledCategoryId, callback)
     ) {
         is ScrollMessagesForLabelResult.Error -> result.v1.toDataError().left()
         is ScrollMessagesForLabelResult.Ok -> MailboxMessagePaginatorWrapper(result.v1).right()

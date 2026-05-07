@@ -46,7 +46,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
-    implementation(project(":mail-pagination:domain"))
-
 }

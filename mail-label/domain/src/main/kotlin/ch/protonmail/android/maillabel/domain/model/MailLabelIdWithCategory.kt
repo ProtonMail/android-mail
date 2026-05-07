@@ -16,12 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcategory.domain.model
+package ch.protonmail.android.maillabel.domain.model
 
-import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
-
-data class CategoryLabel(
-    val id: CategoryLabelId,
-    val isActive: Boolean,
-    val systemLabel: CategorySystemLabelId
+data class MailLabelIdWithCategory(
+    val mailLabelId: MailLabelId,
+    val categoryLabelId: CategoryLabelId? = null
 )
