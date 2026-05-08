@@ -39,6 +39,9 @@ class LoginHelpActivity : ProtonActivity() {
     @Inject
     lateinit var authOrchestrator: AuthOrchestrator
 
+    @Inject
+    lateinit var applicationLogsNavigator: LoginHelpApplicationLogsNavigator
+
     private lateinit var qrLoginLauncher: ActivityResultLauncher<Unit>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +82,8 @@ class LoginHelpActivity : ProtonActivity() {
                     },
                     onSignInWithQrCodeClicked = {
                         qrLoginLauncher.launch(Unit)
-                    }
+                    },
+                    onApplicationLogsClicked = { applicationLogsNavigator.navigate(this) }
                 )
             }
         }
