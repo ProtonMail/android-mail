@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
@@ -115,7 +116,7 @@ object MessageBodyUiModelTestData {
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageId = messageId,
-            messageBody = messageBody,
+            messageBody = MessageBodyContent.Text(messageBody),
             mimeType = mimeType,
             shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
             shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
