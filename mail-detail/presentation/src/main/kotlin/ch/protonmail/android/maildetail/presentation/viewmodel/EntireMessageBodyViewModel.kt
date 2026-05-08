@@ -167,7 +167,12 @@ class EntireMessageBodyViewModel @Inject constructor(
                 ifRight = {
                     mutableState.value = mutableState.value.copy(
                         messageBodyState = MessageBodyState.Data(
-                            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(it, null)
+                            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(
+                                decryptedMessageBody = it,
+                                attachmentListExpandCollapseMode = null,
+                                existingMessageBodyUiModel = null,
+                                forceDisableHeightRestriction = true
+                            )
                         ),
                         requestPhishingLinkConfirmation = it.banners.contains(MessageBanner.PhishingAttempt)
                     )
