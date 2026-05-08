@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageBanner
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentGroupUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
@@ -94,9 +95,22 @@ class MessageBodyUiModelMapperTest {
         coEvery { this@mockk() } returns true
     }
 
+    private val bodyContentUiModelMapper = mockk<MessageBodyContentUiModelMapper> {
+        coEvery {
+            toUiContent(
+                body = any(),
+                messageId = any(),
+                shouldRestrictHeight = any()
+            )
+        } answers {
+            MessageBodyContent.Text(firstArg())
+        }
+    }
+
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper(
         attachmentGroupUiModelMapper = attachmentGroupUiModelMapper,
         hasMessageBodyWebViewCrashed = hasMessageBodyWebViewCrashed,
+        bodyContentUiModelMapper = bodyContentUiModelMapper,
         restrictMessageWebViewHeightEnabled = mockk<FeatureFlag<Boolean>> {
             coEvery { get() } returns true
         }
@@ -117,7 +131,7 @@ class MessageBodyUiModelMapperTest {
         )
         val expected = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = decryptedMessageBody,
+            messageBody = MessageBodyContent.Text(decryptedMessageBody),
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
@@ -159,7 +173,7 @@ class MessageBodyUiModelMapperTest {
 
         val expected = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = decryptedMessageBody,
+            messageBody = MessageBodyContent.Text(decryptedMessageBody),
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
@@ -204,7 +218,7 @@ class MessageBodyUiModelMapperTest {
 
         val expected = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = decryptedMessageBody,
+            messageBody = MessageBodyContent.Text(decryptedMessageBody),
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
@@ -247,7 +261,7 @@ class MessageBodyUiModelMapperTest {
             )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
-                messageBody = decryptedMessageBody,
+                messageBody = MessageBodyContent.Text(decryptedMessageBody),
                 mimeType = MimeTypeUiModel.PlainText,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
@@ -296,7 +310,7 @@ class MessageBodyUiModelMapperTest {
         )
         val expected = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = decryptedMessageBody,
+            messageBody = MessageBodyContent.Text(decryptedMessageBody),
             mimeType = MimeTypeUiModel.Html,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
@@ -331,7 +345,7 @@ class MessageBodyUiModelMapperTest {
             )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
-                messageBody = decryptedMessageBody,
+                messageBody = MessageBodyContent.Text(decryptedMessageBody),
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
@@ -366,7 +380,7 @@ class MessageBodyUiModelMapperTest {
             )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
-                messageBody = decryptedMessageBody,
+                messageBody = MessageBodyContent.Text(decryptedMessageBody),
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = true,
@@ -401,7 +415,7 @@ class MessageBodyUiModelMapperTest {
             )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
-                messageBody = decryptedMessageBody,
+                messageBody = MessageBodyContent.Text(decryptedMessageBody),
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
@@ -436,7 +450,7 @@ class MessageBodyUiModelMapperTest {
             )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
-                messageBody = decryptedMessageBody,
+                messageBody = MessageBodyContent.Text(decryptedMessageBody),
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImagesBanner = true,
                 shouldShowRemoteContentBanner = false,
@@ -462,7 +476,7 @@ class MessageBodyUiModelMapperTest {
         val messageBody = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
         val expected = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = messageBody,
+            messageBody = MessageBodyContent.Text(messageBody),
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
@@ -496,7 +510,7 @@ class MessageBodyUiModelMapperTest {
         )
         val existingState = MessageBodyUiModel(
             messageId = messageId,
-            messageBody = decryptedMessageBody,
+            messageBody = MessageBodyContent.Text(decryptedMessageBody),
             mimeType = MimeTypeUiModel.Html,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = true,

@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.GetMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageBanner
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentGroupUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
@@ -37,6 +38,7 @@ import javax.inject.Inject
 class MessageBodyUiModelMapper @Inject constructor(
     private val attachmentGroupUiModelMapper: AttachmentGroupUiModelMapper,
     private val hasMessageBodyWebViewCrashed: HasMessageBodyWebViewCrashed,
+    private val bodyContentUiModelMapper: MessageBodyContentUiModelMapper,
     @IsRestrictMessageWebViewHeightEnabled private val restrictMessageWebViewHeightEnabled: FeatureFlag<Boolean>
 ) {
 
@@ -45,11 +47,18 @@ class MessageBodyUiModelMapper @Inject constructor(
         attachmentListExpandCollapseMode: AttachmentListExpandCollapseMode?,
         existingMessageBodyUiModel: MessageBodyUiModel? = null
     ): MessageBodyUiModel {
+        val shouldRestrictWebViewHeight =
+            hasMessageBodyWebViewCrashed() && restrictMessageWebViewHeightEnabled.get()
+
         val decryptedMessageBodyWithType = MessageBodyWithType(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         )
-        val messageBody = decryptedMessageBodyWithType.messageBody
+        val messageBody = bodyContentUiModelMapper.toUiContent(
+            decryptedMessageBodyWithType.messageBody,
+            decryptedMessageBody.messageId,
+            shouldRestrictWebViewHeight
+        )
 
         val hasRemoteContentBlocked = decryptedMessageBody.banners.contains(MessageBanner.RemoteContent)
         val hasEmbeddedImagesBlocked = decryptedMessageBody.banners.contains(MessageBanner.EmbeddedImages)
@@ -75,13 +84,13 @@ class MessageBodyUiModelMapper @Inject constructor(
             } else null,
             viewModePreference = viewModePreference,
             reloadMessageEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = hasMessageBodyWebViewCrashed() && restrictMessageWebViewHeightEnabled.get()
+            shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
         )
     }
 
     fun toUiModel(decryptionError: GetMessageBodyError.Decryption) = MessageBodyUiModel(
         messageId = decryptionError.messageId,
-        messageBody = decryptionError.encryptedMessageBody,
+        messageBody = MessageBodyContent.Text(decryptionError.encryptedMessageBody),
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImagesBanner = false,
         shouldShowRemoteContentBanner = false,

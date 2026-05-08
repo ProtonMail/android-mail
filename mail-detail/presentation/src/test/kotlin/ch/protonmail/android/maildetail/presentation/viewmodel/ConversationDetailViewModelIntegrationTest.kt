@@ -100,6 +100,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.DetailAvatarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyContentUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailFooterUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
@@ -372,6 +373,17 @@ internal class ConversationDetailViewModelIntegrationTest {
     private val hasMessageBodyWebViewCrashed = mockk<HasMessageBodyWebViewCrashed> {
         coEvery { this@mockk() } returns true
     }
+    private val bodyContentUiModelMapper = mockk<MessageBodyContentUiModelMapper> {
+        coEvery {
+            toUiContent(
+                body = any(),
+                messageId = any(),
+                shouldRestrictHeight = any()
+            )
+        } answers {
+            ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent.Text(firstArg())
+        }
+    }
 
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentMetadataUiModelMapper = AttachmentMetadataUiModelMapper()
@@ -453,6 +465,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
             attachmentGroupUiModelMapper = attachmentGroupUiModelMapper,
             hasMessageBodyWebViewCrashed = hasMessageBodyWebViewCrashed,
+            bodyContentUiModelMapper = bodyContentUiModelMapper,
             restrictMessageWebViewHeightEnabled = mockk<FeatureFlag<Boolean>> {
                 coEvery { get() } returns true
             }
