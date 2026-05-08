@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
 @Stable
 data class MessageBodyUiModel(
     val messageId: MessageId,
-    val messageBody: String,
+    val messageBody: MessageBodyContent,
     val mimeType: MimeTypeUiModel,
     val shouldShowEmbeddedImagesBanner: Boolean,
     val shouldShowRemoteContentBanner: Boolean,
