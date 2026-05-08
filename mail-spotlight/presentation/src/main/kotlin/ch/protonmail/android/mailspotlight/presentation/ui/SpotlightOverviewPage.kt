@@ -124,7 +124,7 @@ private fun PortraitOverviewPage(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Jumbo))
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge))
 
         FeatureCard(featureItems)
 
@@ -230,7 +230,7 @@ private fun FeatureRow(
             .fillMaxWidth()
             .padding(ProtonDimens.Spacing.Large),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Large),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Box(
             modifier = Modifier

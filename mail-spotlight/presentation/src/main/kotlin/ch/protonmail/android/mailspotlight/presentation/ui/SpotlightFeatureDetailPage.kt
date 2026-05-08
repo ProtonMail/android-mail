@@ -51,10 +51,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureDetailPageContent
@@ -98,6 +98,8 @@ private fun PortraitFeatureDetailPage(content: FeatureDetailPageContent, modifie
                 modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.ExtraLarge)
             )
         }
+
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
         Text(
             text = stringResource(content.titleRes),
@@ -206,8 +208,7 @@ private const val LANDSCAPE_ILLUSTRATION_WEIGHT = 2f
 private const val LANDSCAPE_TEXT_WEIGHT = 3f
 private const val LANDSCAPE_IMAGE_MAX_HEIGHT_FRACTION = 0.75f
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@AdaptivePreviews
 @Composable
 private fun FeatureDetailPageB2CUnreadPreview() {
     ProtonTheme {
@@ -224,8 +225,7 @@ private fun FeatureDetailPageB2CUnreadPreview() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@AdaptivePreviews
 @Composable
 private fun FeatureDetailPageB2CCategoriesPreview() {
     ProtonTheme {
@@ -242,7 +242,7 @@ private fun FeatureDetailPageB2CCategoriesPreview() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@AdaptivePreviews
 @Composable
 private fun FeatureDetailPageB2BUnreadPreview() {
     ProtonTheme {
@@ -259,7 +259,7 @@ private fun FeatureDetailPageB2BUnreadPreview() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@AdaptivePreviews
 @Composable
 private fun FeatureDetailPageB2BCategoriesPreview() {
     ProtonTheme {
@@ -276,11 +276,7 @@ private fun FeatureDetailPageB2BCategoriesPreview() {
     }
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true,
-    device = "spec:width=891dp,height=411dp,orientation=landscape"
-)
+@AdaptivePreviews
 @Composable
 private fun DetailPageLandscapeContinuePreview() {
     ProtonTheme {
@@ -297,11 +293,7 @@ private fun DetailPageLandscapeContinuePreview() {
     }
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true,
-    device = "spec:width=891dp,height=411dp,orientation=landscape"
-)
+@AdaptivePreviews
 @Composable
 private fun FeatureDetailPageLandscapeB2BLastPreview() {
     ProtonTheme {
