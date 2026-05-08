@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -41,12 +42,14 @@ import ch.protonmail.android.maildetail.presentation.model.PagerSettings
 import ch.protonmail.android.maildetail.presentation.reducer.PagedConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.ClearMessageBodyCache
 import ch.protonmail.android.maildetail.presentation.usecase.GetConversationCursor
 import ch.protonmail.android.maildetail.presentation.usecase.ObserveAutoAdvanceSetting
 import ch.protonmail.android.maildetail.presentation.usecase.ObserveSwipeNextPreference
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,6 +77,8 @@ class PagedConversationDetailViewModel @Inject constructor(
     private val observeSwipeNextPreference: ObserveSwipeNextPreference,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val observeIsSingleMessageViewModePreferred: ObserveIsSingleMessageViewModePreferred,
+    private val clearMessageBodyCache: ClearMessageBodyCache,
+    @AppScope private val appScope: CoroutineScope,
     private val savedStateHandle: SavedStateHandle,
     private val reducer: PagedConversationDetailReducer
 ) : ViewModel() {
@@ -239,7 +244,9 @@ class PagedConversationDetailViewModel @Inject constructor(
     override fun onCleared() {
         Timber.d("ViewModel cleared, clearing conversation cursor for conversation ${requireConversationId()}")
 
-        viewModelScope.launch {
+        appScope.launch {
+            clearMessageBodyCache()
+
             cursorMutex.withLock {
                 conversationCursor = null
             }
