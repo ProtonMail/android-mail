@@ -21,6 +21,7 @@ package ch.protonmail.android.mailbugreport.presentation.ui
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,32 +44,7 @@ internal fun ApplicationLogsScreenList(
 ) {
 
     LazyColumn(modifier = modifier) {
-        item {
-            ProtonSettingsHeader(title = R.string.application_events_header_view)
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.application_events_view_logcat),
-                hint = stringResource(R.string.application_events_view_logcat_hint),
-                onClick = actions.onShowLogcat
-            )
-        }
-        item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.application_events_view_rust_events),
-                hint = stringResource(R.string.application_events_view_rust_events_hint),
-                onClick = actions.onShowRustEvents
-            )
-        }
-        item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.application_events_view_events),
-                hint = stringResource(R.string.application_events_view_events_hint),
-                onClick = actions.onShowAppEvents
-            )
-        }
+        if (isStandalone) viewLogsSection(actions)
 
         item {
             ProtonSettingsHeader(
@@ -92,24 +68,54 @@ internal fun ApplicationLogsScreenList(
             )
         }
 
-        if (isStandalone) {
-            item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
-
-            item {
-                ProtonSettingsHeader(
-                    title = stringResource(R.string.application_events_feature_flags_title),
-                    modifier = Modifier.padding(bottom = ProtonDimens.Spacing.Small)
-                )
-            }
-            item {
-                ProtonSettingsItem(
-                    name = stringResource(R.string.application_events_feature_flags_subtitle),
-                    onClick = actions.onFeatureFlagNavigation
-                )
-            }
-        }
+        if (isStandalone) featureFlagsSection(actions)
 
         item { AppVersion(appVersion) }
+    }
+}
+
+private fun LazyListScope.viewLogsSection(actions: ApplicationLogsScreenList.Actions) {
+    item {
+        ProtonSettingsHeader(title = R.string.application_events_header_view)
+    }
+    item {
+        ProtonSettingsItem(
+            name = stringResource(R.string.application_events_view_logcat),
+            hint = stringResource(R.string.application_events_view_logcat_hint),
+            onClick = actions.onShowLogcat
+        )
+    }
+    item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+    item {
+        ProtonSettingsItem(
+            name = stringResource(R.string.application_events_view_rust_events),
+            hint = stringResource(R.string.application_events_view_rust_events_hint),
+            onClick = actions.onShowRustEvents
+        )
+    }
+    item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+    item {
+        ProtonSettingsItem(
+            name = stringResource(R.string.application_events_view_events),
+            hint = stringResource(R.string.application_events_view_events_hint),
+            onClick = actions.onShowAppEvents
+        )
+    }
+}
+
+private fun LazyListScope.featureFlagsSection(actions: ApplicationLogsScreenList.Actions) {
+    item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+    item {
+        ProtonSettingsHeader(
+            title = stringResource(R.string.application_events_feature_flags_title),
+            modifier = Modifier.padding(bottom = ProtonDimens.Spacing.Small)
+        )
+    }
+    item {
+        ProtonSettingsItem(
+            name = stringResource(R.string.application_events_feature_flags_subtitle),
+            onClick = actions.onFeatureFlagNavigation
+        )
     }
 }
 
