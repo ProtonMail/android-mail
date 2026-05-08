@@ -45,10 +45,13 @@ class MessageBodyUiModelMapper @Inject constructor(
     suspend fun toUiModel(
         decryptedMessageBody: DecryptedMessageBody,
         attachmentListExpandCollapseMode: AttachmentListExpandCollapseMode?,
-        existingMessageBodyUiModel: MessageBodyUiModel? = null
+        existingMessageBodyUiModel: MessageBodyUiModel? = null,
+        forceDisableHeightRestriction: Boolean = false
     ): MessageBodyUiModel {
         val shouldRestrictWebViewHeight =
-            hasMessageBodyWebViewCrashed() && restrictMessageWebViewHeightEnabled.get()
+            !forceDisableHeightRestriction &&
+                hasMessageBodyWebViewCrashed() &&
+                restrictMessageWebViewHeightEnabled.get()
 
         val decryptedMessageBodyWithType = MessageBodyWithType(
             decryptedMessageBody.value,

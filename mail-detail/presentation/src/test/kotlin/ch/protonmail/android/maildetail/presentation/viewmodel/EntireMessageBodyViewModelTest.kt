@@ -128,7 +128,12 @@ class EntireMessageBodyViewModelTest {
             getMessageBodyWithClickableLinks(UserIdTestData.userId, MessageId(MESSAGE_ID), any())
         } returns decryptedMessageBody.right()
         coEvery {
-            messageBodyUiModelMapper.toUiModel(decryptedMessageBody, null)
+            messageBodyUiModelMapper.toUiModel(
+                decryptedMessageBody = decryptedMessageBody,
+                attachmentListExpandCollapseMode = null,
+                existingMessageBodyUiModel = null,
+                forceDisableHeightRestriction = true
+            )
         } returns messageBodyUiModel
 
         // When
@@ -224,7 +229,12 @@ class EntireMessageBodyViewModelTest {
             getMessageBodyWithClickableLinks(UserIdTestData.userId, MessageId(MESSAGE_ID), any())
         } returns decryptedMessageBody.right()
         coEvery {
-            messageBodyUiModelMapper.toUiModel(decryptedMessageBody, null)
+            messageBodyUiModelMapper.toUiModel(
+                decryptedMessageBody = decryptedMessageBody,
+                attachmentListExpandCollapseMode = null,
+                existingMessageBodyUiModel = null,
+                forceDisableHeightRestriction = true
+            )
         } returns messageBodyUiModel
 
         // When
@@ -247,7 +257,12 @@ class EntireMessageBodyViewModelTest {
             getMessageBodyWithClickableLinks(UserIdTestData.userId, MessageId(MESSAGE_ID), any())
         } returns decryptedMessageBody.right()
         coEvery {
-            messageBodyUiModelMapper.toUiModel(decryptedMessageBody, null)
+            messageBodyUiModelMapper.toUiModel(
+                decryptedMessageBody = decryptedMessageBody,
+                attachmentListExpandCollapseMode = null,
+                existingMessageBodyUiModel = null,
+                forceDisableHeightRestriction = true
+            )
         } returns messageBodyUiModel
 
         // When
