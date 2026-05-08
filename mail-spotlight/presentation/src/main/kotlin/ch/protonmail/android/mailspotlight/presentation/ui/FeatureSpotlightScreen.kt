@@ -23,7 +23,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -80,7 +78,7 @@ internal fun FeatureSpotlightScreen(
     onDismissWithoutCategories: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState(pageCount = { SpotlightScreenMetadata.TOTAL_PAGE_COUNT })
+    val pagerState = rememberPagerState(pageCount = { SpotlightScreenMetadata.VISIBLE_PAGE_COUNT })
     val scope = rememberCoroutineScope()
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -102,15 +100,6 @@ internal fun FeatureSpotlightScreen(
         onDismissWithoutCategories = onDismissWithoutCategories
     )
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }
-            .collect { page ->
-                if (page == SpotlightScreenMetadata.VISIBLE_PAGE_COUNT) {
-                    onTryCategories()
-                }
-            }
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -130,7 +119,6 @@ internal fun FeatureSpotlightScreen(
                     state = pagerState,
                     beyondViewportPageCount = pagerState.pageCount,
                     modifier = if (isLandscape) Modifier.fillMaxSize() else Modifier.weight(1f),
-                    userScrollEnabled = pagerState.currentPage < SpotlightScreenMetadata.VISIBLE_PAGE_COUNT,
                     flingBehavior = PagerDefaults.flingBehavior(
                         state = pagerState,
                         pagerSnapDistance = PagerSnapDistance.atMost(1),
@@ -165,7 +153,6 @@ internal fun FeatureSpotlightScreen(
                             )
                         }
 
-                        else -> Spacer(modifier = Modifier.fillMaxSize())
                     }
                 }
 
