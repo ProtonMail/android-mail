@@ -63,7 +63,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -87,9 +86,11 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
+import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView.LOCAL_BODY_HOST
 import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -152,10 +153,14 @@ fun MessageBodyWebView(
 
     val contentLoaded = remember(messageId) { mutableStateOf(false) }
 
-    val client = remember(messageId) {
+    val client = remember(messageId, messageBodyUiModel.messageBody) {
         object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                if (isLocalBodyRequest(request)) {
+                    return false
+                }
+
                 request?.let {
                     actions.onMessageBodyLinkClicked(it.url)
                 }
@@ -163,6 +168,19 @@ fun MessageBodyWebView(
             }
 
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
+                if (isLocalBodyRequest(request) && messageBodyUiModel.messageBody is MessageBodyContent.File) {
+                    val fileBody = messageBodyUiModel.messageBody
+                    val stream = runCatching {
+                        context.contentResolver.openInputStream(fileBody.contentUri)
+                    }.getOrNull()
+
+                    return if (stream != null) {
+                        WebResourceResponse(MimeType.Html.value, "utf-8", stream)
+                    } else {
+                        super.shouldInterceptRequest(view, request)
+                    }
+                }
+
                 return if (request?.isRemoteContent() == true || request?.isEmbeddedImage() == true) {
                     request.url?.toString()?.let { url ->
                         actions.loadImage(messageId, url)?.let {
@@ -199,27 +217,20 @@ fun MessageBodyWebView(
 
     val shouldRestrictHeight = messageBodyUiModel.shouldRestrictWebViewHeight && shouldAllowViewingEntireMessage
 
-    // Convert the safe physical cap into CSS pixels for the injected style. Lower-density devices
-    // end up with a larger preview window while high-density devices stay under the GPU texture
-    // limit. physical_px = css_px * density, so css_px = physical_px / density.
-    val density = LocalDensity.current.density
-    val restrictedCssMaxHeightPx = (WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX / density).toInt()
-
-    val messageBodyHtml = if (shouldRestrictHeight) {
-        heightRestrictionStyle(restrictedCssMaxHeightPx) + messageBodyUiModel.messageBody
-    } else {
-        messageBodyUiModel.messageBody
-    }
-
     LaunchedEffect(
         messageId,
         messageBodyUiModel.messageBody,
-        messageBodyUiModel.viewModePreference,
-        shouldRestrictHeight,
-        restrictedCssMaxHeightPx
+        messageBodyUiModel.viewModePreference
     ) {
         Timber.d("message-webview: setting initial value on webview ${webView.hashCode()} ($messageId)")
-        webView.loadDataWithBaseURL(null, messageBodyHtml, MimeType.Html.value, "utf-8", null)
+        when (val body = messageBodyUiModel.messageBody) {
+            is MessageBodyContent.Text -> {
+                webView.loadDataWithBaseURL(null, body.value, MimeType.Html.value, "utf-8", null)
+            }
+            is MessageBodyContent.File -> {
+                webView.loadUrl(localBodyUrl(messageId))
+            }
+        }
     }
 
     LaunchedEffect(messageId) {
@@ -443,6 +454,15 @@ private fun webViewCleanup(webView: WebView, messageId: MessageId) {
     }
 }
 
+private fun localBodyUrl(messageId: MessageId): String = "https://$LOCAL_BODY_HOST/body/${messageId.id}"
+
+private fun isLocalBodyRequest(request: WebResourceRequest?): Boolean {
+    val uri = request?.url ?: return false
+    return uri.scheme == "https" &&
+        uri.host == LOCAL_BODY_HOST &&
+        uri.path?.startsWith("/body/") == true
+}
+
 @Composable
 private fun ViewEntireMessageButton(onClick: () -> Unit) {
     MailDivider()
@@ -497,6 +517,8 @@ private fun ExpandCollapseBodyButtonPreview() {
 
 object MessageBodyWebView {
 
+    internal const val LOCAL_BODY_HOST = "ch.proton.local.body.host"
+
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onMessageBodyLinkLongClicked: (uri: Uri) -> Unit,
@@ -525,10 +547,5 @@ private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
 // the 16383 GL_MAX_TEXTURE_SIZE reported by most Adreno/Mali GPUs, so the Chromium compositor
 // doesn't try to allocate a single HW layer above the limit (the crash path). Per-device CSS cap
 // derives from this via density so lower-DPI devices get a larger preview.
-private const val WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX = 14_000
+const val WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX = 14_000
 
-// Scoped to `body` only: overflow:hidden on `html` makes Android WebView report a measured height
-// of 0 (it uses documentElement for its scroll range), which then suppresses the page-ready signal
-// so the message card never reveals.
-private fun heightRestrictionStyle(cssMaxHeightPx: Int): String =
-    "<style>body{max-height:${cssMaxHeightPx}px !important;overflow:hidden !important;}</style>"
