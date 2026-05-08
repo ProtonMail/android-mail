@@ -51,7 +51,7 @@ class ApplicationLogsActivity : AppCompatActivity() {
                         ApplicationLogsScreen(
                             actions = ApplicationLogsScreen.Actions(
                                 onBackClick = { finish() },
-                                onViewItemClick = { navController.navigate(Screen.ApplicationLogsView(it)) },
+                                onViewItemClick = {},
                                 onFeatureFlagsNavigation = {}
                             )
                         )
