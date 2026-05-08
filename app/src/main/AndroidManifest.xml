@@ -254,6 +254,10 @@
             android:noHistory="true" />
 
         <activity
+            android:name=".feature.applicationlogs.ApplicationLogsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:documentLaunchMode="never"
             android:exported="true"

@@ -20,6 +20,8 @@
 package me.proton.android.core.auth.presentation.login
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +38,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,7 +64,8 @@ fun LoginHelpScreen(
     onForgotPasswordClicked: () -> Unit = {},
     onForgotUsernameClicked: () -> Unit = {},
     onOtherLoginIssuesClicked: () -> Unit = {},
-    onSignInWithQrCodeClicked: () -> Unit = {}
+    onSignInWithQrCodeClicked: () -> Unit = {},
+    onApplicationLogsClicked: (() -> Unit)? = null
 ) {
     Scaffold(
         modifier = modifier,
@@ -85,6 +92,7 @@ fun LoginHelpScreen(
                 onForgotUsernameClicked = onForgotUsernameClicked,
                 onOtherLoginIssuesClicked = onOtherLoginIssuesClicked,
                 onSignInWithQrCodeClicked = onSignInWithQrCodeClicked,
+                onApplicationLogsClicked = onApplicationLogsClicked,
                 modifier = Modifier.padding(paddingValues)
             )
         }
@@ -98,8 +106,11 @@ private fun HelpColumn(
     onForgotPasswordClicked: () -> Unit = {},
     onForgotUsernameClicked: () -> Unit = {},
     onOtherLoginIssuesClicked: () -> Unit = {},
-    onSignInWithQrCodeClicked: () -> Unit = {}
+    onSignInWithQrCodeClicked: () -> Unit = {},
+    onApplicationLogsClicked: (() -> Unit)? = null
 ) {
+    var contactHeaderTapCount by remember { mutableIntStateOf(0) }
+
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
@@ -133,11 +144,16 @@ private fun HelpColumn(
         Text(
             text = stringResource(id = R.string.login_help_contact_needed),
             style = LocalTypography.current.body2Regular,
-            modifier = Modifier.padding(
-                start = ProtonDimens.DefaultSpacing,
-                end = ProtonDimens.DefaultSpacing,
-                top = ProtonDimens.LargerSpacing
-            )
+            modifier = Modifier
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) { if (onApplicationLogsClicked != null) contactHeaderTapCount++ }
+                .padding(
+                    start = ProtonDimens.DefaultSpacing,
+                    end = ProtonDimens.DefaultSpacing,
+                    top = ProtonDimens.LargerSpacing
+                )
         )
         LoginHelpItem(
             icon = painterResource(id = CoreR.drawable.ic_proton_speech_bubble),
@@ -145,6 +161,13 @@ private fun HelpColumn(
             onClick = onCustomerSupportClicked,
             modifier = Modifier.padding(top = ProtonDimens.MediumSpacing)
         )
+        if (onApplicationLogsClicked != null && contactHeaderTapCount >= SHOW_LOGS_TAPS_THRESHOLD) {
+            LoginHelpItem(
+                icon = CoreR.drawable.ic_proton_bug,
+                title = R.string.login_help_application_logs,
+                onClick = onApplicationLogsClicked
+            )
+        }
         Spacer(
             modifier = Modifier
                 .height(ProtonDimens.MediumSpacing)
@@ -152,6 +175,8 @@ private fun HelpColumn(
         )
     }
 }
+
+private const val SHOW_LOGS_TAPS_THRESHOLD = 5
 
 @Preview(name = "Light mode")
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
