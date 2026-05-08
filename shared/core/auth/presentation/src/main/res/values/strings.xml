@@ -25,6 +25,7 @@
     <string name="login_help_contact_needed">Still need help? Contact us directly.</string>
     <string name="login_help_customer_support">Customer support</string>
     <string name="login_help_sign_in_with_qr_code">Sign in with QR code</string>
+    <string name="login_help_application_logs" translatable="false">Application logs</string>
     <string name="welcome_subtitle_mail">Privacy. Security. Convenience. Encrypted email that gives you full control of your personal data.</string>
     <string name="welcome_sign_in">Sign in</string>
     <string name="welcome_sign_up">Create an account</string>
