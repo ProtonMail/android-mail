@@ -1707,6 +1707,55 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox pager is not recreated when expanded state of selected folder changes`() = runTest {
+        // Given
+        val folder = MailLabelTestData.buildCustomFolder(
+            id = "folder-1",
+            isExpanded = false,
+            children = listOf("child-1")
+        )
+        val child = MailLabelTestData.buildCustomFolder(id = "child-1", parent = folder)
+        val mailLabelsFlow = MutableStateFlow(
+            MailLabels(
+                system = MailLabelTestData.dynamicSystemLabels,
+                folders = listOf(folder, child),
+                labels = emptyList()
+            )
+        )
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(folder.id)
+        every { observeMailLabels(userId) } returns mailLabelsFlow
+        every { observeLoadedMailLabelId() } returns currentLocationFlow
+        every { observeSelectedMailLabelId() } returns currentLocationFlow
+        coEvery { getSelectedMailLabelId() } returns folder.id
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxDataState()
+        expectPagerMock(
+            selectedLabelId = folder.id,
+            pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        )
+
+        mailboxViewModel.items.test {
+            awaitItem()
+            verify(exactly = 1) {
+                pagerFactory.create(userId, folder.id, any(), any())
+            }
+
+            // When
+            mailLabelsFlow.value = MailLabels(
+                system = MailLabelTestData.dynamicSystemLabels,
+                folders = listOf(folder.copy(isExpanded = true), child),
+                labels = emptyList()
+            )
+
+            // Then
+            expectNoEvents()
+            verify(exactly = 1) {
+                pagerFactory.create(userId, folder.id, any(), any())
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `mailbox pager is recreated when view mode changes`() = runTest {
         // Given
         val expectedMailBoxState = createMailboxDataState()

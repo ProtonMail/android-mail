@@ -150,6 +150,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
@@ -1439,7 +1440,7 @@ class MailboxViewModel @Inject constructor(
 
     private fun observeMailLabelChangeRequests(): Flow<MailLabel> = observeSelectedMailLabelId()
         .mapToExistingLabel()
-        .distinctUntilChanged()
+        .distinctUntilChangedBy { it.id }
 
     private fun Flow<MailboxState>.observeSearchQuery() = this.map { it.mailboxListState as? MailboxListState.Data }
         .mapNotNull { it?.searchState?.searchQuery }
