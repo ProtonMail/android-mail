@@ -21,7 +21,6 @@ package ch.protonmail.android.mailspotlight.presentation.ui
 internal object SpotlightScreenMetadata {
 
     const val VISIBLE_PAGE_COUNT = 3
-    const val TOTAL_PAGE_COUNT = VISIBLE_PAGE_COUNT + 1
     const val BOUNCE_DAMPING_RATIO = 0.65f
     const val BOUNCE_STIFFNESS = 300f
 }
