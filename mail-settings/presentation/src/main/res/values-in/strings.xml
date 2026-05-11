@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Sesuaikan toolbar</string>
   <string name="mail_settings_app_customization_alternative_routing">Perutean alternatif</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Menangkal firewall atau masalah jaringan apabila situs Proton diblokir.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Lihat catatan aplikasi</string>
   <string name="mail_settings_app_customization_mail_experience_header">Pengalaman Mail</string>
   <string name="mail_settings_app_customization_advanced_header">Lanjutan</string>
   <string name="mail_settings_app_customization_signature_header">Tanda tangan</string>

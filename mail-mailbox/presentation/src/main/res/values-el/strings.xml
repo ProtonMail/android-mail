@@ -105,6 +105,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Αποτυχία διαγραφής μηνύματος</string>
+  <string name="mailbox_action_change_category_failed">Αποτυχία αλλαγής της ενεργής κατηγορίας</string>
   <string name="select_all">Επιλογή Όλων</string>
   <string name="deselect_all">Αποεπιλογή Όλων</string>
   <!--    Expiry messages-->

@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Personalizare bare de unelte</string>
   <string name="mail_settings_app_customization_alternative_routing">Direcționare alternativă</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Ocoliți paravanele de protecție sau problemele de rețea în cazul în care site-urile Proton sunt blocate.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Afișare jurnale aplicație</string>
   <string name="mail_settings_app_customization_mail_experience_header">Experiență Mail</string>
   <string name="mail_settings_app_customization_advanced_header">Avansat</string>
   <string name="mail_settings_app_customization_signature_header">Semnături</string>

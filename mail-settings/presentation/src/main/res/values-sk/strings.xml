@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Prispôsobiť panel nástrojov</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatívne smerovanie</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Obchádzanie firewallu alebo sieťových problémov v prípade, že sú stránky Protonu zablokované.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Zobraziť záznamy aplikácie</string>
   <string name="mail_settings_app_customization_mail_experience_header">Skúsenosti s emailom</string>
   <string name="mail_settings_app_customization_advanced_header">Pokročilé</string>
   <string name="mail_settings_app_customization_signature_header">Podpisy</string>

@@ -105,6 +105,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Sletning af besked mislykkedes</string>
+  <string name="mailbox_action_change_category_failed">Kunne ikke ændre den aktive kategori</string>
   <string name="select_all">Vælg alle/alt</string>
   <string name="deselect_all">Fravælg alle/alt</string>
   <!--    Expiry messages-->

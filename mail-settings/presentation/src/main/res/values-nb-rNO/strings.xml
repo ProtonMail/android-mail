@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Tilpass verktøylinjer</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternativ ruting</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omgå brannmur eller nettverksproblemer i tilfelle Proton-nettsteder er blokkert.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Vis applikasjonslogger</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail-opplevelse</string>
   <string name="mail_settings_app_customization_advanced_header">Avansert</string>
   <string name="mail_settings_app_customization_signature_header">Signaturer</string>

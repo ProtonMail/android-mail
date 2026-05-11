@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Dostosuj paski narzędzi</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatywne przekierowanie połączenia</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Obejście zapory sieciowej lub problemów z siecią w przypadku blokowania stron Proton.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Pokaż logi aplikacji</string>
   <string name="mail_settings_app_customization_mail_experience_header">Opcje poczty</string>
   <string name="mail_settings_app_customization_advanced_header">Zaawansowane</string>
   <string name="mail_settings_app_customization_signature_header">Podpisy</string>
@@ -67,7 +66,7 @@
   <string name="mail_settings_app_customization_mobile_signature_on">Włączony</string>
   <string name="mail_settings_app_customization_mobile_signature_off">Wyłączony</string>
   <string name="mail_settings_app_customization_mobile_signature_enable">Włącz podpis</string>
-  <string name="mail_settings_app_customization_mobile_signature_edit">Edit signature</string>
+  <string name="mail_settings_app_customization_mobile_signature_edit">Edytuj podpis</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemowy</string>
   <string name="mail_settings_theme_light">Jasny</string>
@@ -132,24 +131,24 @@
   <string name="mail_settings_custom_toolbar_nav_title_message">Pasek narzędzi wiadomości</string>
   <string name="mail_settings_custom_toolbar_nav_button_save">Zapisz</string>
   <string name="mail_settings_custom_toolbar_header">The toolbar can have 1–5 actions. You can\'t remove the last remaining action.</string>
-  <string name="mail_settings_custom_toolbar_reset">Reset to default</string>
+  <string name="mail_settings_custom_toolbar_reset">Przywróć ustawienia domyślne</string>
   <string name="mail_settings_custom_toolbar_reset_title">Do you want to reset the toolbar settings?</string>
   <string name="mail_settings_custom_toolbar_reset_confirm">Potwierdź</string>
   <string name="mail_settings_custom_toolbar_save_error">Unable to save toolbar actions. Please try again.</string>
   <string name="mail_settings_custom_toolbar_read_error">Unable to read toolbar actions. Please try again.</string>
   <!-- Custom App Icon -->
-  <string name="settings_app_icon_toolbar_title">App icon</string>
-  <string name="settings_app_icon_name_default">Default</string>
-  <string name="settings_app_icon_name_discreet">Discreet</string>
+  <string name="settings_app_icon_toolbar_title">Ikona aplikacji</string>
+  <string name="settings_app_icon_name_default">Domyślna</string>
+  <string name="settings_app_icon_name_discreet">Dyskretna</string>
   <string name="settings_app_icon_title_default">App icon - default</string>
   <string name="settings_app_icon_title_discreet">App icon - discreet</string>
   <string name="settings_app_icon_description">Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy.\nNotifications will always show the Proton Mail name and icon.</string>
-  <string name="settings_app_icon_learn_more">Learn more…</string>
-  <string name="settings_app_icon_discreet_toggle">Discreet app icon</string>
-  <string name="settings_app_icon_confirmation_title">Change app icon?</string>
+  <string name="settings_app_icon_learn_more">Dowiedz się więcej…</string>
+  <string name="settings_app_icon_discreet_toggle">Dyskretna ikona aplikacji</string>
+  <string name="settings_app_icon_confirmation_title">Zmienić ikonę aplikacji?</string>
   <string name="settings_app_icon_confirmation_details">This will cause the Proton Mail app to close and all notifications to be dismissed.\n\nTo restart Proton Mail, just tap your new app icon.</string>
-  <string name="settings_app_icon_action_cancel">Cancel</string>
-  <string name="settings_app_icon_change_icon">Change icon</string>
+  <string name="settings_app_icon_action_cancel">Anuluj</string>
+  <string name="settings_app_icon_change_icon">Zmień ikonę</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
 </resources>

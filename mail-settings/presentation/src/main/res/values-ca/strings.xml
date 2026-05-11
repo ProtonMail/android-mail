@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Personalitzeu les barres d\'eines</string>
   <string name="mail_settings_app_customization_alternative_routing">Encaminament alternatiu</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omet el tallafoc o problemes de xarxa en cas que es bloquin els llocs del Proton.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Mostra els registres de l\'aplicació</string>
   <string name="mail_settings_app_customization_mail_experience_header">Experiència de correu</string>
   <string name="mail_settings_app_customization_advanced_header">Avançat</string>
   <string name="mail_settings_app_customization_signature_header">Signatures</string>

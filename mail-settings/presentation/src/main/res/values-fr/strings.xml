@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Personnaliser les barres d\'outils</string>
   <string name="mail_settings_app_customization_alternative_routing">Routage alternatif</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Contournez les pare-feu ou les problèmes de réseau au cas où les sites Proton seraient bloqués.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Afficher les journaux de l\'application</string>
   <string name="mail_settings_app_customization_mail_experience_header">Expérience de messagerie</string>
   <string name="mail_settings_app_customization_advanced_header">Avancés</string>
   <string name="mail_settings_app_customization_signature_header">Signatures</string>

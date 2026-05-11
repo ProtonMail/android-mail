@@ -44,7 +44,7 @@
   <string name="spotlight_screen_category_view_secondary_b2c_subtitle">With new email categories, only important and urgent messages land in your primary inbox. Everything else is organized into categories.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hello categories.\nGoodbye distractions.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Stop getting distracted by newsletters, updates, and non-urgent emails. With new email categories, only important messages land in your primary inbox.</string>
-  <string name="spotlight_screen_category_view_button_continue">Continue</string>
-  <string name="spotlight_screen_category_view_button_try">Try categories</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without categories</string>
+  <string name="spotlight_screen_category_view_button_continue">Kontynuuj</string>
+  <string name="spotlight_screen_category_view_button_try">Przetestuj kategorie</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Kontynuuj bez kategorii</string>
 </resources>

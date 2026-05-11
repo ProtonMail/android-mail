@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">도구 모음 사용자화</string>
   <string name="mail_settings_app_customization_alternative_routing">대체 라우팅</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Proton 사이트가 차단된 경우 방화벽이나 네트워크 문제를 우회합니다.</string>
-  <string name="mail_settings_app_customization_view_application_logs">어플리케이션 로그 보기</string>
   <string name="mail_settings_app_customization_mail_experience_header">메일 경험</string>
   <string name="mail_settings_app_customization_advanced_header">고급</string>
   <string name="mail_settings_app_customization_signature_header">서명</string>

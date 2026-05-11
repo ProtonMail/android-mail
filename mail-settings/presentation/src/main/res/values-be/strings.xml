@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Наладзіць панэлі інструментаў</string>
   <string name="mail_settings_app_customization_alternative_routing">Альтэрнатыўная маршрутызацыя</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Абыход міжсеткавага экрана або сеткавых праблем у выпадку, калі сайты Proton заблакіраваны.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Паглядзець журналы праграмы</string>
   <string name="mail_settings_app_customization_mail_experience_header">Досвед працы з электроннай поштай</string>
   <string name="mail_settings_app_customization_advanced_header">Дадатковыя</string>
   <string name="mail_settings_app_customization_signature_header">Подпісы</string>

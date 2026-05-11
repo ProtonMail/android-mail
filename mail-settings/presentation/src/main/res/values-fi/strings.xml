@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Mukauta työkalupalkkeja</string>
   <string name="mail_settings_app_customization_alternative_routing">Vaihtoehtoinen reititys</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Ohita palomuuri- tai verkko-ongelmat sen varalta, että Protonin sivustot on estetty.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Näytä sovelluslokit</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail-elämys</string>
   <string name="mail_settings_app_customization_advanced_header">Edistyneet</string>
   <string name="mail_settings_app_customization_signature_header">Allekirjoitukset</string>

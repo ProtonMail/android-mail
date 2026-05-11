@@ -23,7 +23,7 @@
   <string name="trackers_protection_no_trackers_detected">Tracker protection: no trackers detected</string>
   <string name="tracking_protection">Tracking protection</string>
   <string name="tracking_protection_description">If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details.</string>
-  <string name="tracking_protection_learn_more">Learn  more...</string>
+  <string name="tracking_protection_learn_more">Dowiedz się więcej...</string>
   <string name="original">original</string>
   <string name="cleaned">Cleaned</string>
   <plurals name="number_of_blocked_trackers">

@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Customize toolbars</string>
   <string name="mail_settings_app_customization_alternative_routing">Альтернативная маршрутизация</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Обход брандмауэра или сетевых проблем в случае блокировки сайтов Proton.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Просмотреть журналы приложения</string>
   <string name="mail_settings_app_customization_mail_experience_header">Использование почты</string>
   <string name="mail_settings_app_customization_advanced_header">Дополнительные</string>
   <string name="mail_settings_app_customization_signature_header">Signatures</string>

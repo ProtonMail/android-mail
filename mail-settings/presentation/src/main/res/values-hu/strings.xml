@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Eszköztárak testreszabása</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatív útválasztás</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Tűzfalak vagy hálózati problémák megkerülése abban az esetben, ha a Proton webhelyei blokkolva vannak.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Alkalmazás napló megtekintése</string>
   <string name="mail_settings_app_customization_mail_experience_header">E-mail élmény</string>
   <string name="mail_settings_app_customization_advanced_header">Speciális</string>
   <string name="mail_settings_app_customization_signature_header">Aláírások</string>

@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Symbolleisten anpassen</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatives Routing</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Umgehung von Firewalls oder Netzwerkproblemen, falls Proton-Websites geblockt werden.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Anwendungsprotokolle anzeigen</string>
   <string name="mail_settings_app_customization_mail_experience_header">E-Mail-Erfahrung</string>
   <string name="mail_settings_app_customization_advanced_header">Erweitert</string>
   <string name="mail_settings_app_customization_signature_header">Signaturen</string>

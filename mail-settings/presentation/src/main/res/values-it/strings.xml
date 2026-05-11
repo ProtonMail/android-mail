@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Barre degli strumenti</string>
   <string name="mail_settings_app_customization_alternative_routing">Percorso alternativo</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Evita firewall o problemi di rete che impediscono la connessione al server</string>
-  <string name="mail_settings_app_customization_view_application_logs">Registro degli eventi</string>
   <string name="mail_settings_app_customization_mail_experience_header">Esperienza Mail</string>
   <string name="mail_settings_app_customization_advanced_header">Opzioni avanzate</string>
   <string name="mail_settings_app_customization_signature_header">Firme personali</string>

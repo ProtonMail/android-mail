@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Werkbalken aanpassen</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatieve routing</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omzeil firewall of netwerkproblemen in het geval dat sites van Proton worden geblokkeerd.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Bekijk toepassingslogboeken</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mailervaring</string>
   <string name="mail_settings_app_customization_advanced_header">Geavanceerd</string>
   <string name="mail_settings_app_customization_signature_header">Handtekeningen</string>
