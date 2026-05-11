@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailspotlight.presentation.ui
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -55,6 +56,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
     val viewModel = hiltViewModel<FeatureSpotlightViewModel>()
+
+    BackHandler(enabled = true) {
+        // no-op, we just need to prevent dismissal via back button
+    }
 
     LaunchedEffect(Unit) {
         viewModel.closeScreenEvent.collect { onDismiss() }
