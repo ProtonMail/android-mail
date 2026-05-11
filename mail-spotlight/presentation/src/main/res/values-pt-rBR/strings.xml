@@ -37,9 +37,9 @@
   <string name="spotlight_screen_category_view_categories_title">Categorias de e-mail</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Classificação automática das mensagens recebidas.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Veja as novidades.\nPule o resto.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Put the focus on unread messages. Or not. It’s just a simple tap away to switch between all emails and only the unread ones.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Destaque as mensagens não lidas. Ou não. Basta um simples toque para alternar entre todos os e-mails e apenas os não lidos.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Fique por dentro dos e-mails novos e\nnão lidos</string>
-  <string name="spotlight_screen_category_view_main_b2b_subtitle">The unread filter is now more visible and at your fingertips, letting you quickly scan and take action on unread emails.</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">O filtro de mensagens não lidas agora está mais visível e ao seu alcance, permitindo que você analise rapidamente e tome medidas em relação aos e-mails não lidos.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">Dê as boas-vindas à sua caixa de entrada mais organizada</string>
   <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Com as novas categorias de e-mail, apenas mensagens importantes e urgentes chegam à sua caixa de entrada principal. Todo o resto é organizado em categorias.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Olá, categorias.\nAdeus, distrações.</string>

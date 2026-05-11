@@ -114,6 +114,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Mesajul nu a putut fi șters.</string>
+  <string name="mailbox_action_change_category_failed">Eșuare schimbare categorie activă</string>
   <string name="select_all">Selectare toate</string>
   <string name="deselect_all">Deselectare toate</string>
   <!--    Expiry messages-->

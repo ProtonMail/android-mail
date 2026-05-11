@@ -89,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB lagerplads</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-mailadresse</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">For at låse op for mere lagerplads og premium-funktioner</string>
+  <string name="upselling_unlimited_description_override">For at få mere lagerplads og premium-funktioner.</string>
   <string name="upselling_auto_renew_text">Fornyes automatisk til samme pris og vilkår, medmindre aftalen opsiges</string>
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s%s, medmindre det annulleres</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %s%s, indtil det annulleres.</string>

@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Araç çubuklarını özelleştir</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatif yönlendirme</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Proton siteleri engelleniyorsa güvenlik duvarlarını ve ağ sorunlarını aşın.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Uygulama günlüklerini görüntüleyin</string>
   <string name="mail_settings_app_customization_mail_experience_header">E-posta deneyimi</string>
   <string name="mail_settings_app_customization_advanced_header">Gelişmiş</string>
   <string name="mail_settings_app_customization_signature_header">İmzalar</string>

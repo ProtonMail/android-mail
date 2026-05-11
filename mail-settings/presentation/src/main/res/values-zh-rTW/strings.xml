@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Customize toolbars</string>
   <string name="mail_settings_app_customization_alternative_routing">替代路由</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">繞過防火牆或網路問題，以防 Proton 網站被封鎖。</string>
-  <string name="mail_settings_app_customization_view_application_logs">檢視應用程式紀錄檔</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail 體驗</string>
   <string name="mail_settings_app_customization_advanced_header">進階</string>
   <string name="mail_settings_app_customization_signature_header">Signatures</string>

@@ -114,15 +114,16 @@
   <string name="mailbox_action_clear_trash_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości z kosza?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości ze spamu?</string>
   <string name="mailbox_action_maximum_selection_reached">"Limit liczby zaznaczeń został osiągnięty"</string>
-  <string name="mailbox_talkback_readout_unread">Unread</string>
-  <string name="mailbox_talkback_readout_starred">Unstar</string>
-  <string name="mailbox_talkback_readout_not_starred">Star</string>
+  <string name="mailbox_talkback_readout_unread">Nieprzeczytane</string>
+  <string name="mailbox_talkback_readout_starred">Usuń gwiazdkę</string>
+  <string name="mailbox_talkback_readout_not_starred">Oznacz gwiazdką</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Nie udało się otworzyć załącznika. Spróbuj ponownie.</string>
   <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nie udało się usunąć wiadomości</string>
+  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
   <string name="select_all">Zaznacz wszystko</string>
   <string name="deselect_all">Odznacz wszystko</string>
   <!--    Expiry messages-->

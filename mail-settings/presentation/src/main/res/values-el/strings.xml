@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Προσαρμογή γραμμών εργαλείων</string>
   <string name="mail_settings_app_customization_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Παρακάμψτε προβλήματα τείχους προστασίας ή δικτύου σε περίπτωση οι ιστότοποι του Proton είναι αποκλεισμένοι.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Προβολή καταγραφών εφαρμογών</string>
   <string name="mail_settings_app_customization_mail_experience_header">Εμπειρία Mail</string>
   <string name="mail_settings_app_customization_advanced_header">Προχωρημένα</string>
   <string name="mail_settings_app_customization_signature_header">Υπογραφές</string>

@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">Prilagajanje orodnih vrstic</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternativno usmerjanje</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Izognite se požarnemu zidu ali težavam z omrežjem, če so spletna mesta Proton blokirana.</string>
-  <string name="mail_settings_app_customization_view_application_logs">Ogled dnevnikov aplikacije</string>
   <string name="mail_settings_app_customization_mail_experience_header">Izkušnja z aplikacijo Mail</string>
   <string name="mail_settings_app_customization_advanced_header">Napredno</string>
   <string name="mail_settings_app_customization_signature_header">Podpisi</string>

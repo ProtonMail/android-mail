@@ -56,7 +56,6 @@
   <string name="mail_settings_app_customization_customize_toolbar">ツールバーを編集</string>
   <string name="mail_settings_app_customization_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">ファイアウォールやネットワークの問題を回避して、Protonサイトがブロックされている場合に対処します。</string>
-  <string name="mail_settings_app_customization_view_application_logs">アプリのログを表示</string>
   <string name="mail_settings_app_customization_mail_experience_header">メール体験</string>
   <string name="mail_settings_app_customization_advanced_header">高度</string>
   <string name="mail_settings_app_customization_signature_header">署名</string>

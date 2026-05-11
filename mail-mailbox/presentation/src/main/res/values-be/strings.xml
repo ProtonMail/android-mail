@@ -123,6 +123,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Не ўдалося выдаліць паведамленне.</string>
+  <string name="mailbox_action_change_category_failed">Не ўдалодся змяніць актыўную катэгорыю</string>
   <string name="select_all">Выбраць усе</string>
   <string name="deselect_all">Зняць выбар з усіх</string>
   <!--    Expiry messages-->

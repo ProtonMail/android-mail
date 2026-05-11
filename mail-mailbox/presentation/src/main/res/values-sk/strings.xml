@@ -123,6 +123,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nepodarilo sa vymazať správu</string>
+  <string name="mailbox_action_change_category_failed">Zmena aktívnej kategórie sa nepodarila</string>
   <string name="select_all">Vybrať všetko</string>
   <string name="deselect_all">Odznačiť všetko</string>
   <!--    Expiry messages-->

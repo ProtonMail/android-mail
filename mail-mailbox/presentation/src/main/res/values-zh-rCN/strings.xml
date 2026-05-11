@@ -96,6 +96,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">删除邮件失败</string>
+  <string name="mailbox_action_change_category_failed">更改活动类别失败</string>
   <string name="select_all">全选</string>
   <string name="deselect_all">取消全选</string>
   <!--    Expiry messages-->

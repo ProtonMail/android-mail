@@ -82,7 +82,7 @@
   <string name="message_expiration_banner_text">Wiadomość wygaśnie za %1$s</string>
   <string name="message_auto_delete_banner_text">Wiadomość zostanie automatycznie usunięta za %1$s</string>
   <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
-  <string name="message_auth_fail_banner_button">Learn more</string>
+  <string name="message_auth_fail_banner_button">Dowiedz się więcej</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Opuścisz aplikację i przejdziesz do:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Nie pytaj ponownie</string>
@@ -182,12 +182,12 @@
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Message headers</string>
   <string name="raw_message_data_html_title">Message HTML</string>
-  <string name="raw_message_data_close_button_content_description">Close</string>
-  <string name="raw_message_data_more_button_content_description">More</string>
-  <string name="raw_message_data_download_action">Download</string>
-  <string name="raw_message_data_copy_action">Copy</string>
-  <string name="raw_message_data_learn_more_action">Learn more</string>
-  <string name="raw_message_data_error">Error loading data</string>
+  <string name="raw_message_data_close_button_content_description">Zamknij</string>
+  <string name="raw_message_data_more_button_content_description">Więcej</string>
+  <string name="raw_message_data_download_action">Pobierz</string>
+  <string name="raw_message_data_copy_action">Kopiuj</string>
+  <string name="raw_message_data_learn_more_action">Dowiedz się więcej</string>
+  <string name="raw_message_data_error">Wystąpił błąd podczas ładowania danych</string>
   <string name="raw_message_data_successful_download">Download completed</string>
   <string name="raw_message_data_failed_download">Download failed</string>
 </resources>
