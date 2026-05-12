@@ -42,6 +42,7 @@ class CreateRustSearchPaginator @Inject constructor() {
         val result = scrollerSearch(
             mailbox = mailbox.getRustMailbox(),
             options = PaginatorSearchOptions(keyword),
+            enabledCategory = null,
             callback = callback
         )
 

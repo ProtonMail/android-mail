@@ -38,6 +38,7 @@ class CreateRustConversationPaginator @Inject constructor() {
     ): Either<DataError, ConversationPaginatorWrapper> = when (
         val result = scrollConversationsForLabel(
             mailbox = mailbox.getRustMailbox(),
+            enabledCategory = null,
             callback
         )
     ) {

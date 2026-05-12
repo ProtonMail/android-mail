@@ -37,7 +37,7 @@ class CreateRustMessagesPaginator @Inject constructor() {
         mailbox: MailboxWrapper,
         callback: MessageScrollerLiveQueryCallback
     ): Either<DataError, MessagePaginatorWrapper> = when (
-        val result = scrollMessagesForLabel(mailbox.getRustMailbox(), callback)
+        val result = scrollMessagesForLabel(mailbox.getRustMailbox(), null, callback)
     ) {
         is ScrollMessagesForLabelResult.Error -> result.v1.toDataError().left()
         is ScrollMessagesForLabelResult.Ok -> MailboxMessagePaginatorWrapper(result.v1).right()
