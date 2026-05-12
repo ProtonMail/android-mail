@@ -3916,7 +3916,7 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 any(),
-                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id)
+                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
             )
         } returns intermediateState
 
@@ -3934,7 +3934,7 @@ internal class MailboxViewModelTest {
             verify {
                 mailboxReducer.newStateFrom(
                     any(),
-                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id)
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
                 )
             }
             cancelAndIgnoreRemainingEvents()

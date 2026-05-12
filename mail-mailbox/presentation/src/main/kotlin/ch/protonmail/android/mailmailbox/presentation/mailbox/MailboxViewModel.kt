@@ -604,10 +604,11 @@ class MailboxViewModel @Inject constructor(
             val isConversationGrouping =
                 getViewModeForCurrentLocation(getSelectedMailLabelId()) == ViewMode.ConversationGrouping
 
+            val categoryId = observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
             emitNewStateFrom(
                 MailboxEvent.ItemClicked.ItemDetailsOpened(
                     item, labelId,
-                    isConversationGrouping, subItemId
+                    isConversationGrouping, subItemId, categoryId
                 )
             )
         }

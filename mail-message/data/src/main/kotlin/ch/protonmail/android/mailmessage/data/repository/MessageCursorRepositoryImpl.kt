@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQuery
 import ch.protonmail.android.mailmessage.data.local.debugTypeName
@@ -60,7 +61,8 @@ class MessageCursorRepositoryImpl @Inject constructor(
     override suspend fun getCursor(
         anchorItemId: CursorId,
         userId: UserId,
-        labelId: LabelId
+        labelId: LabelId,
+        categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor> {
         val itemId = anchorItemId.messageId?.toLocalConversationId()
             ?: anchorItemId.conversationId.toLocalConversationId()
@@ -68,6 +70,7 @@ class MessageCursorRepositoryImpl @Inject constructor(
         return getCursorWrapper(
             userId = userId,
             labelId = labelId,
+            categoryLabelId = categoryLabelId,
             anchorItemId = itemId
         ).map { cursorWrapper ->
             RustConversationCursorImpl(anchorItemId, cursorWrapper)
@@ -84,12 +87,14 @@ class MessageCursorRepositoryImpl @Inject constructor(
     private suspend fun getCursorWrapper(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         anchorItemId: LocalItemId
     ): Either<ConversationCursorError, MailMessageCursorWrapper> {
         when (
             val mailboxCursorResult = rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = categoryLabelId,
                 anchorItemId = anchorItemId
             )
         ) {

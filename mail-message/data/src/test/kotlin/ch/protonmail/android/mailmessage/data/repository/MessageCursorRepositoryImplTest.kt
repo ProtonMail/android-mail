@@ -96,6 +96,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = anchorMessageId
             )
         } returns cursorWrapper.right()
@@ -104,7 +105,8 @@ internal class MessageCursorRepositoryImplTest {
         val actual = repository.getCursor(
             anchorItemId = anchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -117,11 +119,12 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = anchorMessageId
             )
         }
         coVerify(exactly = 0) { rustMailboxFactory.create(any(), any()) }
-        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any()) }
+        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any(), any()) }
     }
 
     @Test
@@ -144,6 +147,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = conversationId
             )
         } returns null
@@ -163,7 +167,8 @@ internal class MessageCursorRepositoryImplTest {
         val actual = repository.getCursor(
             anchorItemId = anchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -204,6 +209,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = conversationId
             )
         } returns PaginationError.Other(DataError.Local.IllegalStateError).left()
@@ -223,7 +229,8 @@ internal class MessageCursorRepositoryImplTest {
         val actual = repository.getCursor(
             anchorItemId = anchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -246,6 +253,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = conversationId
             )
         } returns null
@@ -258,12 +266,13 @@ internal class MessageCursorRepositoryImplTest {
         val actual = repository.getCursor(
             anchorItemId = anchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
         assertEquals(ConversationCursorError.InvalidState.left(), actual)
-        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any()) }
+        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any(), any()) }
     }
 
     @Test
@@ -289,6 +298,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = labelId,
+                categoryLabelId = null,
                 anchorItemId = any()
             )
         } returns null
@@ -308,12 +318,14 @@ internal class MessageCursorRepositoryImplTest {
         val firstResult = repository.getCursor(
             anchorItemId = firstAnchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
         val secondResult = repository.getCursor(
             anchorItemId = secondAnchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -361,6 +373,7 @@ internal class MessageCursorRepositoryImplTest {
             rustMessageListQuery.getCursorFromActivePaginator(
                 userId = userId,
                 labelId = any(),
+                categoryLabelId = null,
                 anchorItemId = any()
             )
         } returns null
@@ -389,12 +402,14 @@ internal class MessageCursorRepositoryImplTest {
         val firstResult = repository.getCursor(
             anchorItemId = firstAnchorItem,
             userId = userId,
-            labelId = firstLabelId
+            labelId = firstLabelId,
+            categoryLabelId = null
         )
         val secondResult = repository.getCursor(
             anchorItemId = secondAnchorItem,
             userId = userId,
-            labelId = secondLabelId
+            labelId = secondLabelId,
+            categoryLabelId = null
         )
 
         // Then

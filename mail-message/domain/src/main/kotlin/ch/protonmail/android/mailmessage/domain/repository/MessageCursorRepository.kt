@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import me.proton.core.domain.entity.UserId
 
@@ -29,6 +30,7 @@ interface MessageCursorRepository {
     suspend fun getCursor(
         anchorItemId: CursorId,
         userId: UserId,
-        labelId: LabelId
+        labelId: LabelId,
+        categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor>
 }

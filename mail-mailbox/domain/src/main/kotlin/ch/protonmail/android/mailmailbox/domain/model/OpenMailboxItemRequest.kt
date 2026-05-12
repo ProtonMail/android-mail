@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 
 data class OpenMailboxItemRequest(
@@ -25,5 +26,6 @@ data class OpenMailboxItemRequest(
     val shouldOpenInComposer: Boolean,
     val subItemId: MailboxItemId? = null,
     val openedFromLocation: LabelId,
+    val openedFromCategory: CategoryLabelId? = null,
     val locationViewModeIsConversation: Boolean = true
 )
