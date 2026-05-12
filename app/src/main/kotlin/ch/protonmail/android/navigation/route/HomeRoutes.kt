@@ -98,6 +98,7 @@ internal fun NavGraphBuilder.addMailbox(
                                 MessageId(mailboxItemId.value)
                             },
                             openedFromLocation = request.openedFromLocation,
+                            openedFromCategory = request.openedFromCategory,
                             locationViewModeIsConversation = request.locationViewModeIsConversation,
                             entryPoint = ConversationDetailEntryPoint.Mailbox
                         )

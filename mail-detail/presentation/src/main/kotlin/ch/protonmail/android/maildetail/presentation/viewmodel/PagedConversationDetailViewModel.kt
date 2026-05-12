@@ -46,6 +46,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.ClearMessageBodyCac
 import ch.protonmail.android.maildetail.presentation.usecase.GetConversationCursor
 import ch.protonmail.android.maildetail.presentation.usecase.ObserveAutoAdvanceSetting
 import ch.protonmail.android.maildetail.presentation.usecase.ObserveSwipeNextPreference
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -143,7 +144,8 @@ class PagedConversationDetailViewModel @Inject constructor(
                         conversationId = params.conversationId,
                         messageId = getInitialScrollToMessageId()?.id,
                         locationViewModeIsConversation = requireLocationViewModeModeIsConversation(),
-                        labelId = requireLabelId()
+                        labelId = requireLabelId(),
+                        categoryLabelId = getCategoryLabelIdOrNull()
                     ).fold(
                         ifLeft = { error ->
                             Timber.e(
@@ -262,8 +264,13 @@ class PagedConversationDetailViewModel @Inject constructor(
 
     private fun requireLabelId(): LabelId {
         val labelId = savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey)
-            ?: throw IllegalStateException("No Conversation id given")
+            ?: throw IllegalStateException("No Label id given")
         return LabelId(labelId)
+    }
+
+    private fun getCategoryLabelIdOrNull(): CategoryLabelId? {
+        val categoryIdStr = savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromCategoryKey)
+        return categoryIdStr?.let { if (it == "null") null else CategoryLabelId(it) }
     }
 
     private fun requireConversationOpenMode(): ConversationOpenMode {

@@ -1266,6 +1266,7 @@ object ConversationDetailScreen {
     const val ScrollToMessageIdKey = "scroll to message id"
     const val ConversationOpenModeKey = "conversation open mode"
     const val OpenedFromLocationKey = "opened from location"
+    const val OpenedFromCategoryKey = "opened from category"
     const val ConversationDetailEntryPointNameKey = "detail origin entry point"
 
     data class Actions(

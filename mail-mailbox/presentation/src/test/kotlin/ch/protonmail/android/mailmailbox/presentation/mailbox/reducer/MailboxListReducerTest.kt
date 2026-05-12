@@ -272,7 +272,8 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
-                    subitemId = null
+                    subitemId = null,
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -282,7 +283,8 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
-                    subitemId = null
+                    subitemId = null,
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -395,7 +397,8 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
-                    subitemId = null
+                    subitemId = null,
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
@@ -433,7 +436,8 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
-                    subitemId = null
+                    subitemId = null,
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,

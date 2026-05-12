@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
@@ -49,6 +50,7 @@ interface RustConversationsQuery {
     suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         anchorConversationId: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>?
 

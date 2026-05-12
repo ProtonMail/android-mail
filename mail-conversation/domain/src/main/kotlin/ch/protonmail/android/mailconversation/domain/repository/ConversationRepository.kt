@@ -87,7 +87,8 @@ interface ConversationRepository {
     suspend fun getConversationCursor(
         anchorItemId: CursorId,
         userId: UserId,
-        labelId: LabelId
+        labelId: LabelId,
+        categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor>
 
     suspend fun move(

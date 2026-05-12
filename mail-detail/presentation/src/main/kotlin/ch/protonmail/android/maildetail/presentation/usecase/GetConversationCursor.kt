@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
@@ -33,12 +34,14 @@ class GetConversationCursor @Inject constructor(
     private val conversationRepository: ConversationRepository,
     private val messageRepository: MessageRepository
 ) {
+    @Suppress("LongParameterList")
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId,
         messageId: String?,
         locationViewModeIsConversation: Boolean,
-        labelId: LabelId
+        labelId: LabelId,
+        categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor> {
         val cursorId = CursorId(conversationId, messageId)
 
@@ -46,13 +49,15 @@ class GetConversationCursor @Inject constructor(
             conversationRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = cursorId,
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = categoryLabelId
             )
         } else {
             messageRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = cursorId,
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = categoryLabelId
             )
         }
     }

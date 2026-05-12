@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmessage.data.local.RustMessageDataSource
@@ -185,11 +186,13 @@ internal class RustMessageRepositoryImplTest {
             every { close() } just Runs
         }
         val anchorItem = CursorId(conversationId = ConversationId("99"), messageId = "100")
+        val categoryLabelId = CategoryLabelId("Promotions")
         coEvery {
             messageCursorRepository.getCursor(
                 anchorItemId = anchorItem,
                 userId = userId,
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = categoryLabelId
             )
         } returns conversationCursor.right()
 
@@ -198,7 +201,8 @@ internal class RustMessageRepositoryImplTest {
         val result = repository.getConversationCursor(
             anchorItemId = anchorItem,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = categoryLabelId
         )
 
         // Then

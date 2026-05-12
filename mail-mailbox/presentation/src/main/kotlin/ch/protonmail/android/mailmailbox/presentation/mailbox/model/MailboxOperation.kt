@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.ViewMode
@@ -312,7 +313,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
             override val item: MailboxItemUiModel,
             val contextLabel: LabelId,
             val viewModeIsConversationGrouping: Boolean,
-            val subitemId: String?
+            val subitemId: String?,
+            val openedFromCategory: CategoryLabelId?
         ) : ItemClicked, AffectingMailboxList
 
         data class OpenComposer(

@@ -34,6 +34,7 @@ import ch.protonmail.android.maildetail.presentation.model.RawMessageDataType
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationDetailEntryPointNameKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationOpenModeKey
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromCategoryKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromLocationKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
@@ -42,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen.
 import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen.LocationViewModeIsConversation
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen.RAW_DATA_TYPE_KEY
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -70,7 +72,8 @@ sealed class Destination(val route: String) {
             "mailbox/conversation/${ConversationIdKey.wrap()}/" +
                 "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}" +
                 "/${ConversationDetailEntryPointNameKey.wrap()}/${LocationViewModeIsConversation.wrap()}" +
-                "/${ConversationOpenModeKey.wrap()}"
+                "/${ConversationOpenModeKey.wrap()}" +
+                "/${OpenedFromCategoryKey.wrap()}"
         ) {
 
             operator fun invoke(
@@ -79,13 +82,15 @@ sealed class Destination(val route: String) {
                 openedFromLocation: LabelId,
                 entryPoint: ConversationDetailEntryPoint,
                 locationViewModeIsConversation: Boolean,
-                conversationOpenMode: ConversationOpenMode = ConversationOpenMode.UseUserPreference
+                conversationOpenMode: ConversationOpenMode = ConversationOpenMode.UseUserPreference,
+                openedFromCategory: CategoryLabelId? = null
             ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
                 .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
                 .replace(OpenedFromLocationKey.wrap(), openedFromLocation.id)
                 .replace(ConversationOpenModeKey.wrap(), conversationOpenMode.name)
                 .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
                 .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
+                .replace(OpenedFromCategoryKey.wrap(), openedFromCategory?.id ?: "null")
         }
 
         data object EntireMessageBody : Destination(

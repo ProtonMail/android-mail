@@ -34,6 +34,7 @@ import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWra
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
 import ch.protonmail.android.mailpagination.data.model.scroller.PendingRequest
@@ -267,9 +268,10 @@ class RustConversationsQueryImpl @Inject constructor(
     override suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         anchorConversationId: LocalConversationId
     ): Either<PaginationError, ConversationCursorWrapper>? {
-        val pageDescriptor = PageDescriptor(userId, labelId)
+        val pageDescriptor = PageDescriptor(userId, labelId, categoryLabelId)
 
         return paginatorMutex.withLock {
             val state = paginatorState

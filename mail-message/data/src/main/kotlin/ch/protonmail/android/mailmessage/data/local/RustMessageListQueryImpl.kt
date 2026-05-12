@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.MessageRustCoroutineScope
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustMessagesPaginator
@@ -141,9 +142,13 @@ class RustMessageListQueryImpl @Inject constructor(
     override suspend fun getCursorFromActivePaginator(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         firstPage: LocalConversationId
     ): Either<PaginationError, MailMessageCursorWrapper>? {
-        val pageDescriptor = PageDescriptor.Default(userId = userId, labelId = labelId)
+        val pageDescriptor = PageDescriptor.Default(
+            userId = userId,
+            labelId = labelId, categoryLabelId = categoryLabelId
+        )
 
         return paginatorMutex.withLock {
             val state = paginatorState
@@ -368,7 +373,11 @@ class RustMessageListQueryImpl @Inject constructor(
 
         val userId: UserId
 
-        data class Default(override val userId: UserId, val labelId: LabelId) : PageDescriptor
+        data class Default(
+            override val userId: UserId,
+            val labelId: LabelId,
+            val categoryLabelId: CategoryLabelId?
+        ) : PageDescriptor
 
         data class Search(override val userId: UserId, val keyword: String) : PageDescriptor
     }
@@ -376,7 +385,8 @@ class RustMessageListQueryImpl @Inject constructor(
     private fun PageKey.toPageDescriptor(userId: UserId): PageDescriptor = when (this) {
         is PageKey.DefaultPageKey -> PageDescriptor.Default(
             userId = userId,
-            labelId = this.labelId
+            labelId = this.labelId,
+            categoryLabelId = this.categoryLabelId
         )
 
         is PageKey.PageKeyForSearch -> PageDescriptor.Search(

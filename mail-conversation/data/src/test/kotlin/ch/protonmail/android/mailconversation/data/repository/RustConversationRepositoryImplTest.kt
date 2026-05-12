@@ -36,6 +36,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelWithSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -245,12 +246,14 @@ internal class RustConversationRepositoryImplTest {
         }
         val anchorItemId = CursorId(ConversationId("100"), null)
         val labelId = LabelId("2")
+        val categoryLabelId = CategoryLabelId("Social")
 
         coEvery {
             conversationCursorRepository.getCursor(
                 anchorItemId = anchorItemId,
                 userId = userId,
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = categoryLabelId
             )
         } returns conversationCursor.right()
 
@@ -258,7 +261,8 @@ internal class RustConversationRepositoryImplTest {
         val result = rustConversationRepository.getConversationCursor(
             anchorItemId = anchorItemId,
             userId = userId,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = categoryLabelId
         )
 
         // Then

@@ -731,6 +731,7 @@ class RustMessageListQueryImplTest {
         val actual = rustMessageListQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
+            categoryLabelId = primaryCategoryId,
             firstPage = conversationId
         )
 
@@ -756,6 +757,7 @@ class RustMessageListQueryImplTest {
         val actual = rustMessageListQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = labelId,
+            categoryLabelId = primaryCategoryId,
             firstPage = conversationId
         )
 
@@ -811,6 +813,7 @@ class RustMessageListQueryImplTest {
         val actual = rustMessageListQuery.getCursorFromActivePaginator(
             userId = userId,
             labelId = requestedLabelId,
+            categoryLabelId = socialCategoryId,
             firstPage = conversationId
         )
 

@@ -145,11 +145,13 @@ class RustConversationRepositoryImpl @Inject constructor(
     override suspend fun getConversationCursor(
         anchorItemId: CursorId,
         userId: UserId,
-        labelId: LabelId
+        labelId: LabelId,
+        categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor> = conversationCursorRepository.getCursor(
         anchorItemId,
         userId,
-        labelId
+        labelId,
+        categoryLabelId
     )
 
     override suspend fun move(

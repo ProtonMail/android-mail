@@ -53,7 +53,8 @@ internal class GetConversationCursorTest {
             conversationRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         } returns expected.right()
 
@@ -66,7 +67,8 @@ internal class GetConversationCursorTest {
             conversationId = conversationId,
             messageId = messageId,
             locationViewModeIsConversation = true,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -75,11 +77,12 @@ internal class GetConversationCursorTest {
             conversationRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         }
         coVerify(exactly = 0) {
-            messageRepository.getConversationCursor(any(), any(), any())
+            messageRepository.getConversationCursor(any(), any(), any(), null)
         }
     }
 
@@ -91,7 +94,8 @@ internal class GetConversationCursorTest {
             messageRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         } returns expected.right()
 
@@ -104,7 +108,8 @@ internal class GetConversationCursorTest {
             conversationId = conversationId,
             messageId = messageId,
             locationViewModeIsConversation = false,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -113,11 +118,12 @@ internal class GetConversationCursorTest {
             messageRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         }
         coVerify(exactly = 0) {
-            conversationRepository.getConversationCursor(any(), any(), any())
+            conversationRepository.getConversationCursor(any(), any(), any(), null)
         }
     }
 
@@ -129,7 +135,8 @@ internal class GetConversationCursorTest {
             conversationRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         } returns expected.left()
 
@@ -142,7 +149,8 @@ internal class GetConversationCursorTest {
             conversationId = conversationId,
             messageId = messageId,
             locationViewModeIsConversation = true,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -151,7 +159,8 @@ internal class GetConversationCursorTest {
             conversationRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         }
     }
@@ -164,7 +173,8 @@ internal class GetConversationCursorTest {
             messageRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         } returns expected.left()
 
@@ -177,7 +187,8 @@ internal class GetConversationCursorTest {
             conversationId = conversationId,
             messageId = messageId,
             locationViewModeIsConversation = false,
-            labelId = labelId
+            labelId = labelId,
+            categoryLabelId = null
         )
 
         // Then
@@ -186,7 +197,8 @@ internal class GetConversationCursorTest {
             messageRepository.getConversationCursor(
                 userId = userId,
                 anchorItemId = CursorId(conversationId, messageId),
-                labelId = labelId
+                labelId = labelId,
+                categoryLabelId = null
             )
         }
     }
