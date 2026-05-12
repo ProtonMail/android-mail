@@ -27,12 +27,14 @@ import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.mapper.toAutoLockPinError
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
+import me.proton.core.network.domain.session.SessionId
 import uniffi.mail_uniffi.BackgroundExecutionCallback
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionDeletePinCodeResult
 import uniffi.mail_uniffi.MailSessionGetAccountResult
 import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
 import uniffi.mail_uniffi.MailSessionGetPrimaryAccountResult
+import uniffi.mail_uniffi.MailSessionGetSessionResult
 import uniffi.mail_uniffi.MailSessionGetSessionsResult
 import uniffi.mail_uniffi.MailSessionInitializedUserSessionFromStoredSessionResult
 import uniffi.mail_uniffi.MailSessionNewLoginFlowResult
@@ -47,6 +49,7 @@ import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.StoredAccount
 import uniffi.mail_uniffi.StoredSession
 
+@Suppress("TooManyFunctions")
 class MailSessionWrapper(private val mailSession: MailSession) {
 
     fun getRustMailSession() = mailSession
@@ -82,6 +85,16 @@ class MailSessionWrapper(private val mailSession: MailSession) {
     suspend fun getSessions(): Either<DataError, List<StoredSession>> = when (val result = mailSession.getSessions()) {
         is MailSessionGetSessionsResult.Error -> result.v1.toDataError().left()
         is MailSessionGetSessionsResult.Ok -> result.v1.right()
+    }
+
+    suspend fun getSessionById(sessionId: SessionId): Either<DataError, StoredSession> = when (
+        val result = mailSession.getSession(sessionId.id)
+    ) {
+        is MailSessionGetSessionResult.Error -> result.v1.toDataError().left()
+        is MailSessionGetSessionResult.Ok -> when (val data = result.v1) {
+            null -> DataError.Local.NotFound.left()
+            else -> data.right()
+        }
     }
 
     suspend fun userContextFromSession(session: StoredSession): Either<DataError, MailUserSessionWrapper> =
@@ -169,4 +182,6 @@ class MailSessionWrapper(private val mailSession: MailSession) {
             is MailSessionNewLoginFlowResult.Error -> result.v1.toDataError().left()
         }
     }
+
+    fun newBackgroundExecutionScope() = mailSession.newBackgroundExecutionScope()
 }
