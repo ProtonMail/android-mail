@@ -22,15 +22,19 @@ import ch.protonmail.android.mailnotifications.data.model.QuickActionPayloadData
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailsession.data.mapper.toLocalUserId
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.ActionError
 import uniffi.mail_uniffi.ActionErrorReason
+import uniffi.mail_uniffi.MailBackgroundExecScope
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionGetSessionsResult
 import uniffi.mail_uniffi.PushNotificationQuickAction
@@ -54,8 +58,15 @@ internal class ExecutePushNotificationActionTest {
             MailSessionGetSessionsResult.Ok(listOf(storedSession))
     }
 
+    private val backgroundScope = mockk<MailBackgroundExecScope> {
+        justRun { finsihed() }
+    }
+    private val mailSessionWrapper = mockk<MailSessionWrapper> {
+        every { getRustMailSession() } returns mailSession
+        every { newBackgroundExecutionScope() } returns backgroundScope
+    }
     private val mailSessionRepo = mockk<MailSessionRepository> {
-        coEvery { this@mockk.getMailSession().getRustMailSession() } returns mailSession
+        every { getMailSession() } returns mailSessionWrapper
     }
 
     private lateinit var executePushNotificationAction: ExecutePushNotificationAction
