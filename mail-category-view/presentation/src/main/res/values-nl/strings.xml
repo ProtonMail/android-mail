@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
-  <string name="category_title_social">Social</string>
-  <string name="category_title_promotions">Promotions</string>
+  <string name="category_title_primary">Primair</string>
+  <string name="category_title_social">Sociaal</string>
+  <string name="category_title_promotions">Promoties</string>
   <string name="category_title_updates">Updates</string>
   <string name="category_title_forums">Forums</string>
-  <string name="category_title_newsletters">Newsletters</string>
-  <string name="category_title_transactions">Transactions</string>
+  <string name="category_title_newsletters">Nieuwsbrieven</string>
+  <string name="category_title_transactions">Transacties</string>
 </resources>
