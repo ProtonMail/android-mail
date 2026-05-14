@@ -59,7 +59,7 @@
   <string name="upselling_upgrade_plan_generic">Du trenger et betalt Proton Mail-abonnement for å bruke denne funksjonen</string>
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Lagring</string>
+  <string name="upselling_comparison_table_storage">Lagringsplass</string>
   <string name="upselling_comparison_table_email_addresses">E-postadresser</string>
   <string name="upselling_comparison_table_custom_email_domain">Egendefinert e-postdomene</string>
   <string name="upselling_comparison_table_desktop_app">Tilgang til skrivebordsappen</string>
