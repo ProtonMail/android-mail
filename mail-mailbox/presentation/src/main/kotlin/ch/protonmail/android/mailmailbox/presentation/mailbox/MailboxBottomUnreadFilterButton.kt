@@ -19,10 +19,14 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,12 +41,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.titleMediumNorm
+import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
 import ch.protonmail.android.mailcommon.presentation.model.isEmpty
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -66,6 +74,8 @@ internal fun BottomUnreadFilterButton(
     )
 
     val contentColor = if (isActive) ProtonTheme.colors.textInverted else ProtonTheme.colors.textNorm
+    val shouldShowUnreadCount = !isActive && !state.unreadCount.isEmpty()
+    val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && state.activeCategoryColor != null
 
     Surface(
         modifier = modifier.height(UnreadHeight),
@@ -79,8 +89,14 @@ internal fun BottomUnreadFilterButton(
                     if (isActive) onFilterDisabled() else onFilterEnabled()
                 }
                 .padding(
-                    start = ProtonDimens.Spacing.ModeratelyLarger,
-                    end = if (isActive) ProtonDimens.Spacing.Medium else ProtonDimens.Spacing.ModeratelyLarger
+                    start = ProtonDimens.Spacing.ModeratelyLarge,
+                    end = ProtonDimens.Spacing.ModeratelyLarge
+                )
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMediumLow
+                    )
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -89,7 +105,7 @@ internal fun BottomUnreadFilterButton(
                 text = buildAnnotatedString {
                     append(stringResource(R.string.filter_unread_button_text))
 
-                    if (!state.unreadCount.isEmpty()) {
+                    if (shouldShowUnreadCount && !shouldShowCategoryUnreadCircle) {
                         append(" ")
                         append(state.unreadCount.asDisplayText())
                     }
@@ -97,6 +113,30 @@ internal fun BottomUnreadFilterButton(
                 style = ProtonTheme.typography.titleMediumNorm,
                 color = contentColor
             )
+
+            if (shouldShowCategoryUnreadCircle) {
+                Surface(
+                    modifier = Modifier
+                        .padding(start = ProtonDimens.Spacing.Standard)
+                        .height(CategoryUnreadBadgeHeight)
+                        .defaultMinSize(minWidth = CategoryUnreadBadgeMinWidth),
+                    shape = ProtonTheme.shapes.massive,
+                    color = state.activeCategoryColor
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Standard)
+                    ) {
+                        Text(
+                            text = state.unreadCount.asDisplayText(),
+                            style = ProtonTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = ProtonTheme.colors.textInverted
+                        )
+                    }
+                }
+            }
 
             if (isActive) {
                 Icon(
@@ -113,3 +153,50 @@ internal fun BottomUnreadFilterButton(
 }
 
 private val UnreadHeight = 56.dp
+private val CategoryUnreadBadgeHeight = 30.dp
+private val CategoryUnreadBadgeMinWidth = 30.dp
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("MagicNumber")
+private fun BottomUnreadFilterButtonPreviewVariants() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
+        modifier = Modifier.padding(ProtonDimens.Spacing.Small)
+    ) {
+        BottomUnreadFilterButton(
+            state = UnreadFilterState.Data(unreadCount = CappedNumberUiModel.Exact(12), isFilterEnabled = false),
+            onFilterEnabled = {},
+            onFilterDisabled = {}
+        )
+
+        BottomUnreadFilterButton(
+            state = UnreadFilterState.Data(unreadCount = CappedNumberUiModel.Exact(12), isFilterEnabled = true),
+            onFilterEnabled = {},
+            onFilterDisabled = {}
+        )
+
+        BottomUnreadFilterButton(
+            state = UnreadFilterState.Data(
+                unreadCount = CappedNumberUiModel.Exact(7),
+                isFilterEnabled = false,
+                activeCategoryColor = PreviewCategoryBlue
+            ),
+            onFilterEnabled = {},
+            onFilterDisabled = {}
+        )
+
+        BottomUnreadFilterButton(
+            state = UnreadFilterState.Data(
+                unreadCount = CappedNumberUiModel.Capped(999),
+                isFilterEnabled = false,
+                activeCategoryColor = PreviewCategoryBlue
+            ),
+            onFilterEnabled = {},
+            onFilterDisabled = {}
+        )
+    }
+}
+
+private val PreviewCategoryBlue = Color(0xFF2C96F5)
+
