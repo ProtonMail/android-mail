@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
+import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -34,6 +36,7 @@ class MailboxUnreadFilterReducer @Inject constructor() {
         return when (operation) {
             is MailboxEvent.SelectedLabelCountChanged -> currentState.toNewStateForCountChanged(operation)
             is MailboxEvent.NewLabelSelected -> currentState.toNewStateForLabelSelected(operation)
+            is MailboxEvent.CategoryViewStatusChanged -> currentState.toNewStateForCategoryViewStatusChanged(operation)
             MailboxViewAction.DisableUnreadFilter -> currentState.toNewStateForFilterDisabled()
             MailboxViewAction.EnableUnreadFilter -> currentState.toNewStateForFilterEnabled()
         }
@@ -51,11 +54,11 @@ class MailboxUnreadFilterReducer @Inject constructor() {
 
     private fun UnreadFilterState.toNewStateForLabelSelected(operation: MailboxEvent.NewLabelSelected) = when (this) {
         is UnreadFilterState.Loading -> UnreadFilterState.Data(
-            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(),
+            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
             isFilterEnabled = false
         )
         is UnreadFilterState.Data -> copy(
-            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(),
+            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
             isFilterEnabled = false
         )
     }
@@ -66,10 +69,23 @@ class MailboxUnreadFilterReducer @Inject constructor() {
         val currentLabelCount = operation.selectedLabelCount
         return when (this) {
             is UnreadFilterState.Loading -> UnreadFilterState.Data(
-                unreadCount = currentLabelCount.toCappedNumberUiModel(),
+                unreadCount = currentLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
                 isFilterEnabled = false
             )
-            is UnreadFilterState.Data -> copy(unreadCount = currentLabelCount.toCappedNumberUiModel())
+            is UnreadFilterState.Data -> copy(unreadCount = currentLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP))
         }
+    }
+
+    private fun UnreadFilterState.toNewStateForCategoryViewStatusChanged(
+        operation: MailboxEvent.CategoryViewStatusChanged
+    ): UnreadFilterState = when (this) {
+        is UnreadFilterState.Loading -> this
+        is UnreadFilterState.Data -> copy(
+            activeCategoryColor = operation.categoryViewStatus.activeCategoryOrNull()?.toUiModel()?.activeColor
+        )
+    }
+
+    companion object {
+        private const val UNREAD_COUNT_CAP = 99
     }
 }

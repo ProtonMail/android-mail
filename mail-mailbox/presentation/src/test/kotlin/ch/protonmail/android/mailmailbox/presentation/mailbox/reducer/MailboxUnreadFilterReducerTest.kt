@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.testdata.category.CategoryLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,6 +53,8 @@ internal class MailboxUnreadFilterReducerTest(
         private const val INITIAL_UNREAD_COUNT = 42
         private const val UPDATED_UNREAD_COUNT = 24
         private const val OVERFLOW_UNREAD_COUNT = 100
+        private const val UNREAD_COUNT_CAP = 99
+        private val activeCategoryColor = CategoryLabelTestData.primary.toUiModel().activeColor
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -96,9 +101,18 @@ internal class MailboxUnreadFilterReducerTest(
                 currentState = UnreadFilterState.Loading,
                 operation = MailboxEvent.SelectedLabelCountChanged(OVERFLOW_UNREAD_COUNT),
                 expectedState = UnreadFilterState.Data(
-                    unreadCount = OVERFLOW_UNREAD_COUNT.toCappedNumberUiModel(),
+                    unreadCount = OVERFLOW_UNREAD_COUNT.toCappedNumberUiModel(UNREAD_COUNT_CAP),
                     isFilterEnabled = false
                 )
+            ),
+            TestInput(
+                currentState = UnreadFilterState.Loading,
+                operation = MailboxEvent.CategoryViewStatusChanged(
+                    categoryViewStatus = CategoryViewStatus.Available(
+                        categories = listOf(CategoryLabelTestData.primary)
+                    )
+                ),
+                expectedState = UnreadFilterState.Loading
             )
         )
 
@@ -232,8 +246,39 @@ internal class MailboxUnreadFilterReducerTest(
                 ),
                 operation = MailboxEvent.SelectedLabelCountChanged(OVERFLOW_UNREAD_COUNT),
                 expectedState = UnreadFilterState.Data(
-                    unreadCount = OVERFLOW_UNREAD_COUNT.toCappedNumberUiModel(),
+                    unreadCount = OVERFLOW_UNREAD_COUNT.toCappedNumberUiModel(UNREAD_COUNT_CAP),
                     isFilterEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false
+                ),
+                operation = MailboxEvent.CategoryViewStatusChanged(
+                    categoryViewStatus = CategoryViewStatus.Available(
+                        categories = listOf(CategoryLabelTestData.primary)
+                    )
+                ),
+                expectedState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false,
+                    activeCategoryColor = activeCategoryColor
+                )
+            ),
+            TestInput(
+                currentState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false,
+                    activeCategoryColor = activeCategoryColor
+                ),
+                operation = MailboxEvent.CategoryViewStatusChanged(
+                    categoryViewStatus = CategoryViewStatus.NotAvailable
+                ),
+                expectedState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false,
+                    activeCategoryColor = null
                 )
             )
         )

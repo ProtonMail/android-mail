@@ -28,3 +28,9 @@ sealed interface CategoryViewStatus {
 
     data object Error : CategoryViewStatus
 }
+
+fun CategoryViewStatus.activeCategoryOrNull(): CategoryLabel? = when (this) {
+    is CategoryViewStatus.Available -> categories.firstOrNull { it.isActive }
+    is CategoryViewStatus.NotAvailable,
+    is CategoryViewStatus.Error -> null
+}
