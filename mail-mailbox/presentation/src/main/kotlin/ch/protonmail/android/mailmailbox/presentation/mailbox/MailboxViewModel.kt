@@ -87,6 +87,7 @@ import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -191,6 +192,7 @@ class MailboxViewModel @Inject constructor(
     private val getSelectedMailLabelId: GetSelectedMailLabelId,
     private val selectMailLabelId: SelectMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
+    private val observeCategoryAwareUnreadCount: ObserveCategoryAwareUnreadCount,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val getBottomBarActions: GetBottomBarActions,
     private val getBottomSheetActions: GetBottomSheetActions,
@@ -328,9 +330,7 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
-        observeUnreadCounters()
-            .mapToCurrentLabelCount()
-            .filterNotNull()
+        observeSelectedLabelUnreadCount()
             .onEach { currentLabelCount ->
                 emitNewStateFrom(MailboxEvent.SelectedLabelCountChanged(currentLabelCount))
             }
@@ -1408,9 +1408,12 @@ class MailboxViewModel @Inject constructor(
         Pair(currentLabel, currentLabelCount)
     }
 
-    private fun Flow<List<UnreadCounter>>.mapToCurrentLabelCount() = map { unreadCounters ->
-        val currentMailLabelId = getSelectedMailLabelId()
-        unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count
+    private fun observeSelectedLabelUnreadCount(): Flow<Int> = primaryUserId.flatMapLatest { userId ->
+        observeSelectedLabelWithCategory()
+            .distinctUntilChanged()
+            .flatMapLatest { selectedLabelWithCategory ->
+                observeCategoryAwareUnreadCount(userId, selectedLabelWithCategory)
+            }
     }
 
     private fun emitNewStateFrom(operation: MailboxOperation) {

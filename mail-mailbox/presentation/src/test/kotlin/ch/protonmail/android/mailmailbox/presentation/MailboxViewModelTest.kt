@@ -87,6 +87,7 @@ import ch.protonmail.android.mailmailbox.domain.model.ScrollerType
 import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
@@ -155,7 +156,6 @@ import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadM
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.readMailboxItem
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.unreadMailboxItem
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
-import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData.update
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserIdTestData.userId1
@@ -252,6 +252,10 @@ internal class MailboxViewModelTest {
 
     private val observeUnreadCounters = mockk<ObserveUnreadCounters> {
         coEvery { this@mockk(userId = any()) } returns flowOf(UnreadCountersTestData.systemUnreadCounters)
+    }
+
+    private val observeCategoryAwareUnreadCount = mockk<ObserveCategoryAwareUnreadCount> {
+        every { this@mockk(any(), any()) } returns flowOf(5)
     }
 
     private val pagerFactory = mockk<MailboxPagerFactory>()
@@ -390,6 +394,7 @@ internal class MailboxViewModelTest {
             getSelectedMailLabelId = getSelectedMailLabelId,
             selectMailLabelId = selectMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
+            observeCategoryAwareUnreadCount = observeCategoryAwareUnreadCount,
             observeFolderColorSettings = observeFolderColorSettings,
             getBottomBarActions = getBottomBarActions,
             getBottomSheetActions = getBottomSheetActions,
@@ -455,7 +460,7 @@ internal class MailboxViewModelTest {
     @Test
     fun `emits initial mailbox state when initialized`() = runTest {
         // Given
-        coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
+        every { observeCategoryAwareUnreadCount(any(), any()) } returns emptyFlow()
         coEvery { observeMailLabels(userId = any()) } returns emptyFlow()
 
         // When
@@ -530,6 +535,7 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
             awaitItem() // swipe gestures
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -572,6 +578,7 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(intermediateState, awaitItem())
             assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -663,6 +670,7 @@ internal class MailboxViewModelTest {
             )
         )
         val currentLocationFlow = MutableStateFlow(MailLabelTestData.withCategory(initialMailLabel.id))
+        val modifiedLabelCount = UnreadCountersTestData.labelToCounterMap[modifiedMailLabel.id.labelId]
         every { observeMailLabels(userId) } returns mailLabelsFlow
         every { observeLoadedMailLabelId() } returns currentLocationFlow.map { it.mailLabelId }
         every { observeSelectedLabelWithCategory() } returns currentLocationFlow
@@ -672,7 +680,7 @@ internal class MailboxViewModelTest {
                 any(),
                 MailboxEvent.NewLabelSelected(
                     modifiedMailLabel,
-                    null
+                    modifiedLabelCount
                 )
             )
         } returns expectedState
@@ -691,6 +699,7 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -742,6 +751,7 @@ internal class MailboxViewModelTest {
         )
         val currentLocationFlow = MutableStateFlow(MailLabelTestData.withCategory(initialMailLabel.id))
         val currentUserIdFlow = MutableStateFlow(userId)
+        val initialLabelCount = UnreadCountersTestData.labelToCounterMap[initialMailLabel.id.labelId]
 
         every { observeLoadedMailLabelId() } returns currentLocationFlow.map { it.mailLabelId }
         every { observeSelectedLabelWithCategory() } returns currentLocationFlow
@@ -756,7 +766,7 @@ internal class MailboxViewModelTest {
                 any(),
                 MailboxEvent.NewLabelSelected(
                     initialMailLabel,
-                    null
+                    initialLabelCount
                 )
             )
         } returns expectedState
@@ -775,7 +785,6 @@ internal class MailboxViewModelTest {
             advanceUntilIdle()
 
             // Then
-            assertEquals(MailboxStateSampleData.Loading, awaitItem())
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
 
@@ -787,13 +796,13 @@ internal class MailboxViewModelTest {
     fun `when counters for selected location change, new state is created and emitted`() = runTest {
         // Given
         val expectedCount = 42
+        val selectedLabelWithCategory = MailLabelTestData.withCategory(initialLocationMailLabelId)
         val expectedState = MailboxStateSampleData.Loading.copy(
             unreadFilterState = UnreadFilterState.Data(expectedCount.toCappedNumberUiModel(), false)
         )
-        val currentCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
-        val modifiedCounters = UnreadCountersTestData.systemUnreadCounters
-            .update(initialLocationMailLabelId.labelId, expectedCount)
-        coEvery { observeUnreadCounters(userId) } returns currentCountersFlow
+        val currentUnreadCountFlow = MutableStateFlow(0)
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(selectedLabelWithCategory)
+        every { observeCategoryAwareUnreadCount(userId, selectedLabelWithCategory) } returns currentUnreadCountFlow
         every {
             mailboxReducer.newStateFrom(
                 any(),
@@ -804,7 +813,7 @@ internal class MailboxViewModelTest {
         mailboxViewModel.state.test {
             awaitItem()
 
-            currentCountersFlow.emit(modifiedCounters)
+            currentUnreadCountFlow.emit(expectedCount)
 
             // Then
             assertEquals(expectedState, awaitItem())
@@ -815,13 +824,14 @@ internal class MailboxViewModelTest {
     fun `when counters for a different location change, should not produce nor emit a new state`() = runTest {
         // Given
         val expectedCount = 42
+        val selectedLabelWithCategory = MailLabelTestData.withCategory(initialLocationMailLabelId)
+        val differentLabelWithCategory = MailLabelTestData.withCategory(MailLabelTestData.spamSystemLabel.id)
         val expectedState = MailboxStateSampleData.Loading.copy(
             unreadFilterState = UnreadFilterState.Data(expectedCount.toCappedNumberUiModel(), false)
         )
-        val currentCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
-        val modifiedCounters = UnreadCountersTestData.systemUnreadCounters
-            .update(SystemLabelId.Spam.labelId, expectedCount)
-        coEvery { observeUnreadCounters(userId) } returns currentCountersFlow
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(selectedLabelWithCategory)
+        every { observeCategoryAwareUnreadCount(userId, selectedLabelWithCategory) } returns emptyFlow()
+        every { observeCategoryAwareUnreadCount(userId, differentLabelWithCategory) } returns flowOf(expectedCount)
         every {
             mailboxReducer.newStateFrom(
                 any(),
@@ -832,7 +842,7 @@ internal class MailboxViewModelTest {
         mailboxViewModel.state.test {
             awaitItem()
 
-            currentCountersFlow.emit(modifiedCounters)
+            advanceUntilIdle()
 
             // Then
             verify(exactly = 0) {
@@ -1095,7 +1105,7 @@ internal class MailboxViewModelTest {
     fun `when loading and validateUserSession is false then emit CouldNotLoadUserSession`() = runTest {
         // Given
         coEvery { getUserHasValidSession() } returns false
-        coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
+        every { observeCategoryAwareUnreadCount(any(), any()) } returns emptyFlow()
         coEvery { observeMailLabels(userId = any()) } returns emptyFlow()
 
         // When
@@ -1133,7 +1143,7 @@ internal class MailboxViewModelTest {
     fun `when loading and validateUserSession is true then do not emit CouldNotLoadUserSession`() = runTest {
         // Given
         coEvery { getUserHasValidSession() } returns true
-        coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
+        every { observeCategoryAwareUnreadCount(any(), any()) } returns emptyFlow()
         coEvery { observeMailLabels(userId = any()) } returns emptyFlow()
 
         // When
@@ -3950,12 +3960,7 @@ internal class MailboxViewModelTest {
         )
 
         val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
-        val unreadCountersFlow = MutableStateFlow(
-            UnreadCountersTestData.systemUnreadCounters
-                .update(initialLocationMailLabelId.labelId, expectedUnreadCount)
-        )
-
-        coEvery { observeUnreadCounters(userId) } returns unreadCountersFlow
+        every { observeCategoryAwareUnreadCount(any(), any()) } returns flowOf(expectedUnreadCount)
         every { observeCategoryViewStatus(any()) } returns categoryViewStatusFlow
 
         every {
