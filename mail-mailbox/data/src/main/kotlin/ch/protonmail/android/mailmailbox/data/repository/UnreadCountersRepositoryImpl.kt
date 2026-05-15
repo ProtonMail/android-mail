@@ -19,8 +19,11 @@
 package ch.protonmail.android.mailmailbox.data.repository
 
 import ch.protonmail.android.mailcommon.domain.annotation.MissingRustApi
+import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.local.LabelDataSource
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
@@ -33,6 +36,13 @@ import javax.inject.Inject
 class UnreadCountersRepositoryImpl @Inject constructor(
     private val labelDataSource: LabelDataSource
 ) : UnreadCountersRepository {
+
+    override fun observeUnreadCount(userId: UserId, selectedLabelWithCategory: MailLabelIdWithCategory): Flow<Int> =
+        labelDataSource.observeUnreadCount(
+            userId = userId,
+            labelId = selectedLabelWithCategory.mailLabelId.labelId.toLocalLabelId(),
+            categoryLabelId = selectedLabelWithCategory.categoryLabelId?.toLocalCategoryLabelId()
+        )
 
     @MissingRustApi
     override fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>> = combine(

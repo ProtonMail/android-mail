@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,16 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.repository
+package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-interface UnreadCountersRepository {
+class ObserveCategoryAwareUnreadCount @Inject constructor(
+    private val unreadCountersRepository: UnreadCountersRepository
+) {
 
-    fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>>
-
-    fun observeUnreadCount(userId: UserId, selectedLabelWithCategory: MailLabelIdWithCategory): Flow<Int>
+    operator fun invoke(userId: UserId, selectedLabelWithCategory: MailLabelIdWithCategory): Flow<Int> =
+        unreadCountersRepository.observeUnreadCount(userId, selectedLabelWithCategory)
 }
+

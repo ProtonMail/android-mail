@@ -19,6 +19,7 @@
 package ch.protonmail.android.maillabel.data.local
 
 import arrow.core.Either
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -36,6 +37,12 @@ interface LabelDataSource {
     fun observeMessageLabels(userId: UserId): Flow<List<SidebarCustomLabel>>
 
     fun observeMessageFolders(userId: UserId): Flow<List<SidebarCustomFolder>>
+
+    fun observeUnreadCount(
+        userId: UserId,
+        labelId: LocalLabelId,
+        categoryLabelId: LocalCategoryLabelId?
+    ): Flow<Int>
 
     suspend fun getAllMailLabelId(userId: UserId): Either<DataError, LocalLabelId>
 

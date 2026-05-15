@@ -20,13 +20,13 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId

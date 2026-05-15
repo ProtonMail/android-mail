@@ -19,13 +19,12 @@
 package ch.protonmail.android.mailcategory.data.mapper
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryLabel
-import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabel
-import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryView
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
+import ch.protonmail.android.maillabel.data.mapper.toCategoryLabelId
 import timber.log.Timber
 import uniffi.mail_uniffi.ConversationScrollerCategoryViewResult
 import uniffi.mail_uniffi.MessageScrollerCategoryViewResult
@@ -47,10 +46,6 @@ fun LocalCategoryLabel.toCategoryLabel(): CategoryLabel {
         systemLabel = systemLabel.toCategorySystemLabel()
     )
 }
-
-fun LocalCategoryLabelId.toCategoryLabelId(): CategoryLabelId = CategoryLabelId(this.value.toString())
-
-fun CategoryLabelId.toLocalCategoryLabelId(): LocalCategoryLabelId = LocalCategoryLabelId(this.id.toULong())
 
 fun ConversationScrollerCategoryViewResult.toCategoryViewStatus(): CategoryViewStatus = when (this) {
     is ConversationScrollerCategoryViewResult.Ok -> {

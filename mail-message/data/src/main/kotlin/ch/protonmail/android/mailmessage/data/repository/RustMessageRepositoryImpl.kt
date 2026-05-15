@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import java.io.File
 import arrow.core.Either
-import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
@@ -30,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailcommon.domain.repository.UndoRepository
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageDataSource

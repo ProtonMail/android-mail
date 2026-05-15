@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.maillabel.data.mapper
 
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
@@ -163,3 +165,7 @@ fun InlineCustomLabel.toLabel() = Label(
     isExpanded = null,
     isSticky = null
 )
+
+fun LocalCategoryLabelId.toCategoryLabelId(): CategoryLabelId = CategoryLabelId(this.value.toString())
+
+fun CategoryLabelId.toLocalCategoryLabelId(): LocalCategoryLabelId = LocalCategoryLabelId(this.id.toULong())

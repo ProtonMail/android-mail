@@ -23,6 +23,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
+import ch.protonmail.android.maillabel.data.usecase.CreateMailbox
 import ch.protonmail.android.maillabel.data.usecase.CreateRustSidebar
 import ch.protonmail.android.maillabel.data.usecase.RustGetAllMailLabelId
 import ch.protonmail.android.maillabel.data.wrapper.SidebarWrapper
@@ -60,6 +61,7 @@ internal class RustLabelDataSourceTest {
     private val userSessionRepository = mockk<UserSessionRepository>()
     private val testCoroutineScope = CoroutineScope(mainDispatcherRule.testDispatcher)
     private val createRustSidebar = mockk<CreateRustSidebar>()
+    private val createMailbox = mockk<CreateMailbox>()
     private val rustGetAllMailLabelId = mockk<RustGetAllMailLabelId>()
     private val rustGetSystemLabelById = mockk<RustGetSystemLabelById>()
     private val rustGetLabelIdBySystemLabel = mockk<RustGetLabelIdBySystemLabel>()
@@ -67,6 +69,7 @@ internal class RustLabelDataSourceTest {
     private val labelDataSource = RustLabelDataSource(
         userSessionRepository,
         createRustSidebar,
+        createMailbox,
         rustGetAllMailLabelId,
         rustGetSystemLabelById,
         rustGetLabelIdBySystemLabel,
