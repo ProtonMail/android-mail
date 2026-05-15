@@ -22,7 +22,6 @@ import javax.inject.Singleton
 
 import arrow.core.Either
 import arrow.core.left
-import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.repository.RustConversationCursorImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
@@ -36,6 +35,7 @@ import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWra
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
 import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId

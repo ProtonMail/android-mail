@@ -21,7 +21,6 @@ package ch.protonmail.android.mailconversation.data.repository
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
-import ch.protonmail.android.mailcategory.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
@@ -40,6 +39,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMess
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
 import ch.protonmail.android.mailconversation.domain.repository.ConversationCursorRepository
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId

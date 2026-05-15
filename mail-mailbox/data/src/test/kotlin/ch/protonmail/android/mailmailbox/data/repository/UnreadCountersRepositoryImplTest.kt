@@ -19,11 +19,18 @@
 package ch.protonmail.android.mailmailbox.data.repository
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
+import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.local.LabelDataSource
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.testdata.label.rust.LocalLabelTestData
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -59,6 +66,29 @@ class UnreadCountersRepositoryImplTest {
             awaitComplete()
         }
 
+    }
+
+    @Test
+    fun `observes unread count for selected label with category`() = runTest {
+        // Given
+        val selectedLabelWithCategory = MailLabelIdWithCategory(
+            mailLabelId = MailLabelId.System(SystemLabelId.Inbox.labelId),
+            categoryLabelId = CategoryLabelId("24")
+        )
+        every {
+            labelDataSource.observeUnreadCount(
+                userId = userId,
+                labelId = LocalLabelId(SystemLabelId.Inbox.labelId.id.toULong()),
+                categoryLabelId = LocalCategoryLabelId(24u)
+            )
+        } returns flowOf(9)
+
+        // When
+        repository.observeUnreadCount(userId, selectedLabelWithCategory).test {
+            // Then
+            assertEquals(9, awaitItem())
+            awaitComplete()
+        }
     }
 
     companion object TestData {

@@ -20,13 +20,16 @@ package ch.protonmail.android.maillabel.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.MailLabelRustCoroutineScope
+import ch.protonmail.android.maillabel.data.usecase.CreateMailbox
 import ch.protonmail.android.maillabel.data.usecase.CreateRustSidebar
 import ch.protonmail.android.maillabel.data.usecase.RustGetAllMailLabelId
+import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.data.wrapper.SidebarWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,12 +48,14 @@ import uniffi.mail_uniffi.LiveQueryCallback
 import uniffi.mail_uniffi.SidebarCustomFolder
 import uniffi.mail_uniffi.SidebarCustomLabel
 import uniffi.mail_uniffi.SidebarSystemLabel
+import uniffi.mail_uniffi.UnreadLiveQueryCallback
 import uniffi.mail_uniffi.WatchHandle
 import javax.inject.Inject
 
 class RustLabelDataSource @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
     private val createRustSidebar: CreateRustSidebar,
+    private val createMailbox: CreateMailbox,
     private val rustGetAllMailLabelId: RustGetAllMailLabelId,
     private val rustGetSystemLabelById: RustGetSystemLabelById,
     private val rustGetLabelIdBySystemLabel: RustGetLabelIdBySystemLabel,
@@ -127,6 +132,22 @@ class RustLabelDataSource @Inject constructor(
             }
         }.flowOn(ioDispatcher)
 
+    private suspend fun getRustMailboxInstance(userId: UserId, labelId: LocalLabelId): MailboxWrapper? {
+        val session = userSessionRepository.getUserSession(userId)
+        if (session == null) {
+            Timber.e("rust-label: trying to watch unread count with a null session")
+            return null
+        }
+
+        return createMailbox(session, labelId).fold(
+            ifLeft = {
+                Timber.e("rust-label: trying to watch unread count with an invalid mailbox. error=$it")
+                null
+            },
+            ifRight = { it }
+        )
+    }
+
     override fun observeSystemLabels(userId: UserId): Flow<List<SidebarSystemLabel>> = observeLabels(
         userId = userId
     ) { sidebar ->
@@ -143,6 +164,55 @@ class RustLabelDataSource @Inject constructor(
         userId = userId
     ) { sidebar ->
         sidebar.allCustomFolders().getOrNull()
+    }.flowOn(ioDispatcher)
+
+    override fun observeUnreadCount(
+        userId: UserId,
+        labelId: LocalLabelId,
+        categoryLabelId: LocalCategoryLabelId?
+    ): Flow<Int> = callbackFlow {
+        Timber.d("rust-label: initializing unread count live query")
+
+        val mailbox = getRustMailboxInstance(userId, labelId)
+        if (mailbox == null) {
+            close()
+            return@callbackFlow
+        }
+
+        val unreadUpdatedCallback = object : UnreadLiveQueryCallback {
+            override fun onUpdate(unread: ULong) {
+                trySend(unread.toInt())
+            }
+        }
+
+        var unreadWatchHandle: WatchHandle? = null
+
+        mailbox.unreadCount()
+            .onLeft {
+                close()
+                Timber.e("rust-label: failed to get initial unread count! $it")
+            }
+            .onRight {
+                trySend(it.toInt())
+            }
+
+        mailbox.watchUnreadCount(unreadUpdatedCallback, categoryLabelId)
+            .onLeft {
+                close()
+                Timber.e("rust-label: failed to watch unread count! $it")
+            }
+            .onRight { watcher ->
+                unreadWatchHandle = watcher
+            }
+
+        awaitClose {
+            coroutineScope.launch {
+                unreadWatchHandle?.disconnect()
+                mailbox.destroy()
+                unreadWatchHandle = null
+                Timber.d("rust-label: watcher for unread count destroyed")
+            }
+        }
     }.flowOn(ioDispatcher)
 
     override suspend fun getAllMailLabelId(userId: UserId): Either<DataError, LocalLabelId> =

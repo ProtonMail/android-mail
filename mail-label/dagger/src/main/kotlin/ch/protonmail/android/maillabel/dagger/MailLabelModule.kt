@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.data.local.RustGetLabelIdBySystemLabel
 import ch.protonmail.android.maillabel.data.local.RustGetSystemLabelById
 import ch.protonmail.android.maillabel.data.local.RustLabelDataSource
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.usecase.CreateMailbox
 import ch.protonmail.android.maillabel.data.repository.InMemorySelectedMailLabelIdRepositoryImpl
 import ch.protonmail.android.maillabel.data.repository.RustLabelRepository
 import ch.protonmail.android.maillabel.data.repository.ViewModeRepositoryImpl
@@ -62,6 +63,7 @@ object MailLabelModule {
     fun provideRustLabelDataSource(
         userSessionRepository: UserSessionRepository,
         createRustSidebar: CreateRustSidebar,
+        createMailbox: CreateMailbox,
         rustGetAllMailLabelId: RustGetAllMailLabelId,
         rustGetSystemLabelById: RustGetSystemLabelById,
         rustGetLabelIdBySystemLabel: RustGetLabelIdBySystemLabel,
@@ -70,6 +72,7 @@ object MailLabelModule {
     ): LabelDataSource = RustLabelDataSource(
         userSessionRepository,
         createRustSidebar,
+        createMailbox,
         rustGetAllMailLabelId,
         rustGetSystemLabelById,
         rustGetLabelIdBySystemLabel,

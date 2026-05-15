@@ -19,10 +19,13 @@
 package ch.protonmail.android.mailmailbox.domain.repository
 
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
+import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface UnreadCountersRepository {
 
     fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>>
+
+    fun observeUnreadCount(userId: UserId, selectedLabelWithCategory: MailLabelIdWithCategory): Flow<Int>
 }
