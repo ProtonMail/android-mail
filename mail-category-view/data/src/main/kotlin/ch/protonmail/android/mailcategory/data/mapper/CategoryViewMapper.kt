@@ -42,6 +42,7 @@ fun LocalCategoryView.toCategoryViewStatus(): CategoryViewStatus {
 fun LocalCategoryLabel.toCategoryLabel(): CategoryLabel {
     return CategoryLabel(
         id = id.toCategoryLabelId(),
+        hasUnseen = hasUnseenItems,
         isActive = enabled,
         systemLabel = systemLabel.toCategorySystemLabel()
     )

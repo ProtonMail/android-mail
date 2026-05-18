@@ -22,6 +22,7 @@ import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 
 data class CategoryLabel(
     val id: CategoryLabelId,
+    val hasUnseen: Boolean = false,
     val isActive: Boolean,
     val systemLabel: CategorySystemLabelId
 )

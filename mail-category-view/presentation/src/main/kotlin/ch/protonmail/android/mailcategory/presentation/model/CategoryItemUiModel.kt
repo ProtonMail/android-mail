@@ -30,5 +30,6 @@ data class CategoryItemUiModel(
     @StringRes val titleRes: Int,
     @DrawableRes val iconRes: Int,
     val activeColor: Color,
+    val hasUnseen: Boolean = false,
     val isActive: Boolean = false
 )

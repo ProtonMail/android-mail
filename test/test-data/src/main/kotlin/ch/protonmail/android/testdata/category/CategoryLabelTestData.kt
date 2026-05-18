@@ -26,12 +26,14 @@ object CategoryLabelTestData {
 
     val primary = CategoryLabel(
         id = CategoryLabelId(CategorySystemLabelId.Primary.labelId.id),
+        hasUnseen = true,
         isActive = true,
         systemLabel = CategorySystemLabelId.Primary
     )
 
     val social = CategoryLabel(
         id = CategoryLabelId(CategorySystemLabelId.Social.labelId.id),
+        hasUnseen = true,
         isActive = false,
         systemLabel = CategorySystemLabelId.Social
     )
