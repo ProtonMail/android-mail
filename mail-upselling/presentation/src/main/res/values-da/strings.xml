@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Få 1 måned for %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Spring tilbud over</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s for den 1. måned, derefter %s pr. måned</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Opgrader til Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Send nemt gruppe-e-mails. Nyd godt af dette og mere med Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Gruppér dine kontakter</string>
@@ -81,8 +83,12 @@
   <string name="upselling_comparison_table_desktop_app">Adgang til skrivebords-app</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Ubegrænsede mapper og etiketter</string>
   <string name="upselling_comparison_table_priority_support">Prioriteret kundesupport</string>
+  <string name="upselling_comparison_table_aliases">Hide My Email-aliasser</string>
+  <string name="upselling_comparison_table_folders_labels">Mapper og etiketter</string>
+  <string name="upselling_comparison_table_premium_products">Premium VPN, adgangskodeadministrator, og lagerplads i skyen</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Monitorering af det mørke net</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Vælg dit abonnement</string>
+  <string name="upselling_select_plan">Vælg abonnement</string>
   <string name="upselling_select_plan_year">12 måneder</string>
   <string name="upselling_select_plan_month">1 måned</string>
   <!-- Onboarding upsell -->
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB lagerplads</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-mailadresse</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Dit premium-abonnement med alt i ét</string>
+  <string name="upselling_unlimited_description_override">For at få mere lagerplads og premium-funktioner.</string>
   <string name="upselling_auto_renew_text">Fornyes automatisk til samme pris og vilkår, medmindre aftalen opsiges</string>
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s%s, medmindre det annulleres</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %s%s, indtil det annulleres.</string>

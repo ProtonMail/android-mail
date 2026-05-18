@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Obté 1 mes per %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Omet l\'oferta</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s per al primer mes, després %s al mes</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Milloreu a Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envieu correus de grup fàcilment. Trobareu això i més al Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupeu els contactes</string>
@@ -81,8 +83,12 @@
   <string name="upselling_comparison_table_desktop_app">Accés a l\'aplicació d\'escriptori</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Nombre il·limitat de carpetes i etiquetes</string>
   <string name="upselling_comparison_table_priority_support">Atenció al client prioritària</string>
+  <string name="upselling_comparison_table_aliases">Àlies de Hide My Email</string>
+  <string name="upselling_comparison_table_folders_labels">Carpetes i etiquetes</string>
+  <string name="upselling_comparison_table_premium_products">VPN prèmium, gestor de contrasenyes i emmagatzematge al núvol</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Monitoratge del web fosc</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Trieu el pla</string>
+  <string name="upselling_select_plan">Trieu una subscripció</string>
   <string name="upselling_select_plan_year">12 mesos</string>
   <string name="upselling_select_plan_month">1 mes</string>
   <!-- Onboarding upsell -->
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB d\'emmagatzematge</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 adreça de correu electrònic</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">La subscripció prèmium tot en un</string>
+  <string name="upselling_unlimited_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_auto_renew_text">Es renovarà automàticament al mateix preu i condicions tret que es cancel·li</string>
   <string name="upselling_auto_renew_text_promo">Oferta de benvinguda. Es renovarà automàticament per %s%s tret que es cancel·li</string>
   <string name="upselling_auto_renew_text_bfriday">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %s%s fins que no ho cancel·leu.</string>

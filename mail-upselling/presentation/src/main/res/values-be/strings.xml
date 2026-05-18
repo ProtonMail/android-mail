@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Атрымайце 1 месяц за %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Прапусціць прапанову</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s за першы месяц, а потым %s штомесяц</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Палепшыць да Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Адпраўляйце групавыя лісты з лёгкасцю. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Групаванне кантактаў</string>
@@ -81,8 +83,12 @@
   <string name="upselling_comparison_table_desktop_app">Доступ да праграмы для камп\'ютара</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Неабмежаваная колькасць папак і метак</string>
   <string name="upselling_comparison_table_priority_support">Прыярытэтная падтрымка кліентаў</string>
+  <string name="upselling_comparison_table_aliases">Псеўданімы Hide My Email</string>
+  <string name="upselling_comparison_table_folders_labels">Папкі і меткі</string>
+  <string name="upselling_comparison_table_premium_products">Прэміяльны VPN, менеджар пароляў і воблачнае сховішча</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Выберыце свой тарыфны план</string>
+  <string name="upselling_select_plan">Выберыце падпіску</string>
   <string name="upselling_select_plan_year">12 месяцаў</string>
   <string name="upselling_select_plan_month">1 месяц</string>
   <!-- Onboarding upsell -->
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 ГБ у сховішчы</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 адрас электроннай пошты</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Ваша ўніверсальная прэміяльная падпіска</string>
+  <string name="upselling_unlimited_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
   <string name="upselling_auto_renew_text">Аўтападаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана</string>
   <string name="upselling_auto_renew_text_promo">Вітальная прапанова. Аўтаматычнае падаўжэнне за %s%s пакуль не будзе скасавана</string>
   <string name="upselling_auto_renew_text_bfriday">Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %s%s, пакуль не будзе скасавана.</string>

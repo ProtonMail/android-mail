@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Krijg 1 maand voor %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Sla aanbod over</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s voor de eerste maand, daarna %s per maand</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Upgrade naar Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Verzend gemakkelijk groeps-e-mails. Profiteer hiervan en van meer met Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Groepeer uw contacten</string>
@@ -81,8 +83,12 @@
   <string name="upselling_comparison_table_desktop_app">Toegang tot desktop-app</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Onbeperkte mappen en labels</string>
   <string name="upselling_comparison_table_priority_support">Klantondersteuning met hoge prioriteit</string>
+  <string name="upselling_comparison_table_aliases">Hide-my-email-aliassen</string>
+  <string name="upselling_comparison_table_folders_labels">Mappen en labels</string>
+  <string name="upselling_comparison_table_premium_products">Premium VPN, wachtwoord manager en cloud opslag</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Kies uw abonnement</string>
+  <string name="upselling_select_plan">Abonnement kiezen</string>
   <string name="upselling_select_plan_year">12 maanden</string>
   <string name="upselling_select_plan_month">1 maand</string>
   <!-- Onboarding upsell -->
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB opslagruimte</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-mailadres</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Uw all-in-één Premium-abonnement</string>
+  <string name="upselling_unlimited_description_override">Om meer opslag- en premiumfuncties te ontgrendelen</string>
   <string name="upselling_auto_renew_text">Auto-vernieuwing tegen dezelfde prijs en voorwaarden, tenzij geannuleerd</string>
   <string name="upselling_auto_renew_text_promo">Welkomstaanbieding. Automatisch verlengen op %s%s tenzij u annuleert</string>
   <string name="upselling_auto_renew_text_bfriday">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %s%s totdat u annuleert.</string>
