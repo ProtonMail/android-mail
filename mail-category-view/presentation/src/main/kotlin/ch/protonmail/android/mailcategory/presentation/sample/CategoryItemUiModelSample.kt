@@ -30,6 +30,7 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("primary"),
             titleRes = R.string.category_title_primary,
             iconRes = R.drawable.ic_category_primary,
+            hasUnseen = true,
             isActive = true,
             activeColor = CategoryPillColors.Primary
         )
@@ -39,6 +40,7 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("social"),
             titleRes = R.string.category_title_social,
             iconRes = R.drawable.ic_category_social,
+            hasUnseen = true,
             isActive = false,
             activeColor = CategoryPillColors.Social
         )

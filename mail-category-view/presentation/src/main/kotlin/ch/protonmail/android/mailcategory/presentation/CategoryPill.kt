@@ -23,10 +23,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -90,7 +94,7 @@ fun CategoryPill(
                 bottom = ProtonDimens.Spacing.MediumLight
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Compact)
+        horizontalArrangement = Arrangement.Start
     ) {
         Icon(
             painter = painterResource(id = item.iconRes),
@@ -99,14 +103,33 @@ fun CategoryPill(
             tint = contentColor
         )
 
+        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Compact))
+
         Text(
             text = stringResource(id = item.titleRes),
             style = ProtonTheme.typography.titleSmall.copy(color = contentColor),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+
+        if (item.hasUnseen && !item.isActive) {
+            Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Standard))
+            CategoryUnseenDot()
+        }
     }
 }
+
+@Composable
+private fun CategoryUnseenDot(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(UnseenDotSize)
+            .clip(CircleShape)
+            .background(ProtonTheme.colors.iconWeak)
+    )
+}
+
+private val UnseenDotSize = 6.dp
 
 @Preview
 @Composable
@@ -121,10 +144,27 @@ private fun ActiveCategoryPillPreview() {
 
 @Preview
 @Composable
-private fun InactiveCategoryPillPreview() {
+private fun InactiveCategoryPillNoUnseenPreview() {
     ProtonTheme {
         CategoryPill(
-            item = CategoryItemUiModelSample.primary.copy(isActive = false),
+            item = CategoryItemUiModelSample.primary.copy(
+                isActive = false,
+                hasUnseen = false
+            ),
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun InactiveCategoryPillHasUnseenPreview() {
+    ProtonTheme {
+        CategoryPill(
+            item = CategoryItemUiModelSample.primary.copy(
+                isActive = false,
+                hasUnseen = true
+            ),
             onClick = {}
         )
     }
