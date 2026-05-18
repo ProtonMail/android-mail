@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">获得1个月的 %s</string>
   <string name="upselling_mailbox_plus_promo_skip">跳过优惠</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s 首月，之后每月 %s</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">升级至 Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">轻松发送群组电子邮件。使用 Mail Plus，轻松享受此功能及更多便利。</string>
   <string name="upselling_contact_groups_plus_title">分组您的联系人</string>
@@ -81,8 +83,12 @@
   <string name="upselling_comparison_table_desktop_app">访问桌面应用</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">无限文件夹和标签</string>
   <string name="upselling_comparison_table_priority_support">优先客户支持</string>
+  <string name="upselling_comparison_table_aliases">Hide My Email 邮箱别名</string>
+  <string name="upselling_comparison_table_folders_labels">文件夹和标签</string>
+  <string name="upselling_comparison_table_premium_products">高级 VPN、密码管理器和云存储</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">暗网监测</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">选择您的套餐</string>
+  <string name="upselling_select_plan">选择套餐</string>
   <string name="upselling_select_plan_year">12 个月</string>
   <string name="upselling_select_plan_month">1 个月</string>
   <!-- Onboarding upsell -->
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB 存储空间</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 个邮箱地址</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">您的多合一高级订阅</string>
+  <string name="upselling_unlimited_description_override">解锁更多存储空间和高级功能</string>
   <string name="upselling_auto_renew_text">除非取消，否则将以相同的价格和条款自动续订</string>
   <string name="upselling_auto_renew_text_promo">迎新优惠。除非手动取消，否则将在 %s%s 时自动续订。</string>
   <string name="upselling_auto_renew_text_bfriday">优惠基于标准月度定价。将以 %s%s 的价格自动续订，直至取消。</string>

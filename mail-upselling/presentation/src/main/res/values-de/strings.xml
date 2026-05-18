@@ -31,6 +31,8 @@
   <string name="upselling_mailbox_plus_promo_cta">Erhalte 1 Monat für %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Angebot überspringen</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s im ersten Monat, danach %s pro Monat</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Auf Proton Unlimited umsteigen</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Gruppen-E-Mails ganz einfach versenden. Genieße diese und weitere Vorteile mit Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Gruppiere deine Kontakte</string>
@@ -81,6 +83,10 @@
   <string name="upselling_comparison_table_desktop_app">Zugang zur Desktop-App</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
   <string name="upselling_comparison_table_priority_support">Vorrangiger Kundensupport</string>
+  <string name="upselling_comparison_table_aliases">Aliasse für „Meine E-Mail-Adresse verbergen“</string>
+  <string name="upselling_comparison_table_folders_labels">Ordner und Kategorien</string>
+  <string name="upselling_comparison_table_premium_products">Premium-VPN, Passwort-Manager und Cloud-Speicher</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web-Überwachung</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonnement wählen</string>
   <string name="upselling_select_plan_year">12 Monate</string>
@@ -101,7 +107,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB Speicher</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 E-Mail-Adresse</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Dein All-In-One-Premium-Abonnement</string>
+  <string name="upselling_unlimited_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
   <string name="upselling_auto_renew_text">Verlängert sich automatisch zum gleichen Preis und zu den gleichen Bedingungen, wenn es nicht gekündigt wird.</string>
   <string name="upselling_auto_renew_text_promo">Willkommensangebot. Verlängert sich automatisch für %s%s, sofern nicht gekündigt</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung zu %s%s, bis diese gekündigt wird.</string>
