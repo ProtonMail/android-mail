@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
-import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -54,7 +53,7 @@ internal class MailboxUnreadFilterReducerTest(
         private const val UPDATED_UNREAD_COUNT = 24
         private const val OVERFLOW_UNREAD_COUNT = 100
         private const val UNREAD_COUNT_CAP = 99
-        private val activeCategoryColor = CategoryLabelTestData.primary.toUiModel().activeColor
+        private val activeCategory = CategoryLabelTestData.primary.systemLabel
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -263,14 +262,14 @@ internal class MailboxUnreadFilterReducerTest(
                 expectedState = UnreadFilterState.Data(
                     unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
                     isFilterEnabled = false,
-                    activeCategoryColor = activeCategoryColor
+                    activeCategory = activeCategory
                 )
             ),
             TestInput(
                 currentState = UnreadFilterState.Data(
                     unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
                     isFilterEnabled = false,
-                    activeCategoryColor = activeCategoryColor
+                    activeCategory = activeCategory
                 ),
                 operation = MailboxEvent.CategoryViewStatusChanged(
                     categoryViewStatus = CategoryViewStatus.NotAvailable
@@ -278,7 +277,7 @@ internal class MailboxUnreadFilterReducerTest(
                 expectedState = UnreadFilterState.Data(
                     unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
                     isFilterEnabled = false,
-                    activeCategoryColor = null
+                    activeCategory = null
                 )
             )
         )

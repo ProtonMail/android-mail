@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 
 @Stable
@@ -28,7 +28,7 @@ sealed interface UnreadFilterState {
     data class Data(
         val unreadCount: CappedNumberUiModel,
         val isFilterEnabled: Boolean,
-        val activeCategoryColor: Color? = null
+        val activeCategory: CategorySystemLabelId? = null
     ) : UnreadFilterState
 
     data object Loading : UnreadFilterState

@@ -22,7 +22,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.presentation.R
-import ch.protonmail.android.mailcategory.presentation.design.CategoryPillColors
 
 @StringRes
 fun CategorySystemLabelId.categoryTextRes() = when (this) {
@@ -44,18 +43,4 @@ fun CategorySystemLabelId.categoryIconRes() = when (this) {
     CategorySystemLabelId.Primary -> R.drawable.ic_category_primary
     CategorySystemLabelId.Newsletter -> R.drawable.ic_category_newsletter
     CategorySystemLabelId.Transactions -> R.drawable.ic_category_transactions
-}
-
-fun CategorySystemLabelId.categoryColor(isActive: Boolean) = if (isActive) {
-    when (this) {
-        CategorySystemLabelId.Primary -> CategoryPillColors.Primary
-        CategorySystemLabelId.Social -> CategoryPillColors.Social
-        CategorySystemLabelId.Promotions -> CategoryPillColors.Promotions
-        CategorySystemLabelId.Updates -> CategoryPillColors.Updates
-        CategorySystemLabelId.Forums -> CategoryPillColors.Forums
-        CategorySystemLabelId.Newsletter -> CategoryPillColors.Newsletters
-        CategorySystemLabelId.Transactions -> CategoryPillColors.Transactions
-    }
-} else {
-    CategoryPillColors.InactiveBackground
 }

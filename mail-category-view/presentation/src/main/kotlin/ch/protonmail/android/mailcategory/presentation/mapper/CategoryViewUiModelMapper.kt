@@ -43,7 +43,7 @@ fun CategoryLabel.toUiModel(): CategoryItemUiModel {
         id = CategoryLabelIdUiModel(id.id),
         titleRes = systemLabel.categoryTextRes(),
         iconRes = systemLabel.categoryIconRes(),
-        activeColor = systemLabel.categoryColor(isActive),
+        systemLabel = systemLabel,
         hasUnseen = hasUnseen,
         isActive = isActive
     )

@@ -46,7 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.mailcategory.presentation.design.CategoryPillColors
+import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -58,18 +58,14 @@ fun CategoryPill(
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(999.dp)
-
-    val activeContentColor = if (isSystemInDarkTheme()) {
-        CategoryPillColors.ActiveContentDark
-    } else {
-        CategoryPillColors.ActiveContentLight
-    }
+    val isDarkMode = isSystemInDarkTheme()
 
     val targetContentColor =
-        if (item.isActive) activeContentColor else ProtonTheme.colors.textWeak
+        if (item.isActive) ProtonTheme.colors.textInverted else ProtonTheme.colors.textWeak
 
     val targetBackgroundColor =
-        if (item.isActive) item.activeColor else ProtonTheme.colors.interactionWeakNorm
+        if (item.isActive) item.systemLabel.activeCategoryColor(isDarkMode = isDarkMode)
+        else ProtonTheme.colors.interactionWeakNorm
 
     val contentColor by animateColorAsState(
         targetValue = targetContentColor,
