@@ -79,9 +79,15 @@ class MailboxUnreadFilterReducer @Inject constructor() {
         operation: MailboxEvent.CategoryViewStatusChanged
     ): UnreadFilterState = when (this) {
         is UnreadFilterState.Loading -> this
-        is UnreadFilterState.Data -> copy(
-            activeCategory = operation.categoryViewStatus.activeCategoryOrNull()?.systemLabel
-        )
+        is UnreadFilterState.Data -> {
+            val nextActiveCategory = operation.categoryViewStatus.activeCategoryOrNull()?.systemLabel
+            val isActiveCategoryChanged = activeCategory != nextActiveCategory
+
+            copy(
+                activeCategory = nextActiveCategory,
+                isFilterEnabled = if (isActiveCategoryChanged) false else isFilterEnabled
+            )
+        }
     }
 
     companion object {
