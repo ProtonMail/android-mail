@@ -268,6 +268,23 @@ internal class MailboxUnreadFilterReducerTest(
             TestInput(
                 currentState = UnreadFilterState.Data(
                     unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = true,
+                    activeCategory = CategoryLabelTestData.social.systemLabel
+                ),
+                operation = MailboxEvent.CategoryViewStatusChanged(
+                    categoryViewStatus = CategoryViewStatus.Available(
+                        categories = listOf(CategoryLabelTestData.primary)
+                    )
+                ),
+                expectedState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false,
+                    activeCategory = activeCategory
+                )
+            ),
+            TestInput(
+                currentState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
                     isFilterEnabled = false,
                     activeCategory = activeCategory
                 ),
