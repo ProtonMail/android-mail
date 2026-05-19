@@ -89,7 +89,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB 스토리지</string>
   <string name="upselling_onboarding_free_entitlement_mail">이메일 주소 1개</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
   <string name="upselling_auto_renew_text">취소되기 전까지 같은 가격과 규정으로 갱신됩니다</string>
   <string name="upselling_auto_renew_text_promo">환영 할인. 취소 전까지 %s%s(으)로 자동갱신됩니다.</string>
   <string name="upselling_auto_renew_text_bfriday">할인은 표준 월간 요금을 기준으로 합니다. 취소할 때까지 %s%s로 자동 갱신됩니다.</string>
