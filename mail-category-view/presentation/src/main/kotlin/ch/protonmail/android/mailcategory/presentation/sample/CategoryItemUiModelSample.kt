@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcategory.presentation.sample
 
 import ch.protonmail.android.mailcategory.presentation.R
-import ch.protonmail.android.mailcategory.presentation.design.CategoryPillColors
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryLabelIdUiModel
 
@@ -30,9 +30,9 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("primary"),
             titleRes = R.string.category_title_primary,
             iconRes = R.drawable.ic_category_primary,
+            systemLabel = CategorySystemLabelId.Primary,
             hasUnseen = true,
-            isActive = true,
-            activeColor = CategoryPillColors.Primary
+            isActive = true
         )
 
     val social =
@@ -40,9 +40,9 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("social"),
             titleRes = R.string.category_title_social,
             iconRes = R.drawable.ic_category_social,
+            systemLabel = CategorySystemLabelId.Social,
             hasUnseen = true,
-            isActive = false,
-            activeColor = CategoryPillColors.Social
+            isActive = false
         )
 
     val promotions =
@@ -50,8 +50,8 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("promotions"),
             titleRes = R.string.category_title_promotions,
             iconRes = R.drawable.ic_category_promotions,
-            isActive = false,
-            activeColor = CategoryPillColors.Promotions
+            systemLabel = CategorySystemLabelId.Promotions,
+            isActive = false
         )
 
     val newsletters =
@@ -59,8 +59,8 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("newsletters"),
             titleRes = R.string.category_title_newsletters,
             iconRes = R.drawable.ic_category_newsletter,
-            isActive = false,
-            activeColor = CategoryPillColors.Newsletters
+            systemLabel = CategorySystemLabelId.Newsletter,
+            isActive = false
         )
 
     val transactions =
@@ -68,8 +68,8 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("transactions"),
             titleRes = R.string.category_title_transactions,
             iconRes = R.drawable.ic_category_transactions,
-            isActive = false,
-            activeColor = CategoryPillColors.Transactions
+            systemLabel = CategorySystemLabelId.Transactions,
+            isActive = false
         )
 
     val updates =
@@ -77,8 +77,8 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("updates"),
             titleRes = R.string.category_title_updates,
             iconRes = R.drawable.ic_category_updates,
-            isActive = false,
-            activeColor = CategoryPillColors.Updates
+            systemLabel = CategorySystemLabelId.Updates,
+            isActive = false
         )
 
     val forums =
@@ -86,8 +86,8 @@ object CategoryItemUiModelSample {
             id = CategoryLabelIdUiModel("forums"),
             titleRes = R.string.category_title_forums,
             iconRes = R.drawable.ic_category_forums,
-            isActive = false,
-            activeColor = CategoryPillColors.Forums
+            systemLabel = CategorySystemLabelId.Forums,
+            isActive = false
         )
 
     val all = listOf(

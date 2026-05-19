@@ -20,16 +20,15 @@ package ch.protonmail.android.mailcategory.presentation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 
 @Immutable
 data class CategoryItemUiModel(
     val id: CategoryLabelIdUiModel,
     @StringRes val titleRes: Int,
     @DrawableRes val iconRes: Int,
-    val activeColor: Color,
+    val systemLabel: CategorySystemLabelId,
     val hasUnseen: Boolean = false,
     val isActive: Boolean = false
 )

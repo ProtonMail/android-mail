@@ -107,7 +107,7 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             unreadCount = CappedNumberUiModel.Exact(1),
-            activeCategoryColor = CategoryItemUiModelSample.primary.activeColor
+            activeCategory = CategoryItemUiModelSample.primary.systemLabel
         ),
         categoryViewState = CategoryViewState.Available.Data(
             categories = CategoryItemUiModelSample.all

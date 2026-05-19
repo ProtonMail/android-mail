@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
-import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -81,7 +80,7 @@ class MailboxUnreadFilterReducer @Inject constructor() {
     ): UnreadFilterState = when (this) {
         is UnreadFilterState.Loading -> this
         is UnreadFilterState.Data -> copy(
-            activeCategoryColor = operation.categoryViewStatus.activeCategoryOrNull()?.toUiModel()?.activeColor
+            activeCategory = operation.categoryViewStatus.activeCategoryOrNull()?.systemLabel
         )
     }
 

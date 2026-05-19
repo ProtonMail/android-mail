@@ -19,19 +19,78 @@
 package ch.protonmail.android.mailcategory.presentation.design
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
 
-object CategoryPillColors {
+private sealed interface CategoryPillPalette {
+    val primary: Color
+    val social: Color
+    val promotions: Color
+    val updates: Color
+    val forums: Color
+    val newsletters: Color
+    val transactions: Color
+
+    fun colorOf(labelId: CategorySystemLabelId): Color = when (labelId) {
+        CategorySystemLabelId.Primary -> primary
+        CategorySystemLabelId.Social -> social
+        CategorySystemLabelId.Promotions -> promotions
+        CategorySystemLabelId.Updates -> updates
+        CategorySystemLabelId.Forums -> forums
+        CategorySystemLabelId.Newsletter -> newsletters
+        CategorySystemLabelId.Transactions -> transactions
+    }
+
+    data class Colors(
+        override val primary: Color,
+        override val social: Color,
+        override val promotions: Color,
+        override val updates: Color,
+        override val forums: Color,
+        override val newsletters: Color,
+        override val transactions: Color
+    ) : CategoryPillPalette
+
+    companion object {
+        val Light: CategoryPillPalette = Colors(
+            primary = CategoryPillColorsLight.Primary,
+            social = CategoryPillColorsLight.Social,
+            promotions = CategoryPillColorsLight.Promotions,
+            updates = CategoryPillColorsLight.Updates,
+            forums = CategoryPillColorsLight.Forums,
+            newsletters = CategoryPillColorsLight.Newsletters,
+            transactions = CategoryPillColorsLight.Transactions
+        )
+
+        val Dark: CategoryPillPalette = Colors(
+            primary = CategoryPillColorsDark.Primary,
+            social = CategoryPillColorsDark.Social,
+            promotions = CategoryPillColorsDark.Promotions,
+            updates = CategoryPillColorsDark.Updates,
+            forums = CategoryPillColorsDark.Forums,
+            newsletters = CategoryPillColorsDark.Newsletters,
+            transactions = CategoryPillColorsDark.Transactions
+        )
+    }
+}
+
+object CategoryPillColorsLight {
     val Primary = CategoryBaseColors.Iris500
     val Social = CategoryBaseColors.Cyan600
     val Promotions = CategoryBaseColors.Green600
     val Newsletters = CategoryBaseColors.Orange600
-    val Transactions = CategoryBaseColors.Red500
     val Updates = CategoryBaseColors.Pink500
     val Forums = CategoryBaseColors.Blue500
-    val InactiveBackground = CategoryBaseColors.InactiveBackground
+    val Transactions = CategoryBaseColors.Red500
+}
 
-    val ActiveContentLight = Color.White
-    val ActiveContentDark = Color.White.copy(alpha = 0.8f)
+object CategoryPillColorsDark {
+    val Primary = Color(0xFF9A97F7)
+    val Social = Color(0xFF2FBFDD)
+    val Promotions = Color(0xFF52C67A)
+    val Newsletters = Color(0xFFF78647)
+    val Updates = Color(0xFFF4559B)
+    val Forums = CategoryBaseColors.Blue500
+    val Transactions = CategoryBaseColors.Red500
 }
 
 private object CategoryBaseColors {
@@ -43,6 +102,7 @@ private object CategoryBaseColors {
     val Red500 = Color(0xFFF2364E)
     val Pink500 = Color(0xFFF22287)
     val Blue500 = Color(0xFF2C96F5)
-    val Blue400 = Color(0xFF54A5F3)
-    val InactiveBackground = Color(0xFFF4F5F8)
 }
+
+fun CategorySystemLabelId.activeCategoryColor(isDarkMode: Boolean = false): Color =
+    (if (isDarkMode) CategoryPillPalette.Dark else CategoryPillPalette.Light).colorOf(this)

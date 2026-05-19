@@ -23,6 +23,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +50,8 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.titleMediumNorm
+import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
 import ch.protonmail.android.mailcommon.presentation.model.isEmpty
@@ -66,16 +68,22 @@ internal fun BottomUnreadFilterButton(
     if (state !is UnreadFilterState.Data) return
 
     val isActive = state.isFilterEnabled
+    val isDarkMode = isSystemInDarkTheme()
+    val activeBackgroundColor = state.activeCategory
+        ?.activeCategoryColor(isDarkMode = isDarkMode)
+        ?: ProtonTheme.colors.brandNorm
+    val inactiveBackgroundColor = ProtonTheme.colors.interactionFabNorm
 
     val backgroundColor by animateColorAsState(
-        targetValue = if (isActive) ProtonTheme.colors.brandNorm else ProtonTheme.colors.interactionFabNorm,
+        targetValue = if (isActive) activeBackgroundColor else inactiveBackgroundColor,
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "unreadBg"
     )
 
     val contentColor = if (isActive) ProtonTheme.colors.textInverted else ProtonTheme.colors.textNorm
+    val activeCategoryColor = state.activeCategory?.activeCategoryColor(ProtonTheme.colors.isDark)
     val shouldShowUnreadCount = !isActive && !state.unreadCount.isEmpty()
-    val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && state.activeCategoryColor != null
+    val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && activeCategoryColor != null
 
     Surface(
         modifier = modifier.height(UnreadHeight),
@@ -121,7 +129,7 @@ internal fun BottomUnreadFilterButton(
                         .height(CategoryUnreadBadgeHeight)
                         .defaultMinSize(minWidth = CategoryUnreadBadgeMinWidth),
                     shape = ProtonTheme.shapes.massive,
-                    color = state.activeCategoryColor
+                    color = activeCategoryColor ?: ProtonTheme.colors.interactionWeakNorm
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -180,7 +188,7 @@ private fun BottomUnreadFilterButtonPreviewVariants() {
             state = UnreadFilterState.Data(
                 unreadCount = CappedNumberUiModel.Exact(7),
                 isFilterEnabled = false,
-                activeCategoryColor = PreviewCategoryBlue
+                activeCategory = CategorySystemLabelId.Primary
             ),
             onFilterEnabled = {},
             onFilterDisabled = {}
@@ -190,13 +198,10 @@ private fun BottomUnreadFilterButtonPreviewVariants() {
             state = UnreadFilterState.Data(
                 unreadCount = CappedNumberUiModel.Capped(999),
                 isFilterEnabled = false,
-                activeCategoryColor = PreviewCategoryBlue
+                activeCategory = CategorySystemLabelId.Primary
             ),
             onFilterEnabled = {},
             onFilterDisabled = {}
         )
     }
 }
-
-private val PreviewCategoryBlue = Color(0xFF2C96F5)
-
