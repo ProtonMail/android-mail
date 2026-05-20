@@ -23,7 +23,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -68,9 +68,8 @@ internal fun BottomUnreadFilterButton(
     if (state !is UnreadFilterState.Data) return
 
     val isActive = state.isFilterEnabled
-    val isDarkMode = isSystemInDarkTheme()
     val activeBackgroundColor = state.activeCategory
-        ?.activeCategoryColor(isDarkMode = isDarkMode)
+        ?.activeCategoryColor()
         ?: ProtonTheme.colors.brandNorm
     val inactiveBackgroundColor = ProtonTheme.colors.interactionFabNorm
 
@@ -80,8 +79,8 @@ internal fun BottomUnreadFilterButton(
         label = "unreadBg"
     )
 
-    val contentColor = if (isActive) ProtonTheme.colors.textInverted else ProtonTheme.colors.textNorm
-    val activeCategoryColor = state.activeCategory?.activeCategoryColor(ProtonTheme.colors.isDark)
+    val contentColor = if (isActive) Color.White else ProtonTheme.colors.textNorm
+    val activeCategoryColor = state.activeCategory?.activeCategoryColor()
     val shouldShowUnreadCount = !isActive && !state.unreadCount.isEmpty()
     val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && activeCategoryColor != null
 
@@ -140,7 +139,7 @@ internal fun BottomUnreadFilterButton(
                             style = ProtonTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = ProtonTheme.colors.textInverted
+                            color = Color.White
                         )
                     }
                 }
