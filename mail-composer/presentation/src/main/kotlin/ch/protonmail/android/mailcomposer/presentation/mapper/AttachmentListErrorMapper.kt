@@ -45,6 +45,8 @@ internal object AttachmentListErrorMapper {
         val attachmentTooLargeItems = itemsWithError.filterAttachmentsTooLargeError()
         val invalidDraftMessageItems = itemsWithError.filterInvalidDraftError()
         val encryptionErrorItems = itemsWithError.filterEncryptionErrorError()
+        val uploadTimeoutItems = itemsWithError.filterUploadTimeoutError()
+        val invalidStateItems = itemsWithError.filterInvalidStateError()
 
         return if (storageExceeded.isNotEmpty()) {
             AttachmentAddErrorWithList(
@@ -70,6 +72,16 @@ internal object AttachmentListErrorMapper {
             AttachmentAddErrorWithList(
                 AddAttachmentError.EncryptionError,
                 encryptionErrorItems.map { it.first }
+            )
+        } else if (uploadTimeoutItems.isNotEmpty()) {
+            AttachmentAddErrorWithList(
+                AddAttachmentError.UploadTimeout,
+                uploadTimeoutItems.map { it.first }
+            )
+        } else if (invalidStateItems.isNotEmpty()) {
+            AttachmentAddErrorWithList(
+                AddAttachmentError.InvalidState,
+                invalidStateItems.map { it.first }
             )
         } else {
             AttachmentAddErrorWithList(
@@ -111,6 +123,20 @@ private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterInval
 private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterEncryptionErrorError() = this.filter {
     when (val addAttachment = it.second) {
         is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.EncryptionError
+        else -> false
+    }
+}
+
+private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterUploadTimeoutError() = this.filter {
+    when (val addAttachment = it.second) {
+        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.UploadTimeout
+        else -> false
+    }
+}
+
+private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterInvalidStateError() = this.filter {
+    when (val addAttachment = it.second) {
+        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.InvalidState
         else -> false
     }
 }
