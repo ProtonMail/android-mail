@@ -27,116 +27,29 @@ import ch.protonmail.android.mailcomposer.domain.model.AttachmentAddErrorWithLis
 
 internal object AttachmentListErrorMapper {
 
+    private val priorityOrder = listOf(
+        AddAttachmentError.StorageQuotaExceeded,
+        AddAttachmentError.TooManyAttachments,
+        AddAttachmentError.AttachmentTooLarge,
+        AddAttachmentError.InvalidDraftMessage,
+        AddAttachmentError.EncryptionError,
+        AddAttachmentError.UploadTimeout,
+        AddAttachmentError.InvalidState
+    )
+
     fun toAttachmentAddErrorWithList(attachments: List<AttachmentMetadataWithState>): AttachmentAddErrorWithList? {
-        val itemsWithError: List<Pair<AttachmentMetadataWithState, AttachmentError>> =
-            attachments.mapNotNull { item ->
-                val errorState = item.attachmentState as? AttachmentState.Error
-                errorState?.reason?.let { reason ->
-                    item to reason
-                }
-            }
+        val errored = attachments.filter { it.attachmentState is AttachmentState.Error }
+        if (errored.isEmpty()) return null
 
-        if (itemsWithError.isEmpty()) {
-            return null
+        val byError = errored.groupBy { (it.attachmentState as AttachmentState.Error).addAttachmentErrorOrNull() }
+
+        priorityOrder.forEach { error ->
+            byError[error]?.let { return AttachmentAddErrorWithList(error, it) }
         }
 
-        val storageExceeded = itemsWithError.filterStorageExceededError()
-        val tooManyAttachmentItems = itemsWithError.filterTooManyAttachmentsError()
-        val attachmentTooLargeItems = itemsWithError.filterAttachmentsTooLargeError()
-        val invalidDraftMessageItems = itemsWithError.filterInvalidDraftError()
-        val encryptionErrorItems = itemsWithError.filterEncryptionErrorError()
-        val uploadTimeoutItems = itemsWithError.filterUploadTimeoutError()
-        val invalidStateItems = itemsWithError.filterInvalidStateError()
-
-        return if (storageExceeded.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.StorageQuotaExceeded,
-                storageExceeded.map { it.first }
-            )
-        } else if (tooManyAttachmentItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.TooManyAttachments,
-                tooManyAttachmentItems.map { it.first }
-            )
-        } else if (attachmentTooLargeItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.AttachmentTooLarge,
-                attachmentTooLargeItems.map { it.first }
-            )
-        } else if (invalidDraftMessageItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.InvalidDraftMessage,
-                invalidDraftMessageItems.map { it.first }
-            )
-        } else if (encryptionErrorItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.EncryptionError,
-                encryptionErrorItems.map { it.first }
-            )
-        } else if (uploadTimeoutItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.UploadTimeout,
-                uploadTimeoutItems.map { it.first }
-            )
-        } else if (invalidStateItems.isNotEmpty()) {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.InvalidState,
-                invalidStateItems.map { it.first }
-            )
-        } else {
-            AttachmentAddErrorWithList(
-                AddAttachmentError.Other(DataError.Local.Unknown),
-                itemsWithError.map { it.first }
-            )
-        }
+        return AttachmentAddErrorWithList(AddAttachmentError.Other(DataError.Local.Unknown), errored)
     }
-}
 
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterStorageExceededError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.StorageQuotaExceeded
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterTooManyAttachmentsError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.TooManyAttachments
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterAttachmentsTooLargeError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.AttachmentTooLarge
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterInvalidDraftError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.InvalidDraftMessage
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterEncryptionErrorError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.EncryptionError
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterUploadTimeoutError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.UploadTimeout
-        else -> false
-    }
-}
-
-private fun List<Pair<AttachmentMetadataWithState, AttachmentError>>.filterInvalidStateError() = this.filter {
-    when (val addAttachment = it.second) {
-        is AttachmentError.AddAttachment -> addAttachment.error is AddAttachmentError.InvalidState
-        else -> false
-    }
+    private fun AttachmentState.Error.addAttachmentErrorOrNull(): AddAttachmentError? =
+        (reason as? AttachmentError.AddAttachment)?.error
 }
