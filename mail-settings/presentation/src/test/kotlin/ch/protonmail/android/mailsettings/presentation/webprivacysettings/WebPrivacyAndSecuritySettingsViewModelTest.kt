@@ -66,7 +66,8 @@ class WebPrivacyAndSecuritySettingsViewModelTest {
         spamFilterSettingsAction = "spam-settings",
         privacySecuritySettingsAction = "privacy-settings",
         subscriptionDetailsAction = "subscription",
-        emailSignatureAction = "email-signature"
+        emailSignatureAction = "email-signature",
+        emailCategoriesSettingsAction = "email-categories"
     )
 
     private val primaryUserId = UserIdTestData.Primary

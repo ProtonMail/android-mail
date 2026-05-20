@@ -412,6 +412,20 @@ private fun MailExperienceSettingsItem(
                     )
                 }
             )
+
+            SettingsItemDivider()
+
+            ProtonAppSettingsItemNorm(
+                name = stringResource(id = R.string.mail_settings_app_customization_email_categories),
+                onClick = { actions.onEmailCategoriesClick() },
+                icon = {
+                    ProtonMainSettingsIcon(
+                        iconRes = R.drawable.ic_proton_chevron_right,
+                        contentDescription = "",
+                        tint = ProtonTheme.colors.iconHint
+                    )
+                }
+            )
         }
     }
 }
@@ -479,6 +493,7 @@ object AppSettingsScreen {
         val onNavigateToSignatureSettings: () -> Unit,
         val onNavigateToUpselling: (UpsellingEntryPoint.Feature, UpsellingVisibility) -> Unit,
         val onCustomizeToolbarClick: () -> Unit,
+        val onEmailCategoriesClick: () -> Unit,
         val onViewApplicationLogsClick: () -> Unit,
         val onBackClick: () -> Unit
     )

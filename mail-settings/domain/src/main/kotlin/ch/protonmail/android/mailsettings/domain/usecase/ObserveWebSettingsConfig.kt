@@ -38,7 +38,8 @@ class ObserveWebSettingsConfig @Inject constructor(
             spamFilterSettingsAction = "spam-filters-settings",
             privacySecuritySettingsAction = "privacy-security-settings",
             subscriptionDetailsAction = "subscription-details",
-            emailSignatureAction = "email-signatures"
+            emailSignatureAction = "email-signatures",
+            emailCategoriesSettingsAction = "category-view"
         )
 
         emit(webSettingsConfig)

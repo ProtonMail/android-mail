@@ -138,6 +138,7 @@ import ch.protonmail.android.navigation.route.addSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addThemeSettings
 import ch.protonmail.android.navigation.route.addUpsellingRoutes
 import ch.protonmail.android.navigation.route.addWebAccountSettings
+import ch.protonmail.android.navigation.route.addWebEmailCategoriesSettings
 import ch.protonmail.android.navigation.route.addWebEmailSettings
 import ch.protonmail.android.navigation.route.addWebFolderAndLabelSettings
 import ch.protonmail.android.navigation.route.addWebPrivacyAndSecuritySettings
@@ -730,6 +731,7 @@ fun Home(
                         // settings
                         addWebAccountSettings(navController)
                         addWebEmailSettings(navController)
+                        addWebEmailCategoriesSettings(navController)
                         addWebFolderAndLabelSettings(navController)
                         addWebSpamFilterSettings(navController)
                         addWebPrivacyAndSecuritySettings(navController)

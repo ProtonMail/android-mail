@@ -46,6 +46,7 @@ internal object AppSettingsScreenPreviewData {
         onNavigateToUpselling = { _, _ -> },
         onNavigateToSignatureSettings = {},
         onCustomizeToolbarClick = {},
+        onEmailCategoriesClick = {},
         onViewApplicationLogsClick = {},
         onAppIconSettingsClick = {},
         onBackClick = {}

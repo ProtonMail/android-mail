@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.webaccountsettings
+package ch.protonmail.android.mailsettings.presentation.webcategorysettings
 
 import app.cash.turbine.test
 import arrow.core.left
@@ -24,16 +24,18 @@ import arrow.core.right
 import ch.protonmail.android.mailsession.domain.model.CookieSessionId
 import ch.protonmail.android.mailsession.domain.model.Fork
 import ch.protonmail.android.mailsession.domain.model.Selector
-import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.usecase.ForkSession
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.WebSettingsConfig
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import ch.protonmail.android.mailsettings.domain.usecase.HandleCloseWebSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveWebSettingsConfig
+import ch.protonmail.android.mailsettings.presentation.ObserveWebSettingsStateFlow
 import ch.protonmail.android.mailsettings.presentation.websettings.WebSettingsState
 import ch.protonmail.android.mailsettings.presentation.websettings.model.WebSettingsAction
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.Runs
@@ -49,7 +51,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class WebAccountSettingsViewModelTest {
+class WebCategorySettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -81,12 +83,16 @@ class WebAccountSettingsViewModelTest {
     private val handleCloseWebSettings = mockk<HandleCloseWebSettings> {
         coEvery { this@mockk() } just Runs
     }
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility>()
 
-    private fun buildViewModel() = WebAccountSettingsViewModel(
-        observePrimaryUserId = observePrimaryUserId,
-        forkSession = forkSession,
-        appSettingsRepository = appSettingsRepository,
-        observeWebSettingsConfig = observeWebSettingsConfig,
+    private fun buildViewModel() = WebCategorySettingsViewModel(
+        ObserveWebSettingsStateFlow(
+            observePrimaryUserId = observePrimaryUserId,
+            forkSession = forkSession,
+            appSettingsRepository = appSettingsRepository,
+            observeWebSettingsConfig = observeWebSettingsConfig,
+            observeUpsellingVisibility = observeUpsellingVisibility
+        ),
         handleCloseWebSettings = handleCloseWebSettings
     )
 
@@ -110,10 +116,8 @@ class WebAccountSettingsViewModelTest {
         every { appSettingsRepository.observeTheme() } returns flowOf(testTheme)
         val viewModel = buildViewModel()
 
-        // When
+        // When & Then
         viewModel.state.test {
-
-            // Then
             val actualState = awaitItem() as WebSettingsState.Data
             assertEquals(testTheme, actualState.theme)
         }
@@ -124,15 +128,11 @@ class WebAccountSettingsViewModelTest {
         // Given
         every { observePrimaryUserId.invoke() } returns flowOf(primaryUserId)
         every { appSettingsRepository.observeTheme() } returns flowOf(testTheme)
-        coEvery {
-            forkSession(primaryUserId)
-        } returns SessionError.Local.KeyChainError.left()
+        coEvery { forkSession(primaryUserId) } returns SessionError.Local.KeyChainError.left()
         val viewModel = buildViewModel()
 
-        // When
+        // When & Then
         viewModel.state.test {
-
-            // Then
             assertTrue(awaitItem() is WebSettingsState.Error)
         }
     }
@@ -147,11 +147,12 @@ class WebAccountSettingsViewModelTest {
         // When
         viewModel.submit(WebSettingsAction.OnCloseWebSettings)
         viewModel.state.test {
+            val actualState = awaitItem() as WebSettingsState.Data
 
             // Then
-            val actualState = awaitItem() as WebSettingsState.Data
             assertEquals(testTheme, actualState.theme)
             coVerify(exactly = 1) { handleCloseWebSettings() }
         }
     }
 }
+
