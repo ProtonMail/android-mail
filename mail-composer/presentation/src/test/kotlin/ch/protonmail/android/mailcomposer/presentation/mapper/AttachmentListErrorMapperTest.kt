@@ -117,6 +117,32 @@ internal class AttachmentListErrorMapperTest {
     }
 
     @Test
+    fun `returns UploadTimeout when no higher-priority error exists`() {
+        // Given
+        val attachment = createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.UploadTimeout))
+
+        // When
+        val result = AttachmentListErrorMapper.toAttachmentAddErrorWithList(listOf(attachment))
+
+        // Then
+        assertEquals(AddAttachmentError.UploadTimeout, result?.error)
+        assertEquals(listOf(attachment), result?.failedAttachments)
+    }
+
+    @Test
+    fun `returns InvalidState when no higher-priority error exists`() {
+        // Given
+        val attachment = createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.InvalidState))
+
+        // When
+        val result = AttachmentListErrorMapper.toAttachmentAddErrorWithList(listOf(attachment))
+
+        // Then
+        assertEquals(AddAttachmentError.InvalidState, result?.error)
+        assertEquals(listOf(attachment), result?.failedAttachments)
+    }
+
+    @Test
     fun `returns highest priority error when multiple errors exist`() {
         // Given
         val storageExceeded =
