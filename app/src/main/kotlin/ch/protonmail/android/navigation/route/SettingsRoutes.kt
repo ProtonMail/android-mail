@@ -55,6 +55,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSetti
 import ch.protonmail.android.mailsettings.presentation.settings.toolbar.ui.CustomizeToolbarEditScreen
 import ch.protonmail.android.mailsettings.presentation.settings.toolbar.ui.CustomizeToolbarScreen
 import ch.protonmail.android.mailsettings.presentation.webaccountsettings.WebAccountSettingScreen
+import ch.protonmail.android.mailsettings.presentation.webcategorysettings.WebCategorySettingScreen
 import ch.protonmail.android.mailsettings.presentation.webemailsettings.WebEmailSettingScreen
 import ch.protonmail.android.mailsettings.presentation.webfoldersettings.WebFoldersAndLabelsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.webprivacysettings.WebPrivacyAndSecuritySettingsScreen
@@ -107,6 +108,22 @@ fun NavGraphBuilder.addWebFolderAndLabelSettings(navController: NavHostControlle
                     onUpsellNavigation = { entryPoint, visibility ->
                         navController.navigate(Screen.FeatureUpselling(entryPoint, visibility))
                     }
+                )
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.addWebEmailCategoriesSettings(navController: NavHostController) {
+    composableWithTransitions(
+        route = Screen.EmailCategoriesSettings.route,
+        transitions = RouteTransitionSpec.SettingsSubScreen
+    ) {
+        ProtonInvertedTheme {
+            WebCategorySettingScreen(
+                actions = WebSettingsScreenActions.Empty.copy(
+                    onBackClick = { navController.navigateBack() },
+                    onUpsellNavigation = { _, _ -> }
                 )
             )
         }

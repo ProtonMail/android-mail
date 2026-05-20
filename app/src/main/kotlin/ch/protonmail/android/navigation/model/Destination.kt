@@ -153,6 +153,7 @@ sealed class Destination(val route: String) {
         object AppSettings : Destination("settings/app")
         object EmailSettings : Destination("settings/email")
         object FolderAndLabelSettings : Destination("settings/folderAndLabel")
+        object EmailCategoriesSettings : Destination("settings/emailCategories")
         object PrivacyAndSecuritySettings : Destination("settings/privacyAndSecurity")
         object SecurityKeysSettings : Destination("settings/securityKeys")
         object SpamFilterSettings : Destination("settings/spamFilter")

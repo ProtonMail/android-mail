@@ -35,6 +35,9 @@ fun WebSettingsConfig.toFolderAndLabelSettingsUrl(selector: String, theme: Theme
 fun WebSettingsConfig.toEmailSettingsUrl(selector: String, theme: Theme): String =
     toSettingsUrl(selector, theme, emailSettingsAction)
 
+fun WebSettingsConfig.toEmailCategoriesSettingsUrl(selector: String, theme: Theme): String =
+    toSettingsUrl(selector, theme, emailCategoriesSettingsAction)
+
 fun WebSettingsConfig.toAccountSettingsUrl(selector: String, theme: Theme): String =
     toSettingsUrl(selector, theme, accountSettingsAction).also {
         Timber.d("web-settings: Account settings URL: $it")

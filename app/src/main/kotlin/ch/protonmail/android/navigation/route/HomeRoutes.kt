@@ -332,6 +332,9 @@ internal fun NavGraphBuilder.addAppSettings(navController: NavHostController, sh
                     onCustomizeToolbarClick = {
                         navController.navigate(Destination.Screen.CustomizeToolbar.route)
                     },
+                    onEmailCategoriesClick = {
+                        navController.navigate(Destination.Screen.EmailCategoriesSettings.route)
+                    },
                     onBackClick = {
                         navController.navigateBack()
                     }
