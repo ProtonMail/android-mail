@@ -27,6 +27,7 @@ internal object AppSettingsScreenPreviewData {
         settings = AppSettingsUiModel(
             autoLockEnabled = false,
             alternativeRoutingEnabled = false,
+            isEmailCategoriesEnabled = true,
             customLanguage = null,
             deviceContactsEnabled = false,
             theme = TextUiModel.TextRes(R.string.mail_settings_system_default),
