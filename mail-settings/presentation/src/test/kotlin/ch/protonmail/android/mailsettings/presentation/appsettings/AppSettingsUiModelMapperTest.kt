@@ -39,7 +39,12 @@ internal class AppSettingsUiModelMapperTest(
 
     @Test
     fun `should map to ui model`() {
-        val uiModel = AppSettingsUiModelMapper.toUiModel(args.appSettings, args.notificationsEnabled, args.appName)
+        val uiModel = AppSettingsUiModelMapper.toUiModel(
+            appSettings = args.appSettings,
+            notificationsEnabled = args.notificationsEnabled,
+            appIconDescription = args.appName,
+            isEmailCategoriesEnabled = args.isEmailCategoriesEnabled
+        )
         assertEquals(expectedUiModel, uiModel)
     }
 
@@ -51,6 +56,7 @@ internal class AppSettingsUiModelMapperTest(
         val baseUiModel = AppSettingsUiModel(
             autoLockEnabled = false,
             alternativeRoutingEnabled = true,
+            isEmailCategoriesEnabled = true,
             customLanguage = null,
             deviceContactsEnabled = true,
             theme = TextUiModel.TextRes(R.string.mail_settings_system_default),
@@ -66,7 +72,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with default values",
                 Arguments(
                     appSettings = baseAppSettings,
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel
             ),
@@ -74,7 +81,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with light theme",
                 Arguments(
                     appSettings = baseAppSettings.copy(theme = Theme.LIGHT),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(theme = TextUiModel.TextRes(R.string.mail_settings_theme_light))
             ),
@@ -82,7 +90,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with dark theme",
                 Arguments(
                     appSettings = baseAppSettings.copy(theme = Theme.DARK),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(theme = TextUiModel.TextRes(R.string.mail_settings_theme_dark))
             ),
@@ -90,7 +99,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with custom language",
                 Arguments(
                     appSettings = baseAppSettings.copy(customAppLanguage = "Custom language"),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(customLanguage = "Custom language")
             ),
@@ -98,7 +108,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with pin lock enabled",
                 Arguments(
                     appSettings = baseAppSettings.copy(autolockProtection = Protection.Pin),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(autoLockEnabled = true)
             ),
@@ -106,7 +117,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with biometrics lock enabled",
                 Arguments(
                     appSettings = baseAppSettings.copy(autolockProtection = Protection.Biometrics),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(autoLockEnabled = true)
             ),
@@ -114,7 +126,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with no lock enabled",
                 Arguments(
                     appSettings = baseAppSettings,
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(autoLockEnabled = false)
             ),
@@ -122,7 +135,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with alternative routing enabled",
                 Arguments(
                     appSettings = baseAppSettings.copy(hasAlternativeRouting = true),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(alternativeRoutingEnabled = true)
             ),
@@ -130,7 +144,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with device contacts enabled",
                 Arguments(
                     appSettings = baseAppSettings.copy(hasCombinedContactsEnabled = true),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(deviceContactsEnabled = true)
             ),
@@ -138,7 +153,8 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with notifications off",
                 Arguments(
                     appSettings = baseAppSettings,
-                    notificationsEnabled = false
+                    notificationsEnabled = false,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(notificationsEnabledStatus = TextUiModel(R.string.notifications_off))
             ),
@@ -147,15 +163,26 @@ internal class AppSettingsUiModelMapperTest(
                 "to app settings with swipe pref on",
                 Arguments(
                     appSettings = baseAppSettings.copy(swipeNextPreference = SwipeNextPreference.Enabled),
-                    notificationsEnabled = true
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = true
                 ),
                 baseUiModel.copy(swipeNextEnabled = true)
+            ),
+            arrayOf(
+                "to app settings with email categories disabled",
+                Arguments(
+                    appSettings = baseAppSettings,
+                    notificationsEnabled = true,
+                    isEmailCategoriesEnabled = false
+                ),
+                baseUiModel.copy(isEmailCategoriesEnabled = false)
             )
         )
 
         data class Arguments(
             val appSettings: AppSettings,
             val notificationsEnabled: Boolean,
+            val isEmailCategoriesEnabled: Boolean,
             val appName: TextUiModel = appIconName
         )
     }

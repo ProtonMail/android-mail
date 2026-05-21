@@ -28,6 +28,7 @@ internal sealed class AppSettingsState {
 internal data class AppSettingsUiModel(
     val autoLockEnabled: Boolean,
     val alternativeRoutingEnabled: Boolean,
+    val isEmailCategoriesEnabled: Boolean,
     val customLanguage: String?,
     val theme: TextUiModel,
     val deviceContactsEnabled: Boolean,

@@ -75,6 +75,7 @@ dependencies {
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-featureflags:domain"))
     implementation(project(":mail-notifications"))
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-session:domain"))
