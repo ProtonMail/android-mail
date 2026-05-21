@@ -93,7 +93,7 @@ internal class MailboxReducerTest(
     }
 
     private val categoryViewReducer: MailboxCategoryViewReducer = mockk {
-        every { newStateFrom(any()) } returns reducedState.categoryViewState
+        every { newStateFrom(any(), any()) } returns reducedState.categoryViewState
     }
 
     private val mailboxReducer = MailboxReducer(

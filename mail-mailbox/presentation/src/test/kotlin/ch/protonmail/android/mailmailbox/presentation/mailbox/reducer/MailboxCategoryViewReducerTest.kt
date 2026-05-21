@@ -21,7 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.presentation.mapper.CategoryViewUiModelMapper
 import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
+import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import io.mockk.every
 import io.mockk.mockk
@@ -40,6 +42,7 @@ class MailboxCategoryViewReducerTest {
     fun `should map category view status changed event to category view state`() {
         // Given
         val categoryViewStatus = mockk<CategoryViewStatus>()
+        val currentState = mockk<CategoryViewState>()
         val expectedState = mockk<CategoryViewState>()
 
         every {
@@ -51,9 +54,25 @@ class MailboxCategoryViewReducerTest {
         )
 
         // When
-        val actual = reducer.newStateFrom(operation)
+        val actual = reducer.newStateFrom(currentState, operation)
 
         // Then
         assertEquals(expectedState, actual)
+    }
+
+    @Test
+    fun `should emit reset scroll effect when primary account changes and category view is available data`() {
+        // Given
+        val currentState = CategoryViewState.Available.Data(
+            categories = CategoryItemUiModelSample.all,
+            resetScrollEffect = Effect.empty()
+        )
+
+        // When
+        val actual = reducer.newStateFrom(currentState, MailboxEvent.PrimaryAccountChanged)
+
+        // Then
+        assertEquals(CategoryItemUiModelSample.all, (actual as CategoryViewState.Available.Data).categories)
+        assertEquals(Unit, actual.resetScrollEffect.consume())
     }
 }

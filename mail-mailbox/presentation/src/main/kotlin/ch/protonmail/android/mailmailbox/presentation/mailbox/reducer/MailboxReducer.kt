@@ -76,7 +76,7 @@ class MailboxReducer @Inject constructor(
     private fun MailboxState.toNewCategoryViewStateFrom(operation: MailboxOperation): CategoryViewState {
 
         return if (operation is MailboxOperation.AffectingCategoryView) {
-            categoryViewReducer.newStateFrom(operation)
+            categoryViewReducer.newStateFrom(this.categoryViewState, operation)
         } else {
             categoryViewState
         }

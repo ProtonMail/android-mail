@@ -18,13 +18,16 @@
 
 package ch.protonmail.android.mailcategory.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+
 sealed interface CategoryViewState {
 
     sealed interface Available : CategoryViewState {
         data object Loading : Available
 
         data class Data(
-            val categories: List<CategoryItemUiModel>
+            val categories: List<CategoryItemUiModel>,
+            val resetScrollEffect: Effect<Unit> = Effect.empty()
         ) : Available
     }
 

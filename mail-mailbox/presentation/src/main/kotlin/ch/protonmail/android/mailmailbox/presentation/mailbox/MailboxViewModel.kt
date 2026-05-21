@@ -347,6 +347,14 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
+        primaryUserId
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach {
+                emitNewStateFrom(MailboxEvent.PrimaryAccountChanged)
+            }
+            .launchIn(viewModelScope)
+
         observePrimaryAccountAvatarItem().onEach { item ->
             emitNewStateFrom(MailboxEvent.PrimaryAccountAvatarChanged(item))
         }.launchIn(viewModelScope)
