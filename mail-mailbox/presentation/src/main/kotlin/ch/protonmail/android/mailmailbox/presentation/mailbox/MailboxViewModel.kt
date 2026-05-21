@@ -36,6 +36,8 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
+import ch.protonmail.android.mailcategory.domain.model.isDefault
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
@@ -323,6 +325,9 @@ class MailboxViewModel @Inject constructor(
         observeCategoryViewStatusUpdates()
             .onEach { categoryViewStatus ->
                 Timber.d("Received category view status update: $categoryViewStatus")
+                if (categoryViewStatus.activeCategoryOrNull()?.isDefault() == true) {
+                    selectMailLabelId.resetSelectedCategory()
+                }
 
                 emitNewStateFrom(
                     MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
@@ -1409,12 +1414,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun observeSelectedLabelUnreadCount(): Flow<Int> = primaryUserId.flatMapLatest { userId ->
-        observeSelectedLabelWithCategory()
+        combine(
+            observeSelectedLabelWithCategory()
+                .map { it.mailLabelId }
+                .distinctUntilChanged(),
+            observeActiveCategory().onStart { emit(null) }
+        ) { selectedMailLabelId, activeCategoryId ->
+            MailLabelIdWithCategory(
+                mailLabelId = selectedMailLabelId,
+                categoryLabelId = activeCategoryId
+            )
+        }
             .distinctUntilChanged()
             .flatMapLatest { selectedLabelWithCategory ->
                 observeCategoryAwareUnreadCount(userId, selectedLabelWithCategory)
             }
     }
+
+    private fun observeActiveCategory() = observeCategoryViewStatusUpdates()
+        .map { it.activeCategoryOrNull()?.id }
+        .distinctUntilChanged()
 
     private fun emitNewStateFrom(operation: MailboxOperation) {
         val state = mailboxReducer.newStateFrom(state.value, operation)
