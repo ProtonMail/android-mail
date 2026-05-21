@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.data.local
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.repository.InMemorySelectedMailLabelIdRepositoryImpl
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
@@ -163,6 +164,39 @@ class InMemorySelectedMailLabelIdRepositoryImplTest {
             assertEquals(MailLabelTestData.draftsSystemLabel.id, awaitItem())
 
             repository.setLocationAsLoaded(MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id))
+
+            // Then
+            expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `resetSelectedCategory sets selected category to null when default is selected`() = runTest {
+        // Given
+        val category = CategoryLabelId("20")
+
+        repository.observeSelectedLabelWithCategory().test {
+            assertEquals(MailLabelIdWithCategory(initialSystemLabel), awaitItem())
+
+            repository.selectCategory(category)
+            assertEquals(MailLabelIdWithCategory(initialSystemLabel, category), awaitItem())
+
+            // When
+            repository.resetSelectedCategory()
+
+            // Then
+            assertEquals(MailLabelIdWithCategory(initialSystemLabel), awaitItem())
+        }
+    }
+
+    @Test
+    fun `resetSelectedCategory does nothing when selected category is already null`() = runTest {
+        // Given
+        repository.observeSelectedLabelWithCategory().test {
+            assertEquals(MailLabelIdWithCategory(initialSystemLabel), awaitItem())
+
+            // When
+            repository.resetSelectedCategory()
 
             // Then
             expectNoEvents()

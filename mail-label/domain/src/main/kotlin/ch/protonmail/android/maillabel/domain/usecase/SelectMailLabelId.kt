@@ -30,6 +30,8 @@ class SelectMailLabelId @Inject constructor(
 
     operator fun invoke(mailLabelId: MailLabelId) = selectedMailLabelIdRepository.selectLocation(mailLabelId)
 
+    fun resetSelectedCategory() = selectedMailLabelIdRepository.resetSelectedCategory()
+
     fun setLocationAsLoaded(mailLabelIdWithCategory: MailLabelIdWithCategory) =
         selectedMailLabelIdRepository.setLocationAsLoaded(mailLabelIdWithCategory)
 

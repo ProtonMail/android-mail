@@ -26,3 +26,6 @@ data class CategoryLabel(
     val isActive: Boolean,
     val systemLabel: CategorySystemLabelId
 )
+
+fun CategoryLabel.isDefault(): Boolean = systemLabel == CategorySystemLabelId.Primary
+

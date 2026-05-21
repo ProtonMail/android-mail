@@ -228,6 +228,7 @@ internal class MailboxViewModelTest {
 
     private val selectMailLabelId = mockk<SelectMailLabelId> {
         every { this@mockk.invoke(any()) } just runs
+        every { this@mockk.resetSelectedCategory() } just runs
         every { this@mockk.setLocationAsLoaded(any()) } just runs
         coEvery { this@mockk.selectInitialLocationIfNeeded(any(), any()) } just runs
     }

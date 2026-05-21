@@ -33,6 +33,11 @@ interface SelectedMailLabelIdRepository {
     fun selectCategory(categoryLabelId: CategoryLabelId)
 
     /**
+     * Resets selected category to default
+     */
+    fun resetSelectedCategory()
+
+    /**
      * Updates the selected mail label
      */
     fun selectLocation(mailLabelId: MailLabelId)

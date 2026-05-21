@@ -105,6 +105,16 @@ class InMemorySelectedMailLabelIdRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun resetSelectedCategory() {
+        Timber.d("Resetting selected category to default")
+        appScope.launch {
+            val current = baseFlowOfAllLabelChanges.value ?: return@launch
+            if (current.categoryLabelId == null) return@launch
+
+            mutableFlow.emit(current.mailLabelId.asLocationRequested())
+        }
+    }
+
     override fun setLocationAsLoaded(mailLabelIdWithCategory: MailLabelIdWithCategory) {
         appScope.launch {
             mutableFlow.emit(mailLabelIdWithCategory.asLocationLoaded())
