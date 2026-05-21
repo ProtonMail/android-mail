@@ -299,6 +299,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class PrimaryAccountAvatarChanged(val item: CoreAccountAvatarItem?) : MailboxEvent, AffectingTopAppBar
 
+    data object PrimaryAccountChanged : MailboxEvent, AffectingCategoryView
+
     data class LoadingBarStateUpdated(val state: LoadingBarUiState) : MailboxEvent, AffectingMailboxList
 
     data class PaginatorInvalidated(val event: PageInvalidationEvent) : MailboxEvent, AffectingMailboxList

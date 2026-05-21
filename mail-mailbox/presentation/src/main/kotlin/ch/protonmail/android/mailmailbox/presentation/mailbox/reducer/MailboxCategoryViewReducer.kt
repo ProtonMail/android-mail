@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.presentation.mapper.CategoryViewUiModelMapper
-import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import javax.inject.Inject
@@ -29,11 +29,23 @@ class MailboxCategoryViewReducer @Inject constructor(
     private val categoryViewUiModelMapper: CategoryViewUiModelMapper
 ) {
 
-    internal fun newStateFrom(operation: MailboxOperation.AffectingCategoryView): CategoryViewState {
+    internal fun newStateFrom(
+        currentState: CategoryViewState,
+        operation: MailboxOperation.AffectingCategoryView
+    ): CategoryViewState {
         return when (operation) {
-
             is MailboxEvent.CategoryViewStatusChanged -> {
                 categoryViewUiModelMapper.toUiModel(operation.categoryViewStatus)
+            }
+
+            MailboxEvent.PrimaryAccountChanged -> {
+                when (currentState) {
+                    is CategoryViewState.Available.Data -> {
+                        currentState.copy(resetScrollEffect = Effect.of(Unit))
+                    }
+
+                    else -> currentState
+                }
             }
         }
     }

@@ -36,6 +36,7 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.mailcategory.presentation.CategoryViewMenu
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -50,6 +51,13 @@ fun MailboxStickyHeader(
     actions: MailboxStickyHeader.Actions,
     isCategoryViewEnabled: Boolean
 ) {
+    val horizontalScrollState = rememberScrollState()
+
+    (state.categoryViewState as? CategoryViewState.Available.Data)?.let { categoryViewData ->
+        ConsumableLaunchedEffect(effect = categoryViewData.resetScrollEffect) {
+            horizontalScrollState.animateScrollTo(0)
+        }
+    }
 
     val isCategoryViewVisible =
         isCategoryViewEnabled &&
@@ -78,7 +86,7 @@ fun MailboxStickyHeader(
                 bottom = bottomPadding,
                 top = 0.dp
             )
-            .horizontalScroll(rememberScrollState()),
+            .horizontalScroll(horizontalScrollState),
         horizontalArrangement = Arrangement.Start
     ) {
         if (state.mailboxListState is MailboxListState.Data.SelectionMode) {
