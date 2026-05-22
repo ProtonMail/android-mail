@@ -28,10 +28,11 @@ class BottomBarReducer @Inject constructor() {
     fun newStateFrom(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
         return when (event) {
             is BottomBarEvent.ActionsData -> currentState.toNewStateForActionData(event)
-            is BottomBarEvent.ShowAndUpdateActionsData -> BottomBarState.Data.Shown(
-                event.target,
-                event.actionUiModels
-            )
+            is BottomBarEvent.ShowAndUpdateActionsData -> if (event.actionUiModels.isEmpty()) {
+                BottomBarState.Data.Hidden(event.target, event.actionUiModels)
+            } else {
+                BottomBarState.Data.Shown(event.target, event.actionUiModels)
+            }
 
             is BottomBarEvent.HideBottomSheet -> currentState.toNewStateForHiding()
             is BottomBarEvent.ShowBottomSheet -> currentState.toNewStateForShowing()

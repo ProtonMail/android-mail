@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.presentation.reducer
 
 import arrow.core.nonEmptyListOf
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
@@ -48,6 +49,7 @@ internal class BottomBarReducerTest(
 
         private val actions = nonEmptyListOf(ActionUiModelTestData.markUnread).toImmutableList()
         private val updatedActions = listOf(ActionUiModelTestData.archive).toImmutableList()
+        private val emptyActions = emptyList<ActionUiModel>().toImmutableList()
         private val mailboxTarget = BottomBarTarget.Mailbox
         private val convoTarget = BottomBarTarget.Conversation
         private val messageTarget = BottomBarTarget.Message(id = "messageId")
@@ -73,6 +75,11 @@ internal class BottomBarReducerTest(
                 currentState = BottomBarState.Loading,
                 operation = BottomBarEvent.Offline,
                 expectedState = BottomBarState.Offline
+            ),
+            TestInput(
+                currentState = BottomBarState.Loading,
+                operation = BottomBarEvent.ShowAndUpdateActionsData(convoTarget, emptyActions),
+                expectedState = BottomBarState.Data.Hidden(convoTarget, emptyActions)
             )
         )
 
