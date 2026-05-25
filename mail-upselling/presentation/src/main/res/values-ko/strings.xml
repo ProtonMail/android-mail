@@ -32,7 +32,7 @@
   <string name="upselling_mailbox_plus_promo_skip">혜택 건너뛰기</string>
   <string name="upselling_mailbox_plus_promo_renewal">첫 달 %s, 이후 매월 %s</string>
   <!-- Upselling: Unlimited -->
-  <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
+  <string name="upselling_unlimited_title">Proton Unlimited로 업그레이드</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">그룹 이메일을 간편하게 보내세요. Mail Plus와 함께 이 모든 것과 그 이상을 즐기세요.</string>
   <string name="upselling_contact_groups_plus_title">연락처를 그룹화하기</string>
@@ -60,17 +60,20 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">저장 공간</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">이메일 주소</string>
   <string name="upselling_comparison_table_custom_email_domain">사용자 지정 이메일 도메인</string>
   <string name="upselling_comparison_table_desktop_app">데스크톱 앱으로의 접근 가능</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">무제한 폴더 및 라벨</string>
   <string name="upselling_comparison_table_priority_support">우선 고객 지원</string>
-  <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
-  <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
-  <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
-  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_aliases">나의 이메일 숨기기 별칭</string>
+  <string name="upselling_comparison_table_folders_labels">폴더 및 라벨</string>
+  <string name="upselling_comparison_table_premium_products">프리미엄 VPN, 패스워드 매니저 및 클라우드 저장 공간</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">다크 웹 모니터링</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Choose subscription</string>
+  <string name="upselling_select_plan">요금제를 선택하세요</string>
   <string name="upselling_select_plan_year">12개월</string>
   <string name="upselling_select_plan_month">1개월</string>
   <!-- Onboarding upsell -->
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB 스토리지</string>
   <string name="upselling_onboarding_free_entitlement_mail">이메일 주소 1개</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
+  <string name="upselling_unlimited_description_override">더 많은 저장 공간과 프리미엄 기능 이용</string>
   <string name="upselling_auto_renew_text">취소되기 전까지 같은 가격과 규정으로 갱신됩니다</string>
   <string name="upselling_auto_renew_text_promo">환영 할인. 취소 전까지 %s%s(으)로 자동갱신됩니다.</string>
   <string name="upselling_auto_renew_text_bfriday">할인은 표준 월간 요금을 기준으로 합니다. 취소할 때까지 %s%s로 자동 갱신됩니다.</string>
   <string name="upselling_auto_renew_text_promo_short">환영 할인. %s%s에 자동갱신됩니다.</string>
-  <string name="upselling_auto_renew_text_standard">취소 전까지 %s%s(으)로 갱신됩니다</string>
+  <string name="upselling_auto_renew_text_standard">취소하지 않는 한 %s%s에 갱신됩니다.</string>
   <string name="upselling_social_proof_reviews">2천개 이상의 리뷰</string>
   <string name="upselling_description_social_proof">수백만 명의 구독자가 극찬하는 경험을 위해 업그레이드하세요.</string>
   <string name="upselling_month">/월</string>

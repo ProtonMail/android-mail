@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Passaggio al messaggio successivo</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Vai velocemente al messaggio successivo o precedente nella casella di posta</string>
   <string name="mail_settings_app_customization_customize_toolbar">Barre degli strumenti</string>
+  <string name="mail_settings_app_customization_email_categories">Categorie email</string>
   <string name="mail_settings_app_customization_alternative_routing">Percorso alternativo</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Evita firewall o problemi di rete che impediscono la connessione al server</string>
   <string name="mail_settings_app_customization_mail_experience_header">Esperienza Mail</string>

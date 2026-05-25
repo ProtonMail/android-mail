@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Deslizar al correo electrónico siguiente</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Vaya rápidamente al siguiente o al mensaje anterior en su bandeja de entrada.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Personalizar las barras de herramientas</string>
+  <string name="mail_settings_app_customization_email_categories">Categorías de correo electrónico</string>
   <string name="mail_settings_app_customization_alternative_routing">Enrutamiento alternativo</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Elude el firewall o problemas de red en caso de que los sitios de Proton estén bloqueados.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Experiencia de correo</string>

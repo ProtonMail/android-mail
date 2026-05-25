@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Правядзіце, каб перайсці да наступнага ліста</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Хуткі пераход да наступнага або папярэдняга паведамлення ў вашай паштовай скрыні.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Наладзіць панэлі інструментаў</string>
+  <string name="mail_settings_app_customization_email_categories">Катэгорыі электроннай пошты</string>
   <string name="mail_settings_app_customization_alternative_routing">Альтэрнатыўная маршрутызацыя</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Абыход міжсеткавага экрана або сеткавых праблем у выпадку, калі сайты Proton заблакіраваны.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Досвед працы з электроннай поштай</string>

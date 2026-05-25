@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
-  <string name="category_title_social">Social</string>
-  <string name="category_title_promotions">Promotions</string>
-  <string name="category_title_updates">Updates</string>
-  <string name="category_title_forums">Forums</string>
-  <string name="category_title_newsletters">Newsletters</string>
-  <string name="category_title_transactions">Transactions</string>
+  <string name="category_title_primary">기본</string>
+  <string name="category_title_social">소셜</string>
+  <string name="category_title_promotions">프로모션</string>
+  <string name="category_title_updates">업데이트</string>
+  <string name="category_title_forums">포럼</string>
+  <string name="category_title_newsletters">뉴스레터</string>
+  <string name="category_title_transactions">결제 관련</string>
 </resources>

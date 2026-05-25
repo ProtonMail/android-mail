@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Αποθηκευτικός χώρος</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">Διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>
   <string name="upselling_comparison_table_custom_email_domain">Προσαρμοσμένος τομέας ηλεκτρονικού ταχυδρομείου</string>
   <string name="upselling_comparison_table_desktop_app">Πρόσβαση στην εφαρμογή υπολογιστή</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB αποθηκευτικού χώρου</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 διεύθυνση ηλεκτρονικού ταχυδρομείου</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες</string>
+  <string name="upselling_unlimited_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες.</string>
   <string name="upselling_auto_renew_text">Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί</string>
   <string name="upselling_auto_renew_text_promo">Προσφορά καλωσορίσματος. Ανανεώνεται αυτόματα σε %s%s εκτός εάν ακυρωθεί</string>
   <string name="upselling_auto_renew_text_bfriday">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %s%s μέχρι να ακυρωθεί.</string>
   <string name="upselling_auto_renew_text_promo_short">Προσφορά καλωσορίσματος. Αυτόματη ανανέωση στα %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Ανανεώνεται αυτόματα σε %s%s εκτός εάν ακυρωθεί</string>
+  <string name="upselling_auto_renew_text_standard">Ανανεώνεται αυτόματα σε %s%s εκτός εάν ακυρωθεί.</string>
   <string name="upselling_social_proof_reviews">2k+ ΚΡΙΤΙΚΕΣ</string>
   <string name="upselling_description_social_proof">Αναβαθμίστε στην εμπειρία που εκατομμύρια συνδρομητές αποθεώνουν.</string>
   <string name="upselling_month">/μήνα</string>

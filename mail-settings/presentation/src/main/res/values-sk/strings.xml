@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Potiahnite na ďalší email</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Rýchly prechod na ďalšiu alebo predchádzajúcu správu v doručenej pošte.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Prispôsobiť panel nástrojov</string>
+  <string name="mail_settings_app_customization_email_categories">Kategórie emailov</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatívne smerovanie</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Obchádzanie firewallu alebo sieťových problémov v prípade, že sú stránky Protonu zablokované.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Skúsenosti s emailom</string>

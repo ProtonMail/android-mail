@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">다음 이메일로 쓸어넘기기</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">받은 편지함의 다음 또는 이전 메시지로 빠르게 이동합니다.</string>
   <string name="mail_settings_app_customization_customize_toolbar">도구 모음 사용자화</string>
+  <string name="mail_settings_app_customization_email_categories">이메일 카테고리</string>
   <string name="mail_settings_app_customization_alternative_routing">대체 라우팅</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Proton 사이트가 차단된 경우 방화벽이나 네트워크 문제를 우회합니다.</string>
   <string name="mail_settings_app_customization_mail_experience_header">메일 경험</string>

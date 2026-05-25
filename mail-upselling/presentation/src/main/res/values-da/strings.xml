@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Lagerplads</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">E-mailadresser</string>
   <string name="upselling_comparison_table_custom_email_domain">Tilpasset e-maildomæne</string>
   <string name="upselling_comparison_table_desktop_app">Adgang til skrivebords-app</string>
@@ -94,7 +97,7 @@
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s%s, medmindre det annulleres</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %s%s, indtil det annulleres.</string>
   <string name="upselling_auto_renew_text_promo_short">Velkomsttilbud. Fornyes automatisk til %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s, medmindre det annulleres</string>
+  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s, medmindre det annulleres.</string>
   <string name="upselling_social_proof_reviews">2.000+ ANMELDELSER</string>
   <string name="upselling_description_social_proof">Opgradér til den oplevelse, som millioner af abonnenter er begejstrede for.</string>
   <string name="upselling_month">/måned</string>

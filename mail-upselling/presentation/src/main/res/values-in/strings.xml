@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Penyimpanan</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">Alamat email</string>
   <string name="upselling_comparison_table_custom_email_domain">Domain email khusus</string>
   <string name="upselling_comparison_table_desktop_app">Akses ke aplikasi desktop</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">Ruang penyimpanan 1 GB</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 alamat email</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
   <string name="upselling_auto_renew_text">Diperbarui secara otomatis pada harga dan ketentuan yang sama kecuali apabila dibatalkan</string>
   <string name="upselling_auto_renew_text_promo">Penawaran selamat datang. Diperpanjang otomatis dengan harga %s%s kecuali dibatalkan</string>
   <string name="upselling_auto_renew_text_bfriday">Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada %s%s hingga dibatalkan.</string>
   <string name="upselling_auto_renew_text_promo_short">Penawaran selamat datang. Diperpanjang otomatis dengan harga %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Diperpanjang otomatis dengan harga %s%s kecuali dibatalkan</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
   <string name="upselling_social_proof_reviews">2000+ ULASAN</string>
   <string name="upselling_description_social_proof">Tingkatkan ke pengalaman yang dicintai oleh jutaan pelanggan.</string>
   <string name="upselling_month">/bulan</string>

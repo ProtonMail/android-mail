@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Lapozás a következő e-mail-re</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Gyorsan a következő vagy az előző üzenetre léphet a bejövő üzenetek között.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Eszköztárak testreszabása</string>
+  <string name="mail_settings_app_customization_email_categories">Email categories</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatív útválasztás</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Tűzfalak vagy hálózati problémák megkerülése abban az esetben, ha a Proton webhelyei blokkolva vannak.</string>
   <string name="mail_settings_app_customization_mail_experience_header">E-mail élmény</string>

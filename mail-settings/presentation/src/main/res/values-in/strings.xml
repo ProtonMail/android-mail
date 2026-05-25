@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Geser ke email berikutnya</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Berpindahlah ke pesan berikutnya atau sebelumnya pada kotak masuk Anda dengan cepat.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Sesuaikan toolbar</string>
+  <string name="mail_settings_app_customization_email_categories">Email categories</string>
   <string name="mail_settings_app_customization_alternative_routing">Perutean alternatif</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Menangkal firewall atau masalah jaringan apabila situs Proton diblokir.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Pengalaman Mail</string>

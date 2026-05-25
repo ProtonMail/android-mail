@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Derulare la alt mesaj</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Vă mutați rapid la mesajul următor sau anterior primit.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Personalizare bare de unelte</string>
+  <string name="mail_settings_app_customization_email_categories">Categorii de e-mail</string>
   <string name="mail_settings_app_customization_alternative_routing">Direcționare alternativă</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Ocoliți paravanele de protecție sau problemele de rețea în cazul în care site-urile Proton sunt blocate.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Experiență Mail</string>

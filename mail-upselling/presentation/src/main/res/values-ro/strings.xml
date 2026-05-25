@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Spațiu de stocare</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GiB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GiB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">Adrese de e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Domeniu personal de e-mail</string>
   <string name="upselling_comparison_table_desktop_app">Acces la aplicația desktop</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GiB spațiu de stocare</string>
   <string name="upselling_onboarding_free_entitlement_mail">O adresă de e-mail</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Pentru a debloca mai mult spațiu de stocare și funcții premium</string>
+  <string name="upselling_unlimited_description_override">Pentru a debloca mai mult spațiu și funcții premium.</string>
   <string name="upselling_auto_renew_text">Se reînnoiește automat la același preț și condiții, dacă nu este anulat.</string>
   <string name="upselling_auto_renew_text_promo">Ofertă de bun venit. Se reînnoiește automat cu %s %s dacă nu e anulată.</string>
   <string name="upselling_auto_renew_text_bfriday">Reducerile se bazează pe prețurile lunare standard. Se reînnoiește automat cu %s %s până la anulare.</string>
   <string name="upselling_auto_renew_text_promo_short">Ofertă de bun venit. Se reînnoiește automat cu %s %s.</string>
-  <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s dacă nu e anulată.</string>
+  <string name="upselling_auto_renew_text_standard">Se reînnoiește automat cu %s %s dacă nu e anulat.</string>
   <string name="upselling_social_proof_reviews">Peste 2.000 de RECENZII</string>
   <string name="upselling_description_social_proof">Treceți la experiența de care sunt încântați milioane de abonați.</string>
   <string name="upselling_month">/lună</string>

@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Opslag</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">E-mailadressen</string>
   <string name="upselling_comparison_table_custom_email_domain">Aangepast e-maildomein</string>
   <string name="upselling_comparison_table_desktop_app">Toegang tot desktop-app</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB opslagruimte</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-mailadres</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Om meer opslag- en premiumfuncties te ontgrendelen</string>
+  <string name="upselling_unlimited_description_override">Om meer opslag- en premiumfuncties te ontgrendelen.</string>
   <string name="upselling_auto_renew_text">Auto-vernieuwing tegen dezelfde prijs en voorwaarden, tenzij geannuleerd</string>
   <string name="upselling_auto_renew_text_promo">Welkomstaanbieding. Automatisch verlengen op %s%s tenzij u annuleert</string>
   <string name="upselling_auto_renew_text_bfriday">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %s%s totdat u annuleert.</string>
   <string name="upselling_auto_renew_text_promo_short">Welkomstaanbieding, verlengt automatisch op %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Automatisch verlengen op %s%s tenzij u annuleert</string>
+  <string name="upselling_auto_renew_text_standard">Wordt automatisch verlengt op %s%s tenzij geannuleerd.</string>
   <string name="upselling_social_proof_reviews">2k+ RECENSIES</string>
   <string name="upselling_description_social_proof">Upgrade naar de ervaring waar miljoenen abonnees enthousiast over zijn.</string>
   <string name="upselling_month">/maand</string>

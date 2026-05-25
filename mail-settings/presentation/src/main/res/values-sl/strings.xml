@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Povlecite s prstom za naslednjo e-pošto</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Hitro se premaknite na naslednje ali prejšnje sporočilo v mapi »Prejeto«.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Prilagajanje orodnih vrstic</string>
+  <string name="mail_settings_app_customization_email_categories">Email categories</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternativno usmerjanje</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Izognite se požarnemu zidu ali težavam z omrežjem, če so spletna mesta Proton blokirana.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Izkušnja z aplikacijo Mail</string>

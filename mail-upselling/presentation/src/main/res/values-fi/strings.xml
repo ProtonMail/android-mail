@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Tallennustila</string>
+  <string name="upselling_comparison_table_storage_value_free">1 Gt</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 Gt</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 Gt</string>
   <string name="upselling_comparison_table_email_addresses">Sähköpostiosoitteet</string>
   <string name="upselling_comparison_table_custom_email_domain">Omat verkkotunnukset</string>
   <string name="upselling_comparison_table_desktop_app">Työpöytäsovellus</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 Gt tallennustilaa</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 sähköpostiosoite</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Avataksesi lisää tallennustilaa ja premium-ominaisuuksia</string>
+  <string name="upselling_unlimited_description_override">Avataksesi lisää tallennustilaa ja premium-ominaisuuksia.</string>
   <string name="upselling_auto_renew_text">Uusiutuu automaattisesti samaan hintaan ja samoilla ehdoilla, ellei tilausta peruta</string>
   <string name="upselling_auto_renew_text_promo">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %s%s, ellei peruuteta.</string>
   <string name="upselling_auto_renew_text_bfriday">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Tilaus uusitaan automaattisesti hintaan %s%s, kunnes se peruutetaan.</string>
   <string name="upselling_auto_renew_text_promo_short">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Uusiutuu automaattisesti hintaan %s%s, ellei peruuteta</string>
+  <string name="upselling_auto_renew_text_standard">Uusiutuu automaattisesti hintaan %s%s, ellei peruuteta.</string>
   <string name="upselling_social_proof_reviews">2 000 + arvostelua</string>
   <string name="upselling_description_social_proof">Päivitä kokemukseen, josta miljoonat tilaajat ovat innoissaan.</string>
   <string name="upselling_month">/kuukausi</string>

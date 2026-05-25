@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Veeg naar volgende e-mail</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Ga snel naar het volgende of vorige bericht in uw inbox.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Werkbalken aanpassen</string>
+  <string name="mail_settings_app_customization_email_categories">Email categories</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatieve routing</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omzeil firewall of netwerkproblemen in het geval dat sites van Proton worden geblokkeerd.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mailervaring</string>

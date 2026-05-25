@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">滑動到下一封電子郵件</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">在您的收件匣中快速移動到下一則或上一則訊息。</string>
   <string name="mail_settings_app_customization_customize_toolbar">Customize toolbars</string>
+  <string name="mail_settings_app_customization_email_categories">電子郵件分類</string>
   <string name="mail_settings_app_customization_alternative_routing">替代路由</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">繞過防火牆或網路問題，以防 Proton 網站被封鎖。</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail 體驗</string>
