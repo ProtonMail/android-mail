@@ -92,11 +92,11 @@
   <string name="mailbox_talkback_readout_not_starred">별표</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">첨부 파일을 열 수 없습니다. 나중에 다시 시도하세요.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">다운로드를 시작하기 전에 현재 다운로드를 완료해야 합니다.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">메시지 삭제 실패</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">활성화된 카테고리 변경에 실패했습니다</string>
   <string name="select_all">전체 선택</string>
   <string name="deselect_all">모두 선택 해제</string>
   <!--    Expiry messages-->

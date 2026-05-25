@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Lagringsutrymme</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">E-postadresser</string>
   <string name="upselling_comparison_table_custom_email_domain">Anpassad e-postdomän</string>
   <string name="upselling_comparison_table_desktop_app">Åtkomst till app för stationär dator</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB lagringsutrymme</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-postadress</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
   <string name="upselling_auto_renew_text">Autoförnyas med samma pris och villkor tills uppsägning</string>
   <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt till %s%s om det inte avbryts.</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %s%s tills det avbryts.</string>
   <string name="upselling_auto_renew_text_promo_short">Välkomsterbjudande. Förnyas automatiskt med %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Förnyas automatiskt till %s%s om det inte avbryts.</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
   <string name="upselling_social_proof_reviews">2 000+ RECENSIONER</string>
   <string name="upselling_description_social_proof">Uppgradera till upplevelsen som miljoner prenumeranter hyllar.</string>
   <string name="upselling_month">/månad</string>

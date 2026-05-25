@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Pyyhkäise seuraavaan sähköpostiin</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Siirry nopeasti seuraavaan tai edelliseen viestiin saapuneet-kansiossasi.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Mukauta työkalupalkkeja</string>
+  <string name="mail_settings_app_customization_email_categories">Sähköpostiluokat</string>
   <string name="mail_settings_app_customization_alternative_routing">Vaihtoehtoinen reititys</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Ohita palomuuri- tai verkko-ongelmat sen varalta, että Protonin sivustot on estetty.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail-elämys</string>

@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">容量</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">メールアドレス</string>
   <string name="upselling_comparison_table_custom_email_domain">カスタムメールドメイン</string>
   <string name="upselling_comparison_table_desktop_app">デスクトップアプリへアクセス</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB ストレージ</string>
   <string name="upselling_onboarding_free_entitlement_mail">1個のメールアドレス</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
   <string name="upselling_auto_renew_text">キャンセルするまで同じ金額、同じ期間で自動更新</string>
   <string name="upselling_auto_renew_text_promo">ウェルカムオファー。キャンセルしない限り、%s%s で自動更新します。</string>
   <string name="upselling_auto_renew_text_bfriday">割引は標準月額料金に基づいています。キャンセルされるまで%s%sにて自動更新されます。</string>
   <string name="upselling_auto_renew_text_promo_short">歓迎オファー。%s%sで自動更新。</string>
-  <string name="upselling_auto_renew_text_standard">キャンセルしない限り、%s%s で自動更新します。</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
   <string name="upselling_social_proof_reviews">2000以上のレビュー</string>
   <string name="upselling_description_social_proof">数百万人の加入者が絶賛する体験にアップグレードしてください。</string>
   <string name="upselling_month">/月</string>

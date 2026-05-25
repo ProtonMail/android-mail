@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Σύρετε για το επόμενο μήνυμα</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Μεταβείτε γρήγορα στο επόμενο ή στο προηγούμενο μήνυμα στα εισερχόμενά σας.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Προσαρμογή γραμμών εργαλείων</string>
+  <string name="mail_settings_app_customization_email_categories">Κατηγορίες ηλεκτρονικών μηνυμάτων</string>
   <string name="mail_settings_app_customization_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Παρακάμψτε προβλήματα τείχους προστασίας ή δικτύου σε περίπτωση οι ιστότοποι του Proton είναι αποκλεισμένοι.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Εμπειρία Mail</string>

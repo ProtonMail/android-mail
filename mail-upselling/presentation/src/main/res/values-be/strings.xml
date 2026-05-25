@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Сховішча</string>
+  <string name="upselling_comparison_table_storage_value_free">1 ГБ</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 ГБ</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">Адрасы электроннай пошты</string>
   <string name="upselling_comparison_table_custom_email_domain">Карыстальніцкі дамен электроннай пошты</string>
   <string name="upselling_comparison_table_desktop_app">Доступ да праграмы для камп\'ютара</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 ГБ у сховішчы</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 адрас электроннай пошты</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
+  <string name="upselling_unlimited_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый.</string>
   <string name="upselling_auto_renew_text">Аўтападаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана</string>
   <string name="upselling_auto_renew_text_promo">Вітальная прапанова. Аўтаматычнае падаўжэнне за %s%s пакуль не будзе скасавана</string>
   <string name="upselling_auto_renew_text_bfriday">Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %s%s, пакуль не будзе скасавана.</string>
   <string name="upselling_auto_renew_text_promo_short">Вітальная прапанова. Аўтаматычнае падаўжэнне за %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Аўтападаўжэнне за %s%s пакуль не будзе скасавана</string>
+  <string name="upselling_auto_renew_text_standard">Аўтападаўжэнне за %s%s пакуль не будзе скасавана.</string>
   <string name="upselling_social_proof_reviews">БОЛЬШ ЗА 2000 ВОДГУКАЎ</string>
   <string name="upselling_description_social_proof">Перайдзіце на тарыфны план, які радуе мільёны падпісчыкаў.</string>
   <string name="upselling_month">/месяц</string>

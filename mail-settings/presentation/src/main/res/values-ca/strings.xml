@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Llisca al correu electrònic següent</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Mou ràpidament al missatge següent o anterior de la safata d\'entrada.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Personalitzeu les barres d\'eines</string>
+  <string name="mail_settings_app_customization_email_categories">Categories de correu electrònic</string>
   <string name="mail_settings_app_customization_alternative_routing">Encaminament alternatiu</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omet el tallafoc o problemes de xarxa en cas que es bloquin els llocs del Proton.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Experiència de correu</string>

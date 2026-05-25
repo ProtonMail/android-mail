@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">存储空间</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">邮箱地址</string>
   <string name="upselling_comparison_table_custom_email_domain">自定义邮箱域名</string>
   <string name="upselling_comparison_table_desktop_app">访问桌面应用</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB 存储空间</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 个邮箱地址</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">解锁更多存储空间和高级功能</string>
+  <string name="upselling_unlimited_description_override">解锁更多存储空间与高级功能</string>
   <string name="upselling_auto_renew_text">除非取消，否则将以相同的价格和条款自动续订</string>
   <string name="upselling_auto_renew_text_promo">迎新优惠。除非手动取消，否则将在 %s%s 时自动续订。</string>
   <string name="upselling_auto_renew_text_bfriday">优惠基于标准月度定价。将以 %s%s 的价格自动续订，直至取消。</string>
   <string name="upselling_auto_renew_text_promo_short">欢迎优惠。订阅将以 %s %s 自动续订。</string>
-  <string name="upselling_auto_renew_text_standard">除非手动取消，否则将在 %s%s 时自动续订</string>
+  <string name="upselling_auto_renew_text_standard">除非手动取消，否则按 %s%s 自动续期</string>
   <string name="upselling_social_proof_reviews">2k+ 评论</string>
   <string name="upselling_description_social_proof">升級到数百万订阅者赞不绝口的体验。</string>
   <string name="upselling_month">/月</string>

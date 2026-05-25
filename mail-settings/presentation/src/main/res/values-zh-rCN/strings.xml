@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">轻扫至下一封邮件</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">快速移动到收件箱中的下一封或上一封邮件。</string>
   <string name="mail_settings_app_customization_customize_toolbar">自定义工具栏</string>
+  <string name="mail_settings_app_customization_email_categories">邮件分类</string>
   <string name="mail_settings_app_customization_alternative_routing">备用线路</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">绕过防火墙或网络问题，以防 Proton 网站被屏蔽。</string>
   <string name="mail_settings_app_customization_mail_experience_header">邮箱体验</string>

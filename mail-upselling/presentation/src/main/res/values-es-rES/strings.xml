@@ -60,6 +60,9 @@
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Almacenamiento</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">Direcciones de correo electrónico</string>
   <string name="upselling_comparison_table_custom_email_domain">Dominio de correo electrónico personalizado</string>
   <string name="upselling_comparison_table_desktop_app">Acceso a la aplicación de escritorio</string>
@@ -89,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB de almacenamiento</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 dirección de correo electrónico</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Para desbloquear más almacenamiento y funciones prémium</string>
+  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
   <string name="upselling_auto_renew_text">Se renueva automáticamente al mismo precio y términos a menos que se cancele</string>
   <string name="upselling_auto_renew_text_promo">Oferta de bienvenida. Se renueva automáticamente por %s%s a menos que se cancele</string>
   <string name="upselling_auto_renew_text_bfriday">Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %s%s hasta que se cancele.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta de bienvenida. Se renueva automáticamente por %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Se renueva automáticamente por %s%s a menos que se cancele</string>
+  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
   <string name="upselling_social_proof_reviews">Más de 2000 reseñas</string>
   <string name="upselling_description_social_proof">Pásate a la experiencia de la que hablan millones de suscriptores.</string>
   <string name="upselling_month">/mes</string>

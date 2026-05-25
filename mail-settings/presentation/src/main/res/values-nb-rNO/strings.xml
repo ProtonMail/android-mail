@@ -54,6 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Sveip til neste e-post</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Gå raskt til neste eller forrige melding i innboksen din.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Tilpass verktøylinjer</string>
+  <string name="mail_settings_app_customization_email_categories">Email categories</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternativ ruting</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Omgå brannmur eller nettverksproblemer i tilfelle Proton-nettsteder er blokkert.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail-opplevelse</string>
