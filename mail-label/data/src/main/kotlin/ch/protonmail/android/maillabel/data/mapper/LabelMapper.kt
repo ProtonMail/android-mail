@@ -151,6 +151,10 @@ fun MovableSystemFolder.toSystemLabel() = when (this) {
     MovableSystemFolder.TRASH -> SystemLabelId.Trash
     MovableSystemFolder.SPAM -> SystemLabelId.Spam
     MovableSystemFolder.ARCHIVE -> SystemLabelId.Archive
+    else -> {
+        Timber.w("rust-label: mapping from Inbox categories will be supported later. Fallback to Inbox")
+        SystemLabelId.Inbox
+    }
 }
 
 fun InlineCustomLabel.toLabel() = Label(
