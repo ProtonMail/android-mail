@@ -55,15 +55,15 @@ import org.junit.Rule
 import org.junit.Test
 import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.ConversationActionSheet
-import uniffi.mail_uniffi.CustomFolderAction
+import uniffi.mail_uniffi.CustomFolderDestination
 import uniffi.mail_uniffi.Id
 import uniffi.mail_uniffi.IsSelected
 import uniffi.mail_uniffi.LabelAsAction
 import uniffi.mail_uniffi.LabelAsOutput
 import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MovableSystemFolderAction
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
+import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.Undo
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -202,15 +202,15 @@ internal class RustConversationDataSourceImplTest {
         val labelId = LocalLabelId(1uL)
         val mailbox = mockk<MailboxWrapper>()
         val conversationIds = listOf(LocalConversationIdSample.OctConversation)
-        val archive = MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
-        val customFolder = CustomFolderAction(
+        val archive = SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
+        val customFolder = CustomFolderDestination(
             Id(100uL),
             "custom",
             LabelColor("#fff"),
             emptyList()
         )
-        val allMoveToActions = listOf(MoveAction.SystemFolder(archive), MoveAction.CustomFolder(customFolder))
-        val expected = listOf(MoveAction.SystemFolder(archive))
+        val allMoveToActions = listOf(MoveDestination.SystemFolder(archive), MoveDestination.CustomFolder(customFolder))
+        val expected = listOf(MoveDestination.SystemFolder(archive))
 
         coEvery { rustMailboxFactory.create(userId, labelId) } returns mailbox.right()
         coEvery { getRustConversationMoveToActions(mailbox, conversationIds) } returns allMoveToActions.right()

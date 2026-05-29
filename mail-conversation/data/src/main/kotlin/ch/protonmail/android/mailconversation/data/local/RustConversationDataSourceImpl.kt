@@ -56,7 +56,7 @@ import uniffi.mail_uniffi.AllConversationActions
 import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.ConversationActionSheet
 import uniffi.mail_uniffi.LabelAsAction
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
 import javax.inject.Inject
 import uniffi.mail_uniffi.starConversations as rustStarConversation
 import uniffi.mail_uniffi.unstarConversations as rustUnstarConversation
@@ -252,7 +252,7 @@ class RustConversationDataSourceImpl @Inject constructor(
         userId: UserId,
         labelId: LocalLabelId,
         conversationIds: List<LocalConversationId>
-    ): Either<DataError, List<MoveAction.SystemFolder>> = withContext(ioDispatcher) {
+    ): Either<DataError, List<MoveDestination.SystemFolder>> = withContext(ioDispatcher) {
         val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
         if (mailbox == null) {
             Timber.e("rust-conversation: trying to get available actions for null Mailbox! failing")
@@ -260,7 +260,7 @@ class RustConversationDataSourceImpl @Inject constructor(
         }
 
         return@withContext getRustConversationMoveToActions(mailbox, conversationIds)
-            .map { it.filterIsInstance<MoveAction.SystemFolder>() }
+            .map { it.filterIsInstance<MoveDestination.SystemFolder>() }
     }
 
     override suspend fun moveConversations(
