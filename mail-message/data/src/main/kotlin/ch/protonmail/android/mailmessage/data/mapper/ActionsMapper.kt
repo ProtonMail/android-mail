@@ -38,7 +38,7 @@ import uniffi.mail_uniffi.IsSelected
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MessageAction
 import uniffi.mail_uniffi.MessageActionSheet
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
 
 fun List<LocalLabelAsAction>.toLabelAsActions(): LabelAsActions {
     val labels = this.map { it.toLabel() }
@@ -65,7 +65,7 @@ private fun LocalLabelAsAction.toLabel() = Label(
     isSticky = null
 )
 
-fun List<MoveAction.SystemFolder>.toMailLabels() = this.map { systemAction ->
+fun List<MoveDestination.SystemFolder>.toMailLabels() = this.map { systemAction ->
     MailLabel.System(
         id = MailLabelId.System(systemAction.v1.localId.toLabelId()),
         systemLabelId = systemAction.v1.name.toSystemLabel(),

@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import uniffi.mail_uniffi.AvailableMoveToActionsForMessagesResult
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
 import uniffi.mail_uniffi.availableMoveToActionsForMessages
 import javax.inject.Inject
 
@@ -35,9 +35,10 @@ class GetRustMessageMoveToActions @Inject constructor() {
     suspend operator fun invoke(
         mailbox: MailboxWrapper,
         messageIds: List<LocalMessageId>
-    ): Either<DataError, List<MoveAction>> =
+    ): Either<DataError, List<MoveDestination>> =
         when (val result = availableMoveToActionsForMessages(mailbox.getRustMailbox(), messageIds)) {
             is AvailableMoveToActionsForMessagesResult.Error -> result.v1.toDataError().left()
             is AvailableMoveToActionsForMessagesResult.Ok -> result.v1.right()
         }
 }
+

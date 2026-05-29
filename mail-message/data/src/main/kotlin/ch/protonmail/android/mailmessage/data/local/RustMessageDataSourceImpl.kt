@@ -75,7 +75,7 @@ import timber.log.Timber
 import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.AllMessageActions
 import uniffi.mail_uniffi.MessageActionSheet
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
 import uniffi.mail_uniffi.ThemeOpts
 import javax.inject.Inject
 
@@ -301,14 +301,14 @@ class RustMessageDataSourceImpl @Inject constructor(
         userId: UserId,
         labelId: LocalLabelId,
         messageIds: List<LocalMessageId>
-    ): Either<DataError, List<MoveAction.SystemFolder>> = withContext(ioDispatcher) {
+    ): Either<DataError, List<MoveDestination.SystemFolder>> = withContext(ioDispatcher) {
         val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
         if (mailbox == null) {
             Timber.e("rust-message: trying to get available actions for null Mailbox! failing")
             return@withContext DataError.Local.IllegalStateError.left()
         }
         val moveActions = getRustMessageMoveToActions(mailbox, messageIds)
-        return@withContext moveActions.map { it.filterIsInstance<MoveAction.SystemFolder>() }
+        return@withContext moveActions.map { it.filterIsInstance<MoveDestination.SystemFolder>() }
     }
 
     override suspend fun getAvailableLabelAsActions(

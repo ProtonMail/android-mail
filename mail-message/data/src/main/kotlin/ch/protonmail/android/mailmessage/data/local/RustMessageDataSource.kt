@@ -41,7 +41,7 @@ import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.AllMessageActions
 import uniffi.mail_uniffi.Message
 import uniffi.mail_uniffi.MessageActionSheet
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.MoveDestination
 import uniffi.mail_uniffi.ThemeOpts
 
 @Suppress("ComplexInterface", "TooManyFunctions")
@@ -92,7 +92,7 @@ interface RustMessageDataSource {
         userId: UserId,
         labelId: LocalLabelId,
         messageIds: List<LocalMessageId>
-    ): Either<DataError, List<MoveAction.SystemFolder>>
+    ): Either<DataError, List<MoveDestination.SystemFolder>>
 
     suspend fun getAvailableLabelAsActions(
         userId: UserId,
