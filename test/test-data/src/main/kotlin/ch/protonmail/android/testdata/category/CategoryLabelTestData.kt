@@ -20,7 +20,7 @@ package ch.protonmail.android.testdata.category
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryLabel
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 
 object CategoryLabelTestData {
 

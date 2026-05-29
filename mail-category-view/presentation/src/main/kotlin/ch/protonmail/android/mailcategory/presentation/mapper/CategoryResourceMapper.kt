@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcategory.presentation.mapper
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.presentation.R
 
 @StringRes

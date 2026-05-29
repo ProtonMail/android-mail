@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcategory.data.mapper
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryLabel
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabel
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryView

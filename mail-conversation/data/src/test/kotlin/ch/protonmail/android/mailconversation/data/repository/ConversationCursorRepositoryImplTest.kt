@@ -30,7 +30,7 @@ import ch.protonmail.android.mailconversation.data.local.RustConversationsQuery
 import ch.protonmail.android.mailconversation.data.usecase.CreateRustConversationPaginator
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationPaginatorWrapper
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper

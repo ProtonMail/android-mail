@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcategory.domain.model
 
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 
 data class CategoryLabel(
     val id: CategoryLabelId,
