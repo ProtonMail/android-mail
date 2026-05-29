@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maillabel.presentation.bottomsheet.moveto
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,7 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.design.compose.theme.bodyLargeWeak
+import ch.protonmail.android.design.compose.theme.bodyLargeNorm
 import ch.protonmail.android.design.compose.theme.titleLargeNorm
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -56,12 +57,14 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
+import ch.protonmail.android.maillabel.presentation.sample.MoveToInboxCategorySample
 import ch.protonmail.android.maillabel.presentation.textRes
 import ch.protonmail.android.uicomponents.BottomNavigationBarSpacer
 import kotlinx.collections.immutable.toImmutableList
@@ -106,10 +109,18 @@ internal fun MoveToBottomSheetContent(
 
             Spacer(modifier = Modifier.size(ProtonDimens.Spacing.Large))
 
+            val destinations = buildList<MoveToBottomSheetDestinationUiModel> {
+                dataState.inboxDestination?.let(::add)
+                addAll(dataState.systemDestinations)
+            }
+
             MoveToGroup(
-                destinations = dataState.systemDestinations,
+                destinations = destinations,
                 onFolderSelected = { folderId, folderName ->
                     actions.onFolderSelected(folderId, MailLabelText(folderName), entryPoint)
+                },
+                onCategorySelected = { categoryId, categoryName ->
+                    actions.onCategorySelected(categoryId, MailLabelText(categoryName), entryPoint)
                 }
             )
 
@@ -147,7 +158,8 @@ private fun MoveToSheetTitle() {
 fun MoveToGroup(
     modifier: Modifier = Modifier,
     destinations: List<MoveToBottomSheetDestinationUiModel>,
-    onFolderSelected: (MailLabelId, String) -> Unit
+    onFolderSelected: (MailLabelId, String) -> Unit,
+    onCategorySelected: (CategorySystemLabelId, String) -> Unit = { _, _ -> }
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -163,6 +175,20 @@ fun MoveToGroup(
                     label = label,
                     onFolderClicked = { folderName -> onFolderSelected(label.id, folderName) }
                 )
+
+                if (label is MoveToBottomSheetDestinationUiModel.Inbox) {
+                    label.categories.forEach { category ->
+                        HorizontalDivider(
+                            thickness = MailDimens.DefaultBorder,
+                            color = ProtonTheme.colors.separatorNorm
+                        )
+                        InboxCategoryGroupItem(
+                            category = category,
+                            onCategoryClicked = { categoryName -> onCategorySelected(category.id, categoryName) }
+                        )
+                    }
+                }
+
                 if (index < destinations.lastIndex) {
                     HorizontalDivider(
                         thickness = MailDimens.DefaultBorder,
@@ -240,7 +266,42 @@ private fun MoveToGroupItem(
         Text(
             modifier = Modifier.weight(1f),
             text = folderName,
-            style = ProtonTheme.typography.bodyLargeWeak,
+            style = ProtonTheme.typography.bodyLargeNorm,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun InboxCategoryGroupItem(
+    category: MoveToBottomSheetDestinationUiModel.Inbox.Category,
+    onCategoryClicked: (String) -> Unit
+) {
+    val categoryName = category.text.string()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(role = Role.Button, onClick = { onCategoryClicked(categoryName) })
+            .padding(
+                vertical = ProtonDimens.Spacing.Large,
+                horizontal = ProtonDimens.Spacing.Large
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.padding(
+                start = ProtonDimens.Spacing.Large,
+                end = ProtonDimens.Spacing.Large
+            ),
+            painter = painterResource(id = category.icon),
+            tint = category.iconTint ?: Color.Unspecified,
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = categoryName,
+            style = ProtonTheme.typography.bodyLargeNorm,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -272,7 +333,7 @@ private fun CreateFolderButton(modifier: Modifier = Modifier, onClick: () -> Uni
                 .testTag(MoveToBottomSheetTestTags.AddFolderText)
                 .weight(1f),
             text = stringResource(id = R.string.label_title_create_folder),
-            style = ProtonTheme.typography.bodyLargeWeak,
+            style = ProtonTheme.typography.bodyLargeNorm,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -285,85 +346,95 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onCreateNewFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
+        val onCategorySelected: (CategorySystemLabelId, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
         val onDismiss: () -> Unit,
         val onError: (String) -> Unit,
         val onMoveToComplete: (labelText: MailLabelText, entryPoint: MoveToBottomSheetEntryPoint) -> Unit
     )
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light", showBackground = true)
+@Preview(name = "Dark", showBackground = false, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun MoveToBottomSheetContentPreview() {
-    MoveToBottomSheetContent(
-        dataState = MoveToState.Data(
-            customDestinations = listOf(
-                MoveToBottomSheetDestinationUiModel.Custom(
-                    id = MailLabelId.Custom.Folder(LabelId("folder1")),
-                    text = TextUiModel.Text("Folder1"),
-                    icon = R.drawable.ic_proton_folders_filled,
-                    iconTint = Color.Red,
-                    iconPaddingStart = 0.dp
-                ),
-                MoveToBottomSheetDestinationUiModel.Custom(
-                    id = MailLabelId.Custom.Folder(LabelId("folder2")),
-                    text = TextUiModel.Text("Folder2"),
-                    icon = R.drawable.ic_proton_folder_filled,
-                    iconTint = Color.Red,
-                    iconPaddingStart = ProtonDimens.Spacing.Large * 1
-                ),
-                MoveToBottomSheetDestinationUiModel.Custom(
-                    id = MailLabelId.Custom.Folder(LabelId("folder3")),
-                    text = TextUiModel.Text("Folder3"),
-                    icon = R.drawable.ic_proton_folder_filled,
-                    iconTint = Color.Yellow,
-                    iconPaddingStart = ProtonDimens.Spacing.Large * 2
-                ),
-                MoveToBottomSheetDestinationUiModel.Custom(
-                    id = MailLabelId.Custom.Folder(LabelId("really long folder name")),
-                    text = TextUiModel.Text("This folder is really long so that truncation can be tested"),
-                    icon = R.drawable.ic_proton_folders_filled,
-                    iconTint = Color.Blue,
-                    iconPaddingStart = 0.dp
-                )
-            ).toImmutableList(),
-            systemDestinations = listOf(
-                MoveToBottomSheetDestinationUiModel.System(
+    ProtonTheme {
+        MoveToBottomSheetContent(
+            dataState = MoveToState.Data(
+                customDestinations = listOf(
+                    MoveToBottomSheetDestinationUiModel.Custom(
+                        id = MailLabelId.Custom.Folder(LabelId("folder1")),
+                        text = TextUiModel.Text("Folder1"),
+                        icon = R.drawable.ic_proton_folders_filled,
+                        iconTint = Color.Red,
+                        iconPaddingStart = 0.dp
+                    ),
+                    MoveToBottomSheetDestinationUiModel.Custom(
+                        id = MailLabelId.Custom.Folder(LabelId("folder2")),
+                        text = TextUiModel.Text("Folder2"),
+                        icon = R.drawable.ic_proton_folder_filled,
+                        iconTint = Color.Red,
+                        iconPaddingStart = ProtonDimens.Spacing.Large * 1
+                    ),
+                    MoveToBottomSheetDestinationUiModel.Custom(
+                        id = MailLabelId.Custom.Folder(LabelId("folder3")),
+                        text = TextUiModel.Text("Folder3"),
+                        icon = R.drawable.ic_proton_folder_filled,
+                        iconTint = Color.Yellow,
+                        iconPaddingStart = ProtonDimens.Spacing.Large * 2
+                    ),
+                    MoveToBottomSheetDestinationUiModel.Custom(
+                        id = MailLabelId.Custom.Folder(LabelId("really long folder name")),
+                        text = TextUiModel.Text("This folder is really long so that truncation can be tested"),
+                        icon = R.drawable.ic_proton_folders_filled,
+                        iconTint = Color.Blue,
+                        iconPaddingStart = 0.dp
+                    )
+                ).toImmutableList(),
+                systemDestinations = listOf(
+                    MoveToBottomSheetDestinationUiModel.System(
+                        id = MailLabelId.System(LabelId("spam")),
+                        text = TextUiModel.TextRes(SystemLabelId.Spam.textRes()),
+                        icon = SystemLabelId.Spam.iconRes(),
+                        iconTint = null
+                    ),
+                    MoveToBottomSheetDestinationUiModel.System(
+                        id = MailLabelId.System(LabelId("trash")),
+                        text = TextUiModel.TextRes(SystemLabelId.Trash.textRes()),
+                        icon = SystemLabelId.Trash.iconRes(),
+                        iconTint = null
+                    ),
+                    MoveToBottomSheetDestinationUiModel.System(
+                        id = MailLabelId.System(LabelId("archive")),
+                        text = TextUiModel.TextRes(SystemLabelId.Archive.textRes()),
+                        icon = SystemLabelId.Archive.iconRes(),
+                        iconTint = null
+                    )
+                ).toImmutableList(),
+                inboxDestination = MoveToBottomSheetDestinationUiModel.Inbox(
                     id = MailLabelId.System(LabelId("inbox")),
                     text = TextUiModel.TextRes(SystemLabelId.Inbox.textRes()),
                     icon = SystemLabelId.Inbox.iconRes(),
-                    iconTint = null
+                    iconTint = null,
+                    categories = listOf(
+                        MoveToInboxCategorySample.primary,
+                        MoveToInboxCategorySample.social,
+                        MoveToInboxCategorySample.promotions
+                    )
                 ),
-                MoveToBottomSheetDestinationUiModel.System(
-                    id = MailLabelId.System(LabelId("spam")),
-                    text = TextUiModel.TextRes(SystemLabelId.Spam.textRes()),
-                    icon = SystemLabelId.Spam.iconRes(),
-                    iconTint = null
-                ),
-                MoveToBottomSheetDestinationUiModel.System(
-                    id = MailLabelId.System(LabelId("trash")),
-                    text = TextUiModel.TextRes(SystemLabelId.Trash.textRes()),
-                    icon = SystemLabelId.Trash.iconRes(),
-                    iconTint = null
-                ),
-                MoveToBottomSheetDestinationUiModel.System(
-                    id = MailLabelId.System(LabelId("archive")),
-                    text = TextUiModel.TextRes(SystemLabelId.Archive.textRes()),
-                    icon = SystemLabelId.Archive.iconRes(),
-                    iconTint = null
-                )
-            ).toImmutableList(),
-            entryPoint = MoveToBottomSheetEntryPoint.Conversation,
-            shouldDismissEffect = Effect.empty(),
-            errorEffect = Effect.empty()
-        ),
-        actions = MoveToBottomSheetContent.Actions(
-            onCreateNewFolderClick = {},
-            onFolderSelected = { _, _, _ -> },
-            onDismiss = {},
-            onError = { _ -> },
-            onMoveToComplete = { _, _ -> }
+                entryPoint = MoveToBottomSheetEntryPoint.Conversation,
+                shouldDismissEffect = Effect.empty(),
+                errorEffect = Effect.empty()
+            ),
+            actions = MoveToBottomSheetContent.Actions(
+                onCreateNewFolderClick = {},
+                onFolderSelected = { _, _, _ -> },
+                onCategorySelected = { _, _, _ -> },
+                onDismiss = {},
+                onError = { _ -> },
+                onMoveToComplete = { _, _ -> }
+            )
         )
-    )
+    }
 }
 
 object MoveToBottomSheetTestTags {

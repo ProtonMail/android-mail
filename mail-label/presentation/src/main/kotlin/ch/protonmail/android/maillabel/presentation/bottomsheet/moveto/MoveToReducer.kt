@@ -23,10 +23,12 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.iconTintColor
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.maillabel.presentation.toMoveToInboxCategories
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
@@ -58,18 +60,34 @@ internal class MoveToReducer @Inject constructor() {
     private fun reduceInitialState(event: MoveToOperation.MoveToEvent.InitialData): MoveToState {
         val system = event.moveToDestinations.filterIsInstance<MailLabel.System>()
         val customFolders = event.moveToDestinations.filterIsInstance<MailLabel.Custom>()
+        val inbox = system.firstOrNull { it.systemLabelId == SystemLabelId.Inbox }
         val mailLabels = MailLabels(system = system, folders = customFolders, labels = emptyList())
 
         val systemDestinations = mailLabels.system.map {
-            MoveToBottomSheetDestinationUiModel.System(
-                it.id,
+            if (it.systemLabelId == SystemLabelId.Inbox) {
+                null
+            } else {
+                MoveToBottomSheetDestinationUiModel.System(
+                    it.id,
+                    text = it.text(),
+                    icon = it.iconRes(),
+                    iconTint = it.iconTintColor()
+                )
+            }
+        }.filterNotNull()
+
+        val inboxDestination = inbox?.let {
+            MoveToBottomSheetDestinationUiModel.Inbox(
+                id = it.id,
                 text = it.text(),
                 icon = it.iconRes(),
-                iconTint = it.iconTintColor()
+                iconTint = it.iconTintColor(),
+                categories = it.categories.toMoveToInboxCategories()
             )
         }
 
-        val customDestinations = mailLabels.folders.map {
+
+        val customDestinationsUi = mailLabels.folders.map {
             MoveToBottomSheetDestinationUiModel.Custom(
                 it.id,
                 text = it.text(),
@@ -82,7 +100,8 @@ internal class MoveToReducer @Inject constructor() {
         return MoveToState.Data(
             entryPoint = event.entryPoint,
             systemDestinations = systemDestinations.toImmutableList(),
-            customDestinations = customDestinations.toImmutableList(),
+            customDestinations = customDestinationsUi.toImmutableList(),
+            inboxDestination = inboxDestination,
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )

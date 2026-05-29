@@ -46,15 +46,15 @@ import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.CategoryDestination
 import uniffi.mail_uniffi.ConversationAction
 import uniffi.mail_uniffi.ConversationActionSheet
-import uniffi.mail_uniffi.CustomFolderAction
+import uniffi.mail_uniffi.CustomFolderDestination
 import uniffi.mail_uniffi.Id
-import uniffi.mail_uniffi.InboxFolderAction
+import uniffi.mail_uniffi.InboxDestination
 import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MovableSystemFolderAction
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.SystemFolderDestination
+import uniffi.mail_uniffi.MoveDestination
 import kotlin.test.assertEquals
 
 internal class RustConversationActionRepositoryTest {
@@ -77,10 +77,10 @@ internal class RustConversationActionRepositoryTest {
             listOf(ConversationAction.Star, ConversationAction.LabelAs),
             listOf(
                 ConversationAction.MoveToSystemFolder(
-                    MovableSystemFolderAction(Id(5uL), MovableSystemFolder.SPAM)
+                    SystemFolderDestination(Id(5uL), MovableSystemFolder.SPAM)
                 ),
                 ConversationAction.MoveToSystemFolder(
-                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.ARCHIVE)
+                    SystemFolderDestination(Id(10uL), MovableSystemFolder.ARCHIVE)
                 )
             )
         )
@@ -139,7 +139,7 @@ internal class RustConversationActionRepositoryTest {
             conversationActions = listOf(ConversationAction.Star),
             moveActions = listOf(
                 ConversationAction.MoveToSystemFolder(
-                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.INBOX)
+                    SystemFolderDestination(Id(10uL), MovableSystemFolder.INBOX)
                 )
             )
         )
@@ -172,14 +172,14 @@ internal class RustConversationActionRepositoryTest {
         val labelId = SystemLabelId.Inbox.labelId
         val conversationIds = listOf(ConversationId("1"))
         val rustMoveToActions = listOf(
-            MoveAction.SystemFolder(
-                MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
+            MoveDestination.SystemFolder(
+                SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
             ),
-            MoveAction.SystemFolder(
-                MovableSystemFolderAction(Id(3uL), MovableSystemFolder.TRASH)
+            MoveDestination.SystemFolder(
+                SystemFolderDestination(Id(3uL), MovableSystemFolder.TRASH)
             ),
-            MoveAction.Inbox(
-                InboxFolderAction(
+            MoveDestination.Inbox(
+                InboxDestination(
                     localId = Id(4uL),
                     name = MovableSystemFolder.INBOX,
                     categories = listOf(
@@ -187,8 +187,8 @@ internal class RustConversationActionRepositoryTest {
                     )
                 )
             ),
-            MoveAction.CustomFolder(
-                CustomFolderAction(Id(50uL), "Custom", LabelColor("#FFFFFF"), emptyList())
+            MoveDestination.CustomFolder(
+                CustomFolderDestination(Id(50uL), "Custom", LabelColor("#FFFFFF"), emptyList())
             )
         )
 

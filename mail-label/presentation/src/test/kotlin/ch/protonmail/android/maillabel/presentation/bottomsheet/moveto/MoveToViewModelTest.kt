@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -363,6 +364,94 @@ internal class MoveToViewModelTest {
         verifyConversationMove(initialData, initialState, action, updatedState, conversationId)
     }
 
+    @Test
+    fun `should trigger move to action and update state on category selected (conversation)`() = runTest {
+        // Given
+        val conversationId = ConversationId("item1")
+        val category = CategorySystemLabelId.Social
+        val mailLabelText = MailLabelText("Social")
+        val inboxUiModel = MoveToBottomSheetDestinationUiModel.Inbox(
+            id = MailLabelId.System(labelId),
+            text = TextUiModel("Inbox"),
+            icon = 1,
+            iconTint = null,
+            categories = emptyList()
+        )
+        val initialState = MoveToState.Data(
+            entryPoint = defaultInitialData.entryPoint,
+            customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
+            systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            inboxDestination = inboxUiModel,
+            shouldDismissEffect = Effect.empty(),
+            errorEffect = Effect.empty()
+        )
+        val dismissData = MoveToState.MoveToDismissData(mailLabelText)
+        val updatedState = initialState.copy(shouldDismissEffect = Effect.of(dismissData))
+
+        expectLoadedDataForConversation(conversationId = conversationId, initialState = initialState)
+
+        coEvery {
+            moveConversations.invoke(any<UserId>(), any<List<ConversationId>>(), any<LabelId>())
+        } returns Unit.right()
+
+        // When
+        val action = MoveToOperation.MoveToAction.MoveToDestinationSelected(
+            mailLabelId = MailLabelId.Category(category.labelId),
+            mailLabelText = mailLabelText
+        )
+
+        // Then
+        verifyConversationMove(
+            initialData = defaultInitialData,
+            initialState = initialState,
+            action = action,
+            updatedState = updatedState,
+            conversationId = conversationId,
+            expectedLabelId = category.labelId
+        )
+    }
+
+    @Test
+    fun `should trigger move to action and update state on category selected (message)`() = runTest {
+        // Given
+        val messageId = MessageId("item1")
+        val category = ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId.Promotions
+        val mailLabelText = MailLabelText("Promotions")
+        val initialData = defaultInitialData.copy(entryPoint = MoveToBottomSheetEntryPoint.Message(messageId))
+
+        val initialState = MoveToState.Data(
+            entryPoint = initialData.entryPoint,
+            customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
+            systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            shouldDismissEffect = Effect.empty(),
+            errorEffect = Effect.empty()
+        )
+
+        val dismissData = MoveToState.MoveToDismissData(mailLabelText)
+        val updatedState = initialState.copy(shouldDismissEffect = Effect.of(dismissData))
+        expectLoadedDataForMessage(messageId, initialState = initialState)
+
+        coEvery {
+            moveMessages.invoke(any<UserId>(), any<List<MessageId>>(), any<LabelId>())
+        } returns Unit.right()
+
+        // When
+        val action = MoveToOperation.MoveToAction.MoveToDestinationSelected(
+            mailLabelId = MailLabelId.Category(category.labelId),
+            mailLabelText = mailLabelText
+        )
+
+        // Then
+        verifyMessageMove(
+            initialData = initialData,
+            initialState = initialState,
+            action = action,
+            updatedState = updatedState,
+            messageId = messageId,
+            expectedLabelId = category.labelId
+        )
+    }
+
     private fun viewModel(initialData: MoveToBottomSheet.InitialData) = MoveToViewModel(
         initialData = initialData,
         observePrimaryUserId = observePrimaryUserId,
@@ -375,9 +464,10 @@ internal class MoveToViewModelTest {
     private suspend fun verifyMessageMove(
         initialData: MoveToBottomSheet.InitialData,
         initialState: MoveToState.Data,
-        action: MoveToOperation.MoveToAction.MoveToDestinationSelected,
+        action: MoveToOperation.MoveToAction,
         updatedState: MoveToState.Data,
-        messageId: MessageId
+        messageId: MessageId,
+        expectedLabelId: LabelId = labelId
     ) {
         val viewModel = viewModel(initialData)
         viewModel.state.test {
@@ -392,7 +482,7 @@ internal class MoveToViewModelTest {
             moveMessages(
                 userId = userId,
                 messageIds = listOf(messageId),
-                labelId = labelId
+                labelId = expectedLabelId
             )
         }
         confirmVerified(moveMessages, moveConversations)
@@ -401,9 +491,10 @@ internal class MoveToViewModelTest {
     private suspend fun verifyConversationMove(
         initialData: MoveToBottomSheet.InitialData,
         initialState: MoveToState.Data,
-        action: MoveToOperation.MoveToAction.MoveToDestinationSelected,
+        action: MoveToOperation.MoveToAction,
         updatedState: MoveToState.Data,
-        conversationId: ConversationId
+        conversationId: ConversationId,
+        expectedLabelId: LabelId = labelId
     ) {
         val viewModel = viewModel(initialData)
         viewModel.state.test {
@@ -415,7 +506,7 @@ internal class MoveToViewModelTest {
 
         verify { moveMessages wasNot called }
         coVerify(exactly = 1) {
-            moveConversations(userId, listOf(conversationId), labelId)
+            moveConversations(userId, listOf(conversationId), expectedLabelId)
         }
         confirmVerified(moveMessages, moveConversations)
     }
