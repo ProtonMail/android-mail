@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.AvailableActions
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -32,30 +33,37 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageDataSource
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalThemeOptions
+import ch.protonmail.android.mailmessage.data.mapper.MoveDestinationMapper
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.testdata.label.rust.LabelAsActionsTestData
 import ch.protonmail.android.testdata.label.rust.LocalLabelAsActionTestData
 import ch.protonmail.android.testdata.message.MessageThemeOptionsTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.CategoryDestination
 import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.InboxFolderAction
+import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MessageAction
 import uniffi.mail_uniffi.MessageActionSheet
+import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MoveDestination
-import uniffi.mail_uniffi.SystemFolderDestination
+import uniffi.mail_uniffi.MovableSystemFolderAction
+import uniffi.mail_uniffi.MoveAction
 import kotlin.test.assertEquals
 
 class RustMessageActionRepositoryTest {
 
     private val rustMessageDataSource: RustMessageDataSource = mockk()
+    private val moveDestinationMapper: MoveDestinationMapper = mockk()
 
-    private val repository = RustMessageActionRepository(rustMessageDataSource)
+    private val repository = RustMessageActionRepository(rustMessageDataSource, moveDestinationMapper)
 
     @Test
     fun `get available actions should return supported available actions when data source exposes them`() = runTest {
@@ -69,9 +77,9 @@ class RustMessageActionRepositoryTest {
             listOf(MessageAction.Reply, MessageAction.Forward),
             listOf(MessageAction.Star, MessageAction.LabelAs),
             listOf(
-                MessageAction.MoveToSystemFolder(SystemFolderDestination(Id(5uL), MovableSystemFolder.SPAM)),
+                MessageAction.MoveToSystemFolder(MovableSystemFolderAction(Id(5uL), MovableSystemFolder.SPAM)),
                 MessageAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(10uL), MovableSystemFolder.ARCHIVE)
+                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.ARCHIVE)
                 )
             ),
             listOf(MessageAction.ViewInDarkMode, MessageAction.ViewInLightMode)
@@ -125,48 +133,84 @@ class RustMessageActionRepositoryTest {
     }
 
     @Test
-    fun `get available system move to actions should return actions when data source exposes them`() = runTest {
+    fun `get available move to actions should return actions when data source exposes them`() = runTest {
         // Given
         val userId = UserIdTestData.userId
         val labelId = SystemLabelId.Inbox.labelId
         val messageIds = listOf(MessageId("1"))
         val rustMoveToActions = listOf(
-            MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
+            MoveAction.SystemFolder(
+                MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
             ),
-            MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(3uL), MovableSystemFolder.TRASH)
+            MoveAction.SystemFolder(
+                MovableSystemFolderAction(Id(3uL), MovableSystemFolder.TRASH)
+            ),
+            MoveAction.Inbox(
+                InboxFolderAction(
+                    localId = Id(4uL),
+                    name = MovableSystemFolder.INBOX,
+                    categories = listOf(
+                        CategoryDestination(Id(5uL), MovableCategoryFolder.CATEGORY_SOCIAL)
+                    )
+                )
+            ),
+            MoveAction.CustomFolder(
+                CustomFolderAction(Id(60uL), "Custom", LabelColor("#FFFFFF"), emptyList())
             )
         )
 
         coEvery {
-            rustMessageDataSource.getAvailableSystemMoveToActions(
+            rustMessageDataSource.getAvailableMoveToDestinations(
                 userId,
                 labelId.toLocalLabelId(),
                 messageIds.map { it.toLocalMessageId() }
             )
         } returns rustMoveToActions.right()
-
-        // When
-        val result = repository.getSystemMoveToLocations(userId, labelId, messageIds)
-
-        // Then
         val expected = listOf(
             MailLabel.System(MailLabelId.System(LabelId("2")), SystemLabelId.Archive, 0),
-            MailLabel.System(MailLabelId.System(LabelId("3")), SystemLabelId.Trash, 0)
+            MailLabel.System(MailLabelId.System(LabelId("3")), SystemLabelId.Trash, 0),
+            MailLabel.System(
+                id = MailLabelId.System(LabelId("4")),
+                systemLabelId = SystemLabelId.Inbox,
+                order = 0,
+                categories = listOf(
+                    MailLabel.Category(
+                        id = MailLabelId.Category(LabelId("5")),
+                        categorySystemLabelId = CategorySystemLabelId.Social,
+                        order = 0
+                    )
+                )
+            ),
+            MailLabel.Custom(
+                id = MailLabelId.Custom.Folder(LabelId("60")),
+                parent = null,
+                text = "Custom",
+                color = 0xFFFFFFFF.toInt(),
+                isExpanded = true,
+                level = 0,
+                order = 0,
+                children = emptyList()
+            )
         )
+        coEvery { moveDestinationMapper.invoke(rustMoveToActions) } returns expected
+
+        // When
+        val result = repository.getMoveToLocations(userId, labelId, messageIds)
+
+        // Then
         assertEquals(expected.right(), result)
+        coVerify(exactly = 1) { moveDestinationMapper.invoke(rustMoveToActions) }
     }
 
     @Test
-    fun `get available system move to actions should return error when data source fails`() = runTest {
+    fun `get available move to actions should return error when data source fails`() = runTest {
         // Given
         val userId = UserIdTestData.userId
         val labelId = SystemLabelId.Inbox.labelId
         val messageIds = listOf(MessageId("1"))
         val expectedError = DataError.Local.NoDataCached
         coEvery {
-            rustMessageDataSource.getAvailableSystemMoveToActions(
+            rustMessageDataSource.getAvailableMoveToDestinations(
                 userId,
                 labelId.toLocalLabelId(),
                 messageIds.map { it.toLocalMessageId() }
@@ -174,7 +218,7 @@ class RustMessageActionRepositoryTest {
         } returns expectedError.left()
 
         // When
-        val result = repository.getSystemMoveToLocations(userId, labelId, messageIds)
+        val result = repository.getMoveToLocations(userId, labelId, messageIds)
 
         // Then
         assertEquals(expectedError.left(), result)

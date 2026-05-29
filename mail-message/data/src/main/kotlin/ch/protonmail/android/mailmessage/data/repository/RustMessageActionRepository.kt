@@ -32,7 +32,7 @@ import ch.protonmail.android.mailmessage.data.mapper.toAvailableActions
 import ch.protonmail.android.mailmessage.data.mapper.toLabelAsActions
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalThemeOptions
-import ch.protonmail.android.mailmessage.data.mapper.toMailLabels
+import ch.protonmail.android.mailmessage.data.mapper.MoveDestinationMapper
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageThemeOptions
 import ch.protonmail.android.mailmessage.domain.repository.MessageActionRepository
@@ -40,7 +40,8 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class RustMessageActionRepository @Inject constructor(
-    private val rustMessageDataSource: RustMessageDataSource
+    private val rustMessageDataSource: RustMessageDataSource,
+    private val moveDestinationMapper: MoveDestinationMapper
 ) : MessageActionRepository {
 
     override suspend fun getAvailableActions(
@@ -58,18 +59,18 @@ class RustMessageActionRepository @Inject constructor(
         return availableActions.map { it.toAvailableActions() }
     }
 
-    override suspend fun getSystemMoveToLocations(
+    override suspend fun getMoveToLocations(
         userId: UserId,
         labelId: LabelId,
         messageIds: List<MessageId>
-    ): Either<DataError, List<MailLabel.System>> {
-        val moveToActions = rustMessageDataSource.getAvailableSystemMoveToActions(
+    ): Either<DataError, List<MailLabel>> {
+        val moveToActions = rustMessageDataSource.getAvailableMoveToDestinations(
             userId,
             labelId.toLocalLabelId(),
             messageIds.map { it.toLocalMessageId() }
         )
 
-        return moveToActions.map { it.toMailLabels() }
+        return moveToActions.map(moveDestinationMapper::invoke)
     }
 
     override suspend fun getAvailableLabelAsActions(
