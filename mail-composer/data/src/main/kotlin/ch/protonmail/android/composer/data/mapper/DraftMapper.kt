@@ -168,36 +168,40 @@ fun DraftSendError.toDraftSendError(): SendDraftError = when (this) {
 fun DraftAttachmentUploadError.toObserveAttachmentsError() = when (this) {
     is DraftAttachmentUploadError.Other -> this.v1.toDataError()
     is DraftAttachmentUploadError.Reason -> when (this.v1) {
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST,
-        DraftAttachmentUploadErrorReason.MESSAGE_ALREADY_SENT,
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST_ON_SERVER -> DataError.Local.NotFound
+        is DraftAttachmentUploadErrorReason.MessageDoesNotExist,
+        is DraftAttachmentUploadErrorReason.MessageAlreadySent,
+        is DraftAttachmentUploadErrorReason.MessageDoesNotExistOnServer -> DataError.Local.NotFound
 
-        DraftAttachmentUploadErrorReason.TIMEOUT -> DataError.Remote.Timeout
-        DraftAttachmentUploadErrorReason.RETRY_INVALID_STATE -> DataError.Local.IllegalStateError
-        DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE,
-        DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS,
-        DraftAttachmentUploadErrorReason.TOTAL_ATTACHMENT_SIZE_TOO_LARGE,
-        DraftAttachmentUploadErrorReason.STORAGE_QUOTA_EXCEEDED -> DataError.Local.Unknown
+        is DraftAttachmentUploadErrorReason.Timeout -> DataError.Remote.Timeout
+        is DraftAttachmentUploadErrorReason.RetryInvalidState -> DataError.Local.IllegalStateError
+        is DraftAttachmentUploadErrorReason.AttachmentTooLarge,
+        is DraftAttachmentUploadErrorReason.TooManyAttachments,
+        is DraftAttachmentUploadErrorReason.TotalAttachmentSizeTooLarge,
+        is DraftAttachmentUploadErrorReason.StorageQuotaExceeded -> DataError.Local.Unknown
 
-        DraftAttachmentUploadErrorReason.CRYPTO -> DataError.Local.CryptoError
+        is DraftAttachmentUploadErrorReason.Crypto -> DataError.Local.CryptoError
+        is DraftAttachmentUploadErrorReason.BadRequest -> DataError.Remote.BadRequest
     }
 }
 
 fun DraftAttachmentUploadError.toDeleteAttachmentError() = when (this) {
     is DraftAttachmentUploadError.Other -> AttachmentDeleteError.Other(this.v1.toDataError())
     is DraftAttachmentUploadError.Reason -> when (this.v1) {
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST,
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST_ON_SERVER -> AttachmentDeleteError.MessageDoesNotExist
+        is DraftAttachmentUploadErrorReason.MessageDoesNotExist,
+        is DraftAttachmentUploadErrorReason.MessageDoesNotExistOnServer -> AttachmentDeleteError.MessageDoesNotExist
 
-        DraftAttachmentUploadErrorReason.MESSAGE_ALREADY_SENT -> AttachmentDeleteError.MessageAlreadySent
-        DraftAttachmentUploadErrorReason.TIMEOUT,
-        DraftAttachmentUploadErrorReason.RETRY_INVALID_STATE -> AttachmentDeleteError.RetriableError
+        is DraftAttachmentUploadErrorReason.MessageAlreadySent -> AttachmentDeleteError.MessageAlreadySent
+        is DraftAttachmentUploadErrorReason.Timeout,
+        is DraftAttachmentUploadErrorReason.RetryInvalidState -> AttachmentDeleteError.RetriableError
 
-        DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE,
-        DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS,
-        DraftAttachmentUploadErrorReason.TOTAL_ATTACHMENT_SIZE_TOO_LARGE,
-        DraftAttachmentUploadErrorReason.CRYPTO,
-        DraftAttachmentUploadErrorReason.STORAGE_QUOTA_EXCEEDED -> AttachmentDeleteError.Other(DataError.Local.Unknown)
+        is DraftAttachmentUploadErrorReason.AttachmentTooLarge,
+        is DraftAttachmentUploadErrorReason.TooManyAttachments,
+        is DraftAttachmentUploadErrorReason.TotalAttachmentSizeTooLarge,
+        is DraftAttachmentUploadErrorReason.Crypto,
+        is DraftAttachmentUploadErrorReason.StorageQuotaExceeded ->
+            AttachmentDeleteError.Other(DataError.Local.Unknown)
+
+        is DraftAttachmentUploadErrorReason.BadRequest -> AttachmentDeleteError.Other(DataError.Remote.BadRequest)
     }
 }
 

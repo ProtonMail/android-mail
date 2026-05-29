@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMimeType
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeTypeCategory
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import uniffi.mail_uniffi.DraftAttachmentDispositionSwapError
 import uniffi.mail_uniffi.DraftAttachmentDispositionSwapErrorReason
@@ -114,31 +115,40 @@ fun DraftAttachmentError.toDraftAttachmentError(): AttachmentError = when (val r
 
 fun DraftAttachmentUploadError.toAttachmentError(): AddAttachmentError = when (this) {
     is DraftAttachmentUploadError.Other -> AddAttachmentError.Other(this.v1.toDataError())
-    is DraftAttachmentUploadError.Reason -> when (this.v1) {
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST,
-        DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST_ON_SERVER,
-        DraftAttachmentUploadErrorReason.MESSAGE_ALREADY_SENT -> AddAttachmentError.InvalidDraftMessage
+    is DraftAttachmentUploadError.Reason -> {
+        val reason = this.v1
+        when (reason) {
+            DraftAttachmentUploadErrorReason.MessageDoesNotExist,
+            DraftAttachmentUploadErrorReason.MessageDoesNotExistOnServer,
+            DraftAttachmentUploadErrorReason.MessageAlreadySent -> AddAttachmentError.InvalidDraftMessage
 
-        DraftAttachmentUploadErrorReason.CRYPTO -> AddAttachmentError.EncryptionError
-        DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE -> AddAttachmentError.AttachmentTooLarge
-        DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS -> AddAttachmentError.TooManyAttachments
-        DraftAttachmentUploadErrorReason.RETRY_INVALID_STATE -> AddAttachmentError.InvalidState
-        DraftAttachmentUploadErrorReason.TOTAL_ATTACHMENT_SIZE_TOO_LARGE -> AddAttachmentError.AttachmentTooLarge
-        DraftAttachmentUploadErrorReason.TIMEOUT -> AddAttachmentError.UploadTimeout
-        DraftAttachmentUploadErrorReason.STORAGE_QUOTA_EXCEEDED -> AddAttachmentError.StorageQuotaExceeded
+            DraftAttachmentUploadErrorReason.Crypto -> AddAttachmentError.EncryptionError
+            DraftAttachmentUploadErrorReason.AttachmentTooLarge -> AddAttachmentError.AttachmentTooLarge
+            DraftAttachmentUploadErrorReason.TooManyAttachments -> AddAttachmentError.TooManyAttachments
+            DraftAttachmentUploadErrorReason.RetryInvalidState -> AddAttachmentError.InvalidState
+            DraftAttachmentUploadErrorReason.TotalAttachmentSizeTooLarge -> AddAttachmentError.AttachmentTooLarge
+            DraftAttachmentUploadErrorReason.Timeout -> AddAttachmentError.UploadTimeout
+            DraftAttachmentUploadErrorReason.StorageQuotaExceeded -> AddAttachmentError.StorageQuotaExceeded
+            is DraftAttachmentUploadErrorReason.BadRequest -> AddAttachmentError.Other(DataError.Remote.BadRequest)
+        }
     }
 }
 
-fun DraftAttachmentDispositionSwapError.Reason.toConvertAttachmentError() = when (this.v1) {
-    DraftAttachmentDispositionSwapErrorReason.INVALID_STATE -> ConvertAttachmentError.InvalidState
+fun DraftAttachmentDispositionSwapError.Reason.toConvertAttachmentError(): ConvertAttachmentError {
+    return when (this.v1) {
+        DraftAttachmentDispositionSwapErrorReason.InvalidState -> ConvertAttachmentError.InvalidState
 
-    DraftAttachmentDispositionSwapErrorReason.NOOP -> ConvertAttachmentError.Noop
+        DraftAttachmentDispositionSwapErrorReason.Noop -> ConvertAttachmentError.Noop
 
-    DraftAttachmentDispositionSwapErrorReason.ATTACHMENT_DOES_NOT_EXIST -> ConvertAttachmentError.AttachmentNotExisting
+        DraftAttachmentDispositionSwapErrorReason.AttachmentDoesNotExist -> ConvertAttachmentError.AttachmentNotExisting
 
-    DraftAttachmentDispositionSwapErrorReason.ATTACHMENT_MESSAGE_DOES_NOT_EXIST ->
-        ConvertAttachmentError.MessageNotExisting
+        DraftAttachmentDispositionSwapErrorReason.AttachmentMessageDoesNotExist ->
+            ConvertAttachmentError.MessageNotExisting
 
-    DraftAttachmentDispositionSwapErrorReason.ATTACHMENT_MESSAGE_IS_NOT_A_DRAFT ->
-        ConvertAttachmentError.AttachmentMessageIsNotADraft
+        DraftAttachmentDispositionSwapErrorReason.AttachmentMessageIsNotADraft ->
+            ConvertAttachmentError.AttachmentMessageIsNotADraft
+
+        is DraftAttachmentDispositionSwapErrorReason.BadRequest ->
+            ConvertAttachmentError.Other(DataError.Remote.BadRequest)
+    }
 }

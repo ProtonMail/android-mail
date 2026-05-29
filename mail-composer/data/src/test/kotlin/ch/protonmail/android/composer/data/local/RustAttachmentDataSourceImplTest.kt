@@ -115,7 +115,7 @@ class RustAttachmentDataSourceImplTest {
     fun `observe attachments fails when rust draft attachment access fails`() = runTest {
         // Given
         val protonError = DraftAttachmentUploadError.Reason(
-            DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE
+            DraftAttachmentUploadErrorReason.AttachmentTooLarge
         )
         val wrapper = mockk<AttachmentsWrapper>()
         val stream = mockk<DraftAttachmentListUpdateStream>()
@@ -312,7 +312,7 @@ class RustAttachmentDataSourceImplTest {
             mimeType = "image/jpg"
         )
         val wrapper = mockk<AttachmentsWrapper>()
-        val rustError = DraftAttachmentUploadError.Reason(DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE)
+        val rustError = DraftAttachmentUploadError.Reason(DraftAttachmentUploadErrorReason.AttachmentTooLarge)
 
         coEvery { rustDraftDataSource.attachmentList() } returns wrapper.right()
         coEvery { wrapper.attachmentUploadDirectory() } returns "/fake/path"
@@ -348,7 +348,7 @@ class RustAttachmentDataSourceImplTest {
         // Given
         val cid = "cid-456"
         val wrapper = mockk<AttachmentsWrapper>()
-        val rustError = DraftAttachmentUploadError.Reason(DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS)
+        val rustError = DraftAttachmentUploadError.Reason(DraftAttachmentUploadErrorReason.TooManyAttachments)
 
         coEvery { rustDraftDataSource.attachmentList() } returns wrapper.right()
         coEvery { wrapper.removeInlineAttachment(cid) } returns AttachmentListRemoveWithCidResult.Error(rustError)

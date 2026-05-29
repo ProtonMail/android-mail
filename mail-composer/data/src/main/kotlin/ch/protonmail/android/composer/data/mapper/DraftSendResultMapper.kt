@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalDraftSendResult
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDisabled
@@ -124,25 +125,27 @@ fun DraftSaveErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
     DraftSaveErrorReason.AttachmentTooLarge -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
     DraftSaveErrorReason.TooManyAttachments -> SendErrorReason.ErrorNoMessage.TooManyAttachments
     DraftSaveErrorReason.TotalAttachmentSizeTooLarge -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
+    is DraftSaveErrorReason.BadRequest -> SendErrorReason.ErrorWithMessage.BadRequest(v1)
 }
 
 fun DraftAttachmentUploadErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
-    DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST,
-    DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST_ON_SERVER,
-    DraftAttachmentUploadErrorReason.MESSAGE_ALREADY_SENT -> SendErrorReason.ErrorNoMessage.AlreadySent
+    DraftAttachmentUploadErrorReason.MessageDoesNotExist,
+    DraftAttachmentUploadErrorReason.MessageDoesNotExistOnServer,
+    DraftAttachmentUploadErrorReason.MessageAlreadySent -> SendErrorReason.ErrorNoMessage.AlreadySent
 
-    DraftAttachmentUploadErrorReason.CRYPTO -> SendErrorReason.ErrorNoMessage.AttachmentCryptoFailure
-    DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
-    DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS -> SendErrorReason.ErrorNoMessage.TooManyAttachments
+    DraftAttachmentUploadErrorReason.Crypto -> SendErrorReason.ErrorNoMessage.AttachmentCryptoFailure
+    DraftAttachmentUploadErrorReason.AttachmentTooLarge -> SendErrorReason.ErrorNoMessage.AttachmentTooLarge
+    DraftAttachmentUploadErrorReason.TooManyAttachments -> SendErrorReason.ErrorNoMessage.TooManyAttachments
 
-    DraftAttachmentUploadErrorReason.TIMEOUT,
-    DraftAttachmentUploadErrorReason.RETRY_INVALID_STATE ->
+    DraftAttachmentUploadErrorReason.Timeout,
+    DraftAttachmentUploadErrorReason.RetryInvalidState ->
         SendErrorReason.ErrorNoMessage.AttachmentUploadFailureRetriable
 
-    DraftAttachmentUploadErrorReason.TOTAL_ATTACHMENT_SIZE_TOO_LARGE ->
+    DraftAttachmentUploadErrorReason.TotalAttachmentSizeTooLarge ->
         SendErrorReason.ErrorNoMessage.AttachmentTooLarge
 
-    DraftAttachmentUploadErrorReason.STORAGE_QUOTA_EXCEEDED -> SendErrorReason.ErrorNoMessage.StorageQuotaExceeded
+    DraftAttachmentUploadErrorReason.StorageQuotaExceeded -> SendErrorReason.ErrorNoMessage.StorageQuotaExceeded
+    is DraftAttachmentUploadErrorReason.BadRequest -> SendErrorReason.ErrorWithMessage.BadRequest(v1)
 }
 
 fun DraftSendErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
@@ -190,5 +193,6 @@ fun DraftSaveError.toSaveDraftError(): SaveDraftError = when (this) {
         is DraftSaveErrorReason.AttachmentTooLarge -> SaveDraftError.AttachmentsTooLarge
         is DraftSaveErrorReason.TooManyAttachments -> SaveDraftError.TooManyAttachments
         is DraftSaveErrorReason.TotalAttachmentSizeTooLarge -> SaveDraftError.AttachmentsTooLarge
+        is DraftSaveErrorReason.BadRequest -> SaveDraftError.Other(DataError.Remote.BadRequest)
     }
 }
