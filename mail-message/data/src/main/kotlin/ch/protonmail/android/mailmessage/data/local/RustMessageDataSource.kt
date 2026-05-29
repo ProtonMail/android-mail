@@ -88,11 +88,11 @@ interface RustMessageDataSource {
         themeOpts: ThemeOpts
     ): Either<DataError, MessageActionSheet>
 
-    suspend fun getAvailableSystemMoveToActions(
+    suspend fun getAvailableMoveToDestinations(
         userId: UserId,
         labelId: LocalLabelId,
         messageIds: List<LocalMessageId>
-    ): Either<DataError, List<MoveDestination.SystemFolder>>
+    ): Either<DataError, List<MoveDestination>>
 
     suspend fun getAvailableLabelAsActions(
         userId: UserId,

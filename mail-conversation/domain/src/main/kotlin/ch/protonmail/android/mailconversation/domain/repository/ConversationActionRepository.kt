@@ -36,11 +36,11 @@ interface ConversationActionRepository {
         conversationId: ConversationId
     ): Either<DataError, AvailableActions>
 
-    suspend fun getSystemMoveToLocations(
+    suspend fun getMoveToLocations(
         userId: UserId,
         labelId: LabelId,
         conversationIds: List<ConversationId>
-    ): Either<DataError, List<MailLabel.System>>
+    ): Either<DataError, List<MailLabel>>
 
     suspend fun getAvailableLabelAsActions(
         userId: UserId,

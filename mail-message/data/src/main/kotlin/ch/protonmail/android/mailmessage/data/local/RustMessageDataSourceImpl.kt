@@ -42,7 +42,7 @@ import ch.protonmail.android.mailmessage.data.usecase.GetRustAllMessageBottomBar
 import ch.protonmail.android.mailmessage.data.usecase.GetRustAllMessageListBottomBarActions
 import ch.protonmail.android.mailmessage.data.usecase.GetRustAvailableMessageActions
 import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageLabelAsActions
-import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageMoveToActions
+import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageMoveToDestinations
 import ch.protonmail.android.mailmessage.data.usecase.GetRustSenderImage
 import ch.protonmail.android.mailmessage.data.usecase.RustBlockAddress
 import ch.protonmail.android.mailmessage.data.usecase.RustDeleteAllMessagesInLabel
@@ -97,7 +97,7 @@ class RustMessageDataSourceImpl @Inject constructor(
     private val rustMoveMessages: RustMoveMessages,
     private val rustLabelMessages: RustLabelMessages,
     private val getRustAvailableMessageActions: GetRustAvailableMessageActions,
-    private val getRustMessageMoveToActions: GetRustMessageMoveToActions,
+    private val getRustMessageMoveToDestinations: GetRustMessageMoveToDestinations,
     private val getRustMessageLabelAsActions: GetRustMessageLabelAsActions,
     private val rustMarkMessageAsLegitimate: RustMarkMessageAsLegitimate,
     private val rustUnblockAddress: RustUnblockAddress,
@@ -297,18 +297,17 @@ class RustMessageDataSourceImpl @Inject constructor(
         return@withContext getRustAllMessageBottomBarActions(mailbox, themeOpts, messageId)
     }
 
-    override suspend fun getAvailableSystemMoveToActions(
+    override suspend fun getAvailableMoveToDestinations(
         userId: UserId,
         labelId: LocalLabelId,
         messageIds: List<LocalMessageId>
-    ): Either<DataError, List<MoveDestination.SystemFolder>> = withContext(ioDispatcher) {
+    ): Either<DataError, List<MoveDestination>> = withContext(ioDispatcher) {
         val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
         if (mailbox == null) {
             Timber.e("rust-message: trying to get available actions for null Mailbox! failing")
             return@withContext DataError.Local.IllegalStateError.left()
         }
-        val moveActions = getRustMessageMoveToActions(mailbox, messageIds)
-        return@withContext moveActions.map { it.filterIsInstance<MoveDestination.SystemFolder>() }
+        return@withContext getRustMessageMoveToDestinations(mailbox, messageIds)
     }
 
     override suspend fun getAvailableLabelAsActions(
