@@ -2,7 +2,7 @@ package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversation
 import ch.protonmail.android.mailcommon.domain.model.ConversationId

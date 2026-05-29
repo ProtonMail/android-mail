@@ -16,9 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcategory.domain.model
+package ch.protonmail.android.maillabel.domain.model
 
-import ch.protonmail.android.maillabel.domain.model.LabelId
+import kotlin.collections.get
 
 enum class CategorySystemLabelId(val labelId: LabelId) {
     Social(LabelId("20")),

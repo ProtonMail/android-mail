@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcategory.presentation.sample
 
 import ch.protonmail.android.mailcategory.presentation.R
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryLabelIdUiModel
 

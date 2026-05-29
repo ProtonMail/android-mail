@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcategory.presentation.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 
 @Immutable
 data class CategoryItemUiModel(

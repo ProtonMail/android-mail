@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcategory.presentation.design
 
 import androidx.compose.ui.graphics.Color
-import ch.protonmail.android.mailcategory.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 
 object CategoryPillColors {
     val Primary = CategoryBaseColors.Iris500
