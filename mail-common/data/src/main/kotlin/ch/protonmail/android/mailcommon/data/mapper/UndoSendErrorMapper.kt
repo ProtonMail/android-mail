@@ -27,9 +27,10 @@ import uniffi.mail_uniffi.DraftUndoSendErrorReason
 fun DraftUndoSendError.toUndoSendError(): UndoSendError = when (this) {
     is DraftUndoSendError.Other -> UndoSendError.Other(this.v1.toDataError())
     is DraftUndoSendError.Reason -> when (this.v1) {
-        DraftUndoSendErrorReason.MESSAGE_DOES_NOT_EXIST,
-        DraftUndoSendErrorReason.MESSAGE_CAN_NOT_BE_UNDO_SENT,
-        DraftUndoSendErrorReason.SEND_CAN_NO_LONGER_BE_UNDONE -> UndoSendError.UndoSendFailed
+        is DraftUndoSendErrorReason.BadRequest,
+        DraftUndoSendErrorReason.MessageDoesNotExist,
+        DraftUndoSendErrorReason.MessageCanNotBeUndoSent,
+        DraftUndoSendErrorReason.SendCanNoLongerBeUndone -> UndoSendError.UndoSendFailed
     }
 }
 

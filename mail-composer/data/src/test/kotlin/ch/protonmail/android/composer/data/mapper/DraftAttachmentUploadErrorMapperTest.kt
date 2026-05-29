@@ -44,53 +44,53 @@ internal class DraftAttachmentUploadErrorReasonMapperTest(
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> = listOf(
             arrayOf(
-                "MESSAGE_DOES_NOT_EXIST maps to AlreadySent",
-                DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST,
+                "MessageDoesNotExist maps to AlreadySent",
+                DraftAttachmentUploadErrorReason.MessageDoesNotExist,
                 SendErrorReason.ErrorNoMessage.AlreadySent
             ),
             arrayOf(
-                "MESSAGE_DOES_NOT_EXIST_ON_SERVER maps to AlreadySent",
-                DraftAttachmentUploadErrorReason.MESSAGE_DOES_NOT_EXIST_ON_SERVER,
+                "MessageDoesNotExistOnServer maps to AlreadySent",
+                DraftAttachmentUploadErrorReason.MessageDoesNotExistOnServer,
                 SendErrorReason.ErrorNoMessage.AlreadySent
             ),
             arrayOf(
-                "MESSAGE_ALREADY_SENT maps to AlreadySent",
-                DraftAttachmentUploadErrorReason.MESSAGE_ALREADY_SENT,
+                "MessageAlreadySent maps to AlreadySent",
+                DraftAttachmentUploadErrorReason.MessageAlreadySent,
                 SendErrorReason.ErrorNoMessage.AlreadySent
             ),
             arrayOf(
-                "CRYPTO maps to AttachmentCryptoFailure",
-                DraftAttachmentUploadErrorReason.CRYPTO,
+                "Crypto maps to AttachmentCryptoFailure",
+                DraftAttachmentUploadErrorReason.Crypto,
                 SendErrorReason.ErrorNoMessage.AttachmentCryptoFailure
             ),
             arrayOf(
-                "ATTACHMENT_TOO_LARGE maps to AttachmentTooLarge",
-                DraftAttachmentUploadErrorReason.ATTACHMENT_TOO_LARGE,
+                "AttachmentTooLarge maps to AttachmentTooLarge",
+                DraftAttachmentUploadErrorReason.AttachmentTooLarge,
                 SendErrorReason.ErrorNoMessage.AttachmentTooLarge
             ),
             arrayOf(
-                "TOO_MANY_ATTACHMENTS maps to TooManyAttachments",
-                DraftAttachmentUploadErrorReason.TOO_MANY_ATTACHMENTS,
+                "TooManyAttachments maps to TooManyAttachments",
+                DraftAttachmentUploadErrorReason.TooManyAttachments,
                 SendErrorReason.ErrorNoMessage.TooManyAttachments
             ),
             arrayOf(
-                "TIMEOUT maps to AttachmentUploadFailureRetriable",
-                DraftAttachmentUploadErrorReason.TIMEOUT,
+                "Timeout maps to AttachmentUploadFailureRetriable",
+                DraftAttachmentUploadErrorReason.Timeout,
                 SendErrorReason.ErrorNoMessage.AttachmentUploadFailureRetriable
             ),
             arrayOf(
-                "RETRY_INVALID_STATE maps to AttachmentUploadFailureRetriable",
-                DraftAttachmentUploadErrorReason.RETRY_INVALID_STATE,
+                "RetryInvalidState maps to AttachmentUploadFailureRetriable",
+                DraftAttachmentUploadErrorReason.RetryInvalidState,
                 SendErrorReason.ErrorNoMessage.AttachmentUploadFailureRetriable
             ),
             arrayOf(
-                "TOTAL_ATTACHMENT_SIZE_TOO_LARGE maps to AttachmentTooLarge",
-                DraftAttachmentUploadErrorReason.TOTAL_ATTACHMENT_SIZE_TOO_LARGE,
+                "TotalAttachmentSizeTooLarge maps to AttachmentTooLarge",
+                DraftAttachmentUploadErrorReason.TotalAttachmentSizeTooLarge,
                 SendErrorReason.ErrorNoMessage.AttachmentTooLarge
             ),
             arrayOf(
-                "STORAGE_QUOTA_EXCEEDED maps to StorageQuotaExceeded",
-                DraftAttachmentUploadErrorReason.STORAGE_QUOTA_EXCEEDED,
+                "StorageQuotaExceeded maps to StorageQuotaExceeded",
+                DraftAttachmentUploadErrorReason.StorageQuotaExceeded,
                 SendErrorReason.ErrorNoMessage.StorageQuotaExceeded
             )
         )

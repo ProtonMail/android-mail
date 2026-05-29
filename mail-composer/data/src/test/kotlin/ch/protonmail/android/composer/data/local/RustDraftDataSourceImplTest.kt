@@ -1191,7 +1191,7 @@ class RustDraftDataSourceImplTest {
         every { draftCache.get() } returns expectedDraftWrapper
         val time = MessageExpirationTime.Custom(Instant.DISTANT_FUTURE)
         coEvery { expectedDraftWrapper.setMessageExpiration(any()) } returns VoidDraftExpirationResult.Error(
-            DraftExpirationError.Reason(DraftExpirationErrorReason.EXPIRATION_TIME_EXCEEDS30_DAYS)
+            DraftExpirationError.Reason(DraftExpirationErrorReason.ExpirationTimeExceeds30Days)
         )
 
         // When

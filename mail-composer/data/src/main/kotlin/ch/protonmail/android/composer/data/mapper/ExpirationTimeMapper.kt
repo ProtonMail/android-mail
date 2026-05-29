@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationError
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsExpirationSupport
@@ -39,9 +40,10 @@ fun MessageExpirationTime.toLocalExpirationTime() = when (this) {
 fun DraftExpirationError.toMessageExpirationError() = when (this) {
     is DraftExpirationError.Other -> MessageExpirationError.Other(this.v1.toDataError())
     is DraftExpirationError.Reason -> when (this.v1) {
-        DraftExpirationErrorReason.EXPIRATION_TIME_IN_THE_PAST -> MessageExpirationError.ExpirationTimeInThePast
-        DraftExpirationErrorReason.EXPIRATION_TIME_EXCEEDS30_DAYS -> MessageExpirationError.ExpirationTimeTooFarAhead
-        DraftExpirationErrorReason.EXPIRATION_TIME_LESS_THAN15_MIN -> MessageExpirationError.ExpirationTimeLessThan15Min
+        DraftExpirationErrorReason.ExpirationTimeInThePast -> MessageExpirationError.ExpirationTimeInThePast
+        DraftExpirationErrorReason.ExpirationTimeExceeds30Days -> MessageExpirationError.ExpirationTimeTooFarAhead
+        DraftExpirationErrorReason.ExpirationTimeLessThan15Min -> MessageExpirationError.ExpirationTimeLessThan15Min
+        is DraftExpirationErrorReason.BadRequest -> MessageExpirationError.Other(DataError.Remote.BadRequest)
     }
 }
 
