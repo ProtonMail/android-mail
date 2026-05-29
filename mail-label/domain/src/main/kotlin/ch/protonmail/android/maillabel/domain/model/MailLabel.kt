@@ -26,6 +26,10 @@ sealed class MailLabelId(
         override val labelId: LabelId
     ) : MailLabelId(labelId)
 
+    data class Category(
+        override val labelId: LabelId
+    ) : MailLabelId(labelId)
+
     sealed class Custom(
         override val labelId: LabelId
     ) : MailLabelId(labelId) {
@@ -47,6 +51,13 @@ sealed class MailLabel(
     data class System(
         override val id: MailLabelId.System,
         val systemLabelId: SystemLabelId,
+        val order: Int,
+        val categories: List<Category>? = null
+    ) : MailLabel(id)
+
+    data class Category(
+        override val id: MailLabelId.Category,
+        val categorySystemLabelId: CategorySystemLabelId,
         val order: Int
     ) : MailLabel(id)
 
@@ -82,5 +93,10 @@ data class MailLabels(
 
 fun MailLabel.isTrashOrSpam() = when (this) {
     is MailLabel.System -> systemLabelId == SystemLabelId.Trash || systemLabelId == SystemLabelId.Spam
+    else -> false
+}
+
+fun MailLabel.isInbox() = when (this) {
+    is MailLabel.System -> systemLabelId == SystemLabelId.Inbox
     else -> false
 }

@@ -21,6 +21,9 @@ package ch.protonmail.android.maillabel.presentation
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.design.compose.theme.ProtonDimens
+import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryIconRes
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryTextRes
 import ch.protonmail.android.mailcommon.presentation.model.NullCountPolicy
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.ZeroCountPolicy
@@ -38,6 +41,7 @@ fun MailLabels.toUiModels(counters: Map<LabelId, Int?>, selected: MailLabelId): 
 )
 
 fun MailLabel.toUiModel(counters: Map<LabelId, Int?>, selected: MailLabelId): MailLabelUiModel = when (this) {
+    is MailLabel.Category -> throw UnsupportedOperationException()
     is MailLabel.Custom -> toCustomUiModel(counters, selected)
     is MailLabel.System -> toDynamicSystemUiModel(counters, selected)
 }
@@ -81,12 +85,14 @@ fun MailLabel.Custom.toCustomUiModel(counters: Map<LabelId, Int?>, selected: Mai
     )
 
 fun MailLabel.text(): TextUiModel = when (this) {
+    is MailLabel.Category -> TextUiModel.TextRes(categorySystemLabelId.categoryTextRes())
     is MailLabel.Custom -> TextUiModel.Text(text)
     is MailLabel.System -> TextUiModel.TextRes(systemLabelId.textRes())
 }
 
 @DrawableRes
 fun MailLabel.iconRes(): Int = when (this) {
+    is MailLabel.Category -> this.categorySystemLabelId.categoryIconRes()
     is MailLabel.Custom -> when (id) {
         is MailLabelId.Custom.Label -> presentationComposeR.drawable.ic_proton_circle_filled_small
         is MailLabelId.Custom.Folder -> {
@@ -107,9 +113,10 @@ fun MailLabel.iconRes(): Int = when (this) {
 }
 
 fun MailLabel.iconTintColor(): Color? = when (this) {
+    is MailLabel.Category -> categorySystemLabelId.activeCategoryColor()
     is MailLabel.Custom -> when (id) {
-        is MailLabelId.Custom.Label -> color
-        is MailLabelId.Custom.Folder -> color
+        is MailLabelId.Custom.Label -> color?.let(::Color)
+        is MailLabelId.Custom.Folder -> color?.let(::Color)
     }
     is MailLabel.System -> null
-}?.let { Color(it) }
+}
