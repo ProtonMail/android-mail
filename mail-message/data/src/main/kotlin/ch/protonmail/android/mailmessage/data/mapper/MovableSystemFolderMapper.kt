@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.Action
+import timber.log.Timber
 import uniffi.mail_uniffi.MovableSystemFolder
 
 fun MovableSystemFolder.toAction() = when (this) {
@@ -26,4 +27,8 @@ fun MovableSystemFolder.toAction() = when (this) {
     MovableSystemFolder.SPAM -> Action.Spam
     MovableSystemFolder.ARCHIVE -> Action.Archive
     MovableSystemFolder.INBOX -> Action.Inbox
+    else -> {
+        Timber.w("Mapping from Inbox categories will be supported later. Fallback to Inbox")
+        Action.Inbox
+    }
 }
