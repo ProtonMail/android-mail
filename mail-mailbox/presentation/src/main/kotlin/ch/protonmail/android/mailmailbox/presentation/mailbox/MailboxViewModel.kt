@@ -423,6 +423,7 @@ class MailboxViewModel @Inject constructor(
     private fun MailLabel.resolveId() = when (this) {
         is MailLabel.Custom -> this.id.labelId
         is MailLabel.System -> this.systemLabelId.labelId
+        is MailLabel.Category -> this.id.labelId
     }
 
     @SuppressWarnings("ComplexMethod", "LongMethod")
