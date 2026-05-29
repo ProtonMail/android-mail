@@ -36,7 +36,7 @@ import ch.protonmail.android.mailmessage.data.usecase.GetRustAllMessageBottomBar
 import ch.protonmail.android.mailmessage.data.usecase.GetRustAllMessageListBottomBarActions
 import ch.protonmail.android.mailmessage.data.usecase.GetRustAvailableMessageActions
 import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageLabelAsActions
-import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageMoveToActions
+import ch.protonmail.android.mailmessage.data.usecase.GetRustMessageMoveToDestinations
 import ch.protonmail.android.mailmessage.data.usecase.GetRustSenderImage
 import ch.protonmail.android.mailmessage.data.usecase.RustBlockAddress
 import ch.protonmail.android.mailmessage.data.usecase.RustDeleteAllMessagesInLabel
@@ -70,7 +70,7 @@ import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import uniffi.mail_uniffi.AllListActions
-import uniffi.mail_uniffi.CustomFolderDestination
+import uniffi.mail_uniffi.CustomFolderAction
 import uniffi.mail_uniffi.DraftCancelScheduledSendInfo
 import uniffi.mail_uniffi.Id
 import uniffi.mail_uniffi.IsSelected
@@ -80,8 +80,8 @@ import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.MailTheme
 import uniffi.mail_uniffi.MessageActionSheet
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MoveDestination
-import uniffi.mail_uniffi.SystemFolderDestination
+import uniffi.mail_uniffi.MovableSystemFolderAction
+import uniffi.mail_uniffi.MoveAction
 import uniffi.mail_uniffi.ThemeOpts
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -106,7 +106,7 @@ internal class RustMessageDataSourceImplTest {
     private val rustMoveMessages = mockk<RustMoveMessages>()
     private val rustLabelMessages = mockk<RustLabelMessages>()
     private val getRustAvailableMessageActions = mockk<GetRustAvailableMessageActions>()
-    private val getRustMessageMoveToActions = mockk<GetRustMessageMoveToActions>()
+    private val getRustMessageMoveToDestinations = mockk<GetRustMessageMoveToDestinations>()
     private val getRustMessageLabelAsActions = mockk<GetRustMessageLabelAsActions>()
     private val rustMarkMessageAsLegitimate = mockk<RustMarkMessageAsLegitimate>()
     private val rustUnblockAddress = mockk<RustUnblockAddress>()
@@ -136,7 +136,7 @@ internal class RustMessageDataSourceImplTest {
         rustMoveMessages,
         rustLabelMessages,
         getRustAvailableMessageActions,
-        getRustMessageMoveToActions,
+        getRustMessageMoveToDestinations,
         getRustMessageLabelAsActions,
         rustMarkMessageAsLegitimate,
         rustUnblockAddress,
@@ -465,31 +465,28 @@ internal class RustMessageDataSourceImplTest {
     }
 
     @Test
-    fun `get available system move to actions should return only available actions towards system folders`() =
+    fun `get available move to actions should return available actions including custom folders`() =
         runTest(testDispatcher) {
             // Given
             val userId = UserIdTestData.userId
             val labelId = LocalLabelId(1uL)
             val mailbox = mockk<MailboxWrapper>()
             val messageId = LocalMessageIdSample.AugWeatherForecast
-            val archive = SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
-            val customFolder = CustomFolderDestination(
+            val archive = MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
+            val customFolder = CustomFolderAction(
                 Id(100uL),
                 "custom",
                 LabelColor("#fff"),
                 emptyList()
             )
-            val allMoveToActions = listOf(
-                MoveDestination.SystemFolder(archive),
-                MoveDestination.CustomFolder(customFolder)
-            )
-            val expected = listOf(MoveDestination.SystemFolder(archive))
+            val allMoveToActions = listOf(MoveAction.SystemFolder(archive), MoveAction.CustomFolder(customFolder))
+            val expected = allMoveToActions
 
             coEvery { rustMailboxFactory.create(userId, labelId) } returns mailbox.right()
-            coEvery { getRustMessageMoveToActions(mailbox, listOf(messageId)) } returns allMoveToActions.right()
+            coEvery { getRustMessageMoveToDestinations(mailbox, listOf(messageId)) } returns allMoveToActions.right()
 
             // When
-            val result = dataSource.getAvailableSystemMoveToActions(userId, labelId, listOf(messageId))
+            val result = dataSource.getAvailableMoveToDestinations(userId, labelId, listOf(messageId))
 
             // Then
             assertEquals(expected.right(), result)

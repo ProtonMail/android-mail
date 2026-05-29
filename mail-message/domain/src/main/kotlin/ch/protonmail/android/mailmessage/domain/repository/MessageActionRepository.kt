@@ -38,11 +38,11 @@ interface MessageActionRepository {
         messageThemeOptions: MessageThemeOptions
     ): Either<DataError, AvailableActions>
 
-    suspend fun getSystemMoveToLocations(
+    suspend fun getMoveToLocations(
         userId: UserId,
         labelId: LabelId,
         messageIds: List<MessageId>
-    ): Either<DataError, List<MailLabel.System>>
+    ): Either<DataError, List<MailLabel>>
 
     suspend fun getAvailableLabelAsActions(
         userId: UserId,

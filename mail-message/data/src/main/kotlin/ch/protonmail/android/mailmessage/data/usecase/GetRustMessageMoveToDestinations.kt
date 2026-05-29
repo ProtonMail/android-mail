@@ -16,30 +16,28 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.data.usecase
+package ch.protonmail.android.mailmessage.data.usecase
 
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
-import uniffi.mail_uniffi.AvailableMoveToDestinationsForConversationsResult
+import uniffi.mail_uniffi.AvailableMoveToDestinationsForMessagesResult
 import uniffi.mail_uniffi.MoveDestination
-import uniffi.mail_uniffi.availableMoveToDestinationsForConversations
+import uniffi.mail_uniffi.availableMoveToDestinationsForMessages
 import javax.inject.Inject
 
-class GetRustConversationMoveToActions @Inject constructor() {
+class GetRustMessageMoveToDestinations @Inject constructor() {
 
     suspend operator fun invoke(
         mailbox: MailboxWrapper,
-        conversationIds: List<LocalConversationId>
+        messageIds: List<LocalMessageId>
     ): Either<DataError, List<MoveDestination>> =
-        when (val result = availableMoveToDestinationsForConversations(mailbox.getRustMailbox(), conversationIds)) {
-            is AvailableMoveToDestinationsForConversationsResult.Error -> result.v1.toDataError().left()
-            is AvailableMoveToDestinationsForConversationsResult.Ok -> result.v1.right()
+        when (val result = availableMoveToDestinationsForMessages(mailbox.getRustMailbox(), messageIds)) {
+            is AvailableMoveToDestinationsForMessagesResult.Error -> result.v1.toDataError().left()
+            is AvailableMoveToDestinationsForMessagesResult.Ok -> result.v1.right()
         }
 }
-
-

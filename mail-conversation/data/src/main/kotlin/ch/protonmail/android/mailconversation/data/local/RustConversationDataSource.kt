@@ -98,11 +98,11 @@ interface RustConversationDataSource {
         conversationId: LocalConversationId
     ): Either<DataError, ConversationActionSheet>
 
-    suspend fun getAvailableSystemMoveToActions(
+    suspend fun getAvailableMoveToActions(
         userId: UserId,
         labelId: LocalLabelId,
         conversationIds: List<LocalConversationId>
-    ): Either<DataError, List<MoveDestination.SystemFolder>>
+    ): Either<DataError, List<MoveDestination>>
 
     suspend fun getAvailableLabelAsActions(
         userId: UserId,

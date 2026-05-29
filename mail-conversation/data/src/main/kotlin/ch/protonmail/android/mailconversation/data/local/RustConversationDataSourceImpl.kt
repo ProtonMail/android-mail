@@ -34,7 +34,7 @@ import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationBo
 import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationBottomSheetActions
 import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationLabelAsActions
 import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationListBottomBarActions
-import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationMoveToActions
+import ch.protonmail.android.mailconversation.data.usecase.GetRustConversationMoveToDestinations
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
@@ -70,7 +70,7 @@ class RustConversationDataSourceImpl @Inject constructor(
     private val getRustConversationListBottomBarActions: GetRustConversationListBottomBarActions,
     private val getRustConversationBottomBarActions: GetRustConversationBottomBarActions,
     private val getRustConversationBottomSheetActions: GetRustConversationBottomSheetActions,
-    private val getRustConversationMoveToActions: GetRustConversationMoveToActions,
+    private val getRustConversationMoveToDestinations: GetRustConversationMoveToDestinations,
     private val getRustConversationLabelAsActions: GetRustConversationLabelAsActions,
     private val rustDeleteConversations: RustDeleteConversations,
     private val rustMarkConversationsAsRead: RustMarkConversationsAsRead,
@@ -248,19 +248,18 @@ class RustConversationDataSourceImpl @Inject constructor(
     }
 
 
-    override suspend fun getAvailableSystemMoveToActions(
+    override suspend fun getAvailableMoveToActions(
         userId: UserId,
         labelId: LocalLabelId,
         conversationIds: List<LocalConversationId>
-    ): Either<DataError, List<MoveDestination.SystemFolder>> = withContext(ioDispatcher) {
+    ): Either<DataError, List<MoveDestination>> = withContext(ioDispatcher) {
         val mailbox = rustMailboxFactory.create(userId, labelId).getOrNull()
         if (mailbox == null) {
             Timber.e("rust-conversation: trying to get available actions for null Mailbox! failing")
             return@withContext DataError.Local.IllegalStateError.left()
         }
 
-        return@withContext getRustConversationMoveToActions(mailbox, conversationIds)
-            .map { it.filterIsInstance<MoveDestination.SystemFolder>() }
+        return@withContext getRustConversationMoveToDestinations(mailbox, conversationIds)
     }
 
     override suspend fun moveConversations(
