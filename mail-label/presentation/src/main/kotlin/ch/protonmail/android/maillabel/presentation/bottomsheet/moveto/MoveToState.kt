@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.bottomsheet.moveto
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -35,6 +36,7 @@ sealed interface MoveToState {
     data class Data(
         val systemDestinations: ImmutableList<MoveToBottomSheetDestinationUiModel.System>,
         val customDestinations: ImmutableList<MoveToBottomSheetDestinationUiModel.Custom>,
+        val inboxDestination: MoveToBottomSheetDestinationUiModel.Inbox? = null,
         val entryPoint: MoveToBottomSheetEntryPoint,
         val shouldDismissEffect: Effect<MoveToDismissData>,
         val errorEffect: Effect<TextUiModel>
@@ -66,6 +68,22 @@ sealed class MoveToBottomSheetDestinationUiModel(
         override val iconTint: Color?,
         val iconPaddingStart: Dp
     ) : MoveToBottomSheetDestinationUiModel(id, text, icon, iconTint)
+
+    data class Inbox(
+        override val id: MailLabelId.System,
+        override val text: TextUiModel,
+        override val icon: Int,
+        override val iconTint: Color?,
+        val categories: List<Category>
+    ) : MoveToBottomSheetDestinationUiModel(id, text, icon, iconTint) {
+
+        data class Category(
+            val id: CategorySystemLabelId,
+            val text: TextUiModel,
+            val icon: Int,
+            val iconTint: Color?
+        )
+    }
 }
 
 sealed interface MoveToOperation {

@@ -19,8 +19,15 @@
 package ch.protonmail.android.maillabel.presentation.bottomsheet.moveto
 
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryIconRes
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryTextRes
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.iconTintColor
@@ -54,6 +61,37 @@ internal class MoveToReducerTest(
         private val archiveSystemUiModel = MailLabelTestData.archiveSystemLabel.let {
             MoveToBottomSheetDestinationUiModel.System(it.id, it.text(), it.iconRes(), it.iconTintColor())
         }
+
+        private val inboxUiModel = MailLabelTestData.inboxSystemLabel.let {
+            MoveToBottomSheetDestinationUiModel.Inbox(
+                id = it.id,
+                text = it.text(),
+                icon = it.iconRes(),
+                iconTint = it.iconTintColor(),
+                categories = emptyList()
+            )
+        }
+
+        private val inboxCategory = MailLabel.Category(
+            id = MailLabelId.Category(LabelId("20")),
+            categorySystemLabelId = CategorySystemLabelId.Social,
+            order = 0
+        )
+
+        private val inboxUiModelWithCategory = MoveToBottomSheetDestinationUiModel.Inbox(
+            id = MailLabelTestData.inboxSystemLabel.id,
+            text = MailLabelTestData.inboxSystemLabel.text(),
+            icon = MailLabelTestData.inboxSystemLabel.iconRes(),
+            iconTint = MailLabelTestData.inboxSystemLabel.iconTintColor(),
+            categories = listOf(
+                MoveToBottomSheetDestinationUiModel.Inbox.Category(
+                    id = CategorySystemLabelId.Social,
+                    text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
+                    icon = CategorySystemLabelId.Social.categoryIconRes(),
+                    iconTint = CategorySystemLabelId.Social.activeCategoryColor()
+                )
+            )
+        )
 
         private val label2021UiModel = MailLabelTestData.label2021.let {
             MoveToBottomSheetDestinationUiModel.Custom(
@@ -95,6 +133,41 @@ internal class MoveToReducerTest(
                 MoveToState.Loading,
                 loadedEvent,
                 initialState
+            ),
+            arrayOf(
+                "from loading on initial successful loading with inbox extracted from system destinations",
+                MoveToState.Loading,
+                loadedEvent.copy(
+                    moveToDestinations = listOf(
+                        MailLabelTestData.inboxSystemLabel,
+                        MailLabelTestData.archiveSystemLabel,
+                        MailLabelTestData.label2021
+                    ).toImmutableList()
+                ),
+                initialState.copy(
+                    inboxDestination = inboxUiModel,
+                    systemDestinations = listOf(archiveSystemUiModel).toImmutableList()
+                )
+            ),
+            arrayOf(
+                "from loading on initial successful loading maps inbox categories",
+                MoveToState.Loading,
+                loadedEvent.copy(
+                    moveToDestinations = listOf(
+                        MailLabel.System(
+                            id = MailLabelTestData.inboxSystemLabel.id,
+                            systemLabelId = MailLabelTestData.inboxSystemLabel.systemLabelId,
+                            order = 0,
+                            categories = listOf(inboxCategory)
+                        ),
+                        MailLabelTestData.archiveSystemLabel,
+                        MailLabelTestData.label2021
+                    ).toImmutableList()
+                ),
+                initialState.copy(
+                    inboxDestination = inboxUiModelWithCategory,
+                    systemDestinations = listOf(archiveSystemUiModel).toImmutableList()
+                )
             ),
             arrayOf(
                 "from loaded data to error moving state",

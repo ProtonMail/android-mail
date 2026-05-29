@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonHorizontallyCenteredProgress
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.uicomponents.BottomNavigationBarSpacer
@@ -54,8 +55,16 @@ fun MoveToBottomSheetScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val contentActions = MoveToBottomSheetContent.Actions(
-        onFolderSelected = { id, text, entryPoint ->
+        onFolderSelected = { id, text, _ ->
             viewModel.submit(MoveToOperation.MoveToAction.MoveToDestinationSelected(id, text))
+        },
+        onCategorySelected = { id, text, _ ->
+            viewModel.submit(
+                MoveToOperation.MoveToAction.MoveToDestinationSelected(
+                    MailLabelId.Category(id.labelId),
+                    text
+                )
+            )
         },
         onCreateNewFolderClick = actions.onCreateNewFolderClick,
         onDismiss = actions.onDismiss,

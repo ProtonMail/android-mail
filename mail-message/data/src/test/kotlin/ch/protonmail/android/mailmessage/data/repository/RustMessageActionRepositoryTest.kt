@@ -46,16 +46,17 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import uniffi.mail_uniffi.AllListActions
 import uniffi.mail_uniffi.CategoryDestination
+import uniffi.mail_uniffi.CustomFolderDestination
 import uniffi.mail_uniffi.Id
-import uniffi.mail_uniffi.InboxFolderAction
+import uniffi.mail_uniffi.InboxDestination
 import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MessageAction
 import uniffi.mail_uniffi.MessageActionSheet
 import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MovableSystemFolderAction
-import uniffi.mail_uniffi.MoveAction
+import uniffi.mail_uniffi.SystemFolderDestination
+import uniffi.mail_uniffi.MoveDestination
 import kotlin.test.assertEquals
 
 class RustMessageActionRepositoryTest {
@@ -77,9 +78,9 @@ class RustMessageActionRepositoryTest {
             listOf(MessageAction.Reply, MessageAction.Forward),
             listOf(MessageAction.Star, MessageAction.LabelAs),
             listOf(
-                MessageAction.MoveToSystemFolder(MovableSystemFolderAction(Id(5uL), MovableSystemFolder.SPAM)),
+                MessageAction.MoveToSystemFolder(SystemFolderDestination(Id(5uL), MovableSystemFolder.SPAM)),
                 MessageAction.MoveToSystemFolder(
-                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.ARCHIVE)
+                    SystemFolderDestination(Id(10uL), MovableSystemFolder.ARCHIVE)
                 )
             ),
             listOf(MessageAction.ViewInDarkMode, MessageAction.ViewInLightMode)
@@ -139,14 +140,14 @@ class RustMessageActionRepositoryTest {
         val labelId = SystemLabelId.Inbox.labelId
         val messageIds = listOf(MessageId("1"))
         val rustMoveToActions = listOf(
-            MoveAction.SystemFolder(
-                MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
+            MoveDestination.SystemFolder(
+                SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
             ),
-            MoveAction.SystemFolder(
-                MovableSystemFolderAction(Id(3uL), MovableSystemFolder.TRASH)
+            MoveDestination.SystemFolder(
+                SystemFolderDestination(Id(3uL), MovableSystemFolder.TRASH)
             ),
-            MoveAction.Inbox(
-                InboxFolderAction(
+            MoveDestination.Inbox(
+                InboxDestination(
                     localId = Id(4uL),
                     name = MovableSystemFolder.INBOX,
                     categories = listOf(
@@ -154,8 +155,8 @@ class RustMessageActionRepositoryTest {
                     )
                 )
             ),
-            MoveAction.CustomFolder(
-                CustomFolderAction(Id(60uL), "Custom", LabelColor("#FFFFFF"), emptyList())
+            MoveDestination.CustomFolder(
+                CustomFolderDestination(Id(60uL), "Custom", LabelColor("#FFFFFF"), emptyList())
             )
         )
 
