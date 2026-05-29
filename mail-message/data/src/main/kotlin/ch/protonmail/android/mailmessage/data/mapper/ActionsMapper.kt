@@ -23,12 +23,9 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.AvailableActions
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
-import ch.protonmail.android.maillabel.data.mapper.toSystemLabel
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelAsActions
 import ch.protonmail.android.maillabel.domain.model.LabelType
-import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import timber.log.Timber
 import uniffi.mail_uniffi.AllConversationActions
 import uniffi.mail_uniffi.AllListActions
@@ -38,7 +35,6 @@ import uniffi.mail_uniffi.IsSelected
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MessageAction
 import uniffi.mail_uniffi.MessageActionSheet
-import uniffi.mail_uniffi.MoveDestination
 
 fun List<LocalLabelAsAction>.toLabelAsActions(): LabelAsActions {
     val labels = this.map { it.toLabel() }
@@ -65,13 +61,6 @@ private fun LocalLabelAsAction.toLabel() = Label(
     isSticky = null
 )
 
-fun List<MoveDestination.SystemFolder>.toMailLabels() = this.map { systemAction ->
-    MailLabel.System(
-        id = MailLabelId.System(systemAction.v1.localId.toLabelId()),
-        systemLabelId = systemAction.v1.name.toSystemLabel(),
-        order = 0
-    )
-}
 
 fun MessageActionSheet.toAvailableActions(): AvailableActions {
     return AvailableActions(

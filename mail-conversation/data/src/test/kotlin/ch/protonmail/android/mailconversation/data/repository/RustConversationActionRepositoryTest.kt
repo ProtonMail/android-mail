@@ -27,33 +27,45 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.local.RustConversationDataSource
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
+import ch.protonmail.android.mailmessage.data.mapper.MoveDestinationMapper
 import ch.protonmail.android.testdata.label.rust.LabelAsActionsTestData
 import ch.protonmail.android.testdata.label.rust.LocalLabelAsActionTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import uniffi.mail_uniffi.AllListActions
+import uniffi.mail_uniffi.CategoryDestination
 import uniffi.mail_uniffi.ConversationAction
 import uniffi.mail_uniffi.ConversationActionSheet
+import uniffi.mail_uniffi.CustomFolderAction
 import uniffi.mail_uniffi.Id
+import uniffi.mail_uniffi.InboxFolderAction
+import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.ListActions
+import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.MoveDestination
-import uniffi.mail_uniffi.SystemFolderDestination
+import uniffi.mail_uniffi.MovableSystemFolderAction
+import uniffi.mail_uniffi.MoveAction
 import kotlin.test.assertEquals
 
 internal class RustConversationActionRepositoryTest {
 
     private val rustConversationDataSource: RustConversationDataSource = mockk()
+    private val moveDestinationMapper: MoveDestinationMapper = mockk()
 
-    private val rustConversationRepository = RustConversationActionRepository(rustConversationDataSource)
+    private val rustConversationRepository = RustConversationActionRepository(
+        rustConversationDataSource,
+        moveDestinationMapper
+    )
 
     @Test
     fun `get available actions should return supported available actions when data source exposes them`() = runTest {
@@ -65,10 +77,10 @@ internal class RustConversationActionRepositoryTest {
             listOf(ConversationAction.Star, ConversationAction.LabelAs),
             listOf(
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(5uL), MovableSystemFolder.SPAM)
+                    MovableSystemFolderAction(Id(5uL), MovableSystemFolder.SPAM)
                 ),
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(10uL), MovableSystemFolder.ARCHIVE)
+                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.ARCHIVE)
                 )
             )
         )
@@ -127,7 +139,7 @@ internal class RustConversationActionRepositoryTest {
             conversationActions = listOf(ConversationAction.Star),
             moveActions = listOf(
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(10uL), MovableSystemFolder.INBOX)
+                    MovableSystemFolderAction(Id(10uL), MovableSystemFolder.INBOX)
                 )
             )
         )
@@ -154,41 +166,77 @@ internal class RustConversationActionRepositoryTest {
     }
 
     @Test
-    fun `get available system move to actions should return actions when data source exposes them`() = runTest {
+    fun `get available move to actions should return actions`() = runTest {
         // Given
         val userId = UserIdTestData.userId
         val labelId = SystemLabelId.Inbox.labelId
         val conversationIds = listOf(ConversationId("1"))
         val rustMoveToActions = listOf(
-            MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
+            MoveAction.SystemFolder(
+                MovableSystemFolderAction(Id(2uL), MovableSystemFolder.ARCHIVE)
             ),
-            MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(3uL), MovableSystemFolder.TRASH)
+            MoveAction.SystemFolder(
+                MovableSystemFolderAction(Id(3uL), MovableSystemFolder.TRASH)
+            ),
+            MoveAction.Inbox(
+                InboxFolderAction(
+                    localId = Id(4uL),
+                    name = MovableSystemFolder.INBOX,
+                    categories = listOf(
+                        CategoryDestination(Id(5uL), MovableCategoryFolder.CATEGORY_SOCIAL)
+                    )
+                )
+            ),
+            MoveAction.CustomFolder(
+                CustomFolderAction(Id(50uL), "Custom", LabelColor("#FFFFFF"), emptyList())
             )
         )
 
         coEvery {
-            rustConversationDataSource.getAvailableSystemMoveToActions(
+            rustConversationDataSource.getAvailableMoveToActions(
                 userId,
                 labelId.toLocalLabelId(),
                 conversationIds.map { it.toLocalConversationId() }
             )
         } returns rustMoveToActions.right()
-
-        // When
-        val result = rustConversationRepository.getSystemMoveToLocations(userId, labelId, conversationIds)
-
-        // Then
         val expected = listOf(
             MailLabel.System(MailLabelId.System(LabelId("2")), SystemLabelId.Archive, 0),
-            MailLabel.System(MailLabelId.System(LabelId("3")), SystemLabelId.Trash, 0)
+            MailLabel.System(MailLabelId.System(LabelId("3")), SystemLabelId.Trash, 0),
+            MailLabel.System(
+                id = MailLabelId.System(LabelId("4")),
+                systemLabelId = SystemLabelId.Inbox,
+                order = 0,
+                categories = listOf(
+                    MailLabel.Category(
+                        id = MailLabelId.Category(LabelId("5")),
+                        categorySystemLabelId = CategorySystemLabelId.Social,
+                        order = 0
+                    )
+                )
+            ),
+            MailLabel.Custom(
+                id = MailLabelId.Custom.Folder(LabelId("50")),
+                parent = null,
+                text = "Custom",
+                color = 0xFFFFFFFF.toInt(),
+                isExpanded = true,
+                level = 0,
+                order = 0,
+                children = emptyList()
+            )
         )
+        coEvery { moveDestinationMapper.invoke(rustMoveToActions) } returns expected
+
+        // When
+        val result = rustConversationRepository.getMoveToLocations(userId, labelId, conversationIds)
+
+        // Then
         assertEquals(expected.right(), result)
+        coVerify(exactly = 1) { moveDestinationMapper.invoke(rustMoveToActions) }
     }
 
     @Test
-    fun `get available system move to actions should return error when data source fails`() = runTest {
+    fun `get available move to actions should return error when data source fails`() = runTest {
         // Given
         val userId = UserIdTestData.userId
         val labelId = SystemLabelId.Inbox.labelId
@@ -196,7 +244,7 @@ internal class RustConversationActionRepositoryTest {
         val expectedError = DataError.Local.NoDataCached
 
         coEvery {
-            rustConversationDataSource.getAvailableSystemMoveToActions(
+            rustConversationDataSource.getAvailableMoveToActions(
                 userId,
                 labelId.toLocalLabelId(),
                 conversationIds.map { it.toLocalConversationId() }
@@ -204,7 +252,7 @@ internal class RustConversationActionRepositoryTest {
         } returns expectedError.left()
 
         // When
-        val result = rustConversationRepository.getSystemMoveToLocations(userId, labelId, conversationIds)
+        val result = rustConversationRepository.getMoveToLocations(userId, labelId, conversationIds)
 
         // Then
         assertEquals(expectedError.left(), result)

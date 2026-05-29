@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmessage.data.repository.RsvpEventRepositoryImpl
 import ch.protonmail.android.mailmessage.data.repository.RustMessageActionRepository
 import ch.protonmail.android.mailmessage.data.repository.RustMessageBodyRepository
 import ch.protonmail.android.mailmessage.data.repository.RustMessageRepositoryImpl
+import ch.protonmail.android.mailmessage.data.mapper.MoveDestinationMapper
 import ch.protonmail.android.mailmessage.domain.repository.InMemoryAvatarImageStateRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageActionRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageBodyRepository
@@ -70,8 +71,10 @@ object MailMessageModule {
 
     @Provides
     @Singleton
-    fun providesMessageActionRepository(rustMessageDataSource: RustMessageDataSource): MessageActionRepository =
-        RustMessageActionRepository(rustMessageDataSource)
+    fun providesMessageActionRepository(
+        rustMessageDataSource: RustMessageDataSource,
+        moveDestinationMapper: MoveDestinationMapper
+    ): MessageActionRepository = RustMessageActionRepository(rustMessageDataSource, moveDestinationMapper)
 
     @Module
     @InstallIn(SingletonComponent::class)
