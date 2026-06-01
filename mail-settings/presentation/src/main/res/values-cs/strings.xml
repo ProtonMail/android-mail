@@ -54,7 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Přejetím na další e-mail</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Rychlý přechod na další nebo předchozí zprávu v doručené poště.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Přizpůsobit panely nástrojů</string>
-  <string name="mail_settings_app_customization_email_categories">Email categories</string>
+  <string name="mail_settings_app_customization_email_categories">Kategorie e-mailů</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternativní směrování</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Obcházení firewallu nebo síťových problémů v případě, že jsou stránky Proton blokovány.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Zkušenosti s Mailem</string>

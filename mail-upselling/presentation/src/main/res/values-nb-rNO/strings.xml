@@ -92,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB lagring</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 e-postadresse</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">To unlock more storage and premium features.</string>
+  <string name="upselling_unlimited_description_override">For å låse opp mer lagringsplass og premiumfunksjoner.</string>
   <string name="upselling_auto_renew_text">Automatisk fornyelse til samme pris og vilkår med mindre oppsigelse</string>
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s%s med mindre oppsigelse</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter er basert på standard månedspris. Fornyes automatisk til %s%s inntil abonnementet kanselleres.</string>
   <string name="upselling_auto_renew_text_promo_short">Velkomsttilbud. Fornyes automatisk til %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s med mindre oppsigelse.</string>
   <string name="upselling_social_proof_reviews">2k+ ANMELDELSER</string>
   <string name="upselling_description_social_proof">Oppgrader til opplevelsen som millioner av abonnenter elsker.</string>
   <string name="upselling_month">/måned</string>
