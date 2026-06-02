@@ -20,7 +20,6 @@ package ch.protonmail.android.composer.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalDraftSendResult
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDisabled
@@ -196,6 +195,6 @@ fun DraftSaveError.toSaveDraftError(): SaveDraftError = when (this) {
         is DraftSaveErrorReason.AttachmentTooLarge -> SaveDraftError.AttachmentsTooLarge
         is DraftSaveErrorReason.TooManyAttachments -> SaveDraftError.TooManyAttachments
         is DraftSaveErrorReason.TotalAttachmentSizeTooLarge -> SaveDraftError.AttachmentsTooLarge
-        is DraftSaveErrorReason.BadRequest -> SaveDraftError.Other(DataError.Remote.BadRequest)
+        is DraftSaveErrorReason.BadRequest -> SaveDraftError.BadRequest(reason.v1)
     }
 }

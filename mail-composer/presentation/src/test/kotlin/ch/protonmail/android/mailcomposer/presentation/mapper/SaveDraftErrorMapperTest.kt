@@ -83,6 +83,11 @@ internal class SaveDraftErrorMapperTest(
                 "too many attachments",
                 SaveDraftError.TooManyAttachments,
                 TextUiModel(R.string.composer_error_store_draft_too_many_attachments)
+            ),
+            arrayOf(
+                "bad request",
+                SaveDraftError.BadRequest("Recipient address is invalid"),
+                TextUiModel("Recipient address is invalid")
             )
         )
     }

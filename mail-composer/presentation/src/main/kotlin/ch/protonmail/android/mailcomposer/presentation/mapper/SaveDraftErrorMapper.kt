@@ -24,22 +24,27 @@ import ch.protonmail.android.mailcomposer.presentation.R
 
 internal object SaveDraftErrorMapper {
 
-    fun toTextUiModel(saveDraftError: SaveDraftError): TextUiModel {
-
-        val textRes = when (saveDraftError) {
-            is SaveDraftError.AddressDisabled -> R.string.composer_error_store_draft_address_disabled
-            is SaveDraftError.AddressDoesNotHavePrimaryKey -> R.string.composer_error_store_draft_address_pk_missing
-            is SaveDraftError.AttachmentsTooLarge -> R.string.composer_error_store_draft_attachment_too_large
-            is SaveDraftError.DuplicateRecipient -> R.string.composer_error_store_draft_duplicate_recipient
-            is SaveDraftError.EmptyRecipientGroupName -> R.string.composer_error_store_draft_recipient_group_name
-            is SaveDraftError.InvalidRecipient -> R.string.composer_error_store_draft_invalid_recipient
-            is SaveDraftError.MessageIsNotADraft -> R.string.composer_error_store_draft_message_not_a_draft
-            is SaveDraftError.TooManyAttachments -> R.string.composer_error_store_draft_too_many_attachments
-
-            is SaveDraftError.Other,
-            SaveDraftError.SaveFailed -> R.string.composer_error_store_draft_generic
-        }
-
-        return TextUiModel.TextRes(textRes)
+    fun toTextUiModel(saveDraftError: SaveDraftError): TextUiModel = when (saveDraftError) {
+        is SaveDraftError.AddressDisabled ->
+            TextUiModel(R.string.composer_error_store_draft_address_disabled)
+        is SaveDraftError.AddressDoesNotHavePrimaryKey ->
+            TextUiModel(R.string.composer_error_store_draft_address_pk_missing)
+        is SaveDraftError.AttachmentsTooLarge ->
+            TextUiModel(R.string.composer_error_store_draft_attachment_too_large)
+        is SaveDraftError.BadRequest ->
+            TextUiModel(saveDraftError.message)
+        is SaveDraftError.DuplicateRecipient ->
+            TextUiModel(R.string.composer_error_store_draft_duplicate_recipient)
+        is SaveDraftError.EmptyRecipientGroupName ->
+            TextUiModel(R.string.composer_error_store_draft_recipient_group_name)
+        is SaveDraftError.InvalidRecipient ->
+            TextUiModel(R.string.composer_error_store_draft_invalid_recipient)
+        is SaveDraftError.MessageIsNotADraft ->
+            TextUiModel(R.string.composer_error_store_draft_message_not_a_draft)
+        is SaveDraftError.TooManyAttachments ->
+            TextUiModel(R.string.composer_error_store_draft_too_many_attachments)
+        is SaveDraftError.Other,
+        SaveDraftError.SaveFailed ->
+            TextUiModel(R.string.composer_error_store_draft_generic)
     }
 }
