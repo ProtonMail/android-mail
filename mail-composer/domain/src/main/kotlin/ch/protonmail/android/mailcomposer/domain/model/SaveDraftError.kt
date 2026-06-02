@@ -31,6 +31,7 @@ sealed interface SaveDraftError {
     data class InvalidRecipient(val message: String) : SaveDraftError
     data class AddressDisabled(val message: String) : SaveDraftError
     data class AddressDoesNotHavePrimaryKey(val message: String) : SaveDraftError
+    data class BadRequest(val message: String) : SaveDraftError
 
     data class Other(val error: DataError) : SaveDraftError
 }

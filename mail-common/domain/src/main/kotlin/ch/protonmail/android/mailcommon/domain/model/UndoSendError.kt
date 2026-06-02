@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcommon.domain.model
 
 sealed interface UndoSendError {
     data object UndoSendFailed : UndoSendError
+    data class BadRequest(val message: String) : UndoSendError
     data class Other(val dataError: DataError) : UndoSendError
 }
 
