@@ -376,7 +376,12 @@ fun Home(
             }
 
             is MessageSendingStatus.UndoSendError -> {
-                showUndoSendErrorSnackbar()
+                val badRequestMessage = sendingStatus.badRequestMessage
+                if (badRequestMessage != null) {
+                    showErrorSnackbar(badRequestMessage)
+                } else {
+                    showUndoSendErrorSnackbar()
+                }
             }
 
             is MessageSendingStatus.CancellingScheduleSend -> {

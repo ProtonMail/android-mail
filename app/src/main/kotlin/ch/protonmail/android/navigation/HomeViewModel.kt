@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatFullDate
+import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.MarkMessageSendingStatusesAsSeen
@@ -128,7 +129,7 @@ class HomeViewModel @Inject constructor(
             primaryUserId.firstOrNull()?.let {
                 undoSendMessage(it, messageId)
                     .onRight { navigateToDraftInComposer(messageId) }
-                    .onLeft { showUndoSendError(messageId) }
+                    .onLeft { error -> showUndoSendError(messageId, error) }
             } ?: Timber.e("Primary user is not available!")
         }
     }
@@ -162,9 +163,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun showUndoSendError(messageId: MessageId) {
+    private fun showUndoSendError(messageId: MessageId, error: UndoSendError? = null) {
+        val badRequestMessage = (error as? UndoSendError.BadRequest)?.message
         mutableState.update {
-            it.copy(messageSendingStatusEffect = Effect.of(MessageSendingStatus.UndoSendError(messageId)))
+            it.copy(
+                messageSendingStatusEffect = Effect.of(
+                    MessageSendingStatus.UndoSendError(messageId, badRequestMessage)
+                )
+            )
         }
     }
 
