@@ -382,12 +382,11 @@ class MailboxViewModel @Inject constructor(
 
         primaryUserId.flatMapLatest { userId ->
             shouldShowRatingBooster(userId)
-        }.distinctUntilChanged()
+        }
             .filter { it }
-            .onEach { shouldShowRatingBooster ->
+            .onEach { _ ->
                 recordRatingBoosterTriggered()
                 emitNewStateFrom(MailboxEvent.ShowRatingBooster)
-
             }
             .launchIn(viewModelScope)
     }
