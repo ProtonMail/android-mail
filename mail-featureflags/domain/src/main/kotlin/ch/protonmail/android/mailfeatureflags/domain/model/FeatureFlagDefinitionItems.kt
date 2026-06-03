@@ -122,6 +122,14 @@ data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object RateOnUpsellEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7RateOnUpsell",
+    name = "Rate on upsell",
+    category = FeatureFlagCategory.Rating,
+    description = "Show the rating dialog after a successful upsell",
+    defaultValue = false
+)
+
 data object FeatureSpotlight : FeatureFlagDefinition(
     key = "MailAndroidV7FeatureSpotlight",
     name = "Enable the feature spotlight",
