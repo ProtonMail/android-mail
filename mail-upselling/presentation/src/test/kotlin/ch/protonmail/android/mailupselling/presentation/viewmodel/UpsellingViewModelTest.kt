@@ -34,6 +34,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelled
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
@@ -52,6 +53,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -84,6 +86,7 @@ internal class UpsellingViewModelTest {
     private val recordUpgradeCancelledByUser = mockk<RecordUpgradeCancelledByUser>(relaxUnitFun = true)
     private val recordUpgradeError = mockk<RecordUpgradeError>(relaxUnitFun = true)
     private val recordUpgradeSuccess = mockk<RecordUpgradeSuccess>(relaxUnitFun = true)
+    private val upsellRatingTriggerRepository = mockk<UpsellRatingTriggerRepository>(relaxUnitFun = true)
 
     @AfterTest
     fun teardown() {
@@ -457,6 +460,32 @@ internal class UpsellingViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit upsell success signal when recording upgrade success`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        val vm = viewModel()
+        vm.recordUpgradeSuccess(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // Then
+        verify(exactly = 1) { upsellRatingTriggerRepository.emitUpsellSuccess() }
+    }
+
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observePlanUpgrades,
@@ -468,6 +497,7 @@ internal class UpsellingViewModelTest {
         recordUpgradeAttempt,
         recordUpgradeCancelledByUser,
         recordUpgradeError,
-        recordUpgradeSuccess
+        recordUpgradeSuccess,
+        upsellRatingTriggerRepository
     )
 }

@@ -27,10 +27,12 @@ import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.repository.BlackFridayRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.SpringPromoRepositoryImpl
+import ch.protonmail.android.mailupselling.data.repository.UpsellRatingTriggerRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
 import ch.protonmail.android.mailupselling.domain.repository.SpringPromoRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -64,6 +66,10 @@ interface UpsellingModule {
     @Binds
     @Singleton
     fun provideSpringPromoDataSource(impl: SpringPromoLocalDataSourceImpl): SpringPromoLocalDataSource
+
+    @Binds
+    @Singleton
+    fun provideUpsellRatingTriggerRepository(impl: UpsellRatingTriggerRepositoryImpl): UpsellRatingTriggerRepository
 
     @Module
     @InstallIn(SingletonComponent::class)

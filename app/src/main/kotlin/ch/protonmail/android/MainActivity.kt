@@ -208,17 +208,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleLaunchInAppReview() {
         val request = reviewManager.requestReviewFlow()
+        Timber.d("ReviewFlow - Requesting Review Flow...")
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val reviewInfo = task.result
                 val flow = reviewManager.launchReviewFlow(this, reviewInfo)
                 flow.addOnCompleteListener { _ ->
-                    Timber.d("ReviewFlow Rating In-App Review flow completed.")
+                    Timber.d("ReviewFlow - Rating In-App Review flow completed.")
                 }
             } else {
                 when (val exception = task.exception) {
-                    is ReviewException -> Timber.e("In app review error: ${exception.errorCode}")
-                    else -> Timber.e("Generic error while requesting in app review: $exception")
+                    is ReviewException -> Timber.e("ReviewFlow - In app review error: ${exception.errorCode}")
+                    else -> Timber.e("ReviewFlow - Generic error while requesting in app review: $exception")
                 }
             }
         }

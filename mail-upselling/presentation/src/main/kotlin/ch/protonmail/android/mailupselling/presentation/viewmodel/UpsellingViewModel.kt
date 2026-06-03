@@ -36,6 +36,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelled
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
@@ -72,7 +73,8 @@ internal class UpsellingViewModel @Inject constructor(
     private val recordUpgradeAttempt: RecordUpgradeAttempt,
     private val recordUpgradeCancelledByUser: RecordUpgradeCancelledByUser,
     private val recordUpgradeError: RecordUpgradeError,
-    private val recordUpgradeSuccess: RecordUpgradeSuccess
+    private val recordUpgradeSuccess: RecordUpgradeSuccess,
+    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
@@ -145,8 +147,12 @@ internal class UpsellingViewModel @Inject constructor(
     fun recordUpgradeError(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeError::invoke)
 
-    fun recordUpgradeSuccess(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
+    fun recordUpgradeSuccess(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeSuccess::invoke)
+        // Fire-and-forget, scope-independent: the screen-scoped viewModelScope may be cancelled by
+        // the navigateBack() that runs on success, so the emit must not rely on it.
+        upsellRatingTriggerRepository.emitUpsellSuccess()
+    }
 
     private fun recordUpgradeEvent(
         upsellingTelemetryPayload: UpsellingTelemetryPayload,

@@ -17,23 +17,36 @@
  */
 package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmailbox.domain.repository.InMemoryMailboxRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ShouldShowRatingBooster @Inject constructor(
     private val inMemoryMailboxRepository: InMemoryMailboxRepository,
-    @IsShowRatingBoosterEnabled val showRatingBooster: FeatureFlag<Boolean>
+    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository,
+    @IsShowRatingBoosterEnabled val showRatingBooster: FeatureFlag<Boolean>,
+    @IsRateOnUpsellEnabled val rateOnUpsell: FeatureFlag<Boolean>
 ) {
 
     operator fun invoke(userId: UserId): Flow<Boolean> {
-        return inMemoryMailboxRepository.observeScreenViewCount().map { screenViewCount ->
+        val screenCountPath = inMemoryMailboxRepository.observeScreenViewCount().map { screenViewCount ->
             showRatingBooster.get() && screenViewCount == SCREEN_VIEW_COUNT_THRESHOLD
-        }
+        }.distinctUntilChanged()
+
+        val upsellPath = upsellRatingTriggerRepository.observeUpsellSuccess()
+            .map { rateOnUpsell.get() }
+            .filter { it }
+
+        return merge(screenCountPath, upsellPath)
     }
 
     companion object {
