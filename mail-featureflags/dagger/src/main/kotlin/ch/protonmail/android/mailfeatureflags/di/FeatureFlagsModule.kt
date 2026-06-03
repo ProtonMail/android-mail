@@ -34,6 +34,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverr
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
@@ -55,6 +56,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025En
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.PushProcessingWithoutWorker
+import ch.protonmail.android.mailfeatureflags.domain.model.RateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
@@ -206,6 +208,17 @@ object FeatureFlagsModule {
     @IsShowRatingBoosterEnabled
     fun provideIsShowRatingBoosterEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = ShowRatingBoosterEnabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsRateOnUpsellEnabled
+    fun provideIsRateOnUpsellEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = RateOnUpsellEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideRateOnUpsellEnabledDef(): FeatureFlagDefinition = RateOnUpsellEnabled
 
     @Provides
     @Singleton
