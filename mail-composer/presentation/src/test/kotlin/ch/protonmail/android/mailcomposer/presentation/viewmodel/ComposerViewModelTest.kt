@@ -30,6 +30,8 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentState
 import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
+import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -320,6 +322,35 @@ internal class ComposerViewModelTest {
 
         // Then
         coVerify { addAttachment(uri, DraftMimeType.Html) }
+    }
+
+    @Test
+    fun `should add shared files as standard attachments and not inline when prefilling for share`() = runTest {
+        // Given
+        val rawUri = "content://media/external/images/media/42"
+        val sharedUri = mockk<Uri>()
+        mockkStatic(Uri::class)
+        every { Uri.parse(rawUri) } returns sharedUri
+
+        val shareAction = DraftAction.PrefillForShare(
+            IntentShareInfo.Empty.copy(attachmentUris = listOf(rawUri), isExternal = true).encode()
+        )
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectNoInputDraftMessageId()
+        expectInputDraftAction { shareAction }
+        expectNoObservedMessageAttachments()
+        expectNoRestoredState(savedStateHandle)
+        expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId)
+        ignoreRecipientsUpdates()
+        coEvery { addAttachment.forcingStandardDisposition(sharedUri) } returns
+            AddAttachment.AddAttachmentResult.StandardAttachmentAdded.right()
+
+        // When
+        viewModel()
+
+        // Then
+        coVerify(exactly = 1) { addAttachment.forcingStandardDisposition(sharedUri) }
+        coVerify(exactly = 0) { addAttachment(any(), any()) }
     }
 
     @Test
