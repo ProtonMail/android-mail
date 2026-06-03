@@ -449,7 +449,10 @@ class ComposerViewModel @AssistedInject constructor(
 
         fileShareInfo.attachmentUris.takeIfNotEmpty()?.let { rawUri ->
             val uriList = rawUri.map { it.toUri() }
-            onAttachmentsAdded(uriList)
+            // Shared files (including images) are added as standard attachments: there is no body
+            // context to host an inline image at share time, so forcing standard disposition avoids
+            // an uploaded-but-invisible attachment. Inline embedding for shares is tracked separately.
+            onFileAttachmentsAdded(uriList)
         }
 
         if (fileShareInfo.hasEmailData()) {
