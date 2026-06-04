@@ -151,6 +151,7 @@ fun DraftSendError.toDraftSendError(): SendDraftError = when (this) {
         is DraftSendErrorReason.ProtonRecipientDoesNotExist,
         is DraftSendErrorReason.NoRecipients -> SendDraftError.InvalidRecipient
 
+        is DraftSendErrorReason.FailedAttachmentUploads,
         is DraftSendErrorReason.MissingAttachmentUploads -> SendDraftError.AttachmentsError
         is DraftSendErrorReason.ScheduleSendExpired,
         is DraftSendErrorReason.ScheduleSendMessageLimitExceeded -> SendDraftError.ScheduleSendError

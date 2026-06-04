@@ -99,6 +99,7 @@ private fun LocalDraftSendResult.toMessageSendingStatusForFailure(error: DraftSe
             messageId = this.messageId.toMessageId(),
             reason = error.v1.toSendErrorReason()
         )
+
         is DraftSendFailure.AttachmentDispositionSwap -> MessageSendingStatus.SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = SendErrorReason.ErrorNoMessage.AttachmentConversionFailure
@@ -154,7 +155,9 @@ fun DraftSendErrorReason.toSendErrorReason(): SendErrorReason = when (this) {
     DraftSendErrorReason.MessageDoesNotExist -> SendErrorReason.ErrorNoMessage.MessageDoesNotExist
     DraftSendErrorReason.MessageIsNotADraft -> SendErrorReason.ErrorNoMessage.MessageIsNotADraft
     DraftSendErrorReason.MessageAlreadySent -> SendErrorReason.ErrorNoMessage.MessageAlreadySent
+    is DraftSendErrorReason.FailedAttachmentUploads,
     DraftSendErrorReason.MissingAttachmentUploads -> SendErrorReason.ErrorNoMessage.MissingAttachmentUploads
+
     DraftSendErrorReason.ScheduleSendMessageLimitExceeded -> SendErrorReason.ErrorNoMessage.ScheduledSendMessagesLimit
     DraftSendErrorReason.ScheduleSendExpired -> SendErrorReason.ErrorNoMessage.ScheduledSendExpired
     DraftSendErrorReason.ExpirationTimeTooSoon -> SendErrorReason.ErrorNoMessage.ExpirationTimeTooSoon
