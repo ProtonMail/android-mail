@@ -116,6 +116,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCat
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -380,6 +381,10 @@ internal class MailboxViewModelTest {
         every { this@mockk.invoke(any()) } just runs
     }
 
+    private val setActiveCategoryLabel = mockk<SetActiveCategoryLabel> {
+        every { this@mockk.invoke(any(), any()) } returns Unit.right()
+    }
+
     private val scope = TestScope(UnconfinedTestDispatcher())
 
     private val mailboxViewModel by lazy {
@@ -437,6 +442,7 @@ internal class MailboxViewModelTest {
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
+            setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
             categoryViewEnabled = isCategoryViewEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus
@@ -688,8 +694,8 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(expectedState, MailboxEvent.SwipeActionsChanged(expectedSwipeActions))
         } returns expectedStateWithSwipeGestures
-        expectPagerMock(selectedLabelWithCategory = MailLabelIdWithCategory(initialMailLabel.id))
-        expectPagerMock(selectedLabelWithCategory = MailLabelIdWithCategory(modifiedMailLabel.id))
+        expectPagerMock(selectedLabel = initialMailLabel.id)
+        expectPagerMock(selectedLabel = modifiedMailLabel.id)
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -1281,7 +1287,7 @@ internal class MailboxViewModelTest {
             verify {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(initialLocationMailLabelId),
+                    initialLocationMailLabelId,
                     Message,
                     any()
                 )
@@ -1295,7 +1301,7 @@ internal class MailboxViewModelTest {
             verify {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.spamSystemLabel.id),
+                    MailLabelTestData.spamSystemLabel.id,
                     Message,
                     any()
                 )
@@ -1537,7 +1543,7 @@ internal class MailboxViewModelTest {
                 MailboxViewAction.OnErrorWithData
             )
         } returns expectedState
-        expectPagerMock(selectedLabelWithCategory = MailLabelIdWithCategory(initialLocationMailLabelId))
+        expectPagerMock(selectedLabel = initialLocationMailLabelId)
 
         // When
         mailboxViewModel.submit(MailboxViewAction.OnErrorWithData)
@@ -1697,7 +1703,7 @@ internal class MailboxViewModelTest {
             verify(exactly = 1) {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+                    MailLabelTestData.archiveSystemLabel.id,
                     Message,
                     any()
                 )
@@ -1712,7 +1718,7 @@ internal class MailboxViewModelTest {
             verify(exactly = 1) {
                 pagerFactory.create(
                     userId,
-                    MailLabelTestData.inboxPrimarySystemLabelWithCategory,
+                    MailLabelTestData.inboxSystemLabel.id,
                     Message,
                     any()
                 )
@@ -1744,14 +1750,14 @@ internal class MailboxViewModelTest {
         coEvery { getSelectedMailLabelId() } returns folder.id
         every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxDataState()
         expectPagerMock(
-            selectedLabelWithCategory = MailLabelIdWithCategory(folder.id),
+            selectedLabel = folder.id,
             pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem)))
         )
 
         mailboxViewModel.items.test {
             awaitItem()
             verify(exactly = 1) {
-                pagerFactory.create(userId, MailLabelIdWithCategory(folder.id), any(), any())
+                pagerFactory.create(userId, folder.id, any(), any())
             }
 
             // When
@@ -1764,7 +1770,7 @@ internal class MailboxViewModelTest {
             // Then
             expectNoEvents()
             verify(exactly = 1) {
-                pagerFactory.create(userId, MailLabelIdWithCategory(folder.id), any(), any())
+                pagerFactory.create(userId, folder.id, any(), any())
             }
             cancelAndIgnoreRemainingEvents()
         }
@@ -1777,12 +1783,12 @@ internal class MailboxViewModelTest {
         every { mailboxReducer.newStateFrom(any(), any()) } returns expectedMailBoxState
         val pagingData = PagingData.from(listOf(unreadMailboxItem))
         expectPagerMock(
-            selectedLabelWithCategory = MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+            selectedLabel = MailLabelTestData.archiveSystemLabel.id,
             itemType = Message,
             pagingDataFlow = flowOf(pagingData)
         )
         expectPagerMock(
-            selectedLabelWithCategory = MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+            selectedLabel = MailLabelTestData.archiveSystemLabel.id,
             itemType = Conversation,
             pagingDataFlow = flowOf(pagingData)
         )
@@ -1798,7 +1804,7 @@ internal class MailboxViewModelTest {
             verify {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+                    MailLabelTestData.archiveSystemLabel.id,
                     Message,
                     any()
                 )
@@ -1813,7 +1819,7 @@ internal class MailboxViewModelTest {
             verify {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+                    MailLabelTestData.archiveSystemLabel.id,
                     Conversation,
                     any()
                 )
@@ -1857,7 +1863,7 @@ internal class MailboxViewModelTest {
             verify(exactly = 1) {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+                    MailLabelTestData.archiveSystemLabel.id,
                     Message,
                     any()
                 )
@@ -1884,7 +1890,7 @@ internal class MailboxViewModelTest {
             verify(exactly = 1) {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(MailLabelTestData.archiveSystemLabel.id),
+                    MailLabelTestData.archiveSystemLabel.id,
                     Message,
                     any()
                 )
@@ -2699,7 +2705,7 @@ internal class MailboxViewModelTest {
             verify {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(initialLocationMailLabelId),
+                    initialLocationMailLabelId,
                     Conversation,
                     any()
                 )
@@ -2712,7 +2718,7 @@ internal class MailboxViewModelTest {
             verify(exactly = 0) {
                 pagerFactory.create(
                     userId,
-                    MailLabelIdWithCategory(initialLocationMailLabelId),
+                    initialLocationMailLabelId,
                     Message,
                     any()
                 )
@@ -4005,6 +4011,12 @@ internal class MailboxViewModelTest {
 
         // Then
         verify(exactly = 1) { selectCategory(categoryItem.id.toDomainModel()) }
+        verify(exactly = 1) {
+            setActiveCategoryLabel(categoryItem.id.toDomainModel(), NoConversationGrouping)
+        }
+        verify(atLeast = 1) {
+            mailboxReducer.newStateFrom(any(), any<MailboxEvent.PaginatorInvalidated>())
+        }
 
         verify(exactly = 0) {
             mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
@@ -4022,6 +4034,7 @@ internal class MailboxViewModelTest {
 
         // Then
         verify(exactly = 0) { selectCategory(any()) }
+        verify(exactly = 0) { setActiveCategoryLabel(any(), any()) }
 
         verify(exactly = 0) {
             mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
@@ -4295,7 +4308,7 @@ internal class MailboxViewModelTest {
 
     private fun expectPagerMock(
         user: UserId = userId,
-        selectedLabelWithCategory: MailLabelIdWithCategory? = null,
+        selectedLabel: MailLabelId? = null,
         itemType: MailboxItemType? = null,
         searchQuery: String? = null,
         pagingDataFlow: Flow<PagingData<MailboxItem>> = flowOf()
@@ -4304,7 +4317,7 @@ internal class MailboxViewModelTest {
         every {
             pagerFactory.create(
                 userId = user,
-                selectedLabelWithCategory = selectedLabelWithCategory ?: any(),
+                selectedMailLabelId = selectedLabel ?: any(),
                 type = itemType ?: any(),
                 searchQuery = searchQuery ?: any()
             )
