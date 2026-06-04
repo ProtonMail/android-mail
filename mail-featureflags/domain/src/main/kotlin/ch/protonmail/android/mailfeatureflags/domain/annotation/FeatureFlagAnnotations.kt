@@ -46,6 +46,14 @@ annotation class IsSpringOffer2026Wave2Enabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsSummerCampaign2026Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSummerCampaign2026Wave2Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsComposerFormatMenuEnabled
 
 @Qualifier

@@ -39,6 +39,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessag
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementRegionsEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
@@ -61,6 +63,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebVie
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.SummerCampaign2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.SummerCampaign2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementExperimentEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementRegions
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellingEnabled
@@ -144,6 +148,18 @@ object FeatureFlagsModule {
     @IsSpringOffer2026Wave2Enabled
     fun provideSpringOffer2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = SpringOffer2026Wave2Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsSummerCampaign2026Enabled
+    fun provideSummerCampaign2026Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SummerCampaign2026Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsSummerCampaign2026Wave2Enabled
+    fun provideSummerCampaign2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SummerCampaign2026Wave2Enabled.key, false)
 
     @Provides
     @Singleton

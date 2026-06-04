@@ -29,6 +29,8 @@ import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoSupported
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -42,6 +44,7 @@ class ObservePlanUpgrades @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
+    private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
     @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>,
     @IsUnlimitedPlanPlacementRegionsEnabled private val unlimitedPlanPlacementRegionsFlag: FeatureFlag<Boolean>
@@ -62,7 +65,14 @@ class ObservePlanUpgrades @Inject constructor(
             isSpringPromoOngoing &&
             isEligibleForBlackFridayPromotion(userId)
 
+        val flowSupportsSummerCampaign = entryPoint is SummerCampaignSupported
+        val isSummerCampaignOngoing = getCurrentSummerCampaignPhase() != SummerCampaignPhase.None
+        val supportsSummerCampaign = flowSupportsSummerCampaign &&
+            isSummerCampaignOngoing &&
+            isEligibleForBlackFridayPromotion(userId)
+
         val offersTag = when {
+            supportsSummerCampaign -> PlanUpgradeSupportedTags.SummerCampaign
             supportsSpringPromo -> PlanUpgradeSupportedTags.SpringOffer
             supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
             else -> PlanUpgradeSupportedTags.IntroductoryPrice

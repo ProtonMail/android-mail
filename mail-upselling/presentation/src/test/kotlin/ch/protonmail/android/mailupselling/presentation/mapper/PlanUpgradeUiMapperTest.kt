@@ -29,6 +29,8 @@ import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
@@ -72,8 +74,13 @@ internal class PlanUpgradeUiMapperTest {
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase> {
         coEvery { this@mockk.invoke() } returns SpringPromoPhase.None
     }
+    private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase> {
+        coEvery { this@mockk.invoke() } returns SummerCampaignPhase.None
+    }
 
-    private val planUpgradeMapper = spyk(PlanUpgradeMapper(getCurrentBlackFridayPhase, getCurrentSpringPromoPhase))
+    private val planUpgradeMapper = spyk(
+        PlanUpgradeMapper(getCurrentBlackFridayPhase, getCurrentSpringPromoPhase, getCurrentSummerCampaignPhase)
+    )
 
     private lateinit var planUpgradeUiMapper: PlanUpgradeUiMapper
     private lateinit var context: Context

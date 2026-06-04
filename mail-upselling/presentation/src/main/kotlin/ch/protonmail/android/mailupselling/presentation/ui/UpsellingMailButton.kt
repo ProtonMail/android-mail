@@ -109,6 +109,14 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
                     }
                 )
 
+            is UpsellingVisibility.Promotional.SummerCampaign ->
+                UpsellingSummerCampaignMailButton(
+                    modifier = modifier,
+                    onButtonClick = {
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, UpsellModalVariant.COMPARISON_PLUS)
+                    }
+                )
+
             is UpsellingVisibility.Normal.MailPlus ->
                 UpsellingMailButton(
                     modifier = modifier,
@@ -232,6 +240,23 @@ private fun UpsellingSpringPromoMailButton(onButtonClick: () -> Unit, modifier: 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+private fun UpsellingSummerCampaignMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
+
+    IconButton(
+        modifier = modifier,
+        onClick = onButtonClick
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_upselling_summer),
+            contentDescription = accessibilityDescription,
+            tint = null
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
 private fun UpsellingPromotionalMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
     Box {
@@ -323,6 +348,15 @@ fun UpsellingBFMailButtonWave2Preview() {
 fun UpsellingSpringPromoMailButtonPreview() {
     ProtonTheme {
         UpsellingSpringPromoMailButton(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun UpsellingSummerCampaignMailButtonPreview() {
+    ProtonTheme {
+        UpsellingSummerCampaignMailButton(onButtonClick = {})
     }
 }
 

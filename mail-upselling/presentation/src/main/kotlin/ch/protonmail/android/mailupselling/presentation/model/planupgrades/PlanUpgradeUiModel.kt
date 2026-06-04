@@ -45,4 +45,9 @@ sealed interface PlanUpgradeVariant {
         data object Wave1 : SpringPromo
         data object Wave2 : SpringPromo
     }
+
+    sealed interface SummerCampaign : PlanUpgradeVariant {
+        data object Wave1 : SummerCampaign
+        data object Wave2 : SummerCampaign
+    }
 }

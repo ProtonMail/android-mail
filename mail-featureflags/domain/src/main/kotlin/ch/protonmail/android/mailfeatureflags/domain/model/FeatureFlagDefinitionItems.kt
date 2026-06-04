@@ -74,6 +74,22 @@ data object SpringOffer2026Wave2Enabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object SummerCampaign2026Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SummerCampaign2026",
+    name = "Enable Summer Campaign 26 (Wave 1)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Summer Campaign 26 wave 1.",
+    defaultValue = false
+)
+
+data object SummerCampaign2026Wave2Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SummerCampaign2026Wave2",
+    name = "Enable Summer Campaign 26 (Wave 2)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Summer Campaign 26 wave 2.",
+    defaultValue = false
+)
+
 data object ComposerFormatMenu : FeatureFlagDefinition(
     key = "MailAndroidV7ComposerFormatMenu",
     name = "Composer format menu",

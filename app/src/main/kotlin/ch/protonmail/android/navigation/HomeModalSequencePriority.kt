@@ -24,6 +24,7 @@ import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilitySt
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
+import ch.protonmail.android.mailupselling.presentation.model.summercampaign.SummerCampaignModalState
 
 sealed interface HomeInterstitialPriority {
     data object Loading : HomeInterstitialPriority
@@ -32,15 +33,18 @@ sealed interface HomeInterstitialPriority {
     data object FeatureSpotlight : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
+    data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
 
+@Suppress("LongParameterList")
 fun resolveHomeInterstitialPriority(
     onboardingState: OnboardingEligibilityState,
     notificationsState: NotificationsPermissionState,
     featureSpotlightState: FeatureSpotlightState,
     blackFridayState: BlackFridayModalState,
-    springSaleState: SpringPromoModalState
+    springSaleState: SpringPromoModalState,
+    summerCampaignState: SummerCampaignModalState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
     @Suppress("ComplexCondition")
@@ -58,6 +62,8 @@ fun resolveHomeInterstitialPriority(
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 
         featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
+        summerCampaignState is SummerCampaignModalState.Show ->
+            HomeInterstitialPriority.SummerCampaign(summerCampaignState)
         blackFridayState is BlackFridayModalState.Show -> HomeInterstitialPriority.BlackFriday(blackFridayState)
         springSaleState is SpringPromoModalState.Show -> HomeInterstitialPriority.SpringPromo(springSaleState)
         else -> HomeInterstitialPriority.None

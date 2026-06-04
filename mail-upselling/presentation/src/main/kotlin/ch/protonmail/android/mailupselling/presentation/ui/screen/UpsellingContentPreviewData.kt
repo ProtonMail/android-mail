@@ -188,6 +188,37 @@ internal object UpsellingContentPreviewData {
         UnlimitedPlanModelYearly
     )
 
+    private val summerYearlyPromoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
+        name = "Mail Plus",
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("35.88"), currencyCode = "USD"),
+        promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("35.88"), currencyCode = "USD"),
+        renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("47.88"), currencyCode = "USD"),
+        discountRate = 40,
+        cycle = PlanUpgradeCycle.Yearly,
+        yearlySaving = null,
+        product = Product(
+            planName = "Mail Plus",
+            productId = "summer-yearly",
+            accountId = "456",
+            cycle = 12,
+            header = ProductDetailHeader("Mail Plus", "12 months", "USD 35.88", "/year", false),
+            offerToken = ProductOfferToken(""),
+            entitlements = emptyList(),
+            renewalText = "Auto-renews at \$47.88/year"
+        )
+    )
+
+    private val SummerYearlyPromo = PlanUpgradeInstanceUiModel.Promotional(
+        promoKind = PromoKind.SummerCampaign,
+        params = summerYearlyPromoParams
+    )
+
+    val SummerCampaignList = PlanUpgradeInstanceListUiModel.Data.SummerCampaign(
+        summerCampaignVariant = PlanUpgradeVariant.SummerCampaign.Wave1,
+        shorterCycle = MailPlusPlanModelMonthly,
+        longerCycle = SummerYearlyPromo
+    )
+
     val SimpleListEntitlements = PlanUpgradeEntitlementsListUiModel.SimpleList(
         listOf(
             PlanUpgradeEntitlementListUiModel.Local(
@@ -272,6 +303,19 @@ internal object UpsellingContentPreviewData {
             entitlements = ComparisonTableEntitlements,
             variant = PlanUpgradeVariant.SpringPromo.Wave1,
             list = BlackFridayList
+        )
+    )
+
+    val SummerCampaign = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.summer_campaign_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = ComparisonTableEntitlements,
+            variant = PlanUpgradeVariant.SummerCampaign.Wave1,
+            list = SummerCampaignList
         )
     )
 
