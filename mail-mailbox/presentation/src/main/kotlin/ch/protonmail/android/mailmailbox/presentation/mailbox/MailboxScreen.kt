@@ -827,6 +827,11 @@ private fun MailboxItemsList(
 
     val snapshotKeys = rememberDuplicateTolerantMailboxKeys(items)
 
+    // Only show the append loader when the list is scrollable, so short lists don't look like a full reload.
+    val isListScrollable by remember {
+        derivedStateOf { listState.canScrollForward || listState.canScrollBackward }
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
@@ -936,11 +941,17 @@ private fun MailboxItemsList(
         }
         item {
             when (viewState) {
-                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
-                    modifier = Modifier
-                        .testTag(MailboxScreenTestTags.MailboxAppendLoader)
-                        .padding(ProtonDimens.Spacing.Large)
-                )
+                is MailboxScreenState.AppendLoading -> {
+                    if (isListScrollable) {
+                        ProtonCenteredProgress(
+                            modifier = Modifier
+                                .testTag(MailboxScreenTestTags.MailboxAppendLoader)
+                                .padding(ProtonDimens.Spacing.Large)
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.padding(1.dp))
+                    }
+                }
 
                 is MailboxScreenState.AppendOfflineError -> AppendError(
                     message = stringResource(id = R.string.mailbox_error_message_offline),
