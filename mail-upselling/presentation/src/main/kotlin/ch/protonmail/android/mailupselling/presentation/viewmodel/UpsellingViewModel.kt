@@ -215,6 +215,8 @@ private fun PlanUpgradeVariant.toOfferId(): String? = when (this) {
     is PlanUpgradeVariant.BlackFriday.Wave2 -> "black_friday_wave2"
     is PlanUpgradeVariant.SpringPromo.Wave1 -> "spring26_wave1"
     is PlanUpgradeVariant.SpringPromo.Wave2 -> "spring26_wave2"
+    is PlanUpgradeVariant.SummerCampaign.Wave1 -> "summer26_wave1"
+    is PlanUpgradeVariant.SummerCampaign.Wave2 -> "summer26_wave2"
     is PlanUpgradeVariant.Normal,
     is PlanUpgradeVariant.SocialProof -> null
 }

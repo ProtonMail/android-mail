@@ -92,6 +92,11 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
                         onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
                     )
 
+                is UpsellingVisibility.Promotional.SummerCampaign ->
+                    SidebarUpsellRowSummerCampaign(
+                        onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
+                    )
+
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
                 is UpsellingVisibility.Normal.MailPlus -> SidebarUpsellRow(
                     onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
@@ -169,6 +174,24 @@ private fun SidebarUpsellRowSpringPromo(onButtonClick: () -> Unit, modifier: Mod
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun SidebarUpsellRowSummerCampaign(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val iconModifier = Modifier
+        .width(ProtonDimens.IconSize.Default)
+        .padding(vertical = ProtonDimens.Spacing.Small)
+
+    ProtonSidebarItem(
+        modifier = modifier,
+        icon = painterResource(upsellingR.drawable.ic_upselling_summer),
+        iconTint = Color.Unspecified,
+        iconModifier = iconModifier,
+        text = stringResource(R.string.drawer_upgrade_plus_summer_sale),
+        textColor = UpsellingLayoutValues.SummerCampaign.mainColor,
+        onClick = onButtonClick
+    )
+}
+
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
 @Composable
@@ -193,6 +216,15 @@ fun SidebarUpsellRowBlackFridayPreview() {
 fun SidebarUpsellRowSpringPromoPreview() {
     ProtonTheme {
         SidebarUpsellRowSpringPromo(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun SidebarUpsellRowSummerCampaignPreview() {
+    ProtonTheme {
+        SidebarUpsellRowSummerCampaign(onButtonClick = {})
     }
 }
 

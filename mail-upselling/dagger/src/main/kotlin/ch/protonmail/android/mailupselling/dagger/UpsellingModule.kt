@@ -21,17 +21,22 @@ package ch.protonmail.android.mailupselling.dagger
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.BlackFridayDataStoreProvider
 import ch.protonmail.android.mailupselling.data.SpringPromoDataStoreProvider
+import ch.protonmail.android.mailupselling.data.SummerCampaignDataStoreProvider
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSourceImpl
+import ch.protonmail.android.mailupselling.data.local.SummerCampaignLocalDataSource
+import ch.protonmail.android.mailupselling.data.local.SummerCampaignLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.repository.BlackFridayRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.SpringPromoRepositoryImpl
+import ch.protonmail.android.mailupselling.data.repository.SummerCampaignRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellRatingTriggerRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
 import ch.protonmail.android.mailupselling.domain.repository.SpringPromoRepository
+import ch.protonmail.android.mailupselling.domain.repository.SummerCampaignRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import dagger.Binds
 import dagger.Module
@@ -68,6 +73,14 @@ interface UpsellingModule {
     fun provideSpringPromoDataSource(impl: SpringPromoLocalDataSourceImpl): SpringPromoLocalDataSource
 
     @Binds
+    @Reusable
+    fun provideSummerCampaignRepository(impl: SummerCampaignRepositoryImpl): SummerCampaignRepository
+
+    @Binds
+    @Singleton
+    fun provideSummerCampaignDataSource(impl: SummerCampaignLocalDataSourceImpl): SummerCampaignLocalDataSource
+
+    @Binds
     @Singleton
     fun provideUpsellRatingTriggerRepository(impl: UpsellRatingTriggerRepositoryImpl): UpsellRatingTriggerRepository
 
@@ -84,6 +97,12 @@ interface UpsellingModule {
         @Singleton
         fun provideSpringPromoDataStoreProvider(@ApplicationContext context: Context): SpringPromoDataStoreProvider =
             SpringPromoDataStoreProvider(context)
+
+        @Provides
+        @Singleton
+        fun provideSummerCampaignDataStoreProvider(
+            @ApplicationContext context: Context
+        ): SummerCampaignDataStoreProvider = SummerCampaignDataStoreProvider(context)
     }
 }
 

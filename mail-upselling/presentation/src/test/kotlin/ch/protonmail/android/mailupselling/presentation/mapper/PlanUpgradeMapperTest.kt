@@ -20,9 +20,11 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.clearAllMocks
@@ -45,13 +47,15 @@ internal class PlanUpgradeMapperTest(
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
+    private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase>()
     private lateinit var planUpgradeMapper: PlanUpgradeMapper
 
     @BeforeTest
     fun setup() {
         planUpgradeMapper = PlanUpgradeMapper(
             getCurrentBlackFridayPhase,
-            getCurrentSpringPromoPhase
+            getCurrentSpringPromoPhase,
+            getCurrentSummerCampaignPhase
         )
     }
 
@@ -65,6 +69,7 @@ internal class PlanUpgradeMapperTest(
         // Given
         coEvery { getCurrentBlackFridayPhase() } returns testInput.blackFridayPhase
         coEvery { getCurrentSpringPromoPhase() } returns testInput.springPromoPhase
+        coEvery { getCurrentSummerCampaignPhase() } returns testInput.summerCampaignPhase
 
         // When
         val actual = planUpgradeMapper.resolveVariant(
@@ -85,7 +90,8 @@ internal class PlanUpgradeMapperTest(
             val entryPoint: UpsellingEntryPoint,
             val blackFridayPhase: BlackFridayPhase,
             val springPromoPhase: SpringPromoPhase,
-            val expectedVariant: PlanUpgradeVariant
+            val expectedVariant: PlanUpgradeVariant,
+            val summerCampaignPhase: SummerCampaignPhase = SummerCampaignPhase.None
         )
 
         @JvmStatic
@@ -177,6 +183,42 @@ internal class PlanUpgradeMapperTest(
                     blackFridayPhase = BlackFridayPhase.None,
                     springPromoPhase = SpringPromoPhase.None,
                     expectedVariant = PlanUpgradeVariant.Normal.MailPlus
+                )
+            ),
+            arrayOf(
+                "should return Summer Wave1 variant on summer-tagged instance for suitable entry point and Wave1",
+                TestInput(
+                    monthlyInstance = UpsellingTestData.MailPlusProducts.MonthlyPromoAndSummerProductDetail,
+                    yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
+                    entryPoint = UpsellingEntryPoint.Feature.Navbar,
+                    blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
+                    summerCampaignPhase = SummerCampaignPhase.Active.Wave1,
+                    expectedVariant = PlanUpgradeVariant.SummerCampaign.Wave1
+                )
+            ),
+            arrayOf(
+                "should return Summer Wave2 variant on summer-tagged instance for suitable entry point and Wave2",
+                TestInput(
+                    monthlyInstance = UpsellingTestData.MailPlusProducts.MonthlyPromoAndSummerProductDetail,
+                    yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
+                    entryPoint = UpsellingEntryPoint.Feature.Sidebar,
+                    blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
+                    summerCampaignPhase = SummerCampaignPhase.Active.Wave2,
+                    expectedVariant = PlanUpgradeVariant.SummerCampaign.Wave2
+                )
+            ),
+            arrayOf(
+                "should return intro variant on summer active but no summer-tagged offer",
+                TestInput(
+                    monthlyInstance = UpsellingTestData.MailPlusProducts.MonthlyPromoProductOfferDetail,
+                    yearlyInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail,
+                    entryPoint = UpsellingEntryPoint.Feature.Navbar,
+                    blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
+                    summerCampaignPhase = SummerCampaignPhase.Active.Wave1,
+                    expectedVariant = PlanUpgradeVariant.IntroductoryPrice
                 )
             )
         )

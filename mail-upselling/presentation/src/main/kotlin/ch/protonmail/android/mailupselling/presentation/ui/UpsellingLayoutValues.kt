@@ -152,6 +152,22 @@ object UpsellingLayoutValues {
         }
     }
 
+    object SummerCampaign {
+
+        val mainColor = Color(0xFF6D4AFF)
+        val accentColor = Color(0xFFFF4C81)
+        val borderBrush = Brush.linearGradient(colors = listOf(accentColor, accentColor))
+
+        @Composable
+        @Suppress("MagicNumber")
+        fun backgroundGradient(): Brush = if (isNightMode()) {
+            val dark = Color(0xFF191927)
+            Brush.verticalGradient(listOf(dark, dark))
+        } else {
+            Brush.verticalGradient(listOf(Color.White, Color.White))
+        }
+    }
+
     object BlackFriday {
 
         val mainColor = Color(0xFFD8FF00)

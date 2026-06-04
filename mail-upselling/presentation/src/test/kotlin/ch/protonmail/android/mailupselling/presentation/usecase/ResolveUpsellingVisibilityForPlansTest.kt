@@ -21,8 +21,10 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.clearAllMocks
@@ -40,13 +42,15 @@ internal class ResolveUpsellingVisibilityForPlansTest {
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
+    private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase>()
     private lateinit var resolveUpsellingVisibilityForPlans: ResolveUpsellingVisibilityForPlans
 
     @BeforeTest
     fun setup() {
         resolveUpsellingVisibilityForPlans = ResolveUpsellingVisibilityForPlans(
             getCurrentBlackFridayPhase,
-            getCurrentSpringPromoPhase
+            getCurrentSpringPromoPhase,
+            getCurrentSummerCampaignPhase
         )
     }
 
@@ -163,6 +167,34 @@ internal class ResolveUpsellingVisibilityForPlansTest {
     }
 
     @Test
+    fun `should return summer26 when at least one offer is tagged with summer26`() = runTest {
+        // Given
+        coEvery { getCurrentSummerCampaignPhase() } returns SummerCampaignPhase.Active.Wave1
+
+        val plans = listOf(mailMonthlyBase, mailYearlySummerPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.SummerCampaign.Wave1, actual)
+    }
+
+    @Test
+    fun `should return summer26 when there are both summer26 and intro price offers`() = runTest {
+        // Given
+        coEvery { getCurrentSummerCampaignPhase() } returns SummerCampaignPhase.Active.Wave2
+
+        val plans = listOf(mailMonthlyIntroPrice, mailYearlySummerPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.SummerCampaign.Wave2, actual)
+    }
+
+    @Test
     fun `should fallback to intro price if tagged as BF but there is no active phase`() = runTest {
         // Given
         val plans = listOf(mailMonthlyBF, mailYearlyIntroPrice)
@@ -212,6 +244,12 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         val mailYearlySpringPrice = mailYearlyBase.copy(
             offer = mailYearlyBase.offer.copy(
                 tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.SpringOffer.value))
+            )
+        )
+
+        val mailYearlySummerPrice = mailYearlyBase.copy(
+            offer = mailYearlyBase.offer.copy(
+                tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.SummerCampaign.value))
             )
         )
     }

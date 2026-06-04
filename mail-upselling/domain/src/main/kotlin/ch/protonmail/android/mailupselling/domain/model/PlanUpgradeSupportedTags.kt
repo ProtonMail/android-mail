@@ -31,6 +31,7 @@ sealed class PlanUpgradeSupportedTags(val value: String) {
     data object BlackFriday : PlanUpgradeSupportedTags("bf-promo")
     data object IntroductoryPrice : PlanUpgradeSupportedTags("introductory-price")
     data object SpringOffer : PlanUpgradeSupportedTags("spring26")
+    data object SummerCampaign : PlanUpgradeSupportedTags("summer26")
 }
 
 fun ProductOfferDetail.isTaggedWith(tag: PlanUpgradeSupportedTags) = offer.tags.value.contains(tag.value)

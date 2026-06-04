@@ -27,6 +27,7 @@ import ch.protonmail.android.design.compose.theme.isNightMode
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.BlackFriday
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.SpringPromo
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.SummerCampaign
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.coloredBorderBrush
 
 @Immutable
@@ -84,6 +85,26 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             cycleCardDiscountBadgeTextColor = accentColor,
             cycleCardDiscountBadgeHasShadow = true,
             autoRenewalColor = accentColor
+        )
+    }
+
+    variant is PlanUpgradeVariant.SummerCampaign -> {
+        val nightMode = isNightMode()
+        val textColor = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30
+        UpsellingVariantColors(
+            checkmarkTint = if (nightMode) Color.Black else Color.White,
+            checkmarkBackground = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30,
+            plusBadgeBorderBrush = SummerCampaign.borderBrush,
+            plusBadgeBackground = Color.Transparent,
+            tableTextColor = textColor,
+            tableDividerColor = textColor.copy(alpha = 0.12f),
+            cycleCardContainerColor = Color.Transparent,
+            cycleCardBorderColor = textColor,
+            cycleCardTextColor = textColor,
+            cycleCardDiscountBadgeBackground = SummerCampaign.accentColor,
+            cycleCardDiscountBadgeTextColor = Color.White,
+            cycleCardDiscountBadgeHasShadow = false,
+            autoRenewalColor = textColor
         )
     }
 

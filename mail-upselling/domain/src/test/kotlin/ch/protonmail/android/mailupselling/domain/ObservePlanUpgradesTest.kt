@@ -23,9 +23,11 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.usecase.IsEligibleForBlackFridayPromotion
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
@@ -51,6 +53,7 @@ internal class ObservePlanUpgradesTest {
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
+    private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val unlimitedPlanPlacementFlag = mockk<FeatureFlag<Boolean>>()
     private val unlimitedPlanPlacementRegionsFlag = mockk<FeatureFlag<Boolean>>()
@@ -63,11 +66,13 @@ internal class ObservePlanUpgradesTest {
         every { observePrimaryUserId() } returns flowOf(userId)
         coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.None
         coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.None
+        coEvery { getCurrentSummerCampaignPhase() } returns SummerCampaignPhase.None
         observePlanUpgrades = ObservePlanUpgrades(
             availableUpgradesCache,
             observePrimaryUserId,
             getCurrentBlackFridayPhase,
             getCurrentSpringPromoPhase,
+            getCurrentSummerCampaignPhase,
             isEligibleForBlackFridayPromotion,
             unlimitedPlanPlacementFlag,
             unlimitedPlanPlacementRegionsFlag
