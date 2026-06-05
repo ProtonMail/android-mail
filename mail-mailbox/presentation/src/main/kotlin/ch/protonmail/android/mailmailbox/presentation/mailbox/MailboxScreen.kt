@@ -661,7 +661,7 @@ private fun MailboxSwipeRefresh(
 
     var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
-    val currentViewState = remember(items.loadState, state) {
+    val currentViewState = remember(items.loadState, items.itemCount, state) {
         when {
             state is MailboxListState.Loading -> MailboxScreenState.Loading
             state is MailboxListState.CouldNotLoadUserSession -> MailboxScreenState.CouldNotLoadUserSession
