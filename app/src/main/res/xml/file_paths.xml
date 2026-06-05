@@ -6,4 +6,7 @@
     <cache-path name="rust_log_files" path="rust_logs/" />
     <cache-path name="zip_file" path="export_logs/" />
     <cache-path name="message_body_files" path="body_cache/" />
+    <cache-path
+        name="db_export"
+        path="db_export/" />
 </paths>

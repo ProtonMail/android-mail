@@ -200,6 +200,7 @@ sealed class Destination(val route: String) {
 
         object ApplicationDebug : Destination("settings/appDebug")
         object ApplicationDebugDangerZone : Destination("settings/appDebug/dangerZone")
+        object ApplicationDebugDatabaseExport : Destination("settings/appDebug/databaseExport")
         object ApplicationLogs : Destination("settings/applicationLogs")
         object ApplicationLogsView : Destination("settings/applicationLogs/view/${ApplicationLogsViewMode.wrap()}") {
 
