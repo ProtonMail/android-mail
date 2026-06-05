@@ -57,6 +57,9 @@ internal class DebugActivity : AppCompatActivity() {
                                 onLogsNavigation = { navController.navigate(Screen.ApplicationLogs.route) },
                                 onDangerZoneNavigation = {
                                     navController.navigate(Screen.ApplicationDebugDangerZone.route)
+                                },
+                                onDatabaseExportNavigation = {
+                                    navController.navigate(Screen.ApplicationDebugDatabaseExport.route)
                                 }
                             )
                         )
@@ -64,6 +67,12 @@ internal class DebugActivity : AppCompatActivity() {
 
                     composable(route = Screen.ApplicationDebugDangerZone.route) {
                         DangerZoneScreen(
+                            onBackClick = { navController.navigateBack() }
+                        )
+                    }
+
+                    composable(route = Screen.ApplicationDebugDatabaseExport.route) {
+                        DatabaseExportScreen(
                             onBackClick = { navController.navigateBack() }
                         )
                     }

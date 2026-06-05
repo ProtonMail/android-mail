@@ -32,4 +32,12 @@
     <string name="app_debug_screen_danger_crash_description" translatable="false">Trigger a crash (KT) to test Sentry integration</string>
     <string name="app_debug_screen_danger_crash_webview_title" translatable="false">Simulate a webview crash</string>
     <string name="app_debug_screen_danger_crash_webview_description" translatable="false">Trigger a webview crash to test message limit</string>
+    <string name="app_debug_screen_database_export_section_title" translatable="false">Databases</string>
+    <string name="app_debug_screen_database_export_subtitle" translatable="false">Export databases</string>
+    <string name="app_debug_screen_database_export_title" translatable="false">Export databases</string>
+    <string name="app_debug_screen_database_export_action_export" translatable="false">Export</string>
+    <string name="app_debug_screen_database_export_action_save" translatable="false">Save externally</string>
+    <string name="app_debug_screen_database_export_empty" translatable="false">No databases found</string>
+    <string name="app_debug_screen_database_export_saved" translatable="false">Database saved</string>
+    <string name="app_debug_screen_database_export_error" translatable="false">Failed to export database</string>
 </resources>
