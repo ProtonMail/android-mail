@@ -57,7 +57,6 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -159,7 +158,7 @@ fun MoveToGroup(
     modifier: Modifier = Modifier,
     destinations: List<MoveToBottomSheetDestinationUiModel>,
     onFolderSelected: (MailLabelId, String) -> Unit,
-    onCategorySelected: (CategorySystemLabelId, String) -> Unit = { _, _ -> }
+    onCategorySelected: (MailLabelId.Category, String) -> Unit = { _, _ -> }
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -346,7 +345,7 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onCreateNewFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
-        val onCategorySelected: (CategorySystemLabelId, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
+        val onCategorySelected: (MailLabelId.Category, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
         val onDismiss: () -> Unit,
         val onError: (String) -> Unit,
         val onMoveToComplete: (labelText: MailLabelText, entryPoint: MoveToBottomSheetEntryPoint) -> Unit

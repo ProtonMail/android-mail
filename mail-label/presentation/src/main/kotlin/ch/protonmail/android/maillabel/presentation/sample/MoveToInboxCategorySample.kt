@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.sample
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetDestinationUiModel
@@ -69,7 +70,7 @@ object MoveToInboxCategorySample {
         text: String,
         iconTint: Color
     ) = MoveToBottomSheetDestinationUiModel.Inbox.Category(
-        id = id,
+        id = MailLabelId.Category(id.labelId),
         text = TextUiModel.Text(text),
         icon = R.drawable.ic_proton_circle_filled,
         iconTint = iconTint

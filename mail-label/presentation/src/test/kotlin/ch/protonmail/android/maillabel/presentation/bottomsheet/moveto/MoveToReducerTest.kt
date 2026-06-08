@@ -85,7 +85,7 @@ internal class MoveToReducerTest(
             iconTint = MailLabelTestData.inboxSystemLabel.iconTintColor(),
             categories = listOf(
                 MoveToBottomSheetDestinationUiModel.Inbox.Category(
-                    id = CategorySystemLabelId.Social,
+                    id = MailLabelId.Category(LabelId("20")),
                     text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
                     icon = CategorySystemLabelId.Social.categoryIconRes(),
                     iconTint = CategorySystemLabelId.Social.activeCategoryColor()
