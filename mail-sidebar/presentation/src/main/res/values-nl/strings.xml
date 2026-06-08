@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">Upgrade naar Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">Black Friday-uitverkoop</string>
   <string name="drawer_upgrade_plus_spring_sale">Lenteverkoop</string>
+  <string name="drawer_upgrade_plus_summer_sale">Zomeruitverkoop</string>
 </resources>

@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">升级至 Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">黑色星期五特卖</string>
   <string name="drawer_upgrade_plus_spring_sale">春季特惠</string>
+  <string name="drawer_upgrade_plus_summer_sale">夏季促销</string>
 </resources>

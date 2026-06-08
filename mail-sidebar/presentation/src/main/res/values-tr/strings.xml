@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">Unlimited tarifesine yükseltin</string>
   <string name="drawer_upgrade_plus_black_friday">Muhteşem Cuma Kampanyası</string>
   <string name="drawer_upgrade_plus_spring_sale">Bahar indirimi</string>
+  <string name="drawer_upgrade_plus_summer_sale">Yaz indirimi</string>
 </resources>

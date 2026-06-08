@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">Passa a Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">Sconti Black Friday</string>
   <string name="drawer_upgrade_plus_spring_sale">Saldi di primavera</string>
+  <string name="drawer_upgrade_plus_summer_sale">Saldi estivi</string>
 </resources>
