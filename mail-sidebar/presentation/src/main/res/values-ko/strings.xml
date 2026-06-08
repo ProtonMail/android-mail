@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">Unlimited로 업그레이드</string>
   <string name="drawer_upgrade_plus_black_friday">블랙 프라이데이 세일</string>
   <string name="drawer_upgrade_plus_spring_sale">봄맞이 세일</string>
+  <string name="drawer_upgrade_plus_summer_sale">Summer Sale</string>
 </resources>
