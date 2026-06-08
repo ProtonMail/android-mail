@@ -126,7 +126,7 @@ fun List<MailLabel.Category>?.toMoveToInboxCategories(): List<MoveToBottomSheetD
     this.orEmpty().map { category -> category.toMoveToInboxCategory() }
 
 private fun MailLabel.Category.toMoveToInboxCategory() = MoveToBottomSheetDestinationUiModel.Inbox.Category(
-    id = categorySystemLabelId,
+    id = id,
     text = TextUiModel.TextRes(categorySystemLabelId.categoryTextRes()),
     icon = categorySystemLabelId.categoryIconRes(),
     iconTint = categorySystemLabelId.activeCategoryColor()

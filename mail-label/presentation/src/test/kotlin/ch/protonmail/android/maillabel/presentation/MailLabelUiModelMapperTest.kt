@@ -232,13 +232,13 @@ class MailLabelUiModelMapperTest {
         // Then
         val expected = listOf(
             MoveToBottomSheetDestinationUiModel.Inbox.Category(
-                id = CategorySystemLabelId.Social,
+                id = MailLabelId.Category(LabelId("20")),
                 text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
                 icon = CategorySystemLabelId.Social.categoryIconRes(),
                 iconTint = CategorySystemLabelId.Social.activeCategoryColor()
             ),
             MoveToBottomSheetDestinationUiModel.Inbox.Category(
-                id = CategorySystemLabelId.Primary,
+                id = MailLabelId.Category(LabelId("24")),
                 text = TextUiModel.TextRes(CategorySystemLabelId.Primary.categoryTextRes()),
                 icon = CategorySystemLabelId.Primary.categoryIconRes(),
                 iconTint = CategorySystemLabelId.Primary.activeCategoryColor()
