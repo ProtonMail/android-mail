@@ -202,7 +202,10 @@ internal fun UpsellingScreenContentSummerCampaign(
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .padding(start = ProtonDimens.Spacing.ExtraLarge, top = ProtonDimens.Spacing.Massive),
+                            .padding(
+                                start = ProtonDimens.Spacing.ExtraLarge,
+                                top = ProtonDimens.Spacing.Massive + ProtonDimens.Spacing.Large
+                            ),
                         contentAlignment = Alignment.TopStart
                     ) {
                         Image(
@@ -342,4 +345,26 @@ private fun SummerCampaignPreview(state: UpsellingScreenContentState.Data) {
             )
         }
     }
+}
+
+@Preview(name = "en (default)")
+@Preview(name = "cs", locale = "cs")
+@Preview(name = "da", locale = "da")
+@Preview(name = "de", locale = "de")
+@Preview(name = "es-ES", locale = "es-rES")
+@Preview(name = "es-419", locale = "b+es+419")
+@Preview(name = "fr", locale = "fr")
+@Preview(name = "it", locale = "it")
+@Preview(name = "ja", locale = "ja")
+@Preview(name = "ko", locale = "ko")
+@Preview(name = "nl", locale = "nl")
+@Preview(name = "pl", locale = "pl")
+@Preview(name = "pt-BR", locale = "pt-rBR")
+@Preview(name = "ru", locale = "ru")
+private annotation class SummerCampaignLocalePreviews
+
+@SummerCampaignLocalePreviews
+@Composable
+private fun SummerCampaign_Locales() {
+    SummerCampaignPreview(state = UpsellingContentPreviewData.SummerCampaign)
 }
