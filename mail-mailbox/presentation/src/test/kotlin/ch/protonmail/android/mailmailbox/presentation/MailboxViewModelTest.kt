@@ -1343,6 +1343,70 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `given search mode with non-empty query, when mapping items, then items are mapped as search results`() =
+        runTest {
+            // Given
+            val folderColorSettings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = true)
+            val searchState = createMailboxDataState().copy(
+                mailboxListState = (createMailboxDataState().mailboxListState as MailboxListState.Data.ViewMode).copy(
+                    searchState = MailboxSearchStateSampleData.SearchData,
+                    shouldShowFab = false
+                )
+            )
+            coEvery {
+                mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, true)
+            } returns unreadMailboxItemUiModel
+            expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
+            every { mailboxReducer.newStateFrom(any(), any()) } returns searchState
+            val differ = MailboxAsyncPagingDataDiffer.differ
+
+            // When
+            mailboxViewModel.items.test {
+                awaitItem()
+                val pagingData = awaitItem()
+                differ.submitData(pagingData)
+
+                // Then
+                coVerify {
+                    mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, true)
+                }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `given search mode with empty query, when mapping items, then items are not mapped as search results`() =
+        runTest {
+            // Given
+            val folderColorSettings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = true)
+            val searchState = createMailboxDataState().copy(
+                mailboxListState = (createMailboxDataState().mailboxListState as MailboxListState.Data.ViewMode).copy(
+                    searchState = MailboxSearchStateSampleData.NewSearch,
+                    shouldShowFab = false
+                )
+            )
+            coEvery {
+                mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, false)
+            } returns unreadMailboxItemUiModel
+            expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
+            every { mailboxReducer.newStateFrom(any(), any()) } returns searchState
+            val differ = MailboxAsyncPagingDataDiffer.differ
+
+            // When
+            mailboxViewModel.items.test {
+                awaitItem()
+                val pagingData = awaitItem()
+                differ.submitData(pagingData)
+
+                // Then
+                coVerify {
+                    mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, false)
+                }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `mailbox items are not mapped again in the same page when folder color change`() = runTest {
         // See ET-2929: avoid updating the MailboxItems when the page is not re-created (eg. folder color update)
         // this is needed to respect paging lib's immutable pages requirement.
