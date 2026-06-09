@@ -19,40 +19,64 @@
 package ch.protonmail.android.mailcategory.presentation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
 
 @Composable
 fun CategoryViewMenu(
     items: List<CategoryItemUiModel>,
     modifier: Modifier = Modifier,
+    resetScrollEffect: Effect<Unit> = Effect.empty(),
     onItemClick: (CategoryItemUiModel) -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .padding(
-                top = 0.dp,
-                bottom = 0.dp,
-                start = ProtonDimens.Spacing.ModeratelyLarge,
-                end = ProtonDimens.Spacing.ModeratelyLarge
-            ),
+    val lazyListState = rememberLazyListState()
+    val orientation = LocalConfiguration.current.orientation
+    val activeIndex = items.indexOfFirst { it.isActive }
+
+    var lastHandledOrientation by rememberSaveable { mutableIntStateOf(orientation) }
+
+    ConsumableLaunchedEffect(effect = resetScrollEffect) {
+        lazyListState.animateScrollToItem(0)
+    }
+
+    LaunchedEffect(orientation) {
+        if (orientation != lastHandledOrientation) {
+            lastHandledOrientation = orientation
+
+            if (activeIndex >= 0) {
+                lazyListState.scrollToItem(activeIndex)
+            }
+        }
+    }
+
+    LazyRow(
+        state = lazyListState,
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = ProtonDimens.Spacing.ModeratelyLarge),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items.forEach { item ->
-            CategoryPill(
-                item = item,
-                onClick = { onItemClick(item) }
-            )
+        items(items) { item ->
+            CategoryPill(item = item, onClick = { onItemClick(item) })
         }
     }
 }
