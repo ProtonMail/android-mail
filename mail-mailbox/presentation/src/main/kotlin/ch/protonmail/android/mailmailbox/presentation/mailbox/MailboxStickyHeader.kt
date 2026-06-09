@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -30,14 +27,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.mailcategory.presentation.CategoryViewMenu
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
-import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -52,10 +47,6 @@ fun MailboxStickyHeader(
     actions: MailboxStickyHeader.Actions,
     isCategoryViewEnabled: Boolean
 ) {
-    val categoryHorizontalScrollState = rememberSaveable(saver = ScrollState.Saver) {
-        ScrollState(initial = 0)
-    }
-
     val isCategoryViewVisible =
         isCategoryViewEnabled &&
             state.categoryViewState is CategoryViewState.Available &&
@@ -116,8 +107,7 @@ fun MailboxStickyHeader(
                     if (isCategoryViewEnabled && state.categoryViewState is CategoryViewState.Available) {
                         StickyHeaderWithCategoryView(
                             categoryViewState = state.categoryViewState,
-                            onCategoryItemClicked = actions.onCategoryItemClicked,
-                            scrollState = categoryHorizontalScrollState
+                            onCategoryItemClicked = actions.onCategoryItemClicked
                         )
                     } else {
                         DefaultModeStickyHeader(
@@ -188,32 +178,22 @@ private fun RowScope.DefaultModeStickyHeader(
 @Composable
 private fun RowScope.StickyHeaderWithCategoryView(
     categoryViewState: CategoryViewState.Available,
-    onCategoryItemClicked: (CategoryItemUiModel) -> Unit,
-    scrollState: ScrollState
+    onCategoryItemClicked: (CategoryItemUiModel) -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(scrollState)
-    ) {
-        when (categoryViewState) {
-            CategoryViewState.Available.Loading -> {
-                CategoryViewMenu(
-                    items = emptyList(),
-                    onItemClick = onCategoryItemClicked
-                )
-            }
+    when (categoryViewState) {
+        CategoryViewState.Available.Loading -> {
+            CategoryViewMenu(
+                items = emptyList(),
+                onItemClick = onCategoryItemClicked
+            )
+        }
 
-            is CategoryViewState.Available.Data -> {
-                ConsumableLaunchedEffect(effect = categoryViewState.resetScrollEffect) {
-                    scrollState.animateScrollTo(0)
-                }
-
-                CategoryViewMenu(
-                    items = categoryViewState.categories,
-                    onItemClick = onCategoryItemClicked
-                )
-            }
+        is CategoryViewState.Available.Data -> {
+            CategoryViewMenu(
+                items = categoryViewState.categories,
+                resetScrollEffect = categoryViewState.resetScrollEffect,
+                onItemClick = onCategoryItemClicked
+            )
         }
     }
 }
