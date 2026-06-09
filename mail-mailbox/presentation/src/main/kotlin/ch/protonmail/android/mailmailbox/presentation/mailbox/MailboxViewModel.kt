@@ -886,7 +886,7 @@ class MailboxViewModel @Inject constructor(
                     withContext(dispatchersProvider.Comp) {
                         mailboxItemMapper.toUiModel(
                             userId, it, folderColorSettingsValue,
-                            state.value.isInSearchMode()
+                            state.value.isShowingSearchResults()
                         )
                     }
                 }
@@ -1495,6 +1495,11 @@ class MailboxViewModel @Inject constructor(
 
     private fun MailboxState.isInSearchMode() =
         this.mailboxListState is MailboxListState.Data && this.mailboxListState.searchState.isInSearch()
+
+    private fun MailboxState.isShowingSearchResults(): Boolean {
+        val data = this.mailboxListState as? MailboxListState.Data ?: return false
+        return data.searchState.isInSearch() && data.searchState.searchQuery.isNotBlank()
+    }
 
     private fun Flow<MailboxState>.observeSelectedMailboxItems() =
         this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
