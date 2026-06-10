@@ -42,6 +42,9 @@ object UpsellingLayoutValues {
 
     val imageHeight = 140.dp
 
+    // clamp for tablets on landscape to make it still readable
+    val contentMaxWidth = 600.dp
+
     val BlueInteractionNorm = Color(0xFF6D4AFF)
 
     val backgroundGradient = Brush.verticalGradient(
