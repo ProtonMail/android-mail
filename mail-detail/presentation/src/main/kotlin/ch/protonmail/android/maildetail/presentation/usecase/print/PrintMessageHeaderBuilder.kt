@@ -45,7 +45,7 @@ class PrintMessageHeaderBuilder @Inject constructor(
             append("<div class='print-header'>")
 
             // Subject as title
-            append("<div class='print-header-title'>$subject</div>")
+            append("<div class='print-header-title'>${subject.escapeHtml()}</div>")
 
             // From
             append("<div class='print-header-row'>")
@@ -116,10 +116,25 @@ class PrintMessageHeaderBuilder @Inject constructor(
     }
 
     private fun ParticipantUiModel.format(): String {
+        val name = participantName.escapeHtml()
+        val address = participantAddress.escapeHtml()
         return if (participantName.isNotBlank() && participantName != participantAddress) {
-            "$participantName &lt;$participantAddress&gt;"
+            "$name &lt;$address&gt;"
         } else {
-            participantAddress
+            address
+        }
+    }
+
+    private fun String.escapeHtml(): String = buildString(length) {
+        this@escapeHtml.forEach { char ->
+            when (char) {
+                '&' -> append("&amp;")
+                '<' -> append("&lt;")
+                '>' -> append("&gt;")
+                '"' -> append("&quot;")
+                '\'' -> append("&#39;")
+                else -> append(char)
+            }
         }
     }
 }
