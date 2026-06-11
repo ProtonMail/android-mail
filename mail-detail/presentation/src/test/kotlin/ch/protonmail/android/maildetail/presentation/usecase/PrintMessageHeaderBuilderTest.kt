@@ -152,6 +152,32 @@ internal class PrintMessageHeaderBuilderTest {
         assertEquals(expectedBody, actual)
     }
 
+    @Test
+    fun `should escape HTML in subject and participant fields to prevent markup injection`() {
+        // Given
+        every { getPrintHeaderStyle.invoke() } returns GetPrintHeaderStyleError.left()
+        val header = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel.copy(
+            sender = MessageDetailHeaderUiModelTestData.buildParticipant(
+                "Test <img src=\"https://example.test/x\">",
+                "a&b@pm.com"
+            ),
+            toRecipients = noRecipients,
+            ccRecipients = noRecipients,
+            bccRecipients = noRecipients
+        )
+        val attachments = null
+        val subject = "<img src='https://example.test/p'>"
+
+        // When
+        val actual = builder.buildHeader(subject, header, attachments)
+
+        // Then
+        assertEquals(false, actual.contains("<img"))
+        assertEquals(true, actual.contains("&lt;img src=&#39;https://example.test/p&#39;&gt;"))
+        assertEquals(true, actual.contains("Test &lt;img src=&quot;https://example.test/x&quot;&gt;"))
+        assertEquals(true, actual.contains("a&amp;b@pm.com"))
+    }
+
     private companion object {
 
         val toRecipients = listOf(
