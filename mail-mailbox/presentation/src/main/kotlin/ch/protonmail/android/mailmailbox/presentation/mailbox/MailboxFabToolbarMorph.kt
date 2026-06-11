@@ -50,13 +50,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.FloatingToolbarActionIcons
 import ch.protonmail.android.mailcommon.presentation.ui.rememberWindowFocusState
+import ch.protonmail.android.mailcommon.presentation.ui.protonFloatingButtonShadow
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -177,9 +177,9 @@ internal fun MailboxFabToolbarMorph(
                 Surface(
                     modifier = Modifier
                         .width(containerWidth)
-                        .height(FabSize),
+                        .height(FabSize)
+                        .protonFloatingButtonShadow(),
                     shape = RoundedCornerShape(percent = 50),
-                    shadowElevation = ProtonDimens.ShadowElevation.Mini,
                     color = ProtonTheme.colors.interactionFabNorm
                 ) {
                     Box(
