@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcommon.presentation.ui
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -72,11 +71,6 @@ fun FloatingBottomToolbar(
         animationSpec = tween(ANIMATION_DURATION),
         label = "surfaceColor"
     )
-    val elevation by animateDpAsState(
-        targetValue = if (isVisible) 2.dp else 0.dp,
-        animationSpec = tween(ANIMATION_DURATION),
-        label = "elevation"
-    )
     val contentAlpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = tween(ANIMATION_DURATION),
@@ -89,9 +83,10 @@ fun FloatingBottomToolbar(
     if (!hasWindowFocus) return
 
     Surface(
-        modifier = modifier.height(FloatingToolbarHeight),
+        modifier = modifier
+            .height(FloatingToolbarHeight)
+            .protonFloatingButtonShadow(),
         shape = RoundedCornerShape(percent = 50),
-        shadowElevation = elevation,
         color = surfaceColor
     ) {
         Row(

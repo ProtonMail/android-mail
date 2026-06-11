@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColo
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
 import ch.protonmail.android.mailcommon.presentation.model.isEmpty
+import ch.protonmail.android.mailcommon.presentation.ui.protonFloatingButtonShadow
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -85,9 +86,10 @@ internal fun BottomUnreadFilterButton(
     val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && activeCategoryColor != null
 
     Surface(
-        modifier = modifier.height(UnreadHeight),
+        modifier = modifier
+            .height(UnreadHeight)
+            .protonFloatingButtonShadow(),
         shape = RoundedCornerShape(percent = 50),
-        shadowElevation = ProtonDimens.ShadowElevation.Mini,
         color = backgroundColor
     ) {
         Row(
