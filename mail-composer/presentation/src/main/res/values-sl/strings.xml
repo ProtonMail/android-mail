@@ -40,7 +40,7 @@
   <string name="composer_error_store_draft_generic">Osnutka ni mogoče shraniti – Prišlo je do splošne napake</string>
   <string name="composer_error_create_draft">Prišlo je do napake. Novega osnutka ni bilo mogoče ustvariti.</string>
   <string name="composer_error_loading_draft">Vsebina tega osnutka trenutno ni na voljo, urejanje ni mogoče.</string>
-  <string name="composer_action_clear_formatting">Clear formatting</string>
+  <string name="composer_action_clear_formatting">Odstrani oblikovanje</string>
   <string name="composer_add_attachments_content_description">Dodaj priponke</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Uvozi iz ...</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Iz vaše knjižnice slik</string>
