@@ -32,7 +32,7 @@
   <string name="upselling_mailbox_plus_promo_skip">オファーをスキップ</string>
   <string name="upselling_mailbox_plus_promo_renewal">最初の1ヶ月間%s、その後は月額%s</string>
   <!-- Upselling: Unlimited -->
-  <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
+  <string name="upselling_unlimited_title">Proton Unlimitedへアップグレード</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">グループメールを簡単に送信できます。Mail Plusで、これらやその他の機能をお楽しみください。</string>
   <string name="upselling_contact_groups_plus_title">連絡先をグループ化する</string>
@@ -70,7 +70,7 @@
   <string name="upselling_comparison_table_priority_support">優先的なカスタマーサポート</string>
   <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
   <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
-  <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
+  <string name="upselling_comparison_table_premium_products">プレミアムVPN、パスワードマネージャー、ストレージ</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Choose subscription</string>

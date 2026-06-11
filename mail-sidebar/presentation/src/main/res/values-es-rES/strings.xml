@@ -25,4 +25,5 @@
   <string name="drawer_upgrade_unlimited">Pasar a Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">Oferta del Black Friday</string>
   <string name="drawer_upgrade_plus_spring_sale">Oferta de primavera</string>
+  <string name="drawer_upgrade_plus_summer_sale">Descuento de verano</string>
 </resources>

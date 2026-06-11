@@ -355,6 +355,7 @@ private fun SummerCampaignPreview(state: UpsellingScreenContentState.Data) {
 @Preview(name = "de", locale = "de")
 @Preview(name = "es-ES", locale = "es-rES")
 @Preview(name = "es-419", locale = "b+es+419")
+@Preview(name = "fi", locale = "fi")
 @Preview(name = "fr", locale = "fr")
 @Preview(name = "it", locale = "it")
 @Preview(name = "ja", locale = "ja")
