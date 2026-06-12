@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.mailnotifications.data.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+
 interface DeviceRegistrationRepository {
 
-    fun registerDeviceToken(token: String)
+    suspend fun registerDeviceToken(token: String): Either<DataError, Unit>
 }

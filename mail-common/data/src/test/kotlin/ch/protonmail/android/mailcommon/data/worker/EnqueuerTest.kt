@@ -124,6 +124,28 @@ class EnqueuerTest {
     }
 
     @Test
+    fun `enqueue unique work without user id sets the given input params`() = runTest {
+        // Given
+        val workId = "RegisterDeviceTokenWorker"
+        val params = mapOf("deviceToken" to "test-token")
+        val existingWorkPolicy = ExistingWorkPolicy.REPLACE
+        givenEnqueueUniqueWorkSucceeds(workId, existingWorkPolicy)
+
+        // When
+        enqueuer.enqueueUniqueWork(
+            workerId = workId,
+            worker = ListenableWorker::class.java,
+            existingWorkPolicy = existingWorkPolicy,
+            params = params
+        )
+
+        // Then
+        val workRequestSlot = slot<OneTimeWorkRequest>()
+        coVerify { workManager.enqueueUniqueWork(workId, existingWorkPolicy, capture(workRequestSlot)) }
+        assertEquals("test-token", workRequestSlot.captured.workSpec.input.getString("deviceToken"))
+    }
+
+    @Test
     fun `enqueue in chain tags work with userId`() = runTest {
         // Given
         val workId = "SyncDraftWork-test-message-id"

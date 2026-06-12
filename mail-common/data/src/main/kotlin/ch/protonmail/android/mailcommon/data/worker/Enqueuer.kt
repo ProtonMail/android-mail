@@ -199,10 +199,12 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         workerId: String,
         worker: Class<out ListenableWorker>,
         existingWorkPolicy: ExistingWorkPolicy = ExistingWorkPolicy.REPLACE,
-        constraints: Constraints? = null
+        constraints: Constraints? = null,
+        params: Map<String, Any>? = null
     ) {
         val request = OneTimeWorkRequest.Builder(worker).apply {
             if (constraints != null) setConstraints(constraints)
+            if (params != null) setInputData(workDataOf(*params.map { Pair(it.key, it.value) }.toTypedArray()))
         }.build()
 
         workManager.enqueueUniqueWork(workerId, existingWorkPolicy, request)

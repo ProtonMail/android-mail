@@ -18,20 +18,24 @@
 
 package ch.protonmail.android.mailnotifications.data.repository
 
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import uniffi.mail_uniffi.DeviceEnvironment
+import uniffi.mail_uniffi.MailBackgroundExecScope
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionRegisterDeviceTaskResult
 import uniffi.mail_uniffi.RegisterDeviceTaskHandle
@@ -39,6 +43,7 @@ import uniffi.mail_uniffi.RegisteredDevice
 import uniffi.mail_uniffi.VoidActionResult
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 internal class DeviceRegistrationRepositoryImplTest {
 
@@ -47,11 +52,15 @@ internal class DeviceRegistrationRepositoryImplTest {
 
     private val mailSessionRepository = mockk<MailSessionRepository>()
 
+    private val backgroundExecScope = mockk<MailBackgroundExecScope> {
+        justRun { finsihed() }
+    }
+
     private lateinit var repository: DeviceRegistrationRepositoryImpl
 
     @BeforeTest
     fun setup() {
-        repository = DeviceRegistrationRepositoryImpl(mailSessionRepository)
+        repository = DeviceRegistrationRepositoryImpl(mailSessionRepository, dispatcherRule.testDispatcher)
     }
 
     @AfterTest
@@ -75,22 +84,23 @@ internal class DeviceRegistrationRepositoryImplTest {
         val registerDeviceTask = mockk<RegisterDeviceTaskHandle>()
 
         coEvery { mailSessionRepository.getMailSession() } returns MailSessionWrapper(mailSession)
+        every { mailSession.newBackgroundExecutionScope() } returns backgroundExecScope
         every { mailSession.registerDeviceTask() } returns mailSessionRegisterDeviceTaskResultOk
         every { mailSessionRegisterDeviceTaskResultOk.v1 } returns registerDeviceTask
         every { registerDeviceTask.updateDevice(any()) } returns VoidActionResult.Ok
 
         // When
-        repository.registerDeviceToken(testToken)
-
-        advanceUntilIdle()
+        val result = repository.registerDeviceToken(testToken)
 
         // Then
+        assertEquals(Unit.right(), result)
         coVerify { mailSession.registerDeviceTask() }
         verify { registerDeviceTask.updateDevice(expectedRegisteredDevice) }
+        verify { backgroundExecScope.finsihed() }
     }
 
     @Test
-    fun `should not call update when register device task errors`() = runTest {
+    fun `should return an error and not call update when register device task errors`() = runTest {
         // Given
         val testToken = "test_token"
 
@@ -99,16 +109,41 @@ internal class DeviceRegistrationRepositoryImplTest {
         val registerDeviceTask = mockk<RegisterDeviceTaskHandle>()
 
         coEvery { mailSessionRepository.getMailSession() } returns MailSessionWrapper(mailSession)
+        every { mailSession.newBackgroundExecutionScope() } returns backgroundExecScope
         every { mailSession.registerDeviceTask() } returns mailSessionRegisterDeviceTaskResultError
         every { mailSessionRegisterDeviceTaskResultError.v1 } returns mockk()
 
         // When
-        repository.registerDeviceToken(testToken)
-
-        advanceUntilIdle()
+        val result = repository.registerDeviceToken(testToken)
 
         // Then
+        assertEquals(DataError.Remote.Unknown.left(), result)
         coVerify { mailSession.registerDeviceTask() }
         verify(exactly = 0) { registerDeviceTask.updateDevice(any()) }
+        verify { backgroundExecScope.finsihed() }
+    }
+
+    @Test
+    fun `should return an error when updating the device fails`() = runTest {
+        // Given
+        val testToken = "test_token"
+
+        val mailSessionRegisterDeviceTaskResultOk = mockk<MailSessionRegisterDeviceTaskResult.Ok>()
+        val mailSession = mockk<MailSession>()
+        val registerDeviceTask = mockk<RegisterDeviceTaskHandle>()
+
+        coEvery { mailSessionRepository.getMailSession() } returns MailSessionWrapper(mailSession)
+        every { mailSession.newBackgroundExecutionScope() } returns backgroundExecScope
+        every { mailSession.registerDeviceTask() } returns mailSessionRegisterDeviceTaskResultOk
+        every { mailSessionRegisterDeviceTaskResultOk.v1 } returns registerDeviceTask
+        every { registerDeviceTask.updateDevice(any()) } returns VoidActionResult.Error(mockk())
+
+        // When
+        val result = repository.registerDeviceToken(testToken)
+
+        // Then
+        assertEquals(DataError.Remote.Unknown.left(), result)
+        coVerify { mailSession.registerDeviceTask() }
+        verify { backgroundExecScope.finsihed() }
     }
 }
