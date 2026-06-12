@@ -18,7 +18,15 @@
 
 package ch.protonmail.android.mailnotifications.data.repository
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.repository.runInRustBackground
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import uniffi.mail_uniffi.DeviceEnvironment
 import uniffi.mail_uniffi.MailSessionRegisterDeviceTaskResult
@@ -27,12 +35,13 @@ import uniffi.mail_uniffi.VoidActionResult
 import javax.inject.Inject
 
 internal class DeviceRegistrationRepositoryImpl @Inject constructor(
-    private val mailSessionRepository: MailSessionRepository
+    private val mailSessionRepository: MailSessionRepository,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : DeviceRegistrationRepository {
 
     private var resultHandle: MailSessionRegisterDeviceTaskResult? = null
 
-    override fun registerDeviceToken(token: String) {
+    override suspend fun registerDeviceToken(token: String): Either<DataError, Unit> = withContext(ioDispatcher) {
         val device = RegisteredDevice(
             deviceToken = token,
             environment = DeviceEnvironment.GOOGLE,
@@ -42,26 +51,29 @@ internal class DeviceRegistrationRepositoryImpl @Inject constructor(
 
         destroyExistingResultHandle()
 
-        resultHandle = mailSessionRepository.getMailSession().registerDeviceTask()
+        mailSessionRepository.runInRustBackground { mailSession ->
+            when (val result = mailSession.registerDeviceTask()) {
+                is MailSessionRegisterDeviceTaskResult.Error -> {
+                    Timber.tag("Register device token").d("error ${result.v1}")
+                    DataError.Remote.Unknown.left()
+                }
 
-        when (val currentResultHandle = resultHandle) {
-            is MailSessionRegisterDeviceTaskResult.Error -> {
-                Timber.tag("Register device token").d("error ${currentResultHandle.v1}")
-            }
+                is MailSessionRegisterDeviceTaskResult.Ok -> {
+                    resultHandle = result
 
-            is MailSessionRegisterDeviceTaskResult.Ok -> {
-                when (val taskResult = currentResultHandle.v1.updateDevice(device)) {
-                    is VoidActionResult.Error -> {
-                        Timber.tag("Register device token").d("error registering device $taskResult")
-                    }
+                    when (val taskResult = result.v1.updateDevice(device)) {
+                        is VoidActionResult.Error -> {
+                            Timber.tag("Register device token").d("Error registering device $taskResult")
+                            DataError.Remote.Unknown.left()
+                        }
 
-                    is VoidActionResult.Ok -> {
-                        Timber.tag("Register device token").d("Ok")
+                        is VoidActionResult.Ok -> {
+                            Timber.tag("Register device token").d("Successfully registered device.")
+                            Unit.right()
+                        }
                     }
                 }
             }
-
-            else -> Unit
         }
     }
 

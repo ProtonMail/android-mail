@@ -20,11 +20,13 @@ package ch.protonmail.android.mailnotifications.domain
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.work.ExistingWorkPolicy
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailnotifications.data.FirebaseNotificationsTokenChannel
+import ch.protonmail.android.mailnotifications.data.local.RegisterDeviceTokenWorker
 import ch.protonmail.android.mailnotifications.data.remote.FirebaseMessagingProxy
-import ch.protonmail.android.mailnotifications.data.repository.DeviceRegistrationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,7 +37,7 @@ import javax.inject.Inject
 class FirebaseMessagingTokenLifecycleObserver @Inject constructor(
     private val firebaseMessagingProxy: FirebaseMessagingProxy,
     private val firebaseNotificationsTokenChannel: FirebaseNotificationsTokenChannel,
-    private val deviceRegistrationRepository: DeviceRegistrationRepository,
+    private val enqueuer: Enqueuer,
     @AppScope private val coroutineScope: CoroutineScope
 ) : DefaultLifecycleObserver {
 
@@ -45,15 +47,21 @@ class FirebaseMessagingTokenLifecycleObserver @Inject constructor(
         super.onCreate(owner)
 
         tokenFlowJob = coroutineScope.launch {
-            firebaseNotificationsTokenChannel.tokenFlow.distinctUntilChanged().collect {
-                Timber.tag("Register device token").d("Received new token, registering...")
-                deviceRegistrationRepository.registerDeviceToken(it)
+            firebaseNotificationsTokenChannel.tokenFlow.distinctUntilChanged().collect { token ->
+                Timber.tag(LogTag).d("Received new token, enqueueing registration...")
+                enqueuer.enqueueUniqueWork(
+                    workerId = RegisterDeviceTokenWorker.UniqueWorkerId,
+                    worker = RegisterDeviceTokenWorker::class.java,
+                    existingWorkPolicy = ExistingWorkPolicy.REPLACE,
+                    constraints = enqueuer.buildDefaultConstraints(),
+                    params = RegisterDeviceTokenWorker.params(token)
+                )
             }
         }
 
         coroutineScope.launch {
             val token = firebaseMessagingProxy.fetchToken().getOrElse {
-                Timber.tag("Register device token").d("Unable to fetch token")
+                Timber.tag(LogTag).d("Unable to fetch token")
                 return@launch
             }
 
@@ -64,5 +72,9 @@ class FirebaseMessagingTokenLifecycleObserver @Inject constructor(
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         tokenFlowJob?.cancel()
+    }
+
+    companion object {
+        private const val LogTag = "Register device token"
     }
 }
