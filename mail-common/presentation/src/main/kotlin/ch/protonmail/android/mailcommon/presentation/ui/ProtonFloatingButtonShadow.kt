@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
 
-fun Modifier.protonFloatingButtonShadow(): Modifier = this
+fun Modifier.protonFloatingButtonShadow(alpha: Float = 1f): Modifier = this
     .dropShadow(
         shape = RoundedCornerShape(percent = 50),
         shadow = Shadow(
@@ -36,7 +36,8 @@ fun Modifier.protonFloatingButtonShadow(): Modifier = this
                 FabPrimaryShadow.OffsetX,
                 FabPrimaryShadow.OffsetY
             ),
-            color = FabPrimaryShadow.Color
+            color = FabPrimaryShadow.Color,
+            alpha = alpha
         )
     )
     .dropShadow(
@@ -48,7 +49,8 @@ fun Modifier.protonFloatingButtonShadow(): Modifier = this
                 FabSecondaryShadow.OffsetX,
                 FabSecondaryShadow.OffsetY
             ),
-            color = FabSecondaryShadow.Color
+            color = FabSecondaryShadow.Color,
+            alpha = alpha
         )
     )
 

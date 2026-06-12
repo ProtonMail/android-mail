@@ -46,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -155,6 +156,9 @@ internal fun MailboxFabToolbarMorph(
                         scaleX = unreadScale
                         scaleY = unreadScale
                         translationY = unreadTranslationY
+                        // Fade without an offscreen buffer: Auto clips the drop
+                        // shadow drawn outside the layer bounds while alpha < 1.
+                        compositingStrategy = CompositingStrategy.ModulateAlpha
                     }
                     .padding(ShadowClipGuard)
             ) {
