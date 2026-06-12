@@ -85,7 +85,7 @@ fun FloatingBottomToolbar(
     Surface(
         modifier = modifier
             .height(FloatingToolbarHeight)
-            .protonFloatingButtonShadow(),
+            .protonFloatingButtonShadow(alpha = contentAlpha),
         shape = RoundedCornerShape(percent = 50),
         color = surfaceColor
     ) {
