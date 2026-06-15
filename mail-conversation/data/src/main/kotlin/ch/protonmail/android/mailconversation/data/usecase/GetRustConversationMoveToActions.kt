@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import uniffi.mail_uniffi.AvailableMoveToDestinationsForConversationsResult
 import uniffi.mail_uniffi.MoveDestination
+import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.availableMoveToDestinationsForConversations
 import javax.inject.Inject
 
@@ -38,8 +39,17 @@ class GetRustConversationMoveToActions @Inject constructor() {
     ): Either<DataError, List<MoveDestination>> =
         when (val result = availableMoveToDestinationsForConversations(mailbox.getRustMailbox(), conversationIds)) {
             is AvailableMoveToDestinationsForConversationsResult.Error -> result.v1.toDataError().left()
-            is AvailableMoveToDestinationsForConversationsResult.Ok -> result.v1.right()
+            is AvailableMoveToDestinationsForConversationsResult.Ok ->
+                result.v1.map { it.asSystemFolderOrSelf() }.right()
         }
+
+    /**
+     * Hotfix: the downstream move-to flow only keeps SystemFolder destinations and
+     * discards the Inbox location. Convert the Rust Inbox destination into the equivalent
+     * SystemFolder
+     */
+    private fun MoveDestination.asSystemFolderOrSelf(): MoveDestination = when (this) {
+        is MoveDestination.Inbox -> MoveDestination.SystemFolder(SystemFolderDestination(v1.localId, v1.name))
+        else -> this
+    }
 }
-
-
