@@ -370,6 +370,10 @@ internal class MailboxViewModelTest {
         coEvery { this@mockk.get() } returns false
     }
 
+    private val isContentSearchEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns false
+    }
+
     val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
     private val observeCategoryViewStatus = mockk<ObserveCategoryViewStatus> {
         coEvery {
@@ -445,6 +449,7 @@ internal class MailboxViewModelTest {
             setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
             categoryViewEnabled = isCategoryViewEnabled,
+            contentSearchSettingsEnabled = isContentSearchEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus
         )
     }

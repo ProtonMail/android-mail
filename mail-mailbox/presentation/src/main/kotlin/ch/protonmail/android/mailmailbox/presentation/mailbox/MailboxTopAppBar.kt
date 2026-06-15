@@ -59,7 +59,8 @@ import me.proton.core.util.kotlin.EMPTY_STRING
 fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
-    actions: MailboxTopAppBar.Actions
+    actions: MailboxTopAppBar.Actions,
+    isSearchButtonVisible: Boolean = true
 ) {
     val uiModel = when (state) {
         is MailboxTopAppBarState.Loading -> UiModel.Empty
@@ -137,18 +138,20 @@ fun MailboxTopAppBar(
                         UpsellingMailButton(onClick = { type ->
                             actions.onNavigateToUpselling(UpsellingEntryPoint.Feature.Navbar, type)
                         })
-                        IconButton(
-                            modifier = Modifier
-                                .size(ProtonDimens.DefaultButtonMinHeight)
-                                .testTag(MailboxTopAppBarTestTags.SearchButton),
-                            onClick = actions.onEnterSearchMode
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                                contentDescription = stringResource(
-                                    id = R.string.mailbox_toolbar_search_button_content_description
+                        if (isSearchButtonVisible) {
+                            IconButton(
+                                modifier = Modifier
+                                    .size(ProtonDimens.DefaultButtonMinHeight)
+                                    .testTag(MailboxTopAppBarTestTags.SearchButton),
+                                onClick = actions.onEnterSearchMode
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                                    contentDescription = stringResource(
+                                        id = R.string.mailbox_toolbar_search_button_content_description
+                                    )
                                 )
-                            )
+                            }
                         }
                         Spacer(Modifier.size(ProtonDimens.Spacing.ModeratelyLarge))
                         AccountAvatar(

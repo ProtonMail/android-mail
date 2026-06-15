@@ -182,6 +182,7 @@ fun MailboxScreen(
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
     val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
+    val isContentSearchEnabled = viewModel.isContentSearchEnabled.collectAsStateWithLifecycle().value
 
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -434,6 +435,7 @@ fun MailboxScreen(
             mailboxListItems = mailboxListItems,
             actions = completeActions,
             isCategoryViewEnabled = isCategoryViewEnabled,
+            isContentSearchEnabled = isContentSearchEnabled,
             isSnackbarVisible = isSnackbarVisible,
             modifier = modifier.semantics { testTagsAsResourceId = true }
         )
@@ -445,6 +447,7 @@ fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
     isCategoryViewEnabled: Boolean = false,
+    isContentSearchEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
@@ -512,7 +515,8 @@ fun MailboxScreen(
                         onSearch = { query -> actions.onSearchQuery(query) },
                         onAccountAvatarClicked = actions.onAccountAvatarClicked,
                         onNavigateToUpselling = actions.onNavigateToUpselling
-                    )
+                    ),
+                    isSearchButtonVisible = !isContentSearchEnabled
                 )
 
                 MailboxStickyHeader(
@@ -627,6 +631,8 @@ fun MailboxScreen(
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,
                 onComposeClick = actions.navigateToComposer,
+                onSearchClick = actions.onEnterSearchMode,
+                isSearchButtonVisible = isContentSearchEnabled,
                 onUnreadFilterEnabled = actions.onEnableUnreadFilter,
                 onUnreadFilterDisabled = actions.onDisableUnreadFilter,
                 isSnackbarVisible = isSnackbarVisible,

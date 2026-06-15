@@ -56,8 +56,8 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.FloatingToolbarActionIcons
-import ch.protonmail.android.mailcommon.presentation.ui.rememberWindowFocusState
 import ch.protonmail.android.mailcommon.presentation.ui.protonFloatingButtonShadow
+import ch.protonmail.android.mailcommon.presentation.ui.rememberWindowFocusState
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -71,8 +71,10 @@ internal fun MailboxFabToolbarMorph(
     bottomBarState: BottomBarState,
     bottomBarActions: BottomActionBar.Actions,
     onComposeClick: () -> Unit,
+    onSearchClick: () -> Unit,
     onUnreadFilterEnabled: () -> Unit,
     onUnreadFilterDisabled: () -> Unit,
+    isSearchButtonVisible: Boolean = false,
     isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -170,12 +172,100 @@ internal fun MailboxFabToolbarMorph(
             }
         }
 
+        val wantsSearchFab = isSearchButtonVisible && !isInSelectionMode && !isInSearch
+        var showSearchFab by remember { mutableStateOf(false) }
+        LaunchedEffect(wantsSearchFab) {
+            showSearchFab = wantsSearchFab
+        }
+        val searchSpring = spring<Float>(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMediumLow
+        )
+        val searchAlpha by animateFloatAsState(
+            targetValue = if (showSearchFab) 1f else 0f,
+            animationSpec = searchSpring,
+            label = "searchAlpha"
+        )
+        val searchScale by animateFloatAsState(
+            targetValue = if (showSearchFab) 1f else 0.6f,
+            animationSpec = searchSpring,
+            label = "searchScale"
+        )
+        val searchTranslationY by animateFloatAsState(
+            targetValue = if (showSearchFab) 0f else 40f,
+            animationSpec = searchSpring,
+            label = "searchTranslationY"
+        )
+        if (hasWindowFocus && (showSearchFab || searchAlpha > 0f)) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = FabSize + SearchFabSpacing)
+                    .padding(ShadowClipGuard)
+                    .graphicsLayer {
+                        alpha = searchAlpha
+                        scaleX = searchScale
+                        scaleY = searchScale
+                        translationY = searchTranslationY
+                        // Fade without an offscreen buffer: Auto clips the drop
+                        // shadow drawn outside the layer bounds while alpha < 1.
+                        compositingStrategy = CompositingStrategy.ModulateAlpha
+                    }
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .width(FabSize)
+                        .height(FabSize)
+                        .protonFloatingButtonShadow(),
+                    shape = RoundedCornerShape(percent = 50),
+                    color = ProtonTheme.colors.interactionFabNorm
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.clickable(enabled = !isInSelectionMode) { onSearchClick() }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                            contentDescription = stringResource(
+                                id = R.string.mailbox_toolbar_search_button_content_description
+                            ),
+                            tint = ProtonTheme.colors.textNorm
+                        )
+                    }
+                }
+            }
+        }
+
         // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar)
-        if (hasWindowFocus) {
+        val composeAlpha by animateFloatAsState(
+            targetValue = if (isInSearch) 0f else 1f,
+            animationSpec = searchSpring,
+            label = "composeAlpha"
+        )
+        val composeScale by animateFloatAsState(
+            targetValue = if (isInSearch) 0.6f else 1f,
+            animationSpec = searchSpring,
+            label = "composeScale"
+        )
+        val composeTranslationY by animateFloatAsState(
+            targetValue = if (isInSearch) 40f else 0f,
+            animationSpec = searchSpring,
+            label = "composeTranslationY"
+        )
+        if (hasWindowFocus && (!isInSearch || composeAlpha > 0f)) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(ShadowClipGuard),
+                    .padding(ShadowClipGuard)
+                    .graphicsLayer {
+                        alpha = composeAlpha
+                        scaleX = composeScale
+                        scaleY = composeScale
+                        translationY = composeTranslationY
+                        // Fade without an offscreen buffer: Auto clips the drop
+                        // shadow drawn outside the layer bounds while alpha < 1.
+                        compositingStrategy = CompositingStrategy.ModulateAlpha
+                    },
                 contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
             ) {
                 Surface(
@@ -228,6 +318,7 @@ internal fun MailboxFabToolbarMorph(
 }
 
 private val FabSize = 56.dp
+private val SearchFabSpacing = 12.dp
 private val ToolbarHorizontalPadding = 12.dp
 private const val ICON_BUTTON_SIZE = 48
 private val ShadowClipGuard = 6.dp

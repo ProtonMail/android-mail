@@ -61,6 +61,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -239,7 +240,8 @@ class MailboxViewModel @Inject constructor(
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     private val setActiveCategoryLabel: SetActiveCategoryLabel,
     private val selectCategory: SelectCategory,
-    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>
+    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
+    @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
@@ -255,6 +257,9 @@ class MailboxViewModel @Inject constructor(
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
 
     val isCategoryViewEnabled: StateFlow<Boolean> = flow { emit(categoryViewEnabled.get()) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    val isContentSearchEnabled: StateFlow<Boolean> = flow { emit(contentSearchSettingsEnabled.get()) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
