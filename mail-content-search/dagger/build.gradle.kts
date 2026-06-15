@@ -52,7 +52,6 @@ dependencies {
 
     implementation(project(":mail-content-search:data"))
     implementation(project(":mail-content-search:domain"))
-    implementation(project(":mail-content-search:presentation"))
 
     implementation(libs.dagger.hilt.android)
 }
