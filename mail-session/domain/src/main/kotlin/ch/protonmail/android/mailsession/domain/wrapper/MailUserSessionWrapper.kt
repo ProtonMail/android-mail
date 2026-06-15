@@ -29,10 +29,15 @@ import ch.protonmail.android.mailsession.domain.mapper.toEventLoopError
 import ch.protonmail.android.mailsession.domain.model.EventLoopError
 import timber.log.Timber
 import uniffi.mail_uniffi.AsyncLiveQueryCallback
+import uniffi.mail_uniffi.ContentSearchIndexingProgress
+import uniffi.mail_uniffi.ContentSearchIndexingStatus
 import uniffi.mail_uniffi.EventLoopErrorObserver
 import uniffi.mail_uniffi.ExecuteWhenOnlineCallbackAsync
 import uniffi.mail_uniffi.Fork
 import uniffi.mail_uniffi.MailUserSession
+import uniffi.mail_uniffi.MailUserSessionContentSearchGetIndexingProgressResult
+import uniffi.mail_uniffi.MailUserSessionContentSearchGetIndexingStatusResult
+import uniffi.mail_uniffi.MailUserSessionContentSearchIsEnabledResult
 import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
@@ -110,6 +115,34 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
                 result.v1.toDataError().left()
             }
         }
+
+    suspend fun contentSearchIsEnabled(): Either<DataError, Boolean> =
+        when (val result = userSession.contentSearchIsEnabled()) {
+            is MailUserSessionContentSearchIsEnabledResult.Ok -> result.v1.right()
+            is MailUserSessionContentSearchIsEnabledResult.Error -> result.v1.toDataError().left()
+        }
+
+    suspend fun contentSearchSetEnabled(enabled: Boolean) = userSession.contentSearchSetEnabled(enabled)
+
+    suspend fun contentSearchStartIndexing() = userSession.contentSearchStartIndexing()
+
+    suspend fun contentSearchCancelIndexing(clearData: Boolean) = userSession.contentSearchCancelIndexing(clearData)
+
+    suspend fun contentSearchClearLocalData() = userSession.contentSearchClearLocalData()
+
+    suspend fun contentSearchGetIndexingProgress(): Either<DataError, ContentSearchIndexingProgress> =
+        when (val result = userSession.contentSearchGetIndexingProgress()) {
+            is MailUserSessionContentSearchGetIndexingProgressResult.Ok -> result.v1.right()
+            is MailUserSessionContentSearchGetIndexingProgressResult.Error -> result.v1.toDataError().left()
+        }
+
+    suspend fun contentSearchGetIndexingStatus(): Either<DataError, ContentSearchIndexingStatus> =
+        when (val result = userSession.contentSearchGetIndexingStatus()) {
+            is MailUserSessionContentSearchGetIndexingStatusResult.Ok -> result.v1.right()
+            is MailUserSessionContentSearchGetIndexingStatusResult.Error -> result.v1.toDataError().left()
+        }
+
+    suspend fun contentSearchWatchIndexingStream() = userSession.contentSearchWatchIndexingStream()
 
     suspend fun sendMeasurementEvent(
         eventType: MeasurementEventType,
