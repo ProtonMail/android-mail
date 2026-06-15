@@ -21,22 +21,26 @@ package ch.protonmail.android.mailattachments.data.mapper
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentDisposition
 import ch.protonmail.android.mailattachments.domain.model.AttachmentError
+import ch.protonmail.android.mailattachments.domain.model.AttachmentError.RemoveAttachment
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadata
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMimeType
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
 import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.MimeTypeCategory
+import ch.protonmail.android.mailattachments.domain.model.RemoveAttachmentError
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentDisposition
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentMimeType
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeTypeCategory
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import uniffi.mail_uniffi.DraftAttachmentDispositionSwapError
 import uniffi.mail_uniffi.DraftAttachmentDispositionSwapErrorReason
 import uniffi.mail_uniffi.DraftAttachmentError
+import uniffi.mail_uniffi.DraftAttachmentRemoveError
+import uniffi.mail_uniffi.DraftAttachmentRemoveErrorReason
 import uniffi.mail_uniffi.DraftAttachmentState
 import uniffi.mail_uniffi.DraftAttachmentUploadError
 import uniffi.mail_uniffi.DraftAttachmentUploadErrorReason
@@ -111,6 +115,7 @@ fun DraftAttachmentError.toDraftAttachmentError(): AttachmentError = when (val r
     }
 
     is DraftAttachmentError.Upload -> AttachmentError.AddAttachment(result.v1.toAttachmentError())
+    is DraftAttachmentError.Remove -> RemoveAttachment(result.v1.toRemoveAttachmentError())
 }
 
 fun DraftAttachmentUploadError.toAttachmentError(): AddAttachmentError = when (this) {
@@ -150,5 +155,13 @@ fun DraftAttachmentDispositionSwapError.Reason.toConvertAttachmentError(): Conve
 
         is DraftAttachmentDispositionSwapErrorReason.BadRequest ->
             ConvertAttachmentError.Other(DataError.Remote.BadRequest)
+    }
+}
+
+fun DraftAttachmentRemoveError.toRemoveAttachmentError() = when (this) {
+    is DraftAttachmentRemoveError.Other -> RemoveAttachmentError.Other(this.v1.toDataError())
+    is DraftAttachmentRemoveError.Reason -> when (val result = this.v1) {
+        DraftAttachmentRemoveErrorReason.AttachmentDoesNotExist -> RemoveAttachmentError.AttachmentDoesNotExist
+        is DraftAttachmentRemoveErrorReason.BadRequest -> RemoveAttachmentError.BadRequest(result.v1)
     }
 }

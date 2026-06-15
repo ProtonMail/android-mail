@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
+import ch.protonmail.android.mailattachments.domain.model.RemoveAttachmentError
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertNull
@@ -140,6 +141,44 @@ internal class AttachmentListErrorMapperTest {
         // Then
         assertEquals(AddAttachmentError.InvalidState, result?.error)
         assertEquals(listOf(attachment), result?.failedAttachments)
+    }
+
+    @Test
+    fun `returns null remove error when there are no errors`() {
+        // Given
+        val attachment = mockk<AttachmentMetadataWithState>()
+        every { attachment.attachmentState } returns AttachmentState.Uploaded
+
+        // When
+        val result = AttachmentListErrorMapper.toRemoveAttachmentErrorOrNull(listOf(attachment))
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `returns null remove error when only add errors are present`() {
+        // Given
+        val attachment = createAttachmentWithError(AttachmentError.AddAttachment(AddAttachmentError.EncryptionError))
+
+        // When
+        val result = AttachmentListErrorMapper.toRemoveAttachmentErrorOrNull(listOf(attachment))
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `returns remove bad request error with the server message when present`() {
+        // Given
+        val removeError = RemoveAttachmentError.BadRequest("Server error message")
+        val attachment = createAttachmentWithError(AttachmentError.RemoveAttachment(removeError))
+
+        // When
+        val result = AttachmentListErrorMapper.toRemoveAttachmentErrorOrNull(listOf(attachment))
+
+        // Then
+        assertEquals(removeError, result)
     }
 
     @Test

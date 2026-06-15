@@ -456,7 +456,7 @@ class RustMessageDataSourceImpl @Inject constructor(
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
         rustMessageListQuery.observeCategoryViewStatus()
 
-    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         rustMessageListQuery.setActiveCategoryLabel(categoryLabelId)
 
 }

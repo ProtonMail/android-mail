@@ -345,6 +345,6 @@ class RustConversationDataSourceImpl @Inject constructor(
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> =
         rustConversationsQuery.observeCategoryViewStatus()
 
-    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         rustConversationsQuery.setActiveCategoryLabel(categoryLabelId)
 }

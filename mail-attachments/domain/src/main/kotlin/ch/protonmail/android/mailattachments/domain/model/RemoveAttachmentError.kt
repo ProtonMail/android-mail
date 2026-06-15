@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton Technologies AG
+ * Copyright (c) 2026 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -20,11 +20,9 @@ package ch.protonmail.android.mailattachments.domain.model
 
 import ch.protonmail.android.mailcommon.domain.model.DataError
 
-sealed interface AttachmentError {
-    data class AddAttachment(val error: AddAttachmentError) : AttachmentError
-    data class RemoveAttachment(val error: RemoveAttachmentError) : AttachmentError
+sealed interface RemoveAttachmentError {
+    data object AttachmentDoesNotExist : RemoveAttachmentError
+    data class BadRequest(val message: String) : RemoveAttachmentError
 
-    data class ConvertInlineToAttachment(val error: ConvertAttachmentError) : AttachmentError
-
-    data class Other(val error: DataError) : AttachmentError
+    data class Other(val error: DataError) : RemoveAttachmentError
 }

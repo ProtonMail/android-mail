@@ -195,7 +195,7 @@ class RustMessageListQueryImpl @Inject constructor(
 
     override suspend fun supportsIncludeFilter() = paginatorState?.paginatorWrapper?.supportsIncludeFilter() == true
 
-    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         paginatorState?.paginatorWrapper?.changeCategoryView(categoryLabelId) ?: run {
             Timber.w("rust-message-query: No paginator to change category view")
             PaginationError.Other(DataError.Local.IllegalStateError).left()

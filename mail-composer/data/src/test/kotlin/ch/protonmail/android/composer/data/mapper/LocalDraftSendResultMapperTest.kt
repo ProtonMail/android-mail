@@ -86,19 +86,29 @@ class LocalDraftSendResultMapperTest {
         val timestamp = 456uL
         val secondsLeftToUndo = 0uL
         val deliveryTime = 678uL
-        val localDraftSendResult = LocalDraftSendResult(
-            messageId,
-            timestamp,
-            error = DraftSendStatus.Success(secondsLeftToUndo, deliveryTime),
-            origin = DraftSendResultOrigin.ATTACHMENT_UPLOAD
+        val nonSendOrigins = listOf(
+            DraftSendResultOrigin.SAVE,
+            DraftSendResultOrigin.SAVE_BEFORE_SEND,
+            DraftSendResultOrigin.ATTACHMENT_DISPOSITION_SWAP,
+            DraftSendResultOrigin.ATTACHMENT_REMOVE,
+            DraftSendResultOrigin.ATTACHMENT_UPLOAD
         )
         val expected = MessageSendingStatus.NoStatus(messageId.toMessageId())
 
-        // When
-        val actual = localDraftSendResult.toMessageSendingStatus()
+        nonSendOrigins.forEach { origin ->
+            val localDraftSendResult = LocalDraftSendResult(
+                messageId,
+                timestamp,
+                error = DraftSendStatus.Success(secondsLeftToUndo, deliveryTime),
+                origin = origin
+            )
 
-        // Then
-        assertEquals(expected, actual)
+            // When
+            val actual = localDraftSendResult.toMessageSendingStatus()
+
+            // Then
+            assertEquals(expected, actual, "Unexpected status for origin $origin")
+        }
     }
 
     @Test

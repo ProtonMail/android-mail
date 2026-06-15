@@ -30,7 +30,8 @@ class SetActiveCategoryLabel @Inject constructor(
     private val conversationRepository: ConversationRepository,
     private val messageRepository: MessageRepository
 ) {
-    operator fun invoke(categoryLabelId: CategoryLabelId, viewMode: ViewMode): Either<PaginationError, Unit> =
+
+    suspend operator fun invoke(categoryLabelId: CategoryLabelId, viewMode: ViewMode): Either<PaginationError, Unit> =
         when (viewMode) {
             ViewMode.ConversationGrouping -> conversationRepository.setActiveCategoryLabel(categoryLabelId)
             ViewMode.NoConversationGrouping -> messageRepository.setActiveCategoryLabel(categoryLabelId)

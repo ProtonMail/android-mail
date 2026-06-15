@@ -49,6 +49,7 @@ private fun LocalDraftSendResult.toMessageSendingStatusForSuccess(
     DraftSendResultOrigin.SAVE,
     DraftSendResultOrigin.SAVE_BEFORE_SEND,
     DraftSendResultOrigin.ATTACHMENT_DISPOSITION_SWAP,
+    DraftSendResultOrigin.ATTACHMENT_REMOVE,
     DraftSendResultOrigin.ATTACHMENT_UPLOAD -> MessageSendingStatus.NoStatus(this.messageId.toMessageId())
 
     DraftSendResultOrigin.SEND -> {

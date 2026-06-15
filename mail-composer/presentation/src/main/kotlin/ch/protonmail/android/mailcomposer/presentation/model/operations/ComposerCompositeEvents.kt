@@ -42,6 +42,7 @@ import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.eff
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.DraftBodyChanged
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications.DraftSenderChanged
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.AttachmentRemoveFailed
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.RecoverableError.AttachmentsListChangedWithError
 
 internal sealed interface CompositeEvent : ComposerStateEvent {
@@ -89,8 +90,10 @@ internal sealed interface CompositeEvent : ComposerStateEvent {
             effectsModification = list
                 .filter { it.attachmentState is AttachmentState.Error }
                 .takeIf { it.isNotEmpty() }
-                ?.let {
-                    AttachmentListErrorMapper.toAttachmentAddErrorWithList(it)?.let { errorWithList ->
+                ?.let { errored ->
+                    AttachmentListErrorMapper.toRemoveAttachmentErrorOrNull(errored)?.let { removeError ->
+                        AttachmentRemoveFailed(removeError)
+                    } ?: AttachmentListErrorMapper.toAttachmentAddErrorWithList(errored)?.let { errorWithList ->
                         AttachmentsListChangedWithError(
                             attachmentAddErrorWithList = errorWithList
                         )

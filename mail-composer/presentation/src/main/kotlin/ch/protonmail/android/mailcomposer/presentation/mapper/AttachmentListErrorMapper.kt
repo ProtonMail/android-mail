@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
+import ch.protonmail.android.mailattachments.domain.model.RemoveAttachmentError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentAddErrorWithList
 
@@ -50,6 +51,14 @@ internal object AttachmentListErrorMapper {
         return AttachmentAddErrorWithList(AddAttachmentError.Other(DataError.Local.Unknown), errored)
     }
 
+    fun toRemoveAttachmentErrorOrNull(attachments: List<AttachmentMetadataWithState>): RemoveAttachmentError? =
+        attachments.firstNotNullOfOrNull {
+            (it.attachmentState as? AttachmentState.Error)?.removeAttachmentErrorOrNull()
+        }
+
     private fun AttachmentState.Error.addAttachmentErrorOrNull(): AddAttachmentError? =
         (reason as? AttachmentError.AddAttachment)?.error
+
+    private fun AttachmentState.Error.removeAttachmentErrorOrNull(): RemoveAttachmentError? =
+        (reason as? AttachmentError.RemoveAttachment)?.error
 }

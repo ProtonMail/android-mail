@@ -64,13 +64,13 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
             is ConversationScrollerCursorResult.Ok -> ConversationCursorWrapper(result.v1).right()
         }
 
-    fun filterUnread(filterUnread: Boolean) {
+    suspend fun filterUnread(filterUnread: Boolean) {
         Timber.d("conversation-paginator: Changing unread filter to %s id=%s", filterUnread, rustPaginator.id())
         val filter = if (filterUnread) ReadFilter.UNREAD else ReadFilter.ALL
         rustPaginator.changeFilter(filter)
     }
 
-    fun showSpamAndTrash(show: Boolean) {
+    suspend fun showSpamAndTrash(show: Boolean) {
         Timber.d("conversation-paginator: Changing show spam and trash to %s id=%s", show, rustPaginator.id())
         val includeSwitch = if (show) IncludeSwitch.WITH_SPAM_AND_TRASH else IncludeSwitch.DEFAULT
         rustPaginator.changeInclude(includeSwitch)
@@ -86,7 +86,7 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
 
     suspend fun getCategoryViewStatus(): CategoryViewStatus = rustPaginator.categoryView().toCategoryViewStatus()
 
-    fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    suspend fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         when (val result = rustPaginator.changeCategoryView(categoryLabelId)) {
             is ConversationScrollerChangeCategoryViewResult.Error -> result.v1.toPaginationError().left()
             is ConversationScrollerChangeCategoryViewResult.Ok -> Unit.right()

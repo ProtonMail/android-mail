@@ -71,17 +71,17 @@ class SearchMessagePaginatorWrapper(
         rustPaginator.terminate()
     }
 
-    override fun filterUnread(filterUnread: Boolean) {
+    override suspend fun filterUnread(filterUnread: Boolean) {
         Timber.w("search-paginator: Called filter unread on a search paginator, which is illegal. No-op.")
     }
 
-    override fun showSpamAndTrash(show: Boolean) {
+    override suspend fun showSpamAndTrash(show: Boolean) {
         Timber.d("search-paginator: Updating show spam and trash to: $show")
         val includeSwitch = if (show) IncludeSwitch.WITH_SPAM_AND_TRASH else IncludeSwitch.DEFAULT
         rustPaginator.changeInclude(includeSwitch)
     }
 
-    override fun updateKeyword(keyword: String) {
+    override suspend fun updateKeyword(keyword: String) {
         Timber.d("search-paginator: Updating search keyword to: $keyword")
         rustPaginator.changeKeywords(PaginatorSearchOptions(keyword))
     }
@@ -90,7 +90,7 @@ class SearchMessagePaginatorWrapper(
 
     override suspend fun getCategoryViewStatus(): CategoryViewStatus = CategoryViewStatus.NotAvailable
 
-    override fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> {
+    override suspend fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> {
         Timber.w("search-paginator: Called change category on a search paginator, which is illegal. No-op.")
         return Unit.right()
     }
