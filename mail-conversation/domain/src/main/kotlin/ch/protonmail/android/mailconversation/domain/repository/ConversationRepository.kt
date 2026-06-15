@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailconversation.domain.repository
 
 import arrow.core.Either
-import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -31,6 +30,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.ConversationMessages
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -127,5 +127,5 @@ interface ConversationRepository {
 
     fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
 
-    fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit>
+    suspend fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit>
 }

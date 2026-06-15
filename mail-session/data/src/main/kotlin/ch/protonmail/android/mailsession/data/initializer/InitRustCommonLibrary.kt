@@ -78,7 +78,8 @@ class InitRustCommonLibrary @Inject constructor(
             ),
             origin = Origin.APP,
             quarantineXattrAppName = null,
-            eventPollDurationSeconds = null
+            eventPollDurationSeconds = null,
+            enableContentSearch = false
         )
         Timber.d("rust-session: Initializing the Rust Lib with $sessionParams")
 

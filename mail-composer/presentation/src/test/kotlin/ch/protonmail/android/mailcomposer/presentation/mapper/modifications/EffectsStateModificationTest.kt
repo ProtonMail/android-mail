@@ -23,6 +23,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
 import ch.protonmail.android.mailattachments.domain.model.ConvertAttachmentError
+import ch.protonmail.android.mailattachments.domain.model.RemoveAttachmentError
 import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -479,6 +480,24 @@ internal class EffectsStateModificationTest(
                     changeBottomSheetVisibility = Effect.of(false),
                     error = Effect.of(TextUiModel(R.string.composer_error_converting_inline_to_standard_attachment))
                 )
+            ),
+            arrayOf(
+                "shows the server message on attachment remove bad request failure",
+                initialState,
+                RecoverableError.AttachmentRemoveFailed(RemoveAttachmentError.BadRequest("Server error message")),
+                initialState.copy(error = Effect.of(TextUiModel.Text("Server error message")))
+            ),
+            arrayOf(
+                "shows generic error on attachment remove failure (AttachmentDoesNotExist)",
+                initialState,
+                RecoverableError.AttachmentRemoveFailed(RemoveAttachmentError.AttachmentDoesNotExist),
+                initialState.copy(error = Effect.of(TextUiModel(R.string.composer_delete_attachment_error)))
+            ),
+            arrayOf(
+                "shows generic error on attachment remove failure (Other)",
+                initialState,
+                RecoverableError.AttachmentRemoveFailed(RemoveAttachmentError.Other(DataError.Local.Unknown)),
+                initialState.copy(error = Effect.of(TextUiModel(R.string.composer_delete_attachment_error)))
             ),
             arrayOf(
                 "Show confirmation when send with expiration to many external addresses will fail",

@@ -382,7 +382,7 @@ internal class MailboxViewModelTest {
     }
 
     private val setActiveCategoryLabel = mockk<SetActiveCategoryLabel> {
-        every { this@mockk.invoke(any(), any()) } returns Unit.right()
+        coEvery { this@mockk.invoke(any(), any()) } returns Unit.right()
     }
 
     private val scope = TestScope(UnconfinedTestDispatcher())
@@ -4075,7 +4075,7 @@ internal class MailboxViewModelTest {
 
         // Then
         verify(exactly = 1) { selectCategory(categoryItem.id.toDomainModel()) }
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             setActiveCategoryLabel(categoryItem.id.toDomainModel(), NoConversationGrouping)
         }
         verify(atLeast = 1) {
@@ -4098,7 +4098,7 @@ internal class MailboxViewModelTest {
 
         // Then
         verify(exactly = 0) { selectCategory(any()) }
-        verify(exactly = 0) { setActiveCategoryLabel(any(), any()) }
+        coVerify(exactly = 0) { setActiveCategoryLabel(any(), any()) }
 
         verify(exactly = 0) {
             mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)

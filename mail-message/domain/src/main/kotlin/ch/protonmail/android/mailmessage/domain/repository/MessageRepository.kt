@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.domain.repository
 
 import arrow.core.Either
-import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -27,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -171,5 +171,5 @@ interface MessageRepository {
 
     fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
 
-    fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit>
+    suspend fun setActiveCategoryLabel(categoryLabelId: CategoryLabelId): Either<PaginationError, Unit>
 }

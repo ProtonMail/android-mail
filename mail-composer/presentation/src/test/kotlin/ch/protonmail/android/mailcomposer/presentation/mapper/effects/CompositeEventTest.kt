@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentError
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentState
+import ch.protonmail.android.mailattachments.domain.model.RemoveAttachmentError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentAddErrorWithList
 import ch.protonmail.android.mailcomposer.domain.model.BodyFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -107,7 +108,13 @@ internal class CompositeEventTest(
                 AttachmentError.AddAttachment(AddAttachmentError.TooManyAttachments)
             )
         }
+        private val removeErrorAttachment = mockk<AttachmentMetadataWithState>().apply {
+            every { attachmentState } returns AttachmentState.Error(
+                AttachmentError.RemoveAttachment(RemoveAttachmentError.BadRequest("Server error message"))
+            )
+        }
         private val errorList = listOf(errorAttachment)
+        private val removeErrorList = listOf(removeErrorAttachment)
         private val noErrorList = listOf(noErrorAttachment)
 
         @JvmStatic
@@ -162,6 +169,16 @@ internal class CompositeEventTest(
                             AddAttachmentError.TooManyAttachments,
                             errorList
                         )
+                    )
+                )
+            ),
+            arrayOf(
+                "AttachmentListChanged with remove error to modification",
+                CompositeEvent.AttachmentListChanged(removeErrorList),
+                ComposerStateModifications(
+                    attachmentsModification = AttachmentsStateModification.ListUpdated(removeErrorList),
+                    effectsModification = RecoverableError.AttachmentRemoveFailed(
+                        RemoveAttachmentError.BadRequest("Server error message")
                     )
                 )
             ),

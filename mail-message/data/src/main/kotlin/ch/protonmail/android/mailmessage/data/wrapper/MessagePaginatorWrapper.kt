@@ -36,15 +36,15 @@ interface MessagePaginatorWrapper {
 
     fun disconnect()
 
-    fun filterUnread(filterUnread: Boolean)
+    suspend fun filterUnread(filterUnread: Boolean)
 
-    fun showSpamAndTrash(show: Boolean)
+    suspend fun showSpamAndTrash(show: Boolean)
 
-    fun updateKeyword(keyword: String)
+    suspend fun updateKeyword(keyword: String)
 
     fun getScrollerId(): String
 
     suspend fun getCategoryViewStatus(): CategoryViewStatus
 
-    fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit>
+    suspend fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit>
 }

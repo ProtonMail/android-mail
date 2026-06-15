@@ -75,19 +75,19 @@ class MailboxMessagePaginatorWrapper(
         rustPaginator.terminate()
     }
 
-    override fun filterUnread(filterUnread: Boolean) {
+    override suspend fun filterUnread(filterUnread: Boolean) {
         Timber.d("message-paginator: Changing unread filter to %s", filterUnread)
         val filter = if (filterUnread) ReadFilter.UNREAD else ReadFilter.ALL
         rustPaginator.changeFilter(filter)
     }
 
-    override fun showSpamAndTrash(show: Boolean) {
+    override suspend fun showSpamAndTrash(show: Boolean) {
         Timber.d("message-paginator: Changing show spam and trash to %s", show)
         val includeSwitch = if (show) IncludeSwitch.WITH_SPAM_AND_TRASH else IncludeSwitch.DEFAULT
         rustPaginator.changeInclude(includeSwitch)
     }
 
-    override fun updateKeyword(keyword: String) {
+    override suspend fun updateKeyword(keyword: String) {
         Timber.w("message-paginator: Called updateKeyword on a message paginator, which is illegal. No-op.")
     }
 
@@ -96,7 +96,7 @@ class MailboxMessagePaginatorWrapper(
     override suspend fun getCategoryViewStatus(): CategoryViewStatus =
         rustPaginator.categoryView().toCategoryViewStatus()
 
-    override fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    override suspend fun changeCategoryView(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         when (val result = rustPaginator.changeCategoryView(categoryLabelId)) {
             is MessageScrollerChangeCategoryViewResult.Error -> result.v1.toPaginationError().left()
             is MessageScrollerChangeCategoryViewResult.Ok -> Unit.right()

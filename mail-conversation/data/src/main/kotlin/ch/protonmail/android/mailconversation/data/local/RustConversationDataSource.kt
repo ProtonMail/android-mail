@@ -134,5 +134,5 @@ interface RustConversationDataSource {
 
     fun observeCategoryViewStatus(): Flow<CategoryViewStatus>
 
-    fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit>
+    suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit>
 }

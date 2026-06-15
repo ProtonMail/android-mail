@@ -306,7 +306,7 @@ class RustConversationsQueryImpl @Inject constructor(
 
     override fun observeCategoryViewStatus(): Flow<CategoryViewStatus> = categoryViewStatusFlow.filterNotNull()
 
-    override fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
+    override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         paginatorState?.paginatorWrapper?.changeCategoryView(categoryLabelId)
             ?: PaginationError.Other(DataError.Local.IllegalStateError).left()
 

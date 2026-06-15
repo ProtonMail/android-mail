@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 
 sealed interface AttachmentError {
     data class AddAttachment(val error: AddAttachmentError) : AttachmentError
+    data class RemoveAttachment(val error: RemoveAttachmentError) : AttachmentError
 
     data class ConvertInlineToAttachment(val error: ConvertAttachmentError) : AttachmentError
 
