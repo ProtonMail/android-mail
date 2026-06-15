@@ -170,6 +170,14 @@ data object PushProcessingWithoutWorker : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object RegisterDeviceTokenWithWorker : FeatureFlagDefinition(
+    key = "MailAndroidV7RegisterDeviceTokenWorker",
+    name = "Register device token with worker",
+    category = FeatureFlagCategory.Notifications,
+    description = "Register the FCM device token from a worker so it can complete while the app is backgrounded.",
+    defaultValue = false
+)
+
 data object BgProcessingRelaxedBatteryConstraint : FeatureFlagDefinition(
     key = "MailAndroidV7BgProcessingRelaxedConstraints",
     name = "Relax battery-not-low constraint for background processing",

@@ -25,9 +25,11 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnotifications.data.FirebaseNotificationsTokenChannel
 import ch.protonmail.android.mailnotifications.data.local.RegisterDeviceTokenWorker
 import ch.protonmail.android.mailnotifications.data.remote.FirebaseMessagingProxy
+import ch.protonmail.android.mailnotifications.data.repository.DeviceRegistrationRepository
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -52,9 +54,11 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
     val dispatcherRule = MainDispatcherRule()
     private val testCoroutineScope = CoroutineScope(dispatcherRule.testDispatcher)
 
+    private val deviceRegistrationRepository = mockk<DeviceRegistrationRepository>()
     private val enqueuer = mockk<Enqueuer>()
     private val firebaseMessagingProxy = mockk<FirebaseMessagingProxy>()
     private val firebaseNotificationsTokenChannel = mockk<FirebaseNotificationsTokenChannel>()
+    private val registerWithWorkerEnabled = mockk<FeatureFlag<Boolean>>()
 
     private lateinit var observer: FirebaseMessagingTokenLifecycleObserver
 
@@ -66,7 +70,9 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
         observer = FirebaseMessagingTokenLifecycleObserver(
             firebaseMessagingProxy,
             firebaseNotificationsTokenChannel,
+            deviceRegistrationRepository,
             enqueuer,
+            registerWithWorkerEnabled,
             testCoroutineScope
         )
     }
@@ -77,12 +83,13 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
     }
 
     @Test
-    fun `should collect tokenFlow on onCreate and enqueue device token registration`() = runTest {
+    fun `given worker flag enabled, when token received, then enqueues device token registration`() = runTest {
         // Given
         val testToken = "test_token"
         val tokenFlow = MutableSharedFlow<String>()
         val constraints = mockk<Constraints>()
 
+        coEvery { registerWithWorkerEnabled.get() } returns true
         every { firebaseNotificationsTokenChannel.tokenFlow } returns tokenFlow
         coEvery { firebaseMessagingProxy.fetchToken() } returns testToken.right()
         coEvery { firebaseNotificationsTokenChannel.sendToken(any()) } just runs
@@ -108,10 +115,37 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
                 params = RegisterDeviceTokenWorker.params(testToken)
             )
         }
+        coVerify(exactly = 0) { deviceRegistrationRepository.registerDeviceToken(any()) }
     }
 
     @Test
-    fun `should not enqueue registration if token can't be fetched`() = runTest {
+    fun `given worker flag disabled, when token received, then registers device token directly`() = runTest {
+        // Given
+        val testToken = "test_token"
+        val tokenFlow = MutableSharedFlow<String>()
+
+        coEvery { registerWithWorkerEnabled.get() } returns false
+        every { firebaseNotificationsTokenChannel.tokenFlow } returns tokenFlow
+        coEvery { firebaseMessagingProxy.fetchToken() } returns testToken.right()
+        coEvery { firebaseNotificationsTokenChannel.sendToken(any()) } just runs
+        coEvery { deviceRegistrationRepository.registerDeviceToken(testToken) } returns Unit.right()
+
+        // When
+        observer.onCreate(lifecycleOwner)
+        tokenFlow.emit(testToken)
+
+        advanceUntilIdle()
+
+        // Then
+        coVerify { firebaseNotificationsTokenChannel.sendToken(testToken) }
+        coVerify { deviceRegistrationRepository.registerDeviceToken(testToken) }
+        verify(exactly = 0) {
+            enqueuer.enqueueUniqueWork(any<String>(), any(), any(), any(), any())
+        }
+    }
+
+    @Test
+    fun `should not register if token can't be fetched`() = runTest {
         // Given
         val tokenFlow = MutableSharedFlow<String>()
 
@@ -127,5 +161,6 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
         verify(exactly = 0) {
             enqueuer.enqueueUniqueWork(any<String>(), any(), any(), any(), any())
         }
+        coVerify(exactly = 0) { deviceRegistrationRepository.registerDeviceToken(any()) }
     }
 }

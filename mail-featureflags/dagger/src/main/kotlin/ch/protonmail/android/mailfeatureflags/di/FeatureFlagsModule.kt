@@ -35,6 +35,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAut
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRegisterDeviceTokenWithWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
@@ -59,6 +60,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wa
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.PushProcessingWithoutWorker
 import ch.protonmail.android.mailfeatureflags.domain.model.RateOnUpsellEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.RegisterDeviceTokenWithWorker
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
@@ -266,6 +268,17 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun providePushProcessingWithoutWorkerDef(): FeatureFlagDefinition = PushProcessingWithoutWorker
+
+    @Provides
+    @Singleton
+    @IsRegisterDeviceTokenWithWorkerEnabled
+    fun provideRegisterDeviceTokenWithWorker(factory: BooleanFeatureFlagFactory) =
+        factory.create(RegisterDeviceTokenWithWorker.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideRegisterDeviceTokenWithWorkerDef(): FeatureFlagDefinition = RegisterDeviceTokenWithWorker
 
     @Provides
     @Singleton
