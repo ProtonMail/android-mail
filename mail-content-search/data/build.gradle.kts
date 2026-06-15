@@ -64,4 +64,5 @@ dependencies {
     implementation(project(":mail-session:data"))
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.rust.core)
 }
