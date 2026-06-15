@@ -201,3 +201,11 @@ data object UnlimitedPlanPlacementRegions : FeatureFlagDefinition(
     description = "Enables unlimited plan placement regions",
     defaultValue = false
 )
+
+data object ContentSearchEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7ContentSearch",
+    name = "Enable Content Search",
+    category = FeatureFlagCategory.Settings,
+    description = "Shows the new content search entry points",
+    defaultValue = false
+)

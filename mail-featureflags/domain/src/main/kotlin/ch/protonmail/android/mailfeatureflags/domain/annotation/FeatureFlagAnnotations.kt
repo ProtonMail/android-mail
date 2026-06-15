@@ -111,3 +111,7 @@ annotation class IsUnlimitedPlanPlacementExperimentEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsUnlimitedPlanPlacementRegionsEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsContentSearchEnabled
