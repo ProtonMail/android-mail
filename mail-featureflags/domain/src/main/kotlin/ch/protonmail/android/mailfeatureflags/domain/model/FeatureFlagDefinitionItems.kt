@@ -155,7 +155,7 @@ data object FeatureSpotlight : FeatureFlagDefinition(
 )
 
 data object CategoryView : FeatureFlagDefinition(
-    key = "MailAndroidV7CategoryView",
+    key = "CategoryView",
     name = "Enable category view",
     category = FeatureFlagCategory.Mailbox,
     description = "Enables category view",
