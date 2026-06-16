@@ -30,11 +30,14 @@ import ch.protonmail.android.mailnotifications.data.FirebaseNotificationsTokenCh
 import ch.protonmail.android.mailnotifications.data.local.RegisterDeviceTokenWorker
 import ch.protonmail.android.mailnotifications.data.remote.FirebaseMessagingProxy
 import ch.protonmail.android.mailnotifications.data.repository.DeviceRegistrationRepository
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
@@ -44,6 +47,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import uniffi.mail_uniffi.MailBackgroundExecScope
+import uniffi.mail_uniffi.MailSession
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -59,19 +64,31 @@ internal class FirebaseMessagingTokenLifecycleObserverTest {
     private val firebaseMessagingProxy = mockk<FirebaseMessagingProxy>()
     private val firebaseNotificationsTokenChannel = mockk<FirebaseNotificationsTokenChannel>()
     private val registerWithWorkerEnabled = mockk<FeatureFlag<Boolean>>()
+    private val backgroundExecScope = mockk<MailBackgroundExecScope> {
+        justRun { finsihed() }
+    }
+    private val mailSession = mockk<MailSession> {
+        every { newBackgroundExecutionScope() } returns backgroundExecScope
+    }
+
+    private val mailSessionRepository = mockk<MailSessionRepository> {
+        coEvery { getMailSession() } returns MailSessionWrapper(mailSession)
+
+    }
 
     private lateinit var observer: FirebaseMessagingTokenLifecycleObserver
 
     private val lifecycleOwner = mockk<LifecycleOwner>()
 
-
     @BeforeTest
     fun setup() {
+
         observer = FirebaseMessagingTokenLifecycleObserver(
             firebaseMessagingProxy,
             firebaseNotificationsTokenChannel,
             deviceRegistrationRepository,
             enqueuer,
+            mailSessionRepository,
             registerWithWorkerEnabled,
             testCoroutineScope
         )

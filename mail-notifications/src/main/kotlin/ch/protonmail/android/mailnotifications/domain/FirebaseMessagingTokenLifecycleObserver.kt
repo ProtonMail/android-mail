@@ -30,6 +30,8 @@ import ch.protonmail.android.mailnotifications.data.FirebaseNotificationsTokenCh
 import ch.protonmail.android.mailnotifications.data.local.RegisterDeviceTokenWorker
 import ch.protonmail.android.mailnotifications.data.remote.FirebaseMessagingProxy
 import ch.protonmail.android.mailnotifications.data.repository.DeviceRegistrationRepository
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,6 +44,7 @@ class FirebaseMessagingTokenLifecycleObserver @Inject constructor(
     private val firebaseNotificationsTokenChannel: FirebaseNotificationsTokenChannel,
     private val deviceRegistrationRepository: DeviceRegistrationRepository,
     private val enqueuer: Enqueuer,
+    private val mailSessionRepository: MailSessionRepository,
     @IsRegisterDeviceTokenWithWorkerEnabled private val registerWithWorkerEnabled: FeatureFlag<Boolean>,
     @AppScope private val coroutineScope: CoroutineScope
 ) : DefaultLifecycleObserver {
@@ -53,7 +56,9 @@ class FirebaseMessagingTokenLifecycleObserver @Inject constructor(
 
         tokenFlowJob = coroutineScope.launch {
             firebaseNotificationsTokenChannel.tokenFlow.distinctUntilChanged().collect { token ->
-                if (registerWithWorkerEnabled.get()) {
+                // Resolve the FF inside a Rust background execution scope
+                val registerWithWorker = mailSessionRepository.runInRustBackground { registerWithWorkerEnabled.get() }
+                if (registerWithWorker) {
                     Timber.tag(LogTag).d("Received new token, enqueueing registration...")
                     enqueuer.enqueueUniqueWork(
                         workerId = RegisterDeviceTokenWorker.UniqueWorkerId,
