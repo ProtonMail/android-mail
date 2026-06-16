@@ -42,6 +42,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.Con
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,6 +53,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
@@ -80,7 +82,13 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     private val rescheduleRequests = MutableSharedFlow<Unit>(extraBufferCapacity = 8)
 
+    private val actions = Channel<ContentSearchSettingsViewAction>(Channel.BUFFERED)
+
     init {
+        actions.receiveAsFlow()
+            .onEach { handle(it) }
+            .launchIn(viewModelScope)
+
         viewModelScope.launch {
             val userId = currentUserId()
             if (loadInitialState(userId)) {
@@ -151,6 +159,10 @@ class ContentSearchSettingsViewModel @Inject constructor(
     }
 
     fun submit(action: ContentSearchSettingsViewAction) {
+        actions.trySend(action)
+    }
+
+    private suspend fun handle(action: ContentSearchSettingsViewAction) {
         when (action) {
             is ContentSearchSettingsViewAction.ToggleContentSearch -> handleToggleContentSearch(action.enabled)
             is ContentSearchSettingsViewAction.ToggleAllowMobileData -> handleToggleAllowMobileData(action.enabled)
@@ -158,40 +170,34 @@ class ContentSearchSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun handleToggleContentSearch(newValue: Boolean) {
-        viewModelScope.launch {
-            val userId = currentUserId()
-            val result = if (newValue) {
-                val enqueue = startContentIndexing(userId)
-                if (enqueue is EnqueueIndexingResult.BlockedByOtherUser) {
-                    emitNewStateFor(Data.BlockedByOtherUserChanged(true))
-                    return@launch
-                }
-                setContentSearchEnabled(userId, true)
-            } else {
-                disableContentSearch(userId)
+    private suspend fun handleToggleContentSearch(newValue: Boolean) {
+        val userId = currentUserId()
+        val result = if (newValue) {
+            val enqueue = startContentIndexing(userId)
+            if (enqueue is EnqueueIndexingResult.BlockedByOtherUser) {
+                emitNewStateFor(Data.BlockedByOtherUserChanged(true))
+                return
             }
-            emitNewStateFor(Data.ContentSearchToggled(newValue))
-            result.onLeft { emitNewStateFor(Error.UpdateError) }
+            setContentSearchEnabled(userId, true)
+        } else {
+            disableContentSearch(userId)
         }
+        emitNewStateFor(Data.ContentSearchToggled(newValue))
+        result.onLeft { emitNewStateFor(Error.UpdateError) }
     }
 
-    private fun handleToggleAllowMobileData(newValue: Boolean) {
+    private suspend fun handleToggleAllowMobileData(newValue: Boolean) {
         emitNewStateFor(Data.AllowMobileDataToggled(newValue))
-        viewModelScope.launch {
-            setAllowContentSearchOnMobileData(newValue)
-            rescheduleRequests.tryEmit(Unit)
-        }
+        setAllowContentSearchOnMobileData(newValue)
+        rescheduleRequests.tryEmit(Unit)
     }
 
-    private fun handleClearLocalData() {
-        viewModelScope.launch {
-            val userId = currentUserId()
-            disableContentSearch(userId).onLeft { emitNewStateFor(Error.UpdateError) }
-            observeContentIndexingState(userId).first { it.isTerminal() }
-            clearContentSearchLocalData(userId).onLeft { emitNewStateFor(Error.UpdateError) }
-            emitNewStateFor(Data.LocalSearchDataCleared)
-        }
+    private suspend fun handleClearLocalData() {
+        val userId = currentUserId()
+        disableContentSearch(userId).onLeft { emitNewStateFor(Error.UpdateError) }
+        observeContentIndexingState(userId).first { it.isTerminal() }
+        clearContentSearchLocalData(userId).onLeft { emitNewStateFor(Error.UpdateError) }
+        emitNewStateFor(Data.LocalSearchDataCleared)
     }
 
     private suspend fun currentUserId(): UserId = observePrimaryUserId().filterNotNull().first()
