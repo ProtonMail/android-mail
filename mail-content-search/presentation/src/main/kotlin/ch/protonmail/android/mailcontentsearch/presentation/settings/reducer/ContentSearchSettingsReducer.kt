@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontentsearch.presentation.settings.reducer
 
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent
+import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsOperation
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
 import javax.inject.Inject
 
@@ -26,14 +27,14 @@ class ContentSearchSettingsReducer @Inject constructor() {
 
     fun newStateFrom(
         currentState: ContentSearchSettingsState,
-        event: ContentSearchSettingsEvent
-    ): ContentSearchSettingsState = currentState.toNewStateFromEvent(event)
+        operation: ContentSearchSettingsOperation
+    ): ContentSearchSettingsState = currentState.toNewStateFromOperation(operation)
 
-    private fun ContentSearchSettingsState.toNewStateFromEvent(
-        event: ContentSearchSettingsEvent
+    private fun ContentSearchSettingsState.toNewStateFromOperation(
+        event: ContentSearchSettingsOperation
     ): ContentSearchSettingsState = when (this) {
         is ContentSearchSettingsState.Loading -> when (event) {
-            is ContentSearchSettingsEvent.Data.ContentLoaded -> ContentSearchSettingsState.WithData(
+            is ContentSearchSettingsEvent.Data.ContentLoaded -> ContentSearchSettingsState.Data(
                 isContentSearchEnabled = event.isContentSearchEnabled,
                 isAllowMobileDataEnabled = event.isAllowMobileDataEnabled,
                 syncPercentage = null,
@@ -43,7 +44,7 @@ class ContentSearchSettingsReducer @Inject constructor() {
             else -> this
         }
 
-        is ContentSearchSettingsState.WithData -> when (event) {
+        is ContentSearchSettingsState.Data -> when (event) {
             is ContentSearchSettingsEvent.Data.ContentSearchToggled -> copy(
                 isContentSearchEnabled = event.newValue,
                 syncPercentage = if (event.newValue) syncPercentage else null,

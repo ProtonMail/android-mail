@@ -27,7 +27,7 @@ sealed interface ContentSearchSettingsState {
 
     data object LoadingError : ContentSearchSettingsState
 
-    data class WithData(
+    data class Data(
         val isContentSearchEnabled: Boolean,
         val isAllowMobileDataEnabled: Boolean,
         val syncPercentage: Double?,

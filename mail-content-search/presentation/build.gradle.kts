@@ -75,10 +75,12 @@ dependencies {
     implementation(project(":mail-content-search:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-session:domain"))
 
     debugImplementation(libs.bundles.compose.debug)
 
     testImplementation(libs.bundles.test)
+    testImplementation(project(":test:utils"))
 
     androidTestImplementation(libs.bundles.test.androidTest)
     androidTestImplementation(project(":test:annotations"))

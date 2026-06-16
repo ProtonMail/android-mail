@@ -29,7 +29,7 @@ internal class ContentSearchSettingsReducerTest {
 
     @Test
     fun `toggling on preserves indexing progress so synced state does not flash 'Preparing'`() {
-        val current = ContentSearchSettingsState.WithData(
+        val current = ContentSearchSettingsState.Data(
             isContentSearchEnabled = false,
             isAllowMobileDataEnabled = true,
             syncPercentage = null,
@@ -47,7 +47,7 @@ internal class ContentSearchSettingsReducerTest {
 
     @Test
     fun `toggling off clears indexing progress and active state`() {
-        val current = ContentSearchSettingsState.WithData(
+        val current = ContentSearchSettingsState.Data(
             isContentSearchEnabled = true,
             isAllowMobileDataEnabled = true,
             syncPercentage = 42.0,

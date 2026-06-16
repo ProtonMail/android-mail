@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings
 
-sealed interface ContentSearchSettingsEvent {
+sealed interface ContentSearchSettingsEvent : ContentSearchSettingsOperation {
 
     sealed interface Data : ContentSearchSettingsEvent {
         data class ContentLoaded(
