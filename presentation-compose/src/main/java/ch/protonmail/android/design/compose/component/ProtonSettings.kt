@@ -26,6 +26,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -493,6 +494,36 @@ fun ProtonSettingsToggleItem(
     value: Boolean?,
     onToggle: (Boolean) -> Unit = {}
 ) {
+    ProtonSettingsToggleItem(
+        modifier = modifier,
+        value = value,
+        onToggle = onToggle,
+        content = {
+            val isViewEnabled = value != null
+            Text(
+                text = name,
+                color = ProtonTheme.colors.textNorm(isViewEnabled),
+                style = ProtonTheme.typography.titleMedium
+            )
+            VerticalSpacer(height = ProtonDimens.Spacing.Small)
+            hint?.let {
+                Text(
+                    text = it,
+                    color = ProtonTheme.colors.textWeak,
+                    style = ProtonTheme.typography.bodyMediumNorm
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun ProtonSettingsToggleItem(
+    modifier: Modifier = Modifier,
+    value: Boolean?,
+    onToggle: (Boolean) -> Unit = {},
+    content: @Composable ColumnScope.() -> Unit
+) {
     val isSwitchChecked = value ?: false
     val isViewEnabled = value != null
 
@@ -502,22 +533,9 @@ fun ProtonSettingsToggleItem(
                 modifier = Modifier
                     .weight(1f)
                     .semantics(mergeDescendants = true) {},
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = name,
-                    color = ProtonTheme.colors.textNorm(isViewEnabled),
-                    style = ProtonTheme.typography.titleMedium
-                )
-                VerticalSpacer(height = ProtonDimens.Spacing.Small)
-                hint?.let {
-                    Text(
-                        text = hint,
-                        color = ProtonTheme.colors.textWeak,
-                        style = ProtonTheme.typography.bodyMediumNorm
-                    )
-                }
-            }
+                verticalArrangement = Arrangement.SpaceBetween,
+                content = content
+            )
 
             ProtonSwitch(
                 checked = isSwitchChecked,
