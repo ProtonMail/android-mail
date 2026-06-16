@@ -88,6 +88,7 @@ include(":mail-contact:presentation")
 include(":mail-content-search:dagger")
 include(":mail-content-search:data")
 include(":mail-content-search:domain")
+include(":mail-content-search:presentation")
 
 include(":mail-pagination:dagger")
 include(":mail-pagination:data")
