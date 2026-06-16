@@ -23,6 +23,8 @@ import ch.protonmail.android.mailcontentsearch.data.indexer.RustContentSearchInd
 import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPreferencesRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchSettingsRepositoryImpl
+import ch.protonmail.android.mailcontentsearch.data.scheduler.ContentIndexingSchedulerImpl
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
@@ -41,6 +43,10 @@ interface ContentSearchModule {
     @Binds
     @Singleton
     fun bindContentSearchIndexer(impl: RustContentSearchIndexer): ContentSearchIndexer
+
+    @Binds
+    @Singleton
+    fun bindContentIndexingScheduler(impl: ContentIndexingSchedulerImpl): ContentIndexingScheduler
 
     @Binds
     @Singleton
