@@ -1707,7 +1707,7 @@ internal class MailboxViewModelTest {
                 intermediateState,
                 MailboxEvent.ItemClicked.ItemDetailsOpened(
                     item, labelId,
-                    false, item.id, null
+                    false, item.id, null, ""
                 )
             )
         } returns expectedState
@@ -1889,7 +1889,7 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 intermediateState,
-                MailboxEvent.ItemClicked.ItemDetailsOpened(item, labelId, true, null, null)
+                MailboxEvent.ItemClicked.ItemDetailsOpened(item, labelId, true, null, null, "")
             )
         } returns expectedState
         expectPagerMock()
@@ -2112,7 +2112,8 @@ internal class MailboxViewModelTest {
                     contextLabel = labelId,
                     viewModeIsConversationGrouping = false,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 )
             )
         } returns createMailboxDataState(
@@ -4096,7 +4097,8 @@ internal class MailboxViewModelTest {
                         allMailLabelId.labelId,
                         false,
                         item.id,
-                        null
+                        null,
+                        ""
                     )
                 )
             }
@@ -4232,7 +4234,7 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 any(),
-                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
+                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null, "")
             )
         } returns intermediateState
 
@@ -4250,7 +4252,7 @@ internal class MailboxViewModelTest {
             verify {
                 mailboxReducer.newStateFrom(
                     any(),
-                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null, "")
                 )
             }
             cancelAndIgnoreRemainingEvents()

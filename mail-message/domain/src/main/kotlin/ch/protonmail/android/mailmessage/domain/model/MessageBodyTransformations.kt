@@ -22,7 +22,8 @@ data class MessageBodyTransformations(
     val showQuotedText: Boolean,
     val hideEmbeddedImages: Boolean?,
     val hideRemoteContent: Boolean?,
-    val messageThemeOptions: MessageThemeOptions?
+    val messageThemeOptions: MessageThemeOptions?,
+    val highlightQuery: String = ""
 ) {
 
     companion object {

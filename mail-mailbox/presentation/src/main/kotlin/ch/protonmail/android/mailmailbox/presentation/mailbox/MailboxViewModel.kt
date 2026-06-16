@@ -647,10 +647,20 @@ class MailboxViewModel @Inject constructor(
                 getViewModeForCurrentLocation(getSelectedMailLabelId()) == ViewMode.ConversationGrouping
 
             val categoryId = observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
+            // Highlight matches in the opened item only when content search is on.
+            val searchQuery = if (isInSearchMode && contentSearchSettingsEnabled.get()) {
+                (state.value.mailboxListState as? MailboxListState.Data)?.searchState?.searchQuery.orEmpty()
+            } else {
+                ""
+            }
             emitNewStateFrom(
                 MailboxEvent.ItemClicked.ItemDetailsOpened(
-                    item, labelId,
-                    isConversationGrouping, subItemId, categoryId
+                    item = item,
+                    contextLabel = labelId,
+                    viewModeIsConversationGrouping = isConversationGrouping,
+                    subitemId = subItemId,
+                    openedFromCategory = categoryId,
+                    searchQuery = searchQuery
                 )
             )
         }

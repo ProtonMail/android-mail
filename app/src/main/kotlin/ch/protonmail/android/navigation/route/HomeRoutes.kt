@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactList
 import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearchScreen
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
 import ch.protonmail.android.maildetail.presentation.ui.PagedConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen
@@ -63,7 +64,13 @@ internal fun NavGraphBuilder.addConversationDetail(
 ) {
     composableWithTransitions(
         route = Destination.Screen.Conversation.route,
-        transitions = RouteTransitionSpec.Conversation
+        transitions = RouteTransitionSpec.Conversation,
+        arguments = listOf(
+            navArgument(ConversationDetailScreen.SearchQueryKey) {
+                type = NavType.StringType
+                defaultValue = ""
+            }
+        )
     ) {
         PagedConversationDetailScreen(
             actions = actions,
@@ -100,7 +107,8 @@ internal fun NavGraphBuilder.addMailbox(
                             openedFromLocation = request.openedFromLocation,
                             openedFromCategory = request.openedFromCategory,
                             locationViewModeIsConversation = request.locationViewModeIsConversation,
-                            entryPoint = ConversationDetailEntryPoint.Mailbox
+                            entryPoint = ConversationDetailEntryPoint.Mailbox,
+                            searchQuery = request.searchQuery
                         )
                     }
                     navController.navigate(destination)

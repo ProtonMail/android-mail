@@ -2520,6 +2520,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         initialScrollToMessageId = scrollToMessageId?.let { MessageIdUiModel(scrollToMessageId) },
         openedFromLocation = filterByLocationLabelId,
         conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
+        searchQuery = "",
         isAutoExpandEnabled = isAutoExpandEnabled,
         isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
         applyWebViewDarkModeFallback = applyWebViewDarkModeFallback

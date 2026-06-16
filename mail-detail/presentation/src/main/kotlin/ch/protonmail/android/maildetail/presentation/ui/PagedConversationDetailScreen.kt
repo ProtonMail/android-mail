@@ -142,7 +142,8 @@ private fun PagedConversationDetailScreen(
             singleMessageMode = state.navigationArgs.singleMessageMode,
             openedFromLocation = state.navigationArgs.openedFromLocation,
             conversationEntryPoint = state.navigationArgs.conversationEntryPoint,
-            initialScrollToMessageId = null
+            initialScrollToMessageId = null,
+            searchQuery = state.navigationArgs.searchQuery
         )
 
     ConversationPager(

@@ -186,7 +186,8 @@ fun ConversationDetailScreen(
             initialScrollToMessageId = navigationArgs.initialScrollToMessageId,
             conversationEntryPoint = navigationArgs.conversationEntryPoint,
             isSingleMessageModeEnabled = navigationArgs.singleMessageMode,
-            openedFromLocation = navigationArgs.openedFromLocation
+            openedFromLocation = navigationArgs.openedFromLocation,
+            searchQuery = navigationArgs.searchQuery
         )
     }
 
@@ -1253,7 +1254,8 @@ object ConversationDetail {
         val singleMessageMode: Boolean,
         val initialScrollToMessageId: MessageIdUiModel?,
         val openedFromLocation: LabelId,
-        val conversationEntryPoint: ConversationDetailEntryPoint
+        val conversationEntryPoint: ConversationDetailEntryPoint,
+        val searchQuery: String = ""
     )
 }
 
@@ -1269,6 +1271,7 @@ object ConversationDetailScreen {
     const val OpenedFromLocationKey = "opened from location"
     const val OpenedFromCategoryKey = "opened from category"
     const val ConversationDetailEntryPointNameKey = "detail origin entry point"
+    const val SearchQueryKey = "searchQuery"
 
     data class Actions(
         val onExit: (notifyUserMessage: ActionResult?) -> Unit,

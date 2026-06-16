@@ -374,7 +374,8 @@ class MailboxListReducer @Inject constructor(
             subItemId = operation.subitemId?.let { MailboxItemId(operation.subitemId) },
             openedFromLocation = currentLocation,
             openedFromCategory = operation.openedFromCategory,
-            locationViewModeIsConversation = operation.viewModeIsConversationGrouping
+            locationViewModeIsConversation = operation.viewModeIsConversationGrouping,
+            searchQuery = operation.searchQuery
         )
 
         return when (currentState) {

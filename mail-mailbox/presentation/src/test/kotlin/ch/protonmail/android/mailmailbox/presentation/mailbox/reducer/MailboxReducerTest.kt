@@ -509,7 +509,8 @@ internal class MailboxReducerTest(
                     contextLabel = LabelIdSample.RustLabel1,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 ),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = false,

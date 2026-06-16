@@ -437,6 +437,7 @@ internal class ConversationDetailViewModelTest {
             openedFromLocation = labelId,
             isMessageSenderBlocked = isMessageSenderBlocked,
             conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
+            searchQuery = "",
             isAutoExpandEnabled = isAutoExpandEnabled,
             isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
             applyWebViewDarkModeFallback = applyWebViewDarkModeFallback

@@ -62,7 +62,8 @@ class RustMessageBodyDataSource @Inject constructor(
                     showBlockQuote = transformations.showQuotedText,
                     hideRemoteImages = transformations.hideRemoteContent,
                     hideEmbeddedImages = transformations.hideEmbeddedImages,
-                    theme = transformations.messageThemeOptions?.toLocalThemeOptions()
+                    theme = transformations.messageThemeOptions?.toLocalThemeOptions(),
+                    highlightQuery = transformations.highlightQuery
                 )
 
                 decryptedMessage.body(transformOptions).map { decryptedBody ->

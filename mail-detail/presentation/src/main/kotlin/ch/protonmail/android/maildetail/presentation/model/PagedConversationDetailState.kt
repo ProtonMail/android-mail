@@ -50,7 +50,8 @@ data class PagerSettings(
 data class NavigationArgs(
     val singleMessageMode: Boolean,
     val openedFromLocation: LabelId,
-    val conversationEntryPoint: ConversationDetailEntryPoint
+    val conversationEntryPoint: ConversationDetailEntryPoint,
+    val searchQuery: String = ""
 )
 
 enum class Error {

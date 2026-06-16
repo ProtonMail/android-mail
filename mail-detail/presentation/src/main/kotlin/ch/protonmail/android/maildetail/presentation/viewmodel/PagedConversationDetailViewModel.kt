@@ -169,7 +169,8 @@ class PagedConversationDetailViewModel @Inject constructor(
                                     navigationArgs = NavigationArgs(
                                         openedFromLocation = requireLabelId(),
                                         singleMessageMode = singleMessageModePreferred,
-                                        conversationEntryPoint = getEntryPoint()
+                                        conversationEntryPoint = getEntryPoint(),
+                                        searchQuery = getSearchQuery()
                                     )
                                 )
                             )
@@ -290,6 +291,9 @@ class PagedConversationDetailViewModel @Inject constructor(
         val messageIdStr = savedStateHandle.get<String>(ConversationDetailScreen.ScrollToMessageIdKey)
         return messageIdStr?.let { if (it == "null") null else MessageIdUiModel(it) }
     }
+
+    private fun getSearchQuery(): String =
+        savedStateHandle.get<String>(ConversationDetailScreen.SearchQueryKey).orEmpty()
 
     private fun getEntryPoint(): ConversationDetailEntryPoint {
         val value = savedStateHandle.get<String>(ConversationDetailScreen.ConversationDetailEntryPointNameKey)

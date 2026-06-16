@@ -273,7 +273,8 @@ internal class MailboxListReducerTest(
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -284,7 +285,8 @@ internal class MailboxListReducerTest(
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -425,7 +427,8 @@ internal class MailboxListReducerTest(
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
@@ -464,7 +467,8 @@ internal class MailboxListReducerTest(
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null
+                    openedFromCategory = null,
+                    searchQuery = ""
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,

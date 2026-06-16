@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation.model
 
+import android.net.Uri
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsViewItemMode
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView.ApplicationLogsViewMode
@@ -35,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationOpenModeKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromCategoryKey
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.SearchQueryKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromLocationKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
@@ -73,7 +75,8 @@ sealed class Destination(val route: String) {
                 "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}" +
                 "/${ConversationDetailEntryPointNameKey.wrap()}/${LocationViewModeIsConversation.wrap()}" +
                 "/${ConversationOpenModeKey.wrap()}" +
-                "/${OpenedFromCategoryKey.wrap()}"
+                "/${OpenedFromCategoryKey.wrap()}" +
+                "?$SearchQueryKey={$SearchQueryKey}"
         ) {
 
             operator fun invoke(
@@ -83,6 +86,7 @@ sealed class Destination(val route: String) {
                 entryPoint: ConversationDetailEntryPoint,
                 locationViewModeIsConversation: Boolean,
                 conversationOpenMode: ConversationOpenMode = ConversationOpenMode.UseUserPreference,
+                searchQuery: String = "",
                 openedFromCategory: CategoryLabelId? = null
             ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
                 .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
@@ -91,6 +95,7 @@ sealed class Destination(val route: String) {
                 .replace(ConversationDetailEntryPointNameKey.wrap(), entryPoint.name)
                 .replace(LocationViewModeIsConversation.wrap(), locationViewModeIsConversation.toString())
                 .replace(OpenedFromCategoryKey.wrap(), openedFromCategory?.id ?: "null")
+                .replace("{$SearchQueryKey}", Uri.encode(searchQuery))
         }
 
         data object EntireMessageBody : Destination(

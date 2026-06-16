@@ -191,6 +191,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     @Assisted val initialScrollToMessageId: MessageIdUiModel?,
     @Assisted val openedFromLocation: LabelId,
     @Assisted val conversationEntryPoint: ConversationDetailEntryPoint,
+    @Assisted val searchQuery: String,
     observePrimaryUserId: ObservePrimaryUserId,
     private val messageIdUiModelMapper: MessageIdUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
@@ -1313,8 +1314,10 @@ class ConversationDetailViewModel @AssistedInject constructor(
     ) {
         val domainMsgId = MessageId(messageId.id)
 
-        val currentTransformations = messageViewStateCache.getTransformations(domainMsgId)
-            ?: MessageBodyTransformations.MessageDetailsDefaults
+        val currentTransformations = (
+            messageViewStateCache.getTransformations(domainMsgId)
+                ?: MessageBodyTransformations.MessageDetailsDefaults
+            ).copy(highlightQuery = searchQuery)
 
         val transformationsWithOverride = MessageBodyTransformationsMapper.applyOverride(
             currentTransformations, override
@@ -1760,7 +1763,8 @@ class ConversationDetailViewModel @AssistedInject constructor(
             isSingleMessageModeEnabled: Boolean,
             initialScrollToMessageId: MessageIdUiModel?,
             openedFromLocation: LabelId,
-            conversationEntryPoint: ConversationDetailEntryPoint
+            conversationEntryPoint: ConversationDetailEntryPoint,
+            searchQuery: String
         ): ConversationDetailViewModel
     }
 

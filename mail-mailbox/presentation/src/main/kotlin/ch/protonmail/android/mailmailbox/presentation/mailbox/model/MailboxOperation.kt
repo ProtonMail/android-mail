@@ -316,7 +316,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
             val contextLabel: LabelId,
             val viewModeIsConversationGrouping: Boolean,
             val subitemId: String?,
-            val openedFromCategory: CategoryLabelId?
+            val openedFromCategory: CategoryLabelId?,
+            val searchQuery: String
         ) : ItemClicked, AffectingMailboxList
 
         data class OpenComposer(
