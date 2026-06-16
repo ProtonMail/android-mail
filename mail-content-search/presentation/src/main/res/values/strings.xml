@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mail_settings_content_search">Content Search</string>
+    <string name="mail_settings_content_search_header_title">Search</string>
+    <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
+    <string name="mail_settings_content_search_learn_more">Learn more..</string>
+    <string name="mail_settings_content_search_toggle_title">Content search</string>
+    <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+    <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
+    <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
+    <string name="mail_settings_content_search_preparing_status">Preparing…</string>
+    <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
+    <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
+    <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+</resources>
