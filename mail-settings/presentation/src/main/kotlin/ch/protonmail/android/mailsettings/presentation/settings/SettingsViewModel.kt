@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryAccount
 import ch.protonmail.android.mailsession.presentation.mapper.AccountInformationMapper
 import ch.protonmail.android.design.compose.model.VisibilityUiModel
@@ -40,7 +42,8 @@ class SettingsViewModel @Inject constructor(
     private val appInformation: AppInformation,
     observePrimaryAccount: ObservePrimaryAccount,
     observeStorageQuotaUseCase: ObserveStorageQuotaUseCase,
-    private val accountInformationMapper: AccountInformationMapper
+    private val accountInformationMapper: AccountInformationMapper,
+    @IsContentSearchEnabled private val contentSearchEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     val state = combine(observePrimaryAccount(), observeStorageQuotaUseCase()) { account, storageQuota ->
@@ -50,7 +53,8 @@ class SettingsViewModel @Inject constructor(
             storageQuotaUiModel = storageQuota.getOrNull()?.let { quota ->
                 VisibilityUiModel.Visible(quota.toUiModel())
             } ?: VisibilityUiModel.Hidden,
-            appInformation = appInformation
+            appInformation = appInformation,
+            isContentSearchEnabled = contentSearchEnabled.get()
         )
     }.stateIn(
         viewModelScope,

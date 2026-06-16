@@ -37,7 +37,8 @@ object SettingsScreenPreviewData {
                 isAboveAlertThreshold = true
             )
         ),
-        appInformation = AppInformation(appVersionName = "6.0.0-alpha")
+        appInformation = AppInformation(appVersionName = "6.0.0-alpha"),
+        isContentSearchEnabled = true
     )
 
     val Actions = MainSettingsScreen.Actions(
@@ -51,6 +52,7 @@ object SettingsScreenPreviewData {
         onPasswordManagementClicked = {},
         onAccountStorageClicked = {},
         onBackClick = {},
-        onSignatureClicked = {}
+        onSignatureClicked = {},
+        onContentSearchSettingsClick = {}
     )
 }

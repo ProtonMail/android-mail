@@ -228,6 +228,7 @@ dependencies {
     implementation(project(":mail-common"))
     implementation(project(":mail-composer"))
     implementation(project(":mail-contact"))
+    implementation(project(":mail-content-search"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-detail"))
     implementation(project(":mail-events"))

@@ -283,6 +283,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                     },
                     onSignatureClicked = {
                         navController.navigate(Destination.Screen.SignatureSettingsMenu.route)
+                    },
+                    onContentSearchSettingsClick = {
+                        navController.navigate(Destination.Screen.ContentSearchSettings.route)
                     }
                 )
             )

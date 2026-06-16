@@ -180,6 +180,7 @@ sealed class Destination(val route: String) {
         object PrivacySettings : Destination("settings/account/privacy")
         object LanguageSettings : Destination("settings/appLanguage")
         object AppIconSettings : Destination("settings/appIcon")
+        object ContentSearchSettings : Destination("settings/contentSearch")
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
 

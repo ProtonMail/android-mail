@@ -39,6 +39,7 @@ import ch.protonmail.android.mailpinlock.presentation.pin.ui.AutoLockPinScreen
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialog
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogModeKey
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogResultKey
+import ch.protonmail.android.mailcontentsearch.presentation.settings.ui.ContentSearchSettingsScreen
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.ui.AppIconSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
@@ -182,6 +183,17 @@ internal fun NavGraphBuilder.addAppIconSettings(navController: NavHostController
     composableWithTransitions(route = Screen.AppIconSettings.route) {
         ProtonInvertedTheme {
             AppIconSettingsScreen(
+                modifier = Modifier,
+                onBackClick = { navController.navigateBack() }
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.addContentSearchSettings(navController: NavHostController) {
+    composableWithTransitions(route = Screen.ContentSearchSettings.route) {
+        ProtonInvertedTheme {
+            ContentSearchSettingsScreen(
                 modifier = Modifier,
                 onBackClick = { navController.navigateBack() }
             )

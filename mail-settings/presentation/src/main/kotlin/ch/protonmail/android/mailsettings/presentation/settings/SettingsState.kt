@@ -29,7 +29,8 @@ sealed class SettingsState {
         val userId: UserId?,
         val accountInfoUiModel: AccountInformationUiModel?,
         val storageQuotaUiModel: VisibilityUiModel<StorageQuotaUiModel>,
-        val appInformation: AppInformation
+        val appInformation: AppInformation,
+        val isContentSearchEnabled: Boolean
     ) : SettingsState()
 
     data object Loading : SettingsState()

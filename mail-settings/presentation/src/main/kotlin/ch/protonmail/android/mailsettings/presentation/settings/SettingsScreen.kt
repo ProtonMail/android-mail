@@ -193,6 +193,15 @@ fun MainSettingsScreen(
                         iconRes = R.drawable.ic_proton_mobile,
                         onClick = actions.onAppSettingsClick
                     )
+
+                    if (state.isContentSearchEnabled) {
+                        SettingsItemDivider()
+                        ProtonMainSettingsItem(
+                            name = stringResource(id = string.mail_settings_content_search),
+                            iconRes = R.drawable.ic_proton_magnifier,
+                            onClick = actions.onContentSearchSettingsClick
+                        )
+                    }
                     SettingsItemDivider()
                 }
             }
@@ -323,6 +332,7 @@ object MainSettingsScreen {
         val onPasswordManagementClicked: (UserId?) -> Unit,
         val onAccountStorageClicked: () -> Unit,
         val onSignatureClicked: () -> Unit,
+        val onContentSearchSettingsClick: () -> Unit,
         val onBackClick: () -> Unit
     )
 }
