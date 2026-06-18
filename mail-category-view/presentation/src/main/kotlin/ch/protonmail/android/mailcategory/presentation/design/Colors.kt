@@ -21,6 +21,8 @@ package ch.protonmail.android.mailcategory.presentation.design
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 
+internal val UnseenBadgeColor = CategoryBaseColors.Blue500
+
 object CategoryPillColors {
     val Primary = CategoryBaseColors.Iris500
     val Social = CategoryBaseColors.Cyan600
