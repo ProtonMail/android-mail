@@ -19,8 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.ui.screen
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
-import androidx.activity.compose.LocalActivity
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,6 +37,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -49,7 +49,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -107,13 +106,6 @@ internal fun UpsellingScreenContentSummerCampaign(
     state: UpsellingScreenContentState.Data,
     actions: UpsellingScreen.Actions
 ) {
-    val activity = LocalActivity.current
-    DisposableEffect(Unit) {
-        val original = activity?.requestedOrientation
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        onDispose { original?.let { activity.requestedOrientation = it } }
-    }
-
     val nightMode = isNightMode()
     val plans = state.plans
     val scrollState = rememberScrollState()
@@ -146,7 +138,11 @@ internal fun UpsellingScreenContentSummerCampaign(
             if (plans.list is PlanUpgradeInstanceListUiModel.Data) {
                 val configuration = LocalConfiguration.current
                 val screenHeight = configuration.screenHeightDp.dp
-                val maxHeight = screenHeight / 2
+                val maxHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    screenHeight / 3
+                } else {
+                    screenHeight / 2
+                }
 
                 Column(
                     modifier = Modifier
@@ -159,11 +155,14 @@ internal fun UpsellingScreenContentSummerCampaign(
                                 tint = HazeTint(if (nightMode) Color.Transparent else Color.White.copy(alpha = 0.3f))
                             )
                         )
+                        .fillMaxWidth()
                         .heightIn(max = maxHeight)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     UpsellingPlanButtonsFooter(
                         modifier = Modifier
+                            .widthIn(max = UpsellingLayoutValues.contentMaxWidth)
                             .fillMaxWidth()
                             .windowInsetsPadding(
                                 WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
@@ -178,12 +177,15 @@ internal fun UpsellingScreenContentSummerCampaign(
         Box(
             modifier = modifier
                 .hazeSource(state = hazeState)
-                .fillMaxHeight()
-                .background(UpsellingLayoutValues.SummerCampaign.backgroundGradient())
+                .fillMaxSize()
+                .background(UpsellingLayoutValues.SummerCampaign.backgroundGradient()),
+            contentAlignment = Alignment.TopCenter
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxHeight()
+                    .widthIn(max = UpsellingLayoutValues.contentMaxWidth)
+                    .fillMaxWidth()
                     .verticalScroll(scrollState)
                     .padding(bottom = footerHeight + ProtonDimens.Spacing.Large),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -202,7 +204,10 @@ internal fun UpsellingScreenContentSummerCampaign(
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .padding(start = ProtonDimens.Spacing.ExtraLarge, top = ProtonDimens.Spacing.Massive),
+                            .padding(
+                                start = ProtonDimens.Spacing.ExtraLarge,
+                                top = ProtonDimens.Spacing.Massive + ProtonDimens.Spacing.Large
+                            ),
                         contentAlignment = Alignment.TopStart
                     ) {
                         Image(
@@ -342,4 +347,27 @@ private fun SummerCampaignPreview(state: UpsellingScreenContentState.Data) {
             )
         }
     }
+}
+
+@Preview(name = "en (default)")
+@Preview(name = "cs", locale = "cs")
+@Preview(name = "da", locale = "da")
+@Preview(name = "de", locale = "de")
+@Preview(name = "es-ES", locale = "es-rES")
+@Preview(name = "es-419", locale = "b+es+419")
+@Preview(name = "fi", locale = "fi")
+@Preview(name = "fr", locale = "fr")
+@Preview(name = "it", locale = "it")
+@Preview(name = "ja", locale = "ja")
+@Preview(name = "ko", locale = "ko")
+@Preview(name = "nl", locale = "nl")
+@Preview(name = "pl", locale = "pl")
+@Preview(name = "pt-BR", locale = "pt-rBR")
+@Preview(name = "ru", locale = "ru")
+private annotation class SummerCampaignLocalePreviews
+
+@SummerCampaignLocalePreviews
+@Composable
+private fun SummerCampaign_Locales() {
+    SummerCampaignPreview(state = UpsellingContentPreviewData.SummerCampaign)
 }

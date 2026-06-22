@@ -3983,6 +3983,37 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `when move to requested in search mode, destinations use search-aware label`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem(id = "id", type = Message)
+        val baseSelection = MailboxStateSampleData.createSelectionMode(listOf(item))
+        val searchSelectionState = baseSelection.copy(
+            mailboxListState = (baseSelection.mailboxListState as MailboxListState.Data.SelectionMode).copy(
+                searchState = MailboxSearchStateSampleData.SearchData
+            ),
+            showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = false)
+        )
+        val almostAllMailLabelId = MailLabelTestData.almostAllMailSystemLabel.id
+
+        every { mailboxReducer.newStateFrom(any(), any()) } returns searchSelectionState
+        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) } returns almostAllMailLabelId
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectPagerMock()
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
+            advanceUntilIdle()
+
+            // Then
+            coVerify { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `when item clicked not in search mode with spam trash filter disabled then origin is currentlabel`() = runTest {
         // Given
         val item = buildMailboxUiModelItem(id = "id", type = Message)
