@@ -1098,6 +1098,9 @@ class MailboxViewModel @Inject constructor(
             val currentMailLabel = getSelectedMailLabelId()
             val viewMode = getViewModeForCurrentLocation(currentMailLabel)
 
+            // In search mode the destinations must be resolved against AllMail/AlmostAllMail
+            val fromLabelId = getFromLabelIdSearchAware()
+
             val (entryPoint, selectedItemIds) = when (operation) {
                 is MailboxViewAction.RequestMoveToBottomSheet -> {
                     val selectionMode = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
@@ -1126,7 +1129,7 @@ class MailboxViewModel @Inject constructor(
 
             val event = MoveToBottomSheetState.MoveToBottomSheetEvent.Ready(
                 userId = userId,
-                currentLabel = currentMailLabel.labelId,
+                currentLabel = fromLabelId,
                 itemIds = selectedItemIds,
                 entryPoint = entryPoint
             )

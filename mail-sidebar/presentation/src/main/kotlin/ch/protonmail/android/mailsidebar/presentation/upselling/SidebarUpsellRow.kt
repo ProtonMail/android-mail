@@ -183,11 +183,11 @@ private fun SidebarUpsellRowSummerCampaign(onButtonClick: () -> Unit, modifier: 
 
     ProtonSidebarItem(
         modifier = modifier,
-        icon = painterResource(upsellingR.drawable.ic_upselling_summer),
+        icon = painterResource(upsellingR.drawable.ic_upselling_summer_sidebar),
         iconTint = Color.Unspecified,
         iconModifier = iconModifier,
         text = stringResource(R.string.drawer_upgrade_plus_summer_sale),
-        textColor = UpsellingLayoutValues.SummerCampaign.mainColor,
+        textColor = UpsellingLayoutValues.SummerCampaign.accentColor,
         onClick = onButtonClick
     )
 }
