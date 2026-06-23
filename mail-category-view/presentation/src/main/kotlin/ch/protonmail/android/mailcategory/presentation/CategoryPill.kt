@@ -120,7 +120,7 @@ fun CategoryPill(
 }
 
 @Composable
-private fun CategoryIcon(
+internal fun CategoryIcon(
     iconRes: Int,
     tint: Color,
     showUnseenBadge: Boolean,

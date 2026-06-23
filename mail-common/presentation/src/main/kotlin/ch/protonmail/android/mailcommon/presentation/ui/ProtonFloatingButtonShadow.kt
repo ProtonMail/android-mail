@@ -21,40 +21,44 @@ package ch.protonmail.android.mailcommon.presentation.ui
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
 
-fun Modifier.protonFloatingButtonShadow(alpha: Float = 1f): Modifier = this
+fun Modifier.protonFloatingButtonShadow(alpha: Float = 1f): Modifier =
+    protonTwoLayerShadow(shape = RoundedCornerShape(percent = 50), alpha = alpha)
+
+fun Modifier.protonTwoLayerShadow(shape: Shape, alpha: Float = 1f): Modifier = this
     .dropShadow(
-        shape = RoundedCornerShape(percent = 50),
+        shape = shape,
         shadow = Shadow(
-            radius = FabPrimaryShadow.Radius,
-            spread = FabPrimaryShadow.Spread,
+            radius = PrimaryShadow.Radius,
+            spread = PrimaryShadow.Spread,
             offset = DpOffset(
-                FabPrimaryShadow.OffsetX,
-                FabPrimaryShadow.OffsetY
+                PrimaryShadow.OffsetX,
+                PrimaryShadow.OffsetY
             ),
-            color = FabPrimaryShadow.Color,
+            color = PrimaryShadow.Color,
             alpha = alpha
         )
     )
     .dropShadow(
-        shape = RoundedCornerShape(percent = 50),
+        shape = shape,
         shadow = Shadow(
-            radius = FabSecondaryShadow.Radius,
-            spread = FabSecondaryShadow.Spread,
+            radius = SecondaryShadow.Radius,
+            spread = SecondaryShadow.Spread,
             offset = DpOffset(
-                FabSecondaryShadow.OffsetX,
-                FabSecondaryShadow.OffsetY
+                SecondaryShadow.OffsetX,
+                SecondaryShadow.OffsetY
             ),
-            color = FabSecondaryShadow.Color,
+            color = SecondaryShadow.Color,
             alpha = alpha
         )
     )
 
-private object FabPrimaryShadow {
+private object PrimaryShadow {
     val Radius = 3.dp
     val Spread = 0.dp
 
@@ -64,7 +68,7 @@ private object FabPrimaryShadow {
     val Color = Color(0x4D000000)
 }
 
-private object FabSecondaryShadow {
+private object SecondaryShadow {
     val Radius = 8.dp
     val Spread = 3.dp
 
