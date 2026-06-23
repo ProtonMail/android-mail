@@ -77,6 +77,7 @@ object SendErrorReasonMapper {
         is SendErrorReason.ErrorNoMessage.StorageQuotaExceeded ->
             context.getString(R.string.composer_storage_quota_exceeded_error)
 
+        is SendErrorReason.ErrorNoMessage.AttachmentRemove,
         is SendErrorReason.OtherDataError -> context.getString(R.string.composer_error_send_draft_generic)
         is SendErrorReason.ErrorWithMessage.BadRequest -> sendDraftError.details
     }

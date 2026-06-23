@@ -180,6 +180,11 @@ internal class SendErrorReasonMapperTest(
                 R.string.composer_error_send_draft_generic
             ),
             arrayOf(
+                "AttachmentRemove returns generic error",
+                SendErrorReason.ErrorNoMessage.AttachmentRemove,
+                R.string.composer_error_send_draft_generic
+            ),
+            arrayOf(
                 "BadRequest returns the details string directly",
                 SendErrorReason.ErrorWithMessage.BadRequest("Server error details"),
                 "Server error details"

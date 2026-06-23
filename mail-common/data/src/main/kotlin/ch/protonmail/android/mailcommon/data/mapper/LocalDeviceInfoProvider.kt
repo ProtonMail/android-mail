@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
+ * Copyright (c) 2025 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
@@ -16,14 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsession.domain.coroutines
+package ch.protonmail.android.mailcommon.data.mapper
 
-import javax.inject.Qualifier
+import uniffi.mail_uniffi.DeviceInfo
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class EventLoopScope
+/**
+ * Provides the current device snapshot in the Rust [DeviceInfo] shape.
+ */
+interface LocalDeviceInfoProvider {
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class RustStreamScope
+    suspend fun getDeviceInfo(): DeviceInfo
+}

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsession.dagger
 
 import android.content.Context
+import ch.protonmail.android.mailcommon.data.mapper.LocalDeviceInfoProvider
 import ch.protonmail.android.mailsession.data.database.getDatabaseBaseDirectory
 import ch.protonmail.android.mailsession.data.deviceinfo.AndroidDeviceInfoProvider
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
@@ -35,6 +36,7 @@ import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.user.RustUserDataSourceImpl
 import ch.protonmail.android.mailsession.domain.annotations.DatabasesBaseDirectory
 import ch.protonmail.android.mailsession.domain.coroutines.EventLoopScope
+import ch.protonmail.android.mailsession.domain.coroutines.RustStreamScope
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import dagger.Binds
@@ -47,7 +49,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
-import uniffi.mail_uniffi.DeviceInfoProvider
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.OsKeyChain
 import javax.inject.Singleton
@@ -68,6 +69,11 @@ object MailSessionModule {
 
     @Provides
     @Singleton
+    @RustStreamScope
+    fun provideRustStreamScope() = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    @Provides
+    @Singleton
     @DatabasesBaseDirectory
     fun provideBaseDbDirectory(@ApplicationContext context: Context) = getDatabaseBaseDirectory(context)
 
@@ -81,7 +87,7 @@ object MailSessionModule {
 
         @Binds
         @Singleton
-        fun bindDeviceInfoProvider(impl: AndroidDeviceInfoProvider): DeviceInfoProvider
+        fun bindDeviceInfoProvider(impl: AndroidDeviceInfoProvider): LocalDeviceInfoProvider
 
         @Binds
         @Singleton

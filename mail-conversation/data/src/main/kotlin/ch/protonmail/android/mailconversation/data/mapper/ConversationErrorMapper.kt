@@ -26,6 +26,7 @@ import uniffi.mail_uniffi.ActionErrorReason
 fun ActionError.toConversationError() = when (this) {
     is ActionError.Other -> ConversationError.Other(this.v1.toDataError())
     is ActionError.Reason -> when (v1) {
+        ActionErrorReason.EXPECTED_CATEGORY_LABEL -> ConversationError.ExpectedCategoryLabel
         ActionErrorReason.UNKNOWN_LABEL -> ConversationError.UnknownLabel
         ActionErrorReason.UNKNOWN_MESSAGE -> ConversationError.UnknownMessage
         ActionErrorReason.UNKNOWN_CONTENT_ID -> ConversationError.UnknownContentId

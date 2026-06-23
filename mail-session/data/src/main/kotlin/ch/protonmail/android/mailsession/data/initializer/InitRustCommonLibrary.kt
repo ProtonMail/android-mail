@@ -22,18 +22,16 @@ import java.io.File
 import android.content.Context
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
 import ch.protonmail.android.mailbugreport.domain.annotations.RustLogsFileHandler
-import ch.protonmail.android.mailsession.data.network.AndroidDnsResolver
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.stream.RustSessionStreamCoordinator
 import ch.protonmail.android.mailsession.domain.annotations.DatabasesBaseDirectory
 import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
-import me.proton.android.core.humanverification.domain.ChallengeNotifierCallback
 import timber.log.Timber
 import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
 import uniffi.mail_uniffi.ApiConfig
 import uniffi.mail_uniffi.AppDetails
 import uniffi.mail_uniffi.CreateMailSessionResult
-import uniffi.mail_uniffi.DeviceInfoProvider
 import uniffi.mail_uniffi.MailSessionParams
 import uniffi.mail_uniffi.Origin
 import uniffi.mail_uniffi.OsKeyChain
@@ -46,12 +44,10 @@ class InitRustCommonLibrary @Inject constructor(
     private val initializeRustTlsModule: InitializeRustTlsModule,
     @DatabasesBaseDirectory private val databasesBaseDirectory: File,
     @RustLogsFileHandler private val rustLogsFileHandler: LogsFileHandler,
-    private val challengeNotifierCallback: ChallengeNotifierCallback,
-    private val deviceInfoProvider: DeviceInfoProvider,
     private val rustApiConfig: RustApiConfig,
     private val keyChain: OsKeyChain,
     private val issueReporter: IssueReporter,
-    private val androidDnsResolver: AndroidDnsResolver
+    private val streamCoordinator: RustSessionStreamCoordinator
 ) {
 
     fun init() {
@@ -69,7 +65,7 @@ class InitRustCommonLibrary @Inject constructor(
                 userAgent = rustApiConfig.userAgent,
                 envId = rustApiConfig.envId,
                 proxy = rustApiConfig.proxy,
-                resolver = androidDnsResolver
+                useCustomResolver = true
             ),
             appDetails = AppDetails(
                 platform = rustApiConfig.platform,
@@ -87,8 +83,6 @@ class InitRustCommonLibrary @Inject constructor(
             val result = createMailSession(
                 params = sessionParams,
                 keyChain = keyChain,
-                hvNotifier = challengeNotifierCallback,
-                deviceInfoProvider = deviceInfoProvider,
                 issueReporter = issueReporter
             )
         ) {
@@ -96,7 +90,14 @@ class InitRustCommonLibrary @Inject constructor(
                 Timber.e("rust-session: Critical error! Failed creating Mail session. Reason: ${result.v1}")
             }
 
-            is CreateMailSessionResult.Ok -> mailSessionRepository.setMailSession(result.v1)
+            is CreateMailSessionResult.Ok -> {
+                val bundle = result.v1
+                mailSessionRepository.setMailSession(bundle.session)
+                // The HV / device-info / resolver callbacks are no longer FFI traits: the foreign
+                // side must now drive the request streams returned in the bundle for the session's
+                // lifetime. Delegating that to a separate coordinator to keep the init clean.
+                streamCoordinator.start(bundle)
+            }
         }
     }
 

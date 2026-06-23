@@ -21,6 +21,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import ch.protonmail.android.mailcommon.data.mapper.LocalDeviceInfoProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.util.android.device.appLanguage
 import me.proton.core.util.android.device.deviceFontSize
@@ -32,13 +33,12 @@ import me.proton.core.util.android.device.deviceTimezoneOffset
 import me.proton.core.util.android.device.isDeviceRooted
 import me.proton.core.util.android.device.nightMode
 import uniffi.mail_uniffi.DeviceInfo
-import uniffi.mail_uniffi.DeviceInfoProvider
 import javax.inject.Inject
 
 @SuppressLint("HardwareIds")
 class AndroidDeviceInfoProvider @Inject constructor(
     @ApplicationContext val context: Context
-) : DeviceInfoProvider {
+) : LocalDeviceInfoProvider {
 
     private val appId: String by lazy {
         runCatching {

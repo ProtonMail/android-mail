@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.mapper
 import ch.protonmail.android.mailcommon.data.mapper.LocalDraftSendResult
 import ch.protonmail.android.mailcommon.data.mapper.toDataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus.SendMessageError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDisabled
 import ch.protonmail.android.mailcomposer.domain.model.SaveDraftError.AddressDoesNotHavePrimaryKey
@@ -80,29 +81,34 @@ private fun LocalDraftSendResult.toMessageSendingStatusForSuccess(
 
 private fun LocalDraftSendResult.toMessageSendingStatusForFailure(error: DraftSendFailure): MessageSendingStatus {
     return when (error) {
-        is DraftSendFailure.AttachmentUpload -> MessageSendingStatus.SendMessageError(
+        is DraftSendFailure.AttachmentUpload -> SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = error.v1.toSendErrorReason()
         )
 
-        is DraftSendFailure.Other -> MessageSendingStatus.SendMessageError(
+        is DraftSendFailure.Other -> SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = SendErrorReason.OtherDataError(error.v1.toDataError())
         )
 
-        is DraftSendFailure.Save -> MessageSendingStatus.SendMessageError(
+        is DraftSendFailure.Save -> SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = error.v1.toSendErrorReason()
         )
 
-        is DraftSendFailure.Send -> MessageSendingStatus.SendMessageError(
+        is DraftSendFailure.Send -> SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = error.v1.toSendErrorReason()
         )
 
-        is DraftSendFailure.AttachmentDispositionSwap -> MessageSendingStatus.SendMessageError(
+        is DraftSendFailure.AttachmentDispositionSwap -> SendMessageError(
             messageId = this.messageId.toMessageId(),
             reason = SendErrorReason.ErrorNoMessage.AttachmentConversionFailure
+        )
+
+        is DraftSendFailure.AttachmentRemove -> SendMessageError(
+            messageId = this.messageId.toMessageId(),
+            reason = SendErrorReason.ErrorNoMessage.AttachmentRemove
         )
     }
 }
