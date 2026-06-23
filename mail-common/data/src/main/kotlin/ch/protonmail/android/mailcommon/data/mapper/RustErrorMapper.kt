@@ -21,6 +21,8 @@ package ch.protonmail.android.mailcommon.data.mapper
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import uniffi.mail_uniffi.ActionError
 import uniffi.mail_uniffi.ActionErrorReason
+import uniffi.mail_uniffi.DraftAttachmentRemoveError
+import uniffi.mail_uniffi.DraftAttachmentRemoveErrorReason
 import uniffi.mail_uniffi.OtherErrorReason
 import uniffi.mail_uniffi.ProtonError
 import uniffi.mail_uniffi.SessionReason
@@ -39,11 +41,20 @@ fun UserSessionError.toDataError(): DataError = when (this) {
     }
 }
 
+fun DraftAttachmentRemoveError.toDataError(): DataError = when (this) {
+    is DraftAttachmentRemoveError.Other -> this.v1.toDataError()
+    is DraftAttachmentRemoveError.Reason -> when (val error = v1) {
+        is DraftAttachmentRemoveErrorReason.AttachmentDoesNotExist -> DataError.Local.NotFound
+        is DraftAttachmentRemoveErrorReason.BadRequest -> DataError.Local.Other(error.v1)
+    }
+}
+
 fun ActionError.toDataError(): DataError = when (this) {
     is ActionError.Other -> this.v1.toDataError()
     is ActionError.Reason -> when (v1) {
         ActionErrorReason.UNKNOWN_LABEL,
         ActionErrorReason.UNKNOWN_MESSAGE,
+        ActionErrorReason.EXPECTED_CATEGORY_LABEL,
         ActionErrorReason.UNKNOWN_CONTENT_ID -> DataError.Local.NotFound
     }
 }

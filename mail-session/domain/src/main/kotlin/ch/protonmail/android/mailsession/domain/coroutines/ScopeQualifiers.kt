@@ -23,3 +23,7 @@ import javax.inject.Qualifier
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class EventLoopScope
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class RustStreamScope

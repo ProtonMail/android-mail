@@ -32,6 +32,7 @@ sealed interface SendErrorReason {
         data object AttachmentTooLarge : SendErrorReason
         data object TooManyAttachments : SendErrorReason
         data object MessageTooLarge : SendErrorReason
+        data object AttachmentRemove : SendErrorReason
         data object AttachmentConversionFailure : SendErrorReason
         data object AttachmentCryptoFailure : SendErrorReason
         data object AttachmentUploadFailureRetriable : SendErrorReason

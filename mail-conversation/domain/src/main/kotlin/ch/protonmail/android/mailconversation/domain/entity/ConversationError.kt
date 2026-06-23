@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 
 sealed interface ConversationError {
+    data object ExpectedCategoryLabel : ConversationError
     data object UnknownLabel : ConversationError
     data object UnknownMessage : ConversationError
     data object UnknownContentId : ConversationError

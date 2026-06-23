@@ -28,15 +28,13 @@ import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import uniffi.mail_uniffi.IpAddr
-import uniffi.mail_uniffi.Resolver
-import uniffi.mail_uniffi.ResolverException
+import uniffi.mail_uniffi.ResolverOutcome
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 @Singleton
-class AndroidDnsResolver @Inject constructor(private val networkManager: NetworkManager) : Resolver {
+class AndroidDnsResolver @Inject constructor(private val networkManager: NetworkManager) {
 
     private val resolver: DnsResolver = DnsResolver.getInstance()
 
@@ -44,18 +42,20 @@ class AndroidDnsResolver @Inject constructor(private val networkManager: Network
         Dispatchers.IO.asExecutor()
     }
 
-
-    @Throws(ResolverException::class)
-    override suspend fun resolve(host: String): List<IpAddr>? {
+    /**
+     * Resolves [host] and reports the outcome back to Rust. Failures are returned as
+     * [ResolverOutcome] variants (never thrown): the Rust side maps a [ResolverOutcome.NetworkError]
+     * / [ResolverOutcome.OtherError] to a resolver error and falls back to muon's own resolver.
+     */
+    suspend fun resolve(host: String): ResolverOutcome {
         return suspendCancellableCoroutine { continuation ->
             Timber.tag("DnsResolution").d("required for host: $host")
 
             val network = runCatching { networkManager.activeNetwork }.getOrNull()
             when {
                 network == null -> {
-                    val exception = ResolverException.Network("Network is unavailable! Throwing")
-                    Timber.tag("DnsResolution").d("DNS resolution error: $exception")
-                    continuation.resumeWithException(exception)
+                    Timber.tag("DnsResolution").d("DNS resolution error: network is unavailable")
+                    continuation.resume(ResolverOutcome.NetworkError("Network is unavailable!"))
                 }
 
                 else -> {
@@ -74,14 +74,14 @@ class AndroidDnsResolver @Inject constructor(private val networkManager: Network
                                 it?.toRustIpAddress(originalHost = host)
                             }
 
-                            continuation.resume(addresses)
+                            continuation.resume(ResolverOutcome.Resolved(addresses))
                         }
 
                         override fun onError(error: DnsResolver.DnsException) {
-                            val exception =
-                                ResolverException.Other("DNS resolution for '$host' errored: $error")
-                            Timber.tag("DnsResolution").d("DNS resolution error: $exception ")
-                            continuation.resumeWithException(exception)
+                            Timber.tag("DnsResolution").d("DNS resolution for '$host' errored: $error")
+                            continuation.resume(
+                                ResolverOutcome.OtherError("DNS resolution for '$host' errored: $error")
+                            )
                         }
                     }
 
@@ -95,9 +95,10 @@ class AndroidDnsResolver @Inject constructor(private val networkManager: Network
                             callback
                         )
                     }.getOrElse {
-                        val exception = ResolverException.Other("DNS resolution for '$host' error from resolver: $it")
-                        Timber.tag("DnsResolution").d("DNS resolution error: $exception")
-                        continuation.resumeWithException(exception)
+                        Timber.tag("DnsResolution").d("DNS resolution for '$host' error from resolver: $it")
+                        continuation.resume(
+                            ResolverOutcome.OtherError("DNS resolution for '$host' error from resolver: $it")
+                        )
                     }
                 }
             }
