@@ -108,11 +108,11 @@ fun CategoryPill(
             showUnseenBadge = showUnseenBadge
         )
 
-        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Compact))
+        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.MediumLight))
 
         Text(
             text = stringResource(id = item.titleRes),
-            style = ProtonTheme.typography.titleSmall.copy(color = contentColor),
+            style = ProtonTheme.typography.labelLarge.copy(color = contentColor),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
