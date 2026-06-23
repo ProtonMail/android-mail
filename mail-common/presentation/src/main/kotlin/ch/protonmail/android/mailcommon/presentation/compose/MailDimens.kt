@@ -163,6 +163,6 @@ object MailDimens {
 
     object CategoryView {
         val ItemHeight = 40.dp
-        val IconSize = 20.dp
+        val IconSize = 16.dp
     }
 }
