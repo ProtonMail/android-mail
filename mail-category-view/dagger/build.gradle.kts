@@ -21,6 +21,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
     id("app-config-plugin")
 }
 
@@ -42,5 +44,13 @@ android {
             jvmTarget = JvmTarget.fromTarget("17")
         }
     }
+}
+
+dependencies {
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.dagger.hilt.android)
+
+    implementation(project(":mail-category-view:data"))
+    implementation(project(":mail-category-view:domain"))
 }
 

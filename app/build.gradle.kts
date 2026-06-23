@@ -234,6 +234,7 @@ dependencies {
     implementation(project(":mail-events"))
     implementation(project(":mail-featureflags"))
     implementation(project(":mail-label"))
+    implementation(project(":mail-category-view:dagger"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))
     implementation(project(":mail-notifications"))

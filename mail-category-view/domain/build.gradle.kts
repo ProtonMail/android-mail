@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.bundles.module.domain)
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
 }
