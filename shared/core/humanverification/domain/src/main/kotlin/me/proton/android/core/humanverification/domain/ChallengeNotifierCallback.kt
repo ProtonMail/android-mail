@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import me.proton.android.core.humanverification.domain.entity.HumanVerificationPayload
 import me.proton.android.core.humanverification.domain.entity.HumanVerificationState
+import uniffi.mail_uniffi.ChallengeNotifier
 import uniffi.mail_uniffi.ChallengePayload
 import uniffi.mail_uniffi.ChallengeResponse
 import uniffi.mail_uniffi.ChallengeServer
@@ -34,11 +35,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ChallengeNotifierCallback @Inject constructor() {
+class ChallengeNotifierCallback @Inject constructor() : ChallengeNotifier {
 
     private val mutableHumanVerificationSharedFlow = MutableSharedFlow<HumanVerificationState>(extraBufferCapacity = 1)
 
-    suspend fun onChallenge(server: ChallengeServer, payload: ChallengePayload): ChallengeResponse {
+    override suspend fun onChallenge(server: ChallengeServer, payload: ChallengePayload): ChallengeResponse {
         val baseUrl = when {
             server.doh() -> "${server.scheme()}://${server.resolvedHost()}"
             else -> payload.base()
