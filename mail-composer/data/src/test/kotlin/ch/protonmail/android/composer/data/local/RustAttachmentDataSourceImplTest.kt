@@ -50,6 +50,8 @@ import uniffi.mail_uniffi.AttachmentListRemoveWithCidResult
 import uniffi.mail_uniffi.AttachmentListWatcherStreamResult
 import uniffi.mail_uniffi.DraftAttachment
 import uniffi.mail_uniffi.DraftAttachmentListUpdateStream
+import uniffi.mail_uniffi.DraftAttachmentRemoveError
+import uniffi.mail_uniffi.DraftAttachmentRemoveErrorReason
 import uniffi.mail_uniffi.DraftAttachmentState
 import uniffi.mail_uniffi.DraftAttachmentUploadError
 import uniffi.mail_uniffi.DraftAttachmentUploadErrorReason
@@ -260,7 +262,7 @@ class RustAttachmentDataSourceImplTest {
         val attachmentId = AttachmentId("456")
         val wrapper = mockk<AttachmentsWrapper>()
         val rustError = AttachmentListRemoveResult.Error(
-            LocalProtonError.OtherReason(OtherErrorReason.Other("internal failure"))
+            DraftAttachmentRemoveError.Reason(DraftAttachmentRemoveErrorReason.AttachmentDoesNotExist)
         )
 
         coEvery { rustDraftDataSource.attachmentList() } returns wrapper.right()
@@ -272,7 +274,7 @@ class RustAttachmentDataSourceImplTest {
         val result = dataSource.removeAttachment(attachmentId)
 
         // Then
-        assertEquals(DataError.Local.Other("internal failure").left(), result)
+        assertEquals(DataError.Local.NotFound.left(), result)
     }
 
     @Test
