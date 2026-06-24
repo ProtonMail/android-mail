@@ -30,7 +30,10 @@ import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentVa
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
+import ch.protonmail.android.mailcategory.domain.usecase.ObserveCategorySpotlightSeen
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
+import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.domain.model.Action
@@ -381,6 +384,13 @@ internal class MailboxViewModelTest {
         } returns categoryViewStatusFlow
     }
 
+    private val observeCategorySpotlightSeen = mockk<ObserveCategorySpotlightSeen> {
+        every { this@mockk.invoke() } returns emptyFlow()
+    }
+    private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen> {
+        coEvery { this@mockk.invoke() } returns Unit.right()
+    }
+
     private val selectCategory = mockk<SelectCategory> {
         every { this@mockk.invoke(any()) } just runs
     }
@@ -450,7 +460,9 @@ internal class MailboxViewModelTest {
             selectCategory = selectCategory,
             categoryViewEnabled = isCategoryViewEnabled,
             contentSearchSettingsEnabled = isContentSearchEnabled,
-            observeCategoryViewStatus = observeCategoryViewStatus
+            observeCategoryViewStatus = observeCategoryViewStatus,
+            observeCategorySpotlightSeen = observeCategorySpotlightSeen,
+            markCategorySpotlightSeen = markCategorySpotlightSeen
         )
     }
 
@@ -4297,6 +4309,114 @@ internal class MailboxViewModelTest {
                 )
             }
 
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given not seen and inactive unseen category, then spotlight is shown`() = runTest {
+        // Given
+        val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
+        val dataState = MailboxStateSampleData.Loading.copy(
+            categoryViewState = CategoryViewState.Available.Data(categories = listOf(unseenCategory))
+        )
+        every { observeCategorySpotlightSeen() } returns flowOf(false.right())
+        every { mailboxReducer.newStateFrom(any(), any()) } returns dataState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
+            )
+            advanceUntilIdle()
+
+            // Then
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.CategorySpotlightStateChanged(CategorySpotlightState.Shown(unseenCategory))
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given spotlight already seen, then spotlight is hidden`() = runTest {
+        // Given
+        val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
+        val dataState = MailboxStateSampleData.Loading.copy(
+            categoryViewState = CategoryViewState.Available.Data(categories = listOf(unseenCategory))
+        )
+        every { observeCategorySpotlightSeen() } returns flowOf(true.right())
+        every { mailboxReducer.newStateFrom(any(), any()) } returns dataState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
+            )
+            advanceUntilIdle()
+
+            // Then
+            verify(exactly = 0) {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.CategorySpotlightStateChanged(CategorySpotlightState.Shown(unseenCategory))
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when category spotlight is dismissed, seen is persisted and dismiss event is emitted`() = runTest {
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DismissCategorySpotlight)
+            advanceUntilIdle()
+
+            // Then
+            coVerify { markCategorySpotlightSeen() }
+            verify { mailboxReducer.newStateFrom(any(), MailboxViewAction.DismissCategorySpotlight) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when category tab is selected and spotlight is shown, then spotlight is dismissed`() = runTest {
+        // Given
+        val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
+        val shownState = MailboxStateSampleData.Loading.copy(
+            categoryViewState = CategoryViewState.Available.Data(
+                categories = listOf(unseenCategory),
+                spotlightState = CategorySpotlightState.Shown(unseenCategory)
+            )
+        )
+        every { mailboxReducer.newStateFrom(any(), any()) } returns shownState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
+            )
+            advanceUntilIdle()
+
+            // When
+            mailboxViewModel.submit(
+                MailboxViewAction.OnCategoryItemClicked(CategoryItemUiModelSample.primary.copy(isActive = true))
+            )
+            advanceUntilIdle()
+
+            // Then
+            coVerify { markCategorySpotlightSeen() }
+            verify { mailboxReducer.newStateFrom(any(), MailboxViewAction.DismissCategorySpotlight) }
             cancelAndIgnoreRemainingEvents()
         }
     }

@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentVa
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
+import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
@@ -186,6 +187,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object ValidateUserSession : MailboxViewAction
 
     data class OnCategoryItemClicked(val categoryItem: CategoryItemUiModel) : MailboxViewAction
+
+    object DismissCategorySpotlight : MailboxViewAction, AffectingCategoryView
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -384,6 +387,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
     ) : MailboxEvent, AffectingCategoryView, AffectingUnreadFilter
 
     object CategoryChanged : MailboxEvent, AffectingMailboxList
+
+    data class CategorySpotlightStateChanged(
+        val categorySpotlightState: CategorySpotlightState
+    ) : MailboxEvent, AffectingCategoryView
 }
 
 

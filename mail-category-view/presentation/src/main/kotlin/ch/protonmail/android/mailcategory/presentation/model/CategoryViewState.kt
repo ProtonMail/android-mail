@@ -27,6 +27,7 @@ sealed interface CategoryViewState {
 
         data class Data(
             val categories: List<CategoryItemUiModel>,
+            val spotlightState: CategorySpotlightState = CategorySpotlightState.Hidden,
             val resetScrollEffect: Effect<Unit> = Effect.empty()
         ) : Available
     }

@@ -107,7 +107,10 @@ import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
+import ch.protonmail.android.mailcategory.presentation.CategorySpotlightBanner
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
+import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -291,7 +294,8 @@ fun MailboxScreen(
         onClearAllDismissed = { viewModel.submit(MailboxViewAction.ClearAllDismissed) },
         onSnooze = { viewModel.submit(MailboxViewAction.RequestSnoozeBottomSheet) },
         validateUserSession = { viewModel.submit(MailboxViewAction.ValidateUserSession) },
-        onCategoryItemClicked = { viewModel.submit(MailboxViewAction.OnCategoryItemClicked(it)) }
+        onCategoryItemClicked = { viewModel.submit(MailboxViewAction.OnCategoryItemClicked(it)) },
+        onDismissCategorySpotlight = { viewModel.submit(MailboxViewAction.DismissCategorySpotlight) }
     )
 
     val lifecycle = LocalLifecycleOwner.current
@@ -575,6 +579,9 @@ fun MailboxScreen(
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
+            val categorySpotlightState =
+                (mailboxState.categoryViewState as? CategoryViewState.Available.Data)?.spotlightState
+                    ?: CategorySpotlightState.Hidden
             MailboxSwipeRefresh(
                 modifier = Modifier.padding(paddingValues),
                 topBarHeight = rememberTopBarHeight.value,
@@ -585,6 +592,25 @@ fun MailboxScreen(
                 unreadFilterState = mailboxState.unreadFilterState,
                 actions = actions
             )
+
+            // Floats over the top of the list (below the category menu); not part of the scrolling content.
+            if (categorySpotlightState is CategorySpotlightState.Shown) {
+                // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
+                LaunchedEffect(lazyListState.isScrollInProgress) {
+                    if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
+                }
+                CategorySpotlightBanner(
+                    category = categorySpotlightState.category,
+                    onClose = actions.onDismissCategorySpotlight,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(paddingValues)
+                        .padding(
+                            horizontal = ProtonDimens.Spacing.Large,
+                            vertical = ProtonDimens.Spacing.Small
+                        )
+                )
+            }
 
             val bottomBarActions = remember(actions) {
                 BottomActionBar.Actions(
@@ -1235,7 +1261,8 @@ object MailboxScreen {
         val onCustomizeToolbar: () -> Unit,
         val validateUserSession: () -> Unit,
         val onShowRatingBooster: () -> Unit,
-        val onCategoryItemClicked: (CategoryItemUiModel) -> Unit
+        val onCategoryItemClicked: (CategoryItemUiModel) -> Unit,
+        val onDismissCategorySpotlight: () -> Unit
     ) {
 
         companion object {
@@ -1300,7 +1327,8 @@ object MailboxScreen {
                 onCustomizeToolbar = {},
                 validateUserSession = {},
                 onShowRatingBooster = {},
-                onCategoryItemClicked = {}
+                onCategoryItemClicked = {},
+                onDismissCategorySpotlight = {}
             )
         }
     }
