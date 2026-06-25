@@ -19,18 +19,23 @@
 package ch.protonmail.android.mailspotlight.presentation
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -46,12 +51,15 @@ internal class FeatureSpotlightViewModelTest {
 
     private val appInformation = AppInformation(appVersionName = "7.7.0")
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
+    private val observeIsBusinessUser = mockk<ObserveIsBusinessUser>()
     private lateinit var viewModel: FeatureSpotlightViewModel
 
     @BeforeTest
     fun setup() {
+        every { observeIsBusinessUser() } returns flowOf(false.right())
         viewModel = FeatureSpotlightViewModel(
             appInformation = appInformation,
+            observeIsBusinessUser = observeIsBusinessUser,
             markFeatureSpotlightSeen = markFeatureSpotlightSeen
         )
     }
@@ -75,14 +83,14 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `overviewFeatures list contains UI enhancements as first item`() {
+    fun `overviewFeatures list contains categories as first item`() {
         val firstFeature = viewModel.overviewFeatures[0]
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
             firstFeature.title
         )
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle),
             firstFeature.description
         )
     }
@@ -101,21 +109,52 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `overviewFeatures list contains categories as third item`() {
+    fun `overviewFeatures list contains UI enhancements as third item`() {
         val thirdFeature = viewModel.overviewFeatures[2]
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
             thirdFeature.title
         )
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle),
+            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
             thirdFeature.description
         )
     }
 
     @Test
-    fun `userType defaults to B2C`() {
-        assertEquals(SpotlightUserType.B2C, viewModel.userType)
+    fun `userType is B2B when the user is a business account`() = runTest {
+        // Given
+        every { observeIsBusinessUser() } returns flowOf(true.right())
+        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+
+        // When / Then
+        viewModel.userType.test {
+            assertEquals(SpotlightUserType.B2B, awaitItem())
+        }
+    }
+
+    @Test
+    fun `userType is B2C when the user is not a business account`() = runTest {
+        // Given
+        every { observeIsBusinessUser() } returns flowOf(false.right())
+        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+
+        // When / Then
+        viewModel.userType.test {
+            assertEquals(SpotlightUserType.B2C, awaitItem())
+        }
+    }
+
+    @Test
+    fun `userType falls back to B2C when the business check fails`() = runTest {
+        // Given
+        every { observeIsBusinessUser() } returns flowOf(DataError.Local.NoUserSession.left())
+        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+
+        // When / Then
+        viewModel.userType.test {
+            assertEquals(SpotlightUserType.B2C, awaitItem())
+        }
     }
 
     @Test

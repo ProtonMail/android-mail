@@ -77,6 +77,10 @@ internal class FakeUserSessionRepository(
         TODO("Not yet implemented")
     }
 
+    override suspend fun isBusiness(userId: UserId): Either<DataError, Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUserSettings(userId: UserId): UserSettings? {
         TODO("Not yet implemented")
     }

@@ -20,9 +20,11 @@ package ch.protonmail.android.mailspotlight.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
@@ -30,13 +32,18 @@ import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class FeatureSpotlightViewModel @Inject constructor(
     appInformation: AppInformation,
+    observeIsBusinessUser: ObserveIsBusinessUser,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
 
@@ -50,8 +57,18 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         )
     )
 
-    // ET-6044 - missing Rust wiring for B2B/B2C detection
-    val userType: SpotlightUserType = SpotlightUserType.B2C
+    val userType: StateFlow<SpotlightUserType> = observeIsBusinessUser()
+        .map { result ->
+            result.fold(
+                ifLeft = { DEFAULT_USER_TYPE },
+                ifRight = { isBusiness -> if (isBusiness) SpotlightUserType.B2B else SpotlightUserType.B2C }
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+            initialValue = DEFAULT_USER_TYPE
+        )
 
     val overviewFeatures = listOf(
         FeatureItem(
@@ -85,5 +102,10 @@ internal class FeatureSpotlightViewModel @Inject constructor(
             markFeatureSpotlightSeen()
             _closeScreenEvent.emit(Unit)
         }
+    }
+
+    companion object {
+
+        val DEFAULT_USER_TYPE = SpotlightUserType.B2C
     }
 }

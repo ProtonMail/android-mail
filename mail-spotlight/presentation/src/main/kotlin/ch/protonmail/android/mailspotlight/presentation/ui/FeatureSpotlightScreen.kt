@@ -33,12 +33,14 @@ import androidx.compose.foundation.pager.PagerSnapDistance
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailspotlight.presentation.R
@@ -65,10 +67,12 @@ fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
         viewModel.closeScreenEvent.collect { onDismiss() }
     }
 
+    val userType by viewModel.userType.collectAsStateWithLifecycle()
+
     FeatureSpotlightScreen(
         appVersionUiModel = viewModel.appVersion,
         featureItems = viewModel.overviewFeatures,
-        userType = viewModel.userType,
+        userType = userType,
         onTryCategories = viewModel::onTryCategories,
         onDismissWithoutCategories = viewModel::onDismissWithoutCategories
     )

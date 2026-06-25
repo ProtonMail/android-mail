@@ -231,5 +231,8 @@ class UserSessionRepositoryImpl @Inject constructor(
         flagName: String,
         newValue: Boolean
     ) = getUserSession(userId)?.overrideFeatureFlag(flagName, newValue) ?: DataError.Local.NoUserSession.left()
+
+    override suspend fun isBusiness(userId: UserId): Either<DataError, Boolean> =
+        getUserSession(userId)?.isBusiness() ?: DataError.Local.NoUserSession.left()
 }
 

@@ -59,6 +59,8 @@ interface UserSessionRepository {
 
     suspend fun getUserSession(userId: UserId): MailUserSessionWrapper?
 
+    suspend fun isBusiness(userId: UserId): Either<DataError, Boolean>
+
     suspend fun getUserSettings(userId: UserId): UserSettings?
 
     suspend fun forkSession(userId: UserId): Either<SessionError, Fork>

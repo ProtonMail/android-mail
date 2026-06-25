@@ -40,6 +40,7 @@ import uniffi.mail_uniffi.MailUserSessionContentSearchGetIndexingStatusResult
 import uniffi.mail_uniffi.MailUserSessionContentSearchIsEnabledResult
 import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
+import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
@@ -92,6 +93,11 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
     suspend fun getUser(): Either<DataError, User> = when (val result = userSession.user()) {
         is MailUserSessionUserResult.Error -> result.v1.toDataError().left()
         is MailUserSessionUserResult.Ok -> result.v1.right()
+    }
+
+    suspend fun isBusiness(): Either<DataError, Boolean> = when (val result = userSession.isBusiness()) {
+        is MailUserSessionIsBusinessResult.Error -> result.v1.toDataError().left()
+        is MailUserSessionIsBusinessResult.Ok -> result.v1.right()
     }
 
     fun executeWhenOnline(block: () -> Unit) {
