@@ -46,6 +46,7 @@ import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.SenderImageSize
+import uniffi.mail_uniffi.UpdateCategoryViewResult
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
 
@@ -99,6 +100,12 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
         is MailUserSessionIsBusinessResult.Error -> result.v1.toDataError().left()
         is MailUserSessionIsBusinessResult.Ok -> result.v1.right()
     }
+
+    suspend fun updateCategoryView(enabled: Boolean): Either<DataError, Unit> =
+        when (val result = uniffi.mail_uniffi.updateCategoryView(userSession, enabled)) {
+            is UpdateCategoryViewResult.Error -> result.v1.toDataError().left()
+            UpdateCategoryViewResult.Ok -> Unit.right()
+        }
 
     fun executeWhenOnline(block: () -> Unit) {
         val callback = object : ExecuteWhenOnlineCallbackAsync {

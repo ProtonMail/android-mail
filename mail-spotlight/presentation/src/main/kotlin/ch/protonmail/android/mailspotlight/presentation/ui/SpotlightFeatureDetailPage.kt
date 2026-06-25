@@ -72,13 +72,12 @@ internal fun FeatureDetailPage(
     content: FeatureDetailPageContent,
     actions: SpotlightActions,
     modifier: Modifier = Modifier,
-    isLastPage: Boolean = false,
-    showDismissButton: Boolean = false
+    isLastPage: Boolean = false
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {
-        LandscapeFeatureDetailPage(content, actions, modifier, isLastPage, showDismissButton)
+        LandscapeFeatureDetailPage(content, actions, modifier, isLastPage)
     } else {
         PortraitFeatureDetailPage(content, modifier)
     }
@@ -141,8 +140,7 @@ private fun LandscapeFeatureDetailPage(
     content: FeatureDetailPageContent,
     actions: SpotlightActions,
     modifier: Modifier = Modifier,
-    isLastPage: Boolean = false,
-    showDismissButton: Boolean = false
+    isLastPage: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -204,12 +202,10 @@ private fun LandscapeFeatureDetailPage(
                         text = stringResource(R.string.spotlight_screen_category_view_button_try),
                         onClick = actions.onTryCategories
                     )
-                    if (showDismissButton) {
-                        SecondaryButton(
-                            text = stringResource(R.string.spotlight_screen_category_view_button_dismiss),
-                            onClick = actions.onDismissWithoutCategories
-                        )
-                    }
+                    SecondaryButton(
+                        text = stringResource(R.string.spotlight_screen_category_view_button_dismiss),
+                        onClick = actions.onDismissWithoutCategories
+                    )
                 }
             } else {
                 PrimaryButton(
@@ -350,8 +346,7 @@ private fun FeatureDetailPageLandscapeB2BLastPreview() {
                     subtitleRes = R.string.spotlight_screen_category_view_secondary_b2b_subtitle
                 ),
                 actions = SpotlightActions({}, {}, {}),
-                isLastPage = true,
-                showDismissButton = true
+                isLastPage = true
             )
         }
     }

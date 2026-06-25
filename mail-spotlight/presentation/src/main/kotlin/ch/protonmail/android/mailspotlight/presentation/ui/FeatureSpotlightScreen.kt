@@ -157,8 +157,7 @@ internal fun FeatureSpotlightScreen(
                             FeatureDetailPage(
                                 content = content,
                                 actions = detailPageActions,
-                                isLastPage = true,
-                                showDismissButton = true
+                                isLastPage = true
                             )
                         }
 

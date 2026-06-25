@@ -81,6 +81,10 @@ internal class FakeUserSessionRepository(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateCategoryView(userId: UserId, enabled: Boolean): Either<DataError, Unit> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUserSettings(userId: UserId): UserSettings? {
         TODO("Not yet implemented")
     }

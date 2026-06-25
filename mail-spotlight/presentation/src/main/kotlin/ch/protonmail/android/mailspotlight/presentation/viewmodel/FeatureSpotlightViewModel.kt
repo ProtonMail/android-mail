@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
+import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
@@ -44,6 +45,7 @@ import javax.inject.Inject
 internal class FeatureSpotlightViewModel @Inject constructor(
     appInformation: AppInformation,
     observeIsBusinessUser: ObserveIsBusinessUser,
+    private val updateCategoryView: UpdateCategoryView,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
 
@@ -88,17 +90,17 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         )
     ).toImmutableList()
 
-    // ET-6044 missing Rust wiring for Categories toggling
     fun onTryCategories() {
         viewModelScope.launch {
+            updateCategoryView(enabled = true)
             markFeatureSpotlightSeen()
             _closeScreenEvent.emit(Unit)
         }
     }
 
-    // ET-6044 missing Rust wiring for Categories toggling
     fun onDismissWithoutCategories() {
         viewModelScope.launch {
+            updateCategoryView(enabled = false)
             markFeatureSpotlightSeen()
             _closeScreenEvent.emit(Unit)
         }

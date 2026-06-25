@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
+import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -52,14 +53,17 @@ internal class FeatureSpotlightViewModelTest {
     private val appInformation = AppInformation(appVersionName = "7.7.0")
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
     private val observeIsBusinessUser = mockk<ObserveIsBusinessUser>()
+    private val updateCategoryView = mockk<UpdateCategoryView>()
     private lateinit var viewModel: FeatureSpotlightViewModel
 
     @BeforeTest
     fun setup() {
         every { observeIsBusinessUser() } returns flowOf(false.right())
+        coEvery { updateCategoryView(any()) } returns Unit.right()
         viewModel = FeatureSpotlightViewModel(
             appInformation = appInformation,
             observeIsBusinessUser = observeIsBusinessUser,
+            updateCategoryView = updateCategoryView,
             markFeatureSpotlightSeen = markFeatureSpotlightSeen
         )
     }
@@ -125,7 +129,12 @@ internal class FeatureSpotlightViewModelTest {
     fun `userType is B2B when the user is a business account`() = runTest {
         // Given
         every { observeIsBusinessUser() } returns flowOf(true.right())
-        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+        val viewModel = FeatureSpotlightViewModel(
+            appInformation,
+            observeIsBusinessUser,
+            updateCategoryView,
+            markFeatureSpotlightSeen
+        )
 
         // When / Then
         viewModel.userType.test {
@@ -137,7 +146,12 @@ internal class FeatureSpotlightViewModelTest {
     fun `userType is B2C when the user is not a business account`() = runTest {
         // Given
         every { observeIsBusinessUser() } returns flowOf(false.right())
-        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+        val viewModel = FeatureSpotlightViewModel(
+            appInformation,
+            observeIsBusinessUser,
+            updateCategoryView,
+            markFeatureSpotlightSeen
+        )
 
         // When / Then
         viewModel.userType.test {
@@ -149,7 +163,12 @@ internal class FeatureSpotlightViewModelTest {
     fun `userType falls back to B2C when the business check fails`() = runTest {
         // Given
         every { observeIsBusinessUser() } returns flowOf(DataError.Local.NoUserSession.left())
-        val viewModel = FeatureSpotlightViewModel(appInformation, observeIsBusinessUser, markFeatureSpotlightSeen)
+        val viewModel = FeatureSpotlightViewModel(
+            appInformation,
+            observeIsBusinessUser,
+            updateCategoryView,
+            markFeatureSpotlightSeen
+        )
 
         // When / Then
         viewModel.userType.test {
@@ -158,7 +177,7 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `onTryCategories calls markFeatureSpotlightSeen and emits close`() = runTest {
+    fun `onTryCategories enables category view, marks seen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
 
         viewModel.closeScreenEvent.test {
@@ -166,11 +185,12 @@ internal class FeatureSpotlightViewModelTest {
             assertEquals(Unit, awaitItem())
         }
 
+        coVerify(exactly = 1) { updateCategoryView(enabled = true) }
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
 
     @Test
-    fun `onDismissWithoutCategories calls markFeatureSpotlightSeen and emits close`() = runTest {
+    fun `onDismissWithoutCategories disables category view, marks seen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
 
         viewModel.closeScreenEvent.test {
@@ -178,6 +198,7 @@ internal class FeatureSpotlightViewModelTest {
             assertEquals(Unit, awaitItem())
         }
 
+        coVerify(exactly = 1) { updateCategoryView(enabled = false) }
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
 
