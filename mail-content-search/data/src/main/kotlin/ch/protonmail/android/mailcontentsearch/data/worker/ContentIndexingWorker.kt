@@ -49,9 +49,11 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
@@ -119,22 +121,73 @@ class ContentIndexingWorker @AssistedInject constructor(
      * Index every eligible account in turn, advancing as each completes. A single worker (and a
      * single foreground service) drives the whole sweep. An account that errors out is skipped for
      * the remainder of this sweep so it cannot wedge the loop; it is retried on the next sweep.
+     *
+     * The sweep also reacts to the active (primary) user changing: when the user switches to an
+     * account that should be indexed first, the in-flight account is paused (its partial index is
+     * preserved) and the loop re-evaluates primary-first, so the account now in use is prioritised.
      */
     private suspend fun runSweep(runAsForeground: Boolean): Result {
         val failed = mutableSetOf<UserId>()
         while (true) {
             val next = findFirstEligibleAccountToIndex(skip = failed) ?: break
-            indexAccount(next, runAsForeground).fold(
-                ifLeft = { error ->
-                    Timber.e("ContentIndexingWorker: sweep failed for $next with $error, advancing")
+            when (indexAccountWithPreemption(next, runAsForeground)) {
+                IndexOutcome.Completed -> Timber.d("ContentIndexingWorker: sweep completed $next, advancing")
+                IndexOutcome.Preempted -> {
+                    Timber.d("ContentIndexingWorker: $next preempted by active-user change, pausing")
+                    indexer.cancel(next) // preserve partial index; the account is revisited later
+                }
+                IndexOutcome.Failed -> {
+                    Timber.e("ContentIndexingWorker: sweep failed for $next, advancing")
                     indexer.cancel(next)
                     failed += next
-                },
-                ifRight = { Timber.d("ContentIndexingWorker: sweep completed $next, advancing") }
-            )
+                }
+            }
         }
         Timber.d("ContentIndexingWorker: sweep finished")
         return Result.success()
+    }
+
+    /**
+     * Indexes [userId], racing it against active-user changes. Returns [IndexOutcome.Preempted] when
+     * the user switches to an account that takes priority, so the caller can pause and re-evaluate.
+     */
+    private suspend fun indexAccountWithPreemption(userId: UserId, runAsForeground: Boolean): IndexOutcome {
+        return coroutineScope {
+            val indexing = async { indexAccount(userId, runAsForeground) }
+            val preemption = launch {
+                awaitPreemption(currentlyIndexing = userId) { indexing.cancel(PreemptionSignal()) }
+            }
+            try {
+                indexing.await().fold(
+                    ifLeft = { IndexOutcome.Failed },
+                    ifRight = { IndexOutcome.Completed }
+                )
+            } catch (signal: PreemptionSignal) {
+                Timber.d("ContentIndexingWorker: $userId preempted (${signal.message})")
+                // Let the indexing coroutine finish tearing down its watch stream before the caller
+                // pauses Rust indexing for this account.
+                indexing.join()
+                IndexOutcome.Preempted
+            } finally {
+                preemption.cancel()
+            }
+        }
+    }
+
+    @OptIn(FlowPreview::class)
+    private suspend fun awaitPreemption(currentlyIndexing: UserId, onPreempt: () -> Unit) {
+        userSessionRepository.observePrimaryUserId()
+            .filterNotNull()
+            .distinctUntilChanged()
+            .debounce(PreemptionDebounceMillis.milliseconds)
+            .collect {
+                // The account now in use takes priority only if it is itself eligible to index.
+                val topPriority = findFirstEligibleAccountToIndex()
+                if (topPriority != null && topPriority != currentlyIndexing) {
+                    Timber.d("ContentIndexingWorker: active user prioritises $topPriority over $currentlyIndexing")
+                    onPreempt()
+                }
+            }
     }
 
     private suspend fun indexAccount(userId: UserId, runAsForeground: Boolean): Either<ContentIndexingError, Unit> {
@@ -276,6 +329,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         const val TagUserPrefix = "content_indexing_user:"
 
         private const val ModeSwapDebounceMillis = 2_000L
+        private const val PreemptionDebounceMillis = 500L
 
         fun userTag(userId: String): String = "$TagUserPrefix$userId"
 
@@ -330,3 +384,12 @@ internal enum class CancellationAction {
     PreserveIndexerSession,
     ReleaseIndexerSession
 }
+
+internal enum class IndexOutcome {
+    Completed,
+    Preempted,
+    Failed
+}
+
+/** Cancels the in-flight per-account index when the active user switches to a higher-priority account. */
+private class PreemptionSignal : CancellationException("preempted by active-user change")
