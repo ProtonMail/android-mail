@@ -234,7 +234,7 @@ private fun FeatureRow(
     ) {
         Box(
             modifier = Modifier
-                .size(ProtonDimens.IconSize.Large)
+                .size(ProtonDimens.IconSize.SemiLarge)
                 .background(
                     color = ProtonTheme.colors.backgroundDeep,
                     shape = ProtonTheme.shapes.large

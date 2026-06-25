@@ -55,9 +55,9 @@ internal class FeatureSpotlightViewModel @Inject constructor(
 
     val overviewFeatures = listOf(
         FeatureItem(
-            icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
+            icon = R.drawable.ic_proton_filing_cabinet,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
         ),
         FeatureItem(
             icon = R.drawable.ic_proton_lines_long_to_small,
@@ -65,9 +65,9 @@ internal class FeatureSpotlightViewModel @Inject constructor(
             description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
+            icon = R.drawable.ic_proton_paint_roller,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
         )
     ).toImmutableList()
 

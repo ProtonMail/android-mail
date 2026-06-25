@@ -43,14 +43,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -107,7 +114,7 @@ private fun PortraitFeatureDetailPage(content: FeatureDetailPageContent, modifie
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
 
         Text(
             text = stringResource(content.subtitleRes),
@@ -116,6 +123,14 @@ private fun PortraitFeatureDetailPage(content: FeatureDetailPageContent, modifie
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Medium)
         )
+
+        if (content.showPrivacyLink) {
+            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
+            PrivacyByDesignText(
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Medium)
+            )
+        }
 
         Spacer(modifier = Modifier.weight(TEXT_BOTTOM_WEIGHT))
     }
@@ -172,6 +187,11 @@ private fun LandscapeFeatureDetailPage(
                 color = ProtonTheme.colors.textWeak
             )
 
+            if (content.showPrivacyLink) {
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
+                PrivacyByDesignText()
+            }
+
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
 
             if (isLastPage) {
@@ -202,6 +222,31 @@ private fun LandscapeFeatureDetailPage(
     }
 }
 
+@Composable
+private fun PrivacyByDesignText(modifier: Modifier = Modifier, textAlign: TextAlign? = null) {
+    val privacyText = stringResource(R.string.spotlight_screen_category_view_privacy_by_design)
+    val annotatedString = remember(privacyText) {
+        buildAnnotatedString {
+            withLink(
+                LinkAnnotation.Url(
+                    url = PRIVACY_LEARN_MORE_URL,
+                    styles = TextLinkStyles(style = SpanStyle(textDecoration = TextDecoration.Underline))
+                )
+            ) {
+                append(privacyText)
+            }
+        }
+    }
+    Text(
+        text = annotatedString,
+        style = ProtonTheme.typography.bodyLarge,
+        color = ProtonTheme.colors.textWeak,
+        textAlign = textAlign,
+        modifier = modifier
+    )
+}
+
+private const val PRIVACY_LEARN_MORE_URL = "https://proton.me/support/mail-categories"
 private const val ILLUSTRATION_WEIGHT = 5f
 private const val TEXT_BOTTOM_WEIGHT = 1f
 private const val LANDSCAPE_ILLUSTRATION_WEIGHT = 2f

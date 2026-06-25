@@ -32,9 +32,9 @@ internal object SpotlightPreviewData {
 
     val previewFeatures = listOf(
         FeatureItem(
-            icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel("UI enhancements"),
-            description = TextUiModel("Fluid scrolling, refreshed layout, and more.")
+            icon = R.drawable.ic_proton_filing_cabinet,
+            title = TextUiModel("Email categories"),
+            description = TextUiModel("Automatic sorting of incoming mail.")
         ),
         FeatureItem(
             icon = R.drawable.ic_proton_lines_long_to_small,
@@ -42,9 +42,9 @@ internal object SpotlightPreviewData {
             description = TextUiModel("New look and location for easier access.")
         ),
         FeatureItem(
-            icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel("Email categories"),
-            description = TextUiModel("Automatic sorting of incoming mail.")
+            icon = R.drawable.ic_proton_paint_roller,
+            title = TextUiModel("UI enhancements"),
+            description = TextUiModel("Fluid scrolling, refreshed layout, and more.")
         )
     ).toImmutableList()
 }

@@ -154,7 +154,7 @@ internal fun FeatureSpotlightScreen(
                                 content = content,
                                 actions = detailPageActions,
                                 isLastPage = true,
-                                showDismissButton = userType == SpotlightUserType.B2B
+                                showDismissButton = true
                             )
                         }
 
@@ -189,7 +189,6 @@ internal fun FeatureSpotlightScreen(
         if (!isLandscape) {
             SpotlightBottomBar(
                 pagerState = pagerState,
-                userType = userType,
                 actions = SpotlightActions(
                     onContinue = onContinue,
                     onTryCategories = onTryCategories,
@@ -213,7 +212,8 @@ private fun detailPageContent(userType: SpotlightUserType, isLastPage: Boolean):
             subtitleRes = when (userType) {
                 SpotlightUserType.B2C -> R.string.spotlight_screen_category_view_secondary_b2c_subtitle
                 SpotlightUserType.B2B -> R.string.spotlight_screen_category_view_secondary_b2b_subtitle
-            }
+            },
+            showPrivacyLink = userType == SpotlightUserType.B2C
         )
     } else {
         FeatureDetailPageContent(

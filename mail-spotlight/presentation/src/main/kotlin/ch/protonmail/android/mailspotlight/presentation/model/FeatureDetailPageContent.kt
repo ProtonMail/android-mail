@@ -24,5 +24,6 @@ import androidx.annotation.StringRes
 internal data class FeatureDetailPageContent(
     @DrawableRes val illustrationRes: Int,
     @StringRes val titleRes: Int,
-    @StringRes val subtitleRes: Int
+    @StringRes val subtitleRes: Int,
+    val showPrivacyLink: Boolean = false
 )
