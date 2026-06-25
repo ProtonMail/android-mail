@@ -130,6 +130,7 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
+            buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "false")
 
             val protonHost = "proton.black"
             protonEnvironment {
@@ -142,9 +143,12 @@ android {
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
+            // Allow login/auth screens to be visible over screen mirroring on remote test devices.
+            buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "true")
         }
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
+            buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "false")
         }
     }
 
