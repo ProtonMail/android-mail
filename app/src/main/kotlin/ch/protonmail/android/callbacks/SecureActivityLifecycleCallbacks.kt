@@ -24,6 +24,7 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import android.view.WindowManager
 import arrow.core.getOrElse
+import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.feature.lockscreen.LockScreenActivity
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePreventScreenshotsSetting
@@ -53,7 +54,13 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
     override fun onActivityResumed(activity: Activity) {
         // Regardless of the user-defined setting, a subset of activities will always be secure.
         if (activity.isSecureActivity()) {
-            setSecureFlags(activity)
+            // On Alpha we clear FLAG_SECURE so the login/auth screens are
+            // visible over screen mirroring on remote test devices.
+            if (BuildConfig.DISABLE_SCREEN_SECURITY) {
+                clearSecureFlags(activity)
+            } else {
+                setSecureFlags(activity)
+            }
             return
         }
 
