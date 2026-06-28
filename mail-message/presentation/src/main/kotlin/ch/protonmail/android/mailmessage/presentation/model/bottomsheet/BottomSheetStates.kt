@@ -47,7 +47,8 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
         val userId: UserId,
         val currentLabel: LabelId,
         val itemIds: List<MoveToItemId>,
-        val entryPoint: MoveToBottomSheetEntryPoint
+        val entryPoint: MoveToBottomSheetEntryPoint,
+        val activeCategoryId: LabelId? = null
     ) : MoveToBottomSheetState
 
     sealed interface MoveToBottomSheetOperation : BottomSheetOperation
@@ -56,7 +57,8 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
             val userId: UserId,
             val currentLabel: LabelId,
             val itemIds: List<MoveToItemId>,
-            val entryPoint: MoveToBottomSheetEntryPoint
+            val entryPoint: MoveToBottomSheetEntryPoint,
+            val activeCategoryId: LabelId? = null
         ) : MoveToBottomSheetEvent
     }
 }

@@ -38,6 +38,7 @@ internal class MoveToReducer @Inject constructor() {
         is MoveToState.Data -> when (event) {
             is MoveToOperation.MoveToEvent.MoveComplete -> reduceMoveComplete(contentState, event)
             MoveToOperation.MoveToEvent.ErrorMoving -> reduceMoveError(contentState)
+            MoveToOperation.MoveToEvent.CategoryNoChange -> reduceCategoryNoChange(contentState)
             else -> contentState
         }
 
@@ -115,5 +116,9 @@ internal class MoveToReducer @Inject constructor() {
 
     private fun reduceMoveError(contentState: MoveToState.Data) = contentState.copy(
         errorEffect = Effect.of(TextUiModel.TextRes(R.string.bottom_sheet_move_to_action_error))
+    )
+
+    private fun reduceCategoryNoChange(contentState: MoveToState.Data) = contentState.copy(
+        messageEffect = Effect.of(TextUiModel.TextRes(R.string.bottom_sheet_move_to_category_no_change))
     )
 }

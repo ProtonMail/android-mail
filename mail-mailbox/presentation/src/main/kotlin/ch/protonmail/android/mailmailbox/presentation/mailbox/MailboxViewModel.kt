@@ -1127,11 +1127,17 @@ class MailboxViewModel @Inject constructor(
                 }
             }
 
+            val activeCategoryId = (state.value.categoryViewState as? CategoryViewState.Available.Data)
+                ?.categories
+                ?.firstOrNull { it.isActive }
+                ?.let { LabelId(it.id.id) }
+
             val event = MoveToBottomSheetState.MoveToBottomSheetEvent.Ready(
                 userId = userId,
                 currentLabel = fromLabelId,
                 itemIds = selectedItemIds,
-                entryPoint = entryPoint
+                entryPoint = entryPoint,
+                activeCategoryId = activeCategoryId
             )
 
             emitNewStateFrom(MailboxEvent.MailboxBottomSheetEvent(event))

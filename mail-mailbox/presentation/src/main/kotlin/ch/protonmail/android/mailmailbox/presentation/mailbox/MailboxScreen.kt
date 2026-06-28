@@ -330,11 +330,13 @@ fun MailboxScreen(
                         contentState.userId,
                         contentState.currentLabel,
                         contentState.itemIds,
-                        entryPoint = contentState.entryPoint
+                        entryPoint = contentState.entryPoint,
+                        activeCategoryId = contentState.activeCategoryId
                     )
                     val moveSheetActions = MoveToBottomSheet.Actions(
                         onCreateNewFolderClick = actions.onAddFolder,
                         onError = { actions.showSnackbar(SnackbarError(it)) },
+                        onMessage = { actions.showSnackbar(SnackbarNormal(it)) },
                         onMoveToComplete = { label, entryPoint ->
                             val action = (entryPoint as? MoveToBottomSheetEntryPoint.Mailbox)?.let {
                                 MailboxViewAction.SignalMoveToCompleted(label, it)

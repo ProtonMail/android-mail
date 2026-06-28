@@ -178,6 +178,14 @@ internal class MoveToReducerTest(
                 initialState.copy(
                     shouldDismissEffect = Effect.of(MoveToState.MoveToDismissData(MailLabelText("123")))
                 )
+            ),
+            arrayOf(
+                "from loaded data to no-change state on selecting active category",
+                initialState,
+                MoveToOperation.MoveToEvent.CategoryNoChange,
+                initialState.copy(
+                    messageEffect = Effect.of(TextUiModel(R.string.bottom_sheet_move_to_category_no_change))
+                )
             )
         )
     }

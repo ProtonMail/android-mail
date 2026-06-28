@@ -85,6 +85,11 @@ internal fun MoveToBottomSheetContent(
         actions.onDismiss()
     }
 
+    ConsumableTextEffect(dataState.messageEffect) {
+        actions.onMessage(it)
+        actions.onDismiss()
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -308,6 +313,7 @@ object MoveToBottomSheetContent {
         val onCategorySelected: (MailLabelId.Category, MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
         val onDismiss: () -> Unit,
         val onError: (String) -> Unit,
+        val onMessage: (String) -> Unit,
         val onMoveToComplete: (labelText: MailLabelText, entryPoint: MoveToBottomSheetEntryPoint) -> Unit
     )
 }
@@ -385,6 +391,7 @@ private fun MoveToBottomSheetContentPreview() {
                 onCategorySelected = { _, _, _ -> },
                 onDismiss = {},
                 onError = { _ -> },
+                onMessage = { _ -> },
                 onMoveToComplete = { _, _ -> }
             )
         )

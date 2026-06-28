@@ -52,7 +52,8 @@ class BottomSheetReducer @Inject constructor(
                         operation.userId,
                         operation.currentLabel,
                         operation.itemIds,
-                        operation.entryPoint
+                        operation.entryPoint,
+                        operation.activeCategoryId
                     ),
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
                 )

@@ -58,11 +58,12 @@ fun MoveToBottomSheetScreen(
             viewModel.submit(MoveToOperation.MoveToAction.MoveToDestinationSelected(id, text))
         },
         onCategorySelected = { id, text, _ ->
-            viewModel.submit(MoveToOperation.MoveToAction.MoveToDestinationSelected(id, text))
+            viewModel.submit(MoveToOperation.MoveToAction.CategorySelected(id, text))
         },
         onCreateNewFolderClick = actions.onCreateNewFolderClick,
         onDismiss = actions.onDismiss,
         onError = actions.onError,
+        onMessage = actions.onMessage,
         onMoveToComplete = actions.onMoveToComplete
     )
 
@@ -94,6 +95,7 @@ object MoveToBottomSheet {
     data class Actions(
         val onCreateNewFolderClick: () -> Unit,
         val onError: (String) -> Unit,
+        val onMessage: (String) -> Unit,
         val onDismiss: () -> Unit,
         val onMoveToComplete: (
             mailLabelText: MailLabelText,
@@ -106,6 +108,7 @@ object MoveToBottomSheet {
         val userId: UserId,
         val currentLocationLabelId: LabelId,
         val items: List<MoveToItemId>,
-        val entryPoint: MoveToBottomSheetEntryPoint
+        val entryPoint: MoveToBottomSheetEntryPoint,
+        val activeCategoryId: LabelId? = null
     )
 }

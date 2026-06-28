@@ -72,19 +72,32 @@ internal class MoveToViewModel @AssistedInject constructor(
     fun submit(action: MoveToOperation.MoveToAction) {
         viewModelScope.launch {
             when (action) {
-                is MoveToOperation.MoveToAction.MoveToDestinationSelected -> processMoveToOperation(action)
+                is MoveToOperation.MoveToAction.MoveToDestinationSelected ->
+                    processMoveToOperation(action.mailLabelId, action.mailLabelText)
+
+                is MoveToOperation.MoveToAction.CategorySelected -> processCategorySelection(action)
             }
         }
     }
 
-    private suspend fun processMoveToOperation(action: MoveToOperation.MoveToAction.MoveToDestinationSelected) {
+    private suspend fun processCategorySelection(action: MoveToOperation.MoveToAction.CategorySelected) {
+        // Selecting the category the messages already belong to is a no-op.
+        if (action.mailLabelId.labelId == initialData.activeCategoryId) {
+            emitNewStateFrom(MoveToOperation.MoveToEvent.CategoryNoChange)
+            return
+        }
+
+        processMoveToOperation(action.mailLabelId, action.mailLabelText)
+    }
+
+    private suspend fun processMoveToOperation(mailLabelId: MailLabelId, mailLabelText: MailLabelText) {
         val userId = observePrimaryUserId().filterNotNull().first()
 
         val handleMoveData = HandleMoveData(
             userId = userId,
             selectedItems = initialData.items.toSet(),
-            labelId = action.mailLabelId,
-            mailLabelText = action.mailLabelText,
+            labelId = mailLabelId,
+            mailLabelText = mailLabelText,
             entryPoint = initialData.entryPoint
         )
 

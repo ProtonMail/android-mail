@@ -31,6 +31,7 @@ import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -399,7 +400,7 @@ internal class MoveToViewModelTest {
         } returns Unit.right()
 
         // When
-        val action = MoveToOperation.MoveToAction.MoveToDestinationSelected(
+        val action = MoveToOperation.MoveToAction.CategorySelected(
             mailLabelId = MailLabelId.Category(category.labelId),
             mailLabelText = mailLabelText
         )
@@ -441,7 +442,7 @@ internal class MoveToViewModelTest {
         } returns Unit.right()
 
         // When
-        val action = MoveToOperation.MoveToAction.MoveToDestinationSelected(
+        val action = MoveToOperation.MoveToAction.CategorySelected(
             mailLabelId = MailLabelId.Category(category.labelId),
             mailLabelText = mailLabelText
         )
@@ -455,6 +456,45 @@ internal class MoveToViewModelTest {
             messageId = messageId,
             expectedLabelId = category.labelId
         )
+    }
+
+    @Test
+    fun `should not move and emit no-change error when selecting the active category`() = runTest {
+        // Given
+        val conversationId = ConversationId("item1")
+        val category = CategorySystemLabelId.Social
+        val initialData = defaultInitialData.copy(activeCategoryId = category.labelId)
+
+        val initialState = MoveToState.Data(
+            entryPoint = initialData.entryPoint,
+            customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
+            systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
+            shouldDismissEffect = Effect.empty(),
+            errorEffect = Effect.empty()
+        )
+        val noChangeState = initialState.copy(
+            messageEffect = Effect.of(TextUiModel.TextRes(R.string.bottom_sheet_move_to_category_no_change))
+        )
+        expectLoadedDataForConversation(conversationId = conversationId, initialState = initialState)
+
+        // When + Then
+        val viewModel = viewModel(initialData)
+        viewModel.state.test {
+            assertEquals(initialState, awaitItem())
+
+            viewModel.submit(
+                MoveToOperation.MoveToAction.CategorySelected(
+                    mailLabelId = MailLabelId.Category(category.labelId),
+                    mailLabelText = MailLabelText("Social")
+                )
+            )
+            assertEquals(noChangeState, awaitItem())
+        }
+
+        verify { moveMessages wasNot called }
+        verify { moveConversations wasNot called }
+        confirmVerified(moveMessages, moveConversations)
     }
 
     private fun viewModel(initialData: MoveToBottomSheet.InitialData) = MoveToViewModel(

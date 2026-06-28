@@ -39,7 +39,8 @@ sealed interface MoveToState {
         val inboxDestination: MoveToBottomSheetDestinationUiModel.Inbox? = null,
         val entryPoint: MoveToBottomSheetEntryPoint,
         val shouldDismissEffect: Effect<MoveToDismissData>,
-        val errorEffect: Effect<TextUiModel>
+        val errorEffect: Effect<TextUiModel>,
+        val messageEffect: Effect<TextUiModel> = Effect.empty()
     ) : MoveToState
 
     data object Error : MoveToState
@@ -98,12 +99,18 @@ sealed interface MoveToOperation {
         ) : MoveToEvent
 
         data object ErrorMoving : MoveToEvent
+        data object CategoryNoChange : MoveToEvent
         data class MoveComplete(val mailLabelText: MailLabelText) : MoveToEvent
     }
 
     sealed interface MoveToAction : MoveToOperation {
         data class MoveToDestinationSelected(
             val mailLabelId: MailLabelId,
+            val mailLabelText: MailLabelText
+        ) : MoveToAction
+
+        data class CategorySelected(
+            val mailLabelId: MailLabelId.Category,
             val mailLabelText: MailLabelText
         ) : MoveToAction
     }
