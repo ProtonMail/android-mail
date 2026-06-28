@@ -35,6 +35,7 @@ sealed interface MoveToState {
     data class Data(
         val systemDestinations: ImmutableList<MoveToBottomSheetDestinationUiModel.System>,
         val customDestinations: ImmutableList<MoveToBottomSheetDestinationUiModel.Custom>,
+        val categoryDestinations: ImmutableList<MoveToBottomSheetDestinationUiModel.Category>,
         val inboxDestination: MoveToBottomSheetDestinationUiModel.Inbox? = null,
         val entryPoint: MoveToBottomSheetEntryPoint,
         val shouldDismissEffect: Effect<MoveToDismissData>,
@@ -72,17 +73,16 @@ sealed class MoveToBottomSheetDestinationUiModel(
         override val id: MailLabelId.System,
         override val text: TextUiModel,
         override val icon: Int,
-        override val iconTint: Color?,
-        val categories: List<Category>
-    ) : MoveToBottomSheetDestinationUiModel(id, text, icon, iconTint) {
+        override val iconTint: Color?
+    ) : MoveToBottomSheetDestinationUiModel(id, text, icon, iconTint)
 
-        data class Category(
-            val id: MailLabelId.Category,
-            val text: TextUiModel,
-            val icon: Int,
-            val iconTint: Color?
-        )
-    }
+    data class Category(
+        override val id: MailLabelId.Category,
+        override val text: TextUiModel,
+        override val icon: Int,
+        override val iconTint: Color?,
+        val mailLabelText: MailLabelText
+    ) : MoveToBottomSheetDestinationUiModel(id, text, icon, iconTint)
 }
 
 sealed interface MoveToOperation {

@@ -24,6 +24,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetDestinationUiModel
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 
 object MoveToInboxCategorySample {
 
@@ -69,11 +70,12 @@ object MoveToInboxCategorySample {
         id: CategorySystemLabelId,
         text: String,
         iconTint: Color
-    ) = MoveToBottomSheetDestinationUiModel.Inbox.Category(
+    ) = MoveToBottomSheetDestinationUiModel.Category(
         id = MailLabelId.Category(id.labelId),
         text = TextUiModel.Text(text),
         icon = R.drawable.ic_proton_circle_filled,
-        iconTint = iconTint
+        iconTint = iconTint,
+        mailLabelText = MailLabelText(text)
     )
 }
 

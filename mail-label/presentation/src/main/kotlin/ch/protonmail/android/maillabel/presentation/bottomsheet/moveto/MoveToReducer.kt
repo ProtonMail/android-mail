@@ -28,7 +28,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.iconTintColor
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.maillabel.presentation.toMoveToInboxCategories
+import ch.protonmail.android.maillabel.presentation.toMoveToCategories
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
@@ -76,16 +76,21 @@ internal class MoveToReducer @Inject constructor() {
             }
         }.filterNotNull()
 
-        val inboxDestination = inbox?.let {
-            MoveToBottomSheetDestinationUiModel.Inbox(
-                id = it.id,
-                text = it.text(),
-                icon = it.iconRes(),
-                iconTint = it.iconTintColor(),
-                categories = it.categories.toMoveToInboxCategories()
-            )
-        }
+        val categoryDestinations = inbox?.categories.toMoveToCategories()
 
+        // When categories are available they replace Inbox as direct move-to destinations.
+        val inboxDestination = if (categoryDestinations.isEmpty()) {
+            inbox?.let {
+                MoveToBottomSheetDestinationUiModel.Inbox(
+                    id = it.id,
+                    text = it.text(),
+                    icon = it.iconRes(),
+                    iconTint = it.iconTintColor()
+                )
+            }
+        } else {
+            null
+        }
 
         val customDestinationsUi = mailLabels.folders.map {
             MoveToBottomSheetDestinationUiModel.Custom(
@@ -101,6 +106,7 @@ internal class MoveToReducer @Inject constructor() {
             entryPoint = event.entryPoint,
             systemDestinations = systemDestinations.toImmutableList(),
             customDestinations = customDestinationsUi.toImmutableList(),
+            categoryDestinations = categoryDestinations.toImmutableList(),
             inboxDestination = inboxDestination,
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()

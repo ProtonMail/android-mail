@@ -110,6 +110,7 @@ internal fun MoveToBottomSheetContent(
 
             val destinations = buildList<MoveToBottomSheetDestinationUiModel> {
                 dataState.inboxDestination?.let(::add)
+                addAll(dataState.categoryDestinations)
                 addAll(dataState.systemDestinations)
             }
 
@@ -118,8 +119,8 @@ internal fun MoveToBottomSheetContent(
                 onFolderSelected = { folderId, folderName ->
                     actions.onFolderSelected(folderId, MailLabelText(folderName), entryPoint)
                 },
-                onCategorySelected = { categoryId, categoryName ->
-                    actions.onCategorySelected(categoryId, MailLabelText(categoryName), entryPoint)
+                onCategorySelected = { categoryId, categoryLabelText ->
+                    actions.onCategorySelected(categoryId, categoryLabelText, entryPoint)
                 }
             )
 
@@ -158,7 +159,7 @@ fun MoveToGroup(
     modifier: Modifier = Modifier,
     destinations: List<MoveToBottomSheetDestinationUiModel>,
     onFolderSelected: (MailLabelId, String) -> Unit,
-    onCategorySelected: (MailLabelId.Category, String) -> Unit = { _, _ -> }
+    onCategorySelected: (MailLabelId.Category, MailLabelText) -> Unit = { _, _ -> }
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -172,21 +173,14 @@ fun MoveToGroup(
             destinations.forEachIndexed { index, label ->
                 MoveToGroupItem(
                     label = label,
-                    onFolderClicked = { folderName -> onFolderSelected(label.id, folderName) }
-                )
-
-                if (label is MoveToBottomSheetDestinationUiModel.Inbox) {
-                    label.categories.forEach { category ->
-                        HorizontalDivider(
-                            thickness = MailDimens.DefaultBorder,
-                            color = ProtonTheme.colors.separatorNorm
-                        )
-                        InboxCategoryGroupItem(
-                            category = category,
-                            onCategoryClicked = { categoryName -> onCategorySelected(category.id, categoryName) }
-                        )
+                    onFolderClicked = { name ->
+                        if (label is MoveToBottomSheetDestinationUiModel.Category) {
+                            onCategorySelected(label.id, label.mailLabelText)
+                        } else {
+                            onFolderSelected(label.id, name)
+                        }
                     }
-                }
+                )
 
                 if (index < destinations.lastIndex) {
                     HorizontalDivider(
@@ -257,7 +251,8 @@ private fun MoveToGroupItem(
                 .padding(
                     start = iconPaddingStart,
                     end = ProtonDimens.Spacing.Large
-                ),
+                )
+                .size(ProtonDimens.IconSize.Medium),
             painter = painterResource(id = label.icon),
             tint = label.iconTint ?: Color.Unspecified,
             contentDescription = NO_CONTENT_DESCRIPTION
@@ -265,41 +260,6 @@ private fun MoveToGroupItem(
         Text(
             modifier = Modifier.weight(1f),
             text = folderName,
-            style = ProtonTheme.typography.bodyLargeNorm,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-private fun InboxCategoryGroupItem(
-    category: MoveToBottomSheetDestinationUiModel.Inbox.Category,
-    onCategoryClicked: (String) -> Unit
-) {
-    val categoryName = category.text.string()
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(role = Role.Button, onClick = { onCategoryClicked(categoryName) })
-            .padding(
-                vertical = ProtonDimens.Spacing.Large,
-                horizontal = ProtonDimens.Spacing.Large
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier.padding(
-                start = ProtonDimens.Spacing.Large,
-                end = ProtonDimens.Spacing.Large
-            ),
-            painter = painterResource(id = category.icon),
-            tint = category.iconTint ?: Color.Unspecified,
-            contentDescription = NO_CONTENT_DESCRIPTION
-        )
-        Text(
-            modifier = Modifier.weight(1f),
-            text = categoryName,
             style = ProtonTheme.typography.bodyLargeNorm,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -409,17 +369,12 @@ private fun MoveToBottomSheetContentPreview() {
                         iconTint = null
                     )
                 ).toImmutableList(),
-                inboxDestination = MoveToBottomSheetDestinationUiModel.Inbox(
-                    id = MailLabelId.System(LabelId("inbox")),
-                    text = TextUiModel.TextRes(SystemLabelId.Inbox.textRes()),
-                    icon = SystemLabelId.Inbox.iconRes(),
-                    iconTint = null,
-                    categories = listOf(
-                        MoveToInboxCategorySample.primary,
-                        MoveToInboxCategorySample.social,
-                        MoveToInboxCategorySample.promotions
-                    )
-                ),
+                categoryDestinations = listOf(
+                    MoveToInboxCategorySample.primary,
+                    MoveToInboxCategorySample.social,
+                    MoveToInboxCategorySample.promotions
+                ).toImmutableList(),
+                inboxDestination = null,
                 entryPoint = MoveToBottomSheetEntryPoint.Conversation,
                 shouldDismissEffect = Effect.empty(),
                 errorEffect = Effect.empty()

@@ -32,6 +32,7 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetDestinationUiModel
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -211,7 +212,7 @@ class MailLabelUiModelMapperTest {
     }
 
     @Test
-    fun `maps inbox categories into move-to inbox category ui models`() {
+    fun `maps inbox categories into move-to category ui models`() {
         // Given
         val categories = listOf(
             MailLabel.Category(
@@ -227,30 +228,32 @@ class MailLabelUiModelMapperTest {
         )
 
         // When
-        val actual = categories.toMoveToInboxCategories()
+        val actual = categories.toMoveToCategories()
 
         // Then
         val expected = listOf(
-            MoveToBottomSheetDestinationUiModel.Inbox.Category(
+            MoveToBottomSheetDestinationUiModel.Category(
                 id = MailLabelId.Category(LabelId("20")),
                 text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
                 icon = CategorySystemLabelId.Social.categoryIconRes(),
-                iconTint = CategorySystemLabelId.Social.activeCategoryColor()
+                iconTint = CategorySystemLabelId.Social.activeCategoryColor(),
+                mailLabelText = MailLabelText(CategorySystemLabelId.Social.categoryTextRes())
             ),
-            MoveToBottomSheetDestinationUiModel.Inbox.Category(
+            MoveToBottomSheetDestinationUiModel.Category(
                 id = MailLabelId.Category(LabelId("24")),
                 text = TextUiModel.TextRes(CategorySystemLabelId.Primary.categoryTextRes()),
                 icon = CategorySystemLabelId.Primary.categoryIconRes(),
-                iconTint = CategorySystemLabelId.Primary.activeCategoryColor()
+                iconTint = CategorySystemLabelId.Primary.activeCategoryColor(),
+                mailLabelText = MailLabelText(CategorySystemLabelId.Primary.categoryTextRes())
             )
         )
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `maps null inbox categories to empty move-to inbox category ui models`() {
+    fun `maps null inbox categories to empty move-to category ui models`() {
         // Given & When
-        val actual = (null as List<MailLabel.Category>?).toMoveToInboxCategories()
+        val actual = (null as List<MailLabel.Category>?).toMoveToCategories()
 
         // Then
         assertEquals(emptyList(), actual)

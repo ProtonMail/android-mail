@@ -199,6 +199,7 @@ internal class MoveToViewModelTest {
             entryPoint = defaultInitialData.entryPoint,
             customDestinations = listOf(uiModel).toImmutableList(),
             systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
@@ -252,6 +253,7 @@ internal class MoveToViewModelTest {
             entryPoint = initialData.entryPoint,
             customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
             systemDestinations = listOf(uiModel).toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
@@ -298,6 +300,7 @@ internal class MoveToViewModelTest {
             entryPoint = initialData.entryPoint,
             customDestinations = listOf(uiModel).toImmutableList(),
             systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
@@ -336,6 +339,7 @@ internal class MoveToViewModelTest {
             entryPoint = defaultInitialData.entryPoint,
             customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
             systemDestinations = listOf(uiModel).toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
@@ -374,13 +378,13 @@ internal class MoveToViewModelTest {
             id = MailLabelId.System(labelId),
             text = TextUiModel("Inbox"),
             icon = 1,
-            iconTint = null,
-            categories = emptyList()
+            iconTint = null
         )
         val initialState = MoveToState.Data(
             entryPoint = defaultInitialData.entryPoint,
             customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
             systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             inboxDestination = inboxUiModel,
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
@@ -423,6 +427,7 @@ internal class MoveToViewModelTest {
             entryPoint = initialData.entryPoint,
             customDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Custom>().toImmutableList(),
             systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )

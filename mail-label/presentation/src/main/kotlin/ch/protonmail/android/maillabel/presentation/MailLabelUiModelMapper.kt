@@ -33,6 +33,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetDestinationUiModel
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.design.compose.R as presentationComposeR
 
 fun MailLabels.toUiModels(counters: Map<LabelId, Int?>, selected: MailLabelId): MailLabelsUiModel = MailLabelsUiModel(
@@ -122,12 +123,13 @@ fun MailLabel.iconTintColor(): Color? = when (this) {
     is MailLabel.System -> null
 }
 
-fun List<MailLabel.Category>?.toMoveToInboxCategories(): List<MoveToBottomSheetDestinationUiModel.Inbox.Category> =
-    this.orEmpty().map { category -> category.toMoveToInboxCategory() }
+fun List<MailLabel.Category>?.toMoveToCategories(): List<MoveToBottomSheetDestinationUiModel.Category> =
+    this.orEmpty().map { category -> category.toMoveToCategory() }
 
-private fun MailLabel.Category.toMoveToInboxCategory() = MoveToBottomSheetDestinationUiModel.Inbox.Category(
+private fun MailLabel.Category.toMoveToCategory() = MoveToBottomSheetDestinationUiModel.Category(
     id = id,
     text = TextUiModel.TextRes(categorySystemLabelId.categoryTextRes()),
     icon = categorySystemLabelId.categoryIconRes(),
-    iconTint = categorySystemLabelId.activeCategoryColor()
+    iconTint = categorySystemLabelId.activeCategoryColor(),
+    mailLabelText = MailLabelText(categorySystemLabelId.categoryTextRes())
 )

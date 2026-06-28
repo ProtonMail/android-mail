@@ -67,8 +67,7 @@ internal class MoveToReducerTest(
                 id = it.id,
                 text = it.text(),
                 icon = it.iconRes(),
-                iconTint = it.iconTintColor(),
-                categories = emptyList()
+                iconTint = it.iconTintColor()
             )
         }
 
@@ -78,19 +77,12 @@ internal class MoveToReducerTest(
             order = 0
         )
 
-        private val inboxUiModelWithCategory = MoveToBottomSheetDestinationUiModel.Inbox(
-            id = MailLabelTestData.inboxSystemLabel.id,
-            text = MailLabelTestData.inboxSystemLabel.text(),
-            icon = MailLabelTestData.inboxSystemLabel.iconRes(),
-            iconTint = MailLabelTestData.inboxSystemLabel.iconTintColor(),
-            categories = listOf(
-                MoveToBottomSheetDestinationUiModel.Inbox.Category(
-                    id = MailLabelId.Category(LabelId("20")),
-                    text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
-                    icon = CategorySystemLabelId.Social.categoryIconRes(),
-                    iconTint = CategorySystemLabelId.Social.activeCategoryColor()
-                )
-            )
+        private val socialCategoryUiModel = MoveToBottomSheetDestinationUiModel.Category(
+            id = MailLabelId.Category(LabelId("20")),
+            text = TextUiModel.TextRes(CategorySystemLabelId.Social.categoryTextRes()),
+            icon = CategorySystemLabelId.Social.categoryIconRes(),
+            iconTint = CategorySystemLabelId.Social.activeCategoryColor(),
+            mailLabelText = MailLabelText(CategorySystemLabelId.Social.categoryTextRes())
         )
 
         private val label2021UiModel = MailLabelTestData.label2021.let {
@@ -115,6 +107,7 @@ internal class MoveToReducerTest(
             entryPoint = MoveToBottomSheetEntryPoint.Conversation,
             systemDestinations = listOf(archiveSystemUiModel).toImmutableList(),
             customDestinations = listOf(label2021UiModel).toImmutableList(),
+            categoryDestinations = emptyList<MoveToBottomSheetDestinationUiModel.Category>().toImmutableList(),
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
@@ -150,7 +143,7 @@ internal class MoveToReducerTest(
                 )
             ),
             arrayOf(
-                "from loading on initial successful loading maps inbox categories",
+                "from loading on initial successful loading flattens inbox categories as destinations",
                 MoveToState.Loading,
                 loadedEvent.copy(
                     moveToDestinations = listOf(
@@ -165,7 +158,8 @@ internal class MoveToReducerTest(
                     ).toImmutableList()
                 ),
                 initialState.copy(
-                    inboxDestination = inboxUiModelWithCategory,
+                    inboxDestination = null,
+                    categoryDestinations = listOf(socialCategoryUiModel).toImmutableList(),
                     systemDestinations = listOf(archiveSystemUiModel).toImmutableList()
                 )
             ),
