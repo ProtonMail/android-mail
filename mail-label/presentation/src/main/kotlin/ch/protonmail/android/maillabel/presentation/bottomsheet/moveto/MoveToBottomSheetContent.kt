@@ -103,16 +103,6 @@ internal fun MoveToBottomSheetContent(
                 .padding(horizontal = ProtonDimens.Spacing.Large)
                 .verticalScroll(rememberScrollState())
         ) {
-            CustomMoveToGroupWithActionButton(
-                destinations = dataState.customDestinations,
-                onFolderSelected = { folderId, folderName ->
-                    actions.onFolderSelected(folderId, MailLabelText(folderName), entryPoint)
-                },
-                onAddClick = actions.onCreateNewFolderClick
-            )
-
-            Spacer(modifier = Modifier.size(ProtonDimens.Spacing.Large))
-
             val destinations = buildList<MoveToBottomSheetDestinationUiModel> {
                 dataState.inboxDestination?.let(::add)
                 addAll(dataState.categoryDestinations)
@@ -127,6 +117,16 @@ internal fun MoveToBottomSheetContent(
                 onCategorySelected = { categoryId, categoryLabelText ->
                     actions.onCategorySelected(categoryId, categoryLabelText, entryPoint)
                 }
+            )
+
+            Spacer(modifier = Modifier.size(ProtonDimens.Spacing.Large))
+
+            CustomMoveToGroupWithActionButton(
+                destinations = dataState.customDestinations,
+                onFolderSelected = { folderId, folderName ->
+                    actions.onFolderSelected(folderId, MailLabelText(folderName), entryPoint)
+                },
+                onAddClick = actions.onCreateNewFolderClick
             )
 
             BottomNavigationBarSpacer()
