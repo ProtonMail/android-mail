@@ -342,9 +342,9 @@ fun MailboxScreen(
                         onCreateNewFolderClick = actions.onAddFolder,
                         onError = { actions.showSnackbar(SnackbarError(it)) },
                         onMessage = { actions.showSnackbar(SnackbarNormal(it)) },
-                        onMoveToComplete = { label, entryPoint ->
+                        onMoveToComplete = { label, isCategory, entryPoint ->
                             val action = (entryPoint as? MoveToBottomSheetEntryPoint.Mailbox)?.let {
-                                MailboxViewAction.SignalMoveToCompleted(label, it)
+                                MailboxViewAction.SignalMoveToCompleted(label, isCategory, it)
                             } ?: return@Actions Timber.e("Invalid entry point for MoveTo - $entryPoint")
 
                             viewModel.submit(action)

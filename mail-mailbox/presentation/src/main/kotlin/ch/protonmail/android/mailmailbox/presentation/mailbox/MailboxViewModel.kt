@@ -1363,13 +1363,20 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun handleMoveToCompleted(action: MailboxViewAction.SignalMoveToCompleted) {
-        emitNewStateFrom(
+        val event = if (action.isCategory) {
+            MailboxEvent.MoveToConfirmed.Category(
+                viewMode = action.entryPoint.viewMode,
+                itemCount = action.entryPoint.itemCount,
+                label = action.label
+            )
+        } else {
             MailboxEvent.MoveToConfirmed.Custom(
                 viewMode = action.entryPoint.viewMode,
                 itemCount = action.entryPoint.itemCount,
                 label = action.label
             )
-        )
+        }
+        emitNewStateFrom(event)
     }
 
     private fun handleLabelAsCompleted(action: MailboxViewAction.SignalLabelAsCompleted) {

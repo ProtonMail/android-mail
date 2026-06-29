@@ -390,7 +390,7 @@ internal class MoveToViewModelTest {
             shouldDismissEffect = Effect.empty(),
             errorEffect = Effect.empty()
         )
-        val dismissData = MoveToState.MoveToDismissData(mailLabelText)
+        val dismissData = MoveToState.MoveToDismissData(mailLabelText, isCategory = true)
         val updatedState = initialState.copy(shouldDismissEffect = Effect.of(dismissData))
 
         expectLoadedDataForConversation(conversationId = conversationId, initialState = initialState)
@@ -433,7 +433,7 @@ internal class MoveToViewModelTest {
             errorEffect = Effect.empty()
         )
 
-        val dismissData = MoveToState.MoveToDismissData(mailLabelText)
+        val dismissData = MoveToState.MoveToDismissData(mailLabelText, isCategory = true)
         val updatedState = initialState.copy(shouldDismissEffect = Effect.of(dismissData))
         expectLoadedDataForMessage(messageId, initialState = initialState)
 

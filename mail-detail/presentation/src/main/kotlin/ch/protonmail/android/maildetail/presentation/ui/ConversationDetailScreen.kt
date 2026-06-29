@@ -313,7 +313,7 @@ fun ConversationDetailScreen(
                         onCreateNewFolderClick = actions.onAddLabel,
                         onError = { actions.showSnackbar(it, ProtonSnackbarType.ERROR) },
                         onMessage = { actions.showSnackbar(it, ProtonSnackbarType.NORM) },
-                        onMoveToComplete = { mailLabelText, entryPoint ->
+                        onMoveToComplete = { mailLabelText, _, entryPoint ->
                             val action = ConversationDetailViewAction.MoveToCompleted(mailLabelText, entryPoint)
                             viewModel.submit(action)
                         },

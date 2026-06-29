@@ -121,6 +121,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 
     data class SignalMoveToCompleted(
         val label: MailLabelText,
+        val isCategory: Boolean,
         val entryPoint: MoveToBottomSheetEntryPoint.Mailbox
     ) : MailboxViewAction
 
@@ -255,6 +256,16 @@ internal sealed interface MailboxEvent : MailboxOperation {
         )
 
         data class Custom(
+            override val viewMode: ViewMode,
+            override val itemCount: Int,
+            override val label: MailLabelText
+        ) : MoveToConfirmed(
+            viewMode = viewMode,
+            itemCount = itemCount,
+            label = label
+        )
+
+        data class Category(
             override val viewMode: ViewMode,
             override val itemCount: Int,
             override val label: MailLabelText

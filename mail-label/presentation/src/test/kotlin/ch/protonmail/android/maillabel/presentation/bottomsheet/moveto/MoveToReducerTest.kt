@@ -180,6 +180,16 @@ internal class MoveToReducerTest(
                 )
             ),
             arrayOf(
+                "from loaded data to completed state for a category move",
+                initialState,
+                MoveToOperation.MoveToEvent.MoveComplete(MailLabelText("123"), isCategory = true),
+                initialState.copy(
+                    shouldDismissEffect = Effect.of(
+                        MoveToState.MoveToDismissData(MailLabelText("123"), isCategory = true)
+                    )
+                )
+            ),
+            arrayOf(
                 "from loaded data to no-change state on selecting active category",
                 initialState,
                 MoveToOperation.MoveToEvent.CategoryNoChange,

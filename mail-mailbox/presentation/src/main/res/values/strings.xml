@@ -87,6 +87,14 @@
         <item quantity="one">Message moved to %s</item>
         <item quantity="other">Messages moved to %s</item>
     </plurals>
+    <plurals name="mailbox_action_move_conversation_to_category">
+        <item quantity="one">Conversation moved to %s\nSimilar messages will now be categorized this way.</item>
+        <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
+    </plurals>
+    <plurals name="mailbox_action_move_message_to_category">
+        <item quantity="one">Message moved to %s\nSimilar messages will now be categorized this way.</item>
+        <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
+    </plurals>
 
     <string name="mailbox_action_button_clear_trash">Empty trash</string>
     <string name="mailbox_action_button_clear_spam">Empty spam</string>

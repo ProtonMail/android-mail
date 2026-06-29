@@ -38,22 +38,17 @@ class MailboxActionMessageReducer @Inject constructor(
 
     internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<ActionResult> {
         val actionResult = when (operation) {
-            is MailboxEvent.MoveToConfirmed -> {
-                val pluralsRes = when (operation.viewMode) {
-                    ViewMode.ConversationGrouping -> R.plurals.mailbox_action_move_conversation
-                    ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_move_message
-                }
+            is MailboxEvent.MoveToConfirmed.Category -> moveResult(
+                operation = operation,
+                conversationRes = R.plurals.mailbox_action_move_conversation_to_category,
+                messageRes = R.plurals.mailbox_action_move_message_to_category
+            )
 
-                val destinationFolder = mailLabelTextMapper.mapToString(operation.label)
-
-                UndoableActionResult(
-                    TextUiModel.PluralisedText(
-                        pluralsRes,
-                        operation.itemCount,
-                        listOf(destinationFolder)
-                    )
-                )
-            }
+            is MailboxEvent.MoveToConfirmed -> moveResult(
+                operation = operation,
+                conversationRes = R.plurals.mailbox_action_move_conversation,
+                messageRes = R.plurals.mailbox_action_move_message
+            )
 
             is MailboxEvent.LabelAsConfirmed -> {
                 // Do not show a snackbar on labeling with no archive
@@ -100,5 +95,22 @@ class MailboxActionMessageReducer @Inject constructor(
                 DefinitiveActionResult(TextUiModel(R.string.mailbox_action_maximum_selection_reached))
         }
         return Effect.of(actionResult)
+    }
+
+    private fun moveResult(
+        operation: MailboxEvent.MoveToConfirmed,
+        conversationRes: Int,
+        messageRes: Int
+    ): UndoableActionResult {
+        val pluralsRes = when (operation.viewMode) {
+            ViewMode.ConversationGrouping -> conversationRes
+            ViewMode.NoConversationGrouping -> messageRes
+        }
+
+        val destination = mailLabelTextMapper.mapToString(operation.label)
+
+        return UndoableActionResult(
+            TextUiModel.PluralisedText(pluralsRes, operation.itemCount, listOf(destination))
+        )
     }
 }

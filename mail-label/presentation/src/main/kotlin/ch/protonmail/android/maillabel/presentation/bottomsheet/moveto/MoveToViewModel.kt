@@ -73,7 +73,7 @@ internal class MoveToViewModel @AssistedInject constructor(
         viewModelScope.launch {
             when (action) {
                 is MoveToOperation.MoveToAction.MoveToDestinationSelected ->
-                    processMoveToOperation(action.mailLabelId, action.mailLabelText)
+                    processMoveToOperation(action.mailLabelId, action.mailLabelText, isCategory = false)
 
                 is MoveToOperation.MoveToAction.CategorySelected -> processCategorySelection(action)
             }
@@ -87,10 +87,14 @@ internal class MoveToViewModel @AssistedInject constructor(
             return
         }
 
-        processMoveToOperation(action.mailLabelId, action.mailLabelText)
+        processMoveToOperation(action.mailLabelId, action.mailLabelText, isCategory = true)
     }
 
-    private suspend fun processMoveToOperation(mailLabelId: MailLabelId, mailLabelText: MailLabelText) {
+    private suspend fun processMoveToOperation(
+        mailLabelId: MailLabelId,
+        mailLabelText: MailLabelText,
+        isCategory: Boolean
+    ) {
         val userId = observePrimaryUserId().filterNotNull().first()
 
         val handleMoveData = HandleMoveData(
@@ -101,10 +105,10 @@ internal class MoveToViewModel @AssistedInject constructor(
             entryPoint = initialData.entryPoint
         )
 
-        emitNewStateFrom(handleMoveOperation(handleMoveData))
+        emitNewStateFrom(handleMoveOperation(handleMoveData, isCategory))
     }
 
-    private suspend fun handleMoveOperation(data: HandleMoveData): MoveToOperation {
+    private suspend fun handleMoveOperation(data: HandleMoveData, isCategory: Boolean): MoveToOperation {
         val items = data.selectedItems
         val label = data.labelId.labelId
         val mailLabelText = data.mailLabelText
@@ -138,7 +142,7 @@ internal class MoveToViewModel @AssistedInject constructor(
             }
         }.fold(
             ifLeft = { MoveToOperation.MoveToEvent.ErrorMoving },
-            ifRight = { MoveToOperation.MoveToEvent.MoveComplete(mailLabelText) }
+            ifRight = { MoveToOperation.MoveToEvent.MoveComplete(mailLabelText, isCategory) }
         )
     }
 

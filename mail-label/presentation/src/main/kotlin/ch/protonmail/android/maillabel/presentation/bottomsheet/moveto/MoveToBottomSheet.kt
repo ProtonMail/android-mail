@@ -99,6 +99,7 @@ object MoveToBottomSheet {
         val onDismiss: () -> Unit,
         val onMoveToComplete: (
             mailLabelText: MailLabelText,
+            isCategory: Boolean,
             entryPoint: MoveToBottomSheetEntryPoint
         ) -> Unit
     )

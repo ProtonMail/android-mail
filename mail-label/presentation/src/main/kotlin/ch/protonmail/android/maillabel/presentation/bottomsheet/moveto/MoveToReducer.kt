@@ -54,7 +54,7 @@ internal class MoveToReducer @Inject constructor() {
         state: MoveToState.Data,
         event: MoveToOperation.MoveToEvent.MoveComplete
     ): MoveToState {
-        val dismissData = MoveToState.MoveToDismissData(event.mailLabelText)
+        val dismissData = MoveToState.MoveToDismissData(event.mailLabelText, event.isCategory)
         return state.copy(shouldDismissEffect = Effect.of(dismissData))
     }
 

@@ -77,7 +77,7 @@ internal fun MoveToBottomSheetContent(
     val entryPoint = dataState.entryPoint
 
     ConsumableLaunchedEffect(dataState.shouldDismissEffect) { dismissData ->
-        actions.onMoveToComplete(dismissData.mailLabelText, entryPoint)
+        actions.onMoveToComplete(dismissData.mailLabelText, dismissData.isCategory, entryPoint)
     }
 
     ConsumableTextEffect(dataState.errorEffect) {
@@ -314,7 +314,11 @@ object MoveToBottomSheetContent {
         val onDismiss: () -> Unit,
         val onError: (String) -> Unit,
         val onMessage: (String) -> Unit,
-        val onMoveToComplete: (labelText: MailLabelText, entryPoint: MoveToBottomSheetEntryPoint) -> Unit
+        val onMoveToComplete: (
+            labelText: MailLabelText,
+            isCategory: Boolean,
+            entryPoint: MoveToBottomSheetEntryPoint
+        ) -> Unit
     )
 }
 
@@ -392,7 +396,7 @@ private fun MoveToBottomSheetContentPreview() {
                 onDismiss = {},
                 onError = { _ -> },
                 onMessage = { _ -> },
-                onMoveToComplete = { _, _ -> }
+                onMoveToComplete = { _, _, _ -> }
             )
         )
     }

@@ -45,7 +45,7 @@ sealed interface MoveToState {
 
     data object Error : MoveToState
 
-    data class MoveToDismissData(val mailLabelText: MailLabelText)
+    data class MoveToDismissData(val mailLabelText: MailLabelText, val isCategory: Boolean = false)
 }
 
 sealed class MoveToBottomSheetDestinationUiModel(
@@ -100,7 +100,10 @@ sealed interface MoveToOperation {
 
         data object ErrorMoving : MoveToEvent
         data object CategoryNoChange : MoveToEvent
-        data class MoveComplete(val mailLabelText: MailLabelText) : MoveToEvent
+        data class MoveComplete(
+            val mailLabelText: MailLabelText,
+            val isCategory: Boolean = false
+        ) : MoveToEvent
     }
 
     sealed interface MoveToAction : MoveToOperation {

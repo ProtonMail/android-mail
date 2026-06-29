@@ -78,6 +78,38 @@ internal class MailboxActionMessageReducerTest(
                 )
             ),
             TestInput(
+                operation = MailboxEvent.MoveToConfirmed.Category(
+                    viewMode = ViewMode.NoConversationGrouping,
+                    itemCount = 5,
+                    label = customMailLabelText
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.PluralisedText(
+                            R.plurals.mailbox_action_move_message_to_category,
+                            5,
+                            listOf(customFolderName)
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.MoveToConfirmed.Category(
+                    viewMode = ViewMode.ConversationGrouping,
+                    itemCount = 5,
+                    label = customMailLabelText
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.PluralisedText(
+                            R.plurals.mailbox_action_move_conversation_to_category,
+                            5,
+                            listOf(customFolderName)
+                        )
+                    )
+                )
+            ),
+            TestInput(
                 operation = MailboxEvent.MoveToConfirmed.Archive(
                     viewMode = ViewMode.ConversationGrouping,
                     itemCount = 1
