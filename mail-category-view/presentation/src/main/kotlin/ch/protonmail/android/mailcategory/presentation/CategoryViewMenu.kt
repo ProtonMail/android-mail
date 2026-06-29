@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcategory.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,10 +47,10 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 fun CategoryViewMenu(
     items: List<CategoryItemUiModel>,
     modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
     resetScrollEffect: Effect<Unit> = Effect.empty(),
     onItemClick: (CategoryItemUiModel) -> Unit
 ) {
-    val lazyListState = rememberLazyListState()
     val orientation = LocalConfiguration.current.orientation
     val activeIndex = items.indexOfFirst { it.isActive }
 

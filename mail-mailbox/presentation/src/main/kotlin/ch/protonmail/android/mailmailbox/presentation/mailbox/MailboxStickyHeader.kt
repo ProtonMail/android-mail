@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -47,6 +49,10 @@ fun MailboxStickyHeader(
     actions: MailboxStickyHeader.Actions,
     isCategoryViewEnabled: Boolean
 ) {
+    // Hoisted here so the category bar scroll position survives
+    // the category view leaving composition
+    val categoryListState = rememberLazyListState()
+
     val isCategoryViewVisible =
         isCategoryViewEnabled &&
             state.categoryViewState is CategoryViewState.Available &&
@@ -107,6 +113,7 @@ fun MailboxStickyHeader(
                     if (isCategoryViewEnabled && state.categoryViewState is CategoryViewState.Available) {
                         StickyHeaderWithCategoryView(
                             categoryViewState = state.categoryViewState,
+                            lazyListState = categoryListState,
                             onCategoryItemClicked = actions.onCategoryItemClicked
                         )
                     } else {
@@ -178,12 +185,14 @@ private fun RowScope.DefaultModeStickyHeader(
 @Composable
 private fun RowScope.StickyHeaderWithCategoryView(
     categoryViewState: CategoryViewState.Available,
+    lazyListState: LazyListState,
     onCategoryItemClicked: (CategoryItemUiModel) -> Unit
 ) {
     when (categoryViewState) {
         CategoryViewState.Available.Loading -> {
             CategoryViewMenu(
                 items = emptyList(),
+                lazyListState = lazyListState,
                 onItemClick = onCategoryItemClicked
             )
         }
@@ -191,6 +200,7 @@ private fun RowScope.StickyHeaderWithCategoryView(
         is CategoryViewState.Available.Data -> {
             CategoryViewMenu(
                 items = categoryViewState.categories,
+                lazyListState = lazyListState,
                 resetScrollEffect = categoryViewState.resetScrollEffect,
                 onItemClick = onCategoryItemClicked
             )
