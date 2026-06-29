@@ -23,7 +23,7 @@
   <string name="snooze_sheet_option_tomorrow">明天</string>
   <string name="snooze_sheet_option_this_weekend">本周末</string>
   <string name="snooze_sheet_option_custom">自訂</string>
-  <string name="snooze_sheet_option_custom_detail">Pick date and time</string>
+  <string name="snooze_sheet_option_custom_detail">選擇日期和時間</string>
   <string name="snooze_sheet_snooze_title">緩辦直至</string>
   <string name="snooze_sheet_option_unsnooze">取消緩辦</string>
   <string name="snooze_sheet_error_unable_to_snooze">Sorry, we encountered an unknown error snoozing this conversation</string>

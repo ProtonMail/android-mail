@@ -19,7 +19,7 @@
 <resources>
   <string name="payment_error_title">出了點問題</string>
   <string name="payment_error_description">我們無法載入此頁面。請重新整理頁面或檢查您的網際網路連線。</string>
-  <string name="proton_error_non_processable_actions">One or more actions cannot be processed. Please log out and log back in to your account.</string>
+  <string name="proton_error_non_processable_actions">一項或多項操作無法處理。請登出並重新登入您的帳號。</string>
   <string name="payment_purchase_button_get">取得 %1$s</string>
   <string name="payment_purchase_button_subscribed">已訂閱 %1$s</string>
   <string name="payment_purchase_button_product_not_found">在商店中找不到產品</string>

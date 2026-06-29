@@ -39,7 +39,7 @@
   <string name="new_contact">新增聯絡人</string>
   <string name="new_group">新增群組</string>
   <string name="import_contact">上載裝置通訊錄</string>
-  <string name="contact_deleted">Contact deleted</string>
+  <string name="contact_deleted">聯絡人已刪除</string>
   <string name="contact_delete_dialog_title">刪除 %1$s？</string>
   <string name="contact_delete_dialog_text">此聯絡人會從您的聯絡人清單中刪除。</string>
   <string name="contact_delete_dialog_cancel_button">取消</string>
@@ -84,14 +84,14 @@
   <string name="contact_details_action_copy_label">複製</string>
   <string name="contact_details_action_message_label">郵件訊息</string>
   <string name="contact_details_action_call_label">撥打</string>
-  <string name="contact_details_action_open_url_label">Open URL</string>
+  <string name="contact_details_action_open_url_label">開啟網址</string>
   <string name="contact_group_details_send_message_action">傳送群組訊息</string>
   <plurals name="contact_group_details_number_of_contacts">
     <item quantity="other">%1$d 位聯絡人</item>
   </plurals>
-  <string name="contact_bottom_sheet_redirect_to_web_title">Available on web</string>
-  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Dismiss</string>
-  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.</string>
-  <string name="edit_contact_bottom_sheet_redirect_to_web_description">Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device.</string>
-  <string name="contact_bottom_sheet_redirect_to_web_button">Continue on web</string>
+  <string name="contact_bottom_sheet_redirect_to_web_title">可在網頁上使用</string>
+  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">關閉</string>
+  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">在應用程式中建立聯絡人或群組的功能尚未就緒。目前，您可以在網頁應用程式中建立，系統會將其同步至您的裝置。</string>
+  <string name="edit_contact_bottom_sheet_redirect_to_web_description">在應用程式中編輯聯絡人或群組的功能尚未就緒。目前，您可以在網頁應用程式中進行編輯，變更將會同步至您的裝置。</string>
+  <string name="contact_bottom_sheet_redirect_to_web_button">在網頁上繼續</string>
 </resources>

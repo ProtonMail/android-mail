@@ -105,7 +105,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Falha ao excluir mensagem</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Não foi possível alterar a categoria ativa</string>
   <string name="select_all">Selecionar tudo</string>
   <string name="deselect_all">Desmarcar todos</string>
   <!--    Expiry messages-->

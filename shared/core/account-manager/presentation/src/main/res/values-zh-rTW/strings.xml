@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="account_switcher_manage_account">管理帳號</string>
-  <string name="account_switcher_talkback_title">Manage account: current account</string>
+  <string name="account_switcher_talkback_title">管理帳號：目前帳號</string>
   <string name="account_switcher_sign_out">登出</string>
   <string name="account_switcher_sign_in">登入</string>
   <string name="account_switcher_remove">移除</string>
@@ -27,11 +27,11 @@
   <string name="manage_accounts_title">管理帳號</string>
   <string name="manage_accounts_add_account">新增帳號</string>
   <string name="manage_accounts_switch_to">切換至</string>
-  <string name="manage_accounts_switch_to_signed_in_content_desc">Switch to a signed in account</string>
-  <string name="manage_accounts_switch_to_signed_out_content_desc">Switch to a signed out account</string>
+  <string name="manage_accounts_switch_to_signed_in_content_desc">切換至已登入的帳號</string>
+  <string name="manage_accounts_switch_to_signed_out_content_desc">切換至已登出的帳號</string>
   <string name="primary_account_avatar_camera_content_description">帳號大頭照相機</string>
   <string name="manage_accounts_on_device">在此裝置上管理帳號</string>
   <string name="add_another_account">新增其他帳號</string>
   <string name="account_switcher_no_initials">不適用</string>
-  <string name="manage_accounts_options">Options</string>
+  <string name="manage_accounts_options">選項</string>
 </resources>

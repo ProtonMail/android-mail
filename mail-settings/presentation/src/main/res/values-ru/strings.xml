@@ -22,7 +22,7 @@
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Настройки аккаунта</string>
   <string name="mail_settings_email_settings">Настройки электронной почты</string>
-  <string name="mail_settings_email_signature_settings">Email signature</string>
+  <string name="mail_settings_email_signature_settings">Подпись в электронных письмах</string>
   <string name="mail_settings_folder_and_label_settings">Параметры папок и меток</string>
   <string name="mail_settings_privacy_and_security_settings">Настройки конфиденциальности и безопасности</string>
   <string name="mail_settings_preferences">Настройки</string>
@@ -33,7 +33,7 @@
   <string name="mail_settings_privacy_and_security">Конфиденциальность и безопасность</string>
   <string name="mail_settings_fido_keys">Ключи безопасности</string>
   <string name="mail_settings_change_password">Управление паролями</string>
-  <string name="mail_settings_signature">Signature</string>
+  <string name="mail_settings_signature">Подпись</string>
   <string name="mail_settings_storage_quota">%1$d%% из %2$s</string>
   <string name="mail_settings_theme">Тема</string>
   <string name="mail_settings_app_icon">App icon</string>

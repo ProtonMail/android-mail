@@ -21,7 +21,7 @@
   <string name="show_details">Show details</string>
   <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
   <string name="tracking_protection">Tracking protection</string>
-  <string name="tracking_protection_description">We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message.</string>
+  <string name="tracking_protection_description">我們主動為您抵禦追蹤。您可以在此查看此訊息中被封鎖的間諜像素以及已被清除的追蹤連結。</string>
   <string name="tracking_protection_learn_more">Learn more</string>
   <string name="original">Original</string>
   <string name="cleaned">Cleaned</string>

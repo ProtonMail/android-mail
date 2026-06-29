@@ -23,8 +23,8 @@
   <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Sair do modo de pesquisa</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Limpar pesquisa</string>
-  <string name="filter_unread_button_text">Unread</string>
-  <string name="include_spam_trash_text">Include Spam/Trash</string>
+  <string name="filter_unread_button_text">Não lidas</string>
+  <string name="include_spam_trash_text">Incluir Spam/Lixo</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d selecionado</item>
     <item quantity="other">%d selecionado</item>
@@ -33,7 +33,7 @@
   <string name="mailbox_default_sender">(Sem remetente)</string>
   <string name="mailbox_error_message_offline">Está offline. Não é possível recuperar itens.</string>
   <string name="mailbox_error_message_generic">Erro ao carregar a caixa de correio</string>
-  <string name="mailbox_error_message_user_session">Unable to load session.  Please check your connection and try again.</string>
+  <string name="mailbox_error_message_user_session">Não foi possível carregar a sessão.  Por favor, verifique a sua ligação e tente novamente.</string>
   <string name="mailbox_error_message_unexpected">Ocorreu um erro inesperado.</string>
   <string name="mailbox_is_empty_title">Nenhuma mensagem</string>
   <string name="trash_is_empty_title">Nada no lixo</string>
@@ -69,7 +69,7 @@
   <string name="mailbox_action_label_messages_failed">Erro na operação da etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Erro ao obter etiquetas</string>
   <string name="mailbox_action_failed_retrieving_colors">Erro ao obter definições de cor</string>
-  <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
+  <string name="mailbox_action_no_sender_addresses">Nenhum endereço com permissões de envio</string>
   <string name="mailbox_action_move_messages_failed">Erro na operação de mover</string>
   <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
   <string name="mailbox_action_archive_message">Mensagem movida para o arquivo</string>
@@ -96,16 +96,16 @@
   <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta do Lixo?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta Spam?</string>
   <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
-  <string name="mailbox_talkback_readout_unread">Unread</string>
+  <string name="mailbox_talkback_readout_unread">Não lido</string>
   <string name="mailbox_talkback_readout_starred">Unstar</string>
   <string name="mailbox_talkback_readout_not_starred">Star</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Não foi possível abrir o anexo. Tente novamente.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">A transferência atual tem de ser concluída antes de iniciar uma nova.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Erro ao eliminar a mensagem</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Falha ao alterar a categoria ativa</string>
   <string name="select_all">Selecionar tudo</string>
   <string name="deselect_all">Desmarcar todo</string>
   <!--    Expiry messages-->

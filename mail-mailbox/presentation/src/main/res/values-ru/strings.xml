@@ -23,8 +23,8 @@
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Выйти из режима поиска</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
-  <string name="filter_unread_button_text">Unread</string>
-  <string name="include_spam_trash_text">Include Spam/Trash</string>
+  <string name="filter_unread_button_text">Непрочитанные</string>
+  <string name="include_spam_trash_text">Включая спам/корзину</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Выбран</item>
     <item quantity="few">%d Выбраны</item>
@@ -35,7 +35,7 @@
   <string name="mailbox_default_sender">(Нет отправителя)</string>
   <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
   <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
-  <string name="mailbox_error_message_user_session">Unable to load session.  Please check your connection and try again.</string>
+  <string name="mailbox_error_message_user_session">Не удалось загрузить сеанс.  Пожалуйста, проверьте подключение и попробуйте еще раз.</string>
   <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
   <string name="mailbox_is_empty_title">Сообщений нет</string>
   <string name="trash_is_empty_title">В корзине ничего нет</string>
@@ -83,7 +83,7 @@
   <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
-  <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
+  <string name="mailbox_action_no_sender_addresses">Нет адреса с разрешением на отправку</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
   <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
   <string name="mailbox_action_archive_message">Сообщение перемещено в архив</string>
@@ -114,16 +114,16 @@
   <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из корзины?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из папки «Спам»?</string>
   <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
-  <string name="mailbox_talkback_readout_unread">Unread</string>
+  <string name="mailbox_talkback_readout_unread">Непрочитанное</string>
   <string name="mailbox_talkback_readout_starred">Unstar</string>
   <string name="mailbox_talkback_readout_not_starred">Star</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">Текущее скачивание должно завершиться перед началом нового.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Не удалось удалить сообщение</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Не удалось изменить активную категорию</string>
   <string name="select_all">Выбрать всё</string>
   <string name="deselect_all">Снять выделение со всех</string>
   <!--    Expiry messages-->
