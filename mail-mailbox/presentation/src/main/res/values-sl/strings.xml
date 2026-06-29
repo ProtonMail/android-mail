@@ -123,7 +123,7 @@
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Brisanje sporočila ni uspelo</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Spreminjanje aktivne kategorije ni uspelo</string>
   <string name="select_all">Izberi vse</string>
   <string name="deselect_all">Odznači vse</string>
   <!--    Expiry messages-->

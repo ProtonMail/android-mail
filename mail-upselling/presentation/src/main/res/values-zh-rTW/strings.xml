@@ -26,37 +26,37 @@
   <!-- Upselling: Social Proof -->
   <string name="upselling_mailbox_plus_title_social_proof">啟用 Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
-  <string name="upselling_mailbox_plus_promo_description_override">Get the best of Mail with this limited time offer</string>
+  <string name="upselling_mailbox_plus_promo_description_override">把握此限時優惠，享有 Mail 的最佳體驗</string>
   <string name="upselling_mailbox_plus_promo_title">試用 Mail Plus，為期 %s</string>
-  <string name="upselling_mailbox_plus_promo_cta">Get 1 month for %s</string>
-  <string name="upselling_mailbox_plus_promo_skip">Skip offer</string>
-  <string name="upselling_mailbox_plus_promo_renewal">%s for the 1st month, then %s per month</string>
+  <string name="upselling_mailbox_plus_promo_cta">以 %s 取得 1 個月</string>
+  <string name="upselling_mailbox_plus_promo_skip">略過優惠</string>
+  <string name="upselling_mailbox_plus_promo_renewal">首月 %s，之後每月 %s</string>
   <!-- Upselling: Unlimited -->
-  <string name="upselling_unlimited_title">Upgrade to Proton Unlimited</string>
+  <string name="upselling_unlimited_title">升級至 Proton Unlimited</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Send group emails with ease. Enjoy this and more with Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_description_override">輕鬆傳送群組電子郵件。使用 Mail Plus 享有此功能及更多。</string>
   <string name="upselling_contact_groups_plus_title">將您的聯絡人分組</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Create all you need to stay organized. Get this and more with Mail Plus. </string>
+  <string name="upselling_labels_plus_description_override">建立保持井然有序所需的一切。使用 Mail Plus 取得此功能及更多。 </string>
   <string name="upselling_labels_plus_title">需要更多的標籤或資料夾？</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Create all you need to stay organized. Get this and more with Mail Plus. </string>
+  <string name="upselling_folders_plus_description_override">建立保持井然有序所需的一切。使用 Mail Plus 取得此功能及更多。 </string>
   <string name="upselling_folders_plus_title">需要更多的標籤或資料夾？</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Make your mobile signature your own. Enjoy this and more with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Personalize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">打造專屬的行動版簽名檔。使用 Mail Plus 享有此功能及更多。</string>
+  <string name="upselling_mobile_signature_plus_title">個人化您的簽名檔</string>
   <!-- Upselling: Auto Delete -->
-  <string name="upselling_auto_delete_plus_description_override">Deletes spam and trash after 30 days. Get this and more with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Automated trash removal</string>
+  <string name="upselling_auto_delete_plus_description_override">30 天後刪除垃圾郵件與垃圾桶。使用 Mail Plus 取得此功能及更多。</string>
+  <string name="upselling_auto_delete_plus_title">自動清除垃圾桶</string>
   <!-- Upselling: Schedule Send -->
-  <string name="upselling_schedule_send_plus_description_override">Customize when an email will be sent. Enjoy this and more with Mail Plus.</string>
+  <string name="upselling_schedule_send_plus_description_override">自訂傳送電子郵件的時間。使用 Mail Plus 享有此功能及更多。</string>
   <string name="upselling_schedule_send_plus_title">現在排定，稍後寄送</string>
   <!-- Upselling: Snooze -->
-  <string name="upselling_snooze_plus_description_override">Snooze it — and have it delivered later. Enjoy this and more with Mail Plus.</string>
+  <string name="upselling_snooze_plus_description_override">延後郵件 — 並在稍後寄達。使用 Mail Plus 享有此功能及更多。</string>
   <string name="upselling_snooze_plus_title">這封信來的不是時候？</string>
   <!-- Upselling - Misc buttons -->
-  <string name="upselling_button_hint">Upgrade for full flexibility</string>
-  <string name="upselling_upgrade_plan_generic">You need a paid Proton Mail subscription to access this feature</string>
+  <string name="upselling_button_hint">升級以獲得完全的彈性</string>
+  <string name="upselling_upgrade_plan_generic">您需要付費訂閱 Proton Mail 才能存取此功能</string>
   <!-- Onboarding Upselling -->
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">儲存空間</string>
@@ -70,36 +70,36 @@
   <string name="upselling_comparison_table_priority_support">優先客戶專屬支援</string>
   <string name="upselling_comparison_table_aliases">隱藏我電子郵件的別名</string>
   <string name="upselling_comparison_table_folders_labels">資料夾與標籤</string>
-  <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
-  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_premium_products">頂級質子版 VPN、密碼管理程式和雲端儲存空間</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">暗網監控</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Choose subscription</string>
+  <string name="upselling_select_plan">選擇訂閱</string>
   <string name="upselling_select_plan_year">12 個月</string>
   <string name="upselling_select_plan_month">1 個月</string>
   <!-- Onboarding upsell -->
-  <string name="upselling_onboarding_choose_plan">Choose your plan</string>
-  <string name="upselling_onboarding_choose_plan_monthly">Monthly</string>
-  <string name="upselling_onboarding_choose_plan_yearly">Yearly</string>
+  <string name="upselling_onboarding_choose_plan">選擇您的方案</string>
+  <string name="upselling_onboarding_choose_plan_monthly">每月</string>
+  <string name="upselling_onboarding_choose_plan_yearly">每年</string>
   <string name="upselling_onboarding_best_value">最佳值</string>
-  <string name="upselling_onboarding_yearly_savings">Pay annually and save %s</string>
-  <string name="upselling_onboarding_entitlements_show_more">Show more</string>
-  <string name="upselling_onboarding_entitlements_show_less">Show less</string>
-  <string name="upselling_onboarding_button_continue_free">Continue with Free plan</string>
-  <string name="upselling_onboarding_autorenew">Billed at %s every %s</string>
-  <string name="upselling_onboarding_autorenew_welcome_offer">Welcome offer. Auto-renews at %s every %s</string>
-  <string name="upselling_onboarding_autorenew_month">month</string>
-  <string name="upselling_onboarding_autorenew_year">12 months</string>
-  <string name="upselling_onboarding_free_entitlement_storage">1 GB storage</string>
-  <string name="upselling_onboarding_free_entitlement_mail">1 email address</string>
+  <string name="upselling_onboarding_yearly_savings">按年付款即可節省 %s</string>
+  <string name="upselling_onboarding_entitlements_show_more">顯示更多</string>
+  <string name="upselling_onboarding_entitlements_show_less">顯示較少</string>
+  <string name="upselling_onboarding_button_continue_free">繼續使用 Free plan</string>
+  <string name="upselling_onboarding_autorenew">每 %s 以 %s 計費</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">歡迎優惠。每 %s 以 %s 自動續約</string>
+  <string name="upselling_onboarding_autorenew_month">月</string>
+  <string name="upselling_onboarding_autorenew_year">12 個月</string>
+  <string name="upselling_onboarding_free_entitlement_storage">1 GB 儲存空間</string>
+  <string name="upselling_onboarding_free_entitlement_mail">1 個電子郵件地址</string>
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">要取得更多儲存空間與頂級質子版功能。</string>
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled</string>
-  <string name="upselling_auto_renew_text_promo">Welcome offer. Auto-renews at %s%s unless canceled</string>
+  <string name="upselling_auto_renew_text">除非取消，否則將以相同的價格與條款自動續訂</string>
+  <string name="upselling_auto_renew_text_promo">歡迎優惠。除非取消，否則將以 %s%s 自動續約</string>
   <string name="upselling_auto_renew_text_bfriday">折扣以標準月費計算。在取消前，將以 %s%s 自動續訂。</string>
-  <string name="upselling_auto_renew_text_promo_short">Welcome offer. Auto-renews at %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
-  <string name="upselling_social_proof_reviews">2k+ REVIEWS</string>
-  <string name="upselling_description_social_proof">Upgrade to the experience that millions subscribers are raving about.</string>
+  <string name="upselling_auto_renew_text_promo_short">歡迎優惠。將以 %s%s 自動續約。</string>
+  <string name="upselling_auto_renew_text_standard">除非取消，否則將以 %s%s 自動續約。</string>
+  <string name="upselling_social_proof_reviews">2,000 則以上的評論</string>
+  <string name="upselling_description_social_proof">升級以體驗數百萬訂閱者讚不絕口的服務。</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_month_only">僅 %s /月</string>
   <string name="upselling_year">/年</string>

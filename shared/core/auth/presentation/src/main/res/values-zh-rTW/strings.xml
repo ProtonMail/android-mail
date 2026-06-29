@@ -114,7 +114,7 @@
     <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
   </plurals>
   <string name="common_error_something_went_wrong">發生錯誤，請稍後再試。</string>
-  <string name="auth_fido_config_error">Error retrieving stored keys.</string>
+  <string name="auth_fido_config_error">擷取已儲存的金鑰時發生錯誤。</string>
   <string name="auth_fido_reading_key_error">Error reading security key.</string>
   <string name="auth_fido_submit_key_error">Error submitting key data.</string>
   <string name="auth_fido_authenticating_in_progress">Authenticating with security key.</string>
@@ -146,5 +146,5 @@
   <string name="settings_password_error_invalid_recovery">Incorrect 2FA code. Please try again.</string>
   <string name="settings_password_error_2fa_reused">代碼已使用。請嘗試其他代碼。</string>
   <string name="settings_password_general_error">出現錯誤</string>
-  <string name="proton_error_non_processable_actions">One or more actions cannot be processed. Please log out and log back in to your account.</string>
+  <string name="proton_error_non_processable_actions">一項或多項操作無法處理。請登出並重新登入您的帳號。</string>
 </resources>

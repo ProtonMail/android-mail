@@ -92,11 +92,11 @@
   <string name="mailbox_talkback_readout_not_starred">お気に入り</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">添付ファイルを開けませんでした。もう一度お試しください。</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了する必要があります。</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">メッセージの削除に失敗しました</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">アクティブなカテゴリの変更に失敗しました</string>
   <string name="select_all">すべて選択</string>
   <string name="deselect_all">全てを非選択</string>
   <!--    Expiry messages-->

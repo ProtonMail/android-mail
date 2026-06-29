@@ -54,7 +54,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Проведіть, щоби перейти до наступного листа</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Швидко переходьте до наступного або попереднього повідомлення у вашій скриньці.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Налаштувати панелі інструментів</string>
-  <string name="mail_settings_app_customization_email_categories">Email categories</string>
+  <string name="mail_settings_app_customization_email_categories">Категорії пошти</string>
   <string name="mail_settings_app_customization_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Обхід мережевого екрана або мережевих проблем у разі блокування сайтів Proton.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Досвід роботи з поштою</string>
@@ -139,9 +139,9 @@
   <string name="mail_settings_custom_toolbar_read_error">Не вдалося прочитати дії панелі інструментів. Спробуйте ще раз.</string>
   <!-- Custom App Icon -->
   <string name="settings_app_icon_toolbar_title">Значок програми</string>
-  <string name="settings_app_icon_name_default">За замовчуванням</string>
+  <string name="settings_app_icon_name_default">Типово</string>
   <string name="settings_app_icon_name_discreet">Дискретний</string>
-  <string name="settings_app_icon_title_default">Значок програми – за замовчуванням</string>
+  <string name="settings_app_icon_title_default">Значок застосунку: типовий</string>
   <string name="settings_app_icon_title_discreet">Значок програми – непомітний</string>
   <string name="settings_app_icon_description">Залиште стандартну піктограму Proton Mail або замаскуйте її більш непомітною для додаткової конфіденційності.\nУ сповіщеннях завжди буде відображатись назва та піктограма Proton Mail.</string>
   <string name="settings_app_icon_learn_more">Дізнатися більше…</string>

@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
-  <string name="category_title_social">Social</string>
-  <string name="category_title_promotions">Promotions</string>
-  <string name="category_title_updates">Updates</string>
-  <string name="category_title_forums">Forums</string>
-  <string name="category_title_newsletters">Newsletters</string>
-  <string name="category_title_transactions">Transactions</string>
+  <string name="category_title_primary">主要</string>
+  <string name="category_title_social">社群網路</string>
+  <string name="category_title_promotions">優惠活動</string>
+  <string name="category_title_updates">更新</string>
+  <string name="category_title_forums">論壇</string>
+  <string name="category_title_newsletters">電子報</string>
+  <string name="category_title_transactions">交易記錄</string>
 </resources>

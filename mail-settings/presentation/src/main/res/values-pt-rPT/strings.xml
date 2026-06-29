@@ -22,7 +22,7 @@
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Definições de conta</string>
   <string name="mail_settings_email_settings">Definições de e-mail</string>
-  <string name="mail_settings_email_signature_settings">Email signature</string>
+  <string name="mail_settings_email_signature_settings">Assinatura de e-mail</string>
   <string name="mail_settings_folder_and_label_settings">Definições das pastas e etiquetas</string>
   <string name="mail_settings_privacy_and_security_settings">Definições de privacidade e segurança</string>
   <string name="mail_settings_preferences">Preferências</string>
@@ -33,7 +33,7 @@
   <string name="mail_settings_privacy_and_security">Privacidade e segurança</string>
   <string name="mail_settings_fido_keys">Chaves de segurança</string>
   <string name="mail_settings_change_password">Gestão de palavras-passe</string>
-  <string name="mail_settings_signature">Signature</string>
+  <string name="mail_settings_signature">Assinatura</string>
   <string name="mail_settings_storage_quota">%1$d%% de %2$s</string>
   <string name="mail_settings_theme"> Tema</string>
   <string name="mail_settings_app_icon">App icon</string>

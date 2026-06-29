@@ -24,7 +24,7 @@
   <string name="mailbox_toolbar_exit_search_mode_content_description">Wyjdź z trybu wyszukiwania</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Wyczyść zapytanie</string>
   <string name="filter_unread_button_text">Nieprzeczytane</string>
-  <string name="include_spam_trash_text">Include Spam/Trash</string>
+  <string name="include_spam_trash_text">Uwzględnij spam/Kosz</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d</item>
     <item quantity="few">%d</item>
@@ -35,7 +35,7 @@
   <string name="mailbox_default_sender">(brak nadawcy)</string>
   <string name="mailbox_error_message_offline">Jesteś w trybie offline. Nie można odzyskać elementów</string>
   <string name="mailbox_error_message_generic">Ładowanie skrzynki pocztowej nie powiodło się</string>
-  <string name="mailbox_error_message_user_session">Unable to load session.  Please check your connection and try again.</string>
+  <string name="mailbox_error_message_user_session">Nie można załadować sesji.  Sprawdź swoje połączenie i spróbuj ponownie.</string>
   <string name="mailbox_error_message_unexpected">Coś poszło nie tak</string>
   <string name="mailbox_is_empty_title">Brak wiadomości</string>
   <string name="trash_is_empty_title">Kosz jest pusty</string>
@@ -83,7 +83,7 @@
   <string name="mailbox_action_label_messages_failed">Etykietowanie nie powiodło się</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Nie udało się pobrać etykiet</string>
   <string name="mailbox_action_failed_retrieving_colors">Nie udało się pobrać ustawień kolorów</string>
-  <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
+  <string name="mailbox_action_no_sender_addresses">Brak adresu z uprawnieniami do wysyłania</string>
   <string name="mailbox_action_move_messages_failed">Przeniesienie nie powiodło się</string>
   <string name="mailbox_action_trash_message">Wiadomość została przeniesiona do kosza</string>
   <string name="mailbox_action_archive_message">Wiadomość została przeniesiona do archiwum</string>
@@ -119,11 +119,11 @@
   <string name="mailbox_talkback_readout_not_starred">Oznacz gwiazdką</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Nie udało się otworzyć załącznika. Spróbuj ponownie.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">Aktualne pobieranie musi się zakończyć przed rozpoczęciem nowego.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nie udało się usunąć wiadomości</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Nie udało się zmienić aktywnej kategorii</string>
   <string name="select_all">Zaznacz wszystko</string>
   <string name="deselect_all">Odznacz wszystko</string>
   <!--    Expiry messages-->

@@ -121,10 +121,10 @@
   <string name="undo_success_message">動作復原</string>
   <string name="undo_failure_message">動作復原失敗</string>
   <string name="feature_coming_soon">全新功能即將大展身手...</string>
-  <string name="cancelling_scheduled_send_message">Cancelling…</string>
+  <string name="cancelling_scheduled_send_message">正在取消…</string>
   <!-- date time picker -->
   <string name="time_picker_custom_time_label">時間</string>
   <string name="time_picker_custom_date_label">日期</string>
   <string name="time_picker_send_dialog_ok">確定</string>
-  <string name="time_picker_enter_time">Enter time</string>
+  <string name="time_picker_enter_time">輸入時間</string>
 </resources>

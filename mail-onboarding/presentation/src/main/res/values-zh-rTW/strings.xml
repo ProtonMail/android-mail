@@ -18,7 +18,7 @@
   -->
 <resources>
   <!--  New Onboarding 1  -->
-  <string name="onboarding_welcome_title">Welcome to Proton Mail, where privacy is default</string>
+  <string name="onboarding_welcome_title">歡迎使用 Proton Mail，預設即享隱私</string>
   <string name="onboarding_welcome_description">Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy.</string>
   <!--  New Onboarding 2  -->
   <string name="onboarding_rebuilt_title">Focus at your fingertips</string>

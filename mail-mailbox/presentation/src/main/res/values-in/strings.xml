@@ -62,7 +62,7 @@
   <string name="mailbox_action_label_messages_failed">Proses pelabelan gagal dilakukan</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Label gagal diperoleh</string>
   <string name="mailbox_action_failed_retrieving_colors">Pengaturan warna gagal diperoleh</string>
-  <string name="mailbox_action_no_sender_addresses">No address with sending permissions</string>
+  <string name="mailbox_action_no_sender_addresses">Tidak ada alamat dengan izin mengirim</string>
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal dilangsungkan</string>
   <string name="mailbox_action_trash_message">Pesan dipindahkan ke sampah</string>
   <string name="mailbox_action_archive_message">Pesan dipindahkan ke arsip</string>
@@ -92,11 +92,11 @@
   <string name="mailbox_talkback_readout_not_starred">Bintangi</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Gagal membuka lampiran. Silakan coba lagi.</string>
-  <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="mailbox_attachment_download_in_progress">Unduhan saat ini harus selesai sebelum memulai yang baru.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Pesan gagal dihapus</string>
-  <string name="mailbox_action_change_category_failed">Failed to change the active category</string>
+  <string name="mailbox_action_change_category_failed">Gagal mengubah kategori aktif</string>
   <string name="select_all">Pilih Semua</string>
   <string name="deselect_all">Lepas Semua Pilihan</string>
   <!--    Expiry messages-->

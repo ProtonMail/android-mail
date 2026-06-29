@@ -21,7 +21,7 @@
   <string name="app_icon_name_notes">Notes</string>
   <string name="app_icon_name_calculator">Calculator</string>
   <string name="dialog_sign_out_account_title">登出</string>
-  <string name="dialog_sign_out_account_description">The data associated to your account will remain on this device unless you select to delete it.</string>
+  <string name="dialog_sign_out_account_description">與您帳號相關聯的資料將保留在此裝置上，除非您選取將其刪除。</string>
   <string name="dialog_sign_out_account_confirm">登出</string>
   <string name="dialog_sign_out_account_cancel">取消</string>
   <string name="dialog_remove_account_title">移除帳號？</string>

@@ -92,12 +92,12 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB d\'emmagatzematge</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 adreça de correu electrònic</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Per desbloquejar més emmagatzematge i característiques prèmium.</string>
+  <string name="upselling_unlimited_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium.</string>
   <string name="upselling_auto_renew_text">Es renovarà automàticament al mateix preu i condicions tret que es cancel·li</string>
   <string name="upselling_auto_renew_text_promo">Oferta de benvinguda. Es renovarà automàticament per %s%s tret que es cancel·li</string>
   <string name="upselling_auto_renew_text_bfriday">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %s%s fins que no ho cancel·leu.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta de benvinguda. Es renova automàticament a %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Es renovarà automàticament per %s %s tret que es cancel·li.</string>
+  <string name="upselling_auto_renew_text_standard">Es renova automàticament a %s%s tret que es cancel·li.</string>
   <string name="upselling_social_proof_reviews">MÉS DE 2.000 RESSENYES</string>
   <string name="upselling_description_social_proof">Actualitzeu a l\'experiència que milions de subscriptors estan desitjant.</string>
   <string name="upselling_month">/mes</string>

@@ -72,7 +72,7 @@
   <string name="contact_actions_block_contact_dialog_button_cancel">Cancel</string>
   <string name="contact_actions_unblock_contact">Unblock this contact</string>
   <string name="contact_actions_unblock_contact_description">Unblock this contact</string>
-  <string name="contact_actions_block_address">Block this address</string>
+  <string name="contact_actions_block_address">封鎖此位址</string>
   <string name="contact_actions_block_address_description">Block this address</string>
   <string name="contact_actions_unblock_address">Unblock this address</string>
   <string name="contact_actions_unblock_address_description">Unblock this address</string>
