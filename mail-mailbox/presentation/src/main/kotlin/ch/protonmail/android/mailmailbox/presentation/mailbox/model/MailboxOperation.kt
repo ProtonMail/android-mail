@@ -381,6 +381,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class CategoryViewStatusChanged(
         val categoryViewStatus: CategoryViewStatus
     ) : MailboxEvent, AffectingCategoryView, AffectingUnreadFilter
+
+    object CategoryChanged : MailboxEvent, AffectingMailboxList
 }
 
 

@@ -511,6 +511,9 @@ class MailboxViewModel @Inject constructor(
                 Timber.e("Failed to set active category label: $error")
                 emitNewStateFrom(MailboxEvent.ErrorChangingCategory)
             }
+            .onRight {
+                emitNewStateFrom(MailboxEvent.CategoryChanged)
+            }
     }
 
     private fun handleNavigateToComposer() {

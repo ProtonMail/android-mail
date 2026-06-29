@@ -382,6 +382,33 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.inboxSystemLabel,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshOngoing = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    shouldShowFab = true,
+                    avatarImagesUiModel = AvatarImagesUiModel.Empty,
+                    loadingBarState = LoadingBarUiState.Hide
+                ),
+                operation = MailboxEvent.CategoryChanged,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.inboxSystemLabel,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.of(MailLabelTestData.inboxSystemLabel.id),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshOngoing = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    shouldShowFab = true,
+                    avatarImagesUiModel = AvatarImagesUiModel.Empty,
+                    loadingBarState = LoadingBarUiState.Hide
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),

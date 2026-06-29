@@ -50,6 +50,7 @@ class MailboxListReducer @Inject constructor(
         return when (operation) {
             is MailboxEvent.SelectedLabelChanged -> reduceSelectedLabelChanged(operation, currentState)
             is MailboxEvent.NewLabelSelected -> reduceNewLabelSelected(operation, currentState)
+            is MailboxEvent.CategoryChanged -> reduceCategoryChanged(currentState)
             is MailboxEvent.SwipeActionsChanged -> reduceSwipeActionsChanged(operation, currentState)
             is MailboxEvent.ItemClicked.ItemDetailsOpened -> reduceItemDetailOpened(operation, currentState)
             is MailboxEvent.ItemClicked.OpenComposer -> reduceOpenComposer(operation, currentState)
@@ -335,6 +336,16 @@ class MailboxListReducer @Inject constructor(
             is MailboxListState.Data.SelectionMode -> currentState.copy(
                 currentMailLabel = currentMailLabel
             )
+        }
+    }
+
+    private fun reduceCategoryChanged(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                scrollToMailboxTop = Effect.of(currentState.currentMailLabel.id)
+            )
+
+            else -> currentState
         }
     }
 

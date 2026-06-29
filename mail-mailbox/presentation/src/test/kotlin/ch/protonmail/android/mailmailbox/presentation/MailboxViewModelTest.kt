@@ -4112,6 +4112,9 @@ internal class MailboxViewModelTest {
         verify(atLeast = 1) {
             mailboxReducer.newStateFrom(any(), any<MailboxEvent.PaginatorInvalidated>())
         }
+        verify(exactly = 1) {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.CategoryChanged)
+        }
 
         verify(exactly = 0) {
             mailboxReducer.newStateFrom(any(), MailboxEvent.ErrorChangingCategory)
