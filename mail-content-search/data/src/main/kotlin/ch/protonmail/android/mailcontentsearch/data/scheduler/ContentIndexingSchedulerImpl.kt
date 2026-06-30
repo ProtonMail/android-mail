@@ -80,13 +80,7 @@ class ContentIndexingSchedulerImpl @Inject constructor(
         .first()
         .firstOrNull { !it.state.isFinished }
 
-    private fun WorkInfo.belongsTo(userId: UserId): Boolean {
-        val tagged = tags.contains(userTag(userId))
-        if (tagged) return true
-        // Active workers expose their input via progress data; terminal ones don't, but we treat
-        // those as Idle for the observing user anyway.
-        return userId() == userId
-    }
+    private fun WorkInfo.belongsTo(userId: UserId): Boolean = tags.contains(userTag(userId))
 
     private fun WorkInfo.userId(): UserId? {
         val tagged = tags.firstOrNull { it.startsWith(ContentIndexingWorker.TagUserPrefix) }
