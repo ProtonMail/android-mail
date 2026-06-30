@@ -140,7 +140,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
         label = this.emailType.firstOrNull()?.toTextUiModel()
             ?: TextUiModel.TextRes(R.string.contact_type_email),
         value = TextUiModel.Text(this.email),
-        badges = this.groups.map { it.toUiModel() }
+        badges = this.groups.distinct().map { it.toUiModel() }
     )
 
     private fun ContactGroup.toUiModel() = ContactDetailsItemBadgeUiModel(
