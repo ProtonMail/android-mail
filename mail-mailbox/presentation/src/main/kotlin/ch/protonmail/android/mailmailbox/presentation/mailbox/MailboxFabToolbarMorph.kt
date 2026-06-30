@@ -236,23 +236,26 @@ internal fun MailboxFabToolbarMorph(
             }
         }
 
-        // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar)
+        // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar).
+        // The compose FAB fades out during search, but the selection toolbar lives in
+        // the same container, so the search fade must be suppressed while selecting.
+        val fadeForSearch = isInSearch && !isInSelectionMode
         val composeAlpha by animateFloatAsState(
-            targetValue = if (isInSearch) 0f else 1f,
+            targetValue = if (fadeForSearch) 0f else 1f,
             animationSpec = searchSpring,
             label = "composeAlpha"
         )
         val composeScale by animateFloatAsState(
-            targetValue = if (isInSearch) 0.6f else 1f,
+            targetValue = if (fadeForSearch) 0.6f else 1f,
             animationSpec = searchSpring,
             label = "composeScale"
         )
         val composeTranslationY by animateFloatAsState(
-            targetValue = if (isInSearch) 40f else 0f,
+            targetValue = if (fadeForSearch) 40f else 0f,
             animationSpec = searchSpring,
             label = "composeTranslationY"
         )
-        if (hasWindowFocus && (!isInSearch || composeAlpha > 0f)) {
+        if (hasWindowFocus && (!fadeForSearch || composeAlpha > 0f)) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
