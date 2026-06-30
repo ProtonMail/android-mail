@@ -26,6 +26,7 @@ import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.ListenableWorker
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
@@ -194,7 +195,7 @@ internal class ProcessNewMessagePushNotificationTest {
 
     private fun verifySingleNotification(notification: CapturingSlot<Notification>) {
         with(notification.captured) {
-            assertEquals(NotificationProvider.EMAIL_CHANNEL_ID, channelId)
+            assertEquals(NotificationChannelId.Email, channelId)
             assertEquals(RawSender, title)
             assertEquals(RawContent, text)
             assertEquals(RawUserEmail, subText)
@@ -208,7 +209,7 @@ internal class ProcessNewMessagePushNotificationTest {
 
     private fun verifyGroupNotification(notification: CapturingSlot<Notification>) {
         with(notification.captured) {
-            assertEquals(NotificationProvider.EMAIL_CHANNEL_ID, channelId)
+            assertEquals(NotificationChannelId.Email, channelId)
             assertTrue(actions.isNullOrEmpty())
         }
     }

@@ -24,6 +24,7 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.ListenableWorker
+import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.bigText
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotification
@@ -120,7 +121,7 @@ internal class ProcessNewLoginPushNotificationTest {
 
     private fun verifySingleNotification(notification: CapturingSlot<Notification>) {
         with(notification.captured) {
-            assertEquals(NotificationProvider.LOGIN_CHANNEL_ID, channelId)
+            assertEquals(NotificationChannelId.Login, channelId)
             assertTrue(actions.isNullOrEmpty())
             assertEquals(NotificationSender, title)
             assertEquals(NotificationSummary, text)
@@ -131,7 +132,7 @@ internal class ProcessNewLoginPushNotificationTest {
 
     private fun verifyGroupNotification(notification: CapturingSlot<Notification>) {
         with(notification.captured) {
-            assertEquals(NotificationProvider.LOGIN_CHANNEL_ID, channelId)
+            assertEquals(NotificationChannelId.Login, channelId)
             assertTrue(actions.isNullOrEmpty())
             assertEquals(NotificationSender, title)
             assertEquals(NotificationGroupSummary, text)

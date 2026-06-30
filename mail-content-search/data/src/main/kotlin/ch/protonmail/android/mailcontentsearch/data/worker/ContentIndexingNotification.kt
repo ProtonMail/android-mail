@@ -24,13 +24,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcontentsearch.data.R
 import ch.protonmail.android.mailcontentsearch.data.receiver.ContentIndexingCancelReceiver
 import me.proton.core.domain.entity.UserId
 
 internal object ContentIndexingNotification {
 
-    const val ChannelId = "v7_content_search_channel_id"
     const val NotificationId = 0x437E534C // "CSrch"
 
     // ET-6209: swap the system icon for a branded one once available.
@@ -48,7 +48,7 @@ internal object ContentIndexingNotification {
             ?.takeIf { it.isNotBlank() }
             ?.let { "$title — $it" }
             ?: title
-        return NotificationCompat.Builder(context, ChannelId)
+        return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
             .setContentTitle(titleWithAccount)
             .setContentText(context.getString(R.string.content_search_notification_progress, percentage))
             .setSmallIcon(android.R.drawable.stat_notify_sync)
@@ -82,13 +82,15 @@ internal object ContentIndexingNotification {
 
     private fun ensureChannel(context: Context) {
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (nm.getNotificationChannel(ChannelId) != null) return
+        if (nm.getNotificationChannel(NotificationChannelId.ContentSearch) != null) return
         val channelName = context.getString(R.string.content_search_notification_channel_name)
         val channelDescription = context.getString(R.string.content_search_notification_channel_description)
-        val channel = NotificationChannel(ChannelId, channelName, NotificationManager.IMPORTANCE_LOW).apply {
-            description = channelDescription
-            setShowBadge(false)
-        }
+        val channel =
+            NotificationChannel(NotificationChannelId.ContentSearch, channelName, NotificationManager.IMPORTANCE_LOW)
+                .apply {
+                    description = channelDescription
+                    setShowBadge(false)
+                }
         nm.createNotificationChannel(channel)
     }
 }

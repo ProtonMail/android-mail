@@ -23,6 +23,7 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
+import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcommon.presentation.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class NotificationProvider @Inject constructor(
         // Email
         createNotificationChannel(
             context = context,
-            channelId = EMAIL_CHANNEL_ID,
+            channelId = NotificationChannelId.Email,
             channelName = R.string.email_notification_channel_name,
             channelDescription = R.string.email_notification_channel_description,
             importance = NotificationManager.IMPORTANCE_HIGH
@@ -49,7 +50,7 @@ class NotificationProvider @Inject constructor(
         // New logins
         createNotificationChannel(
             context = context,
-            channelId = LOGIN_CHANNEL_ID,
+            channelId = NotificationChannelId.Login,
             channelName = R.string.login_notification_channel_name,
             channelDescription = R.string.login_notification_channel_description,
             importance = NotificationManager.IMPORTANCE_HIGH
@@ -68,7 +69,7 @@ class NotificationProvider @Inject constructor(
         isGroupSummary: Boolean = false,
         autoCancel: Boolean = false
     ): NotificationCompat.Builder {
-        val channel = provideNotificationChannel(EMAIL_CHANNEL_ID)
+        val channel = provideNotificationChannel(NotificationChannelId.Email)
         return NotificationCompat.Builder(context, channel.id).apply {
             setContentTitle(contentTitle)
             setSmallIcon(R.drawable.ic_proton_brand_proton_mail)
@@ -89,7 +90,7 @@ class NotificationProvider @Inject constructor(
         isGroupSummary: Boolean = false,
         autoCancel: Boolean = false
     ): NotificationCompat.Builder {
-        val channel = provideNotificationChannel(LOGIN_CHANNEL_ID)
+        val channel = provideNotificationChannel(NotificationChannelId.Login)
         val style = NotificationCompat.BigTextStyle().run {
             setSummaryText(userAddress)
             bigText(contentText)
@@ -118,11 +119,5 @@ class NotificationProvider @Inject constructor(
             description = channelDescriptionString
         }
         notificationManager.createNotificationChannel(notificationChannel)
-    }
-
-    companion object {
-
-        const val EMAIL_CHANNEL_ID: ChannelId = "v7_email_channel_id"
-        const val LOGIN_CHANNEL_ID: ChannelId = "v7_login_channel_id"
     }
 }
