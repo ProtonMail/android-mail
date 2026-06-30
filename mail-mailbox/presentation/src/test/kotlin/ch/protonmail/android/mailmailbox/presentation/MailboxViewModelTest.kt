@@ -1114,6 +1114,43 @@ internal class MailboxViewModelTest {
         }
 
     @Test
+    fun `when deselect all is submitted, exit selection mode is triggered`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        expectedTrashSpamFilterStateChange(initialState)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
+        returnExpectedStateForBottomBarEvent(expectedState = selectionState)
+        every {
+            mailboxReducer.newStateFrom(
+                selectionState,
+                MailboxViewAction.ExitSelectionMode
+            )
+        } returns initialState
+        expectPagerMock()
+
+        // When + Then
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+            assertEquals(selectionState, awaitItem())
+
+            mailboxViewModel.submit(MailboxViewAction.DeselectAll)
+
+            assertEquals(initialState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(
+                    currentState = selectionState,
+                    operation = MailboxViewAction.ExitSelectionMode
+                )
+            }
+        }
+    }
+
+    @Test
     fun `when loading and validateUserSession is false then emit CouldNotLoadUserSession`() = runTest {
         // Given
         coEvery { getUserHasValidSession() } returns false

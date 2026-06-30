@@ -108,10 +108,10 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTras
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -582,7 +582,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun handleDeselectAllAction() {
-        emitNewStateFrom(MailboxEvent.AllItemsDeselected)
+        emitNewStateFrom(MailboxViewAction.ExitSelectionMode)
     }
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
