@@ -44,6 +44,7 @@ class ContentIndexingCancelReceiver : BroadcastReceiver() {
         if (intent.action != ActionCancel) return
         val userIdValue = intent.getStringExtra(ExtraUserId)?.takeIf { it.isNotBlank() }
         if (userIdValue == null) {
+            Timber.d("ContentIndexingCancelReceiver: userIdValue == null, canceling unique work")
             WorkManager.getInstance(context).cancelUniqueWork(ContentIndexingWorker.UniqueName)
             return
         }
