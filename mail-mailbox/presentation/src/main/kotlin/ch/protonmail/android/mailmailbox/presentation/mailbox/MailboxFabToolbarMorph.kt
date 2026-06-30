@@ -61,6 +61,14 @@ import ch.protonmail.android.mailcommon.presentation.ui.rememberWindowFocusState
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
+/**
+ * Hosts the floating bottom controls and orchestrates which are visible:
+ * - the unread filter pill (start), shown only while idle,
+ * - the search FAB (end), shown only while idle,
+ * - the compose FAB that morphs into the selection toolbar (center/end).
+ *
+ * Each control owns its own enter/exit animation; this function only decides visibility.
+ */
 @Suppress("UseComposableActions")
 @Composable
 internal fun MailboxFabToolbarMorph(
@@ -78,17 +86,169 @@ internal fun MailboxFabToolbarMorph(
     isSnackbarVisible: Boolean = false,
     modifier: Modifier = Modifier
 ) {
-    val lastShownState = remember { mutableStateOf<BottomBarState.Data.Shown?>(null) }
-    if (bottomBarState is BottomBarState.Data.Shown) {
-        lastShownState.value = bottomBarState
-    }
-
     val snackbarOffset by animateDpAsState(
         targetValue = if (isSnackbarVisible) MailDimens.SnackbarFabOffset else 0.dp,
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "snackbarOffset"
     )
 
+    val hasWindowFocus by rememberWindowFocusState()
+
+    // The unread filter and the search FAB are only relevant in the idle list,
+    // i.e. neither selecting items nor searching.
+    val isIdle = !isInSelectionMode && !isInSearch
+
+    Box(
+        modifier = modifier
+            .padding(bottom = snackbarOffset)
+            .fillMaxWidth()
+    ) {
+        UnreadFilterFab(
+            visible = showBottomUnreadFilter && isIdle,
+            hasWindowFocus = hasWindowFocus,
+            state = unreadFilterState,
+            onFilterEnabled = onUnreadFilterEnabled,
+            onFilterDisabled = onUnreadFilterDisabled,
+            modifier = Modifier.align(Alignment.CenterStart)
+        )
+
+        SearchFab(
+            visible = isSearchButtonVisible && isIdle,
+            enabled = !isInSelectionMode,
+            hasWindowFocus = hasWindowFocus,
+            onClick = onSearchClick,
+            modifier = Modifier.align(Alignment.CenterEnd)
+        )
+
+        ComposeFabToolbarMorph(
+            isInSelectionMode = isInSelectionMode,
+            isInSearch = isInSearch,
+            hasWindowFocus = hasWindowFocus,
+            bottomBarState = bottomBarState,
+            bottomBarActions = bottomBarActions,
+            onComposeClick = onComposeClick,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun UnreadFilterFab(
+    visible: Boolean,
+    hasWindowFocus: Boolean,
+    state: UnreadFilterState,
+    onFilterEnabled: () -> Unit,
+    onFilterDisabled: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    // Latch through a state so the control animates in on first appearance instead of snapping.
+    var show by remember { mutableStateOf(false) }
+    LaunchedEffect(visible) { show = visible }
+
+    val alpha by animateFloatAsState(if (show) 1f else 0f, PopInSpring, label = "unreadAlpha")
+    val scale by animateFloatAsState(if (show) 1f else POP_IN_HIDDEN_SCALE, PopInSpring, label = "unreadScale")
+    val translationY by animateFloatAsState(
+        if (show) 0f else POP_IN_HIDDEN_TRANSLATION_Y, PopInSpring, label = "unreadTranslationY"
+    )
+
+    // Skip drawing the overlay as soon as the window loses focus, so an OEM
+    // extended screenshot can't capture it.
+    if (hasWindowFocus && (show || alpha > 0f)) {
+        Box(
+            modifier = modifier
+                .graphicsLayer {
+                    this.alpha = alpha
+                    scaleX = scale
+                    scaleY = scale
+                    this.translationY = translationY
+                    // Fade without an offscreen buffer: ModulateAlpha clips the drop
+                    // shadow drawn outside the layer bounds while alpha < 1.
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
+                }
+                .padding(ShadowClipGuard)
+        ) {
+            BottomUnreadFilterButton(
+                state = state,
+                onFilterEnabled = onFilterEnabled,
+                onFilterDisabled = onFilterDisabled
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchFab(
+    visible: Boolean,
+    enabled: Boolean,
+    hasWindowFocus: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var show by remember { mutableStateOf(false) }
+    LaunchedEffect(visible) { show = visible }
+
+    val alpha by animateFloatAsState(if (show) 1f else 0f, PopInSpring, label = "searchAlpha")
+    val scale by animateFloatAsState(if (show) 1f else POP_IN_HIDDEN_SCALE, PopInSpring, label = "searchScale")
+    val translationY by animateFloatAsState(
+        if (show) 0f else POP_IN_HIDDEN_TRANSLATION_Y, PopInSpring, label = "searchTranslationY"
+    )
+
+    if (hasWindowFocus && (show || alpha > 0f)) {
+        Box(
+            modifier = modifier
+                .padding(end = FabSize + SearchFabSpacing)
+                .padding(ShadowClipGuard)
+                .graphicsLayer {
+                    this.alpha = alpha
+                    scaleX = scale
+                    scaleY = scale
+                    this.translationY = translationY
+                    // Fade without an offscreen buffer: ModulateAlpha clips the drop
+                    // shadow drawn outside the layer bounds while alpha < 1.
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
+                }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .width(FabSize)
+                    .height(FabSize)
+                    .protonFloatingButtonShadow(),
+                shape = RoundedCornerShape(percent = 50),
+                color = ProtonTheme.colors.interactionFabNorm
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.clickable(enabled = enabled) { onClick() }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                        contentDescription = stringResource(
+                            id = R.string.mailbox_toolbar_search_button_content_description
+                        ),
+                        tint = ProtonTheme.colors.textNorm
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ComposeFabToolbarMorph(
+    isInSelectionMode: Boolean,
+    isInSearch: Boolean,
+    hasWindowFocus: Boolean,
+    bottomBarState: BottomBarState,
+    bottomBarActions: BottomActionBar.Actions,
+    onComposeClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val lastShownState = remember { mutableStateOf<BottomBarState.Data.Shown?>(null) }
+    if (bottomBarState is BottomBarState.Data.Shown) {
+        lastShownState.value = bottomBarState
+    }
+
+    // --- selection morph: FAB (bottom-end) <-> toolbar (centered) ---
     val transition = updateTransition(targetState = isInSelectionMode, label = "fabToolbarMorph")
 
     val actionCount = (lastShownState.value?.actions?.size ?: 0)
@@ -115,203 +275,71 @@ internal fun MailboxFabToolbarMorph(
         label = "horizontalBias"
     ) { inSelection -> if (inSelection) 0f else 1f }
 
-    val hasWindowFocus by rememberWindowFocusState()
+    // --- search fade: hide the bottom bar while searching, but never while selecting ---
+    val fadeForSearch = isInSearch && !isInSelectionMode
+    val searchAlpha by animateFloatAsState(if (fadeForSearch) 0f else 1f, PopInSpring, label = "composeAlpha")
+    val searchScale by animateFloatAsState(
+        if (fadeForSearch) POP_IN_HIDDEN_SCALE else 1f, PopInSpring, label = "composeScale"
+    )
+    val searchTranslationY by animateFloatAsState(
+        if (fadeForSearch) POP_IN_HIDDEN_TRANSLATION_Y else 0f, PopInSpring, label = "composeTranslationY"
+    )
 
-    Box(
-        modifier = modifier
-            .padding(bottom = snackbarOffset)
-            .fillMaxWidth()
-    ) {
-        val wantsUnreadFilter = showBottomUnreadFilter && !isInSelectionMode && !isInSearch
-        var showUnreadFilter by remember { mutableStateOf(false) }
-        LaunchedEffect(wantsUnreadFilter) {
-            showUnreadFilter = wantsUnreadFilter
-        }
-
-        val unreadSpring = spring<Float>(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow
-        )
-        val unreadAlpha by animateFloatAsState(
-            targetValue = if (showUnreadFilter) 1f else 0f,
-            animationSpec = unreadSpring,
-            label = "unreadAlpha"
-        )
-        val unreadScale by animateFloatAsState(
-            targetValue = if (showUnreadFilter) 1f else 0.6f,
-            animationSpec = unreadSpring,
-            label = "unreadScale"
-        )
-        val unreadTranslationY by animateFloatAsState(
-            targetValue = if (showUnreadFilter) 0f else 40f,
-            animationSpec = unreadSpring,
-            label = "unreadTranslationY"
-        )
-        // Skip drawing the floating overlays as soon as the window loses focus,
-        // so an OEM extended screenshot can't capture them.
-        if (hasWindowFocus && (showUnreadFilter || unreadAlpha > 0f)) {
-            Box(
+    if (hasWindowFocus && (!fadeForSearch || searchAlpha > 0f)) {
+        Box(
+            modifier = modifier
+                .padding(ShadowClipGuard)
+                .graphicsLayer {
+                    alpha = searchAlpha
+                    scaleX = searchScale
+                    scaleY = searchScale
+                    translationY = searchTranslationY
+                    // Fade without an offscreen buffer: ModulateAlpha clips the drop
+                    // shadow drawn outside the layer bounds while alpha < 1.
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
+                },
+            contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
+        ) {
+            Surface(
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .graphicsLayer {
-                        alpha = unreadAlpha
-                        scaleX = unreadScale
-                        scaleY = unreadScale
-                        translationY = unreadTranslationY
-                        // Fade without an offscreen buffer: Auto clips the drop
-                        // shadow drawn outside the layer bounds while alpha < 1.
-                        compositingStrategy = CompositingStrategy.ModulateAlpha
-                    }
-                    .padding(ShadowClipGuard)
+                    .width(containerWidth)
+                    .height(FabSize)
+                    .protonFloatingButtonShadow(),
+                shape = RoundedCornerShape(percent = 50),
+                color = ProtonTheme.colors.interactionFabNorm
             ) {
-                BottomUnreadFilterButton(
-                    state = unreadFilterState,
-                    onFilterEnabled = onUnreadFilterEnabled,
-                    onFilterDisabled = onUnreadFilterDisabled
-                )
-            }
-        }
-
-        val wantsSearchFab = isSearchButtonVisible && !isInSelectionMode && !isInSearch
-        var showSearchFab by remember { mutableStateOf(false) }
-        LaunchedEffect(wantsSearchFab) {
-            showSearchFab = wantsSearchFab
-        }
-        val searchSpring = spring<Float>(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow
-        )
-        val searchAlpha by animateFloatAsState(
-            targetValue = if (showSearchFab) 1f else 0f,
-            animationSpec = searchSpring,
-            label = "searchAlpha"
-        )
-        val searchScale by animateFloatAsState(
-            targetValue = if (showSearchFab) 1f else 0.6f,
-            animationSpec = searchSpring,
-            label = "searchScale"
-        )
-        val searchTranslationY by animateFloatAsState(
-            targetValue = if (showSearchFab) 0f else 40f,
-            animationSpec = searchSpring,
-            label = "searchTranslationY"
-        )
-        if (hasWindowFocus && (showSearchFab || searchAlpha > 0f)) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = FabSize + SearchFabSpacing)
-                    .padding(ShadowClipGuard)
-                    .graphicsLayer {
-                        alpha = searchAlpha
-                        scaleX = searchScale
-                        scaleY = searchScale
-                        translationY = searchTranslationY
-                        // Fade without an offscreen buffer: Auto clips the drop
-                        // shadow drawn outside the layer bounds while alpha < 1.
-                        compositingStrategy = CompositingStrategy.ModulateAlpha
-                    }
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .width(FabSize)
-                        .height(FabSize)
-                        .protonFloatingButtonShadow(),
-                    shape = RoundedCornerShape(percent = 50),
-                    color = ProtonTheme.colors.interactionFabNorm
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.clickable(enabled = !isInSelectionMode) { onSearchClick() }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                            contentDescription = stringResource(
-                                id = R.string.mailbox_toolbar_search_button_content_description
-                            ),
-                            tint = ProtonTheme.colors.textNorm
-                        )
-                    }
-                }
-            }
-        }
+                    // FAB icon
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                        contentDescription = stringResource(
+                            id = R.string.mailbox_fab_compose_button_content_description
+                        ),
+                        tint = ProtonTheme.colors.textNorm,
+                        modifier = Modifier.graphicsLayer { alpha = fabAlpha }
+                    )
 
-        // FAB / Toolbar morph – animates from bottom end (FAB) to center (toolbar).
-        // The compose FAB fades out during search, but the selection toolbar lives in
-        // the same container, so the search fade must be suppressed while selecting.
-        val fadeForSearch = isInSearch && !isInSelectionMode
-        val composeAlpha by animateFloatAsState(
-            targetValue = if (fadeForSearch) 0f else 1f,
-            animationSpec = searchSpring,
-            label = "composeAlpha"
-        )
-        val composeScale by animateFloatAsState(
-            targetValue = if (fadeForSearch) 0.6f else 1f,
-            animationSpec = searchSpring,
-            label = "composeScale"
-        )
-        val composeTranslationY by animateFloatAsState(
-            targetValue = if (fadeForSearch) 40f else 0f,
-            animationSpec = searchSpring,
-            label = "composeTranslationY"
-        )
-        if (hasWindowFocus && (!fadeForSearch || composeAlpha > 0f)) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(ShadowClipGuard)
-                    .graphicsLayer {
-                        alpha = composeAlpha
-                        scaleX = composeScale
-                        scaleY = composeScale
-                        translationY = composeTranslationY
-                        // Fade without an offscreen buffer: Auto clips the drop
-                        // shadow drawn outside the layer bounds while alpha < 1.
-                        compositingStrategy = CompositingStrategy.ModulateAlpha
-                    },
-                contentAlignment = BiasAlignment(horizontalBias = horizontalBias, verticalBias = 0f)
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .width(containerWidth)
-                        .height(FabSize)
-                        .protonFloatingButtonShadow(),
-                    shape = RoundedCornerShape(percent = 50),
-                    color = ProtonTheme.colors.interactionFabNorm
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.clickable(enabled = !isInSelectionMode) { onComposeClick() }
-                    ) {
-                        // FAB icon
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                            contentDescription = stringResource(
-                                id = R.string.mailbox_fab_compose_button_content_description
-                            ),
-                            tint = ProtonTheme.colors.textNorm,
-                            modifier = Modifier.graphicsLayer { alpha = fabAlpha }
-                        )
-
-                        // Toolbar actions – keep in composition while animating, remove once done
-                        // so invisible IconButtons don't steal hits from the FAB.
-                        val shownData = lastShownState.value
-                        val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
-                        if (shownData != null && isToolbarActive) {
-                            Row(
-                                modifier = Modifier
-                                    .graphicsLayer { alpha = toolbarAlpha }
-                                    .fillMaxWidth()
-                                    .padding(horizontal = ToolbarHorizontalPadding),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                FloatingToolbarActionIcons(
-                                    actions = shownData.actions,
-                                    target = shownData.target,
-                                    viewActionCallbacks = bottomBarActions
-                                )
-                            }
+                    // Toolbar actions – keep in composition while animating, remove once done
+                    // so invisible IconButtons don't steal hits from the FAB.
+                    val shownData = lastShownState.value
+                    val isToolbarActive = isInSelectionMode || transition.currentState != transition.targetState
+                    if (shownData != null && isToolbarActive) {
+                        Row(
+                            modifier = Modifier
+                                .graphicsLayer { alpha = toolbarAlpha }
+                                .fillMaxWidth()
+                                .padding(horizontal = ToolbarHorizontalPadding),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            FloatingToolbarActionIcons(
+                                actions = shownData.actions,
+                                target = shownData.target,
+                                viewActionCallbacks = bottomBarActions
+                            )
                         }
                     }
                 }
@@ -325,3 +353,11 @@ private val SearchFabSpacing = 12.dp
 private val ToolbarHorizontalPadding = 12.dp
 private const val ICON_BUTTON_SIZE = 48
 private val ShadowClipGuard = 6.dp
+
+// Shared "pop in" enter/exit animation used by the floating controls.
+private val PopInSpring = spring<Float>(
+    dampingRatio = Spring.DampingRatioLowBouncy,
+    stiffness = Spring.StiffnessMediumLow
+)
+private const val POP_IN_HIDDEN_SCALE = 0.6f
+private const val POP_IN_HIDDEN_TRANSLATION_Y = 40f
