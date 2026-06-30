@@ -16,6 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
+pluginManagement {
+    includeBuild("external/clients-monorepo/project/core/android/module-configuration")
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("monoLibs") {
+            from(files("external/clients-monorepo/gradle/libs.versions.toml"))
+        }
+    }
+}
+
+includeBuild("external/clients-monorepo/project/account/android") { name = "account" }
+includeBuild("external/clients-monorepo/project/core/android") { name = "core" }
+
 rootProject.name = "ProtonMail"
 
 include(":shared:core:account-manager:dagger")

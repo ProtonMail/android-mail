@@ -31,15 +31,8 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionOrchestrator
-import ch.protonmail.android.mailsession.data.mapper.toLocalUserId
-import ch.protonmail.android.mailsession.data.mapper.toUserId
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
-import ch.protonmail.android.mailsession.domain.usecase.SetPrimaryAccount
-import ch.protonmail.android.mailsession.presentation.observe
-import ch.protonmail.android.mailsession.presentation.onAccountNewPasswordNeeded
-import ch.protonmail.android.mailsession.presentation.onAccountTwoFactorNeeded
-import ch.protonmail.android.mailsession.presentation.onAccountTwoPasswordNeeded
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.MigrationInProgress
@@ -56,12 +49,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import me.proton.android.core.auth.presentation.AuthOrchestrator
-import me.proton.android.core.auth.presentation.login.LoginInput
-import me.proton.android.core.auth.presentation.login.LoginOutput
-import me.proton.android.core.auth.presentation.onAddAccountResult
-import me.proton.android.core.auth.presentation.onLoginResult
-import me.proton.android.core.auth.presentation.onSignUpResult
+import me.proton.android.account.api.ProtonAccountApi
+import me.proton.android.account.types.ProtonUserId
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
 import me.proton.android.core.payment.presentation.onUpgradeResult
 import me.proton.core.domain.entity.UserId
@@ -71,9 +60,8 @@ import javax.inject.Inject
 @HiltViewModel
 @SuppressWarnings("NotImplementedDeclaration", "UnusedPrivateMember")
 class LauncherViewModel @Inject constructor(
-    private val authOrchestrator: AuthOrchestrator,
+    private val accountApi: ProtonAccountApi,
     private val paymentOrchestrator: PaymentOrchestrator,
-    private val setPrimaryAccount: SetPrimaryAccount,
     private val userSessionRepository: UserSessionRepository,
     private val notificationsPermissionOrchestrator: NotificationsPermissionOrchestrator,
     private val observeLegacyMigrationStatus: ObserveLegacyMigrationStatus,
@@ -136,45 +124,22 @@ class LauncherViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-
     override fun onCleared() {
-        authOrchestrator.unregister()
         notificationsPermissionOrchestrator.unregister()
         paymentOrchestrator.unregister()
         super.onCleared()
     }
 
     fun register(context: AppCompatActivity) {
-        with(authOrchestrator) {
-            register(context)
-            onAddAccountResult { result -> if (!result) context.finish() }
-            onLoginResult { result ->
-                when (result) {
-                    is LoginOutput.LoggedIn -> onSwitchToAccount(result.userId.toUserId())
-                    is LoginOutput.DuplicateAccount -> onDuplicateAccountError()
-                    else -> Timber.e("Unknown login result $result")
-                }
-            }
-            onSignUpResult { result ->
-                if (result != null) {
-                    onSwitchToAccount(result.userId.toUserId())
-                }
-            }
+        viewModelScope.launch {
+            if (shouldMigrateLegacyAccount()) {
+                // Wait for the legacy migration to complete before registering observers.
+                observeLegacyMigrationStatus().first { it == LegacyMigrationStatus.Done }
 
-            viewModelScope.launch {
-                if (shouldMigrateLegacyAccount()) {
-                    // Wait for the legacy migration to complete before registering observers.
-                    observeLegacyMigrationStatus()
-                        .first { it == LegacyMigrationStatus.Done }
-
-                    if (context.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
-                        Timber.d("Legacy migration: Activity is still alive. Registering user session observers.")
-                        registerUserSessionObservers(context)
-                    } else {
-                        Timber.w("Legacy migration: Activity no longer alive. Skipping registration.")
-                    }
+                if (context.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+                    Timber.d("Legacy migration: Activity is still alive. Registering user session observers.")
                 } else {
-                    registerUserSessionObservers(context)
+                    Timber.w("Legacy migration: Activity no longer alive. Skipping registration.")
                 }
             }
         }
@@ -183,22 +148,6 @@ class LauncherViewModel @Inject constructor(
         with(paymentOrchestrator) {
             register(context)
             onUpgradeResult { }
-        }
-    }
-
-    private fun registerUserSessionObservers(context: AppCompatActivity) {
-        with(authOrchestrator) {
-            userSessionRepository
-                .observe(context.lifecycle, minActiveState = Lifecycle.State.RESUMED)
-                .onAccountTwoFactorNeeded {
-                    startSecondFactorWorkflow(it.userId.toLocalUserId())
-                }
-                .onAccountTwoPasswordNeeded {
-                    startTwoPassModeWorkflow(it.userId.toLocalUserId())
-                }
-                .onAccountNewPasswordNeeded {
-                    startPassManagement(it.userId.toLocalUserId())
-                }
         }
     }
 
@@ -220,11 +169,11 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onAddAccount() {
-        authOrchestrator.startAddAccountWorkflow()
+        accountApi.launchAddAccount()
     }
 
     private fun onOpenPasswordManagement(userId: UserId?) {
-        authOrchestrator.startPassManagement(userId = userId?.toLocalUserId())
+        TODO("accountApi.launchSettings()")
     }
 
     private fun onOpenRecoveryEmail() {
@@ -240,22 +189,22 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onOpenSecurityKeys() {
-        authOrchestrator.startSecurityKeys()
+        TODO("accountApi.launchSettings()")
     }
 
     private fun onSignIn(userId: UserId?) = viewModelScope.launch {
         val address = userId?.let {
             userSessionRepository.getAccount(it)?.primaryAddress
         }
-        authOrchestrator.startLoginWorkflow(LoginInput(username = address))
+        accountApi.launchSignIn(/*address*/)
     }
 
     private fun onSignUp() = viewModelScope.launch {
-        authOrchestrator.startSignUpWorkflow()
+        accountApi.launchSignUp()
     }
 
     private fun onSwitchToAccount(userId: UserId) = viewModelScope.launch {
-        setPrimaryAccount(userId)
+        accountApi.setCurrentAccount(ProtonUserId(userId.id))
     }
 
     private fun onDuplicateAccountError() = _duplicateDialogErrorEffect.tryEmit(Effect.of(Unit))

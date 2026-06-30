@@ -34,6 +34,8 @@ import ch.protonmail.android.mailevents.presentation.AppOpenLifecycleObserver
 import ch.protonmail.android.mailnotifications.domain.FirebaseMessagingTokenLifecycleObserver
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
 import dagger.hilt.android.HiltAndroidApp
+import me.proton.android.core.logging.DefaultLogger
+import me.proton.android.core.logging.addLoggers
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -67,6 +69,7 @@ internal class App : Application() {
 
     @OptIn(ExperimentalComposeRuntimeApi::class)
     override fun onCreate() {
+        DefaultLogger.addLoggers(this)
         super.onCreate()
 
         // Richer Compose-related stack traces. Does not work on prod builds, nor it is recommended to do so there.

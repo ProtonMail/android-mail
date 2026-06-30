@@ -18,6 +18,7 @@
 
 import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
+import configuration.util.toBuildConfigValue
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -34,6 +35,7 @@ plugins {
     id("app-config-plugin")
 }
 
+val accountSdkEnabled: Boolean = System.getenv("ACCOUNT_SDK_ENABLED").toBoolean()
 val accountSentryDSN: String = System.getenv("SENTRY_DSN_ACCOUNT") ?: ""
 val sentryDSN: String = System.getenv("SENTRY_DSN_MAIL") ?: ""
 
@@ -68,6 +70,8 @@ android {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
         buildConfigField("String", "RUST_SDK_VERSION", "\"${libs.versions.proton.rust.core.get()}\"")
+
+        buildConfigField("Boolean", "ACCOUNT_SDK_ENABLED", accountSdkEnabled.toBuildConfigValue())
 
         setAssetLinksResValue("proton.me")
     }
@@ -131,6 +135,7 @@ android {
             versionNameSuffix = "-dev+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
             buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "false")
+            buildConfigField("String", "BE_API_ENV", "\"atlas\"")
 
             val protonHost = "proton.black"
             protonEnvironment {
@@ -145,10 +150,12 @@ android {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             // Allow login/auth screens to be visible over screen mirroring on remote test devices.
             buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "true")
+            buildConfigField("String", "BE_API_ENV", "\"prod\"")
         }
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "false")
+            buildConfigField("String", "BE_API_ENV", "\"prod\"")
         }
     }
 
@@ -261,6 +268,14 @@ dependencies {
     implementation(project(":uicomponents"))
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
+
+    implementation(monoLibs.proton.monorepo.account.api)
+    implementation(monoLibs.proton.monorepo.account.crux)
+    implementation(monoLibs.proton.monorepo.account.logging)
+
+    implementation(monoLibs.proton.monorepo.core.env)
+    implementation(monoLibs.proton.monorepo.core.fido.google)
+    implementation(monoLibs.proton.monorepo.core.logging.sentry)
 
     implementation(libs.play.review.core)
     implementation(libs.play.review.ext)

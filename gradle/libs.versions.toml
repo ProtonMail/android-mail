@@ -48,7 +48,7 @@ androidx-work = "2.11.2"
 arrow-core = "2.2.0" # 2.2.1.1 has KT 2.3.0 as base
 cash-turbine = "1.2.1"
 coil = "2.7.0"
-dagger = "2.57.2"
+dagger = "2.58"
 detekt = "1.23.8"
 firebase-bom = "34.7.0"
 guava = "33.5.0-jre"
@@ -57,8 +57,8 @@ timber = "5.0.1"
 javax-inject = "1"
 jna = "5.18.1"
 junit = "4.13.2"
-ksp-symbol-processing-api = "2.2.21-2.0.4"
-kotlin = "2.2.21"
+ksp-symbol-processing-api = "2.3.6"
+kotlin = "2.3.20"
 kotlin-compile-testing = "0.11.1"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
@@ -244,6 +244,17 @@ proton-core-testAndroid = { module = "me.proton.core:test-android", version.ref 
 proton-core-testKotlin = { module = "me.proton.core:test-kotlin", version.ref = "proton-core" }
 proton-core-testAndroidInstrumented = { module = "me.proton.core:test-android-instrumented", version.ref = "proton-core" }
 proton-rust-core = { module = "me.proton.mail.common:lib", version.ref = "proton-rust-core" }
+
+# Proton Monorepo libraries
+proton-monorepo-account-api = { group = "me.proton.android.account", name = "account-api" }
+proton-monorepo-account-logging = { group = "me.proton.android.account", name = "account-logging" }
+
+proton-monorepo-core-env = { group = "me.proton.android.core", name = "core-env" }
+proton-monorepo-core-fido = { group = "me.proton.android.core", name = "core-fido" }
+proton-monorepo-core-fido-google = { group = "me.proton.android.core", name = "core-fido-google" }
+proton-monorepo-core-fido-no-op = { group = "me.proton.android.core", name = "core-fido-no-op" }
+proton-monorepo-core-logging = { group = "me.proton.android.core", name = "core-logging" }
+proton-monorepo-core-logging-sentry = { group = "me.proton.android.core", name = "core-logging-sentry" }
 
 [bundles]
 appLibs = [

@@ -21,6 +21,7 @@
     <string name="app_icon_name_weather">Weather</string>
     <string name="app_icon_name_notes">Notes</string>
     <string name="app_icon_name_calculator">Calculator</string>
+    <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
     <string name="dialog_sign_out_account_title">Sign out</string>
     <string name="dialog_sign_out_account_description">The data associated to your account will remain on this device unless you select to delete it.</string>
     <string name="dialog_sign_out_account_confirm">Sign out</string>
