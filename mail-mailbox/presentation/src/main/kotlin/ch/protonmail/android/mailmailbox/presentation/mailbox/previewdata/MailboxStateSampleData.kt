@@ -20,12 +20,12 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
-import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetState
+import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -181,7 +181,8 @@ object MailboxStateSampleData {
         currentMailLabel: MailLabel = inboxDynamicLabel,
         bottomSheetState: BottomSheetState? = null,
         error: Effect<TextUiModel> = Effect.empty(),
-        showRatingBooster: Effect<Unit> = Effect.empty()
+        showRatingBooster: Effect<Unit> = Effect.empty(),
+        searchState: MailboxSearchState = MailboxSearchState.NotSearching
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
@@ -192,7 +193,7 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchState = MailboxSearchState.NotSearching,
+            searchState = searchState,
             shouldShowFab = false,
             avatarImagesUiModel = AvatarImagesUiModel.Empty,
             areAllItemsSelected = false,

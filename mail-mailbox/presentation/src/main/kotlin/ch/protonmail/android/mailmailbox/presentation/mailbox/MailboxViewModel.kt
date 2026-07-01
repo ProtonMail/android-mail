@@ -307,24 +307,31 @@ class MailboxViewModel @Inject constructor(
             state.observeSelectedMailboxItems(),
             toolbarRefreshSignal.refreshEvents.onStart { emit(Unit) }
         ) { selectedMailLabel, selectedMailboxItems, _ ->
-            getBottomBarActions(
-                primaryUserId.filterNotNull().first(),
-                selectedMailLabel.id.labelId,
-                selectedMailboxItems.map { MailboxItemId(it.id) },
-                getViewModeForCurrentLocation(selectedMailLabel.id)
-            ).fold(
-                ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
-                ifRight = { actions ->
-                    MailboxEvent.MessageBottomBarEvent(
-                        BottomBarEvent.ActionsData(
-                            BottomBarTarget.Mailbox,
-                            actions.map { action -> actionUiModelMapper.toUiModel(action) }
-                                .toImmutableList()
+            when {
+                // Not in selection mode: leave the bottom bar untouched.
+                selectedMailboxItems == null -> null
+                // In selection mode with no items selected: hide the bottom bar.
+                selectedMailboxItems.isEmpty() -> MailboxEvent.MessageBottomBarEvent(BottomBarEvent.HideBottomSheet)
+                else -> getBottomBarActions(
+                    primaryUserId.first(),
+                    selectedMailLabel.id.labelId,
+                    selectedMailboxItems.map { MailboxItemId(it.id) },
+                    getViewModeForCurrentLocation(selectedMailLabel.id)
+                ).fold(
+                    ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                    ifRight = { actions ->
+                        MailboxEvent.MessageBottomBarEvent(
+                            BottomBarEvent.ShowAndUpdateActionsData(
+                                BottomBarTarget.Mailbox,
+                                actions.map { action -> actionUiModelMapper.toUiModel(action) }
+                                    .toImmutableList()
+                            )
                         )
-                    )
-                }
-            )
+                    }
+                )
+            }
         }
+            .filterNotNull()
             .distinctUntilChanged()
             .onEach { emitNewStateFrom(it) }
             .launchIn(viewModelScope)
@@ -582,7 +589,11 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun handleDeselectAllAction() {
-        emitNewStateFrom(MailboxViewAction.ExitSelectionMode)
+        if (state.value.isInSearchMode()) {
+            emitNewStateFrom(MailboxViewAction.ExitSelectionMode)
+        } else {
+            emitNewStateFrom(MailboxEvent.AllItemsDeselected)
+        }
     }
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
@@ -1518,9 +1529,11 @@ class MailboxViewModel @Inject constructor(
         return data.searchState.isInSearch() && data.searchState.searchQuery.isNotBlank()
     }
 
+    // Emits the selected items while in selection mode, or null when not in selection mode.
+    // Emitting null (rather than filtering it out) ensures the combined bottom bar flow does not
+    // keep a stale non-empty selection cached after selection mode is exited.
     private fun Flow<MailboxState>.observeSelectedMailboxItems() =
-        this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
-            .mapNotNull { it?.selectedMailboxItems }
+        this.map { (it.mailboxListState as? MailboxListState.Data.SelectionMode)?.selectedMailboxItems }
             .distinctUntilChanged()
 
     private suspend fun isActionAllowedForCurrentLabel(labelId: LabelId): Boolean {

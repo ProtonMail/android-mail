@@ -953,7 +953,7 @@ internal class MailboxViewModelTest {
             mailboxReducer.newStateFrom(
                 currentState = expectedState,
                 operation = MailboxEvent.MessageBottomBarEvent(
-                    BottomBarEvent.ActionsData(
+                    BottomBarEvent.ShowAndUpdateActionsData(
                         BottomBarTarget.Mailbox,
                         expectedBottomBarActions
                     )
@@ -1031,7 +1031,7 @@ internal class MailboxViewModelTest {
             mailboxReducer.newStateFrom(
                 currentState = intermediateSelectionState,
                 operation = MailboxEvent.MessageBottomBarEvent(
-                    BottomBarEvent.ActionsData(
+                    BottomBarEvent.ShowAndUpdateActionsData(
                         BottomBarTarget.Mailbox, expectedBottomBarActions
                     )
                 )
@@ -1114,11 +1114,14 @@ internal class MailboxViewModelTest {
         }
 
     @Test
-    fun `when deselect all is submitted, exit selection mode is triggered`() = runTest {
+    fun `when deselect all is submitted while in search mode, exit selection mode is triggered`() = runTest {
         // Given
         val item = readMailboxItemUiModel
         val initialState = createMailboxDataState()
-        val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        val selectionState = MailboxStateSampleData.createSelectionMode(
+            listOf(item),
+            searchState = MailboxSearchStateSampleData.NewSearch
+        )
         expectedTrashSpamFilterStateChange(initialState)
         expectedSelectedLabelCountStateChange(initialState)
         returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
@@ -1147,6 +1150,165 @@ internal class MailboxViewModelTest {
                     operation = MailboxViewAction.ExitSelectionMode
                 )
             }
+        }
+    }
+
+    @Test
+    fun `when deselect all is submitted outside of search mode, all items are deselected only`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        expectedTrashSpamFilterStateChange(initialState)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
+        returnExpectedStateForBottomBarEvent(expectedState = selectionState)
+        every {
+            mailboxReducer.newStateFrom(
+                selectionState,
+                MailboxEvent.AllItemsDeselected
+            )
+        } returns initialState
+        expectPagerMock()
+
+        // When + Then
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+            assertEquals(selectionState, awaitItem())
+
+            mailboxViewModel.submit(MailboxViewAction.DeselectAll)
+
+            assertEquals(initialState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(
+                    currentState = selectionState,
+                    operation = MailboxEvent.AllItemsDeselected
+                )
+            }
+            verify(exactly = 0) {
+                mailboxReducer.newStateFrom(
+                    currentState = selectionState,
+                    operation = MailboxViewAction.ExitSelectionMode
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `when deselect all leaves zero items selected, bottom bar is hidden`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val shownBottomBarState = BottomBarState.Data.Shown(
+            BottomBarTarget.Mailbox,
+            listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash).toImmutableList()
+        )
+        val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            .copy(bottomAppBarState = shownBottomBarState)
+        val emptySelectionState = MailboxStateSampleData.createSelectionMode(emptyList())
+            .copy(bottomAppBarState = shownBottomBarState)
+        val hiddenBottomBarState = emptySelectionState.copy(
+            bottomAppBarState = BottomBarState.Data.Hidden(
+                BottomBarTarget.Mailbox,
+                shownBottomBarState.actions
+            )
+        )
+        expectedTrashSpamFilterStateChange(initialState)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
+        returnExpectedStateForBottomBarEvent(expectedState = selectionState)
+        every {
+            mailboxReducer.newStateFrom(selectionState, MailboxEvent.AllItemsDeselected)
+        } returns emptySelectionState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = emptySelectionState,
+                operation = MailboxEvent.MessageBottomBarEvent(BottomBarEvent.HideBottomSheet)
+            )
+        } returns hiddenBottomBarState
+        expectPagerMock()
+
+        // When + Then
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+            assertEquals(selectionState, awaitItem())
+
+            mailboxViewModel.submit(MailboxViewAction.DeselectAll)
+
+            assertEquals(emptySelectionState, awaitItem())
+            assertEquals(hiddenBottomBarState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when selecting an item again after deselect all, bottom bar is shown`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val shownBottomBarState = BottomBarState.Data.Shown(
+            BottomBarTarget.Mailbox,
+            listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash).toImmutableList()
+        )
+        val hiddenBottomBarState = BottomBarState.Data.Hidden(
+            BottomBarTarget.Mailbox,
+            shownBottomBarState.actions
+        )
+        val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            .copy(bottomAppBarState = shownBottomBarState)
+        val emptySelectionState = MailboxStateSampleData.createSelectionMode(emptyList())
+            .copy(bottomAppBarState = hiddenBottomBarState)
+        val reselectedIntermediateState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            .copy(bottomAppBarState = hiddenBottomBarState)
+        val reshownBottomBarState = reselectedIntermediateState.copy(bottomAppBarState = shownBottomBarState)
+        expectedTrashSpamFilterStateChange(initialState)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
+        returnExpectedStateForBottomBarEvent(expectedState = selectionState)
+        every {
+            mailboxReducer.newStateFrom(selectionState, MailboxEvent.AllItemsDeselected)
+        } returns emptySelectionState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = emptySelectionState,
+                operation = MailboxEvent.MessageBottomBarEvent(BottomBarEvent.HideBottomSheet)
+            )
+        } returns emptySelectionState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = emptySelectionState,
+                operation = MailboxEvent.ItemClicked.ItemAddedToSelection(item)
+            )
+        } returns reselectedIntermediateState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = reselectedIntermediateState,
+                operation = MailboxEvent.MessageBottomBarEvent(
+                    BottomBarEvent.ShowAndUpdateActionsData(
+                        BottomBarTarget.Mailbox,
+                        shownBottomBarState.actions
+                    )
+                )
+            )
+        } returns reshownBottomBarState
+        expectPagerMock()
+
+        // When + Then
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+            assertEquals(selectionState, awaitItem())
+
+            mailboxViewModel.submit(MailboxViewAction.DeselectAll)
+            assertEquals(emptySelectionState, awaitItem())
+
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(reselectedIntermediateState, awaitItem())
+            assertEquals(reshownBottomBarState, awaitItem())
         }
     }
 
@@ -4189,7 +4351,7 @@ internal class MailboxViewModelTest {
             mailboxReducer.newStateFrom(
                 intermediateState ?: any(),
                 MailboxEvent.MessageBottomBarEvent(
-                    BottomBarEvent.ActionsData(
+                    BottomBarEvent.ShowAndUpdateActionsData(
                         BottomBarTarget.Mailbox,
                         listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash).toImmutableList()
                     )
