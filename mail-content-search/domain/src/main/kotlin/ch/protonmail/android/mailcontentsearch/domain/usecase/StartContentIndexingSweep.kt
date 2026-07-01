@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 /**
  * Starts (or restarts) the multi-account indexing sweep, which indexes every eligible account in
- * turn under a single worker. Unlike [StartContentIndexing] there is no per-account mutual exclusion:
- * enabling content search on one account does not block another.
+ * turn under a single worker. There is no per-account mutual exclusion: enabling content search on
+ * one account does not block another.
  */
 class StartContentIndexingSweep @Inject constructor(
     private val scheduler: ContentIndexingScheduler,

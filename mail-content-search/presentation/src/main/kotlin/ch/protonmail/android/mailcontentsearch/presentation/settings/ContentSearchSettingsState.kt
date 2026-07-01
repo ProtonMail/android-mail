@@ -31,7 +31,6 @@ sealed interface ContentSearchSettingsState {
         val isContentSearchEnabled: Boolean,
         val isAllowMobileDataEnabled: Boolean,
         val syncPercentage: Double?,
-        val isIndexingActive: Boolean = false,
-        val isBlockedByOtherUser: Boolean = false
+        val isIndexingActive: Boolean = false
     ) : ContentSearchSettingsState
 }

@@ -20,11 +20,8 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.right
 import io.mockk.coEvery
-import io.mockk.coVerifyOrder
-import io.mockk.every
-import io.mockk.just
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.runs
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
@@ -32,21 +29,15 @@ import kotlin.test.Test
 internal class DisableContentSearchTest {
 
     private val userId = UserId("user-1")
-    private val cancelContentIndexing = mockk<CancelContentIndexing> {
-        every { this@mockk.invoke(userId) } just runs
-    }
     private val setContentSearchEnabled = mockk<SetContentSearchEnabled> {
         coEvery { this@mockk.invoke(userId, false) } returns Unit.right()
     }
-    private val disableContentSearch = DisableContentSearch(cancelContentIndexing, setContentSearchEnabled)
+    private val disableContentSearch = DisableContentSearch(setContentSearchEnabled)
 
     @Test
-    fun `cancels indexing then turns off the preference for the same user`() = runTest {
+    fun `turns off the content search preference for the user`() = runTest {
         disableContentSearch(userId)
 
-        coVerifyOrder {
-            cancelContentIndexing(userId)
-            setContentSearchEnabled(userId, false)
-        }
+        coVerify { setContentSearchEnabled(userId, false) }
     }
 }

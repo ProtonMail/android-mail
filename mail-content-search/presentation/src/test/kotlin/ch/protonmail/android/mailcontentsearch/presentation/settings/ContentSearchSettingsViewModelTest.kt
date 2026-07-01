@@ -201,7 +201,6 @@ internal class ContentSearchSettingsViewModelTest {
         // Given
         coEvery { isContentSearchEnabled(userId) } returns false.right()
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { startContentIndexing(userId) } returns EnqueueIndexingResult.Scheduled
         coEvery { setContentSearchEnabled(userId, true) } returns DataError.Local.Unknown.left()
 
         val viewModel = viewModel()

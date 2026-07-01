@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.model
 
-import me.proton.core.domain.entity.UserId
-
 sealed interface EnqueueIndexingResult {
     data object Scheduled : EnqueueIndexingResult
     data object AlreadySynced : EnqueueIndexingResult
-    data class BlockedByOtherUser(val ongoingUserId: UserId) : EnqueueIndexingResult
 }

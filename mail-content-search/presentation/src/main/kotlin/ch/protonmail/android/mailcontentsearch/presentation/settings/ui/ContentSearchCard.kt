@@ -54,7 +54,6 @@ internal fun ContentSearchCard(
     isEnabled: Boolean,
     syncPercentage: Double?,
     isIndexingActive: Boolean,
-    isBlockedByOtherUser: Boolean,
     onToggle: (Boolean) -> Unit,
     onLearnMoreClick: () -> Unit
 ) {
@@ -97,7 +96,7 @@ internal fun ContentSearchCard(
                     horizontal = ProtonDimens.Spacing.Large,
                     vertical = ProtonDimens.Spacing.Medium
                 ),
-                value = if (isBlockedByOtherUser) null else isEnabled,
+                value = isEnabled,
                 onToggle = onToggle
             ) {
                 Text(
@@ -106,36 +105,25 @@ internal fun ContentSearchCard(
                     fontWeight = FontWeight.Normal
                 )
 
-                if (isBlockedByOtherUser) {
+                val statusText = when {
+                    syncPercentage != null -> stringResource(
+                        id = R.string.mail_settings_content_search_syncing_status,
+                        syncPercentage
+                    )
+
+                    showPreparing -> stringResource(
+                        id = R.string.mail_settings_content_search_preparing_status
+                    )
+
+                    else -> null
+                }
+                if (statusText != null) {
                     Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
                     Text(
-                        text = stringResource(
-                            id = R.string.mail_settings_content_search_blocked_by_other_user
-                        ),
+                        text = statusText,
                         style = ProtonTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Normal
                     )
-                } else {
-                    val statusText = when {
-                        syncPercentage != null -> stringResource(
-                            id = R.string.mail_settings_content_search_syncing_status,
-                            syncPercentage
-                        )
-
-                        showPreparing -> stringResource(
-                            id = R.string.mail_settings_content_search_preparing_status
-                        )
-
-                        else -> null
-                    }
-                    if (statusText != null) {
-                        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
-                        Text(
-                            text = statusText,
-                            style = ProtonTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Normal
-                        )
-                    }
                 }
             }
         }

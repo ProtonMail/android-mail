@@ -88,8 +88,7 @@ internal class ContentIndexingWorkerSweepTest {
         every { id } returns UUID.randomUUID()
         every { progressUpdater } returns this@ContentIndexingWorkerSweepTest.progressUpdater
         every { inputData } returns workDataOf(
-            ContentIndexingWorker.KeyRunAsForeground to false,
-            ContentIndexingWorker.KeyAutoAdvance to true
+            ContentIndexingWorker.KeyRunAsForeground to false
         )
     }
 

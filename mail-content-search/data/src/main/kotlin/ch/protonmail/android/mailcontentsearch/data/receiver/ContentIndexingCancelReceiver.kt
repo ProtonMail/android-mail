@@ -23,50 +23,21 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
-import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
-import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 
-@AndroidEntryPoint
 class ContentIndexingCancelReceiver : BroadcastReceiver() {
-
-    @Inject
-    lateinit var disableContentSearch: DisableContentSearch
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ActionCancel) return
-        val userIdValue = intent.getStringExtra(ExtraUserId)?.takeIf { it.isNotBlank() }
-        if (userIdValue == null) {
-            Timber.d("ContentIndexingCancelReceiver: userIdValue == null, canceling unique work")
-            WorkManager.getInstance(context).cancelUniqueWork(ContentIndexingWorker.UniqueName)
-            return
-        }
-        val pending = goAsync()
-        @Suppress("TooGenericExceptionCaught")
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withTimeout(WorkTimeoutMillis.milliseconds) {
-                    disableContentSearch(UserId(userIdValue))
-                }
-            } catch (t: Throwable) {
-                Timber.w(t, "ContentIndexingCancelReceiver: failed to disable content search")
-            } finally {
-                pending.finish()
-            }
-        }
+        // The sweep runs as a single unique work item, so cancelling stops indexing for every account.
+        // This is a pause, not an opt-out: content search stays enabled, so the auto-indexing handler
+        // resumes the sweep the next time the app is foregrounded (or on a cold start, or when an
+        // account newly becomes ready). To stop indexing permanently the user turns content search off.
+        Timber.d("ContentIndexingCancelReceiver: cancelling the content indexing sweep")
+        WorkManager.getInstance(context).cancelUniqueWork(ContentIndexingWorker.UniqueName)
     }
 
     companion object {
         const val ActionCancel = "ch.protonmail.android.mailcontentsearch.action.CANCEL_INDEXING"
-        const val ExtraUserId = "ch.protonmail.android.mailcontentsearch.extra.USER_ID"
-
-        private const val WorkTimeoutMillis = 8_000L
     }
 }

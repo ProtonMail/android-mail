@@ -27,7 +27,6 @@ import androidx.core.app.NotificationCompat
 import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcontentsearch.data.R
 import ch.protonmail.android.mailcontentsearch.data.receiver.ContentIndexingCancelReceiver
-import me.proton.core.domain.entity.UserId
 
 internal object ContentIndexingNotification {
 
@@ -35,7 +34,6 @@ internal object ContentIndexingNotification {
 
     fun build(
         context: Context,
-        userId: UserId?,
         accountLabel: String?,
         progress: Double?
     ): NotificationCompat.Builder {
@@ -60,21 +58,18 @@ internal object ContentIndexingNotification {
                 NotificationCompat.Action.Builder(
                     0,
                     context.getString(R.string.content_search_notification_cancel),
-                    cancelPendingIntent(context, userId)
+                    cancelPendingIntent(context)
                 ).build()
             )
     }
 
-    private fun cancelPendingIntent(context: Context, userId: UserId?): PendingIntent {
+    private fun cancelPendingIntent(context: Context): PendingIntent {
+        // The sweep runs as a single unique work item, so cancelling stops the whole sweep.
         val intent = Intent(context, ContentIndexingCancelReceiver::class.java)
             .setAction(ContentIndexingCancelReceiver.ActionCancel)
-            .apply {
-                if (userId != null) putExtra(ContentIndexingCancelReceiver.ExtraUserId, userId.id)
-            }
-        val requestCode = userId?.id?.hashCode() ?: CANCEL_REQUEST_CODE
         return PendingIntent.getBroadcast(
             context,
-            requestCode,
+            CANCEL_REQUEST_CODE,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

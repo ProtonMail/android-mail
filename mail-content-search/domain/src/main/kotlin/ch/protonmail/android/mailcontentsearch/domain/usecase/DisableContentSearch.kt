@@ -24,12 +24,10 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class DisableContentSearch @Inject constructor(
-    private val cancelContentIndexing: CancelContentIndexing,
     private val setContentSearchEnabled: SetContentSearchEnabled
 ) {
 
-    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> {
-        cancelContentIndexing(userId)
-        return setContentSearchEnabled(userId, false)
-    }
+    // Disabling only clears the flag: the running sweep observes the change, drops this account
+    // from its eligible set and pauses it. There is no per-account worker to cancel.
+    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = setContentSearchEnabled(userId, false)
 }

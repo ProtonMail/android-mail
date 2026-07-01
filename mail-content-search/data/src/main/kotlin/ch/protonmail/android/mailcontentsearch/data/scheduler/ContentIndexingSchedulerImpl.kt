@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -37,74 +36,34 @@ class ContentIndexingSchedulerImpl @Inject constructor(
     private val appInBackgroundState: AppInBackgroundState
 ) : ContentIndexingScheduler {
 
-    override suspend fun enqueue(userId: UserId, allowMobileData: Boolean): EnqueueIndexingResult {
-        val ongoing = currentOngoingWorkInfo()
-        val ongoingUserId = ongoing?.userId()
-        if (ongoingUserId != null && ongoingUserId != userId) {
-            return EnqueueIndexingResult.BlockedByOtherUser(ongoingUserId)
-        }
-
+    override suspend fun enqueueSweep(allowMobileData: Boolean, replaceExisting: Boolean): EnqueueIndexingResult {
         val request = ContentIndexingWorker.buildRequest(
-            userId = userId,
             runAsForeground = appInBackgroundState.isAppInBackground(),
-            allowMobileData = allowMobileData,
-            autoAdvance = false
+            allowMobileData = allowMobileData
         )
-        workManager.enqueueUniqueWork(
-            ContentIndexingWorker.UniqueName,
-            ExistingWorkPolicy.REPLACE,
-            request
-        )
+        val policy = if (replaceExisting) ExistingWorkPolicy.REPLACE else ExistingWorkPolicy.KEEP
+        workManager.enqueueUniqueWork(ContentIndexingWorker.UniqueName, policy, request)
         return EnqueueIndexingResult.Scheduled
-    }
-
-    override suspend fun enqueueSweep(allowMobileData: Boolean): EnqueueIndexingResult {
-        val request = ContentIndexingWorker.buildRequest(
-            userId = null,
-            runAsForeground = appInBackgroundState.isAppInBackground(),
-            allowMobileData = allowMobileData,
-            autoAdvance = true
-        )
-        workManager.enqueueUniqueWork(
-            ContentIndexingWorker.UniqueName,
-            ExistingWorkPolicy.REPLACE,
-            request
-        )
-        return EnqueueIndexingResult.Scheduled
-    }
-
-    override fun cancel(userId: UserId) {
-        workManager.cancelAllWorkByTag(userTag(userId))
     }
 
     override fun observeState(userId: UserId): Flow<ContentIndexingState> =
         workManager.getWorkInfosForUniqueWorkFlow(ContentIndexingWorker.UniqueName)
             .map { infos ->
                 val info = infos.firstOrNull()
-                if (info == null || info.userId() != userId) ContentIndexingState.Idle
-                else info.toState()
+                when {
+                    info == null -> ContentIndexingState.Idle
+                    // The sweep publishes the account it is currently indexing via progress data;
+                    // report its live state for that account.
+                    info.currentUserId() == userId -> info.toState()
+                    // A sweep that is enqueued/starting has not announced an account yet; surface the
+                    // transient "preparing" state so a just-enabled account does not look idle.
+                    info.currentUserId() == null && !info.state.isFinished -> ContentIndexingState.Initializing
+                    else -> ContentIndexingState.Idle
+                }
             }
 
-    override fun observeOngoingUserId(): Flow<UserId?> =
-        workManager.getWorkInfosForUniqueWorkFlow(ContentIndexingWorker.UniqueName)
-            .map { infos ->
-                infos.firstOrNull { !it.state.isFinished }?.userId()
-            }
-
-    private suspend fun currentOngoingWorkInfo(): WorkInfo? = workManager
-        .getWorkInfosForUniqueWorkFlow(ContentIndexingWorker.UniqueName)
-        .first()
-        .firstOrNull { !it.state.isFinished }
-
-    private fun WorkInfo.userId(): UserId? {
-        // The sweep worker has no per-user tag; it publishes the account it is currently indexing
-        // via progress data. Single-account work carries the user tag instead.
-        val fromProgress = progress.getString(ContentIndexingWorker.KeyCurrentUserId)?.takeIf { it.isNotBlank() }
-        if (fromProgress != null) return UserId(fromProgress)
-        val tagged = tags.firstOrNull { it.startsWith(ContentIndexingWorker.TagUserPrefix) }
-            ?.removePrefix(ContentIndexingWorker.TagUserPrefix)
-        return tagged?.let(::UserId)
-    }
+    private fun WorkInfo.currentUserId(): UserId? =
+        progress.getString(ContentIndexingWorker.KeyCurrentUserId)?.takeIf { it.isNotBlank() }?.let(::UserId)
 
     private fun WorkInfo.toState(): ContentIndexingState = when (state) {
         WorkInfo.State.ENQUEUED,
@@ -117,6 +76,4 @@ class ContentIndexingSchedulerImpl @Inject constructor(
         WorkInfo.State.CANCELLED -> ContentIndexingState.Cancelled
         WorkInfo.State.FAILED -> ContentIndexingState.Failed
     }
-
-    private fun userTag(userId: UserId): String = ContentIndexingWorker.userTag(userId.id)
 }

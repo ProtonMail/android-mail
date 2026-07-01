@@ -55,7 +55,6 @@ internal fun ContentSearchSettingsContent(
             isEnabled = state.isContentSearchEnabled,
             syncPercentage = state.syncPercentage,
             isIndexingActive = state.isIndexingActive,
-            isBlockedByOtherUser = state.isBlockedByOtherUser,
             onToggle = actions.onContentSearchToggle,
             onLearnMoreClick = actions.onLearnMoreClick
         )

@@ -62,9 +62,6 @@ class ContentSearchSettingsReducer @Inject constructor() {
                 syncPercentage = event.percentage,
                 isIndexingActive = event.isActive
             )
-            is ContentSearchSettingsEvent.Data.BlockedByOtherUserChanged -> copy(
-                isBlockedByOtherUser = event.isBlocked
-            )
             is ContentSearchSettingsEvent.Error.UpdateError -> this
             else -> this
         }

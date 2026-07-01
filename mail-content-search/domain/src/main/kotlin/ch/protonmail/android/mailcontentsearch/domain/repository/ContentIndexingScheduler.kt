@@ -25,17 +25,16 @@ import me.proton.core.domain.entity.UserId
 
 interface ContentIndexingScheduler {
 
-    suspend fun enqueue(userId: UserId, allowMobileData: Boolean): EnqueueIndexingResult
-
     /**
      * Enqueues a sweep that indexes every eligible account in turn under a single worker. The
      * worker discovers accounts at runtime, so no [UserId] is required.
+     *
+     * [replaceExisting] controls the unique-work policy: `true` (REPLACE) restarts the sweep so it
+     * re-evaluates immediately (e.g. after a settings change); `false` (KEEP) leaves an in-progress
+     * sweep untouched and only starts one when none is running (e.g. resuming after the app returns
+     * to the foreground).
      */
-    suspend fun enqueueSweep(allowMobileData: Boolean): EnqueueIndexingResult
-
-    fun cancel(userId: UserId)
+    suspend fun enqueueSweep(allowMobileData: Boolean, replaceExisting: Boolean = true): EnqueueIndexingResult
 
     fun observeState(userId: UserId): Flow<ContentIndexingState>
-
-    fun observeOngoingUserId(): Flow<UserId?>
 }
