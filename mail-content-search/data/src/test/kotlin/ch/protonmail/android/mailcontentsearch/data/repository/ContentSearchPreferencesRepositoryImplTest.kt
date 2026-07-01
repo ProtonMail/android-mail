@@ -18,10 +18,13 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
@@ -31,6 +34,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -39,7 +43,11 @@ import kotlin.test.assertTrue
 internal class ContentSearchPreferencesRepositoryImplTest {
 
     private val appSettingsRepository = mockk<AppSettingsRepository>()
-    private val repository = ContentSearchPreferencesRepositoryImpl(appSettingsRepository)
+    private val dataStore = mockk<DataStore<Preferences>>()
+    private val dataStoreProvider = mockk<ContentSearchDataStoreProvider> {
+        every { contentSearchDataStore } returns dataStore
+    }
+    private val repository = ContentSearchPreferencesRepositoryImpl(appSettingsRepository, dataStoreProvider)
 
     @Test
     fun `returns the allow mobile data value stored in the rust app settings`() = runTest {
@@ -96,5 +104,63 @@ internal class ContentSearchPreferencesRepositoryImplTest {
 
         // Then
         assertEquals(PreferencesError.left(), result)
+    }
+
+    @Test
+    fun `reports auto-enable as applied when the user id is stored`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Set<String>>>()) } returns setOf(TestUserId.id)
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.hasAutoEnableBeenApplied(TestUserId)
+
+        // Then
+        assertTrue(result.getOrNull()!!)
+    }
+
+    @Test
+    fun `reports auto-enable as not applied when nothing is stored`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Set<String>>>()) } returns null
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.hasAutoEnableBeenApplied(TestUserId)
+
+        // Then
+        assertFalse(result.getOrNull()!!)
+    }
+
+    @Test
+    fun `persists the auto-enable applied marker through the data store`() = runTest {
+        // Given
+        coEvery { dataStore.updateData(any()) } returns mockk()
+
+        // When
+        repository.markAutoEnableApplied(TestUserId)
+
+        // Then
+        coVerify { dataStore.updateData(any()) }
+    }
+
+    @Test
+    fun `clears the auto-enable applied marker through the data store`() = runTest {
+        // Given
+        coEvery { dataStore.updateData(any()) } returns mockk()
+
+        // When
+        repository.clearAutoEnableApplied(TestUserId)
+
+        // Then
+        coVerify { dataStore.updateData(any()) }
+    }
+
+    private companion object {
+        val TestUserId = UserId("user-1")
     }
 }

@@ -219,9 +219,11 @@ class ContentIndexingWorker @AssistedInject constructor(
     private suspend fun indexAccount(userId: UserId, runAsForeground: Boolean): Either<ContentIndexingError, Unit> {
         currentUserId = userId
         val accountLabel = accountLabelFor(userId)
+        Timber.d("content-search: $userId starting (progress=0.0)")
         setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to 0.0))
         if (runAsForeground) trySetForeground(userId, accountLabel, progress = 0.0)
         return indexer.index(userId) { percent ->
+            Timber.d("content-search: $userId progress=$percent")
             setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to percent))
             if (runAsForeground) trySetForeground(userId, accountLabel, percent)
         }
