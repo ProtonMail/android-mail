@@ -40,8 +40,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
@@ -240,6 +242,40 @@ internal class ContentSearchSettingsViewModelTest {
         coVerify { setAllowContentSearchOnMobileData(true) }
         assertTrue(viewModel.state.value.asData().isAllowMobileDataEnabled)
     }
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `submit ToggleAllowMobileData reschedules the sweep after the debounce while enabled`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled = true))
+            advanceUntilIdle()
+
+            // Then
+            coVerify { startContentIndexingSweep() }
+        }
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `submit ToggleAllowMobileData does not reschedule the sweep when content search is disabled`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { isContentSearchEnabled(userId) } returns false.right()
+            enabledFlow.value = false
+            coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled = true))
+            advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 0) { startContentIndexingSweep() }
+        }
 
     @Test
     fun `submit ClearLocalData disables content search and clears the local data`() = runTest {

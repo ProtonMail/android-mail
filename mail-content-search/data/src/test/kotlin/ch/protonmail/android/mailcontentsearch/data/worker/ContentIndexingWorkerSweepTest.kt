@@ -55,20 +55,17 @@ internal class ContentIndexingWorkerSweepTest {
     private val userOne = UserId("user-1")
     private val userTwo = UserId("user-2")
 
-    // Long-lived flows so the in-flight interruption observer only fires after its debounce window,
-    // not when the upstream completes.
     private val primaryUserId = MutableStateFlow<UserId?>(userOne)
     private val contentSearchEnabled = MutableStateFlow(true)
 
-    private val indexer = mockk<ContentSearchIndexer>(relaxed = true)
-    // runInRustBackground is inline, so its session/scope calls run for real and must be mocked.
+    private val indexer = mockk<ContentSearchIndexer>(relaxUnitFun = true)
     private val backgroundScope = mockk<MailBackgroundExecScope>()
     private val mailSessionRepository = mockk<MailSessionRepository> {
         every { getMailSession() } returns mockk {
             every { newBackgroundExecutionScope() } returns backgroundScope
         }
     }
-    private val userSessionRepository = mockk<UserSessionRepository>(relaxed = true) {
+    private val userSessionRepository = mockk<UserSessionRepository>(relaxUnitFun = true) {
         every { observePrimaryUserId() } returns primaryUserId
         coEvery { getAccount(any()) } returns null
     }
@@ -77,7 +74,6 @@ internal class ContentIndexingWorkerSweepTest {
         every { this@mockk.invoke(any()) } returns contentSearchEnabled
     }
     private val appInBackgroundState = mockk<AppInBackgroundState> {
-        // Never emits, so no foreground/background mode swap is triggered during the test.
         every { observe() } returns emptyFlow()
     }
 
@@ -145,7 +141,7 @@ internal class ContentIndexingWorkerSweepTest {
 
     @Test
     fun `sweep interrupts the current account when another should run, then resumes`() = runTest {
-        // Given userOne never finishes, so once the debounce elapses userTwo becomes eligible
+        // Given
         coEvery {
             findFirstEligibleAccountToIndex(any())
         } returnsMany listOf(userOne, userTwo, userTwo, null)
@@ -155,7 +151,7 @@ internal class ContentIndexingWorkerSweepTest {
         // When
         val result = worker.doWork()
 
-        // Then userOne is paused (partial index preserved) and the sweep advances to userTwo
+        // Then
         assertEquals(androidx.work.ListenableWorker.Result.success(), result)
         coVerify { indexer.index(userOne, any()) }
         coVerify { indexer.cancel(userOne) }

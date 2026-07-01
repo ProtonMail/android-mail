@@ -124,4 +124,37 @@ internal class ContentIndexingWorkerCancellationTest {
             )
         )
     }
+
+    @Test
+    fun `should preserve indexer session when system preempts the work`() {
+        assertEquals(
+            CancellationAction.PreserveIndexerSession,
+            ContentIndexingWorker.decideCancellationAction(
+                stopReason = WorkInfo.STOP_REASON_PREEMPT,
+                isSelfRestarting = false
+            )
+        )
+    }
+
+    @Test
+    fun `should preserve indexer session when the worker was not actually stopped`() {
+        assertEquals(
+            CancellationAction.PreserveIndexerSession,
+            ContentIndexingWorker.decideCancellationAction(
+                stopReason = WorkInfo.STOP_REASON_NOT_STOPPED,
+                isSelfRestarting = false
+            )
+        )
+    }
+
+    @Test
+    fun `self restart preserves the session even when the system stops due to device state`() {
+        assertEquals(
+            CancellationAction.PreserveIndexerSession,
+            ContentIndexingWorker.decideCancellationAction(
+                stopReason = WorkInfo.STOP_REASON_DEVICE_STATE,
+                isSelfRestarting = true
+            )
+        )
+    }
 }
