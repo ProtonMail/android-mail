@@ -26,6 +26,7 @@ import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
@@ -35,8 +36,11 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
+import ch.protonmail.android.mailcontentsearch.domain.usecase.FindFirstEligibleAccountToIndex
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -61,47 +65,86 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val indexer: ContentSearchIndexer,
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository,
+    private val findFirstEligibleAccountToIndex: FindFirstEligibleAccountToIndex,
     private val appInBackgroundState: AppInBackgroundState
 ) : CoroutineWorker(context, workerParameters) {
 
     private val isSelfRestarting = AtomicBoolean(false)
 
+    // The account currently being indexed. Tracked so cancellation can release the right Rust
+    // session and so a self-restart can resume the same account (single mode) or sweep.
+    @Volatile
+    private var currentUserId: UserId? = null
+
     override suspend fun doWork(): Result {
-        val userId = userIdOrNull()
-        if (userId == null) {
-            Timber.e("ContentIndexingWorker: missing userId in input data")
-            return Result.failure()
-        }
         val runAsForeground = inputData.getBoolean(KeyRunAsForeground, true)
         val allowMobileData = inputData.getBoolean(KeyAllowMobileData, false)
+        val autoAdvance = inputData.getBoolean(KeyAutoAdvance, false)
 
-        Timber.d("ContentIndexingWorker: starting for $userId (foreground=$runAsForeground)")
-
-        val accountLabel = accountLabelFor(userId)
-        if (runAsForeground) trySetForeground(userId, accountLabel, progress = null)
+        Timber.d("ContentIndexingWorker: starting (foreground=$runAsForeground, sweep=$autoAdvance)")
 
         return mailSessionRepository.runInRustBackground {
             coroutineScope {
-                val swapObserver = launch { observeModeSwap(userId, runAsForeground, allowMobileData) }
+                val swapObserver = launch { observeModeSwap(runAsForeground, allowMobileData, autoAdvance) }
                 try {
-                    indexer.index(userId) { percent ->
-                        setProgress(workDataOf(KeyProgress to percent))
-                        if (runAsForeground) trySetForeground(userId, accountLabel, percent)
-                    }.fold(
-                        ifLeft = { error ->
-                            Timber.e("ContentIndexingWorker: failed with $error")
-                            indexer.cancel(userId)
-                            Result.failure()
-                        },
-                        ifRight = { Result.success() }
-                    )
+                    if (autoAdvance) runSweep(runAsForeground) else runSingleAccount(runAsForeground)
                 } catch (cancellation: CancellationException) {
-                    withContext(NonCancellable) { handleCancellation(userId, allowMobileData) }
+                    withContext(NonCancellable) { handleCancellation(allowMobileData, autoAdvance) }
                     throw cancellation
                 } finally {
                     swapObserver.cancel()
                 }
             }
+        }
+    }
+
+    /** Index a single account taken from the worker input (manual settings toggle, no advance). */
+    private suspend fun runSingleAccount(runAsForeground: Boolean): Result {
+        val userId = userIdOrNull()
+        if (userId == null) {
+            Timber.e("ContentIndexingWorker: missing userId in input data")
+            return Result.failure()
+        }
+        return indexAccount(userId, runAsForeground).fold(
+            ifLeft = { error ->
+                Timber.e("ContentIndexingWorker: failed for $userId with $error")
+                indexer.cancel(userId)
+                Result.failure()
+            },
+            ifRight = { Result.success() }
+        )
+    }
+
+    /**
+     * Index every eligible account in turn, advancing as each completes. A single worker (and a
+     * single foreground service) drives the whole sweep. An account that errors out is skipped for
+     * the remainder of this sweep so it cannot wedge the loop; it is retried on the next sweep.
+     */
+    private suspend fun runSweep(runAsForeground: Boolean): Result {
+        val failed = mutableSetOf<UserId>()
+        while (true) {
+            val next = findFirstEligibleAccountToIndex(skip = failed) ?: break
+            indexAccount(next, runAsForeground).fold(
+                ifLeft = { error ->
+                    Timber.e("ContentIndexingWorker: sweep failed for $next with $error, advancing")
+                    indexer.cancel(next)
+                    failed += next
+                },
+                ifRight = { Timber.d("ContentIndexingWorker: sweep completed $next, advancing") }
+            )
+        }
+        Timber.d("ContentIndexingWorker: sweep finished")
+        return Result.success()
+    }
+
+    private suspend fun indexAccount(userId: UserId, runAsForeground: Boolean): Either<ContentIndexingError, Unit> {
+        currentUserId = userId
+        val accountLabel = accountLabelFor(userId)
+        setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to 0.0))
+        if (runAsForeground) trySetForeground(userId, accountLabel, progress = 0.0)
+        return indexer.index(userId) { percent ->
+            setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to percent))
+            if (runAsForeground) trySetForeground(userId, accountLabel, percent)
         }
     }
 
@@ -136,28 +179,33 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     @OptIn(FlowPreview::class)
     private suspend fun observeModeSwap(
-        userId: UserId,
         runAsForeground: Boolean,
-        allowMobileData: Boolean
+        allowMobileData: Boolean,
+        autoAdvance: Boolean
     ) {
         appInBackgroundState.observe()
             .debounce(ModeSwapDebounceMillis.milliseconds)
             .distinctUntilChanged()
             .collect { isBackground ->
                 if (isBackground != runAsForeground) {
-                    Timber.d("ContentIndexingWorker: swapping mode (foreground=$isBackground) for $userId")
-                    enqueueSelf(userId, runAsForeground = isBackground, allowMobileData = allowMobileData)
+                    Timber.d("ContentIndexingWorker: swapping mode (foreground=$isBackground)")
+                    enqueueSelf(
+                        restartUserId(autoAdvance),
+                        runAsForeground = isBackground,
+                        allowMobileData,
+                        autoAdvance
+                    )
                 }
             }
     }
 
-    private suspend fun handleCancellation(userId: UserId, allowMobileData: Boolean) {
+    private suspend fun handleCancellation(allowMobileData: Boolean, autoAdvance: Boolean) {
         val reason = currentStopReason()
         val selfRestarting = isSelfRestarting.get()
         when (decideCancellationAction(reason, selfRestarting)) {
             CancellationAction.RestartInBackgroundMode -> {
                 Timber.w("ContentIndexingWorker: FGS timeout, restarting in background mode")
-                enqueueSelf(userId, runAsForeground = false, allowMobileData = allowMobileData)
+                enqueueSelf(restartUserId(autoAdvance), runAsForeground = false, allowMobileData, autoAdvance)
             }
 
             CancellationAction.PreserveIndexerSession -> {
@@ -168,7 +216,7 @@ class ContentIndexingWorker @AssistedInject constructor(
 
             CancellationAction.ReleaseIndexerSession -> {
                 Timber.d("ContentIndexingWorker: cancelled by app, releasing indexer session")
-                indexer.cancel(userId)
+                currentUserId?.let { indexer.cancel(it) }
             }
         }
     }
@@ -179,16 +227,21 @@ class ContentIndexingWorker @AssistedInject constructor(
         WorkInfo.STOP_REASON_NOT_STOPPED
     }
 
+    // A sweep restart must stay untagged (see buildRequest) so it keeps observing/cancelling as a
+    // whole sweep instead of getting pinned to whichever account happened to be in flight.
+    private fun restartUserId(autoAdvance: Boolean): UserId? = currentUserId.takeUnless { autoAdvance }
+
     private fun enqueueSelf(
-        userId: UserId,
+        userId: UserId?,
         runAsForeground: Boolean,
-        allowMobileData: Boolean
+        allowMobileData: Boolean,
+        autoAdvance: Boolean
     ) {
         isSelfRestarting.set(true)
         WorkManager.getInstance(context).enqueueUniqueWork(
             UniqueName,
             ExistingWorkPolicy.REPLACE,
-            buildRequest(userId, runAsForeground, allowMobileData)
+            buildRequest(userId, runAsForeground, allowMobileData, autoAdvance)
         )
     }
 
@@ -216,8 +269,10 @@ class ContentIndexingWorker @AssistedInject constructor(
         const val UniqueName = "content_indexing_worker"
         const val KeyProgress = "ContentIndexingWorker.Progress"
         const val KeyUserId = "ContentIndexingWorker.UserId"
+        const val KeyCurrentUserId = "ContentIndexingWorker.CurrentUserId"
         const val KeyRunAsForeground = "ContentIndexingWorker.RunAsForeground"
         const val KeyAllowMobileData = "ContentIndexingWorker.AllowMobileData"
+        const val KeyAutoAdvance = "ContentIndexingWorker.AutoAdvance"
         const val TagUserPrefix = "content_indexing_user:"
 
         private const val ModeSwapDebounceMillis = 2_000L
@@ -234,27 +289,37 @@ class ContentIndexingWorker @AssistedInject constructor(
             else -> CancellationAction.PreserveIndexerSession
         }
 
+        /**
+         * Builds an indexing request. A non-null [userId] indexes a single account (tagged for
+         * per-account cancellation); a null [userId] with [autoAdvance] set drives a full sweep,
+         * which discovers its accounts at runtime and publishes the active one via progress data.
+         */
         fun buildRequest(
-            userId: UserId,
+            userId: UserId?,
             runAsForeground: Boolean,
-            allowMobileData: Boolean
+            allowMobileData: Boolean,
+            autoAdvance: Boolean
         ): OneTimeWorkRequest {
             val networkType = if (allowMobileData) NetworkType.CONNECTED else NetworkType.UNMETERED
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(networkType)
                 .setRequiresBatteryNotLow(true)
                 .build()
+            val data = Data.Builder()
+                .putBoolean(KeyRunAsForeground, runAsForeground)
+                .putBoolean(KeyAllowMobileData, allowMobileData)
+                .putBoolean(KeyAutoAdvance, autoAdvance)
+                .apply { if (userId != null) putString(KeyUserId, userId.id) }
+                .build()
             return OneTimeWorkRequestBuilder<ContentIndexingWorker>()
                 .setConstraints(constraints)
-                .setInputData(
-                    workDataOf(
-                        KeyUserId to userId.id,
-                        KeyRunAsForeground to runAsForeground,
-                        KeyAllowMobileData to allowMobileData
-                    )
-                )
-                .addTag(userId.id)
-                .addTag(userTag(userId.id))
+                .setInputData(data)
+                .apply {
+                    if (userId != null) {
+                        addTag(userId.id)
+                        addTag(userTag(userId.id))
+                    }
+                }
                 .build()
         }
     }

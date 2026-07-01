@@ -47,7 +47,23 @@ class ContentIndexingSchedulerImpl @Inject constructor(
         val request = ContentIndexingWorker.buildRequest(
             userId = userId,
             runAsForeground = appInBackgroundState.isAppInBackground(),
-            allowMobileData = allowMobileData
+            allowMobileData = allowMobileData,
+            autoAdvance = false
+        )
+        workManager.enqueueUniqueWork(
+            ContentIndexingWorker.UniqueName,
+            ExistingWorkPolicy.REPLACE,
+            request
+        )
+        return EnqueueIndexingResult.Scheduled
+    }
+
+    override suspend fun enqueueSweep(allowMobileData: Boolean): EnqueueIndexingResult {
+        val request = ContentIndexingWorker.buildRequest(
+            userId = null,
+            runAsForeground = appInBackgroundState.isAppInBackground(),
+            allowMobileData = allowMobileData,
+            autoAdvance = true
         )
         workManager.enqueueUniqueWork(
             ContentIndexingWorker.UniqueName,
@@ -65,7 +81,7 @@ class ContentIndexingSchedulerImpl @Inject constructor(
         workManager.getWorkInfosForUniqueWorkFlow(ContentIndexingWorker.UniqueName)
             .map { infos ->
                 val info = infos.firstOrNull()
-                if (info == null || !info.belongsTo(userId)) ContentIndexingState.Idle
+                if (info == null || info.userId() != userId) ContentIndexingState.Idle
                 else info.toState()
             }
 
@@ -80,9 +96,11 @@ class ContentIndexingSchedulerImpl @Inject constructor(
         .first()
         .firstOrNull { !it.state.isFinished }
 
-    private fun WorkInfo.belongsTo(userId: UserId): Boolean = tags.contains(userTag(userId))
-
     private fun WorkInfo.userId(): UserId? {
+        // The sweep worker has no per-user tag; it publishes the account it is currently indexing
+        // via progress data. Single-account work carries the user tag instead.
+        val fromProgress = progress.getString(ContentIndexingWorker.KeyCurrentUserId)?.takeIf { it.isNotBlank() }
+        if (fromProgress != null) return UserId(fromProgress)
         val tagged = tags.firstOrNull { it.startsWith(ContentIndexingWorker.TagUserPrefix) }
             ?.removePrefix(ContentIndexingWorker.TagUserPrefix)
         return tagged?.let(::UserId)

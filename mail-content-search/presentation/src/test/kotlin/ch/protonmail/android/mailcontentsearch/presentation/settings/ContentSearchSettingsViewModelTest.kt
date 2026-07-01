@@ -47,7 +47,9 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class ContentSearchSettingsViewModelTest {
@@ -60,6 +62,7 @@ internal class ContentSearchSettingsViewModelTest {
 
     private val ongoingIndexingUserId = MutableStateFlow<UserId?>(null)
     private val ownIndexingStatus = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
+    private val workerState = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
 
     private val reducer = ContentSearchSettingsReducer()
     private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
@@ -70,7 +73,7 @@ internal class ContentSearchSettingsViewModelTest {
     private val startContentIndexing = mockk<StartContentIndexing>()
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
     private val observeContentIndexingState = mockk<ObserveContentIndexingState> {
-        every { this@mockk.invoke(userId) } returns flowOf(ContentIndexingState.Idle)
+        every { this@mockk.invoke(userId) } returns workerState
     }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(userId) } returns flowOf(true)
@@ -142,6 +145,47 @@ internal class ContentSearchSettingsViewModelTest {
 
         // Then
         assertFalse(state.isBlockedByOtherUser)
+    }
+
+    @Test
+    fun `shows the percentage and active state from the rust indexing status`() = runTest {
+        // Given
+        ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertEquals(42.0, state.syncPercentage)
+        assertTrue(state.isIndexingActive)
+    }
+
+    @Test
+    fun `keeps the account marked complete from rust even when the worker reports idle`() = runTest {
+        // Given
+        workerState.value = ContentIndexingState.Idle
+        ownIndexingStatus.value = ContentIndexingState.Completed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertNull(state.syncPercentage)
+        assertFalse(state.isIndexingActive)
+    }
+
+    @Test
+    fun `is active while the worker is initializing even before rust reports progress`() = runTest {
+        // Given
+        workerState.value = ContentIndexingState.Initializing
+        ownIndexingStatus.value = ContentIndexingState.Idle
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertTrue(state.isIndexingActive)
+        assertNull(state.syncPercentage)
     }
 
     @Test

@@ -127,15 +127,20 @@ class ContentSearchSettingsViewModel @Inject constructor(
     )
 
     private fun observeIndexingProgress(userId: UserId) {
-        observeContentIndexingState(userId)
-            .onEach { indexingState ->
-                emitNewStateFor(
-                    Data.IndexingProgress(
-                        percentage = indexingState.toPercentage(),
-                        isActive = indexingState.isActive()
-                    )
-                )
-            }
+        // The displayed percentage and completion come from Rust, which is per-account and durable:
+        // it stays correct for the viewed account even when the sweep worker has advanced to a
+        // different account. WorkManager only supplies the transient "preparing" envelope (the
+        // window after the worker is enqueued but before Rust starts streaming progress).
+        combine(
+            observeContentSearchIndexingStatus(userId),
+            observeContentIndexingState(userId)
+        ) { indexingStatus, workerState ->
+            Data.IndexingProgress(
+                percentage = indexingStatus.toPercentage(),
+                isActive = indexingStatus.isActive() || workerState == ContentIndexingState.Initializing
+            )
+        }
+            .onEach { emitNewStateFor(it) }
             .launchIn(viewModelScope)
     }
 

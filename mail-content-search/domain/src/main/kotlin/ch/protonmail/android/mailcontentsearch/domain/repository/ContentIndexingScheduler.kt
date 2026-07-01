@@ -27,6 +27,12 @@ interface ContentIndexingScheduler {
 
     suspend fun enqueue(userId: UserId, allowMobileData: Boolean): EnqueueIndexingResult
 
+    /**
+     * Enqueues a sweep that indexes every eligible account in turn under a single worker. The
+     * worker discovers accounts at runtime, so no [UserId] is required.
+     */
+    suspend fun enqueueSweep(allowMobileData: Boolean): EnqueueIndexingResult
+
     fun cancel(userId: UserId)
 
     fun observeState(userId: UserId): Flow<ContentIndexingState>
