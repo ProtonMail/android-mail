@@ -65,7 +65,8 @@ object LocalLabelTestData {
         sticky = false,
         total = 2.toULong(),
         unread = 7.toULong(),
-        children = emptyList()
+        children = emptyList(),
+        canHaveSubFolders = false
     )
 
     fun buildSystem(localSystemLabel: LocalSystemLabel) = SidebarSystemLabel(
