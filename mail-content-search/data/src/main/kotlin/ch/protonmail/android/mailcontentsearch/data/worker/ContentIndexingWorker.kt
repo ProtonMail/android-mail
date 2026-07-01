@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
 import ch.protonmail.android.mailcontentsearch.domain.usecase.FindFirstEligibleAccountToIndex
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -51,6 +52,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -68,6 +70,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository,
     private val findFirstEligibleAccountToIndex: FindFirstEligibleAccountToIndex,
+    private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val appInBackgroundState: AppInBackgroundState
 ) : CoroutineWorker(context, workerParameters) {
 
@@ -78,10 +81,16 @@ class ContentIndexingWorker @AssistedInject constructor(
     @Volatile
     private var currentUserId: UserId? = null
 
+    // Whether this run is a multi-account sweep. Drives the notification's cancel action: a sweep's
+    // cancel stops the whole sweep (no per-account target), a single run cancels just that account.
+    @Volatile
+    private var isSweepMode = false
+
     override suspend fun doWork(): Result {
         val runAsForeground = inputData.getBoolean(KeyRunAsForeground, true)
         val allowMobileData = inputData.getBoolean(KeyAllowMobileData, false)
         val autoAdvance = inputData.getBoolean(KeyAutoAdvance, false)
+        isSweepMode = autoAdvance
 
         Timber.d("ContentIndexingWorker: starting (foreground=$runAsForeground, sweep=$autoAdvance)")
 
@@ -130,11 +139,11 @@ class ContentIndexingWorker @AssistedInject constructor(
         val failed = mutableSetOf<UserId>()
         while (true) {
             val next = findFirstEligibleAccountToIndex(skip = failed) ?: break
-            when (indexAccountWithPreemption(next, runAsForeground)) {
+            when (indexAccountWithInterruption(next, skip = failed, runAsForeground)) {
                 IndexOutcome.Completed -> Timber.d("ContentIndexingWorker: sweep completed $next, advancing")
-                IndexOutcome.Preempted -> {
-                    Timber.d("ContentIndexingWorker: $next preempted by active-user change, pausing")
-                    indexer.cancel(next) // preserve partial index; the account is revisited later
+                IndexOutcome.Interrupted -> {
+                    Timber.d("ContentIndexingWorker: $next interrupted, pausing and re-evaluating")
+                    indexer.cancel(next) // preserve partial index; the account is revisited if still eligible
                 }
                 IndexOutcome.Failed -> {
                     Timber.e("ContentIndexingWorker: sweep failed for $next, advancing")
@@ -148,44 +157,58 @@ class ContentIndexingWorker @AssistedInject constructor(
     }
 
     /**
-     * Indexes [userId], racing it against active-user changes. Returns [IndexOutcome.Preempted] when
-     * the user switches to an account that takes priority, so the caller can pause and re-evaluate.
+     * Indexes [userId], racing it against changes that mean it should no longer be the account being
+     * indexed — the active user switching to a higher-priority account, or this account being
+     * disabled. Returns [IndexOutcome.Interrupted] in that case so the caller can pause and re-evaluate.
      */
-    private suspend fun indexAccountWithPreemption(userId: UserId, runAsForeground: Boolean): IndexOutcome {
+    private suspend fun indexAccountWithInterruption(
+        userId: UserId,
+        skip: Set<UserId>,
+        runAsForeground: Boolean
+    ): IndexOutcome {
         return coroutineScope {
             val indexing = async { indexAccount(userId, runAsForeground) }
-            val preemption = launch {
-                awaitPreemption(currentlyIndexing = userId) { indexing.cancel(PreemptionSignal()) }
+            val interruption = launch {
+                awaitInterruption(currentlyIndexing = userId, skip = skip) { indexing.cancel(InterruptionSignal()) }
             }
             try {
                 indexing.await().fold(
                     ifLeft = { IndexOutcome.Failed },
                     ifRight = { IndexOutcome.Completed }
                 )
-            } catch (signal: PreemptionSignal) {
-                Timber.d("ContentIndexingWorker: $userId preempted (${signal.message})")
+            } catch (signal: InterruptionSignal) {
+                Timber.d("ContentIndexingWorker: $userId interrupted (${signal.message})")
                 // Let the indexing coroutine finish tearing down its watch stream before the caller
                 // pauses Rust indexing for this account.
                 indexing.join()
-                IndexOutcome.Preempted
+                IndexOutcome.Interrupted
             } finally {
-                preemption.cancel()
+                interruption.cancel()
             }
         }
     }
 
     @OptIn(FlowPreview::class)
-    private suspend fun awaitPreemption(currentlyIndexing: UserId, onPreempt: () -> Unit) {
-        userSessionRepository.observePrimaryUserId()
-            .filterNotNull()
-            .distinctUntilChanged()
-            .debounce(PreemptionDebounceMillis.milliseconds)
+    private suspend fun awaitInterruption(
+        currentlyIndexing: UserId,
+        skip: Set<UserId>,
+        onInterrupt: () -> Unit
+    ) {
+        // React to the active user changing or this account's content-search setting changing, then
+        // re-evaluate. If the account that should run next is no longer the one we are indexing
+        // (a higher-priority active account, or this account became ineligible), interrupt it.
+        // Honour the sweep's skip set so an account that already failed this sweep cannot repeatedly
+        // interrupt the account currently making progress.
+        combine(
+            userSessionRepository.observePrimaryUserId().filterNotNull().distinctUntilChanged(),
+            observeContentSearchEnabled(currentlyIndexing).distinctUntilChanged()
+        ) { _, _ -> }
+            .debounce(InterruptionDebounceMillis.milliseconds)
             .collect {
-                // The account now in use takes priority only if it is itself eligible to index.
-                val topPriority = findFirstEligibleAccountToIndex()
-                if (topPriority != null && topPriority != currentlyIndexing) {
-                    Timber.d("ContentIndexingWorker: active user prioritises $topPriority over $currentlyIndexing")
-                    onPreempt()
+                val topPriority = findFirstEligibleAccountToIndex(skip = skip)
+                if (topPriority != currentlyIndexing) {
+                    Timber.d("ContentIndexingWorker: $topPriority should run instead of $currentlyIndexing")
+                    onInterrupt()
                 }
             }
     }
@@ -303,9 +326,12 @@ class ContentIndexingWorker @AssistedInject constructor(
         accountLabel: String?,
         progress: Double?
     ): ForegroundInfo {
-        val notification = ContentIndexingNotification.build(context, userId, accountLabel, progress).build().apply {
-            flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT
-        }
+        // In a sweep the cancel action stops the whole sweep (no per-account target); a single run
+        // cancels just that account. The account label is shown regardless.
+        val cancelUserId = userId?.takeUnless { isSweepMode }
+        val notification = ContentIndexingNotification.build(context, cancelUserId, accountLabel, progress)
+            .build()
+            .apply { flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT }
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             ForegroundInfo(
                 ContentIndexingNotification.NotificationId,
@@ -329,7 +355,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         const val TagUserPrefix = "content_indexing_user:"
 
         private const val ModeSwapDebounceMillis = 2_000L
-        private const val PreemptionDebounceMillis = 500L
+        private const val InterruptionDebounceMillis = 500L
 
         fun userTag(userId: String): String = "$TagUserPrefix$userId"
 
@@ -387,9 +413,9 @@ internal enum class CancellationAction {
 
 internal enum class IndexOutcome {
     Completed,
-    Preempted,
+    Interrupted,
     Failed
 }
 
-/** Cancels the in-flight per-account index when the active user switches to a higher-priority account. */
-private class PreemptionSignal : CancellationException("preempted by active-user change")
+/** Cancels the in-flight per-account index when that account should no longer be the one indexing. */
+private class InterruptionSignal : CancellationException("interrupted: another account should run")
