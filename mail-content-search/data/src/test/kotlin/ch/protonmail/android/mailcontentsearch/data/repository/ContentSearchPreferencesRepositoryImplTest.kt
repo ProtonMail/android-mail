@@ -107,7 +107,7 @@ internal class ContentSearchPreferencesRepositoryImplTest {
     }
 
     @Test
-    fun `reports auto-enable as applied when the user id is stored`() = runTest {
+    fun `reports the user as opted out when the user id is stored`() = runTest {
         // Given
         val preferences = mockk<Preferences> {
             every { get(any<Preferences.Key<Set<String>>>()) } returns setOf(TestUserId.id)
@@ -115,14 +115,14 @@ internal class ContentSearchPreferencesRepositoryImplTest {
         every { dataStore.data } returns flowOf(preferences)
 
         // When
-        val result = repository.hasAutoEnableBeenApplied(TestUserId)
+        val result = repository.hasUserOptedOut(TestUserId)
 
         // Then
         assertTrue(result.getOrNull()!!)
     }
 
     @Test
-    fun `reports auto-enable as not applied when nothing is stored`() = runTest {
+    fun `reports the user as not opted out when nothing is stored`() = runTest {
         // Given
         val preferences = mockk<Preferences> {
             every { get(any<Preferences.Key<Set<String>>>()) } returns null
@@ -130,31 +130,73 @@ internal class ContentSearchPreferencesRepositoryImplTest {
         every { dataStore.data } returns flowOf(preferences)
 
         // When
-        val result = repository.hasAutoEnableBeenApplied(TestUserId)
+        val result = repository.hasUserOptedOut(TestUserId)
 
         // Then
         assertFalse(result.getOrNull()!!)
     }
 
     @Test
-    fun `persists the auto-enable applied marker through the data store`() = runTest {
+    fun `persists the opt-out marker through the data store`() = runTest {
         // Given
         coEvery { dataStore.updateData(any()) } returns mockk()
 
         // When
-        repository.markAutoEnableApplied(TestUserId)
+        repository.markUserOptedOut(TestUserId)
 
         // Then
         coVerify { dataStore.updateData(any()) }
     }
 
     @Test
-    fun `clears the auto-enable applied marker through the data store`() = runTest {
+    fun `clears the opt-out marker through the data store`() = runTest {
         // Given
         coEvery { dataStore.updateData(any()) } returns mockk()
 
         // When
-        repository.clearAutoEnableApplied(TestUserId)
+        repository.clearUserOptedOut(TestUserId)
+
+        // Then
+        coVerify { dataStore.updateData(any()) }
+    }
+
+    @Test
+    fun `returns the stored known user ids`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Set<String>>>()) } returns setOf(TestUserId.id)
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.getKnownUserIds()
+
+        // Then
+        assertEquals(setOf(TestUserId), result.getOrNull())
+    }
+
+    @Test
+    fun `returns an empty set of known user ids when nothing is stored`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Set<String>>>()) } returns null
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.getKnownUserIds()
+
+        // Then
+        assertEquals(emptySet(), result.getOrNull())
+    }
+
+    @Test
+    fun `persists the known user ids through the data store`() = runTest {
+        // Given
+        coEvery { dataStore.updateData(any()) } returns mockk()
+
+        // When
+        repository.saveKnownUserIds(setOf(TestUserId))
 
         // Then
         coVerify { dataStore.updateData(any()) }

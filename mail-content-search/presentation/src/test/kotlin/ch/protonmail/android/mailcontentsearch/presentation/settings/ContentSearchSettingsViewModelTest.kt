@@ -25,13 +25,13 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.SetContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -68,7 +68,7 @@ internal class ContentSearchSettingsViewModelTest {
     private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
         coEvery { this@mockk.invoke(userId) } returns true.right()
     }
-    private val setContentSearchEnabled = mockk<SetContentSearchEnabled>()
+    private val enableContentSearch = mockk<EnableContentSearch>()
     private val disableContentSearch = mockk<DisableContentSearch>()
     private val startContentIndexingSweep = mockk<StartContentIndexingSweep> {
         coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
@@ -94,7 +94,7 @@ internal class ContentSearchSettingsViewModelTest {
     private fun viewModel() = ContentSearchSettingsViewModel(
         reducer = reducer,
         isContentSearchEnabled = isContentSearchEnabled,
-        setContentSearchEnabled = setContentSearchEnabled,
+        enableContentSearch = enableContentSearch,
         disableContentSearch = disableContentSearch,
         startContentIndexingSweep = startContentIndexingSweep,
         clearContentSearchLocalData = clearContentSearchLocalData,
@@ -162,22 +162,36 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
+    fun `is not active when the worker is initializing but rust already reports the account complete`() = runTest {
+        // Given
+        workerState.value = ContentIndexingState.Initializing
+        ownIndexingStatus.value = ContentIndexingState.Completed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertFalse(state.isIndexingActive)
+        assertNull(state.syncPercentage)
+    }
+
+    @Test
     fun `submit ToggleContentSearch on enables content search and starts the sweep`() = runTest {
         // Given
-        coEvery { setContentSearchEnabled(userId, true) } returns Unit.right()
+        coEvery { enableContentSearch(userId) } returns Unit.right()
 
         // When
         viewModel().submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
 
         // Then
-        coVerify { setContentSearchEnabled(userId, true) }
+        coVerify { enableContentSearch(userId) }
         coVerify { startContentIndexingSweep() }
     }
 
     @Test
     fun `submit ToggleContentSearch on does not start the sweep when enabling fails`() = runTest {
         // Given
-        coEvery { setContentSearchEnabled(userId, true) } returns DataError.Local.Unknown.left()
+        coEvery { enableContentSearch(userId) } returns DataError.Local.Unknown.left()
 
         // When
         viewModel().submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
@@ -203,7 +217,7 @@ internal class ContentSearchSettingsViewModelTest {
         // Given
         coEvery { isContentSearchEnabled(userId) } returns false.right()
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { setContentSearchEnabled(userId, true) } returns DataError.Local.Unknown.left()
+        coEvery { enableContentSearch(userId) } returns DataError.Local.Unknown.left()
 
         val viewModel = viewModel()
 

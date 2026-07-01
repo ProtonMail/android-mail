@@ -19,9 +19,12 @@
 package ch.protonmail.android.mailcontentsearch.domain.handler
 
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
-import ch.protonmail.android.mailcontentsearch.domain.usecase.SetContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ResumeContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
@@ -32,9 +35,12 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
@@ -42,107 +48,225 @@ import kotlin.test.Test
 internal class ContentSearchAutoIndexingHandlerTest {
 
     private val userSessionRepository = mockk<UserSessionRepository>()
-    private val setContentSearchEnabled = mockk<SetContentSearchEnabled>()
+    private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
+        coEvery { this@mockk.invoke(any()) } returns false.right()
+    }
+    private val settingsRepository = mockk<ContentSearchSettingsRepository> {
+        coEvery { setEnabled(any(), any()) } returns Unit.right()
+    }
     private val startContentIndexingSweep = mockk<StartContentIndexingSweep> {
         coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
     }
+    private val resumeContentIndexingSweep = mockk<ResumeContentIndexingSweep> {
+        coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
+    }
+    private val appInBackgroundState = mockk<AppInBackgroundState> {
+        every { observe() } returns emptyFlow()
+    }
+    private var persistedKnownUserIds: Set<UserId> = emptySet()
     private val preferencesRepository = mockk<ContentSearchPreferencesRepository> {
-        coEvery { markAutoEnableApplied(any()) } returns Unit.right()
-        coEvery { clearAutoEnableApplied(any()) } returns Unit.right()
+        coEvery { hasUserOptedOut(any()) } returns false.right()
+        coEvery { markUserOptedOut(any()) } returns Unit.right()
+        coEvery { clearUserOptedOut(any()) } returns Unit.right()
+        coEvery { getKnownUserIds() } answers { persistedKnownUserIds.right() }
+        coEvery { saveKnownUserIds(any()) } answers {
+            persistedKnownUserIds = firstArg()
+            Unit.right()
+        }
     }
 
     @Test
-    fun `enables content search and starts the sweep on first sight of a ready account`() = runTest {
+    fun `enables a disabled account that has not opted out and starts the sweep`() = runTest {
+        // Given
         givenAccounts(flowOf(listOf(account(UserOne))))
-        givenAlreadyApplied(UserOne, applied = false)
-        givenEnableSucceeds(UserOne)
+        givenRustEnabled(UserOne, enabled = false)
+        givenOptedOut(UserOne, optedOut = false)
 
+        // When
         handler().start()
 
-        coVerify(exactly = 1) { setContentSearchEnabled(UserOne, enabled = true) }
-        coVerify(exactly = 1) { preferencesRepository.markAutoEnableApplied(UserOne) }
+        // Then
+        coVerify(exactly = 1) { settingsRepository.setEnabled(UserOne, enabled = true) }
         coVerify(exactly = 1) { startContentIndexingSweep() }
     }
 
     @Test
-    fun `does not re-enable an account already auto-enabled but still resumes the sweep on launch`() = runTest {
+    fun `does not re-enable an already-enabled account but clears a stale opt-out and resumes the sweep`() = runTest {
+        // Given
         givenAccounts(flowOf(listOf(account(UserOne))))
-        givenAlreadyApplied(UserOne, applied = true)
+        givenRustEnabled(UserOne, enabled = true)
+        givenOptedOut(UserOne, optedOut = true)
 
+        // When
         handler().start()
 
-        coVerify(exactly = 0) { setContentSearchEnabled(any(), any()) }
+        // Then
+        coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
+        coVerify(exactly = 1) { preferencesRepository.clearUserOptedOut(UserOne) }
+        coVerify(exactly = 1) { startContentIndexingSweep() }
+    }
+
+    @Test
+    fun `does not re-enable an account the user has opted out of`() = runTest {
+        // Given
+        givenAccounts(flowOf(listOf(account(UserOne))))
+        givenRustEnabled(UserOne, enabled = false)
+        givenOptedOut(UserOne, optedOut = true)
+
+        // When
+        handler().start()
+
+        // Then
+        coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
         coVerify(exactly = 1) { startContentIndexingSweep() }
     }
 
     @Test
     fun `ignores accounts that are not ready`() = runTest {
+        // Given
         givenAccounts(flowOf(listOf(account(UserOne, state = AccountState.NotReady))))
 
+        // When
         handler().start()
 
-        coVerify(exactly = 0) { setContentSearchEnabled(any(), any()) }
+        // Then
+        coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
         coVerify(exactly = 0) { startContentIndexingSweep() }
     }
 
     @Test
-    fun `enables and restarts the sweep when a new account logs in`() = runTest {
+    fun `enables a newly logged-in disabled account and restarts the sweep`() = runTest {
+        // Given
         givenAccounts(flowOf(listOf(account(UserOne)), listOf(account(UserOne), account(UserTwo))))
-        givenAlreadyApplied(UserOne, applied = true)
-        givenAlreadyApplied(UserTwo, applied = false)
-        givenEnableSucceeds(UserTwo)
+        givenRustEnabled(UserOne, enabled = true)
+        givenRustEnabled(UserTwo, enabled = false)
+        givenOptedOut(UserTwo, optedOut = false)
 
+        // When
         handler().start()
 
-        coVerify(exactly = 1) { setContentSearchEnabled(UserTwo, enabled = true) }
-        coVerify(exactly = 0) { setContentSearchEnabled(UserOne, any()) }
-        // Once for the initial launch, once when the second account appears.
+        // Then
+        coVerify(exactly = 1) { settingsRepository.setEnabled(UserTwo, enabled = true) }
+        coVerify(exactly = 0) { settingsRepository.setEnabled(UserOne, any()) }
         coVerify(exactly = 2) { startContentIndexingSweep() }
     }
 
     @Test
     fun `restarts the sweep when an already-enabled account newly becomes ready`() = runTest {
+        // Given
         givenAccounts(
             flowOf(
                 listOf(account(UserOne)),
                 listOf(account(UserOne), account(UserTwo))
             )
         )
-        givenAlreadyApplied(UserOne, applied = true)
-        givenAlreadyApplied(UserTwo, applied = true)
+        givenRustEnabled(UserOne, enabled = true)
+        givenRustEnabled(UserTwo, enabled = true)
 
+        // When
         handler().start()
 
-        coVerify(exactly = 0) { setContentSearchEnabled(any(), any()) }
-        // Once for the initial launch, once when the second account becomes ready.
+        // Then
+        coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
         coVerify(exactly = 2) { startContentIndexingSweep() }
     }
 
     @Test
-    fun `clears the auto-enable marker when an account is signed out`() = runTest {
+    fun `clears the opt-out when an account is signed out`() = runTest {
+        // Given
         givenAccounts(flowOf(listOf(account(UserOne)), emptyList()))
-        givenAlreadyApplied(UserOne, applied = false)
-        givenEnableSucceeds(UserOne)
+        givenRustEnabled(UserOne, enabled = false)
+        givenOptedOut(UserOne, optedOut = true)
 
+        // When
         handler().start()
 
-        coVerify(exactly = 1) { preferencesRepository.clearAutoEnableApplied(UserOne) }
+        // Then
+        coVerify(exactly = 1) { preferencesRepository.clearUserOptedOut(UserOne) }
+    }
+
+    @Test
+    fun `clears a stale opt-out on a fresh launch when the sign-out happened while the process was dead`() = runTest {
+        // Given
+        persistedKnownUserIds = setOf(UserOne)
+        givenAccounts(flowOf(listOf(account(UserTwo))))
+        givenRustEnabled(UserTwo, enabled = false)
+        givenOptedOut(UserTwo, optedOut = false)
+
+        // When
+        handler().start()
+
+        // Then
+        coVerify(exactly = 1) { preferencesRepository.clearUserOptedOut(UserOne) }
     }
 
     @Test
     fun `does not start the sweep when there is no ready account`() = runTest {
+        // Given
         givenAccounts(flowOf(emptyList()))
 
+        // When
         handler().start()
 
+        // Then
         coVerify(exactly = 0) { startContentIndexingSweep() }
+    }
+
+    @Test
+    fun `resumes the sweep when the app returns to the foreground`() = runTest {
+        // Given
+        givenAccounts(flowOf(emptyList()))
+        val appInBackground = MutableStateFlow(true)
+        every { appInBackgroundState.observe() } returns appInBackground
+
+        // When
+        handler().start()
+        appInBackground.value = false
+        advanceUntilIdle() // let the foreground-resume debounce elapse
+
+        // Then
+        coVerify(exactly = 1) { resumeContentIndexingSweep() }
+    }
+
+    @Test
+    fun `coalesces a burst of foreground flips into a single resume`() = runTest {
+        // Given
+        givenAccounts(flowOf(emptyList()))
+        val appInBackground = MutableStateFlow(true)
+        every { appInBackgroundState.observe() } returns appInBackground
+
+        // When
+        handler().start()
+        appInBackground.value = false
+        appInBackground.value = true
+        appInBackground.value = false
+        advanceUntilIdle() // debounce collapses the flips that settled within the window
+
+        // Then
+        coVerify(exactly = 1) { resumeContentIndexingSweep() }
+    }
+
+    @Test
+    fun `does not resume the sweep while the app stays in the background`() = runTest {
+        // Given
+        givenAccounts(flowOf(emptyList()))
+        every { appInBackgroundState.observe() } returns MutableStateFlow(true)
+
+        // When
+        handler().start()
+
+        // Then
+        coVerify(exactly = 0) { resumeContentIndexingSweep() }
     }
 
     private fun TestScope.handler() = ContentSearchAutoIndexingHandler(
         userSessionRepository = userSessionRepository,
-        setContentSearchEnabled = setContentSearchEnabled,
+        isContentSearchEnabled = isContentSearchEnabled,
+        settingsRepository = settingsRepository,
         startContentIndexingSweep = startContentIndexingSweep,
+        resumeContentIndexingSweep = resumeContentIndexingSweep,
         preferencesRepository = preferencesRepository,
+        appInBackgroundState = appInBackgroundState,
         appScope = CoroutineScope(UnconfinedTestDispatcher(testScheduler))
     )
 
@@ -150,12 +274,12 @@ internal class ContentSearchAutoIndexingHandlerTest {
         every { userSessionRepository.observeAccounts() } returns flow
     }
 
-    private fun givenAlreadyApplied(userId: UserId, applied: Boolean) {
-        coEvery { preferencesRepository.hasAutoEnableBeenApplied(userId) } returns applied.right()
+    private fun givenRustEnabled(userId: UserId, enabled: Boolean) {
+        coEvery { isContentSearchEnabled(userId) } returns enabled.right()
     }
 
-    private fun givenEnableSucceeds(userId: UserId) {
-        coEvery { setContentSearchEnabled(userId, enabled = true) } returns Unit.right()
+    private fun givenOptedOut(userId: UserId, optedOut: Boolean) {
+        coEvery { preferencesRepository.hasUserOptedOut(userId) } returns optedOut.right()
     }
 
     private fun account(userId: UserId, state: AccountState = AccountState.Ready) = Account(

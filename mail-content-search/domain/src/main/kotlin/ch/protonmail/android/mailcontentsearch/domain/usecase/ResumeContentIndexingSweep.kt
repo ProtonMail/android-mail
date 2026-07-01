@@ -18,16 +18,20 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
-import me.proton.core.domain.entity.UserId
+import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
 import javax.inject.Inject
 
-class SetContentSearchEnabled @Inject constructor(
-    private val repository: ContentSearchSettingsRepository
+/**
+ * Ensures a sweep is running without disturbing one already in progress (KEEP policy). Used when the
+ * app returns to the foreground so a sweep that was cancelled (e.g. via the notification's Cancel
+ * action) resumes, while an in-progress sweep is left to continue untouched.
+ */
+class ResumeContentIndexingSweep @Inject constructor(
+    private val scheduler: ContentIndexingScheduler,
+    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData
 ) {
 
-    suspend operator fun invoke(userId: UserId, enabled: Boolean): Either<DataError, Unit> =
-        repository.setEnabled(userId, enabled)
+    suspend operator fun invoke(): EnqueueIndexingResult =
+        scheduler.enqueueSweep(allowMobileData = isContentSearchAllowedOnMobileData(), replaceExisting = false)
 }

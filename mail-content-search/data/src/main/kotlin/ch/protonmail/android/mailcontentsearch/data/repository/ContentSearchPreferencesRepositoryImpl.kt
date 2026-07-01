@@ -38,7 +38,8 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
     private val dataStoreProvider: ContentSearchDataStoreProvider
 ) : ContentSearchPreferencesRepository {
 
-    private val autoEnabledUserIdsKey = stringSetPreferencesKey("contentSearchAutoEnabledUserIdsPrefKey")
+    private val optedOutUserIdsKey = stringSetPreferencesKey("contentSearchOptedOutUserIdsPrefKey")
+    private val knownUserIdsKey = stringSetPreferencesKey("contentSearchKnownUserIdsPrefKey")
 
     // Mobile-data preference lives in Rust (via app settings), so it stays consistent with the rest
     // of the content-search state the sweep reads.
@@ -51,20 +52,30 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
             ifRight = { Unit.right() }
         )
 
-    // Auto-enable markers are a purely local "seen once" flag with no Rust equivalent; they must be
-    // cleared on sign-out independently of the Rust state, so they are kept in a local data store.
-    override suspend fun hasAutoEnableBeenApplied(userId: UserId): Either<PreferencesError, Boolean> =
+    // Opt-out markers and the known-user set are purely local: they have no Rust equivalent and are
+    // reconciled against the Rust state to decide whether an account should be auto-enabled on sight.
+    override suspend fun hasUserOptedOut(userId: UserId): Either<PreferencesError, Boolean> =
         dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
-            preferences.map { it[autoEnabledUserIdsKey].orEmpty().contains(userId.id) }
+            preferences.map { it[optedOutUserIdsKey].orEmpty().contains(userId.id) }
         }.first()
 
-    override suspend fun markAutoEnableApplied(userId: UserId): Either<PreferencesError, Unit> =
+    override suspend fun markUserOptedOut(userId: UserId): Either<PreferencesError, Unit> =
         dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[autoEnabledUserIdsKey] = preferences[autoEnabledUserIdsKey].orEmpty() + userId.id
+            preferences[optedOutUserIdsKey] = preferences[optedOutUserIdsKey].orEmpty() + userId.id
         }.map { }
 
-    override suspend fun clearAutoEnableApplied(userId: UserId): Either<PreferencesError, Unit> =
+    override suspend fun clearUserOptedOut(userId: UserId): Either<PreferencesError, Unit> =
         dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[autoEnabledUserIdsKey] = preferences[autoEnabledUserIdsKey].orEmpty() - userId.id
+            preferences[optedOutUserIdsKey] = preferences[optedOutUserIdsKey].orEmpty() - userId.id
+        }.map { }
+
+    override suspend fun getKnownUserIds(): Either<PreferencesError, Set<UserId>> =
+        dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
+            preferences.map { it[knownUserIdsKey].orEmpty().map(::UserId).toSet() }
+        }.first()
+
+    override suspend fun saveKnownUserIds(userIds: Set<UserId>): Either<PreferencesError, Unit> =
+        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
+            preferences[knownUserIdsKey] = userIds.map { it.id }.toSet()
         }.map { }
 }

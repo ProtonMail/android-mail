@@ -23,13 +23,13 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.SetContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
@@ -62,7 +62,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class ContentSearchSettingsViewModel @Inject constructor(
     private val reducer: ContentSearchSettingsReducer,
     private val isContentSearchEnabled: IsContentSearchEnabled,
-    private val setContentSearchEnabled: SetContentSearchEnabled,
+    private val enableContentSearch: EnableContentSearch,
     private val disableContentSearch: DisableContentSearch,
     private val startContentIndexingSweep: StartContentIndexingSweep,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
@@ -137,9 +137,14 @@ class ContentSearchSettingsViewModel @Inject constructor(
             if (!enabled) {
                 Data.IndexingProgress(percentage = null, isActive = false)
             } else {
+                // The worker's Initializing envelope covers the window before Rust streams progress.
+                // Ignore it once Rust reports the account complete, so a completed account never shows
+                // "preparing" while a sweep for another account is starting up.
+                val preparing = workerState == ContentIndexingState.Initializing &&
+                    indexingStatus !is ContentIndexingState.Completed
                 Data.IndexingProgress(
                     percentage = indexingStatus.toPercentage(),
-                    isActive = indexingStatus.isActive() || workerState == ContentIndexingState.Initializing
+                    isActive = indexingStatus.isActive() || preparing
                 )
             }
         }
@@ -170,7 +175,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
         val result = if (newValue) {
             // Enable the account first so it is eligible, then (re)start the sweep. The sweep indexes
             // every enabled account in turn, so enabling one account never blocks another.
-            setContentSearchEnabled(userId, true).onRight { startContentIndexingSweep() }
+            enableContentSearch(userId).onRight { startContentIndexingSweep() }
         } else {
             disableContentSearch(userId)
         }

@@ -29,18 +29,26 @@ interface ContentSearchPreferencesRepository {
     suspend fun setAllowMobileData(value: Boolean): Either<PreferencesError, Unit>
 
     /**
-     * Whether content search has already been auto-enabled for [userId]. Used to enable indexing
-     * exactly once per account (on first sight), so that a subsequent explicit user *disable* is not
-     * clobbered on the next app launch.
+     * Whether the user has deliberately turned content search off for [userId]. Auto-enable respects
+     * this so a manual *disable* is never clobbered, while still (re-)enabling accounts that were
+     * never opted out — including recovering when Rust loses the enabled state (e.g. after an SDK or
+     * data reset) without a sign-out.
      */
-    suspend fun hasAutoEnableBeenApplied(userId: UserId): Either<PreferencesError, Boolean>
+    suspend fun hasUserOptedOut(userId: UserId): Either<PreferencesError, Boolean>
 
-    suspend fun markAutoEnableApplied(userId: UserId): Either<PreferencesError, Unit>
+    suspend fun markUserOptedOut(userId: UserId): Either<PreferencesError, Unit>
 
     /**
-     * Clears the auto-enable marker for [userId], to be called when the account is signed out. The
-     * account's Rust content-search state is wiped on sign-out, so a later re-login must count as a
-     * first sight again and re-enable indexing.
+     * Clears the opt-out for [userId]. Called on sign-out (Rust state is wiped, so a re-login starts
+     * fresh) and once content search is observed enabled again (a stale opt-out no longer applies).
      */
-    suspend fun clearAutoEnableApplied(userId: UserId): Either<PreferencesError, Unit>
+    suspend fun clearUserOptedOut(userId: UserId): Either<PreferencesError, Unit>
+
+    /**
+     * The set of accounts seen on a previous run. Persisted (rather than kept in memory) so a sign-out
+     * that happens while the process is dead is still detected as a removal on the next launch.
+     */
+    suspend fun getKnownUserIds(): Either<PreferencesError, Set<UserId>>
+
+    suspend fun saveKnownUserIds(userIds: Set<UserId>): Either<PreferencesError, Unit>
 }

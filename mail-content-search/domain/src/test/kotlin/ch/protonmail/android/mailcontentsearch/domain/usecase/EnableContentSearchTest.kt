@@ -21,44 +21,48 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
-internal class SetContentSearchEnabledTest {
+internal class EnableContentSearchTest {
 
     private val userId = UserId("user-1")
-    private val repository = mockk<ContentSearchSettingsRepository>()
-    private val setContentSearchEnabled = SetContentSearchEnabled(repository)
+    private val settingsRepository = mockk<ContentSearchSettingsRepository> {
+        coEvery { setEnabled(userId, true) } returns Unit.right()
+    }
+    private val preferencesRepository = mockk<ContentSearchPreferencesRepository> {
+        coEvery { clearUserOptedOut(userId) } returns Unit.right()
+    }
+    private val enableContentSearch = EnableContentSearch(settingsRepository, preferencesRepository)
 
     @Test
-    fun `delegates the enabled value to the repository and returns its result`() = runTest {
-        // Given
-        coEvery { repository.setEnabled(userId, true) } returns Unit.right()
-
+    fun `turns on the preference then clears the deliberate opt-out`() = runTest {
         // When
-        val result = setContentSearchEnabled(userId, true)
+        enableContentSearch(userId)
 
         // Then
-        assertEquals(Unit.right(), result)
-        coVerify { repository.setEnabled(userId, true) }
+        coVerifyOrder {
+            settingsRepository.setEnabled(userId, true)
+            preferencesRepository.clearUserOptedOut(userId)
+        }
     }
 
     @Test
-    fun `returns the error when the repository fails to persist the value`() = runTest {
+    fun `does not clear the opt-out when enabling fails`() = runTest {
         // Given
-        val error = DataError.Local.Unknown
-        coEvery { repository.setEnabled(userId, false) } returns error.left()
+        coEvery { settingsRepository.setEnabled(userId, true) } returns DataError.Local.Unknown.left()
 
         // When
-        val result = setContentSearchEnabled(userId, false)
+        enableContentSearch(userId)
 
         // Then
-        assertEquals(error.left(), result)
+        coVerify(exactly = 0) { preferencesRepository.clearUserOptedOut(userId) }
     }
 }

@@ -20,14 +20,19 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class DisableContentSearch @Inject constructor(
-    private val setContentSearchEnabled: SetContentSearchEnabled
+    private val settingsRepository: ContentSearchSettingsRepository,
+    private val preferencesRepository: ContentSearchPreferencesRepository
 ) {
 
-    // Disabling only clears the flag: the running sweep observes the change, drops this account
-    // from its eligible set and pauses it. There is no per-account worker to cancel.
-    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = setContentSearchEnabled(userId, false)
+    // Disabling clears the flag and records the deliberate opt-out so auto-enable does not turn it
+    // back on. The running sweep observes the change, drops this account and pauses it — there is no
+    // per-account worker to cancel.
+    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> =
+        settingsRepository.setEnabled(userId, false).onRight { preferencesRepository.markUserOptedOut(userId) }
 }
