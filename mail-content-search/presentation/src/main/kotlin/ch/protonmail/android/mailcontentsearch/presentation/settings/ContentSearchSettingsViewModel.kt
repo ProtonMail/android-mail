@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
@@ -29,10 +28,9 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEna
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveOngoingIndexingUserId
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetContentSearchEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
@@ -66,12 +64,11 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val isContentSearchEnabled: IsContentSearchEnabled,
     private val setContentSearchEnabled: SetContentSearchEnabled,
     private val disableContentSearch: DisableContentSearch,
-    private val startContentIndexing: StartContentIndexing,
+    private val startContentIndexingSweep: StartContentIndexingSweep,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
     private val observeContentIndexingState: ObserveContentIndexingState,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
-    private val observeOngoingIndexingUserId: ObserveOngoingIndexingUserId,
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
     private val setAllowContentSearchOnMobileData: SetAllowContentSearchOnMobileData,
     private val observePrimaryUserId: ObservePrimaryUserId
@@ -93,19 +90,18 @@ class ContentSearchSettingsViewModel @Inject constructor(
             val userId = currentUserId()
             if (loadInitialState(userId)) {
                 observeIndexingProgress(userId)
-                observeBlockedByOtherUser(userId)
                 observeEnabledChanges(userId)
-                observeRescheduleRequests(userId)
+                observeRescheduleRequests()
             }
         }
     }
 
     @OptIn(FlowPreview::class)
-    private fun observeRescheduleRequests(userId: UserId) {
+    private fun observeRescheduleRequests() {
         rescheduleRequests
             .debounce(RescheduleDebounceMillis.milliseconds)
             .onEach {
-                if (isContentSearchCurrentlyEnabled()) startContentIndexing(userId)
+                if (isContentSearchCurrentlyEnabled()) startContentIndexingSweep()
             }
             .launchIn(viewModelScope)
     }
@@ -131,14 +127,21 @@ class ContentSearchSettingsViewModel @Inject constructor(
         // it stays correct for the viewed account even when the sweep worker has advanced to a
         // different account. WorkManager only supplies the transient "preparing" envelope (the
         // window after the worker is enqueued but before Rust starts streaming progress).
+        // When content search is disabled for the account we report no progress, so a syncing label
+        // never lingers after the toggle is switched off (Rust may still emit during teardown).
         combine(
+            observeContentSearchEnabled(userId),
             observeContentSearchIndexingStatus(userId),
             observeContentIndexingState(userId)
-        ) { indexingStatus, workerState ->
-            Data.IndexingProgress(
-                percentage = indexingStatus.toPercentage(),
-                isActive = indexingStatus.isActive() || workerState == ContentIndexingState.Initializing
-            )
+        ) { enabled, indexingStatus, workerState ->
+            if (!enabled) {
+                Data.IndexingProgress(percentage = null, isActive = false)
+            } else {
+                Data.IndexingProgress(
+                    percentage = indexingStatus.toPercentage(),
+                    isActive = indexingStatus.isActive() || workerState == ContentIndexingState.Initializing
+                )
+            }
         }
             .onEach { emitNewStateFor(it) }
             .launchIn(viewModelScope)
@@ -147,19 +150,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private fun observeEnabledChanges(userId: UserId) {
         observeContentSearchEnabled(userId)
             .onEach { enabled -> emitNewStateFor(Data.ContentSearchToggled(enabled)) }
-            .launchIn(viewModelScope)
-    }
-
-    private fun observeBlockedByOtherUser(userId: UserId) {
-        combine(
-            observeOngoingIndexingUserId(),
-            observeContentSearchIndexingStatus(userId)
-        ) { ongoing, ownStatus ->
-            val anotherUserIndexing = ongoing != null && ongoing != userId
-            val currentUserSynced = ownStatus is ContentIndexingState.Completed
-            Data.BlockedByOtherUserChanged(anotherUserIndexing && !currentUserSynced)
-        }
-            .onEach { emitNewStateFor(it) }
             .launchIn(viewModelScope)
     }
 
@@ -178,12 +168,9 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private suspend fun handleToggleContentSearch(newValue: Boolean) {
         val userId = currentUserId()
         val result = if (newValue) {
-            val enqueue = startContentIndexing(userId)
-            if (enqueue is EnqueueIndexingResult.BlockedByOtherUser) {
-                emitNewStateFor(Data.BlockedByOtherUserChanged(true))
-                return
-            }
-            setContentSearchEnabled(userId, true)
+            // Enable the account first so it is eligible, then (re)start the sweep. The sweep indexes
+            // every enabled account in turn, so enabling one account never blocks another.
+            setContentSearchEnabled(userId, true).onRight { startContentIndexingSweep() }
         } else {
             disableContentSearch(userId)
         }

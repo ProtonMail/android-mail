@@ -30,10 +30,9 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEna
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveOngoingIndexingUserId
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetContentSearchEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -58,11 +57,10 @@ internal class ContentSearchSettingsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val userId = UserId("current-user")
-    private val otherUserId = UserId("other-user")
 
-    private val ongoingIndexingUserId = MutableStateFlow<UserId?>(null)
     private val ownIndexingStatus = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
     private val workerState = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
+    private val enabledFlow = MutableStateFlow(true)
 
     private val reducer = ContentSearchSettingsReducer()
     private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
@@ -70,19 +68,18 @@ internal class ContentSearchSettingsViewModelTest {
     }
     private val setContentSearchEnabled = mockk<SetContentSearchEnabled>()
     private val disableContentSearch = mockk<DisableContentSearch>()
-    private val startContentIndexing = mockk<StartContentIndexing>()
+    private val startContentIndexingSweep = mockk<StartContentIndexingSweep> {
+        coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
+    }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
     private val observeContentIndexingState = mockk<ObserveContentIndexingState> {
         every { this@mockk.invoke(userId) } returns workerState
     }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
-        every { this@mockk.invoke(userId) } returns flowOf(true)
+        every { this@mockk.invoke(userId) } returns enabledFlow
     }
     private val observeContentSearchIndexingStatus = mockk<ObserveContentSearchIndexingStatus> {
         every { this@mockk.invoke(userId) } returns ownIndexingStatus
-    }
-    private val observeOngoingIndexingUserId = mockk<ObserveOngoingIndexingUserId> {
-        every { this@mockk.invoke() } returns ongoingIndexingUserId
     }
     private val isContentSearchAllowedOnMobileData = mockk<IsContentSearchAllowedOnMobileData> {
         coEvery { this@mockk.invoke() } returns false
@@ -97,55 +94,15 @@ internal class ContentSearchSettingsViewModelTest {
         isContentSearchEnabled = isContentSearchEnabled,
         setContentSearchEnabled = setContentSearchEnabled,
         disableContentSearch = disableContentSearch,
-        startContentIndexing = startContentIndexing,
+        startContentIndexingSweep = startContentIndexingSweep,
         clearContentSearchLocalData = clearContentSearchLocalData,
         observeContentIndexingState = observeContentIndexingState,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
-        observeOngoingIndexingUserId = observeOngoingIndexingUserId,
         isContentSearchAllowedOnMobileData = isContentSearchAllowedOnMobileData,
         setAllowContentSearchOnMobileData = setAllowContentSearchOnMobileData,
         observePrimaryUserId = observePrimaryUserId
     )
-
-    @Test
-    fun `is blocked when another user is indexing and current user has not completed`() = runTest {
-        // Given
-        ongoingIndexingUserId.value = otherUserId
-        ownIndexingStatus.value = ContentIndexingState.Idle
-
-        // When
-        val state = viewModel().state.value.asData()
-
-        // Then
-        assertTrue(state.isBlockedByOtherUser)
-    }
-
-    @Test
-    fun `is not blocked when another user is indexing but current user has already completed`() = runTest {
-        // Given
-        ongoingIndexingUserId.value = otherUserId
-        ownIndexingStatus.value = ContentIndexingState.Completed
-
-        // When
-        val state = viewModel().state.value.asData()
-
-        // Then
-        assertFalse(state.isBlockedByOtherUser)
-    }
-
-    @Test
-    fun `is not blocked when no other user is indexing`() = runTest {
-        // Given
-        ongoingIndexingUserId.value = null
-        ownIndexingStatus.value = ContentIndexingState.Idle
-
-        // When
-        val state = viewModel().state.value.asData()
-
-        // Then
-        assertFalse(state.isBlockedByOtherUser)
-    }
 
     @Test
     fun `shows the percentage and active state from the rust indexing status`() = runTest {
@@ -158,6 +115,20 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         assertEquals(42.0, state.syncPercentage)
         assertTrue(state.isIndexingActive)
+    }
+
+    @Test
+    fun `does not show syncing progress when content search is disabled`() = runTest {
+        // Given
+        enabledFlow.value = false
+        ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertNull(state.syncPercentage)
+        assertFalse(state.isIndexingActive)
     }
 
     @Test
@@ -189,17 +160,28 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `submit ToggleContentSearch on starts indexing and enables content search`() = runTest {
+    fun `submit ToggleContentSearch on enables content search and starts the sweep`() = runTest {
         // Given
-        coEvery { startContentIndexing(userId) } returns EnqueueIndexingResult.Scheduled
         coEvery { setContentSearchEnabled(userId, true) } returns Unit.right()
 
         // When
         viewModel().submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
 
         // Then
-        coVerify { startContentIndexing(userId) }
         coVerify { setContentSearchEnabled(userId, true) }
+        coVerify { startContentIndexingSweep() }
+    }
+
+    @Test
+    fun `submit ToggleContentSearch on does not start the sweep when enabling fails`() = runTest {
+        // Given
+        coEvery { setContentSearchEnabled(userId, true) } returns DataError.Local.Unknown.left()
+
+        // When
+        viewModel().submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
+
+        // Then
+        coVerify(exactly = 0) { startContentIndexingSweep() }
     }
 
     @Test
@@ -250,9 +232,8 @@ internal class ContentSearchSettingsViewModelTest {
     fun `submit ToggleAllowMobileData persists the value and reflects it in the state`() = runTest {
         // Given
         coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
-        // Changing the preference debounces into a reschedule of indexing.
-        coEvery { startContentIndexing(userId) } returns EnqueueIndexingResult.Scheduled
 
+        // When
         val viewModel = viewModel()
         viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled = true))
 
