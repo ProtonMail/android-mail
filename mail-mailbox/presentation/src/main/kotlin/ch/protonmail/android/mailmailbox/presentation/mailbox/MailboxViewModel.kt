@@ -137,6 +137,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxM
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
+import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
@@ -246,6 +247,7 @@ class MailboxViewModel @Inject constructor(
     private val selectCategory: SelectCategory,
     private val observeCategorySpotlightSeen: ObserveCategorySpotlightSeen,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
+    private val observeOnboarding: ObserveOnboarding,
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
     @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
@@ -359,11 +361,14 @@ class MailboxViewModel @Inject constructor(
         combine(
             observeCategorySpotlightSeen().map { either -> either.getOrElse { true } },
             categorySpotlightDismissed,
+            observeOnboardingCompleted(),
             state
                 .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories.orEmpty() }
                 .distinctUntilChanged()
-        ) { seen, dismissed, categories ->
-            categorySpotlightStateFrom(seen || dismissed, categories)
+        ) { seen, dismissed, onboardingDone, categories ->
+            // Hold the spotlight back until the onboarding is finished
+            if (!onboardingDone) CategorySpotlightState.Hidden
+            else categorySpotlightStateFrom(seen || dismissed, categories)
         }
             .distinctUntilChanged()
             .onEach { emitNewStateFrom(MailboxEvent.CategorySpotlightStateChanged(it)) }
@@ -566,6 +571,11 @@ class MailboxViewModel @Inject constructor(
             dismissCategorySpotlight()
         }
     }
+
+    // Emits true only once we positively know onboarding is done
+    private fun observeOnboardingCompleted(): Flow<Boolean> = observeOnboarding()
+        .map { either -> either.getOrNull()?.display == false }
+        .distinctUntilChanged()
 
     private fun categorySpotlightStateFrom(
         seen: Boolean,

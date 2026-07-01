@@ -138,6 +138,8 @@ import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
+import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
@@ -390,6 +392,9 @@ internal class MailboxViewModelTest {
     private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen> {
         coEvery { this@mockk.invoke() } returns Unit.right()
     }
+    private val observeOnboarding = mockk<ObserveOnboarding> {
+        every { this@mockk.invoke() } returns flowOf(OnboardingPreference(display = false).right())
+    }
 
     private val selectCategory = mockk<SelectCategory> {
         every { this@mockk.invoke(any()) } just runs
@@ -462,7 +467,8 @@ internal class MailboxViewModelTest {
             contentSearchSettingsEnabled = isContentSearchEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus,
             observeCategorySpotlightSeen = observeCategorySpotlightSeen,
-            markCategorySpotlightSeen = markCategorySpotlightSeen
+            markCategorySpotlightSeen = markCategorySpotlightSeen,
+            observeOnboarding = observeOnboarding
         )
     }
 
@@ -4351,6 +4357,37 @@ internal class MailboxViewModelTest {
             categoryViewState = CategoryViewState.Available.Data(categories = listOf(unseenCategory))
         )
         every { observeCategorySpotlightSeen() } returns flowOf(true.right())
+        every { mailboxReducer.newStateFrom(any(), any()) } returns dataState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
+            )
+            advanceUntilIdle()
+
+            // Then
+            verify(exactly = 0) {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.CategorySpotlightStateChanged(CategorySpotlightState.Shown(unseenCategory))
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given onboarding not completed, then spotlight is hidden even with unseen category`() = runTest {
+        // Given
+        val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
+        val dataState = MailboxStateSampleData.Loading.copy(
+            categoryViewState = CategoryViewState.Available.Data(categories = listOf(unseenCategory))
+        )
+        every { observeCategorySpotlightSeen() } returns flowOf(false.right())
+        every { observeOnboarding() } returns flowOf(OnboardingPreference(display = true).right())
         every { mailboxReducer.newStateFrom(any(), any()) } returns dataState
 
         mailboxViewModel.state.test {
