@@ -182,8 +182,10 @@ class ContentSearchSettingsViewModel @Inject constructor(
         } else {
             disableContentSearch(userId)
         }
-        emitNewStateFor(Data.ContentSearchToggled(newValue))
-        result.onLeft { emitNewStateFor(Error.UpdateError) }
+        result.fold(
+            ifLeft = { emitNewStateFor(Error.UpdateError) },
+            ifRight = { emitNewStateFor(Data.ContentSearchToggled(newValue)) }
+        )
     }
 
     private suspend fun handleToggleAllowMobileData(newValue: Boolean) {
@@ -194,9 +196,15 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     private suspend fun handleClearLocalData() {
         val userId = currentUserId()
-        disableContentSearch(userId).onLeft { emitNewStateFor(Error.UpdateError) }
+        disableContentSearch(userId).onLeft {
+            emitNewStateFor(Error.UpdateError)
+            return
+        }
         observeContentIndexingState(userId).first { it.isTerminal() }
-        clearContentSearchLocalData(userId).onLeft { emitNewStateFor(Error.UpdateError) }
+        clearContentSearchLocalData(userId).onLeft {
+            emitNewStateFor(Error.UpdateError)
+            return
+        }
         emitNewStateFor(Data.LocalSearchDataCleared)
     }
 

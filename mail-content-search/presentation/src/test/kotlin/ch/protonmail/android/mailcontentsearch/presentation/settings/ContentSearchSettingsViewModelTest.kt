@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings
 
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
@@ -169,6 +171,38 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
+    fun `submit ToggleContentSearch on keeps previous state when enabling fails`() = runTest {
+        // Given
+        coEvery { isContentSearchEnabled(userId) } returns false.right()
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        coEvery { startContentIndexing(userId) } returns EnqueueIndexingResult.Scheduled
+        coEvery { setContentSearchEnabled(userId, true) } returns DataError.Local.Unknown.left()
+
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
+
+        // Then
+        assertFalse(viewModel.state.value.asData().isContentSearchEnabled)
+    }
+
+    @Test
+    fun `submit ToggleContentSearch off keeps previous state when disabling fails`() = runTest {
+        // Given
+        coEvery { isContentSearchEnabled(userId) } returns true.right()
+        coEvery { disableContentSearch(userId) } returns DataError.Local.Unknown.left()
+
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = false))
+
+        // Then
+        assertTrue(viewModel.state.value.asData().isContentSearchEnabled)
+    }
+
+    @Test
     fun `submit ToggleAllowMobileData persists the value and reflects it in the state`() = runTest {
         // Given
         coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
@@ -195,6 +229,19 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         coVerify { disableContentSearch(userId) }
         coVerify { clearContentSearchLocalData(userId) }
+    }
+
+    @Test
+    fun `submit ClearLocalData does not clear local data when disabling content search fails`() = runTest {
+        // Given
+        coEvery { disableContentSearch(userId) } returns DataError.Local.Unknown.left()
+
+        // When
+        viewModel().submit(ContentSearchSettingsViewAction.ClearLocalData)
+
+        // Then
+        coVerify { disableContentSearch(userId) }
+        coVerify(exactly = 0) { clearContentSearchLocalData(userId) }
     }
 
     private fun ContentSearchSettingsState.asData(): ContentSearchSettingsState.Data {
