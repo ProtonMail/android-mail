@@ -13,14 +13,14 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import uniffi.mail_uniffi.CategoryDestination
+import uniffi.mail_uniffi.CustomFolderDestination
 import uniffi.mail_uniffi.Id
 import uniffi.mail_uniffi.InboxDestination
-import uniffi.mail_uniffi.CustomFolderDestination
 import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.MoveDestination
+import uniffi.mail_uniffi.SystemFolderDestination
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -43,8 +43,10 @@ class ActionsMapperTest {
         // Given
         val archiveLocalId = Id(1uL)
         val spamLocalId = Id(2uL)
-        val archive = SystemFolderDestination(archiveLocalId, MovableSystemFolder.ARCHIVE)
-        val spam = SystemFolderDestination(spamLocalId, MovableSystemFolder.SPAM)
+        val archive = SystemFolderDestination(
+            localId = archiveLocalId, name = MovableSystemFolder.ARCHIVE, isCurrent = false
+        )
+        val spam = SystemFolderDestination(localId = spamLocalId, name = MovableSystemFolder.SPAM, isCurrent = false)
         val systemFolderActions = listOf(MoveDestination.SystemFolder(archive), MoveDestination.SystemFolder(spam))
         val expected = listOf(
             MailLabel.System(MailLabelId.System(archiveLocalId.toLabelId()), SystemLabelId.Archive, 0),
@@ -65,10 +67,22 @@ class ActionsMapperTest {
         every { Color.parseColor("#EEEEEE") } returns 0xFFEEEEEE.toInt()
         val rootId = Id(11uL)
         val childId = Id(12uL)
-        val childFolder = CustomFolderDestination(childId, "Child", LabelColor("#EEE"), emptyList())
+        val childFolder = CustomFolderDestination(
+            localId = childId,
+            name = "Child",
+            color = LabelColor("#EEE"),
+            children = emptyList(),
+            isCurrent = false
+        )
         val actions = listOf(
             MoveDestination.CustomFolder(
-                CustomFolderDestination(rootId, "Root", LabelColor("#FFF"), listOf(childFolder))
+                CustomFolderDestination(
+                    localId = rootId,
+                    name = "Root",
+                    color = LabelColor("#FFF"),
+                    children = listOf(childFolder),
+                    isCurrent = false
+                )
             )
         )
 
@@ -95,7 +109,8 @@ class ActionsMapperTest {
             name = MovableSystemFolder.INBOX,
             categories = listOf(
                 CategoryDestination(Id(21uL), MovableCategoryFolder.CATEGORY_SOCIAL)
-            )
+            ),
+            isCurrent = false
         )
 
         // When
@@ -132,7 +147,8 @@ class ActionsMapperTest {
                 CategoryDestination(Id(4uL), MovableCategoryFolder.CATEGORY_UPDATES),
                 CategoryDestination(Id(5uL), MovableCategoryFolder.CATEGORY_NEWSLETTER),
                 CategoryDestination(Id(6uL), MovableCategoryFolder.CATEGORY_TRANSACTIONS)
-            )
+            ),
+            isCurrent = false
         )
 
         // When
@@ -158,7 +174,8 @@ class ActionsMapperTest {
         val inbox = InboxDestination(
             localId = Id(20uL),
             name = MovableSystemFolder.INBOX,
-            categories = emptyList()
+            categories = emptyList(),
+            isCurrent = false
         )
 
         // When

@@ -62,8 +62,8 @@ import uniffi.mail_uniffi.LabelAsAction
 import uniffi.mail_uniffi.LabelAsOutput
 import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.MoveDestination
+import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.Undo
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -202,15 +202,15 @@ internal class RustConversationDataSourceImplTest {
         val labelId = LocalLabelId(1uL)
         val mailbox = mockk<MailboxWrapper>()
         val conversationIds = listOf(LocalConversationIdSample.OctConversation)
-        val archive = SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
+        val archive = SystemFolderDestination(localId = Id(2uL), name = MovableSystemFolder.ARCHIVE, isCurrent = false)
         val customFolder = CustomFolderDestination(
-            Id(100uL),
-            "custom",
-            LabelColor("#fff"),
-            emptyList()
+            localId = Id(100uL),
+            name = "custom",
+            color = LabelColor("#fff"),
+            children = emptyList(),
+            isCurrent = false
         )
         val allMoveToActions = listOf(MoveDestination.SystemFolder(archive), MoveDestination.CustomFolder(customFolder))
-        val expected = allMoveToActions
 
         coEvery { rustMailboxFactory.create(userId, labelId) } returns mailbox.right()
         coEvery { getRustConversationMoveToDestinations(mailbox, conversationIds) } returns allMoveToActions.right()
@@ -219,7 +219,7 @@ internal class RustConversationDataSourceImplTest {
         val result = dataSource.getAvailableMoveToActions(userId, labelId, conversationIds)
 
         // Then
-        assertEquals(expected.right(), result)
+        assertEquals(allMoveToActions.right(), result)
     }
 
     @Test

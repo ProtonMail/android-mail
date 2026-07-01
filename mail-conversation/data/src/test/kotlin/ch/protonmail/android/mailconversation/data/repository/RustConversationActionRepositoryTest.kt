@@ -32,8 +32,8 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
 import ch.protonmail.android.mailmessage.data.mapper.MoveDestinationMapper
+import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
 import ch.protonmail.android.testdata.label.rust.LabelAsActionsTestData
 import ch.protonmail.android.testdata.label.rust.LocalLabelAsActionTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -53,8 +53,8 @@ import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.ListActions
 import uniffi.mail_uniffi.MovableCategoryFolder
 import uniffi.mail_uniffi.MovableSystemFolder
-import uniffi.mail_uniffi.SystemFolderDestination
 import uniffi.mail_uniffi.MoveDestination
+import uniffi.mail_uniffi.SystemFolderDestination
 import kotlin.test.assertEquals
 
 internal class RustConversationActionRepositoryTest {
@@ -77,10 +77,10 @@ internal class RustConversationActionRepositoryTest {
             listOf(ConversationAction.Star, ConversationAction.LabelAs),
             listOf(
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(5uL), MovableSystemFolder.SPAM)
+                    SystemFolderDestination(localId = Id(5uL), name = MovableSystemFolder.SPAM, isCurrent = false)
                 ),
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(10uL), MovableSystemFolder.ARCHIVE)
+                    SystemFolderDestination(Id(value = 10uL), MovableSystemFolder.ARCHIVE, isCurrent = false)
                 )
             )
         )
@@ -139,7 +139,7 @@ internal class RustConversationActionRepositoryTest {
             conversationActions = listOf(ConversationAction.Star),
             moveActions = listOf(
                 ConversationAction.MoveToSystemFolder(
-                    SystemFolderDestination(Id(10uL), MovableSystemFolder.INBOX)
+                    SystemFolderDestination(localId = Id(10uL), name = MovableSystemFolder.INBOX, isCurrent = false)
                 )
             )
         )
@@ -173,10 +173,10 @@ internal class RustConversationActionRepositoryTest {
         val conversationIds = listOf(ConversationId("1"))
         val rustMoveToActions = listOf(
             MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(2uL), MovableSystemFolder.ARCHIVE)
+                SystemFolderDestination(localId = Id(2uL), name = MovableSystemFolder.ARCHIVE, isCurrent = false)
             ),
             MoveDestination.SystemFolder(
-                SystemFolderDestination(Id(3uL), MovableSystemFolder.TRASH)
+                SystemFolderDestination(localId = Id(3uL), name = MovableSystemFolder.TRASH, isCurrent = false)
             ),
             MoveDestination.Inbox(
                 InboxDestination(
@@ -184,11 +184,18 @@ internal class RustConversationActionRepositoryTest {
                     name = MovableSystemFolder.INBOX,
                     categories = listOf(
                         CategoryDestination(Id(5uL), MovableCategoryFolder.CATEGORY_SOCIAL)
-                    )
+                    ),
+                    isCurrent = false
                 )
             ),
             MoveDestination.CustomFolder(
-                CustomFolderDestination(Id(50uL), "Custom", LabelColor("#FFFFFF"), emptyList())
+                CustomFolderDestination(
+                    localId = Id(50uL),
+                    name = "Custom",
+                    color = LabelColor("#FFFFFF"),
+                    children = emptyList(),
+                    isCurrent = false
+                )
             )
         )
 
