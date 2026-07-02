@@ -35,14 +35,15 @@ import uniffi.mail_uniffi.MailSessionGetAppSettingsResult
 import uniffi.mail_uniffi.SessionReason
 import uniffi.mail_uniffi.UserSessionError
 
-class RustAppSettingsDataSourceTest {
+internal class RustAppSettingsDataSourceTest {
 
     private val mockAppSettings = uniffi.mail_uniffi.AppSettings(
         AppAppearance.LIGHT_MODE,
         AppProtection.PIN,
         AutoLock.Always,
         useCombineContacts = true,
-        useAlternativeRouting = true
+        useAlternativeRouting = true,
+        useMobileDataForContentSearchIndexing = false
     )
 
     val mailSession = mockk<MailSession> {

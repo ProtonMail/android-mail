@@ -32,14 +32,15 @@ import uniffi.mail_uniffi.AppSettings
 import uniffi.mail_uniffi.AutoLock
 import kotlin.test.assertNull
 
-class AppSettingsMapperTest {
+internal class AppSettingsMapperTest {
 
     private val localAppSettings = AppSettings(
         appearance = AppAppearance.DARK_MODE,
         AppProtection.PIN,
         AutoLock.Always,
         useCombineContacts = false,
-        useAlternativeRouting = false
+        useAlternativeRouting = false,
+        useMobileDataForContentSearchIndexing = false
     )
 
     @Test

@@ -66,7 +66,7 @@ import uniffi.mail_uniffi.MailSession
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class AutoLockRepositoryImplTest {
+internal class AutoLockRepositoryImplTest {
 
     @get:Rule
     val loggingTestRule = LoggingTestRule()
@@ -129,7 +129,8 @@ class AutoLockRepositoryImplTest {
         AppProtection.PIN,
         AutoLock.Always,
         useCombineContacts = true,
-        useAlternativeRouting = true
+        useAlternativeRouting = true,
+        useMobileDataForContentSearchIndexing = false
     )
 
     private val expectedAppSettings = AppSettings(

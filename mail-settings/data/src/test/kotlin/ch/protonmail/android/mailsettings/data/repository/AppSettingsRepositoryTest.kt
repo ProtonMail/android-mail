@@ -68,7 +68,8 @@ internal class AppSettingsRepositoryTest {
         AppProtection.PIN,
         AutoLock.Always,
         useCombineContacts = true,
-        useAlternativeRouting = true
+        useAlternativeRouting = true,
+        useMobileDataForContentSearchIndexing = false
     )
 
     private val expectedAppSettings = AppSettings(

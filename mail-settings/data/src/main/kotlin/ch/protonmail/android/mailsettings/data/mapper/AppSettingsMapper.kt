@@ -56,7 +56,8 @@ fun AppSettingsDiff.toAppDiff(): LocalAppSettingsDiff {
         autoLock = interval?.let { setAutoLockInterval(it) },
         useCombineContacts = combineContacts,
         useAlternativeRouting = alternativeRouting,
-        appearance = theme?.let { setTheme(it) }
+        appearance = theme?.let { setTheme(it) },
+        useMobileDataForContentSearchIndexing = null // ET-6485
     )
 }
 

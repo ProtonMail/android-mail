@@ -453,4 +453,6 @@ fun MessageScrollerListUpdate.debugTypeName(): String = when (this) {
 fun MessageScrollerStatusUpdate.debugTypeName(): String = when (this) {
     MessageScrollerStatusUpdate.FETCH_NEW_START -> "FETCH_NEW_START"
     MessageScrollerStatusUpdate.FETCH_NEW_END -> "FETCH_NEW_END"
+    MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_START -> "FIRST_PAGE_LOADING_START"
+    MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_END -> "FIRST_PAGE_LOADING_END"
 }
