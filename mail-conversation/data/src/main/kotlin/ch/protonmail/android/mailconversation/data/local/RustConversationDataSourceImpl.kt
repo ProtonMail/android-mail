@@ -48,7 +48,7 @@ import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -338,7 +338,7 @@ class RustConversationDataSourceImpl @Inject constructor(
     }
 
     override fun observeScrollerFetchNewStatus(): Flow<ConversationScrollerFetchNewStatus> =
-        rustConversationsQuery.observeScrollerFetchNewStatus().map {
+        rustConversationsQuery.observeScrollerFetchNewStatus().mapNotNull {
             it.toConversationScrollerFetchNewStatus()
         }
 

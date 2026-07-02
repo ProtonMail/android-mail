@@ -104,6 +104,7 @@ class MailboxListReducer @Inject constructor(
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 loadingBarState = operation.state
             )
+
             is MailboxListState.Data.SelectionMode -> currentState.copy(
                 loadingBarState = operation.state
             )

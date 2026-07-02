@@ -435,4 +435,6 @@ fun ConversationScrollerListUpdate.debugTypeName(): String = when (this) {
 fun ConversationScrollerStatusUpdate.debugTypeName(): String = when (this) {
     ConversationScrollerStatusUpdate.FETCH_NEW_START -> "FETCH_NEW_START"
     ConversationScrollerStatusUpdate.FETCH_NEW_END -> "FETCH_NEW_END"
+    ConversationScrollerStatusUpdate.FIRST_PAGE_LOADING_START -> "FIRST_PAGE_LOADING_START"
+    ConversationScrollerStatusUpdate.FIRST_PAGE_LOADING_END -> "FIRST_PAGE_LOADING_END"
 }

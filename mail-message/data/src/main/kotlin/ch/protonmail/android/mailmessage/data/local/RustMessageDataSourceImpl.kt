@@ -68,7 +68,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -449,7 +449,7 @@ class RustMessageDataSourceImpl @Inject constructor(
     }
 
     override fun observeScrollerFetchNewStatus(): Flow<MessageScrollerFetchNewStatus> =
-        rustMessageListQuery.observeScrollerFetchNewStatus().map {
+        rustMessageListQuery.observeScrollerFetchNewStatus().mapNotNull {
             it.toMessageScrollerFetchNewStatus()
         }
 

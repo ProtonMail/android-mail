@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingCategoryView
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingClearAllDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingErrorBar
@@ -46,7 +47,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingCategoryView
 import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
