@@ -34,8 +34,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
@@ -56,6 +59,9 @@ fun CategoryViewMenu(
 
     var lastHandledOrientation by rememberSaveable { mutableIntStateOf(orientation) }
 
+    // Extend the system-gesture exclusion beyond the category row
+    val gestureExclusionPaddingPx = with(LocalDensity.current) { GestureExclusionVerticalPadding.toPx() }
+
     ConsumableLaunchedEffect(effect = resetScrollEffect) {
         lazyListState.animateScrollToItem(0)
     }
@@ -74,7 +80,14 @@ fun CategoryViewMenu(
         state = lazyListState,
         modifier = modifier
             .fillMaxWidth()
-            .systemGestureExclusion(),
+            .systemGestureExclusion { coordinates ->
+                Rect(
+                    left = 0f,
+                    top = -gestureExclusionPaddingPx,
+                    right = coordinates.size.width.toFloat(),
+                    bottom = coordinates.size.height + gestureExclusionPaddingPx
+                )
+            },
         contentPadding = PaddingValues(horizontal = ProtonDimens.Spacing.ModeratelyLarge),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small),
         verticalAlignment = Alignment.CenterVertically
@@ -84,6 +97,11 @@ fun CategoryViewMenu(
         }
     }
 }
+
+// Vertical margin added above and below the category row to the gesture-exclusion area, so a swipe
+// slightly outside the bar is still treated as a scroll rather than a back gesture.
+// (Note: Platform gives 200dp-per-edge exclusion budget)
+private val GestureExclusionVerticalPadding = 24.dp
 
 @Preview
 @Composable
