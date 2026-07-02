@@ -72,7 +72,6 @@ dependencies {
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
     implementation(project(":mail-mailbox:domain"))
-    implementation(project(":mail-mailbox:presentation"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-session:domain"))
     implementation(project(":mail-upselling:domain"))

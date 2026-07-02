@@ -27,7 +27,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf

@@ -111,7 +111,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered

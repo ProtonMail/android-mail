@@ -25,7 +25,7 @@ import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.testdata.category.CategoryLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData

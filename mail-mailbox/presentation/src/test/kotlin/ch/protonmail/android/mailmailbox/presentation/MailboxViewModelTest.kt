@@ -115,7 +115,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategoryViewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
