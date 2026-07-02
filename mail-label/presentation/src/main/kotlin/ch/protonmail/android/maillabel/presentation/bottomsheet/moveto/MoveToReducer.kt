@@ -64,18 +64,19 @@ internal class MoveToReducer @Inject constructor() {
         val inbox = system.firstOrNull { it.systemLabelId == SystemLabelId.Inbox }
         val mailLabels = MailLabels(system = system, folders = customFolders, labels = emptyList())
 
-        val systemDestinations = mailLabels.system.map {
-            if (it.systemLabelId == SystemLabelId.Inbox) {
-                null
-            } else {
-                MoveToBottomSheetDestinationUiModel.System(
+        val systemDestinations = mailLabels.system.mapNotNull {
+            when {
+                it.systemLabelId == SystemLabelId.Inbox -> null
+                // Don't offer the system folder the items are already in.
+                it.isCurrent -> null
+                else -> MoveToBottomSheetDestinationUiModel.System(
                     it.id,
                     text = it.text(),
                     icon = it.iconRes(),
                     iconTint = it.iconTintColor()
                 )
             }
-        }.filterNotNull()
+        }
 
         val categoryDestinations = inbox?.categories.toMoveToCategories()
 

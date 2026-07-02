@@ -61,6 +61,26 @@ class ActionsMapperTest {
     }
 
     @Test
+    fun `maps the isCurrent flag from rust system folder destinations`() {
+        // Given
+        val archive = SystemFolderDestination(Id(1uL), MovableSystemFolder.ARCHIVE, isCurrent = true)
+        val spam = SystemFolderDestination(Id(2uL), MovableSystemFolder.SPAM, isCurrent = false)
+        val actions = listOf(MoveDestination.SystemFolder(archive), MoveDestination.SystemFolder(spam))
+
+        // When
+        val actual = moveDestinationMapper(actions)
+
+        // Then
+        assertEquals(
+            listOf(
+                MailLabel.System(MailLabelId.System(Id(1uL).toLabelId()), SystemLabelId.Archive, 0, isCurrent = true),
+                MailLabel.System(MailLabelId.System(Id(2uL).toLabelId()), SystemLabelId.Spam, 0, isCurrent = false)
+            ),
+            actual
+        )
+    }
+
+    @Test
     fun `maps custom folder move actions to custom mail labels hierarchy`() {
         // Given
         every { Color.parseColor("#FFFFFF") } returns 0xFFFFFFFF.toInt()

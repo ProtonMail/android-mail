@@ -68,7 +68,8 @@ class MoveDestinationMapper @Inject constructor() {
                 isExpanded = true,
                 level = level,
                 order = order,
-                children = folder.children.map { child -> toFolderId(child.localId) }
+                children = folder.children.map { child -> toFolderId(child.localId) },
+                isCurrent = folder.isCurrent
             )
             acc += current
             folder.children.forEachIndexed { index, child ->
@@ -101,7 +102,8 @@ private fun SystemFolderDestination.toSystemMailLabelOrNull(): MailLabel.System?
     return MailLabel.System(
         id = MailLabelId.System(localId.toLabelId()),
         systemLabelId = systemLabelId,
-        order = 0
+        order = 0,
+        isCurrent = isCurrent
     )
 }
 

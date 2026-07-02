@@ -164,6 +164,30 @@ internal class MoveToReducerTest(
                 )
             ),
             arrayOf(
+                "excludes the current system folder (isCurrent) from move-to destinations",
+                MoveToState.Loading,
+                loadedEvent.copy(
+                    moveToDestinations = listOf(
+                        MailLabelTestData.archiveSystemLabel.copy(isCurrent = true),
+                        MailLabelTestData.label2021
+                    ).toImmutableList()
+                ),
+                initialState.copy(
+                    systemDestinations = emptyList<MoveToBottomSheetDestinationUiModel.System>().toImmutableList()
+                )
+            ),
+            arrayOf(
+                "keeps the current custom folder in move-to destinations (isCurrent ignored for custom)",
+                MoveToState.Loading,
+                loadedEvent.copy(
+                    moveToDestinations = listOf(
+                        MailLabelTestData.archiveSystemLabel,
+                        MailLabelTestData.label2021.copy(isCurrent = true)
+                    ).toImmutableList()
+                ),
+                initialState
+            ),
+            arrayOf(
                 "from loaded data to error moving state",
                 initialState,
                 MoveToOperation.MoveToEvent.ErrorMoving,

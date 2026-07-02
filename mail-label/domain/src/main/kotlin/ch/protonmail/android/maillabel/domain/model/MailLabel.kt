@@ -52,7 +52,8 @@ sealed class MailLabel(
         override val id: MailLabelId.System,
         val systemLabelId: SystemLabelId,
         val order: Int,
-        val categories: List<Category>? = null
+        val categories: List<Category>? = null,
+        val isCurrent: Boolean = false
     ) : MailLabel(id)
 
     data class Category(
@@ -69,7 +70,8 @@ sealed class MailLabel(
         val isExpanded: Boolean,
         val level: Int,
         val order: Int,
-        val children: List<MailLabelId.Custom>
+        val children: List<MailLabelId.Custom>,
+        val isCurrent: Boolean = false
     ) : MailLabel(id)
 }
 
