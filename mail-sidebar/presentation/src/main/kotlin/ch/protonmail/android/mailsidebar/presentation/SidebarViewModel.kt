@@ -24,6 +24,8 @@ import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedMailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.SelectMailLabelId
@@ -34,12 +36,14 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction
+import ch.protonmail.android.mailsidebar.presentation.usecase.ObservePrimaryCategoryUnreadCount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.util.kotlin.exhaustive
@@ -52,6 +56,7 @@ class SidebarViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
     private val observeUnreadCounters: ObserveUnreadCounters,
+    private val observePrimaryCategoryUnreadCount: ObservePrimaryCategoryUnreadCount,
     private val observeLoadedMailLabelId: ObserveLoadedMailLabelId,
     private val selectMailLabelId: SelectMailLabelId
 ) : ViewModel() {
@@ -68,15 +73,26 @@ class SidebarViewModel @Inject constructor(
         combine(
             observeLoadedMailLabelId(),
             observeMailLabels(userId),
-            observeUnreadCounters(userId)
-        ) { loadedMailLabelId, mailLabels, counters ->
+            observeUnreadCounters(userId),
+            observePrimaryCategoryUnreadCount(userId).onStart { emit(null) }
+        ) { loadedMailLabelId, mailLabels, counters, primaryUnreadCount ->
+            val inboxLabelId = mailLabels.inboxLabelId()
+
+            // When category view is on, the Inbox row shows the Primary category count instead.
+            val unreadCounters = counters.toMap().let { map ->
+                if (primaryUnreadCount != null && inboxLabelId != null) {
+                    map + (inboxLabelId to primaryUnreadCount)
+                } else {
+                    map
+                }
+            }
             State.Enabled(
                 selectedMailLabelId = loadedMailLabelId,
                 // Pending Account team to migrate "paymentManager" to rust
                 // (current implementation isn't aware of the rust session and throws
                 // exception crashing the app if no user is logged into "core"
                 canChangeSubscription = false,
-                mailLabels = mailLabels.toUiModels(counters.toMap(), loadedMailLabelId)
+                mailLabels = mailLabels.toUiModels(unreadCounters, loadedMailLabelId)
             )
         }
     }.stateIn(
@@ -111,6 +127,9 @@ class SidebarViewModel @Inject constructor(
     private fun List<UnreadCounter>.toMap(): Map<LabelId, Int?> = run {
         associateBy({ it.labelId }, { it.count.takeIf { count -> count > 0 } })
     }
+
+    private fun MailLabels.inboxLabelId(): LabelId? =
+        system.firstOrNull { it.systemLabelId == SystemLabelId.Inbox }?.id?.labelId
 
     sealed class State {
         data class Enabled(

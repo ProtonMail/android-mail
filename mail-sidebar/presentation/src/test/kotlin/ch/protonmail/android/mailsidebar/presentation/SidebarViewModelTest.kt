@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsidebar.presentation
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -32,6 +33,7 @@ import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailsidebar.presentation.usecase.ObservePrimaryCategoryUnreadCount
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.Action.LabelAction
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Enabled
@@ -86,6 +88,10 @@ class SidebarViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns flowOf(emptyList<UnreadCounter>())
     }
 
+    private val observePrimaryCategoryUnreadCount = mockk<ObservePrimaryCategoryUnreadCount> {
+        every { this@mockk.invoke(any()) } returns flowOf(null)
+    }
+
     private lateinit var sidebarViewModel: SidebarViewModel
 
     @BeforeTest
@@ -97,6 +103,7 @@ class SidebarViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             observeMailLabels = observeMailboxLabels,
             observeUnreadCounters = observeUnreadCounters,
+            observePrimaryCategoryUnreadCount = observePrimaryCategoryUnreadCount,
             observeLoadedMailLabelId = observeLoadedMailLabelId,
             selectMailLabelId = selectMailLabelId
         )
@@ -181,4 +188,55 @@ class SidebarViewModelTest {
         // Then
         coVerify { updateLabelExpandedState.invoke(UserIdTestData.Primary, mailLabelId, true) }
     }
+
+    @Test
+    fun `when a primary category unread count is available, inbox row shows it`() = runTest {
+        // Given
+        every { observePrimaryCategoryUnreadCount(any()) } returns flowOf(7)
+        coEvery { observeUnreadCounters(any()) } returns flowOf(
+            listOf(UnreadCounter(MailLabelTestData.inboxSystemLabel.id.labelId, 3))
+        )
+        mailboxLabels.value = MailLabels(
+            system = listOf(MailLabelTestData.inboxSystemLabel),
+            folders = emptyList(),
+            labels = emptyList()
+        )
+
+        // When + Then
+        sidebarViewModel.state.test {
+            assertEquals(Disabled, awaitItem())
+            primaryUserId.emit(UserIdTestData.Primary)
+
+            // onStart briefly seeds the regular inbox count before the Primary count arrives;
+            // assert the settled value.
+            val settled = expectMostRecentItem() as Enabled
+            assertEquals(CappedNumberUiModel.Exact(7), settled.inboxCount())
+        }
+    }
+
+    @Test
+    fun `when no primary category unread count, inbox row shows the regular inbox unread count`() = runTest {
+        // Given
+        every { observePrimaryCategoryUnreadCount(any()) } returns flowOf(null)
+        coEvery { observeUnreadCounters(any()) } returns flowOf(
+            listOf(UnreadCounter(MailLabelTestData.inboxSystemLabel.id.labelId, 3))
+        )
+        mailboxLabels.value = MailLabels(
+            system = listOf(MailLabelTestData.inboxSystemLabel),
+            folders = emptyList(),
+            labels = emptyList()
+        )
+
+        // When + Then
+        sidebarViewModel.state.test {
+            assertEquals(Disabled, awaitItem())
+            primaryUserId.emit(UserIdTestData.Primary)
+
+            val enabled = awaitItem() as Enabled
+            assertEquals(CappedNumberUiModel.Exact(3), enabled.inboxCount())
+        }
+    }
+
+    private fun Enabled.inboxCount(): CappedNumberUiModel =
+        mailLabels.systemLabels.first { it.id == MailLabelTestData.inboxSystemLabel.id }.count
 }

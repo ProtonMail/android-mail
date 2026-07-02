@@ -66,12 +66,13 @@ dependencies {
 
     implementation(libs.proton.core.domain)
 
+    implementation(project(":mail-category-view:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
-    implementation(project(":mail-featureflags:domain"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
     implementation(project(":mail-mailbox:domain"))
+    implementation(project(":mail-mailbox:presentation"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-session:domain"))
     implementation(project(":mail-upselling:domain"))
