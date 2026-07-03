@@ -39,10 +39,17 @@ class MailboxCategoryViewReducer @Inject constructor(
             is MailboxEvent.CategoryViewStatusChanged -> {
                 val newState = categoryViewUiModelMapper.toUiModel(operation.categoryViewStatus)
 
-                if (newState is CategoryViewState.Available.Data && currentState is CategoryViewState.Available.Data) {
-                    newState.copy(spotlightState = currentState.spotlightState)
-                } else {
-                    newState
+                when {
+                    newState is CategoryViewState.Available.Data &&
+                        currentState is CategoryViewState.Available.Data ->
+                        newState.copy(spotlightState = currentState.spotlightState)
+
+                    // Categories just (re)appeared after returning to Inbox from another
+                    // location: scroll the category bar back to the start.
+                    newState is CategoryViewState.Available.Data ->
+                        newState.copy(resetScrollEffect = Effect.of(Unit))
+
+                    else -> newState
                 }
             }
 

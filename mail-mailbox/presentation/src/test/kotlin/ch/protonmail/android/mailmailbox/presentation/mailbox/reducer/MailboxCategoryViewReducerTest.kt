@@ -45,7 +45,7 @@ class MailboxCategoryViewReducerTest {
         // Given
         val categoryViewStatus = mockk<CategoryViewStatus>()
         val currentState: CategoryViewState = CategoryViewState.NotAvailable
-        val expectedState = mockk<CategoryViewState>()
+        val expectedState: CategoryViewState = CategoryViewState.NotAvailable
 
         every {
             categoryViewUiModelMapper.toUiModel(categoryViewStatus)
@@ -76,6 +76,25 @@ class MailboxCategoryViewReducerTest {
         // Then
         assertEquals(CategoryItemUiModelSample.all, (actual as CategoryViewState.Available.Data).categories)
         assertEquals(Unit, actual.resetScrollEffect.consume())
+    }
+
+    @Test
+    fun `should reset scroll position when categories become available after being unavailable`() {
+        // Given
+        val currentState: CategoryViewState = CategoryViewState.NotAvailable
+        val categoryViewStatus = mockk<CategoryViewStatus>()
+        every {
+            categoryViewUiModelMapper.toUiModel(categoryViewStatus)
+        } returns CategoryViewState.Available.Data(categories = CategoryItemUiModelSample.all)
+
+        // When
+        val actual = reducer.newStateFrom(
+            currentState,
+            MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
+        )
+
+        // Then
+        assertEquals(Unit, (actual as CategoryViewState.Available.Data).resetScrollEffect.consume())
     }
 
     @Test
