@@ -35,13 +35,12 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
 import ch.protonmail.android.mailcategory.domain.model.isDefault
 import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
-import ch.protonmail.android.mailcategory.domain.usecase.ObserveCategorySpotlightSeen
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
-import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
@@ -112,6 +111,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTras
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
@@ -137,7 +137,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxM
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
-import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
@@ -245,16 +244,16 @@ class MailboxViewModel @Inject constructor(
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     private val setActiveCategoryLabel: SetActiveCategoryLabel,
     private val selectCategory: SelectCategory,
-    private val observeCategorySpotlightSeen: ObserveCategorySpotlightSeen,
+    private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
-    private val observeOnboarding: ObserveOnboarding,
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
     @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
     private val mutableState = MutableStateFlow(initialState)
-    private val categorySpotlightDismissed = MutableStateFlow(false)
+    private val unseenSpotlightDismissed = MutableStateFlow(false)
+    private val personaliseSpotlightDismissed = MutableStateFlow(false)
     private val itemIdsMutex = Mutex()
     private val itemIds = mutableListOf<String>()
     private val folderColorSettings = primaryUserId.flatMapLatest {
@@ -358,19 +357,13 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
-        combine(
-            observeCategorySpotlightSeen().map { either -> either.getOrElse { true } },
-            categorySpotlightDismissed,
-            observeOnboardingCompleted(),
-            state
-                .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories.orEmpty() }
-                .distinctUntilChanged()
-        ) { seen, dismissed, onboardingDone, categories ->
-            // Hold the spotlight back until the onboarding is finished
-            if (!onboardingDone) CategorySpotlightState.Hidden
-            else categorySpotlightStateFrom(seen || dismissed, categories)
-        }
-            .distinctUntilChanged()
+        observeCategorySpotlightState(
+            categories = state
+                .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories }
+                .distinctUntilChanged(),
+            unseenDismissed = unseenSpotlightDismissed,
+            personaliseDismissed = personaliseSpotlightDismissed
+        )
             .onEach { emitNewStateFrom(MailboxEvent.CategorySpotlightStateChanged(it)) }
             .launchIn(viewModelScope)
 
@@ -566,10 +559,25 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun dismissCategorySpotlight() {
-        categorySpotlightDismissed.value = true
+        when (currentSpotlightState()) {
+            is CategorySpotlightState.Shown.UnseenCategory -> {
+                unseenSpotlightDismissed.value = true
+                markCategorySpotlightSeen(CategorySpotlightType.UnseenCategory)
+            }
+
+            CategorySpotlightState.Shown.Personalise -> {
+                personaliseSpotlightDismissed.value = true
+                markCategorySpotlightSeen(CategorySpotlightType.Personalise)
+            }
+
+            CategorySpotlightState.Hidden -> Unit
+        }
         emitNewStateFrom(MailboxViewAction.DismissCategorySpotlight)
-        markCategorySpotlightSeen()
     }
+
+    private fun currentSpotlightState(): CategorySpotlightState =
+        (state.value.categoryViewState as? CategoryViewState.Available.Data)?.spotlightState
+            ?: CategorySpotlightState.Hidden
 
     private suspend fun dismissCategorySpotlightIfShown() {
         val categoryViewState = state.value.categoryViewState
@@ -578,21 +586,6 @@ class MailboxViewModel @Inject constructor(
         ) {
             dismissCategorySpotlight()
         }
-    }
-
-    // Emits true only once we positively know onboarding is done
-    private fun observeOnboardingCompleted(): Flow<Boolean> = observeOnboarding()
-        .map { either -> either.getOrNull()?.display == false }
-        .distinctUntilChanged()
-
-    private fun categorySpotlightStateFrom(
-        seen: Boolean,
-        categories: List<CategoryItemUiModel>
-    ): CategorySpotlightState {
-        if (seen) return CategorySpotlightState.Hidden
-        val unseenCategory = categories.firstOrNull { !it.isActive && it.hasUnseen }
-            ?: return CategorySpotlightState.Hidden
-        return CategorySpotlightState.Shown(unseenCategory)
     }
 
     private fun handleNavigateToComposer() {

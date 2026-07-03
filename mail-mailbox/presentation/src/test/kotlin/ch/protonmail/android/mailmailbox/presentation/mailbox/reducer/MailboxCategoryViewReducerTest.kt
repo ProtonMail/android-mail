@@ -137,7 +137,7 @@ class MailboxCategoryViewReducerTest {
     @Test
     fun `should preserve current spotlight when category view status changes`() {
         // Given
-        val spotlight = CategorySpotlightState.Shown(CategoryItemUiModelSample.social)
+        val spotlight = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
         val currentState = CategoryViewState.Available.Data(
             categories = CategoryItemUiModelSample.all,
             spotlightState = spotlight
@@ -161,7 +161,7 @@ class MailboxCategoryViewReducerTest {
     fun `should apply spotlight state changed event`() {
         // Given
         val currentState = CategoryViewState.Available.Data(categories = CategoryItemUiModelSample.all)
-        val spotlight = CategorySpotlightState.Shown(CategoryItemUiModelSample.social)
+        val spotlight = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
 
         // When
         val actual = reducer.newStateFrom(
@@ -178,7 +178,7 @@ class MailboxCategoryViewReducerTest {
         // Given
         val currentState = CategoryViewState.Available.Data(
             categories = CategoryItemUiModelSample.all,
-            spotlightState = CategorySpotlightState.Shown(CategoryItemUiModelSample.social)
+            spotlightState = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
         )
 
         // When

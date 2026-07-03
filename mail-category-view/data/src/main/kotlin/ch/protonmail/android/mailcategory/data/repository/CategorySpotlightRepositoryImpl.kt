@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcategory.data.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcategory.data.local.CategorySpotlightLocalDataSource
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.repository.CategorySpotlightRepository
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +30,9 @@ class CategorySpotlightRepositoryImpl @Inject constructor(
     private val localDataSource: CategorySpotlightLocalDataSource
 ) : CategorySpotlightRepository {
 
-    override fun observeHasBeenSeen(): Flow<Either<PreferencesError, Boolean>> = localDataSource.observeHasBeenSeen()
+    override fun observeHasBeenSeen(type: CategorySpotlightType): Flow<Either<PreferencesError, Boolean>> =
+        localDataSource.observeHasBeenSeen(type)
 
-    override suspend fun markSeen(): Either<PreferencesError, Unit> = localDataSource.markSeen()
+    override suspend fun markSeen(type: CategorySpotlightType): Either<PreferencesError, Unit> =
+        localDataSource.markSeen(type)
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcategory.domain.usecase
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.repository.CategorySpotlightRepository
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import kotlinx.coroutines.flow.Flow
@@ -28,5 +29,6 @@ class ObserveCategorySpotlightSeen @Inject constructor(
     private val categorySpotlightRepository: CategorySpotlightRepository
 ) {
 
-    operator fun invoke(): Flow<Either<PreferencesError, Boolean>> = categorySpotlightRepository.observeHasBeenSeen()
+    operator fun invoke(type: CategorySpotlightType): Flow<Either<PreferencesError, Boolean>> =
+        categorySpotlightRepository.observeHasBeenSeen(type)
 }

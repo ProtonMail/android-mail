@@ -19,12 +19,13 @@
 package ch.protonmail.android.mailcategory.data.local
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import kotlinx.coroutines.flow.Flow
 
 interface CategorySpotlightLocalDataSource {
 
-    fun observeHasBeenSeen(): Flow<Either<PreferencesError, Boolean>>
+    fun observeHasBeenSeen(type: CategorySpotlightType): Flow<Either<PreferencesError, Boolean>>
 
-    suspend fun markSeen(): Either<PreferencesError, Unit>
+    suspend fun markSeen(type: CategorySpotlightType): Either<PreferencesError, Unit>
 }

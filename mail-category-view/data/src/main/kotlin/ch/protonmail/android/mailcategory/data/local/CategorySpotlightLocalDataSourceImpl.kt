@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailcategory.data.local
 
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcommon.data.mapper.safeData
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
@@ -31,17 +33,25 @@ class CategorySpotlightLocalDataSourceImpl @Inject constructor(
     private val dataStoreProvider: CategorySpotlightDataStoreProvider
 ) : CategorySpotlightLocalDataSource {
 
-    private val seenPrefKey = booleanPreferencesKey(CategorySpotlightDataStoreProvider.CATEGORY_SPOTLIGHT_SEEN_KEY)
-
-    override fun observeHasBeenSeen(): Flow<Either<PreferencesError, Boolean>> =
-        dataStoreProvider.categorySpotlightDataStore.safeData.map { prefsEither ->
+    override fun observeHasBeenSeen(type: CategorySpotlightType): Flow<Either<PreferencesError, Boolean>> {
+        val seenPrefKey = seenPrefKeyFor(type)
+        return dataStoreProvider.categorySpotlightDataStore.safeData.map { prefsEither ->
             prefsEither.map { prefs -> prefs[seenPrefKey] ?: DEFAULT_VALUE }
         }
+    }
 
-    override suspend fun markSeen(): Either<PreferencesError, Unit> =
+    override suspend fun markSeen(type: CategorySpotlightType): Either<PreferencesError, Unit> =
         dataStoreProvider.categorySpotlightDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[seenPrefKey] = true
+            mutablePreferences[seenPrefKeyFor(type)] = true
         }.map { }
+
+    private fun seenPrefKeyFor(type: CategorySpotlightType): Preferences.Key<Boolean> = when (type) {
+        CategorySpotlightType.UnseenCategory ->
+            booleanPreferencesKey(CategorySpotlightDataStoreProvider.CATEGORY_UNSEEN_SPOTLIGHT_SEEN_KEY)
+
+        CategorySpotlightType.Personalise ->
+            booleanPreferencesKey(CategorySpotlightDataStoreProvider.CATEGORY_PERSONALISE_SPOTLIGHT_SEEN_KEY)
+    }
 }
 
 private const val DEFAULT_VALUE = false

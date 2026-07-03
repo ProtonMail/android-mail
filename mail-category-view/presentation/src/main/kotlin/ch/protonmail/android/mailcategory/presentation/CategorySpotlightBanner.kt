@@ -49,17 +49,41 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyMediumWeak
 import ch.protonmail.android.design.compose.theme.titleSmallNorm
-import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
+import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.protonTwoLayerShadow
 
 @Composable
 fun CategorySpotlightBanner(
-    category: CategoryItemUiModel,
+    state: CategorySpotlightState.Shown,
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
+
+    val iconRes: Int
+    val title: String
+    val showUnseenBadge: Boolean
+    when (state) {
+        is CategorySpotlightState.Shown.UnseenCategory -> {
+            iconRes = state.category.iconRes
+            title = stringResource(
+                id = R.string.category_spotlight_unseen_title,
+                stringResource(id = state.category.titleRes)
+            )
+            showUnseenBadge = true
+        }
+
+        CategorySpotlightState.Shown.Personalise -> {
+            iconRes = R.drawable.ic_proton_folder_arrow_in
+            title = stringResource(id = R.string.category_spotlight_personalise_title)
+            showUnseenBadge = false
+        }
+    }
+    val description = when (state) {
+        is CategorySpotlightState.Shown.UnseenCategory -> stringResource(R.string.category_spotlight_unseen_description)
+        CategorySpotlightState.Shown.Personalise -> stringResource(R.string.category_spotlight_personalise_description)
+    }
 
     Row(
         modifier = modifier
@@ -81,7 +105,7 @@ fun CategorySpotlightBanner(
             ),
         verticalAlignment = Alignment.Top
     ) {
-        SpotlightIllustration(iconRes = category.iconRes)
+        SpotlightIllustration(iconRes = iconRes, showUnseenBadge = showUnseenBadge)
 
         Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Standard))
 
@@ -90,14 +114,11 @@ fun CategorySpotlightBanner(
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Tiny)
         ) {
             Text(
-                text = stringResource(
-                    id = R.string.category_spotlight_unseen_title,
-                    stringResource(id = category.titleRes)
-                ),
+                text = title,
                 style = ProtonTheme.typography.titleSmallNorm
             )
             Text(
-                text = stringResource(id = R.string.category_spotlight_unseen_description),
+                text = description,
                 style = ProtonTheme.typography.bodyMediumWeak
             )
         }
@@ -117,7 +138,11 @@ fun CategorySpotlightBanner(
 }
 
 @Composable
-private fun SpotlightIllustration(iconRes: Int, modifier: Modifier = Modifier) {
+private fun SpotlightIllustration(
+    iconRes: Int,
+    showUnseenBadge: Boolean,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .size(IllustrationSize)
@@ -128,7 +153,7 @@ private fun SpotlightIllustration(iconRes: Int, modifier: Modifier = Modifier) {
         CategoryIcon(
             iconRes = iconRes,
             tint = ProtonTheme.colors.iconNorm,
-            showUnseenBadge = true
+            showUnseenBadge = showUnseenBadge
         )
     }
 }
@@ -140,10 +165,23 @@ private val CloseButtonSize = 20.dp
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-private fun CategorySpotlightBannerPreview() {
+private fun UnseenSpotlightBannerPreview() {
     ProtonTheme {
         CategorySpotlightBanner(
-            category = CategoryItemUiModelSample.social,
+            state = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social),
+            onClose = {},
+            modifier = Modifier.padding(ProtonDimens.Spacing.Large)
+        )
+    }
+}
+
+@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun PersonaliseSpotlightBannerPreview() {
+    ProtonTheme {
+        CategorySpotlightBanner(
+            state = CategorySpotlightState.Shown.Personalise,
             onClose = {},
             modifier = Modifier.padding(ProtonDimens.Spacing.Large)
         )

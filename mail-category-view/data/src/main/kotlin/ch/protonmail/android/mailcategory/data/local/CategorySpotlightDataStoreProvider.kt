@@ -35,6 +35,7 @@ class CategorySpotlightDataStoreProvider @Inject constructor(
 
     internal companion object {
 
-        const val CATEGORY_SPOTLIGHT_SEEN_KEY = "CategoryUnseenSpotlightSeen"
+        const val CATEGORY_UNSEEN_SPOTLIGHT_SEEN_KEY = "CategoryUnseenSpotlightSeen"
+        const val CATEGORY_PERSONALISE_SPOTLIGHT_SEEN_KEY = "CategoryPersonaliseSpotlightSeen"
     }
 }

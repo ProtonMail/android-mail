@@ -25,5 +25,12 @@ sealed interface CategorySpotlightState {
 
     data object Hidden : CategorySpotlightState
 
-    data class Shown(val category: CategoryItemUiModel) : CategorySpotlightState
+    sealed interface Shown : CategorySpotlightState {
+
+        // Unseen-dot onboarding banner, tied to a specific category with unread messages.
+        data class UnseenCategory(val category: CategoryItemUiModel) : Shown
+
+        // Static "Personalise your categories" onboarding banner.
+        data object Personalise : Shown
+    }
 }

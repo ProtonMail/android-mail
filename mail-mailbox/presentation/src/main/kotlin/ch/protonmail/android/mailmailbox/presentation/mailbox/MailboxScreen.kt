@@ -600,7 +600,7 @@ fun MailboxScreen(
                     if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
                 }
                 CategorySpotlightBanner(
-                    category = categorySpotlightState.category,
+                    state = categorySpotlightState,
                     onClose = actions.onDismissCategorySpotlight,
                     modifier = Modifier
                         .align(Alignment.TopCenter)

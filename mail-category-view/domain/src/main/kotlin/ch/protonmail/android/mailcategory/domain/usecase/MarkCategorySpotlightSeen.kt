@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcategory.domain.usecase
 
 import arrow.core.Either
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.repository.CategorySpotlightRepository
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import javax.inject.Inject
@@ -27,5 +28,6 @@ class MarkCategorySpotlightSeen @Inject constructor(
     private val categorySpotlightRepository: CategorySpotlightRepository
 ) {
 
-    suspend operator fun invoke(): Either<PreferencesError, Unit> = categorySpotlightRepository.markSeen()
+    suspend operator fun invoke(type: CategorySpotlightType): Either<PreferencesError, Unit> =
+        categorySpotlightRepository.markSeen(type)
 }
