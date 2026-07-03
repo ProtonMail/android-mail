@@ -142,7 +142,6 @@ class HumanVerificationViewModel @Inject constructor(
     private fun onResourceLoadingError(message: String?, error: WebResponseError?): Flow<HumanVerificationViewState> =
         flow {
             recordHumanVerificationViewLoadingResult(status = error.toHumanVerificationViewLoadingStatus())
-            emit(HumanVerificationViewState.GenericError(message))
         }
 
     private fun onFailure(message: String?): Flow<HumanVerificationViewState> = flow {
