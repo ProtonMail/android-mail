@@ -4502,6 +4502,22 @@ internal class MailboxViewModelTest {
         }
     }
 
+    @Test
+    fun `when the view mode changes, the category scroll is reset`() = runTest {
+        // Given
+        every { observeViewModeChanged(any()) } returns flowOf(Unit, Unit)
+
+        // When
+        mailboxViewModel.state.test {
+            awaitItem()
+            advanceUntilIdle()
+
+            // Then
+            verify { mailboxReducer.newStateFrom(any(), MailboxEvent.ViewModeChanged) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     private fun returnExpectedStateForBottomBarEvent(
         intermediateState: MailboxState? = null,
         expectedState: MailboxState

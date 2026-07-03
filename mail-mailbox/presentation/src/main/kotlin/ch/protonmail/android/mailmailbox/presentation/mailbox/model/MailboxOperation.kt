@@ -315,6 +315,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data object PrimaryAccountChanged : MailboxEvent, AffectingCategoryView
 
+    data object ViewModeChanged : MailboxEvent, AffectingCategoryView
+
     data class LoadingBarStateUpdated(val state: LoadingBarUiState) : MailboxEvent, AffectingMailboxList
 
     data class PaginatorInvalidated(val event: PageInvalidationEvent) : MailboxEvent, AffectingMailboxList

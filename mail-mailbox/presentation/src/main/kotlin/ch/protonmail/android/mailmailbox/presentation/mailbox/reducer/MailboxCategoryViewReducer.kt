@@ -42,7 +42,11 @@ class MailboxCategoryViewReducer @Inject constructor(
                 when {
                     newState is CategoryViewState.Available.Data &&
                         currentState is CategoryViewState.Available.Data ->
-                        newState.copy(spotlightState = currentState.spotlightState)
+                        // Carry over a pending scroll reset (e.g. from a view-mode change)
+                        newState.copy(
+                            spotlightState = currentState.spotlightState,
+                            resetScrollEffect = currentState.resetScrollEffect
+                        )
 
                     // Categories just (re)appeared after returning to Inbox from another
                     // location: scroll the category bar back to the start.
@@ -69,7 +73,8 @@ class MailboxCategoryViewReducer @Inject constructor(
                 }
             }
 
-            MailboxEvent.PrimaryAccountChanged -> {
+            MailboxEvent.PrimaryAccountChanged,
+            MailboxEvent.ViewModeChanged -> {
                 when (currentState) {
                     is CategoryViewState.Available.Data -> {
                         currentState.copy(resetScrollEffect = Effect.of(Unit))

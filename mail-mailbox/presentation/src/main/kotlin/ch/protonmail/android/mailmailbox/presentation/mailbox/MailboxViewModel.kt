@@ -394,6 +394,14 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
+        primaryUserId
+            .flatMapLatest { observeViewModeChanged(it) }
+            .drop(1)
+            .onEach {
+                emitNewStateFrom(MailboxEvent.ViewModeChanged)
+            }
+            .launchIn(viewModelScope)
+
         observePrimaryAccountAvatarItem().onEach { item ->
             emitNewStateFrom(MailboxEvent.PrimaryAccountAvatarChanged(item))
         }.launchIn(viewModelScope)

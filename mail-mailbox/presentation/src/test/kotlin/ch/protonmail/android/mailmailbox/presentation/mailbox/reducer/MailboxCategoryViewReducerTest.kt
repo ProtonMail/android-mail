@@ -98,6 +98,43 @@ class MailboxCategoryViewReducerTest {
     }
 
     @Test
+    fun `should reset scroll position when the view mode changes`() {
+        // Given
+        val currentState = CategoryViewState.Available.Data(
+            categories = CategoryItemUiModelSample.all,
+            resetScrollEffect = Effect.empty()
+        )
+
+        // When
+        val actual = reducer.newStateFrom(currentState, MailboxEvent.ViewModeChanged)
+
+        // Then
+        assertEquals(Unit, (actual as CategoryViewState.Available.Data).resetScrollEffect.consume())
+    }
+
+    @Test
+    fun `should keep a pending scroll reset when the category status changes`() {
+        // Given
+        val currentState = CategoryViewState.Available.Data(
+            categories = CategoryItemUiModelSample.all,
+            resetScrollEffect = Effect.of(Unit)
+        )
+        val categoryViewStatus = mockk<CategoryViewStatus>()
+        every {
+            categoryViewUiModelMapper.toUiModel(categoryViewStatus)
+        } returns CategoryViewState.Available.Data(categories = CategoryItemUiModelSample.all)
+
+        // When
+        val actual = reducer.newStateFrom(
+            currentState,
+            MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
+        )
+
+        // Then
+        assertEquals(Unit, (actual as CategoryViewState.Available.Data).resetScrollEffect.consume())
+    }
+
+    @Test
     fun `should preserve current spotlight when category view status changes`() {
         // Given
         val spotlight = CategorySpotlightState.Shown(CategoryItemUiModelSample.social)
