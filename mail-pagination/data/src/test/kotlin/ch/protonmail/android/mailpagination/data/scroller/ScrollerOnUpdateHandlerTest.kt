@@ -119,9 +119,10 @@ class ScrollerOnUpdateHandlerTest {
         runTest {
             // Given
             val pending = pendingAppendRequest()
-            val update = ScrollerUpdate.ReplaceFrom(
+            val update = ScrollerUpdate.ReplaceRange(
                 scrollerId = DefaultScrollerId,
-                idx = 0,
+                fromIdx = 0,
+                toIdx = 1,
                 items = listOf(ScrollerItem("42"))
             )
             val snapshot = listOf(ScrollerItem("7"))
@@ -134,6 +135,26 @@ class ScrollerOnUpdateHandlerTest {
             assertEquals(emptyList<ScrollerItem>(), completed.getOrNull())
             verify(exactly = 0) { invalidate.invoke() }
         }
+
+    @Test
+    fun `when ReplaceFrom zero arrives during Append, completes empty and invalidates`() = runTest {
+        // Given
+        val pending = pendingAppendRequest()
+        val update = ScrollerUpdate.ReplaceFrom(
+            scrollerId = DefaultScrollerId,
+            idx = 0,
+            items = listOf(ScrollerItem("42"))
+        )
+        val snapshot = listOf(ScrollerItem("7"))
+
+        // When
+        handler().handleUpdate(pending, update, snapshot, {})
+        val completed = pending.response.await()
+
+        // Then
+        assertEquals(emptyList<ScrollerItem>(), completed.getOrNull())
+        verify(exactly = 1) { invalidate.invoke() }
+    }
 
     @Test
     fun `when immediate ReplaceFrom zero is received for Refresh request, completes with items from response`() =

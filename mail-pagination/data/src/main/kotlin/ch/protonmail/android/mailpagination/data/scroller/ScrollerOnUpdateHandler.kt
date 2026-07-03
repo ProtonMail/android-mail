@@ -52,6 +52,9 @@ class ScrollerOnUpdateHandler<T>(
                     pending.followUpResponse != null && update.isAppendNoneFollowUpResponseEquivalent() ->
                         processAppendNoneFollowUpResponse(pending, update)
 
+                    update.isFullListInvalidation() ->
+                        processReplaceFromDuringAppend(pending)
+
                     else ->
                         processIndirectResponseAsFallback(pending, update, cacheSnapshot)
                 }
@@ -146,6 +149,16 @@ class ScrollerOnUpdateHandler<T>(
         }
     }
 
+    // A full-list ReplaceFrom(0) can arrive while a next-page Append is still in flight, e.g. when the
+    // active category changes right after a quick switch. It is an invalidation, not the Append's response:
+    // consuming it as one drops the replaced list and leaves the previous category's items on screen.
+    // Complete the Append empty and re-query so Paging reloads the new list.
+    private fun processReplaceFromDuringAppend(pending: PendingRequest<T>) {
+        Timber.d("$tag: Received ReplaceFrom during Append request, processing as invalidation")
+        pending.response.complete(emptyList<T>().right())
+        invalidate()
+    }
+
     // Append request got a follow-up response after initial None
     // The only expected follow-up is ReplaceBefore(0)
     // Any other response is treated as indirect and we return current snapshot
@@ -221,5 +234,6 @@ fun <T> ScrollerUpdate<T>.isImmediateAppendResponseEquivalent(): Boolean = this 
 fun <T> ScrollerUpdate<T>.isAppendNoneFollowUpResponseEquivalent(): Boolean =
     this is ScrollerUpdate.ReplaceBefore && this.idx == 0
 
-fun <T> ScrollerUpdate<T>.isImmediateRefreshResponseEquivalent(): Boolean =
-    this is ScrollerUpdate.ReplaceFrom && this.idx == 0
+fun <T> ScrollerUpdate<T>.isImmediateRefreshResponseEquivalent(): Boolean = isFullListInvalidation()
+
+fun <T> ScrollerUpdate<T>.isFullListInvalidation(): Boolean = this is ScrollerUpdate.ReplaceFrom && this.idx == 0
