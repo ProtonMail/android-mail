@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Søg</string>
+  <string name="mail_settings_content_search_description">Søg gennem alt meddelelsesindhold direkte på din enhed.</string>
+  <string name="mail_settings_content_search_learn_more">Få mere at vide..</string>
+  <string name="mail_settings_content_search_toggle_title">Indholdssøgning</string>
+  <string name="mail_settings_content_search_mobile_data_title">Tillad download via mobildata</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
+  <string name="mail_settings_content_search_syncing_status">Synkroniserer... %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
+  <string name="mail_settings_content_search_clear_data_button">Ryd lokale søgedata</string>
+  <string name="mail_settings_content_search_clear_data_description">Ved at rydde lokale søgedata deaktiveres søgning i meddelelsesindhold. Du kan aktivere det igen når som helst.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">En anden konto er i gang med at indeksere indhold. Vent på at den er færdig før søgning aktiveres her.</string>
+</resources>

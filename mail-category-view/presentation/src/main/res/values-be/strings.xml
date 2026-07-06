@@ -24,4 +24,7 @@
   <string name="category_title_forums">Форумы</string>
   <string name="category_title_newsletters">Рассылкі</string>
   <string name="category_title_transactions">Трансакцыі</string>
+  <string name="category_spotlight_unseen_title">Новыя паведамленні ў %1$s</string>
+  <string name="category_spotlight_unseen_description">Цяпер на значку катэгорыі будзе з\'яўляцца кропка, калі ў ёй ёсць непрачытаныя паведамленні.</string>
+  <string name="category_spotlight_close_content_description">Закрыць</string>
 </resources>

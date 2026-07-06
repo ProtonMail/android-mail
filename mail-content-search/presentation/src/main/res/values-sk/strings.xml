@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Hľadať</string>
+  <string name="mail_settings_content_search_description">Vyhľadávajte vo všetkých správach priamo vo vašom zariadení.</string>
+  <string name="mail_settings_content_search_learn_more">Zistiť viac..</string>
+  <string name="mail_settings_content_search_toggle_title">Prehľadávanie obsahu</string>
+  <string name="mail_settings_content_search_mobile_data_title">Povoliť sťahovanie cez mobilné dáta</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Ak dôjde k prerušeniu pripojenia cez Wi-Fi, sťahovanie pokračuje cez mobilné dáta.</string>
+  <string name="mail_settings_content_search_syncing_status">Synchronizácia… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Príprava…</string>
+  <string name="mail_settings_content_search_clear_data_button">Vymazať údaje z lokálneho vyhľadávania</string>
+  <string name="mail_settings_content_search_clear_data_description">Vymazaním údajov z lokálneho vyhľadávania sa deaktivuje vyhľadávanie v obsahu správ. Túto funkciu môžete kedykoľvek opäť zapnúť.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Prebieha indexovanie obsahu pre iný účet. Pred aktivovaním vyhľadávania tu počkajte, kým sa proces dokončí.</string>
+</resources>

@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Fehler beim Abrufen der Ordner.</string>
   <string name="bottom_sheet_label_as_error_apply">Fehler beim Anwenden der Kategorien.</string>
   <string name="bottom_sheet_move_to_action_error">Fehler beim Verschieben.</string>
+  <string name="bottom_sheet_move_to_category_no_change">An den ausgewählten E-Mails werden keine Änderungen vorgenommen.</string>
 </resources>

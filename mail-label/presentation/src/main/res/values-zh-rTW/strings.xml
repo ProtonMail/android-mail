@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">無法擷取資料夾。</string>
   <string name="bottom_sheet_label_as_error_apply">套用標籤失敗。</string>
   <string name="bottom_sheet_move_to_action_error">移動操作失敗。</string>
+  <string name="bottom_sheet_move_to_category_no_change">選取的郵件將不會有任何變更</string>
 </resources>

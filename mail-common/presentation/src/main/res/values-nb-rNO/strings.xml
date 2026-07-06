@@ -65,7 +65,7 @@
   <string name="action_unstar_content_description">Fjern stjernemerking</string>
   <string name="action_label_content_description">Merk som</string>
   <string name="action_move_content_description">Flytt til</string>
-  <string name="action_trash_content_description">Papirkurv</string>
+  <string name="action_trash_content_description">Slett</string>
   <string name="action_delete_content_description">Slett</string>
   <string name="action_archive_content_description">Arkiver</string>
   <string name="action_spam_content_description">Søppelpost</string>

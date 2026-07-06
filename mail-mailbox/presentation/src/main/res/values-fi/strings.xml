@@ -85,6 +85,14 @@
     <item quantity="one">Viesti siirrettiin kohteeseen %s</item>
     <item quantity="other">Viestit siirretty kohteeseen %s</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="one">Keskustelu siirrettiin %s\nVastaavat viestit luokitellaan tästä lähtien tällä tavalla.</item>
+    <item quantity="other">Keskustelut siirrettiin %s\nVastaavat viestit luokitellaan tästä lähtien tällä tavalla.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="one">Viestit siirrettiin %s\nVastaavat viestit luokitellaan tästä lähtien tällä tavalla.</item>
+    <item quantity="other">Viestit siirrettiin %s\nVastaavat viestit luokitellaan tästä lähtien tällä tavalla.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">Tyhjennä roskakori</string>
   <string name="mailbox_action_button_clear_spam">Tyhjennä roskaposti</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Päivitä poistaaksesi automaattisesti yli 30 päivää roskakorissa tai roskapostikansiossa olleet sähköpostit</string>

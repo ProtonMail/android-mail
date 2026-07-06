@@ -24,4 +24,7 @@
   <string name="category_title_forums">Φόρουμ</string>
   <string name="category_title_newsletters">Ενημερωτικά δελτία</string>
   <string name="category_title_transactions">Συναλλαγές</string>
+  <string name="category_spotlight_unseen_title">Νέα μηνύματα στο %1$s</string>
+  <string name="category_spotlight_unseen_description">Μια κουκκίδα εμφανίζεται πλέον σε ένα εικονίδιο κατηγορίας όταν υπάρχουν μη αναγνωσμένα μηνύματα.</string>
+  <string name="category_spotlight_close_content_description">Κλείσιμο</string>
 </resources>

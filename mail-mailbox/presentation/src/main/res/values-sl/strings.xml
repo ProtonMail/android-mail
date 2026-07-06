@@ -103,6 +103,18 @@
     <item quantity="few">Sporočila so premaknjena v %s</item>
     <item quantity="other">Sporočila so premaknjena v %s</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="one">Pogovori so bili premaknjeni v %s\n. Podobna sporočila bodo odslej razvrščena v to kategorijo.</item>
+    <item quantity="two">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
+    <item quantity="few">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
+    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="one">Sporočilo je bilo premaknjeno v %s\n. Podobna sporočila bodo odslej razvrščena v to kategorijo.</item>
+    <item quantity="two">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
+    <item quantity="few">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
+    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">Izprazni smetnjak</string>
   <string name="mailbox_action_button_clear_spam">Izprazni neželeno pošto</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Nadgradite paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni</string>

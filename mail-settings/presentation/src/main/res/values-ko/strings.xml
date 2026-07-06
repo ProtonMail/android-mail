@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">개인정보 보호 및 보안 설정</string>
   <string name="mail_settings_preferences">환경 설정</string>
   <string name="mail_settings_app">앱 사용자화</string>
+  <string name="mail_settings_content_search">Content Search</string>
   <string name="mail_settings_mailbox">메일함 설정</string>
   <string name="mail_settings_folders_labels">폴더 및 라벨</string>
   <string name="mail_settings_spam_and_custom_filters">스팸 및 필터</string>

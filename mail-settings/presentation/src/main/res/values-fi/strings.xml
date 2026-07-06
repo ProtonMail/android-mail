@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Yksityisyys- ja suojausasetukset</string>
   <string name="mail_settings_preferences">Asetukset</string>
   <string name="mail_settings_app">Sovelluksen mukauttaminen</string>
+  <string name="mail_settings_content_search">Sisältöhaku</string>
   <string name="mail_settings_mailbox">Postilaatikon asetukset</string>
   <string name="mail_settings_folders_labels">Kansiot ja tunnisteet</string>
   <string name="mail_settings_spam_and_custom_filters">Roskaposti ja suodattimet</string>

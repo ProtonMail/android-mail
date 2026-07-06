@@ -24,4 +24,7 @@
   <string name="category_title_forums">Fora</string>
   <string name="category_title_newsletters">Nyhedsbreve</string>
   <string name="category_title_transactions">Transaktioner</string>
+  <string name="category_spotlight_unseen_title">Ny besked i %1$s</string>
+  <string name="category_spotlight_unseen_description">Der vises nu en prik på ikonet for kategorien når den har ulæste beskeder.</string>
+  <string name="category_spotlight_close_content_description">Luk</string>
 </resources>

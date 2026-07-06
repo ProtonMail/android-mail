@@ -17,11 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Haupt</string>
+  <string name="category_title_primary">Wichtig</string>
   <string name="category_title_social">Soziale Medien</string>
   <string name="category_title_promotions">Werbung</string>
   <string name="category_title_updates">Aktualisierungen</string>
   <string name="category_title_forums">Foren</string>
   <string name="category_title_newsletters">Newsletter</string>
   <string name="category_title_transactions">Transaktionen</string>
+  <string name="category_spotlight_unseen_title">Neue Nachrichten in %1$s</string>
+  <string name="category_spotlight_unseen_description">Auf dem Symbol einer Kategorie wird nun ein Punkt angezeigt, wenn ungelesene Nachrichten vorliegen.</string>
+  <string name="category_spotlight_close_content_description">Schließen</string>
 </resources>

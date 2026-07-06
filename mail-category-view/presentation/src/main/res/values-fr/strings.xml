@@ -24,4 +24,7 @@
   <string name="category_title_forums">Forums</string>
   <string name="category_title_newsletters">Newsletters</string>
   <string name="category_title_transactions">Transactions</string>
+  <string name="category_spotlight_unseen_title">Nouveaux messages dans %1$s</string>
+  <string name="category_spotlight_unseen_description">Un point apparaît désormais sur l\'icône d\'une catégorie lorsqu\'elle contient des messages non lus.</string>
+  <string name="category_spotlight_close_content_description">Fermer</string>
 </resources>

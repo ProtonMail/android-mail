@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="account_switcher_manage_account">Zarządzaj kontem</string>
-  <string name="account_switcher_talkback_title">Manage account: current account</string>
+  <string name="account_switcher_talkback_title">Zarządzaj kontem: obecne konto</string>
   <string name="account_switcher_sign_out">Wyloguj</string>
   <string name="account_switcher_sign_in">Zaloguj się</string>
   <string name="account_switcher_remove">Usuń</string>
@@ -33,5 +33,5 @@
   <string name="manage_accounts_on_device">Zarządzaj kontami na tym urządzeniu</string>
   <string name="add_another_account">Dodaj inne konto</string>
   <string name="account_switcher_no_initials">Brak</string>
-  <string name="manage_accounts_options">Options</string>
+  <string name="manage_accounts_options">Opcje</string>
 </resources>

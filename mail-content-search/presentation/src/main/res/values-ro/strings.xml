@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Căutare</string>
+  <string name="mail_settings_content_search_description">Căutați în tot conținutul mesajelor direct pe dispozitiv.</string>
+  <string name="mail_settings_content_search_learn_more">Detalii…</string>
+  <string name="mail_settings_content_search_toggle_title">Căutare în conținut</string>
+  <string name="mail_settings_content_search_mobile_data_title">Permitere descărcare prin date mobile</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Descărcarea continuă prin datele mobile dacă se pierde conexiunea Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Se sincronizează… %1$.2f[%1$.2f]</string>
+  <string name="mail_settings_content_search_preparing_status">Se pregătește…</string>
+  <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>
+  <string name="mail_settings_content_search_clear_data_description">Ștergerea datelor de căutare locală va dezactiva căutarea în conținutul mesajelor. O puteți reactiva oricând.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Indexarea conținutului rulează pentru alt cont. Așteptați să se termine înainte de a activa căutarea aici.</string>
+</resources>

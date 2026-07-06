@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Map ni bilo mogoče pridobiti.</string>
   <string name="bottom_sheet_label_as_error_apply">Oznak ni bilo mogoče uporabiti.</string>
   <string name="bottom_sheet_move_to_action_error">Premikanje ni uspelo.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Spremembe ne bo na izbranih e-poštnih sporočilih.</string>
 </resources>

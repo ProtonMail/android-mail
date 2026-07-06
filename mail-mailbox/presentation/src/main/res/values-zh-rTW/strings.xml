@@ -76,6 +76,12 @@
   <plurals name="mailbox_action_move_message">
     <item quantity="other">Messages moved to %s</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">清空垃圾桶</string>
   <string name="mailbox_action_button_clear_spam">清空垃圾郵件</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">升級以自動刪除在垃圾桶或垃圾郵件中存放超過 30 天的郵件</string>

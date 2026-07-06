@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Suchen</string>
+  <string name="mail_settings_content_search_description">Durchsuche den gesamten Nachrichteninhalt direkt auf deinem Gerät.</string>
+  <string name="mail_settings_content_search_learn_more">Mehr erfahren …</string>
+  <string name="mail_settings_content_search_toggle_title">Inhaltssuche</string>
+  <string name="mail_settings_content_search_mobile_data_title">Herunterladen über Mobilfunk zulassen</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Das Herunterladen wird über Mobilfunk fortgesetzt, wenn die WLAN-Verbindung unterbrochen wird.</string>
+  <string name="mail_settings_content_search_syncing_status">%1$.2f%% wurde synchronisiert …</string>
+  <string name="mail_settings_content_search_preparing_status">Wird vorbereitet …</string>
+  <string name="mail_settings_content_search_clear_data_button">Lokale Suchdaten löschen</string>
+  <string name="mail_settings_content_search_clear_data_description">Durch das Löschen der lokalen Suchdaten wird die Suche nach Nachrichteninhalten deaktiviert. Sie können diese Funktion jederzeit wieder aktivieren.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Die Indizierung der Inhalte für ein anderes Konto wird derzeit durchgeführt. Bitte warten Sie, bis dieser Vorgang abgeschlossen ist, bevor Sie die Suche hier aktivieren.</string>
+</resources>

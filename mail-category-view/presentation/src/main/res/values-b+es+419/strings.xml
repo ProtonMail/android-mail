@@ -24,4 +24,7 @@
   <string name="category_title_forums">Foros</string>
   <string name="category_title_newsletters">Boletines</string>
   <string name="category_title_transactions">Transacciones</string>
+  <string name="category_spotlight_unseen_title">Mensajes nuevos en %1$s</string>
+  <string name="category_spotlight_unseen_description">Ahora aparece un punto en el ícono de la categoría cuando hay mensajes sin leer.</string>
+  <string name="category_spotlight_close_content_description">Cerrar</string>
 </resources>

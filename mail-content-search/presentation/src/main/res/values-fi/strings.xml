@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Etsi</string>
+  <string name="mail_settings_content_search_description">Hae kaikkien viestien sisällöstä suoraan laitteellasi.</string>
+  <string name="mail_settings_content_search_learn_more">Lue lisää..</string>
+  <string name="mail_settings_content_search_toggle_title">Sisältöhaku</string>
+  <string name="mail_settings_content_search_mobile_data_title">Salli lataus mobiiliverkon kautta</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Lataus jatkuu mobiilidatan kautta, jos Wi-Fi-yhteys katkeaa.</string>
+  <string name="mail_settings_content_search_syncing_status">Synkronoidaan… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
+  <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
+  <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Toisen tilin sisällön indeksointi on käynnissä. Odota, että se päättyy, ennen kuin otat haun käyttöön täällä.</string>
+</resources>

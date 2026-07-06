@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Ara</string>
+  <string name="mail_settings_content_search_description">Aygtınız üzerindeki tüm iletilerin içeriklerini arayın.</string>
+  <string name="mail_settings_content_search_learn_more">Ayrıntılı bilgi alın…</string>
+  <string name="mail_settings_content_search_toggle_title">İçerik arama</string>
+  <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indirmeye izin ver</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı kesilirse indirme işlemi mobil veri ile sürdürülür.</string>
+  <string name="mail_settings_content_search_syncing_status">Eşitleniyor… %1$.2f[%1$.2f]</string>
+  <string name="mail_settings_content_search_preparing_status">Hazırlanıyor…</string>
+  <string name="mail_settings_content_search_clear_data_button">Yerel arama verilerini sil</string>
+  <string name="mail_settings_content_search_clear_data_description">Yerel arama verilerini silmek ileti içeriği aramasını kapatır. Bu özelliği istediğiniz zaman yeniden açabilirsiniz.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Başka bir hesap için içerik dizini oluşturma işlemi sürüyor. Buradan arama özelliğini açmadan önce işlemin tamamlanmasını bekleyin.</string>
+</resources>

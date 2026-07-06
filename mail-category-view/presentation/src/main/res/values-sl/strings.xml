@@ -24,4 +24,7 @@
   <string name="category_title_forums">Forumi</string>
   <string name="category_title_newsletters">Glasila</string>
   <string name="category_title_transactions">Transakcije</string>
+  <string name="category_spotlight_unseen_title">Novo sporočila v %1$s</string>
+  <string name="category_spotlight_unseen_description">Na ikoni kategorije se zdaj prikaže oznaka, ki vsebuje neprebrana sporočila.</string>
+  <string name="category_spotlight_close_content_description">Zapri</string>
 </resources>

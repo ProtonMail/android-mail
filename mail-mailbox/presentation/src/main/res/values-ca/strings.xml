@@ -85,6 +85,14 @@
     <item quantity="one">El missatge s\'ha mogut a %s.</item>
     <item quantity="other">Els missatges s\'han mogut a %s</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="one">La conversa s\'ha mogut a %s\nAra els missatges similars es classificaran d\'aquesta manera.</item>
+    <item quantity="other">Les converses s\'han mogut a %s\nAra els missatges similars es classificaran d\'aquesta manera.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="one">El missatge s\'ha mogut a %s\nAra els missatges similars es classificaran d\'aquesta manera.</item>
+    <item quantity="other">Els missatges s\'han mogut a %s\nAra els missatges similars es classificaran d\'aquesta manera.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">Buida la paperera</string>
   <string name="mailbox_action_button_clear_spam">Buida el correu brossa</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Milloreu el pla per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies</string>

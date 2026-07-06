@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Einstellungen für Datenschutz und Sicherheit</string>
   <string name="mail_settings_preferences">Einstellungen</string>
   <string name="mail_settings_app">App-Anpassungen</string>
+  <string name="mail_settings_content_search">Inhaltssuche</string>
   <string name="mail_settings_mailbox">Postfach-Einstellungen</string>
   <string name="mail_settings_folders_labels">Ordner und Kategorien</string>
   <string name="mail_settings_spam_and_custom_filters">Spam und Filter</string>

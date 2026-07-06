@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Caricamento delle cartelle non riuscito</string>
   <string name="bottom_sheet_label_as_error_apply">Etichettatura dell\'elemento non riuscita</string>
   <string name="bottom_sheet_move_to_action_error">Spostamento dell\'elemento non riuscito</string>
+  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
 </resources>

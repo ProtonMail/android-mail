@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Αναζήτηση</string>
+  <string name="mail_settings_content_search_description">Αναζήτηση σε όλο το περιεχόμενο μηνυμάτων απευθείας στη συσκευή σας.</string>
+  <string name="mail_settings_content_search_learn_more">Μάθετε περισσότερα..</string>
+  <string name="mail_settings_content_search_toggle_title">Αναζήτηση περιεχομένου</string>
+  <string name="mail_settings_content_search_mobile_data_title">Να επιτρέπεται λήψη μέσω δεδομένων κινητής τηλεφωνίας</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Η λήψη συνεχίζεται μέσω δεδομένων κινητής τηλεφωνίας εάν χαθεί το Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Συγχρονισμός… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Προετοιμασία…</string>
+  <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
+  <string name="mail_settings_content_search_clear_data_description">Η διαγραφή των δεδομένων τοπικής αναζήτησης θα απενεργοποιήσει την αναζήτηση περιεχομένου μηνύματος. Μπορείτε να την ενεργοποιήσετε ξανά ανά πάσα στιγμή.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Η δημιουργία ευρετηρίου περιεχομένου εκτελείται για έναν άλλο λογαριασμό. Περιμένετε να ολοκληρωθεί πριν ενεργοποιήσετε την αναζήτηση εδώ.</string>
+</resources>

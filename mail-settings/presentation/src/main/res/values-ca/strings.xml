@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Preferències de privacitat i seguretat</string>
   <string name="mail_settings_preferences">Preferències</string>
   <string name="mail_settings_app">Personalitzacions de l\'aplicació</string>
+  <string name="mail_settings_content_search">Cerca de contingut</string>
   <string name="mail_settings_mailbox">Preferències de la bústia de correu</string>
   <string name="mail_settings_folders_labels">Carpetes i etiquetes</string>
   <string name="mail_settings_spam_and_custom_filters">Correu brossa i filtres</string>

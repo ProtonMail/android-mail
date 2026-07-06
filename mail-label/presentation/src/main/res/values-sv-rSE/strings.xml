@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Misslyckades att hämta mappar.</string>
   <string name="bottom_sheet_label_as_error_apply">Misslyckades att tillämpa etiketter.</string>
   <string name="bottom_sheet_move_to_action_error">Flyttåtgärd misslyckades.</string>
+  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
 </resources>

@@ -24,4 +24,7 @@
   <string name="category_title_forums">Forum</string>
   <string name="category_title_newsletters">Nyhetsbrev</string>
   <string name="category_title_transactions">Transaksjoner</string>
+  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
+  <string name="category_spotlight_unseen_description">A dot now appears on a category icon when it has unread messages.</string>
+  <string name="category_spotlight_close_content_description">Close</string>
 </resources>

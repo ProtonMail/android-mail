@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Innstillinger for personvern og sikkerhet</string>
   <string name="mail_settings_preferences">Preferanser</string>
   <string name="mail_settings_app">Tilpasninger av app</string>
+  <string name="mail_settings_content_search">Content Search</string>
   <string name="mail_settings_mailbox">Preferanser for postboks</string>
   <string name="mail_settings_folders_labels">Mapper og etiketter</string>
   <string name="mail_settings_spam_and_custom_filters">Søppelpost og filtre</string>
@@ -95,7 +96,7 @@
   <string name="mail_settings_swipe_action_read_title">Ulest</string>
   <string name="mail_settings_swipe_action_spam_title">Søppelpost</string>
   <string name="mail_settings_swipe_action_star_title">Stjernemerk</string>
-  <string name="mail_settings_swipe_action_trash_title">Papirkurv</string>
+  <string name="mail_settings_swipe_action_trash_title">Slett</string>
   <string name="mail_settings_swipe_action_label_as_title">Merk som...</string>
   <string name="mail_settings_swipe_action_move_to_title">Flytt til…</string>
   <string name="mail_settings_swipe_action_none_description">Ingen</string>

@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Αποτυχία ανάκτησης φακέλων.</string>
   <string name="bottom_sheet_label_as_error_apply">Αποτυχία εφαρμογής ετικετών.</string>
   <string name="bottom_sheet_move_to_action_error">Η λειτουργία μετακίνησης απέτυχε.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Δεν θα γίνει καμία αλλαγή στις επιλεγμένες ηλεκτρονικές διευθύνσεις</string>
 </resources>

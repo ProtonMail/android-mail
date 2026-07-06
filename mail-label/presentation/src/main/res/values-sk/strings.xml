@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Nepodarilo sa načítať priečinky.</string>
   <string name="bottom_sheet_label_as_error_apply">Nepodarilo sa použiť štítky.</string>
   <string name="bottom_sheet_move_to_action_error">Presunutie zlyhalo.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Vybrané emaily nebudú nijak zmenené.</string>
 </resources>

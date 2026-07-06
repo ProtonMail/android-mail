@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">搜索</string>
+  <string name="mail_settings_content_search_description">直接在设备上搜索所有邮件内容</string>
+  <string name="mail_settings_content_search_learn_more">了解详情...</string>
+  <string name="mail_settings_content_search_toggle_title">内容搜索</string>
+  <string name="mail_settings_content_search_mobile_data_title">允许通过移动数据下载</string>
+  <string name="mail_settings_content_search_mobile_data_hint">如果 Wi-Fi 信号丢失，将通过移动数据继续下载</string>
+  <string name="mail_settings_content_search_syncing_status">正在同步… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">正在准备…</string>
+  <string name="mail_settings_content_search_clear_data_button">清除本地搜索数据</string>
+  <string name="mail_settings_content_search_clear_data_description">清除本地搜索数据将禁用邮件内容搜索，您可以随时重新开启。</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">内容索引正在为另一个账户运行，请等待完成后在此处启用搜索。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="content_search_notification_channel_name">Content search indexing</string>
+  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for content search.</string>
+  <string name="content_search_notification_title">Förbereder innehållssökning</string>
+  <string name="content_search_notification_progress">%1$.2f %% slutfört</string>
+  <string name="content_search_notification_cancel">Avbryt</string>
+</resources>

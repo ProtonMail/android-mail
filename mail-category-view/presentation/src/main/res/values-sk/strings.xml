@@ -24,4 +24,7 @@
   <string name="category_title_forums">Diskusné fóra</string>
   <string name="category_title_newsletters">Newslettery</string>
   <string name="category_title_transactions">Transakcie</string>
+  <string name="category_spotlight_unseen_title">Nové správy v %1$s</string>
+  <string name="category_spotlight_unseen_description">Ak má ikona kategórie neprečítané správy, zobrazí sa pri nej bodka.</string>
+  <string name="category_spotlight_close_content_description">Zavrieť</string>
 </resources>

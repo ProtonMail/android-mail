@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Iskanje</string>
+  <string name="mail_settings_content_search_description">Iščite po vsej vsebini sporočil neposredno v svoji napravi.</string>
+  <string name="mail_settings_content_search_learn_more">Več o tem..</string>
+  <string name="mail_settings_content_search_toggle_title">Iskanje po vsebini</string>
+  <string name="mail_settings_content_search_mobile_data_title">Dovoli prenos prek mobilnih podatkov.</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Če povezava Wi-Fi ni več na voljo, se bo prenos nadaljeval prek mobilnih podatkov.</string>
+  <string name="mail_settings_content_search_syncing_status">Sihronizacija … %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Priprava ...</string>
+  <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>
+  <string name="mail_settings_content_search_clear_data_description">Če počistite lokalne podatke iskanja, bo iskanje po vsebini sporočil onemogočeno. Kadar koli ga lahko znova omogočite.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Indeksiranje vsebine trenutno poteka za drug račun. Počakajte, da se konča, preden tukaj omogočite iskanje.</string>
+</resources>

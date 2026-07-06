@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Nastavenia súkromia a zabezpečenia</string>
   <string name="mail_settings_preferences">Preferencie</string>
   <string name="mail_settings_app">Prispôsobenie aplikácie</string>
+  <string name="mail_settings_content_search">Prehľadávanie obsahu</string>
   <string name="mail_settings_mailbox">Predvoľby poštovej schránky</string>
   <string name="mail_settings_folders_labels">Priečinky a štítky</string>
   <string name="mail_settings_spam_and_custom_filters">Spam a filtre</string>

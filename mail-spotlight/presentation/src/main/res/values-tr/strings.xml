@@ -29,22 +29,23 @@
   <string name="spotlight_feature_item_headers_html_description">Şüpheli iletileri inceleyerek gerçekliklerini doğrulayın ve gizli izleme ögelerini ortaya çıkarın.</string>
   <string name="spotlight_screen_got_it">Anladım</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">Proton Mail \nyeniliklerini öğrenin</string>
+  <string name="spotlight_screen_category_view_title">Proton Mail yenilikleri</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Kullanıcı arayüzü iyileştirmeleri</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Akıcı kaydırma, yenilenmiş yerleşim ve diğer şeyler.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Okunmamış süzgeci</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Daha kolay erişim için yeni görünüm ve konum.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Daha kolay erişilmesi için sayfanın altına taşındı.</string>
   <string name="spotlight_screen_category_view_categories_title">E-posta kategorileri</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Gelen e-postaların otomatik olarak sıralanması.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Yeniliklere göz atın.\nKalanını atla.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Okunmamış iletilere odaklanın. Ya da odaklanmayın. Tüm e-postaları ya da yalnızca okunmamış olanları görmek için tek dokunuş yeter.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">E-postaların size yardımcı olacak şekilde sınıflandırılmasın sağlayın.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Okunmamış iletilere ulaşmak artık daha kolay</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Okunmamış iletiler süzgeci artık gelen kutunuzun altında bulunuyor. Böylece tüm e-postalara ve okunmamış iletilere daha kolay erişebilir ve bunlar arasında geçiş yapabilirsiniz.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Yeni ve okunmamış e-postaları\nizleyin</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Artık \"Okunmamış\" süzgeci daha belirgin ve parmaklarınızın ucunda. Böylece okunmamış e-postaları hızla gözden geçirip gerekli işlemleri yapabilirsiniz.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Daha düzenli gelen kutunuzla tanışın</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Yeni e-posta kategorileri ile yalnızca önemli ve acil iletiler birincil gelen kutunuzda görünür. Diğer tüm iletiler kategorilere ayrılır.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Gelen kutunuz\nkendiliğinden düzenlenir</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Gelen kutunuz artık Birincil, Sosyal, Tanıtımlar ve diğer kategorilere ayrılacak. Böylece gereksiz e-postaları ayıklamak ve önemli e-postalara odaklanmak daha kolay olacak.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Gizlilik odaklı tasarlanmıştır. Ayrıntılı bilgi alın</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Merhaba kategoriler.\nGüle güle dikkat dağınıklığı.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Duyurular, güncellemeler ve acil olmayan e-postalar yüzünden dikkatinizin dağılmasını önleyin. Yeni e-posta kategorileri ile yalnızca önemli iletiler birincil gelen kutunuza düşer.</string>
   <string name="spotlight_screen_category_view_button_continue">İlerle</string>
   <string name="spotlight_screen_category_view_button_try">Kategorileri deneyin</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Kategoriler kullanılmasın</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Bu özellik olmadan kullanmayı sürdür</string>
 </resources>

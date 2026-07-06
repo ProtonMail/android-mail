@@ -24,4 +24,7 @@
   <string name="category_title_forums">论坛</string>
   <string name="category_title_newsletters">新闻通讯</string>
   <string name="category_title_transactions">交易</string>
+  <string name="category_spotlight_unseen_title">%1$s 中有新邮件</string>
+  <string name="category_spotlight_unseen_description">当分类图标中有未读邮件时，图标上会出现小圆点。</string>
+  <string name="category_spotlight_close_content_description">关闭</string>
 </resources>

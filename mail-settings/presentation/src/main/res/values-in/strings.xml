@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Pengaturan privasi dan keamanan</string>
   <string name="mail_settings_preferences">Preferensi</string>
   <string name="mail_settings_app">Penyesuaian aplikasi</string>
+  <string name="mail_settings_content_search">Content Search</string>
   <string name="mail_settings_mailbox">Preferensi kotak surat</string>
   <string name="mail_settings_folders_labels">Folder dan label</string>
   <string name="mail_settings_spam_and_custom_filters">Spam dan filter</string>

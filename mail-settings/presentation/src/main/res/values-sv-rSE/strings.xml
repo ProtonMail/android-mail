@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Inställningar för integritet och säkerhet</string>
   <string name="mail_settings_preferences">Preferenser</string>
   <string name="mail_settings_app">Appanpassningar</string>
+  <string name="mail_settings_content_search">Innehållssökning</string>
   <string name="mail_settings_mailbox">Inställningar för brevlåda</string>
   <string name="mail_settings_folders_labels">Mappar och etiketter</string>
   <string name="mail_settings_spam_and_custom_filters">Skräppost och filter</string>
@@ -87,7 +88,7 @@
   <string name="mail_settings_privacy_error_loading">Fel vid laddning av inställningar</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Svepåtgärder</string>
-  <string name="mail_settings_swipe_actions_subtitle">Ställ in svepgester för att komma åt de mest använda åtgärderna.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Ställ in svep gester för att komma åt de mest använda åtgärderna.</string>
   <string name="mail_settings_swipe_right_name">Vänster till höger</string>
   <string name="mail_settings_swipe_left_name">Höger till vänster</string>
   <string name="mail_settings_swipe_action_none_title">Inte inställt</string>

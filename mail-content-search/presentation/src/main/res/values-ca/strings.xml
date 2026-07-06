@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Cerca</string>
+  <string name="mail_settings_content_search_description">Cerqueu en tot el contingut dels missatges directament al vostre dispositiu.</string>
+  <string name="mail_settings_content_search_learn_more">Més informació..</string>
+  <string name="mail_settings_content_search_toggle_title">Cerca de contingut</string>
+  <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
+  <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">S\'està sincronitzant… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
+  <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
+  <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">S\'està executant la indexació de contingut per a un altre compte. Espereu que acabi abans d\'habilitar la cerca aquí.</string>
+</resources>

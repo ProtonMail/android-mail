@@ -85,6 +85,14 @@
     <item quantity="one">Nachricht nach „%s“ verschoben</item>
     <item quantity="other">Nachrichten nach „%s“ verschoben</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="one">Unterhaltung wurde nach %s verschoben.\nÄhnliche Nachrichten werden nun auf diese Weise kategorisiert.</item>
+    <item quantity="other">Unterhaltungen wurden nach %s verschoben.\nÄhnliche Nachrichten werden nun auf diese Weise kategorisiert.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="one">Nachricht wurde nach %s verschoben.\nÄhnliche Nachrichten werden nun auf diese Weise kategorisiert.</item>
+    <item quantity="other">Nachrichten wurdeen nach %s verschoben.\nÄhnliche Nachrichten werden nun auf diese Weise kategorisiert.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">Papierkorb leeren</string>
   <string name="mailbox_action_button_clear_spam">Spam-Ordner leeren</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Upgrade zum automatischen Löschen von Nachrichten, die sich seit mehr als 30 Tagen im Papierkorb oder im Spam befinden.</string>

@@ -24,4 +24,7 @@
   <string name="category_title_forums">Foorumit</string>
   <string name="category_title_newsletters">Uutiskirjeet</string>
   <string name="category_title_transactions">Tapahtumat</string>
+  <string name="category_spotlight_unseen_title">Uudet viestit %1$s:ssa</string>
+  <string name="category_spotlight_unseen_description">Kategorian kuvakkeeseen ilmestyy nyt piste, kun siinä on lukemattomia viestejä.</string>
+  <string name="category_spotlight_close_content_description">Sulje</string>
 </resources>

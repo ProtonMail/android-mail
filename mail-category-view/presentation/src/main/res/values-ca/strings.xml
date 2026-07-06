@@ -24,4 +24,7 @@
   <string name="category_title_forums">Fòrums</string>
   <string name="category_title_newsletters">Butlletins</string>
   <string name="category_title_transactions">Transaccions</string>
+  <string name="category_spotlight_unseen_title">Nous missatges a %1$s</string>
+  <string name="category_spotlight_unseen_description">Ara es mostra un punt a la icona d\'una categoria quan té missatges per llegir.</string>
+  <string name="category_spotlight_close_content_description">Tancar-ho</string>
 </resources>

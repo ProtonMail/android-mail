@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Пошук</string>
+  <string name="mail_settings_content_search_description">Шукайце па ўсім змесціве паведамленняў непасрэдна на вашай прыладзе.</string>
+  <string name="mail_settings_content_search_learn_more">Даведацца больш..</string>
+  <string name="mail_settings_content_search_toggle_title">Пошук па змесціве</string>
+  <string name="mail_settings_content_search_mobile_data_title">Дазволіць спампоўванне праз праз мабільныя даныя</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
+  <string name="mail_settings_content_search_syncing_status">Сінхранізацыя… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
+  <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
+  <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Індэксацыя змесціва выконваецца для іншага ўліковага запісу. Дачакайцеся яго завяршэння перад тым, як уключыць пошук тут.</string>
+</resources>

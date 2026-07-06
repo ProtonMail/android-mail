@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Rechercher</string>
+  <string name="mail_settings_content_search_description">Effectuez une recherche dans le contenu de tous vos messages directement sur votre appareil.</string>
+  <string name="mail_settings_content_search_learn_more">En savoir plus..</string>
+  <string name="mail_settings_content_search_toggle_title">Recherche dans le contenu</string>
+  <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Synchronisation en cours… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
+  <string name="mail_settings_content_search_clear_data_button">Effacer les données locales de recherche</string>
+  <string name="mail_settings_content_search_clear_data_description">La suppression des données locales de recherche désactivera la recherche dans le contenu des messages. Vous pouvez réactiver cette fonctionnalité à tout moment.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">L\'indexation du contenu est en cours pour un autre compte. Veuillez patienter jusqu\'à ce qu\'elle soit terminée avant d\'activer la recherche ici.</string>
+</resources>

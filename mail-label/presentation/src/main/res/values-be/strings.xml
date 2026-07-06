@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Не ўдалося атрымаць папкі.</string>
   <string name="bottom_sheet_label_as_error_apply">Не ўдалося прымяніць меткі.</string>
   <string name="bottom_sheet_move_to_action_error">Збой аперацыі пераносу.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Змены не будуць унесены ў выбраныя лісты.</string>
 </resources>

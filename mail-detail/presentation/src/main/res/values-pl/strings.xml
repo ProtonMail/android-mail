@@ -180,7 +180,7 @@
   <string name="error_unsubscribe_newsletter">Nie udało się anulować subskrypcji</string>
   <string name="detail_error_loading_single_message">Ładowanie wiadomość nie powiodło się</string>
   <!-- Raw message data screen -->
-  <string name="raw_message_data_headers_title">Message headers</string>
+  <string name="raw_message_data_headers_title">Nagłówki wiadomości</string>
   <string name="raw_message_data_html_title">Message HTML</string>
   <string name="raw_message_data_close_button_content_description">Zamknij</string>
   <string name="raw_message_data_more_button_content_description">Więcej</string>
@@ -188,6 +188,6 @@
   <string name="raw_message_data_copy_action">Kopiuj</string>
   <string name="raw_message_data_learn_more_action">Dowiedz się więcej</string>
   <string name="raw_message_data_error">Wystąpił błąd podczas ładowania danych</string>
-  <string name="raw_message_data_successful_download">Download completed</string>
-  <string name="raw_message_data_failed_download">Download failed</string>
+  <string name="raw_message_data_successful_download">Pobieranie zostało zakończone</string>
+  <string name="raw_message_data_failed_download">Pobieranie nie powiodło się</string>
 </resources>

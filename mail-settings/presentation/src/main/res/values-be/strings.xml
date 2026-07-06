@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Налады прыватнасці і бяспекі</string>
   <string name="mail_settings_preferences">Параметры</string>
   <string name="mail_settings_app">Налады праграмы</string>
+  <string name="mail_settings_content_search">Пошук па змесціве</string>
   <string name="mail_settings_mailbox">Параметры паштовай скрыні</string>
   <string name="mail_settings_folders_labels">Папкі і меткі</string>
   <string name="mail_settings_spam_and_custom_filters">Спам і фільтры</string>

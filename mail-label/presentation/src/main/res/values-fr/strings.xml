@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Boite de réception</string>
+  <string name="label_title_inbox">Boîte de réception</string>
   <string name="label_title_drafts">Brouillons</string>
   <string name="label_title_sent">Envoyés</string>
   <string name="label_title_starred">Favoris</string>
@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Les dossiers n\'ont pas pu être récupérés.</string>
   <string name="bottom_sheet_label_as_error_apply">L\'application des labels n\'a pas abouti.</string>
   <string name="bottom_sheet_move_to_action_error">Le déplacement n\'a pas abouti.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Aucun changement ne sera apporté aux messages sélectionnés.</string>
 </resources>

@@ -40,7 +40,7 @@
   <string name="composer_error_store_draft_generic">Nie można zapisać szkicu. Wystąpił błąd</string>
   <string name="composer_error_create_draft">Coś poszło nie tak. Nie można utworzyć nowego szkicu.</string>
   <string name="composer_error_loading_draft">Zawartość szkicu nie jest obecnie dostępna. Edycja nie jest możliwa.</string>
-  <string name="composer_action_clear_formatting">Clear formatting</string>
+  <string name="composer_action_clear_formatting">Wyczyść formatowanie</string>
   <string name="composer_add_attachments_content_description">Dodaj załączniki</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importuj z…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Z biblioteki zdjęć</string>
@@ -137,10 +137,10 @@
   <string name="composer_error_send_draft_generic">An unexpected error happened sending this message. Please retry.</string>
   <string name="composer_error_send_draft_invalid_sender">Disabled or invalid email address. Check that the address is valid and active.</string>
   <string name="composer_error_send_draft_external_password_decrypt_error">Failed to decrypt external encryption password</string>
-  <string name="composer_error_send_draft_already_sent">Message was already sent</string>
+  <string name="composer_error_send_draft_already_sent">Wiadomość została już wysłana</string>
   <string name="composer_error_send_draft_message_does_not_exist">Draft not found. You may have already sent or discarded it.</string>
   <string name="composer_error_send_draft_message_too_large">Message is too large to send. Please reduce the size of your attachments.</string>
-  <string name="composer_error_send_draft_attachments_error">Attachment is missing. Please upload again.</string>
+  <string name="composer_error_send_draft_attachments_error">Brak załącznika. Prześlij go ponownie.</string>
   <string name="composer_error_send_draft_attachments_conversion_error">Unable to convert attachment. Please upload again.</string>
   <string name="composer_error_send_draft_invalid_recipient">Some recipients are invalid, please check recipients and try again.</string>
   <string name="composer_error_send_draft_schedule_send_error">Scheduled send time is in the past. Go to Drafts to send or reschedule it.</string>

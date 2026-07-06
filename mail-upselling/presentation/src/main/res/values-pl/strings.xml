@@ -68,12 +68,12 @@
   <string name="upselling_comparison_table_desktop_app">Dostęp do aplikacji desktopowej</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Nieograniczona liczba folderów i etykiet</string>
   <string name="upselling_comparison_table_priority_support">Priorytetowe wsparcie klienta</string>
-  <string name="upselling_comparison_table_aliases">Hide My Email aliases</string>
-  <string name="upselling_comparison_table_folders_labels">Folders and labels</string>
+  <string name="upselling_comparison_table_aliases">Aliasy hide-my-email</string>
+  <string name="upselling_comparison_table_folders_labels">Foldery i etykiety</string>
   <string name="upselling_comparison_table_premium_products">Premium VPN, password manager and cloud storage</string>
-  <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Monitoring dark web</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Choose subscription</string>
+  <string name="upselling_select_plan">Wybierz subskrypcję</string>
   <string name="upselling_select_plan_year">12 miesięcy</string>
   <string name="upselling_select_plan_month">1 miesiąc</string>
   <!-- Onboarding upsell -->

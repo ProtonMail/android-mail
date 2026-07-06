@@ -39,4 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Erro ao obter as pastas</string>
   <string name="bottom_sheet_label_as_error_apply">Erro ao aplicar as etiquetas.</string>
   <string name="bottom_sheet_move_to_action_error">Erro ao mover.</string>
+  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
 </resources>

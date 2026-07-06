@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">プライバシーとセキュリティの設定</string>
   <string name="mail_settings_preferences">設定</string>
   <string name="mail_settings_app">アプリのカスタマイズ</string>
+  <string name="mail_settings_content_search">Content Search</string>
   <string name="mail_settings_mailbox">メールボックスの設定</string>
   <string name="mail_settings_folders_labels">フォルダとラベル</string>
   <string name="mail_settings_spam_and_custom_filters">迷惑メールフィルター</string>

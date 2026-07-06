@@ -27,6 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Privatlivs- og sikkerhedsindstillinger</string>
   <string name="mail_settings_preferences">Præferencer</string>
   <string name="mail_settings_app">App-tilpasninger</string>
+  <string name="mail_settings_content_search">Indholdssøgning</string>
   <string name="mail_settings_mailbox">Postkasse-præferencer</string>
   <string name="mail_settings_folders_labels">Mapper og etiketter</string>
   <string name="mail_settings_spam_and_custom_filters">Spam og filtre</string>

@@ -69,7 +69,7 @@
   <string name="action_delete_content_description">Supprimer</string>
   <string name="action_archive_content_description">Archiver</string>
   <string name="action_spam_content_description">Indésirables/spam</string>
-  <string name="action_inbox_content_description">Boite de réception</string>
+  <string name="action_inbox_content_description">Boîte de réception</string>
   <string name="action_pin_content_description">Épingler</string>
   <string name="action_unpin_content_description">Désépingler</string>
   <string name="action_view_in_light_mode_content_description">Voir le message en mode clair</string>

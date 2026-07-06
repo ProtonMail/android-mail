@@ -85,6 +85,14 @@
     <item quantity="one">Besked flyttet til %s</item>
     <item quantity="other">Beskeder flyttet til %s</item>
   </plurals>
+  <plurals name="mailbox_action_move_conversation_to_category">
+    <item quantity="one">Samtale flyttet til %s\nLignende beskeder vil fremover kategories på denne måde.</item>
+    <item quantity="other">Samtaler flyttet til %s\nLignende beskeder vil fremover kategories på denne måde.</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message_to_category">
+    <item quantity="one">Besked flyttet til %s\nLignende beskeder vil fremover kategories på denne måde.</item>
+    <item quantity="other">Beskeder flyttet til %s\nLignende beskeder vil fremover kategories på denne måde.</item>
+  </plurals>
   <string name="mailbox_action_button_clear_trash">Tøm papirkurven</string>
   <string name="mailbox_action_button_clear_spam">Slet spam</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Opgradér for automatisk at slette beskeder, der har været i papirkurv eller spam i over 30 dage</string>

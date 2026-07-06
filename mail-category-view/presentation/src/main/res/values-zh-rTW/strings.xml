@@ -24,4 +24,7 @@
   <string name="category_title_forums">論壇</string>
   <string name="category_title_newsletters">電子報</string>
   <string name="category_title_transactions">交易記錄</string>
+  <string name="category_spotlight_unseen_title">新訊息在 %1$s</string>
+  <string name="category_spotlight_unseen_description">A dot now appears on a category icon when it has unread messages.</string>
+  <string name="category_spotlight_close_content_description">關閉</string>
 </resources>
