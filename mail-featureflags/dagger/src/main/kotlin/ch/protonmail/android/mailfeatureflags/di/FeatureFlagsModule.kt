@@ -20,8 +20,10 @@ package ch.protonmail.android.mailfeatureflags.di
 
 import ch.protonmail.android.mailfeatureflags.data.local.DataStoreFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.data.local.UnleashFeatureFlagValueProvider
+import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagOverrideManager
+import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureFlagFactory
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
@@ -200,7 +202,11 @@ object FeatureFlagsModule {
     @Provides
     @IntoSet
     @Singleton
-    fun provideUnleashProvider(impl: UnleashFeatureFlagValueProvider): FeatureFlagValueProvider = impl
+    fun provideRustProvider(impl: RustFeatureFlagValueProvider): FeatureFlagValueProvider = impl
+
+    @Provides
+    @Singleton
+    fun provideFeatureFlagOverrideManager(impl: RustFeatureFlagOverrideManager): FeatureFlagOverrideManager = impl
 
     @Provides
     @IntoSet
