@@ -189,6 +189,11 @@ android {
         getByName("androidTest").res.srcDirs("src/uiTest/res")
         getByName("dev").res.srcDirs("src/dev/res")
         getByName("alpha").res.srcDirs("src/alpha/res")
+        // Debug menu is available on dev and alpha builds, but not on prod.
+        getByName("dev").kotlin.srcDirs("src/debugMenu/kotlin")
+        getByName("alpha").kotlin.srcDirs("src/debugMenu/kotlin")
+        getByName("dev").res.srcDirs("src/debugMenu/res")
+        getByName("alpha").res.srcDirs("src/debugMenu/res")
     }
 }
 

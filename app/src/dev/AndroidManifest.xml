@@ -23,5 +23,16 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="MissingApplicationIcon">
         <activity android:name="ch.protonmail.android.test.utils.HiltComponentActivity" />
+
+        <activity
+            android:name=".debug.DebugActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="PM ET debug">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
