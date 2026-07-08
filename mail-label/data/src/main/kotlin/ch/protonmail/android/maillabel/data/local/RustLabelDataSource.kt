@@ -29,6 +29,7 @@ import ch.protonmail.android.maillabel.data.MailLabelRustCoroutineScope
 import ch.protonmail.android.maillabel.data.usecase.CreateMailbox
 import ch.protonmail.android.maillabel.data.usecase.CreateRustSidebar
 import ch.protonmail.android.maillabel.data.usecase.RustGetAllMailLabelId
+import ch.protonmail.android.maillabel.data.usecase.RustMarkLabelSeen
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.data.wrapper.SidebarWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -59,6 +60,7 @@ class RustLabelDataSource @Inject constructor(
     private val rustGetAllMailLabelId: RustGetAllMailLabelId,
     private val rustGetSystemLabelById: RustGetSystemLabelById,
     private val rustGetLabelIdBySystemLabel: RustGetLabelIdBySystemLabel,
+    private val rustMarkLabelSeen: RustMarkLabelSeen,
     @MailLabelRustCoroutineScope private val coroutineScope: CoroutineScope,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : LabelDataSource {
@@ -270,4 +272,15 @@ class RustLabelDataSource @Inject constructor(
             sidebar.destroy()
         }
     }
+
+    override suspend fun markLabelSeen(userId: UserId, localId: LocalCategoryLabelId): Either<DataError, Unit> =
+        withContext(ioDispatcher) {
+            val session = userSessionRepository.getUserSession(userId)
+            if (session == null) {
+                Timber.e("rust-label: trying to mark label seen with a null session.")
+                return@withContext DataError.Local.NoUserSession.left()
+            }
+            Timber.d("rust-label: marking label seen for userId=$userId, localId=$localId")
+            rustMarkLabelSeen(session, localId)
+        }
 }

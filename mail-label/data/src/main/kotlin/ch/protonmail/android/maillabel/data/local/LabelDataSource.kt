@@ -55,4 +55,6 @@ interface LabelDataSource {
         labelId: LocalLabelId,
         isExpanded: Boolean
     ): Either<DataError, Unit>
+
+    suspend fun markLabelSeen(userId: UserId, localId: LocalCategoryLabelId): Either<DataError, Unit>
 }

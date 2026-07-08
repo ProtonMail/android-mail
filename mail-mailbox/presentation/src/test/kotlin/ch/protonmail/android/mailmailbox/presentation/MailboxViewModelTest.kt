@@ -73,6 +73,8 @@ import ch.protonmail.android.maillabel.domain.model.ViewMode.NoConversationGroup
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetSelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.MarkCategoryLabelSeen
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedLabelWithCategory
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedMailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveSelectedLabelWithCategory
@@ -217,6 +219,16 @@ internal class MailboxViewModelTest {
         every { this@mockk.invoke() } returns MutableStateFlow(
             MailLabelIdWithCategory(initialLocationMailLabelId)
         )
+    }
+
+    private val observeLoadedLabelWithCategory = mockk<ObserveLoadedLabelWithCategory> {
+        every { this@mockk.invoke() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId)
+        )
+    }
+
+    private val markCategoryLabelSeen = mockk<MarkCategoryLabelSeen> {
+        coEvery { this@mockk.invoke(any(), any()) } returns Unit.right()
     }
 
     private val observeLoadedMailLabelId = mockk<ObserveLoadedMailLabelId> {
@@ -411,6 +423,8 @@ internal class MailboxViewModelTest {
             observeMailLabels = observeMailLabels,
             observeSwipeActionsPreference = observeSwipeActionsPreference,
             observeSelectedLabelWithCategory = observeSelectedLabelWithCategory,
+            observeLoadedLabelWithCategory = observeLoadedLabelWithCategory,
+            markCategoryLabelSeen = markCategoryLabelSeen,
             observeLoadedMailLabelId = observeLoadedMailLabelId,
             getSelectedMailLabelId = getSelectedMailLabelId,
             selectMailLabelId = selectMailLabelId,
@@ -3795,6 +3809,73 @@ internal class MailboxViewModelTest {
                 any(),
                 MailboxEvent.AttachmentErrorEvent
             )
+        }
+    }
+
+    @Test
+    fun `given a non-default category is loaded with data, then that category is marked seen`() = runTest {
+        // Given
+        val activeCategory = CategoryLabelTestData.social.copy(isActive = true)
+        val labelWithCategory = MailLabelIdWithCategory(initialLocationMailLabelId, activeCategory.id)
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { observeLoadedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(CategoryViewStatus.Available(categories = listOf(activeCategory)))
+            advanceUntilIdle()
+
+            // Then
+            coVerify { markCategoryLabelSeen(userId, activeCategory.id) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given the default Primary category is loaded, then Primary is marked seen`() = runTest {
+        // Given
+        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When the category view reports Primary as the active category
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
+            )
+            advanceUntilIdle()
+
+            // Then
+            coVerify { markCategoryLabelSeen(userId, CategoryLabelTestData.primary.id) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given the requested category is not loaded yet, then the category is not marked seen`() = runTest {
+        // Given
+        val activeCategory = CategoryLabelTestData.social.copy(isActive = true)
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId, activeCategory.id)
+        )
+        every { observeLoadedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId)
+        )
+        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            categoryViewStatusFlow.emit(CategoryViewStatus.Available(categories = listOf(activeCategory)))
+            advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 0) { markCategoryLabelSeen(any(), any()) }
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

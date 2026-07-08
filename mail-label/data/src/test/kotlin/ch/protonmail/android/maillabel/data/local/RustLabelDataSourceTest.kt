@@ -19,13 +19,17 @@
 package ch.protonmail.android.maillabel.data.local
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.usecase.CreateMailbox
 import ch.protonmail.android.maillabel.data.usecase.CreateRustSidebar
 import ch.protonmail.android.maillabel.data.usecase.RustGetAllMailLabelId
+import ch.protonmail.android.maillabel.data.usecase.RustMarkLabelSeen
 import ch.protonmail.android.maillabel.data.wrapper.SidebarWrapper
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -65,6 +69,7 @@ internal class RustLabelDataSourceTest {
     private val rustGetAllMailLabelId = mockk<RustGetAllMailLabelId>()
     private val rustGetSystemLabelById = mockk<RustGetSystemLabelById>()
     private val rustGetLabelIdBySystemLabel = mockk<RustGetLabelIdBySystemLabel>()
+    private val rustMarkLabelSeen = mockk<RustMarkLabelSeen>()
 
     private val labelDataSource = RustLabelDataSource(
         userSessionRepository,
@@ -73,6 +78,7 @@ internal class RustLabelDataSourceTest {
         rustGetAllMailLabelId,
         rustGetSystemLabelById,
         rustGetLabelIdBySystemLabel,
+        rustMarkLabelSeen,
         testCoroutineScope,
         mainDispatcherRule.testDispatcher
     )
@@ -400,5 +406,37 @@ internal class RustLabelDataSourceTest {
         assertEquals(expectedLocalLabelId.right(), actual)
         coVerify(exactly = 1) { rustGetLabelIdBySystemLabel(userSessionMock, systemLabel) }
         confirmVerified(rustGetLabelIdBySystemLabel)
+    }
+
+    @Test
+    fun `mark label seen fails and logs error when session is invalid`() = runTest(mainDispatcherRule.testDispatcher) {
+        // Given
+        val userId = UserIdTestData.userId
+        val localId = LocalCategoryLabelId(15u)
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
+
+        // When
+        val actual = labelDataSource.markLabelSeen(userId, localId)
+
+        // Then
+        assertEquals(DataError.Local.NoUserSession.left(), actual)
+        loggingTestRule.assertErrorLogged("rust-label: trying to mark label seen with a null session.")
+    }
+
+    @Test
+    fun `mark label seen delegates to the rust wrapper with the user session and local id`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val userSessionMock = mockk<MailUserSessionWrapper>()
+        val localId = LocalCategoryLabelId(15u)
+        coEvery { userSessionRepository.getUserSession(userId) } returns userSessionMock
+        coEvery { rustMarkLabelSeen(userSessionMock, localId) } returns Unit.right()
+
+        // When
+        val actual = labelDataSource.markLabelSeen(userId, localId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify(exactly = 1) { rustMarkLabelSeen(userSessionMock, localId) }
     }
 }

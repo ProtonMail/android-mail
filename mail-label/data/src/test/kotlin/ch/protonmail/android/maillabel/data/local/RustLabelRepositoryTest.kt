@@ -19,17 +19,22 @@
 package ch.protonmail.android.maillabel.data.local
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLabelType
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toSystemLabel
 import ch.protonmail.android.maillabel.data.repository.RustLabelRepository
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelWithSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.label.rust.LocalLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -95,6 +100,23 @@ class RustLabelRepositoryTest {
             assertEquals(listOf(expectedLabel), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `mark category label seen delegates to data source with the local category id`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val categoryLabelId = CategoryLabelId("15")
+        coEvery {
+            labelDataSource.markLabelSeen(userId, categoryLabelId.toLocalCategoryLabelId())
+        } returns Unit.right()
+
+        // When
+        val result = labelRepository.markCategoryLabelSeen(userId, categoryLabelId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify { labelDataSource.markLabelSeen(userId, categoryLabelId.toLocalCategoryLabelId()) }
     }
 
     @Test

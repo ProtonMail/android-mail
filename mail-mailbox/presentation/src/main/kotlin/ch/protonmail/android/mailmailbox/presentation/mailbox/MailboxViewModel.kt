@@ -67,6 +67,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEn
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -76,6 +77,8 @@ import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetSelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.MarkCategoryLabelSeen
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedLabelWithCategory
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLoadedMailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveSelectedLabelWithCategory
@@ -196,6 +199,8 @@ class MailboxViewModel @Inject constructor(
     private val getUserHasValidSession: HasValidUserSession,
     private val observeSwipeActionsPreference: ObserveSwipeActionsPreference,
     private val observeSelectedLabelWithCategory: ObserveSelectedLabelWithCategory,
+    private val observeLoadedLabelWithCategory: ObserveLoadedLabelWithCategory,
+    private val markCategoryLabelSeen: MarkCategoryLabelSeen,
     private val observeLoadedMailLabelId: ObserveLoadedMailLabelId,
     private val getSelectedMailLabelId: GetSelectedMailLabelId,
     private val selectMailLabelId: SelectMailLabelId,
@@ -354,6 +359,14 @@ class MailboxViewModel @Inject constructor(
                 emitNewStateFrom(
                     MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
                 )
+            }
+            .launchIn(viewModelScope)
+
+        observeCategoryToMarkSeen()
+            .onEach { categoryLabelId ->
+                primaryUserId.firstOrNull()?.let { userId ->
+                    markCategoryLabelSeen(userId, categoryLabelId)
+                }
             }
             .launchIn(viewModelScope)
 
@@ -870,26 +883,33 @@ class MailboxViewModel @Inject constructor(
                         val firstPageArrived = CompletableDeferred<Unit>()
                         val pagingJob = launch {
                             var emittedOnce = false
+                            var lastLoadedCategory: CategoryLabelId? = null
+
+                            suspend fun markLocationLoaded(activeCategory: CategoryLabelId?) {
+                                lastLoadedCategory = activeCategory
+                                currentMailLabel?.let { labelLoaded ->
+                                    Timber.d(
+                                        "Setting loaded label id to: ${labelLoaded.id} category: $activeCategory"
+                                    )
+                                    selectMailLabelId.setLocationAsLoaded(
+                                        MailLabelIdWithCategory(labelLoaded.id, activeCategory)
+                                    )
+                                }
+                            }
+
                             mapPagingData(userId, pager)
                                 .onEach { page ->
+                                    val activeCategory =
+                                        observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
                                     if (!emittedOnce) {
                                         emittedOnce = true
                                         firstPageArrived.complete(Unit)
-
-                                        currentMailLabel?.let { labelLoaded ->
-                                            val activeCategory =
-                                                observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
-                                            Timber.d(
-                                                "Setting loaded label id to: ${labelLoaded.id} " +
-                                                    "category: $activeCategory"
-                                            )
-
-                                            selectMailLabelId.setLocationAsLoaded(
-                                                MailLabelIdWithCategory(labelLoaded.id, activeCategory)
-                                            )
-                                        }
-
+                                        markLocationLoaded(activeCategory)
                                         Timber.d("First page arrived for label=${getSelectedMailLabelId()}")
+                                    } else if (activeCategory != lastLoadedCategory) {
+                                        // The category was switched on the same pager and its data
+                                        // just (re)loaded, so update the loaded location accordingly.
+                                        markLocationLoaded(activeCategory)
                                     }
                                     send(page)
                                 }
@@ -1653,6 +1673,22 @@ class MailboxViewModel @Inject constructor(
                     }
             }
     }
+
+    /**
+     * Emits the active category's id as soon as its list has loaded with data. The requested and
+     * loaded categories are used only to gate on "the selection has settled and finished loading";
+     * the id emitted comes from the category view status, so it also covers the default Primary
+     * category (whose selection is tracked as a null category id).
+     */
+    private fun observeCategoryToMarkSeen(): Flow<CategoryLabelId> = combine(
+        observeSelectedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
+        observeLoadedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
+        observeCategoryViewStatusUpdates().map { it.activeCategoryOrNull()?.id }.distinctUntilChanged()
+    ) { requestedCategory, loadedCategory, activeCategoryId ->
+        activeCategoryId.takeIf { requestedCategory == loadedCategory }
+    }
+        .filterNotNull()
+        .distinctUntilChanged()
 
     companion object {
 

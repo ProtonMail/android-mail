@@ -24,9 +24,11 @@ import ch.protonmail.android.maillabel.data.local.LabelDataSource
 import ch.protonmail.android.maillabel.data.mapper.toLabel
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLabelWithSystemLabelId
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalSystemLabel
 import ch.protonmail.android.maillabel.data.mapper.toSystemLabel
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
@@ -114,4 +116,8 @@ class RustLabelRepository @Inject constructor(
             .map { it.toLabelId() }
     }
 
+    override suspend fun markCategoryLabelSeen(
+        userId: UserId,
+        categoryLabelId: CategoryLabelId
+    ): Either<DataError, Unit> = labelDataSource.markLabelSeen(userId, categoryLabelId.toLocalCategoryLabelId())
 }

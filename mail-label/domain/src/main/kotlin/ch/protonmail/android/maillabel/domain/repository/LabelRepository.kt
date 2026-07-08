@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
@@ -85,4 +86,5 @@ interface LabelRepository {
 
     suspend fun resolveLocalIdBySystemLabel(userId: UserId, labelId: SystemLabelId): Either<DataError, LabelId>
 
+    suspend fun markCategoryLabelSeen(userId: UserId, categoryLabelId: CategoryLabelId): Either<DataError, Unit>
 }
