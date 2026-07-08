@@ -25,7 +25,6 @@ package ch.protonmail.android.mailfeatureflags.domain
  */
 object FeatureFlagProviderPriority {
 
-    const val DataStoreProvider = Int.MAX_VALUE // Local overrides always have the top priority.
     const val RustProvider = 0
     const val HardcodedProvider = Int.MIN_VALUE
 }

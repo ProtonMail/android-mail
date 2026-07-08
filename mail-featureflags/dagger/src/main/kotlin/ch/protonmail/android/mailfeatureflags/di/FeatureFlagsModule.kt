@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailfeatureflags.di
 
-import ch.protonmail.android.mailfeatureflags.data.local.DataStoreFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagValueProvider
@@ -193,11 +192,6 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideDefaultProvider(impl: DefaultFeatureFlagValueProvider): FeatureFlagValueProvider = impl
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideDataStoreProvider(impl: DataStoreFeatureFlagValueProvider): FeatureFlagValueProvider = impl
 
     @Provides
     @IntoSet
