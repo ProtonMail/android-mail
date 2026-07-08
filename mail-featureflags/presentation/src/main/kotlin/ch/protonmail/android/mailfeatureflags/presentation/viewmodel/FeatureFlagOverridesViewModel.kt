@@ -20,31 +20,38 @@ package ch.protonmail.android.mailfeatureflags.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailfeatureflags.data.local.DataStoreFeatureFlagValueProvider
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagOverridesState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class FeatureFlagOverridesViewModel @Inject constructor(
     private val definitions: Set<@JvmSuppressWildcards FeatureFlagDefinition>,
-    private val dataStoreProvider: DataStoreFeatureFlagValueProvider,
+    private val overrideManager: FeatureFlagOverrideManager,
+    private val resolver: FeatureFlagResolver,
     private val mapper: FeatureFlagsDefinitionsMapper
 ) : ViewModel() {
 
+    // Rust exposes overrides as a one-shot list (not a Flow), so we re-read on each refresh tick.
+    private val refreshTrigger = MutableStateFlow(0)
+
     val state: StateFlow<FeatureFlagOverridesState> =
-        dataStoreProvider.observeAllOverrides().flatMapLatest { overrides ->
+        refreshTrigger.mapLatest {
+            val overrides = currentOverrides()
             val groupedDefinitions = definitions.groupBy { it.category }
-            val listItems = mapper.toFlattenedListUiModel(groupedDefinitions, overrides)
-            flowOf(FeatureFlagOverridesState.Loaded(listItems))
+            FeatureFlagOverridesState.Loaded(mapper.toFlattenedListUiModel(groupedDefinitions, overrides))
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -53,10 +60,42 @@ class FeatureFlagOverridesViewModel @Inject constructor(
 
     fun toggleKey(key: String) {
         val definition = definitions.firstOrNull { it.key == key } ?: return
-        viewModelScope.launch { dataStoreProvider.toggle(definition, definition.defaultValue) }
+        viewModelScope.launch {
+            overrideManager.setOverride(key, !currentValue(definition))
+            refresh()
+        }
     }
 
     fun resetAll() {
-        viewModelScope.launch { dataStoreProvider.resetAll() }
+        viewModelScope.launch {
+            overrideManager.clearAllOverrides()
+            refresh()
+        }
+    }
+
+    /**
+     * The value currently shown for [definition] in the list: the override when one is set,
+     * otherwise the resolved flag value. Mirrors [FeatureFlagsDefinitionsMapper] so a toggle always
+     * flips away from what the user sees rather than from the hardcoded default.
+     */
+    private suspend fun currentValue(definition: FeatureFlagDefinition): Boolean {
+        val overrides = overrideManager.overriddenFlags()
+        return if (overrides.containsKey(definition.key)) {
+            overrides[definition.key] ?: definition.defaultValue
+        } else {
+            resolver.getFeatureFlag(definition.key, definition.defaultValue)
+        }
+    }
+
+    private suspend fun currentOverrides(): Map<FeatureFlagDefinition, Boolean> {
+        val overriddenByName = overrideManager.overriddenFlags()
+        return definitions.mapNotNull { definition ->
+            if (!overriddenByName.containsKey(definition.key)) return@mapNotNull null
+            definition to (overriddenByName[definition.key] ?: definition.defaultValue)
+        }.toMap()
+    }
+
+    private fun refresh() {
+        refreshTrigger.update { it + 1 }
     }
 }

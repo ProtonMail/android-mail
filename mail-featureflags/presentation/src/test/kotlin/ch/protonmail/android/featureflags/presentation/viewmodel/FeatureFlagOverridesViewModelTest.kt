@@ -19,7 +19,8 @@
 package ch.protonmail.android.featureflags.presentation.viewmodel
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailfeatureflags.data.local.DataStoreFeatureFlagValueProvider
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagCategory
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
@@ -30,13 +31,11 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.featureflags.FeatureFlagDefinitionsTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.AfterTest
@@ -46,7 +45,8 @@ import kotlin.test.assertEquals
 internal class FeatureFlagOverridesViewModelTest {
 
     private val mapper = mockk<FeatureFlagsDefinitionsMapper>()
-    private val dataStoreProvider = mockk<DataStoreFeatureFlagValueProvider>()
+    private val overrideManager = mockk<FeatureFlagOverrideManager>(relaxUnitFun = true)
+    private val resolver = mockk<FeatureFlagResolver>()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -69,7 +69,7 @@ internal class FeatureFlagOverridesViewModelTest {
         val expectedOverrides = mapOf(systemFlag to false)
         val expectedUiModelsList = mockk<ImmutableList<FeatureFlagListItem>>()
 
-        every { dataStoreProvider.observeAllOverrides() } returns flowOf(expectedOverrides)
+        coEvery { overrideManager.overriddenFlags() } returns mapOf(systemFlag.key to false)
         coEvery { mapper.toFlattenedListUiModel(any(), expectedOverrides) } returns expectedUiModelsList
 
         // When + Then
@@ -83,49 +83,65 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        every { dataStoreProvider.observeAllOverrides() } returns flowOf()
+        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
 
         // When
         viewModel(definitions).toggleKey("unknownKey")
 
         // Then
-        coVerify(exactly = 0) { dataStoreProvider.toggle(flag, flag.defaultValue) }
+        coVerify(exactly = 0) { overrideManager.setOverride(any(), any()) }
     }
 
     @Test
-    fun `should call the datastore when toggling a key`() {
+    fun `should flip the resolved value when toggling a non-overridden key`() = runTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        every { dataStoreProvider.observeAllOverrides() } returns flowOf()
-        coEvery { dataStoreProvider.toggle(flag, flag.defaultValue) } just runs
+        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
+        // Resolved value differs from the hardcoded default: the toggle must flip away from what's shown.
+        coEvery { resolver.getFeatureFlag(flag.key, flag.defaultValue) } returns true
 
         // When
         viewModel(definitions).toggleKey(flag.key)
 
         // Then
-        coVerify(exactly = 1) { dataStoreProvider.toggle(flag, flag.defaultValue) }
+        coVerify(exactly = 1) { overrideManager.setOverride(flag.key, false) }
     }
 
     @Test
-    fun `should call the datastore when resetting all overrides`() {
+    fun `should flip the existing override value when toggling an overridden key`() = runTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
+        coEvery { overrideManager.overriddenFlags() } returns mapOf(flag.key to true)
 
-        every { dataStoreProvider.observeAllOverrides() } returns flowOf()
-        coEvery { dataStoreProvider.resetAll() } just runs
+        // When
+        viewModel(definitions).toggleKey(flag.key)
+
+        // Then
+        coVerify(exactly = 1) { overrideManager.setOverride(flag.key, false) }
+        coVerify(exactly = 0) { resolver.getFeatureFlag(any(), any()) }
+    }
+
+    @Test
+    fun `should clear all overrides on the manager when resetting`() = runTest {
+        // Given
+        val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
+        val definitions = setOf(flag)
+        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
+        coEvery { overrideManager.clearAllOverrides() } just runs
 
         // When
         viewModel(definitions).resetAll()
 
         // Then
-        coVerify(exactly = 1) { dataStoreProvider.resetAll() }
+        coVerify(exactly = 1) { overrideManager.clearAllOverrides() }
     }
 
     private fun viewModel(definitions: Set<FeatureFlagDefinition>) = FeatureFlagOverridesViewModel(
         definitions,
-        dataStoreProvider,
+        overrideManager,
+        resolver,
         mapper
     )
 }
