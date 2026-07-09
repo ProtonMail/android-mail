@@ -107,11 +107,11 @@ fun CategorySpotlightBanner(
     ) {
         SpotlightIllustration(iconRes = iconRes, showUnseenBadge = showUnseenBadge)
 
-        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Standard))
+        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.ModeratelyLarge))
 
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Tiny)
+            verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
         ) {
             Text(
                 text = title,
@@ -153,6 +153,7 @@ private fun SpotlightIllustration(
         CategoryIcon(
             iconRes = iconRes,
             tint = ProtonTheme.colors.iconNorm,
+            iconSize = SpotlightIconSize,
             showUnseenBadge = showUnseenBadge
         )
     }
@@ -161,6 +162,7 @@ private fun SpotlightIllustration(
 private val BorderSize = 1.dp
 private val IllustrationSize = 36.dp
 private val CloseButtonSize = 20.dp
+private val SpotlightIconSize = 20.dp
 
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

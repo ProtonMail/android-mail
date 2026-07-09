@@ -51,6 +51,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -124,9 +125,10 @@ internal fun CategoryIcon(
     iconRes: Int,
     tint: Color,
     showUnseenBadge: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconSize: Dp = MailDimens.CategoryView.IconSize
 ) {
-    Box(modifier = modifier.size(MailDimens.CategoryView.IconSize)) {
+    Box(modifier = modifier.size(iconSize)) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = null,
