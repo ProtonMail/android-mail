@@ -38,11 +38,12 @@ class MailboxActionMessageReducer @Inject constructor(
 
     internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<ActionResult> {
         val actionResult = when (operation) {
-            is MailboxEvent.MoveToConfirmed.Category -> moveResult(
-                operation = operation,
-                conversationRes = R.plurals.mailbox_action_move_conversation_to_category,
-                messageRes = R.plurals.mailbox_action_move_message_to_category
-            )
+            is MailboxEvent.MoveToConfirmed.Category -> {
+                val destination = mailLabelTextMapper.mapToString(operation.label)
+                UndoableActionResult(
+                    TextUiModel(R.string.mailbox_action_move_to_category, destination)
+                )
+            }
 
             is MailboxEvent.MoveToConfirmed -> moveResult(
                 operation = operation,
