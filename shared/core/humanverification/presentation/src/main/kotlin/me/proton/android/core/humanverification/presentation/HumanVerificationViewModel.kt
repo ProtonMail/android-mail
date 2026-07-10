@@ -55,40 +55,31 @@ class HumanVerificationViewModel @Inject constructor(
     initialAction = HumanVerificationAction.NoOp,
     initialState = HumanVerificationViewState.Idle
 ) {
+
     val uiEvent = UiEventFlow<HumanVerificationViewEvent>()
-
-    override fun onAction(action: HumanVerificationAction): Flow<HumanVerificationViewState> = when (action) {
-        is HumanVerificationAction.NoOp -> flowOf(HumanVerificationViewState.Idle)
-        is HumanVerificationAction.Load -> with(action) {
-            onLoad(
-                url = url,
-                originalHost = action.originalHost,
-                alternativeHost = action.alternativeHost,
-                defaultCountry = defaultCountry,
-                recoveryPhone = recoveryPhone,
-                locale = locale,
-                headers = headers
-            )
-        }
-
-        is HumanVerificationAction.Verify -> onWebviewEvent(action.result)
-        is HumanVerificationAction.Cancel -> onCancel()
-        is HumanVerificationAction.Failure.ResourceLoadingError -> {
-            onResourceLoadingError(
-                message = action.message,
-                error = action.error
-            )
-        }
-    }
 
     override suspend fun FlowCollector<HumanVerificationViewState>.onError(throwable: Throwable) {
         emit(HumanVerificationViewState.GenericError(throwable.localizedMessage))
     }
 
-    fun onScreenView() {
-        viewModelScope.launch {
-            recordHumanVerificationScreenView(screenId = HumanVerificationScreenId.V3)
-        }
+    override fun onAction(action: HumanVerificationAction): Flow<HumanVerificationViewState> = when (action) {
+        is HumanVerificationAction.NoOp -> flowOf(HumanVerificationViewState.Idle)
+        is HumanVerificationAction.HVMessage -> onHVMessage(action.message)
+        is HumanVerificationAction.WebError -> onWebError(action.error)
+        is HumanVerificationAction.Cancel -> onCancel()
+        is HumanVerificationAction.Load -> onLoad(
+            url = action.url,
+            originalHost = action.originalHost,
+            alternativeHost = action.alternativeHost,
+            defaultCountry = action.defaultCountry,
+            recoveryPhone = action.recoveryPhone,
+            locale = action.locale,
+            headers = action.headers
+        )
+    }
+
+    fun onScreenView() = viewModelScope.launch {
+        recordHumanVerificationScreenView(screenId = HumanVerificationScreenId.V3)
     }
 
     @Suppress("LongParameterList")
@@ -133,16 +124,15 @@ class HumanVerificationViewModel @Inject constructor(
         }
     }
 
+    private fun onWebError(error: WebResponseError?) = flow<HumanVerificationViewState> {
+        recordHumanVerificationViewLoadingResult(status = error.toHumanVerificationViewLoadingStatus())
+    }
+
     private fun onCancel(): Flow<HumanVerificationViewState> = flow {
         challengeNotifierCallback.onHumanVerificationCancel()
         recordHumanVerificationResult(HumanVerificationStatus.CANCELLED)
         emit(HumanVerificationViewState.Cancel)
     }
-
-    private fun onResourceLoadingError(message: String?, error: WebResponseError?): Flow<HumanVerificationViewState> =
-        flow {
-            recordHumanVerificationViewLoadingResult(status = error.toHumanVerificationViewLoadingStatus())
-        }
 
     private fun onFailure(message: String?): Flow<HumanVerificationViewState> = flow {
         challengeNotifierCallback.onHumanVerificationFailed()
@@ -150,11 +140,11 @@ class HumanVerificationViewModel @Inject constructor(
         emit(HumanVerificationViewState.GenericError(message))
     }
 
-    private fun onWebviewEvent(result: HV3ResponseMessage): Flow<HumanVerificationViewState> = flow {
+    private fun onHVMessage(result: HV3ResponseMessage): Flow<HumanVerificationViewState> = flow {
         when (result.type) {
             HV3ResponseMessage.Type.Success -> {
                 val token = requireNotNull(result.payload?.token)
-                val tokenType = requireNotNull(result.payload?.type)
+                val tokenType = requireNotNull(result.payload.type)
                 challengeNotifierCallback.onHumanVerificationSuccess(tokenType, token)
                 recordHumanVerificationResult(HumanVerificationStatus.SUCCEEDED)
                 uiEvent.emit(HumanVerificationViewEvent.Success(token, tokenType))
@@ -162,16 +152,16 @@ class HumanVerificationViewModel @Inject constructor(
 
             HV3ResponseMessage.Type.Notification -> {
                 val message = requireNotNull(result.payload?.text)
-                val messageType = requireNotNull(result.payload?.type?.let { MessageType.map[it] })
+                val messageType = requireNotNull(result.payload.type?.let { MessageType.map[it] })
                 uiEvent.emit(HumanVerificationViewEvent.HvNotification(messageType, message))
             }
 
             HV3ResponseMessage.Type.Close -> {
-                onCancel()
+                emitAll(onCancel())
             }
 
             HV3ResponseMessage.Type.Error -> {
-                onFailure(result.payload?.text)
+                emitAll(onFailure(result.payload?.text))
             }
 
             HV3ResponseMessage.Type.Loaded -> {
