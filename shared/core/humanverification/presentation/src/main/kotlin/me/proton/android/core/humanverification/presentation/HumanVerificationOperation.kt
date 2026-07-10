@@ -35,11 +35,6 @@ sealed interface HumanVerificationAction : HumanVerificationOperation {
     ) : HumanVerificationAction
 
     data class Cancel(val unused: Long = System.currentTimeMillis()) : HumanVerificationAction
-    data class Verify(val result: HV3ResponseMessage) : HumanVerificationAction
-    sealed interface Failure : HumanVerificationAction {
-        data class ResourceLoadingError(
-            val message: String?,
-            val error: WebResponseError?
-        ) : HumanVerificationAction
-    }
+    data class HVMessage(val message: HV3ResponseMessage) : HumanVerificationAction
+    data class WebError(val error: WebResponseError?) : HumanVerificationAction
 }

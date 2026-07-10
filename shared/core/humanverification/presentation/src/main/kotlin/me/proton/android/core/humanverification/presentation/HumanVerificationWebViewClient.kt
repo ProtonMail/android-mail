@@ -127,10 +127,10 @@ sealed class WebResponseError {
 internal fun WebResponseError?.toHumanVerificationViewLoadingStatus(): HumanVerificationViewLoadingStatus =
     when (this) {
         is WebResponseError.Http -> when (response.statusCode) {
-            in 200..299 -> HumanVerificationViewLoadingStatus.HTTP2XX
             400 -> HumanVerificationViewLoadingStatus.HTTP400
             404 -> HumanVerificationViewLoadingStatus.HTTP404
             422 -> HumanVerificationViewLoadingStatus.HTTP422
+            in 200..299 -> HumanVerificationViewLoadingStatus.HTTP2XX
             in 400..499 -> HumanVerificationViewLoadingStatus.HTTP4XX
             in 500..599 -> HumanVerificationViewLoadingStatus.HTTP5XX
             else -> HumanVerificationViewLoadingStatus.CONNECTION_ERROR

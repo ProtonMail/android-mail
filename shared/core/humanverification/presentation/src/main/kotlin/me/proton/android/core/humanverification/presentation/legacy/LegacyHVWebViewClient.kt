@@ -39,7 +39,7 @@ internal class LegacyHVWebViewClient(
     private val alternativeHost: String?,
     private val extraHeaders: List<Pair<String, String>>,
     private val networkRequestOverrider: LegacyNetworkRequestOverrider,
-    private val onResourceLoadingError: (response: WebResponseError?) -> Unit
+    private val onWebError: (response: WebResponseError?) -> Unit
 ) : ProtonWebViewClient(extraHeaders) {
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
@@ -78,7 +78,7 @@ internal class LegacyHVWebViewClient(
         val logMessage = "Request failed (HTTP): ${request?.method} ${request?.url} with " +
             "status ${errorResponse?.statusCode} ${errorResponse?.reasonPhrase}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
-        onResourceLoadingError(errorResponse?.let { WebResponseError.Http(it) })
+        onWebError(errorResponse?.let { WebResponseError.Http(it) })
     }
 
     override fun onReceivedError(
@@ -90,7 +90,7 @@ internal class LegacyHVWebViewClient(
         val logMessage = "Request failed: ${request?.method} ${request?.url} with " +
             "code ${error?.errorCode} ${error?.description}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
-        onResourceLoadingError(error?.let { WebResponseError.Resource(it) })
+        onWebError(error?.let { WebResponseError.Resource(it) })
     }
 
     private fun overrideWithExtraHeaders(
@@ -121,7 +121,7 @@ internal class LegacyHVWebViewClient(
             acceptSelfSignedCertificates = true
         ).also {
             if (it?.statusCode !in HTTP_SUCCESS_RANGE) {
-                onResourceLoadingError(it?.let { WebResponseError.Http(it) })
+                onWebError(it?.let { WebResponseError.Http(it) })
             }
         }
     }

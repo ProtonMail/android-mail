@@ -97,15 +97,12 @@ fun HumanVerificationScreen(
     viewModel: HumanVerificationViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val connectivityErrorMessage = stringResource(R.string.presentation_connectivity_issues)
 
     LaunchOnScreenView(enqueue = viewModel::onScreenView)
 
     HumanVerificationScreen(
         modifier = modifier,
-        onCloseClicked = {
-            viewModel.perform(HumanVerificationAction.Cancel())
-        },
+        onCloseClicked = { viewModel.perform(HumanVerificationAction.Cancel()) },
         onCancel = onCancel,
         onIdle = {
             viewModel.perform(
@@ -120,22 +117,11 @@ fun HumanVerificationScreen(
                 )
             )
         },
-        onBackClicked = {
-            viewModel.perform(HumanVerificationAction.Cancel())
-        },
+        onBackClicked = { viewModel.perform(HumanVerificationAction.Cancel()) },
         onHelpClicked = onHelpClicked,
         onSuccess = onSuccess,
-        onVerificationResult = {
-            viewModel.perform(HumanVerificationAction.Verify(it))
-        },
-        onResourceLoadingError = {
-            viewModel.perform(
-                HumanVerificationAction.Failure.ResourceLoadingError(
-                    message = connectivityErrorMessage,
-                    error = it
-                )
-            )
-        },
+        onHVMessage = { viewModel.perform(HumanVerificationAction.HVMessage(it)) },
+        onWebError = { viewModel.perform(HumanVerificationAction.WebError(it)) },
         headers = headers,
         state = state,
         events = viewModel.uiEvent
@@ -151,8 +137,8 @@ fun HumanVerificationScreen(
     onCancel: () -> Unit = {},
     onIdle: () -> Unit = {},
     onHelpClicked: () -> Unit = {},
-    onVerificationResult: (HV3ResponseMessage) -> Unit = {},
-    onResourceLoadingError: (response: WebResponseError?) -> Unit = {},
+    onHVMessage: (HV3ResponseMessage) -> Unit = {},
+    onWebError: (response: WebResponseError?) -> Unit = {},
     onSuccess: (String) -> Unit = {},
     headers: List<Pair<String, String>>?,
     state: HumanVerificationViewState,
@@ -202,8 +188,8 @@ fun HumanVerificationScreen(
         onCloseClicked = onCloseClicked,
         onBackClicked = onBackClicked,
         onHelpClicked = onHelpClicked,
-        onVerificationResult = onVerificationResult,
-        onResourceLoadingError = onResourceLoadingError,
+        onHVMessage = onHVMessage,
+        onWebError = onWebError,
         headers = headers,
         state = state,
         snackbarHostState = snackbarHostState
@@ -217,8 +203,8 @@ fun HumanVerificationScaffold(
     onCloseClicked: () -> Unit = {},
     onBackClicked: () -> Unit,
     onHelpClicked: () -> Unit = {},
-    onVerificationResult: (HV3ResponseMessage) -> Unit,
-    onResourceLoadingError: (response: WebResponseError?) -> Unit,
+    onHVMessage: (HV3ResponseMessage) -> Unit,
+    onWebError: (response: WebResponseError?) -> Unit,
     headers: List<Pair<String, String>>?,
     state: HumanVerificationViewState = HumanVerificationViewState.Idle,
     snackbarHostState: ProtonSnackbarHostState = remember { ProtonSnackbarHostState() }
@@ -257,8 +243,8 @@ fun HumanVerificationScaffold(
             HumanVerificationView(
                 modifier = modifier,
                 onBackClicked = onBackClicked,
-                onVerificationResult = onVerificationResult,
-                onResourceLoadingError = onResourceLoadingError,
+                onHVMessage = onHVMessage,
+                onWebError = onWebError,
                 headers = headers,
                 state = state
             )
@@ -272,18 +258,18 @@ fun HumanVerificationScaffold(
 private fun HumanVerificationView(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onVerificationResult: (HV3ResponseMessage) -> Unit,
-    onResourceLoadingError: (response: WebResponseError?) -> Unit,
+    onHVMessage: (HV3ResponseMessage) -> Unit,
+    onWebError: (response: WebResponseError?) -> Unit,
     headers: List<Pair<String, String>>?,
     state: HumanVerificationViewState = HumanVerificationViewState.Idle
 ) {
     when (state) {
         is HumanVerificationViewState.Load -> {
-            HumanVerificationWebViewSetup(
+            HumanVerificationWebView(
                 modifier = modifier,
-                onVerificationResult = onVerificationResult,
                 headers = headers,
-                onResourceLoadingError = onResourceLoadingError,
+                onHVMessage = onHVMessage,
+                onWebError = onWebError,
                 state = state
             )
         }
@@ -304,10 +290,10 @@ private fun HumanVerificationView(
 }
 
 @Composable
-private fun HumanVerificationWebViewSetup(
+private fun HumanVerificationWebView(
     modifier: Modifier = Modifier,
-    onVerificationResult: (HV3ResponseMessage) -> Unit,
-    onResourceLoadingError: (response: WebResponseError?) -> Unit,
+    onHVMessage: (HV3ResponseMessage) -> Unit,
+    onWebError: (response: WebResponseError?) -> Unit,
     headers: List<Pair<String, String>>?,
     state: HumanVerificationViewState.Load
 ) {
@@ -324,7 +310,7 @@ private fun HumanVerificationWebViewSetup(
             alternativeHost = state.alternativeHost,
             extraHeaders = state.extraHeaders.orEmpty(),
             networkRequestOverrider = LegacyNetworkRequestOverrider(OkHttpClient()),
-            onResourceLoadingError = onResourceLoadingError
+            onWebError = onWebError
         )
     }
     val webChromeClient = remember {
@@ -359,7 +345,7 @@ private fun HumanVerificationWebViewSetup(
                     WEB_VIEW_MAX_COLOR_COMPONENT
                 )
             )
-            webView.addJavascriptInterface(VerificationJSInterface(scope, onVerificationResult), JS_INTERFACE_NAME)
+            webView.addJavascriptInterface(VerificationJSInterface(scope, onHVMessage), JS_INTERFACE_NAME)
         },
         modifier = modifier.fillMaxSize(),
         client = webViewClient,
