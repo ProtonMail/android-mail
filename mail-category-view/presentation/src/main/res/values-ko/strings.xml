@@ -24,7 +24,9 @@
   <string name="category_title_forums">포럼</string>
   <string name="category_title_newsletters">뉴스레터</string>
   <string name="category_title_transactions">결제 관련</string>
-  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
-  <string name="category_spotlight_unseen_description">A dot now appears on a category icon when it has unread messages.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_spotlight_unseen_title">%1$s의 새로운 메시지</string>
+  <string name="category_spotlight_unseen_description">마지막 확인 이후로 새로운 메시지가 카테고리에 있을 때 파란 점이 나타납니다.</string>
+  <string name="category_spotlight_personalise_title">카테고리 개인화</string>
+  <string name="category_spotlight_personalise_description">\"다음으로 이동:\"을 사용하여 이메일을 다른 카테고리로 이동할 수 있습니다. 유사한 아메일이 해당 카테고리로 분류됩니다.</string>
+  <string name="category_spotlight_close_content_description">닫기</string>
 </resources>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Boletines</string>
   <string name="category_title_transactions">Transacciones</string>
   <string name="category_spotlight_unseen_title">Mensajes nuevos en %1$s</string>
-  <string name="category_spotlight_unseen_description">Ahora aparece un punto en el ícono de la categoría cuando hay mensajes sin leer.</string>
+  <string name="category_spotlight_unseen_description">Se muestra un punto azul cuando una categoría tiene mensajes nuevos desde la última vez que la revisó.</string>
+  <string name="category_spotlight_personalise_title">Personalice las categorías</string>
+  <string name="category_spotlight_personalise_description">Mueva un correo a otra categoría usando «Mover a». Los correos similares se ordenarán ahí automáticamente desde ahora.</string>
   <string name="category_spotlight_close_content_description">Cerrar</string>
 </resources>

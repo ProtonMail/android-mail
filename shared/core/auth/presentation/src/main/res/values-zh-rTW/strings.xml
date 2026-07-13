@@ -32,7 +32,7 @@
   <string name="auth_login_close">關閉</string>
   <string name="auth_login_help">說明</string>
   <string name="auth_sign_in">登入</string>
-  <string name="auth_login_username">Username or email</string>
+  <string name="auth_login_username">使用者名稱或電子郵件</string>
   <string name="auth_email">電子郵件</string>
   <string name="auth_password">密碼</string>
   <string name="auth_login_assistive_text">請輸入您的 Proton 電子郵件或使用者名稱。</string>
@@ -62,7 +62,7 @@
   <string name="auth_signup_title">建立您的 Proton 帳號</string>
   <string name="auth_signup_subtitle">一個帳號即可使用所有 Proton 服務</string>
   <string name="auth_signup_next">下一步</string>
-  <string name="auth_signup_username">Username</string>
+  <string name="auth_signup_username">使用者名稱</string>
   <string name="auth_signup_create_password">建立您的密碼</string>
   <string name="auth_signup_password">密碼</string>
   <string name="auth_signup_repeat_password">再次輸入密碼</string>
@@ -98,7 +98,7 @@
   <string name="auth_signup_recovery_email_validation_error">電子郵件驗證失敗</string>
   <string name="auth_signup_recovery_phone_validation_error">電話號碼驗證失敗</string>
   <string name="auth_signup_createpassword_error_password_not_equal">密碼不一致。請再試一次。</string>
-  <string name="auth_signup_general_error">Something went wrong. Please try again.</string>
+  <string name="auth_signup_general_error">出了一點問題。請再試一次。</string>
   <string name="auth_signup_countries_search">搜尋國家</string>
   <string name="auth_login_error_invalid_action_cannot_setup_user">無法設定使用者。</string>
   <string name="auth_login_error_invalid_action_cannot_setup_address">無法設定位址。</string>
@@ -111,13 +111,13 @@
   <string name="auth_fido_add_security_key">新增安全金鑰</string>
   <string name="auth_fido_security_keys_learn_more">了解更多</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
+    <item quantity="other">已超出 %d 個免費帳號上限。</item>
   </plurals>
   <string name="common_error_something_went_wrong">發生錯誤，請稍後再試。</string>
   <string name="auth_fido_config_error">擷取已儲存的金鑰時發生錯誤。</string>
-  <string name="auth_fido_reading_key_error">Error reading security key.</string>
-  <string name="auth_fido_submit_key_error">Error submitting key data.</string>
-  <string name="auth_fido_authenticating_in_progress">Authenticating with security key.</string>
+  <string name="auth_fido_reading_key_error">讀取安全性金鑰時發生錯誤。</string>
+  <string name="auth_fido_submit_key_error">提交金鑰資料時發生錯誤。</string>
+  <string name="auth_fido_authenticating_in_progress">正在使用安全性金鑰進行認證。</string>
   <string name="auth_fido_security_key">安全金鑰</string>
   <plurals name="password_validator_min_length_error">
     <item quantity="other">密碼至少必須包含 %1$s 個字元</item>
@@ -130,8 +130,8 @@
   <string name="settings_save_main_password">儲存新的主要密碼</string>
   <string name="settings_password_management_tab_main_password">主密碼</string>
   <string name="settings_password_management_tab_second_password">第二密碼</string>
-  <string name="settings_password_management_change_password_note">To change either of your passwords, you\'ll need to know your main password.\u0020</string>
-  <string name="settings_password_management_forgot_main_password">Forgot your main password?</string>
+  <string name="settings_password_management_change_password_note">若要變更您的密碼兩者之一，您將需要知道您的主密碼。\u0020</string>
+  <string name="settings_password_management_forgot_main_password">忘記了您的主密碼嗎？</string>
   <string name="settings_main_password_hint_current">目前的主密碼</string>
   <string name="settings_main_password_hint_new">新的主密碼</string>
   <string name="settings_main_password_hint_new_confirm">確認新的主密碼</string>
@@ -139,7 +139,7 @@
   <string name="settings_second_password_hint_new">新的第二密碼</string>
   <string name="settings_second_password_hint_new_confirm">確認新的第二密碼</string>
   <string name="settings_password_management_login_success">已更新登入密碼</string>
-  <string name="settings_password_management_second_success">Second password updated</string>
+  <string name="settings_password_management_second_success">第二密碼已更新</string>
   <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
   <string name="settings_password_error_empty">密碼不能為空.</string>
   <string name="settings_password_error">帳號或密碼不正確，請再檢查一下</string>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Newsletter</string>
   <string name="category_title_transactions">Transaktionen</string>
   <string name="category_spotlight_unseen_title">Neue Nachrichten in %1$s</string>
-  <string name="category_spotlight_unseen_description">Auf dem Symbol einer Kategorie wird nun ein Punkt angezeigt, wenn ungelesene Nachrichten vorliegen.</string>
+  <string name="category_spotlight_unseen_description">Ein blauer Punkt zeigt an, dass in einer Kategorie seit dem letzten Aufruf neue Nachrichten eingegangen sind.</string>
+  <string name="category_spotlight_personalise_title">Kategorien individuell anpassen</string>
+  <string name="category_spotlight_personalise_description">Verschiebe eine E-Mail mithilfe der Funktion „Verschieben nach“ in eine andere Kategorie. Ähnliche E-Mails werden von nun an automatisch dorthin sortiert.</string>
   <string name="category_spotlight_close_content_description">Schließen</string>
 </resources>

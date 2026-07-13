@@ -37,11 +37,11 @@
   <string name="spotlight_screen_category_view_categories_title">Categorias de e-mail</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Classifique automaticamente os e-mails em categorias úteis.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">É mais fácil acessar as mensagens não lidas</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">O filtro de mensagens não lidas agora fica na parte inferior da sua caixa de entrada, facilitando o acesso e a alternância entre todos os e-mails e as mensagens não lidas.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Fique por dentro dos e-mails novos e\nnão lidos</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">O filtro de mensagens não lidas agora está mais visível e ao seu alcance, permitindo que você analise rapidamente e tome medidas em relação aos e-mails não lidos.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">Sua caixa de entrada,\nautomaticamente organizada</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Sua caixa de entrada agora está organizada em categorias como Principal, Redes sociais, Promoções e outras, facilitando a redução do excesso de mensagens e permitindo que você se concentre nos e-mails que realmente importam.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Privado por design. Saiba mais</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Olá, categorias.\nAdeus, distrações.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Pare de se distrair com boletins informativos, atualizações e e-mails não urgentes. Com as novas categorias de e-mail, apenas mensagens importantes chegam à sua caixa de entrada principal.</string>

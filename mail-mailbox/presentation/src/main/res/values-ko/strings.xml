@@ -76,12 +76,7 @@
   <plurals name="mailbox_action_move_message">
     <item quantity="other">메시지가 %s(으)로 이동함</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">%s(으)로 이동되었습니다. 유사한 메시지가 추후 해당 카테고리로 분류됩니다.</string>
   <string name="mailbox_action_button_clear_trash">휴지통 비우기</string>
   <string name="mailbox_action_button_clear_spam">스팸함 비우기</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">휴지통 또는 스팸함에 30일 넘게 보관된 메시지를 자동으로 삭제하려면 업그레이드하세요.</string>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Buletine informative</string>
   <string name="category_title_transactions">Tranzacții</string>
   <string name="category_spotlight_unseen_title">Mesaje noi în %1$s</string>
-  <string name="category_spotlight_unseen_description">Acum apare un punct pe pictograma unei categorii atunci când aceasta conține mesaje necitite.</string>
+  <string name="category_spotlight_unseen_description">Un punct albastru arată când o categorie are mesaje noi de la ultima verificare.</string>
+  <string name="category_spotlight_personalise_title">Personalizați-vă categoriile</string>
+  <string name="category_spotlight_personalise_description">Mutați ​​un mesaj într-o altă categorie folosind opțiunea „Mutare în”. Mesajele similare vor fi mutate automat acolo în viitor.</string>
   <string name="category_spotlight_close_content_description">Închidere</string>
 </resources>

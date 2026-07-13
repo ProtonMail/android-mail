@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Nyhedsbreve</string>
   <string name="category_title_transactions">Transaktioner</string>
   <string name="category_spotlight_unseen_title">Ny besked i %1$s</string>
-  <string name="category_spotlight_unseen_description">Der vises nu en prik på ikonet for kategorien når den har ulæste beskeder.</string>
+  <string name="category_spotlight_unseen_description">Når en kategori har nye meddelelser - siden du sidst tjekkede den - vises en blå prik.</string>
+  <string name="category_spotlight_personalise_title">Gør dine kategorier personlige</string>
+  <string name="category_spotlight_personalise_description">Flyt en e-mail til en anden kategori ved at bruge \"Flyt til\". Lignende e-mails sorteres automatisk dertil fremadrettet.</string>
   <string name="category_spotlight_close_content_description">Luk</string>
 </resources>

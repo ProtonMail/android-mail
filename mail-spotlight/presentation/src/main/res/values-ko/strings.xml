@@ -29,23 +29,23 @@
   <string name="spotlight_feature_item_headers_html_description">숨겨진 추적 요소를 찾아내고 해당 메시지의 진위 여부를 확인하기 위해 의심스러운 메시지를 검사하세요.</string>
   <string name="spotlight_screen_got_it">확인</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">What\’s new in Proton Mail</string>
+  <string name="spotlight_screen_category_view_title">Proton Mail의 새로운 기능</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">UI 개선</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">부드러운 스크롤링, 레이아웃 업데이트 등.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">읽지 않음 필터</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">더욱 쉬운 접근을 위한 하단부로의 위치 이동.</string>
   <string name="spotlight_screen_category_view_categories_title">이메일 카테고리</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">적절한 카테고리로 이메일을 자동 분류합니다.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">더욱 쉽게 읽지 않음 편지함 접근하기</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">이제 읽지 않음 필터가 받은 편지함 하단으로 이동되어 더욱 쉽게 전체 편지함과 읽지 않은 편지함 사이를 전환할 수 있어요.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">새로운 이메일과\n읽지 않은 이메일 관리</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">읽지 않음 필터의 시인성과 접근성 개선으로, 이제 읽지 않은 이메일을 빠르게 훑어보고 작업할 수 있습니다.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Your inbox,\nautomatically organized</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">완벽하게 정리된\n나의 받은 편지함.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">이제 받은 편지함이 중요, 소셜, 프로모션 등의 카테고리로 분류되어 불필요한 것들은 줄이고 필요한 것에만 집중할 수 있습니다.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">어서와요, 카테고리.\n잘가요, 딴짓거리.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">뉴스레터, 업데이트, 급하지 않은 이메일에 주의가 분산 되는 건 이제 그만. 새로운 이메일 카테고리 덕분에 기본 편지함에는 중요한 메시지만 들어온답니다.</string>
   <string name="spotlight_screen_category_view_button_continue">계속</string>
   <string name="spotlight_screen_category_view_button_try">카테고리 사용해보기</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+  <string name="spotlight_screen_category_view_button_dismiss">없이 계속하기:</string>
 </resources>

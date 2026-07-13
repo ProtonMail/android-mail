@@ -33,19 +33,19 @@
   <string name="spotlight_screen_category_view_ui_enhancements_title">Vylepšenia používateľského rozhrania</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Plynulé skrolovanie, nový dizajn a ďalšie vylepšenia.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filter neprečítaných správ</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Teraz sa nachádza v spodnej časti, aby bol prístup jednoduchší.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategórie emailov</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Automatické triedenie emailov do užitočných kategórií.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">K neprečítanému sa dostanete ľahšie</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter neprečítaných správ sa teraz nachádza v spodnej časti vašej doručenej pošty, vďaka čomu je ľahšie sa k nemu dostať a prepínať medzi všetkými emailmi a neprečítanými správami.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Majte prehľad o nových a\nneprečítaných emailoch</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Filter neprečítaných správ je teraz lepšie viditeľný a máte ho na dosah ruky, vďaka čomu môžete rýchlo prehliadať neprečítané emaily a reagovať na ne.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Your inbox,\nautomatically organized</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Vaša doručená pošta,\nautomaticky usporiadaná</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Vaša doručená pošta je teraz roztriedená do kategórií, ako sú „Primárne“, „Sociálne siete“, „Propagačné“ a ďalšie, vďaka čomu je jednoduchšie zbaviť sa neporiadku a sústrediť sa na emaily, ktoré sú pre vás dôležité.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Súkromie je súčasťou nášho konceptu. Zistiť viac</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Ahoj, kategórie.\nZbohom, rozptyľovanie.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Nenechajte sa už rozptyľovať newslettermi, aktualizáciami a nepodstatnými emailmi. Vďaka novým kategóriám emailov sa do vašej hlavnej doručenej pošty dostanú len dôležité správy.</string>
   <string name="spotlight_screen_category_view_button_continue">Pokračovať</string>
   <string name="spotlight_screen_category_view_button_try">Vyskúšajte kategórie</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Pokračovať bez kategórií</string>
 </resources>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Ενημερωτικά δελτία</string>
   <string name="category_title_transactions">Συναλλαγές</string>
   <string name="category_spotlight_unseen_title">Νέα μηνύματα στο %1$s</string>
-  <string name="category_spotlight_unseen_description">Μια κουκκίδα εμφανίζεται πλέον σε ένα εικονίδιο κατηγορίας όταν υπάρχουν μη αναγνωσμένα μηνύματα.</string>
+  <string name="category_spotlight_unseen_description">Μια μπλε κουκκίδα υποδεικνύει πότε μια κατηγορία έχει νέα μηνύματα από την τελευταία φορά που την ελέγξατε.</string>
+  <string name="category_spotlight_personalise_title">Προσαρμόστε τις Κατηγορίες σας</string>
+  <string name="category_spotlight_personalise_description">Μετακινήστε ένα μήνυμα σε άλλη κατηγορία χρησιμοποιώντας την επιλογή \"Μετακίνηση σε\". Παρόμοια μηνύματα θα ταξινομούνται αυτόματα εκεί από εδώ και στο εξής.</string>
   <string name="category_spotlight_close_content_description">Κλείσιμο</string>
 </resources>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">新闻通讯</string>
   <string name="category_title_transactions">交易</string>
   <string name="category_spotlight_unseen_title">%1$s 中有新邮件</string>
-  <string name="category_spotlight_unseen_description">当分类图标中有未读邮件时，图标上会出现小圆点。</string>
+  <string name="category_spotlight_unseen_description">蓝点表示自您上次查看以来，该分类中有新邮件。</string>
+  <string name="category_spotlight_personalise_title">个性化您的分类</string>
+  <string name="category_spotlight_personalise_description">使用“移至”将邮件移至其他分类。此后，类似邮件将自动归类到该分类中。</string>
   <string name="category_spotlight_close_content_description">关闭</string>
 </resources>

@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Newslettery</string>
   <string name="category_title_transactions">Transakcie</string>
   <string name="category_spotlight_unseen_title">Nové správy v %1$s</string>
-  <string name="category_spotlight_unseen_description">Ak má ikona kategórie neprečítané správy, zobrazí sa pri nej bodka.</string>
+  <string name="category_spotlight_unseen_description">Modrá bodka signalizuje, že v danej kategórii sa od vášho posledného nahliadnutia objavili nové správy.</string>
+  <string name="category_spotlight_personalise_title">Prispôsobte si svoje kategórie</string>
+  <string name="category_spotlight_personalise_description">Email presuňte do inej kategórie pomocou funkcie „Presunúť do“. Podobné emaily sa odteraz budú automaticky zaraďovať do tejto kategórie.</string>
   <string name="category_spotlight_close_content_description">Zavrieť</string>
 </resources>

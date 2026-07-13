@@ -76,12 +76,7 @@
   <plurals name="mailbox_action_move_message">
     <item quantity="other">Pesan dipindahkan ke %s</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
   <string name="mailbox_action_button_clear_trash">Kosongkan sampah</string>
   <string name="mailbox_action_button_clear_spam">Kosongkan spam</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Tingkatkan akun Anda untuk menghapus email yang telah berada di sampah atau spam selama lebih dari 30 hari secara otomatis</string>

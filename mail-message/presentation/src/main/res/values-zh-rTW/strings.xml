@@ -53,7 +53,7 @@
   <string name="message_link_long_click_share">分享連結</string>
   <string name="message_link_long_click_share_via">分享連結途徑</string>
   <!-- Message body image actions -->
-  <string name="message_image_long_click_download">Download image</string>
+  <string name="message_image_long_click_download">下載影像</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">複製電子郵件地址</string>
   <string name="contact_actions_copy_address_description">複製聯絡電子郵件位址</string>
@@ -67,15 +67,15 @@
   <string name="contact_actions_add_contact_description">將此收件者儲存為聯絡人</string>
   <string name="contact_actions_block_contact">封鎖此聯絡人</string>
   <string name="contact_actions_block_contact_description">封鎖此聯絡人</string>
-  <string name="contact_actions_block_contact_dialog_text">Emails from <xliff:g id="email">%1$s</xliff:g> will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.</string>
-  <string name="contact_actions_block_contact_dialog_button_block">Block</string>
-  <string name="contact_actions_block_contact_dialog_button_cancel">Cancel</string>
-  <string name="contact_actions_unblock_contact">Unblock this contact</string>
-  <string name="contact_actions_unblock_contact_description">Unblock this contact</string>
+  <string name="contact_actions_block_contact_dialog_text">來自 <xliff:g id="email">%1$s</xliff:g> 的電子郵件俱將不再送達並會永久刪除。您可以在設定中管理已封鎖的電子郵件地址。</string>
+  <string name="contact_actions_block_contact_dialog_button_block">封鎖</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">取消</string>
+  <string name="contact_actions_unblock_contact">解除封鎖此聯絡人</string>
+  <string name="contact_actions_unblock_contact_description">解除封鎖此聯絡人</string>
   <string name="contact_actions_block_address">封鎖此位址</string>
-  <string name="contact_actions_block_address_description">Block this address</string>
-  <string name="contact_actions_unblock_address">Unblock this address</string>
-  <string name="contact_actions_unblock_address_description">Unblock this address</string>
+  <string name="contact_actions_block_address_description">封鎖此電子郵件地址</string>
+  <string name="contact_actions_unblock_address">解除封鎖此電子郵件地址</string>
+  <string name="contact_actions_unblock_address_description">解除封鎖此電子郵件地址</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">檢視完整訊息</string>
 </resources>

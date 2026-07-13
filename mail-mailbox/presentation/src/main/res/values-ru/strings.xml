@@ -103,18 +103,7 @@
     <item quantity="many">Сообщений перемещено в %s</item>
     <item quantity="other">Сообщения перемещены в %s</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="one">Conversation moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="few">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="many">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="one">Message moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="few">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="many">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
   <string name="mailbox_action_button_clear_trash">Очистить Корзину</string>
   <string name="mailbox_action_button_clear_spam">Очистить спам</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Перейдите на платный тариф, чтобы автоматически удалять сообщения, которые находятся в корзине или спаме более 30 дней</string>

@@ -103,18 +103,7 @@
     <item quantity="many">Zprávy přesunuty do %s</item>
     <item quantity="other">Zprávy přesunuty do %s</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="one">Konverzace přesunuta do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="few">Konverzace přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="many">Konverzace přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="other">Konverzace přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="one">Zpráva přesunuta do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="few">Zprávy přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="many">Zprávy přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-    <item quantity="other">Zprávy přesunuty do %s\nPodobné zprávy budou nyní zařazovány tímto způsobem.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
   <string name="mailbox_action_button_clear_trash">Vyprázdnit koš</string>
   <string name="mailbox_action_button_clear_spam">Vyprázdnit spam</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní</string>

@@ -38,7 +38,7 @@
   <string name="composer_error_store_draft_invalid_recipient">無法儲存草稿 - 收件者無效</string>
   <string name="composer_error_store_draft_message_not_a_draft">無法儲存草稿 - 此訊息並非草稿</string>
   <string name="composer_error_store_draft_generic">無法儲存草稿 - 發生一般錯誤</string>
-  <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
+  <string name="composer_error_create_draft">出了一點問題。無法建立新草稿。</string>
   <string name="composer_error_loading_draft">此草稿的內容目前無法使用，無法編輯。</string>
   <string name="composer_action_clear_formatting">清除格式</string>
   <string name="composer_add_attachments_content_description">新增附件</string>
@@ -53,7 +53,7 @@
   <string name="composer_too_many_attachments_error">超過附件數量上限 (100)。</string>
   <string name="composer_delete_attachment_error">刪除附件時發生意外錯誤。</string>
   <string name="composer_unexpected_attachments_error">有與附件相關的意外錯誤。</string>
-  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">無法儲存附件。請檢查您的儲存空間，然後再試一次。</string>
   <string name="composer_storage_quota_exceeded_error">您的儲存空間已滿。請騰出空間或升級以新增更多內容。</string>
   <string name="composer_attach_capture_from_camera_error">目前無法從相機拍攝附件</string>
   <string name="composer_warning_local_data_shown">此草稿的最新版本無法載入。任何變更將覆蓋其內容。</string>
@@ -151,6 +151,6 @@
   <string name="composer_error_send_draft_attachments_crypto_error">無法傳送草稿 - 附件加密失敗。</string>
   <string name="composer_expiration_time_learn_more">了解更多</string>
   <string name="composer_enter_recipient_content_description">輸入收件者</string>
-  <string name="composer_sender_address_description">Choose Sender Address</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_sender_address_description">選擇寄件者電子郵件地址</string>
+  <string name="composer_encryption_info_learn_more">瞭解更多</string>
 </resources>

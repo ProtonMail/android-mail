@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Glasila</string>
   <string name="category_title_transactions">Transakcije</string>
   <string name="category_spotlight_unseen_title">Novo sporočila v %1$s</string>
-  <string name="category_spotlight_unseen_description">Na ikoni kategorije se zdaj prikaže oznaka, ki vsebuje neprebrana sporočila.</string>
+  <string name="category_spotlight_unseen_description">Modra pika pomeni, da so se v tej kategoriji od vašega zadnjega ogleda pojavila nova obvestila.</string>
+  <string name="category_spotlight_personalise_title">Prilagodite svoje kategorije</string>
+  <string name="category_spotlight_personalise_description">Premaknite e-poštno sporočilo v drugo kategorijo z možnostjo »Premakni v«. Podobna e-poštna sporočila bodo odslej samodejno razvrščena tja.</string>
   <string name="category_spotlight_close_content_description">Zapri</string>
 </resources>

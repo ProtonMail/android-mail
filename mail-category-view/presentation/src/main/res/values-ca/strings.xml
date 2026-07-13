@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Butlletins</string>
   <string name="category_title_transactions">Transaccions</string>
   <string name="category_spotlight_unseen_title">Nous missatges a %1$s</string>
-  <string name="category_spotlight_unseen_description">Ara es mostra un punt a la icona d\'una categoria quan té missatges per llegir.</string>
+  <string name="category_spotlight_unseen_description">El punt blau indica que una categoria té missatges nous des de l\'última vegada que ho vau comprovar.</string>
+  <string name="category_spotlight_personalise_title">Personalitzeu les vostres categories</string>
+  <string name="category_spotlight_personalise_description">Moveu un correu a una altra categoria utilitzant «Moure a». Els correus similars es classificaran allà automàticament a partir d\'ara.</string>
   <string name="category_spotlight_close_content_description">Tancar-ho</string>
 </resources>

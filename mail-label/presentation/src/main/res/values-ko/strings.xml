@@ -39,5 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">폴더 불러오기에 실패했습니다.</string>
   <string name="bottom_sheet_label_as_error_apply">라벨 적용에 실패했습니다.</string>
   <string name="bottom_sheet_move_to_action_error">이동 작업에 실패했습니다.</string>
-  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
+  <string name="bottom_sheet_move_to_category_no_change">선택된 이메일에 변경 사항이 적용되지 않습니다.</string>
 </resources>

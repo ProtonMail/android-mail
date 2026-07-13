@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Uutiskirjeet</string>
   <string name="category_title_transactions">Tapahtumat</string>
   <string name="category_spotlight_unseen_title">Uudet viestit %1$s:ssa</string>
-  <string name="category_spotlight_unseen_description">Kategorian kuvakkeeseen ilmestyy nyt piste, kun siinä on lukemattomia viestejä.</string>
+  <string name="category_spotlight_unseen_description">Sininen piste osoittaa, että kategoriassa on uusia viestejä sen jälkeen, kun olet viimeksi tarkistanut sen.</string>
+  <string name="category_spotlight_personalise_title">Mukauta omat luokkasi</string>
+  <string name="category_spotlight_personalise_description">Siirrä sähköposti toiseen luokkaan ”Siirrä”-toiminnolla. Samankaltaiset sähköpostit lajitellaan tästä lähtien automaattisesti kyseiseen luokkaan.</string>
   <string name="category_spotlight_close_content_description">Sulje</string>
 </resources>

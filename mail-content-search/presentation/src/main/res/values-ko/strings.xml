@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more..</string>
-  <string name="mail_settings_content_search_toggle_title">Content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
-  <string name="mail_settings_content_search_preparing_status">Preparing…</string>
-  <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_header_title">검색</string>
+  <string name="mail_settings_content_search_description">기기 상에서 바로 모든 메시지를 검색할 수 있습니다.</string>
+  <string name="mail_settings_content_search_learn_more">자세히 알아보기..</string>
+  <string name="mail_settings_content_search_toggle_title">콘텐츠 검색</string>
+  <string name="mail_settings_content_search_mobile_data_title">모바일 데이터로 다운로드 허용</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi 신호 유실시 모바일 데이터로 계속 다운로드합니다.</string>
+  <string name="mail_settings_content_search_syncing_status">동기화 중… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">준비 중…</string>
+  <string name="mail_settings_content_search_clear_data_button">로컬 검색 데이터 지우기</string>
+  <string name="mail_settings_content_search_clear_data_description">로컬 검색 데이터를 지우면 메시지 콘텐츠 검색도 함께 비활성화됩니다. 언제든지 다시 재활성화할 수 있습니다.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">콘텐츠 색인이 다른 계정에서 진행 중입니다. 이 계정의 색인을 진행하려면 앞서 진행 중인 색인이 완료될 때까지 기다려야합니다.</string>
 </resources>

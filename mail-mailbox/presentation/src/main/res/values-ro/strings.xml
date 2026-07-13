@@ -94,16 +94,7 @@
     <item quantity="few">Mesajele au fost mutate în «%s».</item>
     <item quantity="other">Mesajele au fost mutate în «%s».</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="one">Conversația s-a mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-    <item quantity="few">Conversațiile s-au mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-    <item quantity="other">Conversațiile s-au mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="one">Mesajul s-a mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-    <item quantity="few">Mesajele s-au mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-    <item quantity="other">Mesajele s-au mutat în %s.\nMesajele similare vor fi categorizate în acest fel.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">Mesajul s-a mutat în %s. În viitor, mesajele similare vor fi categorizate aici.</string>
   <string name="mailbox_action_button_clear_trash">Golire gunoi</string>
   <string name="mailbox_action_button_clear_spam">Golire nedorite</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile</string>

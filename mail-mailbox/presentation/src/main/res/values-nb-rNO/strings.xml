@@ -85,14 +85,7 @@
     <item quantity="one">Meldingen flyttet til %s</item>
     <item quantity="other">Meldinger flyttet til %s</item>
   </plurals>
-  <plurals name="mailbox_action_move_conversation_to_category">
-    <item quantity="one">Conversation moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="other">Conversations moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
-  <plurals name="mailbox_action_move_message_to_category">
-    <item quantity="one">Message moved to %s\nSimilar messages will now be categorized this way.</item>
-    <item quantity="other">Messages moved to %s\nSimilar messages will now be categorized this way.</item>
-  </plurals>
+  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
   <string name="mailbox_action_button_clear_trash">Tøm papirkurven</string>
   <string name="mailbox_action_button_clear_spam">Tøm søppelpost</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager</string>

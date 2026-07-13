@@ -25,6 +25,8 @@
   <string name="category_title_newsletters">Newsletters</string>
   <string name="category_title_transactions">Transactions</string>
   <string name="category_spotlight_unseen_title">Nouveaux messages dans %1$s</string>
-  <string name="category_spotlight_unseen_description">Un point apparaît désormais sur l\'icône d\'une catégorie lorsqu\'elle contient des messages non lus.</string>
+  <string name="category_spotlight_unseen_description">Un point bleu indique qu\'une catégorie contient de nouveaux messages depuis votre dernière consultation.</string>
+  <string name="category_spotlight_personalise_title">Personnalisez vos catégories</string>
+  <string name="category_spotlight_personalise_description">Déplacez un e-mail vers une autre catégorie à l\'aide de l\'option « Déplacer vers ». Les e-mails similaires y seront désormais automatiquement triés.</string>
   <string name="category_spotlight_close_content_description">Fermer</string>
 </resources>
