@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -32,7 +32,7 @@ import kotlin.test.assertEquals
 internal class ObserveContentSearchIndexingStatusTest {
 
     private val userId = UserId("user-1")
-    private val repository = mockk<ContentSearchSettingsRepository>()
+    private val repository = mockk<ContentSearchRepository>()
     private val observeContentSearchIndexingStatus = ObserveContentSearchIndexingStatus(repository)
 
     @Test

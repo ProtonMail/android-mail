@@ -24,7 +24,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
 import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
@@ -35,9 +34,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import uniffi.mail_uniffi.SyncEvent
-import uniffi.mail_uniffi.SyncEventStream
-import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -100,55 +96,6 @@ internal class ContentSearchSettingsRepositoryImplTest {
     }
 
     @Test
-    fun `clearLocalData resets the sync service`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.reset() } returns Unit.right()
-
-        // When
-        val result = repository.clearLocalData(userId)
-
-        // Then
-        assertEquals(Unit.right(), result)
-        coVerify { syncServiceWrapper.reset() }
-    }
-
-    @Test
-    fun `getIndexingStatus maps the sync service status to the domain state`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.status() } returns SyncStatus.COMPLETED.right()
-
-        // When
-        val result = repository.getIndexingStatus(userId)
-
-        // Then
-        assertEquals(ContentIndexingState.Completed, result)
-    }
-
-    @Test
-    fun `getIndexingStatus maps ONGOING with no known progress to Initializing`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
-
-        // When
-        val result = repository.getIndexingStatus(userId)
-
-        // Then
-        assertEquals(ContentIndexingState.Initializing, result)
-    }
-
-    @Test
-    fun `getIndexingStatus falls back to Idle when the session has no status`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.status() } returns DataError.Local.Unknown.left()
-
-        // When
-        val result = repository.getIndexingStatus(userId)
-
-        // Then
-        assertEquals(ContentIndexingState.Idle, result)
-    }
-
-    @Test
     fun `observeIsEnabled emits the current value on start`() = runTest {
         // Given
         coEvery { syncServiceWrapper.isEnabled() } returns true.right()
@@ -156,36 +103,6 @@ internal class ContentSearchSettingsRepositoryImplTest {
         // When + Then
         repository.observeIsEnabled(userId).test {
             assertEquals(true, awaitItem())
-        }
-    }
-
-    @Test
-    fun `observeIndexingStatus emits the snapshot then live events until a terminal one`() = runTest {
-        // Given
-        val stream = mockk<SyncEventStream> {
-            every { destroy() } returns Unit
-        }
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
-        coEvery { stream.next() } returnsMany listOf(SyncEvent.Progress(50.0), SyncEvent.Completed)
-
-        // When + Then
-        repository.observeIndexingStatus(userId).test {
-            assertEquals(ContentIndexingState.Initializing, awaitItem())
-            assertEquals(ContentIndexingState.Running(50.0), awaitItem())
-            assertEquals(ContentIndexingState.Completed, awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `observeIndexingStatus closes when subscribing fails`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.subscribe() } returns DataError.Local.Unknown.left()
-
-        // When + Then
-        repository.observeIndexingStatus(userId).test {
-            awaitComplete()
         }
     }
 }

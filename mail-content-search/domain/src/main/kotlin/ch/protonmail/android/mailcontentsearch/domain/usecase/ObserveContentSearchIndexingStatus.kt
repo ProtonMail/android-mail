@@ -19,13 +19,13 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObserveContentSearchIndexingStatus @Inject constructor(
-    private val repository: ContentSearchSettingsRepository
+    private val repository: ContentSearchRepository
 ) {
 
     operator fun invoke(userId: UserId): Flow<ContentIndexingState> = repository.observeIndexingStatus(userId)

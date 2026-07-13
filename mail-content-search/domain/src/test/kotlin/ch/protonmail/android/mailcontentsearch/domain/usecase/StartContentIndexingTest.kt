@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -34,16 +33,16 @@ internal class StartContentIndexingTest {
 
     private val userId = UserId("user-1")
     private val scheduler = mockk<ContentIndexingScheduler>()
-    private val settingsRepository = mockk<ContentSearchSettingsRepository>()
+    private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus>()
     private val isContentSearchAllowedOnMobileData = mockk<IsContentSearchAllowedOnMobileData> {
         coEvery { this@mockk.invoke() } returns false
     }
     private val startContentIndexing =
-        StartContentIndexing(scheduler, settingsRepository, isContentSearchAllowedOnMobileData)
+        StartContentIndexing(scheduler, getContentSearchIndexingStatus, isContentSearchAllowedOnMobileData)
 
     @Test
     fun `returns AlreadySynced and does not enqueue when rust reports Completed`() = runTest {
-        coEvery { settingsRepository.getIndexingStatus(userId) } returns ContentIndexingState.Completed
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
 
         val result = startContentIndexing(userId)
 
@@ -53,7 +52,7 @@ internal class StartContentIndexingTest {
 
     @Test
     fun `enqueues the worker when rust reports a non-terminal status`() = runTest {
-        coEvery { settingsRepository.getIndexingStatus(userId) } returns ContentIndexingState.Idle
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Idle
         coEvery { scheduler.enqueue(userId, false) } returns EnqueueIndexingResult.Scheduled
 
         val result = startContentIndexing(userId)

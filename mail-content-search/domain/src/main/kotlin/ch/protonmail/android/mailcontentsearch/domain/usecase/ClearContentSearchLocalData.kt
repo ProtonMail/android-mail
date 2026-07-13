@@ -20,12 +20,12 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ClearContentSearchLocalData @Inject constructor(
-    private val repository: ContentSearchSettingsRepository
+    private val repository: ContentSearchRepository
 ) {
 
     suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = repository.clearLocalData(userId)

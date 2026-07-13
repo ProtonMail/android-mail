@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -33,7 +33,7 @@ import kotlin.test.assertEquals
 internal class ClearContentSearchLocalDataTest {
 
     private val userId = UserId("user-1")
-    private val repository = mockk<ContentSearchSettingsRepository>()
+    private val repository = mockk<ContentSearchRepository>()
     private val clearContentSearchLocalData = ClearContentSearchLocalData(repository)
 
     @Test

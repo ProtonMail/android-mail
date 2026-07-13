@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcontentsearch.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
@@ -31,10 +30,4 @@ interface ContentSearchSettingsRepository {
     fun observeIsEnabled(userId: UserId): Flow<Boolean>
 
     suspend fun setEnabled(userId: UserId, enabled: Boolean): Either<DataError, Unit>
-
-    suspend fun clearLocalData(userId: UserId): Either<DataError, Unit>
-
-    fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState>
-
-    suspend fun getIndexingStatus(userId: UserId): ContentIndexingState
 }

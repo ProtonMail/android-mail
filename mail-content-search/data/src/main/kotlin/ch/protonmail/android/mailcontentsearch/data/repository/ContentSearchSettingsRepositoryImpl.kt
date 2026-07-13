@@ -22,27 +22,18 @@ import arrow.core.Either
 import arrow.core.flatten
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
-import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
 import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
-import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
 class ContentSearchSettingsRepositoryImpl @Inject constructor(
@@ -71,69 +62,4 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
         }.flatten().also { result ->
             result.onRight { enabledChanges.tryEmit(userId) }
         }
-
-    override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
-        executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).reset()
-        }.flatten()
-
-    override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> =
-        observeForUser(userId).flowOn(ioDispatcher)
-
-    override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState =
-        readIndexingState(userId) ?: ContentIndexingState.Idle
-
-    private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
-        executeWithUserSession(userId) { wrapper ->
-            currentIndexingState(createRustSyncService(wrapper))
-        }.getOrNull()
-
-    private suspend fun currentIndexingState(syncService: SyncServiceWrapper): ContentIndexingState? =
-        syncService.status().getOrNull()?.toIndexingState(progress = null)
-
-    private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
-        // Subscribe before reading the snapshot: the stream has no replay, so anything
-        // published between the snapshot read and subscribe() would otherwise be lost
-        // (e.g. a terminal event that fires in that window would never reach this collector).
-        val stream = executeWithUserSession(userId) { wrapper ->
-            val syncService = createRustSyncService(wrapper)
-            val subscribeResult = syncService.subscribe()
-
-            subscribeResult.onRight { currentIndexingState(syncService)?.let { trySend(it) } }
-
-            subscribeResult
-        }.flatten().fold(
-            ifLeft = { error ->
-                Timber.e("content-search: failed to register indexing watcher: $error")
-                null
-            },
-            ifRight = { it }
-        )
-
-        if (stream == null) {
-            close()
-            return@callbackFlow
-        }
-
-        launch {
-            while (isActive) {
-                val event = stream.next()
-                if (event == null) {
-                    Timber.w("content-search: indexing watcher closed")
-                    close()
-                    break
-                }
-
-                event.toIndexingState()?.let { trySend(it) }
-                if (event.isTerminal()) {
-                    close()
-                    break
-                }
-            }
-        }
-
-        awaitClose {
-            runCatching { stream.destroy() }
-        }
-    }
 }

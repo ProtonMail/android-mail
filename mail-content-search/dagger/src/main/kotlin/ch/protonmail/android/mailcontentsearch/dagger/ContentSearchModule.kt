@@ -20,11 +20,13 @@ package ch.protonmail.android.mailcontentsearch.dagger
 
 import ch.protonmail.android.mailcontentsearch.data.indexer.RustContentSearchIndexer
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPreferencesRepositoryImpl
+import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchSettingsRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.data.scheduler.ContentIndexingSchedulerImpl
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import dagger.Binds
 import dagger.Module
@@ -47,6 +49,10 @@ interface ContentSearchModule {
     @Binds
     @Singleton
     fun bindContentSearchSettingsRepository(impl: ContentSearchSettingsRepositoryImpl): ContentSearchSettingsRepository
+
+    @Binds
+    @Singleton
+    fun bindContentSearchRepository(impl: ContentSearchRepositoryImpl): ContentSearchRepository
 
     @Binds
     @Singleton
