@@ -27,7 +27,7 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
     SyncStatus.PENDING -> ContentIndexingState.Idle
     // No known progress yet (e.g. a fresh one-shot read before any live event arrived):
     // Initializing rather than Running(0.0), so the UI shows a "preparing" placeholder
-    // instead of a misleading 0% instead of nothing.
+    // instead of a misleading 0%.
     SyncStatus.ONGOING -> progress?.let { ContentIndexingState.Running(it) } ?: ContentIndexingState.Initializing
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
 }
