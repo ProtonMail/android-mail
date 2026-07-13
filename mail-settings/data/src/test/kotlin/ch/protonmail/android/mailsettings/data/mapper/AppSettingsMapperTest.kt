@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.data.mapper
 
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
+import ch.protonmail.android.mailsettings.domain.model.AppSettingsDiff
 import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
 import ch.protonmail.android.mailsettings.domain.model.Theme
@@ -113,6 +114,34 @@ internal class AppSettingsMapperTest {
                     swipeNext = SwipeNextPreference.NotEnabled
                 )
                 .customAppLanguage
+        )
+    }
+
+    @Test
+    fun `when map LocalAppSettings then useMobileDataForContentSearchIndexing is mapped`() {
+        assertFalse(
+            localAppSettings
+                .toAppSettings(null, MobileSignaturePreference.Empty, SwipeNextPreference.NotEnabled)
+                .useMobileDataForContentSearchIndexing
+                .enabled
+        )
+        assertTrue(
+            localAppSettings.copy(useMobileDataForContentSearchIndexing = true)
+                .toAppSettings(null, MobileSignaturePreference.Empty, SwipeNextPreference.NotEnabled)
+                .useMobileDataForContentSearchIndexing
+                .enabled
+        )
+    }
+
+    @Test
+    fun `when map AppSettingsDiff then useMobileDataForContentSearchIndexing is mapped`() {
+        assertEquals(
+            true,
+            AppSettingsDiff(useMobileDataForContentSearchIndexing = true).toAppDiff()
+                .useMobileDataForContentSearchIndexing
+        )
+        assertNull(
+            AppSettingsDiff().toAppDiff().useMobileDataForContentSearchIndexing
         )
     }
 }

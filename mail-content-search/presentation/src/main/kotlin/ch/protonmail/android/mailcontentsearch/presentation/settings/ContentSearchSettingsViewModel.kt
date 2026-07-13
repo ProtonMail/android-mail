@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
-import ch.protonmail.android.mailcontentsearch.domain.usecase.GetAllowContentSearchOnMobileData
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
@@ -72,7 +72,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val observeOngoingIndexingUserId: ObserveOngoingIndexingUserId,
-    private val getAllowContentSearchOnMobileData: GetAllowContentSearchOnMobileData,
+    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
     private val setAllowContentSearchOnMobileData: SetAllowContentSearchOnMobileData,
     private val observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
@@ -119,7 +119,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
             emitNewStateFor(
                 Data.ContentLoaded(
                     isContentSearchEnabled = enabled,
-                    isAllowMobileDataEnabled = getAllowContentSearchOnMobileData()
+                    isAllowMobileDataEnabled = isContentSearchAllowedOnMobileData()
                 )
             )
             true

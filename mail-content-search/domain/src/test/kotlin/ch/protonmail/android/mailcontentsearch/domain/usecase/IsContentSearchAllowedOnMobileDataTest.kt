@@ -30,10 +30,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal class GetAllowContentSearchOnMobileDataTest {
+internal class IsContentSearchAllowedOnMobileDataTest {
 
     private val repository = mockk<ContentSearchPreferencesRepository>()
-    private val getAllowContentSearchOnMobileData = GetAllowContentSearchOnMobileData(repository)
+    private val isContentSearchAllowedOnMobileData = IsContentSearchAllowedOnMobileData(repository)
 
     @Test
     fun `returns the stored preference when present`() = runTest {
@@ -41,7 +41,7 @@ internal class GetAllowContentSearchOnMobileDataTest {
         coEvery { repository.getAllowMobileData() } returns false.right()
 
         // When
-        val result = getAllowContentSearchOnMobileData()
+        val result = isContentSearchAllowedOnMobileData()
 
         // Then
         assertFalse(result)
@@ -53,7 +53,7 @@ internal class GetAllowContentSearchOnMobileDataTest {
         coEvery { repository.getAllowMobileData() } returns PreferencesError.left()
 
         // When
-        val result = getAllowContentSearchOnMobileData()
+        val result = isContentSearchAllowedOnMobileData()
 
         // Then
         assertTrue(result)
@@ -65,7 +65,7 @@ internal class GetAllowContentSearchOnMobileDataTest {
         coEvery { repository.getAllowMobileData() } returns true.right()
 
         // When
-        val result = getAllowContentSearchOnMobileData()
+        val result = isContentSearchAllowedOnMobileData()
 
         // Then
         assertEquals(true, result)

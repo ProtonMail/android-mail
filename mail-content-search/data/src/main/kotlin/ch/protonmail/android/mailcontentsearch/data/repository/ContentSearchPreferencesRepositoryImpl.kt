@@ -18,36 +18,25 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.mapper.safeData
-import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
+import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ContentSearchPreferencesRepositoryImpl @Inject constructor(
-    private val dataStoreProvider: ContentSearchDataStoreProvider
+    private val appSettingsRepository: AppSettingsRepository
 ) : ContentSearchPreferencesRepository {
 
-    private val allowMobileDataKey = booleanPreferencesKey("contentSearchAllowMobileDataPrefKey")
-
     override suspend fun getAllowMobileData(): Either<PreferencesError, Boolean> =
-        dataStoreProvider.allowMobileDataDataStore.safeData.map { preferences ->
-            preferences.map { it[allowMobileDataKey] ?: DefaultAllowMobileData }
-        }.first()
+        appSettingsRepository.observeAppSettings().first().useMobileDataForContentSearchIndexing.enabled.right()
 
     override suspend fun setAllowMobileData(value: Boolean): Either<PreferencesError, Unit> =
-        dataStoreProvider.allowMobileDataDataStore.safeEdit { preferences ->
-            preferences[allowMobileDataKey] = value
-        }.map { Unit.right() }
-
-    private companion object {
-
-        const val DefaultAllowMobileData = true
-    }
+        appSettingsRepository.updateUseMobileDataForContentSearch(value).fold(
+            ifLeft = { PreferencesError.left() },
+            ifRight = { Unit.right() }
+        )
 }

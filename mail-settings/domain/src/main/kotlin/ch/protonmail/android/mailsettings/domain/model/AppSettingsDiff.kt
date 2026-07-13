@@ -23,5 +23,6 @@ data class AppSettingsDiff(
     val theme: Theme? = null,
     val interval: AutoLockInterval? = null,
     val alternativeRouting: Boolean? = null,
-    val combineContacts: Boolean? = null
+    val combineContacts: Boolean? = null,
+    val useMobileDataForContentSearchIndexing: Boolean? = null
 )

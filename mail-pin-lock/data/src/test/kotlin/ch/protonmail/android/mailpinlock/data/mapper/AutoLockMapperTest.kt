@@ -23,6 +23,7 @@ import ch.protonmail.android.mailpinlock.model.AutoLockBiometricsState
 import ch.protonmail.android.mailpinlock.model.AutoLockInterval
 import ch.protonmail.android.mailpinlock.model.BiometricsSystemState
 import ch.protonmail.android.mailpinlock.model.Protection
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
@@ -40,7 +41,8 @@ class AutoLockMapperTest {
         hasCombinedContactsEnabled = true,
         hasAlternativeRouting = false,
         mobileSignaturePreference = MobileSignaturePreference.Empty,
-        swipeNextPreference = SwipeNextPreference(true)
+        swipeNextPreference = SwipeNextPreference(true),
+        useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.Enabled
     )
 
     private val biometricsSystemState = BiometricsSystemState.BiometricEnrolled

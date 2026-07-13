@@ -16,22 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontentsearch.domain.usecase
+package ch.protonmail.android.mailsettings.domain.model
 
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
-import javax.inject.Inject
+@JvmInline
+value class AllowMobileDataForContentSearchIndexing(val enabled: Boolean) {
 
-class GetAllowContentSearchOnMobileData @Inject constructor(
-    private val repository: ContentSearchPreferencesRepository
-) {
+    companion object {
 
-    suspend operator fun invoke(): Boolean = repository.getAllowMobileData().fold(
-        ifLeft = { DefaultValue },
-        ifRight = { it }
-    )
-
-    private companion object {
-
-        const val DefaultValue = true
+        val Enabled = AllowMobileDataForContentSearchIndexing(true)
+        val NotEnabled = AllowMobileDataForContentSearchIndexing(false)
     }
 }

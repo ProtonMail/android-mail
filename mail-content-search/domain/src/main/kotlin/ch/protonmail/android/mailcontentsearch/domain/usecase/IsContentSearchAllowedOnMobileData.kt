@@ -16,21 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontentsearch.data.local
+package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import javax.inject.Inject
 
-class ContentSearchDataStoreProvider @Inject constructor(
-    context: Context
+class IsContentSearchAllowedOnMobileData @Inject constructor(
+    private val repository: ContentSearchPreferencesRepository
 ) {
 
-    private val Context.allowMobileDataDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "contentSearchAllowMobileDataPrefDataStore"
+    suspend operator fun invoke(): Boolean = repository.getAllowMobileData().fold(
+        ifLeft = { DefaultValue },
+        ifRight = { it }
     )
 
-    val allowMobileDataDataStore = context.allowMobileDataDataStore
+    private companion object {
+
+        const val DefaultValue = true
+    }
 }

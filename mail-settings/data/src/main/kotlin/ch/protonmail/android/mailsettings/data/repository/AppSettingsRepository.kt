@@ -110,6 +110,9 @@ class AppSettingsRepository @Inject constructor(
     override suspend fun updateUseCombineContacts(value: Boolean): Either<DataError, Unit> =
         updateAppSettings(AppSettingsDiff(combineContacts = value))
 
+    override suspend fun updateUseMobileDataForContentSearch(value: Boolean): Either<DataError, Unit> =
+        updateAppSettings(AppSettingsDiff(useMobileDataForContentSearchIndexing = value))
+
     override suspend fun updateSwipeToNextEmail(userId: UserId, value: Boolean): Either<DataError, Unit> =
         swipeNextRepository.setSwipeNextEnabled(userId, value)
 

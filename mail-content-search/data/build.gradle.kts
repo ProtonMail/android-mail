@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":mail-common:data"))
     implementation(project(":mail-session:domain"))
     implementation(project(":mail-session:data"))
+    implementation(project(":mail-settings:domain"))
 
     testImplementation(libs.bundles.test)
     testImplementation(libs.proton.rust.core)

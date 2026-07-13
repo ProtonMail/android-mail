@@ -33,6 +33,7 @@ interface AppSettingsRepository {
     suspend fun updateTheme(theme: Theme): Either<DataError, Unit>
     suspend fun updateAlternativeRouting(value: Boolean): Either<DataError, Unit>
     suspend fun updateUseCombineContacts(value: Boolean): Either<DataError, Unit>
+    suspend fun updateUseMobileDataForContentSearch(value: Boolean): Either<DataError, Unit>
     suspend fun updateSwipeToNextEmail(userId: UserId, value: Boolean): Either<DataError, Unit>
     suspend fun updateInterval(interval: AutoLockInterval): Either<DataError, Unit>
     suspend fun refreshSettings()

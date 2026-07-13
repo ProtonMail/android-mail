@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.testdata
 
 import ch.protonmail.android.mailpinlock.model.AutoLockInterval
 import ch.protonmail.android.mailpinlock.model.Protection
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
@@ -35,6 +36,7 @@ object AppSettingsTestData {
         hasCombinedContactsEnabled = true,
         theme = Theme.SYSTEM_DEFAULT,
         mobileSignaturePreference = MobileSignaturePreference.Empty,
-        swipeNextPreference = SwipeNextPreference.NotEnabled
+        swipeNextPreference = SwipeNextPreference.NotEnabled,
+        useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.Enabled
     )
 }

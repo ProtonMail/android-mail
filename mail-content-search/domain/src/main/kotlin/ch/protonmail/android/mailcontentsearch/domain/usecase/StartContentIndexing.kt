@@ -28,13 +28,13 @@ import javax.inject.Inject
 class StartContentIndexing @Inject constructor(
     private val scheduler: ContentIndexingScheduler,
     private val settingsRepository: ContentSearchSettingsRepository,
-    private val getAllowContentSearchOnMobileData: GetAllowContentSearchOnMobileData
+    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData
 ) {
 
     suspend operator fun invoke(userId: UserId): EnqueueIndexingResult {
         if (settingsRepository.getIndexingStatus(userId) is ContentIndexingState.Completed) {
             return EnqueueIndexingResult.AlreadySynced
         }
-        return scheduler.enqueue(userId = userId, allowMobileData = getAllowContentSearchOnMobileData())
+        return scheduler.enqueue(userId = userId, allowMobileData = isContentSearchAllowedOnMobileData())
     }
 }

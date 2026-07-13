@@ -36,6 +36,7 @@ import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsettings.data.local.RustAppSettingsDataSource
 import ch.protonmail.android.mailsettings.data.repository.AppSettingsRepository
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
@@ -141,7 +142,8 @@ internal class AutoLockRepositoryImplTest {
         hasCombinedContactsEnabled = true,
         theme = Theme.LIGHT,
         mobileSignaturePreference = MobileSignaturePreference.Empty,
-        swipeNextPreference = SwipeNextPreference.NotEnabled
+        swipeNextPreference = SwipeNextPreference.NotEnabled,
+        useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.NotEnabled
     )
 
     @Test

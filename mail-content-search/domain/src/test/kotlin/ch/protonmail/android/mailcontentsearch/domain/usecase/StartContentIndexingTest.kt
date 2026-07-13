@@ -35,11 +35,11 @@ internal class StartContentIndexingTest {
     private val userId = UserId("user-1")
     private val scheduler = mockk<ContentIndexingScheduler>()
     private val settingsRepository = mockk<ContentSearchSettingsRepository>()
-    private val getAllowContentSearchOnMobileData = mockk<GetAllowContentSearchOnMobileData> {
+    private val isContentSearchAllowedOnMobileData = mockk<IsContentSearchAllowedOnMobileData> {
         coEvery { this@mockk.invoke() } returns false
     }
     private val startContentIndexing =
-        StartContentIndexing(scheduler, settingsRepository, getAllowContentSearchOnMobileData)
+        StartContentIndexing(scheduler, settingsRepository, isContentSearchAllowedOnMobileData)
 
     @Test
     fun `returns AlreadySynced and does not enqueue when rust reports Completed`() = runTest {

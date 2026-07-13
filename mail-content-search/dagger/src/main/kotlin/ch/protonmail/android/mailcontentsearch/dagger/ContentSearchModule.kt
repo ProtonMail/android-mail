@@ -18,9 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.dagger
 
-import android.content.Context
 import ch.protonmail.android.mailcontentsearch.data.indexer.RustContentSearchIndexer
-import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPreferencesRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchSettingsRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.data.scheduler.ContentIndexingSchedulerImpl
@@ -30,9 +28,7 @@ import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPr
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -57,13 +53,4 @@ interface ContentSearchModule {
     fun bindContentSearchPreferencesRepository(
         impl: ContentSearchPreferencesRepositoryImpl
     ): ContentSearchPreferencesRepository
-
-    companion object {
-
-        @Provides
-        @Singleton
-        fun provideContentSearchDataStoreProvider(
-            @ApplicationContext context: Context
-        ): ContentSearchDataStoreProvider = ContentSearchDataStoreProvider(context)
-    }
 }

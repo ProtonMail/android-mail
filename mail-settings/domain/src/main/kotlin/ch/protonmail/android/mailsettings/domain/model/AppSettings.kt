@@ -29,7 +29,8 @@ data class AppSettings(
     val hasCombinedContactsEnabled: Boolean,
     val theme: Theme,
     val mobileSignaturePreference: MobileSignaturePreference,
-    val swipeNextPreference: SwipeNextPreference
+    val swipeNextPreference: SwipeNextPreference,
+    val useMobileDataForContentSearchIndexing: AllowMobileDataForContentSearchIndexing
 ) {
     val hasAutoLock = autolockProtection != Protection.None
 
@@ -48,7 +49,8 @@ data class AppSettings(
             DEFAULT_HAS_DEVICE_CONTACTS_ENABLED,
             DEFAULT_THEME,
             MobileSignaturePreference.Empty,
-            SwipeNextPreference.NotEnabled
+            SwipeNextPreference.NotEnabled,
+            AllowMobileDataForContentSearchIndexing.Enabled
         )
     }
 }

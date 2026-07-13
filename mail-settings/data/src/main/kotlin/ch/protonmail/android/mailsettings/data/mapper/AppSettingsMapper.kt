@@ -25,6 +25,7 @@ import ch.protonmail.android.mailpinlock.model.AutoLockInterval
 import ch.protonmail.android.mailpinlock.model.Protection
 import ch.protonmail.android.mailsettings.data.mapper.LocalMapperThemeConstants.defaultThemeFallback
 import ch.protonmail.android.mailsettings.data.mapper.LocalMapperThemeConstants.themeAppearanceLookup
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.AppSettingsDiff
@@ -57,7 +58,7 @@ fun AppSettingsDiff.toAppDiff(): LocalAppSettingsDiff {
         useCombineContacts = combineContacts,
         useAlternativeRouting = alternativeRouting,
         appearance = theme?.let { setTheme(it) },
-        useMobileDataForContentSearchIndexing = null // ET-6485
+        useMobileDataForContentSearchIndexing = useMobileDataForContentSearchIndexing
     )
 }
 
@@ -98,6 +99,9 @@ fun LocalAppSettings.toAppSettings(
     customAppLanguage = customLanguage?.langName,
     hasCombinedContactsEnabled = useCombineContacts,
     mobileSignaturePreference = mobileSignature,
-    swipeNextPreference = swipeNext
+    swipeNextPreference = swipeNext,
+    useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing(
+        useMobileDataForContentSearchIndexing
+    )
 )
 

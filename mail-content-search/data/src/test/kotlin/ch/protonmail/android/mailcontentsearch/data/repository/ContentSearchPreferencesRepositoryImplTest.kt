@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
+import ch.protonmail.android.mailsettings.domain.model.AppSettings
+import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -28,24 +32,22 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class ContentSearchPreferencesRepositoryImplTest {
 
-    private val dataStore = mockk<DataStore<Preferences>>()
-    private val dataStoreProvider = mockk<ContentSearchDataStoreProvider> {
-        every { allowMobileDataDataStore } returns dataStore
-    }
-    private val repository = ContentSearchPreferencesRepositoryImpl(dataStoreProvider)
+    private val appSettingsRepository = mockk<AppSettingsRepository>()
+    private val repository = ContentSearchPreferencesRepositoryImpl(appSettingsRepository)
 
     @Test
-    fun `returns the stored allow mobile data value when present`() = runTest {
+    fun `returns the allow mobile data value stored in the rust app settings`() = runTest {
         // Given
-        val preferences = mockk<Preferences> {
-            every { get(any<Preferences.Key<Boolean>>()) } returns false
-        }
-        every { dataStore.data } returns flowOf(preferences)
+        val appSettings = AppSettings.default().copy(
+            useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.NotEnabled
+        )
+        every { appSettingsRepository.observeAppSettings() } returns flowOf(appSettings)
 
         // When
         val result = repository.getAllowMobileData()
@@ -55,12 +57,12 @@ internal class ContentSearchPreferencesRepositoryImplTest {
     }
 
     @Test
-    fun `defaults to allowing mobile data when no value is stored`() = runTest {
+    fun `defaults to allowing mobile data when the rust app settings enable it`() = runTest {
         // Given
-        val preferences = mockk<Preferences> {
-            every { get(any<Preferences.Key<Boolean>>()) } returns null
-        }
-        every { dataStore.data } returns flowOf(preferences)
+        val appSettings = AppSettings.default().copy(
+            useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.Enabled
+        )
+        every { appSettingsRepository.observeAppSettings() } returns flowOf(appSettings)
 
         // When
         val result = repository.getAllowMobileData()
@@ -70,14 +72,29 @@ internal class ContentSearchPreferencesRepositoryImplTest {
     }
 
     @Test
-    fun `persists the allow mobile data value through the data store`() = runTest {
+    fun `persists the allow mobile data value through the rust app settings repository`() = runTest {
         // Given
-        coEvery { dataStore.updateData(any()) } returns mockk()
+        coEvery { appSettingsRepository.updateUseMobileDataForContentSearch(true) } returns Unit.right()
 
         // When
-        repository.setAllowMobileData(true)
+        val result = repository.setAllowMobileData(true)
 
         // Then
-        coVerify { dataStore.updateData(any()) }
+        coVerify { appSettingsRepository.updateUseMobileDataForContentSearch(true) }
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `returns a preferences error when the rust app settings update fails`() = runTest {
+        // Given
+        coEvery {
+            appSettingsRepository.updateUseMobileDataForContentSearch(true)
+        } returns DataError.Local.NotFound.left()
+
+        // When
+        val result = repository.setAllowMobileData(true)
+
+        // Then
+        assertEquals(PreferencesError.left(), result)
     }
 }

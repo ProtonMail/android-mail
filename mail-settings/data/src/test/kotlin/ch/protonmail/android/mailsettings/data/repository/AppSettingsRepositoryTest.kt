@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsettings.data.local.RustAppSettingsDataSource
+import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.MobileSignaturePreference
@@ -80,7 +81,8 @@ internal class AppSettingsRepositoryTest {
         hasCombinedContactsEnabled = true,
         theme = Theme.LIGHT,
         mobileSignaturePreference = MobileSignaturePreference.Empty,
-        swipeNextPreference = SwipeNextPreference.NotEnabled
+        swipeNextPreference = SwipeNextPreference.NotEnabled,
+        useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing.NotEnabled
     )
 
     private val userId = UserId("user-123")
@@ -257,6 +259,29 @@ internal class AppSettingsRepositoryTest {
             assertEquals(expectedInitialAppSettings, awaitItem())
 
             appSettingsRepository.updateAlternativeRouting(expectedUpdatedRouting)
+
+            assertEquals(expectedUpdatedAppSettings, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when useMobileDataForContentSearchIndexing is updated then appSettings observer is also updated`() = runTest {
+        // Given
+        val expectedInitialAppSettings = expectedAppSettings
+        val expectedUpdatedValue = true
+        val expectedUpdatedAppSettings = expectedAppSettings.copy(
+            useMobileDataForContentSearchIndexing = AllowMobileDataForContentSearchIndexing(expectedUpdatedValue)
+        )
+
+        coEvery {
+            appSettingsDataSource.getAppSettings(mockMailSessionWrapper)
+        } returns mockAppSettings.right() andThen
+            mockAppSettings.copy(useMobileDataForContentSearchIndexing = expectedUpdatedValue).right()
+        // When
+        appSettingsRepository.observeAppSettings().test {
+            assertEquals(expectedInitialAppSettings, awaitItem())
+
+            appSettingsRepository.updateUseMobileDataForContentSearch(expectedUpdatedValue)
 
             assertEquals(expectedUpdatedAppSettings, awaitItem())
         }
