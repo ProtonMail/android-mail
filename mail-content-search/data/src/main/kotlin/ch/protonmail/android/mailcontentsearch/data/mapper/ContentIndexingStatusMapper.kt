@@ -19,28 +19,42 @@
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import uniffi.mail_uniffi.ContentSearchIndexingProgress
-import uniffi.mail_uniffi.ContentSearchIndexingStatus
+import uniffi.mail_uniffi.SyncDriverEvent
+import uniffi.mail_uniffi.SyncEvent
+import uniffi.mail_uniffi.SyncStatus
 
-@Suppress("MagicNumber")
-internal fun ContentSearchIndexingProgress.toPercentage() = (this.estimatedFraction ?: 0.0) * 100
-
-internal fun ContentSearchIndexingProgress.toIndexingState(): ContentIndexingState = toIndexingState(this.status, this)
-
-internal fun toIndexingState(
-    status: ContentSearchIndexingStatus,
-    progress: ContentSearchIndexingProgress?
-): ContentIndexingState = when (status) {
-    ContentSearchIndexingStatus.NONE -> ContentIndexingState.Idle
-    ContentSearchIndexingStatus.ONGOING -> ContentIndexingState.Running(progress?.toPercentage() ?: 0.0)
-    ContentSearchIndexingStatus.COMPLETED -> ContentIndexingState.Completed
-    ContentSearchIndexingStatus.INTERRUPTED -> ContentIndexingState.Cancelled
+internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
+    SyncStatus.PENDING -> ContentIndexingState.Idle
+    // No known progress yet (e.g. a fresh one-shot read before any live event arrived):
+    // Initializing rather than Running(0.0), so the UI shows a "preparing" placeholder
+    // instead of a misleading 0% instead of nothing.
+    SyncStatus.ONGOING -> progress?.let { ContentIndexingState.Running(it) } ?: ContentIndexingState.Initializing
+    SyncStatus.COMPLETED -> ContentIndexingState.Completed
 }
 
-internal fun ContentSearchIndexingStatus.isTerminal(): Boolean = when (this) {
-    ContentSearchIndexingStatus.NONE,
-    ContentSearchIndexingStatus.COMPLETED,
-    ContentSearchIndexingStatus.INTERRUPTED -> true
+/**
+ * Returns null for events that don't map to a UI-visible state change (e.g. per-item
+ * worker events), so callers can filter them out of the stream.
+ */
+internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
+    is SyncEvent.Started -> ContentIndexingState.Initializing
+    is SyncEvent.Progress -> ContentIndexingState.Running(this.v1)
+    is SyncEvent.Completed -> ContentIndexingState.Completed
+    is SyncEvent.Stopped -> ContentIndexingState.Cancelled
+    is SyncEvent.Driver -> when (this.v1) {
+        is SyncDriverEvent.Failure -> ContentIndexingState.Failed
+        is SyncDriverEvent.Completed -> null
+    }
 
-    ContentSearchIndexingStatus.ONGOING -> false
+    is SyncEvent.Worker -> null
+}
+
+internal fun SyncEvent.isTerminal(): Boolean = when (this) {
+    is SyncEvent.Completed,
+    is SyncEvent.Stopped -> true
+
+    is SyncEvent.Driver -> this.v1 is SyncDriverEvent.Failure
+    is SyncEvent.Started,
+    is SyncEvent.Progress,
+    is SyncEvent.Worker -> false
 }

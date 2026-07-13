@@ -19,87 +19,88 @@
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import io.mockk.every
-import io.mockk.mockk
-import uniffi.mail_uniffi.ContentSearchIndexingProgress
-import uniffi.mail_uniffi.ContentSearchIndexingStatus
+import uniffi.mail_uniffi.SyncDriverEvent
+import uniffi.mail_uniffi.SyncEvent
+import uniffi.mail_uniffi.SyncStatus
+import uniffi.mail_uniffi.SyncWorkerEvent
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class ContentIndexingStatusMapperTest {
 
-    private fun progress(status: ContentSearchIndexingStatus, fraction: Double?) =
-        mockk<ContentSearchIndexingProgress> {
-            every { this@mockk.status } returns status
-            every { estimatedFraction } returns fraction
-        }
-
     @Test
-    fun `maps NONE status to Idle`() {
-        assertEquals(ContentIndexingState.Idle, toIndexingState(ContentSearchIndexingStatus.NONE, null))
+    fun `maps PENDING status to Idle`() {
+        assertEquals(ContentIndexingState.Idle, SyncStatus.PENDING.toIndexingState(null))
     }
 
     @Test
     fun `maps COMPLETED status to Completed`() {
-        assertEquals(ContentIndexingState.Completed, toIndexingState(ContentSearchIndexingStatus.COMPLETED, null))
+        assertEquals(ContentIndexingState.Completed, SyncStatus.COMPLETED.toIndexingState(null))
     }
 
     @Test
-    fun `maps INTERRUPTED status to Cancelled`() {
-        assertEquals(ContentIndexingState.Cancelled, toIndexingState(ContentSearchIndexingStatus.INTERRUPTED, null))
+    fun `maps ONGOING status to Running with the given progress`() {
+        assertEquals(ContentIndexingState.Running(42.0), SyncStatus.ONGOING.toIndexingState(42.0))
     }
 
     @Test
-    fun `maps ONGOING status to Running with the progress percentage`() {
-        // Given
-        val ongoing = progress(ContentSearchIndexingStatus.ONGOING, fraction = 0.42)
-
-        // When
-        val result = toIndexingState(ContentSearchIndexingStatus.ONGOING, ongoing)
-
-        // Then
-        assertEquals(ContentIndexingState.Running(42.0), result)
+    fun `maps ONGOING status with no progress to Initializing`() {
+        assertEquals(ContentIndexingState.Initializing, SyncStatus.ONGOING.toIndexingState(null))
     }
 
     @Test
-    fun `maps ONGOING status with no fraction to Running at zero percent`() {
-        // When
-        val result = toIndexingState(ContentSearchIndexingStatus.ONGOING, null)
-
-        // Then
-        assertEquals(ContentIndexingState.Running(0.0), result)
+    fun `maps Started event to Initializing`() {
+        assertEquals(ContentIndexingState.Initializing, SyncEvent.Started.toIndexingState())
     }
 
     @Test
-    fun `progress extension derives the state from its own status`() {
-        // Given
-        val ongoing = progress(ContentSearchIndexingStatus.ONGOING, fraction = 1.0)
-
-        // When + Then
-        assertEquals(ContentIndexingState.Running(100.0), ongoing.toIndexingState())
+    fun `maps Progress event to Running`() {
+        assertEquals(ContentIndexingState.Running(64.0), SyncEvent.Progress(64.0).toIndexingState())
     }
 
     @Test
-    fun `toPercentage converts the estimated fraction to a percentage`() {
-        assertEquals(75.0, progress(ContentSearchIndexingStatus.ONGOING, fraction = 0.75).toPercentage())
+    fun `maps Completed event to Completed`() {
+        assertEquals(ContentIndexingState.Completed, SyncEvent.Completed.toIndexingState())
     }
 
     @Test
-    fun `toPercentage defaults to zero when the fraction is missing`() {
-        assertEquals(0.0, progress(ContentSearchIndexingStatus.ONGOING, fraction = null).toPercentage())
+    fun `maps Stopped event to Cancelled`() {
+        assertEquals(ContentIndexingState.Cancelled, SyncEvent.Stopped.toIndexingState())
     }
 
     @Test
-    fun `terminal statuses are reported as terminal`() {
-        assertTrue(ContentSearchIndexingStatus.NONE.isTerminal())
-        assertTrue(ContentSearchIndexingStatus.COMPLETED.isTerminal())
-        assertTrue(ContentSearchIndexingStatus.INTERRUPTED.isTerminal())
+    fun `maps Driver Failure event to Failed`() {
+        assertEquals(
+            ContentIndexingState.Failed,
+            SyncEvent.Driver(SyncDriverEvent.Failure("boom")).toIndexingState()
+        )
     }
 
     @Test
-    fun `ongoing status is not terminal`() {
-        assertFalse(ContentSearchIndexingStatus.ONGOING.isTerminal())
+    fun `Driver Completed event maps to null`() {
+        assertNull(SyncEvent.Driver(SyncDriverEvent.Completed).toIndexingState())
+    }
+
+    @Test
+    fun `Worker event maps to null`() {
+        assertNull(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).toIndexingState())
+    }
+
+    @Test
+    fun `terminal events are reported as terminal`() {
+        assertTrue(SyncEvent.Completed.isTerminal())
+        assertTrue(SyncEvent.Stopped.isTerminal())
+        assertTrue(SyncEvent.Driver(SyncDriverEvent.Failure("boom")).isTerminal())
+    }
+
+    @Test
+    fun `non-terminal events are reported as non-terminal`() {
+        assertFalse(SyncEvent.Started.isTerminal())
+        assertFalse(SyncEvent.Progress(10.0).isTerminal())
+        assertFalse(SyncEvent.Driver(SyncDriverEvent.Completed).isTerminal())
+        assertFalse(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).isTerminal())
     }
 }

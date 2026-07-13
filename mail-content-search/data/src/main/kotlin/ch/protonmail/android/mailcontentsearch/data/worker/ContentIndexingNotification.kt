@@ -33,24 +33,24 @@ internal object ContentIndexingNotification {
 
     const val NotificationId = 0x437E534C // "CSrch"
 
-    // ET-6209: swap the system icon for a branded one once available.
-
     fun build(
         context: Context,
         userId: UserId?,
         accountLabel: String?,
-        progress: Double
+        progress: Double?
     ): NotificationCompat.Builder {
         ensureChannel(context)
-        val percentage = progress.coerceAtLeast(0.0)
         val title = context.getString(R.string.content_search_notification_title)
         val titleWithAccount = accountLabel
             ?.takeIf { it.isNotBlank() }
             ?.let { "$title — $it" }
             ?: title
+        val contentText = progress?.let {
+            context.getString(R.string.content_search_notification_progress, it.coerceAtLeast(0.0))
+        } ?: context.getString(R.string.content_search_notification_preparing)
         return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
             .setContentTitle(titleWithAccount)
-            .setContentText(context.getString(R.string.content_search_notification_progress, percentage))
+            .setContentText(contentText)
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setOngoing(true)
             .setOnlyAlertOnce(true)

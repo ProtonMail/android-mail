@@ -78,7 +78,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         Timber.d("ContentIndexingWorker: starting for $userId (foreground=$runAsForeground)")
 
         val accountLabel = accountLabelFor(userId)
-        if (runAsForeground) trySetForeground(userId, accountLabel, progress = 0.0)
+        if (runAsForeground) trySetForeground(userId, accountLabel, progress = null)
 
         return mailSessionRepository.runInRustBackground {
             coroutineScope {
@@ -108,7 +108,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val userId = userIdOrNull()
         val label = userId?.let { accountLabelFor(it) }
-        return buildForegroundInfo(userId, label, progress = 0.0)
+        return buildForegroundInfo(userId, label, progress = null)
     }
 
     private fun userIdOrNull(): UserId? = inputData.getString(KeyUserId)?.takeIf { it.isNotBlank() }?.let(::UserId)
@@ -121,7 +121,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private suspend fun trySetForeground(
         userId: UserId,
         accountLabel: String?,
-        progress: Double
+        progress: Double?
     ) {
         try {
             setForeground(buildForegroundInfo(userId, accountLabel, progress))
@@ -195,7 +195,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private fun buildForegroundInfo(
         userId: UserId?,
         accountLabel: String?,
-        progress: Double
+        progress: Double?
     ): ForegroundInfo {
         val notification = ContentIndexingNotification.build(context, userId, accountLabel, progress).build().apply {
             flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT

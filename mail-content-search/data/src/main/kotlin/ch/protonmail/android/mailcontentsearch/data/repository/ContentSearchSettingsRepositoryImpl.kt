@@ -20,10 +20,12 @@ package ch.protonmail.android.mailcontentsearch.data.repository
 
 import arrow.core.Either
 import arrow.core.flatten
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
+import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
+import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
@@ -41,19 +43,20 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.mail_uniffi.MailUserSessionContentSearchWatchIndexingStreamResult
-import uniffi.mail_uniffi.WatchContentSearchIndexingStreamNextAsyncResult
 import javax.inject.Inject
 
 class ContentSearchSettingsRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
+    private val createRustSyncService: CreateRustSyncService,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ContentSearchSettingsRepository {
 
     private val enabledChanges = MutableSharedFlow<UserId>(extraBufferCapacity = 8)
 
     override suspend fun isEnabled(userId: UserId): Either<DataError, Boolean> =
-        executeWithUserSession(userId) { wrapper -> wrapper.contentSearchIsEnabled() }.flatten()
+        executeWithUserSession(userId) { wrapper ->
+            createRustSyncService(wrapper).isEnabled()
+        }.flatten()
 
     override fun observeIsEnabled(userId: UserId): Flow<Boolean> = enabledChanges
         .filter { it == userId }
@@ -64,16 +67,14 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
 
     override suspend fun setEnabled(userId: UserId, enabled: Boolean): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper ->
-            wrapper.contentSearchSetEnabled(enabled)
-            Unit.right()
+            createRustSyncService(wrapper).setEnabled(enabled)
         }.flatten().also { result ->
             result.onRight { enabledChanges.tryEmit(userId) }
         }
 
     override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper ->
-            wrapper.contentSearchClearLocalData()
-            Unit.right()
+            createRustSyncService(wrapper).reset()
         }.flatten()
 
     override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> =
@@ -84,28 +85,29 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
 
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper ->
-            val status = wrapper.contentSearchGetIndexingStatus().getOrNull() ?: return@executeWithUserSession null
-            val progress = wrapper.contentSearchGetIndexingProgress().getOrNull()
-            toIndexingState(status, progress)
+            currentIndexingState(createRustSyncService(wrapper))
         }.getOrNull()
 
+    private suspend fun currentIndexingState(syncService: SyncServiceWrapper): ContentIndexingState? =
+        syncService.status().getOrNull()?.toIndexingState(progress = null)
+
     private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
+        // Subscribe before reading the snapshot: the stream has no replay, so anything
+        // published between the snapshot read and subscribe() would otherwise be lost
+        // (e.g. a terminal event that fires in that window would never reach this collector).
         val stream = executeWithUserSession(userId) { wrapper ->
-            wrapper.contentSearchWatchIndexingStream()
-        }.fold(
+            val syncService = createRustSyncService(wrapper)
+            val subscribeResult = syncService.subscribe()
+
+            subscribeResult.onRight { currentIndexingState(syncService)?.let { trySend(it) } }
+
+            subscribeResult
+        }.flatten().fold(
             ifLeft = { error ->
                 Timber.e("content-search: failed to register indexing watcher: $error")
                 null
             },
-            ifRight = { result ->
-                when (result) {
-                    is MailUserSessionContentSearchWatchIndexingStreamResult.Ok -> result.v1
-                    is MailUserSessionContentSearchWatchIndexingStreamResult.Error -> {
-                        Timber.e("content-search: failed to register indexing watcher: ${result.v1}")
-                        null
-                    }
-                }
-            }
+            ifRight = { it }
         )
 
         if (stream == null) {
@@ -113,26 +115,25 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
             return@callbackFlow
         }
 
-        trySend(stream.initialProgress().toIndexingState())
-
         launch {
             while (isActive) {
-                when (val next = stream.nextAsync()) {
-                    is WatchContentSearchIndexingStreamNextAsyncResult.Ok ->
-                        trySend(next.v1.toIndexingState())
+                val event = stream.next()
+                if (event == null) {
+                    Timber.w("content-search: indexing watcher closed")
+                    close()
+                    break
+                }
 
-                    is WatchContentSearchIndexingStreamNextAsyncResult.Error -> {
-                        Timber.w("content-search: indexing watcher closed: ${next.v1}")
-                        close()
-                        break
-                    }
+                event.toIndexingState()?.let { trySend(it) }
+                if (event.isTerminal()) {
+                    close()
+                    break
                 }
             }
         }
 
         awaitClose {
-            stream.cancel()
-            runCatching { stream.close() }
+            runCatching { stream.destroy() }
         }
     }
 }

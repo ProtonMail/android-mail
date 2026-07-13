@@ -22,43 +22,57 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
+import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import uniffi.mail_uniffi.ContentSearchIndexingProgress
-import uniffi.mail_uniffi.ContentSearchIndexingStatus
-import uniffi.mail_uniffi.MailUserSessionContentSearchWatchIndexingStreamResult
-import uniffi.mail_uniffi.WatchContentSearchIndexingStream
-import uniffi.mail_uniffi.WatchContentSearchIndexingStreamNextAsyncResult
+import uniffi.mail_uniffi.SyncDriverEvent
+import uniffi.mail_uniffi.SyncEvent
+import uniffi.mail_uniffi.SyncEventStream
+import uniffi.mail_uniffi.SyncStartOutcome
 import javax.inject.Inject
 
 class RustContentSearchIndexer @Inject constructor(
-    private val executeWithUserSession: ExecuteWithUserSession
+    private val executeWithUserSession: ExecuteWithUserSession,
+    private val createRustSyncService: CreateRustSyncService
 ) : ContentSearchIndexer {
 
     override suspend fun index(
         userId: UserId,
         onProgress: suspend (Double) -> Unit
     ): Either<ContentIndexingError, Unit> = executeWithUserSession(userId) { wrapper ->
-        wrapper.contentSearchStartIndexing()
+        val syncService = createRustSyncService(wrapper)
 
-        when (val result = wrapper.contentSearchWatchIndexingStream()) {
-            is MailUserSessionContentSearchWatchIndexingStreamResult.Error -> {
-                Timber.e("content-search: failed to start indexing watcher: ${result.v1}")
-                ContentIndexingError.Unknown(result.v1.toString()).left()
+        val stream = when (val result = syncService.subscribe()) {
+            is Either.Left -> {
+                Timber.e("content-search: failed to subscribe to sync events: ${result.value}")
+                return@executeWithUserSession ContentIndexingError.Unknown(result.value.toString()).left()
             }
 
-            is MailUserSessionContentSearchWatchIndexingStreamResult.Ok -> {
-                val stream = result.v1
-                try {
-                    consumeIndexing(stream, onProgress)
-                } finally {
-                    stream.cancel()
-                    runCatching { stream.close() }
+            is Either.Right -> result.value
+        }
+
+        try {
+            val startOutcome = when (val result = syncService.start()) {
+                is Either.Left -> {
+                    Timber.e("content-search: failed to start sync: ${result.value}")
+                    return@executeWithUserSession ContentIndexingError.Unknown(result.value.toString()).left()
                 }
+
+                is Either.Right -> result.value
             }
+
+            when (startOutcome) {
+                SyncStartOutcome.COMPLETED -> return@executeWithUserSession Unit.right()
+                SyncStartOutcome.DISABLED -> return@executeWithUserSession ContentIndexingError.Cancelled.left()
+                SyncStartOutcome.STARTED, SyncStartOutcome.ONGOING -> Unit
+            }
+
+            consumeEvents(stream, onProgress)
+        } finally {
+            runCatching { stream.destroy() }
         }
     }.fold(
         ifLeft = {
@@ -70,47 +84,36 @@ class RustContentSearchIndexer @Inject constructor(
 
     override suspend fun cancel(userId: UserId) {
         executeWithUserSession(userId) { wrapper ->
-            wrapper.contentSearchCancelIndexing(clearData = false)
+            createRustSyncService(wrapper).stop()
         }
     }
 
-    private suspend fun consumeIndexing(
-        stream: WatchContentSearchIndexingStream,
+    private suspend fun consumeEvents(
+        stream: SyncEventStream,
         onProgress: suspend (Double) -> Unit
     ): Either<ContentIndexingError, Unit> {
-        // Emit an initial progress tick so the worker shows a non-zero notification quickly.
-        stream.initialProgress().let { progress ->
-            progress.emitProgress(onProgress)
-            if (progress.status.isTerminal()) return progress.status.toResult()
-        }
-
         while (true) {
-            when (val next = stream.nextAsync()) {
-                is WatchContentSearchIndexingStreamNextAsyncResult.Error -> {
-                    Timber.w("content-search: indexing watcher closed: ${next.v1}")
-                    return ContentIndexingError.Cancelled.left()
-                }
-
-                is WatchContentSearchIndexingStreamNextAsyncResult.Ok -> {
-                    val progress = next.v1
-                    progress.emitProgress(onProgress)
-                    if (progress.status.isTerminal()) return progress.status.toResult()
-                }
+            val event = stream.next() ?: run {
+                Timber.w("content-search: sync event stream closed unexpectedly")
+                return ContentIndexingError.Cancelled.left()
             }
+
+            if (event is SyncEvent.Progress) onProgress(event.v1)
+
+            if (event.isTerminal()) return event.toResult()
         }
     }
 
-    private suspend fun ContentSearchIndexingProgress.emitProgress(onProgress: suspend (Double) -> Unit) {
-        @Suppress("MagicNumber")
-        estimatedFraction?.let { onProgress(it * 100) }
-        Timber.d("content-search: progress = $this")
-    }
+    private fun SyncEvent.toResult(): Either<ContentIndexingError, Unit> = when (this) {
+        is SyncEvent.Completed -> Unit.right()
+        is SyncEvent.Stopped -> ContentIndexingError.Cancelled.left()
+        is SyncEvent.Driver -> when (val driverEvent = this.v1) {
+            is SyncDriverEvent.Failure -> ContentIndexingError.Unknown(driverEvent.v1).left()
+            is SyncDriverEvent.Completed -> Unit.right() // unreachable; guarded by isTerminal()
+        }
 
-    private fun ContentSearchIndexingStatus.toResult(): Either<ContentIndexingError, Unit> = when (this) {
-        ContentSearchIndexingStatus.COMPLETED -> Unit.right()
-        ContentSearchIndexingStatus.INTERRUPTED,
-        ContentSearchIndexingStatus.NONE -> ContentIndexingError.Cancelled.left()
-
-        ContentSearchIndexingStatus.ONGOING -> Unit.right() // unreachable; guarded by isTerminal()
+        is SyncEvent.Started,
+        is SyncEvent.Progress,
+        is SyncEvent.Worker -> Unit.right() // unreachable; guarded by isTerminal()
     }
 }
