@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
@@ -31,6 +32,7 @@ sealed interface HomeInterstitialPriority {
     data object Onboarding : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
     data object FeatureSpotlight : HomeInterstitialPriority
+    data object ContentSearch : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
@@ -42,6 +44,7 @@ fun resolveHomeInterstitialPriority(
     onboardingState: OnboardingEligibilityState,
     notificationsState: NotificationsPermissionState,
     featureSpotlightState: FeatureSpotlightState,
+    contentSearchBottomSheetState: ContentSearchBottomSheetState,
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
     summerCampaignState: SummerCampaignModalState
@@ -51,6 +54,7 @@ fun resolveHomeInterstitialPriority(
     if (onboardingState is OnboardingEligibilityState.Loading ||
         notificationsState is NotificationsPermissionState.Loading ||
         featureSpotlightState is FeatureSpotlightState.Loading ||
+        contentSearchBottomSheetState is ContentSearchBottomSheetState.Loading ||
         blackFridayState is BlackFridayModalState.Loading
     ) {
         return HomeInterstitialPriority.Loading
@@ -62,6 +66,7 @@ fun resolveHomeInterstitialPriority(
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 
         featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
+        contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch
         summerCampaignState is SummerCampaignModalState.Show ->
             HomeInterstitialPriority.SummerCampaign(summerCampaignState)
         blackFridayState is BlackFridayModalState.Show -> HomeInterstitialPriority.BlackFriday(blackFridayState)

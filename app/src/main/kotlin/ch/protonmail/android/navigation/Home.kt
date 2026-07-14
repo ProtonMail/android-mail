@@ -68,6 +68,7 @@ import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
 import ch.protonmail.android.design.compose.component.ProtonSnackbarType
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -86,6 +87,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
+import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheet
 import ch.protonmail.android.mailnotifications.presentation.viewmodel.NotificationsPermissionViewModel
 import ch.protonmail.android.mailnotifications.ui.NotificationsPermissionBottomSheet
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
@@ -168,7 +170,8 @@ fun Home(
     blackFridayModalUpsellViewModel: BlackFridayModalUpsellViewModel = hiltViewModel(),
     springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
-    featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel()
+    featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
+    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -184,6 +187,7 @@ fun Home(
     val springSaleEligibilityState by springPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
+    val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -191,6 +195,7 @@ fun Home(
                 onboardingEligibilityState,
                 notificationsPermissionsState,
                 featureSpotlightState,
+                contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
                 summerCampaignEligibilityState
@@ -440,6 +445,10 @@ fun Home(
                     BottomSheetType.Onboarding -> {
                         onboardingStepViewModel.submit(OnboardingStepAction.MarkOnboardingComplete)
                     }
+
+                    BottomSheetType.ContentSearch -> {
+                        contentSearchBottomSheetViewModel.markShown()
+                    }
                 }
 
                 if (!bottomSheetState.isVisible) {
@@ -468,6 +477,12 @@ fun Home(
 
             is HomeInterstitialPriority.FeatureSpotlight -> {
                 navController.navigate(Screen.FeatureSpotlight.route)
+            }
+
+            is HomeInterstitialPriority.ContentSearch -> {
+                bottomSheetType = BottomSheetType.ContentSearch
+                scope.launch { bottomSheetState.show() }
+                    .invokeOnCompletion { showBottomSheet = true }
             }
 
             is HomeInterstitialPriority.BlackFriday -> {
@@ -565,6 +580,16 @@ fun Home(
                     }
                 ).also {
                     preventBottomSheetDismissal = true
+                }
+
+                is BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
+                    onOpenSettings = {
+                        onBottomSheetDismissed()
+                        navController.navigate(Screen.ContentSearchSettings.route)
+                    },
+                    onDismiss = onBottomSheetDismissed
+                ).also {
+                    preventBottomSheetDismissal = false
                 }
             }
         },
@@ -866,5 +891,6 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
 private sealed interface BottomSheetType {
     data object Onboarding : BottomSheetType
     data class NotificationsPermissions(val permissionsState: NotificationsPermissionStateType) : BottomSheetType
+    data object ContentSearch : BottomSheetType
 }
 
