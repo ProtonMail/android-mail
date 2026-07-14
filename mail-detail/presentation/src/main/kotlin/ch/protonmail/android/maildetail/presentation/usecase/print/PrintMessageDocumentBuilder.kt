@@ -18,15 +18,23 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase.print
 
+import android.content.Context
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class PrintMessageDocumentBuilder @Inject constructor(
-    private val headerBuilder: PrintMessageHeaderBuilder
+    private val headerBuilder: PrintMessageHeaderBuilder,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    fun buildDocument(
+    suspend fun buildDocument(
+        context: Context,
         subject: String,
         messageHeader: MessageDetailHeaderUiModel,
         messageBody: MessageBodyUiModel
@@ -37,6 +45,20 @@ class PrintMessageDocumentBuilder @Inject constructor(
             attachments = messageBody.attachments
         )
 
-        return header + messageBody.messageBody
+        return header + messageBody.messageBody.resolve(context)
+    }
+
+    private suspend fun MessageBodyContent.resolve(context: Context): String = when (this) {
+        is MessageBodyContent.Text -> value
+        is MessageBodyContent.File -> withContext(ioDispatcher) {
+            runCatching {
+                context.contentResolver.openInputStream(contentUri)
+                    ?.bufferedReader()
+                    ?.use { it.readText() }
+            }.getOrElse {
+                Timber.e(it, "Unable to read message body file for printing.")
+                null
+            }.orEmpty()
+        }
     }
 }

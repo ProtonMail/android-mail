@@ -213,7 +213,6 @@ import io.mockk.mockkStatic
 import io.mockk.runs
 import io.mockk.spyk
 import io.mockk.unmockkStatic
-import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -2190,7 +2189,7 @@ internal class ConversationDetailViewModelIntegrationTest {
             ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
         )
         val messageId = MessageId(messages.first().messageId.id)
-        every { printMessage(any(), any(), any(), any(), any(), any()) } just runs
+        coEvery { printMessage(any(), any(), any(), any(), any(), any()) } just runs
 
         coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
             messageId = messageId,
@@ -2239,7 +2238,7 @@ internal class ConversationDetailViewModelIntegrationTest {
             viewModel.submit(ConversationDetailViewAction.PrintMessage(context, messageId))
             advanceUntilIdle()
 
-            verify {
+            coVerify {
                 printMessage(
                     context,
                     conversationState.conversationUiModel.subject,
