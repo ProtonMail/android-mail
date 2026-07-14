@@ -23,10 +23,10 @@ import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagCategory
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
+import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagOverridesState
 import ch.protonmail.android.mailfeatureflags.presentation.viewmodel.FeatureFlagOverridesViewModel
-import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.featureflags.FeatureFlagDefinitionsTestData
 import io.mockk.coEvery
@@ -69,7 +69,7 @@ internal class FeatureFlagOverridesViewModelTest {
         val expectedOverrides = mapOf(systemFlag to false)
         val expectedUiModelsList = mockk<ImmutableList<FeatureFlagListItem>>()
 
-        coEvery { overrideManager.overriddenFlags() } returns mapOf(systemFlag.key to false)
+        coEvery { overrideManager.overriddenDebugFlags() } returns mapOf(systemFlag.key to false)
         coEvery { mapper.toFlattenedListUiModel(any(), expectedOverrides) } returns expectedUiModelsList
 
         // When + Then
@@ -83,13 +83,13 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
+        coEvery { overrideManager.overriddenDebugFlags() } returns emptyMap()
 
         // When
         viewModel(definitions).toggleKey("unknownKey")
 
         // Then
-        coVerify(exactly = 0) { overrideManager.setOverride(any(), any()) }
+        coVerify(exactly = 0) { overrideManager.setDebugOverride(any(), any()) }
     }
 
     @Test
@@ -97,7 +97,7 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
+        coEvery { overrideManager.overriddenDebugFlags() } returns emptyMap()
         // Resolved value differs from the hardcoded default: the toggle must flip away from what's shown.
         coEvery { resolver.getFeatureFlag(flag.key, flag.defaultValue) } returns true
 
@@ -105,7 +105,7 @@ internal class FeatureFlagOverridesViewModelTest {
         viewModel(definitions).toggleKey(flag.key)
 
         // Then
-        coVerify(exactly = 1) { overrideManager.setOverride(flag.key, false) }
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false) }
     }
 
     @Test
@@ -113,13 +113,13 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        coEvery { overrideManager.overriddenFlags() } returns mapOf(flag.key to true)
+        coEvery { overrideManager.overriddenDebugFlags() } returns mapOf(flag.key to true)
 
         // When
         viewModel(definitions).toggleKey(flag.key)
 
         // Then
-        coVerify(exactly = 1) { overrideManager.setOverride(flag.key, false) }
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false) }
         coVerify(exactly = 0) { resolver.getFeatureFlag(any(), any()) }
     }
 
@@ -128,14 +128,14 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        coEvery { overrideManager.overriddenFlags() } returns emptyMap()
-        coEvery { overrideManager.clearAllOverrides() } just runs
+        coEvery { overrideManager.overriddenDebugFlags() } returns emptyMap()
+        coEvery { overrideManager.clearAllDebugOverrides() } just runs
 
         // When
         viewModel(definitions).resetAll()
 
         // Then
-        coVerify(exactly = 1) { overrideManager.clearAllOverrides() }
+        coVerify(exactly = 1) { overrideManager.clearAllDebugOverrides() }
     }
 
     private fun viewModel(definitions: Set<FeatureFlagDefinition>) = FeatureFlagOverridesViewModel(

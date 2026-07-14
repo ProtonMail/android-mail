@@ -28,7 +28,7 @@ import org.junit.Rule
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
 import uniffi.mail_uniffi.MailUserSession
-import uniffi.mail_uniffi.MailUserSessionClearDebugFeatureFlagOverrideResult
+import uniffi.mail_uniffi.MailUserSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionSetDebugFeatureFlagOverrideResult
 import kotlin.test.Test
@@ -60,7 +60,7 @@ class RustFeatureFlagOverrideManagerTest {
         } returns MailUserSessionSetDebugFeatureFlagOverrideResult.Ok
 
         // When
-        manager.setOverride(key, enabled = true)
+        manager.setDebugOverride(key, enabled = true)
 
         // Then
         coVerify(exactly = 1) {
@@ -79,7 +79,7 @@ class RustFeatureFlagOverrideManagerTest {
             MailUserSessionListDebugFeatureFlagOverridesResult.Ok(entries)
 
         // When
-        val result = manager.overriddenFlags()
+        val result = manager.overriddenDebugFlags()
 
         // Then
         assertEquals(mapOf("flag_a" to true, "flag_b" to null), result)
@@ -92,16 +92,13 @@ class RustFeatureFlagOverrideManagerTest {
             DebugFeatureFlagOverrideEntry("flag_a", DebugFeatureFlagOverride(enabled = true, variant = null)),
             DebugFeatureFlagOverrideEntry("flag_b", DebugFeatureFlagOverride(enabled = false, variant = null))
         )
-        coEvery { rustUserSession.listDebugFeatureFlagOverrides() } returns
-            MailUserSessionListDebugFeatureFlagOverridesResult.Ok(entries)
-        coEvery { rustUserSession.clearDebugFeatureFlagOverride(any()) } returns
-            MailUserSessionClearDebugFeatureFlagOverrideResult.Ok
+        coEvery { rustUserSession.clearAllDebugFeatureFlagOverrides() } returns
+            MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok
 
         // When
-        manager.clearAllOverrides()
+        manager.clearAllDebugOverrides()
 
         // Then
-        coVerify(exactly = 1) { rustUserSession.clearDebugFeatureFlagOverride("flag_a") }
-        coVerify(exactly = 1) { rustUserSession.clearDebugFeatureFlagOverride("flag_b") }
+        coVerify(exactly = 1) { rustUserSession.clearAllDebugFeatureFlagOverrides() }
     }
 }

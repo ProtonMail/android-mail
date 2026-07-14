@@ -30,11 +30,9 @@ interface FeatureFlagOverrideManager {
      * Currently overridden flags keyed by flag name, with the overridden boolean value
      * (`null` when only a variant is forced).
      */
-    suspend fun overriddenFlags(): Map<String, Boolean?>
+    suspend fun overriddenDebugFlags(): Map<String, Boolean?>
 
-    suspend fun setOverride(key: String, enabled: Boolean)
+    suspend fun setDebugOverride(key: String, enabled: Boolean)
 
-    suspend fun clearOverride(key: String)
-
-    suspend fun clearAllOverrides()
+    suspend fun clearAllDebugOverrides()
 }

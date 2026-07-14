@@ -26,11 +26,9 @@ import timber.log.Timber
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
 import uniffi.mail_uniffi.MailSessionClearAllDebugFeatureFlagOverridesResult
-import uniffi.mail_uniffi.MailSessionClearDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionSetDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailUserSessionClearAllDebugFeatureFlagOverridesResult
-import uniffi.mail_uniffi.MailUserSessionClearDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailUserSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionSetDebugFeatureFlagOverrideResult
 import javax.inject.Inject
@@ -46,11 +44,11 @@ class RustFeatureFlagOverrideManager @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : FeatureFlagOverrideManager {
 
-    override suspend fun overriddenFlags(): Map<String, Boolean?> = withContext(ioDispatcher) {
+    override suspend fun overriddenDebugFlags(): Map<String, Boolean?> = withContext(ioDispatcher) {
         listOverrideEntries().associate { it.flagName to it.debugOverride.enabled }
     }
 
-    override suspend fun setOverride(key: String, enabled: Boolean) = withContext(ioDispatcher) {
+    override suspend fun setDebugOverride(key: String, enabled: Boolean) = withContext(ioDispatcher) {
         val override = DebugFeatureFlagOverride(enabled = enabled, variant = null)
         when (val session = sessionResolver.activeSession()) {
             is ActiveSession.User ->
@@ -67,23 +65,7 @@ class RustFeatureFlagOverrideManager @Inject constructor(
         }
     }
 
-    override suspend fun clearOverride(key: String) = withContext(ioDispatcher) {
-        when (val session = sessionResolver.activeSession()) {
-            is ActiveSession.User ->
-                when (val result = session.session.clearDebugFeatureFlagOverride(key)) {
-                    is MailUserSessionClearDebugFeatureFlagOverrideResult.Ok -> Unit
-                    is MailUserSessionClearDebugFeatureFlagOverrideResult.Error -> logError("clear", key, result.v1)
-                }
-
-            is ActiveSession.App ->
-                when (val result = session.session.clearDebugFeatureFlagOverride(key)) {
-                    is MailSessionClearDebugFeatureFlagOverrideResult.Ok -> Unit
-                    is MailSessionClearDebugFeatureFlagOverrideResult.Error -> logError("clear", key, result.v1)
-                }
-        }
-    }
-
-    override suspend fun clearAllOverrides() {
+    override suspend fun clearAllDebugOverrides() {
         when (val session = sessionResolver.activeSession()) {
             is ActiveSession.User ->
                 when (val result = session.session.clearAllDebugFeatureFlagOverrides()) {

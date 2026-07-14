@@ -61,14 +61,14 @@ class FeatureFlagOverridesViewModel @Inject constructor(
     fun toggleKey(key: String) {
         val definition = definitions.firstOrNull { it.key == key } ?: return
         viewModelScope.launch {
-            overrideManager.setOverride(key, !currentValue(definition))
+            overrideManager.setDebugOverride(key, !currentValue(definition))
             refresh()
         }
     }
 
     fun resetAll() {
         viewModelScope.launch {
-            overrideManager.clearAllOverrides()
+            overrideManager.clearAllDebugOverrides()
             refresh()
         }
     }
@@ -79,7 +79,7 @@ class FeatureFlagOverridesViewModel @Inject constructor(
      * flips away from what the user sees rather than from the hardcoded default.
      */
     private suspend fun currentValue(definition: FeatureFlagDefinition): Boolean {
-        val overrides = overrideManager.overriddenFlags()
+        val overrides = overrideManager.overriddenDebugFlags()
         return if (overrides.containsKey(definition.key)) {
             overrides[definition.key] ?: definition.defaultValue
         } else {
@@ -88,7 +88,7 @@ class FeatureFlagOverridesViewModel @Inject constructor(
     }
 
     private suspend fun currentOverrides(): Map<FeatureFlagDefinition, Boolean> {
-        val overriddenByName = overrideManager.overriddenFlags()
+        val overriddenByName = overrideManager.overriddenDebugFlags()
         return definitions.mapNotNull { definition ->
             if (!overriddenByName.containsKey(definition.key)) return@mapNotNull null
             definition to (overriddenByName[definition.key] ?: definition.defaultValue)
