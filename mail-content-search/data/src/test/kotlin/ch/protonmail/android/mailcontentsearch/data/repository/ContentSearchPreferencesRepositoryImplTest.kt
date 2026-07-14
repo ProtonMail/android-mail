@@ -202,6 +202,48 @@ internal class ContentSearchPreferencesRepositoryImplTest {
         coVerify { dataStore.updateData(any()) }
     }
 
+    @Test
+    fun `reports the bottom sheet as not shown when nothing is stored`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Boolean>>()) } returns null
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.hasShownBottomSheet()
+
+        // Then
+        assertFalse(result.getOrNull()!!)
+    }
+
+    @Test
+    fun `reports the bottom sheet as shown when the flag is stored`() = runTest {
+        // Given
+        val preferences = mockk<Preferences> {
+            every { get(any<Preferences.Key<Boolean>>()) } returns true
+        }
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When
+        val result = repository.hasShownBottomSheet()
+
+        // Then
+        assertTrue(result.getOrNull()!!)
+    }
+
+    @Test
+    fun `persists the bottom sheet shown flag through the data store`() = runTest {
+        // Given
+        coEvery { dataStore.updateData(any()) } returns mockk()
+
+        // When
+        repository.markBottomSheetShown()
+
+        // Then
+        coVerify { dataStore.updateData(any()) }
+    }
+
     private companion object {
         val TestUserId = UserId("user-1")
     }

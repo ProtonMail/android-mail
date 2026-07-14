@@ -51,4 +51,11 @@ interface ContentSearchPreferencesRepository {
     suspend fun getKnownUserIds(): Either<PreferencesError, Set<UserId>>
 
     suspend fun saveKnownUserIds(userIds: Set<UserId>): Either<PreferencesError, Unit>
+
+    /**
+     * Whether the "Getting emails ready" content-search bottomsheet has already been shown once.
+     */
+    suspend fun hasShownBottomSheet(): Either<PreferencesError, Boolean>
+
+    suspend fun markBottomSheetShown(): Either<PreferencesError, Unit>
 }

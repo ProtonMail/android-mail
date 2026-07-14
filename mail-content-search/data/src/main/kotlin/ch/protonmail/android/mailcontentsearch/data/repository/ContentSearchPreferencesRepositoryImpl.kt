@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import arrow.core.Either
 import arrow.core.left
@@ -40,6 +41,7 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
 
     private val optedOutUserIdsKey = stringSetPreferencesKey("contentSearchOptedOutUserIdsPrefKey")
     private val knownUserIdsKey = stringSetPreferencesKey("contentSearchKnownUserIdsPrefKey")
+    private val bottomSheetShownKey = booleanPreferencesKey("contentSearchBottomSheetShownPrefKey")
 
     override suspend fun getAllowMobileData(): Either<PreferencesError, Boolean> =
         appSettingsRepository.observeAppSettings().first().useMobileDataForContentSearchIndexing.enabled.right()
@@ -73,5 +75,15 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
     override suspend fun saveKnownUserIds(userIds: Set<UserId>): Either<PreferencesError, Unit> =
         dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
             preferences[knownUserIdsKey] = userIds.map { it.id }.toSet()
+        }.map { }
+
+    override suspend fun hasShownBottomSheet(): Either<PreferencesError, Boolean> =
+        dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
+            preferences.map { it[bottomSheetShownKey] ?: false }
+        }.first()
+
+    override suspend fun markBottomSheetShown(): Either<PreferencesError, Unit> =
+        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
+            preferences[bottomSheetShownKey] = true
         }.map { }
 }
