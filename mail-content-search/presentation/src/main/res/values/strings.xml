@@ -11,4 +11,8 @@
     <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
     <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
     <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+    <string name="content_search_bottomsheet_title">Getting emails ready…</string>
+    <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
+    <string name="content_search_bottomsheet_settings_link">settings</string>
+    <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>
