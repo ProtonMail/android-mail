@@ -25,9 +25,11 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
+import uniffi.mail_uniffi.MailSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionClearDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionSetDebugFeatureFlagOverrideResult
+import uniffi.mail_uniffi.MailUserSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionClearDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailUserSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionSetDebugFeatureFlagOverrideResult
@@ -81,11 +83,30 @@ class RustFeatureFlagOverrideManager @Inject constructor(
         }
     }
 
-    /**
-     * Rust exposes no "clear all", so we clear every currently overridden flag one by one.
-     */
     override suspend fun clearAllOverrides() {
-        overriddenFlags().keys.forEach { clearOverride(it) }
+        when (val session = sessionResolver.activeSession()) {
+            is ActiveSession.User ->
+                when (val result = session.session.clearAllDebugFeatureFlagOverrides()) {
+                    is MailUserSessionClearAllDebugFeatureFlagOverridesResult.Error -> logError(
+                        action = "clear",
+                        key = null,
+                        error = result.v1
+                    )
+
+                    MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok -> Unit
+                }
+
+            is ActiveSession.App ->
+                when (val result = session.session.clearAllDebugFeatureFlagOverrides()) {
+                    is MailSessionClearAllDebugFeatureFlagOverridesResult.Error -> logError(
+                        action = "clear",
+                        key = null,
+                        error = result.v1
+                    )
+
+                    is MailSessionClearAllDebugFeatureFlagOverridesResult.Ok -> Unit
+                }
+        }
     }
 
     private suspend fun listOverrideEntries(): List<DebugFeatureFlagOverrideEntry> {
@@ -104,9 +125,10 @@ class RustFeatureFlagOverrideManager @Inject constructor(
 
     private fun logError(
         action: String,
-        key: String,
+        key: String?,
         error: Any?
     ) {
-        Timber.e("Rust FF override: unable to $action debug override for '$key': $error")
+        val target = key?.let { "'$it'" } ?: "all overrides"
+        Timber.e("Rust FF override: unable to $action debug override for $target: $error")
     }
 }
