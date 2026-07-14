@@ -30,7 +30,7 @@ class PrintMessage @Inject constructor(
     private val webViewHandler: PrintWebViewHandler
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         context: Context,
         subject: String,
         messageHeader: MessageDetailHeaderUiModel,
@@ -39,6 +39,7 @@ class PrintMessage @Inject constructor(
         printConfiguration: PrintConfiguration = PrintConfiguration()
     ) {
         val htmlDocument = documentBuilder.buildDocument(
+            context = context,
             subject = subject,
             messageHeader = messageHeader,
             messageBody = messageBody

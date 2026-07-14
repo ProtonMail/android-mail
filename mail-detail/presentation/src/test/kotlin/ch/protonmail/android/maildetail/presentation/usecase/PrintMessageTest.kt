@@ -26,11 +26,13 @@ import ch.protonmail.android.maildetail.presentation.usecase.print.PrintWebViewH
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
+import io.mockk.coEvery
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -52,7 +54,7 @@ internal class PrintMessageTest {
     }
 
     @Test
-    fun `should trigger print webView`() {
+    fun `should trigger print webView`() = runTest {
         // Given
         val subject = "subject"
         val context = mockk<Context>()
@@ -72,7 +74,7 @@ internal class PrintMessageTest {
                 showEmbeddedImages = printConfiguration.showEmbeddedImages
             )
         )
-        every { bodyBuilder.buildDocument(subject, messageHeader, messageBody) } returns expectedBody
+        coEvery { bodyBuilder.buildDocument(context, subject, messageHeader, messageBody) } returns expectedBody
         every { webViewHandler.createPrintWebView(expectedConfig) } returns mockk()
 
         // When

@@ -463,7 +463,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handlePrintMessage(context: Context, messageId: MessageId) {
+    private suspend fun handlePrintMessage(context: Context, messageId: MessageId) {
         val conversationState = state.value.conversationState
         val messagesState = state.value.messagesState
 
