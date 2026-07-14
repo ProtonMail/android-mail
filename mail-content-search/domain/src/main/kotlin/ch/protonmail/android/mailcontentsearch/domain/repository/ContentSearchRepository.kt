@@ -31,4 +31,6 @@ interface ContentSearchRepository {
     fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState>
 
     suspend fun getIndexingStatus(userId: UserId): ContentIndexingState
+
+    suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean
 }

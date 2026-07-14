@@ -144,4 +144,28 @@ internal class ContentSearchRepositoryImplTest {
             awaitComplete()
         }
     }
+
+    @Test
+    fun `shouldShowMobileBottomSheet returns the sync service value`() = runTest {
+        // Given
+        coEvery { syncServiceWrapper.shouldShowMobileBottomSheet() } returns true.right()
+
+        // When
+        val result = repository.shouldShowMobileBottomSheet(userId)
+
+        // Then
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `shouldShowMobileBottomSheet falls back to false when the sync service call fails`() = runTest {
+        // Given
+        coEvery { syncServiceWrapper.shouldShowMobileBottomSheet() } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.shouldShowMobileBottomSheet(userId)
+
+        // Then
+        assertEquals(false, result)
+    }
 }

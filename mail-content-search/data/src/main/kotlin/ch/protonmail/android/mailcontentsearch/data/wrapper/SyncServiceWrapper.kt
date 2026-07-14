@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import uniffi.mail_uniffi.SyncEventStream
 import uniffi.mail_uniffi.SyncService
 import uniffi.mail_uniffi.SyncServiceIsEnabledResult
+import uniffi.mail_uniffi.SyncServiceShouldShowMobileSheetResult
 import uniffi.mail_uniffi.SyncServiceStartResult
 import uniffi.mail_uniffi.SyncServiceStatusResult
 import uniffi.mail_uniffi.SyncServiceSubscribeResult
@@ -80,6 +81,13 @@ class SyncServiceWrapper(private val syncService: SyncService) {
         return when (val result = syncService.subscribe()) {
             is SyncServiceSubscribeResult.Error -> result.v1.toDataError().left()
             is SyncServiceSubscribeResult.Ok -> result.v1.right()
+        }
+    }
+
+    suspend fun shouldShowMobileBottomSheet(): Either<DataError, Boolean> {
+        return when (val result = syncService.shouldShowMobileSheet()) {
+            is SyncServiceShouldShowMobileSheetResult.Error -> result.v1.toDataError().left()
+            is SyncServiceShouldShowMobileSheetResult.Ok -> result.v1.right()
         }
     }
 }

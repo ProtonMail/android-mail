@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontentsearch.data.repository
 
 import arrow.core.Either
 import arrow.core.flatten
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
@@ -56,6 +57,11 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState =
         readIndexingState(userId) ?: ContentIndexingState.Idle
+
+    override suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean =
+        executeWithUserSession(userId) { wrapper ->
+            createRustSyncService(wrapper).shouldShowMobileBottomSheet()
+        }.flatten().getOrElse { false }
 
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper ->
