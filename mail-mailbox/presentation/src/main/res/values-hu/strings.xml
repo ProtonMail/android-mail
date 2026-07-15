@@ -85,7 +85,7 @@
     <item quantity="one">Üzenet áthelyezve a %s mappába</item>
     <item quantity="other">Üzenetek áthelyezve ide: %s</item>
   </plurals>
-  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
+  <string name="mailbox_action_move_to_category">Áthelyezve a(z) %s kategóriába. A hasonló üzenetek a jövőben ide lesznek sorolva.</string>
   <string name="mailbox_action_button_clear_trash">Lomtár kiürítése</string>
   <string name="mailbox_action_button_clear_spam">Levélszemét kiürítése</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Frissítsen, hogy automatikusan törölhesse az üzeneteket, amelyek több mint 30 napja a lomtárban vagy a levélszemétben vannak.</string>
@@ -98,8 +98,8 @@
   <string name="mailbox_action_clear_spam_dialog_body_message">Biztos, hogy örökre törölni akarja az összes üzenetet a Levélszemét mappában?</string>
   <string name="mailbox_action_maximum_selection_reached">"Maximális kijelölés elérve"</string>
   <string name="mailbox_talkback_readout_unread">Olvasatlan</string>
-  <string name="mailbox_talkback_readout_starred">Unstar</string>
-  <string name="mailbox_talkback_readout_not_starred">Star</string>
+  <string name="mailbox_talkback_readout_starred">Csillagozás törlése</string>
+  <string name="mailbox_talkback_readout_not_starred">Csillagozás</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Nem sikerült megnyitni a mellékletet. Próbálja meg újra.</string>
   <string name="mailbox_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie egy új indítása előtt.</string>

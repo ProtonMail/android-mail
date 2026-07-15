@@ -25,8 +25,8 @@
   <string name="category_title_newsletters">Nyhetsbrev</string>
   <string name="category_title_transactions">Transaktioner</string>
   <string name="category_spotlight_unseen_title">Nya meddelanden i %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
+  <string name="category_spotlight_unseen_description">En blå punkt visas när en kategori har nya meddelanden sedan du senast kontrollerade den.</string>
+  <string name="category_spotlight_personalise_title">Personifiera dina kategorier</string>
+  <string name="category_spotlight_personalise_description">Flytta ett e-postmeddelande till en annan kategori med \"Flytta till\". Liknande e-postmeddelanden kommer att sorteras dit automatiskt från och med nu.</string>
   <string name="category_spotlight_close_content_description">Stäng</string>
 </resources>

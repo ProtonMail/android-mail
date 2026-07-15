@@ -49,6 +49,6 @@
   <string name="payment_subscription_managed_by_google">Ваша подписка управляется Google Play.</string>
   <string name="payment_subscription_managed_by_apple">Ваша подписка управляется Apple Store.</string>
   <string name="payment_subscription_managed_by_other">Вы не можете управлять подпиской из мобильного приложения.</string>
-  <string name="payment_subscription_restricted_access_title">Restricted access</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_title">Ограниченный доступ</string>
+  <string name="payment_subscription_restricted_access_description">К сожалению, у вас нет разрешения на доступ к этой странице. Обратитесь к администратору, если этого не должно было произойти.</string>
 </resources>

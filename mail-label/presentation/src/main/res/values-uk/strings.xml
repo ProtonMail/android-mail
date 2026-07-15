@@ -39,5 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Не вдалося отримати теки.</string>
   <string name="bottom_sheet_label_as_error_apply">Не вдалося застосувати мітки.</string>
   <string name="bottom_sheet_move_to_action_error">Помилка операції переміщення.</string>
-  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
+  <string name="bottom_sheet_move_to_category_no_change">Жодних змін для вибраних електронних листів не буде внесено</string>
 </resources>

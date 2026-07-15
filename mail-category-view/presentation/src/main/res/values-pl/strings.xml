@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
+  <string name="category_title_primary">Główna</string>
   <string name="category_title_social">Społeczności</string>
   <string name="category_title_promotions">Oferty</string>
   <string name="category_title_updates">Powiadomienia</string>
@@ -25,8 +25,8 @@
   <string name="category_title_newsletters">Newslettery</string>
   <string name="category_title_transactions">Płatności</string>
   <string name="category_spotlight_unseen_title">Nowa wiadomość w %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_spotlight_unseen_description">Niebieska kropka wskazuje, kiedy kategoria ma nowe wiadomości od czasu Twojego ostatniego sprawdzenia.</string>
+  <string name="category_spotlight_personalise_title">Spersonalizuj swoje kategorie</string>
+  <string name="category_spotlight_personalise_description">Przenieś wiadomość e-mail do innej kategorii za pomocą opcji „Przenieś do”. Podobne wiadomości e-mail będą od teraz automatycznie tam sortowane.</string>
+  <string name="category_spotlight_close_content_description">Zamknij</string>
 </resources>

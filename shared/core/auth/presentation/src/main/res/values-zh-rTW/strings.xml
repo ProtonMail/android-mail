@@ -140,10 +140,10 @@
   <string name="settings_second_password_hint_new_confirm">確認新的第二密碼</string>
   <string name="settings_password_management_login_success">已更新登入密碼</string>
   <string name="settings_password_management_second_success">第二密碼已更新</string>
-  <string name="settings_password_invalid_2fa">Invalid second factor code. Please try again.</string>
+  <string name="settings_password_invalid_2fa">無效的雙重驗證代碼。請重試。</string>
   <string name="settings_password_error_empty">密碼不能為空.</string>
   <string name="settings_password_error">帳號或密碼不正確，請再檢查一下</string>
-  <string name="settings_password_error_invalid_recovery">Incorrect 2FA code. Please try again.</string>
+  <string name="settings_password_error_invalid_recovery">雙重驗證代碼錯誤。請再試一次。</string>
   <string name="settings_password_error_2fa_reused">代碼已使用。請嘗試其他代碼。</string>
   <string name="settings_password_general_error">出現錯誤</string>
   <string name="proton_error_non_processable_actions">一項或多項操作無法處理。請登出並重新登入您的帳號。</string>

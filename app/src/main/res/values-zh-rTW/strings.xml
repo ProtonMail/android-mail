@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_icon_name_weather">Weather</string>
-  <string name="app_icon_name_notes">Notes</string>
-  <string name="app_icon_name_calculator">Calculator</string>
+  <string name="app_icon_name_weather">天氣</string>
+  <string name="app_icon_name_notes">備註</string>
+  <string name="app_icon_name_calculator">計算機</string>
   <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">與您帳號相關聯的資料將保留在此裝置上，除非您選取將其刪除。</string>
   <string name="dialog_sign_out_account_confirm">登出</string>
@@ -35,11 +35,11 @@
   <string name="mailbox_message_sending">傳送郵件訊息...</string>
   <string name="mailbox_message_sending_offline">未連線：郵件佇列等候傳送</string>
   <string name="mailbox_message_sending_success">郵件已傳送</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">前往草稿</string>
   <string name="notification_switched_account">已切換至帳號 %s</string>
   <string name="mailbox_message_scheduling">正在排程訊息…</string>
   <string name="mailbox_message_scheduling_offline">離線：訊息已排入佇列以供排程</string>
   <string name="mailbox_message_scheduled_for_sending_success">此郵件將在 %1$s 時送出</string>
-  <string name="launcher_alert_duplicate_account_description">The user is already signed in</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="launcher_alert_duplicate_account_description">此使用者已登入</string>
+  <string name="home_event_loop_error_snackbar">我們無法同步您的郵件。請嘗試登出並重新登入。如果仍然無效，請提交錯誤回報。</string>
 </resources>

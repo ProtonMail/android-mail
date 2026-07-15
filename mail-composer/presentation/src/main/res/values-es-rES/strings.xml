@@ -68,12 +68,12 @@
   <string name="composer_bottom_bar_expiration_time_custom">En una fecha específica</string>
   <string name="composer_error_setting_expiration_time">Error al establecer la fecha de expiración</string>
   <!-- Send expiring message to external recipients dialog -->
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Add Password to Use Expiration</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Añadir contraseña para usar la expiración</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancelar</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Enviar de todos modos</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Añadir protección por contraseña</string>
-  <string name="composer_send_expiring_message_to_external_may_fail">We could not confirm all recipients use Proton Mail. Only Proton addresses support message expiration. In this case, we suggest adding a password instead.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Some recipients (%1$s) don\'t support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.</string>
+  <string name="composer_send_expiring_message_to_external_may_fail">No hemos podido confirmar que todos los destinatarios utilicen Proton Mail. Solo las direcciones de Proton admiten la expiración de mensajes. En este caso, te sugerimos añadir una contraseña en su lugar.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Algunos destinatarios (%1$s) no admiten la expiración por defecto. Añade una contraseña para activar la expiración para los destinatarios que no son de Proton Mail.</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">Ninguno de los destinatarios admite la expiración por defecto. Añade una contraseña para activar la expiración para destinatarios que no usan Proton Mail.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Notificación de envío</string>
@@ -130,10 +130,10 @@
   <string name="composer_external_encryption_unexpected_error">Error inesperado %s. Inténtalo de nuevo.</string>
   <string name="composer_sender_changed_original_address_cannot_send">La dirección seleccionada no se puede usar para realizar el envío. Tu mensaje se enviará desde tu dirección por defecto.</string>
   <string name="composer_expiration_time_bottom_sheet_description">Establece cuándo el mensaje será eliminado de la bandeja de entrada del destinatario y de tu carpeta de Enviados. Para que los mensajes expiren con usuarios que no son de Proton, añade una contraseña.</string>
-  <string name="expiration_time_set_time_and_date">Set time and date</string>
-  <string name="composer_expiration_set_expiration">Set expiration</string>
+  <string name="expiration_time_set_time_and_date">Establecer fecha y hora</string>
+  <string name="composer_expiration_set_expiration">Establecer expiración</string>
   <string name="composer_expiration_pick_time_title">Establecer hora</string>
-  <string name="composer_expiration_time_custom_time_on">On %1$s</string>
+  <string name="composer_expiration_time_custom_time_on">El %1$s</string>
   <string name="composer_error_send_draft_generic">Ha ocurrido un error inesperado al enviar este mensaje. Inténtalo de nuevo.</string>
   <string name="composer_error_send_draft_invalid_sender">Dirección de correo electrónico desactivada o inválida. Comprueba que la dirección es válida y está activa.</string>
   <string name="composer_error_send_draft_external_password_decrypt_error">Error al descifrar la contraseña de cifrado externa</string>

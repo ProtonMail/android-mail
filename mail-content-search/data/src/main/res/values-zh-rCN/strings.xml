@@ -4,5 +4,6 @@
   <string name="content_search_notification_channel_description">显示邮件内容搜索索引的进度。</string>
   <string name="content_search_notification_title">正在准备内容搜索</string>
   <string name="content_search_notification_progress">%1$.2f%% 已完成</string>
+  <string name="content_search_notification_preparing">正在准备…</string>
   <string name="content_search_notification_cancel">取消</string>
 </resources>

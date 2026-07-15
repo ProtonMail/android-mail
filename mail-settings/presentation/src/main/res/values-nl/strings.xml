@@ -27,7 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Privacy- en beveiligingsinstellingen</string>
   <string name="mail_settings_preferences">Voorkeuren</string>
   <string name="mail_settings_app">App aanpassingen</string>
-  <string name="mail_settings_content_search">Content Search</string>
+  <string name="mail_settings_content_search">Inhoud zoeken</string>
   <string name="mail_settings_mailbox">Mailbox voorkeuren</string>
   <string name="mail_settings_folders_labels">Mappen en labels</string>
   <string name="mail_settings_spam_and_custom_filters">Spam en filters</string>

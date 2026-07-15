@@ -38,9 +38,9 @@
   <string name="composer_error_store_draft_invalid_recipient">Draf tidak dapat disimpan - Penerima tidak valid</string>
   <string name="composer_error_store_draft_message_not_a_draft">Draf tidak dapat disimpan - Pesan ini bukan draf</string>
   <string name="composer_error_store_draft_generic">Draf tidak dapat disimpan - Terjadi suatu kesalahan umum</string>
-  <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
+  <string name="composer_error_create_draft">Terjadi kesalahan. Gagal membuat draf baru.</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia saat ini, penyuntingan tidak dimungkinkan.</string>
-  <string name="composer_action_clear_formatting">Clear formatting</string>
+  <string name="composer_action_clear_formatting">Hapus pemformatan</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Impor dari…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">Dari pustaka foto Anda</string>
@@ -53,7 +53,7 @@
   <string name="composer_too_many_attachments_error">Jumlah lampiran maksimal (100) terlampaui</string>
   <string name="composer_delete_attachment_error">Terdapat kesalahan yang tidak terduga pada saat menghapus lampiran.</string>
   <string name="composer_unexpected_attachments_error">Terdapat kesalahan yang tidak terduga yang berhubungan dengan lampiran.</string>
-  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Gagal menyimpan lampiran. Periksa penyimpanan dan silakan coba lagi.</string>
   <string name="composer_storage_quota_exceeded_error">Ruang penyimpanan Anda penuh. Silakan kosongkan ruang yang ada atau tingkatkan akun untuk menambahkan lebih banyak ruang.</string>
   <string name="composer_attach_capture_from_camera_error">Mengambil lampiran dari kamera saat ini belum dimungkinkan</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
@@ -151,6 +151,6 @@
   <string name="composer_error_send_draft_attachments_crypto_error">Draf tidak dapat dikirim - Enkripsi lampiran gagal.</string>
   <string name="composer_expiration_time_learn_more">Pelajari lebih lanjut</string>
   <string name="composer_enter_recipient_content_description">Masukkan penerima</string>
-  <string name="composer_sender_address_description">Choose Sender Address</string>
+  <string name="composer_sender_address_description">Pilih Alamat Pengirim</string>
   <string name="composer_encryption_info_learn_more">Pelajari lebih lanjut</string>
 </resources>

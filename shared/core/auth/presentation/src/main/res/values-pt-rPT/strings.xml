@@ -32,7 +32,7 @@
   <string name="auth_login_close">Fechar</string>
   <string name="auth_login_help">Ajuda</string>
   <string name="auth_sign_in">Iniciar sessão</string>
-  <string name="auth_login_username">Username or email</string>
+  <string name="auth_login_username">Nome de utilizador ou e-mail</string>
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Palavra-passe</string>
   <string name="auth_login_assistive_text">Introduza o seu e-mail ou nome de utilizador Proton.</string>
@@ -62,7 +62,7 @@
   <string name="auth_signup_title">Criar a sua conta da Proton</string>
   <string name="auth_signup_subtitle">Uma conta para todos os serviços Proton</string>
   <string name="auth_signup_next">Seguinte</string>
-  <string name="auth_signup_username">Username</string>
+  <string name="auth_signup_username">Nome de utilizador</string>
   <string name="auth_signup_create_password">Crie a sua palavra-passe</string>
   <string name="auth_signup_password">Palavra-passe</string>
   <string name="auth_signup_repeat_password">Repita a palavra-passe</string>
@@ -98,7 +98,7 @@
   <string name="auth_signup_recovery_email_validation_error">Erro na validação do e-mail</string>
   <string name="auth_signup_recovery_phone_validation_error">Erro ao validar o número de telefone</string>
   <string name="auth_signup_createpassword_error_password_not_equal">As palavras-passe não coincidem. Tente novamente.</string>
-  <string name="auth_signup_general_error">Something went wrong. Please try again.</string>
+  <string name="auth_signup_general_error">Ocorreu um erro. Por favor, tente novamente.</string>
   <string name="auth_signup_countries_search">Pesquisar um país</string>
   <string name="auth_login_error_invalid_action_cannot_setup_user">Não foi possível configurar o utilizador.</string>
   <string name="auth_login_error_invalid_action_cannot_setup_address">Não foi possível configurar o endereço.</string>
@@ -111,8 +111,8 @@
   <string name="auth_fido_add_security_key">Adicionar uma chave de segurança</string>
   <string name="auth_fido_security_keys_learn_more">Saiba mais</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="one">The maximum number of %d free account has been exceeded.</item>
-    <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
+    <item quantity="one">O número máximo de %d conta gratuita foi excedido.</item>
+    <item quantity="other">O número máximo de %d contas gratuitas foi excedido.</item>
   </plurals>
   <string name="common_error_something_went_wrong">Ocorreu um erro. Tente novamente mais tarde.</string>
   <string name="auth_fido_config_error">Erro ao obter as chaves guardadas.</string>
@@ -149,5 +149,5 @@
   <string name="settings_password_error_invalid_recovery">Código A2F incorreto. Tente novamente.</string>
   <string name="settings_password_error_2fa_reused">O código já foi usado. Tente um código diferente.</string>
   <string name="settings_password_general_error">Ocorreu um erro.</string>
-  <string name="proton_error_non_processable_actions">One or more actions cannot be processed. Please log out and log back in to your account.</string>
+  <string name="proton_error_non_processable_actions">Uma ou mais ações não podem ser processadas. Termine a sessão e volte a iniciar sessão na sua conta.</string>
 </resources>

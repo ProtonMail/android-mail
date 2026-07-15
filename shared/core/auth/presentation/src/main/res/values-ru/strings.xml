@@ -111,10 +111,10 @@
   <string name="auth_fido_add_security_key">Добавить ключ безопасности</string>
   <string name="auth_fido_security_keys_learn_more">Подробнее</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="one">The maximum number of %d free account has been exceeded.</item>
-    <item quantity="few">The maximum number of %d free accounts have been exceeded.</item>
-    <item quantity="many">The maximum number of %d free accounts have been exceeded.</item>
-    <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
+    <item quantity="one">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
+    <item quantity="few">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
+    <item quantity="many">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
+    <item quantity="other">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
   </plurals>
   <string name="common_error_something_went_wrong">Что-то пошло не так. Пожалуйста, попробуйте еще раз.</string>
   <string name="auth_fido_config_error">Ошибка при получении сохранённых ключей.</string>

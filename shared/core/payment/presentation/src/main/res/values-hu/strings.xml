@@ -45,6 +45,6 @@
   <string name="payment_subscription_managed_by_google">Előfizetését a Google Play kezeli.</string>
   <string name="payment_subscription_managed_by_apple">Előfizetését az Apple Store kezeli.</string>
   <string name="payment_subscription_managed_by_other">Az előfizetése nem kezelhető a mobilalkalmazásban.</string>
-  <string name="payment_subscription_restricted_access_title">Restricted access</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_title">Korlátozott hozzáférés</string>
+  <string name="payment_subscription_restricted_access_description">Sajnáljuk, nincs jogosultsága az oldal eléréséhez. Lépjen kapcsolatba a rendszergazdával, ha ennek nem így kellene lennie.</string>
 </resources>

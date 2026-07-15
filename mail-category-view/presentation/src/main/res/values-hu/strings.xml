@@ -17,16 +17,16 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
-  <string name="category_title_social">Social</string>
-  <string name="category_title_promotions">Promotions</string>
-  <string name="category_title_updates">Updates</string>
-  <string name="category_title_forums">Forums</string>
-  <string name="category_title_newsletters">Newsletters</string>
-  <string name="category_title_transactions">Transactions</string>
-  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_title_primary">Elsődleges</string>
+  <string name="category_title_social">Közösségi</string>
+  <string name="category_title_promotions">Promóciók</string>
+  <string name="category_title_updates">Frissítések</string>
+  <string name="category_title_forums">Fórumok</string>
+  <string name="category_title_newsletters">Hírlevelek</string>
+  <string name="category_title_transactions">Tranzakciók</string>
+  <string name="category_spotlight_unseen_title">Új üzenetek itt: %1$s</string>
+  <string name="category_spotlight_unseen_description">Kék pont jelzi, ha egy kategóriában új üzenetek érkeztek az utolsó megtekintése óta.</string>
+  <string name="category_spotlight_personalise_title">Kategóriák testreszabása</string>
+  <string name="category_spotlight_personalise_description">Helyezzen át egy e-mailt egy másik kategóriába az „Áthelyezés” funkcióval. A hasonló e-mailek mostantól automatikusan oda lesznek rendezve.</string>
+  <string name="category_spotlight_close_content_description">Bezárás</string>
 </resources>

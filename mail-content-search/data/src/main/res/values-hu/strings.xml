@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Content search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for content search.</string>
-  <string name="content_search_notification_title">Preparing Content Search</string>
-  <string name="content_search_notification_progress">%1$.2f%% completed</string>
-  <string name="content_search_notification_cancel">Cancel</string>
+  <string name="content_search_notification_channel_name">Keresés a tartalomban indexelése</string>
+  <string name="content_search_notification_channel_description">A folyamat előrehaladását mutatja, miközben az üzenetek indexelése zajlik a keresés a tartalomban funkcióhoz.</string>
+  <string name="content_search_notification_title">Keresés a tartalomban előkészítése</string>
+  <string name="content_search_notification_progress">%1$.2f%% befejeződött</string>
+  <string name="content_search_notification_preparing">Előkészítés…</string>
+  <string name="content_search_notification_cancel">Mégsem</string>
 </resources>

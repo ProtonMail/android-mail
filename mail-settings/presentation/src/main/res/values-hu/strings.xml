@@ -27,7 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Adatvédelem és biztonsági beállítások</string>
   <string name="mail_settings_preferences">Beállítások</string>
   <string name="mail_settings_app">Alkalmazás testreszabása</string>
-  <string name="mail_settings_content_search">Content Search</string>
+  <string name="mail_settings_content_search">Keresés a tartalomban</string>
   <string name="mail_settings_mailbox">Postafiók beállítások</string>
   <string name="mail_settings_folders_labels">Mappák és címkék</string>
   <string name="mail_settings_spam_and_custom_filters">Levélszemét és szűrők</string>
@@ -55,7 +55,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Lapozás a következő e-mail-re</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Gyorsan a következő vagy az előző üzenetre léphet a bejövő üzenetek között.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Eszköztárak testreszabása</string>
-  <string name="mail_settings_app_customization_email_categories">Email categories</string>
+  <string name="mail_settings_app_customization_email_categories">E-mail kategóriák</string>
   <string name="mail_settings_app_customization_alternative_routing">Alternatív útválasztás</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Tűzfalak vagy hálózati problémák megkerülése abban az esetben, ha a Proton webhelyei blokkolva vannak.</string>
   <string name="mail_settings_app_customization_mail_experience_header">E-mail élmény</string>
@@ -68,7 +68,7 @@
   <string name="mail_settings_app_customization_mobile_signature_on">Be</string>
   <string name="mail_settings_app_customization_mobile_signature_off">Ki</string>
   <string name="mail_settings_app_customization_mobile_signature_enable">Aláírás bekapcsolása</string>
-  <string name="mail_settings_app_customization_mobile_signature_edit">Edit signature</string>
+  <string name="mail_settings_app_customization_mobile_signature_edit">Aláírás szerkesztése</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Rendszer</string>
   <string name="mail_settings_theme_light">Világos</string>
@@ -128,29 +128,29 @@
   <string name="mail_settings_custom_toolbar_edit_actions">Műveletek szerkesztése</string>
   <string name="mail_settings_custom_toolbar_set_actions">Eszköztár műveletek</string>
   <string name="mail_settings_custom_toolbar_remaining_actions">Elérhető műveletek</string>
-  <string name="mail_settings_custom_toolbar_nav_title_list">Edit list toolbar</string>
-  <string name="mail_settings_custom_toolbar_nav_title_convo">Conversation toolbar</string>
-  <string name="mail_settings_custom_toolbar_nav_title_message">Message toolbar</string>
-  <string name="mail_settings_custom_toolbar_nav_button_save">Save</string>
-  <string name="mail_settings_custom_toolbar_header">The toolbar can have 1–5 actions. You can\'t remove the last remaining action.</string>
-  <string name="mail_settings_custom_toolbar_reset">Reset to default</string>
-  <string name="mail_settings_custom_toolbar_reset_title">Do you want to reset the toolbar settings?</string>
-  <string name="mail_settings_custom_toolbar_reset_confirm">Confirm</string>
-  <string name="mail_settings_custom_toolbar_save_error">Unable to save toolbar actions. Please try again.</string>
-  <string name="mail_settings_custom_toolbar_read_error">Unable to read toolbar actions. Please try again.</string>
+  <string name="mail_settings_custom_toolbar_nav_title_list">Lista eszköztár szerkesztése</string>
+  <string name="mail_settings_custom_toolbar_nav_title_convo">Beszélgetés eszköztár</string>
+  <string name="mail_settings_custom_toolbar_nav_title_message">Üzenet eszköztár</string>
+  <string name="mail_settings_custom_toolbar_nav_button_save">Mentés</string>
+  <string name="mail_settings_custom_toolbar_header">Az eszköztáron 1–5 művelet szerepelhet. Az utolsó megmaradt műveletet nem távolíthatja el.</string>
+  <string name="mail_settings_custom_toolbar_reset">Alapbeállítások visszaállítása</string>
+  <string name="mail_settings_custom_toolbar_reset_title">Szeretné visszaállítani az eszköztár beállításait?</string>
+  <string name="mail_settings_custom_toolbar_reset_confirm">Megerősítés</string>
+  <string name="mail_settings_custom_toolbar_save_error">Az eszköztár-műveletek mentése sikertelen. Kérjük, próbálja újra.</string>
+  <string name="mail_settings_custom_toolbar_read_error">Az eszköztár-műveletek beolvasása sikertelen. Kérjük, próbálja újra.</string>
   <!-- Custom App Icon -->
-  <string name="settings_app_icon_toolbar_title">App icon</string>
-  <string name="settings_app_icon_name_default">Default</string>
-  <string name="settings_app_icon_name_discreet">Discreet</string>
-  <string name="settings_app_icon_title_default">App icon - default</string>
-  <string name="settings_app_icon_title_discreet">App icon - discreet</string>
-  <string name="settings_app_icon_description">Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy.\nNotifications will always show the Proton Mail name and icon.</string>
-  <string name="settings_app_icon_learn_more">Learn more…</string>
-  <string name="settings_app_icon_discreet_toggle">Discreet app icon</string>
-  <string name="settings_app_icon_confirmation_title">Change app icon?</string>
-  <string name="settings_app_icon_confirmation_details">This will cause the Proton Mail app to close and all notifications to be dismissed.\n\nTo restart Proton Mail, just tap your new app icon.</string>
-  <string name="settings_app_icon_action_cancel">Cancel</string>
-  <string name="settings_app_icon_change_icon">Change icon</string>
+  <string name="settings_app_icon_toolbar_title">Alkalmazásikon</string>
+  <string name="settings_app_icon_name_default">Alapértelmezett</string>
+  <string name="settings_app_icon_name_discreet">Diszkrét</string>
+  <string name="settings_app_icon_title_default">Alkalmazásikon - alapértelmezett</string>
+  <string name="settings_app_icon_title_discreet">Alkalmazásikon - diszkrét</string>
+  <string name="settings_app_icon_description">Tartsa meg az alapértelmezett Proton Mail ikont, vagy álcázza egy diszkrétebb ikonnal a fokozott adatvédelem érdekében.\nAz értesítések mindig a Proton Mail nevet és ikont fogják mutatni.</string>
+  <string name="settings_app_icon_learn_more">További információk…</string>
+  <string name="settings_app_icon_discreet_toggle">Diszkrét alkalmazásikon</string>
+  <string name="settings_app_icon_confirmation_title">Módosítja az alkalmazásikont?</string>
+  <string name="settings_app_icon_confirmation_details">Ez a Proton Mail alkalmazás bezárását és az összes értesítés elvetését eredményezi.\n\nA Proton Mail újraindításához csak koppintson az új alkalmazásikonra.</string>
+  <string name="settings_app_icon_action_cancel">Mégsem</string>
+  <string name="settings_app_icon_change_icon">Ikon módosítása</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Hiba történt. Próbálja újra.</string>
 </resources>

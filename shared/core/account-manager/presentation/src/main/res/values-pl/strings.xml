@@ -27,8 +27,8 @@
   <string name="manage_accounts_title">Zarządzaj kontami</string>
   <string name="manage_accounts_add_account">Dodaj konto</string>
   <string name="manage_accounts_switch_to">Przełącz na konto</string>
-  <string name="manage_accounts_switch_to_signed_in_content_desc">Switch to a signed in account</string>
-  <string name="manage_accounts_switch_to_signed_out_content_desc">Switch to a signed out account</string>
+  <string name="manage_accounts_switch_to_signed_in_content_desc">Przełącz na zalogowane konto</string>
+  <string name="manage_accounts_switch_to_signed_out_content_desc">Przełącz na wylogowane konto</string>
   <string name="primary_account_avatar_camera_content_description">Aparat do tworzenia awatara konta</string>
   <string name="manage_accounts_on_device">Zarządzaj kontami na tym urządzeniu</string>
   <string name="add_another_account">Dodaj inne konto</string>

@@ -26,14 +26,14 @@
   <string name="snooze_sheet_option_custom_detail">選擇日期和時間</string>
   <string name="snooze_sheet_snooze_title">緩辦直至</string>
   <string name="snooze_sheet_option_unsnooze">取消緩辦</string>
-  <string name="snooze_sheet_error_unable_to_snooze">Sorry, we encountered an unknown error snoozing this conversation</string>
-  <string name="snooze_sheet_error_unable_to_unsnooze">An unknown error occurred when unsnoozing the conversation</string>
-  <string name="snooze_sheet_error_in_the_past">Snooze time is in the past</string>
+  <string name="snooze_sheet_error_unable_to_snooze">抱歉，延後此對話時發生未知錯誤</string>
+  <string name="snooze_sheet_error_unable_to_unsnooze">取消延後此對話時發生未知錯誤</string>
+  <string name="snooze_sheet_error_in_the_past">延後時間已過</string>
   <string name="snooze_sheet_success">已緩辦，直至 %s</string>
-  <string name="unsnooze_sheet_success">Conversation is no longer snoozed</string>
+  <string name="unsnooze_sheet_success">已取消對話的延後狀態</string>
   <string name="snooze_picker_content_description">訊息延後</string>
   <string name="snooze_picker_button_title">儲存</string>
-  <string name="snooze_custom_upsell_title">Custom date and time</string>
+  <string name="snooze_custom_upsell_title">自訂日期和時間</string>
   <string name="snooze_custom_upsell_title_short">自訂</string>
-  <string name="snooze_custom_upsell_hint_short">Upgrade to access</string>
+  <string name="snooze_custom_upsell_hint_short">升級以進行存取</string>
 </resources>

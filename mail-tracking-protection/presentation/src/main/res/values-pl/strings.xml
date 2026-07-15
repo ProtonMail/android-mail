@@ -21,23 +21,23 @@
   <string name="show_details">Pokaż szczegóły</string>
   <string name="trackers_protection_no_trackers_detected">Ochrona przed śledzeniem: nie wykryto żadnych elementów śledzących</string>
   <string name="tracking_protection">Ochrona przed śledzeniem</string>
-  <string name="tracking_protection_description">We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message.</string>
+  <string name="tracking_protection_description">Aktywnie chronimy Cię przed śledzeniem. Tutaj możesz zobaczyć zablokowane przez nas piksele śledzące oraz wyczyszczone linki śledzące w tej wiadomości.</string>
   <string name="tracking_protection_learn_more">Dowiedz się więcej</string>
-  <string name="original">Original</string>
+  <string name="original">Oryginał</string>
   <string name="cleaned">Wyczyszczony</string>
   <string name="open_link">Otwórz link</string>
   <string name="action_close_dialog_button">Zamknij</string>
   <string name="got_it">Ok</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="one">%s tracker blocked</item>
-    <item quantity="few">%s trackers blocked</item>
-    <item quantity="many">%s trackers blocked</item>
-    <item quantity="other">%s trackers blocked</item>
+    <item quantity="one">Zablokowano %s element śledzący</item>
+    <item quantity="few">Zablokowano %s elementy śledzące</item>
+    <item quantity="many">Zablokowano %s elementów śledzących</item>
+    <item quantity="other">Zablokowano %s elementu śledzącego</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="one">%s link cleaned</item>
-    <item quantity="few">%s links cleaned</item>
-    <item quantity="many">%s links cleaned</item>
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="one">Oczyszczono %s link</item>
+    <item quantity="few">Oczyszczono %s linki</item>
+    <item quantity="many">Oczyszczono %s linków</item>
+    <item quantity="other">Oczyszczono %s linku</item>
   </plurals>
 </resources>

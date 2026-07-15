@@ -22,8 +22,8 @@
   <string name="drawer_item_create_label">Utwórz etykietę</string>
   <string name="drawer_item_create_folder">Utwórz folder</string>
   <string name="drawer_upgrade_plus">Ulepsz do planu Mail Plus</string>
-  <string name="drawer_upgrade_unlimited">Upgrade to Unlimited</string>
+  <string name="drawer_upgrade_unlimited">Ulepsz do Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">Wyprzedaż z okazji Czarnego Piątku</string>
-  <string name="drawer_upgrade_plus_spring_sale">Spring Sale</string>
+  <string name="drawer_upgrade_plus_spring_sale">Wiosenna promocja</string>
   <string name="drawer_upgrade_plus_summer_sale">Letnie promocje</string>
 </resources>

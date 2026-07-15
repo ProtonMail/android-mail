@@ -29,23 +29,23 @@
   <string name="spotlight_feature_item_headers_html_description">Inspecciona mensajes sospechosos para confirmar su autenticidad y descubrir cualquier elemento de rastreo oculto.</string>
   <string name="spotlight_screen_got_it">Entendido</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">What\’s new in Proton Mail</string>
+  <string name="spotlight_screen_category_view_title">Novedades en Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Mejoras en la interfaz</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Desplazamiento fluido, diseño renovado y mucho más.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtro de no leídos</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Ahora ubicados en la parte inferior para facilitar el acceso.</string>
   <string name="spotlight_screen_category_view_categories_title">Categorías de correo electrónico</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Clasifica automáticamente el correo en categorías útiles.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Los mensajes sin leer están más a mano</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">El filtro de no leídos está ahora en la parte inferior de tu bandeja de entrada, lo que facilita el acceso y el cambio entre todos los correos electrónicos y los mensajes sin leer.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Mantente al día con tus correos nuevos y\nno leídos</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">El filtro de no leídos está ahora más a la vista y a mano para que revises y gestiones tus mensajes pendientes rápidamente.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Your inbox,\nautomatically organized</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Tu bandeja de entrada,\norganizada automáticamente</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Tu bandeja de entrada está ahora organizada en categorías como Principal, Social, Promociones y más, lo que te facilita reducir el desorden y centrarte en los correos electrónicos que importan.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Privado por diseño. Más información</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Bienvenidas las categorías.\nAdiós a las distracciones.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Olvídate de las distracciones de boletines, actualizaciones y correos no urgentes. Con las nuevas categorías, solo los mensajes importantes llegarán a tu bandeja principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continuar</string>
   <string name="spotlight_screen_category_view_button_try">Prueba las categorías</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Continuar sin</string>
 </resources>

@@ -27,7 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">プライバシーとセキュリティの設定</string>
   <string name="mail_settings_preferences">設定</string>
   <string name="mail_settings_app">アプリのカスタマイズ</string>
-  <string name="mail_settings_content_search">Content Search</string>
+  <string name="mail_settings_content_search">コンテンツ検索</string>
   <string name="mail_settings_mailbox">メールボックスの設定</string>
   <string name="mail_settings_folders_labels">フォルダとラベル</string>
   <string name="mail_settings_spam_and_custom_filters">迷惑メールフィルター</string>
@@ -55,7 +55,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">スワイプして次のメール</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">受信トレイ内の次または前のメッセージにすばやく移動します。</string>
   <string name="mail_settings_app_customization_customize_toolbar">ツールバーを編集</string>
-  <string name="mail_settings_app_customization_email_categories">Email categories</string>
+  <string name="mail_settings_app_customization_email_categories">メールカテゴリ</string>
   <string name="mail_settings_app_customization_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">ファイアウォールやネットワークの問題を回避して、Protonサイトがブロックされている場合に対処します。</string>
   <string name="mail_settings_app_customization_mail_experience_header">メール体験</string>

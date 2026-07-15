@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Content search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for content search.</string>
-  <string name="content_search_notification_title">Preparing Content Search</string>
-  <string name="content_search_notification_progress">%1$.2f%% completed</string>
-  <string name="content_search_notification_cancel">Cancel</string>
+  <string name="content_search_notification_channel_name">Pengindeksan pencarian konten</string>
+  <string name="content_search_notification_channel_description">Menampilkan progres saat pesan diindeks untuk pencarian konten.</string>
+  <string name="content_search_notification_title">Menyiapkan Pencarian Konten</string>
+  <string name="content_search_notification_progress">%1$.2f%% selesai</string>
+  <string name="content_search_notification_preparing">Menyiapkan…</string>
+  <string name="content_search_notification_cancel">Batal</string>
 </resources>

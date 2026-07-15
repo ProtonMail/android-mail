@@ -55,5 +55,5 @@
   <string name="target_sign_in_error_new_qr">Gerar um código QR</string>
   <string name="target_sign_in_error_back_to_signin">Voltar para o início de sessão</string>
   <string name="target_sign_in_learn_more">Mais informação</string>
-  <string name="proton_error_non_processable_actions">One or more actions cannot be processed. Please log out and log back in to your account.</string>
+  <string name="proton_error_non_processable_actions">Uma ou mais ações não podem ser processadas. Termine a sessão e volte a iniciar sessão na sua conta.</string>
 </resources>

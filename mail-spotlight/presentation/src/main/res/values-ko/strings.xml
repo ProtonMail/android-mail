@@ -42,7 +42,7 @@
   <string name="spotlight_screen_category_view_main_b2b_subtitle">읽지 않음 필터의 시인성과 접근성 개선으로, 이제 읽지 않은 이메일을 빠르게 훑어보고 작업할 수 있습니다.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">완벽하게 정리된\n나의 받은 편지함.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_subtitle">이제 받은 편지함이 중요, 소셜, 프로모션 등의 카테고리로 분류되어 불필요한 것들은 줄이고 필요한 것에만 집중할 수 있습니다.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">설계부터 프라이버시를 존중합니다. 더 알아보기</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">어서와요, 카테고리.\n잘가요, 딴짓거리.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">뉴스레터, 업데이트, 급하지 않은 이메일에 주의가 분산 되는 건 이제 그만. 새로운 이메일 카테고리 덕분에 기본 편지함에는 중요한 메시지만 들어온답니다.</string>
   <string name="spotlight_screen_category_view_button_continue">계속</string>

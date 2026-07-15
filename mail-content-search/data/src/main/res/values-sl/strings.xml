@@ -4,5 +4,6 @@
   <string name="content_search_notification_channel_description">Prikazuje napredek med indeksiranjem sporočil za iskanje po vsebini.</string>
   <string name="content_search_notification_title">Priprava iskanja po vsebini</string>
   <string name="content_search_notification_progress">%1$.2f%% opravljeno</string>
+  <string name="content_search_notification_preparing">Priprava ...</string>
   <string name="content_search_notification_cancel">Prekliči</string>
 </resources>

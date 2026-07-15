@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more..</string>
-  <string name="mail_settings_content_search_toggle_title">Content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
-  <string name="mail_settings_content_search_preparing_status">Preparing…</string>
-  <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_header_title">検索</string>
+  <string name="mail_settings_content_search_description">お客様のデバイス上で直接、すべてのメッセージコンテンツを対象に検索します。</string>
+  <string name="mail_settings_content_search_learn_more">より詳しく。。</string>
+  <string name="mail_settings_content_search_toggle_title">コンテンツ検索</string>
+  <string name="mail_settings_content_search_mobile_data_title">モバイルデータ通信経由のダウンロードを許可</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fiが切断された場合、モバイルデータ通信経由でダウンロードを継続します。</string>
+  <string name="mail_settings_content_search_syncing_status">同期中… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">準備中…</string>
+  <string name="mail_settings_content_search_clear_data_button">ローカル検索データを消去</string>
+  <string name="mail_settings_content_search_clear_data_description">ローカル検索データを消去すると、メッセージコンテンツ検索が無効化されます。この機能はいつでも再度有効にすることができます。</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">別のアカウントでコンテンツのインデックス作成が実行されています。こちらで検索を有効にする前に、インデックス作成が完了するまでお待ちください。</string>
 </resources>

@@ -4,5 +4,6 @@
   <string name="content_search_notification_channel_description">İleti içeriklerini arama dizininin oluşturulma durumunu görüntüler.</string>
   <string name="content_search_notification_title">İçerik araması hazırlanıyor</string>
   <string name="content_search_notification_progress">%1$.2f[%1$.2f] tamamlandı</string>
+  <string name="content_search_notification_preparing">Hazırlanıyor…</string>
   <string name="content_search_notification_cancel">İptal</string>
 </resources>

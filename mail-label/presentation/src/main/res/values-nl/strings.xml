@@ -39,5 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Kan geen mappen ophalen.</string>
   <string name="bottom_sheet_label_as_error_apply">Labels toepassen mislukt.</string>
   <string name="bottom_sheet_move_to_action_error">Verplaatsen is mislukt.</string>
-  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
+  <string name="bottom_sheet_move_to_category_no_change">Er wordt geen wijziging aangebracht aan de geselecteerde e-mails</string>
 </resources>

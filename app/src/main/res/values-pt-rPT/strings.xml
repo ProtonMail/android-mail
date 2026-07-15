@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_icon_name_weather">Weather</string>
-  <string name="app_icon_name_notes">Notes</string>
-  <string name="app_icon_name_calculator">Calculator</string>
+  <string name="app_icon_name_weather">Tempo</string>
+  <string name="app_icon_name_notes">Notas</string>
+  <string name="app_icon_name_calculator">Calculadora</string>
   <string name="dialog_sign_out_account_title">Terminar sessão</string>
-  <string name="dialog_sign_out_account_description">The data associated to your account will remain on this device unless you select to delete it.</string>
+  <string name="dialog_sign_out_account_description">Os dados associados à sua conta permanecerão neste dispositivo, a menos que selecione a sua eliminação.</string>
   <string name="dialog_sign_out_account_confirm">Terminar sessão</string>
   <string name="dialog_sign_out_account_cancel">Cancelar</string>
   <string name="dialog_remove_account_title">Remover a conta?</string>
@@ -35,11 +35,11 @@
   <string name="mailbox_message_sending">A enviar a mensagem…</string>
   <string name="mailbox_message_sending_offline">Sem ligação: a mensagem está na lista para ser enviada.</string>
   <string name="mailbox_message_sending_success">Mensagem enviada</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">Ir para Rascunho</string>
   <string name="notification_switched_account">Mudou para a conta %s</string>
   <string name="mailbox_message_scheduling">A agendar mensagem...</string>
   <string name="mailbox_message_scheduling_offline">Offline: A mensagem está na lista para ser agendada.</string>
   <string name="mailbox_message_scheduled_for_sending_success">Esta mensagem será enviada a %1$s</string>
-  <string name="launcher_alert_duplicate_account_description">The user is already signed in</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="launcher_alert_duplicate_account_description">O utilizador já tem sessão iniciada</string>
+  <string name="home_event_loop_error_snackbar">Não conseguimos sincronizar as suas mensagens. Tente terminar sessão e voltar a iniciá-la. Se isso não funcionar, por favor envie um relatório de erro.</string>
 </resources>

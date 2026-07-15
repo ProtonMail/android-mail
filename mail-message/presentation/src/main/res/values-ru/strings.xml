@@ -59,7 +59,7 @@
   <string name="message_link_long_click_share">Поделиться ссылкой</string>
   <string name="message_link_long_click_share_via">Поделиться ссылкой через</string>
   <!-- Message body image actions -->
-  <string name="message_image_long_click_download">Download image</string>
+  <string name="message_image_long_click_download">Скачать изображение</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Копировать адрес</string>
   <string name="contact_actions_copy_address_description">Копировать адрес контакта</string>
@@ -73,15 +73,15 @@
   <string name="contact_actions_add_contact_description">Сохранить этого получателя как контакт</string>
   <string name="contact_actions_block_contact">Заблокировать этот контакт</string>
   <string name="contact_actions_block_contact_description">Заблокировать этот контакт</string>
-  <string name="contact_actions_block_contact_dialog_text">Emails from <xliff:g id="email">%1$s</xliff:g> will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.</string>
-  <string name="contact_actions_block_contact_dialog_button_block">Block</string>
-  <string name="contact_actions_block_contact_dialog_button_cancel">Cancel</string>
-  <string name="contact_actions_unblock_contact">Unblock this contact</string>
-  <string name="contact_actions_unblock_contact_description">Unblock this contact</string>
-  <string name="contact_actions_block_address">Block this address</string>
-  <string name="contact_actions_block_address_description">Block this address</string>
-  <string name="contact_actions_unblock_address">Unblock this address</string>
-  <string name="contact_actions_unblock_address_description">Unblock this address</string>
+  <string name="contact_actions_block_contact_dialog_text">Письма от <xliff:g id="email">%1$s</xliff:g> больше не будут доставляться и будут удалены без возможности восстановления. Вы можете управлять заблокированными адресами электронной почты в настройках.</string>
+  <string name="contact_actions_block_contact_dialog_button_block">Заблокировать</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">Отмена</string>
+  <string name="contact_actions_unblock_contact">Разблокировать этот контакт</string>
+  <string name="contact_actions_unblock_contact_description">Разблокировать этот контакт</string>
+  <string name="contact_actions_block_address">Заблокировать этот адрес</string>
+  <string name="contact_actions_block_address_description">Заблокировать этот адрес</string>
+  <string name="contact_actions_unblock_address">Разблокировать этот адрес</string>
+  <string name="contact_actions_unblock_address_description">Разблокировать этот адрес</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">Просмотреть сообщение полностью</string>
 </resources>

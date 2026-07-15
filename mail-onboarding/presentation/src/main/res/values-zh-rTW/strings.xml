@@ -19,13 +19,13 @@
 <resources>
   <!--  New Onboarding 1  -->
   <string name="onboarding_welcome_title">歡迎使用 Proton Mail，預設即享隱私</string>
-  <string name="onboarding_welcome_description">Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy.</string>
+  <string name="onboarding_welcome_description">享受加密訊息、更少的垃圾郵件、網路釣魚防護，以及封鎖的追蹤程式。歡迎體驗隱私保護。</string>
   <!--  New Onboarding 2  -->
-  <string name="onboarding_rebuilt_title">Focus at your fingertips</string>
-  <string name="onboarding_rebuilt_description">Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster.</string>
+  <string name="onboarding_rebuilt_title">專注，觸手可及</string>
+  <string name="onboarding_rebuilt_description">減少整理的時間，將更多心力投入在行動上。您的收件匣經過全新設計，導覽更為輕鬆，讓您能更快處理重要事項。</string>
   <!--  New Onboarding 3  -->
-  <string name="onboarding_feedback_title">Stay connected, even offline</string>
-  <string name="onboarding_feedback_description">Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online.</string>
+  <string name="onboarding_feedback_title">即使離線，也能保持連線</string>
+  <string name="onboarding_feedback_description">無論身在何處，都能閱讀、撰寫及管理電子郵件。當您重新回到線上，所有內容都會自動同步。</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_get_started">入門指南</string>

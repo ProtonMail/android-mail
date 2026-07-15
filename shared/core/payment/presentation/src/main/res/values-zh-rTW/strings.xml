@@ -44,5 +44,5 @@
   <string name="payment_subscription_managed_by_apple">您的訂閱是由 Apple Store 管理。</string>
   <string name="payment_subscription_managed_by_other">您的訂閱無法在行動裝置應用程式內管理。</string>
   <string name="payment_subscription_restricted_access_title">存取受限</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_description">抱歉，您沒有權限存取此頁面。如果這不應該發生，請聯絡您的管理員。</string>
 </resources>

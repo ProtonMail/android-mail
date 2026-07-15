@@ -4,5 +4,6 @@
   <string name="content_search_notification_channel_description">Εμφανίζει την πρόοδο κατά την ευρετηρίαση των μηνυμάτων για αναζήτηση περιεχομένου.</string>
   <string name="content_search_notification_title">Προετοιμασία Αναζήτησης Περιεχομένου</string>
   <string name="content_search_notification_progress">%1$.2f%% ολοκληρώθηκε</string>
+  <string name="content_search_notification_preparing">Προετοιμασία…</string>
   <string name="content_search_notification_cancel">Ακύρωση</string>
 </resources>

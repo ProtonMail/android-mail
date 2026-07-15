@@ -29,23 +29,23 @@
   <string name="spotlight_feature_item_headers_html_description">Controleer verdachte berichten om hun authenticiteit te bevestigen en eventuele verborgen traceerelementen bloot te leggen.</string>
   <string name="spotlight_screen_got_it">Begrepen</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">What\’s new in Proton Mail</string>
+  <string name="spotlight_screen_category_view_title">Wat is er nieuw in Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Verbeterde visuele vormgeving</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Vloeiend scrollen, vernieuwde lay-out en meer.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Ongelezen filter</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Nu onderaan geplaatst voor eenvoudigere toegang.</string>
   <string name="spotlight_screen_category_view_categories_title">E-mailcategorieën</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Sorteer e-mail automatisch in handige categorieën.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">Ongelezen is eenvoudiger te bereiken</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Het filter voor ongelezen berichten bevindt zich nu onderaan uw inbox, waardoor u er gemakkelijker bij kunt en kunt schakelen tussen alle e-mails en ongelezen berichten.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Blijf op de hoogte van nieuwe en\nongelezen e-mails.</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">De filter voor ongelezen e-mails is nu beter zichtbaar en direct beschikbaar, zodat u snel ongelezen e-mails kunt scannen en actie kunt ondernemen.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Your inbox,\nautomatically organized</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Uw inbox,\nautomatisch georganiseerd</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Uw inbox is nu onderverdeeld in categorieën zoals Primair, Sociaal, Promoties en meer, waardoor u rommel eenvoudiger kunt verminderen en u zich kunt concentreren op de e-mails die ertoe doen.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Privé door ontwerp. Meer informatie</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hallo categorieën.\nVaarwel afleidingen.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Laat u niet langer afleiden door nieuwsbrieven, updates en niet-urgente e-mails. Dankzij de nieuwe e-mailcategorieën komen alleen belangrijke berichten in uw primaire inbox terecht.</string>
   <string name="spotlight_screen_category_view_button_continue">Doorgaan</string>
   <string name="spotlight_screen_category_view_button_try">Probeer categorieën</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Doorgaan zonder</string>
 </resources>

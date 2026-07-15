@@ -41,5 +41,5 @@
   <string name="mailbox_message_scheduling_offline">Sin conexión: mensaje en cola para envío programado</string>
   <string name="mailbox_message_scheduled_for_sending_success">Este mensaje se enviará el %1$s</string>
   <string name="launcher_alert_duplicate_account_description">El usuario ya ha iniciado sesión</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="home_event_loop_error_snackbar">No hemos podido sincronizar tu correo. Intenta cerrar sesión y volver a iniciarla. Si eso no funciona, envía un informe de errores.</string>
 </resources>

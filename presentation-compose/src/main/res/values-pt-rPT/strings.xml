@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="drawer_menu_description">Menu</string>
-  <string name="topbar_back_description">Back</string>
+  <string name="topbar_back_description">Voltar</string>
 </resources>

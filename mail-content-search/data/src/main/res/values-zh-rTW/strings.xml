@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="content_search_notification_channel_name">正建立內文搜尋索引</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for content search.</string>
+  <string name="content_search_notification_channel_description">顯示為內文搜尋建立訊息索引時的進度。</string>
   <string name="content_search_notification_title">正準備內文搜尋</string>
   <string name="content_search_notification_progress">%1$.2f%% 完成</string>
+  <string name="content_search_notification_preparing">準備中…</string>
   <string name="content_search_notification_cancel">取消</string>
 </resources>

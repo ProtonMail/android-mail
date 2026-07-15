@@ -41,5 +41,5 @@
   <string name="mailbox_message_scheduling_offline">Offline: Pesan diantrekan untuk dijadwalkan</string>
   <string name="mailbox_message_scheduled_for_sending_success">Pesan ini akan dikirim pada %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Pengguna ini telah terhubung masuk</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="home_event_loop_error_snackbar">Gagal menyinkronkan email. Coba keluar dan masuk kembali. Jika tidak berhasil, silakan kirim laporan bug.</string>
 </resources>

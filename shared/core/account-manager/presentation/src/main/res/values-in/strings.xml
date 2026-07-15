@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="account_switcher_manage_account">Kelola akun</string>
-  <string name="account_switcher_talkback_title">Manage account: current account</string>
+  <string name="account_switcher_talkback_title">Kelola akun: akun saat ini</string>
   <string name="account_switcher_sign_out">Keluar</string>
   <string name="account_switcher_sign_in">Masuk</string>
   <string name="account_switcher_remove">Hapus</string>
@@ -27,8 +27,8 @@
   <string name="manage_accounts_title">Kelola akun</string>
   <string name="manage_accounts_add_account">Tambah akun</string>
   <string name="manage_accounts_switch_to">Beralih ke</string>
-  <string name="manage_accounts_switch_to_signed_in_content_desc">Switch to a signed in account</string>
-  <string name="manage_accounts_switch_to_signed_out_content_desc">Switch to a signed out account</string>
+  <string name="manage_accounts_switch_to_signed_in_content_desc">Beralih ke akun yang sudah masuk</string>
+  <string name="manage_accounts_switch_to_signed_out_content_desc">Beralih ke akun yang sudah keluar</string>
   <string name="primary_account_avatar_camera_content_description">Kamera avatar akun</string>
   <string name="manage_accounts_on_device">Kelola akun pada perangkat ini</string>
   <string name="add_another_account">Tambah akun lainnya</string>

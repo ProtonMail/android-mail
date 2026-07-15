@@ -144,7 +144,7 @@
   <string name="settings_app_icon_name_discreet">Diskret</string>
   <string name="settings_app_icon_title_default">Appikon – standard</string>
   <string name="settings_app_icon_title_discreet">Appikon – diskret</string>
-  <string name="settings_app_icon_description">Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy.\nNotifications will always show the Proton Mail name and icon.</string>
+  <string name="settings_app_icon_description">Behåll standardikonen för Proton Mail, eller dölj den med en mer diskret ikon för extra integritet.\nAviseringar kommer alltid att visa namnet och ikonen för Proton Mail.</string>
   <string name="settings_app_icon_learn_more">Lär dig mer …</string>
   <string name="settings_app_icon_discreet_toggle">Diskret appikon</string>
   <string name="settings_app_icon_confirmation_title">Ändra appikon?</string>

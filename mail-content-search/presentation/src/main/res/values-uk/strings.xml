@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more..</string>
-  <string name="mail_settings_content_search_toggle_title">Content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
-  <string name="mail_settings_content_search_preparing_status">Preparing…</string>
-  <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_header_title">Пошук</string>
+  <string name="mail_settings_content_search_description">Шукайте безпосередньо на своєму пристрої за вмістом усіх повідомлень.</string>
+  <string name="mail_settings_content_search_learn_more">Докладніше..</string>
+  <string name="mail_settings_content_search_toggle_title">Пошук вмісту</string>
+  <string name="mail_settings_content_search_mobile_data_title">Дозволити завантаження через мобільні дані</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Завантаження продовжується через мобільні дані, якщо втрачено зв’язок Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Синхронізація… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Підготовка…</string>
+  <string name="mail_settings_content_search_clear_data_button">Очистити локальні дані пошуку</string>
+  <string name="mail_settings_content_search_clear_data_description">Очищення локальних даних пошуку вимкне пошук вмісту повідомлень. Ви можете ввімкнути його знову в будь-який час.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Індексація вмісту виконується для іншого облікового запису. Зачекайте, поки вона завершиться, перш ніж вмикати пошук тут.</string>
 </resources>

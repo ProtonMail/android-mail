@@ -85,7 +85,7 @@
     <item quantity="one">A mensagem foi movida para %s</item>
     <item quantity="other">Mensagens movidas para %s</item>
   </plurals>
-  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
+  <string name="mailbox_action_move_to_category">Movido para %s. Mensagens semelhantes serão categorizadas aqui no futuro.</string>
   <string name="mailbox_action_button_clear_trash">Esvaziar lixo</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar spam</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Melhore o seu plano para eliminar automaticamente as mensagens que estão no lixo ou spam há mais de 30 dias</string>
@@ -96,10 +96,10 @@
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta do Lixo?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta Spam?</string>
-  <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
+  <string name="mailbox_action_maximum_selection_reached">"O número máximo de seleções foi atingido"</string>
   <string name="mailbox_talkback_readout_unread">Não lido</string>
-  <string name="mailbox_talkback_readout_starred">Unstar</string>
-  <string name="mailbox_talkback_readout_not_starred">Star</string>
+  <string name="mailbox_talkback_readout_starred">Remover estrela</string>
+  <string name="mailbox_talkback_readout_not_starred">Marcar com estrela</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Não foi possível abrir o anexo. Tente novamente.</string>
   <string name="mailbox_attachment_download_in_progress">A transferência atual tem de ser concluída antes de iniciar uma nova.</string>

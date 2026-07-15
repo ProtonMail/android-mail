@@ -22,7 +22,7 @@
   <string name="show_details">Visa detaljer</string>
   <string name="trackers_protection_no_trackers_detected">Spårskydd: inga spårare upptäcktes</string>
   <string name="tracking_protection">Spårningsskydd</string>
-  <string name="tracking_protection_description">If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details.</string>
+  <string name="tracking_protection_description">Om du får ett e-postmeddelande som innehåller dolda spårningspixlar (spårare) eller spårningslänkar ser du sköldikonen i e-postdetaljerna.</string>
   <string name="tracking_protection_learn_more">Lär dig mer …</string>
   <string name="original">original</string>
   <string name="cleaned">Rensad</string>

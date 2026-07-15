@@ -9,6 +9,6 @@
   <string name="mail_settings_content_search_syncing_status">Sincronizando… %1$.2f%%</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa locais</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">A indexação de conteúdo está em execução em outra conta. Aguarde até que ela termine antes de ativar a pesquisa aqui.</string>
 </resources>

@@ -19,7 +19,7 @@
 <resources>
   <string name="payment_error_title">Ocorreu um erro.</string>
   <string name="payment_error_description">Não foi possível carregar esta página. Atualize a página ou verifique a sua ligação à internet.</string>
-  <string name="proton_error_non_processable_actions">One or more actions cannot be processed. Please log out and log back in to your account.</string>
+  <string name="proton_error_non_processable_actions">Uma ou mais ações não podem ser processadas. Termine a sessão e volte a iniciar sessão na sua conta.</string>
   <string name="payment_purchase_button_get">Obter %1$s</string>
   <string name="payment_purchase_button_subscribed">Subscrito em %1$s</string>
   <string name="payment_purchase_button_product_not_found">O produto não foi encontrado na loja.</string>
@@ -45,6 +45,6 @@
   <string name="payment_subscription_managed_by_google">A sua subscrição é gerida pelo Google Play.</string>
   <string name="payment_subscription_managed_by_apple">A sua subscrição é gerida pela Apple Store.</string>
   <string name="payment_subscription_managed_by_other">Não é possível gerir a sua subscrição na aplicação móvel.</string>
-  <string name="payment_subscription_restricted_access_title">Restricted access</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_title">Acesso restrito</string>
+  <string name="payment_subscription_restricted_access_description">Lamentamos, mas não tem permissão para aceder a esta página. Contacte o seu administrador se isto não devesse acontecer.</string>
 </resources>

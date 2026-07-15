@@ -25,7 +25,7 @@
   <string name="category_title_newsletters">E-mailové zpravodaje</string>
   <string name="category_title_transactions">Transakce</string>
   <string name="category_spotlight_unseen_title">Nové zprávy v %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
+  <string name="category_spotlight_unseen_description">Modrá tečka ukazuje, kdy má kategorie nové zprávy od doby, kdy jste ji naposledy zkontrolovali.</string>
   <string name="category_spotlight_personalise_title">Přizpůsobte si své Kategorie</string>
   <string name="category_spotlight_personalise_description">Pomocí funkce „Přesunout do“ přesuňte e-mail do jiné kategorie. Podobné e-maily se tam od nynějška budou automaticky třídit.</string>
   <string name="category_spotlight_close_content_description">Zavřít</string>

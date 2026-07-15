@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more..</string>
-  <string name="mail_settings_content_search_toggle_title">Content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
-  <string name="mail_settings_content_search_preparing_status">Preparing…</string>
-  <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_header_title">Pencarian</string>
+  <string name="mail_settings_content_search_description">Cari di semua konten pesan secara langsung di perangkat.</string>
+  <string name="mail_settings_content_search_learn_more">Pelajari lebih lanjut..</string>
+  <string name="mail_settings_content_search_toggle_title">Pencarian konten</string>
+  <string name="mail_settings_content_search_mobile_data_title">Izinkan pengunduhan via data seluler</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Pengunduhan dilanjutkan melalui data seluler jika Wi-Fi terputus.</string>
+  <string name="mail_settings_content_search_syncing_status">Menyingkronkan… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Menyiapkan…</string>
+  <string name="mail_settings_content_search_clear_data_button">Bersihkan data pencarian lokal</string>
+  <string name="mail_settings_content_search_clear_data_description">Membersihkan data pencarian lokal akan menonaktifkan pencarian konten pesan. Fitur ini dapat diaktifkan kembali kapan saja.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Pengindeksan konten sedang berjalan untuk akun lain. Tunggu hingga selesai sebelum mengaktifkan pencarian di sini.</string>
 </resources>

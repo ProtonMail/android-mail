@@ -19,7 +19,7 @@
 <resources>
   <!--  New Onboarding 1  -->
   <string name="onboarding_welcome_title">Witaj w Proton Mail, gdzie prywatność jest domyślna</string>
-  <string name="onboarding_welcome_description">Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy.</string>
+  <string name="onboarding_welcome_description">Ciesz się szyfrowanymi wiadomościami, mniejszą ilością spamu, ochroną przed phishingiem i zablokowanymi elementami śledzącymi. Witaj w świecie prywatności.</string>
   <!--  New Onboarding 2  -->
   <string name="onboarding_rebuilt_title">Koncentracja na wyciągnięcie ręki‎</string>
   <string name="onboarding_rebuilt_description">Poświęcaj mniej czasu na porządkowanie, a więcej na pracę. Skrzynka odbiorcza została zaprojektowana tak, aby ułatwić nawigację, dzięki czemu szybciej dotrzesz do tego, co ważne.</string>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more..</string>
-  <string name="mail_settings_content_search_toggle_title">Content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">Syncing… %1$.2f%%</string>
-  <string name="mail_settings_content_search_preparing_status">Preparing…</string>
-  <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_header_title">Cerca</string>
+  <string name="mail_settings_content_search_description">Cerca tra tutti i contenuti dei messaggi direttamente sul tuo dispositivo.</string>
+  <string name="mail_settings_content_search_learn_more">Scopri di più..</string>
+  <string name="mail_settings_content_search_toggle_title">Ricerca contenuto</string>
+  <string name="mail_settings_content_search_mobile_data_title">Consenti download tramite rete dati</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Il download continua tramite rete dati se viene persa la connessione Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Sincronizzazione in corso… %1$.2f%%</string>
+  <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
+  <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
+  <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">L\'indicizzazione dei contenuti è in corso per un altro account. Attendi che finisca prima di attivare la ricerca qui.</string>
 </resources>

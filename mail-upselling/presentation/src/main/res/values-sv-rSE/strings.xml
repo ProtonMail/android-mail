@@ -97,7 +97,7 @@
   <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt till %s%s om det inte avbryts.</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %s%s tills det avbryts.</string>
   <string name="upselling_auto_renew_text_promo_short">Välkomsterbjudande. Förnyas automatiskt med %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Auto-renews at %s%s unless canceled.</string>
+  <string name="upselling_auto_renew_text_standard">Förnyas automatiskt för %s%s om prenumerationen inte avslutas.</string>
   <string name="upselling_social_proof_reviews">2 000+ RECENSIONER</string>
   <string name="upselling_description_social_proof">Uppgradera till upplevelsen som miljoner prenumeranter hyllar.</string>
   <string name="upselling_month">/månad</string>

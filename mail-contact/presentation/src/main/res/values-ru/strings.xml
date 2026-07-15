@@ -87,7 +87,7 @@
   <string name="contact_details_action_copy_label">Копировать</string>
   <string name="contact_details_action_message_label">Сообщение</string>
   <string name="contact_details_action_call_label">Позвонить</string>
-  <string name="contact_details_action_open_url_label">Open URL</string>
+  <string name="contact_details_action_open_url_label">Открыть URL</string>
   <string name="contact_group_details_send_message_action">Отправить сообщение всей группе</string>
   <plurals name="contact_group_details_number_of_contacts">
     <item quantity="one">%1$d контакт</item>
@@ -95,9 +95,9 @@
     <item quantity="many">%1$d контактов</item>
     <item quantity="other">%1$d контактов</item>
   </plurals>
-  <string name="contact_bottom_sheet_redirect_to_web_title">Available on web</string>
+  <string name="contact_bottom_sheet_redirect_to_web_title">Доступно в Сети</string>
   <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Отклонить</string>
-  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.</string>
-  <string name="edit_contact_bottom_sheet_redirect_to_web_description">Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device.</string>
-  <string name="contact_bottom_sheet_redirect_to_web_button">Continue on web</string>
+  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Создание контактов и групп в приложении пока не поддерживается. Сейчас вы можете создать их в веб-версии приложения, и они синхронизируются с вашим устройством.</string>
+  <string name="edit_contact_bottom_sheet_redirect_to_web_description">Редактирование контактов и групп в приложении пока не поддерживается. Сейчас вы можете изменить их в веб-версии приложения, и изменения синхронизируются с вашим устройством.</string>
+  <string name="contact_bottom_sheet_redirect_to_web_button">Продолжить в Сети</string>
 </resources>

@@ -39,5 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">フォルダーを取得できませんでした.</string>
   <string name="bottom_sheet_label_as_error_apply">ラベルの適用に失敗しました。</string>
   <string name="bottom_sheet_move_to_action_error">移動できませんでした。</string>
-  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
+  <string name="bottom_sheet_move_to_category_no_change">選択されたメールに変更は加えられません</string>
 </resources>

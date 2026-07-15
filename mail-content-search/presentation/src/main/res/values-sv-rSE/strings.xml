@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="mail_settings_content_search_header_title">Sök</string>
-  <string name="mail_settings_content_search_description">Search across all message content directly on your device.</string>
+  <string name="mail_settings_content_search_description">Sök i allt meddelandeinnehåll direkt på din enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
   <string name="mail_settings_content_search_toggle_title">Innehållssökning</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillåt nedladdning via mobildata</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Nedladdningen fortsätter via mobil data om Wi-Fi förloras.</string>
   <string name="mail_settings_content_search_syncing_status">Synkroniserar … %1$.2f %%</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
-  <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Content indexing is running for another account. Wait for it to finish before enabling search here.</string>
+  <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
+  <string name="mail_settings_content_search_blocked_by_other_user">Innehållsindexering körs för ett annat konto. Vänta tills den är klar innan du aktiverar sökning här.</string>
 </resources>

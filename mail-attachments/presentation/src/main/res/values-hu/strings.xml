@@ -17,8 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="open_with">Open with…</string>
-  <string name="file_saved">File saved</string>
-  <string name="file_saved_fallback">File saved to Downloads folder</string>
-  <string name="error_saving_file">An error occurred during file save</string>
+  <string name="open_with">Megnyitás ezzel…</string>
+  <string name="file_saved">Fájl mentve</string>
+  <string name="file_saved_fallback">Fájl elmentve a Letöltések mappába</string>
+  <string name="error_saving_file">Hiba történt a fájl mentése közben</string>
 </resources>

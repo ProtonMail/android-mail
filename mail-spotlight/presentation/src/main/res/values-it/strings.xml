@@ -29,23 +29,23 @@
   <string name="spotlight_feature_item_headers_html_description">Ispeziona i messaggi sospetti per confermarne l\'autenticità e scoprire eventuali elementi di tracciamento nascosti.</string>
   <string name="spotlight_screen_got_it">Ho capito</string>
   <!-- Category View Spotlight -->
-  <string name="spotlight_screen_category_view_title">What\’s new in Proton Mail</string>
+  <string name="spotlight_screen_category_view_title">Cosa c\'è di nuovo in Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Miglioramenti dell\'interfaccia utente</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Scorrimento fluido, layout rinnovato e altro ancora.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtro non letto</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">Ora posizionato in basso per un accesso più semplice.</string>
   <string name="spotlight_screen_category_view_categories_title">Categorie email</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
-  <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">Ordina automaticamente la posta in comode categorie.</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">I messaggi non letti sono più facili da raggiungere</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Il filtro non letti è ora in fondo alla tua posta in arrivo, rendendolo più facile da raggiungere per passare da tutte le email ai messaggi non letti.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Tieni sotto controllo le nuove\nemail e quelle non lette</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Il filtro “non letti” è ora più visibile e a portata di mano, permettendoti di scorrere rapidamente e gestire le email non lette.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Your inbox,\nautomatically organized</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Your inbox is now sorted into categories like Primary, Social, Promotions, and more, making it easier to reduce clutter and focus on the emails that matter.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Private by design. Learn more</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">La tua posta in arrivo,\norganizzata automaticamente</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">La tua posta in arrivo è ora suddivisa in categorie come Principale, Social, Promozioni e altro, rendendo più facile ridurre il disordine e concentrarsi sulle email che contano.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Privato per progettazione. Scopri di più</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Ciao categorie.\nAddio distrazioni.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Smetti di farti distrarre da newsletter, aggiornamenti ed email non urgenti. Grazie alle nuove categorie di email, solo i messaggi importanti arriveranno nella tua casella di posta principale.</string>
   <string name="spotlight_screen_category_view_button_continue">Conferma</string>
   <string name="spotlight_screen_category_view_button_try">Prova le categorie</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Continua senza</string>
 </resources>

@@ -18,10 +18,10 @@
   -->
 <resources>
   <string name="app_icon_name_weather">Погода</string>
-  <string name="app_icon_name_notes">Notes</string>
+  <string name="app_icon_name_notes">Заметки</string>
   <string name="app_icon_name_calculator">Калькулятор</string>
   <string name="dialog_sign_out_account_title">Выйти</string>
-  <string name="dialog_sign_out_account_description">The data associated to your account will remain on this device unless you select to delete it.</string>
+  <string name="dialog_sign_out_account_description">Данные, связанные с вашим аккаунтом, останутся на этом устройстве, если только вы не решите удалить их.</string>
   <string name="dialog_sign_out_account_confirm">Выйти</string>
   <string name="dialog_sign_out_account_cancel">Отменить</string>
   <string name="dialog_remove_account_title">Удалить аккаунт?</string>
@@ -35,11 +35,11 @@
   <string name="mailbox_message_sending">Отправка сообщения…</string>
   <string name="mailbox_message_sending_offline">Нет подключения к сети: сообщение поставлено в очередь на отправку</string>
   <string name="mailbox_message_sending_success">Сообщение отправлено</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">Перейти в черновик</string>
   <string name="notification_switched_account">Вы перешли в аккаунт %s</string>
   <string name="mailbox_message_scheduling">Планирование сообщения…</string>
   <string name="mailbox_message_scheduling_offline">Офлайн: сообщение в очереди на планирование</string>
   <string name="mailbox_message_scheduled_for_sending_success">Это сообщение будет отправлено %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Пользователь уже вошёл</string>
-  <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+  <string name="home_event_loop_error_snackbar">Нам не удалось синхронизировать вашу почту. Попробуйте выйти из аккаунта и войти снова. Если это не поможет, пожалуйста, отправьте отчет об ошибке.</string>
 </resources>

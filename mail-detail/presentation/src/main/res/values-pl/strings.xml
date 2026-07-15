@@ -71,8 +71,8 @@
   <string name="message_body_embedded_images_banner_text">Automatyczne ładowanie osadzonych obrazów jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_remote_content_banner_text">Automatyczne ładowanie zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatyczne ładowanie osadzonych obrazów i zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
-  <string name="message_body_images_failed_to_load_banner_text">Some images failed to load with tracker protection.</string>
-  <string name="message_body_images_failed_to_load_banner_button">Load images</string>
+  <string name="message_body_images_failed_to_load_banner_text">Niektóre obrazy nie mogły zostać załadowane z ochroną przed elementami śledzącymi.</string>
+  <string name="message_body_images_failed_to_load_banner_button">Załaduj obrazy</string>
   <string name="message_phishing_banner_text">Wiadomość została oznaczona jako podejrzana przez nasz system lub przez Ciebie. Jeśli uważasz, że jest bezpieczna, oznacz ją jako wiarygodną.</string>
   <string name="message_phishing_banner_mark_as_legitimate_button">Oznacz jako wiarygodną</string>
   <string name="message_spam_banner_text">Wiadomość została oznaczona jako spam przez nasz system lub przez Ciebie.</string>
@@ -81,7 +81,7 @@
   <string name="message_blocked_sender_button_text">Odblokuj</string>
   <string name="message_expiration_banner_text">Wiadomość wygaśnie za %1$s</string>
   <string name="message_auto_delete_banner_text">Wiadomość zostanie automatycznie usunięta za %1$s</string>
-  <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
+  <string name="message_auth_fail_banner_text">Ta wiadomość nie spełnia wymogów uwierzytelniania swojej domeny. Może być sfałszowana lub nieprawidłowo przekazana dalej!</string>
   <string name="message_auth_fail_banner_button">Dowiedz się więcej</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Opuścisz aplikację i przejdziesz do:</string>
@@ -116,7 +116,7 @@
   <string name="message_report_phishing_dialog_confim_button">Potwierdź</string>
   <string name="message_report_phishing_dialog_cancel_button">Anuluj</string>
   <string name="trashed_messages_banner">Pokaż usunięte wiadomości w tym wątku.</string>
-  <string name="non_trashed_messages_banner">Show non-trashed messages in this conversation.</string>
+  <string name="non_trashed_messages_banner">Pokaż nieusunięte wiadomości w tym wątku.</string>
   <string name="recipient_me">ja</string>
   <string name="message_details_header_from">Od</string>
   <string name="message_details_header_to">Do</string>
@@ -166,7 +166,7 @@
   <string name="rsvp_widget_button_retry">Spróbuj ponownie</string>
   <string name="rsvp_widget_error_answering">Wystąpił błąd podczas odpowiadania na to wydarzenie</string>
   <string name="rsvp_widget_open_in_proton_calendar">Otwórz w Proton Calendar</string>
-  <string name="rsvp_widget_failed_to_open_in_proton_calendar">Failed to open in Proton Calendar</string>
+  <string name="rsvp_widget_failed_to_open_in_proton_calendar">Nie udało się otworzyć w Proton Calendar</string>
   <string name="rsvp_widget_copy_address">Kopiuj adres</string>
   <string name="rsvp_widget_message">Napisz</string>
   <string name="snooze_message_snoozed_until_banner_title">Odłożono do</string>
@@ -181,7 +181,7 @@
   <string name="detail_error_loading_single_message">Ładowanie wiadomość nie powiodło się</string>
   <!-- Raw message data screen -->
   <string name="raw_message_data_headers_title">Nagłówki wiadomości</string>
-  <string name="raw_message_data_html_title">Message HTML</string>
+  <string name="raw_message_data_html_title">HTML wiadomości</string>
   <string name="raw_message_data_close_button_content_description">Zamknij</string>
   <string name="raw_message_data_more_button_content_description">Więcej</string>
   <string name="raw_message_data_download_action">Pobierz</string>

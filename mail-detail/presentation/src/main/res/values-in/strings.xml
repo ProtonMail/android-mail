@@ -65,7 +65,7 @@
   <string name="message_body_embedded_images_banner_text">Pemuatan otomatis gambar yang tersemat sedang dinonaktifkan. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_remote_content_banner_text">Konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
-  <string name="message_body_images_failed_to_load_banner_text">Some images failed to load with tracker protection.</string>
+  <string name="message_body_images_failed_to_load_banner_text">Beberapa gambar gagal dimuat dengan perlindungan pelacak.</string>
   <string name="message_body_images_failed_to_load_banner_button">Muat gambar</string>
   <string name="message_phishing_banner_text">Pesan ini ditandai sebagai mencurigakan, baik oleh sistem kami maupun oleh Anda. Jika Anda yakin itu aman, tandai sebagai sah.</string>
   <string name="message_phishing_banner_mark_as_legitimate_button">Tandai sebagai sah</string>
@@ -75,7 +75,7 @@
   <string name="message_blocked_sender_button_text">Buka Blokir</string>
   <string name="message_expiration_banner_text">Pesan ini akan kedaluwarsa dalam %1$s</string>
   <string name="message_auto_delete_banner_text">Pesan ini akan terhapus otomatis dalam %1$s</string>
-  <string name="message_auth_fail_banner_text">This email has failed its domain\'s authentication requirements. It may be spoofed or improperly forwarded!</string>
+  <string name="message_auth_fail_banner_text">Email ini gagal memenuhi persyaratan autentikasi domainnya. Email ini mungkin dipalsukan atau diteruskan dengan tidak benar!</string>
   <string name="message_auth_fail_banner_button">Pelajari lebih lanjut</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Anda akan meninggalkan aplikasi dan mengunjungi:</string>
@@ -179,6 +179,6 @@
   <string name="raw_message_data_copy_action">Salin</string>
   <string name="raw_message_data_learn_more_action">Pelajari lebih lanjut</string>
   <string name="raw_message_data_error">Kesalahan memuat data</string>
-  <string name="raw_message_data_successful_download">Download completed</string>
+  <string name="raw_message_data_successful_download">Unduhan selesai</string>
   <string name="raw_message_data_failed_download">Unduhan gagal</string>
 </resources>

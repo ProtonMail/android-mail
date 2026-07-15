@@ -50,5 +50,5 @@
   <string name="payment_subscription_managed_by_apple">Twoja subskrypcja jest zarządzana przez App Store.</string>
   <string name="payment_subscription_managed_by_other">Nie możesz zarządzać subskrypcją poprzez aplikację mobilną.</string>
   <string name="payment_subscription_restricted_access_title">Dostęp jest ograniczony</string>
-  <string name="payment_subscription_restricted_access_description">Sorry, you don\'t have permission to access this page. Contact your administrator if this wasn\'t supposed to happen.</string>
+  <string name="payment_subscription_restricted_access_description">Przepraszamy, nie masz uprawnień do dostępu do tej strony. Skontaktuj się ze swoim administratorem, jeśli nie powinno tak być.</string>
 </resources>

@@ -22,8 +22,8 @@
   <string name="drawer_item_create_label">Címke létrehozása</string>
   <string name="drawer_item_create_folder">Mappa létrehozása</string>
   <string name="drawer_upgrade_plus">Mail Plus előfizetés</string>
-  <string name="drawer_upgrade_unlimited">Upgrade to Unlimited</string>
+  <string name="drawer_upgrade_unlimited">Frissítsen Unlimitedre</string>
   <string name="drawer_upgrade_plus_black_friday">Black Friday akció</string>
-  <string name="drawer_upgrade_plus_spring_sale">Spring Sale</string>
+  <string name="drawer_upgrade_plus_spring_sale">Tavaszi vásár</string>
   <string name="drawer_upgrade_plus_summer_sale">Nyári akció</string>
 </resources>

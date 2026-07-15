@@ -29,18 +29,18 @@
   <string name="composer_error_invalid_email">Az e-mail cím érvénytelen vagy nem létezik.</string>
   <string name="composer_change_sender_paid_feature">Váltson előfizetéses csomagra a feladó címének megváltoztatásához</string>
   <string name="composer_error_duplicate_recipient">Duplikált címzett(ek) eltávolítva</string>
-  <string name="composer_error_store_draft_address_disabled">Unable to save draft - This sender address is disabled</string>
-  <string name="composer_error_store_draft_address_pk_missing">Unable to save draft - This sender address does not have a primary key</string>
-  <string name="composer_error_store_draft_attachment_too_large">Unable to save draft - Attachments exceed the size limit</string>
-  <string name="composer_error_store_draft_too_many_attachments">Unable to save draft - Attachment limit reached</string>
-  <string name="composer_error_store_draft_duplicate_recipient">Unable to save draft - One or more recipients are duplicates</string>
-  <string name="composer_error_store_draft_recipient_group_name">Unable to save draft - Invalid recipient group name</string>
-  <string name="composer_error_store_draft_invalid_recipient">Unable to save draft - Invalid recipient(s)</string>
-  <string name="composer_error_store_draft_message_not_a_draft">Unable to save draft - This message is not a draft</string>
-  <string name="composer_error_store_draft_generic">Unable to save draft - A generic error occurred</string>
-  <string name="composer_error_create_draft">Something went wrong. Unable to create a new draft.</string>
+  <string name="composer_error_store_draft_address_disabled">Nem sikerült menteni a piszkozatot - Ez a feladó cím le van tiltva</string>
+  <string name="composer_error_store_draft_address_pk_missing">Nem sikerült menteni a piszkozatot - Ez a feladó cím nem rendelkezik elsődleges kulccsal</string>
+  <string name="composer_error_store_draft_attachment_too_large">Nem sikerült menteni a piszkozatot - A mellékletek meghaladják a méretkorlátot</string>
+  <string name="composer_error_store_draft_too_many_attachments">Nem sikerült menteni a piszkozatot - Mellékletek száma elérte a korlátot</string>
+  <string name="composer_error_store_draft_duplicate_recipient">Nem sikerült menteni a piszkozatot - Egy vagy több Címzett duplikált</string>
+  <string name="composer_error_store_draft_recipient_group_name">Nem sikerült menteni a piszkozatot - Érvénytelen címzettcsoport-név</string>
+  <string name="composer_error_store_draft_invalid_recipient">Nem sikerült menteni a piszkozatot - Érvénytelen Címzett(ek)</string>
+  <string name="composer_error_store_draft_message_not_a_draft">Nem sikerült menteni a piszkozatot - Ez az Üzenet nem egy piszkozat</string>
+  <string name="composer_error_store_draft_generic">Nem sikerült menteni a piszkozatot - Általános hiba történt</string>
+  <string name="composer_error_create_draft">Hiba történt. Nem sikerült új piszkozatot létrehozni.</string>
   <string name="composer_error_loading_draft">Ennek a piszkozatnak a tartalma jelenleg nem érhető el, a szerkesztés nem lehetséges.</string>
-  <string name="composer_action_clear_formatting">Clear formatting</string>
+  <string name="composer_action_clear_formatting">Formázás törlése</string>
   <string name="composer_add_attachments_content_description">Melléklet hozzáadása</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importálás innen…</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">A saját fotókönyvtárból</string>
@@ -53,18 +53,18 @@
   <string name="composer_too_many_attachments_error">Túllépve a mellékletek maximális száma (100).</string>
   <string name="composer_delete_attachment_error">Váratlan hiba történt egy melléklet törlése közben.</string>
   <string name="composer_unexpected_attachments_error">Váratlan hiba történt a mellékletekkel kapcsolatban.</string>
-  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
-  <string name="composer_storage_quota_exceeded_error">Your storage is full. Please free up space or upgrade to add more.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Nem sikerült elmenteni a mellékletet. Ellenőrizze a tárhelyét, és próbálja újra.</string>
+  <string name="composer_storage_quota_exceeded_error">A tárhelye megtelt. Szabadítson fel helyet, vagy végezzen verziófrissítést a bővítéshez.</string>
   <string name="composer_attach_capture_from_camera_error">Egy melléklet rögzítése kameráról jelenleg nem lehetséges.</string>
   <string name="composer_warning_local_data_shown">A vázlat legutóbbi változatának betöltése nem sikerült. Bármilyen változtatás felülírja a tartalmát.</string>
   <string name="composer_button_add_password">Jelszó hozzáadása</string>
   <string name="composer_button_discard_draft">Piszkozat elvetése</string>
   <string name="composer_button_set_expiration">Időkorlát megadása</string>
   <string name="composer_expiration_time_bottom_sheet_title">Időkorlátos üzenet</string>
-  <string name="composer_bottom_bar_expiration_time_none">Never expires</string>
-  <string name="composer_bottom_bar_expiration_time_one_hour">After 1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">After 1 day</string>
-  <string name="composer_bottom_bar_expiration_time_three_days">After 3 days</string>
+  <string name="composer_bottom_bar_expiration_time_none">Soha nem jár le</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 óra múlva</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 nap után</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 nap után</string>
   <string name="composer_bottom_bar_expiration_time_custom">Meghatározott időpontban</string>
   <string name="composer_error_setting_expiration_time">Az időkorlát beállítása nem sikerült</string>
   <!-- Send expiring message to external recipients dialog -->
@@ -72,9 +72,9 @@
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Mégsem</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Küldés mindenképpen</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Jelszóvédelem hozzáadása</string>
-  <string name="composer_send_expiring_message_to_external_may_fail">We could not confirm all recipients use Proton Mail. Only Proton addresses support message expiration. In this case, we suggest adding a password instead.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Some recipients (%1$s) don\'t support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail_for_all">None of the recipients support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.</string>
+  <string name="composer_send_expiring_message_to_external_may_fail">Nem sikerült megerősíteni, hogy minden Címzett Proton Mailt használ. Csak a Proton-címek támogatják az üzenet-időkorlátot. Ebben az esetben javasoljuk, hogy adjon meg egy jelszót helyette.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Néhány Címzett (%1$s) alapértelmezetten nem támogatja az időkorlátot. Adjon meg egy jelszót az időkorlát engedélyezéséhez a nem Proton Mail címzettek számára.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail_for_all">Egyik címzett sem támogatja az időkorlátot. Adjon meg egy jelszót az időkorlát engedélyezéséhez a nem Proton Mail címzettek számára.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Küldési tudnivaló</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Üzenetek küldése a @pm.me címről előfizetéshez kötött. Az üzenet az alapértelmezett címről kerül elküldésre.</string>
@@ -128,7 +128,7 @@
   <string name="composer_loading_attachments_error">A csatolmányok betöltése sikertelen</string>
   <string name="composer_attachment_upload_error_retry">Néhány csatolmány feltöltése sikertelen. Kérjük, próbálja újra.</string>
   <string name="composer_external_encryption_unexpected_error">Váratlan hiba %s. Próbálja újra.</string>
-  <string name="composer_sender_changed_original_address_cannot_send">The selected address cannot be used to send. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_cannot_send">A kiválasztott cím nem használható küldésre. Az üzenet az alapértelmezett címéről kerül elküldésre.</string>
   <string name="composer_expiration_time_bottom_sheet_description">Állítsa be, hogy mikor törlődjön az üzenet a címzettnél és az Ön elküldött levelek mappájából. Nem-Proton címzettek esetén a lejárati lehetőséghez jelszót kell megadnia.</string>
   <string name="expiration_time_set_time_and_date">Dátum és idő beállítása</string>
   <string name="composer_expiration_set_expiration">Időkorlát beállítása</string>
@@ -150,7 +150,7 @@
   <string name="composer_error_send_draft_too_many_attachments">Nem sikerült elküldeni a piszkozatot - Túl sok melléklet</string>
   <string name="composer_error_send_draft_attachments_crypto_error">Nem sikerült elküldeni a piszkozatot - A melléklet titkosítása meghiúsult.</string>
   <string name="composer_expiration_time_learn_more">További információk</string>
-  <string name="composer_enter_recipient_content_description">Enter a recipient</string>
-  <string name="composer_sender_address_description">Choose Sender Address</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_enter_recipient_content_description">Címzett megadása</string>
+  <string name="composer_sender_address_description">Feladó címének kiválasztása</string>
+  <string name="composer_encryption_info_learn_more">További információk</string>
 </resources>

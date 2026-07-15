@@ -59,7 +59,7 @@
   <string name="message_link_long_click_share">Udostępnij link</string>
   <string name="message_link_long_click_share_via">Udostępnij link</string>
   <!-- Message body image actions -->
-  <string name="message_image_long_click_download">Download image</string>
+  <string name="message_image_long_click_download">Pobierz obraz</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Kopiuj adres</string>
   <string name="contact_actions_copy_address_description">Kopiuj adres kontaktu</string>
@@ -73,7 +73,7 @@
   <string name="contact_actions_add_contact_description">Zapisz odbiorcę w kontaktach</string>
   <string name="contact_actions_block_contact">Zablokuj kontakt</string>
   <string name="contact_actions_block_contact_description">Zablokuj kontakt</string>
-  <string name="contact_actions_block_contact_dialog_text">Emails from <xliff:g id="email">%1$s</xliff:g> will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.</string>
+  <string name="contact_actions_block_contact_dialog_text">Wiadomości e-mail od <xliff:g id="email">%1$s</xliff:g> nie będą już dostarczane i zostaną trwale usunięte. Możesz zarządzać zablokowanymi adresami e-mail w ustawieniach.</string>
   <string name="contact_actions_block_contact_dialog_button_block">Zablokuj</string>
   <string name="contact_actions_block_contact_dialog_button_cancel">Anuluj</string>
   <string name="contact_actions_unblock_contact">Odblokuj kontakt</string>

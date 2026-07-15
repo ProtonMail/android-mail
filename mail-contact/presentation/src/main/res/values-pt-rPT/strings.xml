@@ -40,7 +40,7 @@
   <string name="new_contact">Novo contacto</string>
   <string name="new_group">Novo grupo</string>
   <string name="import_contact">Enviar contactos do dispositivo</string>
-  <string name="contact_deleted">Contact deleted</string>
+  <string name="contact_deleted">Contacto eliminado</string>
   <string name="contact_delete_dialog_title">Excluir %1$s?</string>
   <string name="contact_delete_dialog_text">Este contacto será eliminado da sua lista de contactos.</string>
   <string name="contact_delete_dialog_cancel_button">Cancelar</string>
@@ -85,15 +85,15 @@
   <string name="contact_details_action_copy_label">Copiar</string>
   <string name="contact_details_action_message_label">Mensagem</string>
   <string name="contact_details_action_call_label">Telefonar</string>
-  <string name="contact_details_action_open_url_label">Open URL</string>
+  <string name="contact_details_action_open_url_label">Abrir URL</string>
   <string name="contact_group_details_send_message_action">Enviar mensagem de grupo</string>
   <plurals name="contact_group_details_number_of_contacts">
     <item quantity="one">%1$d contacto</item>
     <item quantity="other">%1$d contactos</item>
   </plurals>
-  <string name="contact_bottom_sheet_redirect_to_web_title">Available on web</string>
-  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Dismiss</string>
-  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.</string>
-  <string name="edit_contact_bottom_sheet_redirect_to_web_description">Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device.</string>
-  <string name="contact_bottom_sheet_redirect_to_web_button">Continue on web</string>
+  <string name="contact_bottom_sheet_redirect_to_web_title">Disponível na web</string>
+  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Dispensar</string>
+  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">A criação de contactos ou grupos na aplicação ainda não está pronta. Por enquanto, pode criá-los na aplicação web e estes serão sincronizados com o seu dispositivo.</string>
+  <string name="edit_contact_bottom_sheet_redirect_to_web_description">A edição de contactos ou grupos na aplicação ainda não está pronta. Por enquanto, pode editá-los na aplicação web e as alterações serão sincronizadas com o seu dispositivo.</string>
+  <string name="contact_bottom_sheet_redirect_to_web_button">Continuar na web</string>
 </resources>

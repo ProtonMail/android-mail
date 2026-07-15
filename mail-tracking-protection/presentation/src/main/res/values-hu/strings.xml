@@ -17,23 +17,23 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_protection">Tracking protection:</string>
-  <string name="show_details">Show details</string>
-  <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
-  <string name="tracking_protection">Tracking protection</string>
-  <string name="tracking_protection_description">We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message.</string>
-  <string name="tracking_protection_learn_more">Learn more</string>
-  <string name="original">Original</string>
-  <string name="cleaned">Cleaned</string>
-  <string name="open_link">Open link</string>
-  <string name="action_close_dialog_button">Close</string>
-  <string name="got_it">Got it</string>
+  <string name="trackers_protection">Követés elleni védelem:</string>
+  <string name="show_details">Részletek megjelenítése</string>
+  <string name="trackers_protection_no_trackers_detected">Követés elleni védelem: nem találhatók követők</string>
+  <string name="tracking_protection">Követés elleni védelem</string>
+  <string name="tracking_protection_description">Aktívan védjük Önt a követéstől. Itt megtekintheti az ebben az üzenetben blokkolt kémpixeleket és a megtisztított nyomkövető hivatkozásokat.</string>
+  <string name="tracking_protection_learn_more">További információk</string>
+  <string name="original">Eredeti</string>
+  <string name="cleaned">Megtisztítva</string>
+  <string name="open_link">Hivatkozás megnyitása</string>
+  <string name="action_close_dialog_button">Bezárás</string>
+  <string name="got_it">Megvan</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="one">%s tracker blocked</item>
-    <item quantity="other">%s trackers blocked</item>
+    <item quantity="one">%s követő blokkolva</item>
+    <item quantity="other">%s követő blokkolva</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="one">%s link cleaned</item>
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="one">%s hivatkozás megtisztítva</item>
+    <item quantity="other">%s hivatkozás megtisztítva</item>
   </plurals>
 </resources>

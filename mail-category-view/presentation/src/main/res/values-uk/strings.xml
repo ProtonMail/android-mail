@@ -24,9 +24,9 @@
   <string name="category_title_forums">Форуми</string>
   <string name="category_title_newsletters">Розсилки</string>
   <string name="category_title_transactions">Трансакції</string>
-  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_spotlight_unseen_title">Нові повідомлення в %1$s</string>
+  <string name="category_spotlight_unseen_description">Синя крапка показує, коли в категорії з\'явилися нові повідомлення з моменту вашої останньої перевірки.</string>
+  <string name="category_spotlight_personalise_title">Персоналізуйте свої категорії</string>
+  <string name="category_spotlight_personalise_description">Перемістіть електронний лист до іншої категорії за допомогою кнопки «Перемістити до». Надалі схожі листи сортуватимуться туди автоматично.</string>
+  <string name="category_spotlight_close_content_description">Закрити</string>
 </resources>

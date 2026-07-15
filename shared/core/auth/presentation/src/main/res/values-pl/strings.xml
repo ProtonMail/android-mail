@@ -111,10 +111,10 @@
   <string name="auth_fido_add_security_key">Dodaj klucz bezpieczeństwa</string>
   <string name="auth_fido_security_keys_learn_more">Dowiedz się więcej</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="one">The maximum number of %d free account has been exceeded.</item>
-    <item quantity="few">The maximum number of %d free accounts have been exceeded.</item>
-    <item quantity="many">The maximum number of %d free accounts have been exceeded.</item>
-    <item quantity="other">The maximum number of %d free accounts have been exceeded.</item>
+    <item quantity="one">Przekroczono maksymalną liczbę bezpłatnych kont: %d.</item>
+    <item quantity="few">Przekroczono maksymalną liczbę bezpłatnych kont: %d.</item>
+    <item quantity="many">Przekroczono maksymalną liczbę bezpłatnych kont: %d.</item>
+    <item quantity="other">Przekroczono maksymalną liczbę bezpłatnych kont: %d.</item>
   </plurals>
   <string name="common_error_something_went_wrong">Coś poszło nie tak. Spróbuj ponownie.</string>
   <string name="auth_fido_config_error">Wystąpił błąd podczas pobierania przechowywanych kluczy.</string>

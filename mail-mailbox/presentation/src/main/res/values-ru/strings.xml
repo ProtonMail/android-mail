@@ -103,7 +103,7 @@
     <item quantity="many">Сообщений перемещено в %s</item>
     <item quantity="other">Сообщения перемещены в %s</item>
   </plurals>
-  <string name="mailbox_action_move_to_category">Moved to %s. Similar messages will be categorized here in the future.</string>
+  <string name="mailbox_action_move_to_category">Перенесено в %s. Подобные сообщения будут распределяться сюда в будущем.</string>
   <string name="mailbox_action_button_clear_trash">Очистить Корзину</string>
   <string name="mailbox_action_button_clear_spam">Очистить спам</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Перейдите на платный тариф, чтобы автоматически удалять сообщения, которые находятся в корзине или спаме более 30 дней</string>
@@ -114,10 +114,10 @@
   <string name="mailbox_action_clear_spam_dialog_title">Очистить папку «Спам»</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из корзины?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите безвозвратно удалить все сообщения из папки «Спам»?</string>
-  <string name="mailbox_action_maximum_selection_reached">"Maximum selection reached"</string>
+  <string name="mailbox_action_maximum_selection_reached">"Достигнут максимум выбранных сообщений"</string>
   <string name="mailbox_talkback_readout_unread">Непрочитанное</string>
-  <string name="mailbox_talkback_readout_starred">Unstar</string>
-  <string name="mailbox_talkback_readout_not_starred">Star</string>
+  <string name="mailbox_talkback_readout_starred">Снять звёздочку</string>
+  <string name="mailbox_talkback_readout_not_starred">Пометить звёздочкой</string>
   <!-- Attachment download -->
   <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
   <string name="mailbox_attachment_download_in_progress">Текущее скачивание должно завершиться перед началом нового.</string>

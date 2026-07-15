@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_protection">Tracking protection:</string>
+  <string name="trackers_protection">Perlindungan pelacakan:</string>
   <string name="show_details">Tampilkan rincian</string>
-  <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
-  <string name="tracking_protection">Tracking protection</string>
+  <string name="trackers_protection_no_trackers_detected">Perlindungan pelacakan: tidak ada pelacak yang terdeteksi</string>
+  <string name="tracking_protection">Perlindungan pelacakan</string>
   <string name="tracking_protection_description">Kami melindungi Anda secara aktif dari pelacakan. Di sini Anda dapat melihat piksel pelacakan yang kami blokir dan tautan pelacakan yang kami bersihkan dalam pesan ini.</string>
   <string name="tracking_protection_learn_more">Pelajari lebih lanjut</string>
   <string name="original">Asli</string>
@@ -29,7 +29,7 @@
   <string name="action_close_dialog_button">Tutup</string>
   <string name="got_it">Mengerti</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="other">%s trackers blocked</item>
+    <item quantity="other">%s pelacak diblokir</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
     <item quantity="other">%s tautan dibersihkan</item>

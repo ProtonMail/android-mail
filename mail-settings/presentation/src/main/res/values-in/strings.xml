@@ -27,7 +27,7 @@
   <string name="mail_settings_privacy_and_security_settings">Pengaturan privasi dan keamanan</string>
   <string name="mail_settings_preferences">Preferensi</string>
   <string name="mail_settings_app">Penyesuaian aplikasi</string>
-  <string name="mail_settings_content_search">Content Search</string>
+  <string name="mail_settings_content_search">Pencarian Konten</string>
   <string name="mail_settings_mailbox">Preferensi kotak surat</string>
   <string name="mail_settings_folders_labels">Folder dan label</string>
   <string name="mail_settings_spam_and_custom_filters">Spam dan filter</string>
@@ -55,7 +55,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Geser ke email berikutnya</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Berpindahlah ke pesan berikutnya atau sebelumnya pada kotak masuk Anda dengan cepat.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Sesuaikan toolbar</string>
-  <string name="mail_settings_app_customization_email_categories">Email categories</string>
+  <string name="mail_settings_app_customization_email_categories">Kategori email</string>
   <string name="mail_settings_app_customization_alternative_routing">Perutean alternatif</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Menangkal firewall atau masalah jaringan apabila situs Proton diblokir.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Pengalaman Mail</string>
@@ -143,7 +143,7 @@
   <string name="settings_app_icon_name_default">Bawaan</string>
   <string name="settings_app_icon_name_discreet">Rahasia</string>
   <string name="settings_app_icon_title_default">Ikon aplikasi - bawaan</string>
-  <string name="settings_app_icon_title_discreet">App icon - discreet</string>
+  <string name="settings_app_icon_title_discreet">Ikon aplikasi - tersamar</string>
   <string name="settings_app_icon_description">Pertahankan ikon Proton Mail bawaan, atau samarkan dengan ikon rahasia untuk privasi tambahan.\nNotifikasi akan selalu menampilkan nama dan ikon Proton Mail.</string>
   <string name="settings_app_icon_learn_more">Pelajari lebih lanjut…</string>
   <string name="settings_app_icon_discreet_toggle">Ikon aplikasi rahasia</string>

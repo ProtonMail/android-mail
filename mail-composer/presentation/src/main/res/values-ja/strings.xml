@@ -40,7 +40,7 @@
   <string name="composer_error_store_draft_generic">下書きを保存できませんでした - 一般的なエラーが発生しました。</string>
   <string name="composer_error_create_draft">何か問題が発生しました。新しい下書きの作成ができませんでした。</string>
   <string name="composer_error_loading_draft">この下書きの内容は現時点では利用できません、編集はできません。</string>
-  <string name="composer_action_clear_formatting">Clear formatting</string>
+  <string name="composer_action_clear_formatting">書式をクリア</string>
   <string name="composer_add_attachments_content_description">添付ファイルの追加</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">インポート...</string>
   <string name="composer_add_attachments_bottom_sheet_from_photos">写真ライブラリから</string>
@@ -53,7 +53,7 @@
   <string name="composer_too_many_attachments_error">添付ファイルの最大数（100個）を超えました。</string>
   <string name="composer_delete_attachment_error">添付ファイルの削除中に予期しないエラーが発生しました。</string>
   <string name="composer_unexpected_attachments_error">添付ファイルに関連して、予期しないエラーが発生しました。</string>
-  <string name="composer_error_converting_inline_to_standard_attachment">Could not save the attachment. Check your storage and try again.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">添付ファイルを保存できませんでした。ストレージを確認して、もう一度お試しください。</string>
   <string name="composer_storage_quota_exceeded_error">ストレージがいっぱいです。スペースを開けるかアップグレードしてさらに追加してください。</string>
   <string name="composer_attach_capture_from_camera_error">現在、カメラからの添付ファイルの取り込みはできません。</string>
   <string name="composer_warning_local_data_shown">この下書きの最新バージョンの読み込みに失敗しました。変更するとコンテンツが上書きされます。</string>
@@ -152,5 +152,5 @@
   <string name="composer_expiration_time_learn_more">より詳しく</string>
   <string name="composer_enter_recipient_content_description">受信者を入力してください</string>
   <string name="composer_sender_address_description">送信者アドレスを選択</string>
-  <string name="composer_encryption_info_learn_more">Learn more</string>
+  <string name="composer_encryption_info_learn_more">より詳しく</string>
 </resources>

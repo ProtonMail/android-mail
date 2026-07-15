@@ -55,7 +55,7 @@
   <string name="message_link_long_click_share">Link megosztása</string>
   <string name="message_link_long_click_share_via">Hivatkozás megosztása:</string>
   <!-- Message body image actions -->
-  <string name="message_image_long_click_download">Download image</string>
+  <string name="message_image_long_click_download">Kép letöltése</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Cím másolása</string>
   <string name="contact_actions_copy_address_description">Cím másolása</string>
@@ -69,15 +69,15 @@
   <string name="contact_actions_add_contact_description">Címzett mentése névjegyként</string>
   <string name="contact_actions_block_contact">Kapcsolat blokkolása</string>
   <string name="contact_actions_block_contact_description">Névjegy letiltása</string>
-  <string name="contact_actions_block_contact_dialog_text">Emails from <xliff:g id="email">%1$s</xliff:g> will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.</string>
-  <string name="contact_actions_block_contact_dialog_button_block">Block</string>
-  <string name="contact_actions_block_contact_dialog_button_cancel">Cancel</string>
-  <string name="contact_actions_unblock_contact">Unblock this contact</string>
-  <string name="contact_actions_unblock_contact_description">Unblock this contact</string>
-  <string name="contact_actions_block_address">Block this address</string>
-  <string name="contact_actions_block_address_description">Block this address</string>
-  <string name="contact_actions_unblock_address">Unblock this address</string>
-  <string name="contact_actions_unblock_address_description">Unblock this address</string>
+  <string name="contact_actions_block_contact_dialog_text">A(z) <xliff:g id="email">%1$s</xliff:g> címről érkező e-mailek a jövőben nem kerülnek kézbesítésre, és véglegesen törlésre kerülnek. A letiltott e-mail-címeket a beállításokban kezelheti.</string>
+  <string name="contact_actions_block_contact_dialog_button_block">Tiltás</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">Mégsem</string>
+  <string name="contact_actions_unblock_contact">Névjegy feloldása</string>
+  <string name="contact_actions_unblock_contact_description">Névjegy feloldása</string>
+  <string name="contact_actions_block_address">Cím letiltása</string>
+  <string name="contact_actions_block_address_description">Cím letiltása</string>
+  <string name="contact_actions_unblock_address">Cím feloldása</string>
+  <string name="contact_actions_unblock_address_description">Cím feloldása</string>
   <!-- View entire message button -->
   <string name="button_view_entire_message">Teljes üzenet megtekintése</string>
 </resources>

@@ -17,17 +17,17 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_protection">Tracking protection:</string>
+  <string name="trackers_protection">Защита от трекеров:</string>
   <string name="show_details">Показать информацию</string>
-  <string name="trackers_protection_no_trackers_detected">Tracking protection: no trackers detected</string>
+  <string name="trackers_protection_no_trackers_detected">Защита от трекеров: трекеры не обнаружены</string>
   <string name="tracking_protection">Защита от трекеров</string>
-  <string name="tracking_protection_description">We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message.</string>
-  <string name="tracking_protection_learn_more">Learn more</string>
-  <string name="original">Original</string>
+  <string name="tracking_protection_description">Мы активно защищаем вас от отслеживания. Здесь вы можете просмотреть шпионские пиксели, которые мы заблокировали, и ссылки отслеживания, которые мы удалили в этом сообщении.</string>
+  <string name="tracking_protection_learn_more">Подробнее</string>
+  <string name="original">Оригинал</string>
   <string name="cleaned">Очищено</string>
-  <string name="open_link">Open link</string>
-  <string name="action_close_dialog_button">Close</string>
-  <string name="got_it">Got it</string>
+  <string name="open_link">Открыть ссылку</string>
+  <string name="action_close_dialog_button">Закрыть</string>
+  <string name="got_it">Понятно</string>
   <plurals name="number_of_blocked_trackers">
     <item quantity="one">%s трекер заблокирован</item>
     <item quantity="few">%s трекера заблокированы</item>

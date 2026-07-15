@@ -24,9 +24,9 @@
   <string name="category_title_forums">Forum</string>
   <string name="category_title_newsletters">Nyhetsbrev</string>
   <string name="category_title_transactions">Transaksjoner</string>
-  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_spotlight_unseen_title">Nye meldinger i %1$s</string>
+  <string name="category_spotlight_unseen_description">En blå prikk viser når en kategori har nye meldinger siden du sist sjekket den.</string>
+  <string name="category_spotlight_personalise_title">Tilpass dine kategorier</string>
+  <string name="category_spotlight_personalise_description">Flytt en e-post til en annen kategori ved å bruke «Flytt til». Lignende e-poster vil bli sortert der automatisk fra nå av.</string>
+  <string name="category_spotlight_close_content_description">Lukk</string>
 </resources>

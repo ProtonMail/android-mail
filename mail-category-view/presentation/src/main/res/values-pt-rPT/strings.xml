@@ -17,16 +17,16 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Primary</string>
-  <string name="category_title_social">Social</string>
-  <string name="category_title_promotions">Promotions</string>
-  <string name="category_title_updates">Updates</string>
-  <string name="category_title_forums">Forums</string>
-  <string name="category_title_newsletters">Newsletters</string>
-  <string name="category_title_transactions">Transactions</string>
-  <string name="category_spotlight_unseen_title">New messages in %1$s</string>
-  <string name="category_spotlight_unseen_description">A blue dot shows when a category has new messages since you last checked it.</string>
-  <string name="category_spotlight_personalise_title">Personalise your Categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will be sorted there automatically from now on.</string>
-  <string name="category_spotlight_close_content_description">Close</string>
+  <string name="category_title_primary">Principal</string>
+  <string name="category_title_social">Redes sociais</string>
+  <string name="category_title_promotions">Promoções</string>
+  <string name="category_title_updates">Atualizações</string>
+  <string name="category_title_forums">Fóruns</string>
+  <string name="category_title_newsletters">Boletins informativos</string>
+  <string name="category_title_transactions">Transações</string>
+  <string name="category_spotlight_unseen_title">Novas mensagens em %1$s</string>
+  <string name="category_spotlight_unseen_description">Um ponto azul é apresentado quando uma categoria tiver novas mensagens desde a última vez que a consultou.</string>
+  <string name="category_spotlight_personalise_title">Personalize as suas categorias</string>
+  <string name="category_spotlight_personalise_description">Mova um e-mail para outra categoria utilizando \"Mover para\". E-mails semelhantes serão organizados de forma automática a partir de agora nessa categoria.</string>
+  <string name="category_spotlight_close_content_description">Fechar</string>
 </resources>

@@ -18,18 +18,18 @@
   -->
 <resources>
   <string name="trackers_blocked_links_cleaned_numbers">已攔截 %s 個追蹤程式，已清理 %s 個連結</string>
-  <string name="trackers_protection">Tracker protection:</string>
-  <string name="show_details">Show details</string>
-  <string name="trackers_protection_no_trackers_detected">Tracker protection: no trackers detected</string>
-  <string name="tracking_protection">Tracking protection</string>
-  <string name="tracking_protection_description">If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details.</string>
-  <string name="tracking_protection_learn_more">Learn  more...</string>
-  <string name="original">original</string>
-  <string name="cleaned">Cleaned</string>
+  <string name="trackers_protection">追蹤程式保護：</string>
+  <string name="show_details">顯示詳細資料</string>
+  <string name="trackers_protection_no_trackers_detected">追蹤程式保護：未偵測到追蹤程式</string>
+  <string name="tracking_protection">追蹤保護</string>
+  <string name="tracking_protection_description">如果您收到的電子郵件中包含間諜像素（追蹤程式）或追蹤連結，您將會在電子郵件詳細資料中看到盾牌圖示。</string>
+  <string name="tracking_protection_learn_more">進一步瞭解……</string>
+  <string name="original">原始</string>
+  <string name="cleaned">已清理</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="other">%s trackers blocked</item>
+    <item quantity="other">已攔截 %s 個追蹤程式</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="other">%s links cleaned</item>
+    <item quantity="other">已清理 %s 個連結</item>
   </plurals>
 </resources>

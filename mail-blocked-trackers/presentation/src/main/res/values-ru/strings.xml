@@ -24,7 +24,7 @@
   <string name="tracking_protection">Защита от трекеров</string>
   <string name="tracking_protection_description">Если полученное электронное письмо содержит пиксели отслеживания (трекеры) или ссылки для отслеживания, в информации о письме отобразится значок щита.</string>
   <string name="tracking_protection_learn_more">Подробнее...</string>
-  <string name="original">original</string>
+  <string name="original">оригинал</string>
   <string name="cleaned">Очищено</string>
   <plurals name="number_of_blocked_trackers">
     <item quantity="one">%s трекер заблокирован</item>

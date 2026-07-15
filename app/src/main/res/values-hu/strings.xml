@@ -35,7 +35,7 @@
   <string name="mailbox_message_sending">Üzenet küldése…</string>
   <string name="mailbox_message_sending_offline">Offline: az üzenet sorba van állítva küldésre</string>
   <string name="mailbox_message_sending_success">Üzenet elküldve</string>
-  <string name="mailbox_message_sending_error_action">Go to Draft</string>
+  <string name="mailbox_message_sending_error_action">Ugrás a piszkozathoz</string>
   <string name="notification_switched_account">Átváltás %s fiókra</string>
   <string name="mailbox_message_scheduling">Üzenet ütemezése…</string>
   <string name="mailbox_message_scheduling_offline">Offline: az üzenet sorba van állítva ütemezésre</string>

@@ -39,5 +39,5 @@
   <string name="bottom_sheet_move_to_error_fetch">Nem sikerült betölteni a mappákat.</string>
   <string name="bottom_sheet_label_as_error_apply">Nem sikerült a címkék alkalmazása.</string>
   <string name="bottom_sheet_move_to_action_error">Áthelyezési művelet sikertelen.</string>
-  <string name="bottom_sheet_move_to_category_no_change">No change will be made to the selected emails</string>
+  <string name="bottom_sheet_move_to_category_no_change">Nem történik változtatás a kiválasztott e-maileken</string>
 </resources>
