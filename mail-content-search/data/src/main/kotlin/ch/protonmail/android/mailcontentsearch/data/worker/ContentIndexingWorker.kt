@@ -136,19 +136,20 @@ class ContentIndexingWorker @AssistedInject constructor(
      * preserved) and the loop re-evaluates primary-first, so the account now in use is prioritised.
      */
     private suspend fun runSweep(runAsForeground: Boolean): Result {
-        val failed = mutableSetOf<UserId>()
+        val failedAccounts = mutableSetOf<UserId>()
         while (true) {
-            val next = findFirstEligibleAccountToIndex(skip = failed) ?: break
-            when (indexAccountWithInterruption(next, skip = failed, runAsForeground)) {
-                IndexOutcome.Completed -> Timber.d("ContentIndexingWorker: sweep completed $next, advancing")
+            val nextAccount = findFirstEligibleAccountToIndex(skip = failedAccounts) ?: break
+            when (indexAccountWithInterruption(nextAccount, failedAccounts = failedAccounts, runAsForeground)) {
+                IndexOutcome.Completed -> Timber.d("ContentIndexingWorker: sweep completed $nextAccount, advancing")
                 IndexOutcome.Interrupted -> {
-                    Timber.d("ContentIndexingWorker: $next interrupted, pausing and re-evaluating")
-                    indexer.cancel(next) // preserve partial index; the account is revisited if still eligible
+                    Timber.d("ContentIndexingWorker: $nextAccount interrupted, pausing and re-evaluating")
+                    // preserve partial index; the account is revisited if still eligible
+                    indexer.cancel(nextAccount)
                 }
                 IndexOutcome.Failed -> {
-                    Timber.e("ContentIndexingWorker: sweep failed for $next, advancing")
-                    indexer.cancel(next)
-                    failed += next
+                    Timber.e("ContentIndexingWorker: sweep failed for $nextAccount, advancing")
+                    indexer.cancel(nextAccount)
+                    failedAccounts += nextAccount
                 }
             }
         }
@@ -163,13 +164,15 @@ class ContentIndexingWorker @AssistedInject constructor(
      */
     private suspend fun indexAccountWithInterruption(
         userId: UserId,
-        skip: Set<UserId>,
+        failedAccounts: Set<UserId>,
         runAsForeground: Boolean
     ): IndexOutcome {
         return coroutineScope {
             val indexing = async { indexAccount(userId, runAsForeground) }
             val interruption = launch {
-                awaitInterruption(currentlyIndexing = userId, skip = skip) { indexing.cancel(InterruptionSignal()) }
+                awaitInterruption(currentlyIndexing = userId, failedAccounts = failedAccounts) {
+                    indexing.cancel(InterruptionSignal())
+                }
             }
             try {
                 indexing.await().fold(
@@ -191,21 +194,21 @@ class ContentIndexingWorker @AssistedInject constructor(
     @OptIn(FlowPreview::class)
     private suspend fun awaitInterruption(
         currentlyIndexing: UserId,
-        skip: Set<UserId>,
+        failedAccounts: Set<UserId>,
         onInterrupt: () -> Unit
     ) {
         // React to the active user changing or this account's content-search setting changing, then
         // re-evaluate. If the account that should run next is no longer the one we are indexing
         // (a higher-priority active account, or this account became ineligible), interrupt it.
-        // Honour the sweep's skip set so an account that already failed this sweep cannot repeatedly
-        // interrupt the account currently making progress.
+        // Honour the sweep's failed-accounts set so an account that already failed this sweep cannot
+        // repeatedly interrupt the account currently making progress.
         combine(
             userSessionRepository.observePrimaryUserId().filterNotNull().distinctUntilChanged(),
             observeContentSearchEnabled(currentlyIndexing).distinctUntilChanged()
         ) { _, _ -> }
             .debounce(InterruptionDebounceMillis.milliseconds)
             .collect {
-                val topPriority = findFirstEligibleAccountToIndex(skip = skip)
+                val topPriority = findFirstEligibleAccountToIndex(skip = failedAccounts)
                 if (topPriority != currentlyIndexing) {
                     Timber.d("ContentIndexingWorker: $topPriority should run instead of $currentlyIndexing")
                     onInterrupt()
