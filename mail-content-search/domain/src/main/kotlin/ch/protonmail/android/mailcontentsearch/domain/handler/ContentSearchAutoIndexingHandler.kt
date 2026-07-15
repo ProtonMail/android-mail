@@ -40,7 +40,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * Drives content-search indexing automatically, without the user having to open settings.
+ * Drives content-search indexing automatically, without the user having to manually opt-in every account.
  */
 class ContentSearchAutoIndexingHandler @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
@@ -68,13 +68,16 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
                 .collect { accounts ->
                     val currentUserIds = accounts.map { it.userId }.toSet()
 
-                    // Persist the known-user set only when accounts list actually changes, to avoid a
-                    // DataStore write on every unrelated account emission. Account removal (sign-out)
+                    // Persist the known-user set only when accounts list actually changes. Account removal (sign-out)
                     // is not collected as a state change; the entity simply stops being emitted, so
                     // clear the opt-out for removed accounts here so a future re-login starts fresh.
                     if (currentUserIds != knownUserIds) {
-                        (knownUserIds - currentUserIds).forEach { preferencesRepository.clearUserOptedOut(it) }
-                        knownUserIds = currentUserIds
+                        // Keep any user whose opt-out clear failed in the known set, so the removal is
+                        // re-diffed and retried on the next emission instead of being silently dropped.
+                        val failedToClear = (knownUserIds - currentUserIds)
+                            .filter { preferencesRepository.clearUserOptedOut(it).isLeft() }
+                            .toSet()
+                        knownUserIds = currentUserIds + failedToClear
                         preferencesRepository.saveKnownUserIds(knownUserIds)
                     }
 

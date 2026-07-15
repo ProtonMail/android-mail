@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.handler
 
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
@@ -44,6 +46,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 internal class ContentSearchAutoIndexingHandlerTest {
 
@@ -198,6 +201,23 @@ internal class ContentSearchAutoIndexingHandlerTest {
 
         // Then
         coVerify(exactly = 1) { preferencesRepository.clearUserOptedOut(UserOne) }
+    }
+
+    @Test
+    fun `retries clearing the opt-out on the next emission when the clear fails`() = runTest {
+        // Given
+        persistedKnownUserIds = setOf(UserOne)
+        givenAccounts(flowOf(listOf(account(UserTwo)), emptyList()))
+        givenRustEnabled(UserTwo, enabled = false)
+        givenOptedOut(UserTwo, optedOut = false)
+        coEvery { preferencesRepository.clearUserOptedOut(UserOne) } returns PreferencesError.left()
+
+        // When
+        handler().start()
+
+        // Then
+        coVerify(exactly = 2) { preferencesRepository.clearUserOptedOut(UserOne) }
+        assertTrue(UserOne in persistedKnownUserIds)
     }
 
     @Test
