@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ResolveLocalCategoryLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserPreferredViewMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -42,15 +43,18 @@ import javax.inject.Inject
  * unfiltered unread count.
  */
 class ObservePrimaryCategoryUnreadCount @Inject constructor(
+    private val observeUserPreferredViewMode: ObserveUserPreferredViewMode,
     private val observeMailLabels: ObserveMailLabels,
     private val resolveLocalCategoryLabelId: ResolveLocalCategoryLabelId,
     private val observeCategoryAwareUnreadCount: ObserveCategoryAwareUnreadCount
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Int?> =
-        observeInboxPrimaryLabelWithCategory(userId).flatMapLatest { labelWithCategory ->
-            if (labelWithCategory == null) flowOf(null)
-            else observeCategoryAwareUnreadCount(userId, labelWithCategory)
+    operator fun invoke(userId: UserId): Flow<Int?> = observeUserPreferredViewMode(userId)
+        .flatMapLatest {
+            observeInboxPrimaryLabelWithCategory(userId).flatMapLatest { labelWithCategory ->
+                if (labelWithCategory == null) flowOf(null)
+                else observeCategoryAwareUnreadCount(userId, labelWithCategory)
+            }
         }
 
     private fun observeInboxPrimaryLabelWithCategory(userId: UserId): Flow<MailLabelIdWithCategory?> =

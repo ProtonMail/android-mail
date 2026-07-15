@@ -22,14 +22,17 @@ import app.cash.turbine.test
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ResolveLocalCategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserPreferredViewMode
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -46,6 +49,11 @@ internal class ObservePrimaryCategoryUnreadCountTest {
         labels = emptyList()
     )
 
+    private val viewMode = MutableStateFlow(ViewMode.ConversationGrouping)
+
+    private val observeUserPreferredViewMode = mockk<ObserveUserPreferredViewMode> {
+        every { this@mockk(userId) } returns viewMode
+    }
     private val observeMailLabels = mockk<ObserveMailLabels> {
         every { this@mockk(userId) } returns flowOf(inboxLabels)
     }
@@ -53,6 +61,7 @@ internal class ObservePrimaryCategoryUnreadCountTest {
     private val observeCategoryAwareUnreadCount = mockk<ObserveCategoryAwareUnreadCount>()
 
     private val observePrimaryCategoryUnreadCount = ObservePrimaryCategoryUnreadCount(
+        observeUserPreferredViewMode = observeUserPreferredViewMode,
         observeMailLabels = observeMailLabels,
         resolveLocalCategoryLabelId = resolveLocalCategoryLabelId,
         observeCategoryAwareUnreadCount = observeCategoryAwareUnreadCount
@@ -71,7 +80,7 @@ internal class ObservePrimaryCategoryUnreadCountTest {
         // When + Then
         observePrimaryCategoryUnreadCount(userId).test {
             assertEquals(7, awaitItem())
-            awaitComplete()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -83,9 +92,31 @@ internal class ObservePrimaryCategoryUnreadCountTest {
         // When + Then
         observePrimaryCategoryUnreadCount(userId).test {
             assertNull(awaitItem())
-            awaitComplete()
+            cancelAndIgnoreRemainingEvents()
         }
         verify(exactly = 0) { observeCategoryAwareUnreadCount(any(), any()) }
+    }
+
+    @Test
+    fun `given the view mode changes, then re-subscribes and emits the count for the new mode`() = runTest {
+        // Given
+        coEvery {
+            resolveLocalCategoryLabelId(userId, CategorySystemLabelId.Primary)
+        } returns MailLabelTestData.primaryCategoryLabelId
+        every {
+            observeCategoryAwareUnreadCount(userId, MailLabelTestData.inboxPrimarySystemLabelWithCategory)
+        } returns flowOf(7) andThen flowOf(3)
+
+        // When + Then
+        observePrimaryCategoryUnreadCount(userId).test {
+            assertEquals(7, awaitItem())
+
+            viewMode.value = ViewMode.NoConversationGrouping
+
+            assertEquals(3, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(exactly = 2) { observeCategoryAwareUnreadCount(userId, any()) }
     }
 
     @Test
@@ -98,7 +129,7 @@ internal class ObservePrimaryCategoryUnreadCountTest {
         // When + Then
         observePrimaryCategoryUnreadCount(userId).test {
             assertNull(awaitItem())
-            awaitComplete()
+            cancelAndIgnoreRemainingEvents()
         }
         verify(exactly = 0) { observeCategoryAwareUnreadCount(any(), any()) }
     }
