@@ -24,8 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalHighlightQuery
+import ch.protonmail.android.uicomponents.text.MultiWordHighlightedText
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -48,11 +51,25 @@ fun SingleLineRecipientNames(
         }
     }
 
-    Text(
-        modifier = modifier,
-        text = toRecipientsLine,
-        style = textStyle,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1
-    )
+    val highlightQuery = LocalHighlightQuery.current
+    if (highlightQuery.isEmpty() || hasUndisclosedRecipients) {
+        Text(
+            modifier = modifier,
+            text = toRecipientsLine,
+            style = textStyle,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
+    } else {
+        MultiWordHighlightedText(
+            modifier = modifier,
+            text = toRecipientsLine,
+            highlight = highlightQuery,
+            highlightTextColor = ProtonTheme.colors.searchHighlightText,
+            highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+            maxLines = 1,
+            style = textStyle,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }

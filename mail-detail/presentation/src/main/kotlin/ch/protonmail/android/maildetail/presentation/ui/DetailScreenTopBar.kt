@@ -58,6 +58,7 @@ import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreview
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreviewProvider
+import ch.protonmail.android.uicomponents.text.MultiWordHighlightedText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +68,8 @@ fun DetailScreenTopBar(
     isStarred: Boolean?,
     messageCount: Int?,
     actions: DetailScreenTopBar.Actions,
-    subjectAlpha: Float = 0f
+    subjectAlpha: Float = 0f,
+    highlightQuery: String = ""
 ) {
     Box(
         modifier = modifier
@@ -107,19 +109,34 @@ fun DetailScreenTopBar(
             )
         }
 
-        Text(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth(fraction = 0.7f)
-                .padding(horizontal = ProtonDimens.Spacing.Jumbo)
-                .alpha(subjectAlpha)
-                .wrapContentHeight(align = Alignment.CenterVertically),
-            text = title,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-        )
+        val titleModifier = Modifier
+            .align(Alignment.Center)
+            .fillMaxWidth(fraction = 0.7f)
+            .padding(horizontal = ProtonDimens.Spacing.Jumbo)
+            .alpha(subjectAlpha)
+            .wrapContentHeight(align = Alignment.CenterVertically)
+
+        if (highlightQuery.isEmpty()) {
+            Text(
+                modifier = titleModifier,
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = ProtonTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+        } else {
+            MultiWordHighlightedText(
+                modifier = titleModifier,
+                text = title,
+                highlight = highlightQuery,
+                highlightTextColor = ProtonTheme.colors.searchHighlightText,
+                highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+                maxLines = 1,
+                style = ProtonTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         if (isStarred != null) {
             IconButton(

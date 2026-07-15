@@ -77,6 +77,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHe
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailItemTestTags
 import ch.protonmail.android.maildetail.presentation.ui.common.SingleLineRecipientNames
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalHighlightQuery
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -86,6 +87,7 @@ import ch.protonmail.android.mailpadlocks.presentation.EncryptionInfoSection
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.ui.BlockedTrackingElements
+import ch.protonmail.android.uicomponents.text.MultiWordHighlightedText
 import ch.protonmail.android.uicomponents.thenIf
 import kotlinx.collections.immutable.ImmutableList
 
@@ -241,13 +243,27 @@ private fun SenderNameRow(
             modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier.testTag(MessageDetailHeaderTestTags.SenderName),
-                text = participantUiModel.participantName,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = style
-            )
+            val highlightQuery = LocalHighlightQuery.current
+            if (highlightQuery.isEmpty()) {
+                Text(
+                    modifier = Modifier.testTag(MessageDetailHeaderTestTags.SenderName),
+                    text = participantUiModel.participantName,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = style
+                )
+            } else {
+                MultiWordHighlightedText(
+                    modifier = Modifier.testTag(MessageDetailHeaderTestTags.SenderName),
+                    text = participantUiModel.participantName,
+                    highlight = highlightQuery,
+                    highlightTextColor = ProtonTheme.colors.searchHighlightText,
+                    highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+                    maxLines = 1,
+                    style = style,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
             if (participantUiModel.shouldShowOfficialBadge) {
                 OfficialBadge()
             }
@@ -269,15 +285,34 @@ private fun ParticipantAddress(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val highlightQuery = LocalHighlightQuery.current
+        val addressColor = if (participantUiModel.shouldShowAddressInRed) {
+            ProtonTheme.colors.notificationError
+        } else {
+            textColor
+        }
 
-        Text(
-            text = participantUiModel.participantAddress,
-            modifier = modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
-            maxLines = maxLines,
-            color = if (participantUiModel.shouldShowAddressInRed) ProtonTheme.colors.notificationError else textColor,
-            style = textStyle,
-            overflow = overflow
-        )
+        if (highlightQuery.isEmpty()) {
+            Text(
+                text = participantUiModel.participantAddress,
+                modifier = modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
+                maxLines = maxLines,
+                color = addressColor,
+                style = textStyle,
+                overflow = overflow
+            )
+        } else {
+            MultiWordHighlightedText(
+                text = participantUiModel.participantAddress,
+                modifier = modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
+                highlight = highlightQuery,
+                highlightTextColor = ProtonTheme.colors.searchHighlightText,
+                highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+                maxLines = maxLines,
+                style = textStyle.copy(color = addressColor),
+                overflow = overflow
+            )
+        }
     }
 }
 
@@ -374,15 +409,30 @@ private fun ParticipantText(
         } else {
             participantUiModel.participantName.ifBlank { participantUiModel.participantAddress }
         }
+    val maxLines = if (shouldBreak) Int.MAX_VALUE else 1
+    val highlightQuery = LocalHighlightQuery.current
 
-    Text(
-        text = nameText,
-        modifier = modifier,
-        color = textColor,
-        style = ProtonTheme.typography.bodySmall,
-        maxLines = if (shouldBreak) Int.MAX_VALUE else 1,
-        overflow = TextOverflow.Ellipsis
-    )
+    if (highlightQuery.isEmpty() || participantUiModel.isPrimaryUser) {
+        Text(
+            text = nameText,
+            modifier = modifier,
+            color = textColor,
+            style = ProtonTheme.typography.bodySmall,
+            maxLines = maxLines,
+            overflow = TextOverflow.Ellipsis
+        )
+    } else {
+        MultiWordHighlightedText(
+            text = nameText,
+            modifier = modifier,
+            highlight = highlightQuery,
+            highlightTextColor = ProtonTheme.colors.searchHighlightText,
+            highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+            maxLines = maxLines,
+            style = ProtonTheme.typography.bodySmall.copy(color = textColor),
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }
 
 @Composable

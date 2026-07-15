@@ -38,6 +38,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalHighlightQuery
+import ch.protonmail.android.uicomponents.text.MultiWordHighlightedText
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -68,15 +70,30 @@ internal fun ConversationSubjectHeader(
                 }.using(SizeTransform(clip = false))
             }
         ) { currentSubject ->
+            val highlightQuery = LocalHighlightQuery.current
             SelectionContainer {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    text = currentSubject,
-                    overflow = TextOverflow.Ellipsis,
-                    style = ProtonTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
+                if (highlightQuery.isEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = currentSubject,
+                        overflow = TextOverflow.Ellipsis,
+                        style = ProtonTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    MultiWordHighlightedText(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = currentSubject,
+                        highlight = highlightQuery,
+                        highlightTextColor = ProtonTheme.colors.searchHighlightText,
+                        highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground,
+                        maxLines = Int.MAX_VALUE,
+                        style = ProtonTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }

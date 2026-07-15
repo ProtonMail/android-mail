@@ -21,3 +21,4 @@ package ch.protonmail.android.maildetail.presentation.ui.localcomposition
 import androidx.compose.runtime.compositionLocalOf
 
 internal val LocalIsLastMessageAutoExpandEnabled = compositionLocalOf { false }
+internal val LocalHighlightQuery = compositionLocalOf { "" }

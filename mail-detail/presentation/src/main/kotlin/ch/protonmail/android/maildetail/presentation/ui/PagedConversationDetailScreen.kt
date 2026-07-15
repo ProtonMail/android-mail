@@ -225,6 +225,7 @@ private fun ConversationPager(
                 isStarred = currentTopBarState.isStarred.value,
                 messageCount = currentTopBarState.messages.value,
                 subjectAlpha = currentTopBarState.subjectAlpha.floatValue,
+                highlightQuery = conversationDetailScreenNavArgs.searchQuery,
                 actions = DetailScreenTopBar.Actions(
                     onBackClick = onTopBarExit,
                     onStarClick = { currentTopBarState.onStarClick() },

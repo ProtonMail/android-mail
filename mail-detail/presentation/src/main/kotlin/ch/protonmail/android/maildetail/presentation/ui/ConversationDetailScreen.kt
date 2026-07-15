@@ -124,6 +124,7 @@ import ch.protonmail.android.maildetail.presentation.ui.dialog.BlockSenderDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.EditScheduleSendDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.MarkAsLegitimateDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalHighlightQuery
 import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsLastMessageAutoExpandEnabled
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -547,7 +548,10 @@ fun ConversationDetailScreen(
             }
         }
     ) {
-        CompositionLocalProvider(LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled) {
+        CompositionLocalProvider(
+            LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled,
+            LocalHighlightQuery provides navigationArgs.searchQuery
+        ) {
             ConversationDetailScreen(
                 modifier = modifier,
                 state = state,
