@@ -38,7 +38,7 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
  */
 internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
     is SyncEvent.Started -> ContentIndexingState.Initializing
-    is SyncEvent.Progress -> ContentIndexingState.Running(this.v1)
+    is SyncEvent.Progress -> ContentIndexingState.Running(this.v1.percentage)
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled
     is SyncEvent.Driver -> when (this.v1) {

@@ -27,7 +27,7 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelledByUser
@@ -314,10 +314,7 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -358,10 +355,7 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -402,10 +396,7 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -446,10 +437,7 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",

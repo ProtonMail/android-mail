@@ -21,12 +21,11 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementExperimentEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementRegions
+import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -69,9 +68,8 @@ class UpsellingButtonViewModel @AssistedInject constructor(
                     upsellEntryPoint = upsellEntryPoint,
                     planBeforeUpgrade = FREE_PLAN,
                     modalVariant = modalVariant,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = UnlimitedPlanPlacementRegions.key,
-                        childFlagName = UnlimitedPlanPlacementExperimentEnabled.key
+                    upsellExperimentFlag = UpsellExperimentFlag(
+                        flagName = UpsellPlanExperiment.key
                     )
                 )
             )

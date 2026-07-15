@@ -22,12 +22,11 @@ data class GeneralDimensions(
     val upsellEntryPoint: UpsellEntryPoint,
     val planBeforeUpgrade: String,
     val modalVariant: UpsellModalVariant,
-    val upsellFeatureFlags: UpsellFeatureFlags
+    val upsellExperimentFlag: UpsellExperimentFlag
 )
 
-data class UpsellFeatureFlags(
-    val parentFlagName: String,
-    val childFlagName: String
+data class UpsellExperimentFlag(
+    val flagName: String
 )
 
 enum class UpsellEntryPoint {

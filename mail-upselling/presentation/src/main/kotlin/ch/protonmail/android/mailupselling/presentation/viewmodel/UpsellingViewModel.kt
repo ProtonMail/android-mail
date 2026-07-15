@@ -23,14 +23,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementExperimentEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementRegions
+import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelledByUser
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
@@ -167,9 +166,8 @@ internal class UpsellingViewModel @Inject constructor(
                 ),
                 planBeforeUpgrade = FREE_PLAN,
                 modalVariant = upsellingTelemetryPayload.modalVariant,
-                upsellFeatureFlags = UpsellFeatureFlags(
-                    parentFlagName = UnlimitedPlanPlacementRegions.key,
-                    childFlagName = UnlimitedPlanPlacementExperimentEnabled.key
+                upsellExperimentFlag = UpsellExperimentFlag(
+                    flagName = UpsellPlanExperiment.key
                 )
             ),
             PlanSpecificDimensions(

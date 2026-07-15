@@ -22,7 +22,7 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -142,10 +142,7 @@ internal class UpsellingButtonViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 )
             )
         } just runs
@@ -161,10 +158,7 @@ internal class UpsellingButtonViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellFeatureFlags = UpsellFeatureFlags(
-                        parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                        childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-                    )
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
                 )
             )
         }

@@ -37,6 +37,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncEventStream
+import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -119,7 +120,10 @@ internal class ContentSearchRepositoryImplTest {
         }
         coEvery { syncServiceWrapper.subscribe() } returns stream.right()
         coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
-        coEvery { stream.next() } returnsMany listOf(SyncEvent.Progress(50.0), SyncEvent.Completed)
+        coEvery { stream.next() } returnsMany listOf(
+            SyncEvent.Progress(SyncProgress(processed = 50uL, total = 100uL, percentage = 50.0)),
+            SyncEvent.Completed
+        )
 
         // When + Then
         repository.observeIndexingStatus(userId).test {

@@ -20,18 +20,18 @@ package ch.protonmail.android.mailtelemetry.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalGeneralDimensions
 import ch.protonmail.android.mailcommon.data.mapper.LocalUpsellEntryPoint
-import ch.protonmail.android.mailcommon.data.mapper.LocalUpsellFeatureFlags
+import ch.protonmail.android.mailcommon.data.mapper.LocalUpsellExperimentFlag
 import ch.protonmail.android.mailcommon.data.mapper.LocalUpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 
 fun GeneralDimensions.toLocal() = LocalGeneralDimensions(
     upsellEntryPoint = this.upsellEntryPoint.toLocal(),
     planBeforeUpgrade = this.planBeforeUpgrade,
     modalVariant = this.modalVariant.toLocal(),
-    upsellFeatureFlags = this.upsellFeatureFlags.toLocal(),
+    upsellExperimentFlag = this.upsellExperimentFlag.toLocal(),
     promoCampaign = null
 )
 
@@ -55,7 +55,6 @@ fun UpsellModalVariant.toLocal() = when (this) {
     UpsellModalVariant.COMPARISON_UNLIMITED -> LocalUpsellModalVariant.COMPARISON_UNLIMITED
 }
 
-fun UpsellFeatureFlags.toLocal() = LocalUpsellFeatureFlags(
-    parentFlagName = this.parentFlagName,
-    childFlagName = this.childFlagName
+fun UpsellExperimentFlag.toLocal() = LocalUpsellExperimentFlag(
+    flagName = this.flagName
 )

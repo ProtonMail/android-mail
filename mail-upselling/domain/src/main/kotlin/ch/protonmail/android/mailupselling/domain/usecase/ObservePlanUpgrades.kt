@@ -18,9 +18,6 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementRegionsEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
@@ -46,8 +43,7 @@ class ObservePlanUpgrades @Inject constructor(
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
     private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
-    @IsUnlimitedPlanPlacementExperimentEnabled private val unlimitedPlanPlacementFlag: FeatureFlag<Boolean>,
-    @IsUnlimitedPlanPlacementRegionsEnabled private val unlimitedPlanPlacementRegionsFlag: FeatureFlag<Boolean>
+    private val resolveUpsellVariant: ResolveUpsellVariant
 ) {
 
     operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = observePrimaryUserId().flatMapLatest { userId ->
@@ -78,11 +74,13 @@ class ObservePlanUpgrades @Inject constructor(
             else -> PlanUpgradeSupportedTags.IntroductoryPrice
         }
 
+        val showUnlimited = resolveUpsellVariant() == UpsellVariantPlan.UNLIMITED
+
         // Here should be either BF **OR** Intro pricing, never fallback between 2 promo prices
         cache.observe(userId).map { upgrades ->
             val hasPromoOffers = upgrades.filterForTags(primaryTag = offersTag.value, fallbackToBaseOffer = false)
                 .isNotEmpty()
-            if (!hasPromoOffers && unlimitedPlanPlacementRegionsFlag.get() && unlimitedPlanPlacementFlag.get()) {
+            if (!hasPromoOffers && showUnlimited) {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = null, fallbackToBaseOffer = true)
                 eligibleOffers.filterUnlimited()
             } else {

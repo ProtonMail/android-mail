@@ -99,7 +99,7 @@ import uniffi.mail_uniffi.SpamOrTrash
 import uniffi.mail_uniffi.SwipeAction
 import uniffi.mail_uniffi.SystemLabel
 import uniffi.mail_uniffi.UpsellEntryPoint
-import uniffi.mail_uniffi.UpsellFeatureFlags
+import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.UpsellModalVariant
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.UserSettings
@@ -266,7 +266,7 @@ typealias LocalGeneralDimensions = GeneralDimensions
 typealias LocalPlanSpecificDimensions = PlanSpecificDimensions
 typealias LocalUpsellEntryPoint = UpsellEntryPoint
 typealias LocalUpsellModalVariant = UpsellModalVariant
-typealias LocalUpsellFeatureFlags = UpsellFeatureFlags
+typealias LocalUpsellExperimentFlag = UpsellExperimentFlag
 typealias LocalCategoryView = CategoryView
 typealias LocalCategoryLabel = CategoryLabel
 typealias LocalCategoryLabelId = Id

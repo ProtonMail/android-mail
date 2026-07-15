@@ -38,6 +38,7 @@ import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncEventStream
+import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStartOutcome
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -96,7 +97,10 @@ internal class RustContentSearchIndexerTest {
         val progressValues = mutableListOf<Double>()
         coEvery { syncServiceWrapper.subscribe() } returns stream.right()
         coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.STARTED.right()
-        coEvery { stream.next() } returnsMany listOf(SyncEvent.Progress(30.0), SyncEvent.Completed)
+        coEvery { stream.next() } returnsMany listOf(
+            SyncEvent.Progress(SyncProgress(processed = 30uL, total = 100uL, percentage = 30.0)),
+            SyncEvent.Completed
+        )
 
         // When
         val result = indexer.index(userId) { progressValues.add(it) }

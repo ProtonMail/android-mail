@@ -186,19 +186,11 @@ data object BgProcessingRelaxedBatteryConstraint : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object UnlimitedPlanPlacementExperimentEnabled : FeatureFlagDefinition(
-    key = "MailAndroidV7UnlimitedPlanPlacementExperiment",
-    name = "Enable Unlimited Plan placement experiment",
+data object UpsellPlanExperiment : FeatureFlagDefinition(
+    key = "MailAndroidV7UpsellPlanExperiment",
+    name = "Upsell plan experiment",
     category = FeatureFlagCategory.Upselling,
-    description = "Enables Unlimited Plan placement experiment.",
-    defaultValue = false
-)
-
-data object UnlimitedPlanPlacementRegions : FeatureFlagDefinition(
-    key = "MailAndroidV7UnlimitedPlanPlacementRegions",
-    name = "Unlimited plan placement regions",
-    category = FeatureFlagCategory.Upselling,
-    description = "Enables unlimited plan placement regions",
+    description = "Determines MailPlus vs Unlimited upsell via the Unleash variant payload.",
     defaultValue = false
 )
 

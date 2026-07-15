@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.data.mapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
+import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStatus
 import uniffi.mail_uniffi.SyncWorkerEvent
 import kotlin.test.Test
@@ -58,7 +59,10 @@ internal class ContentIndexingStatusMapperTest {
 
     @Test
     fun `maps Progress event to Running`() {
-        assertEquals(ContentIndexingState.Running(64.0), SyncEvent.Progress(64.0).toIndexingState())
+        assertEquals(
+            ContentIndexingState.Running(64.0),
+            SyncEvent.Progress(SyncProgress(processed = 64uL, total = 100uL, percentage = 64.0)).toIndexingState()
+        )
     }
 
     @Test
@@ -99,7 +103,7 @@ internal class ContentIndexingStatusMapperTest {
     @Test
     fun `non-terminal events are reported as non-terminal`() {
         assertFalse(SyncEvent.Started.isTerminal())
-        assertFalse(SyncEvent.Progress(10.0).isTerminal())
+        assertFalse(SyncEvent.Progress(SyncProgress(processed = 10uL, total = 100uL, percentage = 10.0)).isTerminal())
         assertFalse(SyncEvent.Driver(SyncDriverEvent.Completed).isTerminal())
         assertFalse(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).isTerminal())
     }

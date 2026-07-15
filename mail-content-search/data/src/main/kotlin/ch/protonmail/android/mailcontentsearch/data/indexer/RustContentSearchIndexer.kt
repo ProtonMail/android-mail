@@ -98,7 +98,7 @@ class RustContentSearchIndexer @Inject constructor(
                 return ContentIndexingError.Cancelled.left()
             }
 
-            if (event is SyncEvent.Progress) onProgress(event.v1)
+            if (event is SyncEvent.Progress) onProgress(event.v1.percentage)
 
             if (event.isTerminal()) return event.toResult()
         }

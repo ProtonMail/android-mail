@@ -27,7 +27,7 @@ import ch.protonmail.android.mailtelemetry.data.mapper.toLocal
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
-import ch.protonmail.android.mailtelemetry.domain.model.UpsellFeatureFlags
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -160,10 +160,7 @@ class UpsellingTelemetryRepositoryImplTest {
             upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
             planBeforeUpgrade = "Free plan",
             modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-            upsellFeatureFlags = UpsellFeatureFlags(
-                parentFlagName = "MailAndroidV7UnlimitedPlanPlacementRegions",
-                childFlagName = "MailAndroidV7UnlimitedPlanPlacementExperiment"
-            )
+            upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
         )
         val planSpecificDimensions = PlanSpecificDimensions(
             selectedPlan = "Mail Plus",

@@ -21,9 +21,11 @@ package ch.protonmail.android.mailfeatureflags.di
 import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagValueProvider
+import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagVariantProvider
 import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureFlagFactory
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
+import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagVariantProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
@@ -44,8 +46,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer202
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Wave2Enabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementExperimentEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUnlimitedPlanPlacementRegionsEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
@@ -70,8 +70,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enable
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SummerCampaign2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SummerCampaign2026Wave2Enabled
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementExperimentEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.UnlimitedPlanPlacementRegions
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellingEnabled
 import dagger.Module
 import dagger.Provides
@@ -296,25 +294,7 @@ object FeatureFlagsModule {
 
     @Provides
     @Singleton
-    @IsUnlimitedPlanPlacementExperimentEnabled
-    fun provideUnlimitedPlanPlacementExperiment(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = UnlimitedPlanPlacementExperimentEnabled.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideUnlimitedPlanPlacementEnabledDef(): FeatureFlagDefinition = UnlimitedPlanPlacementExperimentEnabled
-
-    @Provides
-    @Singleton
-    @IsUnlimitedPlanPlacementRegionsEnabled
-    fun provideUnlimitedPlanPlacementRegions(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = UnlimitedPlanPlacementRegions.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideUnlimitedPlanPlacementRegionsDef(): FeatureFlagDefinition = UnlimitedPlanPlacementRegions
+    fun provideFeatureFlagVariantProvider(impl: RustFeatureFlagVariantProvider): FeatureFlagVariantProvider = impl
 
     @Provides
     @Singleton
