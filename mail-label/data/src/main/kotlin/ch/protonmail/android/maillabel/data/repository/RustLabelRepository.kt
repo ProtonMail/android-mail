@@ -23,12 +23,14 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.LabelDataSource
 import ch.protonmail.android.maillabel.data.mapper.toLabel
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
+import ch.protonmail.android.maillabel.data.mapper.toCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLabelWithSystemLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalSystemLabel
 import ch.protonmail.android.maillabel.data.mapper.toSystemLabel
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
@@ -114,6 +116,14 @@ class RustLabelRepository @Inject constructor(
     ): Either<DataError, LabelId> {
         return labelDataSource.resolveLocalIdBySystemLabel(userId = userId, systemLabel = labelId.toLocalSystemLabel())
             .map { it.toLabelId() }
+    }
+
+    override suspend fun resolveLocalIdByCategory(
+        userId: UserId,
+        category: CategorySystemLabelId
+    ): Either<DataError, CategoryLabelId> {
+        return labelDataSource.resolveLocalIdBySystemLabel(userId = userId, systemLabel = category.toLocalSystemLabel())
+            .map { it.toCategoryLabelId() }
     }
 
     override suspend fun markCategoryLabelSeen(

@@ -18,16 +18,14 @@
 
 package ch.protonmail.android.mailsidebar.presentation.usecase
 
-import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelIdWithCategory
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
+import ch.protonmail.android.maillabel.domain.usecase.ResolveLocalCategoryLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -38,13 +36,14 @@ import javax.inject.Inject
 /**
  * Observes the unread count of the Primary category within the Inbox.
  *
- * Resolves the local Inbox label id and Primary category id
- * Emits `null` when category view is off or the ids can't be resolved.
+ * The Primary category id is resolved directly from Rust via [ResolveLocalCategoryLabelId]
+ *
+ * Emits `null` when the ids can't be resolved, letting the caller fall back to the label's
+ * unfiltered unread count.
  */
 class ObservePrimaryCategoryUnreadCount @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
-    private val getCurrentViewModeForLabel: GetCurrentViewModeForLabel,
-    private val observeCategoryViewStatus: ObserveCategoryViewStatus,
+    private val resolveLocalCategoryLabelId: ResolveLocalCategoryLabelId,
     private val observeCategoryAwareUnreadCount: ObserveCategoryAwareUnreadCount
 ) {
 
@@ -55,18 +54,14 @@ class ObservePrimaryCategoryUnreadCount @Inject constructor(
         }
 
     private fun observeInboxPrimaryLabelWithCategory(userId: UserId): Flow<MailLabelIdWithCategory?> =
-        observeMailLabels(userId).flatMapLatest { mailLabels ->
-            val inboxLabelId = mailLabels.inboxLabelId() ?: return@flatMapLatest flowOf(null)
-            val viewMode = getCurrentViewModeForLabel(userId, inboxLabelId)
-            observeCategoryViewStatus(viewMode).map { status ->
-                val primaryCategoryId = (status as? CategoryViewStatus.Available)
-                    ?.categories
-                    ?.firstOrNull { it.systemLabel == CategorySystemLabelId.Primary }
-                    ?.id
-                primaryCategoryId?.let {
-                    MailLabelIdWithCategory(mailLabelId = MailLabelId.System(inboxLabelId), categoryLabelId = it)
-                }
-            }
+        observeMailLabels(userId).map { mailLabels ->
+            val inboxLabelId = mailLabels.inboxLabelId() ?: return@map null
+            val primaryCategoryId = resolveLocalCategoryLabelId(userId, CategorySystemLabelId.Primary)
+                ?: return@map null
+            MailLabelIdWithCategory(
+                mailLabelId = MailLabelId.System(inboxLabelId),
+                categoryLabelId = primaryCategoryId
+            )
         }
 
     private fun MailLabels.inboxLabelId() = system

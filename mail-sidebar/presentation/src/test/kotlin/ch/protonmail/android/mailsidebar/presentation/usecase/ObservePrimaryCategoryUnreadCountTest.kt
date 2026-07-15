@@ -19,14 +19,11 @@
 package ch.protonmail.android.mailsidebar.presentation.usecase
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
-import ch.protonmail.android.maillabel.domain.model.ViewMode
-import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
+import ch.protonmail.android.maillabel.domain.usecase.ResolveLocalCategoryLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
-import ch.protonmail.android.testdata.category.CategoryLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -52,25 +49,21 @@ internal class ObservePrimaryCategoryUnreadCountTest {
     private val observeMailLabels = mockk<ObserveMailLabels> {
         every { this@mockk(userId) } returns flowOf(inboxLabels)
     }
-    private val getCurrentViewModeForLabel = mockk<GetCurrentViewModeForLabel> {
-        coEvery { this@mockk(any(), any()) } returns ViewMode.ConversationGrouping
-    }
-    private val observeCategoryViewStatus = mockk<ObserveCategoryViewStatus>()
+    private val resolveLocalCategoryLabelId = mockk<ResolveLocalCategoryLabelId>()
     private val observeCategoryAwareUnreadCount = mockk<ObserveCategoryAwareUnreadCount>()
 
     private val observePrimaryCategoryUnreadCount = ObservePrimaryCategoryUnreadCount(
         observeMailLabels = observeMailLabels,
-        getCurrentViewModeForLabel = getCurrentViewModeForLabel,
-        observeCategoryViewStatus = observeCategoryViewStatus,
+        resolveLocalCategoryLabelId = resolveLocalCategoryLabelId,
         observeCategoryAwareUnreadCount = observeCategoryAwareUnreadCount
     )
 
     @Test
-    fun `given primary category available, then emits its unread count`() = runTest {
+    fun `given the primary category resolves, then emits its unread count`() = runTest {
         // Given
-        every { observeCategoryViewStatus(any()) } returns flowOf(
-            CategoryViewStatus.Available(categories = listOf(CategoryLabelTestData.primary))
-        )
+        coEvery {
+            resolveLocalCategoryLabelId(userId, CategorySystemLabelId.Primary)
+        } returns MailLabelTestData.primaryCategoryLabelId
         every {
             observeCategoryAwareUnreadCount(userId, MailLabelTestData.inboxPrimarySystemLabelWithCategory)
         } returns flowOf(7)
@@ -83,9 +76,9 @@ internal class ObservePrimaryCategoryUnreadCountTest {
     }
 
     @Test
-    fun `given category view not available, then emits null`() = runTest {
+    fun `given the primary category cannot be resolved, then emits null`() = runTest {
         // Given
-        every { observeCategoryViewStatus(any()) } returns flowOf(CategoryViewStatus.NotAvailable)
+        coEvery { resolveLocalCategoryLabelId(userId, CategorySystemLabelId.Primary) } returns null
 
         // When + Then
         observePrimaryCategoryUnreadCount(userId).test {
@@ -96,7 +89,7 @@ internal class ObservePrimaryCategoryUnreadCountTest {
     }
 
     @Test
-    fun `given no inbox label, then emits null without querying the category`() = runTest {
+    fun `given no inbox label, then emits null without resolving the category`() = runTest {
         // Given
         every { observeMailLabels(userId) } returns flowOf(
             MailLabels(system = emptyList(), folders = emptyList(), labels = emptyList())
@@ -107,6 +100,6 @@ internal class ObservePrimaryCategoryUnreadCountTest {
             assertNull(awaitItem())
             awaitComplete()
         }
-        verify(exactly = 0) { observeCategoryViewStatus(any()) }
+        verify(exactly = 0) { observeCategoryAwareUnreadCount(any(), any()) }
     }
 }

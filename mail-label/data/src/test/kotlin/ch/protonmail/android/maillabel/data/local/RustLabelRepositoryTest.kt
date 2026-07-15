@@ -19,14 +19,18 @@
 package ch.protonmail.android.maillabel.data.local
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.mapper.toLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLabelType
 import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toSystemLabel
 import ch.protonmail.android.maillabel.data.repository.RustLabelRepository
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelWithSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -100,6 +104,37 @@ class RustLabelRepositoryTest {
             assertEquals(listOf(expectedLabel), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `resolve local id by category delegates to data source and maps to a category label id`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val localLabelId = LocalLabelId(42uL)
+        coEvery {
+            labelDataSource.resolveLocalIdBySystemLabel(userId, LocalSystemLabel.CATEGORY_DEFAULT)
+        } returns localLabelId.right()
+
+        // When
+        val result = labelRepository.resolveLocalIdByCategory(userId, CategorySystemLabelId.Primary)
+
+        // Then
+        assertEquals(CategoryLabelId("42").right(), result)
+    }
+
+    @Test
+    fun `resolve local id by category returns the error when the data source fails`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        coEvery {
+            labelDataSource.resolveLocalIdBySystemLabel(userId, LocalSystemLabel.CATEGORY_DEFAULT)
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        val result = labelRepository.resolveLocalIdByCategory(userId, CategorySystemLabelId.Primary)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 
     @Test

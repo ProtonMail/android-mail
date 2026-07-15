@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.LabelType
@@ -144,6 +145,16 @@ fun SystemLabelId.toLocalSystemLabel() = when (this) {
     SystemLabelId.AllScheduled -> LocalSystemLabel.SCHEDULED
     SystemLabelId.AlmostAllMail -> LocalSystemLabel.ALMOST_ALL_MAIL
     SystemLabelId.Snoozed -> LocalSystemLabel.SNOOZED
+}
+
+fun CategorySystemLabelId.toLocalSystemLabel() = when (this) {
+    CategorySystemLabelId.Primary -> LocalSystemLabel.CATEGORY_DEFAULT
+    CategorySystemLabelId.Social -> LocalSystemLabel.CATEGORY_SOCIAL
+    CategorySystemLabelId.Promotions -> LocalSystemLabel.CATEGORY_PROMOTIONS
+    CategorySystemLabelId.Updates -> LocalSystemLabel.CATEGORY_UPDATES
+    CategorySystemLabelId.Forums -> LocalSystemLabel.CATEGORY_FORUMS
+    CategorySystemLabelId.Newsletter -> LocalSystemLabel.CATEGORY_NEWSLETTER
+    CategorySystemLabelId.Transactions -> LocalSystemLabel.CATEGORY_TRANSACTIONS
 }
 
 fun MovableSystemFolder.toSystemLabelIdOrNull() = when (this) {
