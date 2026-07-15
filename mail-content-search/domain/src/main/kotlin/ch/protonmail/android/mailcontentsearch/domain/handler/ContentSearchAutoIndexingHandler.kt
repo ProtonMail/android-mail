@@ -99,8 +99,8 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
         appScope.launch {
             appInBackgroundState.observe()
                 .distinctUntilChanged()
-                .filter { isInBackground -> !isInBackground }
                 .debounce(ForegroundResumeDebounceMillis.milliseconds)
+                .filter { isInBackground -> !isInBackground }
                 .collect { resumeContentIndexingSweep() }
         }
     }

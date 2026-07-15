@@ -247,6 +247,23 @@ internal class ContentSearchAutoIndexingHandlerTest {
     }
 
     @Test
+    fun `does not resume the sweep when a foreground flicker settles back in the background`() = runTest {
+        // Given
+        givenAccounts(flowOf(emptyList()))
+        val appInBackground = MutableStateFlow(true)
+        every { appInBackgroundState.observe() } returns appInBackground
+
+        // When
+        handler().start()
+        appInBackground.value = false
+        appInBackground.value = true
+        advanceUntilIdle() // debounce settles on the background state, which the filter drops
+
+        // Then
+        coVerify(exactly = 0) { resumeContentIndexingSweep() }
+    }
+
+    @Test
     fun `does not resume the sweep while the app stays in the background`() = runTest {
         // Given
         givenAccounts(flowOf(emptyList()))
