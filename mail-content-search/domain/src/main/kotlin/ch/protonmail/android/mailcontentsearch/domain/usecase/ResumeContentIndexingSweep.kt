@@ -22,11 +22,6 @@ import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResul
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
 import javax.inject.Inject
 
-/**
- * Ensures a sweep is running without disturbing one already in progress (KEEP policy). Used when the
- * app returns to the foreground so a sweep that was cancelled (e.g. via the notification's Cancel
- * action) resumes, while an in-progress sweep is left to continue untouched.
- */
 class ResumeContentIndexingSweep @Inject constructor(
     private val scheduler: ContentIndexingScheduler,
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData

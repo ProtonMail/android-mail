@@ -41,8 +41,6 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
     private val optedOutUserIdsKey = stringSetPreferencesKey("contentSearchOptedOutUserIdsPrefKey")
     private val knownUserIdsKey = stringSetPreferencesKey("contentSearchKnownUserIdsPrefKey")
 
-    // Mobile-data preference lives in Rust (via app settings), so it stays consistent with the rest
-    // of the content-search state the sweep reads.
     override suspend fun getAllowMobileData(): Either<PreferencesError, Boolean> =
         appSettingsRepository.observeAppSettings().first().useMobileDataForContentSearchIndexing.enabled.right()
 
@@ -52,8 +50,6 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
             ifRight = { Unit.right() }
         )
 
-    // Opt-out markers and the known-user set are purely local: they have no Rust equivalent and are
-    // reconciled against the Rust state to decide whether an account should be auto-enabled on sight.
     override suspend fun hasUserOptedOut(userId: UserId): Either<PreferencesError, Boolean> =
         dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
             preferences.map { it[optedOutUserIdsKey].orEmpty().contains(userId.id) }

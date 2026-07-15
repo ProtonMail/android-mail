@@ -29,10 +29,7 @@ class ContentIndexingCancelReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ActionCancel) return
-        // The sweep runs as a single unique work item, so cancelling stops indexing for every account.
-        // This is a pause, not an opt-out: content search stays enabled, so the auto-indexing handler
-        // resumes the sweep the next time the app is foregrounded (or on a cold start, or when an
-        // account newly becomes ready). To stop indexing permanently the user turns content search off.
+
         Timber.d("ContentIndexingCancelReceiver: cancelling the content indexing sweep")
         WorkManager.getInstance(context).cancelUniqueWork(ContentIndexingWorker.UniqueName)
     }

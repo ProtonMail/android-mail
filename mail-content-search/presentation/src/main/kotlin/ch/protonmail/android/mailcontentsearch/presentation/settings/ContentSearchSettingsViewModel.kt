@@ -123,12 +123,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
     )
 
     private fun observeIndexingProgress(userId: UserId) {
-        // The displayed percentage and completion come from Rust, which is per-account and durable:
-        // it stays correct for the viewed account even when the sweep worker has advanced to a
-        // different account. WorkManager only supplies the transient "preparing" envelope (the
-        // window after the worker is enqueued but before Rust starts streaming progress).
-        // When content search is disabled for the account we report no progress, so a syncing label
-        // never lingers after the toggle is switched off (Rust may still emit during teardown).
         combine(
             observeContentSearchEnabled(userId),
             observeContentSearchIndexingStatus(userId),
@@ -137,7 +131,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
             if (!enabled) {
                 Data.IndexingProgress(percentage = null, isActive = false)
             } else {
-                // The worker's Initializing envelope covers the window before Rust streams progress.
+                // The worker's Initializing state covers the window before Rust streams progress.
                 // Ignore it once Rust reports the account complete, so a completed account never shows
                 // "preparing" while a sweep for another account is starting up.
                 val preparing = workerState == ContentIndexingState.Initializing &&

@@ -41,22 +41,6 @@ import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Drives content-search indexing automatically, without the user having to open settings.
- *
- * On app launch and whenever the set of accounts changes, each ready account is reconciled against
- * its Rust content-search state:
- * - If content search is already enabled, nothing is done (and any stale opt-out marker is cleared).
- * - If it is disabled and the user has not deliberately opted out, it is enabled. This covers first
- *   sight (fresh login or accounts present after an app update) and also recovers when Rust loses the
- *   enabled state (e.g. an SDK or data reset) without a sign-out.
- * - A deliberate user *disable* (via DisableContentSearch) records an opt-out, which is respected
- *   here so it is never turned back on. The opt-out is cleared on sign-out (Rust state is wiped) so
- *   a later re-login starts fresh.
- * - The multi-account [StartContentIndexingSweep] is (re)started so newly logged-in accounts are
- *   picked up and any pending indexing resumes. The sweep worker discovers accounts at runtime, so a
- *   restart simply re-evaluates which account to index next (primary-first).
- * - When the app returns to the foreground the sweep is resumed via [ResumeContentIndexingSweep]
- *   (KEEP policy), so a run cancelled from the notification picks up again without waiting for a cold
- *   start; an already-running sweep is left untouched.
  */
 class ContentSearchAutoIndexingHandler @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
@@ -76,8 +60,6 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
 
     private fun observeAccountChanges() {
         appScope.launch {
-            // Persisted (not kept in memory) so a sign-out that happens while the process is dead is
-            // still detected as a removal here on the next launch, rather than leaking a stale opt-out.
             var knownUserIds = preferencesRepository.getKnownUserIds().getOrElse { emptySet() }
             var previousReadyUserIds = emptySet<UserId>()
             var sweepStarted = false
@@ -115,15 +97,6 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
     @OptIn(FlowPreview::class)
     private fun observeForegroundResumes() {
         appScope.launch {
-            // The account collector only (re)starts the sweep on a cold launch or when an account
-            // newly becomes ready. Returning from the background is neither, so a sweep cancelled from
-            // the notification would otherwise stay stopped until the process is recreated. Resume it
-            // whenever the app comes to the foreground; KEEP leaves an in-progress sweep untouched.
-            //
-            // No eligibility guard here on purpose: whether an account still needs indexing is the
-            // sweep worker's decision (FindFirstEligibleAccountToIndex), and it self-terminates cheaply
-            // when nothing is eligible. Debounce instead so a burst of quick foreground/background
-            // flips (app-switching) coalesces into a single resume rather than one enqueue each.
             appInBackgroundState.observe()
                 .distinctUntilChanged()
                 .filter { isInBackground -> !isInBackground }
@@ -158,7 +131,6 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
 
     private companion object {
 
-        // Coalesce bursts of quick foreground/background flips into a single sweep resume.
         const val ForegroundResumeDebounceMillis = 2_000L
     }
 }
