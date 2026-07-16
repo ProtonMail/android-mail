@@ -18,12 +18,8 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagVariantProvider
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagVariantPayloadType
-import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
+import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 enum class UpsellVariantPlan {
@@ -35,35 +31,9 @@ enum class UpsellVariantPlan {
 }
 
 class ResolveUpsellVariant @Inject constructor(
-    private val variantProvider: FeatureFlagVariantProvider
+    private val upsellEligibilityRepository: UpsellEligibilityRepository
 ) {
 
-    suspend operator fun invoke(): UpsellVariantPlan {
-        val variant = variantProvider.getVariant(UpsellPlanExperiment.key) ?: return UpsellVariantPlan.Default
-        val payload = variant.payload
-            ?.takeIf { variant.enabled && it.type == FeatureFlagVariantPayloadType.JSON }
-            ?: return UpsellVariantPlan.Default
-
-        return runCatching {
-            when (json.decodeFromString<UpsellPayload>(payload.value).upsell) {
-                UpsellPayload.Plan.UNLIMITED -> UpsellVariantPlan.UNLIMITED
-                UpsellPayload.Plan.MAIL_PLUS -> UpsellVariantPlan.MAIL_PLUS
-            }
-        }.getOrDefault(UpsellVariantPlan.Default)
-    }
-
-    private companion object {
-        val json = Json { ignoreUnknownKeys = true }
-    }
-}
-
-@Serializable
-private data class UpsellPayload(val upsell: Plan) {
-
-    @Serializable
-    enum class Plan {
-        @SerialName("MailPlus") MAIL_PLUS,
-
-        @SerialName("Unlimited") UNLIMITED
-    }
+    suspend operator fun invoke(userId: UserId): UpsellVariantPlan =
+        upsellEligibilityRepository.getEligibleUpsellPlan(userId) ?: UpsellVariantPlan.Default
 }

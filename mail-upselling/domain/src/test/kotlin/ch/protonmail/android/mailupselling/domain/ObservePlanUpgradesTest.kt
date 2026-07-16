@@ -103,7 +103,7 @@ internal class ObservePlanUpgradesTest {
             }
         )
 
-        coEvery { resolveUpsellVariant() } returns UpsellVariantPlan.MAIL_PLUS
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.MAIL_PLUS
 
         // When
         val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
@@ -135,7 +135,7 @@ internal class ObservePlanUpgradesTest {
             }
         )
 
-        coEvery { resolveUpsellVariant() } returns UpsellVariantPlan.UNLIMITED
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.UNLIMITED
 
         // When
         val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()

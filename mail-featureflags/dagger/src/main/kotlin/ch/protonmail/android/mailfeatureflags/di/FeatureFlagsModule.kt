@@ -21,11 +21,9 @@ package ch.protonmail.android.mailfeatureflags.di
 import ch.protonmail.android.mailfeatureflags.data.local.DefaultFeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.data.local.RustFeatureFlagVariantProvider
 import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureFlagFactory
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
-import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagVariantProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
@@ -291,10 +289,6 @@ object FeatureFlagsModule {
     @Singleton
     fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
-
-    @Provides
-    @Singleton
-    fun provideFeatureFlagVariantProvider(impl: RustFeatureFlagVariantProvider): FeatureFlagVariantProvider = impl
 
     @Provides
     @Singleton

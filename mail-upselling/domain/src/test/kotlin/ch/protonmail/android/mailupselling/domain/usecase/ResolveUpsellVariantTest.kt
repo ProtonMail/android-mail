@@ -18,83 +18,35 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
-import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagVariantProvider
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagVariant
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagVariantPayload
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagVariantPayloadType
-import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
+import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class ResolveUpsellVariantTest {
 
-    private val variantProvider = mockk<FeatureFlagVariantProvider>()
-    private val resolveUpsellVariant = ResolveUpsellVariant(variantProvider)
+    private val userId = UserId("user-id")
+    private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository>()
+    private val resolveUpsellVariant = ResolveUpsellVariant(upsellEligibilityRepository)
 
-    private fun jsonVariant(value: String, enabled: Boolean = true) = FeatureFlagVariant(
-        name = "variant",
-        enabled = enabled,
-        payload = FeatureFlagVariantPayload(FeatureFlagVariantPayloadType.JSON, value)
-    )
-
-    private fun stubVariant(variant: FeatureFlagVariant?) {
-        coEvery { variantProvider.getVariant(UpsellPlanExperiment.key) } returns variant
+    @Test
+    fun `returns the eligible plan when the user is eligible for Unlimited`() = runTest {
+        coEvery { upsellEligibilityRepository.getEligibleUpsellPlan(userId) } returns UpsellVariantPlan.UNLIMITED
+        assertEquals(UpsellVariantPlan.UNLIMITED, resolveUpsellVariant(userId))
     }
 
     @Test
-    fun `resolves Unlimited from the payload`() = runTest {
-        stubVariant(jsonVariant("""{"upsell":"Unlimited"}"""))
-        assertEquals(UpsellVariantPlan.UNLIMITED, resolveUpsellVariant())
+    fun `returns the eligible plan when the user is eligible for Mail Plus`() = runTest {
+        coEvery { upsellEligibilityRepository.getEligibleUpsellPlan(userId) } returns UpsellVariantPlan.MAIL_PLUS
+        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant(userId))
     }
 
     @Test
-    fun `resolves MailPlus from the payload`() = runTest {
-        stubVariant(jsonVariant("""{"upsell":"MailPlus"}"""))
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `ignores unknown web-offer fields alongside the upsell type`() = runTest {
-        stubVariant(jsonVariant("""{"upsell":"Unlimited","type":"blackFriday","coupon":"BF"}"""))
-        assertEquals(UpsellVariantPlan.UNLIMITED, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `falls back to MailPlus when there is no variant`() = runTest {
-        stubVariant(null)
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `falls back to MailPlus when the variant is disabled`() = runTest {
-        stubVariant(jsonVariant("""{"upsell":"Unlimited"}""", enabled = false))
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `falls back to MailPlus when the payload is not JSON`() = runTest {
-        stubVariant(
-            FeatureFlagVariant(
-                name = "variant",
-                enabled = true,
-                payload = FeatureFlagVariantPayload(FeatureFlagVariantPayloadType.STRING, "Unlimited")
-            )
-        )
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `falls back to MailPlus when the payload is malformed`() = runTest {
-        stubVariant(jsonVariant("""{"upsell":"Enterprise"}"""))
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
-    }
-
-    @Test
-    fun `falls back to MailPlus when there is no payload`() = runTest {
-        stubVariant(FeatureFlagVariant(name = "variant", enabled = true, payload = null))
-        assertEquals(UpsellVariantPlan.MAIL_PLUS, resolveUpsellVariant())
+    fun `falls back to the default plan when the user is not eligible`() = runTest {
+        coEvery { upsellEligibilityRepository.getEligibleUpsellPlan(userId) } returns null
+        assertEquals(UpsellVariantPlan.Default, resolveUpsellVariant(userId))
     }
 }

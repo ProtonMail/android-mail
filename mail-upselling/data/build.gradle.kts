@@ -50,14 +50,20 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.proton.rust.core)
+
     implementation(libs.bundles.module.data)
+    implementation(libs.proton.core.domain)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
+    implementation(project(":mail-session:data"))
+    implementation(project(":mail-session:domain"))
     implementation(project(":mail-upselling:domain"))
     implementation(libs.arrow.core)
 
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
     testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.rust.core)
 }

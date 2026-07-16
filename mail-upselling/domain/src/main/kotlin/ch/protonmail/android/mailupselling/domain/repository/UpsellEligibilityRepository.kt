@@ -16,22 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailfeatureflags.domain.model
+package ch.protonmail.android.mailupselling.domain.repository
 
-data class FeatureFlagVariant(
-    val name: String,
-    val enabled: Boolean,
-    val payload: FeatureFlagVariantPayload?
-)
+import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
+import me.proton.core.domain.entity.UserId
 
-data class FeatureFlagVariantPayload(
-    val type: FeatureFlagVariantPayloadType,
-    val value: String
-)
+interface UpsellEligibilityRepository {
 
-enum class FeatureFlagVariantPayloadType {
-    JSON,
-    CSV,
-    STRING,
-    NUMBER
+    suspend fun getEligibleUpsellPlan(userId: UserId): UpsellVariantPlan?
 }
