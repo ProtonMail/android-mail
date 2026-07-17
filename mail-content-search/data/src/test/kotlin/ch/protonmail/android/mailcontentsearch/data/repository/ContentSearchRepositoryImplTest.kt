@@ -32,6 +32,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -64,7 +65,7 @@ internal class ContentSearchRepositoryImplTest {
     )
 
     @Test
-    fun `clearLocalData resets the sync service`() = runTest {
+    fun `clearLocalData resets the sync service`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.reset() } returns Unit.right()
 
@@ -77,7 +78,7 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `getIndexingStatus maps the sync service status to the domain state`() = runTest {
+    fun `getIndexingStatus maps the sync service status to the domain state`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.status() } returns SyncStatus.COMPLETED.right()
 
@@ -89,7 +90,7 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `getIndexingStatus maps ONGOING with no known progress to Initializing`() = runTest {
+    fun `getIndexingStatus maps ONGOING with no known progress to Initializing`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
 
@@ -101,7 +102,7 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `getIndexingStatus falls back to Idle when the session has no status`() = runTest {
+    fun `getIndexingStatus falls back to Idle when the session has no status`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.status() } returns DataError.Local.Unknown.left()
 
@@ -113,40 +114,50 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `observeIndexingStatus emits the snapshot then live events until a terminal one`() = runTest {
-        // Given
-        val stream = mockk<SyncEventStream> {
-            every { destroy() } returns Unit
+    fun `observeIndexingStatus emits the snapshot then live events then resubscribes on a terminal one`() =
+        runTest(dispatcher) {
+            // Given
+            val liveStream = mockk<SyncEventStream> { every { destroy() } returns Unit }
+            val parkedStream = mockk<SyncEventStream> { every { destroy() } returns Unit }
+            coEvery { syncServiceWrapper.subscribe() } returnsMany listOf(liveStream.right(), parkedStream.right())
+            coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
+            coEvery { liveStream.next() } returnsMany listOf(
+                SyncEvent.Progress(SyncProgress(processed = 50uL, total = 100uL, percentage = 50.0)),
+                SyncEvent.Completed
+            )
+            coEvery { parkedStream.next() } coAnswers { awaitCancellation() }
+
+            // When + Then
+            repository.observeIndexingStatus(userId).test {
+                assertEquals(ContentIndexingState.Initializing, awaitItem())
+                assertEquals(ContentIndexingState.Running(50.0), awaitItem())
+                assertEquals(ContentIndexingState.Completed, awaitItem())
+                assertEquals(ContentIndexingState.Initializing, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
         }
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
-        coEvery { stream.next() } returnsMany listOf(
-            SyncEvent.Progress(SyncProgress(processed = 50uL, total = 100uL, percentage = 50.0)),
-            SyncEvent.Completed
+
+    @Test
+    fun `observeIndexingStatus retries when subscribing fails`() = runTest(dispatcher) {
+        // Given
+        val parkedStream = mockk<SyncEventStream> { every { destroy() } returns Unit }
+        coEvery { syncServiceWrapper.subscribe() } returnsMany listOf(
+            DataError.Local.Unknown.left(),
+            parkedStream.right()
         )
+        coEvery { syncServiceWrapper.status() } returns SyncStatus.ONGOING.right()
+        coEvery { parkedStream.next() } coAnswers { awaitCancellation() }
 
         // When + Then
         repository.observeIndexingStatus(userId).test {
             assertEquals(ContentIndexingState.Initializing, awaitItem())
-            assertEquals(ContentIndexingState.Running(50.0), awaitItem())
-            assertEquals(ContentIndexingState.Completed, awaitItem())
-            awaitComplete()
+            cancelAndIgnoreRemainingEvents()
         }
+        coVerify(atLeast = 2) { syncServiceWrapper.subscribe() }
     }
 
     @Test
-    fun `observeIndexingStatus closes when subscribing fails`() = runTest {
-        // Given
-        coEvery { syncServiceWrapper.subscribe() } returns DataError.Local.Unknown.left()
-
-        // When + Then
-        repository.observeIndexingStatus(userId).test {
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `shouldShowMobileBottomSheet returns the sync service value`() = runTest {
+    fun `shouldShowMobileBottomSheet returns the sync service value`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.shouldShowMobileBottomSheet() } returns true.right()
 
@@ -158,7 +169,7 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `shouldShowMobileBottomSheet falls back to false when the sync service call fails`() = runTest {
+    fun `shouldShowMobileBottomSheet falls back to false when the sync service call fails`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.shouldShowMobileBottomSheet() } returns DataError.Local.Unknown.left()
 

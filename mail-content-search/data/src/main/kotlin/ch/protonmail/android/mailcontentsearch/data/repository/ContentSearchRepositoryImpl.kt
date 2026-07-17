@@ -32,14 +32,19 @@ import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRe
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
@@ -52,8 +57,13 @@ class ContentSearchRepositoryImpl @Inject constructor(
             createRustSyncService(wrapper).reset()
         }.flatten()
 
-    override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> =
-        observeForUser(userId).flowOn(ioDispatcher)
+    // observeForUser ends on every terminal event, so resubscribe to stay durable across worker
+    // reschedules (which stop and restart the underlying session).
+    override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> = flow {
+        while (currentCoroutineContext().isActive) {
+            emitAll(observeForUser(userId))
+        }
+    }.flowOn(ioDispatcher)
 
     override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState =
         readIndexingState(userId) ?: ContentIndexingState.Idle
@@ -91,6 +101,8 @@ class ContentSearchRepositoryImpl @Inject constructor(
         )
 
         if (stream == null) {
+            // Throttle the resubscribe in observeIndexingStatus so quick transitions don't make the UI flash.
+            delay(ResubscribeBackoffMillis.milliseconds)
             close()
             return@callbackFlow
         }
@@ -100,12 +112,17 @@ class ContentSearchRepositoryImpl @Inject constructor(
                 val event = stream.next()
                 if (event == null) {
                     Timber.w("content-search: indexing watcher closed")
+                    // Throttle the resubscribe in observeIndexingStatus so quick transitions don't make the UI flash.
+                    delay(ResubscribeBackoffMillis.milliseconds)
                     close()
                     break
                 }
 
                 event.toIndexingState()?.let { trySend(it) }
                 if (event.isTerminal()) {
+                    // Throttle the resubscribe in observeIndexingStatus so a session that fails
+                    // immediately on every subscribe can't spin the loop with no backoff.
+                    delay(ResubscribeBackoffMillis.milliseconds)
                     close()
                     break
                 }
@@ -115,5 +132,10 @@ class ContentSearchRepositoryImpl @Inject constructor(
         awaitClose {
             runCatching { stream.destroy() }
         }
+    }
+
+    private companion object {
+
+        const val ResubscribeBackoffMillis = 1_000L
     }
 }

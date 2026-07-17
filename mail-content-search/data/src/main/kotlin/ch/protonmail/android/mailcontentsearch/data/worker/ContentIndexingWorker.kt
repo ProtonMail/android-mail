@@ -305,9 +305,10 @@ class ContentIndexingWorker @AssistedInject constructor(
                 stopReason == WorkInfo.STOP_REASON_TIMEOUT ->
                 CancellationAction.RestartInBackgroundMode
 
+            // Preserve the running Rust session only when a replacement worker is coming right away,
+            // for instance when swapping WiFi-only to Allow Mobile Data while data is enabled.
             isSelfRestarting -> CancellationAction.PreserveIndexerSession
-            stopReason == WorkInfo.STOP_REASON_CANCELLED_BY_APP -> CancellationAction.ReleaseIndexerSession
-            else -> CancellationAction.PreserveIndexerSession
+            else -> CancellationAction.ReleaseIndexerSession
         }
 
         /**

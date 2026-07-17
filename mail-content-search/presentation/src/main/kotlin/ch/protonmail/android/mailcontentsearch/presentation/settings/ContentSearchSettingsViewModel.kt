@@ -39,8 +39,10 @@ import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPe
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,6 +52,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -122,13 +125,14 @@ class ContentSearchSettingsViewModel @Inject constructor(
         }
     )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeIndexingProgress(userId: UserId) {
         combine(
             observeContentSearchEnabled(userId),
             observeContentSearchIndexingStatus(userId),
             observeContentIndexingState(userId)
         ) { enabled, indexingStatus, workerState ->
-            if (!enabled) {
+            val progress = if (!enabled) {
                 Data.IndexingProgress(percentage = null, isActive = false)
             } else {
                 // The worker's Initializing state covers the window before Rust streams progress.
@@ -141,7 +145,13 @@ class ContentSearchSettingsViewModel @Inject constructor(
                     isActive = indexingStatus.isActive() || preparing
                 )
             }
+            enabled to progress
         }
+            .mapLatest { (enabled, progress) ->
+                // Delay the "blank" state as it might be caused by a worker being briefly rescheduled.
+                if (enabled && progress.percentage == null) delay(BlankPercentageHoldMillis.milliseconds)
+                progress
+            }
             .onEach { emitNewStateFor(it) }
             .launchIn(viewModelScope)
     }
@@ -211,5 +221,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private companion object {
 
         const val RescheduleDebounceMillis = 500L
+        const val BlankPercentageHoldMillis = 1_000L
     }
 }

@@ -71,6 +71,28 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
+    fun `should release indexer session when the network constraint is no longer met`() {
+        assertEquals(
+            CancellationAction.ReleaseIndexerSession,
+            ContentIndexingWorker.decideCancellationAction(
+                stopReason = WorkInfo.STOP_REASON_CONSTRAINT_CONNECTIVITY,
+                isSelfRestarting = false
+            )
+        )
+    }
+
+    @Test
+    fun `self restart preserves the session even when the network constraint is no longer met`() {
+        assertEquals(
+            CancellationAction.PreserveIndexerSession,
+            ContentIndexingWorker.decideCancellationAction(
+                stopReason = WorkInfo.STOP_REASON_CONSTRAINT_CONNECTIVITY,
+                isSelfRestarting = true
+            )
+        )
+    }
+
+    @Test
     fun `should restart in background mode when system stops with a plain timeout`() {
         assertEquals(
             CancellationAction.RestartInBackgroundMode,
@@ -82,9 +104,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when system stops due to device state`() {
+    fun `should release indexer session when system stops due to device state`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_DEVICE_STATE,
                 isSelfRestarting = false
@@ -93,9 +115,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when system stops due to quota`() {
+    fun `should release indexer session when system stops due to quota`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_QUOTA,
                 isSelfRestarting = false
@@ -104,9 +126,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when system stops due to app standby`() {
+    fun `should release indexer session when system stops due to app standby`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_APP_STANDBY,
                 isSelfRestarting = false
@@ -115,9 +137,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when stop reason is unknown`() {
+    fun `should release indexer session when stop reason is unknown`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_UNKNOWN,
                 isSelfRestarting = false
@@ -126,9 +148,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when system preempts the work`() {
+    fun `should release indexer session when system preempts the work`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_PREEMPT,
                 isSelfRestarting = false
@@ -137,9 +159,9 @@ internal class ContentIndexingWorkerCancellationTest {
     }
 
     @Test
-    fun `should preserve indexer session when the worker was not actually stopped`() {
+    fun `should release indexer session when the worker was not actually stopped`() {
         assertEquals(
-            CancellationAction.PreserveIndexerSession,
+            CancellationAction.ReleaseIndexerSession,
             ContentIndexingWorker.decideCancellationAction(
                 stopReason = WorkInfo.STOP_REASON_NOT_STOPPED,
                 isSelfRestarting = false

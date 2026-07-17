@@ -43,6 +43,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -148,18 +149,80 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `is active while the worker is initializing even before rust reports progress`() = runTest {
-        // Given
-        workerState.value = ContentIndexingState.Initializing
-        ownIndexingStatus.value = ContentIndexingState.Idle
+    fun `is active while the worker is initializing even before rust reports progress`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            workerState.value = ContentIndexingState.Initializing
+            ownIndexingStatus.value = ContentIndexingState.Idle
 
-        // When
-        val state = viewModel().state.value.asData()
+            // When
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            val state = viewModel.state.value.asData()
 
-        // Then
-        assertTrue(state.isIndexingActive)
-        assertNull(state.syncPercentage)
-    }
+            // Then
+            assertTrue(state.isIndexingActive)
+            assertNull(state.syncPercentage)
+        }
+
+    @Test
+    fun `holds the last percentage through a brief blank so it does not flash empty`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
+
+            // When
+            ownIndexingStatus.value = ContentIndexingState.Cancelled
+            advanceTimeBy(500) // shorter than BlankPercentageHoldMillis
+
+            // Then
+            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
+
+            // When
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 50.0)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(50.0, viewModel.state.value.asData().syncPercentage)
+        }
+
+    @Test
+    fun `blanks the percentage immediately when content search is disabled`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given a sweep reporting progress
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
+
+            // When content search is turned off
+            enabledFlow.value = false
+
+            // Then the percentage clears instantly - the hold window only applies to transient blanks
+            // while enabled, so no virtual time is advanced here
+            assertNull(viewModel.state.value.asData().syncPercentage)
+            assertFalse(viewModel.state.value.asData().isIndexingActive)
+        }
+
+    @Test
+    fun `clears the percentage when the blank persists beyond the hold window`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
+
+            // When
+            ownIndexingStatus.value = ContentIndexingState.Cancelled
+            advanceUntilIdle() // past BlankPercentageHoldMillis
+
+            // Then
+            assertNull(viewModel.state.value.asData().syncPercentage)
+        }
 
     @Test
     fun `is not active when the worker is initializing but rust already reports the account complete`() = runTest {
