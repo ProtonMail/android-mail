@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontentsearch.data.repository
 
 import arrow.core.Either
+import arrow.core.flatMap
 import arrow.core.flatten
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
@@ -54,7 +55,8 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).reset()
+            val syncService = createRustSyncService(wrapper)
+            syncService.stop().flatMap { syncService.reset() }
         }.flatten()
 
     // observeForUser ends on every terminal event, so resubscribe to stay durable across worker

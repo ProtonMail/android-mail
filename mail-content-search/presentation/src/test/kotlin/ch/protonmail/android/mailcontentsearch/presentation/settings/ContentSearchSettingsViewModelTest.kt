@@ -192,17 +192,16 @@ internal class ContentSearchSettingsViewModelTest {
     @Test
     fun `blanks the percentage immediately when content search is disabled`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given a sweep reporting progress
+            // Given
             ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
             val viewModel = viewModel()
             advanceUntilIdle()
             assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
 
-            // When content search is turned off
+            // When
             enabledFlow.value = false
 
-            // Then the percentage clears instantly - the hold window only applies to transient blanks
-            // while enabled, so no virtual time is advanced here
+            // Then
             assertNull(viewModel.state.value.asData().syncPercentage)
             assertFalse(viewModel.state.value.asData().isIndexingActive)
         }
@@ -219,6 +218,28 @@ internal class ContentSearchSettingsViewModelTest {
             // When
             ownIndexingStatus.value = ContentIndexingState.Cancelled
             advanceUntilIdle() // past BlankPercentageHoldMillis
+
+            // Then
+            assertNull(viewModel.state.value.asData().syncPercentage)
+        }
+
+    @Test
+    fun `does not replay the previous percentage when content search is re-enabled on the same screen`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            every { observeContentSearchIndexingStatus(userId) } returnsMany listOf(
+                flowOf(ContentIndexingState.Running(percentage = 42.0)),
+                flowOf(ContentIndexingState.Idle)
+            )
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
+
+            // When
+            enabledFlow.value = false
+            advanceUntilIdle()
+            enabledFlow.value = true
+            advanceUntilIdle()
 
             // Then
             assertNull(viewModel.state.value.asData().syncPercentage)

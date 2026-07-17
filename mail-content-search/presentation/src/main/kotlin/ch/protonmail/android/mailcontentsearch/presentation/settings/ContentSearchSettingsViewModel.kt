@@ -34,7 +34,6 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexi
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
-import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isTerminal
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPercentage
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -49,8 +48,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
@@ -127,30 +129,31 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeIndexingProgress(userId: UserId) {
-        combine(
-            observeContentSearchEnabled(userId),
-            observeContentSearchIndexingStatus(userId),
-            observeContentIndexingState(userId)
-        ) { enabled, indexingStatus, workerState ->
-            val progress = if (!enabled) {
-                Data.IndexingProgress(percentage = null, isActive = false)
-            } else {
-                // The worker's Initializing state covers the window before Rust streams progress.
-                // Ignore it once Rust reports the account complete, so a completed account never shows
-                // "preparing" while a sweep for another account is starting up.
-                val preparing = workerState == ContentIndexingState.Initializing &&
-                    indexingStatus !is ContentIndexingState.Completed
-                Data.IndexingProgress(
-                    percentage = indexingStatus.toPercentage(),
-                    isActive = indexingStatus.isActive() || preparing
-                )
-            }
-            enabled to progress
-        }
-            .mapLatest { (enabled, progress) ->
-                // Delay the "blank" state as it might be caused by a worker being briefly rescheduled.
-                if (enabled && progress.percentage == null) delay(BlankPercentageHoldMillis.milliseconds)
-                progress
+        observeContentSearchEnabled(userId)
+            .distinctUntilChanged()
+            .flatMapLatest { enabled ->
+                if (!enabled) {
+                    flowOf(Data.IndexingProgress(percentage = null, isActive = false))
+                } else {
+                    combine(
+                        observeContentSearchIndexingStatus(userId),
+                        observeContentIndexingState(userId)
+                    ) { indexingStatus, workerState ->
+                        // The worker's Initializing state covers the window before Rust streams progress.
+                        // Ignored once Rust reports the account complete, so a completed account never
+                        // shows "Preparing" while a sweep for another account is starting up.
+                        val preparing = workerState == ContentIndexingState.Initializing &&
+                            indexingStatus !is ContentIndexingState.Completed
+                        Data.IndexingProgress(
+                            percentage = indexingStatus.toPercentage(),
+                            isActive = indexingStatus.isActive() || preparing
+                        )
+                    }.mapLatest { progress ->
+                        // Delay the "blank" state as it might be caused by a worker being briefly rescheduled.
+                        if (progress.percentage == null) delay(BlankPercentageHoldMillis.milliseconds)
+                        progress
+                    }
+                }
             }
             .onEach { emitNewStateFor(it) }
             .launchIn(viewModelScope)
@@ -201,7 +204,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
             emitNewStateFor(Error.UpdateError)
             return
         }
-        observeContentIndexingState(userId).first { it.isTerminal() }
         clearContentSearchLocalData(userId).onLeft {
             emitNewStateFor(Error.UpdateError)
             return

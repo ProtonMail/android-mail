@@ -30,6 +30,7 @@ import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.awaitCancellation
@@ -65,8 +66,9 @@ internal class ContentSearchRepositoryImplTest {
     )
 
     @Test
-    fun `clearLocalData resets the sync service`() = runTest(dispatcher) {
+    fun `clearLocalData stops the sync service before resetting it`() = runTest(dispatcher) {
         // Given
+        coEvery { syncServiceWrapper.stop() } returns Unit.right()
         coEvery { syncServiceWrapper.reset() } returns Unit.right()
 
         // When
@@ -74,7 +76,23 @@ internal class ContentSearchRepositoryImplTest {
 
         // Then
         assertEquals(Unit.right(), result)
-        coVerify { syncServiceWrapper.reset() }
+        coVerifyOrder {
+            syncServiceWrapper.stop()
+            syncServiceWrapper.reset()
+        }
+    }
+
+    @Test
+    fun `clearLocalData does not reset when stopping the sync service fails`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.stop() } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.clearLocalData(userId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
+        coVerify(exactly = 0) { syncServiceWrapper.reset() }
     }
 
     @Test
