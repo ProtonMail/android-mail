@@ -195,9 +195,9 @@ class ContentIndexingWorker @AssistedInject constructor(
     private suspend fun indexAccount(userId: UserId, runAsForeground: Boolean): Either<ContentIndexingError, Unit> {
         currentUserId = userId
         val accountLabel = accountLabelFor(userId)
-        Timber.d("content-search: $userId starting (progress=0.0)")
+        Timber.d("content-search: $userId starting (progress=unknown)")
         setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to 0.0))
-        if (runAsForeground) trySetForeground(accountLabel, progress = 0.0)
+        if (runAsForeground) trySetForeground(accountLabel, progress = null)
         return indexer.index(userId) { percent ->
             Timber.d("content-search: $userId progress=$percent")
             setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to percent))
@@ -205,14 +205,14 @@ class ContentIndexingWorker @AssistedInject constructor(
         }
     }
 
-    override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = 0.0)
+    override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
 
     private suspend fun accountLabelFor(userId: UserId): String? = runCatching {
         userSessionRepository.getAccount(userId)?.primaryAddress
     }.getOrNull()
 
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun trySetForeground(accountLabel: String?, progress: Double) {
+    private suspend fun trySetForeground(accountLabel: String?, progress: Double?) {
         try {
             setForeground(buildForegroundInfo(accountLabel, progress))
         } catch (e: CancellationException) {
@@ -274,7 +274,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         )
     }
 
-    private fun buildForegroundInfo(accountLabel: String?, progress: Double): ForegroundInfo {
+    private fun buildForegroundInfo(accountLabel: String?, progress: Double?): ForegroundInfo {
         val notification = ContentIndexingNotification.build(context, accountLabel, progress)
             .build()
             .apply { flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT }
