@@ -108,6 +108,7 @@ import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
 import ch.protonmail.android.mailcategory.presentation.CategorySpotlightBanner
+import ch.protonmail.android.mailcategory.presentation.RecategoriseBottomSheet
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
@@ -593,23 +594,31 @@ fun MailboxScreen(
                 actions = actions
             )
 
-            // Floats over the top of the list (below the category menu); not part of the scrolling content.
-            if (categorySpotlightState is CategorySpotlightState.Shown) {
-                // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
-                LaunchedEffect(lazyListState.isScrollInProgress) {
-                    if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
+            when (categorySpotlightState) {
+                // Floats over the top of the list (below the category menu); not part of the scrolling content.
+                is CategorySpotlightState.Shown.UnseenCategory -> {
+                    // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
+                    LaunchedEffect(lazyListState.isScrollInProgress) {
+                        if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
+                    }
+                    CategorySpotlightBanner(
+                        state = categorySpotlightState,
+                        onClose = actions.onDismissCategorySpotlight,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(paddingValues)
+                            .padding(
+                                horizontal = ProtonDimens.Spacing.Large,
+                                vertical = ProtonDimens.Spacing.Small
+                            )
+                    )
                 }
-                CategorySpotlightBanner(
-                    state = categorySpotlightState,
-                    onClose = actions.onDismissCategorySpotlight,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(paddingValues)
-                        .padding(
-                            horizontal = ProtonDimens.Spacing.Large,
-                            vertical = ProtonDimens.Spacing.Small
-                        )
+
+                CategorySpotlightState.Shown.Personalise -> RecategoriseBottomSheet(
+                    onDismiss = actions.onDismissCategorySpotlight
                 )
+
+                CategorySpotlightState.Hidden -> Unit
             }
 
             val bottomBarActions = remember(actions) {
