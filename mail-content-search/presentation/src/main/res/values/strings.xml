@@ -10,6 +10,9 @@
     <string name="mail_settings_content_search_preparing_status">Preparing…</string>
     <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
     <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
+    <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
+    <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
+    <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
     <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
     <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
     <string name="content_search_bottomsheet_settings_link">settings</string>
