@@ -23,7 +23,9 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicText
@@ -58,6 +60,9 @@ fun MessageDetailFooter(
     actions: MessageDetailFooter.Actions
 ) {
     if (!uiModel.shouldShowActions) {
+        // Even without action buttons, keep bottom breathing room so the message body content above (e.g. the
+        // expand/collapse "..." button) is not cramped against the card's bottom edge.
+        Spacer(modifier = modifier.height(ProtonDimens.Spacing.Huge - ProtonDimens.Spacing.Small))
         return
     }
 
