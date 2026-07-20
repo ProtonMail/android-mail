@@ -35,6 +35,13 @@ internal object MessageDetailFooterPreviewData {
         shouldShowReplyAll = false,
         shouldShowActions = true
     )
+
+    // Reply not allowed (e.g. outbox/sent messages): no buttons, only reserved bottom spacing.
+    val NoActions = MessageDetailFooterUiModel(
+        MessageIdUiModel("id"),
+        shouldShowReplyAll = false,
+        shouldShowActions = false
+    )
 }
 
 internal data class MessageDetailFooterPreview(
@@ -49,6 +56,9 @@ internal class MessageDetailFooterPreviewProvider : PreviewParameterProvider<Mes
         ),
         MessageDetailFooterPreview(
             uiModel = MessageDetailFooterPreviewData.Reply
+        ),
+        MessageDetailFooterPreview(
+            uiModel = MessageDetailFooterPreviewData.NoActions
         )
     )
 }
