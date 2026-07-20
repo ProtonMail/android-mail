@@ -42,7 +42,8 @@ import me.proton.core.presentation.R
 fun ProductHeader(
     header: ProductDetailHeader,
     modifier: Modifier = Modifier,
-    icon: Painter? = null
+    icon: Painter? = null,
+    showPrice: Boolean = true
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
@@ -72,22 +73,24 @@ fun ProductHeader(
             )
         }
         Column {
-            Text(
-                modifier = Modifier.align(Alignment.End),
-                text = header.priceText,
-                style = ProtonTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                modifier = Modifier.align(Alignment.End),
-                text = header.cycleText,
-                style = ProtonTheme.typography.labelMedium,
-                color = ProtonTheme.colors.textHint
-            )
+            if (showPrice) {
+                Text(
+                    modifier = Modifier.align(Alignment.End),
+                    text = header.priceText,
+                    style = ProtonTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier.align(Alignment.End),
+                    text = header.cycleText,
+                    style = ProtonTheme.typography.labelMedium,
+                    color = ProtonTheme.colors.textHint
+                )
+            }
             if (icon != null) {
                 Icon(
                     modifier = Modifier
-                        .padding(top = Spacing.Large)
+                        .then(if (showPrice) Modifier.padding(top = Spacing.Large) else Modifier)
                         .size(IconSize.Medium)
                         .align(Alignment.End),
                     painter = icon,
@@ -107,6 +110,19 @@ private fun ProductHeaderPreview() {
         ProductHeader(
             header = Subscription.test.header,
             modifier = Modifier.padding(Spacing.Medium)
+        )
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = false)
+private fun ProductHeaderNoPricePreview() {
+    ProtonTheme {
+        ProductHeader(
+            header = Subscription.test.header,
+            modifier = Modifier.padding(Spacing.Medium),
+            showPrice = false
         )
     }
 }

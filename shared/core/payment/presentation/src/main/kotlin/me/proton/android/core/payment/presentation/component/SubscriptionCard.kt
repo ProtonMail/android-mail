@@ -78,7 +78,7 @@ fun SubscriptionCard(
             modifier = Modifier.padding(Spacing.Medium),
             expanded = expanded,
             header = {
-                ProductHeader(header = subscription.header, icon = expandCollapseIcon)
+                ProductHeader(header = subscription.header, icon = expandCollapseIcon, showPrice = false)
             },
             content = {
                 EntitlementList(subscription.entitlements)
