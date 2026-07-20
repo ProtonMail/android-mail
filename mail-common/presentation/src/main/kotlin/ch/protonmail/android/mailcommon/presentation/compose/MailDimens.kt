@@ -54,8 +54,12 @@ object MailDimens {
 
     val ConversationMessageCollapseBarHeight = 20.dp
     val ConversationCollapseHeaderOverlapHeight = 32.dp
-    val ConversationItemBottomPadding = 22.dp
-    val ConversationCollapseHeaderElevation = 16.dp
+
+    // Expanded conversation items are forced to have a bottom corner radius (see google issue 429387112 / ET-3593).
+    // The LazyColumn overlaps consecutive items by ConversationCollapseHeaderOverlapHeight (32.dp), so the next card
+    // hides the previous card's bottom corners only if (overlap - bottomPadding) >= corner radius. shapes.large is a
+    // 12.dp radius, so this padding must be <= 32 - 12 = 20.dp to fully cover the rounded corners.
+    val ConversationItemBottomPadding = 20.dp
 
     val IconWeakRoundBackgroundRadius = 28.dp
 

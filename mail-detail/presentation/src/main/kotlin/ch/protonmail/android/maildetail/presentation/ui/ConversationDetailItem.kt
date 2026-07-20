@@ -24,7 +24,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -48,9 +47,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -89,6 +91,9 @@ fun ConversationDetailItem(
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
     downloadingAttachmentId: AttachmentId? = null,
+    // the last message in the conversation has nothing stacked below it, so its bottom corners are rounded too;
+    // every other card keeps a square bottom so it connects seamlessly to the card overlapping it below
+    isLastMessage: Boolean = true,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
     // we won't bother waiting for the heights to be calculated as we already know, this can happen when you scroll
     // back to an expanded item. We don't want to re-animate the card into view and we don't need to wait for load
@@ -101,15 +106,20 @@ fun ConversationDetailItem(
     val avatarActions = ParticipantAvatar.Actions.Empty.copy(
         onAvatarImageLoadRequested = actions.onAvatarImageLoadRequested
     )
+    val cardShape = if (isLastMessage) ProtonTheme.shapes.large else ProtonTheme.shapes.conversation
+    // The bottom padding exists so the next card can overlap into it via the -32.dp stacking arrangement. The last
+    // card has nothing stacked below it, so it only needs the header Row's own vertical padding - otherwise it shows
+    // a large empty gap at the bottom.
+    val collapsedHeaderBottomPadding = if (isLastMessage) 0.dp else MailDimens.ConversationCollapseHeaderOverlapHeight
 
     when (uiModel) {
         is Collapsed -> {
-            ConversationDetailCard(modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, modifier = modifier) {
                 ConversationDetailCollapsedMessageHeader(
                     uiModel = uiModel,
                     avatarActions = avatarActions,
                     modifier = Modifier
-                        .padding(bottom = MailDimens.ConversationCollapseHeaderOverlapHeight)
+                        .padding(bottom = collapsedHeaderBottomPadding)
                         .clickable {
                             when (uiModel.isDraft) {
                                 true -> actions.onOpenComposer(uiModel.messageId)
@@ -121,7 +131,7 @@ fun ConversationDetailItem(
         }
 
         is Expanding -> {
-            ConversationDetailCard(modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, modifier = modifier) {
                 ConversationDetailExpandingItem(
                     uiModel = uiModel,
                     avatarActions = avatarActions
@@ -130,7 +140,7 @@ fun ConversationDetailItem(
         }
 
         is Expanded -> {
-            ConversationDetailCard(modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, modifier = modifier) {
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
@@ -145,40 +155,47 @@ fun ConversationDetailItem(
 }
 
 @Composable
-private fun ConversationDetailCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
-    // ET-4775 box is added here to hide the bottom corners of the top card until there is a fix to the android bug -
-    // we cannot add a card shape with bottom radii at 0
-    Box(Modifier.background(ProtonTheme.colors.backgroundNorm)) {
-        ElevatedCard(
-            modifier = modifier
-                .fillMaxWidth()
-                .border(
-                    width = MailDimens.DefaultBorder,
-                    color = ProtonTheme.colors.borderNorm,
-                    // attention here, there is a bug in the Card and we cannot use shapes.conversations for now
-                    // This bug causes unreactive buttons on long messages (reply, reply all etc do not respond)
-                    shape = ProtonTheme.shapes.large
-                )
-                .shadow(
-                    elevation = if (isSystemInDarkTheme()) {
-                        ProtonDimens.ShadowElevation.Raised
-                    } else {
-                        ProtonDimens.ShadowElevation.Lifted
-                    },
-                    shape = ProtonTheme.shapes.large,
-                    ambientColor = ProtonTheme.colors.shadowSoft,
-                    spotColor = ProtonTheme.colors.shadowSoft
-                ),
-            shape = ProtonTheme.shapes.large,
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = ProtonTheme.colors.backgroundNorm
+private fun ConversationDetailCard(
+    shape: Shape,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = MailDimens.DefaultBorder,
+                color = ProtonTheme.colors.borderNorm,
+                shape = shape
+            )
+            // The .shadow() modifier both draws the shadow and clips the card to `shape` (clip defaults to true for a
+            // non-zero elevation). Clipping here - rather than via the ElevatedCard `shape` param - is deliberate:
+            // a non-uniform shape (rounded top, square bottom) on the Card itself breaks touch handling on long
+            // messages (Reply/Reply all become unresponsive, google issue 429387112 / ET-4775). A modifier-level clip
+            // leaves the seam corners square AND transparent, so stacked cards keep a continuous vertical border
+            // (this replaces the old opaque-background Box hack that painted over the previous card's border).
+            .shadow(
+                elevation = if (isSystemInDarkTheme()) {
+                    ProtonDimens.ShadowElevation.Raised
+                } else {
+                    ProtonDimens.ShadowElevation.Lifted
+                },
+                shape = shape,
+                ambientColor = ProtonTheme.colors.shadowSoft,
+                spotColor = ProtonTheme.colors.shadowSoft
             ),
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = MailDimens.ConversationCollapseHeaderElevation
-            ),
-            content = content
-        )
-    }
+        shape = RectangleShape,
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = ProtonTheme.colors.backgroundNorm
+        ),
+        // Keep the card's own elevation at 0: the shadow is already drawn by the .shadow() modifier above, and a
+        // non-zero elevation makes Material3 apply a tonal-elevation tint to the container that makes the fill diverge
+        // from backgroundNorm (visible as a corner "break" in dark mode).
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 0.dp
+        ),
+        content = content
+    )
 }
 
 @Composable
