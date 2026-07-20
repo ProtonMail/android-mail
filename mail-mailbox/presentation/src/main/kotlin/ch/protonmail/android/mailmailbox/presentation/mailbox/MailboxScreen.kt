@@ -23,6 +23,7 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -58,9 +59,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -69,7 +72,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -145,6 +147,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.getHighlightText
@@ -506,38 +509,75 @@ fun MailboxScreen(
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
         topBar = {
             val localDensity = LocalDensity.current
-            var topAppBarBounds by remember { mutableStateOf<Rect?>(null) }
+
+            val isSelectionMode = mailboxState.mailboxListState is MailboxListState.Data.SelectionMode
+            val isSearchMode = mailboxState.topAppBarState is MailboxTopAppBarState.Data.SearchMode
+            val isCategoryViewShown = isCategoryViewEnabled &&
+                mailboxState.categoryViewState is CategoryViewState.Available &&
+                !isSearchMode && !isSelectionMode
+
+            // With content search enabled, collapse the top app bar once the first mailbox item has
+            // scrolled off screen.
+            val collapseTopBarOnScroll = isContentSearchEnabled && !isSelectionMode && !isSearchMode
+            val scrolledPastFirstItem by remember {
+                derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
+            }
+            val isScrollingUp by rememberIsScrollingUp(lazyListState)
+            // Collapse while scrolling down, but bring the bar back on any upward scroll so it's
+            // reachable without returning all the way to the top in long mailboxes.
+            val showTopAppBar = !collapseTopBarOnScroll || !scrolledPastFirstItem || isScrollingUp
+            // The category pills stay pinned to the top even while the app bar is collapsed
+            val showStickyHeader = showTopAppBar || isCategoryViewShown
 
             Column(
                 modifier = Modifier
+                    // In category view the pills stay pinned, so we need a status bar inset.
+                    .then(
+                        if (isCategoryViewShown) {
+                            Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
+                        } else {
+                            Modifier
+                        }
+                    )
                     .onGloballyPositioned { coordinates ->
                         rememberTopBarHeight.value = with(localDensity) { coordinates.size.height.toDp() }
                     }
             ) {
 
-                MailboxTopAppBar(
-                    state = mailboxState.topAppBarState,
-                    actions = MailboxTopAppBar.Actions(
-                        onOpenMenu = actions.openDrawerMenu,
-                        onExitSelectionMode = { actions.onExitSelectionMode() },
-                        onExitSearchMode = { actions.onExitSearchMode() },
-                        onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
-                        onEnterSearchMode = { actions.onEnterSearchMode() },
-                        onSearch = { query -> actions.onSearchQuery(query) },
-                        onAccountAvatarClicked = actions.onAccountAvatarClicked,
-                        onNavigateToUpselling = actions.onNavigateToUpselling
-                    ),
-                    isSearchButtonVisible = !isContentSearchEnabled
-                )
+                AnimatedVisibility(visible = showTopAppBar) {
+                    MailboxTopAppBar(
+                        state = mailboxState.topAppBarState,
+                        actions = MailboxTopAppBar.Actions(
+                            onOpenMenu = actions.openDrawerMenu,
+                            onExitSelectionMode = { actions.onExitSelectionMode() },
+                            onExitSearchMode = { actions.onExitSearchMode() },
+                            onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
+                            onEnterSearchMode = { actions.onEnterSearchMode() },
+                            onSearch = { query -> actions.onSearchQuery(query) },
+                            onAccountAvatarClicked = actions.onAccountAvatarClicked,
+                            onNavigateToUpselling = actions.onNavigateToUpselling
+                        ),
+                        isSearchButtonVisible = !isContentSearchEnabled,
+                        // Category view: top inset is on the Column. Otherwise the app bar owns it so
+                        // it collapses together with the bar, letting the list go edge-to-edge.
+                        windowInsets = if (isCategoryViewShown) {
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                        } else {
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+                        }
+                    )
+                }
 
-                MailboxStickyHeader(
-                    modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                    ),
-                    state = mailboxState,
-                    actions = stickyHeaderActions,
-                    isCategoryViewEnabled = isCategoryViewEnabled
-                )
+                AnimatedVisibility(visible = showStickyHeader) {
+                    MailboxStickyHeader(
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                        ),
+                        state = mailboxState,
+                        actions = stickyHeaderActions,
+                        isCategoryViewEnabled = isCategoryViewEnabled
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
 
@@ -688,6 +728,28 @@ fun MailboxScreen(
         }
     }
 }
+
+/**
+ * Tracks the mailbox list scroll direction, returning `true` while the user is scrolling up
+ * (towards the top) and `false` while scrolling down. Used to reveal the collapsed top bar on any
+ * upward scroll without having to reach the top of the list.
+ */
+@Composable
+private fun rememberIsScrollingUp(listState: LazyListState): State<Boolean> =
+    produceState(initialValue = true, listState) {
+        var previousIndex = listState.firstVisibleItemIndex
+        var previousScrollOffset = listState.firstVisibleItemScrollOffset
+        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
+            .collect { (index, offset) ->
+                value = if (previousIndex != index) {
+                    previousIndex > index
+                } else {
+                    previousScrollOffset >= offset
+                }
+                previousIndex = index
+                previousScrollOffset = offset
+            }
+    }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressWarnings("ComplexMethod")

@@ -22,7 +22,11 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -60,7 +64,10 @@ fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
     actions: MailboxTopAppBar.Actions,
-    isSearchButtonVisible: Boolean = true
+    isSearchButtonVisible: Boolean = true,
+    windowInsets: WindowInsets = WindowInsets.safeDrawing.only(
+        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
+    )
 ) {
     val uiModel = when (state) {
         is MailboxTopAppBarState.Loading -> UiModel.Empty
@@ -109,11 +116,13 @@ fun MailboxTopAppBar(
             TopAppBarInSearchMode(
                 modifier = modifier,
                 uiModel = uiModel,
-                actions = actions
+                actions = actions,
+                windowInsets = windowInsets
             )
         } else {
             ProtonTopAppBar(
                 modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
+                windowInsets = windowInsets,
                 title = {
                     Text(
                         modifier = Modifier
@@ -170,13 +179,17 @@ fun MailboxTopAppBar(
 private fun TopAppBarInSearchMode(
     modifier: Modifier = Modifier,
     uiModel: UiModel,
-    actions: MailboxTopAppBar.Actions
+    actions: MailboxTopAppBar.Actions,
+    windowInsets: WindowInsets = WindowInsets.safeDrawing.only(
+        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
+    )
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
     ProtonTopAppBar(
         modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
+        windowInsets = windowInsets,
         title = {
             SearchView(
                 SearchView.Parameters(
