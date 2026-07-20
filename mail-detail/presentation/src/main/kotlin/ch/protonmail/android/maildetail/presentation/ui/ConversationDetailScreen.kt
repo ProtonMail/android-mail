@@ -1055,19 +1055,21 @@ private fun MessagesContent(
         }
     }
 
-    // Automatically expand the last message on opening/uiModels size changed
+    // Automatically expand the last message on opening/uiModels size changed, or when the last message flips
+    // from draft to sent (e.g. after replying inline). Keying only on the list size misses the draft->sent
+    // transition, because sending a reply does not change the message count - it mutates the same item in place.
     val isAutoExpandEnabled = LocalIsLastMessageAutoExpandEnabled.current
-    LaunchedEffect(uiModels.size) {
+    val lastCollapsedMessage = uiModels.lastOrNull() as? ConversationDetailMessageUiModel.Collapsed
+    LaunchedEffect(lastCollapsedMessage?.messageId?.id, lastCollapsedMessage?.isDraft) {
         if (!isAutoExpandEnabled) return@LaunchedEffect
 
-        val lastMessage = uiModels.lastOrNull()
         val scrollToMessageId = scrollToMessageState.getScrollTargetMessageIdOrNull()
-        val shouldAutoExpandLastMessage = lastMessage is ConversationDetailMessageUiModel.Collapsed &&
-            lastMessage.messageId.id != scrollToMessageId &&
-            lastMessage.isDraft.not()
+        val shouldAutoExpandLastMessage = lastCollapsedMessage != null &&
+            lastCollapsedMessage.messageId.id != scrollToMessageId &&
+            lastCollapsedMessage.isDraft.not()
 
         if (shouldAutoExpandLastMessage) {
-            actions.onExpand(lastMessage.messageId)
+            actions.onExpand(lastCollapsedMessage.messageId)
         }
     }
 
@@ -1203,6 +1205,7 @@ private fun MessagesContent(
                 uiModel = uiModel,
                 actions = actions,
                 downloadingAttachmentId = downloadingAttachmentId,
+                isLastMessage = isLastItem,
                 modifier = when (uiModel) {
                     is ConversationDetailMessageUiModel.Collapsed,
                     is ConversationDetailMessageUiModel.Expanding -> {
