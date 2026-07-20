@@ -398,7 +398,7 @@ internal class MailboxViewModelTest {
     }
 
     private val observeCategorySpotlightState = mockk<ObserveCategorySpotlightState> {
-        every { this@mockk.invoke(any(), any(), any()) } returns emptyFlow()
+        every { this@mockk.invoke(any(), any()) } returns emptyFlow()
     }
     private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen> {
         coEvery { this@mockk.invoke(any()) } returns Unit.right()
@@ -4479,7 +4479,7 @@ internal class MailboxViewModelTest {
         // Given
         val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
         val spotlightState = CategorySpotlightState.Shown.UnseenCategory(unseenCategory)
-        every { observeCategorySpotlightState(any(), any(), any()) } returns flowOf(spotlightState)
+        every { observeCategorySpotlightState(any(), any()) } returns flowOf(spotlightState)
         every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
 
         mailboxViewModel.state.test {
@@ -4491,28 +4491,6 @@ internal class MailboxViewModelTest {
                 mailboxReducer.newStateFrom(
                     any(),
                     MailboxEvent.CategorySpotlightStateChanged(spotlightState)
-                )
-            }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `given observe category spotlight state emits personalise, it is forwarded to the reducer`() = runTest {
-        // Given
-        every { observeCategorySpotlightState(any(), any(), any()) } returns
-            flowOf(CategorySpotlightState.Shown.Personalise)
-        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
-
-        mailboxViewModel.state.test {
-            awaitItem()
-            advanceUntilIdle()
-
-            // Then
-            verify {
-                mailboxReducer.newStateFrom(
-                    any(),
-                    MailboxEvent.CategorySpotlightStateChanged(CategorySpotlightState.Shown.Personalise)
                 )
             }
             cancelAndIgnoreRemainingEvents()

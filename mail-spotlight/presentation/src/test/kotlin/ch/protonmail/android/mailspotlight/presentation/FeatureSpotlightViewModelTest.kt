@@ -21,6 +21,8 @@ package ch.protonmail.android.mailspotlight.presentation
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.right
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
+import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
@@ -49,6 +51,7 @@ internal class FeatureSpotlightViewModelTest {
     private val appInformation = AppInformation(appVersionName = "7.7.0")
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
     private val updateCategoryView = mockk<UpdateCategoryView>()
+    private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen>()
 
     @AfterTest
     fun tearDown() {
@@ -57,13 +60,15 @@ internal class FeatureSpotlightViewModelTest {
 
     private fun buildViewModel(userTypeArg: String?): FeatureSpotlightViewModel {
         coEvery { updateCategoryView(any()) } returns Unit.right()
+        coEvery { markCategorySpotlightSeen(any()) } returns Unit.right()
         return FeatureSpotlightViewModel(
             savedStateHandle = SavedStateHandle(
                 if (userTypeArg == null) emptyMap() else mapOf(SPOTLIGHT_USER_TYPE_KEY to userTypeArg)
             ),
             appInformation = appInformation,
             updateCategoryView = updateCategoryView,
-            markFeatureSpotlightSeen = markFeatureSpotlightSeen
+            markFeatureSpotlightSeen = markFeatureSpotlightSeen,
+            markCategorySpotlightSeen = markCategorySpotlightSeen
         )
     }
 
@@ -180,6 +185,19 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
+    fun `onTryCategories does not mark the Personalise recategorise spotlight as seen`() = runTest {
+        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
+
+        viewModel.closeScreenEvent.test {
+            viewModel.onTryCategories()
+            assertEquals(Unit, awaitItem())
+        }
+
+        coVerify(exactly = 0) { markCategorySpotlightSeen(any()) }
+    }
+
+    @Test
     fun `onDismissWithoutCategories disables category view, marks seen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
         val viewModel = buildViewModel(SpotlightUserType.B2C.name)
@@ -191,5 +209,18 @@ internal class FeatureSpotlightViewModelTest {
 
         coVerify(exactly = 1) { updateCategoryView(enabled = false) }
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }
+    }
+
+    @Test
+    fun `onDismissWithoutCategories marks the Personalise recategorise spotlight as seen`() = runTest {
+        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
+
+        viewModel.closeScreenEvent.test {
+            viewModel.onDismissWithoutCategories()
+            assertEquals(Unit, awaitItem())
+        }
+
+        coVerify(exactly = 1) { markCategorySpotlightSeen(CategorySpotlightType.Personalise) }
     }
 }

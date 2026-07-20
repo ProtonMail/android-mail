@@ -240,6 +240,8 @@ dependencies {
     implementation(project(":mail-featureflags"))
     implementation(project(":mail-label"))
     implementation(project(":mail-category-view:dagger"))
+    implementation(project(":mail-category-view:domain"))
+    implementation(project(":mail-category-view:presentation"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))
     implementation(project(":mail-notifications"))

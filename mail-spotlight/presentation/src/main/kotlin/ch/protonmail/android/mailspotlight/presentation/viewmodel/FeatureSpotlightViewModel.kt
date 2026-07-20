@@ -21,6 +21,8 @@ package ch.protonmail.android.mailspotlight.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
+import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
@@ -43,7 +45,8 @@ internal class FeatureSpotlightViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     appInformation: AppInformation,
     private val updateCategoryView: UpdateCategoryView,
-    private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
+    private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
+    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen
 ) : ViewModel() {
 
     private val _closeScreenEvent = MutableSharedFlow<Unit>()
@@ -75,6 +78,8 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         viewModelScope.launch {
             updateCategoryView(enabled = false)
             markFeatureSpotlightSeen()
+            // The user opted out of categories, so the Personalise recategorise sheet is irrelevant.
+            markCategorySpotlightSeen(CategorySpotlightType.Personalise)
             _closeScreenEvent.emit(Unit)
         }
     }

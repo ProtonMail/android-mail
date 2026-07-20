@@ -73,16 +73,6 @@ fun CategorySpotlightBanner(
             )
             showUnseenBadge = true
         }
-
-        CategorySpotlightState.Shown.Personalise -> {
-            iconRes = R.drawable.ic_proton_folder_arrow_in
-            title = stringResource(id = R.string.category_spotlight_personalise_title)
-            showUnseenBadge = false
-        }
-    }
-    val description = when (state) {
-        is CategorySpotlightState.Shown.UnseenCategory -> stringResource(R.string.category_spotlight_unseen_description)
-        CategorySpotlightState.Shown.Personalise -> stringResource(R.string.category_spotlight_personalise_description)
     }
 
     Row(
@@ -118,7 +108,7 @@ fun CategorySpotlightBanner(
                 style = ProtonTheme.typography.titleSmallNorm
             )
             Text(
-                text = description,
+                text = stringResource(R.string.category_spotlight_unseen_description),
                 style = ProtonTheme.typography.bodyMediumWeak
             )
         }
@@ -171,19 +161,6 @@ private fun UnseenSpotlightBannerPreview() {
     ProtonTheme {
         CategorySpotlightBanner(
             state = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social),
-            onClose = {},
-            modifier = Modifier.padding(ProtonDimens.Spacing.Large)
-        )
-    }
-}
-
-@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-private fun PersonaliseSpotlightBannerPreview() {
-    ProtonTheme {
-        CategorySpotlightBanner(
-            state = CategorySpotlightState.Shown.Personalise,
             onClose = {},
             modifier = Modifier.padding(ProtonDimens.Spacing.Large)
         )

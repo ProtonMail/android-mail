@@ -257,7 +257,6 @@ class MailboxViewModel @Inject constructor(
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
     private val mutableState = MutableStateFlow(initialState)
     private val unseenSpotlightDismissed = MutableStateFlow(false)
-    private val personaliseSpotlightDismissed = MutableStateFlow(false)
     private val itemIdsMutex = Mutex()
     private val itemIds = mutableListOf<String>()
     private val folderColorSettings = primaryUserId.flatMapLatest {
@@ -377,8 +376,7 @@ class MailboxViewModel @Inject constructor(
             categories = state
                 .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories }
                 .distinctUntilChanged(),
-            unseenDismissed = unseenSpotlightDismissed,
-            personaliseDismissed = personaliseSpotlightDismissed
+            unseenDismissed = unseenSpotlightDismissed
         )
             .onEach { emitNewStateFrom(MailboxEvent.CategorySpotlightStateChanged(it)) }
             .launchIn(viewModelScope)
@@ -579,11 +577,6 @@ class MailboxViewModel @Inject constructor(
             is CategorySpotlightState.Shown.UnseenCategory -> {
                 unseenSpotlightDismissed.value = true
                 markCategorySpotlightSeen(CategorySpotlightType.UnseenCategory)
-            }
-
-            CategorySpotlightState.Shown.Personalise -> {
-                personaliseSpotlightDismissed.value = true
-                markCategorySpotlightSeen(CategorySpotlightType.Personalise)
             }
 
             CategorySpotlightState.Hidden -> Unit

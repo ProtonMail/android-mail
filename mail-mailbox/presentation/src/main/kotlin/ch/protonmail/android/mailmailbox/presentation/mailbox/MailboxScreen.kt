@@ -108,7 +108,6 @@ import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
 import ch.protonmail.android.mailcategory.presentation.CategorySpotlightBanner
-import ch.protonmail.android.mailcategory.presentation.RecategoriseBottomSheet
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
@@ -613,10 +612,6 @@ fun MailboxScreen(
                             )
                     )
                 }
-
-                CategorySpotlightState.Shown.Personalise -> RecategoriseBottomSheet(
-                    onDismiss = actions.onDismissCategorySpotlight
-                )
 
                 CategorySpotlightState.Hidden -> Unit
             }

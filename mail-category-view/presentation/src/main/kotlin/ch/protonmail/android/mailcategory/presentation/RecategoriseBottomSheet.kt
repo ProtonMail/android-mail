@@ -166,7 +166,6 @@ private fun DescriptionText(modifier: Modifier = Modifier, textAlign: TextAlign 
 
 @Composable
 private fun RecategoriseAnimation(modifier: Modifier = Modifier) {
-    // R.raw.recategorise_email is a placeholder asset until the final animation is delivered by design.
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.recategorise_email))
     LottieAnimation(
         composition = composition,
