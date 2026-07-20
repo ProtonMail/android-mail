@@ -1055,17 +1055,27 @@ private fun MessagesContent(
         }
     }
 
-    // Automatically expand the last message on opening/uiModels size changed, or when the last message flips
-    // from draft to sent (e.g. after replying inline). Keying only on the list size misses the draft->sent
+    // Automatically expand the last message on opening, when a new last message appears, or when the last message
+    // flips from draft to sent (e.g. after replying inline). Keying only on the list size misses the draft->sent
     // transition, because sending a reply does not change the message count - it mutates the same item in place.
+    //
+    // The key is (id, isDraft) of the raw last message, treating an expanded message as non-draft. This is important
+    // so that manually collapsing the last message (Expanded -> Collapsed, isDraft stays false) does NOT change the
+    // key and therefore does NOT re-trigger auto-expansion, while a genuine draft->sent flip (isDraft true -> false)
+    // still does.
     val isAutoExpandEnabled = LocalIsLastMessageAutoExpandEnabled.current
-    val lastCollapsedMessage = uiModels.lastOrNull() as? ConversationDetailMessageUiModel.Collapsed
-    LaunchedEffect(lastCollapsedMessage?.messageId?.id, lastCollapsedMessage?.isDraft) {
+    val lastMessage = uiModels.lastOrNull()
+    val lastMessageIsDraft = when (lastMessage) {
+        is ConversationDetailMessageUiModel.Collapsed -> lastMessage.isDraft
+        is ConversationDetailMessageUiModel.Expanding -> lastMessage.collapsed.isDraft
+        else -> false
+    }
+    LaunchedEffect(lastMessage?.messageId?.id, lastMessageIsDraft) {
         if (!isAutoExpandEnabled) return@LaunchedEffect
 
+        val lastCollapsedMessage = lastMessage as? ConversationDetailMessageUiModel.Collapsed ?: return@LaunchedEffect
         val scrollToMessageId = scrollToMessageState.getScrollTargetMessageIdOrNull()
-        val shouldAutoExpandLastMessage = lastCollapsedMessage != null &&
-            lastCollapsedMessage.messageId.id != scrollToMessageId &&
+        val shouldAutoExpandLastMessage = lastCollapsedMessage.messageId.id != scrollToMessageId &&
             lastCollapsedMessage.isDraft.not()
 
         if (shouldAutoExpandLastMessage) {
