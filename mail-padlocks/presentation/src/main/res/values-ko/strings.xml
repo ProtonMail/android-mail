@@ -89,15 +89,15 @@
   <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">Proton 사용자 간에 주고받는 이메일은 자동으로 종단간 암호화됩니다.</string>
   <string name="padlocks_non_encrypted_copy">하지만 Proton Mail을 사용하지 않는 보낸 사람이나 수신인은 이메일 서버에 암호화되지 않은 복사본을 저장하고 있을 수 있습니다.</string>
-  <string name="padlocks_sender_verified_contact">보낸 사람은 귀하가 암호화 키를 신뢰한 %s입니다.</string>
+  <string name="padlocks_sender_verified_contact">보낸 사람은 나의 암호화 키를 신뢰한 %s입니다.</string>
   <string name="padlocks_sender_verified_contact_link_text">검증된 연락처</string>
   <string name="padlocks_sender_verification_failed">%s. 연락처를 통해 이메일의 진위를 확인해 주세요.</string>
   <string name="padlocks_sender_verification_failed_link_text">보낸 사람 검증 실패</string>
   <string name="padlocks_sender_verification_failed_no_signature">%s. 서명되지 않았습니다. 연락처를 통해 이메일의 진위를 확인해 주세요.</string>
   <string name="padlocks_sender_verification_failed_no_signature_link_text">보낸 사람 검증 실패</string>
-  <string name="padlocks_recipient_verified_contact">수신인은 귀하가 암호화 키를 신뢰한 %s입니다.</string>
+  <string name="padlocks_recipient_verified_contact">수신인은 내가 암호화 키를 신뢰한 %s입니다.</string>
   <string name="padlocks_recipient_verified_contact_link_text">검증된 연락처</string>
-  <string name="padlocks_recipients_verified_contacts">수신인은 귀하가 암호화 키를 신뢰한 %s입니다.</string>
+  <string name="padlocks_recipients_verified_contacts">수신인은 내가 암호화 키를 신뢰한 %s입니다.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">검증된 연락처</string>
   <string name="padlocks_zero_access_addendum">이 이메일은 Proton 서버에 %s로 저장됩니다. Proton이나 다른 누구도 이를 읽을 수 없습니다.</string>
   <string name="padlocks_zero_access_addendum_link_text">제로 액세스 암호화</string>
