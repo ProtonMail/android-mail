@@ -97,6 +97,7 @@ import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -113,7 +114,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -170,7 +170,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -269,10 +268,14 @@ class MailboxViewModel @Inject constructor(
 
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
 
-    val isCategoryViewEnabled: StateFlow<Boolean> = flow { emit(categoryViewEnabled.get()) }
+    val isCategoryViewEnabled: StateFlow<Boolean> = primaryUserId
+        .mapLatest { categoryViewEnabled.get() }
+        .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val isContentSearchEnabled: StateFlow<Boolean> = flow { emit(contentSearchSettingsEnabled.get()) }
+    val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
+        .mapLatest { contentSearchSettingsEnabled.get() }
+        .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()

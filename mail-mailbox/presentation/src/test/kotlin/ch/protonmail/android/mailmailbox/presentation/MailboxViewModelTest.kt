@@ -93,6 +93,7 @@ import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
@@ -117,7 +118,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -826,6 +826,52 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `isCategoryViewEnabled is re-evaluated when primary user changes`() = runTest {
+        // Given
+        val currentUserIdFlow = MutableStateFlow(userId)
+        every { observePrimaryUserId() } returns currentUserIdFlow
+        // The flag resolves to different values for the two users
+        coEvery { isCategoryViewEnabled.get() } returns false andThen true
+
+        mailboxViewModel.isCategoryViewEnabled.test {
+            // Then
+            assertEquals(false, awaitItem())
+
+            // When
+            currentUserIdFlow.emit(userId1)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `isContentSearchEnabled is re-evaluated when primary user changes`() = runTest {
+        // Given
+        val currentUserIdFlow = MutableStateFlow(userId)
+        every { observePrimaryUserId() } returns currentUserIdFlow
+        // The flag resolves to different values for the two users
+        coEvery { isContentSearchEnabled.get() } returns false andThen true
+
+        mailboxViewModel.isContentSearchEnabled.test {
+            // Then
+            assertEquals(false, awaitItem())
+
+            // When
+            currentUserIdFlow.emit(userId1)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
