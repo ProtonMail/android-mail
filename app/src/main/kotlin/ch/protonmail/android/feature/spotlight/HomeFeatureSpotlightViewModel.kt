@@ -26,11 +26,14 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureSpotlightDisplay
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -43,7 +46,8 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
     // Temporarily couple the 2 FFs as the new feature spotlight depends on the Category View impl in 7.10+
     @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
     private val isRecentAppInstall: IsRecentAppInstall,
-    private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
+    private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
+    private val observeIsBusinessUser: ObserveIsBusinessUser
 ) : ViewModel() {
 
     val state: StateFlow<FeatureSpotlightState> = flow {
@@ -57,7 +61,15 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
                 observeFeatureSpotlightDisplay().map { preferenceEither ->
                     preferenceEither.fold(
                         ifLeft = { FeatureSpotlightState.Hide },
-                        ifRight = { if (it.show) FeatureSpotlightState.Show else FeatureSpotlightState.Hide }
+                        // Only resolve the user type once we know the spotlight is eligible to be shown,
+                        // so we don't spin up the observation when it's hidden or another interstitial wins.
+                        ifRight = { preference ->
+                            if (preference.show) {
+                                FeatureSpotlightState.Show(resolveUserType())
+                            } else {
+                                FeatureSpotlightState.Hide
+                            }
+                        }
                     )
                 }
             )
@@ -66,5 +78,10 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = FeatureSpotlightState.Loading
+    )
+
+    private suspend fun resolveUserType(): SpotlightUserType = observeIsBusinessUser().first().fold(
+        ifLeft = { SpotlightUserType.B2C },
+        ifRight = { isBusiness -> if (isBusiness) SpotlightUserType.B2B else SpotlightUserType.B2C }
     )
 }

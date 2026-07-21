@@ -27,7 +27,9 @@ import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureSpotlightDisplay
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,6 +52,9 @@ internal class HomeFeatureSpotlightViewModelTest {
     private val mockIsRecentAppInstall = mockk<IsRecentAppInstall>()
     private val mockMarkFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen> {
         coEvery { this@mockk.invoke() } returns Unit.right()
+    }
+    private val mockObserveIsBusinessUser = mockk<ObserveIsBusinessUser> {
+        every { this@mockk.invoke() } returns flowOf(false.right())
     }
 
     @Test
@@ -83,24 +88,42 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `should emit Show when feature flag is enabled and preference is show`() = runTest {
+    fun `should emit Show with B2C user type when preference is show and user is not a business account`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
 
         // When/Then
         viewModel.state.test {
-            assertEquals(FeatureSpotlightState.Show, awaitItem())
+            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
         }
         coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
     }
 
     @Test
-    fun `should emit Hide when feature flag is enabled and preference is hide`() = runTest {
+    fun `should emit Show with B2B user type when preference is show and user is a business account`() = runTest {
+        // Given
+        coEvery { mockFeatureFlag.get() } returns true
+        coEvery { mockCategoryViewFlag.get() } returns true
+        every { mockIsRecentAppInstall() } returns false
+        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveIsBusinessUser() } returns flowOf(true.right())
+
+        val viewModel = buildViewModel()
+
+        // When/Then
+        viewModel.state.test {
+            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2B), awaitItem())
+        }
+    }
+
+    @Test
+    fun `should not resolve user type when preference is hide`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag.get() } returns true
@@ -113,6 +136,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
         }
+        coVerify(exactly = 0) { mockObserveIsBusinessUser() }
     }
 
     @Test
@@ -154,12 +178,13 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockCategoryViewFlag.get() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
 
         // When/Then
         viewModel.state.test {
-            assertEquals(FeatureSpotlightState.Show, awaitItem())
+            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
         }
         coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
     }
@@ -169,6 +194,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         isEnabled = mockFeatureFlag,
         categoryViewEnabled = mockCategoryViewFlag,
         isRecentAppInstall = mockIsRecentAppInstall,
-        markFeatureSpotlightSeen = mockMarkFeatureSpotlightSeen
+        markFeatureSpotlightSeen = mockMarkFeatureSpotlightSeen,
+        observeIsBusinessUser = mockObserveIsBusinessUser
     )
 }

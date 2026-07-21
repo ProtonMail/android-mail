@@ -105,7 +105,6 @@ import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.onboarding.Onboarding
 import ch.protonmail.android.navigation.route.addAppIconSettings
 import ch.protonmail.android.navigation.route.addAppSettings
-import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addAutoLockIntervalSettings
 import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
@@ -116,6 +115,7 @@ import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
+import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addCustomizeToolbarSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
@@ -467,7 +467,7 @@ fun Home(
             }
 
             is HomeInterstitialPriority.FeatureSpotlight -> {
-                navController.navigate(Screen.FeatureSpotlight.route)
+                navController.navigate(Screen.FeatureSpotlight(priority.userType))
             }
 
             is HomeInterstitialPriority.BlackFriday -> {

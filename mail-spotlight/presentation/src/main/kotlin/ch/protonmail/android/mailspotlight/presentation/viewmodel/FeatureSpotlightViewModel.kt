@@ -18,34 +18,30 @@
 
 package ch.protonmail.android.mailspotlight.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
-import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
+import ch.protonmail.android.mailspotlight.presentation.ui.SPOTLIGHT_USER_TYPE_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class FeatureSpotlightViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     appInformation: AppInformation,
-    observeIsBusinessUser: ObserveIsBusinessUser,
     private val updateCategoryView: UpdateCategoryView,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
@@ -60,26 +56,12 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         )
     )
 
-    val userType: StateFlow<SpotlightUserType> = observeIsBusinessUser()
-        .map { result ->
-            result.fold(
-                ifLeft = { DEFAULT_USER_TYPE },
-                ifRight = { isBusiness -> if (isBusiness) SpotlightUserType.B2B else SpotlightUserType.B2C }
-            )
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = DEFAULT_USER_TYPE
-        )
+    // The user type is resolved before navigation and passed as an argument, so it's known synchronously here.
+    val userType: SpotlightUserType = savedStateHandle.get<String>(SPOTLIGHT_USER_TYPE_KEY)
+        ?.let { runCatching { SpotlightUserType.valueOf(it) }.getOrNull() }
+        ?: DEFAULT_USER_TYPE
 
-    val overviewFeatures: StateFlow<ImmutableList<FeatureItem>> = userType
-        .map(::overviewFeaturesFor)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = overviewFeaturesFor(DEFAULT_USER_TYPE)
-        )
+    val overviewFeatures: ImmutableList<FeatureItem> = overviewFeaturesFor(userType)
 
     fun onTryCategories() {
         viewModelScope.launch {
