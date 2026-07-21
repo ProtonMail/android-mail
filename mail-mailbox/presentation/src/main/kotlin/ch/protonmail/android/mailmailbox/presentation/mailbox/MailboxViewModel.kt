@@ -1678,20 +1678,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     /**
-     * Emits the active category's id as soon as its list has loaded with data. The requested and
-     * loaded categories are used only to gate on "the selection has settled and finished loading";
-     * the id emitted comes from the category view status, so it also covers the default Primary
-     * category (whose selection is tracked as a null category id).
+     * Emits the active category's id whenever it has unseen items and its list has loaded with data.
+     * The requested and loaded categories are used only to gate on "the selection has settled and
+     * finished loading"; the category emitted comes from the category view status, so it also covers
+     * the default Primary category (whose selection is tracked as a null category id).
+     *
+     * We key the distinct check on both the id and [CategoryLabel.hasUnseen] so that new items
+     * arriving in the currently-active category (a false -> true transition, with no id change) also
+     * re-trigger the mark-seen, not only category switches.
      */
     private fun observeCategoryToMarkSeen(): Flow<CategoryLabelId> = combine(
         observeSelectedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
         observeLoadedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
-        observeCategoryViewStatusUpdates().map { it.activeCategoryOrNull()?.id }.distinctUntilChanged()
-    ) { requestedCategory, loadedCategory, activeCategoryId ->
-        activeCategoryId.takeIf { requestedCategory == loadedCategory }
+        observeCategoryViewStatusUpdates().map { it.activeCategoryOrNull() }.distinctUntilChanged()
+    ) { requestedCategory, loadedCategory, activeCategory ->
+        activeCategory.takeIf { requestedCategory == loadedCategory }
     }
         .filterNotNull()
-        .distinctUntilChanged()
+        .distinctUntilChangedBy { it.id to it.hasUnseen }
+        .filter { it.hasUnseen }
+        .map { it.id }
 
     companion object {
 

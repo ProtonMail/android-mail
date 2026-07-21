@@ -3926,6 +3926,39 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `given the active category gains unseen items, then it is marked seen without switching category`() = runTest {
+        // Given
+        val category = CategoryLabelTestData.social.copy(isActive = true)
+        val labelWithCategory = MailLabelIdWithCategory(initialLocationMailLabelId, category.id)
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { observeLoadedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When (active category is loaded with no unseen)
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(category.copy(hasUnseen = false)))
+            )
+            advanceUntilIdle()
+
+            // Then it is not marked seen yet (nothing unseen)
+            coVerify(exactly = 0) { markCategoryLabelSeen(userId, category.id) }
+
+            // When a new item arrives in the still-active category (hasUnseen flips to true)
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(category.copy(hasUnseen = true)))
+            )
+            advanceUntilIdle()
+
+            // Then the active category is marked seen even though it never changed
+            coVerify(exactly = 1) { markCategoryLabelSeen(userId, category.id) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `should emit intermediate state on intent values fetch when it takes too long (success)`() = runTest {
         // Given
         val attachmentIdUiModel = AttachmentIdUiModel("attachment-id")
