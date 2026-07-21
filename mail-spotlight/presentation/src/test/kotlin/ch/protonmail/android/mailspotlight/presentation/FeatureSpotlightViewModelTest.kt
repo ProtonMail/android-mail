@@ -83,12 +83,12 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `overviewFeatures list contains exactly three items`() {
-        assertEquals(3, viewModel.overviewFeatures.size)
+        assertEquals(3, viewModel.overviewFeatures.value.size)
     }
 
     @Test
     fun `overviewFeatures list contains categories as first item`() {
-        val firstFeature = viewModel.overviewFeatures[0]
+        val firstFeature = viewModel.overviewFeatures.value[0]
         assertEquals(
             TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
             firstFeature.title
@@ -101,7 +101,7 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `overviewFeatures list contains unread filter as second item`() {
-        val secondFeature = viewModel.overviewFeatures[1]
+        val secondFeature = viewModel.overviewFeatures.value[1]
         assertEquals(
             TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
             secondFeature.title
@@ -114,7 +114,7 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `overviewFeatures list contains UI enhancements as third item`() {
-        val thirdFeature = viewModel.overviewFeatures[2]
+        val thirdFeature = viewModel.overviewFeatures.value[2]
         assertEquals(
             TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
             thirdFeature.title
@@ -123,6 +123,62 @@ internal class FeatureSpotlightViewModelTest {
             TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
             thirdFeature.description
         )
+    }
+
+    @Test
+    fun `overviewFeatures uses B2B subtitles when the user is a business account`() = runTest {
+        // Given
+        every { observeIsBusinessUser() } returns flowOf(true.right())
+        val viewModel = FeatureSpotlightViewModel(
+            appInformation,
+            observeIsBusinessUser,
+            updateCategoryView,
+            markFeatureSpotlightSeen
+        )
+
+        // When / Then
+        viewModel.overviewFeatures.test {
+            val features = awaitItem()
+            assertEquals(3, features.size)
+            assertEquals(
+                TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle_b2b),
+                features[0].description
+            )
+            assertEquals(
+                TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle_b2b),
+                features[1].description
+            )
+            assertEquals(
+                TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
+                features[2].description
+            )
+        }
+    }
+
+    @Test
+    fun `overviewFeatures uses B2C subtitles when the user is not a business account`() = runTest {
+        // Given
+        every { observeIsBusinessUser() } returns flowOf(false.right())
+        val viewModel = FeatureSpotlightViewModel(
+            appInformation,
+            observeIsBusinessUser,
+            updateCategoryView,
+            markFeatureSpotlightSeen
+        )
+
+        // When / Then
+        viewModel.overviewFeatures.test {
+            val features = awaitItem()
+            assertEquals(3, features.size)
+            assertEquals(
+                TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle),
+                features[0].description
+            )
+            assertEquals(
+                TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle),
+                features[1].description
+            )
+        }
     }
 
     @Test

@@ -31,7 +31,8 @@ import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -72,23 +73,13 @@ internal class FeatureSpotlightViewModel @Inject constructor(
             initialValue = DEFAULT_USER_TYPE
         )
 
-    val overviewFeatures = listOf(
-        FeatureItem(
-            icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
-        ),
-        FeatureItem(
-            icon = R.drawable.ic_proton_lines_long_to_small,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle)
-        ),
-        FeatureItem(
-            icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
+    val overviewFeatures: StateFlow<ImmutableList<FeatureItem>> = userType
+        .map(::overviewFeaturesFor)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+            initialValue = overviewFeaturesFor(DEFAULT_USER_TYPE)
         )
-    ).toImmutableList()
 
     fun onTryCategories() {
         viewModelScope.launch {
@@ -104,6 +95,39 @@ internal class FeatureSpotlightViewModel @Inject constructor(
             markFeatureSpotlightSeen()
             _closeScreenEvent.emit(Unit)
         }
+    }
+
+    private fun overviewFeaturesFor(userType: SpotlightUserType): ImmutableList<FeatureItem> {
+        val categoriesSubtitle: Int
+        val unreadFilterSubtitle: Int
+        when (userType) {
+            SpotlightUserType.B2C -> {
+                categoriesSubtitle = R.string.spotlight_screen_category_view_categories_subtitle
+                unreadFilterSubtitle = R.string.spotlight_screen_category_view_unread_filter_subtitle
+            }
+
+            SpotlightUserType.B2B -> {
+                categoriesSubtitle = R.string.spotlight_screen_category_view_categories_subtitle_b2b
+                unreadFilterSubtitle = R.string.spotlight_screen_category_view_unread_filter_subtitle_b2b
+            }
+        }
+        return persistentListOf(
+            FeatureItem(
+                icon = R.drawable.ic_proton_filing_cabinet,
+                title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+                description = TextUiModel.TextRes(categoriesSubtitle)
+            ),
+            FeatureItem(
+                icon = R.drawable.ic_proton_lines_long_to_small,
+                title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
+                description = TextUiModel.TextRes(unreadFilterSubtitle)
+            ),
+            FeatureItem(
+                icon = R.drawable.ic_proton_paint_roller,
+                title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+                description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
+            )
+        )
     }
 
     companion object {

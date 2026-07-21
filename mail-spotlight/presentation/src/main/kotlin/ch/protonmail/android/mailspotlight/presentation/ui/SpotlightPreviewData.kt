@@ -30,21 +30,39 @@ internal object SpotlightPreviewData {
         TextUiModel(value = R.string.spotlight_screen_version_text, formatArgs = arrayOf("1.11.2"))
     )
 
-    val previewFeatures = listOf(
+    val previewFeaturesB2C = listOf(
         FeatureItem(
             icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel("Email categories"),
-            description = TextUiModel("Automatic sorting of incoming mail.")
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
         ),
         FeatureItem(
             icon = R.drawable.ic_proton_lines_long_to_small,
-            title = TextUiModel("Unread filter"),
-            description = TextUiModel("New look and location for easier access.")
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle)
         ),
         FeatureItem(
             icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel("UI enhancements"),
-            description = TextUiModel("Fluid scrolling, refreshed layout, and more.")
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
+        )
+    ).toImmutableList()
+
+    val previewFeaturesB2B = listOf(
+        FeatureItem(
+            icon = R.drawable.ic_proton_filing_cabinet,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle_b2b)
+        ),
+        FeatureItem(
+            icon = R.drawable.ic_proton_lines_long_to_small,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle_b2b)
+        ),
+        FeatureItem(
+            icon = R.drawable.ic_proton_paint_roller,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
         )
     ).toImmutableList()
 }

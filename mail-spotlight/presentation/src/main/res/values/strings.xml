@@ -33,12 +33,15 @@
 
     <!-- Category View Spotlight -->
     <string name="spotlight_screen_category_view_title">What\’s new in Proton Mail</string>
+    <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
     <string name="spotlight_screen_category_view_ui_enhancements_title">UI enhancements</string>
     <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Fluid scrolling, refreshed layout, and more.</string>
     <string name="spotlight_screen_category_view_unread_filter_title">Unread filter</string>
     <string name="spotlight_screen_category_view_unread_filter_subtitle">Now located at the bottom for easier access.</string>
+    <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
     <string name="spotlight_screen_category_view_categories_title">Email categories</string>
     <string name="spotlight_screen_category_view_categories_subtitle">Automatically sort mail into helpful categories.</string>
+    <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
 
     <string name="spotlight_screen_category_view_main_b2c_title">Unread is easier to reach</string>
     <string name="spotlight_screen_category_view_main_b2c_subtitle">The unread filter is now at the bottom of your inbox, making it easier to reach and switch between all emails and unread messages.</string>

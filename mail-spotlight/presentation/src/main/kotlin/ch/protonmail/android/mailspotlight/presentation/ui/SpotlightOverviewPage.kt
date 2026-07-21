@@ -66,21 +66,23 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun OverviewPage(
     appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
+    userType: SpotlightUserType,
     modifier: Modifier = Modifier,
     onContinue: (() -> Unit)? = null
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {
-        LandscapeOverviewPage(appVersionUiModel, featureItems, modifier, onContinue)
+        LandscapeOverviewPage(appVersionUiModel, featureItems, userType, modifier, onContinue)
     } else {
-        PortraitOverviewPage(appVersionUiModel, featureItems, modifier)
+        PortraitOverviewPage(appVersionUiModel, featureItems, userType, modifier)
     }
 }
 
@@ -88,6 +90,7 @@ internal fun OverviewPage(
 private fun PortraitOverviewPage(
     appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
+    userType: SpotlightUserType,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -119,7 +122,7 @@ private fun PortraitOverviewPage(
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
         Text(
-            text = stringResource(R.string.spotlight_screen_category_view_title),
+            text = stringResource(overviewTitleRes(userType)),
             style = ProtonTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center
         )
@@ -136,6 +139,7 @@ private fun PortraitOverviewPage(
 private fun LandscapeOverviewPage(
     appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
+    userType: SpotlightUserType,
     modifier: Modifier = Modifier,
     onContinue: (() -> Unit)? = null
 ) {
@@ -172,7 +176,7 @@ private fun LandscapeOverviewPage(
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
 
             Text(
-                text = stringResource(R.string.spotlight_screen_category_view_title),
+                text = stringResource(overviewTitleRes(userType)),
                 style = ProtonTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
@@ -264,6 +268,11 @@ private fun FeatureRow(
     }
 }
 
+private fun overviewTitleRes(userType: SpotlightUserType) = when (userType) {
+    SpotlightUserType.B2C -> R.string.spotlight_screen_category_view_title
+    SpotlightUserType.B2B -> R.string.spotlight_screen_category_view_title_b2b
+}
+
 private const val PORTRAIT_TOP_OFFSET_FRACTION = 0.1f
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
@@ -274,7 +283,22 @@ private fun OverviewPagePreview() {
         SpotlightGradientBackground {
             OverviewPage(
                 appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-                featureItems = SpotlightPreviewData.previewFeatures
+                featureItems = SpotlightPreviewData.previewFeaturesB2C,
+                userType = SpotlightUserType.B2C
+            )
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun OverviewPageB2BPreview() {
+    ProtonTheme {
+        SpotlightGradientBackground {
+            OverviewPage(
+                appVersionUiModel = SpotlightPreviewData.previewAppVersion,
+                featureItems = SpotlightPreviewData.previewFeaturesB2B,
+                userType = SpotlightUserType.B2B
             )
         }
     }
@@ -291,7 +315,8 @@ private fun OverviewPageLandscapePreview() {
         SpotlightGradientBackground {
             OverviewPage(
                 appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-                featureItems = SpotlightPreviewData.previewFeatures,
+                featureItems = SpotlightPreviewData.previewFeaturesB2C,
+                userType = SpotlightUserType.B2C,
                 onContinue = {}
             )
         }

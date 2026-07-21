@@ -68,10 +68,11 @@ fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
     }
 
     val userType by viewModel.userType.collectAsStateWithLifecycle()
+    val overviewFeatures by viewModel.overviewFeatures.collectAsStateWithLifecycle()
 
     FeatureSpotlightScreen(
         appVersionUiModel = viewModel.appVersion,
-        featureItems = viewModel.overviewFeatures,
+        featureItems = overviewFeatures,
         userType = userType,
         onTryCategories = viewModel::onTryCategories,
         onDismissWithoutCategories = viewModel::onDismissWithoutCategories
@@ -141,6 +142,7 @@ internal fun FeatureSpotlightScreen(
                         0 -> OverviewPage(
                             appVersionUiModel = appVersionUiModel,
                             featureItems = featureItems,
+                            userType = userType,
                             onContinue = if (isLandscape) onContinue else null
                         )
 
@@ -239,7 +241,7 @@ private fun FeatureSpotlightScreenB2CPreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
             appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-            featureItems = SpotlightPreviewData.previewFeatures,
+            featureItems = SpotlightPreviewData.previewFeaturesB2C,
             userType = SpotlightUserType.B2C,
             onTryCategories = {},
             onDismissWithoutCategories = {}
@@ -253,7 +255,7 @@ private fun FeatureSpotlightScreenB2BPreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
             appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-            featureItems = SpotlightPreviewData.previewFeatures,
+            featureItems = SpotlightPreviewData.previewFeaturesB2B,
             userType = SpotlightUserType.B2B,
             onTryCategories = {},
             onDismissWithoutCategories = {}
