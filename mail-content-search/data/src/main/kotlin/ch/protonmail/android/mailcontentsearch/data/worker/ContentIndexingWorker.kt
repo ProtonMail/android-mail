@@ -112,11 +112,14 @@ class ContentIndexingWorker @AssistedInject constructor(
      * preserved) and the loop re-evaluates primary-first, so the account now in use is prioritised.
      */
     private suspend fun runSweep(runAsForeground: Boolean): Result {
-        val failedAccounts = mutableSetOf<UserId>()
+        val skippedAccounts = mutableSetOf<UserId>()
         while (true) {
-            val nextAccount = findFirstEligibleAccountToIndex(skip = failedAccounts) ?: break
-            when (indexAccountWithInterruption(nextAccount, failedAccounts = failedAccounts, runAsForeground)) {
-                IndexOutcome.Completed -> Timber.d("ContentIndexingWorker: sweep completed $nextAccount, advancing")
+            val nextAccount = findFirstEligibleAccountToIndex(skip = skippedAccounts) ?: break
+            when (indexAccountWithInterruption(nextAccount, skippedAccounts = skippedAccounts, runAsForeground)) {
+                IndexOutcome.Completed -> {
+                    Timber.d("ContentIndexingWorker: sweep completed $nextAccount, advancing")
+                    skippedAccounts += nextAccount
+                }
                 IndexOutcome.Interrupted -> {
                     Timber.d("ContentIndexingWorker: $nextAccount interrupted, pausing and re-evaluating")
                     // preserve partial index; the account is revisited if still eligible
@@ -125,7 +128,7 @@ class ContentIndexingWorker @AssistedInject constructor(
                 IndexOutcome.Failed -> {
                     Timber.e("ContentIndexingWorker: sweep failed for $nextAccount, advancing")
                     indexer.cancel(nextAccount)
-                    failedAccounts += nextAccount
+                    skippedAccounts += nextAccount
                 }
             }
         }
@@ -140,13 +143,13 @@ class ContentIndexingWorker @AssistedInject constructor(
      */
     private suspend fun indexAccountWithInterruption(
         userId: UserId,
-        failedAccounts: Set<UserId>,
+        skippedAccounts: Set<UserId>,
         runAsForeground: Boolean
     ): IndexOutcome {
         return coroutineScope {
             val indexing = async { indexAccount(userId, runAsForeground) }
             val interruption = launch {
-                awaitInterruption(currentlyIndexing = userId, failedAccounts = failedAccounts) {
+                awaitInterruption(currentlyIndexing = userId, skippedAccounts = skippedAccounts) {
                     indexing.cancel(InterruptionSignal())
                 }
             }
@@ -170,13 +173,13 @@ class ContentIndexingWorker @AssistedInject constructor(
     @OptIn(FlowPreview::class)
     private suspend fun awaitInterruption(
         currentlyIndexing: UserId,
-        failedAccounts: Set<UserId>,
+        skippedAccounts: Set<UserId>,
         onInterrupt: () -> Unit
     ) {
         // React to the active user changing or this account's content-search setting changing, then
         // re-evaluate. If the account that should run next is no longer the one we are indexing
         // (a higher-priority active account, or this account became ineligible), interrupt it.
-        // Honour the sweep's failed-accounts set so an account that already failed this sweep cannot
+        // Honour the sweep's skip set so an account that already failed or completed this sweep cannot
         // repeatedly interrupt the account currently making progress.
         combine(
             userSessionRepository.observePrimaryUserId().filterNotNull().distinctUntilChanged(),
@@ -184,7 +187,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         ) { _, _ -> }
             .debounce(InterruptionDebounceMillis.milliseconds)
             .collect {
-                val topPriority = findFirstEligibleAccountToIndex(skip = failedAccounts)
+                val topPriority = findFirstEligibleAccountToIndex(skip = skippedAccounts)
                 if (topPriority != currentlyIndexing) {
                     Timber.d("ContentIndexingWorker: $topPriority should run instead of $currentlyIndexing")
                     onInterrupt()

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
@@ -71,6 +72,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val disableContentSearch: DisableContentSearch,
     private val startContentIndexingSweep: StartContentIndexingSweep,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
+    private val getContentSearchIndexingStatus: GetContentSearchIndexingStatus,
     private val observeContentIndexingState: ObserveContentIndexingState,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
@@ -85,6 +87,10 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val rescheduleRequests = MutableSharedFlow<Unit>(extraBufferCapacity = 8)
 
     private val actions = Channel<ContentSearchSettingsViewAction>(Channel.BUFFERED)
+
+    // Tracks whether the account is fully indexed so progress never regresses to "Preparing".
+    // Seeded from Rust status at the start of each enabled session and updated as indexing runs or completes.
+    private var isAccountIndexed = false
 
     init {
         actions.receiveAsFlow()
@@ -135,18 +141,23 @@ class ContentSearchSettingsViewModel @Inject constructor(
                 if (!enabled) {
                     flowOf(Data.IndexingProgress(percentage = null, isActive = false))
                 } else {
+                    isAccountIndexed = getContentSearchIndexingStatus(userId) is ContentIndexingState.Completed
                     combine(
                         observeContentSearchIndexingStatus(userId),
                         observeContentIndexingState(userId)
                     ) { indexingStatus, workerState ->
-                        // The worker's Initializing state covers the window before Rust streams progress.
-                        // Ignored once Rust reports the account complete, so a completed account never
-                        // shows "Preparing" while a sweep for another account is starting up.
-                        val preparing = workerState == ContentIndexingState.Initializing &&
+                        when (indexingStatus) {
+                            is ContentIndexingState.Completed -> isAccountIndexed = true
+                            // Concrete progress is the only signal that real re-indexing resumed.
+                            is ContentIndexingState.Running -> isAccountIndexed = false
+                            else -> Unit
+                        }
+                        val percentage = indexingStatus.toPercentage()
+                        val preparing = workerState.isActive() && !isAccountIndexed &&
                             indexingStatus !is ContentIndexingState.Completed
                         Data.IndexingProgress(
-                            percentage = indexingStatus.toPercentage(),
-                            isActive = indexingStatus.isActive() || preparing
+                            percentage = percentage,
+                            isActive = percentage != null || preparing
                         )
                     }.mapLatest { progress ->
                         // Delay the "blank" state as it might be caused by a worker being briefly rescheduled.
@@ -208,6 +219,9 @@ class ContentSearchSettingsViewModel @Inject constructor(
             emitNewStateFor(Error.UpdateError)
             return
         }
+        // Resetting wipes the index; disabling first tears down the progress observer. When the
+        // account is re-enabled, observeIndexingProgress re-seeds isAccountIndexed from the (now
+        // reset) Rust status, so the latch is never mutated from this coroutine.
         emitNewStateFor(Data.LocalSearchDataCleared)
     }
 

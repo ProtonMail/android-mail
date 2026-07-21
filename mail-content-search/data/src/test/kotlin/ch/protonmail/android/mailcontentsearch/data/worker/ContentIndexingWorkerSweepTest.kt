@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.worker
 
+import java.util.UUID
 import androidx.work.ProgressUpdater
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -45,7 +46,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import uniffi.mail_uniffi.MailBackgroundExecScope
-import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -137,6 +137,22 @@ internal class ContentIndexingWorkerSweepTest {
         coVerify(exactly = 1) { indexer.index(userOne, any()) }
         coVerify(exactly = 1) { indexer.index(userTwo, any()) }
         coVerify { indexer.cancel(userOne) }
+    }
+
+    @Test
+    fun `sweep does not re-index an account it just completed`() = runTest {
+        coEvery { findFirstEligibleAccountToIndex(any()) } answers {
+            val skip = firstArg<Set<UserId>>()
+            if (userOne in skip) null else userOne
+        }
+        coEvery { indexer.index(userOne, any()) } returns Unit.right()
+
+        // When
+        val result = worker.doWork()
+
+        // Then
+        assertEquals(androidx.work.ListenableWorker.Result.success(), result)
+        coVerify(exactly = 1) { indexer.index(userOne, any()) }
     }
 
     @Test

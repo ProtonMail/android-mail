@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResul
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
@@ -75,6 +76,9 @@ internal class ContentSearchSettingsViewModelTest {
         coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
+    private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus> {
+        coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Idle
+    }
     private val observeContentIndexingState = mockk<ObserveContentIndexingState> {
         every { this@mockk.invoke(userId) } returns workerState
     }
@@ -99,6 +103,7 @@ internal class ContentSearchSettingsViewModelTest {
         disableContentSearch = disableContentSearch,
         startContentIndexingSweep = startContentIndexingSweep,
         clearContentSearchLocalData = clearContentSearchLocalData,
+        getContentSearchIndexingStatus = getContentSearchIndexingStatus,
         observeContentIndexingState = observeContentIndexingState,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
@@ -258,6 +263,119 @@ internal class ContentSearchSettingsViewModelTest {
         assertFalse(state.isIndexingActive)
         assertNull(state.syncPercentage)
     }
+
+    @Test
+    fun `does not show preparing for a stale initializing status when no worker is running`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            workerState.value = ContentIndexingState.Idle
+            ownIndexingStatus.value = ContentIndexingState.Initializing
+
+            // When
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            val state = viewModel.state.value.asData()
+
+            // Then
+            assertFalse(state.isIndexingActive)
+            assertNull(state.syncPercentage)
+        }
+
+    @Test
+    fun `never shows preparing after completion even when toggled off and on with an active worker`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
+            ownIndexingStatus.value = ContentIndexingState.Completed
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertFalse(viewModel.state.value.asData().isIndexingActive)
+
+            // When
+            enabledFlow.value = false
+            advanceUntilIdle()
+            workerState.value = ContentIndexingState.Initializing
+            ownIndexingStatus.value = ContentIndexingState.Initializing
+            enabledFlow.value = true
+            advanceUntilIdle()
+
+            // Then
+            val state = viewModel.state.value.asData()
+            assertFalse(state.isIndexingActive)
+            assertNull(state.syncPercentage)
+        }
+
+    @Test
+    fun `never shows preparing on reopen of an already indexed account even with an active worker`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
+            workerState.value = ContentIndexingState.Initializing
+            ownIndexingStatus.value = ContentIndexingState.Initializing
+
+            // When
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // Then
+            val state = viewModel.state.value.asData()
+            assertFalse(state.isIndexingActive)
+            assertNull(state.syncPercentage)
+        }
+
+    @Test
+    fun `shows progress again after resetting local data on a previously completed account`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { disableContentSearch(userId) } returns Unit.right()
+            coEvery { clearContentSearchLocalData(userId) } returns Unit.right()
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
+            ownIndexingStatus.value = ContentIndexingState.Completed
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertFalse(viewModel.state.value.asData().isIndexingActive)
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData)
+            advanceUntilIdle()
+            enabledFlow.value = false // disabling content search is part of clearing the data
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Idle
+            ownIndexingStatus.value = ContentIndexingState.Idle
+            advanceUntilIdle()
+            enabledFlow.value = true
+            workerState.value = ContentIndexingState.Initializing
+            ownIndexingStatus.value = ContentIndexingState.Initializing
+            advanceUntilIdle()
+
+            // Then
+            assertTrue(viewModel.state.value.asData().isIndexingActive)
+        }
+
+    @Test
+    fun `shows progress again after resetting local data while content search is already disabled`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { disableContentSearch(userId) } returns Unit.right()
+            coEvery { clearContentSearchLocalData(userId) } returns Unit.right()
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
+            enabledFlow.value = false
+            ownIndexingStatus.value = ContentIndexingState.Completed
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData)
+            advanceUntilIdle()
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Idle
+            ownIndexingStatus.value = ContentIndexingState.Idle
+            enabledFlow.value = true
+            workerState.value = ContentIndexingState.Initializing
+            ownIndexingStatus.value = ContentIndexingState.Initializing
+            advanceUntilIdle()
+
+            // Then
+            assertTrue(viewModel.state.value.asData().isIndexingActive)
+        }
 
     @Test
     fun `submit ToggleContentSearch on enables content search and starts the sweep`() = runTest {
