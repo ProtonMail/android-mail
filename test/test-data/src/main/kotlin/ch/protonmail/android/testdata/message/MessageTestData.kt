@@ -25,6 +25,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadata
 import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.AvatarInformationSample
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -209,6 +210,7 @@ object MessageTestData {
         customLabels: List<Label> = emptyList(),
         isStarred: Boolean = false,
         exclusiveLocation: ExclusiveLocation = ExclusiveLocation.System(AllMail, LabelId("100")),
+        category: CategoryLocation = CategoryLocation.NoValue,
         attachments: List<AttachmentMetadata> = emptyList()
     ) = Message(
         messageId = MessageId(id),
@@ -234,6 +236,7 @@ object MessageTestData {
         customLabels = customLabels,
         avatarInformation = AvatarInformationSample.avatarSample,
         exclusiveLocation = exclusiveLocation,
+        category = category,
         attachmentPreviews = attachments,
         isDraft = false,
         isScheduled = false,

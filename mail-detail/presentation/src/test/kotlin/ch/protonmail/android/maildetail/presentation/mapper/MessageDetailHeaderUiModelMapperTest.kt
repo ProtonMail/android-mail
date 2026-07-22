@@ -36,6 +36,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
+import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.sample.LabelSample
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AvatarImageState
@@ -92,6 +94,7 @@ class MessageDetailHeaderUiModelMapperTest {
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
         location = messageLocationUiModel,
+        category = null,
         time = shortTimeTextUiModel,
         extendedTime = extendedTimeTestUiModel,
         shouldShowUndisclosedRecipients = false,
@@ -124,7 +127,8 @@ class MessageDetailHeaderUiModelMapperTest {
         every { this@mockk(message.time.seconds) } returns shortTimeTextUiModel
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        coEvery { this@mockk(any()) } returns messageLocationUiModel
+        coEvery { this@mockk(any<ExclusiveLocation>()) } returns messageLocationUiModel
+        every { this@mockk(any<CategoryLocation>()) } returns null
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
         every { senderToUiModel(MessageTestData.sender) } returns senderUiModel

@@ -38,6 +38,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
 import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamples
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ResolveSystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentListExpandCollapseMode
@@ -99,6 +100,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
         coEvery { this@mockk(messageLocation = any()) } returns MessageLocationUiModelSample.AllMail
+        every { this@mockk(any<CategoryLocation>()) } returns null
     }
     private val avatarImageUiModelMapper: AvatarImageUiModelMapper = mockk {
         every { this@mockk.toUiModel(avatarImageState = any()) } returns AvatarImageUiModel.NoImageAvailable

@@ -82,6 +82,7 @@ dependencies {
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-message:presentation"))
     implementation(project(":mail-mailbox:domain"))
+    implementation(project(":mail-category-view:presentation"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
     implementation(project(":mail-crash-record:domain"))

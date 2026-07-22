@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentCount
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadata
 import ch.protonmail.android.mailcommon.domain.model.AvatarInformation
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.mailsnooze.domain.model.ConversationSnoozeStatus
@@ -68,6 +69,7 @@ data class Message(
     val customLabels: List<Label>,
     val avatarInformation: AvatarInformation,
     val exclusiveLocation: ExclusiveLocation,
+    val category: CategoryLocation,
     val isDraft: Boolean,
     val isScheduled: Boolean,
     val isReplyAllowed: Boolean,

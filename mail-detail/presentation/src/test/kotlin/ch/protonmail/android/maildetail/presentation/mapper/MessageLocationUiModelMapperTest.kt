@@ -21,10 +21,15 @@ package ch.protonmail.android.maildetail.presentation.mapper
 import androidx.compose.ui.graphics.Color
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryIconRes
+import ch.protonmail.android.mailcategory.presentation.mapper.categoryTextRes
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -117,4 +122,30 @@ class MessageLocationUiModelMapperTest {
             // Then
             assertEquals(expectedResult, result)
         }
+
+    @Test
+    fun `when a category is present, it is mapped to its name, icon and color`() = runTest {
+        // Given
+        val category = CategoryLocation.Value(CategorySystemLabelId.Social)
+        val expectedResult = MessageLocationUiModel(
+            name = TextUiModel(CategorySystemLabelId.Social.categoryTextRes()),
+            icon = CategorySystemLabelId.Social.categoryIconRes(),
+            color = CategorySystemLabelId.Social.activeCategoryColor()
+        )
+
+        // When
+        val result = messageLocationUiModelMapper(category)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `when the category has no value, null is returned`() = runTest {
+        // When
+        val result = messageLocationUiModelMapper(CategoryLocation.NoValue)
+
+        // Then
+        assertEquals(null, result)
+    }
 }

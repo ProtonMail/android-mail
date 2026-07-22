@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeType
 import ch.protonmail.android.mailcommon.domain.model.AvatarInformation
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.maillabel.data.mapper.toCategoryLocation
 import ch.protonmail.android.maillabel.data.mapper.toExclusiveLocation
 import ch.protonmail.android.maillabel.data.mapper.toLabel
 import ch.protonmail.android.mailmessage.domain.model.Message
@@ -117,6 +118,7 @@ fun LocalMessageMetadata.toMessage(): Message {
         customLabels = customLabels.map { it.toLabel() },
         avatarInformation = this.avatar.toAvatarInformation(),
         exclusiveLocation = this.location.toExclusiveLocation(),
+        category = this.category.toCategoryLocation(),
         isDraft = this.isDraft,
         isScheduled = this.isScheduled,
         isReplyAllowed = this.canReply,
