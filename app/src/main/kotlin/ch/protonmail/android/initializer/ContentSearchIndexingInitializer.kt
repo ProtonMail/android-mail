@@ -20,26 +20,11 @@ package ch.protonmail.android.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import ch.protonmail.android.mailcontentsearch.domain.handler.ContentSearchAutoIndexingHandler
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
 
 class ContentSearchIndexingInitializer : Initializer<Unit> {
 
-    override fun create(context: Context) {
-        EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            ContentSearchIndexingEntryPoint::class.java
-        ).autoIndexingHandler().start()
-    }
+    // Disabled for 7.11.x, will be re-enabled for 7.12.x
+    override fun create(context: Context) = Unit
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
-
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface ContentSearchIndexingEntryPoint {
-        fun autoIndexingHandler(): ContentSearchAutoIndexingHandler
-    }
 }
