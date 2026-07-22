@@ -28,4 +28,12 @@ sealed interface ConversationScrollerFetchNewStatus {
     data class FetchNewEnded(
         override val timestampMs: Long
     ) : ConversationScrollerFetchNewStatus
+
+    data class FirstPageLoadingStarted(
+        override val timestampMs: Long
+    ) : ConversationScrollerFetchNewStatus
+
+    data class FirstPageLoadingEnded(
+        override val timestampMs: Long
+    ) : ConversationScrollerFetchNewStatus
 }

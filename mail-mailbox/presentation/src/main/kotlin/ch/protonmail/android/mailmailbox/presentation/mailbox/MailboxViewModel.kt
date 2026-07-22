@@ -88,6 +88,7 @@ import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomShe
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsItemId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToItemId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -99,6 +100,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
@@ -241,6 +243,7 @@ class MailboxViewModel @Inject constructor(
     private val updateUnreadFilter: UpdateUnreadFilter,
     private val updateShowSpamTrashFilter: UpdateShowSpamTrashFilter,
     private val observeMailboxFetchNewStatus: ObserveMailboxFetchNewStatus,
+    private val observeMailboxFirstPageLoadingStatus: ObserveMailboxFirstPageLoadingStatus,
     private val observeValidSenderAddress: ObserveValidSenderAddress,
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
@@ -426,6 +429,14 @@ class MailboxViewModel @Inject constructor(
 
         observeMailboxFetchNewStatus().onEach {
             loadingBarController.onMailboxFetchNewStatus(it)
+        }.launchIn(viewModelScope)
+
+        observeMailboxFirstPageLoadingStatus().onEach { status ->
+            emitNewStateFrom(
+                MailboxEvent.FirstPageLoadingChanged(
+                    isLoading = status is MailboxFirstPageLoadingStatus.Started
+                )
+            )
         }.launchIn(viewModelScope)
 
         primaryUserId.flatMapLatest {

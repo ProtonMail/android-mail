@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import uniffi.mail_uniffi.MessageScrollerStatusUpdate
 
-fun MessageScrollerStatusUpdate.toMessageScrollerFetchNewStatus(): MessageScrollerFetchNewStatus? {
+fun MessageScrollerStatusUpdate.toMessageScrollerFetchNewStatus(): MessageScrollerFetchNewStatus {
     val timestampMs = System.currentTimeMillis()
 
     return when (this) {
@@ -31,8 +31,10 @@ fun MessageScrollerStatusUpdate.toMessageScrollerFetchNewStatus(): MessageScroll
         MessageScrollerStatusUpdate.FETCH_NEW_END ->
             MessageScrollerFetchNewStatus.FetchNewEnded(timestampMs = timestampMs)
 
-        // These events are ignored on purpose.
-        MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_START,
-        MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_END -> null
+        MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_START ->
+            MessageScrollerFetchNewStatus.FirstPageLoadingStarted(timestampMs = timestampMs)
+
+        MessageScrollerStatusUpdate.FIRST_PAGE_LOADING_END ->
+            MessageScrollerFetchNewStatus.FirstPageLoadingEnded(timestampMs = timestampMs)
     }
 }

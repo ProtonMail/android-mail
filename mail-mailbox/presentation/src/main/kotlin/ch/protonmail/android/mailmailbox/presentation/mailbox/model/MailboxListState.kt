@@ -42,6 +42,16 @@ sealed interface MailboxListState {
         val refreshOngoing: Boolean
         val loadingBarState: LoadingBarUiState
 
+        /**
+         * Monotonically increasing counter, bumped every time the scroller starts (re)loading its
+         * first page (e.g. after a category switch on the live scroller). It is used — instead of a
+         * toggling boolean — because the state is exposed through a conflated [kotlinx.coroutines.flow.StateFlow]:
+         * a fast start/end pair would otherwise be conflated away and the skeleton would never show,
+         * flashing the previous category's stale items. A counter's latest value always reflects that
+         * a load started, so the UI can edge-detect it reliably. See ET-6553.
+         */
+        val firstPageLoadingStartCount: Int
+
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
@@ -51,6 +61,7 @@ sealed interface MailboxListState {
             override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
             override val loadingBarState: LoadingBarUiState,
+            override val firstPageLoadingStartCount: Int = 0,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
             val refreshErrorEffect: Effect<Unit>,
@@ -71,6 +82,7 @@ sealed interface MailboxListState {
             override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
             override val loadingBarState: LoadingBarUiState,
+            override val firstPageLoadingStartCount: Int = 0,
             val selectedMailboxItems: Set<SelectedMailboxItem>,
             val areAllItemsSelected: Boolean
         ) : Data {

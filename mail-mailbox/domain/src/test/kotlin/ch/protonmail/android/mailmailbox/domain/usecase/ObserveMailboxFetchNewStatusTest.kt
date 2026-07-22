@@ -105,6 +105,31 @@ class ObserveMailboxFetchNewStatusTest {
     }
 
     @Test
+    fun `first page loading events are ignored so the loading bar is unaffected`() = runTest {
+        // Given
+        val conversationFlow = MutableSharedFlow<ConversationScrollerFetchNewStatus>()
+        val messageFlow = MutableSharedFlow<MessageScrollerFetchNewStatus>()
+        every { conversationRepository.observeScrollerFetchNewStatus() } returns conversationFlow
+        every { messageRepository.observeScrollerFetchNewStatus() } returns messageFlow
+
+        // When
+        useCase().test {
+            conversationFlow.emit(ConversationScrollerFetchNewStatus.FirstPageLoadingStarted(1L))
+            messageFlow.emit(MessageScrollerFetchNewStatus.FirstPageLoadingEnded(2L))
+            // Only the fetch-new event should surface.
+            conversationFlow.emit(ConversationScrollerFetchNewStatus.FetchNewStarted(3L))
+
+            // Then
+            assertEquals(
+                MailboxFetchNewStatus.Started(3L, ScrollerType.Conversation),
+                awaitItem()
+            )
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `message and conversation events are merged and emitted in arrival order`() = runTest {
         // Given
         val conversationFlow = MutableSharedFlow<ConversationScrollerFetchNewStatus>()

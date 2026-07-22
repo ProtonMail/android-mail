@@ -95,6 +95,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarControllerFactory
@@ -362,6 +363,10 @@ internal class MailboxViewModelTest {
         every { this@mockk() } returns emptyFlow()
     }
 
+    private val observeMailboxFirstPageLoadingStatus = mockk<ObserveMailboxFirstPageLoadingStatus> {
+        every { this@mockk() } returns emptyFlow()
+    }
+
     private val loadingBarController: MailboxLoadingBarStateController =
         mockk<MailboxLoadingBarStateController>(relaxed = true).apply {
             every { observeState() } returns emptyFlow()
@@ -467,6 +472,7 @@ internal class MailboxViewModelTest {
             updateUnreadFilter = updateUnreadFilter,
             updateShowSpamTrashFilter = updateShowSpamTrashFilter,
             observeMailboxFetchNewStatus = observeMailboxFetchNewStatus,
+            observeMailboxFirstPageLoadingStatus = observeMailboxFirstPageLoadingStatus,
             loadingBarControllerFactory = loadingBarControllerFactory,
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,

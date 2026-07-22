@@ -91,6 +91,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -153,6 +154,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.SwipeActions
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.SwipeableItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.getAccessibilityActionsForTalkback
+import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiStatesInSearch
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -679,6 +681,54 @@ fun MailboxScreen(
     }
 }
 
+/**
+ * Keeps the category-switch skeleton visible for the whole first-page (re)load, from the moment the
+ * scroller starts loading its first page until the Paging refresh presents the new list. Without it,
+ * the previous category's items flash back in between. See ET-6553.
+ *
+ * It arms by edge-detecting [MailboxListState.Data.firstPageLoadingStartCount] rather than reading a
+ * toggling boolean: the state arrives through a conflated StateFlow, so a fast start/end pair could be
+ * conflated away and never observed, leaving the skeleton un-armed (the "loading too quick → stale
+ * flash" bug). A monotonic counter's latest value always reveals that a load started, so the arm is
+ * reliable. It then stays latched — bridging the gap before the Paging refresh begins — and clears
+ * once that refresh has been seen loading and has settled (the new list is present).
+ */
+private class CategorySkeletonLatch {
+
+    private var initialised = false
+    private var lastStartCount = 0
+    private var latched = false
+    private var sawRefreshLoading = false
+
+    fun update(
+        firstPageLoadingStartCount: Int,
+        isRefreshLoading: Boolean,
+        isInError: Boolean
+    ): Boolean {
+        // Seed on the first composition so a pre-existing count (e.g. a config change that recreates
+        // the composable while the ViewModel survives) does not arm a spurious skeleton.
+        if (!initialised) {
+            lastStartCount = firstPageLoadingStartCount
+            initialised = true
+        }
+        val started = firstPageLoadingStartCount > lastStartCount
+        lastStartCount = firstPageLoadingStartCount
+
+        if (started) {
+            latched = true
+            sawRefreshLoading = false
+        }
+        latched = when {
+            isInError -> false
+            !latched -> false
+            isRefreshLoading -> true.also { sawRefreshLoading = true }
+            sawRefreshLoading -> false // refresh loaded and settled → new list is present
+            else -> true // armed, but the refresh has not started yet → bridge the gap
+        }
+        return latched
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressWarnings("ComplexMethod")
 @Composable
@@ -699,11 +749,23 @@ private fun MailboxSwipeRefresh(
 
     var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
-    val currentViewState = remember(items.loadState, items.itemCount, state) {
+    // Latch the category-switch skeleton from the first-page load start until Paging actually presents
+    // the new list. The scroller start/end can fire faster than the conflated StateFlow delivers, so we
+    // edge-detect a monotonic start counter (see CategorySkeletonLatch) instead of a toggling boolean.
+    // Cached switches never bump the counter, so the skeleton never shows for them. See ET-6553.
+    val firstPageLoadingStartCount = (state as? MailboxListState.Data)?.firstPageLoadingStartCount ?: 0
+    val isRefreshLoading = items.loadState.refresh is LoadState.Loading
+    val isPageInError = items.isPageInError()
+    val categorySkeletonLatch = remember { CategorySkeletonLatch() }
+    val showCategorySkeleton =
+        categorySkeletonLatch.update(firstPageLoadingStartCount, isRefreshLoading, isPageInError)
+
+    val currentViewState = remember(items.loadState, items.itemCount, state, showCategorySkeleton) {
         when {
             state is MailboxListState.Loading -> MailboxScreenState.Loading
             state is MailboxListState.CouldNotLoadUserSession -> MailboxScreenState.CouldNotLoadUserSession
             searchMode.isInSearch() -> items.mapToUiStatesInSearch(searchMode, lastViewState)
+            showCategorySkeleton -> MailboxScreenState.Loading
             else -> items.mapToUiStates(refreshOngoing)
         }
     }

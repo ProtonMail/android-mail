@@ -20,10 +20,11 @@ package ch.protonmail.android.mailmailbox.domain.mapper
 
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.model.MailboxFetchNewStatus
+import ch.protonmail.android.mailmailbox.domain.model.MailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.model.ScrollerType
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 
-fun ConversationScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNewStatus {
+fun ConversationScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNewStatus? {
     return when (this) {
         is ConversationScrollerFetchNewStatus.FetchNewStarted ->
             MailboxFetchNewStatus.Started(
@@ -36,10 +37,13 @@ fun ConversationScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNe
                 timestampMs = this.timestampMs,
                 scrollerType = ScrollerType.Conversation
             )
+
+        is ConversationScrollerFetchNewStatus.FirstPageLoadingStarted,
+        is ConversationScrollerFetchNewStatus.FirstPageLoadingEnded -> null
     }
 }
 
-fun MessageScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNewStatus {
+fun MessageScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNewStatus? {
     return when (this) {
         is MessageScrollerFetchNewStatus.FetchNewStarted ->
             MailboxFetchNewStatus.Started(
@@ -52,5 +56,46 @@ fun MessageScrollerFetchNewStatus.toMailboxFetchNewStatus(): MailboxFetchNewStat
                 timestampMs = this.timestampMs,
                 scrollerType = ScrollerType.Message
             )
+
+        is MessageScrollerFetchNewStatus.FirstPageLoadingStarted,
+        is MessageScrollerFetchNewStatus.FirstPageLoadingEnded -> null
+    }
+}
+
+fun ConversationScrollerFetchNewStatus.toMailboxFirstPageLoadingStatus(): MailboxFirstPageLoadingStatus? {
+    return when (this) {
+        is ConversationScrollerFetchNewStatus.FirstPageLoadingStarted ->
+            MailboxFirstPageLoadingStatus.Started(
+                timestampMs = this.timestampMs,
+                scrollerType = ScrollerType.Conversation
+            )
+
+        is ConversationScrollerFetchNewStatus.FirstPageLoadingEnded ->
+            MailboxFirstPageLoadingStatus.Ended(
+                timestampMs = this.timestampMs,
+                scrollerType = ScrollerType.Conversation
+            )
+
+        is ConversationScrollerFetchNewStatus.FetchNewStarted,
+        is ConversationScrollerFetchNewStatus.FetchNewEnded -> null
+    }
+}
+
+fun MessageScrollerFetchNewStatus.toMailboxFirstPageLoadingStatus(): MailboxFirstPageLoadingStatus? {
+    return when (this) {
+        is MessageScrollerFetchNewStatus.FirstPageLoadingStarted ->
+            MailboxFirstPageLoadingStatus.Started(
+                timestampMs = this.timestampMs,
+                scrollerType = ScrollerType.Message
+            )
+
+        is MessageScrollerFetchNewStatus.FirstPageLoadingEnded ->
+            MailboxFirstPageLoadingStatus.Ended(
+                timestampMs = this.timestampMs,
+                scrollerType = ScrollerType.Message
+            )
+
+        is MessageScrollerFetchNewStatus.FetchNewStarted,
+        is MessageScrollerFetchNewStatus.FetchNewEnded -> null
     }
 }

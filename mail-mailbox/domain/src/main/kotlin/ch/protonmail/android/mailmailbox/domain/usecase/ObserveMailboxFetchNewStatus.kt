@@ -23,7 +23,7 @@ import ch.protonmail.android.mailmailbox.domain.mapper.toMailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.model.MailboxFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import javax.inject.Inject
 
@@ -35,13 +35,13 @@ class ObserveMailboxFetchNewStatus @Inject constructor(
     operator fun invoke(): Flow<MailboxFetchNewStatus> {
         val conversationFlow: Flow<MailboxFetchNewStatus> =
             conversationRepository.observeScrollerFetchNewStatus()
-                .map { status ->
+                .mapNotNull { status ->
                     status.toMailboxFetchNewStatus()
                 }
 
         val messageFlow: Flow<MailboxFetchNewStatus> =
             messageRepository.observeScrollerFetchNewStatus()
-                .map { status -> status.toMailboxFetchNewStatus() }
+                .mapNotNull { status -> status.toMailboxFetchNewStatus() }
 
         return merge(conversationFlow, messageFlow)
     }

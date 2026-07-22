@@ -1587,6 +1587,26 @@ internal class MailboxListReducerTest(
                 expectedState = listStateWithSearchModeNone.copy(
                     loadingBarState = LoadingBarUiState.Show(cycleDurationMs = 1500)
                 )
+            ),
+            TestInput(
+                currentState = listStateWithSearchModeNone,
+                operation = MailboxEvent.FirstPageLoadingChanged(isLoading = true),
+                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 1)
+            ),
+            TestInput(
+                currentState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 5),
+                operation = MailboxEvent.FirstPageLoadingChanged(isLoading = true),
+                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 6)
+            ),
+            TestInput(
+                currentState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 3),
+                operation = MailboxEvent.FirstPageLoadingChanged(isLoading = false),
+                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 3)
+            ),
+            TestInput(
+                currentState = MailboxListState.Loading,
+                operation = MailboxEvent.FirstPageLoadingChanged(isLoading = true),
+                expectedState = MailboxListState.Loading
             )
         )
 
