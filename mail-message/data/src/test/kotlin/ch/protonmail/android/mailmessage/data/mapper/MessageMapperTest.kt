@@ -78,6 +78,7 @@ class MessageMapperTest {
             attachmentsMetadata = emptyList(),
             customLabels = emptyList(),
             location = exclusiveLocation,
+            category = null,
             snoozedUntil = 12345u,
             isDraft = false,
             isScheduled = false,
