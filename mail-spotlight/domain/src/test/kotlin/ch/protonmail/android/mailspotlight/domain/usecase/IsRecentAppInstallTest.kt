@@ -25,8 +25,8 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Instant
 
 internal class IsRecentAppInstallTest {
@@ -40,10 +40,10 @@ internal class IsRecentAppInstallTest {
     )
 
     @Test
-    fun `should return true when app was installed less than 1 day ago`() {
+    fun `should return true when app was installed less than 1 hour ago`() {
         // Given
         val now = Instant.fromEpochMilliseconds(1_000_000_000_000L)
-        val installTime = now.minus(12.hours).toEpochMilliseconds()
+        val installTime = now.minus(30.minutes).toEpochMilliseconds()
 
         every { clock.now() } returns now
         every { appInstallRepository.getFirstInstallTime() } returns installTime
@@ -56,10 +56,10 @@ internal class IsRecentAppInstallTest {
     }
 
     @Test
-    fun `should return false when app was installed more than 1 day ago`() {
+    fun `should return false when app was installed more than 1 hour ago`() {
         // Given
         val now = Instant.fromEpochMilliseconds(1_000_000_000_000L)
-        val installTime = now.minus(2.days).toEpochMilliseconds()
+        val installTime = now.minus(2.hours).toEpochMilliseconds()
 
         every { clock.now() } returns now
         every { appInstallRepository.getFirstInstallTime() } returns installTime
@@ -72,10 +72,10 @@ internal class IsRecentAppInstallTest {
     }
 
     @Test
-    fun `should return false when app was installed exactly 1 day ago`() {
+    fun `should return false when app was installed exactly 1 hour ago`() {
         // Given
         val now = Instant.fromEpochMilliseconds(1_000_000_000_000L)
-        val installTime = now.minus(1.days).toEpochMilliseconds()
+        val installTime = now.minus(1.hours).toEpochMilliseconds()
 
         every { clock.now() } returns now
         every { appInstallRepository.getFirstInstallTime() } returns installTime
