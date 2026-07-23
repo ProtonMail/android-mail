@@ -113,6 +113,7 @@ class RustContentSearchIndexer @Inject constructor(
         }
 
         is SyncEvent.Started,
+        is SyncEvent.WaitingForUnmeteredConnection,
         is SyncEvent.Progress,
         is SyncEvent.Worker -> Unit.right() // unreachable; guarded by isTerminal()
     }

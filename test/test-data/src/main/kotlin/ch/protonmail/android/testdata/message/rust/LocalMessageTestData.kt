@@ -244,6 +244,7 @@ object LocalMessageTestData {
         attachmentsMetadata = attachments,
         customLabels = labels,
         location = null,
+        category = null,
         avatar = avatarInformation,
         isDraft = false,
         isScheduled = false,

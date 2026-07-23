@@ -37,7 +37,9 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
  * worker events), so callers can filter them out of the stream.
  */
 internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
-    is SyncEvent.Started -> ContentIndexingState.Initializing
+    is SyncEvent.Started,
+    is SyncEvent.WaitingForUnmeteredConnection -> ContentIndexingState.Initializing
+
     is SyncEvent.Progress -> ContentIndexingState.Running(this.v1.percentage)
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled
@@ -55,6 +57,7 @@ internal fun SyncEvent.isTerminal(): Boolean = when (this) {
 
     is SyncEvent.Driver -> this.v1 is SyncDriverEvent.Failure
     is SyncEvent.Started,
+    is SyncEvent.WaitingForUnmeteredConnection,
     is SyncEvent.Progress,
     is SyncEvent.Worker -> false
 }
