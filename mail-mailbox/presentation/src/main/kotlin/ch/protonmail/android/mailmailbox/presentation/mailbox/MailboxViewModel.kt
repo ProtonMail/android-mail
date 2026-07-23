@@ -357,7 +357,12 @@ class MailboxViewModel @Inject constructor(
         observeCategoryViewStatusUpdates()
             .onEach { categoryViewStatus ->
                 Timber.d("Received category view status update: $categoryViewStatus")
-                if (categoryViewStatus.activeCategoryOrNull()?.isDefault() == true) {
+                // While in search mode the pager runs against AllMail with no category, so the Rust
+                // status reports the default (Primary) category. Resetting here would wipe the user's
+                // selection and push them back to Primary when they exit search, so we skip it.
+                if (categoryViewStatus.activeCategoryOrNull()?.isDefault() == true &&
+                    !state.value.isInSearchMode()
+                ) {
                     selectMailLabelId.resetSelectedCategory()
                 }
 
@@ -869,11 +874,18 @@ class MailboxViewModel @Inject constructor(
 
                 val viewMode = getViewModeForCurrentLocation(selectedMailLabel.id)
 
+                // Carry over the currently selected category so a freshly created pager (e.g. when
+                // returning from search on the same location) loads and reports that category instead
+                // of defaulting to Primary. Real location changes clear the category upstream, so this
+                // only preserves it across recreations that keep the same mail label (like search).
+                val categoryLabelId = observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
+
                 mailboxPagerFactory.create(
                     userId = userId,
                     selectedMailLabelId = selectedMailLabel.id,
                     type = if (!isInSearchMode) viewMode.toMailboxItemType() else MailboxItemType.Message,
-                    searchQuery = query
+                    searchQuery = query,
+                    categoryLabelId = categoryLabelId
                 ) to (query to viewMode)
             }
                 .flatMapLatest { (pager, searchAndViewMode) ->

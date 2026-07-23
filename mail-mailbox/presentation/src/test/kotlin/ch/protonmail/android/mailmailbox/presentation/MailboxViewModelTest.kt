@@ -1572,6 +1572,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -1586,6 +1587,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.spamSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2052,6 +2054,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2067,6 +2070,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.inboxSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2104,7 +2108,7 @@ internal class MailboxViewModelTest {
         mailboxViewModel.items.test {
             awaitItem()
             verify(exactly = 1) {
-                pagerFactory.create(userId, folder.id, any(), any())
+                pagerFactory.create(userId, folder.id, any(), any(), any())
             }
 
             // When
@@ -2117,7 +2121,7 @@ internal class MailboxViewModelTest {
             // Then
             expectNoEvents()
             verify(exactly = 1) {
-                pagerFactory.create(userId, folder.id, any(), any())
+                pagerFactory.create(userId, folder.id, any(), any(), any())
             }
             cancelAndIgnoreRemainingEvents()
         }
@@ -2153,6 +2157,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2168,6 +2173,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Conversation,
+                    any(),
                     any()
                 )
             }
@@ -2213,6 +2219,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2240,6 +2247,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -3055,6 +3063,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Conversation,
+                    any(),
                     any()
                 )
             }
@@ -3068,6 +3077,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -4481,6 +4491,91 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox pager is created with the currently selected category`() = runTest {
+        // Given
+        val selectedCategory = MailLabelTestData.socialCategoryLabelId
+        val locationFlow = MutableStateFlow(
+            MailLabelIdWithCategory(MailLabelTestData.inboxSystemLabel.id, selectedCategory)
+        )
+        every { observeSelectedLabelWithCategory() } returns locationFlow
+        every { observeLoadedMailLabelId() } returns locationFlow.map { it.mailLabelId }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxDataState()
+        expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
+
+        // When
+        mailboxViewModel.items.test {
+            awaitItem()
+
+            // Then
+            verify {
+                pagerFactory.create(
+                    userId = userId,
+                    selectedMailLabelId = MailLabelTestData.inboxSystemLabel.id,
+                    type = any(),
+                    searchQuery = any(),
+                    categoryLabelId = selectedCategory
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given in search mode, when category view status has a default active category, reset is skipped`() = runTest {
+        // Given
+        val searchState = MailboxStateSampleData.Inbox.copy(
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = MailLabelTestData.allMailSystemLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                refreshErrorEffect = Effect.of(Unit),
+                refreshOngoing = false,
+                swipeActions = null,
+                searchState = MailboxSearchStateSampleData.NewSearch,
+                shouldShowFab = false,
+                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
+                loadingBarState = LoadingBarUiState.Hide
+            )
+        )
+        val defaultActiveStatus = CategoryViewStatus.Available(
+            categories = listOf(CategoryLabelTestData.primary)
+        )
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxViewAction.EnterSearchMode)
+        } returns searchState
+        expectPagerMock()
+        mailboxViewModel.submit(MailboxViewAction.EnterSearchMode)
+        advanceUntilIdle()
+
+        // When
+        categoryViewStatusFlow.emit(defaultActiveStatus)
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 0) { selectMailLabelId.resetSelectedCategory() }
+    }
+
+    @Test
+    fun `given not in search mode, when category view status has a default active category, reset is invoked`() =
+        runTest {
+            // Given
+            val defaultActiveStatus = CategoryViewStatus.Available(
+                categories = listOf(CategoryLabelTestData.primary)
+            )
+
+            // When
+            mailboxViewModel.state.test {
+                awaitItem()
+                categoryViewStatusFlow.emit(defaultActiveStatus)
+                advanceUntilIdle()
+
+                // Then
+                verify(exactly = 1) { selectMailLabelId.resetSelectedCategory() }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `given observe category spotlight state emits a shown state, it is forwarded to the reducer`() = runTest {
         // Given
         val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
@@ -4903,7 +4998,8 @@ internal class MailboxViewModelTest {
                 userId = user,
                 selectedMailLabelId = selectedLabel ?: any(),
                 type = itemType ?: any(),
-                searchQuery = searchQuery ?: any()
+                searchQuery = searchQuery ?: any(),
+                categoryLabelId = any()
             )
         } returns mockk mockPager@{ every { this@mockPager.flow } returns pagingDataFlow }
     }

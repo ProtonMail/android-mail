@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -38,7 +39,8 @@ class MailboxPagerFactory @Inject constructor(
         userId: UserId,
         selectedMailLabelId: MailLabelId,
         type: MailboxItemType,
-        searchQuery: String
+        searchQuery: String,
+        categoryLabelId: CategoryLabelId? = null
     ): Pager<MailboxPageKey, MailboxItem> {
         Timber.d("Paging: creating new paginator for label: ${selectedMailLabelId.labelId}")
         val mailboxPageKey = if (searchQuery.isNotEmpty()) {
@@ -49,7 +51,8 @@ class MailboxPagerFactory @Inject constructor(
         } else {
             buildDefaultPageKey(
                 selectedMailLabelId = selectedMailLabelId,
-                userId = userId
+                userId = userId,
+                categoryLabelId = categoryLabelId
             )
         }
         return Pager(
@@ -58,8 +61,15 @@ class MailboxPagerFactory @Inject constructor(
         )
     }
 
-    private fun buildDefaultPageKey(selectedMailLabelId: MailLabelId, userId: UserId): MailboxPageKey {
-        val pageKey = PageKey.DefaultPageKey(labelId = selectedMailLabelId.labelId)
+    private fun buildDefaultPageKey(
+        selectedMailLabelId: MailLabelId,
+        userId: UserId,
+        categoryLabelId: CategoryLabelId?
+    ): MailboxPageKey {
+        val pageKey = PageKey.DefaultPageKey(
+            labelId = selectedMailLabelId.labelId,
+            categoryLabelId = categoryLabelId
+        )
 
         return MailboxPageKey(
             userId = userId,
