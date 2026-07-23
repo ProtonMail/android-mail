@@ -31,6 +31,6 @@
     <string name="category_spotlight_close_content_description">Close</string>
 
     <string name="recategorise_bottom_sheet_title">Recategorize email</string>
-    <string name="recategorise_bottom_sheet_description">When you move an email to another category, similar messages will be categorized here in the future.</string>
+    <string name="recategorise_bottom_sheet_description">When you move an email to another category, similar messages will be categorized there in the future.</string>
     <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>
