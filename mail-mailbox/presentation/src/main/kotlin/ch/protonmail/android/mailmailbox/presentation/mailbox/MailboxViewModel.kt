@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSe
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -269,6 +270,14 @@ class MailboxViewModel @Inject constructor(
     private var attachmentDownloadJob: Job? = null
 
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
+
+    /**
+     * The account the mailbox is currently showing. The UI needs it to tell an account switch apart from
+     * an in-place reload: both keep the same label and category, but only the former warrants a skeleton.
+     */
+    val primaryUserIdState: StateFlow<UserId?> = primaryUserId
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val isCategoryViewEnabled: StateFlow<Boolean> = primaryUserId
         .mapLatest { categoryViewEnabled.get() }
@@ -1255,10 +1264,7 @@ class MailboxViewModel @Inject constructor(
                 }
             }
 
-            val activeCategoryId = (state.value.categoryViewState as? CategoryViewState.Available.Data)
-                ?.categories
-                ?.firstOrNull { it.isActive }
-                ?.let { LabelId(it.id.id) }
+            val activeCategoryId = state.value.categoryViewState.activeCategory()?.let { LabelId(it.id.id) }
 
             val event = MoveToBottomSheetState.MoveToBottomSheetEvent.Ready(
                 userId = userId,

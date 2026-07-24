@@ -34,3 +34,10 @@ sealed interface CategoryViewState {
 
     data object NotAvailable : CategoryViewState
 }
+
+/**
+ * The category tab the user is currently browsing, or `null` when the category view is unavailable,
+ * still loading, or no tab is marked active.
+ */
+fun CategoryViewState.activeCategory(): CategoryItemUiModel? =
+    (this as? CategoryViewState.Available.Data)?.categories?.firstOrNull { it.isActive }
