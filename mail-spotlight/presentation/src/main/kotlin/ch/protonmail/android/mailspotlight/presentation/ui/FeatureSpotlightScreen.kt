@@ -112,8 +112,6 @@ internal fun FeatureSpotlightScreen(
             .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        TopNavigationBarSpacer()
-
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -122,10 +120,12 @@ internal fun FeatureSpotlightScreen(
             SpotlightGradientBackground(
                 modifier = Modifier.fillMaxSize()
             ) {
+                TopNavigationBarSpacer()
+
                 HorizontalPager(
                     state = pagerState,
                     beyondViewportPageCount = pagerState.pageCount,
-                    modifier = if (isLandscape) Modifier.fillMaxSize() else Modifier.weight(1f),
+                    modifier = Modifier.weight(1f),
                     flingBehavior = PagerDefaults.flingBehavior(
                         state = pagerState,
                         pagerSnapDistance = PagerSnapDistance.atMost(1),
