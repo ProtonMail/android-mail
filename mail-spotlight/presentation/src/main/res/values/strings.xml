@@ -57,6 +57,6 @@
     <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Stop getting distracted by newsletters, updates, and non-urgent emails. With new email categories, only important messages land in your primary inbox.</string>
 
     <string name="spotlight_screen_category_view_button_continue">Continue</string>
-    <string name="spotlight_screen_category_view_button_try">Try categories</string>
-    <string name="spotlight_screen_category_view_button_dismiss">Continue without</string>
+    <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+    <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>
