@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSe
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -63,7 +64,6 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
@@ -88,6 +88,7 @@ import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomShe
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsItemId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToItemId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -97,7 +98,9 @@ import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
@@ -113,7 +116,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -143,6 +145,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSh
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -170,7 +173,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -242,6 +244,7 @@ class MailboxViewModel @Inject constructor(
     private val updateUnreadFilter: UpdateUnreadFilter,
     private val updateShowSpamTrashFilter: UpdateShowSpamTrashFilter,
     private val observeMailboxFetchNewStatus: ObserveMailboxFetchNewStatus,
+    private val observeMailboxFirstPageLoadingStatus: ObserveMailboxFirstPageLoadingStatus,
     private val observeValidSenderAddress: ObserveValidSenderAddress,
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
@@ -251,14 +254,13 @@ class MailboxViewModel @Inject constructor(
     private val selectCategory: SelectCategory,
     private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
-    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
+    private val categoryViewEnabled: IsCategoryViewEnabled,
     @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
     private val mutableState = MutableStateFlow(initialState)
     private val unseenSpotlightDismissed = MutableStateFlow(false)
-    private val personaliseSpotlightDismissed = MutableStateFlow(false)
     private val itemIdsMutex = Mutex()
     private val itemIds = mutableListOf<String>()
     private val folderColorSettings = primaryUserId.flatMapLatest {
@@ -269,10 +271,22 @@ class MailboxViewModel @Inject constructor(
 
     private val loadingBarController = loadingBarControllerFactory.create(viewModelScope)
 
-    val isCategoryViewEnabled: StateFlow<Boolean> = flow { emit(categoryViewEnabled.get()) }
+    /**
+     * The account the mailbox is currently showing. The UI needs it to tell an account switch apart from
+     * an in-place reload: both keep the same label and category, but only the former warrants a skeleton.
+     */
+    val primaryUserIdState: StateFlow<UserId?> = primaryUserId
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val isCategoryViewEnabled: StateFlow<Boolean> = primaryUserId
+        .mapLatest { categoryViewEnabled(it) }
+        .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val isContentSearchEnabled: StateFlow<Boolean> = flow { emit(contentSearchSettingsEnabled.get()) }
+    val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
+        .mapLatest { contentSearchSettingsEnabled.get() }
+        .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
@@ -352,7 +366,12 @@ class MailboxViewModel @Inject constructor(
         observeCategoryViewStatusUpdates()
             .onEach { categoryViewStatus ->
                 Timber.d("Received category view status update: $categoryViewStatus")
-                if (categoryViewStatus.activeCategoryOrNull()?.isDefault() == true) {
+                // While in search mode the pager runs against AllMail with no category, so the Rust
+                // status reports the default (Primary) category. Resetting here would wipe the user's
+                // selection and push them back to Primary when they exit search, so we skip it.
+                if (categoryViewStatus.activeCategoryOrNull()?.isDefault() == true &&
+                    !state.value.isInSearchMode()
+                ) {
                     selectMailLabelId.resetSelectedCategory()
                 }
 
@@ -374,8 +393,7 @@ class MailboxViewModel @Inject constructor(
             categories = state
                 .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories }
                 .distinctUntilChanged(),
-            unseenDismissed = unseenSpotlightDismissed,
-            personaliseDismissed = personaliseSpotlightDismissed
+            unseenDismissed = unseenSpotlightDismissed
         )
             .onEach { emitNewStateFrom(MailboxEvent.CategorySpotlightStateChanged(it)) }
             .launchIn(viewModelScope)
@@ -425,6 +443,14 @@ class MailboxViewModel @Inject constructor(
 
         observeMailboxFetchNewStatus().onEach {
             loadingBarController.onMailboxFetchNewStatus(it)
+        }.launchIn(viewModelScope)
+
+        observeMailboxFirstPageLoadingStatus().onEach { status ->
+            emitNewStateFrom(
+                MailboxEvent.FirstPageLoadingChanged(
+                    isLoading = status is MailboxFirstPageLoadingStatus.Started
+                )
+            )
         }.launchIn(viewModelScope)
 
         primaryUserId.flatMapLatest {
@@ -576,11 +602,6 @@ class MailboxViewModel @Inject constructor(
             is CategorySpotlightState.Shown.UnseenCategory -> {
                 unseenSpotlightDismissed.value = true
                 markCategorySpotlightSeen(CategorySpotlightType.UnseenCategory)
-            }
-
-            CategorySpotlightState.Shown.Personalise -> {
-                personaliseSpotlightDismissed.value = true
-                markCategorySpotlightSeen(CategorySpotlightType.Personalise)
             }
 
             CategorySpotlightState.Hidden -> Unit
@@ -862,11 +883,18 @@ class MailboxViewModel @Inject constructor(
 
                 val viewMode = getViewModeForCurrentLocation(selectedMailLabel.id)
 
+                // Carry over the currently selected category so a freshly created pager (e.g. when
+                // returning from search on the same location) loads and reports that category instead
+                // of defaulting to Primary. Real location changes clear the category upstream, so this
+                // only preserves it across recreations that keep the same mail label (like search).
+                val categoryLabelId = observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
+
                 mailboxPagerFactory.create(
                     userId = userId,
                     selectedMailLabelId = selectedMailLabel.id,
                     type = if (!isInSearchMode) viewMode.toMailboxItemType() else MailboxItemType.Message,
-                    searchQuery = query
+                    searchQuery = query,
+                    categoryLabelId = categoryLabelId
                 ) to (query to viewMode)
             }
                 .flatMapLatest { (pager, searchAndViewMode) ->
@@ -1236,10 +1264,7 @@ class MailboxViewModel @Inject constructor(
                 }
             }
 
-            val activeCategoryId = (state.value.categoryViewState as? CategoryViewState.Available.Data)
-                ?.categories
-                ?.firstOrNull { it.isActive }
-                ?.let { LabelId(it.id.id) }
+            val activeCategoryId = state.value.categoryViewState.activeCategory()?.let { LabelId(it.id.id) }
 
             val event = MoveToBottomSheetState.MoveToBottomSheetEvent.Ready(
                 userId = userId,
@@ -1675,20 +1700,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     /**
-     * Emits the active category's id as soon as its list has loaded with data. The requested and
-     * loaded categories are used only to gate on "the selection has settled and finished loading";
-     * the id emitted comes from the category view status, so it also covers the default Primary
-     * category (whose selection is tracked as a null category id).
+     * Emits the active category's id whenever it has unseen items and its list has loaded with data.
+     * The requested and loaded categories are used only to gate on "the selection has settled and
+     * finished loading"; the category emitted comes from the category view status, so it also covers
+     * the default Primary category (whose selection is tracked as a null category id).
+     *
+     * We key the distinct check on both the id and [CategoryLabel.hasUnseen] so that new items
+     * arriving in the currently-active category (a false -> true transition, with no id change) also
+     * re-trigger the mark-seen, not only category switches.
      */
     private fun observeCategoryToMarkSeen(): Flow<CategoryLabelId> = combine(
         observeSelectedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
         observeLoadedLabelWithCategory().map { it.categoryLabelId }.distinctUntilChanged(),
-        observeCategoryViewStatusUpdates().map { it.activeCategoryOrNull()?.id }.distinctUntilChanged()
-    ) { requestedCategory, loadedCategory, activeCategoryId ->
-        activeCategoryId.takeIf { requestedCategory == loadedCategory }
+        observeCategoryViewStatusUpdates().map { it.activeCategoryOrNull() }.distinctUntilChanged()
+    ) { requestedCategory, loadedCategory, activeCategory ->
+        activeCategory.takeIf { requestedCategory == loadedCategory }
     }
         .filterNotNull()
-        .distinctUntilChanged()
+        .distinctUntilChangedBy { it.id to it.hasUnseen }
+        .filter { it.hasUnseen }
+        .map { it.id }
 
     companion object {
 

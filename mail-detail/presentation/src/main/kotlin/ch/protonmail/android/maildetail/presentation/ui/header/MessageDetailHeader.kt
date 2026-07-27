@@ -648,6 +648,13 @@ private fun ExtendedHeaderSection(uiModel: MessageDetailHeaderUiModel) {
             iconColor = uiModel.location.color,
             text = uiModel.location.name.string()
         )
+        uiModel.category?.let { category ->
+            ExtendedHeaderRow(
+                icon = category.icon,
+                iconColor = category.color,
+                text = category.name.string()
+            )
+        }
     }
 }
 

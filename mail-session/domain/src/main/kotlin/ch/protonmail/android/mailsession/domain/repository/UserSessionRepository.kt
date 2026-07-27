@@ -63,6 +63,8 @@ interface UserSessionRepository {
 
     suspend fun updateCategoryView(userId: UserId, enabled: Boolean): Either<DataError, Unit>
 
+    suspend fun isCategoryViewEnabled(userId: UserId): Either<DataError, Boolean>
+
     suspend fun getUserSettings(userId: UserId): UserSettings?
 
     suspend fun forkSession(userId: UserId): Either<SessionError, Fork>

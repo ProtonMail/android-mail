@@ -37,6 +37,7 @@ data class MessageDetailHeaderUiModel(
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowStar: Boolean,
     val location: MessageLocationUiModel,
+    val category: MessageLocationUiModel?,
     val time: TextUiModel,
     val extendedTime: TextUiModel,
     val shouldShowUndisclosedRecipients: Boolean,

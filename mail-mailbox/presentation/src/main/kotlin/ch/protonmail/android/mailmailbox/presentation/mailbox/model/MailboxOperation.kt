@@ -319,6 +319,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class LoadingBarStateUpdated(val state: LoadingBarUiState) : MailboxEvent, AffectingMailboxList
 
+    data class FirstPageLoadingChanged(val isLoading: Boolean) : MailboxEvent, AffectingMailboxList
+
     data class PaginatorInvalidated(val event: PageInvalidationEvent) : MailboxEvent, AffectingMailboxList
 
     data object ShowRatingBooster : MailboxEvent

@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSystemLabel
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -31,7 +32,6 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import timber.log.Timber
 import uniffi.mail_uniffi.InlineCustomLabel
 import uniffi.mail_uniffi.LabelDescription
-import uniffi.mail_uniffi.MovableSystemFolder
 import uniffi.mail_uniffi.SidebarCustomFolder
 import uniffi.mail_uniffi.SidebarCustomLabel
 import uniffi.mail_uniffi.SidebarSystemLabel
@@ -147,6 +147,20 @@ fun SystemLabelId.toLocalSystemLabel() = when (this) {
     SystemLabelId.Snoozed -> LocalSystemLabel.SNOOZED
 }
 
+fun LocalSystemLabel?.toCategoryLocation(): CategoryLocation {
+    val categoryId = when (this) {
+        LocalSystemLabel.CATEGORY_DEFAULT -> CategorySystemLabelId.Primary
+        LocalSystemLabel.CATEGORY_SOCIAL -> CategorySystemLabelId.Social
+        LocalSystemLabel.CATEGORY_PROMOTIONS -> CategorySystemLabelId.Promotions
+        LocalSystemLabel.CATEGORY_UPDATES -> CategorySystemLabelId.Updates
+        LocalSystemLabel.CATEGORY_FORUMS -> CategorySystemLabelId.Forums
+        LocalSystemLabel.CATEGORY_NEWSLETTER -> CategorySystemLabelId.Newsletter
+        LocalSystemLabel.CATEGORY_TRANSACTIONS -> CategorySystemLabelId.Transactions
+        else -> null
+    }
+    return categoryId?.let { CategoryLocation.Value(it) } ?: CategoryLocation.NoValue
+}
+
 fun CategorySystemLabelId.toLocalSystemLabel() = when (this) {
     CategorySystemLabelId.Primary -> LocalSystemLabel.CATEGORY_DEFAULT
     CategorySystemLabelId.Social -> LocalSystemLabel.CATEGORY_SOCIAL
@@ -155,14 +169,6 @@ fun CategorySystemLabelId.toLocalSystemLabel() = when (this) {
     CategorySystemLabelId.Forums -> LocalSystemLabel.CATEGORY_FORUMS
     CategorySystemLabelId.Newsletter -> LocalSystemLabel.CATEGORY_NEWSLETTER
     CategorySystemLabelId.Transactions -> LocalSystemLabel.CATEGORY_TRANSACTIONS
-}
-
-fun MovableSystemFolder.toSystemLabelIdOrNull() = when (this) {
-    MovableSystemFolder.INBOX -> SystemLabelId.Inbox
-    MovableSystemFolder.TRASH -> SystemLabelId.Trash
-    MovableSystemFolder.SPAM -> SystemLabelId.Spam
-    MovableSystemFolder.ARCHIVE -> SystemLabelId.Archive
-    else -> null
 }
 
 fun InlineCustomLabel.toLabel() = Label(

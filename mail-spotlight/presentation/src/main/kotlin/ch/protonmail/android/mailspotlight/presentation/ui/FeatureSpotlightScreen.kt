@@ -33,14 +33,12 @@ import androidx.compose.foundation.pager.PagerSnapDistance
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailspotlight.presentation.R
@@ -67,16 +65,16 @@ fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
         viewModel.closeScreenEvent.collect { onDismiss() }
     }
 
-    val userType by viewModel.userType.collectAsStateWithLifecycle()
-
     FeatureSpotlightScreen(
         appVersionUiModel = viewModel.appVersion,
         featureItems = viewModel.overviewFeatures,
-        userType = userType,
+        userType = viewModel.userType,
         onTryCategories = viewModel::onTryCategories,
         onDismissWithoutCategories = viewModel::onDismissWithoutCategories
     )
 }
+
+const val SPOTLIGHT_USER_TYPE_KEY = "SpotlightUserTypeKey"
 
 @Composable
 internal fun FeatureSpotlightScreen(
@@ -114,8 +112,6 @@ internal fun FeatureSpotlightScreen(
             .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        TopNavigationBarSpacer()
-
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -124,10 +120,12 @@ internal fun FeatureSpotlightScreen(
             SpotlightGradientBackground(
                 modifier = Modifier.fillMaxSize()
             ) {
+                TopNavigationBarSpacer()
+
                 HorizontalPager(
                     state = pagerState,
                     beyondViewportPageCount = pagerState.pageCount,
-                    modifier = if (isLandscape) Modifier.fillMaxSize() else Modifier.weight(1f),
+                    modifier = Modifier.weight(1f),
                     flingBehavior = PagerDefaults.flingBehavior(
                         state = pagerState,
                         pagerSnapDistance = PagerSnapDistance.atMost(1),
@@ -141,6 +139,7 @@ internal fun FeatureSpotlightScreen(
                         0 -> OverviewPage(
                             appVersionUiModel = appVersionUiModel,
                             featureItems = featureItems,
+                            userType = userType,
                             onContinue = if (isLandscape) onContinue else null
                         )
 
@@ -239,7 +238,7 @@ private fun FeatureSpotlightScreenB2CPreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
             appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-            featureItems = SpotlightPreviewData.previewFeatures,
+            featureItems = SpotlightPreviewData.previewFeaturesB2C,
             userType = SpotlightUserType.B2C,
             onTryCategories = {},
             onDismissWithoutCategories = {}
@@ -253,7 +252,7 @@ private fun FeatureSpotlightScreenB2BPreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
             appVersionUiModel = SpotlightPreviewData.previewAppVersion,
-            featureItems = SpotlightPreviewData.previewFeatures,
+            featureItems = SpotlightPreviewData.previewFeaturesB2B,
             userType = SpotlightUserType.B2B,
             onTryCategories = {},
             onDismissWithoutCategories = {}

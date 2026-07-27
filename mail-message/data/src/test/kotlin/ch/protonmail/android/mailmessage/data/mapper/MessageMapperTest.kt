@@ -23,6 +23,8 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalAvatarInformation
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -78,7 +80,7 @@ class MessageMapperTest {
             attachmentsMetadata = emptyList(),
             customLabels = emptyList(),
             location = exclusiveLocation,
-            category = null,
+            category = SystemLabel.CATEGORY_SOCIAL,
             snoozedUntil = 12345u,
             isDraft = false,
             isScheduled = false,
@@ -115,6 +117,7 @@ class MessageMapperTest {
         assertEquals(12_345L, result.flags)
         assertEquals("SN", result.avatarInformation.initials)
         assertEquals("#FFFFFF", result.avatarInformation.color)
+        assertEquals(CategoryLocation.Value(CategorySystemLabelId.Social), result.category)
     }
 
 }

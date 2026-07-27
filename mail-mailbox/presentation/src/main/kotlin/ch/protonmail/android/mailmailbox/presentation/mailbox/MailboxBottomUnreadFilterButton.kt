@@ -18,16 +18,24 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,19 +51,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.titleMediumNorm
-import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
 import ch.protonmail.android.mailcommon.presentation.model.isEmpty
 import ch.protonmail.android.mailcommon.presentation.ui.protonFloatingButtonShadow
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
@@ -69,9 +76,8 @@ internal fun BottomUnreadFilterButton(
     if (state !is UnreadFilterState.Data) return
 
     val isActive = state.isFilterEnabled
-    val activeBackgroundColor = state.activeCategory
-        ?.activeCategoryColor()
-        ?: ProtonTheme.colors.brandNorm
+    val activeCategoryColor = state.activeCategory?.activeCategoryColor()
+    val activeBackgroundColor = activeCategoryColor ?: ProtonTheme.colors.brandNorm
     val inactiveBackgroundColor = ProtonTheme.colors.interactionFabNorm
 
     val backgroundColor by animateColorAsState(
@@ -81,7 +87,6 @@ internal fun BottomUnreadFilterButton(
     )
 
     val contentColor = if (isActive) Color.White else ProtonTheme.colors.textNorm
-    val activeCategoryColor = state.activeCategory?.activeCategoryColor()
     val shouldShowUnreadCount = !isActive && !state.unreadCount.isEmpty()
     val shouldShowCategoryUnreadCircle = shouldShowUnreadCount && activeCategoryColor != null
 
@@ -100,30 +105,42 @@ internal fun BottomUnreadFilterButton(
                 .padding(
                     start = ProtonDimens.Spacing.ModeratelyLarge,
                     end = ProtonDimens.Spacing.ModeratelyLarge
-                )
-                .animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMediumLow
-                    )
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = buildAnnotatedString {
-                    append(stringResource(R.string.filter_unread_button_text))
-
-                    if (shouldShowUnreadCount && !shouldShowCategoryUnreadCircle) {
-                        append(" ")
-                        append(state.unreadCount.asDisplayText())
-                    }
-                },
+                text = stringResource(R.string.filter_unread_button_text),
                 style = ProtonTheme.typography.titleMediumNorm,
                 color = contentColor
             )
 
-            if (shouldShowCategoryUnreadCircle) {
+            // Count collapses towards its trailing edge as the Close icon expands from its
+            // leading edge, so the two swap in place instead of the pill shrinking then growing.
+            AnimatedVisibility(
+                visible = shouldShowUnreadCount && !shouldShowCategoryUnreadCircle,
+                enter = pillItemEnter(Alignment.End),
+                exit = pillItemExit(Alignment.End)
+            ) {
+                AnimatedContent(
+                    targetState = state.unreadCount.asDisplayText(),
+                    transitionSpec = { unreadCountTransition() },
+                    contentAlignment = Alignment.Center,
+                    label = "unreadCountInline"
+                ) { countText ->
+                    Text(
+                        text = " $countText",
+                        style = ProtonTheme.typography.titleMediumNorm,
+                        color = contentColor
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = shouldShowCategoryUnreadCircle,
+                enter = pillItemEnter(Alignment.End),
+                exit = pillItemExit(Alignment.End)
+            ) {
                 Surface(
                     modifier = Modifier
                         .padding(start = ProtonDimens.Spacing.Standard)
@@ -136,18 +153,29 @@ internal fun BottomUnreadFilterButton(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Standard)
                     ) {
-                        Text(
-                            text = state.unreadCount.asDisplayText(),
-                            style = ProtonTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Bold
-                            ),
-                            color = Color.White
-                        )
+                        AnimatedContent(
+                            targetState = state.unreadCount.asDisplayText(),
+                            transitionSpec = { unreadCountTransition() },
+                            contentAlignment = Alignment.Center,
+                            label = "unreadCountBadge"
+                        ) { countText ->
+                            Text(
+                                text = countText,
+                                style = ProtonTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = Color.White
+                            )
+                        }
                     }
                 }
             }
 
-            if (isActive) {
+            AnimatedVisibility(
+                visible = isActive,
+                enter = pillItemEnter(Alignment.Start),
+                exit = pillItemExit(Alignment.Start)
+            ) {
                 Icon(
                     modifier = Modifier
                         .padding(start = ProtonDimens.Spacing.Small)
@@ -161,6 +189,29 @@ internal fun BottomUnreadFilterButton(
     }
 }
 
+private fun unreadCountTransition() = ContentTransform(
+    targetContentEnter = fadeIn(animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS)),
+    initialContentExit = fadeOut(animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS)),
+    // Grow/shrink the badge in lock-step with the fade (same tween) and centred, so the reveal
+    // clip only ever falls on faint, fading text instead of cutting off the visible number.
+    sizeTransform = SizeTransform { _, _ -> tween(durationMillis = PILL_ANIMATION_DURATION_MS) }
+)
+
+private fun pillItemEnter(expandFrom: Alignment.Horizontal) =
+    fadeIn(animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS)) +
+        expandHorizontally(
+            animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS),
+            expandFrom = expandFrom
+        )
+
+private fun pillItemExit(shrinkTowards: Alignment.Horizontal) =
+    fadeOut(animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS)) +
+        shrinkHorizontally(
+            animationSpec = tween(durationMillis = PILL_ANIMATION_DURATION_MS),
+            shrinkTowards = shrinkTowards
+        )
+
+private const val PILL_ANIMATION_DURATION_MS = 200
 private val UnreadHeight = 56.dp
 private val CategoryUnreadBadgeHeight = 30.dp
 private val CategoryUnreadBadgeMinWidth = 30.dp

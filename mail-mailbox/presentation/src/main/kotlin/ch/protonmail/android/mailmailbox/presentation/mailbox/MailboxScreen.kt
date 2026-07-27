@@ -91,6 +91,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -111,6 +112,7 @@ import ch.protonmail.android.mailcategory.presentation.CategorySpotlightBanner
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -153,6 +155,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.SwipeActions
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.SwipeableItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.getAccessibilityActionsForTalkback
+import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiStatesInSearch
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -171,6 +174,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountSwitchEvent
 import me.proton.android.core.accountmanager.presentation.switcher.v2.AccountsSwitcherBottomSheetScreen
+import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -181,11 +185,12 @@ fun MailboxScreen(
     actions: MailboxScreen.Actions,
     onEvent: (AccountSwitchEvent) -> Unit,
     viewModel: MailboxViewModel = hiltViewModel(),
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
     val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
     val isContentSearchEnabled = viewModel.isContentSearchEnabled.collectAsStateWithLifecycle().value
+    val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -440,7 +445,8 @@ fun MailboxScreen(
             actions = completeActions,
             isCategoryViewEnabled = isCategoryViewEnabled,
             isContentSearchEnabled = isContentSearchEnabled,
-            isSnackbarVisible = isSnackbarVisible,
+            snackbarHeight = snackbarHeight,
+            userId = primaryUserId,
             modifier = modifier.semantics { testTagsAsResourceId = true }
         )
     }
@@ -453,7 +459,8 @@ fun MailboxScreen(
     isCategoryViewEnabled: Boolean = false,
     isContentSearchEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
-    isSnackbarVisible: Boolean = false,
+    snackbarHeight: Dp = 0.dp,
+    userId: UserId? = null,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -590,26 +597,32 @@ fun MailboxScreen(
                 listState = lazyListState,
                 viewState = mailboxListState,
                 unreadFilterState = mailboxState.unreadFilterState,
+                userId = userId,
+                activeCategoryId = mailboxState.categoryViewState.activeCategory()?.id?.id,
                 actions = actions
             )
 
-            // Floats over the top of the list (below the category menu); not part of the scrolling content.
-            if (categorySpotlightState is CategorySpotlightState.Shown) {
-                // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
-                LaunchedEffect(lazyListState.isScrollInProgress) {
-                    if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
+            when (categorySpotlightState) {
+                // Floats over the top of the list (below the category menu); not part of the scrolling content.
+                is CategorySpotlightState.Shown.UnseenCategory -> {
+                    // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
+                    LaunchedEffect(lazyListState.isScrollInProgress) {
+                        if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
+                    }
+                    CategorySpotlightBanner(
+                        state = categorySpotlightState,
+                        onClose = actions.onDismissCategorySpotlight,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(paddingValues)
+                            .padding(
+                                horizontal = ProtonDimens.Spacing.Large,
+                                vertical = ProtonDimens.Spacing.Small
+                            )
+                    )
                 }
-                CategorySpotlightBanner(
-                    state = categorySpotlightState,
-                    onClose = actions.onDismissCategorySpotlight,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(paddingValues)
-                        .padding(
-                            horizontal = ProtonDimens.Spacing.Large,
-                            vertical = ProtonDimens.Spacing.Small
-                        )
-                )
+
+                CategorySpotlightState.Hidden -> Unit
             }
 
             val bottomBarActions = remember(actions) {
@@ -661,15 +674,16 @@ fun MailboxScreen(
                 isSearchButtonVisible = isContentSearchEnabled,
                 onUnreadFilterEnabled = actions.onEnableUnreadFilter,
                 onUnreadFilterDisabled = actions.onDisableUnreadFilter,
-                isSnackbarVisible = isSnackbarVisible,
+                snackbarHeight = snackbarHeight,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .windowInsetsPadding(
                         WindowInsets.safeDrawing
                             .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
                     )
+                    // Bottom padding is owned by MailboxFabToolbarMorph, which has to reconcile it
+                    // with the snackbar lift.
                     .padding(horizontal = ProtonDimens.Spacing.Large)
-                    .padding(bottom = ProtonDimens.Spacing.Large)
             )
         }
     }
@@ -684,6 +698,8 @@ private fun MailboxSwipeRefresh(
     viewState: MailboxListState,
     listState: LazyListState,
     unreadFilterState: UnreadFilterState,
+    userId: UserId?,
+    activeCategoryId: String?,
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier,
     topBarHeight: Dp = 0.dp
@@ -695,14 +711,51 @@ private fun MailboxSwipeRefresh(
 
     var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
-    val currentViewState = remember(items.loadState, items.itemCount, state) {
+    // Latch the category-switch skeleton from the first-page load start until Paging actually presents
+    // the new list. The scroller start/end can fire faster than the conflated StateFlow delivers, so we
+    // edge-detect a monotonic start counter (see CategorySkeletonLatch) instead of a toggling boolean.
+    // Cached switches never bump the counter, so the skeleton never shows for them. See ET-6553.
+    val firstPageLoadingStartCount = (state as? MailboxListState.Data)?.firstPageLoadingStartCount ?: 0
+    val isRefreshLoading = items.loadState.refresh is LoadState.Loading
+    val isPageInError = items.isPageInError()
+    val categorySkeletonLatch = remember { CategorySkeletonLatch() }
+    val rawCategorySkeleton =
+        categorySkeletonLatch.update(firstPageLoadingStartCount, isRefreshLoading, isPageInError)
+    // Smooth the raw latch: show the skeleton immediately on a category switch, release it as soon as
+    // items arrive, otherwise hold it briefly so the refresh oscillation settles straight into
+    // "No messages" without an empty→skeleton→empty blink. See ET-6594.
+    val showCategorySkeleton = rememberSkeletonVisibility(
+        rawVisible = rawCategorySkeleton,
+        hasItems = items.itemCount > 0
+    )
+
+    val rawViewState = remember(items.loadState, items.itemCount, state, showCategorySkeleton) {
         when {
             state is MailboxListState.Loading -> MailboxScreenState.Loading
             state is MailboxListState.CouldNotLoadUserSession -> MailboxScreenState.CouldNotLoadUserSession
             searchMode.isInSearch() -> items.mapToUiStatesInSearch(searchMode, lastViewState)
+            showCategorySkeleton -> MailboxScreenState.Loading
             else -> items.mapToUiStates(refreshOngoing)
         }
     }
+
+    // A change of location means the user navigated somewhere else and a skeleton is appropriate;
+    // otherwise the reload happened in place (unread / spam-trash filter toggle, pull-to-refresh) and the
+    // last settled view is kept instead of flashing one. See SettledViewLatch and ET-6594.
+    val location = (state as? MailboxListState.Data)?.let {
+        MailboxLocation(
+            userId = userId,
+            labelId = it.currentMailLabel.id.labelId.id,
+            categoryId = activeCategoryId,
+            isInSearch = searchMode.isInSearch()
+        )
+    }
+    val settledViewLatch = remember { SettledViewLatch() }
+    val currentViewState = settledViewLatch.update(
+        rawView = rawViewState,
+        location = location,
+        isPagerReloading = showCategorySkeleton || isRefreshLoading
+    )
 
     BackHandler(
         state is MailboxListState.Data.ViewMode && searchMode.isInSearch()

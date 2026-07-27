@@ -52,8 +52,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -70,6 +73,8 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
+import ch.protonmail.android.feature.spotlight.HomeRecategoriseSpotlightViewModel
+import ch.protonmail.android.mailcategory.presentation.RecategoriseBottomSheet
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.SnackbarError
@@ -107,7 +112,6 @@ import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.onboarding.Onboarding
 import ch.protonmail.android.navigation.route.addAppIconSettings
 import ch.protonmail.android.navigation.route.addAppSettings
-import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addAutoLockIntervalSettings
 import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
@@ -118,6 +122,7 @@ import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
+import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addCustomizeToolbarSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
@@ -171,13 +176,18 @@ fun Home(
     springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
-    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel()
+    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel(),
+    recategoriseSpotlightViewModel: HomeRecategoriseSpotlightViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = navBackStackEntry?.destination?.route
 
     val snackbarHost = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.NORM) }
+    // Measured height of the snackbar host (0.dp when hidden), used to lift the mailbox/detail
+    // floating controls so multi-line snackbars never overlap them.
+    var snackbarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
     val isDrawerSwipeGestureEnabled = remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle(HomeState.Initial)
@@ -188,6 +198,7 @@ fun Home(
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
+    val recategoriseSpotlightState by recategoriseSpotlightViewModel.state.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -198,7 +209,8 @@ fun Home(
                 contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
-                summerCampaignEligibilityState
+                summerCampaignEligibilityState,
+                recategoriseSpotlightState
             )
         }
     }
@@ -476,7 +488,7 @@ fun Home(
             }
 
             is HomeInterstitialPriority.FeatureSpotlight -> {
-                navController.navigate(Screen.FeatureSpotlight.route)
+                navController.navigate(Screen.FeatureSpotlight(priority.userType))
             }
 
             is HomeInterstitialPriority.ContentSearch -> {
@@ -506,6 +518,9 @@ fun Home(
                 )
             }
 
+            // Rendered below via its own self-contained bottom sheet.
+            is HomeInterstitialPriority.Recategorise -> Unit
+
             is HomeInterstitialPriority.None -> {
                 if (showBottomSheet) {
                     scope.launch { bottomSheetState.hide() }
@@ -513,6 +528,12 @@ fun Home(
                 }
             }
         }
+    }
+
+    if (interstitialPriority is HomeInterstitialPriority.Recategorise &&
+        currentDestinationRoute == Screen.Mailbox.route
+    ) {
+        RecategoriseBottomSheet(onDismiss = { recategoriseSpotlightViewModel.markPersonaliseSeen() })
     }
 
     val eventLoopErrorString = stringResource(R.string.home_event_loop_error_snackbar)
@@ -636,7 +657,7 @@ fun Home(
                     ) {
                         // home
                         addConversationDetail(
-                            isSnackbarVisible = { snackbarHost.snackbarHostState.currentSnackbarData != null },
+                            snackbarHeight = { snackbarHeight },
                             actions = ConversationDetail.Actions(
                                 onExit = { notifyUserMessage ->
                                     navController.navigateBack()
@@ -746,7 +767,7 @@ fun Home(
                             onEvent = eventHandler,
                             showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
                             onShowRatingBooster = activityActions.launchRatingBooster,
-                            isSnackbarVisible = { snackbarHost.snackbarHostState.currentSnackbarData != null }
+                            snackbarHeight = { snackbarHeight }
                         )
                         addAccountsManager(
                             navController,
@@ -869,7 +890,10 @@ fun Home(
                 DismissableSnackbarHost(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .navigationBarsPadding(),
+                        .navigationBarsPadding()
+                        // Measured inside navigationBarsPadding, so this excludes the inset but still
+                        // includes the snackbar's own margin (0 when no snackbar is shown).
+                        .onSizeChanged { snackbarHeight = with(density) { it.height.toDp() } },
                     protonSnackbarHostState = snackbarHost
                 )
             }

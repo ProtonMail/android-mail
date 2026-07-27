@@ -27,7 +27,6 @@ import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
@@ -245,11 +244,6 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideFeatureSpotlightEnabledDef(): FeatureFlagDefinition = FeatureSpotlight
-
-    @Provides
-    @Singleton
-    @IsCategoryViewEnabled
-    fun provideCategoryViewEnabled(factory: BooleanFeatureFlagFactory) = factory.create(CategoryView.key, false)
 
     @Provides
     @IntoSet

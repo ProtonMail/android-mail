@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailspotlight.presentation.model
 
-internal enum class SpotlightUserType {
+enum class SpotlightUserType {
     B2C,
     B2B
 }

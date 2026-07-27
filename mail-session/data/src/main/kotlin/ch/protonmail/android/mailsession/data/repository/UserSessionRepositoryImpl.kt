@@ -237,5 +237,8 @@ class UserSessionRepositoryImpl @Inject constructor(
 
     override suspend fun updateCategoryView(userId: UserId, enabled: Boolean): Either<DataError, Unit> =
         getUserSession(userId)?.updateCategoryView(enabled) ?: DataError.Local.NoUserSession.left()
+
+    override suspend fun isCategoryViewEnabled(userId: UserId): Either<DataError, Boolean> =
+        getUserSession(userId)?.isCategoryViewEnabled() ?: DataError.Local.NoUserSession.left()
 }
 

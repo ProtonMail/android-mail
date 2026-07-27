@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.sample.AddressIdSample
 import ch.protonmail.android.mailcommon.domain.sample.AvatarInformationSample
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.Label
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -262,7 +263,8 @@ object MessageSample {
         userId: UserId = UserIdSample.Primary,
         unread: Boolean = false,
         customLabels: List<Label> = emptyList(),
-        exclusiveLocation: ExclusiveLocation = ExclusiveLocation.System(SystemLabelId.Inbox, LabelId("1"))
+        exclusiveLocation: ExclusiveLocation = ExclusiveLocation.System(SystemLabelId.Inbox, LabelId("1")),
+        category: CategoryLocation = CategoryLocation.NoValue
     ) = Message(
         messageId = messageId,
         conversationId = conversationId,
@@ -288,6 +290,7 @@ object MessageSample {
         customLabels = customLabels,
         avatarInformation = AvatarInformationSample.avatarSample,
         exclusiveLocation = exclusiveLocation,
+        category = category,
         isDraft = false,
         isScheduled = false,
         isReplyAllowed = true,

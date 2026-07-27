@@ -51,6 +51,7 @@ object MessageDetailHeaderUiModelSample {
         shouldShowAttachmentIcon = false,
         shouldShowStar = isStarred,
         location = location,
+        category = null,
         time = time,
         extendedTime = extendedTime,
         shouldShowUndisclosedRecipients = false,

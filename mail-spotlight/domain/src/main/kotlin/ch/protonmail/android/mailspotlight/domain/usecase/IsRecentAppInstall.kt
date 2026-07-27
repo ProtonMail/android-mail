@@ -22,14 +22,14 @@ import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 class IsRecentAppInstall @Inject constructor(
     private val appInstallRepository: AppInstallRepository,
     private val clock: Clock
 ) {
 
-    operator fun invoke(threshold: Duration = 1.days): Boolean {
+    operator fun invoke(threshold: Duration = 1.hours): Boolean {
         val installTime = appInstallRepository.getFirstInstallTime()
         val now = clock.now().toEpochMilliseconds()
         return now - installTime < threshold.inWholeMilliseconds

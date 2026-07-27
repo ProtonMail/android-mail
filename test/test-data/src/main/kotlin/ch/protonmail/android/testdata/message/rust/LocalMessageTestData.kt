@@ -30,6 +30,7 @@ import uniffi.mail_uniffi.LabelColor
 import uniffi.mail_uniffi.MessageFlags
 import uniffi.mail_uniffi.MessageRecipient
 import uniffi.mail_uniffi.MessageSender
+import uniffi.mail_uniffi.SystemLabel
 
 object LocalMessageTestData {
     const val RAW_SUBJECT = "Subject"
@@ -219,7 +220,8 @@ object LocalMessageTestData {
         flags: MessageFlags = MessageFlags(0uL),
         starred: Boolean = false,
         attachments: List<LocalAttachmentMetadata> = emptyList(),
-        avatarInformation: AvatarInformation = AvatarInformation("A", "blue")
+        avatarInformation: AvatarInformation = AvatarInformation("A", "blue"),
+        category: SystemLabel? = null
     ) = LocalMessageMetadata(
         id = id,
         conversationId = LocalConversationId(50.toULong()),
@@ -244,7 +246,7 @@ object LocalMessageTestData {
         attachmentsMetadata = attachments,
         customLabels = labels,
         location = null,
-        category = null,
+        category = category,
         avatar = avatarInformation,
         isDraft = false,
         isScheduled = false,

@@ -37,7 +37,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelM
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LargeClass")
 class MailboxListReducer @Inject constructor(
     private val avatarImageUiModelMapper: AvatarImageUiModelMapper
 ) {
@@ -93,6 +93,28 @@ class MailboxListReducer @Inject constructor(
             is MailboxEvent.PaginatorInvalidated -> reducePaginatorInvalidated(operation, currentState)
             is MailboxEvent.CouldNotLoadUserSession -> reduceCouldNotLoadUserSession()
             is MailboxEvent.LoadingBarStateUpdated -> reduceLoadingBarStateUpdated(operation, currentState)
+            is MailboxEvent.FirstPageLoadingChanged -> reduceFirstPageLoadingChanged(operation, currentState)
+        }
+    }
+
+    private fun reduceFirstPageLoadingChanged(
+        operation: MailboxEvent.FirstPageLoadingChanged,
+        currentState: MailboxListState
+    ): MailboxListState {
+        // Only the start edge matters: bump the counter so the UI can edge-detect it even through the
+        // conflated StateFlow. The end edge is ignored — the skeleton is dismissed by the paging refresh
+        // settling, not by this event. See ET-6553 and MailboxListState.Data.firstPageLoadingStartCount.
+        if (!operation.isLoading) return currentState
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                firstPageLoadingStartCount = currentState.firstPageLoadingStartCount + 1
+            )
+
+            is MailboxListState.Data.SelectionMode -> currentState.copy(
+                firstPageLoadingStartCount = currentState.firstPageLoadingStartCount + 1
+            )
+
+            else -> currentState
         }
     }
 

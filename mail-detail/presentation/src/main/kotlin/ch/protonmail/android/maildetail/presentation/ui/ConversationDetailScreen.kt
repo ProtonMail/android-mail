@@ -66,9 +66,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -177,7 +179,7 @@ fun ConversationDetailScreen(
     navigationArgs: ConversationDetail.NavigationArgs,
     topBarState: ConversationTopBarState,
     isDirectionForwards: () -> Boolean,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val viewModel = hiltViewModel<ConversationDetailViewModel, ConversationDetailViewModel.Factory>(
         key = conversationId.id + navigationArgs.initialScrollToMessageId + navigationArgs.singleMessageMode
@@ -557,7 +559,7 @@ fun ConversationDetailScreen(
                 state = state,
                 topBarState = topBarState,
                 isDirectionForwards = isDirectionForwards,
-                isSnackbarVisible = isSnackbarVisible,
+                snackbarHeight = snackbarHeight,
                 actions = ConversationDetailScreen.Actions(
                     onExit = actions.onExit,
                     onExitWithError = {
@@ -736,14 +738,27 @@ private fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     topBarState: ConversationTopBarState,
     isDirectionForwards: () -> Boolean,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val snackbarHostState = remember { ProtonSnackbarHostState() }
-    val isSnackbarVisible = isSnackbarVisible || snackbarHostState.snackbarHostState.currentSnackbarData != null
-    val snackbarOffset by animateDpAsState(
-        targetValue = if (isSnackbarVisible) MailDimens.SnackbarFabOffset else 0.dp,
+    val density = LocalDensity.current
+    // Height of this screen's own snackbar (measured below); combine with the host snackbar height
+    // passed from Home and clear whichever is taller so neither can overlap the toolbar.
+    //
+    // Both are measured host heights, which include Material3's built-in margin on either side of the
+    // snackbar. Only the visible snackbar plus its top margin rises above the navigation bar, so clear
+    // that rather than the full measurement — otherwise the bottom margin is counted twice and the
+    // toolbar floats too high. Taking the larger of this and the resting padding keeps the two from
+    // stacking as well.
+    var localSnackbarHeight by remember { mutableStateOf(0.dp) }
+    val toolbarBottomPadding by animateDpAsState(
+        targetValue = maxOf(
+            ProtonDimens.Spacing.ExtraLarge,
+            maxOf(snackbarHeight, localSnackbarHeight) - MailDimens.SnackbarOuterMargin +
+                MailDimens.SnackbarFabGap
+        ),
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-        label = "snackbarOffset"
+        label = "toolbarBottomPadding"
     )
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
     val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
@@ -950,7 +965,7 @@ private fun ConversationDetailScreen(
         FloatingBottomToolbar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = ProtonDimens.Spacing.ExtraLarge + snackbarOffset)
+                .padding(bottom = toolbarBottomPadding)
                 .navigationBarsPadding(),
             state = state.bottomBarState,
             viewActionCallbacks = BottomActionBar.Actions(
@@ -988,6 +1003,9 @@ private fun ConversationDetailScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
+                // Measured inside navigationBarsPadding, so this excludes the inset but still includes
+                // the snackbar's own margin (0 when no snackbar is shown).
+                .onSizeChanged { localSnackbarHeight = with(density) { it.height.toDp() } }
                 .testTag(CommonTestTags.SnackbarHost),
             protonSnackbarHostState = snackbarHostState
         )

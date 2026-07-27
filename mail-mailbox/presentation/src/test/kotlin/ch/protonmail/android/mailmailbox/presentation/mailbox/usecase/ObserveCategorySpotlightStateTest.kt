@@ -65,7 +65,6 @@ class ObserveCategorySpotlightStateTest {
     fun `given unseen already seen, then unseen spotlight is not shown`() = runTest {
         // Given
         every { observeCategorySpotlightSeen(CategorySpotlightType.UnseenCategory) } returns flowOf(true.right())
-        every { observeCategorySpotlightSeen(CategorySpotlightType.Personalise) } returns flowOf(true.right())
 
         // When
         invoke(categories = listOf(unseenCategory)).test {
@@ -99,46 +98,28 @@ class ObserveCategorySpotlightStateTest {
     }
 
     @Test
-    fun `given unseen consumed but personalise not seen, then personalise spotlight is shown`() = runTest {
+    fun `given unseen consumed, then spotlight is hidden`() = runTest {
         // Given
         every { observeCategorySpotlightSeen(CategorySpotlightType.UnseenCategory) } returns flowOf(true.right())
-        every { observeCategorySpotlightSeen(CategorySpotlightType.Personalise) } returns flowOf(false.right())
 
         // When
         invoke(categories = listOf(unseenCategory)).test {
             // Then
-            assertEquals(CategorySpotlightState.Shown.Personalise, awaitItem())
+            assertEquals(CategorySpotlightState.Hidden, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `given both spotlights eligible, then unseen spotlight is shown`() = runTest {
-        // When
-        invoke(categories = listOf(unseenCategory)).test {
-            // Then
-            assertEquals(CategorySpotlightState.Shown.UnseenCategory(unseenCategory), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `given unseen dismissed in the current session, then personalise spotlight is shown`() = runTest {
+    fun `given unseen dismissed in the current session, then spotlight is hidden`() = runTest {
         // When
         invoke(categories = listOf(unseenCategory), unseenDismissed = flowOf(true)).test {
             // Then
-            assertEquals(CategorySpotlightState.Shown.Personalise, awaitItem())
+            assertEquals(CategorySpotlightState.Hidden, awaitItem())
             awaitComplete()
         }
     }
 
-    private fun invoke(
-        categories: List<CategoryItemUiModel>?,
-        unseenDismissed: Flow<Boolean> = flowOf(false),
-        personaliseDismissed: Flow<Boolean> = flowOf(false)
-    ) = observeCategorySpotlightState(
-        categories = flowOf(categories),
-        unseenDismissed = unseenDismissed,
-        personaliseDismissed = personaliseDismissed
-    )
+    private fun invoke(categories: List<CategoryItemUiModel>?, unseenDismissed: Flow<Boolean> = flowOf(false)) =
+        observeCategorySpotlightState(categories = flowOf(categories), unseenDismissed = unseenDismissed)
 }

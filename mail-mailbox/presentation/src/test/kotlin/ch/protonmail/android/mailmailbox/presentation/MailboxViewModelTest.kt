@@ -93,7 +93,9 @@ import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFirstPageLoadingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarControllerFactory
@@ -117,7 +119,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -145,6 +146,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
@@ -362,6 +364,10 @@ internal class MailboxViewModelTest {
         every { this@mockk() } returns emptyFlow()
     }
 
+    private val observeMailboxFirstPageLoadingStatus = mockk<ObserveMailboxFirstPageLoadingStatus> {
+        every { this@mockk() } returns emptyFlow()
+    }
+
     private val loadingBarController: MailboxLoadingBarStateController =
         mockk<MailboxLoadingBarStateController>(relaxed = true).apply {
             every { observeState() } returns emptyFlow()
@@ -382,8 +388,8 @@ internal class MailboxViewModelTest {
     private val updateUnreadFilter = mockk<UpdateUnreadFilter>()
     private val updateShowSpamTrashFilter = mockk<UpdateShowSpamTrashFilter>()
 
-    private val isCategoryViewEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns false
+    private val isCategoryViewEnabled = mockk<IsCategoryViewEnabled> {
+        coEvery { this@mockk.invoke(any()) } returns false
     }
 
     private val isContentSearchEnabled = mockk<FeatureFlag<Boolean>> {
@@ -398,7 +404,7 @@ internal class MailboxViewModelTest {
     }
 
     private val observeCategorySpotlightState = mockk<ObserveCategorySpotlightState> {
-        every { this@mockk.invoke(any(), any(), any()) } returns emptyFlow()
+        every { this@mockk.invoke(any(), any()) } returns emptyFlow()
     }
     private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen> {
         coEvery { this@mockk.invoke(any()) } returns Unit.right()
@@ -467,6 +473,7 @@ internal class MailboxViewModelTest {
             updateUnreadFilter = updateUnreadFilter,
             updateShowSpamTrashFilter = updateShowSpamTrashFilter,
             observeMailboxFetchNewStatus = observeMailboxFetchNewStatus,
+            observeMailboxFirstPageLoadingStatus = observeMailboxFirstPageLoadingStatus,
             loadingBarControllerFactory = loadingBarControllerFactory,
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,
@@ -826,6 +833,52 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `isCategoryViewEnabled is re-evaluated when primary user changes`() = runTest {
+        // Given
+        val currentUserIdFlow = MutableStateFlow(userId)
+        every { observePrimaryUserId() } returns currentUserIdFlow
+        // The flag resolves to different values for the two users
+        coEvery { isCategoryViewEnabled(any()) } returns false andThen true
+
+        mailboxViewModel.isCategoryViewEnabled.test {
+            // Then
+            assertEquals(false, awaitItem())
+
+            // When
+            currentUserIdFlow.emit(userId1)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `isContentSearchEnabled is re-evaluated when primary user changes`() = runTest {
+        // Given
+        val currentUserIdFlow = MutableStateFlow(userId)
+        every { observePrimaryUserId() } returns currentUserIdFlow
+        // The flag resolves to different values for the two users
+        coEvery { isContentSearchEnabled.get() } returns false andThen true
+
+        mailboxViewModel.isContentSearchEnabled.test {
+            // Then
+            assertEquals(false, awaitItem())
+
+            // When
+            currentUserIdFlow.emit(userId1)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -1520,6 +1573,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -1534,6 +1588,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.spamSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2000,6 +2055,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2015,6 +2071,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.inboxSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2052,7 +2109,7 @@ internal class MailboxViewModelTest {
         mailboxViewModel.items.test {
             awaitItem()
             verify(exactly = 1) {
-                pagerFactory.create(userId, folder.id, any(), any())
+                pagerFactory.create(userId, folder.id, any(), any(), any())
             }
 
             // When
@@ -2065,7 +2122,7 @@ internal class MailboxViewModelTest {
             // Then
             expectNoEvents()
             verify(exactly = 1) {
-                pagerFactory.create(userId, folder.id, any(), any())
+                pagerFactory.create(userId, folder.id, any(), any(), any())
             }
             cancelAndIgnoreRemainingEvents()
         }
@@ -2101,6 +2158,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2116,6 +2174,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Conversation,
+                    any(),
                     any()
                 )
             }
@@ -2161,6 +2220,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -2188,6 +2248,7 @@ internal class MailboxViewModelTest {
                     userId,
                     MailLabelTestData.archiveSystemLabel.id,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -3003,6 +3064,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Conversation,
+                    any(),
                     any()
                 )
             }
@@ -3016,6 +3078,7 @@ internal class MailboxViewModelTest {
                     userId,
                     initialLocationMailLabelId,
                     Message,
+                    any(),
                     any()
                 )
             }
@@ -3880,6 +3943,39 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `given the active category gains unseen items, then it is marked seen without switching category`() = runTest {
+        // Given
+        val category = CategoryLabelTestData.social.copy(isActive = true)
+        val labelWithCategory = MailLabelIdWithCategory(initialLocationMailLabelId, category.id)
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { observeLoadedLabelWithCategory() } returns MutableStateFlow(labelWithCategory)
+        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When (active category is loaded with no unseen)
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(category.copy(hasUnseen = false)))
+            )
+            advanceUntilIdle()
+
+            // Then it is not marked seen yet (nothing unseen)
+            coVerify(exactly = 0) { markCategoryLabelSeen(userId, category.id) }
+
+            // When a new item arrives in the still-active category (hasUnseen flips to true)
+            categoryViewStatusFlow.emit(
+                CategoryViewStatus.Available(categories = listOf(category.copy(hasUnseen = true)))
+            )
+            advanceUntilIdle()
+
+            // Then the active category is marked seen even though it never changed
+            coVerify(exactly = 1) { markCategoryLabelSeen(userId, category.id) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `should emit intermediate state on intent values fetch when it takes too long (success)`() = runTest {
         // Given
         val attachmentIdUiModel = AttachmentIdUiModel("attachment-id")
@@ -4396,11 +4492,96 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox pager is created with the currently selected category`() = runTest {
+        // Given
+        val selectedCategory = MailLabelTestData.socialCategoryLabelId
+        val locationFlow = MutableStateFlow(
+            MailLabelIdWithCategory(MailLabelTestData.inboxSystemLabel.id, selectedCategory)
+        )
+        every { observeSelectedLabelWithCategory() } returns locationFlow
+        every { observeLoadedMailLabelId() } returns locationFlow.map { it.mailLabelId }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxDataState()
+        expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
+
+        // When
+        mailboxViewModel.items.test {
+            awaitItem()
+
+            // Then
+            verify {
+                pagerFactory.create(
+                    userId = userId,
+                    selectedMailLabelId = MailLabelTestData.inboxSystemLabel.id,
+                    type = any(),
+                    searchQuery = any(),
+                    categoryLabelId = selectedCategory
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `given in search mode, when category view status has a default active category, reset is skipped`() = runTest {
+        // Given
+        val searchState = MailboxStateSampleData.Inbox.copy(
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = MailLabelTestData.allMailSystemLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                refreshErrorEffect = Effect.of(Unit),
+                refreshOngoing = false,
+                swipeActions = null,
+                searchState = MailboxSearchStateSampleData.NewSearch,
+                shouldShowFab = false,
+                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
+                loadingBarState = LoadingBarUiState.Hide
+            )
+        )
+        val defaultActiveStatus = CategoryViewStatus.Available(
+            categories = listOf(CategoryLabelTestData.primary)
+        )
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxViewAction.EnterSearchMode)
+        } returns searchState
+        expectPagerMock()
+        mailboxViewModel.submit(MailboxViewAction.EnterSearchMode)
+        advanceUntilIdle()
+
+        // When
+        categoryViewStatusFlow.emit(defaultActiveStatus)
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 0) { selectMailLabelId.resetSelectedCategory() }
+    }
+
+    @Test
+    fun `given not in search mode, when category view status has a default active category, reset is invoked`() =
+        runTest {
+            // Given
+            val defaultActiveStatus = CategoryViewStatus.Available(
+                categories = listOf(CategoryLabelTestData.primary)
+            )
+
+            // When
+            mailboxViewModel.state.test {
+                awaitItem()
+                categoryViewStatusFlow.emit(defaultActiveStatus)
+                advanceUntilIdle()
+
+                // Then
+                verify(exactly = 1) { selectMailLabelId.resetSelectedCategory() }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `given observe category spotlight state emits a shown state, it is forwarded to the reducer`() = runTest {
         // Given
         val unseenCategory = CategoryItemUiModelSample.social.copy(isActive = false, hasUnseen = true)
         val spotlightState = CategorySpotlightState.Shown.UnseenCategory(unseenCategory)
-        every { observeCategorySpotlightState(any(), any(), any()) } returns flowOf(spotlightState)
+        every { observeCategorySpotlightState(any(), any()) } returns flowOf(spotlightState)
         every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
 
         mailboxViewModel.state.test {
@@ -4412,28 +4593,6 @@ internal class MailboxViewModelTest {
                 mailboxReducer.newStateFrom(
                     any(),
                     MailboxEvent.CategorySpotlightStateChanged(spotlightState)
-                )
-            }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `given observe category spotlight state emits personalise, it is forwarded to the reducer`() = runTest {
-        // Given
-        every { observeCategorySpotlightState(any(), any(), any()) } returns
-            flowOf(CategorySpotlightState.Shown.Personalise)
-        every { mailboxReducer.newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
-
-        mailboxViewModel.state.test {
-            awaitItem()
-            advanceUntilIdle()
-
-            // Then
-            verify {
-                mailboxReducer.newStateFrom(
-                    any(),
-                    MailboxEvent.CategorySpotlightStateChanged(CategorySpotlightState.Shown.Personalise)
                 )
             }
             cancelAndIgnoreRemainingEvents()
@@ -4840,7 +4999,8 @@ internal class MailboxViewModelTest {
                 userId = user,
                 selectedMailLabelId = selectedLabel ?: any(),
                 type = itemType ?: any(),
-                searchQuery = searchQuery ?: any()
+                searchQuery = searchQuery ?: any(),
+                categoryLabelId = any()
             )
         } returns mockk mockPager@{ every { this@mockPager.flow } returns pagingDataFlow }
     }

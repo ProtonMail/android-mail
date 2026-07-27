@@ -18,11 +18,13 @@
 
 package ch.protonmail.android.navigation
 
+import ch.protonmail.android.feature.spotlight.RecategoriseSpotlightState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
+import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.summercampaign.SummerCampaignModalState
@@ -31,11 +33,12 @@ sealed interface HomeInterstitialPriority {
     data object Loading : HomeInterstitialPriority
     data object Onboarding : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
-    data object FeatureSpotlight : HomeInterstitialPriority
+    data class FeatureSpotlight(val userType: SpotlightUserType) : HomeInterstitialPriority
     data object ContentSearch : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
+    data object Recategorise : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
 
@@ -47,7 +50,8 @@ fun resolveHomeInterstitialPriority(
     contentSearchBottomSheetState: ContentSearchBottomSheetState,
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
-    summerCampaignState: SummerCampaignModalState
+    summerCampaignState: SummerCampaignModalState,
+    recategoriseState: RecategoriseSpotlightState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
     @Suppress("ComplexCondition")
@@ -55,7 +59,8 @@ fun resolveHomeInterstitialPriority(
         notificationsState is NotificationsPermissionState.Loading ||
         featureSpotlightState is FeatureSpotlightState.Loading ||
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Loading ||
-        blackFridayState is BlackFridayModalState.Loading
+        blackFridayState is BlackFridayModalState.Loading ||
+        recategoriseState is RecategoriseSpotlightState.Loading
     ) {
         return HomeInterstitialPriority.Loading
     }
@@ -65,7 +70,10 @@ fun resolveHomeInterstitialPriority(
         notificationsState is NotificationsPermissionState.RequiresInteraction ->
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 
-        featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
+        featureSpotlightState is FeatureSpotlightState.Show ->
+            HomeInterstitialPriority.FeatureSpotlight(featureSpotlightState.userType)
+
+        recategoriseState is RecategoriseSpotlightState.Show -> HomeInterstitialPriority.Recategorise
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch
         summerCampaignState is SummerCampaignModalState.Show ->
             HomeInterstitialPriority.SummerCampaign(summerCampaignState)

@@ -90,10 +90,6 @@ annotation class IsFeatureSpotlightEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IsCategoryViewEnabled
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class IsPushProcessingWithoutWorkerEnabled
 
 @Qualifier

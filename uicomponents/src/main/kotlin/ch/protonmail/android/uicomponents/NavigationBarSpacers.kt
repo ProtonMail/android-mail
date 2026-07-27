@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -33,7 +34,7 @@ fun TopNavigationBarSpacer() {
     Spacer(
         modifier = Modifier.height(
             WindowInsets
-                .navigationBars
+                .systemBars
                 .only(WindowInsetsSides.Top)
                 .asPaddingValues()
                 .calculateTopPadding()

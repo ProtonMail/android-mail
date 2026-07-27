@@ -50,7 +50,9 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -83,13 +85,21 @@ internal fun MailboxFabToolbarMorph(
     onUnreadFilterEnabled: () -> Unit,
     onUnreadFilterDisabled: () -> Unit,
     isSearchButtonVisible: Boolean = false,
-    isSnackbarVisible: Boolean = false,
+    snackbarHeight: Dp = 0.dp,
     modifier: Modifier = Modifier
 ) {
-    val snackbarOffset by animateDpAsState(
-        targetValue = if (isSnackbarVisible) MailDimens.SnackbarFabOffset else 0.dp,
+    // [snackbarHeight] is the measured height of the snackbar host (0.dp when hidden), which includes
+    // Material3's built-in margin on both sides. Only the visible snackbar plus its top margin rises
+    // above the navigation bar, so clear that rather than the full measurement, otherwise the bottom
+    // margin gets counted twice and the controls float too high. Owning the resting padding here (and
+    // taking the larger of the two) keeps it from stacking on top of the lift as well.
+    val bottomPadding by animateDpAsState(
+        targetValue = maxOf(
+            ProtonDimens.Spacing.Large,
+            snackbarHeight - MailDimens.SnackbarOuterMargin + MailDimens.SnackbarFabGap
+        ),
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-        label = "snackbarOffset"
+        label = "fabBottomPadding"
     )
 
     val hasWindowFocus by rememberWindowFocusState()
@@ -100,7 +110,7 @@ internal fun MailboxFabToolbarMorph(
 
     Box(
         modifier = modifier
-            .padding(bottom = snackbarOffset)
+            .padding(bottom = bottomPadding)
             .fillMaxWidth()
     ) {
         UnreadFilterFab(

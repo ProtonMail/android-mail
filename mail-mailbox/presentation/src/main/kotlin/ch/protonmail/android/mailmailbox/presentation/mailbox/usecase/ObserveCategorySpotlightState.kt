@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
- * Decides which category-view onboarding banner (if any) should be shown.
+ * Decides whether the unseen-dot category-view onboarding banner should be shown.
  *
- * The unseen-dot banner has priority: when both are eligible, it is shown and the Personalise
- * banner surfaces on a later run once the unseen one is consumed
+ * The Personalise spotlight is handled separately as a Home interstitial (see
+ * `HomeRecategoriseSpotlightViewModel`), so it is intentionally not produced here.
  */
 class ObserveCategorySpotlightState @Inject constructor(
     private val observeCategorySpotlightSeen: ObserveCategorySpotlightSeen,
@@ -43,26 +43,19 @@ class ObserveCategorySpotlightState @Inject constructor(
 
     operator fun invoke(
         categories: Flow<List<CategoryItemUiModel>?>,
-        unseenDismissed: Flow<Boolean>,
-        personaliseDismissed: Flow<Boolean>
+        unseenDismissed: Flow<Boolean>
     ): Flow<CategorySpotlightState> = combine(
         observeConsumed(CategorySpotlightType.UnseenCategory, unseenDismissed),
-        observeConsumed(CategorySpotlightType.Personalise, personaliseDismissed),
         observeOnboardingCompleted(),
         categories.distinctUntilChanged()
-    ) { unseenConsumed, personaliseConsumed, onboardingDone, availableCategories ->
-        // Hold the spotlights back until the onboarding is finished and the category bar is available.
+    ) { unseenConsumed, onboardingDone, availableCategories ->
+        // Hold the spotlight back until the onboarding is finished and the category bar is available.
         if (!onboardingDone || availableCategories == null) return@combine CategorySpotlightState.Hidden
 
-        val unseen = if (!unseenConsumed) {
+        if (!unseenConsumed) {
             unseenStateFrom(availableCategories)
         } else {
             CategorySpotlightState.Hidden
-        }
-        when {
-            unseen is CategorySpotlightState.Shown -> unseen
-            !personaliseConsumed -> CategorySpotlightState.Shown.Personalise
-            else -> CategorySpotlightState.Hidden
         }
     }.distinctUntilChanged()
 

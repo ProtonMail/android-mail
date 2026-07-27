@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
 import ch.protonmail.android.mailcommon.data.mapper.LocalMimeTypeCategory
 import ch.protonmail.android.maillabel.data.mapper.toExclusiveLocation
 import ch.protonmail.android.maillabel.data.mapper.toLabel
+import ch.protonmail.android.maillabel.domain.model.CategoryLocation
 import ch.protonmail.android.mailmessage.data.mapper.toAddressId
 import ch.protonmail.android.mailmessage.data.mapper.toConversationId
 import ch.protonmail.android.mailmessage.data.mapper.toMessage
@@ -249,6 +250,7 @@ class MessageMapperTest {
         assertEquals(flags.value.toLong(), message.flags)
         assertEquals(0, message.attachmentCount.calendar)
         assertEquals(exclusiveLocation.toExclusiveLocation(), message.exclusiveLocation)
+        assertEquals(CategoryLocation.NoValue, message.category)
     }
 
     @Test
