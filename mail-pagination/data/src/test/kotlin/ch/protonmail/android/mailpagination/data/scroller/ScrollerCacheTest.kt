@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailpagination.data.scroller
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import uniffi.mail_uniffi.MailScrollerError
 import uniffi.mail_uniffi.ProtonError
@@ -130,6 +132,31 @@ class ScrollerCacheTest {
 
         // Then
         assertSnapshotIds(listOf("A1", "B1", "C1"), cache.snapshot)
+    }
+
+    @Test
+    fun `needsResync is set when an update cannot be applied and cleared by the next full replacement`() {
+        // Given
+        val cache = ScrollerCache<ScrollerItem>()
+        cache.applyUpdate(ScrollerUpdate.Append(scrollerId = DefaultScrollerId, items = items("A1", "B1", "C1")))
+        assertFalse(cache.needsResync)
+
+        // When
+        cache.applyUpdate(
+            ScrollerUpdate.ReplaceFrom(scrollerId = DefaultScrollerId, idx = 10, items = items("X1"))
+        )
+
+        // Then
+        assertTrue(cache.needsResync)
+
+        // When
+        cache.applyUpdate(
+            ScrollerUpdate.ReplaceFrom(scrollerId = DefaultScrollerId, idx = 0, items = items("D1"))
+        )
+
+        // Then
+        assertFalse(cache.needsResync)
+        assertSnapshotIds(listOf("D1"), cache.snapshot)
     }
 
     @Test

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.Either
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
@@ -120,22 +121,45 @@ class RustConversationsQueryImpl @Inject constructor(
                     )
                     loadNextConversationPage()
                 } else {
-                    Timber.d("rust-conversation-query: calling reload() for pageKey: %s", pageKey)
+                    Timber.d("rust-conversation-query: refreshing for pageKey: %s", pageKey)
                     reloadConversations()
                 }
             }
         }
     }
 
+    /**
+     * Serves a Paging refresh — "all the items loaded so far" — from [ScrollerCache], which mirrors the
+     * scroller's list because both are built from the same stream of updates.
+     *
+     * Rust processes scroller calls serially, so getItems() can sit behind an in-flight fetch for
+     * seconds (a switch to a category that is not synced yet is the worst case) and then answer with
+     * the very list we are already holding. Paging keeps the previous location's items on screen for
+     * that whole wait, so only ask Rust when we have nothing to serve.
+     *
+     * Note that we must not do both: a getItems() response no request is waiting for is treated as an
+     * invalidation, which would refresh, serve the cache, call getItems() again, and never settle. So
+     * when the cache reports it could not apply an update — the one case where it stops mirroring the
+     * scroller — Rust re-pushing the list is how it recovers, and we go there instead.
+     */
     private suspend fun reloadConversations(): Either<PaginationError, List<LocalConversation>> {
+        val cached = paginatorMutex.withLock { servableCachedItems() }
+        if (cached.isNotEmpty()) {
+            Timber.d("rust-conversation-query: serving refresh from cache (%d items)", cached.size)
+            return cached.right()
+        }
+
+        Timber.d("rust-conversation-query: nothing cached, calling reload()")
         val deferred = setPendingRequest(RequestType.Refresh)
         paginatorState?.paginatorWrapper?.reload()
+            ?.onLeft { completeRejectedRequest(deferred, RequestType.Refresh, it) }
         return deferred.await()
     }
 
     private suspend fun loadNextConversationPage(): Either<PaginationError, List<LocalConversation>> {
         val deferred = setPendingRequest(RequestType.Append)
         paginatorState?.paginatorWrapper?.nextPage()
+            ?.onLeft { completeRejectedRequest(deferred, RequestType.Append, it) }
 
         return deferred.await().let { firstResponse ->
             val followUp = paginatorState?.pendingRequest?.followUpResponse
@@ -338,10 +362,44 @@ class RustConversationsQueryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Completes a request that Rust rejected on the call itself, with the same fallback the update
+     * handler applies to an unexpected first response: the cache snapshot for a Refresh, no items for
+     * an Append.
+     *
+     * A rejected call gets no update callback, so leaving the request pending blocks the Paging load
+     * until an unrelated update happens to resolve it — and Paging keeps the previous list on screen
+     * for the whole wait. It is exactly what stalls a switch to a category that is not synced yet.
+     */
+    private suspend fun completeRejectedRequest(
+        deferred: CompletableDeferred<Either<PaginationError, List<LocalConversation>>>,
+        type: RequestType,
+        error: PaginationError
+    ) {
+        Timber.w("rust-conversation-query: %s call rejected by Rust: %s", type, error)
+        paginatorMutex.withLock {
+            if (paginatorState?.pendingRequest?.response === deferred) {
+                paginatorState = paginatorState?.copy(pendingRequest = null)
+            }
+            deferred.complete(fallbackResponse(type).right())
+        }
+    }
+
     private suspend fun setPendingRequest(
         type: RequestType
     ): CompletableDeferred<Either<PaginationError, List<LocalConversation>>> {
         paginatorMutex.withLock {
+            // Paging can start a load while a previous one is still waiting (several invalidations in a
+            // row do exactly that). Only one pending request is tracked, so complete the one being
+            // replaced rather than orphaning its deferred and leaving that Paging load in flight forever.
+            paginatorState?.pendingRequest?.let { outgoing ->
+                if (!outgoing.isCompleted()) {
+                    Timber.w("rust-conversation-query: replacing a pending %s request", outgoing.type)
+                    outgoing.response.complete(fallbackResponse(outgoing.type).right())
+                    outgoing.followUpResponse?.complete(emptyList<LocalConversation>().right())
+                }
+            }
+
             val deferred = CompletableDeferred<Either<PaginationError, List<LocalConversation>>>()
             paginatorState = paginatorState?.copy(
                 pendingRequest = PendingRequest(
@@ -352,6 +410,24 @@ class RustConversationsQueryImpl @Inject constructor(
 
             return deferred
         }
+    }
+
+    // The cached items a refresh can be served with: none while the cache reports it could not apply an
+    // update, so that the getItems() call which repairs it still happens.
+    // Callers must hold [paginatorMutex].
+    private fun servableCachedItems(): List<LocalConversation> {
+        val cache = paginatorState?.scrollerCache ?: return emptyList()
+        return if (cache.needsResync) emptyList() else cache.snapshot
+    }
+
+    // What a request resolves to when no Rust response is coming: everything we hold for a Refresh
+    // (it asks for the loaded items), nothing for an Append (it asks for items beyond them).
+    // Mirrors ScrollerOnUpdateHandler's fallback. Callers must hold [paginatorMutex].
+    private fun cachedItems(): List<LocalConversation> = paginatorState?.scrollerCache?.snapshot ?: emptyList()
+
+    private fun fallbackResponse(type: RequestType): List<LocalConversation> = when (type) {
+        RequestType.Refresh -> cachedItems()
+        RequestType.Append -> emptyList()
     }
 
     private data class PaginatorState(

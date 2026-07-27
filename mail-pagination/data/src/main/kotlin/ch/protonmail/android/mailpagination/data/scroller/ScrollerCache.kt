@@ -25,6 +25,15 @@ class ScrollerCache<T> {
     private val items = mutableListOf<T>()
     val snapshot: List<T> get() = items.toList()
 
+    /**
+     * Set when an update could not be applied, which means this cache no longer mirrors the scroller's
+     * list. Callers that would otherwise serve the cache instead of querying the scroller (see
+     * `RustConversationsQueryImpl.reloadConversations`) should go to the scroller while it is set, so a
+     * drift cannot outlive the update that caused it. Cleared by the next full replacement of the list.
+     */
+    var needsResync: Boolean = false
+        private set
+
     fun itemCount(): Int = items.size
 
     fun applyUpdate(update: ScrollerUpdate<T>): List<T> {
@@ -37,12 +46,18 @@ class ScrollerCache<T> {
             is ScrollerUpdate.ReplaceFrom -> {
                 val idx = update.idx
                 when (idx) {
-                    in 0 until items.size -> {
+                    0 -> {
+                        items.clear()
+                        items.addAll(update.items)
+                        needsResync = false
+                    }
+
+                    in 1 until items.size -> {
                         items.subList(idx, items.size).clear()
                         items.addAll(update.items)
                     }
                     items.size -> items.addAll(update.items)
-                    else -> Timber.w("ReplaceFrom ignored: idx=$idx (size=${items.size})")
+                    else -> ignoreUpdate("ReplaceFrom", "idx=$idx")
                 }
             }
 
@@ -56,8 +71,10 @@ class ScrollerCache<T> {
                     items.size -> {
                         items.clear()
                         items.addAll(update.items)
+                        needsResync = false
                     }
-                    else -> Timber.w("ReplaceBefore ignored: idx=$idx (size=${items.size})")
+
+                    else -> ignoreUpdate("ReplaceBefore", "idx=$idx")
                 }
             }
 
@@ -66,11 +83,11 @@ class ScrollerCache<T> {
                 val toIdx = update.toIdx
                 when {
                     fromIdx !in 0..items.size ->
-                        Timber.w("ReplaceRange invalid fromIdx=$fromIdx (size=${items.size})")
+                        ignoreUpdate("ReplaceRange", "invalid fromIdx=$fromIdx")
                     toIdx !in 0..items.size ->
-                        Timber.w("ReplaceRange invalid toIdx=$toIdx (size=${items.size})")
+                        ignoreUpdate("ReplaceRange", "invalid toIdx=$toIdx")
                     fromIdx > toIdx ->
-                        Timber.w("ReplaceRange requires fromIdx <= toIdx (from=$fromIdx, to=$toIdx)")
+                        ignoreUpdate("ReplaceRange", "requires fromIdx <= toIdx (from=$fromIdx, to=$toIdx)")
                     else -> {
                         items.subList(fromIdx, toIdx).clear()
                         items.addAll(fromIdx, update.items)
@@ -83,5 +100,10 @@ class ScrollerCache<T> {
         }
 
         return snapshot
+    }
+
+    private fun ignoreUpdate(updateName: String, reason: String) {
+        Timber.w("$updateName ignored: $reason (size=${items.size})")
+        needsResync = true
     }
 }

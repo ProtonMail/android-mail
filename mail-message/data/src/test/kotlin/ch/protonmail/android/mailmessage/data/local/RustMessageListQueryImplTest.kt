@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -29,6 +28,7 @@ import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQueryImpl.Companion.NONE_FOLLOWUP_GRACE_MS
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
@@ -234,16 +234,15 @@ class RustMessageListQueryImplTest {
     }
 
     @Test
-    fun `returns all pages when called with PageToLoad All and paginator already exists`() = runTest {
+    fun `serves cached items without calling reload when called with PageToLoad All and paginator exists`() = runTest {
         // Given
         val firstPageMessages = listOf(
             LocalMessageTestData.AugWeatherForecast,
             LocalMessageTestData.SepWeatherForecast
         )
-        val reloadedMessages = listOf(
-            LocalMessageTestData.AugWeatherForecast,
-            LocalMessageTestData.SepWeatherForecast
-        )
+        // What Rust would answer a getItems() call with. The cached items are expected instead, so that
+        // a refresh never waits for a scroller that is busy fetching.
+        val reloadedMessages = listOf(LocalMessageTestData.OctWeatherForecast)
 
         val firstPageKey = PageKey.DefaultPageKey(
             labelId = inboxLabelId,
@@ -308,16 +307,79 @@ class RustMessageListQueryImplTest {
 
         // Then
         assertEquals(firstPageMessages.right(), firstResult)
-        assertEquals(reloadedMessages.right(), allResult)
+        assertEquals(firstPageMessages.right(), allResult)
 
         coVerify(exactly = 1) { paginator.nextPage() }
-        coVerify(exactly = 1) { paginator.reload() }
+        coVerify(exactly = 0) { paginator.reload() }
         coVerify(exactly = 1) {
             createRustMessagesPaginator(
                 mailbox = mailbox,
                 callback = any()
             )
         }
+    }
+
+    @Test
+    fun `calls reload when called with PageToLoad All and no items have been cached`() = runTest {
+        // Given
+        val reloadedMessages = listOf(LocalMessageTestData.OctWeatherForecast)
+
+        val firstPageKey = PageKey.DefaultPageKey(labelId = inboxLabelId, pageToLoad = PageToLoad.First)
+        val allPageKey = firstPageKey.copy(pageToLoad = PageToLoad.All)
+
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+
+        val paginator = mockk<MessagePaginatorWrapper> {
+            // The location is empty, so the first page leaves nothing in the cache.
+            coEvery { nextPage() } coAnswers {
+                launch {
+                    delay(100)
+                    callback.captured.onUpdate(
+                        MessageScrollerUpdate.List(
+                            MessageScrollerListUpdate.Append(items = emptyList(), scrollerId = DefaultScrollerId)
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { reload() } coAnswers {
+                launch {
+                    delay(100)
+                    callback.captured.onUpdate(
+                        MessageScrollerUpdate.List(
+                            MessageScrollerListUpdate.ReplaceFrom(
+                                idx = 0uL,
+                                items = reloadedMessages,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
+            coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+        }
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                callback = capture(callback)
+            )
+        } returns paginator.right()
+
+        // When
+        rustMessageListQuery.getMessages(userId, firstPageKey)
+        val allResult = rustMessageListQuery.getMessages(userId, allPageKey)
+
+        // Then
+        assertEquals(reloadedMessages.right(), allResult)
+        coVerify(exactly = 1) { paginator.reload() }
     }
 
     @Test
