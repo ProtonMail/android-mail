@@ -86,7 +86,7 @@ internal class MailboxActionMessageReducerTest(
                 expectedState = Effect.of(
                     ActionResult.UndoableActionResult(
                         TextUiModel.TextResWithArgs(
-                            R.string.mailbox_action_move_to_category,
+                            labelR.string.move_to_category_action_message,
                             listOf(customFolderName)
                         )
                     )
@@ -101,7 +101,7 @@ internal class MailboxActionMessageReducerTest(
                 expectedState = Effect.of(
                     ActionResult.UndoableActionResult(
                         TextUiModel.TextResWithArgs(
-                            R.string.mailbox_action_move_to_category,
+                            labelR.string.move_to_category_action_message,
                             listOf(customFolderName)
                         )
                     )

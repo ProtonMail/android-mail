@@ -30,6 +30,7 @@ import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomShe
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import javax.inject.Inject
+import ch.protonmail.android.maillabel.presentation.R as LabelR
 
 class ActionResultMapper @Inject constructor(
     private val mailLabelTextMapper: MailLabelTextMapper
@@ -48,22 +49,7 @@ class ActionResultMapper @Inject constructor(
         is ConversationDetailViewAction.MoveToInbox ->
             UndoableActionResult(TextUiModel(R.string.conversation_moved_to_inbox))
 
-        is ConversationDetailViewAction.MoveToCompleted -> {
-            val textRes = when (operation.entryPoint) {
-                is MoveToBottomSheetEntryPoint.Conversation -> R.string.conversation_moved_to_selected_destination
-                is MoveToBottomSheetEntryPoint.Message -> R.string.message_moved_to_selected_destination
-                else -> null
-            }
-
-            textRes?.let {
-                UndoableActionResult(
-                    message = TextUiModel.TextResWithArgs(
-                        value = it,
-                        formatArgs = listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
-                    )
-                )
-            }
-        }
+        is ConversationDetailViewAction.MoveToCompleted -> toMoveToActionResult(operation)
 
         is ConversationDetailViewAction.LabelAsCompleted -> if (operation.wasArchived) {
             val textRes = when (operation.entryPoint) {
@@ -107,5 +93,27 @@ class ActionResultMapper @Inject constructor(
             DefinitiveActionResult(TextUiModel(value = R.string.unsnooze_sheet_success))
 
         else -> null // No specific ActionResult for other operations
+    }
+
+    private fun toMoveToActionResult(operation: ConversationDetailViewAction.MoveToCompleted): ActionResult? {
+        val textRes = when {
+            operation.isCategory -> LabelR.string.move_to_category_action_message
+            operation.entryPoint is MoveToBottomSheetEntryPoint.Conversation ->
+                R.string.conversation_moved_to_selected_destination
+
+            operation.entryPoint is MoveToBottomSheetEntryPoint.Message ->
+                R.string.message_moved_to_selected_destination
+
+            else -> null
+        }
+
+        return textRes?.let {
+            UndoableActionResult(
+                message = TextUiModel.TextResWithArgs(
+                    value = it,
+                    formatArgs = listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
+                )
+            )
+        }
     }
 }

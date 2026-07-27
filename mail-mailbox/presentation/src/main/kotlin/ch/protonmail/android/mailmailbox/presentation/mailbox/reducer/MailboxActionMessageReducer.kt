@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.maillabel.presentation.R as LabelR
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -41,7 +42,7 @@ class MailboxActionMessageReducer @Inject constructor(
             is MailboxEvent.MoveToConfirmed.Category -> {
                 val destination = mailLabelTextMapper.mapToString(operation.label)
                 UndoableActionResult(
-                    TextUiModel(R.string.mailbox_action_move_to_category, destination)
+                    TextUiModel(LabelR.string.move_to_category_action_message, destination)
                 )
             }
 

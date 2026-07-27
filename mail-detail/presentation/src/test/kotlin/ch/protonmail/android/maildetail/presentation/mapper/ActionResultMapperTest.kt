@@ -26,12 +26,14 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheetEntryPoint
+import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import ch.protonmail.android.maillabel.presentation.R as LabelR
 
 internal class ActionResultMapperTest {
 
@@ -94,11 +96,36 @@ internal class ActionResultMapperTest {
     fun `returns undoable result with label text when operation is MoveToDestinationConfirmed`() {
         // Given
         val mailLabelText = MailLabelText("Inbox")
-        val operation = ConversationDetailViewAction.MoveToCompleted(mailLabelText, mockk())
+        val operation = ConversationDetailViewAction.MoveToCompleted(
+            mailLabelText,
+            MoveToBottomSheetEntryPoint.Conversation,
+            isCategory = false
+        )
         val expectedResult = UndoableActionResult(
             TextUiModel(R.string.conversation_moved_to_selected_destination, "Inbox")
         )
         every { mailLabelTextMapper.mapToString(mailLabelText) } returns "Inbox"
+
+        // When
+        val result = actionResultMapper.toActionResult(operation)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `returns category result when operation is MoveToDestinationConfirmed for a category`() {
+        // Given
+        val mailLabelText = MailLabelText("Social")
+        val operation = ConversationDetailViewAction.MoveToCompleted(
+            mailLabelText,
+            MoveToBottomSheetEntryPoint.Conversation,
+            isCategory = true
+        )
+        val expectedResult = UndoableActionResult(
+            TextUiModel(LabelR.string.move_to_category_action_message, "Social")
+        )
+        every { mailLabelTextMapper.mapToString(mailLabelText) } returns "Social"
 
         // When
         val result = actionResultMapper.toActionResult(operation)
