@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailconversation.data.repository
 
-import javax.inject.Singleton
-
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
@@ -29,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailconversation.data.local.RustConversationsQuery
 import ch.protonmail.android.mailconversation.data.local.debugTypeName
+import ch.protonmail.android.mailconversation.data.local.toScrollerUpdate
 import ch.protonmail.android.mailconversation.data.model.PageDescriptor
 import ch.protonmail.android.mailconversation.data.usecase.CreateRustConversationPaginator
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
@@ -40,8 +39,11 @@ import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
 import ch.protonmail.android.mailmessage.domain.model.toConversationCursorError
+import ch.protonmail.android.mailpagination.data.scroller.itemCount
 import ch.protonmail.android.mailsnooze.data.mapper.toLocalConversationId
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
@@ -49,6 +51,7 @@ import timber.log.Timber
 import uniffi.mail_uniffi.ConversationScrollerLiveQueryCallback
 import uniffi.mail_uniffi.ConversationScrollerUpdate
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class ConversationCursorRepositoryImpl @Inject constructor(
@@ -125,6 +128,7 @@ class ConversationCursorRepositoryImpl @Inject constructor(
         return getCursorFromCursorPaginator(
             userId = userId,
             labelId = labelId,
+            categoryLabelId = categoryLabelId,
             anchorConversationId = anchorConversationId
         )
     }
@@ -132,9 +136,14 @@ class ConversationCursorRepositoryImpl @Inject constructor(
     private suspend fun getCursorFromCursorPaginator(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         anchorConversationId: LocalConversationId
     ): Either<ConversationCursorError, ConversationCursorWrapper> = cursorPaginatorMutex.withLock {
-        val pageDescriptor = PageDescriptor(userId = userId, labelId = labelId)
+        val pageDescriptor = PageDescriptor(
+            userId = userId,
+            labelId = labelId,
+            categoryLabelId = categoryLabelId
+        )
         val state = cursorPaginatorState
 
         if (state == null || state.pageDescriptor != pageDescriptor) {
@@ -164,9 +173,12 @@ class ConversationCursorRepositoryImpl @Inject constructor(
             )
         }
 
-        cursorPaginatorState?.paginatorWrapper?.getCursor(anchorConversationId)?.mapLeft {
+        val currentState = cursorPaginatorState ?: return@withLock ConversationCursorError.InvalidState.left()
+        currentState.awaitFirstItems()
+
+        currentState.paginatorWrapper.getCursor(anchorConversationId).mapLeft {
             it.toConversationCursorError()
-        } ?: ConversationCursorError.InvalidState.left()
+        }
     }
 
     private suspend fun initCursorPaginator(
@@ -174,6 +186,10 @@ class ConversationCursorRepositoryImpl @Inject constructor(
         mailbox: MailboxWrapper
     ): ConversationCursorError? {
         if (hasCursorPaginator()) destroyCursorPaginator()
+
+        // A freshly connected scroller holds no items yet, and Rust cannot resolve an anchor against
+        // an empty list. Signal as soon as the first items land so we only ask for the cursor after.
+        val firstItemsLoaded = CompletableDeferred<Unit>()
 
         return createRustConversationPaginator(
             mailbox = mailbox,
@@ -184,6 +200,9 @@ class ConversationCursorRepositoryImpl @Inject constructor(
                         "conversation-cursor-repository: Cursor paginator update=%s",
                         update.debugTypeName()
                     )
+                    if (update is ConversationScrollerUpdate.List && update.toScrollerUpdate().itemCount() > 0) {
+                        firstItemsLoaded.complete(Unit)
+                    }
                 }
             }
         ).fold(
@@ -201,8 +220,16 @@ class ConversationCursorRepositoryImpl @Inject constructor(
                 )
                 cursorPaginatorState = CursorPaginatorState(
                     paginatorWrapper = paginator,
-                    pageDescriptor = pageDescriptor
+                    pageDescriptor = pageDescriptor,
+                    firstItemsLoaded = firstItemsLoaded
                 )
+
+                paginator.nextPage().onLeft { error ->
+                    Timber.w(
+                        "conversation-cursor-repository: Failed to load first cursor paginator page. error=%s",
+                        error
+                    )
+                }
                 null
             }
         )
@@ -226,7 +253,27 @@ class ConversationCursorRepositoryImpl @Inject constructor(
 
     private data class CursorPaginatorState(
         val paginatorWrapper: ConversationPaginatorWrapper,
-        val pageDescriptor: PageDescriptor
-    )
+        val pageDescriptor: PageDescriptor,
+        val firstItemsLoaded: CompletableDeferred<Unit>
+    ) {
+
+        /**
+         * Waits, briefly, for the scroller to hold items: Rust cannot resolve an anchor against an
+         * empty list. Returns immediately once they have arrived, so reused paginators pay nothing.
+         * Timing out is not fatal — we still try to resolve the cursor, and this paginator is kept so
+         * a later lookup can reuse it once it has caught up.
+         */
+        suspend fun awaitFirstItems() = firstItemsLoaded.awaitWithTimeout(FIRST_ITEMS_TIMEOUT_MS, Unit) {
+            Timber.w(
+                "conversation-cursor-repository: Timed out waiting for cursor paginator items, scrollerId=%s",
+                paginatorWrapper.getScrollerId()
+            )
+        }
+    }
+
+    private companion object {
+
+        const val FIRST_ITEMS_TIMEOUT_MS = 1000L
+    }
 
 }

@@ -27,18 +27,23 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.CursorId
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQuery
 import ch.protonmail.android.mailmessage.data.local.debugTypeName
+import ch.protonmail.android.mailmessage.data.local.toScrollerUpdate
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustMessagesPaginator
+import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
 import ch.protonmail.android.mailmessage.domain.model.toConversationCursorError
 import ch.protonmail.android.mailmessage.domain.repository.MessageCursorRepository
+import ch.protonmail.android.mailpagination.data.scroller.itemCount
 import ch.protonmail.android.mailsnooze.data.mapper.toLocalConversationId
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
@@ -124,6 +129,7 @@ class MessageCursorRepositoryImpl @Inject constructor(
         return getCursorFromCursorPaginator(
             userId = userId,
             labelId = labelId,
+            categoryLabelId = categoryLabelId,
             anchorItemId = anchorItemId
         )
     }
@@ -131,9 +137,14 @@ class MessageCursorRepositoryImpl @Inject constructor(
     private suspend fun getCursorFromCursorPaginator(
         userId: UserId,
         labelId: LabelId,
+        categoryLabelId: CategoryLabelId?,
         anchorItemId: LocalItemId
     ): Either<ConversationCursorError, MailMessageCursorWrapper> = cursorPaginatorMutex.withLock {
-        val pageDescriptor = PageDescriptor(userId = userId, labelId = labelId)
+        val pageDescriptor = PageDescriptor(
+            userId = userId,
+            labelId = labelId,
+            categoryLabelId = categoryLabelId
+        )
         val state = cursorPaginatorState
 
         if (state == null || state.pageDescriptor != pageDescriptor) {
@@ -163,9 +174,12 @@ class MessageCursorRepositoryImpl @Inject constructor(
             )
         }
 
-        cursorPaginatorState?.paginatorWrapper?.getCursor(anchorItemId)?.mapLeft {
+        val currentState = cursorPaginatorState ?: return@withLock ConversationCursorError.InvalidState.left()
+        currentState.awaitFirstItems()
+
+        currentState.paginatorWrapper.getCursor(anchorItemId).mapLeft {
             it.toConversationCursorError()
-        } ?: ConversationCursorError.InvalidState.left()
+        }
     }
 
     private suspend fun initCursorPaginator(
@@ -174,14 +188,22 @@ class MessageCursorRepositoryImpl @Inject constructor(
     ): ConversationCursorError? {
         if (hasCursorPaginator()) destroyCursorPaginator()
 
+        // A freshly connected scroller holds no items yet, and Rust cannot resolve an anchor against
+        // an empty list. Signal as soon as the first items land so we only ask for the cursor after.
+        val firstItemsLoaded = CompletableDeferred<Unit>()
+
         return createRustMessagesPaginator(
             mailbox = mailbox,
+            enabledCategoryId = pageDescriptor.categoryLabelId?.toLocalCategoryLabelId(),
             callback = object : MessageScrollerLiveQueryCallback {
                 override fun onUpdate(update: MessageScrollerUpdate) {
                     Timber.d(
                         "message-cursor-repository: Cursor paginator update=%s",
                         update.debugTypeName()
                     )
+                    if (update is MessageScrollerUpdate.List && update.toScrollerUpdate().itemCount() > 0) {
+                        firstItemsLoaded.complete(Unit)
+                    }
                 }
             }
         ).fold(
@@ -199,8 +221,13 @@ class MessageCursorRepositoryImpl @Inject constructor(
                 )
                 cursorPaginatorState = CursorPaginatorState(
                     paginatorWrapper = paginator,
-                    pageDescriptor = pageDescriptor
+                    pageDescriptor = pageDescriptor,
+                    firstItemsLoaded = firstItemsLoaded
                 )
+
+                paginator.nextPage().onLeft { error ->
+                    Timber.w("message-cursor-repository: Failed to load first cursor paginator page. error=%s", error)
+                }
                 null
             }
         )
@@ -226,11 +253,32 @@ class MessageCursorRepositoryImpl @Inject constructor(
 
     private data class CursorPaginatorState(
         val paginatorWrapper: MessagePaginatorWrapper,
-        val pageDescriptor: PageDescriptor
-    )
+        val pageDescriptor: PageDescriptor,
+        val firstItemsLoaded: CompletableDeferred<Unit>
+    ) {
+
+        /**
+         * Waits, briefly, for the scroller to hold items: Rust cannot resolve an anchor against an
+         * empty list. Returns immediately once they have arrived, so reused paginators pay nothing.
+         * Timing out is not fatal — we still try to resolve the cursor, and this paginator is kept so
+         * a later lookup can reuse it once it has caught up.
+         */
+        suspend fun awaitFirstItems() = firstItemsLoaded.awaitWithTimeout(FIRST_ITEMS_TIMEOUT_MS, Unit) {
+            Timber.w(
+                "message-cursor-repository: Timed out waiting for cursor paginator items, scrollerId=%s",
+                paginatorWrapper.getScrollerId()
+            )
+        }
+    }
 
     private data class PageDescriptor(
         val userId: UserId,
-        val labelId: LabelId
+        val labelId: LabelId,
+        val categoryLabelId: CategoryLabelId? = null
     )
+
+    private companion object {
+
+        const val FIRST_ITEMS_TIMEOUT_MS = 1000L
+    }
 }

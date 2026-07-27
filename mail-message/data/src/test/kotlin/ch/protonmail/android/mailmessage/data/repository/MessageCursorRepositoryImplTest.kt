@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
@@ -27,8 +28,11 @@ import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
+import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
 import ch.protonmail.android.maillabel.data.mapper.toLocalLabelId
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
+import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
+import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.RustMessageListQuery
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
@@ -37,21 +41,20 @@ import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
-import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
-import io.mockk.coEvery
-import io.mockk.mockk
-import kotlinx.coroutines.test.runTest
-import org.junit.Test
-import kotlin.test.assertEquals
 import io.mockk.Runs
+import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.just
+import io.mockk.mockk
 import io.mockk.slot
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import org.junit.Test
 import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.text.toULong
 
 internal class MessageCursorRepositoryImplTest {
 
@@ -138,6 +141,7 @@ internal class MessageCursorRepositoryImplTest {
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
         val paginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
             every { getScrollerId() } returns "cursor-scroller-id"
             coEvery { disconnect() } just Runs
             coEvery { getCursor(conversationId) } returns cursorWrapper.right()
@@ -190,6 +194,145 @@ internal class MessageCursorRepositoryImplTest {
     }
 
     @Test
+    fun `getCursor applies the requested category to the dedicated cursor paginator`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val categoryLabelId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
+        val anchorItem = CursorId(ConversationId("100"), null)
+        val conversationId = anchorItem.conversationId.toLocalConversationId()
+        val mailbox = mockk<MailboxWrapper>()
+
+        val paginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
+            every { getScrollerId() } returns "cursor-scroller-id"
+            coEvery { disconnect() } just Runs
+            coEvery { getCursor(conversationId) } returns cursorWrapper.right()
+        }
+
+        coEvery {
+            rustMessageListQuery.getCursorFromActivePaginator(
+                userId = userId,
+                labelId = labelId,
+                categoryLabelId = categoryLabelId,
+                anchorItemId = conversationId
+            )
+        } returns null
+
+        coEvery {
+            rustMailboxFactory.create(userId, labelId.toLocalLabelId())
+        } returns mailbox.right()
+
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = categoryLabelId.toLocalCategoryLabelId(),
+                callback = any()
+            )
+        } returns paginator.right()
+
+        // When
+        val actual = repository.getCursor(
+            anchorItemId = anchorItem,
+            userId = userId,
+            labelId = labelId,
+            categoryLabelId = categoryLabelId
+        )
+
+        // Then
+        assertTrue(actual.isRight())
+        coVerify(exactly = 1) {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = categoryLabelId.toLocalCategoryLabelId(),
+                callback = any()
+            )
+        }
+        // The anchor cannot be resolved against an empty scroller, so the first page is loaded first.
+        coVerifyOrder {
+            paginator.nextPage()
+            paginator.getCursor(conversationId)
+        }
+    }
+
+    @Test
+    fun `getCursor recreates the dedicated cursor paginator when only the category changes`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val primaryCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Primary.labelId.id)
+        val socialCategoryLabelId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
+        val anchorItem = CursorId(ConversationId("100"), null)
+        val secondAnchorItem = CursorId(ConversationId("200"), null)
+        val firstConversationId = anchorItem.conversationId.toLocalConversationId()
+        val secondConversationId = secondAnchorItem.conversationId.toLocalConversationId()
+        val mailbox = mockk<MailboxWrapper>()
+
+        val firstPaginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
+            every { getScrollerId() } returns "cursor-scroller-id-1"
+            coEvery { disconnect() } just Runs
+            coEvery { getCursor(firstConversationId) } returns cursorWrapper.right()
+        }
+
+        val secondPaginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
+            every { getScrollerId() } returns "cursor-scroller-id-2"
+            coEvery { disconnect() } just Runs
+            coEvery { getCursor(secondConversationId) } returns secondCursorWrapper.right()
+        }
+
+        coEvery {
+            rustMessageListQuery.getCursorFromActivePaginator(
+                userId = userId,
+                labelId = labelId,
+                categoryLabelId = any(),
+                anchorItemId = any()
+            )
+        } returns null
+
+        coEvery {
+            rustMailboxFactory.create(userId, labelId.toLocalLabelId())
+        } returns mailbox.right()
+
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryCategoryLabelId.toLocalCategoryLabelId(),
+                callback = any()
+            )
+        } returns firstPaginator.right()
+        coEvery {
+            createRustMessagesPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = socialCategoryLabelId.toLocalCategoryLabelId(),
+                callback = any()
+            )
+        } returns secondPaginator.right()
+
+        // When
+        val firstResult = repository.getCursor(
+            anchorItemId = anchorItem,
+            userId = userId,
+            labelId = labelId,
+            categoryLabelId = primaryCategoryLabelId
+        )
+        val secondResult = repository.getCursor(
+            anchorItemId = secondAnchorItem,
+            userId = userId,
+            labelId = labelId,
+            categoryLabelId = socialCategoryLabelId
+        )
+
+        // Then
+        assertTrue(firstResult.isRight())
+        assertTrue(secondResult.isRight())
+        coVerify(exactly = 1) { firstPaginator.disconnect() }
+        coVerify(exactly = 1) { firstPaginator.getCursor(firstConversationId) }
+        coVerify(exactly = 1) { secondPaginator.getCursor(secondConversationId) }
+    }
+
+    @Test
     fun `getCursor falls back to dedicated cursor paginator when active mailbox paginator returns error`() = runTest {
         // Given
         val userId = UserIdSample.Primary
@@ -200,6 +343,7 @@ internal class MessageCursorRepositoryImplTest {
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
         val paginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
             every { getScrollerId() } returns "cursor-scroller-id"
             coEvery { disconnect() } just Runs
             coEvery { getCursor(conversationId) } returns cursorWrapper.right()
@@ -288,6 +432,7 @@ internal class MessageCursorRepositoryImplTest {
         val callbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
         val paginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
             every { getScrollerId() } returns "cursor-scroller-id"
             coEvery { disconnect() } just Runs
             coEvery { getCursor(firstConversationId) } returns cursorWrapper.right()
@@ -358,12 +503,14 @@ internal class MessageCursorRepositoryImplTest {
         val secondCallbackSlot = slot<MessageScrollerLiveQueryCallback>()
 
         val firstPaginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
             every { getScrollerId() } returns "cursor-scroller-id-1"
             coEvery { disconnect() } just Runs
             coEvery { getCursor(firstConversationId) } returns cursorWrapper.right()
         }
 
         val secondPaginator = mockk<MessagePaginatorWrapper> {
+            coEvery { nextPage() } returns Unit.right()
             every { getScrollerId() } returns "cursor-scroller-id-2"
             coEvery { disconnect() } just Runs
             coEvery { getCursor(secondConversationId) } returns secondCursorWrapper.right()
