@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -93,7 +94,10 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
         )
 
     private suspend fun resolveUserType(): SpotlightUserType = observeIsBusinessUser().first().fold(
-        ifLeft = { SpotlightUserType.B2C },
+        ifLeft = {
+            Timber.d("resolveUserType: unable to resolve user type, fall back to B2C")
+            SpotlightUserType.B2C
+        },
         ifRight = { isBusiness -> if (isBusiness) SpotlightUserType.B2B else SpotlightUserType.B2C }
     )
 }
