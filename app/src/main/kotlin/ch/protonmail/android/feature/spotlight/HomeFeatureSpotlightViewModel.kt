@@ -20,9 +20,9 @@ package ch.protonmail.android.feature.spotlight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
@@ -49,7 +49,7 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
     observeFeatureSpotlightDisplay: ObserveFeatureSpotlightDisplay,
     @IsFeatureSpotlightEnabled private val isEnabled: FeatureFlag<Boolean>,
     // Temporarily couple the 2 FFs as the new feature spotlight depends on the Category View impl in 7.10+
-    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
+    private val isCategoryViewEnabled: IsCategoryViewEnabled,
     private val isRecentAppInstall: IsRecentAppInstall,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
     private val observeIsBusinessUser: ObserveIsBusinessUser,
@@ -60,9 +60,9 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
     val state: StateFlow<FeatureSpotlightState> = observePrimaryUserId()
         .filterNotNull()
         .distinctUntilChanged()
-        .flatMapLatest {
+        .flatMapLatest { userId ->
             flow {
-                if (!isEnabled.get() || !categoryViewEnabled.get()) {
+                if (!isEnabled.get() || !isCategoryViewEnabled(userId)) {
                     emit(FeatureSpotlightState.Hide)
                 } else if (isRecentAppInstall()) {
                     markFeatureSpotlightSeen()

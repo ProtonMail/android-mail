@@ -22,7 +22,7 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
@@ -69,8 +69,8 @@ internal class AppSettingsViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val isCategoryViewEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns true
+    private val isCategoryViewEnabled = mockk<IsCategoryViewEnabled> {
+        coEvery { this@mockk.invoke(any()) } returns true
     }
 
     private lateinit var viewModel: AppSettingsViewModel

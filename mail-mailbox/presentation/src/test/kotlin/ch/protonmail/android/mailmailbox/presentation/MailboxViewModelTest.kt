@@ -146,6 +146,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
@@ -387,8 +388,8 @@ internal class MailboxViewModelTest {
     private val updateUnreadFilter = mockk<UpdateUnreadFilter>()
     private val updateShowSpamTrashFilter = mockk<UpdateShowSpamTrashFilter>()
 
-    private val isCategoryViewEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns false
+    private val isCategoryViewEnabled = mockk<IsCategoryViewEnabled> {
+        coEvery { this@mockk.invoke(any()) } returns false
     }
 
     private val isContentSearchEnabled = mockk<FeatureFlag<Boolean>> {
@@ -843,7 +844,7 @@ internal class MailboxViewModelTest {
         val currentUserIdFlow = MutableStateFlow(userId)
         every { observePrimaryUserId() } returns currentUserIdFlow
         // The flag resolves to different values for the two users
-        coEvery { isCategoryViewEnabled.get() } returns false andThen true
+        coEvery { isCategoryViewEnabled(any()) } returns false andThen true
 
         mailboxViewModel.isCategoryViewEnabled.test {
             // Then

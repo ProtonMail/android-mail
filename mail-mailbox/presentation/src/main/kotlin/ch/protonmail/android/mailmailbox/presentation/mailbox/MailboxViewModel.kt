@@ -64,7 +64,6 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryViewEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
@@ -146,6 +145,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSh
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
+import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -254,7 +254,7 @@ class MailboxViewModel @Inject constructor(
     private val selectCategory: SelectCategory,
     private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
-    @IsCategoryViewEnabled private val categoryViewEnabled: FeatureFlag<Boolean>,
+    private val categoryViewEnabled: IsCategoryViewEnabled,
     @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -280,7 +280,7 @@ class MailboxViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val isCategoryViewEnabled: StateFlow<Boolean> = primaryUserId
-        .mapLatest { categoryViewEnabled.get() }
+        .mapLatest { categoryViewEnabled(it) }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
