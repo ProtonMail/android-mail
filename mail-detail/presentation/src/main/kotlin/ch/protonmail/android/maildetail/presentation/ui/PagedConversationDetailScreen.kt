@@ -44,6 +44,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonHorizontallyCenteredProgress
@@ -72,7 +74,7 @@ import timber.log.Timber
 fun PagedConversationDetailScreen(
     modifier: Modifier = Modifier,
     actions: ConversationDetail.Actions,
-    isSnackbarVisible: Boolean = false,
+    snackbarHeight: Dp = 0.dp,
     viewModel: PagedConversationDetailViewModel = hiltViewModel()
 ) {
 
@@ -107,7 +109,7 @@ fun PagedConversationDetailScreen(
                 state = currentState,
                 showUndoableOperationSnackbar = { action -> actions.showUndoableOperationSnackbar(action) },
                 onPagerAction = { viewModel.submit(it) },
-                isSnackbarVisible = isSnackbarVisible
+                snackbarHeight = snackbarHeight
             )
         }
     }
@@ -120,7 +122,7 @@ private fun PagedConversationDetailScreen(
     state: PagedConversationDetailState.Ready,
     showUndoableOperationSnackbar: (notifyUserMessage: ActionResult?) -> Unit,
     onPagerAction: (PagedConversationDetailAction) -> Unit,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val onTopbarBackClicked = { conversationDetailActions.onExit(null) }
     val actions = state.settings.autoAdvanceEnabled.takeIf { it }?.let {
@@ -154,7 +156,7 @@ private fun PagedConversationDetailScreen(
         conversationDetailScreenNavArgs = conversationDetailScreenArgs,
         onPagerAction = onPagerAction,
         onTopBarExit = onTopbarBackClicked,
-        isSnackbarVisible = isSnackbarVisible
+        snackbarHeight = snackbarHeight
     )
 }
 
@@ -168,7 +170,7 @@ private fun ConversationPager(
     swipeEnabled: Boolean,
     onPagerAction: (PagedConversationDetailAction) -> Unit,
     onTopBarExit: () -> Unit,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPageIndex ?: 0,
@@ -243,7 +245,7 @@ private fun ConversationPager(
             onTopBarStateUpdated = onTopBarStateUpdated,
             canScroll = state.userScrollEnabled && swipeEnabled,
             isDirectionForwards = { pagerState.lastScrolledForward },
-            isSnackbarVisible = isSnackbarVisible
+            snackbarHeight = snackbarHeight
         )
     }
 
@@ -260,7 +262,7 @@ private fun Pager(
     canScroll: Boolean,
     onTopBarStateUpdated: (ConversationTopBarState) -> Unit,
     isDirectionForwards: () -> Boolean,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     HorizontalPager(
         modifier = modifier,
@@ -291,7 +293,7 @@ private fun Pager(
                     ),
                     conversationId = item.cursorId.conversationId,
                     isDirectionForwards = isDirectionForwards,
-                    isSnackbarVisible = isSnackbarVisible
+                    snackbarHeight = snackbarHeight
                 )
             }
 
@@ -322,7 +324,7 @@ private fun PageUpdated(
     navigationArgs: ConversationDetail.NavigationArgs,
     conversationId: ConversationId,
     isDirectionForwards: () -> Boolean,
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     ConversationDetailScreen(
         actions = conversationActions,
@@ -330,7 +332,7 @@ private fun PageUpdated(
         navigationArgs = navigationArgs,
         topBarState = topBarHostState,
         isDirectionForwards = isDirectionForwards,
-        isSnackbarVisible = isSnackbarVisible
+        snackbarHeight = snackbarHeight
     )
 }
 

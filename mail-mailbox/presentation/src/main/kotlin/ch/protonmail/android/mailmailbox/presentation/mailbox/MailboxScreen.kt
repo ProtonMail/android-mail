@@ -183,7 +183,7 @@ fun MailboxScreen(
     actions: MailboxScreen.Actions,
     onEvent: (AccountSwitchEvent) -> Unit,
     viewModel: MailboxViewModel = hiltViewModel(),
-    isSnackbarVisible: Boolean = false
+    snackbarHeight: Dp = 0.dp
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
     val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
@@ -442,7 +442,7 @@ fun MailboxScreen(
             actions = completeActions,
             isCategoryViewEnabled = isCategoryViewEnabled,
             isContentSearchEnabled = isContentSearchEnabled,
-            isSnackbarVisible = isSnackbarVisible,
+            snackbarHeight = snackbarHeight,
             modifier = modifier.semantics { testTagsAsResourceId = true }
         )
     }
@@ -455,7 +455,7 @@ fun MailboxScreen(
     isCategoryViewEnabled: Boolean = false,
     isContentSearchEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
-    isSnackbarVisible: Boolean = false,
+    snackbarHeight: Dp = 0.dp,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -667,15 +667,16 @@ fun MailboxScreen(
                 isSearchButtonVisible = isContentSearchEnabled,
                 onUnreadFilterEnabled = actions.onEnableUnreadFilter,
                 onUnreadFilterDisabled = actions.onDisableUnreadFilter,
-                isSnackbarVisible = isSnackbarVisible,
+                snackbarHeight = snackbarHeight,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .windowInsetsPadding(
                         WindowInsets.safeDrawing
                             .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
                     )
+                    // Bottom padding is owned by MailboxFabToolbarMorph, which has to reconcile it
+                    // with the snackbar lift.
                     .padding(horizontal = ProtonDimens.Spacing.Large)
-                    .padding(bottom = ProtonDimens.Spacing.Large)
             )
         }
     }

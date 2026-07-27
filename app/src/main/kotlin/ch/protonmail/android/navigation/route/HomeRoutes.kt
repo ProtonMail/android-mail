@@ -19,6 +19,8 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -60,7 +62,7 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 @SuppressWarnings("LongMethod")
 internal fun NavGraphBuilder.addConversationDetail(
     actions: ConversationDetail.Actions,
-    isSnackbarVisible: () -> Boolean = { false }
+    snackbarHeight: () -> Dp = { 0.dp }
 ) {
     composableWithTransitions(
         route = Destination.Screen.Conversation.route,
@@ -74,7 +76,7 @@ internal fun NavGraphBuilder.addConversationDetail(
     ) {
         PagedConversationDetailScreen(
             actions = actions,
-            isSnackbarVisible = isSnackbarVisible()
+            snackbarHeight = snackbarHeight()
         )
     }
 }
@@ -88,7 +90,7 @@ internal fun NavGraphBuilder.addMailbox(
     showSnackbar: (type: SnackbarType) -> Unit,
     showFeatureMissingSnackbar: () -> Unit,
     onShowRatingBooster: () -> Unit,
-    isSnackbarVisible: () -> Boolean = { false }
+    snackbarHeight: () -> Dp = { 0.dp }
 ) {
     composableWithTransitions(
         route = Destination.Screen.Mailbox.route,
@@ -137,7 +139,7 @@ internal fun NavGraphBuilder.addMailbox(
                 onShowRatingBooster = onShowRatingBooster
             ),
             onEvent = onEvent,
-            isSnackbarVisible = isSnackbarVisible()
+            snackbarHeight = snackbarHeight()
         )
     }
 }

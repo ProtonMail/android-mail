@@ -128,7 +128,14 @@ object MailDimens {
     val OnboardingUpsellButtonHeight = 48.dp
 
     val MailboxFabRadius = 32.dp
-    val SnackbarFabOffset = 56.dp
+
+    // Material3's Snackbar wraps itself in a 12.dp margin on every side (see Snackbar.kt), so a
+    // measured snackbar host is 24.dp taller than the snackbar you actually see.
+    val SnackbarOuterMargin = 12.dp
+
+    // Clearance kept between the top of a visible snackbar and the bottom of the floating controls
+    // lifted above it.
+    val SnackbarFabGap = 12.dp
 
     val MessageBannerIconSize = 20.dp
 
