@@ -330,7 +330,7 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         combine(
-            observeLoadedMailLabelId().mapToExistingLabel(),
+            observeLoadedMailLabelId().mapToExistingLabel().distinctUntilChanged(),
             state.observeSelectedMailboxItems(),
             toolbarRefreshSignal.refreshEvents.onStart { emit(Unit) }
         ) { selectedMailLabel, selectedMailboxItems, _ ->
@@ -359,6 +359,11 @@ class MailboxViewModel @Inject constructor(
             }
         }
             .filterNotNull()
+            // Loading the actions suspends, so the selection can be gone by the time they are ready (e.g.
+            // the selected items were just moved away). `combine` still holds the stale selection, and
+            // showing the bar for it would leave the selection toolbar up with nothing selected, with no
+            // further event to hide it again: the exit only emits a null selection, which is dropped above.
+            .filter { it.isHiding() || state.value.hasSelectedItems() }
             .distinctUntilChanged()
             .onEach { emitNewStateFrom(it) }
             .launchIn(viewModelScope)
@@ -1657,6 +1662,13 @@ class MailboxViewModel @Inject constructor(
     private fun Flow<MailboxState>.observeSelectedMailboxItems() =
         this.map { (it.mailboxListState as? MailboxListState.Data.SelectionMode)?.selectedMailboxItems }
             .distinctUntilChanged()
+
+    private fun MailboxState.hasSelectedItems(): Boolean {
+        val selectionMode = this.mailboxListState as? MailboxListState.Data.SelectionMode ?: return false
+        return selectionMode.selectedMailboxItems.isNotEmpty()
+    }
+
+    private fun MailboxEvent.MessageBottomBarEvent.isHiding() = this.bottomBarEvent is BottomBarEvent.HideBottomSheet
 
     private suspend fun isActionAllowedForCurrentLabel(labelId: LabelId): Boolean {
         return when (val mailLabel = observeCurrentMailLabel().first()) {
