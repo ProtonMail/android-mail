@@ -4511,6 +4511,90 @@ internal class MailboxViewModelTest {
     }
 
     @Test
+    fun `when item clicked in search mode then the selected category is not opened from`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem(id = "id", type = Message)
+        val selectedCategory = CategoryLabelTestData.social.id
+        val allMailLabelId = MailLabelTestData.allMailSystemLabel.id
+
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId, selectedCategory)
+        )
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createSearchModeState(
+            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = true)
+        )
+        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectPagerMock()
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+            advanceUntilIdle()
+
+            // Then the category is dropped, as it belongs to the location we searched from and not
+            // to the search-aware label the item is opened from.
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(
+                        item,
+                        allMailLabelId.labelId,
+                        false,
+                        item.id,
+                        null,
+                        ""
+                    )
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when item clicked not in search mode then the selected category is opened from`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem(id = "id", type = Message)
+        val selectedCategory = CategoryLabelTestData.social.id
+        val currentLabelId = initialLocationMailLabelId.labelId
+        val intermediateState = createMailboxDataState()
+
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId, selectedCategory)
+        )
+        expectedTrashSpamFilterStateChange(intermediateState)
+        expectedSelectedLabelCountStateChange(intermediateState)
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectPagerMock()
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+            advanceUntilIdle()
+
+            // Then
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(
+                        item,
+                        currentLabelId,
+                        false,
+                        item.id,
+                        selectedCategory,
+                        ""
+                    )
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `when category view status changes, event is emitted with unread count`() = runTest {
         // Given
         val expectedUnreadCount = 42

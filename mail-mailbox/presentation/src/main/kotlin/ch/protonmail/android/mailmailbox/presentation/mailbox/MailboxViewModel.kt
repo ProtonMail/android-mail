@@ -745,7 +745,13 @@ class MailboxViewModel @Inject constructor(
             val isConversationGrouping =
                 getViewModeForCurrentLocation(getSelectedMailLabelId()) == ViewMode.ConversationGrouping
 
-            val categoryId = observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
+            // The category belongs to the location we searched from, not to the search-aware label
+            // resolved above, so pairing the two would ask for a category-filtered All Mail.
+            val categoryId = if (isInSearchMode) {
+                null
+            } else {
+                observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
+            }
             // Highlight matches in the opened item only when content search is on.
             val searchQuery = if (isInSearchMode && contentSearchSettingsEnabled.get()) {
                 (state.value.mailboxListState as? MailboxListState.Data)?.searchState?.searchQuery.orEmpty()
