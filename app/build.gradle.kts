@@ -276,6 +276,7 @@ dependencies {
     if (accountNewEnabled) {
         implementation(monoLibs.proton.monorepo.account.api)
         implementation(monoLibs.proton.monorepo.account.crux)
+        implementation(monoLibs.proton.monorepo.account.entry)
         implementation(monoLibs.proton.monorepo.account.logging)
 
         implementation(monoLibs.proton.monorepo.core.env)

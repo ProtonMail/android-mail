@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
 import ch.protonmail.android.api.AccountApiProvider
+import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplication
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
@@ -58,6 +59,7 @@ class LauncherViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val accountApiProvider = mockk<AccountApiProvider>(relaxUnitFun = true)
+    private val accountWelcomeProvider = mockk<AccountWelcomeProvider>(relaxed = true)
     private val paymentOrchestrator = mockk<PaymentOrchestrator>()
     private val userSessionRepository = mockk<UserSessionRepository>()
     private val notificationsPermissionOrchestrator = mockk<NotificationsPermissionOrchestrator>(relaxUnitFun = true)
@@ -79,6 +81,7 @@ class LauncherViewModelTest {
 
     private fun viewModel() = LauncherViewModel(
         accountApiProvider,
+        accountWelcomeProvider,
         paymentOrchestrator,
         userSessionRepository,
         notificationsPermissionOrchestrator,

@@ -23,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.api.AccountApiProvider
+import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplication
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
@@ -60,6 +61,7 @@ import javax.inject.Inject
 @SuppressWarnings("NotImplementedDeclaration", "UnusedPrivateMember")
 class LauncherViewModel @Inject constructor(
     private val accountApiProvider: AccountApiProvider,
+    val accountWelcomeProvider: AccountWelcomeProvider,
     private val paymentOrchestrator: PaymentOrchestrator,
     private val userSessionRepository: UserSessionRepository,
     private val notificationsPermissionOrchestrator: NotificationsPermissionOrchestrator,

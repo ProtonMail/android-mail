@@ -19,7 +19,9 @@
 package ch.protonmail.android.di
 
 import ch.protonmail.android.api.AccountApiProvider
+import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.api.NewAccountApiProvider
+import ch.protonmail.android.api.NewAccountWelcomeProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,8 @@ interface AccountBindings {
     @Binds
     @Singleton
     abstract fun provideAccountApiProvider(impl: NewAccountApiProvider): AccountApiProvider
+
+    @Binds
+    @Singleton
+    abstract fun provideAccountWelcomeProvider(impl: NewAccountWelcomeProvider): AccountWelcomeProvider
 }

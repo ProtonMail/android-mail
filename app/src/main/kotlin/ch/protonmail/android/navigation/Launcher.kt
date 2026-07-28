@@ -47,9 +47,9 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
             Toast.LENGTH_LONG
         ).show()
     }
-    when (state) {
-        LauncherState.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
-        LauncherState.PrimaryExist -> LauncherRouter(
+
+    val signedInContent: @Composable (() -> Unit) = {
+        LauncherRouter(
             activityActions = activityActions,
             launcherActions = Launcher.Actions(
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement(it)) },
@@ -64,6 +64,11 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
                 }
             )
         )
+    }
+
+    when (state) {
+        LauncherState.AccountNeeded -> viewModel.accountWelcomeProvider.Welcome(viewModel, signedInContent)
+        LauncherState.PrimaryExist -> signedInContent()
 
         LauncherState.Processing,
         LauncherState.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
