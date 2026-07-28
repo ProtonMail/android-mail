@@ -4,12 +4,15 @@ import java.io.File
 import android.content.Context
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.R
+import ch.protonmail.android.api.AccountApiProvider
+import ch.protonmail.android.api.LegacyAccountApiProvider
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import me.proton.android.account.coordinator.di.IsAllowedToStartWelcome
+import me.proton.android.account.api.startup.AccountSdkEnabled
 import me.proton.android.account.welcome.ui.model.WelcomeScreenConfig
 import me.proton.android.core.client.info.capability.ClientInfoResponse
 import me.proton.android.core.client.info.di.ClientVersionName
@@ -22,6 +25,15 @@ import javax.inject.Singleton
 
 private const val DATABASE_FILE_PATH = "account-db.sqlite"
 private const val LOG_FILE_PATH = "account-log.txt"
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface AccountBindings {
+
+    @Binds
+    @Singleton
+    abstract fun provideAccountApiProvider(impl: LegacyAccountApiProvider): AccountApiProvider
+}
 
 @Module
 @InstallIn(SingletonComponent::class)

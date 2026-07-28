@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.api.AccountApiProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplication
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
@@ -49,8 +50,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import me.proton.android.account.api.ProtonAccountApi
-import me.proton.android.account.types.ProtonUserId
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
 import me.proton.android.core.payment.presentation.onUpgradeResult
 import me.proton.core.domain.entity.UserId
@@ -60,7 +59,7 @@ import javax.inject.Inject
 @HiltViewModel
 @SuppressWarnings("NotImplementedDeclaration", "UnusedPrivateMember")
 class LauncherViewModel @Inject constructor(
-    private val accountApi: ProtonAccountApi,
+    private val accountApiProvider: AccountApiProvider,
     private val paymentOrchestrator: PaymentOrchestrator,
     private val userSessionRepository: UserSessionRepository,
     private val notificationsPermissionOrchestrator: NotificationsPermissionOrchestrator,
@@ -125,6 +124,7 @@ class LauncherViewModel @Inject constructor(
     }
 
     override fun onCleared() {
+        accountApiProvider.unregister()
         notificationsPermissionOrchestrator.unregister()
         paymentOrchestrator.unregister()
         super.onCleared()
@@ -138,9 +138,12 @@ class LauncherViewModel @Inject constructor(
 
                 if (context.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
                     Timber.d("Legacy migration: Activity is still alive. Registering user session observers.")
+                    accountApiProvider.register(context)
                 } else {
                     Timber.w("Legacy migration: Activity no longer alive. Skipping registration.")
                 }
+            } else {
+                accountApiProvider.register(context)
             }
         }
 
@@ -169,11 +172,11 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onAddAccount() {
-        accountApi.launchAddAccount()
+        accountApiProvider.startAddAccount()
     }
 
     private fun onOpenPasswordManagement(userId: UserId?) {
-        TODO("accountApi.launchSettings()")
+        accountApiProvider.startSettings(requireNotNull(userId))
     }
 
     private fun onOpenRecoveryEmail() {
@@ -189,22 +192,22 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onOpenSecurityKeys() {
-        TODO("accountApi.launchSettings()")
+        //TODO: accountApiProvider.startSettings()
     }
 
     private fun onSignIn(userId: UserId?) = viewModelScope.launch {
         val address = userId?.let {
             userSessionRepository.getAccount(it)?.primaryAddress
         }
-        accountApi.launchSignIn(/*address*/)
+        accountApiProvider.startSignIn(address)
     }
 
     private fun onSignUp() = viewModelScope.launch {
-        accountApi.launchSignUp()
+        accountApiProvider.startSignUp()
     }
 
     private fun onSwitchToAccount(userId: UserId) = viewModelScope.launch {
-        accountApi.setCurrentAccount(ProtonUserId(userId.id))
+        accountApiProvider.switchAccount(userId)
     }
 
     private fun onDuplicateAccountError() = _duplicateDialogErrorEffect.tryEmit(Effect.of(Unit))
