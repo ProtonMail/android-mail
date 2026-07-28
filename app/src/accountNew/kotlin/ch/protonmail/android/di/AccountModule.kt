@@ -4,9 +4,6 @@ import java.io.File
 import android.content.Context
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.R
-import ch.protonmail.android.api.AccountApiProvider
-import ch.protonmail.android.api.LegacyAccountApiProvider
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,20 +25,7 @@ private const val LOG_FILE_PATH = "account-log.txt"
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface AccountBindings {
-
-    @Binds
-    @Singleton
-    abstract fun provideAccountApiProvider(impl: LegacyAccountApiProvider): AccountApiProvider
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
 object AccountModule {
-
-    @Provides
-    @AccountSdkEnabled
-    fun provideAccountSdkEnabled(): Boolean = false
 
     @Provides
     @Singleton
@@ -81,13 +65,5 @@ object AccountModule {
         product = clientInfo.product,
         version = clientInfo.version,
         userAgent = clientInfo.userAgent,
-    )
-
-    @Provides
-    @Singleton
-    fun provideWelcomeScreenConfig(@ApplicationContext context: Context): WelcomeScreenConfig = WelcomeScreenConfig(
-        headerImageRes = R.drawable.header_mail,
-        logoRes = R.drawable.logo_mail,
-        subtitle = context.getString(R.string.app_welcome_subtitle),
     )
 }

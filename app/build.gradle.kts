@@ -35,7 +35,11 @@ plugins {
     id("app-config-plugin")
 }
 
-val accountSdkEnabled: Boolean = System.getenv("ACCOUNT_SDK_ENABLED").toBoolean()
+// Opt-in toggle for the new Account SDK integration. When disabled (the default), none of the
+// Account SDK dependencies nor the `src/accountNew` sources are compiled or bundled; the old
+// auth flow in `src/accountOld` is used instead. Enable with `-PaccountNew=true`.
+val accountNewEnabled: Boolean = (project.findProperty("accountNew") as String?)?.toBoolean() ?: false
+
 val accountSentryDSN: String = System.getenv("SENTRY_DSN_ACCOUNT") ?: ""
 val sentryDSN: String = System.getenv("SENTRY_DSN_MAIL") ?: ""
 
@@ -70,8 +74,6 @@ android {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
         buildConfigField("String", "RUST_SDK_VERSION", "\"${libs.versions.proton.rust.core.get()}\"")
-
-        buildConfigField("Boolean", "ACCOUNT_SDK_ENABLED", accountSdkEnabled.toBuildConfigValue())
 
         setAssetLinksResValue("proton.me")
     }
@@ -190,6 +192,7 @@ android {
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("main").java.srcDir(if (accountNewEnabled) "src/accountNew/kotlin" else "src/accountOld/kotlin")
         getByName("test").java.srcDirs("src/test/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin", "src/uiTest/kotlin")
         getByName("androidTest").assets.srcDirs("src/uiTest/assets")
@@ -269,13 +272,15 @@ dependencies {
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
 
-    implementation(monoLibs.proton.monorepo.account.api)
-    implementation(monoLibs.proton.monorepo.account.crux)
-    implementation(monoLibs.proton.monorepo.account.logging)
+    if (accountNewEnabled) {
+        implementation(monoLibs.proton.monorepo.account.api)
+        implementation(monoLibs.proton.monorepo.account.crux)
+        implementation(monoLibs.proton.monorepo.account.logging)
 
-    implementation(monoLibs.proton.monorepo.core.env)
-    implementation(monoLibs.proton.monorepo.core.fido.google)
-    implementation(monoLibs.proton.monorepo.core.logging.sentry)
+        implementation(monoLibs.proton.monorepo.core.env)
+        implementation(monoLibs.proton.monorepo.core.fido.google)
+        implementation(monoLibs.proton.monorepo.core.logging.sentry)
+    }
 
     implementation(libs.play.review.core)
     implementation(libs.play.review.ext)
