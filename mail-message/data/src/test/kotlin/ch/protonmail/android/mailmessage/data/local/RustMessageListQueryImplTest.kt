@@ -320,7 +320,7 @@ class RustMessageListQueryImplTest {
     }
 
     @Test
-    fun `calls reload when called with PageToLoad All and no items have been cached`() = runTest {
+    fun `calls reload when called with PageToLoad All and the scroller never reported its list`() = runTest {
         // Given
         val reloadedMessages = listOf(LocalMessageTestData.OctWeatherForecast)
 
@@ -330,13 +330,13 @@ class RustMessageListQueryImplTest {
         val callback = slot<MessageScrollerLiveQueryCallback>()
 
         val paginator = mockk<MessagePaginatorWrapper> {
-            // The location is empty, so the first page leaves nothing in the cache.
+            // None is the scroller saying nothing about its list, so the cache stays unable to answer.
             coEvery { nextPage() } coAnswers {
                 launch {
                     delay(100)
                     callback.captured.onUpdate(
                         MessageScrollerUpdate.List(
-                            MessageScrollerListUpdate.Append(items = emptyList(), scrollerId = DefaultScrollerId)
+                            MessageScrollerListUpdate.None(scrollerId = DefaultScrollerId)
                         )
                     )
                 }

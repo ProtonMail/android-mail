@@ -392,7 +392,162 @@ class RustConversationsQueryImplTest {
     }
 
     @Test
-    fun `calls reload when called with PageToLoad All and no items have been cached`() = runTest {
+    fun `calls reload when the cache holds a duplicate item`() = runTest {
+        // Given
+        val firstPageConversations = listOf(
+            LocalConversationTestData.OctConversation,
+            LocalConversationTestData.AugConversation
+        )
+        val reloadedConversations = listOf(LocalConversationTestData.SepConversation)
+
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val firstPageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId,
+            pageToLoad = PageToLoad.First
+        )
+        val allPageKey = firstPageKey.copy(pageToLoad = PageToLoad.All)
+
+        val mailbox = mockk<MailboxWrapper>()
+        val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
+        expectConversationsInvalidatedSubmit()
+
+        val paginator = mockk<ConversationPaginatorWrapper> {
+            coEvery { nextPage() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.Append(
+                                items = firstPageConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { reload() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.ReplaceFrom(
+                                idx = 0uL,
+                                items = reloadedConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
+            coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+        }
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+
+        // When
+        rustConversationsQuery.getConversations(userId, firstPageKey)
+        // The scroller appends an item the cache already holds, as the duplicate item issue does.
+        callbackSlot.captured.onUpdate(
+            ConversationScrollerUpdate.List(
+                ConversationScrollerListUpdate.Append(
+                    items = listOf(LocalConversationTestData.AugConversation),
+                    scrollerId = DefaultScrollerId
+                )
+            )
+        )
+        val allResult = rustConversationsQuery.getConversations(userId, allPageKey)
+
+        // Then
+        assertEquals(reloadedConversations.right(), allResult)
+        coVerify(exactly = 1) { paginator.reload() }
+    }
+
+    @Test
+    fun `serves an empty list from cache when the scroller reported the location as empty`() = runTest {
+        // Given
+        val firstPageConversations = listOf(LocalConversationTestData.OctConversation)
+        val userId = UserIdSample.Primary
+        val labelId = SystemLabelId.Inbox.labelId
+        val firstPageKey = PageKey.DefaultPageKey(
+            labelId = labelId,
+            categoryLabelId = primaryCategoryId,
+            pageToLoad = PageToLoad.First
+        )
+        val allPageKey = firstPageKey.copy(pageToLoad = PageToLoad.All)
+
+        val mailbox = mockk<MailboxWrapper>()
+        val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
+        expectConversationsInvalidatedSubmit()
+
+        val paginator = mockk<ConversationPaginatorWrapper> {
+            coEvery { nextPage() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.Append(
+                                items = firstPageConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+            coEvery { reload() } returns Unit.right()
+            coEvery { filterUnread(false) } just Runs
+            coEvery { showSpamAndTrash(false) } just Runs
+            every { getScrollerId() } returns DefaultScrollerId
+            coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+        }
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustConversationPaginator(
+                mailbox = mailbox,
+                enabledCategoryId = primaryLocalCategoryId,
+                callback = capture(callbackSlot)
+            )
+        } returns paginator.right()
+
+        // When
+        rustConversationsQuery.getConversations(userId, firstPageKey)
+        // The scroller replaces its list with nothing, as it does when switching to an empty category.
+        callbackSlot.captured.onUpdate(
+            ConversationScrollerUpdate.List(
+                ConversationScrollerListUpdate.ReplaceFrom(
+                    idx = 0uL,
+                    items = emptyList(),
+                    scrollerId = DefaultScrollerId
+                )
+            )
+        )
+        val allResult = rustConversationsQuery.getConversations(userId, allPageKey)
+
+        // Then
+        assertEquals(emptyList<LocalConversation>().right(), allResult)
+        // "Empty" is an answer the cache can give, so it must not wait on the scroller to repeat it.
+        coVerify(exactly = 0) { paginator.reload() }
+    }
+
+    @Test
+    fun `calls reload when called with PageToLoad All and the scroller never reported its list`() = runTest {
         // Given
         val reloadedConversations = listOf(LocalConversationTestData.SepConversation)
 
@@ -409,13 +564,13 @@ class RustConversationsQueryImplTest {
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
 
         val paginator = mockk<ConversationPaginatorWrapper> {
-            // The location is empty, so the first page leaves nothing in the cache.
+            // None is the scroller saying nothing about its list, so the cache stays unable to answer.
             coEvery { nextPage() } coAnswers {
                 launch {
                     delay(100)
                     callbackSlot.captured.onUpdate(
                         ConversationScrollerUpdate.List(
-                            ConversationScrollerListUpdate.Append(items = emptyList(), scrollerId = DefaultScrollerId)
+                            ConversationScrollerListUpdate.None(scrollerId = DefaultScrollerId)
                         )
                     )
                 }
@@ -1006,7 +1161,9 @@ class RustConversationsQueryImplTest {
         val mailbox = mockk<MailboxWrapper>()
         val callbackSlot = slot<ConversationScrollerLiveQueryCallback>()
 
-        coEvery { invalidationRepository.submit(PageInvalidationEvent.ConversationsInvalidated(id = 1)) } just Runs
+        // Event ids come from a process-wide counter, so this must not assert a specific one: any test
+        // that invalidates before this one would shift it.
+        expectConversationsInvalidatedSubmit()
 
         val lateItems = listOf(LocalConversationTestData.OctConversation)
 
@@ -1054,11 +1211,7 @@ class RustConversationsQueryImplTest {
 
         // Late Append causes invalidation
         testScheduler.advanceUntilIdle()
-        coVerify(exactly = 1) {
-            invalidationRepository.submit(
-                PageInvalidationEvent.ConversationsInvalidated(id = 1)
-            )
-        }
+        verifyConversationsInvalidatedSubmitted()
     }
 
     @Test

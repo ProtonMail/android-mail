@@ -144,19 +144,24 @@ class RustMessageListQueryImpl @Inject constructor(
      * the very list we are already holding. Paging keeps the previous location's items on screen for
      * that whole wait, so only ask Rust when we have nothing to serve.
      *
+     * An empty cache is served too when the scroller has reported the location as empty: waiting on
+     * getItems() to be told "still nothing" is the same stall for no gain. Only a cache that cannot
+     * answer at all goes to Rust — see [ScrollerCache.mirrorsScroller].
+     *
      * Note that we must not do both: a getItems() response no request is waiting for is treated as an
      * invalidation, which would refresh, serve the cache, call getItems() again, and never settle. So
      * when the cache reports it could not apply an update — the one case where it stops mirroring the
-     * scroller — Rust re-pushing the list is how it recovers, and we go there instead.
+     * scroller — every refresh queries Rust again, as they all did before this cache was trusted, until a
+     * full replacement puts the two back in step.
      */
     private suspend fun reloadMessages(): Either<PaginationError, List<Message>> {
         val cached = paginatorMutex.withLock { servableCachedItems() }
-        if (cached.isNotEmpty()) {
+        if (cached != null) {
             Timber.d("rust-message-query: serving refresh from cache (%d items)", cached.size)
             return cached.right()
         }
 
-        Timber.d("rust-message-query: nothing cached, calling reload()")
+        Timber.d("rust-message-query: cache cannot answer the refresh, calling reload()")
         val deferred = setPendingRequest(RequestType.Refresh)
         paginatorState?.paginatorWrapper?.reload()
             ?.onLeft { completeRejectedRequest(deferred, RequestType.Refresh, it) }
@@ -402,12 +407,22 @@ class RustMessageListQueryImpl @Inject constructor(
         }
     }
 
-    // The cached items a refresh can be served with: none while the cache reports it could not apply an
-    // update, so that the getItems() call which repairs it still happens.
-    // Callers must hold [paginatorMutex].
-    private fun servableCachedItems(): List<Message> {
-        val cache = paginatorState?.scrollerCache ?: return emptyList()
-        return if (cache.needsResync) emptyList() else cache.snapshot
+    // The items a refresh can be served with, or null when the cache cannot answer it: nothing has been
+    // loaded yet, an update was dropped, or the list holds a duplicate. An empty list is an answer — the
+    // scroller reported the location as empty. Callers must hold [paginatorMutex].
+    private fun servableCachedItems(): List<Message>? {
+        val snapshot = paginatorState?.scrollerCache?.takeIf { it.mirrorsScroller }?.snapshot ?: return null
+
+        // Messages are unique per id, so a repeat means the incremental updates left one behind (see
+        // rememberDuplicateTolerantMailboxKeys). Rust's list is authoritative and replaces the cache when
+        // it arrives, so refresh from it rather than serving the duplicate back for as long as it survives.
+        val duplicates = snapshot.size - snapshot.distinctBy { it.id }.size
+        if (duplicates > 0) {
+            Timber.e("rust-message-query: cache holds %d duplicate item(s), asking Rust instead", duplicates)
+            return null
+        }
+
+        return snapshot
     }
 
     // What a request resolves to when no Rust response is coming: everything we hold for a Refresh
@@ -416,7 +431,8 @@ class RustMessageListQueryImpl @Inject constructor(
     private fun cachedItems(): List<Message> = paginatorState?.scrollerCache?.snapshot ?: emptyList()
 
     private fun fallbackResponse(type: RequestType): List<Message> = when (type) {
-        RequestType.Refresh -> cachedItems()
+        // Deduplicated as well: Paging should never be handed a repeated id, whichever path answers.
+        RequestType.Refresh -> cachedItems().distinctBy { it.id }
         RequestType.Append -> emptyList()
     }
 

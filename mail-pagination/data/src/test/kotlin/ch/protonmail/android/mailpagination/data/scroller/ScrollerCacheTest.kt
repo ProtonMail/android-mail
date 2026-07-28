@@ -135,6 +135,50 @@ class ScrollerCacheTest {
     }
 
     @Test
+    fun `mirrorsScroller only once a list update was received, and an empty list still counts`() {
+        // Given
+        val cache = ScrollerCache<ScrollerItem>()
+
+        // Then
+        assertFalse(cache.mirrorsScroller)
+
+        // When: None says nothing about the list
+        cache.applyUpdate(ScrollerUpdate.None(scrollerId = DefaultScrollerId))
+
+        // Then
+        assertFalse(cache.mirrorsScroller)
+
+        // When: the scroller reports an empty list
+        cache.applyUpdate(
+            ScrollerUpdate.ReplaceFrom(scrollerId = DefaultScrollerId, idx = 0, items = emptyList())
+        )
+
+        // Then
+        assertTrue(cache.mirrorsScroller)
+        assertSnapshotIds(emptyList(), cache.snapshot)
+    }
+
+    @Test
+    fun `mirrorsScroller is false while an update could not be applied`() {
+        // Given
+        val cache = ScrollerCache<ScrollerItem>()
+        cache.applyUpdate(ScrollerUpdate.Append(scrollerId = DefaultScrollerId, items = items("A1")))
+        assertTrue(cache.mirrorsScroller)
+
+        // When
+        cache.applyUpdate(ScrollerUpdate.ReplaceFrom(scrollerId = DefaultScrollerId, idx = 10, items = items("X1")))
+
+        // Then
+        assertFalse(cache.mirrorsScroller)
+
+        // When
+        cache.applyUpdate(ScrollerUpdate.ReplaceFrom(scrollerId = DefaultScrollerId, idx = 0, items = items("D1")))
+
+        // Then
+        assertTrue(cache.mirrorsScroller)
+    }
+
+    @Test
     fun `needsResync is set when an update cannot be applied and cleared by the next full replacement`() {
         // Given
         val cache = ScrollerCache<ScrollerItem>()
