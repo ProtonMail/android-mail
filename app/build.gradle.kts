@@ -192,8 +192,9 @@ android {
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("main").java.srcDir(if (accountNewEnabled) "src/accountNew/kotlin" else "src/accountOld/kotlin")
         getByName("test").java.srcDirs("src/test/kotlin")
+        getByName("main").java.srcDir(if (accountNewEnabled) "src/accountNew/kotlin" else "src/accountOld/kotlin")
+        getByName("test").java.srcDir(if (accountNewEnabled) "src/testAccountNew/kotlin" else "src/testAccountOld/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin", "src/uiTest/kotlin")
         getByName("androidTest").assets.srcDirs("src/uiTest/assets")
         getByName("androidTest").res.srcDirs("src/uiTest/res")

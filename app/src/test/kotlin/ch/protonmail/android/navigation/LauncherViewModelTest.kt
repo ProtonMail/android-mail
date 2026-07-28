@@ -18,25 +18,21 @@
 
 package ch.protonmail.android.navigation
 
-import androidx.lifecycle.Lifecycle
 import app.cash.turbine.test
+import ch.protonmail.android.api.AccountApiProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplication
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.SetLegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.ShouldMigrateLegacyAccount
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionOrchestrator
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
-import ch.protonmail.android.mailsession.domain.usecase.SetPrimaryAccount
-import ch.protonmail.android.mailsession.presentation.observe
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
-import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,19 +40,12 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.runs
-import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.android.core.auth.presentation.AuthOrchestrator
-import me.proton.android.core.auth.presentation.login.LoginOutput
-import me.proton.android.core.auth.presentation.onLoginResult
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
-import org.junit.Assert
 import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -68,9 +57,8 @@ class LauncherViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val authOrchestrator = mockk<AuthOrchestrator>()
+    private val accountApiProvider = mockk<AccountApiProvider>(relaxUnitFun = true)
     private val paymentOrchestrator = mockk<PaymentOrchestrator>()
-    private val setPrimaryAccount = mockk<SetPrimaryAccount>(relaxUnitFun = true)
     private val userSessionRepository = mockk<UserSessionRepository>()
     private val notificationsPermissionOrchestrator = mockk<NotificationsPermissionOrchestrator>(relaxUnitFun = true)
     private val observeLegacyMigrationStatus = mockk<ObserveLegacyMigrationStatus>()
@@ -90,9 +78,8 @@ class LauncherViewModelTest {
     )
 
     private fun viewModel() = LauncherViewModel(
-        authOrchestrator,
+        accountApiProvider,
         paymentOrchestrator,
-        setPrimaryAccount,
         userSessionRepository,
         notificationsPermissionOrchestrator,
         observeLegacyMigrationStatus,
@@ -180,61 +167,5 @@ class LauncherViewModelTest {
         // Then
         coVerify(exactly = 1) { paymentOrchestrator.startSubscriptionWorkflow(true) }
         confirmVerified(paymentOrchestrator)
-    }
-
-    @Test
-    fun `if onLoginResult is DuplicateAccount then emit duplicateDialogErrorEffect`() = runTest {
-        // Given
-        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
-        every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
-        coEvery { shouldMigrateLegacyAccount.invoke() } returns false
-        every { paymentOrchestrator.register(any()) } just runs
-        every { paymentOrchestrator.setOnUpgradeResult(any()) } just runs
-        mockkStatic(userSessionRepository::observe)
-        every { userSessionRepository.observe(any(), Lifecycle.State.RESUMED) } returns mockk(relaxed = true)
-
-        val blockSlot = slot<(result: LoginOutput?) -> Unit>()
-        every { authOrchestrator.setOnSignUpResult(any()) } just runs
-        every { authOrchestrator.register(any()) } just runs
-        every { authOrchestrator.setOnAddAccountResult(any()) } just runs
-        mockkStatic(authOrchestrator::onLoginResult)
-        every { authOrchestrator.onLoginResult(capture(blockSlot)) } returns mockk()
-        val sut = viewModel()
-        // when
-
-        sut.register(mockk(relaxed = true))
-        val callback = blockSlot.captured
-        callback(LoginOutput.DuplicateAccount(UserIdTestData.userId.id))
-
-        // then
-        Assert.assertEquals(sut.duplicateDialogErrorEffect.first(), Effect.of(Unit))
-    }
-
-    @Test
-    fun `if onLoginResult is LoggedIn then setPrimaryAccount`() = runTest {
-        // Given
-        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
-        every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
-        coEvery { shouldMigrateLegacyAccount.invoke() } returns false
-        every { paymentOrchestrator.register(any()) } just runs
-        every { paymentOrchestrator.setOnUpgradeResult(any()) } just runs
-        mockkStatic(userSessionRepository::observe)
-        every { userSessionRepository.observe(any(), Lifecycle.State.RESUMED) } returns mockk(relaxed = true)
-
-        val blockSlot = slot<(result: LoginOutput?) -> Unit>()
-        every { authOrchestrator.setOnSignUpResult(any()) } just runs
-        every { authOrchestrator.register(any()) } just runs
-        every { authOrchestrator.setOnAddAccountResult(any()) } just runs
-        mockkStatic(authOrchestrator::onLoginResult)
-        every { authOrchestrator.onLoginResult(capture(blockSlot)) } returns mockk()
-        val sut = viewModel()
-        // when
-
-        sut.register(mockk(relaxed = true))
-        val callback = blockSlot.captured
-        callback(LoginOutput.LoggedIn(UserIdTestData.userId.id))
-
-        // then
-        coVerify { setPrimaryAccount(UserIdTestData.userId) }
     }
 }
