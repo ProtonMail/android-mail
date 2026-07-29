@@ -34,7 +34,7 @@ import uniffi.mail_uniffi.ConversationScrollerCursorResult
 import uniffi.mail_uniffi.ConversationScrollerFetchMoreResult
 import uniffi.mail_uniffi.ConversationScrollerGetItemsResult
 import uniffi.mail_uniffi.ConversationScrollerSupportsIncludeFilterResult
-import uniffi.mail_uniffi.IncludeSwitch
+import uniffi.mail_uniffi.IncludeFilter
 import uniffi.mail_uniffi.ReadFilter
 
 class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroller) {
@@ -72,8 +72,7 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
 
     suspend fun showSpamAndTrash(show: Boolean) {
         Timber.d("conversation-paginator: Changing show spam and trash to %s id=%s", show, rustPaginator.id())
-        val includeSwitch = if (show) IncludeSwitch.WITH_SPAM_AND_TRASH else IncludeSwitch.DEFAULT
-        rustPaginator.changeInclude(includeSwitch)
+        rustPaginator.changeInclude(IncludeFilter(includeSpam = show, includeTrash = show))
     }
 
     fun disconnect() {

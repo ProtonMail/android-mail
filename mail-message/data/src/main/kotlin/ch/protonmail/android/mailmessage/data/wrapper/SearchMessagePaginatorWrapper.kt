@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
-import uniffi.mail_uniffi.IncludeSwitch
+import uniffi.mail_uniffi.IncludeFilter
 import uniffi.mail_uniffi.PaginatorSearchOptions
 import uniffi.mail_uniffi.SearchScroller
 import uniffi.mail_uniffi.SearchScrollerCursorResult
@@ -77,8 +77,7 @@ class SearchMessagePaginatorWrapper(
 
     override suspend fun showSpamAndTrash(show: Boolean) {
         Timber.d("search-paginator: Updating show spam and trash to: $show")
-        val includeSwitch = if (show) IncludeSwitch.WITH_SPAM_AND_TRASH else IncludeSwitch.DEFAULT
-        rustPaginator.changeInclude(includeSwitch)
+        rustPaginator.changeInclude(IncludeFilter(includeSpam = show, includeTrash = show))
     }
 
     override suspend fun updateKeyword(keyword: String) {
