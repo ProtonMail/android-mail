@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indexation de la recherche dans le contenu</string>
-  <string name="content_search_notification_channel_description">Affiche la progression pendant que les messages sont indexés pour la recherche dans le contenu.</string>
-  <string name="content_search_notification_title">Préparation de la recherche dans le contenu</string>
+  <string name="content_search_notification_channel_name">Indexation pour la recherche avancée</string>
+  <string name="content_search_notification_channel_description">Affiche la progression pendant que les messages sont indexés pour la recherche avancée.</string>
+  <string name="content_search_notification_title">Préparation en cours de la recherche avancée</string>
   <string name="content_search_notification_progress">%1$.2f%% terminé</string>
   <string name="content_search_notification_preparing">Préparation en cours…</string>
   <string name="content_search_notification_cancel">Annuler</string>

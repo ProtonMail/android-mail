@@ -40,5 +40,4 @@
   <string name="bottom_sheet_label_as_error_apply">L\'application des labels n\'a pas abouti.</string>
   <string name="bottom_sheet_move_to_action_error">Le déplacement n\'a pas abouti.</string>
   <string name="bottom_sheet_move_to_category_no_change">Aucun changement ne sera apporté aux messages sélectionnés.</string>
-    <string name="move_to_category_action_message">Déplacé vers %s. Les messages similaires seront catégorisés ici à l\'avenir.</string>
 </resources>

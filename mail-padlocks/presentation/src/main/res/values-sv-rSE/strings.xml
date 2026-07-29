@@ -87,7 +87,7 @@
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">end-to-end-krypterat</string>
   <string name="padlocks_proton_sent_recipient_e2ee">End-to-end-krypterat</string>
   <!-- Additional descriptions -->
-  <string name="padlocks_proton_always_e2ee">E-post som utbyts mellan Proton-användare är automatiskt end-to-end-krypterat.</string>
+  <string name="padlocks_proton_always_e2ee">E-post som utbyts mellan Proton-användare är alltid end-to-end-krypterat.</string>
   <string name="padlocks_non_encrypted_copy">En avsändare eller mottagare som inte använder Proton Mail kan dock ha en okrypterad kopia lagrad på sin e-postserver.</string>
   <string name="padlocks_sender_verified_contact">Avsändaren är en %s vars krypteringsnycklar du har betrott.</string>
   <string name="padlocks_sender_verified_contact_link_text">verifierad kontakt</string>

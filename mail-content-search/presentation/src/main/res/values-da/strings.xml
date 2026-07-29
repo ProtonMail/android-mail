@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Søg</string>
-  <string name="mail_settings_content_search_description">Søg gennem alt meddelelsesindhold direkte på din enhed.</string>
+  <string name="mail_settings_content_search_header_title">Avanceret søgning</string>
+  <string name="mail_settings_content_search_description">For at du kan søge i meddelelsesindhold vil meddelelser blive downloadet på denne enhed.</string>
   <string name="mail_settings_content_search_learn_more">Få mere at vide..</string>
-  <string name="mail_settings_content_search_toggle_title">Indholdssøgning</string>
+  <string name="mail_settings_content_search_toggle_title">Avanceret søgning</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillad download via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
-  <string name="mail_settings_content_search_syncing_status">Synkroniserer... %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Forbereder %1$.2f%%...</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
   <string name="mail_settings_content_search_clear_data_button">Ryd lokale søgedata</string>
   <string name="mail_settings_content_search_clear_data_description">Ved at rydde lokale søgedata deaktiveres søgning i meddelelsesindhold. Du kan aktivere det igen når som helst.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">En anden konto er i gang med at indeksere indhold. Vent på at den er færdig før søgning aktiveres her.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Ryd lokale søgedata</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Søgedata på denne enhed vil blive fjernet. Du bliver nødt til at downloade igen for at bruge avanceret søgning.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Ryd data</string>
+  <string name="content_search_bottomsheet_title">Forbereder avanceret søgning...</string>
+  <string name="content_search_bottomsheet_description">E-mails downloades via Wi-Fi eller mobildata. Du kan vælge kun at bruge Wi-Fi i %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">indstillinger</string>
+  <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Zoeken</string>
-  <string name="mail_settings_content_search_description">Zoek rechtstreeks op uw apparaat in de inhoud van alle berichten.</string>
+  <string name="mail_settings_content_search_header_title">Geavanceerd Zoeken</string>
+  <string name="mail_settings_content_search_description">Om u te laten zoeken op berichtinhoud, worden berichten gedownload op dit apparaat.</string>
   <string name="mail_settings_content_search_learn_more">Meer informatie..</string>
-  <string name="mail_settings_content_search_toggle_title">Inhoud doorzoeken</string>
+  <string name="mail_settings_content_search_toggle_title">Geavanceerd zoeken</string>
   <string name="mail_settings_content_search_mobile_data_title">Downloaden via mobiele gegevens toestaan</string>
   <string name="mail_settings_content_search_mobile_data_hint">Het downloaden gaat door via mobiele gegevens als de wifi-verbinding wordt verbroken.</string>
-  <string name="mail_settings_content_search_syncing_status">Synchroniseren… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Voorbereiden %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Voorbereiden…</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale zoekgegevens wissen</string>
   <string name="mail_settings_content_search_clear_data_description">Het wissen van lokale zoekgegevens schakelt het doorzoeken van de inhoud van berichten uit. U kunt dit op elk gewenst moment weer inschakelen.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Er is een indexering van de inhoud bezig voor een ander account. Wacht tot dit is voltooid voordat u hier zoeken inschakelt.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Lokale zoekgegevens wissen</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">De zoekgegevens op dit apparaat worden verwijderd. U moet deze opnieuw downloaden om Geavanceerd Zoeken te gebruiken.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Gegevens wissen</string>
+  <string name="content_search_bottomsheet_title">Geavanceerd Zoeken voorbereiden…</string>
+  <string name="content_search_bottomsheet_description">E-mails worden gedownload via Wi-Fi of mobiele data. U kunt alleen overschakelen naar Wi-Fi binnen %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">instellingen</string>
+  <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Keresés</string>
-  <string name="mail_settings_content_search_description">Keresés az összes üzenet tartalmában közvetlenül az eszközén.</string>
+  <string name="mail_settings_content_search_header_title">Advanced Search</string>
+  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
   <string name="mail_settings_content_search_learn_more">További információk..</string>
-  <string name="mail_settings_content_search_toggle_title">Keresés a tartalomban</string>
+  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
   <string name="mail_settings_content_search_mobile_data_title">Letöltés engedélyezése mobiladat-kapcsolattal</string>
   <string name="mail_settings_content_search_mobile_data_hint">A letöltés mobiladat-kapcsolaton keresztül folytatódik, ha a Wi-Fi megszakad.</string>
-  <string name="mail_settings_content_search_syncing_status">Szinkronizálás… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Előkészítés…</string>
   <string name="mail_settings_content_search_clear_data_button">Helyi keresési adatok törlése</string>
   <string name="mail_settings_content_search_clear_data_description">A helyi keresési adatok törlése letiltja a keresést az üzenetek tartalmában. Ezt bármikor visszakapcsolhatja.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">A tartalomindexelés jelenleg egy másik fióknál fut. Várja meg, amíg befejeződik, mielőtt itt engedélyezné a keresést.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
+  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
+  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">settings</string>
+  <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

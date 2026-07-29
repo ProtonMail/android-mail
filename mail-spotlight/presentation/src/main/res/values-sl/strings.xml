@@ -37,11 +37,11 @@
   <string name="spotlight_screen_category_view_categories_title">Kategorije za sporočila</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Samodejno razvrstite e-pošto v uporabne kategorije.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Neprebrana sporočila so zdaj lažje dostopna.</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter za neprebrana sporočila je zdaj na dnu mape, zato lahko preprosto preklapljate med vsemi in neprebranimi e-poštnimi sporočili.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter za neprebrana sporočila je zdaj na dnu mape Prejeto, zato lahko preprosto preklapljate med vsemi in neprebranimi e-poštnimi sporočili.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Ostanite na tekočem z novimi\nin neprebranimi e-poštnimi sporočili.</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Filter za neprebrana sporočila je zdaj bolj opazen in vedno pri roki, zato lahko neprebrana e-poštna sporočila hitreje pregledate in ukrepate.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">Vaša mapa Prejeto\nje samodejno organizirana.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Mapa Prejeto je zdaj razvrščena v kategorije, kot so Primarno, Družabno, Promocije in druge, zato se lažje osredotočite na pomembna e-poštna sporočila ter zmanjšate nepreglednost.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Mapa Prejeto je zdaj razvrščena v kategorije, kot so Glavno, Družabno, Reklame in druge, zato se lažje osredotočite na pomembna e-poštna sporočila ter zmanjšate nepreglednost.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Zasnovano z mislijo na zasebnost. Več o tem.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Pozdravite kategorije.\nAdijo motnje.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Naj vas ne motijo glasila, posodobitve in nenujna sporočila. Z novimi kategorijami za sporočila bodo v vašo glavno mapo Prejeto uvrščena samo pomembna sporočila.</string>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Cerca</string>
-  <string name="mail_settings_content_search_description">Cerqueu en tot el contingut dels missatges directament al vostre dispositiu.</string>
+  <string name="mail_settings_content_search_header_title">Cerca avançada</string>
+  <string name="mail_settings_content_search_description">Per tal que pugueu cercar pel contingut dels missatges, es descarregaran en aquest dispositiu.</string>
   <string name="mail_settings_content_search_learn_more">Més informació..</string>
-  <string name="mail_settings_content_search_toggle_title">Cerca de contingut</string>
+  <string name="mail_settings_content_search_toggle_title">Cerca avançada</string>
   <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">S\'està sincronitzant… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$.2f%%</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
   <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">S\'està executant la indexació de contingut per a un altre compte. Espereu que acabi abans d\'habilitar la cerca aquí.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Neteja les dades de cerca local</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">S\'esborraran les dades de cerca en aquest dispositiu. Haureu de tornar-les a descarregar per utilitzar la cerca avançada.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Neteja les dades</string>
+  <string name="content_search_bottomsheet_title">S\'està preparant la Cerca Avançada</string>
+  <string name="content_search_bottomsheet_description">S\'estan descarregant els correus a través de la xarxa Wi-Fi o de les dades mòbils. Podeu canviar-ho únicament a Wi-Fi a %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">preferències</string>
+  <string name="content_search_bottomsheet_ok">D\'acord</string>
 </resources>

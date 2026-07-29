@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Buscar</string>
-  <string name="mail_settings_content_search_description">Busca en todo el contenido de los mensajes directamente en su dispositivo.</string>
+  <string name="mail_settings_content_search_header_title">Búsqueda avanzada</string>
+  <string name="mail_settings_content_search_description">Para que pueda buscar por contenido de los mensajes, estos se descargarán en este dispositivo.</string>
   <string name="mail_settings_content_search_learn_more">Más información.</string>
-  <string name="mail_settings_content_search_toggle_title">Búsqueda de contenido</string>
+  <string name="mail_settings_content_search_toggle_title">Búsqueda avanzada</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitir descargas usando datos móviles</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descarga continúa con datos móviles si se pierde la señal de Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Sincronizando… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Preparando %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_clear_data_button">Borrar datos de búsqueda locales</string>
   <string name="mail_settings_content_search_clear_data_description">Borrar datos de búsqueda locales desactivará búsqueda por contenido de mensaje. Puede activarla nuevamente en cualquier momento.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Se está realizando la indexación de contenido para otra cuenta. Espere a que finalice antes de activar la búsqueda aquí.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Borrar datos de búsqueda locales</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Se eliminarán los datos de búsqueda de este dispositivo. Deberá descargarlos de nuevo para usar la búsqueda avanzada.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Borrar los datos</string>
+  <string name="content_search_bottomsheet_title">Preparando la búsqueda avanzada…</string>
+  <string name="content_search_bottomsheet_description">Los correos se están descargando por Wi-Fi o datos móviles. Puede cambiar a solo Wi-Fi en %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">ajustes</string>
+  <string name="content_search_bottomsheet_ok">Aceptar</string>
 </resources>

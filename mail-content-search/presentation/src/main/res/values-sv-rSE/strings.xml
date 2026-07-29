@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Sök</string>
-  <string name="mail_settings_content_search_description">Sök i allt meddelandeinnehåll direkt på din enhet.</string>
+  <string name="mail_settings_content_search_header_title">Avancerad sök</string>
+  <string name="mail_settings_content_search_description">För att du ska kunna söka efter meddelandeinnehåll kommer meddelanden att laddas ner på denna enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
-  <string name="mail_settings_content_search_toggle_title">Innehållssökning</string>
+  <string name="mail_settings_content_search_toggle_title">Avancerad sök</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillåt nedladdning via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Nedladdningen fortsätter via mobil data om Wi-Fi förloras.</string>
-  <string name="mail_settings_content_search_syncing_status">Synkroniserar … %1$.2f %%</string>
+  <string name="mail_settings_content_search_syncing_status">Förbereder %1$.2f %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">Innehållsindexering körs för ett annat konto. Vänta tills den är klar innan du aktiverar sökning här.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Rensa data</string>
+  <string name="content_search_bottomsheet_title">Förbereder avancerad sök …</string>
+  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">inställningar</string>
+  <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">搜尋</string>
-  <string name="mail_settings_content_search_description">直接在您的裝置上搜尋所有訊息內文。</string>
+  <string name="mail_settings_content_search_header_title">Advanced Search</string>
+  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
   <string name="mail_settings_content_search_learn_more">進一步瞭解..</string>
-  <string name="mail_settings_content_search_toggle_title">內文搜尋</string>
+  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
   <string name="mail_settings_content_search_mobile_data_title">允許透過行動數據下載</string>
   <string name="mail_settings_content_search_mobile_data_hint">若中斷 Wi-Fi 連線，將繼續透過行動數據下載。</string>
-  <string name="mail_settings_content_search_syncing_status">正在同步… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_clear_data_button">清除本機搜尋資料</string>
   <string name="mail_settings_content_search_clear_data_description">清除本機搜尋資料將會停用訊息內文搜尋。您可以隨時重新啟用。</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">另一個帳號正在進行內文索引。請等其完成後，再於此處啟用搜尋。</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
+  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
+  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">settings</string>
+  <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

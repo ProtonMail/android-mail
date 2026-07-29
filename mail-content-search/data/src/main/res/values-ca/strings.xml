@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indexació de la cerca de contingut</string>
-  <string name="content_search_notification_channel_description">Mostra el progrés mentre s\'indexen els missatges per a la cerca de contingut.</string>
-  <string name="content_search_notification_title">S\'està preparant la cerca de contingut</string>
+  <string name="content_search_notification_channel_name">Indexació de la cerca avançada</string>
+  <string name="content_search_notification_channel_description">Mostra el progrés mentre s\'indexen els missatges per a la cerca avançada.</string>
+  <string name="content_search_notification_title">S\'està preparant la Cerca Avançada</string>
   <string name="content_search_notification_progress">[%1$.2f%% completat</string>
   <string name="content_search_notification_preparing">S\'està preparant…</string>
-  <string name="content_search_notification_cancel">Cancel·lar-ho</string>
+  <string name="content_search_notification_cancel">Cancel·la</string>
 </resources>

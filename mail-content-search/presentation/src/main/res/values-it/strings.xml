@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Cerca</string>
-  <string name="mail_settings_content_search_description">Cerca tra tutti i contenuti dei messaggi direttamente sul tuo dispositivo.</string>
+  <string name="mail_settings_content_search_header_title">Ricerca avanzata</string>
+  <string name="mail_settings_content_search_description">Per consentirti di effettuare ricerche in base al contenuto dei messaggi, questi ultimi verranno scaricati su questo dispositivo.</string>
   <string name="mail_settings_content_search_learn_more">Scopri di più..</string>
-  <string name="mail_settings_content_search_toggle_title">Ricerca contenuto</string>
+  <string name="mail_settings_content_search_toggle_title">Ricerca avanzata</string>
   <string name="mail_settings_content_search_mobile_data_title">Consenti download tramite rete dati</string>
   <string name="mail_settings_content_search_mobile_data_hint">Il download continua tramite rete dati se viene persa la connessione Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Sincronizzazione in corso… %1$.2f%%</string>
+  <string name="mail_settings_content_search_syncing_status">Preparazione di %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
   <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
-  <string name="mail_settings_content_search_blocked_by_other_user">L\'indicizzazione dei contenuti è in corso per un altro account. Attendi che finisca prima di attivare la ricerca qui.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Cancella i dati della ricerca locale</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">I dati di ricerca presenti su questo dispositivo verranno eliminati. Per utilizzare la Ricerca avanzata, dovrai scaricarli nuovamente.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Cancella la cache</string>
+  <string name="content_search_bottomsheet_title">Preparazione della ricerca avanzata…</string>
+  <string name="content_search_bottomsheet_description">Le e-mail vengono scaricate tramite Wi-Fi o dati mobili. Puoi impostare il download solo tramite Wi-Fi in %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">impostazioni</string>
+  <string name="content_search_bottomsheet_ok">OK</string>
 </resources>
