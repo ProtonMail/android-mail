@@ -1294,7 +1294,7 @@ internal class ConversationDetailViewModelTest {
                 currentState = any(),
                 operation = ConversationDetailEvent.ExitScreenWithMessage(
                     ConversationDetailViewAction.MoveToCompleted(
-                        labelText, moveToEntryPoint
+                        labelText, moveToEntryPoint, isCategory = false
                     )
                 )
             )
@@ -1310,7 +1310,9 @@ internal class ConversationDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
 
-            viewModel.submit(ConversationDetailViewAction.MoveToCompleted(labelText, moveToEntryPoint))
+            viewModel.submit(
+                ConversationDetailViewAction.MoveToCompleted(labelText, moveToEntryPoint, isCategory = false)
+            )
             advanceUntilIdle()
 
             // Then

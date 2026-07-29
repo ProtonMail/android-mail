@@ -292,7 +292,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
     data class MoveToCompleted(
         val mailLabelText: MailLabelText,
-        val entryPoint: MoveToBottomSheetEntryPoint
+        val entryPoint: MoveToBottomSheetEntryPoint,
+        val isCategory: Boolean
     ) : ConversationDetailViewAction,
         AffectingBottomSheet,
         AffectingMessageBar

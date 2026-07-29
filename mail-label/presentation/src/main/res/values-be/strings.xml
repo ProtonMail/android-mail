@@ -40,4 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">Не ўдалося прымяніць меткі.</string>
   <string name="bottom_sheet_move_to_action_error">Збой аперацыі пераносу.</string>
   <string name="bottom_sheet_move_to_category_no_change">Змены не будуць унесены ў выбраныя лісты.</string>
+  <string name="move_to_category_action_message">Перамешчана ў %s. Аналагічныя паведамленні будуць разбівацца ў гэтым месцы па катэгорыях у будучыні.</string>
 </resources>

@@ -316,8 +316,12 @@ fun ConversationDetailScreen(
                         onCreateNewFolderClick = actions.onAddLabel,
                         onError = { actions.showSnackbar(it, ProtonSnackbarType.ERROR) },
                         onMessage = { actions.showSnackbar(it, ProtonSnackbarType.NORM) },
-                        onMoveToComplete = { mailLabelText, _, entryPoint ->
-                            val action = ConversationDetailViewAction.MoveToCompleted(mailLabelText, entryPoint)
+                        onMoveToComplete = { mailLabelText, isCategory, entryPoint ->
+                            val action = ConversationDetailViewAction.MoveToCompleted(
+                                mailLabelText,
+                                entryPoint,
+                                isCategory
+                            )
                             viewModel.submit(action)
                         },
                         onDismiss = { dismissBottomSheet() }

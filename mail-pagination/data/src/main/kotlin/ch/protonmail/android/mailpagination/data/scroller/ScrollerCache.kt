@@ -25,9 +25,37 @@ class ScrollerCache<T> {
     private val items = mutableListOf<T>()
     val snapshot: List<T> get() = items.toList()
 
+    /**
+     * Set when an update could not be applied, which means this cache no longer mirrors the scroller's
+     * list. Cleared by the next full replacement of the list.
+     *
+     * Clearing it is not guaranteed to be prompt. While it is set, callers query the scroller instead of
+     * this cache, and get_items() answering with a full replacement — the response [ScrollerOnUpdateHandler]
+     * expects of it — is what puts the two back in step. Should that answer never come, the cost is that
+     * every refresh queries the scroller, which is the behaviour that predates serving refreshes from here.
+     */
+    var needsResync: Boolean = false
+        private set
+
+    /** Set once the scroller has told us what its list holds, even if the answer was "nothing". */
+    private var hasReceivedListUpdate: Boolean = false
+
+    /**
+     * Whether this cache can answer for the scroller's list: it has been told what the list holds and
+     * has applied every update since. When false a caller must query the scroller instead — either
+     * nothing has been loaded yet, or an update was dropped and this cache no longer mirrors it.
+     *
+     * Note that [snapshot] being empty is not the same thing: a location the scroller has reported as
+     * empty is something this cache can answer with, and an empty answer served straight away beats
+     * waiting on a scroller that may be busy fetching. See `RustConversationsQueryImpl.reloadConversations`.
+     */
+    val mirrorsScroller: Boolean get() = hasReceivedListUpdate && !needsResync
+
     fun itemCount(): Int = items.size
 
     fun applyUpdate(update: ScrollerUpdate<T>): List<T> {
+
+        hasReceivedListUpdate = hasReceivedListUpdate || update.reportsListContent()
 
         when (update) {
             is ScrollerUpdate.Append -> {
@@ -37,12 +65,18 @@ class ScrollerCache<T> {
             is ScrollerUpdate.ReplaceFrom -> {
                 val idx = update.idx
                 when (idx) {
-                    in 0 until items.size -> {
+                    0 -> {
+                        items.clear()
+                        items.addAll(update.items)
+                        needsResync = false
+                    }
+
+                    in 1 until items.size -> {
                         items.subList(idx, items.size).clear()
                         items.addAll(update.items)
                     }
                     items.size -> items.addAll(update.items)
-                    else -> Timber.w("ReplaceFrom ignored: idx=$idx (size=${items.size})")
+                    else -> ignoreUpdate("ReplaceFrom", "idx=$idx")
                 }
             }
 
@@ -56,8 +90,10 @@ class ScrollerCache<T> {
                     items.size -> {
                         items.clear()
                         items.addAll(update.items)
+                        needsResync = false
                     }
-                    else -> Timber.w("ReplaceBefore ignored: idx=$idx (size=${items.size})")
+
+                    else -> ignoreUpdate("ReplaceBefore", "idx=$idx")
                 }
             }
 
@@ -66,11 +102,11 @@ class ScrollerCache<T> {
                 val toIdx = update.toIdx
                 when {
                     fromIdx !in 0..items.size ->
-                        Timber.w("ReplaceRange invalid fromIdx=$fromIdx (size=${items.size})")
+                        ignoreUpdate("ReplaceRange", "invalid fromIdx=$fromIdx")
                     toIdx !in 0..items.size ->
-                        Timber.w("ReplaceRange invalid toIdx=$toIdx (size=${items.size})")
+                        ignoreUpdate("ReplaceRange", "invalid toIdx=$toIdx")
                     fromIdx > toIdx ->
-                        Timber.w("ReplaceRange requires fromIdx <= toIdx (from=$fromIdx, to=$toIdx)")
+                        ignoreUpdate("ReplaceRange", "requires fromIdx <= toIdx (from=$fromIdx, to=$toIdx)")
                     else -> {
                         items.subList(fromIdx, toIdx).clear()
                         items.addAll(fromIdx, update.items)
@@ -83,5 +119,22 @@ class ScrollerCache<T> {
         }
 
         return snapshot
+    }
+
+    // Whether the update states what the scroller's list holds. An empty list does; None (no more items
+    // to add) and Error say nothing about it, so they leave a fresh cache unable to answer for the list.
+    private fun ScrollerUpdate<T>.reportsListContent(): Boolean = when (this) {
+        is ScrollerUpdate.Append,
+        is ScrollerUpdate.ReplaceFrom,
+        is ScrollerUpdate.ReplaceBefore,
+        is ScrollerUpdate.ReplaceRange -> true
+
+        is ScrollerUpdate.None,
+        is ScrollerUpdate.Error -> false
+    }
+
+    private fun ignoreUpdate(updateName: String, reason: String) {
+        Timber.w("$updateName ignored: $reason (size=${items.size})")
+        needsResync = true
     }
 }

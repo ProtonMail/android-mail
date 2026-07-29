@@ -612,6 +612,11 @@ internal class MailboxViewModelTest {
                 MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
             )
         } returns intermediateState
+        // The swipe actions of the new location are reduced while the bottom bar actions are being
+        // loaded: keep the selection in place, as the actions are only applied to a live selection.
+        every {
+            mailboxReducer.newStateFrom(intermediateState, ofType<MailboxEvent.SwipeActionsChanged>())
+        } returns intermediateState
         returnExpectedStateForBottomBarEvent(expectedState = expectedState)
         expectPagerMock()
 
@@ -667,6 +672,62 @@ internal class MailboxViewModelTest {
             }
         }
     }
+
+    @Test
+    fun `when selection is acted upon while bottom bar actions are loading, the bottom bar is not shown again`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val initialState = createMailboxDataState()
+            val selectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            val shownBottomBarState = selectionState.copy(
+                bottomAppBarState = BottomBarState.Data.Shown(
+                    BottomBarTarget.Mailbox,
+                    listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash).toImmutableList()
+                )
+            )
+
+            expectViewModeForCurrentLocation(NoConversationGrouping)
+            expectedTrashSpamFilterStateChange(initialState)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
+            returnExpectedStateForBottomBarEvent(selectionState, shownBottomBarState)
+            expectMoveMessagesSucceeds(userId, listOf(item), SystemLabelId.Archive)
+            expectedReducerResult(
+                operation = MailboxEvent.MoveToConfirmed.Archive(viewMode = NoConversationGrouping, itemCount = 1),
+                expectedState = initialState
+            )
+            expectPagerMock()
+
+            // Hold back the second load and let it resolve to a different set of actions, so that it is
+            // not deduplicated once it completes.
+            val pendingActionsLoad = CompletableDeferred<Unit>()
+            var loadCount = 0
+            coEvery { getBottomBarActions(any(), any(), any(), any()) } coAnswers {
+                if (++loadCount == 1) return@coAnswers listOf(Action.Archive, Action.Trash).right()
+                pendingActionsLoad.await()
+                listOf(Action.Spam).right()
+            }
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission
+
+                mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+                assertEquals(selectionState, awaitItem())
+                assertEquals(shownBottomBarState, awaitItem())
+
+                // When
+                refreshToolbarSharedFlow.emit(Unit)
+                mailboxViewModel.submit(MailboxViewAction.MoveToArchive)
+                assertEquals(initialState, awaitItem())
+
+                pendingActionsLoad.complete(Unit)
+                advanceUntilIdle()
+
+                // Then
+                expectNoEvents()
+            }
+        }
 
     @Test
     fun `when selected label changes, new state is created and emitted`() = runTest {
@@ -4443,6 +4504,90 @@ internal class MailboxViewModelTest {
                 mailboxReducer.newStateFrom(
                     any(),
                     MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null, "")
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when item clicked in search mode then the selected category is not opened from`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem(id = "id", type = Message)
+        val selectedCategory = CategoryLabelTestData.social.id
+        val allMailLabelId = MailLabelTestData.allMailSystemLabel.id
+
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId, selectedCategory)
+        )
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createSearchModeState(
+            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = true)
+        )
+        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectPagerMock()
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+            advanceUntilIdle()
+
+            // Then the category is dropped, as it belongs to the location we searched from and not
+            // to the search-aware label the item is opened from.
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(
+                        item,
+                        allMailLabelId.labelId,
+                        false,
+                        item.id,
+                        null,
+                        ""
+                    )
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when item clicked not in search mode then the selected category is opened from`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem(id = "id", type = Message)
+        val selectedCategory = CategoryLabelTestData.social.id
+        val currentLabelId = initialLocationMailLabelId.labelId
+        val intermediateState = createMailboxDataState()
+
+        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
+            MailLabelIdWithCategory(initialLocationMailLabelId, selectedCategory)
+        )
+        expectedTrashSpamFilterStateChange(intermediateState)
+        expectedSelectedLabelCountStateChange(intermediateState)
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectPagerMock()
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+            advanceUntilIdle()
+
+            // Then
+            verify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(
+                        item,
+                        currentLabelId,
+                        false,
+                        item.id,
+                        selectedCategory,
+                        ""
+                    )
                 )
             }
             cancelAndIgnoreRemainingEvents()

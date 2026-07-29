@@ -85,7 +85,6 @@
     <item quantity="one">Üzenet áthelyezve a %s mappába</item>
     <item quantity="other">Üzenetek áthelyezve ide: %s</item>
   </plurals>
-  <string name="mailbox_action_move_to_category">Áthelyezve a(z) %s kategóriába. A hasonló üzenetek a jövőben ide lesznek sorolva.</string>
   <string name="mailbox_action_button_clear_trash">Lomtár kiürítése</string>
   <string name="mailbox_action_button_clear_spam">Levélszemét kiürítése</string>
   <string name="mailbox_action_clear_trash_spam_upsell_banner_text">Frissítsen, hogy automatikusan törölhesse az üzeneteket, amelyek több mint 30 napja a lomtárban vagy a levélszemétben vannak.</string>
