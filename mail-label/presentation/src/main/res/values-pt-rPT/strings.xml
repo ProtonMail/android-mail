@@ -40,5 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">Erro ao aplicar as etiquetas.</string>
   <string name="bottom_sheet_move_to_action_error">Erro ao mover.</string>
   <string name="bottom_sheet_move_to_category_no_change">Nenhuma alteração será feita nos e-mails selecionados</string>
-  <string name="move_to_category_action_message">Movido para %s. Mensagens semelhantes serão categorizadas aqui no futuro.</string>
+  <string name="move_to_category_action_message">Moved to %s. Similar messages will be categorized there in the future.</string>
 </resources>

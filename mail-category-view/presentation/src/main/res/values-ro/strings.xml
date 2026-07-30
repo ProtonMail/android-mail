@@ -26,10 +26,10 @@
   <string name="category_title_transactions">Tranzacții</string>
   <string name="category_spotlight_unseen_title">Mesaje noi în %1$s</string>
   <string name="category_spotlight_unseen_description">Un punct albastru arată când o categorie are mesaje noi de la ultima verificare.</string>
-  <string name="category_spotlight_personalise_title">Refine your categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
+  <string name="category_spotlight_personalise_title">Rafinați-vă categoriile</string>
+  <string name="category_spotlight_personalise_description">Mutați ​​un mesaj într-o altă categorie folosind opțiunea „Mutare în”. Mesajele similare vor fi apoi mutate automat.</string>
   <string name="category_spotlight_close_content_description">Închidere</string>
-  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_title">Recategorizare mesaje</string>
   <string name="recategorise_bottom_sheet_description">Când mutați un e-mail într-o altă categorie, mesajele similare vor fi clasificate acolo în viitor.</string>
-  <string name="recategorise_bottom_sheet_button">Got it</string>
+  <string name="recategorise_bottom_sheet_button">Am înțeles</string>
 </resources>
