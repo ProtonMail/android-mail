@@ -245,17 +245,6 @@ proton-core-testKotlin = { module = "me.proton.core:test-kotlin", version.ref = 
 proton-core-testAndroidInstrumented = { module = "me.proton.core:test-android-instrumented", version.ref = "proton-core" }
 proton-rust-core = { module = "me.proton.mail.common:lib", version.ref = "proton-rust-core" }
 
-# Proton Monorepo libraries
-proton-monorepo-account-api = { group = "me.proton.android.account", name = "account-api" }
-proton-monorepo-account-logging = { group = "me.proton.android.account", name = "account-logging" }
-
-proton-monorepo-core-env = { group = "me.proton.android.core", name = "core-env" }
-proton-monorepo-core-fido = { group = "me.proton.android.core", name = "core-fido" }
-proton-monorepo-core-fido-google = { group = "me.proton.android.core", name = "core-fido-google" }
-proton-monorepo-core-fido-no-op = { group = "me.proton.android.core", name = "core-fido-no-op" }
-proton-monorepo-core-logging = { group = "me.proton.android.core", name = "core-logging" }
-proton-monorepo-core-logging-sentry = { group = "me.proton.android.core", name = "core-logging-sentry" }
-
 [bundles]
 appLibs = [
     "androidx-activity-ktx",

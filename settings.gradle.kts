@@ -17,19 +17,48 @@
  */
 
 pluginManagement {
-    includeBuild("external/clients-monorepo/project/core/android/module-configuration")
-}
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("monoLibs") {
-            from(files("external/clients-monorepo/gradle/libs.versions.toml"))
-        }
+    // See `buildFromSource` below. Read again here because `pluginManagement` must be the first
+    // block of the settings script, so no value can be declared before it.
+    if (providers.gradleProperty("buildFromSource").orNull.toBoolean()) {
+        includeBuild("external/clients-monorepo/project/core/android/module-configuration")
     }
 }
 
-includeBuild("external/clients-monorepo/project/account/android") { name = "account" }
-includeBuild("external/clients-monorepo/project/core/android") { name = "core" }
+/**
+ * Builds the Proton libraries from the `external/clients-monorepo` submodule instead of consuming
+ * them from Maven. When disabled (the default) the submodule is not needed at all and does not have
+ * to be checked out. Enable with `-PbuildFromSource=true`.
+ */
+val buildFromSource: Boolean = providers.gradleProperty("buildFromSource").orNull.toBoolean()
+
+/**
+ * Opts in to the new Account SDK integration, which is only available from source.
+ * See the `accountNew` property in `gradle.properties`.
+ */
+val accountNew: Boolean = providers.gradleProperty("accountNew").orNull.toBoolean()
+
+require(buildFromSource || !accountNew) {
+    "accountNew=true requires buildFromSource=true: the Account SDK is not published to Maven."
+}
+
+if (buildFromSource) {
+    val monorepoDir = File(settingsDir, "external/clients-monorepo")
+    require(monorepoDir.listFiles()?.isNotEmpty() == true) {
+        "buildFromSource=true but $monorepoDir is empty. " +
+            "Run: git submodule update --init external/clients-monorepo"
+    }
+
+    dependencyResolutionManagement {
+        versionCatalogs {
+            create("monoLibs") {
+                from(files("external/clients-monorepo/gradle/libs.versions.toml"))
+            }
+        }
+    }
+
+    includeBuild("external/clients-monorepo/project/account/android") { name = "account" }
+    includeBuild("external/clients-monorepo/project/core/android") { name = "core" }
+}
 
 rootProject.name = "ProtonMail"
 
