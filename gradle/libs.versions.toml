@@ -216,9 +216,6 @@ proton-core-biometric = { module = "me.proton.core:biometric", version.ref = "pr
 proton-core-challenge-data = { module = "me.proton.core:challenge-data", version.ref = "proton-core" }
 proton-core-challenge-domain = { module = "me.proton.core:challenge-domain", version.ref = "proton-core" }
 proton-core-challenge-presentation = { module = "me.proton.core:challenge-presentation-compose", version.ref = "proton-core" }
-proton-core-configuration-data = { module = "me.proton.core:configuration-data", version.ref = "proton-core" }
-proton-core-configuration-dagger-static = { module = "me.proton.core:configuration-dagger-staticdefaults", version.ref = "proton-core" }
-proton-core-configuration-dagger-contentProvider = { module = "me.proton.core:configuration-dagger-content-resolver", version.ref = "proton-core" }
 proton-core-fido-domain = { module = "me.proton.core:auth-fido-domain", version.ref = "proton-core" }
 proton-core-fido-play = { module = "me.proton.core:auth-fido-play", version.ref = "proton-core" }
 proton-core-featureFlag-domain = { module = "me.proton.core:feature-flag-domain", version.ref = "proton-core" }
@@ -382,7 +379,6 @@ test-androidTest = [
 
 module-legacyCore = [
     "proton-core-auth-domain",
-    "proton-core-configuration-data",
     "proton-core-eventManager-domain",
     "proton-core-featureFlag-domain",
     "proton-core-mailSettings-domain",

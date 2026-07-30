@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import ch.protonmail.android.mailevents.domain.repository.AppInfoProvider
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkHelperImpl
@@ -34,7 +35,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.account.domain.entity.AccountType
-import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
 import javax.inject.Singleton
@@ -53,13 +53,13 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAppInfo(envConfig: EnvironmentConfiguration): AppInformation = AppInformation(
+    fun provideAppInfo(apiEnvironment: ApiEnvironment): AppInformation = AppInformation(
         appName = "Proton Mail",
         appVersionName = BuildConfig.VERSION_NAME,
         appVersionCode = BuildConfig.VERSION_CODE,
         appBuildType = BuildConfig.BUILD_TYPE,
         appBuildFlavor = BuildConfig.FLAVOR,
-        appHost = envConfig.host,
+        appHost = apiEnvironment.host,
         rustSdkVersion = BuildConfig.RUST_SDK_VERSION
     )
 

@@ -17,7 +17,6 @@
  */
 
 import com.android.build.api.dsl.VariantDimension
-import configuration.extensions.protonEnvironment
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -29,7 +28,6 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("io.sentry.android.gradle")
     id("org.jetbrains.kotlinx.kover")
-    id("me.proton.core.gradle-plugins.environment-config") version libs.versions.proton.core.plugin.get()
     id("org.jetbrains.kotlin.plugin.compose")
     id("app-config-plugin")
     id("account-sdk-plugin")
@@ -62,9 +60,7 @@ android {
         testInstrumentationRunner = AppConfiguration.testInstrumentationRunner.get()
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
 
-        protonEnvironment {
-            apiPrefix = "mail-api"
-        }
+        setApiEnvironment(host = "proton.me", apiPrefix = "mail-api")
 
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
@@ -135,10 +131,7 @@ android {
             buildConfigField("String", "BE_API_ENV", "\"atlas\"")
 
             val protonHost = "proton.black"
-            protonEnvironment {
-                host = protonHost
-                apiPrefix = "mail-api"
-            }
+            setApiEnvironment(host = protonHost, apiPrefix = "mail-api")
             setAssetLinksResValue(protonHost)
         }
         create("alpha") {
@@ -163,8 +156,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JvmTarget.fromTarget("17").target
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget("17")
+        }
     }
 
     buildFeatures {
@@ -274,10 +269,6 @@ dependencies {
 
     debugImplementation(libs.bundles.app.debug)
 
-    // Environment configuration
-    releaseImplementation(libs.proton.core.configuration.dagger.static)
-    debugImplementation(libs.proton.core.configuration.dagger.contentProvider)
-
     kapt(libs.bundles.app.annotationProcessors)
 
     coreLibraryDesugaring(libs.android.tools.desugarJdkLibs)
@@ -289,8 +280,6 @@ dependencies {
     benchmarkImplementation(libs.androidx.tracing.compose.runtime)
     benchmarkImplementation(libs.androidx.tracing.perfetto)
     benchmarkImplementation(libs.androidx.tracing.perfetto.binary)
-    // Also include configDaggerStatic to provide the required Hilt bindings in benchmark.
-    benchmarkImplementation(libs.proton.core.configuration.dagger.static)
 
     testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
@@ -327,6 +316,11 @@ sentry {
 }
 
 fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"
+
+fun VariantDimension.setApiEnvironment(host: String, apiPrefix: String) {
+    buildConfigField("String", "API_HOST", host.toBuildConfigValue())
+    buildConfigField("String", "API_PREFIX", apiPrefix.toBuildConfigValue())
+}
 
 fun VariantDimension.setAssetLinksResValue(host: String) {
     resValue(

@@ -21,7 +21,6 @@ package ch.protonmail.android.api
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import ch.protonmail.android.useragent.BuildUserAgent
-import me.proton.core.configuration.EnvironmentConfigurationDefaults
 import okhttp3.HttpUrl
 import uniffi.mail_uniffi.ApiEnvId
 import javax.inject.Inject
@@ -48,7 +47,7 @@ class MailRustApiConfig @Inject constructor(
 
     private fun String.toApiEnv(): ApiEnvId {
         val apiEnvId = when {
-            endsWith("${EnvironmentConfigurationDefaults.apiPrefix}.proton.black") -> ApiEnvId.Atlas
+            endsWith("${BuildConfig.API_PREFIX}.proton.black") -> ApiEnvId.Atlas
             endsWith("proton.black") -> ApiEnvId.Scientist(split(".")[1])
             else -> ApiEnvId.Prod
         }

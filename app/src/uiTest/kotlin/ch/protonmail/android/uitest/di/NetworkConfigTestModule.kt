@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.di
 
 import ch.protonmail.android.di.BaseUrlModule
+import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -26,7 +27,6 @@ import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.proton.core.configuration.EnvironmentConfiguration
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.MockWebServer
@@ -42,7 +42,7 @@ object NetworkConfigTestModule {
     fun provideHttpUrl(
         @LocalhostApi localhostApi: Boolean,
         mockWebServer: MockWebServer,
-        envConfig: EnvironmentConfiguration
+        apiEnvironment: ApiEnvironment
     ): HttpUrl {
         return if (localhostApi) {
             runBlocking {
@@ -54,7 +54,7 @@ object NetworkConfigTestModule {
                 }
             }
         } else {
-            envConfig.baseUrl.toHttpUrl()
+            apiEnvironment.baseUrl.toHttpUrl()
         }
     }
 }

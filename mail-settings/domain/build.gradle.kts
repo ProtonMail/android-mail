@@ -49,7 +49,6 @@ android {
 dependencies {
     implementation(libs.bundles.module.domain)
     implementation(libs.proton.core.mailSettings.domain)
-    implementation(libs.proton.core.configuration.data)
     implementation(libs.proton.core.user.domain)
 
     implementation(project(":mail-label:domain"))

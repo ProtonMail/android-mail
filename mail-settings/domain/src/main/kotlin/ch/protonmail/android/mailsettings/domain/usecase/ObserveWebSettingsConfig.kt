@@ -18,20 +18,20 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase
 
+import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import ch.protonmail.android.mailsettings.domain.model.WebSettingsConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import me.proton.core.configuration.EnvironmentConfiguration
 import javax.inject.Inject
 
 class ObserveWebSettingsConfig @Inject constructor(
-    private val envConfig: EnvironmentConfiguration
+    private val apiEnvironment: ApiEnvironment
 ) {
 
     operator fun invoke(): Flow<WebSettingsConfig> = flow {
 
         val webSettingsConfig = WebSettingsConfig(
-            baseUrl = "https://account.${envConfig.host}/lite",
+            baseUrl = "https://account.${apiEnvironment.host}/lite",
             accountSettingsAction = "account-settings",
             emailSettingsAction = "email-settings",
             labelSettingsAction = "labels-settings",

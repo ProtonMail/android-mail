@@ -33,7 +33,6 @@ import io.sentry.SentryOptions
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
 import kotlinx.coroutines.flow.MutableStateFlow
-import me.proton.core.configuration.EnvironmentConfigurationDefaults
 
 class SentryInitializer : Initializer<Unit> {
 
@@ -46,7 +45,7 @@ class SentryInitializer : Initializer<Unit> {
         SentryAndroid.init(context.applicationContext) { options: SentryOptions ->
             options.dsn = BuildConfig.SENTRY_DSN
             options.release = BuildConfig.VERSION_NAME
-            options.environment = EnvironmentConfigurationDefaults.host
+            options.environment = BuildConfig.API_HOST
             options.addIntegration(
                 SentryTimberIntegration(
                     minEventLevel = SentryLevel.WARNING,
