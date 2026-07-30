@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReduc
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -37,6 +36,7 @@ import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
 import javax.inject.Inject
+import ch.protonmail.android.mailattachments.presentation.R as attachmentsR
 
 @Suppress("TooManyFunctions", "LargeClass")
 class MailboxListReducer @Inject constructor(
@@ -169,7 +169,7 @@ class MailboxListReducer @Inject constructor(
     private fun reduceAttachmentDownloadInProgress(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> {
-                val errorMessage = TextUiModel.TextRes(R.string.mailbox_attachment_download_in_progress)
+                val errorMessage = TextUiModel.TextRes(attachmentsR.string.attachment_download_in_progress)
                 currentState.copy(displayAttachmentError = Effect.of(errorMessage))
             }
 
@@ -195,7 +195,7 @@ class MailboxListReducer @Inject constructor(
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 downloadingAttachmentId = null,
-                displayAttachmentError = Effect.of(TextUiModel.TextRes(R.string.mailbox_attachment_download_error))
+                displayAttachmentError = Effect.of(TextUiModel.TextRes(attachmentsR.string.attachment_download_error))
             )
 
             else -> currentState

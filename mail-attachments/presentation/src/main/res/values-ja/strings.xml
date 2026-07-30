@@ -21,4 +21,6 @@
   <string name="file_saved">ファイルが保存されました</string>
   <string name="file_saved_fallback">ファイルがダウンロードフォルダに保存されました</string>
   <string name="error_saving_file">ファイル保存中にエラーが発生しました</string>
+  <string name="attachment_download_error">添付ファイルを開けませんでした。もう一度お試しください。</string>
+  <string name="attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了する必要があります。</string>
 </resources>

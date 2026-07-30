@@ -21,4 +21,6 @@
   <string name="file_saved">Файл сохранён</string>
   <string name="file_saved_fallback">Файл сохранён в папку Загрузки</string>
   <string name="error_saving_file">Произошла ошибка при сохранении файла</string>
+  <string name="attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
+  <string name="attachment_download_in_progress">Текущее скачивание должно завершиться перед началом нового.</string>
 </resources>

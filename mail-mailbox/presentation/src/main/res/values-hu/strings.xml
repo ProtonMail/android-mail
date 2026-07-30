@@ -100,8 +100,6 @@
   <string name="mailbox_talkback_readout_starred">Csillagozás törlése</string>
   <string name="mailbox_talkback_readout_not_starred">Csillagozás</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Nem sikerült megnyitni a mellékletet. Próbálja meg újra.</string>
-  <string name="mailbox_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie egy új indítása előtt.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nem sikerült törölni az üzenetet</string>

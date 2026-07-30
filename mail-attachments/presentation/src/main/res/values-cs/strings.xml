@@ -21,4 +21,6 @@
   <string name="file_saved">Soubor uložen</string>
   <string name="file_saved_fallback">Soubor uložen do složky Stahování</string>
   <string name="error_saving_file">Při ukládání souboru došlo k chybě</string>
+  <string name="attachment_download_error">Nelze otevřít přílohu. Zkuste to prosím znovu.</string>
+  <string name="attachment_download_in_progress">Před zahájením nového stahování je třeba dokončit stávající stahování.</string>
 </resources>

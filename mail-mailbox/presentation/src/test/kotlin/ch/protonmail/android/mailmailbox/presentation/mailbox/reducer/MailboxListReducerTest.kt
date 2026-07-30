@@ -27,7 +27,6 @@ import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -51,6 +50,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import ch.protonmail.android.mailattachments.presentation.R as attachmentsR
 
 @RunWith(Parameterized::class)
 internal class MailboxListReducerTest(
@@ -760,7 +760,9 @@ internal class MailboxListReducerTest(
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     downloadingAttachmentId = null,
-                    displayAttachmentError = Effect.of(TextUiModel.TextRes(R.string.mailbox_attachment_download_error))
+                    displayAttachmentError = Effect.of(
+                        TextUiModel.TextRes(attachmentsR.string.attachment_download_error)
+                    )
                 )
             ),
             TestInput(

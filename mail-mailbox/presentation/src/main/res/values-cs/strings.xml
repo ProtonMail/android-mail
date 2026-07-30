@@ -118,8 +118,6 @@
   <string name="mailbox_talkback_readout_starred">Odebrat hvězdičku</string>
   <string name="mailbox_talkback_readout_not_starred">Označit hvězdičkou</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Nelze otevřít přílohu. Zkuste to prosím znovu.</string>
-  <string name="mailbox_attachment_download_in_progress">Před zahájením nového stahování je třeba dokončit stávající stahování.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Smazání zprávy selhalo</string>

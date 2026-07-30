@@ -21,4 +21,6 @@
   <string name="file_saved">Файл збережено</string>
   <string name="file_saved_fallback">Файл збережено у теку «Завантаження»</string>
   <string name="error_saving_file">Помилка під час збереження файлу</string>
+  <string name="attachment_download_error">Не вдалося відкрити вкладення. Спробуйте ще раз.</string>
+  <string name="attachment_download_in_progress">Поточне завантаження має бути завершене, перш ніж розпочати нове.</string>
 </resources>

@@ -100,8 +100,6 @@
   <string name="mailbox_talkback_readout_starred">Ta bort stjärnmärkning</string>
   <string name="mailbox_talkback_readout_not_starred">Stjärnmärk</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Kan inte öppna bilagan. Försök igen.</string>
-  <string name="mailbox_attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Det gick inte att ta bort meddelandet</string>

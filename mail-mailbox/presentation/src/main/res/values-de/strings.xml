@@ -100,8 +100,6 @@
   <string name="mailbox_talkback_readout_starred">Kennzeichnung entfernen</string>
   <string name="mailbox_talkback_readout_not_starred">Kennzeichnen</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Der Anhang konnte nicht geöffnet werden. Bitte erneut versuchen.</string>
-  <string name="mailbox_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nachricht konnte nicht gelöscht werden</string>

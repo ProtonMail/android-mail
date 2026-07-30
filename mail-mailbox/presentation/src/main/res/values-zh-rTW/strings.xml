@@ -91,8 +91,6 @@
   <string name="mailbox_talkback_readout_starred">取消星號</string>
   <string name="mailbox_talkback_readout_not_starred">標注星號</string>
   <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">無法開啟附件。請再試一次。</string>
-  <string name="mailbox_attachment_download_in_progress">目前的下載必須先完成，才能開始新的下載。</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">刪除郵件失敗</string>

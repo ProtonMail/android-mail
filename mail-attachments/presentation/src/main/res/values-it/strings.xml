@@ -21,4 +21,6 @@
   <string name="file_saved">File salvato</string>
   <string name="file_saved_fallback">File scaricato</string>
   <string name="error_saving_file">Salvataggio del file non riuscito</string>
+  <string name="attachment_download_error">Scaricamento del file allegato non riuscito</string>
+  <string name="attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
 </resources>

@@ -103,10 +103,6 @@
     <string name="mailbox_talkback_readout_starred">Unstar</string>
     <string name="mailbox_talkback_readout_not_starred">Star</string>
 
-    <!-- Attachment download -->
-    <string name="mailbox_attachment_download_error">Unable to open the attachment. Please try again.</string>
-    <string name="mailbox_attachment_download_in_progress">Current download must complete before starting a new one.</string>
-
     <!--    Storage Limit Warning-->
 
     <!--    Storage Quota Over Warning-->

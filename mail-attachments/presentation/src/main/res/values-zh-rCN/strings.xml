@@ -21,4 +21,6 @@
   <string name="file_saved">文件已保存</string>
   <string name="file_saved_fallback">文件已保存到下载文件夹</string>
   <string name="error_saving_file">文件保存失败</string>
+  <string name="attachment_download_error">无法打开附件，请重试。</string>
+  <string name="attachment_download_in_progress">当前下载必须完成后才能开始新的下载！</string>
 </resources>
