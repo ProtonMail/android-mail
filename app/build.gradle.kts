@@ -18,7 +18,6 @@
 
 import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
-import configuration.util.toBuildConfigValue
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -33,19 +32,8 @@ plugins {
     id("me.proton.core.gradle-plugins.environment-config") version libs.versions.proton.core.plugin.get()
     id("org.jetbrains.kotlin.plugin.compose")
     id("app-config-plugin")
+    id("account-sdk-plugin")
 }
-
-// Opt-in toggle for the new Account SDK integration. When disabled (the default), none of the
-// Account SDK dependencies nor the `src/accountNew` sources are compiled or bundled; the old
-// auth flow in `src/accountOld` is used instead. Enable with `-PaccountNew=true -PbuildFromSource=true`.
-val accountNewEnabled: Boolean = (project.findProperty("accountNew") as String?)?.toBoolean() ?: false
-
-// The `monoLibs` catalog only exists when building from source, so its generated type-safe accessor
-// cannot be referenced here: the script would fail to compile when `buildFromSource=false`, even
-// from inside a disabled branch. Look the aliases up by name instead.
-fun monoLib(alias: String): Provider<MinimalExternalModuleDependency> =
-    extensions.getByType<VersionCatalogsExtension>().named("monoLibs").findLibrary(alias)
-        .orElseThrow { GradleException("Missing monoLibs alias: $alias") }
 
 val accountSentryDSN: String = System.getenv("SENTRY_DSN_ACCOUNT") ?: ""
 val sentryDSN: String = System.getenv("SENTRY_DSN_MAIL") ?: ""
@@ -200,8 +188,6 @@ android {
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
         getByName("test").java.srcDirs("src/test/kotlin")
-        getByName("main").java.srcDir(if (accountNewEnabled) "src/accountNew/kotlin" else "src/accountOld/kotlin")
-        getByName("test").java.srcDir(if (accountNewEnabled) "src/testAccountNew/kotlin" else "src/testAccountOld/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin", "src/uiTest/kotlin")
         getByName("androidTest").assets.srcDirs("src/uiTest/assets")
         getByName("androidTest").res.srcDirs("src/uiTest/res")
@@ -279,17 +265,6 @@ dependencies {
     implementation(project(":uicomponents"))
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
-
-    if (accountNewEnabled) {
-        implementation(monoLib("proton-monorepo-account-api"))
-        implementation(monoLib("proton-monorepo-account-crux"))
-        implementation(monoLib("proton-monorepo-account-entry"))
-        implementation(monoLib("proton-monorepo-account-logging"))
-
-        implementation(monoLib("proton-monorepo-core-env"))
-        implementation(monoLib("proton-monorepo-core-fido-google"))
-        implementation(monoLib("proton-monorepo-core-logging-sentry"))
-    }
 
     implementation(libs.play.review.core)
     implementation(libs.play.review.ext)

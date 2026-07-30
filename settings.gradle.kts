@@ -48,14 +48,6 @@ if (buildFromSource) {
             "Run: git submodule update --init external/clients-monorepo"
     }
 
-    dependencyResolutionManagement {
-        versionCatalogs {
-            create("monoLibs") {
-                from(files("external/clients-monorepo/gradle/libs.versions.toml"))
-            }
-        }
-    }
-
     includeBuild("external/clients-monorepo/project/account/android") { name = "account" }
     includeBuild("external/clients-monorepo/project/core/android") { name = "core" }
 }

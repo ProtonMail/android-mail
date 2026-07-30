@@ -21,7 +21,13 @@ plugins {
 }
 
 repositories {
+    google()
     mavenCentral()
+}
+
+dependencies {
+    // Provided by the consuming build's buildscript classpath, so only needed to compile against.
+    compileOnly(libs.android.tools.build)
 }
 
 gradlePlugin {
@@ -29,6 +35,10 @@ gradlePlugin {
         create("versionPlugin") {
             id = "app-config-plugin"
             implementationClass = "ch.protonmail.android.mail.plugin.ApplicationConfigPlugin"
+        }
+        create("accountSdkPlugin") {
+            id = "account-sdk-plugin"
+            implementationClass = "ch.protonmail.android.mail.plugin.AccountSdkPlugin"
         }
     }
 }
