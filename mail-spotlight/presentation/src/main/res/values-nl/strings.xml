@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Begrepen</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Wat is er nieuw in Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Verbeterde visuele vormgeving</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Vloeiend scrollen, vernieuwde lay-out en meer.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Ongelezen filter</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Nu onderaan geplaatst voor eenvoudigere toegang.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">E-mailcategorieën</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sorteer e-mail automatisch in handige categorieën.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Ongelezen is eenvoudiger te bereiken</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Het filter voor ongelezen berichten bevindt zich nu onderaan uw inbox, waardoor u er gemakkelijker bij kunt en kunt schakelen tussen alle e-mails en ongelezen berichten.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Blijf op de hoogte van nieuwe en\nongelezen e-mails.</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hallo categorieën.\nVaarwel afleidingen.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Laat u niet langer afleiden door nieuwsbrieven, updates en niet-urgente e-mails. Dankzij de nieuwe e-mailcategorieën komen alleen belangrijke berichten in uw primaire inbox terecht.</string>
   <string name="spotlight_screen_category_view_button_continue">Doorgaan</string>
-  <string name="spotlight_screen_category_view_button_try">Probeer categorieën</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Doorgaan zonder</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

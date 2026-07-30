@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Razumem</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Kaj je novega v Proton Mailu</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Izboljšave v uporabniškem vmesniku</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Bolj tekoče pomikanje, osvežena postavitev in še več.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filter neprebranega</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Zdaj je na dnu za lažji dostop.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategorije za sporočila</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Samodejno razvrstite e-pošto v uporabne kategorije.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Neprebrana sporočila so zdaj lažje dostopna.</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter za neprebrana sporočila je zdaj na dnu mape Prejeto, zato lahko preprosto preklapljate med vsemi in neprebranimi e-poštnimi sporočili.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Ostanite na tekočem z novimi\nin neprebranimi e-poštnimi sporočili.</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Pozdravite kategorije.\nAdijo motnje.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Naj vas ne motijo glasila, posodobitve in nenujna sporočila. Z novimi kategorijami za sporočila bodo v vašo glavno mapo Prejeto uvrščena samo pomembna sporočila.</string>
   <string name="spotlight_screen_category_view_button_continue">Nadaljuj</string>
-  <string name="spotlight_screen_category_view_button_try">Preizkusite kategorije</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Nadaljuj brez</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

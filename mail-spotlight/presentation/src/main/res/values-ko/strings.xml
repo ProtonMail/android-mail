@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">확인</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Proton Mail의 새로운 기능</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">UI 개선</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">부드러운 스크롤링, 레이아웃 업데이트 등.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">읽지 않음 필터</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">더욱 쉬운 접근을 위한 하단부로의 위치 이동.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">이메일 카테고리</string>
   <string name="spotlight_screen_category_view_categories_subtitle">적절한 카테고리로 이메일을 자동 분류합니다.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">더욱 쉽게 읽지 않음 편지함 접근하기</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">이제 읽지 않음 필터가 받은 편지함 하단으로 이동되어 더욱 쉽게 전체 편지함과 읽지 않은 편지함 사이를 전환할 수 있어요.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">새로운 이메일과\n읽지 않은 이메일 관리</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">어서와요, 카테고리.\n잘가요, 딴짓거리.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">뉴스레터, 업데이트, 급하지 않은 이메일에 주의가 분산 되는 건 이제 그만. 새로운 이메일 카테고리 덕분에 기본 편지함에는 중요한 메시지만 들어온답니다.</string>
   <string name="spotlight_screen_category_view_button_continue">계속</string>
-  <string name="spotlight_screen_category_view_button_try">카테고리 사용해보기</string>
-  <string name="spotlight_screen_category_view_button_dismiss">없이 계속하기:</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

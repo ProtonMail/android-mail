@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Skjønner</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Hva er nytt i Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Forbedringer av brukergrensesnittet</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Flytende rulling, oppdatert utforming og mer.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Ulest-filter</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Nå plassert nederst for enklere tilgang.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">E-postkategorier</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sorter e-post automatisk i nyttige kategorier.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Ulest er enklere å nå</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Ulest-filteret er nå nederst i innboksen din, noe som gjør det enklere å nå og bytte mellom alle e-poster og uleste meldinger.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Hold deg oppdatert på nye og\nuleste e-poster</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hallo kategorier.\nHa det distraksjoner.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Slutt å bli distrahert av nyhetsbrev, oppdateringer og ikke-haster e-poster. Med nye e-postkategorier havner bare viktige meldinger i den primære innboksen din.</string>
   <string name="spotlight_screen_category_view_button_continue">Fortsett</string>
-  <string name="spotlight_screen_category_view_button_try">Prøv kategorier</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Fortsett uten</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

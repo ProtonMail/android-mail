@@ -26,7 +26,10 @@
   <string name="category_title_transactions">交易記錄</string>
   <string name="category_spotlight_unseen_title">新訊息在 %1$s</string>
   <string name="category_spotlight_unseen_description">藍點表示自您上次查看以來，該類別有新訊息。</string>
-  <string name="category_spotlight_personalise_title">個人化您的類別</string>
-  <string name="category_spotlight_personalise_description">使用「移動至」將電子郵件移動到另一個類別。從現在開始，類似的電子郵件將會自動歸類到該處。</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">關閉</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">當您將電子郵件移至另一個類別時，類似的訊息在未來將會歸類至該處。</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

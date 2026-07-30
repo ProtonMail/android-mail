@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Трансакції</string>
   <string name="category_spotlight_unseen_title">Нові повідомлення в %1$s</string>
   <string name="category_spotlight_unseen_description">Синя крапка показує, коли в категорії з\'явилися нові повідомлення з моменту вашої останньої перевірки.</string>
-  <string name="category_spotlight_personalise_title">Персоналізуйте свої категорії</string>
-  <string name="category_spotlight_personalise_description">Перемістіть електронний лист до іншої категорії за допомогою кнопки «Перемістити до». Надалі схожі листи сортуватимуться туди автоматично.</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Закрити</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">Коли ви переміщуєте електронний лист до іншої категорії, подібні повідомлення надалі сортуватимуться туди.</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

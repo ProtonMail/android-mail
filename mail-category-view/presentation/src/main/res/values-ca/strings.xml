@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Transaccions</string>
   <string name="category_spotlight_unseen_title">Nous missatges a %1$s</string>
   <string name="category_spotlight_unseen_description">El punt blau indica que una categoria té missatges nous des de l\'última vegada que ho vau comprovar.</string>
-  <string name="category_spotlight_personalise_title">Personalitzeu les categories</string>
-  <string name="category_spotlight_personalise_description">Moveu un correu a una altra categoria utilitzant «Moure a». Els correus similars es classificaran allà automàticament a partir d\'ara.</string>
+  <string name="category_spotlight_personalise_title">Definiu més les vostres categories</string>
+  <string name="category_spotlight_personalise_description">Moveu un correu electrònic a una altra categoria mitjançant «Moure a». Després els correus similars es classificaran automàticament allà</string>
   <string name="category_spotlight_close_content_description">Tanca</string>
+  <string name="recategorise_bottom_sheet_title">Torneu a categoritzar el correu electrònic</string>
+  <string name="recategorise_bottom_sheet_description">Quan moveu un correu electrònic a una altra categoria, els missatges similars s\'hi classificaran en el futur.</string>
+  <string name="recategorise_bottom_sheet_button">Entesos</string>
 </resources>

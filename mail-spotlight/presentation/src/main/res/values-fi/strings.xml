@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Selvä</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Uutta Proton Mailissa</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Käyttöliittymän parannukset</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Sujuva vieritys, uudistettu ulkoasu ja paljon muuta.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Lukemattomat-suodatin</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Sijaitsee nyt alareunassa, jotta siihen pääsee helpommin käsiksi.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">Sähköpostiluokat</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Lajittele sähköpostit automaattisesti hyödyllisiin luokkiin.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Lukemattomiin pääsee helpommin</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Lukemattomien viestien suodatin sijaitsee nyt postilaatikkosi alaosassa, minkä ansiosta se on helpompi löytää ja voit vaihtaa helpommin kaikkien sähköpostiviestien ja lukemattomien viestien välillä.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Pysy ajan tasalla uusista ja\nlukemattomista sähköposteista</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hei, kategoriat.\nHyvästi, häiriötekijät.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Älä enää anna uutiskirjeiden, päivitysten ja kiireettömien sähköpostien häiritä sinua. Uusien sähköpostiluokkien ansiosta vain tärkeät viestit päätyvät pääsähköpostilaatikkoosi.</string>
   <string name="spotlight_screen_category_view_button_continue">Jatka</string>
-  <string name="spotlight_screen_category_view_button_try">Kokeile luokkia</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Jatka ilman</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

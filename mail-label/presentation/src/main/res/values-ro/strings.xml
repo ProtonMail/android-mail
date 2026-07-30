@@ -40,4 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">Eșuare la aplicarea etichetelor.</string>
   <string name="bottom_sheet_move_to_action_error">Mutarea a eșuat.</string>
   <string name="bottom_sheet_move_to_category_no_change">Nu va fi efectuată nicio modificare asupra mesajelor selectate.</string>
+  <string name="move_to_category_action_message">Mutat în %s. În viitor, mesajele similare vor fi categorizate aici.</string>
 </resources>

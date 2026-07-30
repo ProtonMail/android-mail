@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Am înțeles</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Noutăți în Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Îmbunătățiri ale interfeței</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Derulare fluidă, aspect împrospătat și multe altele.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtrare mesaje necitite</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Acum aflate jos pentru acces mai ușor.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">Categorii de e-mail</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sortați automat mesajele în categorii ajutătoare.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Necitite este mai ușor de accesat</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filtrul pentru mesaje necitite se află acum în partea de jos a interfeței, facilitând accesul și comutarea între toate mesajele și cele necitite.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Rămâneți la curent cu\nmesajele noi și necitite</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Bun venit categorii.\nAdio distrageri.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Evitați distragerea buletinelor informative, actualizărilor și a mesajelor neurgente. Cu noile categorii pentru mesaje, doar cele importante ajung în folderul principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continuare</string>
-  <string name="spotlight_screen_category_view_button_try">Încercați categoriile</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continuare fără</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

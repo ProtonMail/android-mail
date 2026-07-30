@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Verstanden</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Was gibt’s Neues bei Proton Mail?</string>
+  <string name="spotlight_screen_category_view_title_b2b">Entdecke die Neuheiten\nbei Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Verbesserungen der Benutzeroberfläche</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Flüssigerer Bildlauf, überarbeitetes Layout und vieles mehr.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filter für ungelesene Nachrichten</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Wird jetzt unten angezeigt, um den Zugriff zu erleichtern.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Neues Erscheinungsbild und neuer Standort für einen leichteren Zugang.</string>
   <string name="spotlight_screen_category_view_categories_title">E-Mail-Kategorien</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sortiert E-Mails automatisch in nützliche Kategorien.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatisches Sortieren eingehender E-Mails.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">„Ungelesen“ ist leichter zu erreichen</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Der Filter für ungelesene Nachrichten befindet sich nun am unteren Rand Ihres Posteingangs, sodass alle E-Mails und ungelesenen Nachrichten leichter zu erreichen sind und einfacher zwischen ihnen gewechselt werden kann.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Behalte den Überblick über neue\nund ungelesene Nachrichten</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hallo Kategorien.\nTschüss Ablenkungen.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Lass dich nicht länger von Newslettern, Aktualisierungen und nicht dringenden E-Mails ablenken. Dank neuer E-Mail-Kategorien landen nur noch wichtige Nachrichten in deinem Hauptpostfach.</string>
   <string name="spotlight_screen_category_view_button_continue">Weiter</string>
-  <string name="spotlight_screen_category_view_button_try">Kategorien ausprobieren</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Weiter ohne</string>
+  <string name="spotlight_screen_category_view_button_try">Ja, bitte organisieren</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Posteingang wie bisher beibehalten</string>
 </resources>

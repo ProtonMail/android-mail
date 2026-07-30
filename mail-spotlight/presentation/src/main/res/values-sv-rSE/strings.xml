@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Jag förstår</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Vad som är nytt i Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">UI-förbättringar</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Smidig rullning, uppdaterad layout och mycket mer.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Oläst filter</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Nu placerad längst ner för enklare åtkomst.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">E-postkategorier</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sortera e-post automatiskt i användbara kategorier.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Oläst är enklare att nå</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Det olästa filtret finns nu längst ner i din inkorg, vilket gör det enklare att nå och växla mellan all e-post och olästa meddelanden.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Håll dig uppdaterad om nya och\noläst e-post</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hej kategorier.\nHej då distraktioner.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Sluta bli distraherad av nyhetsbrev, uppdateringar och icke-brådskande e-post. Med nya e-postkategorier hamnar endast viktiga meddelanden i din primära inkorg.</string>
   <string name="spotlight_screen_category_view_button_continue">Fortsätt</string>
-  <string name="spotlight_screen_category_view_button_try">Prova kategorier</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Fortsätt utan</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>

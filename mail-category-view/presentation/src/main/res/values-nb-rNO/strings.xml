@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Transaksjoner</string>
   <string name="category_spotlight_unseen_title">Nye meldinger i %1$s</string>
   <string name="category_spotlight_unseen_description">En blå prikk viser når en kategori har nye meldinger siden du sist sjekket den.</string>
-  <string name="category_spotlight_personalise_title">Tilpass kategoriene dine</string>
-  <string name="category_spotlight_personalise_description">Flytt en e-post til en annen kategori ved å bruke \"Flytt til\". Lignende e-poster vil bli sortert der automatisk fra nå av.</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Lukk</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">Når du flytter en e-post til en annen kategori, vil lignende meldinger bli kategorisert der i fremtiden.</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

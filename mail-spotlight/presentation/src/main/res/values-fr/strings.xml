@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">J\'ai compris</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Nouveautés dans Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Découvrez les nouveautés\nde Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Améliorations de l\'interface</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Défilement fluide, mise en page actualisée et bien plus.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtre non lu</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Désormais situé en bas de page pour un accès plus facile.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nouvelle apparence et nouvel emplacement pour y accéder plus facilement.</string>
   <string name="spotlight_screen_category_view_categories_title">Catégories de messages</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Trier automatiquement les e-mails en catégories pratiques.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Tri automatique du courrier entrant.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Les messages non lus sont plus faciles à trouver</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Le filtre non lu se trouve désormais au bas de votre boîte de réception, ce qui vous permet d\'y accéder plus facilement et de basculer plus aisément entre tous vos e-mails et vos messages non lus.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Restez au courant des e-mails\nrécents et non lus</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Bonjour les catégories.\nAu revoir les distractions.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Ne vous laissez plus distraire par les newsletters, les mises à jour et les messages non urgents. Avec les nouvelles catégories de messages, seuls les messages importants arrivent dans votre boite de réception principale.</string>
   <string name="spotlight_screen_category_view_button_continue">Continuer</string>
-  <string name="spotlight_screen_category_view_button_try">Essayer les catégories</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continuer sans</string>
+  <string name="spotlight_screen_category_view_button_try">Oui, l\'organiser</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Conserver la boite de réception telle quelle</string>
 </resources>

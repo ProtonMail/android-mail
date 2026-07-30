@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Płatności</string>
   <string name="category_spotlight_unseen_title">Nowa wiadomość w %1$s</string>
   <string name="category_spotlight_unseen_description">Niebieska kropka wskazuje, kiedy kategoria ma nowe wiadomości od czasu Twojego ostatniego sprawdzenia.</string>
-  <string name="category_spotlight_personalise_title">Spersonalizuj swoje kategorie</string>
-  <string name="category_spotlight_personalise_description">Przenieś wiadomość e-mail do innej kategorii za pomocą opcji „Przenieś do”. Podobne wiadomości e-mail będą od teraz automatycznie tam sortowane.</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Zamknij</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">Gdy przeniesiesz wiadomość do innej kategorii, podobne wiadomości będą tam kategoryzowane w przyszłości.</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

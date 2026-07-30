@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Anladım</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Proton Mail yenilikleri</string>
+  <string name="spotlight_screen_category_view_title_b2b">Proton Mail \nyeniliklerini öğrenin</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Kullanıcı arayüzü iyileştirmeleri</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Akıcı kaydırma, yenilenmiş yerleşim ve diğer şeyler.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Okunmamış süzgeci</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Daha kolay erişilmesi için sayfanın altına taşındı.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Daha kolay erişim için yeni görünüm ve konumlandırma.</string>
   <string name="spotlight_screen_category_view_categories_title">E-posta kategorileri</string>
   <string name="spotlight_screen_category_view_categories_subtitle">E-postaların size yardımcı olacak şekilde sınıflandırılmasını sağlayın.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Gelen e-postaların otomatik olarak sıralanması.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Okunmamış iletilere ulaşmak artık daha kolay</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Okunmamış iletiler süzgeci artık gelen kutunuzun altında bulunuyor. Böylece tüm e-postalara ve okunmamış iletilere daha kolay erişebilir ve bunlar arasında geçiş yapabilirsiniz.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Yeni ve okunmamış e-postaları\nizleyin</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Merhaba kategoriler.\nGüle güle dikkat dağınıklığı.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Duyurular, güncellemeler ve acil olmayan e-postalar yüzünden dikkatinizin dağılmasını önleyin. Yeni e-posta kategorileri ile yalnızca önemli iletiler birincil gelen kutunuza düşer.</string>
   <string name="spotlight_screen_category_view_button_continue">İlerle</string>
-  <string name="spotlight_screen_category_view_button_try">Kategorileri deneyin</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Bu özellik olmadan kullanmayı sürdür</string>
+  <string name="spotlight_screen_category_view_button_try">Evet, düzenle</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Gelen kutusu eskisi gibi kalsın</string>
 </resources>

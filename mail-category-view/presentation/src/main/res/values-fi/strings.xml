@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Tapahtumat</string>
   <string name="category_spotlight_unseen_title">Uudet viestit %1$s:ssa</string>
   <string name="category_spotlight_unseen_description">Sininen piste osoittaa, että kategoriassa on uusia viestejä sen jälkeen, kun olet viimeksi tarkistanut sen.</string>
-  <string name="category_spotlight_personalise_title">Mukauta omat luokkasi</string>
-  <string name="category_spotlight_personalise_description">Siirrä sähköposti toiseen luokkaan ”Siirrä”-toiminnolla. Samankaltaiset sähköpostit lajitellaan tästä lähtien automaattisesti kyseiseen luokkaan.</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Sulje</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">Kun siirrätte sähköpostin toiseen luokkaan, samankaltaiset viestit luokitellaan sinne tulevaisuudessa.</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Transakce</string>
   <string name="category_spotlight_unseen_title">Nové zprávy v %1$s</string>
   <string name="category_spotlight_unseen_description">Modrá tečka ukazuje, kdy má kategorie nové zprávy od doby, kdy jste ji naposledy zkontrolovali.</string>
-  <string name="category_spotlight_personalise_title">Přizpůsobte si své Kategorie</string>
-  <string name="category_spotlight_personalise_description">Pomocí funkce „Přesunout do“ přesuňte e-mail do jiné kategorie. Podobné e-maily se tam od nynějška budou automaticky třídit.</string>
+  <string name="category_spotlight_personalise_title">Refine your categories</string>
+  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Zavřít</string>
+  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_description">Pokud přesunete e-mail do jiné kategorie, podobné zprávy budou v budoucnu zařazovány tam.</string>
+  <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>

@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">了解</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Proton Mail 新增功能</string>
+  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">界面增强</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">流畅滚动、全新布局等更多改进！</string>
   <string name="spotlight_screen_category_view_unread_filter_title">未读筛选器</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">现已移至底部，方便访问。</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
   <string name="spotlight_screen_category_view_categories_title">邮件分类</string>
   <string name="spotlight_screen_category_view_categories_subtitle">自动将邮件归入有用的类别。</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">未读邮件更易触达</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">未读筛选器现已移至收件箱底部，方便您在全部邮件和未读邮件之间切换。</string>
   <string name="spotlight_screen_category_view_main_b2b_title">随时掌握新邮件和未读邮件</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">告别分类，\n告别干扰。</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">不再被资讯、更新和非紧急邮件打扰。有了新的邮件分类功能，只有重要邮件才会进入您的主收件箱。</string>
   <string name="spotlight_screen_category_view_button_continue">继续</string>
-  <string name="spotlight_screen_category_view_button_try">试用分类</string>
-  <string name="spotlight_screen_category_view_button_dismiss">继续但跳过</string>
+  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
 </resources>
