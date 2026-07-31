@@ -56,6 +56,10 @@ class NewAccountApiProvider @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun startSecurityKeys() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun disableAccount(userId: UserId) {
         TODO("Not yet implemented")
     }

@@ -67,7 +67,11 @@ class LegacyAccountApiProvider @Inject constructor(
     }
 
     override fun startSettings(userId: UserId) {
-        TODO("Not yet implemented")
+        orchestrator.startPassManagement(userId.toLocalUserId())
+    }
+
+    override fun startSecurityKeys() {
+        orchestrator.startSecurityKeys()
     }
 
     override suspend fun switchAccount(userId: UserId) {

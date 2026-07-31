@@ -195,7 +195,7 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onOpenSecurityKeys() {
-        // TODO: accountApiProvider.startSettings()
+        accountApiProvider.startSecurityKeys()
     }
 
     private fun onSignIn(userId: UserId?) = viewModelScope.launch {

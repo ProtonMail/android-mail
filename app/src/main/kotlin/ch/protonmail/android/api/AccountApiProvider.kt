@@ -42,6 +42,7 @@ interface AccountApiProvider {
     fun startSignIn(username: String?)
     fun startSignUp()
     fun startSettings(userId: UserId)
+    fun startSecurityKeys()
 
     suspend fun disableAccount(userId: UserId)
     suspend fun deleteAccount(userId: UserId)
