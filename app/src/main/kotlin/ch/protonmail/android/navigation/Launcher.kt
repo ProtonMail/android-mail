@@ -28,6 +28,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
+import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.legacymigration.presentation.MigrationLoadingScreen
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -35,7 +36,11 @@ import ch.protonmail.android.navigation.model.LauncherState
 import me.proton.core.domain.entity.UserId
 
 @Composable
-fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel = hiltViewModel()) {
+fun Launcher(
+    activityActions: MainActivity.Actions,
+    accountWelcomeProvider: AccountWelcomeProvider,
+    viewModel: LauncherViewModel = hiltViewModel()
+) {
     // Do not set a default initial value because we may miss a state update
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.duplicateDialogErrorEffect.collectAsStateWithLifecycle().value
@@ -67,7 +72,10 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
     }
 
     when (state) {
-        LauncherState.AccountNeeded -> viewModel.accountWelcomeProvider.Welcome(viewModel, signedInContent)
+        LauncherState.AccountNeeded -> accountWelcomeProvider.Welcome(
+            onAddAccount = { viewModel.submit(LauncherViewModel.Action.AddAccount) },
+            signedInContent = signedInContent
+        )
         LauncherState.PrimaryExist -> signedInContent()
 
         LauncherState.Processing,

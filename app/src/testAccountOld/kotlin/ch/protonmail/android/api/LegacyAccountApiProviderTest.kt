@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.api
 
+import androidx.appcompat.app.AppCompatActivity
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.usecase.SetPrimaryAccount
@@ -97,5 +98,17 @@ class LegacyAccountApiProviderTest {
         provider.switchAccount(userId)
 
         coVerify(exactly = 1) { setPrimaryAccount(userId) }
+    }
+
+    @Test
+    fun `register registers the auth orchestrator and its result listeners`() {
+        val context = mockk<AppCompatActivity>(relaxed = true)
+
+        provider.register(context)
+
+        verify(exactly = 1) { orchestrator.register(context) }
+        verify(exactly = 1) { orchestrator.setOnLoginResult(any()) }
+        verify(exactly = 1) { orchestrator.setOnAddAccountResult(any()) }
+        verify(exactly = 1) { orchestrator.setOnSignUpResult(any()) }
     }
 }

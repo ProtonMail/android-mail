@@ -19,17 +19,20 @@
 package ch.protonmail.android.api
 
 import androidx.compose.runtime.Composable
-import ch.protonmail.android.navigation.LauncherViewModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import javax.inject.Inject
 
 class LegacyAccountWelcomeProvider @Inject constructor() : AccountWelcomeProvider {
 
     @Composable
     override fun Welcome(
-        viewModel: LauncherViewModel,
+        onAddAccount: () -> Unit,
         signedInContent: @Composable () -> Unit
     ) {
-        // Legacy flow: delegate to the auth orchestrator's add-account workflow.
-        viewModel.submit(LauncherViewModel.Action.AddAccount)
+        // Legacy flow: there is no welcome screen, delegate to the auth orchestrator's add-account workflow.
+        val currentOnAddAccount by rememberUpdatedState(onAddAccount)
+        LaunchedEffect(Unit) { currentOnAddAccount() }
     }
 }

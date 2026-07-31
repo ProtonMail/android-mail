@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.lockscreen.LockScreenActivity
 import ch.protonmail.android.mailcommon.data.file.IntentExtraKeys
@@ -69,6 +70,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var reviewManager: ReviewManager
+
+    @Inject
+    lateinit var accountWelcomeProvider: AccountWelcomeProvider
 
     private val launcherViewModel: LauncherViewModel by viewModels()
 
@@ -123,6 +127,7 @@ class MainActivity : AppCompatActivity() {
                                 handleLaunchInAppReview()
                             }
                         ),
+                        accountWelcomeProvider,
                         launcherViewModel
                     )
                 }

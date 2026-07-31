@@ -82,6 +82,7 @@ class NewAccountApiProviderTest {
     @Test
     fun `register does not interact with the SDK`() = runTest(mainDispatcherRule.testDispatcher) {
         provider.register(mockk(relaxed = true))
+        provider.registerUserSessionObservers(mockk(relaxed = true))
         provider.unregister()
         provider.startAddAccount()
 

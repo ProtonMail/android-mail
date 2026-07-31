@@ -21,7 +21,6 @@ package ch.protonmail.android.api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.R
-import ch.protonmail.android.navigation.LauncherViewModel
 import me.proton.android.account.entry.AccountEntryGate
 import me.proton.android.account.welcome.ui.model.WelcomeScreenConfig
 import me.proton.android.core.designsystem.theme.ProtonTheme
@@ -31,7 +30,7 @@ class NewAccountWelcomeProvider @Inject constructor() : AccountWelcomeProvider {
 
     @Composable
     override fun Welcome(
-        viewModel: LauncherViewModel,
+        onAddAccount: () -> Unit,
         signedInContent: @Composable () -> Unit
     ) {
         ProtonTheme {

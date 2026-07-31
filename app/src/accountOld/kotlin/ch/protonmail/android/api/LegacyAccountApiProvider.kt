@@ -46,9 +46,8 @@ class LegacyAccountApiProvider @Inject constructor(
     private val userSessionRepository: UserSessionRepository
 ) : AccountApiProvider {
 
-    override suspend fun register(context: AppCompatActivity) {
+    override fun register(context: AppCompatActivity) {
         registerAuthOrchestrator(context)
-        registerUserSessionObservers(context)
     }
 
     override fun unregister() {
@@ -93,7 +92,8 @@ class LegacyAccountApiProvider @Inject constructor(
         orchestrator.onLoginResult { result ->
             when (result) {
                 is LoginOutput.LoggedIn -> onSwitchAccount(context, result.userId.toUserId())
-                is LoginOutput.DuplicateAccount -> Unit //onDuplicateAccountError()
+                // Not handled.
+                is LoginOutput.DuplicateAccount -> Unit
                 else -> Timber.e("Unknown login result $result")
             }
         }
@@ -104,7 +104,7 @@ class LegacyAccountApiProvider @Inject constructor(
         }
     }
 
-    private fun registerUserSessionObservers(context: AppCompatActivity) {
+    override suspend fun registerUserSessionObservers(context: AppCompatActivity) {
         userSessionRepository
             .observe(context.lifecycle, minActiveState = Lifecycle.State.RESUMED)
             .onAccountTwoFactorNeeded { orchestrator.startSecondFactorWorkflow(it.userId.toLocalUserId()) }

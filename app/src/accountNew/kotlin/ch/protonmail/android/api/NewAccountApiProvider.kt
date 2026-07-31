@@ -28,7 +28,11 @@ class NewAccountApiProvider @Inject constructor(
     private val accountApi: ProtonAccountApi
 ) : AccountApiProvider {
 
-    override suspend fun register(context: AppCompatActivity) {
+    override fun register(context: AppCompatActivity) {
+        // No-op
+    }
+
+    override suspend fun registerUserSessionObservers(context: AppCompatActivity) {
         // No-op
     }
 

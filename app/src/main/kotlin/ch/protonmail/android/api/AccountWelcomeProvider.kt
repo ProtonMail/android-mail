@@ -19,13 +19,15 @@
 package ch.protonmail.android.api
 
 import androidx.compose.runtime.Composable
-import ch.protonmail.android.navigation.LauncherViewModel
 
 interface AccountWelcomeProvider {
 
+    /**
+     * Content shown when no account is signed in.
+     *
+     * @param onAddAccount starts the add account workflow.
+     * @param signedInContent content to show once an account is signed in.
+     */
     @Composable
-    fun Welcome(
-        viewModel: LauncherViewModel,
-        signedInContent: @Composable () -> Unit
-    )
+    fun Welcome(onAddAccount: () -> Unit, signedInContent: @Composable () -> Unit)
 }

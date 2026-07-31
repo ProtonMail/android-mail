@@ -23,7 +23,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.api.AccountApiProvider
-import ch.protonmail.android.api.AccountWelcomeProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplication
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
@@ -61,7 +60,6 @@ import javax.inject.Inject
 @SuppressWarnings("NotImplementedDeclaration", "UnusedPrivateMember")
 class LauncherViewModel @Inject constructor(
     private val accountApiProvider: AccountApiProvider,
-    val accountWelcomeProvider: AccountWelcomeProvider,
     private val paymentOrchestrator: PaymentOrchestrator,
     private val userSessionRepository: UserSessionRepository,
     private val notificationsPermissionOrchestrator: NotificationsPermissionOrchestrator,
@@ -133,6 +131,9 @@ class LauncherViewModel @Inject constructor(
     }
 
     fun register(context: AppCompatActivity) {
+        // Activity result launchers must be registered before the Activity is STARTED, so this cannot be deferred.
+        accountApiProvider.register(context)
+
         viewModelScope.launch {
             if (shouldMigrateLegacyAccount()) {
                 // Wait for the legacy migration to complete before registering observers.
@@ -140,12 +141,12 @@ class LauncherViewModel @Inject constructor(
 
                 if (context.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
                     Timber.d("Legacy migration: Activity is still alive. Registering user session observers.")
-                    accountApiProvider.register(context)
+                    accountApiProvider.registerUserSessionObservers(context)
                 } else {
                     Timber.w("Legacy migration: Activity no longer alive. Skipping registration.")
                 }
             } else {
-                accountApiProvider.register(context)
+                accountApiProvider.registerUserSessionObservers(context)
             }
         }
 
@@ -194,7 +195,7 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onOpenSecurityKeys() {
-        //TODO: accountApiProvider.startSettings()
+        // TODO: accountApiProvider.startSettings()
     }
 
     private fun onSignIn(userId: UserId?) = viewModelScope.launch {

@@ -23,7 +23,20 @@ import me.proton.core.domain.entity.UserId
 
 interface AccountApiProvider {
 
-    suspend fun register(context: AppCompatActivity)
+    /**
+     * Registers the activity result launchers and their listeners.
+     *
+     * Must be called synchronously from [AppCompatActivity.onCreate], before the activity is STARTED.
+     */
+    fun register(context: AppCompatActivity)
+
+    /**
+     * Registers the observers reacting to account state changes.
+     *
+     * Unlike [register], this can be deferred (eg. until the legacy migration completed).
+     */
+    suspend fun registerUserSessionObservers(context: AppCompatActivity)
+
     fun unregister()
     fun startAddAccount()
     fun startSignIn(username: String?)
