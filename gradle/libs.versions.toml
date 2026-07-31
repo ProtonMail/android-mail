@@ -253,7 +253,6 @@ appLibs = [
     "androidx-core-splashscreen",
     "androidx-hilt-lifecycle-viewmodel",
     "dagger-hilt-android",
-    "dagger-hilt-compiler",
     "androidx-hilt-work",
     "androidx-lifecycle-process",
     "androidx-navigation-compose",
