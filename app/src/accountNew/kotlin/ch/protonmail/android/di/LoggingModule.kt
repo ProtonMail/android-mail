@@ -43,7 +43,8 @@ object LoggingModule {
         accountApi: ProtonAccountApi
     ): SentryAppLogger {
         return NoOpSentryAppLogger
-        /* TODO: Migrate Mail to use initSentry.
+        /* ET-6676: Migrate Mail to use initSentry. It calls SentryAndroid.init itself, so it cannot
+           coexist with the init in SentryInitializer (main src) - that one has to move first.
         return initSentry(
             context = context,
             name = "mail-app-logger"
