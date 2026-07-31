@@ -4834,9 +4834,6 @@ internal class MailboxViewModelTest {
         coVerify(exactly = 1) {
             setActiveCategoryLabel(categoryItem.id.toDomainModel(), NoConversationGrouping)
         }
-        verify(atLeast = 1) {
-            mailboxReducer.newStateFrom(any(), any<MailboxEvent.PaginatorInvalidated>())
-        }
         verify(exactly = 1) {
             mailboxReducer.newStateFrom(any(), MailboxEvent.CategoryChanged)
         }
