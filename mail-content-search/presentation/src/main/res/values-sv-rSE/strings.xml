@@ -11,7 +11,7 @@
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Sökdata på denna enhet kommer att tas bort Du kommer att behöva ladda ner den igen för att använda avancerad sökning.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Rensa data</string>
   <string name="content_search_bottomsheet_title">Förbereder avancerad sök …</string>
   <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>

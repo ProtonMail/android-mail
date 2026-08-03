@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Advanced Search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for Advanced Search.</string>
+  <string name="content_search_notification_channel_name">Avancerad sökindexering</string>
+  <string name="content_search_notification_channel_description">Visar förloppet medan meddelanden indexeras för avancerad sökning.</string>
   <string name="content_search_notification_title">Förbereder avancerad sök</string>
   <string name="content_search_notification_progress">%1$.2f %% slutfört</string>
   <string name="content_search_notification_preparing">Förbereder …</string>

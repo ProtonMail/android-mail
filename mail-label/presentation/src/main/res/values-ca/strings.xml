@@ -40,5 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">No s\'han pogut aplicar les etiquetes.</string>
   <string name="bottom_sheet_move_to_action_error">No s\'ha pogut moure.</string>
   <string name="bottom_sheet_move_to_category_no_change">No es farà cap canvi als correus electrònics seleccionats</string>
-  <string name="move_to_category_action_message">Moved to %s. Similar messages will be categorized there in the future.</string>
+  <string name="move_to_category_action_message">S\'ha mogut a %s. Els missatges similars es classificaran aquí en el futur.</string>
 </resources>

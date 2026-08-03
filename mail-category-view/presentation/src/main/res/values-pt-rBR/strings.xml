@@ -29,7 +29,7 @@
   <string name="category_spotlight_personalise_title">Refine your categories</string>
   <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
   <string name="category_spotlight_close_content_description">Fechar</string>
-  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_title">Recategorizar e-mail</string>
   <string name="recategorise_bottom_sheet_description">Quando você mover um e-mail para outra categoria, mensagens semelhantes serão categorizadas lá no futuro.</string>
   <string name="recategorise_bottom_sheet_button">Entendi</string>
 </resources>
