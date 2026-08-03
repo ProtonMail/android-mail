@@ -45,6 +45,7 @@ import ch.protonmail.android.mailpagination.data.scroller.ScrollerCache
 import ch.protonmail.android.mailpagination.data.scroller.ScrollerOnUpdateHandler
 import ch.protonmail.android.mailpagination.data.scroller.ScrollerUpdate
 import ch.protonmail.android.mailpagination.data.scroller.itemCount
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PageToLoad
@@ -191,8 +192,8 @@ class RustConversationsQueryImpl @Inject constructor(
         paginatorState?.paginatorWrapper?.filterUnread(filterUnread)
     }
 
-    override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) {
-        paginatorState?.paginatorWrapper?.showSpamAndTrash(showSpamTrash)
+    override suspend fun updateIncludeFilter(filter: IncludeFilter) {
+        paginatorState?.paginatorWrapper?.changeInclude(filter)
     }
 
     private suspend fun initPaginator(pageDescriptor: PageDescriptor, mailbox: MailboxWrapper) {

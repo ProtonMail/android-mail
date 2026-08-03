@@ -21,21 +21,22 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import javax.inject.Inject
 
-class UpdateShowSpamTrashFilter @Inject constructor(
+class UpdateIncludeFilter @Inject constructor(
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository
 ) {
 
-    suspend operator fun invoke(showSpamTrash: Boolean, viewMode: ViewMode) {
+    suspend operator fun invoke(filter: IncludeFilter, viewMode: ViewMode) {
         when (viewMode) {
             ViewMode.NoConversationGrouping -> {
-                messageRepository.updateShowSpamTrashFilter(showSpamTrash)
+                messageRepository.updateIncludeFilter(filter)
             }
 
             ViewMode.ConversationGrouping -> {
-                conversationRepository.updateShowSpamTrashFilter(showSpamTrash)
+                conversationRepository.updateIncludeFilter(filter)
             }
         }
     }

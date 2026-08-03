@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.data.usecase.CreateRustMessagesPaginato
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustSearchPaginator
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PageToLoad
@@ -103,7 +104,7 @@ class RustMessageListQueryImplTest {
         callback: CapturingSlot<MessageScrollerLiveQueryCallback>,
         items: List<Message>,
         filterUnread: Boolean = false,
-        showSpamTrash: Boolean = false
+        includeFilter: IncludeFilter = IncludeFilter.None
     ): MessagePaginatorWrapper = mockk {
         coEvery { nextPage() } answers {
             callback.captured.onUpdate(
@@ -118,7 +119,7 @@ class RustMessageListQueryImplTest {
         }
         coEvery { disconnect() } just Runs
         coEvery { filterUnread(filterUnread) } just Runs
-        coEvery { showSpamAndTrash(showSpamTrash) } just Runs
+        coEvery { changeInclude(includeFilter) } just Runs
         every { getScrollerId() } returns DefaultScrollerId
         coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -211,7 +212,7 @@ class RustMessageListQueryImplTest {
             }
             coEvery { reload() } returns Unit.right()
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -288,7 +289,7 @@ class RustMessageListQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -360,7 +361,7 @@ class RustMessageListQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -524,14 +525,14 @@ class RustMessageListQueryImplTest {
     }
 
     @Test
-    fun `updates flag on paginator without re-initializing when includeSpamTrash filter is applied`() = runTest {
+    fun `updates flag on paginator without re-initializing when include filter is applied`() = runTest {
         // Given
         val firstKey = PageKey.DefaultPageKey(labelId = inboxLabelId)
 
         val callback = slot<MessageScrollerLiveQueryCallback>()
         val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
 
-        coEvery { paginator.showSpamAndTrash(true) } just Runs
+        coEvery { paginator.changeInclude(IncludeFilter.spamAndTrash(true)) } just Runs
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
         coEvery {
             createRustMessagesPaginator(
@@ -542,7 +543,7 @@ class RustMessageListQueryImplTest {
 
         // When
         rustMessageListQuery.getMessages(userId, firstKey)
-        rustMessageListQuery.updateShowSpamTrashFilter(true)
+        rustMessageListQuery.updateIncludeFilter(IncludeFilter.spamAndTrash(true))
 
         // Then
         coVerify(exactly = 1) {
@@ -551,7 +552,7 @@ class RustMessageListQueryImplTest {
                 callback = any()
             )
         }
-        coVerify { paginator.showSpamAndTrash(true) }
+        coVerify { paginator.changeInclude(IncludeFilter.spamAndTrash(true)) }
     }
 
     @Test
@@ -668,7 +669,7 @@ class RustMessageListQueryImplTest {
             }
             coEvery { disconnect() } just Runs
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -719,7 +720,7 @@ class RustMessageListQueryImplTest {
             }
             coEvery { disconnect() } just Runs
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -765,7 +766,7 @@ class RustMessageListQueryImplTest {
                 Unit.right()
             }
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
             coEvery { getCursor(conversationId) } returns expectedCursor.right()
@@ -848,7 +849,7 @@ class RustMessageListQueryImplTest {
                 Unit.right()
             }
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }

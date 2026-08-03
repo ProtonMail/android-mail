@@ -30,6 +30,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.mailconversation.domain.entity.ConversationError
 import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.data.model.LocalConversationWithMessages
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,7 @@ import uniffi.mail_uniffi.MoveDestination
 @SuppressWarnings("ComplexInterface", "TooManyFunctions")
 interface RustConversationDataSource {
 
-    suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
+    suspend fun updateIncludeFilter(filter: IncludeFilter)
 
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 

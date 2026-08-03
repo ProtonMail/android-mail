@@ -44,6 +44,7 @@ import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
 import ch.protonmail.android.mailmessage.domain.repository.MessageCursorRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -60,8 +61,7 @@ class RustMessageRepositoryImpl @Inject constructor(
     private val messageCursorRepository: MessageCursorRepository
 ) : MessageRepository {
 
-    override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
-        rustMessageDataSource.updateShowSpamTrashFilter(showSpamTrash)
+    override suspend fun updateIncludeFilter(filter: IncludeFilter) = rustMessageDataSource.updateIncludeFilter(filter)
 
     override suspend fun updateUnreadFilter(filterUnread: Boolean) =
         rustMessageDataSource.updateUnreadFilter(filterUnread)

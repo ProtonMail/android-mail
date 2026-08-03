@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewSta
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +43,7 @@ import me.proton.core.domain.entity.UserId
 @Suppress("TooManyFunctions", "ComplexInterface")
 interface MessageRepository {
 
-    suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
+    suspend fun updateIncludeFilter(filter: IncludeFilter)
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 
     suspend fun terminatePaginator(userId: UserId)

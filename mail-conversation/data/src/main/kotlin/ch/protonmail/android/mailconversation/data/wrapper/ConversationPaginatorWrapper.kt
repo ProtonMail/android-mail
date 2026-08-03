@@ -26,6 +26,8 @@ import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
+import ch.protonmail.android.mailpagination.data.mapper.toRustIncludeFilter
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
 import uniffi.mail_uniffi.ConversationScroller
@@ -34,7 +36,6 @@ import uniffi.mail_uniffi.ConversationScrollerCursorResult
 import uniffi.mail_uniffi.ConversationScrollerFetchMoreResult
 import uniffi.mail_uniffi.ConversationScrollerGetItemsResult
 import uniffi.mail_uniffi.ConversationScrollerSupportsIncludeFilterResult
-import uniffi.mail_uniffi.IncludeFilter
 import uniffi.mail_uniffi.ReadFilter
 
 class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroller) {
@@ -70,9 +71,9 @@ class ConversationPaginatorWrapper(private val rustPaginator: ConversationScroll
         rustPaginator.changeFilter(filter)
     }
 
-    suspend fun showSpamAndTrash(show: Boolean) {
-        Timber.d("conversation-paginator: Changing show spam and trash to %s id=%s", show, rustPaginator.id())
-        rustPaginator.changeInclude(IncludeFilter(includeSpam = show, includeTrash = show))
+    suspend fun changeInclude(filter: IncludeFilter) {
+        Timber.d("conversation-paginator: Changing include filter to %s id=%s", filter, rustPaginator.id())
+        rustPaginator.changeInclude(filter.toRustIncludeFilter())
     }
 
     fun disconnect() {

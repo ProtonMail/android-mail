@@ -116,7 +116,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveVie
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateIncludeFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
@@ -128,6 +128,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
@@ -217,7 +218,7 @@ class MailboxViewModel @Inject constructor(
     private val isExpandableLocation: IsExpandableLocation,
     private val eventLoopRepository: EventLoopRepository,
     private val updateUnreadFilter: UpdateUnreadFilter,
-    private val updateShowSpamTrashFilter: UpdateShowSpamTrashFilter,
+    private val updateIncludeFilter: UpdateIncludeFilter,
     private val observeMailboxFetchNewStatus: ObserveMailboxFetchNewStatus,
     private val observeMailboxFirstPageLoadingStatus: ObserveMailboxFirstPageLoadingStatus,
     private val observeValidSenderAddress: ObserveValidSenderAddress,
@@ -953,7 +954,7 @@ class MailboxViewModel @Inject constructor(
                                 .drop(1) // ignore initial value
                                 .collect { showSpamTrash ->
                                     Timber.d("Updating showSpamTrash filter: $showSpamTrash")
-                                    updateShowSpamTrashFilter(showSpamTrash, viewMode)
+                                    updateIncludeFilter(IncludeFilter.spamAndTrash(showSpamTrash), viewMode)
                                 }
                         }
 

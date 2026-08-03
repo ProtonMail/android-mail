@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -47,7 +48,7 @@ import uniffi.mail_uniffi.ThemeOpts
 @Suppress("ComplexInterface", "TooManyFunctions")
 interface RustMessageDataSource {
 
-    suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
+    suspend fun updateIncludeFilter(filter: IncludeFilter)
 
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 

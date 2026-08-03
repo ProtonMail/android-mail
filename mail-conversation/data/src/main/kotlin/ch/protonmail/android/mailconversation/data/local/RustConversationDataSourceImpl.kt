@@ -41,6 +41,7 @@ import ch.protonmail.android.mailconversation.domain.model.ConversationScrollerF
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.mailmessage.data.model.LocalConversationWithMessages
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
@@ -79,8 +80,7 @@ class RustConversationDataSourceImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RustConversationDataSource {
 
-    override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
-        rustConversationsQuery.updateShowSpamTrashFilter(showSpamTrash)
+    override suspend fun updateIncludeFilter(filter: IncludeFilter) = rustConversationsQuery.updateIncludeFilter(filter)
 
     override suspend fun updateUnreadFilter(filterUnread: Boolean) =
         rustConversationsQuery.updateUnreadFilter(filterUnread)

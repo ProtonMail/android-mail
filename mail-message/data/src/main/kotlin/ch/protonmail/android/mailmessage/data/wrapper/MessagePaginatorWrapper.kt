@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 
 interface MessagePaginatorWrapper {
@@ -38,7 +39,7 @@ interface MessagePaginatorWrapper {
 
     suspend fun filterUnread(filterUnread: Boolean)
 
-    suspend fun showSpamAndTrash(show: Boolean)
+    suspend fun changeInclude(filter: IncludeFilter)
 
     suspend fun updateKeyword(keyword: String)
 

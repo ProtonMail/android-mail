@@ -26,9 +26,10 @@ import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
+import ch.protonmail.android.mailpagination.data.mapper.toRustIncludeFilter
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
-import uniffi.mail_uniffi.IncludeFilter
 import uniffi.mail_uniffi.MessageScroller
 import uniffi.mail_uniffi.MessageScrollerChangeCategoryViewResult
 import uniffi.mail_uniffi.MessageScrollerCursorResult
@@ -81,9 +82,9 @@ class MailboxMessagePaginatorWrapper(
         rustPaginator.changeFilter(filter)
     }
 
-    override suspend fun showSpamAndTrash(show: Boolean) {
-        Timber.d("message-paginator: Changing show spam and trash to %s", show)
-        rustPaginator.changeInclude(IncludeFilter(includeSpam = show, includeTrash = show))
+    override suspend fun changeInclude(filter: IncludeFilter) {
+        Timber.d("message-paginator: Changing include filter to %s", filter)
+        rustPaginator.changeInclude(filter.toRustIncludeFilter())
     }
 
     override suspend fun updateKeyword(keyword: String) {

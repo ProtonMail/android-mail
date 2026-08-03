@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
 import ch.protonmail.android.mailconversation.data.wrapper.ConversationCursorWrapper
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +46,7 @@ interface RustConversationsQuery {
 
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 
-    suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean)
+    suspend fun updateIncludeFilter(filter: IncludeFilter)
 
     suspend fun getCursorFromActivePaginator(
         userId: UserId,

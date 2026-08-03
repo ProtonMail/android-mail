@@ -18,6 +18,7 @@ import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.CategorySystemLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PageToLoad
@@ -109,7 +110,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -158,7 +159,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -211,7 +212,7 @@ class RustConversationsQueryImplTest {
             }
             coEvery { reload() } returns Unit.right()
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -294,7 +295,7 @@ class RustConversationsQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -365,7 +366,7 @@ class RustConversationsQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -446,7 +447,7 @@ class RustConversationsQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -512,7 +513,7 @@ class RustConversationsQueryImplTest {
             }
             coEvery { reload() } returns Unit.right()
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -594,7 +595,7 @@ class RustConversationsQueryImplTest {
             }
 
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -650,7 +651,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -706,7 +707,7 @@ class RustConversationsQueryImplTest {
             }
             coEvery { this@mockk.disconnect() } just Runs
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -763,7 +764,7 @@ class RustConversationsQueryImplTest {
             }
             coEvery { this@mockk.disconnect() } just Runs
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }
@@ -884,7 +885,7 @@ class RustConversationsQueryImplTest {
             }
             coEvery { this@mockk.disconnect() } just Runs
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(any()) } just Runs
+            coEvery { this@mockk.changeInclude(any()) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -900,7 +901,7 @@ class RustConversationsQueryImplTest {
 
         // When
         rustConversationsQuery.getConversations(userId, pageKey)
-        rustConversationsQuery.updateShowSpamTrashFilter(true)
+        rustConversationsQuery.updateIncludeFilter(IncludeFilter.spamAndTrash(true))
 
         // Then
         coVerify(exactly = 1) {
@@ -938,7 +939,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -997,7 +998,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -1068,7 +1069,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -1126,7 +1127,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -1188,7 +1189,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { this@mockk.filterUnread(false) } just Runs
-            coEvery { this@mockk.showSpamAndTrash(false) } just Runs
+            coEvery { this@mockk.changeInclude(IncludeFilter.None) } just Runs
             every { this@mockk.getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
 
@@ -1237,7 +1238,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
             coEvery { getCursor(conversationId) } returns expectedCursor.right()
@@ -1323,7 +1324,7 @@ class RustConversationsQueryImplTest {
                 Unit.right()
             }
             coEvery { filterUnread(false) } just Runs
-            coEvery { showSpamAndTrash(false) } just Runs
+            coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
             coEvery { this@mockk.getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
         }

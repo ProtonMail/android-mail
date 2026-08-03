@@ -60,6 +60,7 @@ import ch.protonmail.android.mailmessage.data.usecase.RustUnstarMessages
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
@@ -110,8 +111,7 @@ class RustMessageDataSourceImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RustMessageDataSource {
 
-    override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
-        rustMessageListQuery.updateShowSpamTrashFilter(showSpamTrash)
+    override suspend fun updateIncludeFilter(filter: IncludeFilter) = rustMessageListQuery.updateIncludeFilter(filter)
 
     override suspend fun updateUnreadFilter(filterUnread: Boolean) =
         rustMessageListQuery.updateUnreadFilter(filterUnread)

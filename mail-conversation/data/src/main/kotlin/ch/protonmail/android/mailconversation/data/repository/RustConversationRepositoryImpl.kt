@@ -44,6 +44,7 @@ import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.mapper.toLocalConversationId
 import ch.protonmail.android.mailmessage.domain.model.ConversationMessages
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
@@ -58,8 +59,8 @@ class RustConversationRepositoryImpl @Inject constructor(
     private val conversationCursorRepository: ConversationCursorRepository
 ) : ConversationRepository {
 
-    override suspend fun updateShowSpamTrashFilter(showSpamTrash: Boolean) =
-        rustConversationDataSource.updateShowSpamTrashFilter(showSpamTrash)
+    override suspend fun updateIncludeFilter(filter: IncludeFilter) =
+        rustConversationDataSource.updateIncludeFilter(filter)
 
     override suspend fun updateUnreadFilter(filterUnread: Boolean) =
         rustConversationDataSource.updateUnreadFilter(filterUnread)

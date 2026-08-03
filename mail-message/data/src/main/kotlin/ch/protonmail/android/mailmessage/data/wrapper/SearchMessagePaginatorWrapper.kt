@@ -25,9 +25,10 @@ import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
+import ch.protonmail.android.mailpagination.data.mapper.toRustIncludeFilter
+import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import timber.log.Timber
-import uniffi.mail_uniffi.IncludeFilter
 import uniffi.mail_uniffi.PaginatorSearchOptions
 import uniffi.mail_uniffi.SearchScroller
 import uniffi.mail_uniffi.SearchScrollerCursorResult
@@ -75,9 +76,9 @@ class SearchMessagePaginatorWrapper(
         Timber.w("search-paginator: Called filter unread on a search paginator, which is illegal. No-op.")
     }
 
-    override suspend fun showSpamAndTrash(show: Boolean) {
-        Timber.d("search-paginator: Updating show spam and trash to: $show")
-        rustPaginator.changeInclude(IncludeFilter(includeSpam = show, includeTrash = show))
+    override suspend fun changeInclude(filter: IncludeFilter) {
+        Timber.d("search-paginator: Updating include filter to: $filter")
+        rustPaginator.changeInclude(filter.toRustIncludeFilter())
     }
 
     override suspend fun updateKeyword(keyword: String) {

@@ -127,7 +127,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveVie
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateIncludeFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -411,7 +411,7 @@ internal class MailboxViewModelTest {
     }
 
     private val updateUnreadFilter = mockk<UpdateUnreadFilter>()
-    private val updateShowSpamTrashFilter = mockk<UpdateShowSpamTrashFilter>()
+    private val updateIncludeFilter = mockk<UpdateIncludeFilter>()
 
     private val isCategoryViewEnabled = mockk<IsCategoryViewEnabled> {
         coEvery { this@mockk.invoke(any()) } returns false
@@ -485,7 +485,7 @@ internal class MailboxViewModelTest {
             isExpandableLocation = isExpandableLocation,
             eventLoopRepository = eventLoopRepository,
             updateUnreadFilter = updateUnreadFilter,
-            updateShowSpamTrashFilter = updateShowSpamTrashFilter,
+            updateIncludeFilter = updateIncludeFilter,
             observeMailboxFetchNewStatus = observeMailboxFetchNewStatus,
             observeMailboxFirstPageLoadingStatus = observeMailboxFirstPageLoadingStatus,
             loadingBarControllerFactory = loadingBarControllerFactory,
