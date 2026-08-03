@@ -32,7 +32,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
+import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState.SelectedMailItem as SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -57,7 +58,9 @@ internal class MailboxListReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val topAppBarReducer = MailboxListReducer(AvatarImageUiModelMapper())
+    // Real SelectionStateReducer, so the delegated selection transitions are exercised end to end
+    // and the expectations below keep asserting the same behaviour as the hand-rolled ones did.
+    private val topAppBarReducer = MailboxListReducer(AvatarImageUiModelMapper(), SelectionStateReducer())
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {

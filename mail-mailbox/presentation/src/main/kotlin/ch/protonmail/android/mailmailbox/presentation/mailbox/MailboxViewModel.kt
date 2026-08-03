@@ -54,6 +54,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
@@ -796,7 +797,7 @@ class MailboxViewModel @Inject constructor(
                 MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
             }
         } else {
-            if (selectionMode.selectedMailboxItems.size >= MailboxListState.maxItemSelectionLimit) {
+            if (selectionMode.selectedMailboxItems.size >= SelectionState.MaxItemSelectionLimit) {
                 MailboxEvent.MaxSelectionLimitReached
             } else {
                 MailboxEvent.ItemClicked.ItemAddedToSelection(item)

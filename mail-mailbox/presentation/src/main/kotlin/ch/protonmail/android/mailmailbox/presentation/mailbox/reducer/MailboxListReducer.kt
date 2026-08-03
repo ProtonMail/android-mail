@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
+import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
@@ -27,7 +29,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
@@ -39,7 +40,8 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "LargeClass")
 class MailboxListReducer @Inject constructor(
-    private val avatarImageUiModelMapper: AvatarImageUiModelMapper
+    private val avatarImageUiModelMapper: AvatarImageUiModelMapper,
+    private val selectionStateReducer: SelectionStateReducer
 ) {
 
     @Suppress("ComplexMethod")
@@ -443,18 +445,13 @@ class MailboxListReducer @Inject constructor(
         else -> currentState
     }
 
+    // Selection-set transitions are delegated to the shared SelectionStateReducer; this reducer only
+    // adapts them into the mailbox's ViewMode <-> SelectionMode fork, which additionally carries the
+    // FAB visibility and the attachment effects that must be reset on exit.
     private fun reduceEnterSelectionMode(item: MailboxItemUiModel, currentState: MailboxListState) =
         when (currentState) {
-            is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
-                currentMailLabel = currentState.currentMailLabel,
-                selectedMailboxItems = setOf(SelectedMailboxItem(item.id, item.isRead, item.isStarred)),
-                swipeActions = currentState.swipeActions,
-                searchState = currentState.searchState,
-                avatarImagesUiModel = currentState.avatarImagesUiModel,
-                shouldShowFab = false,
-                areAllItemsSelected = false,
-                refreshOngoing = currentState.refreshOngoing,
-                loadingBarState = currentState.loadingBarState
+            is MailboxListState.Data.ViewMode -> currentState.toSelectionMode(
+                selectionStateReducer.enterSelection(item)
             )
 
             else -> currentState
@@ -482,94 +479,35 @@ class MailboxListReducer @Inject constructor(
     private fun reduceItemAddedToSelection(
         operation: MailboxEvent.ItemClicked.ItemAddedToSelection,
         currentState: MailboxListState
-    ) = when (currentState) {
-        is MailboxListState.Data.SelectionMode ->
-            currentState.copy(
-                selectedMailboxItems = currentState.selectedMailboxItems +
-                    SelectedMailboxItem(
-                        operation.item.id,
-                        operation.item.isRead,
-                        operation.item.isStarred
-                    )
-            )
-
-        else -> currentState
-    }
+    ) = currentState.mapSelection { selectionStateReducer.addToSelection(it, operation.item) }
 
     private fun reduceItemRemovedFromSelection(
         operation: MailboxEvent.ItemClicked.ItemRemovedFromSelection,
         currentState: MailboxListState
-    ) = when (currentState) {
-        is MailboxListState.Data.SelectionMode ->
-            currentState.copy(
-                areAllItemsSelected = false,
-                selectedMailboxItems = currentState.selectedMailboxItems
-                    .filterNot { it.id == operation.item.id }
-                    .toSet()
-            )
-
-        else -> currentState
-    }
+    ) = currentState.mapSelection { selectionStateReducer.removeFromSelection(it, operation.item.id) }
 
     private fun reduceItemsRemovedFromSelection(
         operation: MailboxEvent.ItemsRemovedFromSelection,
         currentState: MailboxListState
-    ) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            areAllItemsSelected = false,
-            selectedMailboxItems = currentState.selectedMailboxItems
-                .filterNot { operation.itemIds.contains(it.id) }
-                .toSet()
-        )
+    ) = currentState.mapSelection { selectionStateReducer.removeFromSelection(it, operation.itemIds) }
 
-        else -> currentState
-    }
+    private fun reduceAllItemsSelected(operation: MailboxEvent.AllItemsSelected, currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.selectAll(it, operation.allItems) }
 
-    private fun reduceAllItemsSelected(
-        operation: MailboxEvent.AllItemsSelected,
-        currentState: MailboxListState
-    ): MailboxListState {
-        val state: MailboxListState
-        when (currentState) {
-            is MailboxListState.Data.SelectionMode -> {
-                val selectedIds = currentState.selectedMailboxItems.map { it.id }
-                val limitedSelection = currentState.selectedMailboxItems.toMutableSet()
-                limitedSelection.addAll(
-                    operation.allItems.let { allItems ->
-                        // remove selected id's so we don't add duplicates
-                        allItems.filter { !selectedIds.contains(it.id) }.take(
-                            // add additional items up to our maximum supported limit
-                            0.coerceAtLeast(
-                                MailboxListState.maxItemSelectionLimit - selectedIds.size
-                            )
-                        ).map {
-                            SelectedMailboxItem(
-                                id = it.id,
-                                isRead = it.isRead,
-                                isStarred = it.isStarred
-                            )
-                        }
-                    }
-                )
-                state = currentState.copy(
-                    areAllItemsSelected = true,
-                    selectedMailboxItems = limitedSelection
-                )
-            }
+    private fun reduceAllItemsDeselected(currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.deselectAll() }
 
-            else -> state = currentState
-        }
-        return state
-    }
+    private fun reduceMarkAsRead(currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.markRead(it, isRead = true) }
 
-    private fun reduceAllItemsDeselected(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            areAllItemsSelected = false,
-            selectedMailboxItems = emptySet()
-        )
+    private fun reduceMarkAsUnread(currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.markRead(it, isRead = false) }
 
-        else -> currentState
-    }
+    private fun reduceStar(currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.markStarred(it, isStarred = true) }
+
+    private fun reduceUnStar(currentState: MailboxListState) =
+        currentState.mapSelection { selectionStateReducer.markStarred(it, isStarred = false) }
 
     private fun reduceOpenComposer(operation: MailboxEvent.ItemClicked.OpenComposer, currentState: MailboxListState) =
         when (currentState) {
@@ -586,45 +524,36 @@ class MailboxListReducer @Inject constructor(
             else -> currentState
         }
 
-    private fun reduceMarkAsRead(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
-                currentSelectedItem.copy(isRead = true)
-            }.toSet()
-        )
-
-        else -> currentState
-    }
-
-    private fun reduceMarkAsUnread(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
-                currentSelectedItem.copy(isRead = false)
-            }.toSet()
-        )
-
-        else -> currentState
-    }
-
-    private fun reduceStar(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
-                currentSelectedItem.copy(isStarred = true)
-            }.toSet()
-        )
-
-        else -> currentState
-    }
-
-    private fun reduceUnStar(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data.SelectionMode -> currentState.copy(
-            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
-                currentSelectedItem.copy(isStarred = false)
-            }.toSet()
-        )
-
-        else -> currentState
-    }
-
     private fun reduceCouldNotLoadUserSession(): MailboxListState = MailboxListState.CouldNotLoadUserSession
 }
+
+/**
+ * Adapters between the mailbox's ViewMode <-> SelectionMode fork and the screen-agnostic
+ * [SelectionState] the shared reducer operates on.
+ */
+private fun MailboxListState.mapSelection(transition: (SelectionState) -> SelectionState): MailboxListState =
+    when (this) {
+        is MailboxListState.Data.SelectionMode -> withSelection(transition(selection))
+        else -> this
+    }
+
+private val MailboxListState.Data.SelectionMode.selection: SelectionState
+    get() = SelectionState(selectedItems = selectedMailboxItems, areAllItemsSelected = areAllItemsSelected)
+
+private fun MailboxListState.Data.SelectionMode.withSelection(selection: SelectionState) = copy(
+    selectedMailboxItems = selection.selectedItems,
+    areAllItemsSelected = selection.areAllItemsSelected
+)
+
+private fun MailboxListState.Data.ViewMode.toSelectionMode(selection: SelectionState) =
+    MailboxListState.Data.SelectionMode(
+        currentMailLabel = currentMailLabel,
+        selectedMailboxItems = selection.selectedItems,
+        swipeActions = swipeActions,
+        searchState = searchState,
+        avatarImagesUiModel = avatarImagesUiModel,
+        shouldShowFab = false,
+        areAllItemsSelected = selection.areAllItemsSelected,
+        refreshOngoing = refreshOngoing,
+        loadingBarState = loadingBarState
+    )

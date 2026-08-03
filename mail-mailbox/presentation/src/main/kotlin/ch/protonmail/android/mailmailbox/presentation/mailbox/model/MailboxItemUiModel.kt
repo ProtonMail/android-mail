@@ -22,6 +22,7 @@ import androidx.compose.runtime.Immutable
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentMetadataUiModel
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.SelectableMailItem
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -33,10 +34,10 @@ data class MailboxItemUiModel(
     val avatar: AvatarUiModel,
     val type: MailboxItemType,
     val userId: String,
-    val id: String,
+    override val id: String,
     val conversationId: ConversationId,
     val time: TextUiModel,
-    val isRead: Boolean,
+    override val isRead: Boolean,
     val labels: ImmutableList<LabelUiModel>,
     val subject: String,
     val participants: ParticipantsUiModel,
@@ -44,7 +45,7 @@ data class MailboxItemUiModel(
     val shouldShowRepliedAllIcon: Boolean,
     val shouldShowForwardedIcon: Boolean,
     val numMessages: Int?,
-    val isStarred: Boolean,
+    override val isStarred: Boolean,
     val locations: ImmutableList<MailboxItemLocationUiModel>,
     val attachments: ImmutableList<AttachmentMetadataUiModel>,
     val expiryInformation: ExpiryInformationUiModel,
@@ -54,4 +55,4 @@ data class MailboxItemUiModel(
     val shouldShowScheduleSendTime: Boolean,
     val displaySnoozeReminder: Boolean,
     val snoozedUntil: SnoozeStatusUiModel
-)
+) : SelectableMailItem

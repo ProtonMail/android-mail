@@ -38,7 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -187,7 +187,7 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
             selectedMailboxItems = selectedMailboxItemUiModels.map {
-                SelectedMailboxItem(it.id, it.isRead, it.isStarred)
+                SelectionState.SelectedMailItem(it.id, it.isRead, it.isStarred)
             }.toSet(),
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,

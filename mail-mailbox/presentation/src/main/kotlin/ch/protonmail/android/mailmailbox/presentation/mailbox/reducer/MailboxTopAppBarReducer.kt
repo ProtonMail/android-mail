@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent.ItemsRemovedFromSelection
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data.SelectionMode
@@ -158,7 +158,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
         when (this) {
             is SelectionMode -> this.copy(
                 selectedCount = operation.allItems.size.coerceAtMost(
-                    MailboxListState.maxItemSelectionLimit
+                    SelectionState.MaxItemSelectionLimit
                 )
             )
 

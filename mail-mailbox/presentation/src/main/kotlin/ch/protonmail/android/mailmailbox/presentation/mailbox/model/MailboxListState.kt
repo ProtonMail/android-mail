@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -83,25 +84,13 @@ sealed interface MailboxListState {
             override val refreshOngoing: Boolean,
             override val loadingBarState: LoadingBarUiState,
             override val firstPageLoadingStartCount: Int = 0,
-            val selectedMailboxItems: Set<SelectedMailboxItem>,
+            val selectedMailboxItems: Set<SelectionState.SelectedMailItem>,
             val areAllItemsSelected: Boolean
-        ) : Data {
-
-            data class SelectedMailboxItem(
-                val id: String,
-                val isRead: Boolean,
-                val isStarred: Boolean
-            )
-        }
+        ) : Data
     }
 
     data object Loading : MailboxListState
     data object CouldNotLoadUserSession : MailboxListState
-
-    companion object {
-
-        const val maxItemSelectionLimit = 100
-    }
 }
 
 fun MailboxListState.hasClearableOperations() = this is MailboxListState.Data.ViewMode && !this.searchState.isInSearch()
