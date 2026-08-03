@@ -18,12 +18,13 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownloadState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -36,12 +37,12 @@ import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
 import javax.inject.Inject
-import ch.protonmail.android.mailattachments.presentation.R as attachmentsR
 
 @Suppress("TooManyFunctions", "LargeClass")
 class MailboxListReducer @Inject constructor(
     private val avatarImageUiModelMapper: AvatarImageUiModelMapper,
-    private val selectionStateReducer: SelectionStateReducer
+    private val selectionStateReducer: SelectionStateReducer,
+    private val attachmentDownloadReducer: AttachmentDownloadReducer
 ) {
 
     @Suppress("ComplexMethod")
@@ -88,10 +89,21 @@ class MailboxListReducer @Inject constructor(
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.AvatarImageStatesUpdated -> reduceAvatarImageStatesUpdated(operation, currentState)
-            is MailboxEvent.AttachmentDownloadStartedEvent -> reduceAttachmentDownloadStarted(operation, currentState)
-            is MailboxEvent.AttachmentDownloadInProgressEvent -> reduceAttachmentDownloadInProgress(currentState)
-            is MailboxEvent.AttachmentReadyEvent -> reduceAttachmentReady(operation, currentState)
-            is MailboxEvent.AttachmentErrorEvent -> reduceAttachmentDownloadError(currentState)
+            is MailboxEvent.AttachmentDownloadStartedEvent -> currentState.mapAttachmentDownload {
+                attachmentDownloadReducer.downloadStarted(it, operation.attachmentId)
+            }
+
+            is MailboxEvent.AttachmentDownloadInProgressEvent -> currentState.mapAttachmentDownload {
+                attachmentDownloadReducer.downloadAlreadyInProgress(it)
+            }
+
+            is MailboxEvent.AttachmentReadyEvent -> currentState.mapAttachmentDownload {
+                attachmentDownloadReducer.downloadReady(it, operation.openAttachmentIntentValues)
+            }
+
+            is MailboxEvent.AttachmentErrorEvent -> currentState.mapAttachmentDownload {
+                attachmentDownloadReducer.downloadFailed(it)
+            }
             is MailboxEvent.PaginatorInvalidated -> reducePaginatorInvalidated(operation, currentState)
             is MailboxEvent.CouldNotLoadUserSession -> reduceCouldNotLoadUserSession()
             is MailboxEvent.LoadingBarStateUpdated -> reduceLoadingBarStateUpdated(operation, currentState)
@@ -148,54 +160,6 @@ class MailboxListReducer @Inject constructor(
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
                 paginatorInvalidationEffect = Effect.of(operation.event)
-            )
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceAttachmentDownloadStarted(
-        event: MailboxEvent.AttachmentDownloadStartedEvent,
-        currentState: MailboxListState
-    ): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                downloadingAttachmentId = event.attachmentId
-            )
-            else -> currentState
-        }
-    }
-
-    private fun reduceAttachmentDownloadInProgress(currentState: MailboxListState): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> {
-                val errorMessage = TextUiModel.TextRes(attachmentsR.string.attachment_download_in_progress)
-                currentState.copy(displayAttachmentError = Effect.of(errorMessage))
-            }
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceAttachmentReady(
-        event: MailboxEvent.AttachmentReadyEvent,
-        currentState: MailboxListState
-    ): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                downloadingAttachmentId = null,
-                displayAttachment = Effect.of(event.openAttachmentIntentValues)
-            )
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceAttachmentDownloadError(currentState: MailboxListState): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                downloadingAttachmentId = null,
-                displayAttachmentError = Effect.of(TextUiModel.TextRes(attachmentsR.string.attachment_download_error))
             )
 
             else -> currentState
@@ -557,3 +521,27 @@ private fun MailboxListState.Data.ViewMode.toSelectionMode(selection: SelectionS
         refreshOngoing = refreshOngoing,
         loadingBarState = loadingBarState
     )
+
+/**
+ * Attachment downloads are offered only outside selection mode, so every other state ignores these
+ * transitions — as the hand-rolled ones did.
+ */
+private fun MailboxListState.mapAttachmentDownload(
+    transition: (AttachmentDownloadState) -> AttachmentDownloadState
+): MailboxListState = when (this) {
+    is MailboxListState.Data.ViewMode -> withAttachmentDownload(transition(attachmentDownload))
+    else -> this
+}
+
+private val MailboxListState.Data.ViewMode.attachmentDownload: AttachmentDownloadState
+    get() = AttachmentDownloadState(
+        downloadingAttachmentId = downloadingAttachmentId,
+        openAttachment = displayAttachment,
+        error = displayAttachmentError
+    )
+
+private fun MailboxListState.Data.ViewMode.withAttachmentDownload(state: AttachmentDownloadState) = copy(
+    downloadingAttachmentId = state.downloadingAttachmentId,
+    displayAttachment = state.openAttachment,
+    displayAttachmentError = state.error
+)

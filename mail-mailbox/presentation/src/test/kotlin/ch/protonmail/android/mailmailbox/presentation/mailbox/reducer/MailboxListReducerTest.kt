@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
+import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.ViewMode
@@ -60,7 +61,11 @@ internal class MailboxListReducerTest(
 
     // Real SelectionStateReducer, so the delegated selection transitions are exercised end to end
     // and the expectations below keep asserting the same behaviour as the hand-rolled ones did.
-    private val topAppBarReducer = MailboxListReducer(AvatarImageUiModelMapper(), SelectionStateReducer())
+    private val topAppBarReducer = MailboxListReducer(
+        AvatarImageUiModelMapper(),
+        SelectionStateReducer(),
+        AttachmentDownloadReducer()
+    )
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
