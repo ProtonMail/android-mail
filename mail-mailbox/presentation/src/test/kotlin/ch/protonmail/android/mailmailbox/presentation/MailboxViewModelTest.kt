@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -308,6 +309,23 @@ internal class MailboxViewModelTest {
     }
     private val unStarMessages = mockk<UnStarMessages>()
     private val unStarConversations = mockk<UnStarConversations>()
+
+    // Built from the same mocks the tests already assert on, so the conversation-vs-message
+    // expectations below are unaffected by the extraction.
+    private val mailboxActionExecutor = MailboxActionExecutor(
+        markConversationsAsRead = markConversationsAsRead,
+        markMessagesAsRead = markMessagesAsRead,
+        markConversationsAsUnread = markConversationsAsUnread,
+        markMessagesAsUnread = markMessagesAsUnread,
+        moveConversations = moveConversations,
+        moveMessages = moveMessages,
+        deleteConversations = deleteConversations,
+        deleteMessages = deleteMessages,
+        starConversations = starConversations,
+        starMessages = starMessages,
+        unStarConversations = unStarConversations,
+        unStarMessages = unStarMessages
+    )
     private val getBottomSheetActions = mockk<GetBottomSheetActions>()
     private val observePrimaryAccountAvatarItem = mockk<ObservePrimaryAccountAvatarItem> {
         every { this@mockk() } returns flowOf()
@@ -442,18 +460,7 @@ internal class MailboxViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             swipeActionsMapper = swipeActionsMapper,
-            markConversationsAsRead = markConversationsAsRead,
-            markConversationsAsUnread = markConversationsAsUnread,
-            markMessagesAsRead = markMessagesAsRead,
-            markMessagesAsUnread = markMessagesAsUnread,
-            moveConversations = moveConversations,
-            moveMessages = moveMessages,
-            deleteConversations = deleteConversations,
-            deleteMessages = deleteMessages,
-            starMessages = starMessages,
-            starConversations = starConversations,
-            unStarMessages = unStarMessages,
-            unStarConversations = unStarConversations,
+            mailboxActionExecutor = mailboxActionExecutor,
             mailboxReducer = mailboxReducer,
             dispatchersProvider = TestDispatcherProvider(),
             findLocalSystemLabelId = findLocalSystemLabelId,

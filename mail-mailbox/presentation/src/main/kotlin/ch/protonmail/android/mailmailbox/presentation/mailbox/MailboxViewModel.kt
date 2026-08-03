@@ -46,7 +46,6 @@ import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -56,14 +55,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
-import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
-import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
-import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
-import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
-import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
-import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
@@ -116,6 +109,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -125,18 +119,11 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShow
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateShowSpamTrashFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteAllMessagesInLocation
-import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.HandleAvatarImageLoadingFailure
 import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
-import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
-import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
-import ch.protonmail.android.mailmessage.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
-import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
-import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
@@ -214,18 +201,7 @@ class MailboxViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val swipeActionsMapper: SwipeActionsMapper,
-    private val markConversationsAsRead: MarkConversationsAsRead,
-    private val markConversationsAsUnread: MarkConversationsAsUnread,
-    private val markMessagesAsRead: MarkMessagesAsRead,
-    private val markMessagesAsUnread: MarkMessagesAsUnread,
-    private val moveConversations: MoveConversations,
-    private val moveMessages: MoveMessages,
-    private val deleteConversations: DeleteConversations,
-    private val deleteMessages: DeleteMessages,
-    private val starMessages: StarMessages,
-    private val starConversations: StarConversations,
-    private val unStarMessages: UnStarMessages,
-    private val unStarConversations: UnStarConversations,
+    private val mailboxActionExecutor: MailboxActionExecutor,
     private val mailboxReducer: MailboxReducer,
     private val dispatchersProvider: DispatcherProvider,
     private val findLocalSystemLabelId: FindLocalSystemLabelId,
@@ -1051,18 +1027,12 @@ class MailboxViewModel @Inject constructor(
 
         val user = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> markConversationsAsRead(
-                userId = user,
-                labelId = getFromLabelIdSearchAware(),
-                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-            )
-
-            ViewMode.NoConversationGrouping -> markMessagesAsRead(
-                userId = user,
-                messageIds = selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) }
-            )
-        }
+        mailboxActionExecutor.markRead(
+            userId = user,
+            viewMode = viewMode,
+            itemIds = selectionModeDataState.selectedMailboxItems.map { it.id },
+            labelId = getFromLabelIdSearchAware()
+        )
         emitNewStateFrom(markAsReadOperation)
     }
 
@@ -1074,77 +1044,36 @@ class MailboxViewModel @Inject constructor(
         }
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> markConversationsAsUnread(
-                userId = userId,
-                labelId = getFromLabelIdSearchAware(),
-                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-            )
-
-            ViewMode.NoConversationGrouping -> markMessagesAsUnread(
-                userId = userId,
-                messageIds = selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) }
-            )
-        }
+        mailboxActionExecutor.markUnread(
+            userId = userId,
+            viewMode = viewMode,
+            itemIds = selectionModeDataState.selectedMailboxItems.map { it.id },
+            labelId = getFromLabelIdSearchAware()
+        )
         emitNewStateFrom(markAsReadOperation)
     }
 
     private suspend fun handleSwipeReadAction(swipeReadAction: MailboxViewAction.SwipeReadAction) {
+        val userId = primaryUserId.filterNotNull().first()
+        val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
+        val itemIds = listOf(swipeReadAction.itemId)
+        val labelId = getFromLabelIdSearchAware()
         if (swipeReadAction.isRead) {
-            when (getViewModeForCurrentLocation(getSelectedMailLabelId())) {
-                ViewMode.ConversationGrouping -> markConversationsAsUnread(
-                    userId = primaryUserId.filterNotNull().first(),
-                    labelId = getFromLabelIdSearchAware(),
-                    conversationIds = listOf(ConversationId(swipeReadAction.itemId))
-                )
-
-                ViewMode.NoConversationGrouping -> markMessagesAsUnread(
-                    userId = primaryUserId.filterNotNull().first(),
-                    messageIds = listOf(MessageId(swipeReadAction.itemId))
-                )
-            }
+            mailboxActionExecutor.markUnread(userId, viewMode, itemIds, labelId)
         } else {
-            when (getViewModeForCurrentLocation(getSelectedMailLabelId())) {
-                ViewMode.ConversationGrouping -> markConversationsAsRead(
-                    userId = primaryUserId.filterNotNull().first(),
-                    labelId = getFromLabelIdSearchAware(),
-                    conversationIds = listOf(ConversationId(swipeReadAction.itemId))
-                )
-
-                ViewMode.NoConversationGrouping -> markMessagesAsRead(
-                    userId = primaryUserId.filterNotNull().first(),
-                    messageIds = listOf(MessageId(swipeReadAction.itemId))
-                )
-            }
+            mailboxActionExecutor.markRead(userId, viewMode, itemIds, labelId)
         }
         emitNewStateFrom(swipeReadAction)
     }
 
     private suspend fun handleSwipeStarAction(swipeStarAction: MailboxViewAction.StarAction) {
+        val userId = primaryUserId.filterNotNull().first()
+        val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
+        val itemIds = listOf(swipeStarAction.itemId)
         if (swipeStarAction.isStarred) {
-            when (getViewModeForCurrentLocation(getSelectedMailLabelId())) {
-                ViewMode.ConversationGrouping -> unStarConversations(
-                    userId = primaryUserId.filterNotNull().first(),
-                    conversationIds = listOf(ConversationId(swipeStarAction.itemId))
-                )
-
-                ViewMode.NoConversationGrouping -> unStarMessages(
-                    userId = primaryUserId.filterNotNull().first(),
-                    messageIds = listOf(MessageId(swipeStarAction.itemId))
-                )
-            }
+            mailboxActionExecutor.unStar(userId, viewMode, itemIds)
         } else {
-            when (getViewModeForCurrentLocation(getSelectedMailLabelId())) {
-                ViewMode.ConversationGrouping -> starConversations(
-                    userId = primaryUserId.filterNotNull().first(),
-                    conversationIds = listOf(ConversationId(swipeStarAction.itemId))
-                )
-
-                ViewMode.NoConversationGrouping -> starMessages(
-                    userId = primaryUserId.filterNotNull().first(),
-                    messageIds = listOf(MessageId(swipeStarAction.itemId))
-                )
-            }
+            mailboxActionExecutor.star(userId, viewMode, itemIds)
         }
         emitNewStateFrom(swipeStarAction)
     }
@@ -1182,19 +1111,7 @@ class MailboxViewModel @Inject constructor(
         systemLabelId: SystemLabelId,
         viewMode: ViewMode
     ) {
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> moveConversations(
-                userId = userId,
-                conversationIds = listOf(ConversationId(itemId)),
-                systemLabelId = systemLabelId
-            )
-
-            ViewMode.NoConversationGrouping -> moveMessages(
-                userId = userId,
-                messageIds = listOf(MessageId(itemId)),
-                systemLabelId = systemLabelId
-            )
-        }
+        mailboxActionExecutor.move(userId, viewMode, listOf(itemId), systemLabelId)
     }
 
     private fun requestLabelAsBottomSheet(operation: MailboxViewAction) {
@@ -1402,19 +1319,12 @@ class MailboxViewModel @Inject constructor(
         }
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        return when (viewMode) {
-            ViewMode.ConversationGrouping -> moveConversations(
-                userId = userId,
-                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) },
-                systemLabelId = systemLabelId
-            )
-
-            ViewMode.NoConversationGrouping -> moveMessages(
-                userId = userId,
-                messageIds = selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) },
-                systemLabelId = systemLabelId
-            )
-        }.flatMap {
+        return mailboxActionExecutor.move(
+            userId = userId,
+            viewMode = viewMode,
+            itemIds = selectionModeDataState.selectedMailboxItems.map { it.id },
+            systemLabelId = systemLabelId
+        ).flatMap {
             MoveResult(viewMode, selectionModeDataState.selectedMailboxItems.size).right()
         }
     }
@@ -1468,22 +1378,12 @@ class MailboxViewModel @Inject constructor(
 
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> {
-                deleteConversations(
-                    userId = userId,
-                    conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-                )
-            }
-
-            ViewMode.NoConversationGrouping -> {
-                deleteMessages(
-                    userId = userId,
-                    messageIds = selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) },
-                    currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
-                )
-            }
-        }.onLeft {
+        mailboxActionExecutor.delete(
+            userId = userId,
+            viewMode = viewMode,
+            itemIds = selectionModeDataState.selectedMailboxItems.map { it.id },
+            currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
+        ).onLeft {
             emitNewStateFrom(MailboxEvent.ErrorDeleting)
         }.onRight {
             emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
@@ -1520,16 +1420,7 @@ class MailboxViewModel @Inject constructor(
         }
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> {
-                starConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
-            }
-
-            ViewMode.NoConversationGrouping -> {
-                starMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
-            }
-        }
-
+        mailboxActionExecutor.star(userId, viewMode, selectionModeDataState.selectedMailboxItems.map { it.id })
         emitNewStateFrom(viewAction)
     }
 
@@ -1541,15 +1432,7 @@ class MailboxViewModel @Inject constructor(
         }
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(getSelectedMailLabelId())
-        when (viewMode) {
-            ViewMode.ConversationGrouping -> {
-                unStarConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
-            }
-
-            ViewMode.NoConversationGrouping -> {
-                unStarMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
-            }
-        }
+        mailboxActionExecutor.unStar(userId, viewMode, selectionModeDataState.selectedMailboxItems.map { it.id })
         emitNewStateFrom(viewAction)
     }
 
