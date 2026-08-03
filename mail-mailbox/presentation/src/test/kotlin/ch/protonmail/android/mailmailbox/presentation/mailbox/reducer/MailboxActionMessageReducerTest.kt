@@ -8,6 +8,7 @@ import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import io.mockk.every
 import io.mockk.mockk
@@ -30,7 +31,10 @@ internal class MailboxActionMessageReducerTest(
         every { this@mockk.mapToString(customMailLabelText) } returns customFolderName
     }
 
-    private val actionMessageReducer = MailboxActionMessageReducer(mailLabelTextMapper)
+    private val actionMessageReducer = MailboxActionMessageReducer(
+        BulkActionMessageFactory(mailLabelTextMapper),
+        mailLabelTextMapper
+    )
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
