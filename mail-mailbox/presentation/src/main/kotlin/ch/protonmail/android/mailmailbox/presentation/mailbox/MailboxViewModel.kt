@@ -45,7 +45,6 @@ import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightSt
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
-import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -90,7 +89,6 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
-import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
@@ -111,6 +109,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTras
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MoreActionsSheetStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -126,7 +125,6 @@ import ch.protonmail.android.mailmessage.domain.usecase.HandleAvatarImageLoading
 import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
@@ -198,7 +196,7 @@ class MailboxViewModel @Inject constructor(
     private val observeCategoryAwareUnreadCount: ObserveCategoryAwareUnreadCount,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val getBottomBarActions: GetBottomBarActions,
-    private val getBottomSheetActions: GetBottomSheetActions,
+    private val moreActionsSheetStateFactory: MoreActionsSheetStateFactory,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val swipeActionsMapper: SwipeActionsMapper,
@@ -1258,26 +1256,14 @@ class MailboxViewModel @Inject constructor(
         val viewMode = getViewModeForCurrentLocation(currentMailLabel)
         val selectedItemIds: List<MailboxItemId> = selectionState.selectedMailboxItems.map { MailboxItemId(it.id) }
 
-        val actions = getBottomSheetActions(userId, currentMailLabel.labelId, selectedItemIds, viewMode)
+        val actionData = moreActionsSheetStateFactory
+            .create(userId, currentMailLabel.labelId, selectedItemIds, viewMode)
             .getOrElse {
                 Timber.e("Mailbox failed to load the bottom-sheet actions: $it")
                 return
             }
 
-        emitNewStateFrom(
-            MailboxEvent.MailboxBottomSheetEvent(
-                MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
-                    hiddenActionUiModels = actions.hiddenActions
-                        .map { actionUiModelMapper.toUiModel(it) }
-                        .toImmutableList(),
-                    visibleActionUiModels = actions.visibleActions
-                        .map { actionUiModelMapper.toUiModel(it) }
-                        .toImmutableList(),
-                    customizeToolbarActionUiModel = actionUiModelMapper.toUiModel(Action.CustomizeToolbar),
-                    selectedCount = selectionState.selectedMailboxItems.size
-                )
-            )
-        )
+        emitNewStateFrom(MailboxEvent.MailboxBottomSheetEvent(actionData))
     }
 
     private suspend fun handleTrashAction() {

@@ -120,6 +120,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MoreActionsSheetStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
@@ -327,6 +328,12 @@ internal class MailboxViewModelTest {
         unStarMessages = unStarMessages
     )
     private val getBottomSheetActions = mockk<GetBottomSheetActions>()
+
+    // Real factory over the same mock, so the bottom-sheet expectations below are unaffected.
+    private val moreActionsSheetStateFactory = MoreActionsSheetStateFactory(
+        getBottomSheetActions = getBottomSheetActions,
+        actionUiModelMapper = actionUiModelMapper
+    )
     private val observePrimaryAccountAvatarItem = mockk<ObservePrimaryAccountAvatarItem> {
         every { this@mockk() } returns flowOf()
     }
@@ -456,7 +463,7 @@ internal class MailboxViewModelTest {
             observeCategoryAwareUnreadCount = observeCategoryAwareUnreadCount,
             observeFolderColorSettings = observeFolderColorSettings,
             getBottomBarActions = getBottomBarActions,
-            getBottomSheetActions = getBottomSheetActions,
+            moreActionsSheetStateFactory = moreActionsSheetStateFactory,
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             swipeActionsMapper = swipeActionsMapper,
