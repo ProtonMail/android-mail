@@ -195,7 +195,7 @@ data object UpsellPlanExperiment : FeatureFlagDefinition(
 )
 
 data object ContentSearchEnabled : FeatureFlagDefinition(
-    key = "MailAndroidV7ContentSearch",
+    key = "MailMobileContentSearch",
     name = "Enable Content Search",
     category = FeatureFlagCategory.Settings,
     description = "Shows the new content search entry points",
