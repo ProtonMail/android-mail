@@ -81,6 +81,8 @@ import uniffi.mail_uniffi.PrivacyLock
 import uniffi.mail_uniffi.PrivacyLockColor
 import uniffi.mail_uniffi.PrivacyLockIcon
 import uniffi.mail_uniffi.PrivacyLockTooltip
+import uniffi.mail_uniffi.RecentFoundItem
+import uniffi.mail_uniffi.RecentSearchTerm
 import uniffi.mail_uniffi.RemoteId
 import uniffi.mail_uniffi.RsvpAnswer
 import uniffi.mail_uniffi.RsvpAttendance
@@ -270,3 +272,5 @@ typealias LocalUpsellExperimentFlag = UpsellExperimentFlag
 typealias LocalCategoryView = CategoryView
 typealias LocalCategoryLabel = CategoryLabel
 typealias LocalCategoryLabelId = Id
+typealias LocalRecentSearchTerm = RecentSearchTerm
+typealias LocalRecentFoundItem = RecentFoundItem

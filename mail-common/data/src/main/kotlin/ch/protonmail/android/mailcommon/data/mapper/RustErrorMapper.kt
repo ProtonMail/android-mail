@@ -25,6 +25,7 @@ import uniffi.mail_uniffi.DraftAttachmentRemoveError
 import uniffi.mail_uniffi.DraftAttachmentRemoveErrorReason
 import uniffi.mail_uniffi.OtherErrorReason
 import uniffi.mail_uniffi.ProtonError
+import uniffi.mail_uniffi.SearchRecentsError
 import uniffi.mail_uniffi.SessionReason
 import uniffi.mail_uniffi.UserSessionError
 
@@ -57,6 +58,12 @@ fun ActionError.toDataError(): DataError = when (this) {
         ActionErrorReason.EXPECTED_CATEGORY_LABEL,
         ActionErrorReason.UNKNOWN_CONTENT_ID -> DataError.Local.NotFound
     }
+}
+
+fun SearchRecentsError.toDataError(): DataError = when (this) {
+    SearchRecentsError.InvalidQuery -> DataError.Local.InvalidRequest
+    is SearchRecentsError.Database -> DataError.Local.Other(this.message)
+    is SearchRecentsError.Other -> this.v1.toDataError()
 }
 
 fun ProtonError.toDataError(): DataError = when (this) {
