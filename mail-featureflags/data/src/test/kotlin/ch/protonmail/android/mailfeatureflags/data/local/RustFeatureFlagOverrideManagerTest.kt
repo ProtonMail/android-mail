@@ -21,12 +21,16 @@ package ch.protonmail.android.mailfeatureflags.data.local
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
+import uniffi.mail_uniffi.MailSession
+import uniffi.mail_uniffi.MailSessionClearAllDebugFeatureFlagOverridesResult
+import uniffi.mail_uniffi.MailSessionSetDebugFeatureFlagOverrideResult
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailUserSessionListDebugFeatureFlagOverridesResult
@@ -41,8 +45,10 @@ class RustFeatureFlagOverrideManagerTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val rustUserSession: MailUserSession = mockk()
+    private val rustAppSession: MailSession = mockk()
     private val sessionResolver: RustFeatureFlagSessionResolver = mockk {
         coEvery { activeSession() } returns ActiveSession.User(rustUserSession)
+        every { appSession() } returns rustAppSession
     }
 
     private val manager = RustFeatureFlagOverrideManager(
@@ -58,6 +64,9 @@ class RustFeatureFlagOverrideManagerTest {
         coEvery {
             rustUserSession.setDebugFeatureFlagOverride(key, DebugFeatureFlagOverride(enabled = true, variant = null))
         } returns MailUserSessionSetDebugFeatureFlagOverrideResult.Ok
+        coEvery {
+            rustAppSession.setDebugFeatureFlagOverride(key, DebugFeatureFlagOverride(enabled = true, variant = null))
+        } returns MailSessionSetDebugFeatureFlagOverrideResult.Ok
 
         // When
         manager.setDebugOverride(key, enabled = true)
@@ -94,11 +103,49 @@ class RustFeatureFlagOverrideManagerTest {
         )
         coEvery { rustUserSession.clearAllDebugFeatureFlagOverrides() } returns
             MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok
+        coEvery { rustAppSession.clearAllDebugFeatureFlagOverrides() } returns
+            MailSessionClearAllDebugFeatureFlagOverridesResult.Ok
 
         // When
         manager.clearAllDebugOverrides()
 
         // Then
         coVerify(exactly = 1) { rustUserSession.clearAllDebugFeatureFlagOverrides() }
+    }
+
+    @Test
+    fun `mirrors the override onto the app session so app-only accessors observe it`() = runTest {
+        val override = DebugFeatureFlagOverride(enabled = true, variant = null)
+        coEvery { rustUserSession.setDebugFeatureFlagOverride(key, override) } returns
+            MailUserSessionSetDebugFeatureFlagOverrideResult.Ok
+        coEvery { rustAppSession.setDebugFeatureFlagOverride(key, override) } returns
+            MailSessionSetDebugFeatureFlagOverrideResult.Ok
+
+        manager.setDebugOverride(key, enabled = true)
+
+        coVerify(exactly = 1) { rustAppSession.setDebugFeatureFlagOverride(key, override) }
+    }
+
+    @Test
+    fun `clears the app session too, so a cleared flag does not stay overridden there`() = runTest {
+        coEvery { rustUserSession.clearAllDebugFeatureFlagOverrides() } returns
+            MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok
+        coEvery { rustAppSession.clearAllDebugFeatureFlagOverrides() } returns
+            MailSessionClearAllDebugFeatureFlagOverridesResult.Ok
+
+        manager.clearAllDebugOverrides()
+
+        coVerify(exactly = 1) { rustAppSession.clearAllDebugFeatureFlagOverrides() }
+    }
+
+    @Test
+    fun `skips the app session when it does not exist yet`() = runTest {
+        every { sessionResolver.appSession() } returns null
+        coEvery { rustUserSession.clearAllDebugFeatureFlagOverrides() } returns
+            MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok
+
+        manager.clearAllDebugOverrides()
+
+        coVerify(exactly = 0) { rustAppSession.clearAllDebugFeatureFlagOverrides() }
     }
 }

@@ -48,6 +48,16 @@ class RustFeatureFlagSessionResolver @Inject constructor(
         }
     }
 
+    /**
+     * The pre-login session. Exposed separately because a few SDK accessors are only defined on it (e.g.
+     * content search availability), so debug overrides have to be mirrored there to have any effect.
+     * Null before the session exists.
+     */
+    internal fun appSession(): MailSession? {
+        if (mailSessionRepository.isMailSessionInitialised().not()) return null
+        return mailSessionRepository.getMailSession().getRustMailSession()
+    }
+
     private suspend fun loggedInUserSession(): MailUserSession? {
         if (mailSessionRepository.isMailSessionInitialised().not()) return null
         val userId = userSessionRepository.observePrimaryUserId().firstOrNull() ?: return null

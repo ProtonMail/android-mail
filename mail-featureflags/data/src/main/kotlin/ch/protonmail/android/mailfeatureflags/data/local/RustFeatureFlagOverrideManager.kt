@@ -48,48 +48,49 @@ class RustFeatureFlagOverrideManager @Inject constructor(
         listOverrideEntries().associate { it.flagName to it.debugOverride.enabled }
     }
 
-    override suspend fun setDebugOverride(key: String, enabled: Boolean) = withContext(ioDispatcher) {
+    override suspend fun setDebugOverride(key: String, enabled: Boolean) {
         val override = DebugFeatureFlagOverride(enabled = enabled, variant = null)
-        when (val session = sessionResolver.activeSession()) {
-            is ActiveSession.User ->
-                when (val result = session.session.setDebugFeatureFlagOverride(key, override)) {
+        withContext(ioDispatcher) {
+            activeUserSession()?.let { userSession ->
+                when (val result = userSession.setDebugFeatureFlagOverride(key, override)) {
                     is MailUserSessionSetDebugFeatureFlagOverrideResult.Ok -> Unit
                     is MailUserSessionSetDebugFeatureFlagOverrideResult.Error -> logError("set", key, result.v1)
                 }
-
-            is ActiveSession.App ->
-                when (val result = session.session.setDebugFeatureFlagOverride(key, override)) {
+            }
+            // Always mirrored onto the app session: accessors such as content search availability are
+            // only defined there, so while logged in they would otherwise miss the override entirely.
+            appSession()?.let { appSession ->
+                when (val result = appSession.setDebugFeatureFlagOverride(key, override)) {
                     is MailSessionSetDebugFeatureFlagOverrideResult.Ok -> Unit
                     is MailSessionSetDebugFeatureFlagOverrideResult.Error -> logError("set", key, result.v1)
                 }
+            }
         }
     }
 
     override suspend fun clearAllDebugOverrides() {
-        when (val session = sessionResolver.activeSession()) {
-            is ActiveSession.User ->
-                when (val result = session.session.clearAllDebugFeatureFlagOverrides()) {
-                    is MailUserSessionClearAllDebugFeatureFlagOverridesResult.Error -> logError(
-                        action = "clear",
-                        key = null,
-                        error = result.v1
-                    )
-
-                    MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok -> Unit
+        withContext(ioDispatcher) {
+            activeUserSession()?.let { userSession ->
+                when (val result = userSession.clearAllDebugFeatureFlagOverrides()) {
+                    is MailUserSessionClearAllDebugFeatureFlagOverridesResult.Ok -> Unit
+                    is MailUserSessionClearAllDebugFeatureFlagOverridesResult.Error ->
+                        logError(action = "clear", key = null, error = result.v1)
                 }
-
-            is ActiveSession.App ->
-                when (val result = session.session.clearAllDebugFeatureFlagOverrides()) {
-                    is MailSessionClearAllDebugFeatureFlagOverridesResult.Error -> logError(
-                        action = "clear",
-                        key = null,
-                        error = result.v1
-                    )
-
+            }
+            // Mirrored writes must be mirrored on the way out too, or a cleared flag stays overridden.
+            appSession()?.let { appSession ->
+                when (val result = appSession.clearAllDebugFeatureFlagOverrides()) {
                     is MailSessionClearAllDebugFeatureFlagOverridesResult.Ok -> Unit
+                    is MailSessionClearAllDebugFeatureFlagOverridesResult.Error ->
+                        logError(action = "clear", key = null, error = result.v1)
                 }
+            }
         }
     }
+
+    private suspend fun activeUserSession() = (sessionResolver.activeSession() as? ActiveSession.User)?.session
+
+    private fun appSession() = sessionResolver.appSession()
 
     private suspend fun listOverrideEntries(): List<DebugFeatureFlagOverrideEntry> {
         return when (val session = sessionResolver.activeSession()) {
