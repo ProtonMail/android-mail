@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Transaksi</string>
   <string name="category_spotlight_unseen_title">Pesan baru di %1$s</string>
   <string name="category_spotlight_unseen_description">Titik biru menunjukkan saat kategori memiliki pesan baru sejak terakhir kali diperiksa.</string>
-  <string name="category_spotlight_personalise_title">Personalisasi Kategori Anda</string>
-  <string name="category_spotlight_personalise_description">Pindahkan email ke kategori lain menggunakan “Pindahkan ke”. Email serupa akan disortir ke sana secara otomatis mulai sekarang.</string>
+    <string name="category_spotlight_personalise_title">Sempurnakan kategori</string>
+    <string name="category_spotlight_personalise_description">Pindahkan email ke kategori lain menggunakan “Pindahkan ke”. Email serupa akan disortir ke sana secara otomatis</string>
   <string name="category_spotlight_close_content_description">Tutup</string>
+    <string name="recategorise_bottom_sheet_title">Kategorikan ulang email</string>
+    <string name="recategorise_bottom_sheet_description">Saat memindahkan email ke kategori lain, pesan serupa akan dikategorikan di sana di masa mendatang.</string>
+    <string name="recategorise_bottom_sheet_button">Mengerti</string>
 </resources>

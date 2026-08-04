@@ -25,8 +25,11 @@
   <string name="category_title_newsletters">Nyhedsbreve</string>
   <string name="category_title_transactions">Transaktioner</string>
   <string name="category_spotlight_unseen_title">Ny besked i %1$s</string>
-  <string name="category_spotlight_unseen_description">Når en kategori har nye meddelelser - siden du sidst tjekkede den - vises en blå prik.</string>
-  <string name="category_spotlight_personalise_title">Gør dine kategorier personlige</string>
-  <string name="category_spotlight_personalise_description">Flyt en e-mail til en anden kategori ved at bruge \"Flyt til\". Lignende e-mails sorteres automatisk dertil fremadrettet.</string>
+    <string name="category_spotlight_unseen_description">En blå prik vises, når en kategori har nye beskeder, siden du sidst tjekkede den.</string>
+    <string name="category_spotlight_personalise_title">Tilpas dine kategorier</string>
+    <string name="category_spotlight_personalise_description">Flyt en e-mail til en anden kategori ved at bruge \"Flyt til\". Lignende e-mails sorteres automatisk dertil</string>
   <string name="category_spotlight_close_content_description">Luk</string>
+    <string name="recategorise_bottom_sheet_title">Kategoriser e-mail igen</string>
+    <string name="recategorise_bottom_sheet_description">Når du flytter en e-mail til en anden kategori vil lignende beskeder blive kategoriseret der fremover.</string>
+    <string name="recategorise_bottom_sheet_button">Forstået</string>
 </resources>

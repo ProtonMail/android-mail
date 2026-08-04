@@ -26,7 +26,10 @@
   <string name="category_title_transactions">결제 관련</string>
   <string name="category_spotlight_unseen_title">%1$s의 새로운 메시지</string>
   <string name="category_spotlight_unseen_description">마지막 확인 이후로 새로운 메시지가 카테고리에 있을 때 파란 점이 나타납니다.</string>
-  <string name="category_spotlight_personalise_title">카테고리 개인화</string>
-  <string name="category_spotlight_personalise_description">\"다음으로 이동:\"을 사용하여 이메일을 다른 카테고리로 이동할 수 있습니다. 유사한 아메일이 해당 카테고리로 분류됩니다.</string>
+    <string name="category_spotlight_personalise_title">카테고리 세분화</string>
+    <string name="category_spotlight_personalise_description">“이동”을 사용하여 이메일을 다른 카테고리로 이동해 보세요. 그러면 유사한 이메일이 그곳으로 자동 분류됩니다</string>
   <string name="category_spotlight_close_content_description">닫기</string>
+    <string name="recategorise_bottom_sheet_title">이메일 재분류</string>
+    <string name="recategorise_bottom_sheet_description">이메일을 다른 카테고리로 이동하면 추후 유사한 메시지가 해당 카테고리로 분류됩니다.</string>
+    <string name="recategorise_bottom_sheet_button">확인</string>
 </resources>

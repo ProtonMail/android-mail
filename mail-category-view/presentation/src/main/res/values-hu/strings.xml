@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Tranzakciók</string>
   <string name="category_spotlight_unseen_title">Új üzenetek itt: %1$s</string>
   <string name="category_spotlight_unseen_description">Kék pont jelzi, ha egy kategóriában új üzenetek érkeztek az utolsó megtekintése óta.</string>
-  <string name="category_spotlight_personalise_title">Kategóriák testreszabása</string>
-  <string name="category_spotlight_personalise_description">Helyezzen át egy e-mailt egy másik kategóriába az „Áthelyezés” funkcióval. A hasonló e-mailek mostantól automatikusan oda lesznek rendezve.</string>
+    <string name="category_spotlight_personalise_title">Kategóriák finomítása</string>
+    <string name="category_spotlight_personalise_description">Helyezzen át egy e-mailt egy másik kategóriába az „Áthelyezés” használatával. A hasonló e-mailek ezt követően automatikusan oda kerülnek</string>
   <string name="category_spotlight_close_content_description">Bezárás</string>
+    <string name="recategorise_bottom_sheet_title">E-mail újrakategorizálása</string>
+    <string name="recategorise_bottom_sheet_description">Ha egy e-mailt áthelyez egy másik kategóriába, a jövőben a hasonló üzenetek is oda kerülnek.</string>
+    <string name="recategorise_bottom_sheet_button">Értem</string>
 </resources>

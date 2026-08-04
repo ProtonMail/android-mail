@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Transações</string>
   <string name="category_spotlight_unseen_title">Novas mensagens em %1$s</string>
   <string name="category_spotlight_unseen_description">Um ponto azul é apresentado quando uma categoria tiver novas mensagens desde a última vez que a consultou.</string>
-  <string name="category_spotlight_personalise_title">Personalize as suas categorias</string>
-  <string name="category_spotlight_personalise_description">Mova um e-mail para outra categoria utilizando \"Mover para\". E-mails semelhantes serão organizados de forma automática a partir de agora nessa categoria.</string>
+    <string name="category_spotlight_personalise_title">Refine as suas categorias</string>
+    <string name="category_spotlight_personalise_description">Mova um e-mail para outra categoria usando “Mover para”. Os e-mails semelhantes serão depois organizados aí automaticamente</string>
   <string name="category_spotlight_close_content_description">Fechar</string>
+    <string name="recategorise_bottom_sheet_title">Recategorizar e-mail</string>
+    <string name="recategorise_bottom_sheet_description">Quando move um e-mail para outra categoria, as mensagens semelhantes serão categorizadas aí no futuro.</string>
+    <string name="recategorise_bottom_sheet_button">Entendido</string>
 </resources>

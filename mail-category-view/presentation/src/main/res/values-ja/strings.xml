@@ -26,7 +26,10 @@
   <string name="category_title_transactions">取引</string>
   <string name="category_spotlight_unseen_title">%1$s内の新規メッセージ</string>
   <string name="category_spotlight_unseen_description">カテゴリー内に新規メッセージがある場合、青色のドットが表示されます。</string>
-  <string name="category_spotlight_personalise_title">カテゴリをカスタマイズ</string>
-  <string name="category_spotlight_personalise_description">「移動」機能を使ってメールを別のカテゴリに移動します。今後は同様のメールが自動的にそのカテゴリに分類されるようになります。</string>
+    <string name="category_spotlight_personalise_title">カテゴリを調整する</string>
+    <string name="category_spotlight_personalise_description">「移動先」を使用してメールを別のカテゴリに移動します。以降、同様のメールは自動的にそのカテゴリに分類されます</string>
   <string name="category_spotlight_close_content_description">閉じる</string>
+    <string name="recategorise_bottom_sheet_title">メールのカテゴリを変更</string>
+    <string name="recategorise_bottom_sheet_description">メールを別のカテゴリーに移動すると、今後は類似のメッセージがそちらのカテゴリーに分類されます。</string>
+    <string name="recategorise_bottom_sheet_button">了解しました</string>
 </resources>

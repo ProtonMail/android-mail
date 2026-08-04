@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Hesap işlemleri</string>
   <string name="category_spotlight_unseen_title">%1$s içindeki yeni iletiler</string>
   <string name="category_spotlight_unseen_description">Son bakmanızdan bu yana yeni iletileri olan kategorilerde mavi bir nokta görüntülenir.</string>
-  <string name="category_spotlight_personalise_title">Kategorilerinizi kişiselleştirin</string>
-  <string name="category_spotlight_personalise_description">“Şuraya taşı” seçeneğini kullanarak bir e-postayı başka bir kategoriye taşıyın. Bundan sonra benzer e-postalar otomatik olarak oraya taşınır.</string>
+    <string name="category_spotlight_personalise_title">Kategorilerinizi düzenleyin</string>
+    <string name="category_spotlight_personalise_description">“Şuraya taşı” seçeneğini kullanarak bir e-postayı başka bir kategoriye taşıyın. Benzer e-postalar otomatik olarak oraya taşınır</string>
   <string name="category_spotlight_close_content_description">Kapat</string>
+    <string name="recategorise_bottom_sheet_title">E-postaları yeniden sınıfla</string>
+    <string name="recategorise_bottom_sheet_description">Bir e-postayı başka bir kategoriye taşıdığınızda, gelecekte benzer iletiler orada sınıflandırılır.</string>
+    <string name="recategorise_bottom_sheet_button">Anladım</string>
 </resources>

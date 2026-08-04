@@ -26,7 +26,10 @@
   <string name="category_title_transactions">Трансакцыі</string>
   <string name="category_spotlight_unseen_title">Новыя паведамленні ў %1$s</string>
   <string name="category_spotlight_unseen_description">Блакітная кропка паказвае на тое, што ў катэгорыі прысутнічаюць новыя паведамленні з моманту вашай апошняй праверкі.</string>
-  <string name="category_spotlight_personalise_title">Персаналізуйце свае катэгорыі</string>
-  <string name="category_spotlight_personalise_description">Перамясціце ліст у іншую катэгорыю з дапамогай каманды \"Перамясціць у\". Аналагічныя лісты з гэтага моманту будуць сартавацца там аўтаматычна.</string>
+    <string name="category_spotlight_personalise_title">Удасканальце свае катэгорыі</string>
+    <string name="category_spotlight_personalise_description">Перамясціце ліст у іншую катэгорыю з дапамогай каманды \"Перамясціць у\". Аналагічныя лісты потым будуць сартавацца там аўтаматычна.</string>
   <string name="category_spotlight_close_content_description">Закрыць</string>
+    <string name="recategorise_bottom_sheet_title">Паўторна класіфікаваць лісты</string>
+    <string name="recategorise_bottom_sheet_description">Калі вы перамесціце ліст у іншую катэгорыю, падобныя паведамленні ў будучыні будуць класіфікавацца туды.</string>
+    <string name="recategorise_bottom_sheet_button">Зразумела</string>
 </resources>
