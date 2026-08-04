@@ -25,6 +25,8 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
 import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
@@ -33,6 +35,7 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -42,6 +45,8 @@ import uniffi.mail_uniffi.SyncEventStream
 import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
+import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 import kotlin.test.assertEquals
 
 internal class ContentSearchRepositoryImplTest {
@@ -59,11 +64,34 @@ internal class ContentSearchRepositoryImplTest {
         every { this@mockk(wrapper) } returns syncServiceWrapper
     }
 
+    private val mailSession = mockk<MailSessionWrapper>()
+    private val mailSessionRepository = mockk<MailSessionRepository> {
+        every { isMailSessionInitialised() } returns true
+        every { getMailSession() } returns mailSession
+    }
+
     private val repository = ContentSearchRepositoryImpl(
         executeWithUserSession = executeWithUserSession,
+        mailSessionRepository = mailSessionRepository,
         createRustSyncService = createRustSyncService,
         ioDispatcher = dispatcher
     )
+
+    @Test
+    fun `isFeatureEnabled reflects what the sdk reports`() = runTest(dispatcher) {
+        every { mailSession.isContentSearchFFEnabled() } returns true
+
+        assertTrue(repository.isFeatureEnabled())
+    }
+
+    @Test
+    fun `isFeatureEnabled is false before the mail session exists`() = runTest(dispatcher) {
+        every { mailSessionRepository.isMailSessionInitialised() } returns false
+
+        assertFalse(repository.isFeatureEnabled())
+
+        verify(exactly = 0) { mailSessionRepository.getMailSession() }
+    }
 
     @Test
     fun `clearLocalData stops the sync service before resetting it`() = runTest(dispatcher) {

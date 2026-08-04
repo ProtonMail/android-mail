@@ -35,6 +35,7 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
@@ -57,8 +58,6 @@ import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -231,7 +230,7 @@ class MailboxViewModel @Inject constructor(
     private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
     private val categoryViewEnabled: IsCategoryViewEnabled,
-    @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
@@ -261,7 +260,7 @@ class MailboxViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
-        .mapLatest { contentSearchSettingsEnabled.get() }
+        .mapLatest { isContentSearchFeatureEnabled() }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
@@ -729,7 +728,7 @@ class MailboxViewModel @Inject constructor(
                 observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
             }
             // Highlight matches in the opened item only when content search is on.
-            val searchQuery = if (isInSearchMode && contentSearchSettingsEnabled.get()) {
+            val searchQuery = if (isInSearchMode && isContentSearchFeatureEnabled()) {
                 (state.value.mailboxListState as? MailboxListState.Data)?.searchState?.searchQuery.orEmpty()
             } else {
                 ""

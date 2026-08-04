@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":mail-attachments:presentation"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-content-search:domain"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))

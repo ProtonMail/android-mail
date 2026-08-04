@@ -73,6 +73,7 @@ dependencies {
 
     implementation(libs.proton.core.mailSettings.domain)
 
+    implementation(project(":mail-content-search:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-featureflags:domain"))

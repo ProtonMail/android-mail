@@ -52,6 +52,7 @@ import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
@@ -60,7 +61,6 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -417,8 +417,8 @@ internal class MailboxViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns false
     }
 
-    private val isContentSearchEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns false
+    private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
+        coEvery { this@mockk.invoke() } returns false
     }
 
     val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
@@ -495,7 +495,7 @@ internal class MailboxViewModelTest {
             setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
             categoryViewEnabled = isCategoryViewEnabled,
-            contentSearchSettingsEnabled = isContentSearchEnabled,
+            isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus,
             observeCategorySpotlightState = observeCategorySpotlightState,
             markCategorySpotlightSeen = markCategorySpotlightSeen
@@ -942,7 +942,7 @@ internal class MailboxViewModelTest {
         val currentUserIdFlow = MutableStateFlow(userId)
         every { observePrimaryUserId() } returns currentUserIdFlow
         // The flag resolves to different values for the two users
-        coEvery { isContentSearchEnabled.get() } returns false andThen true
+        coEvery { isContentSearchFeatureEnabled() } returns false andThen true
 
         mailboxViewModel.isContentSearchEnabled.test {
             // Then

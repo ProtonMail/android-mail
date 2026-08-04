@@ -26,6 +26,15 @@ import me.proton.core.domain.entity.UserId
 
 interface ContentSearchRepository {
 
+    /**
+     * Whether the feature is available at all, as answered by the Rust SDK.
+     *
+     * Not the plain feature flag: the SDK combines it with any additional eligibility rule, and applies
+     * device-local debug overrides itself, so this must not be read through the feature flag resolver.
+     * False before the mail session exists, since nothing can be resolved that early.
+     */
+    suspend fun isFeatureEnabled(): Boolean
+
     suspend fun clearLocalData(userId: UserId): Either<DataError, Unit>
 
     fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState>

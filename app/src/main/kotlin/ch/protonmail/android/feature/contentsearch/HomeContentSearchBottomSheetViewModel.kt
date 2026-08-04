@@ -25,8 +25,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.MarkContentSearchB
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ShouldShowContentSearchBottomSheet
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -43,7 +42,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeContentSearchBottomSheetViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
-    @IsContentSearchEnabled private val isContentSearchEnabled: FeatureFlag<Boolean>,
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val shouldShowContentSearchBottomSheet: ShouldShowContentSearchBottomSheet,
     private val hasShownContentSearchBottomSheet: HasShownContentSearchBottomSheet,
@@ -54,7 +53,7 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
         .filterNotNull()
         .flatMapLatest { userId ->
             flow {
-                if (!isContentSearchEnabled.get() || hasShownContentSearchBottomSheet()) {
+                if (!isContentSearchFeatureEnabled() || hasShownContentSearchBottomSheet()) {
                     emit(ContentSearchBottomSheetState.Hide)
                     return@flow
                 }

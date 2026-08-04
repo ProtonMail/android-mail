@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncServic
 import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
@@ -42,6 +43,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,9 +51,19 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
+    private val mailSessionRepository: MailSessionRepository,
     private val createRustSyncService: CreateRustSyncService,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ContentSearchRepository {
+
+    // Resolved from the app session rather than a user session, so it answers before login too.
+    override suspend fun isFeatureEnabled(): Boolean = withContext(ioDispatcher) {
+        if (!mailSessionRepository.isMailSessionInitialised()) {
+            Timber.d("content-search: availability requested before the mail session was created")
+            return@withContext false
+        }
+        mailSessionRepository.getMailSession().isContentSearchFFEnabled()
+    }
 
     override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper ->

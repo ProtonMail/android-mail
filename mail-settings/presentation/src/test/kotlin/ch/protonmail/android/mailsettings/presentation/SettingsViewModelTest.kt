@@ -25,7 +25,7 @@ import ch.protonmail.android.design.compose.model.VisibilityUiModel
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountAvatarInfo
 import ch.protonmail.android.mailsession.domain.model.AccountState
@@ -81,8 +81,8 @@ class SettingsViewModelTest {
     private val appInformation = AppInformation(appVersionName = "6.0.0-alpha")
     private val accountInformationMapper = AccountInformationMapper(ColorMapper())
 
-    private val contentSearchEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { this@mockk.get() } returns true
+    private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
+        coEvery { this@mockk.invoke() } returns true
     }
 
     private lateinit var viewModel: SettingsViewModel
@@ -95,7 +95,7 @@ class SettingsViewModelTest {
             observePrimaryAccount = observePrimaryAccount,
             observeStorageQuotaUseCase = observeStorageQuotaUseCase,
             accountInformationMapper = accountInformationMapper,
-            contentSearchEnabled = contentSearchEnabled
+            isContentSearchFeatureEnabled = isContentSearchFeatureEnabled
         )
     }
 

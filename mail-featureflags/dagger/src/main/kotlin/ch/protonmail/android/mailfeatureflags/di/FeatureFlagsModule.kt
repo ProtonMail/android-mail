@@ -28,7 +28,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
@@ -283,12 +282,6 @@ object FeatureFlagsModule {
     @Singleton
     fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
-
-    @Provides
-    @Singleton
-    @IsContentSearchEnabled
-    fun provideContentSearchEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = ContentSearchEnabled.key, false)
 
     @Provides
     @IntoSet
