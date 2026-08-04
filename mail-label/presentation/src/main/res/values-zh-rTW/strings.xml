@@ -40,5 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">套用標籤失敗。</string>
   <string name="bottom_sheet_move_to_action_error">移動操作失敗。</string>
   <string name="bottom_sheet_move_to_category_no_change">選取的郵件將不會有任何變更</string>
-    <string name="move_to_category_action_message">已移至 %s。未來類似的訊息也將分類至此。</string>
+    <string name="move_to_category_action_message">已移至 %s。類似的訊息日後將歸類至此。</string>
 </resources>

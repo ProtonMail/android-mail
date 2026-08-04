@@ -40,5 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">Labels toepassen mislukt.</string>
   <string name="bottom_sheet_move_to_action_error">Verplaatsen is mislukt.</string>
   <string name="bottom_sheet_move_to_category_no_change">Er wordt geen wijziging aangebracht aan de geselecteerde e-mails</string>
-    <string name="move_to_category_action_message">Verplaatst naar %s. Vergelijkbare berichten worden in de toekomst hier gecategoriseerd.</string>
+    <string name="move_to_category_action_message">Verplaatst naar %s. Soortgelijke berichten worden daar in de toekomst gecategoriseerd.</string>
 </resources>
