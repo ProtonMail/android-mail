@@ -30,15 +30,15 @@
   <string name="spotlight_screen_got_it">Зрозуміло</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Що нового в Proton Mail</string>
-  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Дізнайтеся, що нового\nу Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Покращення інтерфейсу</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Плавне гортання, оновлений макет і багато іншого.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Фільтр непрочитаного</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Тепер розташовано внизу для зручнішого доступу.</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Новий вигляд і розташування для зручнішого доступу.</string>
   <string name="spotlight_screen_category_view_categories_title">Категорії пошти</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Автоматично сортуйте пошту за корисними категоріями.</string>
-  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Автоматичне сортування вхідної пошти.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">До непрочитаних легше дістатися</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Фільтр непрочитаних листів тепер розташовано внизу вашої папки «Вхідні», завдяки чому легше дістатися до нього та перемикатися між усіма листами й непрочитаними повідомленнями.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Будьте в курсі нових та\nнепрочитаних листів</string>
@@ -49,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Привіт, категорії.\nПрощавайте, відволікання.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Досить відволікатися на розсилки, оновлення та нетермінові листи. Завдяки новим категоріям у вашу основну теку «Вхідні» потраплятимуть лише важливі повідомлення.</string>
   <string name="spotlight_screen_category_view_button_continue">Продовжити</string>
-  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
+  <string name="spotlight_screen_category_view_button_try">Так, упорядкувати</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Залишити вхідні як раніше</string>
 </resources>

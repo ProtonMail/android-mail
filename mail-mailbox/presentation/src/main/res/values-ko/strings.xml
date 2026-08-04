@@ -91,6 +91,8 @@
   <string name="mailbox_talkback_readout_starred">별표 삭제</string>
   <string name="mailbox_talkback_readout_not_starred">별표</string>
   <!-- Attachment download -->
+  <string name="mailbox_attachment_download_error">첨부 파일을 열 수 없습니다. 나중에 다시 시도하세요.</string>
+  <string name="mailbox_attachment_download_in_progress">다운로드를 시작하기 전에 현재 다운로드를 완료해야 합니다.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">메시지 삭제 실패</string>

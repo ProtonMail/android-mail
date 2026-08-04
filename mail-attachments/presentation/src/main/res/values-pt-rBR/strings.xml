@@ -21,6 +21,4 @@
   <string name="file_saved">Arquivo salvo</string>
   <string name="file_saved_fallback">Arquivo salvo na pasta Downloads</string>
   <string name="error_saving_file">Ocorreu um erro ao salvar o arquivo</string>
-  <string name="attachment_download_error">Não foi possível abir o anexo. Tente novamente.</string>
-  <string name="attachment_download_in_progress">O download atual deve ser concluído antes de iniciar um novo.</string>
 </resources>

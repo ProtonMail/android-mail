@@ -100,6 +100,8 @@
   <string name="mailbox_talkback_readout_starred">Yıldızı kaldır</string>
   <string name="mailbox_talkback_readout_not_starred">Yıldız koy</string>
   <!-- Attachment download -->
+  <string name="mailbox_attachment_download_error">Ek dosya açılamadı. Lütfen yeniden deneyin.</string>
+  <string name="mailbox_attachment_download_in_progress">Yeni bir indirme başlatmadan önce geçerli indirme tamamlanmalıdır.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">İleti silinemedi</string>

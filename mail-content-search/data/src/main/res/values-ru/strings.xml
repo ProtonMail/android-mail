@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Advanced Search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for Advanced Search.</string>
-  <string name="content_search_notification_title">Preparing Advanced Search</string>
+  <string name="content_search_notification_channel_name">Индексирование для расширенного поиска</string>
+  <string name="content_search_notification_channel_description">Показывает ход индексирования сообщений для расширенного поиска.</string>
+  <string name="content_search_notification_title">Подготовка расширенного поиска</string>
   <string name="content_search_notification_progress">Выполнено %1$.2f%%</string>
   <string name="content_search_notification_preparing">Подготовка…</string>
   <string name="content_search_notification_cancel">Отмена</string>

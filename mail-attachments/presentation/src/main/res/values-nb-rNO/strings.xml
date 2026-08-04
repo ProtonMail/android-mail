@@ -21,6 +21,4 @@
   <string name="file_saved">Fil lagret</string>
   <string name="file_saved_fallback">Fil lagret i nedlastingsmappen</string>
   <string name="error_saving_file">Det oppstod en feil under lagring av filen</string>
-  <string name="attachment_download_error">Kan ikke åpne vedlegget. Prøv igjen.</string>
-  <string name="attachment_download_in_progress">Gjeldende nedlasting må fullføres før en ny kan startes.</string>
 </resources>

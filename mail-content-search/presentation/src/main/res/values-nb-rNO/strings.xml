@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Advanced Search</string>
-  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
+  <string name="mail_settings_content_search_header_title">Avansert søk</string>
+  <string name="mail_settings_content_search_description">For at du skal kunne søke etter meldingsinnhold, lastes meldinger ned på denne enheten.</string>
   <string name="mail_settings_content_search_learn_more">Lær mer..</string>
-  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
+  <string name="mail_settings_content_search_toggle_title">Avansert søk</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillat nedlasting via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Nedlastingen fortsetter via mobildata hvis Wi-Fi-forbindelsen mistes.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
+  <string name="mail_settings_content_search_syncing_status">Forbereder %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder…</string>
   <string name="mail_settings_content_search_clear_data_button">Tøm lokale søkedata</string>
   <string name="mail_settings_content_search_clear_data_description">Hvis du tømmer lokale søkedata, deaktiveres søk etter meldingsinnhold. Du kan aktivere det igjen når som helst.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
-  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">settings</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Tøm lokale søkedata</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Søkedataene på denne enheten vil bli fjernet. Du må laste dem ned på nytt for å bruke avansert søk.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Tøm data</string>
+  <string name="content_search_bottomsheet_title">Forbereder avansert søk…</string>
+  <string name="content_search_bottomsheet_description">E-poster lastes ned over Wi-Fi eller mobildata. Du kan bytte til kun Wi-Fi i %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">innstillinger</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

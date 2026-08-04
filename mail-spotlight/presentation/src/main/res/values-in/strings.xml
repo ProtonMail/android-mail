@@ -30,15 +30,15 @@
   <string name="spotlight_screen_got_it">Mengerti</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Yang baru di Proton Mail</string>
-  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Temukan hal baru\ndi Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Peningkatan UI</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Gulir yang mulus, tata letak yang diperbarui, dan banyak lagi.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filter belum dibaca</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Kini berada di bagian bawah untuk akses yang lebih mudah.</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Tampilan dan lokasi baru untuk akses yang lebih mudah.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategori email</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Urutkan email secara otomatis ke dalam kategori yang berguna.</string>
-  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Penyortiran otomatis surat masuk.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Bagian belum dibaca lebih mudah dijangkau</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter belum dibaca kini berada di bagian bawah kotak masuk, membuatnya lebih mudah dijangkau dan dialihkan antara semua email dan pesan yang belum dibaca.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Pantau terus email baru dan\nbelum dibaca</string>
@@ -49,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Selamat datang kategori.\nSelamat tinggal gangguan.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Jangan lagi terganggu oleh buletin, pembaruan, dan email yang tidak mendesak. Dengan kategori email baru, hanya pesan penting yang masuk ke kotak masuk utama.</string>
   <string name="spotlight_screen_category_view_button_continue">Lanjutkan</string>
-  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
+  <string name="spotlight_screen_category_view_button_try">Ya, atur</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Pertahankan kotak masuk seperti sedia kala</string>
 </resources>

@@ -118,6 +118,8 @@
   <string name="mailbox_talkback_readout_starred">Odstrániť hviezdičku</string>
   <string name="mailbox_talkback_readout_not_starred">Označiť hviezdičkou</string>
   <!-- Attachment download -->
+  <string name="mailbox_attachment_download_error">Nie je možné otvoriť prílohu. Skúste to znova, prosím.</string>
+  <string name="mailbox_attachment_download_in_progress">Prebiehajúce sťahovanie musí byť dokončené pred začatím nového.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nepodarilo sa vymazať správu</string>

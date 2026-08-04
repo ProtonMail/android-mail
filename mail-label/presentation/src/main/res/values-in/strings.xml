@@ -40,5 +40,5 @@
   <string name="bottom_sheet_label_as_error_apply">Label gagal diterapkan.</string>
   <string name="bottom_sheet_move_to_action_error">Operasi pemindahan gagal.</string>
   <string name="bottom_sheet_move_to_category_no_change">Tidak ada perubahan yang akan diterapkan pada email yang dipilih</string>
-  <string name="move_to_category_action_message">Moved to %s. Similar messages will be categorized there in the future.</string>
+  <string name="move_to_category_action_message">Dipindahkan ke %s. Pesan serupa akan dikategorikan di sana di masa mendatang.</string>
 </resources>

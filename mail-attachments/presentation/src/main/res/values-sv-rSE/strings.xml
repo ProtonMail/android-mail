@@ -21,6 +21,4 @@
   <string name="file_saved">Fil sparad</string>
   <string name="file_saved_fallback">Fil sparad i nedladdningsmapp</string>
   <string name="error_saving_file">Ett fel uppstod när filen sparades</string>
-  <string name="attachment_download_error">Kan inte öppna bilagan. Försök igen.</string>
-  <string name="attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
 </resources>

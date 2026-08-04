@@ -30,15 +30,15 @@
   <string name="spotlight_screen_got_it">Rozumiem</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Co nowego w Proton Mail</string>
-  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Odkryj, co nowego\nw Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Ulepszenia interfejsu użytkownika</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Płynne przewijanie, odświeżony widok i nie tylko.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtr nieprzeczytanych</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Teraz znajduje się na dole, aby ułatwić dostęp.</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nowy wygląd i lokalizacja ułatwiające dostęp.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategorie wiadomości</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Automatycznie sortuj wiadomości na przydatne kategorie.</string>
-  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatyczne sortowanie poczty przychodzącej.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Łatwiejszy dostęp do nieprzeczytanych</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filtr nieprzeczytanych znajduje się teraz na dole Twojej skrzynki odbiorczej, co ułatwia dostęp i przełączanie się między wszystkimi wiadomościami a nieprzeczytanymi wiadomościami.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Bądź na bieżąco z nowymi i\nnieprzeczytanymi wiadomościami</string>
@@ -49,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Witajcie kategorie.\nŻegnajcie rozpraszacze.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Przestań rozpraszać się newsletterami, powiadomieniami i mniej pilnymi wiadomościami. Dzięki nowym kategoriom wiadomości tylko ważne wiadomości trafią do Twojej głównej skrzynki odbiorczej.</string>
   <string name="spotlight_screen_category_view_button_continue">Kontynuuj</string>
-  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
+  <string name="spotlight_screen_category_view_button_try">Tak, uporządkuj</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Pozostaw skrzynkę odbiorczą bez zmian</string>
 </resources>

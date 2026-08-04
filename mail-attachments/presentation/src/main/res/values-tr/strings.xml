@@ -21,6 +21,4 @@
   <string name="file_saved">Dosya kaydedildi</string>
   <string name="file_saved_fallback">Dosya İndirilenler klasörüne kaydedildi</string>
   <string name="error_saving_file">Dosya kaydedilirken bir sorun çıktı</string>
-  <string name="attachment_download_error">Ek dosya açılamadı. Lütfen yeniden deneyin.</string>
-  <string name="attachment_download_in_progress">Yeni bir indirme başlatmadan önce geçerli indirme tamamlanmalıdır.</string>
 </resources>

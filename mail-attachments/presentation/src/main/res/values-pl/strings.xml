@@ -21,6 +21,4 @@
   <string name="file_saved">Plik został zapisany</string>
   <string name="file_saved_fallback">Plik został zapisany w folderze Pobrane</string>
   <string name="error_saving_file">Wystąpił błąd podczas zapisywania pliku</string>
-  <string name="attachment_download_error">Nie udało się otworzyć załącznika. Spróbuj ponownie.</string>
-  <string name="attachment_download_in_progress">Aktualne pobieranie musi się zakończyć przed rozpoczęciem nowego.</string>
 </resources>

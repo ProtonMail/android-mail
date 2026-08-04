@@ -21,6 +21,4 @@
   <string name="file_saved">S\'ha desat el fitxer</string>
   <string name="file_saved_fallback">El fitxer s\'ha desat a la carpeta de descàrregues</string>
   <string name="error_saving_file">S\'ha produït un error en desar el fitxer</string>
-  <string name="attachment_download_error">No s\'ha pogut obrir l\'adjunt. Torneu-ho a provar.</string>
-  <string name="attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
 </resources>

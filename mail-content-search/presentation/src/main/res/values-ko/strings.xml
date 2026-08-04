@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Advanced Search</string>
-  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
+  <string name="mail_settings_content_search_header_title">향상된 검색</string>
+  <string name="mail_settings_content_search_description">메시지 콘텐츠 검색을 위해, 메시지가 이 기기에 다운로드됩니다.</string>
   <string name="mail_settings_content_search_learn_more">자세히 알아보기..</string>
-  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
+  <string name="mail_settings_content_search_toggle_title">향상된 검색</string>
   <string name="mail_settings_content_search_mobile_data_title">모바일 데이터로 다운로드 허용</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi 신호 유실시 모바일 데이터로 계속 다운로드합니다.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
+  <string name="mail_settings_content_search_syncing_status">준비 중 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">준비 중…</string>
   <string name="mail_settings_content_search_clear_data_button">로컬 검색 데이터 지우기</string>
   <string name="mail_settings_content_search_clear_data_description">로컬 검색 데이터를 지우면 메시지 콘텐츠 검색도 함께 비활성화됩니다. 언제든지 다시 재활성화할 수 있습니다.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
-  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">settings</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">로컬 검색 데이터 비우기</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">이 기기의 검색 데이터가 삭제됩니다. 향상된 검색을 사용하려면 다시 다운로드해야 합니다.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">데이터 비우기</string>
+  <string name="content_search_bottomsheet_title">향상된 검색 준비 중…</string>
+  <string name="content_search_bottomsheet_description">이메일이 Wi-Fi 또는 모바일 데이터로 다운로드되고 있습니다. %1$s에서 Wi-Fi만으로 변경할 수 있습니다.</string>
+  <string name="content_search_bottomsheet_settings_link">설정</string>
+  <string name="content_search_bottomsheet_ok">확인</string>
 </resources>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Advanced Search</string>
-  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
+  <string name="mail_settings_content_search_header_title">高度な検索</string>
+  <string name="mail_settings_content_search_description">メッセージ内容で検索できるようにするため、メッセージはこのデバイスにダウンロードされます。</string>
   <string name="mail_settings_content_search_learn_more">より詳しく。。</string>
-  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
+  <string name="mail_settings_content_search_toggle_title">高度な検索</string>
   <string name="mail_settings_content_search_mobile_data_title">モバイルデータ通信経由のダウンロードを許可</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fiが切断された場合、モバイルデータ通信経由でダウンロードを継続します。</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
+  <string name="mail_settings_content_search_syncing_status">準備中 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_clear_data_button">ローカル検索データを消去</string>
   <string name="mail_settings_content_search_clear_data_description">ローカル検索データを消去すると、メッセージコンテンツ検索が無効化されます。この機能はいつでも再度有効にすることができます。</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
-  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">settings</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">ローカルの検索データをクリア</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">このデバイスの検索データは削除されます。高度な検索を使用するには、再度ダウンロードする必要があります。</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">データをクリア</string>
+  <string name="content_search_bottomsheet_title">高度な検索を準備中…</string>
+  <string name="content_search_bottomsheet_description">メールはWi-Fiまたはモバイルデータ通信経由でダウンロードされています。%1$sでWi-Fi接続のみに切り替えることができます。</string>
+  <string name="content_search_bottomsheet_settings_link">設定</string>
+  <string name="content_search_bottomsheet_ok">OK</string>
 </resources>

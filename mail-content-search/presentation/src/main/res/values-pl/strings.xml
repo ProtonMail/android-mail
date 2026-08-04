@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Advanced Search</string>
-  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
+  <string name="mail_settings_content_search_header_title">Zaawansowane wyszukiwanie</string>
+  <string name="mail_settings_content_search_description">Aby umożliwić Ci wyszukiwanie po treści wiadomości, zostaną one pobrane na to urządzenie.</string>
   <string name="mail_settings_content_search_learn_more">Dowiedz się więcej...</string>
-  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
+  <string name="mail_settings_content_search_toggle_title">Zaawansowane wyszukiwanie</string>
   <string name="mail_settings_content_search_mobile_data_title">Zezwalaj na pobieranie przez dane mobilne</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pobieranie będzie kontynuowane przy użyciu danych mobilnych w przypadku utraty połączenia Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
+  <string name="mail_settings_content_search_syncing_status">Przygotowywanie %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Przygotowywanie…</string>
   <string name="mail_settings_content_search_clear_data_button">Wyczyść lokalne dane wyszukiwania</string>
   <string name="mail_settings_content_search_clear_data_description">Wyczyszczenie lokalnych danych wyszukiwania wyłączy wyszukiwanie zawartości wiadomości. Możesz je włączyć ponownie w dowolnym momencie.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
-  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">settings</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Wyczyść lokalne dane wyszukiwania</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Dane wyszukiwania na tym urządzeniu zostaną usunięte. Musisz pobrać je ponownie, aby korzystać z zaawansowanego wyszukiwania.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Wyczyść dane</string>
+  <string name="content_search_bottomsheet_title">Przygotowywanie zaawansowanego wyszukiwania…</string>
+  <string name="content_search_bottomsheet_description">Wiadomości są pobierane przez Wi-Fi lub komórkową transmisję danych. Możesz przełączyć się na pobieranie tylko przez Wi-Fi w %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">ustawieniach</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
 </resources>

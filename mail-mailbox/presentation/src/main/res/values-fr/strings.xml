@@ -100,6 +100,8 @@
   <string name="mailbox_talkback_readout_starred">Retirer des favoris</string>
   <string name="mailbox_talkback_readout_not_starred">Ajouter aux Favoris</string>
   <!-- Attachment download -->
+  <string name="mailbox_attachment_download_error">La pièce jointe n\'a pas pu être ouverte. Nous vous invitons à réessayer.</string>
+  <string name="mailbox_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">La suppression du message n\'a pas abouti.</string>

@@ -49,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Olá, categorias.\nAdeus, distrações.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Pare de se distrair com boletins informativos, atualizações e e-mails não urgentes. Com as novas categorias de e-mail, apenas mensagens importantes chegam à sua caixa de entrada principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continuar</string>
-  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
+  <string name="spotlight_screen_category_view_button_try">Sim, organize</string>
   <string name="spotlight_screen_category_view_button_dismiss">Manter a caixa de entrada como antes</string>
 </resources>

@@ -21,6 +21,4 @@
   <string name="file_saved">檔案已儲存</string>
   <string name="file_saved_fallback">檔案已儲存至「下載」資料夾</string>
   <string name="error_saving_file">儲存檔案時發生錯誤</string>
-  <string name="attachment_download_error">無法開啟附件。請再試一次。</string>
-  <string name="attachment_download_in_progress">目前的下載必須先完成，才能開始新的下載。</string>
 </resources>

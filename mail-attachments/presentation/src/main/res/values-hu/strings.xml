@@ -21,6 +21,4 @@
   <string name="file_saved">Fájl mentve</string>
   <string name="file_saved_fallback">Fájl elmentve a Letöltések mappába</string>
   <string name="error_saving_file">Hiba történt a fájl mentése közben</string>
-  <string name="attachment_download_error">Nem sikerült megnyitni a mellékletet. Próbálja meg újra.</string>
-  <string name="attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie egy új indítása előtt.</string>
 </resources>

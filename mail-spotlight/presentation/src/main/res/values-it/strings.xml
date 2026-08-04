@@ -30,15 +30,15 @@
   <string name="spotlight_screen_got_it">Ho capito</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Cosa c\'è di nuovo in Proton Mail</string>
-  <string name="spotlight_screen_category_view_title_b2b">Discover what\’s new\nin Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Scopri le novità\nin Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Miglioramenti dell\'interfaccia utente</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Scorrimento fluido, layout rinnovato e altro ancora.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtro non letto</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Ora posizionato in basso per un accesso più semplice.</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">New look and location for easier access.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nuovo look e nuova posizione per un accesso più agevole.</string>
   <string name="spotlight_screen_category_view_categories_title">Categorie email</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Ordina automaticamente la posta in comode categorie.</string>
-  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatic sorting of incoming mail.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Smistamento automatico della posta in arrivo.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">I messaggi non letti sono più facili da raggiungere</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Il filtro non letti è ora in fondo alla tua posta in arrivo, rendendolo più facile da raggiungere per passare da tutte le email ai messaggi non letti.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Tieni sotto controllo le nuove\nemail e quelle non lette</string>
@@ -49,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Ciao categorie.\nAddio distrazioni.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Smetti di farti distrarre da newsletter, aggiornamenti ed email non urgenti. Grazie alle nuove categorie di email, solo i messaggi importanti arriveranno nella tua casella di posta principale.</string>
   <string name="spotlight_screen_category_view_button_continue">Conferma</string>
-  <string name="spotlight_screen_category_view_button_try">Yes, organize it</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Keep inbox as before</string>
+  <string name="spotlight_screen_category_view_button_try">Sì, organizzala</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Mantieni la posta in arrivo come prima</string>
 </resources>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Advanced Search</string>
-  <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
+  <string name="mail_settings_content_search_header_title">Pencarian Lanjutan</string>
+  <string name="mail_settings_content_search_description">Untuk mencari berdasarkan konten pesan, pesan akan diunduh di perangkat ini.</string>
   <string name="mail_settings_content_search_learn_more">Pelajari lebih lanjut..</string>
-  <string name="mail_settings_content_search_toggle_title">Advanced search</string>
+  <string name="mail_settings_content_search_toggle_title">Pencarian lanjutan</string>
   <string name="mail_settings_content_search_mobile_data_title">Izinkan pengunduhan via data seluler</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pengunduhan dilanjutkan melalui data seluler jika Wi-Fi terputus.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
+  <string name="mail_settings_content_search_syncing_status">Menyiapkan %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Menyiapkan…</string>
   <string name="mail_settings_content_search_clear_data_button">Bersihkan data pencarian lokal</string>
   <string name="mail_settings_content_search_clear_data_description">Membersihkan data pencarian lokal akan menonaktifkan pencarian konten pesan. Fitur ini dapat diaktifkan kembali kapan saja.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed.You will need to download it again to use Advanced Search.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-  <string name="content_search_bottomsheet_title">Preparing Advanced Search…</string>
-  <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">settings</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Hapus data pencarian lokal</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Data pencarian di perangkat ini akan dihapus. Perlu mengunduh kembali untuk menggunakan Pencarian Lanjutan.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Hapus data</string>
+  <string name="content_search_bottomsheet_title">Menyiapkan Pencarian Lanjutan…</string>
+  <string name="content_search_bottomsheet_description">Email sedang diunduh melalui Wi-Fi atau data seluler. Dapat beralih ke Wi-Fi saja di %1$s.</string>
+  <string name="content_search_bottomsheet_settings_link">pengaturan</string>
+  <string name="content_search_bottomsheet_ok">Oke</string>
 </resources>

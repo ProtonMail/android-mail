@@ -26,10 +26,10 @@
   <string name="category_title_transactions">Транзакции</string>
   <string name="category_spotlight_unseen_title">Новые сообщения в %1$s</string>
   <string name="category_spotlight_unseen_description">Синяя точка показывает, что в категории появились новые сообщения с момента вашей последней проверки.</string>
-  <string name="category_spotlight_personalise_title">Refine your categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
+  <string name="category_spotlight_personalise_title">Настройте свои категории</string>
+  <string name="category_spotlight_personalise_description">Переместите электронное письмо в другую категорию с помощью «Переместить в». Похожие электронные письма затем будут автоматически сортироваться туда</string>
   <string name="category_spotlight_close_content_description">Закрыть</string>
-  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
+  <string name="recategorise_bottom_sheet_title">Изменить категорию электронного письма</string>
   <string name="recategorise_bottom_sheet_description">Когда вы перемещаете электронное письмо в другую категорию, похожие сообщения в будущем будут распределяться туда же.</string>
-  <string name="recategorise_bottom_sheet_button">Got it</string>
+  <string name="recategorise_bottom_sheet_button">Понятно</string>
 </resources>

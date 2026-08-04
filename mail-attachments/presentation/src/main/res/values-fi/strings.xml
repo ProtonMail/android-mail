@@ -21,6 +21,4 @@
   <string name="file_saved">Tiedosto tallennettu</string>
   <string name="file_saved_fallback">Tiedosto tallennettu Lataukset-kansioon</string>
   <string name="error_saving_file">Virhe tiedostoa tallentaessa</string>
-  <string name="attachment_download_error">Liitteen avaaminen epäonnistui. Yritä uudelleen.</string>
-  <string name="attachment_download_in_progress">Nykyisen latauksen on valmistuttava ennen uuden aloitusta.</string>
 </resources>

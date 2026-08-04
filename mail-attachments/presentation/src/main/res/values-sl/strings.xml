@@ -21,6 +21,4 @@
   <string name="file_saved">Datoteka shranjena</string>
   <string name="file_saved_fallback">Datoteka shranjena v mapo Prenosi.</string>
   <string name="error_saving_file">Prišlo je do napake pri shranjevanju datoteke.</string>
-  <string name="attachment_download_error">Priponke ni bilo mogoče odpreti. Poskusite znova.</string>
-  <string name="attachment_download_in_progress">Pred začetkom novega prenosa se mora dokončati trenutni.</string>
 </resources>
