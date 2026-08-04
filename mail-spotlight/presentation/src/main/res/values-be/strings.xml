@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Зразумела</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Што новага ў Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Даведайцеся, што новага\nў Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Паляпшэнні інтэрфейсу</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Плаўная прагортка, абноўлены дызайн і многае іншае.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Непрачытаны фільтр</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Цяпер размяшчаецца знізу для больш лёгкага доступу.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Новы выгляд і размяшчэнне для больш зручнага доступу.</string>
   <string name="spotlight_screen_category_view_categories_title">Катэгорыі электроннай пошты</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Аўтаматычна сартуе лісты ў карысныя катэгорыі.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Аўтаматычнае сартаванне ўваходнай пошты.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Непрачытаныя лісты цяпер прасцей знайсці</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Фільтр непрачытаных цяпер размяшчаецца знізу вашых уваходных лістоў, што дазваляе больш лёгка атрымліваць доступ і пераключацца паміж усімі лістамі і непрачытанымі паведамленнямі.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Будзьце ў курсе новых і\nнепрачытаных лістоў</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Сустракайце катэгорыі і\nразвітайцеся з адцягваннем увагі.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Перастаньце адцягваць увагу на рассылкі, абнаўленні і нетэрміновыя электронныя лісты. Дзякуючы новым катэгорыям электроннай пошты толькі важныя паведамленні трапляюць у вашу асноўную паштовую скрыню.</string>
   <string name="spotlight_screen_category_view_button_continue">Працягнуць</string>
-  <string name="spotlight_screen_category_view_button_try">Паспрабуйце катэгорыі</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Працягнуць без</string>
+  <string name="spotlight_screen_category_view_button_try">Так, упарадкаваць іх</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Пакінуць папярэдні выгляд паштовай скрыні</string>
 </resources>

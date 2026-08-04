@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Rozumiem</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Čo je nové v Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Zistite, čo je nové\nv Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Vylepšenia používateľského rozhrania</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Plynulé skrolovanie, nový dizajn a ďalšie vylepšenia.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filter neprečítaných správ</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Teraz sa nachádza v spodnej časti, aby bol prístup jednoduchší.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nový vzhľad a nová lokalita pre ľahší prístup.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategórie emailov</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Automatické triedenie emailov do užitočných kategórií.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatické triedenie prichádzajúcej pošty.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">K neprečítanému sa dostanete ľahšie</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filter neprečítaných správ sa teraz nachádza v spodnej časti vašej doručenej pošty, vďaka čomu je ľahšie sa k nemu dostať a prepínať medzi všetkými emailmi a neprečítanými správami.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Majte prehľad o nových a\nneprečítaných emailoch</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Ahoj, kategórie.\nZbohom, rozptyľovanie.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Nenechajte sa už rozptyľovať newslettermi, aktualizáciami a nepodstatnými emailmi. Vďaka novým kategóriám emailov sa do vašej hlavnej doručenej pošty dostanú len dôležité správy.</string>
   <string name="spotlight_screen_category_view_button_continue">Pokračovať</string>
-  <string name="spotlight_screen_category_view_button_try">Vyskúšajte kategórie</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Pokračovať bez kategórií</string>
+  <string name="spotlight_screen_category_view_button_try">Áno, organizovať</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Ponechať doručenú poštu ako predtým</string>
 </resources>

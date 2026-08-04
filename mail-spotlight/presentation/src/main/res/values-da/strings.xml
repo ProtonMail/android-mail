@@ -30,22 +30,25 @@
   <string name="spotlight_screen_got_it">Forstået</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Nyt i Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Se hvad der er nyt\ni Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">UI-forbedringer</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Flydende scrolling, opdateret layout og meget mere.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Ulæst-filter</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Nu placeret i bunden for lettere adgang.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Bedre tilgængelighed med nyt udseende og ny placering.</string>
   <string name="spotlight_screen_category_view_categories_title">E-mail-kategorier</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Sortér automatisk mails i forskellige kategorier.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatisk sortering af indgående mails.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Ulæst er lettere at tilgå</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Ulæst-filteret er nu placeret i bunden af din indbakke, så det er lettere at tilgå og skifte mellem alle e-mails og ulæste beskeder.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Hold dig opdateret på nye og\nulæste e-mails</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Ulæst-filteret er nu mere tydeligt og nemmere at tilgå, så du lettere kan gennemgå og handle på ulæste e-mails.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Din indbakke,\nsorteret automatisk</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Din indbakke,\nautomatisk organiseret</string>
   <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Din indbakke er nu sorteret efter kategorier såsom Primær, Social, Reklamer, og mere, se det er lettere at forblive organiseret og fokusere på de vigtige e-mails.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Designet til at være privat. Få mere at vide</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hej kategorier.\nFarvel forstyrrelser.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Undgå forstyrrelser fra nyhedsbreve, opdateringer, og e-mails der ikke er vigtige. Med de nye e-mail-kategorier er det kun vigtige beskeder der lander i din primære indbakke.</string>
   <string name="spotlight_screen_category_view_button_continue">Fortsæt</string>
-  <string name="spotlight_screen_category_view_button_try">Prøv kategorier</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Fortsæt uden</string>
+  <string name="spotlight_screen_category_view_button_try">Ja, organiser den</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Behold indbakken som før</string>
 </resources>

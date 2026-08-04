@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Το κατάλαβα</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Τι νέο στο Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Ανακαλύψτε τι νέο υπάρχει\nστο Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Βελτιώσεις διεπαφής χρήστη</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Ομαλή κύλιση, ανανεωμένη διάταξη και άλλα.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Φίλτρο μη αναγνωσμένων</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Τώρα βρίσκεται στο κάτω μέρος για ευκολότερη πρόσβαση.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Νέα εμφάνιση και τοποθεσία για ευκολότερη πρόσβαση.</string>
   <string name="spotlight_screen_category_view_categories_title">Κατηγορίες ηλεκτρονικών μηνυμάτων</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Αυτόματη ταξινόμηση αλληλογραφίας σε χρήσιμες κατηγορίες.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Αυτόματη ταξινόμηση των εισερχόμενων μηνυμάτων.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Τα μη αναγνωσμένα είναι πιο εύκολα προσβάσιμα</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Το φίλτρο μη αναγνωσμένων βρίσκεται πλέον στο κάτω μέρος των εισερχομένων σας, διευκολύνοντας την πρόσβαση και την εναλλαγή μεταξύ όλων των μηνυμάτων και των μη αναγνωσμένων μηνυμάτων.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Μείνε ενημερωμένοι για νέα και \nαδιάβαστα μηνύματα ηλεκτρονικού ταχυδρομείου</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Γεια στις κατηγορίες.\nΑντίο στους περισπασμούς</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Σταματήστε να αποσπάτε την προσοχή σας από ενημερωτικά δελτία, ενημερώσεις και μη επείγοντα μηνύματα ηλεκτρονικού ταχυδρομείου. Με νέες κατηγορίες μηνυμάτων, μόνο τα σημαντικά μηνύματα καταλήγουν στα κύρια εισερχόμενά σας.</string>
   <string name="spotlight_screen_category_view_button_continue">Συνέχεια</string>
-  <string name="spotlight_screen_category_view_button_try">Δοκιμάστε τις κατηγορίες</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Συνέχεια χωρίς</string>
+  <string name="spotlight_screen_category_view_button_try">Ναι, οργανώστε το</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Διατηρήστε τα εισερχόμενά σας όπως πριν</string>
 </resources>

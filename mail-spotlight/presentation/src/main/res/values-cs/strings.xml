@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Rozumím</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Co je nového v aplikaci Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Zjistěte, co je nového\nv Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Vylepšení UI</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Plynulé posouvání, vylepšené rozvržení a další.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtr nepřečtených</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Nyní se nachází ve spodní části, aby byl přístup snazší.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nový vzhled a nové umístění pro snazší přístup.</string>
   <string name="spotlight_screen_category_view_categories_title">Kategorie e-mailů</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Automaticky třídit e-maily do užitečných kategorií.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">Automatické třídění příchozí pošty.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">K nepřečteným se dostanete snáze</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Filtr nepřečtených se nyní nachází v dolní části doručené pošty, díky čemuž je snazší se k němu dostat a přepínat mezi všemi e-maily a nepřečtenými zprávami.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Mějte přehled o nových a\nnepřečtených e-mailech</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Seznamte se s kategoriemi.\nSbohem, rozptylování.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Nenechte se už rozptylovat zpravodaji, aktualizacemi a e-maily, které nejsou naléhavé. Díky novým kategoriím e-mailů se do vaší hlavní doručené pošty dostanou pouze důležité zprávy.</string>
   <string name="spotlight_screen_category_view_button_continue">Pokračovat</string>
-  <string name="spotlight_screen_category_view_button_try">Vyzkoušejte kategorie</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Pokračovat bez</string>
+  <string name="spotlight_screen_category_view_button_try">Ano, uspořádat</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Ponechat doručenou poštu beze změn</string>
 </resources>

@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Entendido</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Novidades no Proton Mail</string>
+    <string name="spotlight_screen_category_view_title_b2b">Descubra as novidades\nno Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Melhorias de UI</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Deslocamento fluido, esquema atualizado e muito mais.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtro de não lidos</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Agora localizado na parte inferior para facilitar o acesso.</string>
+    <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Novo aspeto e localização para aceder mais facilmente.</string>
   <string name="spotlight_screen_category_view_categories_title">Categorias de e-mail</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Organize automaticamente o correio em categorias úteis.</string>
+    <string name="spotlight_screen_category_view_categories_subtitle_b2b">Organização automática do correio recebido.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">O filtro de não lidos é mais fácil de alcançar</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">O filtro de não lidos está agora na parte inferior da sua caixa de entrada, facilitando o acesso e a alternância entre todos os e-mails e as mensagens não lidas.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Acompanhe os novos e\ne-mails não lidos</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Olá categorias.\nAdeus distrações.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Deixe de se distrair com newsletters, atualizações e e-mails não urgentes. Com as novas categorias de e-mail, apenas as mensagens importantes chegam à sua caixa de entrada principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continuar</string>
-  <string name="spotlight_screen_category_view_button_try">Experimentar categorias</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Continuar sem</string>
+    <string name="spotlight_screen_category_view_button_try">Sim, organizar</string>
+    <string name="spotlight_screen_category_view_button_dismiss">Manter a caixa de entrada como antes</string>
 </resources>

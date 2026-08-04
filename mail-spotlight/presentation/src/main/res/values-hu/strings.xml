@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Megvan</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Újdonságok a Proton Mailben</string>
+    <string name="spotlight_screen_category_view_title_b2b">Fedezze fel a Proton Mail\nújdonságait</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Felhasználói felület fejlesztései</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Gördülékeny görgetés, megújult elrendezés és még sok más.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Olvasatlan szűrő</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">A könnyebb hozzáférés érdekében mostantól alul található.</string>
+    <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Új megjelenés és helyszín a könnyebb hozzáférésért.</string>
   <string name="spotlight_screen_category_view_categories_title">E-mail kategóriák</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Levelek automatikus rendezése hasznos kategóriákba.</string>
+    <string name="spotlight_screen_category_view_categories_subtitle_b2b">A beérkező levelek automatikus rendezése.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Az olvasatlanok könnyebben elérhetők</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Az olvasatlan szűrő mostantól a beérkezett üzenetek alján található, így könnyebben elérhető, és egyszerűbb váltani az összes e-mail és az olvasatlan üzenetek között.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Maradjon naprakész az új és\nolvasatlan e-mailekkel</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Üdvözöljük a kategóriákat.\nBúcsút inthet a zavaró tényezőknek.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Ne hagyja, hogy a hírlevelek, frissítések és a nem sürgős e-mailek eltereljék a figyelmét. Az új e-mail kategóriákkal csak a fontos üzenetek kerülnek az elsődleges beérkezett üzenetek közé.</string>
   <string name="spotlight_screen_category_view_button_continue">Tovább</string>
-  <string name="spotlight_screen_category_view_button_try">Kategóriák kipróbálása</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Folytatás enélkül</string>
+    <string name="spotlight_screen_category_view_button_try">Igen, rendszerezem</string>
+    <string name="spotlight_screen_category_view_button_dismiss">Hagyja változatlanul a beérkezett üzeneteket</string>
 </resources>

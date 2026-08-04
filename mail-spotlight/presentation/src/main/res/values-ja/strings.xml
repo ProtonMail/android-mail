@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">分かりました</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Proton Mailの新機能</string>
+    <string name="spotlight_screen_category_view_title_b2b">Proton Mailの\n新機能をご覧ください</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">UIの改善</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">滑らかなスクロール、刷新されたレイアウトなど。</string>
   <string name="spotlight_screen_category_view_unread_filter_title">未読フィルター</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">アクセスしやすいよう、下部に配置されました。</string>
+    <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">より簡単にアクセスできるよう、外観と位置が新しくなりました。</string>
   <string name="spotlight_screen_category_view_categories_title">メールカテゴリ</string>
   <string name="spotlight_screen_category_view_categories_subtitle">メールを便利なカテゴリに自動的に振り分けます。</string>
+    <string name="spotlight_screen_category_view_categories_subtitle_b2b">受信メールを自動的に分類します。</string>
   <string name="spotlight_screen_category_view_main_b2c_title">未読機能がより簡単に使えます</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">未読フィルターが受信トレイの下部に配置され、すべてのメールと未読メッセージの切り替えがより簡単になりました。</string>
   <string name="spotlight_screen_category_view_main_b2b_title">新規や未読のメールを\n常に把握</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">カテゴリ機能が登場。\nもう気が散ることはありません。</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">ニュースレター、更新情報、緊急性の低いメールに気を取られるのはやめましょう。新しいメールカテゴリ機能により、重要なメッセージのみがプライマリー受信トレイに届きます。</string>
   <string name="spotlight_screen_category_view_button_continue">続ける</string>
-  <string name="spotlight_screen_category_view_button_try">カテゴリを試す</string>
-  <string name="spotlight_screen_category_view_button_dismiss">適用せずに続行</string>
+    <string name="spotlight_screen_category_view_button_try">はい、整理します</string>
+    <string name="spotlight_screen_category_view_button_dismiss">受信トレイを以前のままに保つ</string>
 </resources>

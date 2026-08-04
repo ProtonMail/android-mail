@@ -30,12 +30,15 @@
   <string name="spotlight_screen_got_it">Понятно</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Что нового в Proton Mail</string>
+    <string name="spotlight_screen_category_view_title_b2b">Узнайте, что нового\nв Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Улучшения интерфейса</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Плавная прокрутка, обновленный вид и многое другое.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Фильтр непрочитанных</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Теперь находится внизу для более простого доступа.</string>
+    <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Новый вид и расположение для более удобного доступа.</string>
   <string name="spotlight_screen_category_view_categories_title">Категории писем</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Автоматическая сортировка почты по удобным категориям.</string>
+    <string name="spotlight_screen_category_view_categories_subtitle_b2b">Автоматическая сортировка входящей почты.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Непрочитанные стали доступнее</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Фильтр непрочитанных теперь находится внизу вашего почтового ящика, благодаря чему стало проще переключаться между всеми электронными письмами и непрочитанными сообщениями.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Будьте в курсе новых и\nнепрочитанных электронных писем</string>
@@ -46,6 +49,6 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Встречайте категории.\nЗабудьте об отвлекающих факторах.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Перестаньте отвлекаться на рассылки, обновления и несрочные электронные письма. Благодаря новым категориям писем в ваш основной почтовый ящик будут попадать только важные сообщения.</string>
   <string name="spotlight_screen_category_view_button_continue">Продолжить</string>
-  <string name="spotlight_screen_category_view_button_try">Попробовать категории</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Продолжить без</string>
+    <string name="spotlight_screen_category_view_button_try">Да, упорядочить</string>
+    <string name="spotlight_screen_category_view_button_dismiss">Оставить почтовый ящик как раньше</string>
 </resources>
