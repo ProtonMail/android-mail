@@ -26,10 +26,10 @@
   <string name="category_title_transactions">交易</string>
   <string name="category_spotlight_unseen_title">%1$s 中有新邮件</string>
   <string name="category_spotlight_unseen_description">蓝点表示自您上次查看以来，该分类中有新邮件。</string>
-  <string name="category_spotlight_personalise_title">Refine your categories</string>
-  <string name="category_spotlight_personalise_description">Move an email to another category using “Move to”. Similar emails will then be sorted there automatically</string>
+  <string name="category_spotlight_personalise_title">优化您的分类</string>
+  <string name="category_spotlight_personalise_description">使用“移至”将邮件移至其他分类。此后，类似邮件将自动归类到该分类中。</string>
   <string name="category_spotlight_close_content_description">关闭</string>
-  <string name="recategorise_bottom_sheet_title">Recategorize email</string>
-  <string name="recategorise_bottom_sheet_description">当您将电子邮件移至其他类别后，后续类似消息将被归类到该类别。</string>
-  <string name="recategorise_bottom_sheet_button">Got it</string>
+  <string name="recategorise_bottom_sheet_title">重新分类邮件</string>
+  <string name="recategorise_bottom_sheet_description">当您将邮件移至其他类别后，后续类似邮件将被归类到该类别。</string>
+  <string name="recategorise_bottom_sheet_button">了解</string>
 </resources>
