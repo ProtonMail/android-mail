@@ -85,4 +85,14 @@ internal class AttachmentDownloadReducerTest {
             result.error.consume()
         )
     }
+
+    @Test
+    fun `should clear the spinner silently when the download is cancelled`() {
+        val downloading = reducer.downloadStarted(AttachmentDownloadState.Initial, attachmentId)
+
+        val result = reducer.downloadCancelled(downloading)
+
+        assertNull(result.downloadingAttachmentId)
+        assertNull(result.error.consume())
+    }
 }

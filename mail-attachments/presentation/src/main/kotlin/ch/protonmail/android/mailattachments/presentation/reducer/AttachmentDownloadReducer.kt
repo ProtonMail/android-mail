@@ -52,4 +52,6 @@ class AttachmentDownloadReducer @Inject constructor() {
         downloadingAttachmentId = null,
         error = Effect.of(TextUiModel.TextRes(R.string.attachment_download_error))
     )
+
+    fun downloadCancelled(current: AttachmentDownloadState) = current.copy(downloadingAttachmentId = null)
 }

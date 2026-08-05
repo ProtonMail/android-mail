@@ -34,6 +34,13 @@ data class SelectionState(
 
     val inSelectionMode: Boolean get() = selectedItems.isNotEmpty()
 
+    /**
+     * Whether no further item can be added.
+     * [ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer.selectAll] already tops
+     * up only to [MaxItemSelectionLimit]; screens adding one item at a time check this so they can say why.
+     */
+    val isAtLimit: Boolean get() = selectedItems.size >= MaxItemSelectionLimit
+
     data class SelectedMailItem(
         override val id: String,
         override val isRead: Boolean,

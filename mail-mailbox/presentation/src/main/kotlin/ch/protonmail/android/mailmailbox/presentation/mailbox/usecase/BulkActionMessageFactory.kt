@@ -58,6 +58,13 @@ class BulkActionMessageFactory @Inject constructor(
         )
     }
 
+    /**
+     * Refuses a selection that would exceed
+     * [ch.protonmail.android.mailcommon.presentation.model.SelectionState.MaxItemSelectionLimit].
+     */
+    fun maxSelectionReachedResult(): DefinitiveActionResult =
+        DefinitiveActionResult(TextUiModel(R.string.mailbox_action_maximum_selection_reached))
+
     /** A definitive "N deleted" snackbar (delete is permanent, so it is not undoable), pluralised by [viewMode]. */
     fun deleteResult(itemCount: Int, viewMode: ViewMode): DefinitiveActionResult {
         val pluralsRes = when (viewMode) {

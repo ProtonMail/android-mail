@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
@@ -76,8 +75,7 @@ class MailboxActionMessageReducer @Inject constructor(
                 TextUiModel(R.string.mailbox_action_trash_message)
             )
 
-            is MailboxEvent.MaxSelectionLimitReached ->
-                DefinitiveActionResult(TextUiModel(R.string.mailbox_action_maximum_selection_reached))
+            is MailboxEvent.MaxSelectionLimitReached -> bulkActionMessageFactory.maxSelectionReachedResult()
         }
         return Effect.of(actionResult)
     }

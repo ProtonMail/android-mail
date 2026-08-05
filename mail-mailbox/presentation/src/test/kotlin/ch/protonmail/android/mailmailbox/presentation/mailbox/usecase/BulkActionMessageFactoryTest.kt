@@ -63,6 +63,13 @@ internal class BulkActionMessageFactoryTest {
     }
 
     @Test
+    fun `max selection reached result is definitive`() {
+        val result = factory.maxSelectionReachedResult()
+
+        assertEquals(DefinitiveActionResult(TextUiModel(R.string.mailbox_action_maximum_selection_reached)), result)
+    }
+
+    @Test
     fun `delete result uses the message plural and is definitive when not grouping conversations`() {
         val result = factory.deleteResult(itemCount = 2, viewMode = ViewMode.NoConversationGrouping)
 
