@@ -24,4 +24,6 @@ internal object FeatureSpotlightVersions {
     const val PRIVACY_BUNDLE = 1
     const val CATEGORY_VIEW_PRE_7110 = 2 // This was used in 7.10.x and pre-alpha of 7.11.0
     const val CATEGORY_VIEW = 3
+
+    const val CONTENT_SEARCH = 4
 }
