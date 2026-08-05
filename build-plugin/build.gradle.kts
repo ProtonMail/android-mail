@@ -25,6 +25,11 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    // Pin both compileJava and compileKotlin, which otherwise default to the JDK running the daemon.
+    jvmToolchain(17)
+}
+
 dependencies {
     // Provided by the consuming build's buildscript classpath, so only needed to compile against.
     compileOnly(libs.android.tools.build)
