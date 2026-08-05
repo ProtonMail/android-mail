@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentSearchTerms
-import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentFoundItem
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentFoundMailboxItems
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentSearchTerms
@@ -74,7 +73,6 @@ class RecentSearchesViewModel @Inject constructor(
     private val dismissRecentSearchTerm: DismissRecentSearchTerm,
     private val clearRecentSearchTerms: ClearRecentSearchTerms,
     private val touchRecentFoundItem: TouchRecentFoundItem,
-    private val dismissRecentFoundItem: DismissRecentFoundItem,
     private val recordSearchOpen: RecordSearchOpen,
     private val starMessages: StarMessages,
     private val unStarMessages: UnStarMessages,
@@ -92,7 +90,6 @@ class RecentSearchesViewModel @Inject constructor(
             is RecentSearchesViewAction.TermDismissed -> onTermDismissed(action.query)
             RecentSearchesViewAction.ClearTerms -> onClearTerms()
             is RecentSearchesViewAction.FoundItemClicked -> onFoundItemClicked(action.item)
-            is RecentSearchesViewAction.FoundItemDismissed -> onFoundItemDismissed(action.item)
             is RecentSearchesViewAction.FoundItemStarClicked -> onFoundItemStarClicked(action.item)
             is RecentSearchesViewAction.SearchResultOpened ->
                 onSearchResultOpened(action.query, action.messageId, action.conversationId)
@@ -118,16 +115,6 @@ class RecentSearchesViewModel @Inject constructor(
 
     private fun onFoundItemClicked(item: RecentFoundItemUiModel) =
         reloadAfter { userId -> touchRecentFoundItem(userId, item.messageId) }
-
-    private fun onFoundItemDismissed(item: RecentFoundItemUiModel) {
-        updateData {
-            it.copy(
-                foundItems = it.foundItems.filterNot { found -> found.messageId == item.messageId }
-                    .toImmutableList()
-            )
-        }
-        reloadAfter { userId -> dismissRecentFoundItem(userId, item.messageId) }
-    }
 
     private fun onFoundItemStarClicked(item: RecentFoundItemUiModel) = reloadAfter { userId ->
         val messageIds = listOf(item.messageId)

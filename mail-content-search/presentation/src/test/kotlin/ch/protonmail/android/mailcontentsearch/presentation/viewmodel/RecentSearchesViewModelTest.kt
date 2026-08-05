@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.RecentFoundMailboxItem
 import ch.protonmail.android.mailcontentsearch.domain.model.RecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentSearchTerms
-import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentFoundItem
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentFoundMailboxItems
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentSearchTerms
@@ -85,7 +84,6 @@ internal class RecentSearchesViewModelTest {
     private val dismissRecentSearchTerm = mockk<DismissRecentSearchTerm>()
     private val clearRecentSearchTerms = mockk<ClearRecentSearchTerms>()
     private val touchRecentFoundItem = mockk<TouchRecentFoundItem>()
-    private val dismissRecentFoundItem = mockk<DismissRecentFoundItem>()
     private val recordSearchOpen = mockk<RecordSearchOpen>()
     private val starMessages = mockk<StarMessages>()
     private val unStarMessages = mockk<UnStarMessages>()
@@ -251,26 +249,6 @@ internal class RecentSearchesViewModelTest {
     }
 
     @Test
-    fun `dismissing a found item drops it from the state`() = runTest(dispatcher) {
-        // Given
-        givenHistory(terms = emptyList(), items = listOf(foundItem(FirstMessageId), foundItem(SecondMessageId)))
-        coEvery { dismissRecentFoundItem(userId, MessageId(FirstMessageId)) } returns Unit.right()
-        val viewModel = buildViewModel()
-        viewModel.submit(RecentSearchesViewAction.Refresh)
-        givenHistory(terms = emptyList(), items = listOf(foundItem(SecondMessageId)))
-
-        // When
-        viewModel.submit(RecentSearchesViewAction.FoundItemDismissed(uiModel(FirstMessageId)))
-
-        // Then
-        coVerify { dismissRecentFoundItem(userId, MessageId(FirstMessageId)) }
-        assertEquals(
-            RecentSearchesState.Data(persistentListOf(), persistentListOf(uiModel(SecondMessageId))),
-            viewModel.state.value
-        )
-    }
-
-    @Test
     fun `re-opening a found item bumps it instead of recording a new search open`() = runTest(dispatcher) {
         // Given
         givenHistory(terms = emptyList(), items = listOf(foundItem(FirstMessageId)))
@@ -353,7 +331,6 @@ internal class RecentSearchesViewModelTest {
         dismissRecentSearchTerm = dismissRecentSearchTerm,
         clearRecentSearchTerms = clearRecentSearchTerms,
         touchRecentFoundItem = touchRecentFoundItem,
-        dismissRecentFoundItem = dismissRecentFoundItem,
         recordSearchOpen = recordSearchOpen,
         starMessages = starMessages,
         unStarMessages = unStarMessages,
