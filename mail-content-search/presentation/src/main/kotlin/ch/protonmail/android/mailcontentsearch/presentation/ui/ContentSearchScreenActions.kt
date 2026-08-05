@@ -30,13 +30,15 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
  *
  * @param searchQuery forwarded so the detail view highlights the terms the message was found by. Empty
  * when no query is known for it.
+ * @param shouldOpenInComposer true for drafts, which open in the composer rather than in the detail view.
  */
 data class OpenSearchResultRequest(
     val messageId: MessageId,
     val conversationId: ConversationId,
     val searchQuery: String,
     val isConversationGrouping: Boolean,
-    val openedFromLocation: LabelId
+    val openedFromLocation: LabelId,
+    val shouldOpenInComposer: Boolean
 )
 
 data class ContentSearchScreenActions(

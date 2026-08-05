@@ -158,7 +158,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
                             state.allMailLocation
                         } else {
                             state.openedFromLocation
-                        }
+                        },
+                        shouldOpenInComposer = found.item.shouldOpenInComposer
                     )
                 )
             },
@@ -202,7 +203,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
                                 state.allMailLocation
                             } else {
                                 state.openedFromLocation
-                            }
+                            },
+                            shouldOpenInComposer = item.shouldOpenInComposer
                         )
                     )
                 }
