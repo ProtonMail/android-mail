@@ -41,6 +41,8 @@ import ch.protonmail.android.mailcontact.presentation.contactdetails.ui.ContactD
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListScreen
 import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearchScreen
+import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreen
+import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreenActions
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -129,6 +131,9 @@ internal fun NavGraphBuilder.addMailbox(
                 showMissingFeature = showFeatureMissingSnackbar,
                 onEnterSearchMode = {
                     setDrawerEnabled(false)
+                },
+                onNavigateToContentSearch = {
+                    navController.navigate(Destination.Screen.ContentSearch.route)
                 },
                 onExitSearchMode = {
                     setDrawerEnabled(true)
@@ -415,6 +420,37 @@ internal fun NavGraphBuilder.addContactDetails(
                 onShowErrorSnackbar = onShowErrorSnackbar,
                 onMessageContact = onMessageContact,
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            )
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addContentSearchScreen(
+    navController: NavHostController,
+    showSnackbar: (type: SnackbarType) -> Unit,
+    snackbarHeight: () -> Dp = { 0.dp }
+) {
+    composableWithTransitions(route = Destination.Screen.ContentSearch.route) {
+        ContentSearchScreen(
+            ContentSearchScreenActions(
+                showSnackbar = showSnackbar,
+                snackbarHeight = snackbarHeight,
+                onClose = { navController.navigateBack() },
+                onOpenItem = { request ->
+                    val destination = when (request.shouldOpenInComposer) {
+                        true -> Destination.Screen.EditDraftComposer(request.messageId)
+                        false -> Destination.Screen.Conversation(
+                            conversationId = request.conversationId,
+                            scrollToMessageId = request.messageId,
+                            openedFromLocation = request.openedFromLocation,
+                            openedFromCategory = null,
+                            locationViewModeIsConversation = request.isConversationGrouping,
+                            entryPoint = ConversationDetailEntryPoint.Mailbox,
+                            searchQuery = request.searchQuery
+                        )
+                    }
+                    navController.navigate(destination)
+                }
             )
         )
     }

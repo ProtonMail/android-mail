@@ -122,6 +122,7 @@ import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
+import ch.protonmail.android.navigation.route.addContentSearchScreen
 import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addCustomizeToolbarSettings
@@ -767,6 +768,11 @@ fun Home(
                             onEvent = eventHandler,
                             showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
                             onShowRatingBooster = activityActions.launchRatingBooster,
+                            snackbarHeight = { snackbarHeight }
+                        )
+                        addContentSearchScreen(
+                            navController,
+                            showSnackbar = { showSnackbar(it) },
                             snackbarHeight = { snackbarHeight }
                         )
                         addAccountsManager(

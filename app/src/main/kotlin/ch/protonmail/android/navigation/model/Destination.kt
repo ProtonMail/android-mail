@@ -71,6 +71,7 @@ sealed class Destination(val route: String) {
 
     object Screen {
         object Mailbox : Destination("mailbox")
+        object ContentSearch : Destination("contentSearch")
 
         object Conversation : Destination(
             "mailbox/conversation/${ConversationIdKey.wrap()}/" +
