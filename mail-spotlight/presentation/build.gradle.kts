@@ -66,7 +66,6 @@ dependencies {
     implementation(libs.bundles.module.presentation)
     implementation(libs.haze)
 
-    implementation(project(":mail-category-view:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-spotlight:domain"))

@@ -58,8 +58,6 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import ch.protonmail.android.mailsettings.presentation.settings.toolbar.ui.CustomizeToolbarEditScreen
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
-import ch.protonmail.android.mailspotlight.presentation.ui.SPOTLIGHT_USER_TYPE_KEY
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
@@ -253,11 +251,7 @@ sealed class Destination(val route: String) {
                 .replace(UpsellingTypeKey.wrap(), type.serialize())
         }
 
-        object FeatureSpotlight : Destination("featureSpotlight/${SPOTLIGHT_USER_TYPE_KEY.wrap()}") {
-
-            operator fun invoke(userType: SpotlightUserType) =
-                route.replace(SPOTLIGHT_USER_TYPE_KEY.wrap(), userType.name)
-        }
+        object FeatureSpotlight : Destination("featureSpotlight")
     }
 
     object Dialog {

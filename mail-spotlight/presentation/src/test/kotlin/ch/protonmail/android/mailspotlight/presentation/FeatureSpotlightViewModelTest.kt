@@ -18,17 +18,12 @@
 
 package ch.protonmail.android.mailspotlight.presentation
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
-import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
-import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
-import ch.protonmail.android.mailspotlight.presentation.ui.SPOTLIGHT_USER_TYPE_KEY
+import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
@@ -50,31 +45,20 @@ internal class FeatureSpotlightViewModelTest {
 
     private val appInformation = AppInformation(appVersionName = "7.7.0")
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
-    private val updateCategoryView = mockk<UpdateCategoryView>()
-    private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen>()
 
     @AfterTest
     fun tearDown() {
         clearAllMocks()
     }
 
-    private fun buildViewModel(userTypeArg: String?): FeatureSpotlightViewModel {
-        coEvery { updateCategoryView(any()) } returns Unit.right()
-        coEvery { markCategorySpotlightSeen(any()) } returns Unit.right()
-        return FeatureSpotlightViewModel(
-            savedStateHandle = SavedStateHandle(
-                if (userTypeArg == null) emptyMap() else mapOf(SPOTLIGHT_USER_TYPE_KEY to userTypeArg)
-            ),
-            appInformation = appInformation,
-            updateCategoryView = updateCategoryView,
-            markFeatureSpotlightSeen = markFeatureSpotlightSeen,
-            markCategorySpotlightSeen = markCategorySpotlightSeen
-        )
-    }
+    private fun buildViewModel() = FeatureSpotlightViewModel(
+        appInformation = appInformation,
+        markFeatureSpotlightSeen = markFeatureSpotlightSeen
+    )
 
     @Test
     fun `appVersion contains correct text resource with version name`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
+        val viewModel = buildViewModel()
         val appVersion = viewModel.appVersion
         val textModel = appVersion.text as TextUiModel.TextResWithArgs
         assertEquals(R.string.spotlight_screen_version_text, textModel.value)
@@ -82,145 +66,44 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `userType reflects the B2B navigation argument`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2B.name)
-        assertEquals(SpotlightUserType.B2B, viewModel.userType)
-    }
-
-    @Test
-    fun `userType reflects the B2C navigation argument`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-        assertEquals(SpotlightUserType.B2C, viewModel.userType)
-    }
-
-    @Test
-    fun `userType falls back to B2C when the navigation argument is missing`() {
-        val viewModel = buildViewModel(userTypeArg = null)
-        assertEquals(SpotlightUserType.B2C, viewModel.userType)
-    }
-
-    @Test
-    fun `userType falls back to B2C when the navigation argument is invalid`() {
-        val viewModel = buildViewModel(userTypeArg = "not-a-user-type")
-        assertEquals(SpotlightUserType.B2C, viewModel.userType)
-    }
-
-    @Test
-    fun `overviewFeatures list contains exactly three items`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-        assertEquals(3, viewModel.overviewFeatures.size)
-    }
-
-    @Test
-    fun `overviewFeatures list contains categories as first item`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-        val firstFeature = viewModel.overviewFeatures[0]
+    fun `overviewFeatures contains the three content search items in order`() {
+        val viewModel = buildViewModel()
         assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
-            firstFeature.title
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle),
-            firstFeature.description
+            listOf(
+                FeatureItem(
+                    icon = R.drawable.ic_arrow_down_to_line,
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_title),
+                    description = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_message_content_subtitle
+                    )
+                ),
+                FeatureItem(
+                    icon = R.drawable.ic_magnifier,
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_title),
+                    description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_subtitle)
+                ),
+                FeatureItem(
+                    icon = R.drawable.ic_envelope_lines,
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
+                    description = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_recent_searches_subtitle
+                    )
+                )
+            ),
+            viewModel.overviewFeatures
         )
     }
 
     @Test
-    fun `overviewFeatures list contains unread filter as second item`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-        val secondFeature = viewModel.overviewFeatures[1]
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
-            secondFeature.title
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle),
-            secondFeature.description
-        )
-    }
-
-    @Test
-    fun `overviewFeatures list contains UI enhancements as third item`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-        val thirdFeature = viewModel.overviewFeatures[2]
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
-            thirdFeature.title
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
-            thirdFeature.description
-        )
-    }
-
-    @Test
-    fun `overviewFeatures uses B2B subtitles for a business user`() {
-        val viewModel = buildViewModel(SpotlightUserType.B2B.name)
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle_b2b),
-            viewModel.overviewFeatures[0].description
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle_b2b),
-            viewModel.overviewFeatures[1].description
-        )
-        assertEquals(
-            TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle),
-            viewModel.overviewFeatures[2].description
-        )
-    }
-
-    @Test
-    fun `onTryCategories enables category view, marks seen and emits close`() = runTest {
+    fun `onGotIt marks the spotlight as seen and emits close`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
+        val viewModel = buildViewModel()
 
         viewModel.closeScreenEvent.test {
-            viewModel.onTryCategories()
+            viewModel.onGotIt()
             assertEquals(Unit, awaitItem())
         }
 
-        coVerify(exactly = 1) { updateCategoryView(enabled = true) }
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }
-    }
-
-    @Test
-    fun `onTryCategories does not mark the Personalise recategorise spotlight as seen`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-
-        viewModel.closeScreenEvent.test {
-            viewModel.onTryCategories()
-            assertEquals(Unit, awaitItem())
-        }
-
-        coVerify(exactly = 0) { markCategorySpotlightSeen(any()) }
-    }
-
-    @Test
-    fun `onDismissWithoutCategories disables category view, marks seen and emits close`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-
-        viewModel.closeScreenEvent.test {
-            viewModel.onDismissWithoutCategories()
-            assertEquals(Unit, awaitItem())
-        }
-
-        coVerify(exactly = 1) { updateCategoryView(enabled = false) }
-        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
-    }
-
-    @Test
-    fun `onDismissWithoutCategories marks the Personalise recategorise spotlight as seen`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
-        val viewModel = buildViewModel(SpotlightUserType.B2C.name)
-
-        viewModel.closeScreenEvent.test {
-            viewModel.onDismissWithoutCategories()
-            assertEquals(Unit, awaitItem())
-        }
-
-        coVerify(exactly = 1) { markCategorySpotlightSeen(CategorySpotlightType.Personalise) }
     }
 }

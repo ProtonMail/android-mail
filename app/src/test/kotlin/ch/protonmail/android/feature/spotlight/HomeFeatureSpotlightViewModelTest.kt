@@ -23,15 +23,13 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureSpotlightDisplay
-import ch.protonmail.android.mailspotlight.domain.usecase.ObserveIsBusinessUser
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -51,14 +49,11 @@ internal class HomeFeatureSpotlightViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val mockFeatureFlag = mockk<FeatureFlag<Boolean>>()
-    private val mockCategoryViewFlag = mockk<IsCategoryViewEnabled>()
+    private val mockIsContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled>()
     private val mockObserveFeatureSpotlightDisplay = mockk<ObserveFeatureSpotlightDisplay>()
     private val mockIsRecentAppInstall = mockk<IsRecentAppInstall>()
     private val mockMarkFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen> {
         coEvery { this@mockk.invoke() } returns Unit.right()
-    }
-    private val mockObserveIsBusinessUser = mockk<ObserveIsBusinessUser> {
-        every { this@mockk.invoke() } returns flowOf(false.right())
     }
     private val mockObservePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
@@ -68,7 +63,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when feature spotlight flag is disabled`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns false
-        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
 
         val viewModel = buildViewModel()
 
@@ -80,10 +75,10 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `should emit Hide when category view flag is disabled`() = runTest {
+    fun `should emit Hide when the content search feature is disabled`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns false
+        coEvery { mockIsContentSearchFeatureEnabled() } returns false
 
         val viewModel = buildViewModel()
 
@@ -95,45 +90,27 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `should emit Show with B2C user type when preference is show and user is not a business account`() = runTest {
+    fun `should emit Show when preference is show`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
 
         // When/Then
         viewModel.state.test {
-            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
+            assertEquals(FeatureSpotlightState.Show, awaitItem())
         }
         coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
     }
 
     @Test
-    fun `should emit Show with B2B user type when preference is show and user is a business account`() = runTest {
+    fun `should emit Hide when preference is hide`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { mockObserveIsBusinessUser() } returns flowOf(true.right())
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
-            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2B), awaitItem())
-        }
-    }
-
-    @Test
-    fun `should not resolve user type when preference is hide`() = runTest {
-        // Given
-        coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
 
@@ -143,14 +120,13 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
         }
-        coVerify(exactly = 0) { mockObserveIsBusinessUser() }
     }
 
     @Test
     fun `should emit Hide when feature flag is enabled and preference returns error`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(PreferencesError.left())
 
@@ -166,7 +142,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide and mark seen when feature flag is enabled and app is recent install`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         every { mockIsRecentAppInstall() } returns true
 
         val viewModel = buildViewModel()
@@ -179,37 +155,18 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `should observe spotlight display when feature flag enabled and not recent install`() = runTest {
-        // Given
-        coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { mockObserveIsBusinessUser() } returns flowOf(false.right())
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
-            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
-        }
-        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
-    }
-
-    @Test
-    fun `should re-evaluate and emit Show when primary user changes to one with the flags enabled`() = runTest {
-        // Given: first user has the category view flag disabled, the second has flags enabled.
-        // Drive the primary user emissions manually so we can assert the full Hide -> Show sequence
-        // rather than only the final (conflated) value, which would not prove re-evaluation happened.
+    fun `should re-evaluate when the primary user changes`() = runTest {
+        // Given: the content search feature resolves as disabled on the first evaluation, enabled on the second.
+        // Drive the primary user emissions manually so we can assert the full Hide -> Show sequence, which only
+        // holds if the new primary user triggered a fresh evaluation rather than replaying the conflated value.
         val firstUser = UserId("first-user")
         val secondUser = UserId("second-user")
         val primaryUserId = MutableStateFlow<UserId?>(firstUser)
         every { mockObservePrimaryUserId() } returns primaryUserId
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockCategoryViewFlag(any()) } returnsMany listOf(false, true)
+        coEvery { mockIsContentSearchFeatureEnabled() } returnsMany listOf(false, true)
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
 
@@ -217,17 +174,16 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
             primaryUserId.emit(secondUser)
-            assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
+            assertEquals(FeatureSpotlightState.Show, awaitItem())
         }
     }
 
     private fun buildViewModel() = HomeFeatureSpotlightViewModel(
         observeFeatureSpotlightDisplay = mockObserveFeatureSpotlightDisplay,
         isEnabled = mockFeatureFlag,
-        isCategoryViewEnabled = mockCategoryViewFlag,
+        isContentSearchFeatureEnabled = mockIsContentSearchFeatureEnabled,
         isRecentAppInstall = mockIsRecentAppInstall,
         markFeatureSpotlightSeen = mockMarkFeatureSpotlightSeen,
-        observeIsBusinessUser = mockObserveIsBusinessUser,
         observePrimaryUserId = mockObservePrimaryUserId
     )
 }

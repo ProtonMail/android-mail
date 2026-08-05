@@ -24,7 +24,6 @@ import ch.protonmail.android.mailnotifications.presentation.model.NotificationsP
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
@@ -99,7 +98,7 @@ internal class HomeModalSequencePriorityTest {
         val result = resolveHomeInterstitialPriority(
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
-            featureSpotlightState = FeatureSpotlightState.Show(SpotlightUserType.B2C),
+            featureSpotlightState = FeatureSpotlightState.Show,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -108,7 +107,7 @@ internal class HomeModalSequencePriorityTest {
         )
 
         // Then
-        assertEquals(HomeInterstitialPriority.FeatureSpotlight(SpotlightUserType.B2C), result)
+        assertEquals(HomeInterstitialPriority.FeatureSpotlight, result)
     }
 
     @Test

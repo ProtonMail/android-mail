@@ -489,7 +489,7 @@ fun Home(
             }
 
             is HomeInterstitialPriority.FeatureSpotlight -> {
-                navController.navigate(Screen.FeatureSpotlight(priority.userType))
+                navController.navigate(Screen.FeatureSpotlight.route)
             }
 
             is HomeInterstitialPriority.ContentSearch -> {

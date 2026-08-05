@@ -24,7 +24,6 @@ import ch.protonmail.android.mailnotifications.presentation.model.NotificationsP
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.summercampaign.SummerCampaignModalState
@@ -33,7 +32,7 @@ sealed interface HomeInterstitialPriority {
     data object Loading : HomeInterstitialPriority
     data object Onboarding : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
-    data class FeatureSpotlight(val userType: SpotlightUserType) : HomeInterstitialPriority
+    data object FeatureSpotlight : HomeInterstitialPriority
     data object ContentSearch : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
@@ -70,8 +69,7 @@ fun resolveHomeInterstitialPriority(
         notificationsState is NotificationsPermissionState.RequiresInteraction ->
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 
-        featureSpotlightState is FeatureSpotlightState.Show ->
-            HomeInterstitialPriority.FeatureSpotlight(featureSpotlightState.userType)
+        featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
 
         recategoriseState is RecategoriseSpotlightState.Show -> HomeInterstitialPriority.Recategorise
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch

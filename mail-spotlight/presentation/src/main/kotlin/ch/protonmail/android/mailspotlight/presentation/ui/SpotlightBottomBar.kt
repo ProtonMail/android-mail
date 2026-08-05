@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailspotlight.presentation.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -29,15 +27,9 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,46 +37,18 @@ import ch.protonmail.android.design.compose.component.ProtonTextButton
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailspotlight.presentation.R
-import ch.protonmail.android.mailspotlight.presentation.model.SpotlightActions
 
 @Composable
-internal fun SpotlightBottomBar(
-    pagerState: PagerState,
-    actions: SpotlightActions,
-    modifier: Modifier = Modifier
-) {
-    val isLastPage by remember {
-        derivedStateOf { pagerState.currentPage == SpotlightScreenMetadata.VISIBLE_PAGE_COUNT - 1 }
-    }
-
-    Column(
+internal fun SpotlightBottomBar(onGotIt: () -> Unit, modifier: Modifier = Modifier) {
+    PrimaryButton(
+        text = stringResource(R.string.spotlight_screen_got_it),
+        onClick = onGotIt,
         modifier = modifier
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
             .padding(horizontal = ProtonDimens.Spacing.Large)
-            .padding(bottom = ProtonDimens.Spacing.Large),
-        verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
-    ) {
-        if (isLastPage) {
-            SecondaryButton(
-                text = stringResource(R.string.spotlight_screen_category_view_button_dismiss),
-                onClick = actions.onDismissWithoutCategories,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            PrimaryButton(
-                text = stringResource(R.string.spotlight_screen_category_view_button_try),
-                onClick = actions.onTryCategories,
-                modifier = Modifier.fillMaxWidth()
-            )
-        } else {
-            PrimaryButton(
-                text = stringResource(R.string.spotlight_screen_category_view_button_continue),
-                onClick = actions.onContinue,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
+            .padding(bottom = ProtonDimens.Spacing.Large)
+    )
 }
 
 @Composable
@@ -112,27 +76,6 @@ internal fun PrimaryButton(
     }
 }
 
-@Composable
-internal fun SecondaryButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    ProtonTextButton(
-        modifier = modifier.clip(ProtonTheme.shapes.massive),
-        onClick = onClick,
-        contentPadding = ButtonContentPadding
-    ) {
-        Text(
-            text = text,
-            style = ProtonTheme.typography.titleMedium,
-            color = ProtonTheme.colors.textNorm,
-            textAlign = TextAlign.Center,
-            maxLines = 1
-        )
-    }
-}
-
 private val ButtonContentPadding = PaddingValues(
     horizontal = ProtonDimens.Spacing.Standard,
     vertical = ProtonDimens.Spacing.Large
@@ -140,25 +83,8 @@ private val ButtonContentPadding = PaddingValues(
 
 @Preview(showBackground = true)
 @Composable
-private fun SpotlightBottomBarLastPagePreview() {
+private fun SpotlightBottomBarPreview() {
     ProtonTheme {
-        SpotlightBottomBar(
-            pagerState = rememberPagerState(
-                initialPage = SpotlightScreenMetadata.VISIBLE_PAGE_COUNT - 1,
-                pageCount = { SpotlightScreenMetadata.VISIBLE_PAGE_COUNT }
-            ),
-            actions = SpotlightActions({}, {}, {})
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SpotlightBottomBarContinuePreview() {
-    ProtonTheme {
-        SpotlightBottomBar(
-            pagerState = rememberPagerState(pageCount = { SpotlightScreenMetadata.VISIBLE_PAGE_COUNT }),
-            actions = SpotlightActions({}, {}, {})
-        )
+        SpotlightBottomBar(onGotIt = {})
     }
 }

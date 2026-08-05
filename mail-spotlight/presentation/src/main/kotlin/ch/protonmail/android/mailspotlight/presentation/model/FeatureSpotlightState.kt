@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailspotlight.presentation.model
 
 sealed interface FeatureSpotlightState {
-    data class Show(val userType: SpotlightUserType) : FeatureSpotlightState
+    data object Show : FeatureSpotlightState
     data object Hide : FeatureSpotlightState
     data object Loading : FeatureSpotlightState
 }

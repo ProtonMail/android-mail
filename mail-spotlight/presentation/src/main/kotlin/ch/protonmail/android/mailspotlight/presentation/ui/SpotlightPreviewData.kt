@@ -30,40 +30,21 @@ internal object SpotlightPreviewData {
         TextUiModel(value = R.string.spotlight_screen_version_text, formatArgs = arrayOf("1.11.2"))
     )
 
-    val previewFeaturesB2C = listOf(
+    val previewFeatures = listOf(
         FeatureItem(
-            icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle)
+            icon = R.drawable.ic_arrow_down_to_line,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_proton_lines_long_to_small,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle)
+            icon = R.drawable.ic_magnifier,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
-        )
-    ).toImmutableList()
-
-    val previewFeaturesB2B = listOf(
-        FeatureItem(
-            icon = R.drawable.ic_proton_filing_cabinet,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_categories_subtitle_b2b)
-        ),
-        FeatureItem(
-            icon = R.drawable.ic_proton_lines_long_to_small,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_unread_filter_subtitle_b2b)
-        ),
-        FeatureItem(
-            icon = R.drawable.ic_proton_paint_roller,
-            title = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_title),
-            description = TextUiModel.TextRes(R.string.spotlight_screen_category_view_ui_enhancements_subtitle)
+            icon = R.drawable.ic_envelope_lines,
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_subtitle)
         )
     ).toImmutableList()
 }
-
