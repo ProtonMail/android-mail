@@ -17,6 +17,10 @@
     <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
     <string name="content_search_bottomsheet_settings_link">settings</string>
     <string name="content_search_bottomsheet_ok">Ok</string>
+
+    <!-- Content search screen -->
+    <string name="content_search_no_results_title">No results</string>
+    <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
     <string name="content_search_placeholder_text">Search</string>
     <string name="content_search_clear_query_content_description">Clear search query</string>
     <string name="content_search_close_content_description">Close search</string>
@@ -25,4 +29,15 @@
     <string name="content_search_include_trash">Trash</string>
     <string name="content_search_include_spam">Spam</string>
     <string name="content_search_about_content_search">About searching\nemail content</string>
+    <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+    <!-- Search history -->
+    <string name="content_search_recent_searches_title">Recent</string>
+    <string name="content_search_clear_recent_searches">Clear</string>
+    <string name="content_search_previously_found_title">Previously found</string>
+    <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+    <!-- Selection mode -->
+    <string name="content_search_delete_dialog_title">Delete permanently?</string>
+    <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
+    <string name="content_search_delete_dialog_confirm">Delete</string>
+    <string name="content_search_delete_dialog_cancel">Cancel</string>
 </resources>

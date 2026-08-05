@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.bundles.module.presentation)
     implementation(libs.bundles.compose)
     implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
     implementation(project(":mail-attachments:domain"))
     implementation(project(":mail-attachments:presentation"))
