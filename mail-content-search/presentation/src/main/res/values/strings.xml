@@ -17,4 +17,12 @@
     <string name="content_search_bottomsheet_description">Emails are being downloaded over Wi-Fi or mobile data. You can switch to Wi-Fi only in %1$s.</string>
     <string name="content_search_bottomsheet_settings_link">settings</string>
     <string name="content_search_bottomsheet_ok">Ok</string>
+    <string name="content_search_placeholder_text">Search</string>
+    <string name="content_search_clear_query_content_description">Clear search query</string>
+    <string name="content_search_close_content_description">Close search</string>
+    <string name="content_search_options_content_description">Search options</string>
+    <string name="content_search_include_messages_in">Include messages in</string>
+    <string name="content_search_include_trash">Trash</string>
+    <string name="content_search_include_spam">Spam</string>
+    <string name="content_search_about_content_search">About searching\nemail content</string>
 </resources>
