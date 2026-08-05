@@ -193,6 +193,7 @@ fun MailboxScreen(
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
     val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
     val isContentSearchEnabled = viewModel.isContentSearchEnabled.collectAsStateWithLifecycle().value
+    val isContentSearchScreenEnabled = viewModel.isContentSearchScreenEnabled.collectAsStateWithLifecycle().value
     val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
@@ -287,8 +288,14 @@ fun MailboxScreen(
         onSwipeLabelAs = { itemId -> viewModel.submit(MailboxViewAction.SwipeLabelAsAction(itemId)) },
         onSwipeMoveTo = { itemId -> viewModel.submit(MailboxViewAction.SwipeMoveToAction(itemId)) },
         onEnterSearchMode = {
-            actions.onEnterSearchMode()
-            viewModel.submit(MailboxViewAction.EnterSearchMode)
+            // The standalone search screen replaces the in-mailbox search mode entirely, so the two
+            // paths are exclusive rather than layered.
+            if (isContentSearchScreenEnabled) {
+                actions.onNavigateToContentSearch()
+            } else {
+                actions.onEnterSearchMode()
+                viewModel.submit(MailboxViewAction.EnterSearchMode)
+            }
         },
         onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
         onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
@@ -1364,6 +1371,7 @@ object MailboxScreen {
         val onSwipeLabelAs: (LabelAsItemId) -> Unit,
         val onSwipeMoveTo: (MoveToItemId) -> Unit,
         val onEnterSearchMode: () -> Unit,
+        val onNavigateToContentSearch: () -> Unit,
         val onSearchQuery: (String) -> Unit,
         val onSearchResult: () -> Unit,
         val onExitSearchMode: () -> Unit,
@@ -1428,6 +1436,7 @@ object MailboxScreen {
                 onSwipeMoveTo = { _ -> },
                 onExitSearchMode = {},
                 onEnterSearchMode = {},
+                onNavigateToContentSearch = {},
                 onSearchQuery = {},
                 onSearchResult = {},
                 onAccountAvatarClicked = {},

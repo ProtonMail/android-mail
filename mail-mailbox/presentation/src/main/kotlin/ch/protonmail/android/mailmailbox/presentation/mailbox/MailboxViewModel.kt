@@ -35,7 +35,6 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
@@ -55,8 +54,11 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchScreenEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -228,7 +230,8 @@ class MailboxViewModel @Inject constructor(
     private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
     private val categoryViewEnabled: IsCategoryViewEnabled,
-    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
+    @IsContentSearchScreenEnabled private val isContentSearchScreenFeatureEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
@@ -259,6 +262,11 @@ class MailboxViewModel @Inject constructor(
 
     val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
         .mapLatest { isContentSearchFeatureEnabled() }
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    val isContentSearchScreenEnabled: StateFlow<Boolean> = primaryUserId
+        .mapLatest { isContentSearchScreenFeatureEnabled.get() }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
@@ -323,6 +331,7 @@ class MailboxViewModel @Inject constructor(
                     is BottomBarState.Data -> MailboxEvent.MessageBottomBarEvent(
                         BottomBarEvent.ShowAndUpdateActionsData(bottomBarState.target, bottomBarState.actions)
                     )
+
                     else -> MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
                 }
             }

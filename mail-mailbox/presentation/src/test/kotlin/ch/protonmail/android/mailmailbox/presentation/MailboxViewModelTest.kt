@@ -81,6 +81,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveSelectedLabelWithCa
 import ch.protonmail.android.maillabel.domain.usecase.SelectCategory
 import ch.protonmail.android.maillabel.domain.usecase.SelectMailLabelId
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmailbox.domain.model.MailboxFetchNewStatus
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
@@ -428,6 +429,10 @@ internal class MailboxViewModelTest {
         coEvery { this@mockk.invoke() } returns false
     }
 
+    private val isContentSearchScreenFeatureEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
+
     val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
     private val observeCategoryViewStatus = mockk<ObserveCategoryViewStatus> {
         coEvery {
@@ -502,6 +507,7 @@ internal class MailboxViewModelTest {
             selectCategory = selectCategory,
             categoryViewEnabled = isCategoryViewEnabled,
             isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
+            isContentSearchScreenFeatureEnabled = isContentSearchScreenFeatureEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus,
             observeCategorySpotlightState = observeCategorySpotlightState,
             markCategorySpotlightSeen = markCategorySpotlightSeen
