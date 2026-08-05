@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation
 
-import ch.protonmail.android.feature.spotlight.RecategoriseSpotlightState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
@@ -43,8 +42,7 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Loading,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.NotRequired
         )
 
         // Then
@@ -61,8 +59,7 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.NotRequired
         )
 
         // Then
@@ -81,8 +78,7 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.NotRequired
         )
 
         // Then
@@ -102,48 +98,11 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.NotRequired
         )
 
         // Then
         assertEquals(HomeInterstitialPriority.FeatureSpotlight, result)
-    }
-
-    @Test
-    fun `resolves to recategorise over the content search bottom sheet`() {
-        // When
-        val result = resolveHomeInterstitialPriority(
-            onboardingState = OnboardingEligibilityState.NotRequired,
-            notificationsState = NotificationsPermissionState.Granted,
-            featureSpotlightState = FeatureSpotlightState.Hide,
-            contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
-            blackFridayState = BlackFridayModalState.NotRequired,
-            springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Show
-        )
-
-        // Then
-        assertEquals(HomeInterstitialPriority.Recategorise, result)
-    }
-
-    @Test
-    fun `resolves to loading when the recategorise state is still loading`() {
-        // When
-        val result = resolveHomeInterstitialPriority(
-            onboardingState = OnboardingEligibilityState.NotRequired,
-            notificationsState = NotificationsPermissionState.Granted,
-            featureSpotlightState = FeatureSpotlightState.Hide,
-            contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
-            blackFridayState = BlackFridayModalState.NotRequired,
-            springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Loading
-        )
-
-        // Then
-        assertEquals(HomeInterstitialPriority.Loading, result)
     }
 
     @Test
@@ -156,8 +115,7 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.Show(UpsellingVisibility.Promotional.SummerCampaign.Wave1),
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.Show(UpsellingVisibility.Promotional.SummerCampaign.Wave1)
         )
 
         // Then
@@ -174,8 +132,7 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired,
-            recategoriseState = RecategoriseSpotlightState.Hide
+            summerCampaignState = SummerCampaignModalState.NotRequired
         )
 
         // Then

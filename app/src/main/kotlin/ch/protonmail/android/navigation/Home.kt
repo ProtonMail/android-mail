@@ -73,8 +73,6 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
-import ch.protonmail.android.feature.spotlight.HomeRecategoriseSpotlightViewModel
-import ch.protonmail.android.mailcategory.presentation.RecategoriseBottomSheet
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.SnackbarError
@@ -177,8 +175,7 @@ fun Home(
     springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
-    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel(),
-    recategoriseSpotlightViewModel: HomeRecategoriseSpotlightViewModel = hiltViewModel()
+    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -199,7 +196,6 @@ fun Home(
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
-    val recategoriseSpotlightState by recategoriseSpotlightViewModel.state.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -210,8 +206,7 @@ fun Home(
                 contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
-                summerCampaignEligibilityState,
-                recategoriseSpotlightState
+                summerCampaignEligibilityState
             )
         }
     }
@@ -519,9 +514,6 @@ fun Home(
                 )
             }
 
-            // Rendered below via its own self-contained bottom sheet.
-            is HomeInterstitialPriority.Recategorise -> Unit
-
             is HomeInterstitialPriority.None -> {
                 if (showBottomSheet) {
                     scope.launch { bottomSheetState.hide() }
@@ -529,12 +521,6 @@ fun Home(
                 }
             }
         }
-    }
-
-    if (interstitialPriority is HomeInterstitialPriority.Recategorise &&
-        currentDestinationRoute == Screen.Mailbox.route
-    ) {
-        RecategoriseBottomSheet(onDismiss = { recategoriseSpotlightViewModel.markPersonaliseSeen() })
     }
 
     val eventLoopErrorString = stringResource(R.string.home_event_loop_error_snackbar)

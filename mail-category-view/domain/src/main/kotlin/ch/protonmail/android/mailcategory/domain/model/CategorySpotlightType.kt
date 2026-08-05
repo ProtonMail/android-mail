@@ -20,9 +20,8 @@ package ch.protonmail.android.mailcategory.domain.model
 
 /**
  * The category-view onboarding banners. Each is dismissed independently and tracked with its own
- * "seen" preference. [UnseenCategory] has priority over [Personalise] when both are eligible to show.
+ * "seen" preference.
  */
 enum class CategorySpotlightType {
-    UnseenCategory,
-    Personalise
+    UnseenCategory
 }

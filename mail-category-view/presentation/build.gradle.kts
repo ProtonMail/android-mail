@@ -64,7 +64,6 @@ dependencies {
 
     implementation(libs.bundles.module.presentation)
 
-    implementation(libs.lottie.compose)
     implementation(libs.proton.core.domain)
 
     implementation(project(":design-system"))

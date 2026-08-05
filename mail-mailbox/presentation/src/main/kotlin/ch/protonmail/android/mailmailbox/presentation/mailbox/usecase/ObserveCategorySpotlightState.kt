@@ -32,9 +32,6 @@ import javax.inject.Inject
 
 /**
  * Decides whether the unseen-dot category-view onboarding banner should be shown.
- *
- * The Personalise spotlight is handled separately as a Home interstitial (see
- * `HomeRecategoriseSpotlightViewModel`), so it is intentionally not produced here.
  */
 class ObserveCategorySpotlightState @Inject constructor(
     private val observeCategorySpotlightSeen: ObserveCategorySpotlightSeen,

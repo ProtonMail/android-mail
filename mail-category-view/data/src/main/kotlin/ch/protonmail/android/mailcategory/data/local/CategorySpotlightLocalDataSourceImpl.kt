@@ -48,9 +48,6 @@ class CategorySpotlightLocalDataSourceImpl @Inject constructor(
     private fun seenPrefKeyFor(type: CategorySpotlightType): Preferences.Key<Boolean> = when (type) {
         CategorySpotlightType.UnseenCategory ->
             booleanPreferencesKey(CategorySpotlightDataStoreProvider.CATEGORY_UNSEEN_SPOTLIGHT_SEEN_KEY)
-
-        CategorySpotlightType.Personalise ->
-            booleanPreferencesKey(CategorySpotlightDataStoreProvider.CATEGORY_PERSONALISE_SPOTLIGHT_SEEN_KEY)
     }
 }
 

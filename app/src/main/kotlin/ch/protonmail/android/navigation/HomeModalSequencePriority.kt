@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation
 
-import ch.protonmail.android.feature.spotlight.RecategoriseSpotlightState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
@@ -37,7 +36,6 @@ sealed interface HomeInterstitialPriority {
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
-    data object Recategorise : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
 
@@ -49,8 +47,7 @@ fun resolveHomeInterstitialPriority(
     contentSearchBottomSheetState: ContentSearchBottomSheetState,
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
-    summerCampaignState: SummerCampaignModalState,
-    recategoriseState: RecategoriseSpotlightState
+    summerCampaignState: SummerCampaignModalState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
     @Suppress("ComplexCondition")
@@ -58,8 +55,7 @@ fun resolveHomeInterstitialPriority(
         notificationsState is NotificationsPermissionState.Loading ||
         featureSpotlightState is FeatureSpotlightState.Loading ||
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Loading ||
-        blackFridayState is BlackFridayModalState.Loading ||
-        recategoriseState is RecategoriseSpotlightState.Loading
+        blackFridayState is BlackFridayModalState.Loading
     ) {
         return HomeInterstitialPriority.Loading
     }
@@ -71,7 +67,6 @@ fun resolveHomeInterstitialPriority(
 
         featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
 
-        recategoriseState is RecategoriseSpotlightState.Show -> HomeInterstitialPriority.Recategorise
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch
         summerCampaignState is SummerCampaignModalState.Show ->
             HomeInterstitialPriority.SummerCampaign(summerCampaignState)
