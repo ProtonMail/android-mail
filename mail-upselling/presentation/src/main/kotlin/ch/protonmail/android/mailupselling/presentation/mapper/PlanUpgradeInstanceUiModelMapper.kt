@@ -133,7 +133,9 @@ internal fun ProductOfferDetail.toProduct(context: Context): Product {
         cycle = offer.current.cycle,
         header = header,
         entitlements = metadata.entitlements,
-        renewalText = getRenewalText(context)
+        renewalText = getRenewalText(context),
+        amount = offer.current.amount,
+        currency = offer.current.currency
     )
 }
 

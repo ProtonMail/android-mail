@@ -48,5 +48,6 @@ android {
 dependencies {
     implementation(libs.javax.inject)
     implementation(libs.kotlin.coroutines.core)
+    implementation(libs.proton.android.payment)
     testImplementation(libs.bundles.test)
 }

@@ -111,7 +111,7 @@ private fun MailPurchaseButton(
 
     MailPurchaseButton(
         onClick = onClick,
-        loading = state is Pending,
+        loading = state is Pending || state is Loading,
         enabled = state !is Loading && state !is Success && (state as? PurchaseButtonState.Error)?.enabled != false,
         variant = variant,
         modifier = modifier

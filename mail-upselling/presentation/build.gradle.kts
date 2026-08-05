@@ -90,6 +90,7 @@ dependencies {
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
     implementation(project(":uicomponents"))
+    implementation(project(":shared:core:events:domain"))
     implementation(project(":shared:core:payment:domain"))
     implementation(project(":shared:core:payment:presentation"))
     implementation(project(":shared:core:payment-google:domain"))
@@ -97,6 +98,7 @@ dependencies {
 
     debugImplementation(libs.bundles.compose.debug)
 
+    implementation(libs.proton.android.payment)
     implementation(libs.proton.core.user.domain)
     implementation(libs.bundles.compose)
     implementation(libs.androidx.hilt.lifecycle.viewmodel)

@@ -29,7 +29,9 @@ data class Product(
     val header: ProductDetailHeader,
     val offerToken: ProductOfferToken,
     val entitlements: List<ProductEntitlement>,
-    val renewalText: String?
+    val renewalText: String?,
+    val amount: Long = 0L,
+    val currency: String = ""
 ) {
 
     companion object {

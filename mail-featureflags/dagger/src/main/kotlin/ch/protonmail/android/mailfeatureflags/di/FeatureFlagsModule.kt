@@ -37,6 +37,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessing
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRegisterDeviceTokenWithWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
@@ -61,6 +63,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.PushProcessingWithout
 import ch.protonmail.android.mailfeatureflags.domain.model.RateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.RegisterDeviceTokenWithWorker
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
+import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesPurchaseEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
@@ -284,7 +288,29 @@ object FeatureFlagsModule {
 
 
     @Provides
+    @Singleton
+    @IsSdkUpgradesReadEnabled
+    fun provideSdkUpgradesReadEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SdkUpgradesReadEnabled.key, false)
+
+    @Provides
     @IntoSet
     @Singleton
     fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideSdkUpgradesReadEnabledDef(): FeatureFlagDefinition = SdkUpgradesReadEnabled
+
+    @Provides
+    @Singleton
+    @IsSdkUpgradesPurchaseEnabled
+    fun provideSdkUpgradesPurchaseEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SdkUpgradesPurchaseEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideSdkUpgradesPurchaseEnabledDef(): FeatureFlagDefinition = SdkUpgradesPurchaseEnabled
 }

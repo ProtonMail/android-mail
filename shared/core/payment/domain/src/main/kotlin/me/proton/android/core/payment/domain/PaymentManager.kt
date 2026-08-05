@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.android.core.payment.domain.model.PlayStoreProductOfferList
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import me.proton.android.core.payment.domain.model.Purchase
+import me.proton.android.payment.billing.model.StoreProduct
 
 /**
  * Get [ProductOfferDetail] from App Store (e.g. Google Play Store).
@@ -33,6 +34,14 @@ interface PaymentManager {
      * @throws PaymentException
      */
     suspend fun getStoreProducts(ids: List<String>): List<PlayStoreProductOfferList>
+
+    /**
+     * Get [StoreProduct]s (Payments SDK model) from Google Play.
+     * Will be removed once payment-billing-google is added, through which the StoreCapability can fetch directly.
+     *
+     * @throws PaymentException
+     */
+    suspend fun getSdkStoreProducts(ids: List<String>): List<StoreProduct>
 
     /**
      * Get existing [Purchase] from Store.

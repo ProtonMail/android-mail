@@ -99,3 +99,11 @@ annotation class IsRegisterDeviceTokenWithWorkerEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsBgProcessingRelaxedBatteryConstraintEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSdkUpgradesReadEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSdkUpgradesPurchaseEnabled

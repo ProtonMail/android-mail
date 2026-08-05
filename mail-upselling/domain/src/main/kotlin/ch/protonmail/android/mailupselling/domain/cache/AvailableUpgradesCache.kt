@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.domain.cache
 
 import java.util.concurrent.ConcurrentHashMap
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
+import ch.protonmail.android.mailupselling.domain.sdk.SdkBackedGetAvailableUpgrades
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.android.core.payment.domain.model.ProductOfferList
-import me.proton.android.core.payment.domain.usecase.GetAvailableUpgrades
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,7 +39,7 @@ import kotlin.time.Clock
 
 @Singleton
 class AvailableUpgradesCache @Inject constructor(
-    private val getAvailableUpgrades: GetAvailableUpgrades,
+    private val getAvailableUpgrades: SdkBackedGetAvailableUpgrades,
     @UpsellingCacheScope private val scope: CoroutineScope
 ) {
 

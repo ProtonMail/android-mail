@@ -222,6 +222,10 @@ dependencies {
     implementation(project(":shared:core:payment-google:dagger"))
     implementation(project(":shared:core:payment-google:presentation"))
 
+    implementation(libs.proton.android.payment)
+    implementation(libs.proton.android.payment.billing.google)
+    implementation(libs.kotlin.serialization.json)
+
     implementation(libs.bundles.appLibs)
     implementation(libs.bundles.module.legacyCore)
     implementation(libs.java.jna) { artifact { type = "aar" } }

@@ -34,7 +34,10 @@ import ch.protonmail.android.mailcrashrecord.domain.usecase.SaveMessageBodyWebVi
 import ch.protonmail.android.mailevents.presentation.AppOpenLifecycleObserver
 import ch.protonmail.android.mailnotifications.domain.FirebaseMessagingTokenLifecycleObserver
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
+import ch.protonmail.android.payment.di.HttpCapabilityImpl
+import ch.protonmail.android.payment.di.StoreCapabilityImpl
 import dagger.hilt.android.HiltAndroidApp
+import me.proton.android.payment.Payments
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -66,6 +69,12 @@ internal class App : Application() {
     @Inject
     lateinit var saveMessageBodyWebViewCrash: SaveMessageBodyWebViewCrash
 
+    @Inject
+    lateinit var httpCapability: HttpCapabilityImpl
+
+    @Inject
+    lateinit var storeCapability: StoreCapabilityImpl
+
     @OptIn(ExperimentalComposeRuntimeApi::class)
     override fun onCreate() {
         AppLoggers.install(this)
@@ -75,6 +84,8 @@ internal class App : Application() {
         Composer.setDiagnosticStackTraceEnabled(BuildConfig.DEBUG)
 
         benchmarkTracer.begin("proton-app-init")
+
+        initPaymentsSdk()
 
         MainInitializer.init(this)
         registerActivityLifecycleCallbacks(secureActivityLifecycleCallbacks)
@@ -86,6 +97,13 @@ internal class App : Application() {
         addAppOpenLifecycleObserver()
 
         benchmarkTracer.end()
+    }
+
+    private fun initPaymentsSdk() {
+        Payments
+            .registerHttp(httpCapability)
+            .registerStore(storeCapability)
+            .init(this)
     }
 
     private fun addLogsFileHandlerObserver() {

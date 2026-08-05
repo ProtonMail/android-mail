@@ -49,10 +49,13 @@ dependencies {
     implementation(libs.android.billing)
     implementation(libs.dagger.hilt.android)
     implementation(libs.proton.core.utilKotlin)
+    implementation(libs.proton.android.payment)
 
     implementation(project(":shared:core:payment:domain"))
     implementation(project(":shared:core:payment-google:domain"))
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.javax.inject)
+
+    testImplementation(libs.bundles.test)
 }

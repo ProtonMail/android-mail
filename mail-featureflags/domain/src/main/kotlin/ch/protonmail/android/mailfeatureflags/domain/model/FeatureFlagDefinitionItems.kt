@@ -201,3 +201,19 @@ data object ContentSearchEnabled : FeatureFlagDefinition(
     description = "Shows the new content search entry points",
     defaultValue = false
 )
+
+data object SdkUpgradesReadEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SdkPaymentUpgradesRead",
+    name = "Use Payments SDK for upgrades read",
+    category = FeatureFlagCategory.Upselling,
+    description = "When ON, fetches upgrade products through the Payments SDK instead of the legacy path.",
+    defaultValue = false
+)
+
+data object SdkUpgradesPurchaseEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SdkPaymentUpgradesPurchase",
+    name = "Use Payments SDK for upgrades purchase",
+    category = FeatureFlagCategory.Upselling,
+    description = "When ON, purchases upgrades through the Payments SDK instead of the legacy path.",
+    defaultValue = false
+)

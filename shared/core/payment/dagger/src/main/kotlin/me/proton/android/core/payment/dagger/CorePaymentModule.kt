@@ -27,17 +27,7 @@ import me.proton.android.core.payment.data.SubscriptionManagerRust
 import me.proton.android.core.payment.domain.IconResourceManager
 import me.proton.android.core.payment.domain.PaymentMetricsTracker
 import me.proton.android.core.payment.domain.SubscriptionManager
-import me.proton.android.core.payment.presentation.component.PurchaseButtonProcessor
-import me.proton.android.core.payment.presentation.component.PurchaseButtonProcessorNative
 import javax.inject.Singleton
-
-@InstallIn(SingletonComponent::class)
-@Module
-interface CorePaymentModule {
-
-    @Binds
-    fun bindPurchaseButtonProcessor(processor: PurchaseButtonProcessorNative): PurchaseButtonProcessor
-}
 
 @Module
 @InstallIn(SingletonComponent::class)

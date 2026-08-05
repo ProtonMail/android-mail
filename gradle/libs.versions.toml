@@ -68,8 +68,9 @@ lottie = "6.7.1"
 material = "1.13.0"
 mockk = "1.14.11"
 paparazzi = "2.0.0-alpha02"
-proton-core = "36.2.0"
+proton-core = "36.4.2"
 proton-rust-core = "0.169.5"
+proton-android-payment = "20260610.d85124a5d8"
 robolectric = "4.15.1" # 4.16.0 requires Java 21
 kotlinpoet-ksp = "2.2.0"
 leakcanary = "2.14"
@@ -241,6 +242,8 @@ proton-core-testAndroid = { module = "me.proton.core:test-android", version.ref 
 proton-core-testKotlin = { module = "me.proton.core:test-kotlin", version.ref = "proton-core" }
 proton-core-testAndroidInstrumented = { module = "me.proton.core:test-android-instrumented", version.ref = "proton-core" }
 proton-rust-core = { module = "me.proton.mail.common:lib", version.ref = "proton-rust-core" }
+proton-android-payment = { module = "me.proton.android.payment:payment", version.ref = "proton-android-payment" }
+proton-android-payment-billing-google = { module = "me.proton.android.payment:payment-billing-google", version.ref = "proton-android-payment" }
 
 [bundles]
 appLibs = [

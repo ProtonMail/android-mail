@@ -60,6 +60,8 @@ dependencies {
     implementation(project(":uicomponents"))
     implementation(project(":shared:core:payment:domain"))
 
+    implementation(libs.proton.android.payment)
+
     implementation(libs.kotlinx.datetime)
     implementation(libs.timber)
     implementation(libs.proton.core.user.domain)
