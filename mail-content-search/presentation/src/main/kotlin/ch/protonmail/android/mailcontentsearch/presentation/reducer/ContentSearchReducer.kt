@@ -21,20 +21,17 @@ package ch.protonmail.android.mailcontentsearch.presentation.reducer
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownloadState
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import javax.inject.Inject
 
 class ContentSearchReducer @Inject constructor(
     private val selectionReducer: SelectionStateReducer,
     private val attachmentDownloadReducer: AttachmentDownloadReducer,
-    private val bulkActionMessageFactory: BulkActionMessageFactory,
-    private val bottomBarReducer: BottomBarReducer
+    private val bulkActionMessageFactory: BulkActionMessageFactory
 ) {
 
     fun newStateFrom(currentState: ContentSearchState, operation: ContentSearchOperation): ContentSearchState =
@@ -74,12 +71,11 @@ class ContentSearchReducer @Inject constructor(
                 currentState.withSelection(selectionReducer.markStarred(currentState.selectionState, isStarred = true))
 
             ContentSearchOperation.UnStarSelection ->
-                currentState.withSelection(
-                    selectionReducer.markStarred(currentState.selectionState, isStarred = false)
-                )
+                currentState.withSelection(selectionReducer.markStarred(currentState.selectionState, isStarred = false))
 
-            // Content-search-specific layer on top of the shared selection state.
-            ContentSearchOperation.ExitSelectionMode -> currentState.exitSelectionMode()
+            // Content-search-specific layers on top of the shared selection state.
+            ContentSearchOperation.ExitSelectionMode ->
+                currentState.copy(selectionState = SelectionState.None, showDeleteDialog = false)
 
             is ContentSearchOperation.BottomBarUpdated -> currentState.copy(bottomBarState = operation.bottomBarState)
 
@@ -117,16 +113,8 @@ class ContentSearchReducer @Inject constructor(
             }
         }
 
-    private fun ContentSearchState.withSelection(newSelectionState: SelectionState) =
-        copy(selectionState = newSelectionState)
+    private fun ContentSearchState.withSelection(selectionState: SelectionState) = copy(selectionState = selectionState)
 
-    // Hides the toolbar along with the selection — otherwise it would keep showing the stale
-    // selection's actions until the next BottomBarUpdated happened to arrive.
-    private fun ContentSearchState.exitSelectionMode() = copy(
-        selectionState = SelectionState.None,
-        showDeleteDialog = false,
-        bottomBarState = bottomBarReducer.newStateFrom(bottomBarState, BottomBarEvent.HideBottomSheet)
-    )
 }
 
 // Adapters between this screen's flat attachment fields and the shared [AttachmentDownloadState].

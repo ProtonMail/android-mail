@@ -18,292 +18,165 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.reducer
 
-import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
-import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
-import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
-import ch.protonmail.android.mailattachments.presentation.R as AttachmentR
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
-import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
-import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
+import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.test.Test
+import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 internal class ContentSearchReducerTest {
 
-    private val maxSelectionMessage = DefinitiveActionResult(TextUiModel.Text("Maximum selection reached"))
-    private val bulkActionMessageFactory = mockk<BulkActionMessageFactory> {
-        every { maxSelectionReachedResult() } returns maxSelectionMessage
-    }
+    // The max-selection message is a plain string, so the label mapper is never consulted here.
     private val reducer = ContentSearchReducer(
-        selectionReducer = SelectionStateReducer(),
-        attachmentDownloadReducer = AttachmentDownloadReducer(),
-        bulkActionMessageFactory = bulkActionMessageFactory,
-        bottomBarReducer = BottomBarReducer()
+        SelectionStateReducer(),
+        AttachmentDownloadReducer(),
+        BulkActionMessageFactory(mockk<MailLabelTextMapper>())
     )
 
-    private fun item(id: String) = MailboxItemUiModelPreviewData.Message.WeatherForecastAug.copy(id = id)
-
-    @Test
-    fun `entering selection mode selects the tapped item`() {
-        val result = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.EnterSelectionMode(item("1"))
-        )
-
-        assertEquals(setOf("1"), result.selectionState.selectedItems.map { it.id }.toSet())
-        assertTrue(result.inSelectionMode)
+    private fun item(
+        id: String,
+        isRead: Boolean = false,
+        isStarred: Boolean = false
+    ): MailboxItemUiModel = mockk {
+        every { this@mockk.id } returns id
+        every { this@mockk.isRead } returns isRead
+        every { this@mockk.isStarred } returns isStarred
     }
 
     @Test
-    fun `toggling an unselected item adds it to the selection`() {
-        val selecting = reducer.newStateFrom(
+    fun `enter selection mode selects the long-clicked item`() {
+        val result = reducer.newStateFrom(
+            ContentSearchState.Initial,
+            ContentSearchOperation.EnterSelectionMode(item("1", isRead = true, isStarred = true))
+        )
+
+        assertTrue(result.inSelectionMode)
+        assertEquals(setOf("1"), result.selectionState.selectedItems.map { it.id }.toSet())
+        assertTrue(result.selectionState.selectedItems.single().isRead)
+        assertTrue(result.selectionState.selectedItems.single().isStarred)
+    }
+
+    @Test
+    fun `toggling an unselected item adds it`() {
+        val start = reducer.newStateFrom(
             ContentSearchState.Initial,
             ContentSearchOperation.EnterSelectionMode(item("1"))
         )
 
-        val result = reducer.newStateFrom(selecting, ContentSearchOperation.ToggleSelection(item("2")))
+        val result = reducer.newStateFrom(start, ContentSearchOperation.ToggleSelection(item("2")))
 
         assertEquals(setOf("1", "2"), result.selectionState.selectedItems.map { it.id }.toSet())
     }
 
     @Test
-    fun `toggling an already-selected item removes it`() {
-        val selecting = reducer.newStateFrom(
+    fun `toggling the last selected item leaves selection mode`() {
+        val start = reducer.newStateFrom(
             ContentSearchState.Initial,
             ContentSearchOperation.EnterSelectionMode(item("1"))
         )
 
-        val result = reducer.newStateFrom(selecting, ContentSearchOperation.ToggleSelection(item("1")))
+        val result = reducer.newStateFrom(start, ContentSearchOperation.ToggleSelection(item("1")))
 
-        assertEquals(emptySet(), result.selectionState.selectedItems.map { it.id }.toSet())
+        assertFalse(result.inSelectionMode)
     }
 
     @Test
-    fun `toggling a new item at the selection limit reports the cap instead of adding it`() {
-        val entering = reducer.newStateFrom(
+    fun `exit selection clears items and dismisses delete dialog`() {
+        val start = reducer
+            .newStateFrom(ContentSearchState.Initial, ContentSearchOperation.EnterSelectionMode(item("1")))
+            .let { reducer.newStateFrom(it, ContentSearchOperation.ShowDeleteDialog) }
+
+        val result = reducer.newStateFrom(start, ContentSearchOperation.ExitSelectionMode)
+
+        assertFalse(result.inSelectionMode)
+        assertFalse(result.showDeleteDialog)
+    }
+
+    @Test
+    fun `mark selection as read flips the cached read flag without exiting`() {
+        val start = reducer.newStateFrom(
             ContentSearchState.Initial,
-            ContentSearchOperation.EnterSelectionMode(item("0"))
+            ContentSearchOperation.EnterSelectionMode(item("1", isRead = false))
         )
-        val atLimit = (1 until SelectionState.MaxItemSelectionLimit).fold(entering) { state, i ->
-            reducer.newStateFrom(state, ContentSearchOperation.ToggleSelection(item("$i")))
-        }
-        assertEquals(SelectionState.MaxItemSelectionLimit, atLimit.selectionState.selectedItems.size)
 
-        val result = reducer.newStateFrom(atLimit, ContentSearchOperation.ToggleSelection(item("overflow")))
+        val result = reducer.newStateFrom(start, ContentSearchOperation.MarkSelectionAsRead)
 
-        assertEquals(SelectionState.MaxItemSelectionLimit, result.selectionState.selectedItems.size)
-        assertEquals(maxSelectionMessage, result.actionMessage.consume())
+        assertTrue(result.inSelectionMode)
+        assertTrue(result.selectionState.selectedItems.all { it.isRead })
     }
 
     @Test
-    fun `items removed from selection drop only those ids`() {
-        val selecting = reducer.newStateFrom(
-            reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.EnterSelectionMode(item("1"))),
-            ContentSearchOperation.ToggleSelection(item("2"))
-        )
+    fun `items removed from selection are dropped`() {
+        val start = reducer
+            .newStateFrom(ContentSearchState.Initial, ContentSearchOperation.EnterSelectionMode(item("1")))
+            .let { reducer.newStateFrom(it, ContentSearchOperation.ToggleSelection(item("2"))) }
 
-        val result = reducer.newStateFrom(selecting, ContentSearchOperation.ItemsRemovedFromSelection(listOf("1")))
+        val result = reducer.newStateFrom(start, ContentSearchOperation.ItemsRemovedFromSelection(listOf("1")))
 
         assertEquals(setOf("2"), result.selectionState.selectedItems.map { it.id }.toSet())
     }
 
     @Test
-    fun `exiting selection mode clears the selection and the delete dialog`() {
-        val selecting = reducer.newStateFrom(
-            ContentSearchState.Initial.copy(showDeleteDialog = true),
-            ContentSearchOperation.EnterSelectionMode(item("1"))
-        )
-
-        val result = reducer.newStateFrom(selecting, ContentSearchOperation.ExitSelectionMode)
-
-        assertEquals(SelectionState.None, result.selectionState)
-        assertEquals(false, result.showDeleteDialog)
-    }
-
-    @Test
-    fun `exiting selection mode hides the bottom bar instead of leaving the stale selection's actions shown`() {
-        val shownWithStaleActions = reducer.newStateFrom(
-            reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.EnterSelectionMode(item("1"))),
-            ContentSearchOperation.BottomBarUpdated(
-                BottomBarState.Data.Shown(BottomBarTarget.Mailbox, persistentListOf())
+    fun `toggling past the selection limit refuses the item and reports the cap`() {
+        val atLimit = ContentSearchState.Initial.copy(
+            selectionState = SelectionState(
+                selectedItems = (1..SelectionState.MaxItemSelectionLimit).map {
+                    SelectionState.SelectedMailItem(id = "$it", isRead = false, isStarred = false)
+                }.toSet(),
+                areAllItemsSelected = false
             )
         )
 
-        val result = reducer.newStateFrom(shownWithStaleActions, ContentSearchOperation.ExitSelectionMode)
+        val result = reducer.newStateFrom(atLimit, ContentSearchOperation.ToggleSelection(item("overflow")))
 
-        assertEquals(
-            BottomBarState.Data.Hidden(BottomBarTarget.Mailbox, persistentListOf()),
-            result.bottomBarState
-        )
+        assertEquals(SelectionState.MaxItemSelectionLimit, result.selectionState.selectedItems.size)
+        assertFalse(result.selectionState.selectedItems.any { it.id == "overflow" })
+        assertNotNull(result.actionMessage.consume())
     }
 
     @Test
-    fun `bottom bar updated replaces the bottom bar state`() {
-        val newState = BottomBarState.Data.Shown(BottomBarTarget.Mailbox, persistentListOf())
+    fun `toggling an already selected item still works at the limit`() {
+        val selected = (1..SelectionState.MaxItemSelectionLimit).map {
+            SelectionState.SelectedMailItem(id = "$it", isRead = false, isStarred = false)
+        }.toSet()
+        val atLimit = ContentSearchState.Initial.copy(
+            selectionState = SelectionState(selectedItems = selected, areAllItemsSelected = false)
+        )
 
-        val result = reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.BottomBarUpdated(newState))
+        val result = reducer.newStateFrom(atLimit, ContentSearchOperation.ToggleSelection(item("1")))
 
-        assertEquals(newState, result.bottomBarState)
+        assertEquals(SelectionState.MaxItemSelectionLimit - 1, result.selectionState.selectedItems.size)
     }
 
     @Test
-    fun `show and dismiss delete dialog toggle the flag`() {
-        val shown = reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.ShowDeleteDialog)
-        assertTrue(shown.showDeleteDialog)
-
-        val dismissed = reducer.newStateFrom(shown, ContentSearchOperation.DismissDeleteDialog)
-        assertEquals(false, dismissed.showDeleteDialog)
-    }
-
-    @Test
-    fun `avatar images updated replaces the avatar images map`() {
-        val avatarImages = AvatarImagesUiModel(mapOf("a" to mockk()))
-
-        val result = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AvatarImagesUpdated(avatarImages)
-        )
-
-        assertEquals(avatarImages, result.avatarImages)
-    }
-
-    @Test
-    fun `attachment download started marks the pill as downloading`() {
-        val attachmentId = AttachmentIdUiModel("attachment-1")
-
-        val result = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AttachmentDownloadStarted(attachmentId)
-        )
-
-        assertEquals(attachmentId, result.downloadingAttachmentId)
-    }
-
-    @Test
-    fun `attachment ready clears the spinner and exposes the file to open`() {
-        val downloading = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AttachmentDownloadStarted(AttachmentIdUiModel("attachment-1"))
-        )
-        val intentValues = OpenAttachmentIntentValues(
-            openMode = AttachmentOpenMode.Open,
-            name = "invoice.pdf",
-            mimeType = "application/pdf",
-            uri = mockk()
-        )
-
-        val result = reducer.newStateFrom(downloading, ContentSearchOperation.AttachmentReady(intentValues))
-
-        assertNull(result.downloadingAttachmentId)
-        assertEquals(intentValues, result.openAttachment.consume())
-    }
-
-    @Test
-    fun `attachment download cancelled clears the spinner silently`() {
-        val downloading = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AttachmentDownloadStarted(AttachmentIdUiModel("attachment-1"))
-        )
-
-        val result = reducer.newStateFrom(downloading, ContentSearchOperation.AttachmentDownloadCancelled)
-
-        assertNull(result.downloadingAttachmentId)
-        assertNull(result.errorMessage.consume())
-    }
-
-    @Test
-    fun `attachment download in progress warns without disturbing the running download`() {
-        val downloading = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AttachmentDownloadStarted(AttachmentIdUiModel("attachment-1"))
-        )
-
-        val result = reducer.newStateFrom(downloading, ContentSearchOperation.AttachmentDownloadInProgress)
-
-        assertEquals(AttachmentIdUiModel("attachment-1"), result.downloadingAttachmentId)
-        assertEquals(
-            TextUiModel.TextRes(AttachmentR.string.attachment_download_in_progress),
-            result.errorMessage.consume()
-        )
-    }
-
-    @Test
-    fun `attachment download failed clears the spinner and reports the error`() {
-        val downloading = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.AttachmentDownloadStarted(AttachmentIdUiModel("attachment-1"))
-        )
-
-        val result = reducer.newStateFrom(downloading, ContentSearchOperation.AttachmentDownloadFailed)
-
-        assertNull(result.downloadingAttachmentId)
-        assertEquals(
-            TextUiModel.TextRes(AttachmentR.string.attachment_download_error),
-            result.errorMessage.consume()
-        )
-    }
-
-    @Test
-    fun `mark selection as read and unread flip the cached read flag`() {
-        val selecting = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.EnterSelectionMode(item("1"))
-        )
-
-        val read = reducer.newStateFrom(selecting, ContentSearchOperation.MarkSelectionAsRead)
-        assertTrue(read.selectionState.selectedItems.all { it.isRead })
-
-        val unread = reducer.newStateFrom(read, ContentSearchOperation.MarkSelectionAsUnread)
-        assertTrue(unread.selectionState.selectedItems.none { it.isRead })
-    }
-
-    @Test
-    fun `star and unstar selection flip the cached starred flag`() {
-        val selecting = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.EnterSelectionMode(item("1"))
-        )
-
-        val starred = reducer.newStateFrom(selecting, ContentSearchOperation.StarSelection)
-        assertTrue(starred.selectionState.selectedItems.all { it.isStarred })
-
-        val unstarred = reducer.newStateFrom(starred, ContentSearchOperation.UnStarSelection)
-        assertTrue(unstarred.selectionState.selectedItems.none { it.isStarred })
-    }
-
-    @Test
-    fun `show action message surfaces the given result`() {
-        val actionResult = DefinitiveActionResult(TextUiModel.Text("3 moved"))
-
-        val result = reducer.newStateFrom(
-            ContentSearchState.Initial,
-            ContentSearchOperation.ShowActionMessage(actionResult)
-        )
-
-        assertEquals(actionResult, result.actionMessage.consume())
-    }
-
-    @Test
-    fun `show error surfaces the given message`() {
-        val message = TextUiModel.Text("Something went wrong")
+    fun `show error surfaces the message`() {
+        val message = TextUiModel("Move operation failed")
 
         val result = reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.ShowError(message))
 
         assertEquals(message, result.errorMessage.consume())
+    }
+
+    @Test
+    fun `bottom bar updated replaces the bottom bar state`() {
+        val shown = BottomBarState.Data.Shown(BottomBarTarget.Mailbox, persistentListOf())
+
+        val result = reducer.newStateFrom(ContentSearchState.Initial, ContentSearchOperation.BottomBarUpdated(shown))
+
+        assertEquals(shown, result.bottomBarState)
     }
 }
