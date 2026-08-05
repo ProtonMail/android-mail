@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MoreActionsSheetStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
@@ -292,6 +293,12 @@ internal class MailboxViewModelTest {
         coEvery { this@mockk(any(), any(), any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
+    // Real factory over the same mock, so the bottom-bar expectations below are unaffected by the extraction.
+    private val bottomBarStateFactory = BottomBarStateFactory(
+        getBottomBarActions = getBottomBarActions,
+        actionUiModelMapper = actionUiModelMapper
+    )
+
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
 
     private val findLocalSystemLabelId = mockk<FindLocalSystemLabelId>()
@@ -462,9 +469,8 @@ internal class MailboxViewModelTest {
             observeUnreadCounters = observeUnreadCounters,
             observeCategoryAwareUnreadCount = observeCategoryAwareUnreadCount,
             observeFolderColorSettings = observeFolderColorSettings,
-            getBottomBarActions = getBottomBarActions,
+            bottomBarStateFactory = bottomBarStateFactory,
             moreActionsSheetStateFactory = moreActionsSheetStateFactory,
-            actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             swipeActionsMapper = swipeActionsMapper,
             mailboxActionExecutor = mailboxActionExecutor,

@@ -48,7 +48,6 @@ import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
@@ -87,7 +86,6 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.SpamOrTrash
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
-import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryAwareUnreadCount
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCategoryViewStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxFetchNewStatus
@@ -107,6 +105,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MoveResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MoreActionsSheetStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
@@ -195,9 +194,8 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeCategoryAwareUnreadCount: ObserveCategoryAwareUnreadCount,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
-    private val getBottomBarActions: GetBottomBarActions,
+    private val bottomBarStateFactory: BottomBarStateFactory,
     private val moreActionsSheetStateFactory: MoreActionsSheetStateFactory,
-    private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val swipeActionsMapper: SwipeActionsMapper,
     private val mailboxActionExecutor: MailboxActionExecutor,
@@ -314,23 +312,19 @@ class MailboxViewModel @Inject constructor(
                 selectedMailboxItems == null -> null
                 // In selection mode with no items selected: hide the bottom bar.
                 selectedMailboxItems.isEmpty() -> MailboxEvent.MessageBottomBarEvent(BottomBarEvent.HideBottomSheet)
-                else -> getBottomBarActions(
-                    primaryUserId.first(),
-                    selectedMailLabel.id.labelId,
-                    selectedMailboxItems.map { MailboxItemId(it.id) },
-                    getViewModeForCurrentLocation(selectedMailLabel.id)
-                ).fold(
-                    ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
-                    ifRight = { actions ->
-                        MailboxEvent.MessageBottomBarEvent(
-                            BottomBarEvent.ShowAndUpdateActionsData(
-                                BottomBarTarget.Mailbox,
-                                actions.map { action -> actionUiModelMapper.toUiModel(action) }
-                                    .toImmutableList()
-                            )
-                        )
-                    }
-                )
+                else -> when (
+                    val bottomBarState = bottomBarStateFactory.create(
+                        primaryUserId.first(),
+                        selectedMailLabel.id.labelId,
+                        selectedMailboxItems.map { MailboxItemId(it.id) },
+                        getViewModeForCurrentLocation(selectedMailLabel.id)
+                    )
+                ) {
+                    is BottomBarState.Data -> MailboxEvent.MessageBottomBarEvent(
+                        BottomBarEvent.ShowAndUpdateActionsData(bottomBarState.target, bottomBarState.actions)
+                    )
+                    else -> MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
+                }
             }
         }
             .filterNotNull()
