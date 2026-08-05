@@ -57,7 +57,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.MailboxSkeletonRowHeight
 
 @Composable
-internal fun MailboxSkeletonLoading(modifier: Modifier = Modifier) {
+fun MailboxSkeletonLoading(modifier: Modifier = Modifier) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val rowHeight = MailboxSkeletonRowHeight
     val rowCount = remember(screenHeight, rowHeight) {
