@@ -71,12 +71,13 @@ dependencies {
 
     implementation(libs.bundles.module.presentation)
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.paging.runtime)
 
+    implementation(project(":mail-attachments:domain"))
+    implementation(project(":mail-attachments:presentation"))
     implementation(project(":mail-content-search:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
-    implementation(project(":mail-attachments:domain"))
-    implementation(project(":mail-attachments:presentation"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
     implementation(project(":mail-mailbox:domain"))
