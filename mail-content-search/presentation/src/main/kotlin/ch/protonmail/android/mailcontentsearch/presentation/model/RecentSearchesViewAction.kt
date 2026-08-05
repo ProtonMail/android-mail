@@ -23,13 +23,14 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 sealed interface RecentSearchesViewAction {
 
+    /** Re-reads the history. Safe to submit repeatedly: it never drops back to the loading state. */
     data object Refresh : RecentSearchesViewAction
 
     data class TermClicked(val query: String) : RecentSearchesViewAction
 
     data class TermDismissed(val query: String) : RecentSearchesViewAction
 
-    data object ClearTermsClicked : RecentSearchesViewAction
+    data object ClearTerms : RecentSearchesViewAction
 
     data class FoundItemClicked(val item: RecentFoundItemUiModel) : RecentSearchesViewAction
 
@@ -37,6 +38,7 @@ sealed interface RecentSearchesViewAction {
 
     data class FoundItemStarClicked(val item: RecentFoundItemUiModel) : RecentSearchesViewAction
 
+    /** A live search result was opened: records both the query and the item it was found by. */
     data class SearchResultOpened(
         val query: String,
         val messageId: MessageId,

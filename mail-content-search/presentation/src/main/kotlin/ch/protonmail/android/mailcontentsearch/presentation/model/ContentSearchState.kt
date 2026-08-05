@@ -41,11 +41,14 @@ data class ContentSearchState(
     val includeFilter: IncludeFilter,
     val isConversationGrouping: Boolean,
     val openedFromLocation: LabelId,
+    /**
+     * All Mail, the one location that spans every folder. Used to open a previously found item that has
+     * since been moved to Trash or Spam, which [openedFromLocation] may exclude — the history is not
+     * scoped by the include filter, so it can offer items the current search would not return.
+     */
     val allMailLocation: LabelId,
     val selectionState: SelectionState,
     val bottomBarState: BottomBarState,
-    // Set directly by the view model, like [query] and [phase]: request/dismiss is a one-shot UI
-    // event, not a reusable transition, so it has no ContentSearchOperation of its own.
     val bottomSheetState: BottomSheetState?,
     val showDeleteDialog: Boolean,
     val actionMessage: Effect<ActionResult>,
@@ -54,9 +57,6 @@ data class ContentSearchState(
     val openAttachment: Effect<OpenAttachmentIntentValues>,
     val errorMessage: Effect<TextUiModel>
 ) {
-
-    // Selection state machine is shared with the mailbox (see SelectionStateReducer); content search
-    // only owns the toolbar/dialog layer on top of it.
     val inSelectionMode: Boolean get() = selectionState.inSelectionMode
 
     sealed interface Phase {

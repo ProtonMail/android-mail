@@ -23,7 +23,6 @@ import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 
 sealed interface ContentSearchViewAction {
-
     data class SuggestionSelected(val query: String) : ContentSearchViewAction
 
     data object ClearQuery : ContentSearchViewAction

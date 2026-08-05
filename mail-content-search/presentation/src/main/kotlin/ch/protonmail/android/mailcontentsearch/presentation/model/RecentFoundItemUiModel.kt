@@ -28,11 +28,15 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
  *
  * @param searchQuery the query the item was found by, forwarded on open so the detail screen
  * highlights the same terms. Null when no query was recorded.
+ * @param isInTrashOrSpam where the item lives *now*, which is not necessarily where it was found: the
+ * history outlives the moves made to it. Only Trash and Spam are called out because they are the two
+ * locations Almost All Mail leaves out, so an item in either has to be opened from All Mail instead.
  */
 @Immutable
 data class RecentFoundItemUiModel(
     val item: MailboxItemUiModel,
-    val searchQuery: String?
+    val searchQuery: String?,
+    val isInTrashOrSpam: Boolean = false
 ) {
 
     val messageId: MessageId get() = MessageId(item.id)

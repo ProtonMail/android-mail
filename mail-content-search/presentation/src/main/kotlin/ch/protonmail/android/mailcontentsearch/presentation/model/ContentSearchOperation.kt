@@ -33,11 +33,6 @@ import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
  */
 sealed interface ContentSearchOperation {
 
-    /**
-     * Replaces the selection outright — the caller must not dispatch this while already in selection
-     * mode, or the existing selection is lost. The mailbox guards this at the call site; content search
-     * will need the same guard once it has a view model.
-     */
     data class EnterSelectionMode(val item: MailboxItemUiModel) : ContentSearchOperation
 
     data class ToggleSelection(val item: MailboxItemUiModel) : ContentSearchOperation
