@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentSearchTerms
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentFoundItem
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentSearchTerm
@@ -32,7 +33,9 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.TouchRecentSearchT
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentFoundItemUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesViewAction
+import ch.protonmail.android.mailcontentsearch.presentation.model.isInTrashOrSpam
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
@@ -56,6 +59,9 @@ import javax.inject.Inject
  * Owns the search-history sections of the content search screen (recent queries and previously found
  * items). Both sections share one view model because a single tap couples them: opening a result
  * upserts the query *and* the item, so the two lists always have to be re-read together.
+ *
+ * The Rust side exposes no change stream, so the state is re-read after every mutation and whenever
+ * the screen goes back to showing the history.
  */
 @HiltViewModel
 @SuppressWarnings("LongParameterList")
@@ -80,44 +86,40 @@ class RecentSearchesViewModel @Inject constructor(
     val state: StateFlow<RecentSearchesState> = mutableState.asStateFlow()
 
     fun submit(action: RecentSearchesViewAction) {
-        viewModelScope.launch { handle(action) }
-    }
-
-    private suspend fun handle(action: RecentSearchesViewAction) {
         when (action) {
-            RecentSearchesViewAction.Refresh -> handleRefresh()
-            is RecentSearchesViewAction.TermClicked -> handleTermClicked(action.query)
-            is RecentSearchesViewAction.TermDismissed -> handleTermDismissed(action.query)
-            RecentSearchesViewAction.ClearTermsClicked -> handleClearTermsClicked()
-            is RecentSearchesViewAction.FoundItemClicked -> handleFoundItemClicked(action.item)
-            is RecentSearchesViewAction.FoundItemDismissed -> handleFoundItemDismissed(action.item)
-            is RecentSearchesViewAction.FoundItemStarClicked -> handleFoundItemStarClicked(action.item)
-            is RecentSearchesViewAction.SearchResultOpened -> handleSearchResultOpened(action)
+            RecentSearchesViewAction.Refresh -> onRefresh()
+            is RecentSearchesViewAction.TermClicked -> onTermClicked(action.query)
+            is RecentSearchesViewAction.TermDismissed -> onTermDismissed(action.query)
+            RecentSearchesViewAction.ClearTerms -> onClearTerms()
+            is RecentSearchesViewAction.FoundItemClicked -> onFoundItemClicked(action.item)
+            is RecentSearchesViewAction.FoundItemDismissed -> onFoundItemDismissed(action.item)
+            is RecentSearchesViewAction.FoundItemStarClicked -> onFoundItemStarClicked(action.item)
+            is RecentSearchesViewAction.SearchResultOpened ->
+                onSearchResultOpened(action.query, action.messageId, action.conversationId)
         }
     }
 
-    /** Re-reads the history. Safe to call repeatedly: it never drops back to the loading state. */
-    private suspend fun handleRefresh() = reloadAfter { }
+    /** Re-reads the history. Safe to submit repeatedly: it never drops back to the loading state. */
+    private fun onRefresh() = reloadAfter { }
 
-    private suspend fun handleTermClicked(query: String) =
-        reloadAfter { userId -> touchRecentSearchTerm(userId, query) }
+    private fun onTermClicked(query: String) = reloadAfter { userId -> touchRecentSearchTerm(userId, query) }
 
-    private suspend fun handleTermDismissed(query: String) {
+    private fun onTermDismissed(query: String) {
         // Drop the row locally so it disappears on tap; the reload can then pull an older query into
         // the slot it freed.
         updateData { it.copy(terms = it.terms.filterNot { term -> term == query }.toImmutableList()) }
         reloadAfter { userId -> dismissRecentSearchTerm(userId, query) }
     }
 
-    private suspend fun handleClearTermsClicked() {
+    private fun onClearTerms() {
         updateData { it.copy(terms = persistentListOf()) }
         reloadAfter { userId -> clearRecentSearchTerms(userId) }
     }
 
-    private suspend fun handleFoundItemClicked(item: RecentFoundItemUiModel) =
+    private fun onFoundItemClicked(item: RecentFoundItemUiModel) =
         reloadAfter { userId -> touchRecentFoundItem(userId, item.messageId) }
 
-    private suspend fun handleFoundItemDismissed(item: RecentFoundItemUiModel) {
+    private fun onFoundItemDismissed(item: RecentFoundItemUiModel) {
         updateData {
             it.copy(
                 foundItems = it.foundItems.filterNot { found -> found.messageId == item.messageId }
@@ -127,19 +129,24 @@ class RecentSearchesViewModel @Inject constructor(
         reloadAfter { userId -> dismissRecentFoundItem(userId, item.messageId) }
     }
 
-    private suspend fun handleFoundItemStarClicked(item: RecentFoundItemUiModel) = reloadAfter { userId ->
+    private fun onFoundItemStarClicked(item: RecentFoundItemUiModel) = reloadAfter { userId ->
         val messageIds = listOf(item.messageId)
         if (item.item.isStarred) unStarMessages(userId, messageIds) else starMessages(userId, messageIds)
     }
 
-    private suspend fun handleSearchResultOpened(action: RecentSearchesViewAction.SearchResultOpened) =
-        reloadAfter { userId -> recordSearchOpen(userId, action.query, action.messageId, action.conversationId) }
+    private fun onSearchResultOpened(
+        query: String,
+        messageId: MessageId,
+        conversationId: ConversationId
+    ) = reloadAfter { userId -> recordSearchOpen(userId, query, messageId, conversationId) }
 
     /** Runs [block] against the primary user, then re-reads the history it may have changed. */
-    private suspend fun reloadAfter(block: suspend (UserId) -> Unit) {
-        val userId = observePrimaryUserId().filterNotNull().first()
-        block(userId)
-        mutableState.value = collapseIfEmpty(readHistory(userId))
+    private fun reloadAfter(block: suspend (UserId) -> Unit) {
+        viewModelScope.launch {
+            val userId = observePrimaryUserId().filterNotNull().first()
+            block(userId)
+            mutableState.value = collapseIfEmpty(readHistory(userId))
+        }
     }
 
     private suspend fun readHistory(userId: UserId): RecentSearchesState.Data {
@@ -156,7 +163,8 @@ class RecentSearchesViewModel @Inject constructor(
                         folderColorSettings = folderColorSettings,
                         isShowingSearchResults = true
                     ),
-                    searchQuery = found.searchQuery
+                    searchQuery = found.searchQuery,
+                    isInTrashOrSpam = found.item.isInTrashOrSpam()
                 )
             }
         }
