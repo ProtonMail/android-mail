@@ -23,11 +23,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalDrawerSheet
@@ -896,8 +896,12 @@ fun Home(
                 DismissableSnackbarHost(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .navigationBarsPadding()
-                        // Measured inside navigationBarsPadding, so this excludes the inset but still
+                        // Above the keyboard as well as the navigation bar: the window no longer
+                        // resizes around the IME, so without this the snackbar hides behind it. The
+                        // IME inset already covers the navigation bar, hence the union rather than
+                        // both paddings, which would stack.
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                        // Measured inside that padding, so this excludes the inset but still
                         // includes the snackbar's own margin (0 when no snackbar is shown).
                         .onSizeChanged { snackbarHeight = with(density) { it.height.toDp() } },
                     protonSnackbarHostState = snackbarHost
