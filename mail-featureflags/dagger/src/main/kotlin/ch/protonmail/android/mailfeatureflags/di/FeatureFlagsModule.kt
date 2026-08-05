@@ -28,6 +28,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
@@ -50,6 +51,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBa
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
@@ -288,17 +290,27 @@ object FeatureFlagsModule {
     @Singleton
     fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
+
+    @Provides
+    @Singleton
+    @IsContentSearchScreenEnabled
+    fun provideContentSearchScreenEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = ContentSearchScreenEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideContentSearchScreenEnabledDef(): FeatureFlagDefinition = ContentSearchScreenEnabled
 
     @Provides
     @Singleton
     @IsSdkUpgradesReadEnabled
     fun provideSdkUpgradesReadEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = SdkUpgradesReadEnabled.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
 
     @Provides
     @IntoSet

@@ -202,6 +202,14 @@ data object ContentSearchEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object ContentSearchScreenEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7ContentSearchScreen",
+    name = "Enable Content Search Screen",
+    category = FeatureFlagCategory.Mailbox,
+    description = "Opens the new standalone search screen instead of the in-mailbox search mode",
+    defaultValue = false
+)
+
 data object SdkUpgradesReadEnabled : FeatureFlagDefinition(
     key = "MailAndroidV7SdkPaymentUpgradesRead",
     name = "Use Payments SDK for upgrades read",
