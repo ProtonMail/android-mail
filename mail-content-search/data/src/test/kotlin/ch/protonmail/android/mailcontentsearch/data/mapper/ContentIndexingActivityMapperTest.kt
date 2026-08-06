@@ -78,7 +78,7 @@ internal class ContentIndexingActivityMapperTest {
     }
 
     @Test
-    fun `progress carries the active account and the account counts`() {
+    fun `progress carries the active account, the message counts and the account counts`() {
         // Given
         val event = SyncOrchestratorEvent.Progress(
             progress(activeId = "user-1", completedUsers = 1uL, userCount = 3uL)
@@ -89,7 +89,14 @@ internal class ContentIndexingActivityMapperTest {
 
         // Then
         assertEquals(
-            ContentIndexingActivity.Progress(UserId("user-1"), completedUsers = 1, userCount = 3),
+            ContentIndexingActivity.Progress(
+                activeUserId = UserId("user-1"),
+                percentage = 10.0,
+                processedMessages = 10,
+                totalMessages = 100,
+                completedUsers = 1,
+                userCount = 3
+            ),
             activity
         )
     }

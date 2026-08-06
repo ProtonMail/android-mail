@@ -27,15 +27,18 @@ import androidx.core.app.NotificationCompat
 import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcontentsearch.data.R
 import ch.protonmail.android.mailcontentsearch.data.receiver.ContentIndexingCancelReceiver
+import kotlin.math.roundToInt
 
 internal object ContentIndexingNotification {
 
     const val NotificationId = 0x437E534C // "CSrch"
 
+    private const val PercentageScale = 100
+
     fun build(
         context: Context,
         accountLabel: String?,
-        progress: AccountProgress?
+        progress: IndexingProgress?
     ): NotificationCompat.Builder {
         ensureChannel(context)
         val title = context.getString(R.string.content_search_notification_title)
@@ -43,18 +46,20 @@ internal object ContentIndexingNotification {
             ?.takeIf { it.isNotBlank() }
             ?.let { "$title — $it" }
             ?: title
-        val contentText = progress?.let {
-            context.getString(R.string.content_search_notification_progress_accounts, it.completed, it.total)
-        } ?: context.getString(R.string.content_search_notification_preparing)
+        // Rust reports a total of zero until it has sized the backfill, which would render as
+        // "0% · 0/0 messages" rather than as the wait it is.
+        val sized = progress?.takeIf { it.totalMessages > 0 }
+        val contentText = sized?.contentText(context)
+            ?: context.getString(R.string.content_search_notification_preparing)
         return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
             .setContentTitle(titleWithAccount)
             .setContentText(contentText)
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            // Determinate over accounts, not messages: the orchestrator's overall percentage is
-            // summed across every account's totals, so it jumps when an account is added or removed.
-            .setProgress(progress?.total ?: 0, progress?.completed ?: 0, progress == null)
+            // Scaled to the percentage rather than the raw counts: those are message totals summed
+            // across accounts, so they can outgrow the Int the bar takes.
+            .setProgress(PercentageScale, sized?.roundedPercentage ?: 0, sized == null)
             .addAction(
                 NotificationCompat.Action.Builder(
                     0,
@@ -64,8 +69,40 @@ internal object ContentIndexingNotification {
             )
     }
 
-    /** Accounts finished out of the accounts the orchestrator set out to index. */
-    data class AccountProgress(val completed: Int, val total: Int)
+    /**
+     * What the orchestrator has indexed so far, session-wide.
+     *
+     * The message counts are summed across every account, so they are only meaningful next to the
+     * account counts - hence both are shown as soon as there is more than one account to index.
+     */
+    data class IndexingProgress(
+        val percentage: Double,
+        val processedMessages: Long,
+        val totalMessages: Long,
+        val completedAccounts: Int,
+        val totalAccounts: Int
+    ) {
+
+        val roundedPercentage: Int get() = percentage.roundToInt().coerceIn(0, PercentageScale)
+
+        fun contentText(context: Context): String = if (totalAccounts > 1) {
+            context.getString(
+                R.string.content_search_notification_message_progress_multi_account,
+                roundedPercentage,
+                processedMessages,
+                totalMessages,
+                completedAccounts,
+                totalAccounts
+            )
+        } else {
+            context.getString(
+                R.string.content_search_notification_message_progress,
+                roundedPercentage,
+                processedMessages,
+                totalMessages
+            )
+        }
+    }
 
     private fun cancelPendingIntent(context: Context): PendingIntent {
         // Stops the orchestrator for every account. Nothing persists that, so the next foreground

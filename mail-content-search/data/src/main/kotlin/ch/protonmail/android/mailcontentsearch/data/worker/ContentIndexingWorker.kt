@@ -28,7 +28,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
-import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.AccountProgress
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.IndexingProgress
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
@@ -183,7 +183,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         Timber.d("content-search: app backgrounded, promoting the indexing worker")
         val progress = latestProgress
         val label = progress?.activeUserId?.let { accountLabelFor(it) }
-        isPromoted = trySetForeground(label, progress?.toAccountProgress())
+        isPromoted = trySetForeground(label, progress?.toNotificationProgress())
     }
 
     private suspend fun refreshNotification(activity: ContentIndexingActivity.Progress) {
@@ -193,15 +193,16 @@ class ContentIndexingWorker @AssistedInject constructor(
         // refused - there is no notification to update.
         if (!isPromoted) return
         val label = activity.activeUserId?.let { accountLabelFor(it) }
-        trySetForeground(label, activity.toAccountProgress())
+        trySetForeground(label, activity.toNotificationProgress())
     }
 
-    /**
-     * Account-level progress only. `SyncOrchestratorProgress.percentage` is summed across every
-     * account's totals, so it lurches whenever an account is added or removed.
-     */
-    private fun ContentIndexingActivity.Progress.toAccountProgress(): AccountProgress? =
-        if (userCount > 0) AccountProgress(completed = completedUsers.toInt(), total = userCount.toInt()) else null
+    private fun ContentIndexingActivity.Progress.toNotificationProgress() = IndexingProgress(
+        percentage = percentage,
+        processedMessages = processedMessages,
+        totalMessages = totalMessages,
+        completedAccounts = completedUsers.toInt(),
+        totalAccounts = userCount.toInt()
+    )
 
     override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
 
@@ -211,7 +212,7 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     /** Whether the service is now held. */
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun trySetForeground(accountLabel: String?, progress: AccountProgress?): Boolean {
+    private suspend fun trySetForeground(accountLabel: String?, progress: IndexingProgress?): Boolean {
         return try {
             setForeground(buildForegroundInfo(accountLabel, progress))
             true
@@ -226,7 +227,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         }
     }
 
-    private fun buildForegroundInfo(accountLabel: String?, progress: AccountProgress?): ForegroundInfo {
+    private fun buildForegroundInfo(accountLabel: String?, progress: IndexingProgress?): ForegroundInfo {
         val notification = ContentIndexingNotification.build(context, accountLabel, progress)
             .build()
             .apply { flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT }

@@ -48,6 +48,9 @@ internal fun SyncOrchestratorEvent.toIndexingActivity(): ContentIndexingActivity
     is SyncOrchestratorEvent.Progress -> ContentIndexingActivity.Progress(
         // Rust reports the active account as an opaque id and leaves it null between accounts.
         activeUserId = v1.activeId?.takeIf { it.isNotBlank() }?.let(::UserId),
+        percentage = v1.percentage,
+        processedMessages = v1.processed.toLong(),
+        totalMessages = v1.total.toLong(),
         completedUsers = v1.completedUsers.toLong(),
         userCount = v1.userCount.toLong()
     )

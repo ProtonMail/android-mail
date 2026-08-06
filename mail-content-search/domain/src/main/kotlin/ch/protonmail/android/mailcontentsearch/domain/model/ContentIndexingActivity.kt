@@ -31,12 +31,17 @@ sealed interface ContentIndexingActivity {
     /**
      * @param activeUserId the account being indexed, or `null` while the orchestrator is between
      *  accounts. Rust reports it as an opaque id, so it is not guaranteed to still be logged in.
-     * @param completedUsers / [userCount] account-level progress, safe to show. The overall
-     *  percentage is deliberately absent: Rust sums it across every account's totals, so it jumps
-     *  whenever an account is added or removed.
+     * @param percentage / [processedMessages] / [totalMessages] session-wide message counts, summed
+     *  across every account. Self-consistent - the percentage is these two counts - but the totals
+     *  are revised as accounts are added, removed or sized, so the figure can move on its own.
+     * @param completedUsers / [userCount] account-level progress, which gives the message counts
+     *  the context that keeps such a jump readable.
      */
     data class Progress(
         val activeUserId: UserId?,
+        val percentage: Double,
+        val processedMessages: Long,
+        val totalMessages: Long,
         val completedUsers: Long,
         val userCount: Long
     ) : ContentIndexingActivity

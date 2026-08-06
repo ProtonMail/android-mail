@@ -307,5 +307,12 @@ internal class ContentIndexingWorkerTest {
         activeUserId: UserId? = UserId("user-1"),
         completedUsers: Long = 0,
         userCount: Long = 2
-    ) = ContentIndexingActivity.Progress(activeUserId, completedUsers, userCount)
+    ) = ContentIndexingActivity.Progress(
+        activeUserId = activeUserId,
+        percentage = 10.0,
+        processedMessages = 10,
+        totalMessages = 100,
+        completedUsers = completedUsers,
+        userCount = userCount
+    )
 }
