@@ -19,18 +19,23 @@
 package ch.protonmail.android.mailcontentsearch.data.usecase
 
 import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
+import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import uniffi.mail_uniffi.SyncService
 import javax.inject.Inject
 
-class CreateRustSyncService @Inject constructor() {
+class CreateRustSyncService @Inject constructor(
+    private val mailSessionRepository: MailSessionRepository
+) {
 
     /**
      * Safe to call once per operation instead of caching an instance: as of the current SDK,
-     * `SyncService(userSession)` only wraps a weak pointer and delegates every call to the one
-     * shared sync actor already registered for the user session - it does not spawn a new
-     * worker or hold independent state per construction.
+     * `SyncService(session)` only wraps a weak pointer and delegates every call to the one
+     * shared sync orchestrator already registered for the mail session - it does not spawn a
+     * new worker or hold independent state per construction.
      */
-    operator fun invoke(userSession: MailUserSessionWrapper) =
-        SyncServiceWrapper(SyncService(userSession.getRustUserSession()))
+    operator fun invoke(userSession: MailUserSessionWrapper) = SyncServiceWrapper(
+        SyncService(mailSessionRepository.getMailSession().getRustMailSession()),
+        userSession.getRustUserSession()
+    )
 }

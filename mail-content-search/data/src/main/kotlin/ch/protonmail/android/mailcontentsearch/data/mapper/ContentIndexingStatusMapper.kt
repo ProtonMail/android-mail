@@ -30,6 +30,7 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
     // instead of a misleading 0%.
     SyncStatus.ONGOING -> progress?.let { ContentIndexingState.Running(it) } ?: ContentIndexingState.Initializing
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
+    SyncStatus.FAILURE -> ContentIndexingState.Failed
 }
 
 /**

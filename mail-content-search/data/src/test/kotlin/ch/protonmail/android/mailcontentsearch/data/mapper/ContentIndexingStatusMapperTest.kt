@@ -43,6 +43,11 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
+    fun `maps FAILURE status to Failed`() {
+        assertEquals(ContentIndexingState.Failed, SyncStatus.FAILURE.toIndexingState(null))
+    }
+
+    @Test
     fun `maps ONGOING status to Running with the given progress`() {
         assertEquals(ContentIndexingState.Running(42.0), SyncStatus.ONGOING.toIndexingState(42.0))
     }
