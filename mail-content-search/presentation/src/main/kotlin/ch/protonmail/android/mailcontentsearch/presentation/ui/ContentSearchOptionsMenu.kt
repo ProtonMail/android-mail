@@ -41,6 +41,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -66,6 +67,8 @@ internal fun SearchOptionsMenu(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
+    val learnMoreLink = stringResource(R.string.content_search_learn_more_link)
 
     Box(modifier = modifier) {
         IconButton(onClick = { expanded = true }) {
@@ -122,9 +125,10 @@ internal fun SearchOptionsMenu(
                     )
                 },
                 contentPadding = MenuItemContentPadding,
-                // Dismisses only, for now: the content-search explainer this opens is still to be
-                // designed, so there is nowhere to send the user yet.
-                onClick = { expanded = false }
+                onClick = {
+                    expanded = false
+                    uriHandler.openUri(learnMoreLink)
+                }
             )
         }
     }

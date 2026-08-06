@@ -24,24 +24,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.component.ProtonSettingsDetailsAppBar
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsViewModel
 
 @Composable
-fun ContentSearchSettingsScreen(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onLearnMoreClick: () -> Unit = {}
-) {
+fun ContentSearchSettingsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
     val viewModel: ContentSearchSettingsViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val uriHandler = LocalUriHandler.current
+    val learnMoreLink = stringResource(id = R.string.content_search_learn_more_link)
     val actions = ContentSearchSettingsScreen.Actions(
         onContentSearchToggle = { enabled ->
             viewModel.submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled))
@@ -50,7 +51,7 @@ fun ContentSearchSettingsScreen(
             viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled))
         },
         onClearLocalSearchData = { viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData) },
-        onLearnMoreClick = onLearnMoreClick
+        onLearnMoreClick = { uriHandler.openUri(learnMoreLink) }
     )
 
     ContentSearchSettingsScreen(
