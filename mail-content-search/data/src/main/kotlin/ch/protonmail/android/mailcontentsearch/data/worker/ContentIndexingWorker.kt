@@ -31,12 +31,14 @@ import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWo
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.IndexingProgress
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -69,19 +71,23 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository,
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
+    private val startContentIndexing: StartContentIndexing,
     private val appInBackgroundState: AppInBackgroundState,
     private val workScheduler: ContentIndexingWorkScheduler
 ) : CoroutineWorker(context, workerParameters) {
 
     // The worker has to be enqueued while the app is foregrounded - WorkManager will not promote one
-    // started from the background - but the service is only worth anything once the app is off
-    // screen, so promotion is deferred until then rather than done at start.
+    // started from the background - but the service is only worth anything once the app is off screen
+    // and there is indexing to protect, so promotion waits for both. See [promoteIfWorthIt].
     //
     // Set from the result of the attempt, not before it: promotion can be refused (see
     // [trySetForeground]), and a worker that never took a service has neither a notification to
     // update nor anything to give up when the app comes back.
     @Volatile
     private var isPromoted = false
+
+    /** Completed once the orchestrator has answered whether it has anything to index. */
+    private val orchestratorHasWork = CompletableDeferred<Boolean>()
 
     @Volatile
     private var latestProgress: ContentIndexingActivity.Progress? = null
@@ -140,13 +146,27 @@ class ContentIndexingWorker @AssistedInject constructor(
         // Consumed through a channel rather than collected, so the watchdog can bound the wait for
         // each individual emission instead of the run as a whole.
         val activities = observeContentIndexingActivity().produceIn(this)
+        // Asked rather than inferred from silence, and idempotent - an orchestrator that is already
+        // running answers with its current stats. Also the only thing that starts it when
+        // WorkManager reruns this worker after the process was killed. Asked after subscribing, so
+        // nothing the start itself sets off is missed.
+        val hasWorkPending = startContentIndexing().fold(
+            ifLeft = { error ->
+                Timber.w("content-search: could not ask the orchestrator for work: $error")
+                true
+            },
+            ifRight = { it.hasWorkPending }
+        )
+        if (!hasWorkPending) Timber.d("content-search: orchestrator reports nothing to index")
+        orchestratorHasWork.complete(hasWorkPending)
         try {
             while (true) {
+                val timeout = if (latestProgress == null && !hasWorkPending) NoWorkTimeout else IdleTimeout
                 // receiveCatching, so an upstream that completes releases the service the same way a
                 // silent one does instead of failing the run.
-                val activity = withTimeoutOrNull(IdleTimeout) { activities.receiveCatching().getOrNull() }
+                val activity = withTimeoutOrNull(timeout) { activities.receiveCatching().getOrNull() }
                 if (activity == null) {
-                    Timber.w("content-search: no more indexing activity within $IdleTimeout, releasing the service")
+                    Timber.w("content-search: no indexing progress within $timeout, releasing the service")
                     break
                 }
                 if (activity !is ContentIndexingActivity.Progress) {
@@ -162,7 +182,7 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     /**
      * Matches the foreground service to where the user actually is: acquired when the app leaves the
-     * screen, given up when it comes back.
+     * screen if there is indexing to protect, given up when it comes back.
      *
      * Giving it up means ending this worker, because WorkManager offers no way to drop the service
      * on its own - so the release path replaces the worker instead of just returning, and the
@@ -174,7 +194,7 @@ class ContentIndexingWorker @AssistedInject constructor(
      * the top activity - waiting even a couple of seconds is long enough to be stopped with
      * STOP_REASON_QUOTA, after which the replacement will not be started until quota recovers. The
      * same haste keeps the promotion inside the grace period for starting a service from the
-     * background on Android 12+.
+     * background on Android 12+. It does wait for a reason to hold one at all - see [promoteIfWorthIt].
      *
      * Releasing is debounced, so an app that is briefly backgrounded - a permission dialog, a share
      * sheet - does not churn a worker it is about to want back.
@@ -184,7 +204,7 @@ class ContentIndexingWorker @AssistedInject constructor(
             .distinctUntilChanged()
             .collectLatest { isInBackground ->
                 when {
-                    isInBackground && !isPromoted -> promote()
+                    isInBackground && !isPromoted -> refreshNotification()
 
                     !isInBackground && isPromoted -> {
                         // Cancelled by collectLatest if the app leaves again within the window.
@@ -197,32 +217,59 @@ class ContentIndexingWorker @AssistedInject constructor(
             }
     }
 
-    /**
-     * Takes the foreground service, and records whether it was actually granted.
-     *
-     * A refusal is not retried here: this worker is short-lived and the next foreground transition
-     * enqueues a fresh one, so the only thing re-asking would add is a repeat of the warning. It does
-     * mean the worker carries on unpromoted for the rest of its run, which is the honest state - the
-     * release path below then has nothing to give up, and does nothing.
-     */
-    private suspend fun promote() {
-        Timber.d("content-search: app backgrounded, promoting the indexing worker")
-        // Bare notification first. Resolving the account label is a session round-trip, and the job is
-        // unprotected for as long as it takes - which is all the quota controller needs to stop us. The
-        // label follows a moment later, by which point the service is already held.
-        val progress = latestProgress
-        isPromoted = trySetForeground(accountLabel = null, progress = progress?.toNotificationProgress())
-        if (isPromoted) progress?.let { refreshNotification(it) }
-    }
-
     private suspend fun refreshNotification(activity: ContentIndexingActivity.Progress) {
         latestProgress = activity
+        refreshNotification()
+    }
+
+    private suspend fun refreshNotification() {
+        if (!isPromoted) promoteIfWorthIt()
         // Nothing to show while the app is on screen: the settings screen already reports progress,
         // and a notification for an app the user is looking at is just noise. Same when promotion was
         // refused - there is no notification to update.
         if (!isPromoted) return
-        val label = activity.activeUserId?.let { accountLabelFor(it) }
-        trySetForeground(label, activity.toNotificationProgress())
+        val progress = latestProgress
+        val label = progress?.activeUserId?.let { accountLabelFor(it) }
+        trySetForeground(label, progress?.toNotificationProgress())
+    }
+
+    /**
+     * Takes the foreground service, if there is anything to hold one for: the app off screen, because
+     * a notification for an app the user is looking at is just noise, and indexing to protect.
+     *
+     * That second condition is why this exists. A worker is enqueued on every foreground transition
+     * whether or not the orchestrator had anything to do, and one that promoted regardless would show
+     * "Preparing" only to drop it again when [NoWorkTimeout] fired - a flash for every trip to the
+     * background, protecting nothing. Holding off costs nothing: that worker exits either way.
+     *
+     * Progress is the other way in, hence this sitting on the notification path and not only on the
+     * visibility one: the stats are read while Rust is still bringing accounts up, so a worker told
+     * there was nothing to do can find work while still inside the window where a service may be
+     * started from the background.
+     *
+     * The answer is awaited rather than read, because a worker that starts with the app already off
+     * screen - a rerun after the process was killed - gets here before it has one. [collectLatest]
+     * cancels the wait if the app comes back first.
+     *
+     * A refusal is not retried here: this worker is short-lived and the next foreground transition
+     * enqueues a fresh one, so the only thing re-asking would add is a repeat of the warning. It does
+     * mean the worker carries on unpromoted for the rest of its run, which is the honest state - the
+     * release path then has nothing to give up, and does nothing.
+     */
+    private suspend fun promoteIfWorthIt() {
+        if (!appInBackgroundState.isAppInBackground()) return
+        if (latestProgress == null && !orchestratorHasWork.await()) {
+            Timber.d("content-search: nothing to index, leaving the indexing worker unpromoted")
+            return
+        }
+        Timber.d("content-search: app backgrounded, promoting the indexing worker")
+        // Bare notification first. Resolving the account label is a session round-trip, and the job
+        // is unprotected for as long as it takes - which is all the quota controller needs to stop
+        // us. The label follows a moment later, by which point the service is already held.
+        isPromoted = trySetForeground(
+            accountLabel = null,
+            progress = latestProgress?.toNotificationProgress()
+        )
     }
 
     private fun ContentIndexingActivity.Progress.toNotificationProgress() = IndexingProgress(
@@ -281,11 +328,19 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     internal companion object {
 
-        /**
-         * An orchestrator that never publishes must not hold a foreground service forever. Generous,
-         * because a large first backfill can stay quiet for a while before the first progress event.
-         */
+        /** An orchestrator that stops publishing must not hold a foreground service forever. */
         val IdleTimeout: Duration = 5.minutes
+
+        /**
+         * How long a worker the orchestrator said it had no work for waits before giving up. Such a
+         * worker takes no service, so there is no notification to bound, but it does hold a job -
+         * and a job that does nothing is charged against the app's standby quota like any other.
+         *
+         * Not zero, because the stats are read while Rust is still bringing accounts up, so a fresh
+         * login can be reported as nothing to index for a moment; progress arriving inside the window
+         * promotes the worker after all.
+         */
+        val NoWorkTimeout: Duration = 10.seconds
 
         /**
          * How long the app has to stay on screen before the service is handed back. Long enough to

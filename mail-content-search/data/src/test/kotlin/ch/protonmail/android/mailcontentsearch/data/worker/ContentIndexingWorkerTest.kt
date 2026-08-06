@@ -20,10 +20,15 @@ package ch.protonmail.android.mailcontentsearch.data.worker
 
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -51,6 +56,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class ContentIndexingWorkerTest {
 
@@ -65,9 +71,13 @@ internal class ContentIndexingWorkerTest {
         coEvery { getAccount(any()) } returns null
     }
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity>()
+    private val startContentIndexing = mockk<StartContentIndexing> {
+        coEvery { this@mockk.invoke() } returns startSummary(pending = 1).right()
+    }
     private val appInBackground = MutableStateFlow(false)
     private val appInBackgroundState = mockk<AppInBackgroundState> {
         every { observe() } returns appInBackground
+        every { isAppInBackground() } answers { appInBackground.value }
     }
     private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true)
 
@@ -107,6 +117,7 @@ internal class ContentIndexingWorkerTest {
         mailSessionRepository = mailSessionRepository,
         userSessionRepository = userSessionRepository,
         observeContentIndexingActivity = observeContentIndexingActivity,
+        startContentIndexing = startContentIndexing,
         appInBackgroundState = appInBackgroundState,
         workScheduler = workScheduler
     )
@@ -166,24 +177,92 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
-    fun `the watchdog releases the service when the orchestrator never reports anything`() = runTest {
-        // Given - an orchestrator that accepted start() but publishes nothing would otherwise hold
-        // a foreground service open indefinitely.
+    fun `gives up quickly when the orchestrator says there is nothing to index`() = runTest {
+        // Given - a worker is enqueued on every foreground transition whether or not there is work,
+        // and one there was never anything for should not hold a job for the full idle timeout.
+        coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
         givenActivity(flow { awaitCancellation() })
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.IdleTimeout.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1)
 
         // Then
         assertEquals(ListenableWorker.Result.success(), work.await())
     }
 
     @Test
+    fun `waits for an orchestrator that has work but has not reported it yet`() = runTest {
+        // Given - a large first backfill can stay quiet for a while before the first event.
+        givenActivity(
+            flow {
+                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3)
+                emit(progress())
+                emit(ContentIndexingActivity.Stopped)
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1)
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), work.await())
+        coVerify(atLeast = 1) { observeContentIndexingActivity() }
+    }
+
+    @Test
+    fun `keeps waiting once progress has arrived, whatever the stats said`() = runTest {
+        // Given - the stats are read while Rust is still bringing accounts up, so a fresh login can
+        // be reported as nothing to index for a moment.
+        coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
+        givenActivity(
+            flow {
+                emit(progress())
+                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3)
+                emit(ContentIndexingActivity.Stopped)
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1)
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `assumes there is work when the orchestrator cannot be asked`() = runTest {
+        // Given - being wrong here costs an idle job; the other way costs an unprotected backfill.
+        coEvery { startContentIndexing() } returns DataError.Local.Unknown.left()
+        givenActivity(flow { awaitCancellation() })
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1)
+
+        // Then - still waiting, on the long timeout.
+        assertTrue(work.isActive)
+        advanceTimeBy(ContentIndexingWorker.IdleTimeout.inWholeMilliseconds + 1)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    private fun startSummary(pending: Long = 0, completed: Long = 0) = ContentIndexingStartSummary(
+        pending = pending,
+        ongoing = 0,
+        completed = completed,
+        failed = 0,
+        disabled = 0,
+        total = pending + completed
+    )
+
+    @Test
     fun `the watchdog measures the gap between emissions, not the total run`() = runTest {
         // Given - steady progress well past the idle timeout in total.
         givenActivity(
             flow {
+                emit(progress())
                 repeat(4) {
                     delay(ContentIndexingWorker.IdleTimeout.inWholeMilliseconds / 2)
                     emit(progress())
@@ -229,6 +308,66 @@ internal class ContentIndexingWorkerTest {
         runCurrent()
 
         // Then - the account label is read to build the notification.
+        coVerify(atLeast = 1) { userSessionRepository.getAccount(UserId("user-1")) }
+        work.cancel()
+    }
+
+    @Test
+    fun `takes the service before any progress when there is indexing to protect`() = runTest {
+        // Given - a large first backfill can stay quiet for a while, and is unprotected until the
+        // service is held, so promotion does not wait for the first event.
+        appInBackground.value = true
+        givenActivity(flow { awaitCancellation() })
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        appInBackground.value = false
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+
+        // Then - it has a service to hand back, so it ends itself to do it.
+        verify(exactly = 1) { workScheduler.restart() }
+        work.cancel()
+    }
+
+    @Test
+    fun `does not take the service when there is nothing to index`() = runTest {
+        // Given - a worker is enqueued on every foreground transition whether or not there is work,
+        // and one that promoted anyway would flash "Preparing" for every trip to the background.
+        appInBackground.value = true
+        coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
+        givenActivity(flow { awaitCancellation() })
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        appInBackground.value = false
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+
+        // Then - nothing was ever acquired, so there is nothing to give back either.
+        verify(exactly = 0) { workScheduler.restart() }
+        work.cancel()
+    }
+
+    @Test
+    fun `takes the service when progress turns up after all`() = runTest {
+        // Given - a worker told there was nothing to index, because the stats were read while Rust
+        // was still bringing accounts up.
+        appInBackground.value = true
+        coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
+        givenActivity(
+            flow {
+                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2)
+                emit(progress())
+                awaitCancellation()
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2 + 1)
+
+        // Then - the account label is read, which only happens to build a notification.
         coVerify(atLeast = 1) { userSessionRepository.getAccount(UserId("user-1")) }
         work.cancel()
     }

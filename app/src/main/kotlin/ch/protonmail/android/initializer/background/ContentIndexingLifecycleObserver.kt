@@ -67,13 +67,13 @@ class ContentIndexingLifecycleObserver @Inject constructor(
             startContentIndexing().fold(
                 ifLeft = { Timber.w("content-search: could not start indexing: $it") },
                 ifRight = { summary ->
-                    if (summary.hasWorkPending) {
-                        // Enqueued now, while still foregrounded: WorkManager will not let a
-                        // background app promote a worker to a foreground service.
-                        workScheduler.ensureWorkerRunning()
-                    } else {
-                        Timber.d("content-search: nothing pending, watching for work to appear")
+                    if (!summary.hasWorkPending) {
+                        Timber.d("content-search: nothing pending, the worker will exit early")
                     }
+                    // Enqueued whatever the summary said, and now, while still foregrounded:
+                    // WorkManager will not let a background app promote a worker to a foreground
+                    // service, so a worker started once work turns up would be too late to protect it.
+                    workScheduler.ensureWorkerRunning()
                     watchForIndexingToStart()
                 }
             )
@@ -108,13 +108,12 @@ class ContentIndexingLifecycleObserver @Inject constructor(
                 .distinctUntilChanged()
                 .filter { it }
                 .collect {
-                    // The worker enqueued above is usually the one already handling this. Asking
-                    // WorkManager rather than tracking it here also covers a worker that has since
-                    // exited on its idle timeout.
-                    if (!workScheduler.isWorkerRunning()) {
-                        Timber.d("content-search: indexing started with no worker behind it")
-                        workScheduler.ensureWorkerRunning()
-                    }
+                    // Usually a no-op: the worker enqueued above is the one reporting this. It is
+                    // not when work appeared after the summary, or when a worker has since exited
+                    // on its idle timeout, and the scheduler is the one that can tell the
+                    // difference - hence the log here rather than around the call.
+                    Timber.d("content-search: indexing progressing, checking there is a worker behind it")
+                    workScheduler.ensureWorkerRunning()
                 }
         }
         // `onStart` is app-scoped, so it can land after the app has already left the screen.

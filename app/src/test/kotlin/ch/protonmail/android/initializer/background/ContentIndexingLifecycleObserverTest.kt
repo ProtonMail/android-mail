@@ -34,7 +34,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -62,9 +61,7 @@ internal class ContentIndexingLifecycleObserverTest {
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity> {
         every { this@mockk.invoke() } returns activities
     }
-    private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true) {
-        coEvery { isWorkerRunning() } returns false
-    }
+    private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true)
 
     @Test
     fun `starts the orchestrator and enqueues the worker when there is work pending`() = runTest {
@@ -77,7 +74,7 @@ internal class ContentIndexingLifecycleObserverTest {
 
         // Then
         coVerify(exactly = 1) { startContentIndexing() }
-        verify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -90,21 +87,22 @@ internal class ContentIndexingLifecycleObserverTest {
         advanceUntilIdle()
 
         // Then
-        verify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
-    fun `does not enqueue a worker when every account is already settled`() = runTest {
-        // Given - nothing to drive, so there is no reason to hold a foreground service.
+    fun `enqueues a worker even when every account looks settled`() = runTest {
+        // Given - the summary is taken while Rust is still bringing accounts up, and a worker
+        // started after the app is backgrounded could no longer take a foreground service.
         givenStartSummary(summary(completed = 2, disabled = 1))
 
         // When
         observer().onStart(lifecycleOwner())
         advanceUntilIdle()
 
-        // Then
+        // Then - the worker exits on its own if nothing turns up.
         coVerify(exactly = 1) { startContentIndexing() }
-        verify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -117,7 +115,7 @@ internal class ContentIndexingLifecycleObserverTest {
         advanceUntilIdle()
 
         // Then
-        verify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -131,7 +129,7 @@ internal class ContentIndexingLifecycleObserverTest {
 
         // Then
         coVerify(exactly = 0) { startContentIndexing() }
-        verify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -150,9 +148,9 @@ internal class ContentIndexingLifecycleObserverTest {
     }
 
     @Test
-    fun `enqueues a worker when indexing starts after the summary was taken`() = runTest {
+    fun `asks again when indexing starts after the summary was taken`() = runTest {
         // Given - nothing pending when the app came up, then an account signs in and the
-        // orchestrator picks it up on its own.
+        // orchestrator picks it up on its own. The worker from onStart may well have exited by now.
         givenStartSummary(summary(completed = 1))
         observer().onStart(lifecycleOwner())
         advanceUntilIdle()
@@ -161,15 +159,14 @@ internal class ContentIndexingLifecycleObserverTest {
         activities.emit(progress())
         advanceUntilIdle()
 
-        // Then
-        verify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+        // Then - one at start, one when progress turned up.
+        coVerify(exactly = 2) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
-    fun `leaves a worker that is already running alone`() = runTest {
-        // Given - the worker enqueued at foreground time is the one reporting this progress.
+    fun `asks once per burst of progress rather than once per event`() = runTest {
+        // Given - progress arrives every batch; only the transition into it is interesting.
         givenStartSummary(summary(pending = 1))
-        coEvery { workScheduler.isWorkerRunning() } returns true
         observer().onStart(lifecycleOwner())
         advanceUntilIdle()
 
@@ -178,8 +175,8 @@ internal class ContentIndexingLifecycleObserverTest {
         activities.emit(progress())
         advanceUntilIdle()
 
-        // Then - only the enqueue from onStart.
-        verify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+        // Then - one at start, one for the burst.
+        coVerify(exactly = 2) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -195,8 +192,8 @@ internal class ContentIndexingLifecycleObserverTest {
         activities.emit(progress())
         advanceUntilIdle()
 
-        // Then
-        verify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        // Then - only the one from onStart; the progress is ignored.
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -211,8 +208,8 @@ internal class ContentIndexingLifecycleObserverTest {
         activities.emit(ContentIndexingActivity.Stopped)
         advanceUntilIdle()
 
-        // Then
-        verify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        // Then - only the one from onStart.
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
     }
 
     private fun progress() = ContentIndexingActivity.Progress(

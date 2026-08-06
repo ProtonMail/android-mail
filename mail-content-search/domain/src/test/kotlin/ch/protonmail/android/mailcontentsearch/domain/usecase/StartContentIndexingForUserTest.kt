@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
@@ -52,7 +51,7 @@ internal class StartContentIndexingForUserTest {
         // Then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { repository.startIndexingForUser(userId) }
-        verify(exactly = 1) { scheduler.ensureWorkerRunning() }
+        coVerify(exactly = 1) { scheduler.ensureWorkerRunning() }
     }
 
     @Test
@@ -66,6 +65,6 @@ internal class StartContentIndexingForUserTest {
 
         // Then
         assertEquals(error.left(), result)
-        verify(exactly = 0) { scheduler.ensureWorkerRunning() }
+        coVerify(exactly = 0) { scheduler.ensureWorkerRunning() }
     }
 }

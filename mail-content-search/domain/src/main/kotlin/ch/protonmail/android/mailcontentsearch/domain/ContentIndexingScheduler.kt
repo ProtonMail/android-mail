@@ -27,5 +27,6 @@ package ch.protonmail.android.mailcontentsearch.domain
  */
 interface ContentIndexingScheduler {
 
-    fun ensureWorkerRunning()
+    /** Idempotent: a worker that is already executing is left to get on with it. */
+    suspend fun ensureWorkerRunning()
 }

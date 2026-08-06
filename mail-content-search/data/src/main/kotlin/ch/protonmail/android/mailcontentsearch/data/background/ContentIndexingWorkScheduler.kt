@@ -42,19 +42,20 @@ class ContentIndexingWorkScheduler @Inject constructor(
     /**
      * This and [restart] can both fire on one background-to-foreground trip - the lifecycle observer
      * calls this while the worker that was holding the service calls that. Both go through the same
-     * [enqueue], so the two cannot disagree about policy and the end state is one worker either way,
-     * whichever request lands last.
+     * [enqueue], so the two cannot disagree about policy, and the guard below means the observer's
+     * call is a no-op against a worker that is already running.
      */
-    override fun ensureWorkerRunning() {
+    override suspend fun ensureWorkerRunning() {
+        // A worker that is already executing is observing the same orchestrator a new one would, so
+        // replacing it would only drop and re-acquire its foreground service. Work parked in
+        // `ENQUEUED` deliberately does not count - see [Enqueuer.isWorkRunning].
+        if (enqueuer.isWorkRunning(WORKER_ID)) {
+            Timber.d("content-search: indexing worker already running")
+            return
+        }
         enqueue()
         Timber.d("content-search: indexing worker enqueued")
     }
-
-    /**
-     * Whether a worker is executing right now, for callers deciding if one still needs enqueuing.
-     * Work parked in `ENQUEUED` does not count - see [Enqueuer.isWorkRunning].
-     */
-    suspend fun isWorkerRunning(): Boolean = enqueuer.isWorkRunning(WORKER_ID)
 
     /**
      * Replaces the running worker with a fresh one.
