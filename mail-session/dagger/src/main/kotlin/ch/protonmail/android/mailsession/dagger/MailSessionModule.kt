@@ -33,6 +33,7 @@ import ch.protonmail.android.mailsession.data.repository.RustEventLoopRepository
 import ch.protonmail.android.mailsession.data.repository.UserSessionRepositoryImpl
 import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.user.RustUserDataSourceImpl
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.domain.annotations.DatabasesBaseDirectory
 import ch.protonmail.android.mailsession.domain.coroutines.EventLoopScope
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
@@ -50,6 +51,7 @@ import uniffi.mail_issue_reporter_service_uniffi.IssueReporter
 import uniffi.mail_uniffi.DeviceInfoProvider
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.OsKeyChain
+import uniffi.mail_uniffi.SyncService
 import javax.inject.Singleton
 
 @Module(includes = [MailSessionModule.BindsModule::class])
@@ -60,6 +62,19 @@ object MailSessionModule {
     @Singleton
     fun provideMailSessionInterface(repository: MailSessionRepository): MailSession =
         repository.getMailSession().getRustMailSession()
+
+    /**
+     * Binds the [SyncService] for the lifetime of the process, which holds because the Rust session
+     * is created exactly once: [MailSessionRepository.setMailSession] has a single production caller
+     * in `InitRustCommonLibrary.init()`, itself invoked once from the `RustMailCommonInitializer` App
+     * Startup entry. [provideMailSessionInterface] above already relies on the same invariant.
+     */
+    @Provides
+    @Singleton
+    fun provideSyncServiceWrapper(
+        mailSession: MailSession,
+        mailSessionRepository: MailSessionRepository
+    ): SyncServiceWrapper = SyncServiceWrapper(SyncService(mailSession), mailSessionRepository)
 
     @Provides
     @Singleton

@@ -22,9 +22,9 @@ import arrow.core.Either
 import arrow.core.flatten
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,7 +38,7 @@ import javax.inject.Inject
 
 class ContentSearchSettingsRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
-    private val createRustSyncService: CreateRustSyncService,
+    private val syncService: SyncServiceWrapper,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ContentSearchSettingsRepository {
 
@@ -46,7 +46,7 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
 
     override suspend fun isEnabled(userId: UserId): Either<DataError, Boolean> =
         executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).isEnabled()
+            syncService.isEnabled(wrapper)
         }.flatten()
 
     override fun observeIsEnabled(userId: UserId): Flow<Boolean> = enabledChanges
@@ -58,7 +58,7 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
 
     override suspend fun setEnabled(userId: UserId, enabled: Boolean): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).setEnabled(enabled)
+            syncService.setEnabled(wrapper, enabled)
         }.flatten().also { result ->
             result.onRight { enabledChanges.tryEmit(userId) }
         }

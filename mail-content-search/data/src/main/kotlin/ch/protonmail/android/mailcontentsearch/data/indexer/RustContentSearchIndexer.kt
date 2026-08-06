@@ -22,10 +22,10 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
-import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import uniffi.mail_uniffi.SyncDriverEvent
@@ -36,16 +36,14 @@ import javax.inject.Inject
 
 class RustContentSearchIndexer @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
-    private val createRustSyncService: CreateRustSyncService
+    private val syncService: SyncServiceWrapper
 ) : ContentSearchIndexer {
 
     override suspend fun index(
         userId: UserId,
         onProgress: suspend (Double) -> Unit
     ): Either<ContentIndexingError, Unit> = executeWithUserSession(userId) { wrapper ->
-        val syncService = createRustSyncService(wrapper)
-
-        val stream = when (val result = syncService.subscribe()) {
+        val stream = when (val result = syncService.subscribeUser(wrapper)) {
             is Either.Left -> {
                 Timber.e("content-search: failed to subscribe to sync events: ${result.value}")
                 return@executeWithUserSession ContentIndexingError.Unknown(result.value.toString()).left()
@@ -55,7 +53,7 @@ class RustContentSearchIndexer @Inject constructor(
         }
 
         try {
-            val startOutcome = when (val result = syncService.start()) {
+            val startOutcome = when (val result = syncService.startUser(wrapper)) {
                 is Either.Left -> {
                     Timber.e("content-search: failed to start sync: ${result.value}")
                     return@executeWithUserSession ContentIndexingError.Unknown(result.value.toString()).left()
@@ -82,10 +80,16 @@ class RustContentSearchIndexer @Inject constructor(
         ifRight = { it }
     )
 
+    /**
+     * Pauses indexing, keeping whatever [userId] has indexed so far.
+     *
+     * The orchestrator only exposes a session-wide stop - there is no per-account one - but the sweep
+     * in `ContentIndexingWorker` indexes one account at a time, so there is never another account's
+     * indexing for this to halt. [userId] is unused for that reason: it says which account the caller
+     * means, not which one Rust stops.
+     */
     override suspend fun cancel(userId: UserId) {
-        executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).stop()
-        }
+        syncService.stop()
     }
 
     private suspend fun consumeEvents(

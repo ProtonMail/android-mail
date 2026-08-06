@@ -22,14 +22,12 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
-import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -48,20 +46,17 @@ internal class ContentSearchSettingsRepositoryImplTest {
         coEvery { getUserSession(userId) } returns wrapper
     }
     private val executeWithUserSession = ExecuteWithUserSession(userSessionRepository, dispatcher)
-    private val createRustSyncService = mockk<CreateRustSyncService> {
-        every { this@mockk(wrapper) } returns syncServiceWrapper
-    }
 
     private val repository = ContentSearchSettingsRepositoryImpl(
         executeWithUserSession = executeWithUserSession,
-        createRustSyncService = createRustSyncService,
+        syncService = syncServiceWrapper,
         ioDispatcher = dispatcher
     )
 
     @Test
     fun `isEnabled returns the value reported by the sync service`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.isEnabled() } returns true.right()
+        coEvery { syncServiceWrapper.isEnabled(wrapper) } returns true.right()
 
         // When
         val result = repository.isEnabled(userId)
@@ -73,7 +68,7 @@ internal class ContentSearchSettingsRepositoryImplTest {
     @Test
     fun `isEnabled propagates the sync service error`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.isEnabled() } returns DataError.Local.Unknown.left()
+        coEvery { syncServiceWrapper.isEnabled(wrapper) } returns DataError.Local.Unknown.left()
 
         // When
         val result = repository.isEnabled(userId)
@@ -85,20 +80,20 @@ internal class ContentSearchSettingsRepositoryImplTest {
     @Test
     fun `setEnabled forwards the value to the sync service`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.setEnabled(true) } returns Unit.right()
+        coEvery { syncServiceWrapper.setEnabled(wrapper, true) } returns Unit.right()
 
         // When
         val result = repository.setEnabled(userId, true)
 
         // Then
         assertEquals(Unit.right(), result)
-        coVerify { syncServiceWrapper.setEnabled(true) }
+        coVerify { syncServiceWrapper.setEnabled(wrapper, true) }
     }
 
     @Test
     fun `observeIsEnabled emits the current value on start`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.isEnabled() } returns true.right()
+        coEvery { syncServiceWrapper.isEnabled(wrapper) } returns true.right()
 
         // When + Then
         repository.observeIsEnabled(userId).test {

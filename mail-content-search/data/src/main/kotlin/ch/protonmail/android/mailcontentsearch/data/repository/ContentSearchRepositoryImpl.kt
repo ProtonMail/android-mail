@@ -19,19 +19,18 @@
 package ch.protonmail.android.mailcontentsearch.data.repository
 
 import arrow.core.Either
-import arrow.core.flatMap
 import arrow.core.flatten
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
-import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
-import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
+import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.currentCoroutineContext
@@ -52,7 +51,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
     private val mailSessionRepository: MailSessionRepository,
-    private val createRustSyncService: CreateRustSyncService,
+    private val syncService: SyncServiceWrapper,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ContentSearchRepository {
 
@@ -65,11 +64,11 @@ class ContentSearchRepositoryImpl @Inject constructor(
         mailSessionRepository.getMailSession().isContentSearchFFEnabled()
     }
 
+    // Only reset: stop() is global as of the sync orchestrator, so it would halt indexing for
+    // every other account too. reset() already re-prepares this user and hands the orchestrator
+    // its next candidate.
     override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
-        executeWithUserSession(userId) { wrapper ->
-            val syncService = createRustSyncService(wrapper)
-            syncService.stop().flatMap { syncService.reset() }
-        }.flatten()
+        executeWithUserSession(userId) { wrapper -> syncService.reset(wrapper) }.flatten()
 
     // observeForUser ends on every terminal event, so resubscribe to stay durable across worker
     // reschedules (which stop and restart the underlying session).
@@ -84,26 +83,23 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean =
         executeWithUserSession(userId) { wrapper ->
-            createRustSyncService(wrapper).shouldShowMobileBottomSheet()
+            syncService.shouldShowMobileSheet(wrapper)
         }.flatten().getOrElse { false }
 
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
-        executeWithUserSession(userId) { wrapper ->
-            currentIndexingState(createRustSyncService(wrapper))
-        }.getOrNull()
+        executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()
 
-    private suspend fun currentIndexingState(syncService: SyncServiceWrapper): ContentIndexingState? =
-        syncService.status().getOrNull()?.toIndexingState(progress = null)
+    private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState? =
+        syncService.userStatus(wrapper).getOrNull()?.toIndexingState(progress = null)
 
     private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
         // Subscribe before reading the snapshot: the stream has no replay, so anything
         // published between the snapshot read and subscribe() would otherwise be lost
         // (e.g. a terminal event that fires in that window would never reach this collector).
         val stream = executeWithUserSession(userId) { wrapper ->
-            val syncService = createRustSyncService(wrapper)
-            val subscribeResult = syncService.subscribe()
+            val subscribeResult = syncService.subscribeUser(wrapper)
 
-            subscribeResult.onRight { currentIndexingState(syncService)?.let { trySend(it) } }
+            subscribeResult.onRight { currentIndexingState(wrapper)?.let { trySend(it) } }
 
             subscribeResult
         }.flatten().fold(

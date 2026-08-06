@@ -21,8 +21,7 @@ package ch.protonmail.android.mailcontentsearch.data.indexer
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.data.usecase.CreateRustSyncService
-import ch.protonmail.android.mailcontentsearch.data.wrapper.SyncServiceWrapper
+import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -58,17 +57,14 @@ internal class RustContentSearchIndexerTest {
         coEvery { getUserSession(userId) } returns wrapper
     }
     private val executeWithUserSession = ExecuteWithUserSession(userSessionRepository, dispatcher)
-    private val createRustSyncService = mockk<CreateRustSyncService> {
-        every { this@mockk(wrapper) } returns syncServiceWrapper
-    }
 
-    private val indexer = RustContentSearchIndexer(executeWithUserSession, createRustSyncService)
+    private val indexer = RustContentSearchIndexer(executeWithUserSession, syncServiceWrapper)
 
     @Test
     fun `index short-circuits to Unit when start reports COMPLETED`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.COMPLETED.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.COMPLETED.right()
 
         // When
         val result = indexer.index(userId) { }
@@ -81,8 +77,8 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index returns Cancelled when start reports DISABLED`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.DISABLED.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.DISABLED.right()
 
         // When
         val result = indexer.index(userId) { }
@@ -95,8 +91,8 @@ internal class RustContentSearchIndexerTest {
     fun `index reports progress and completes on the Completed event`() = runTest {
         // Given
         val progressValues = mutableListOf<Double>()
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.STARTED.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.STARTED.right()
         coEvery { stream.next() } returnsMany listOf(
             SyncEvent.Progress(SyncProgress(processed = 30uL, total = 100uL, percentage = 30.0)),
             SyncEvent.Completed
@@ -114,8 +110,8 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index returns Cancelled when the sync is stopped`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.ONGOING.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.ONGOING.right()
         coEvery { stream.next() } returns SyncEvent.Stopped
 
         // When
@@ -128,8 +124,8 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index returns Cancelled when the stream closes unexpectedly`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.STARTED.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.STARTED.right()
         coEvery { stream.next() } returns null
 
         // When
@@ -142,8 +138,8 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index returns Unknown when the driver reports a failure`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns SyncStartOutcome.STARTED.right()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.STARTED.right()
         coEvery { stream.next() } returns SyncEvent.Driver(SyncDriverEvent.Failure("boom"))
 
         // When
@@ -156,8 +152,8 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index destroys the stream even when subscribe succeeds but start fails`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns stream.right()
-        coEvery { syncServiceWrapper.start() } returns DataError.Local.Unknown.left()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns stream.right()
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns DataError.Local.Unknown.left()
 
         // When
         val result = indexer.index(userId) { }
@@ -170,7 +166,7 @@ internal class RustContentSearchIndexerTest {
     @Test
     fun `index returns Unknown when subscribing fails`() = runTest {
         // Given
-        coEvery { syncServiceWrapper.subscribe() } returns DataError.Local.Unknown.left()
+        coEvery { syncServiceWrapper.subscribeUser(wrapper) } returns DataError.Local.Unknown.left()
 
         // When
         val result = indexer.index(userId) { }
