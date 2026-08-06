@@ -8,6 +8,7 @@
     <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
     <string name="mail_settings_content_search_syncing_status">Preparing %1$.2f%%…</string>
     <string name="mail_settings_content_search_preparing_status">Preparing…</string>
+    <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
     <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
     <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
     <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>

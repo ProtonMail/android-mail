@@ -28,7 +28,11 @@ sealed interface ContentSearchSettingsEvent : ContentSearchSettingsOperation {
         data class ContentSearchToggled(val newValue: Boolean) : Data
         data class AllowMobileDataToggled(val newValue: Boolean) : Data
         data object LocalSearchDataCleared : Data
-        data class IndexingProgress(val percentage: Double?, val isActive: Boolean) : Data
+        data class IndexingProgress(
+            val percentage: Double?,
+            val isActive: Boolean,
+            val isWaitingForUnmeteredConnection: Boolean
+        ) : Data
     }
 
     sealed interface Error : ContentSearchSettingsEvent {

@@ -65,6 +65,32 @@ internal class ContentIndexingStateMappingsTest {
     }
 
     @Test
+    fun `waiting for an unmetered connection is a pause, not an end`() {
+        // Given - Rust parked the queue and will resume it on its own, so the account still has a
+        // backfill to run and the screen says so rather than showing a stalled percentage.
+        val state = ContentIndexingState.WaitingForUnmeteredConnection
+
+        // Then
+        assertTrue(state.isWaitingForUnmeteredConnection())
+        assertTrue(state.isActive())
+        assertNull(state.toPercentage())
+    }
+
+    @Test
+    fun `no other state is mistaken for waiting on Wi-Fi`() {
+        listOf(
+            ContentIndexingState.Idle,
+            ContentIndexingState.Initializing,
+            ContentIndexingState.Running(percentage = 42.5),
+            ContentIndexingState.Completed,
+            ContentIndexingState.Cancelled,
+            ContentIndexingState.Failed
+        ).forEach { state ->
+            assertFalse(state.isWaitingForUnmeteredConnection(), "$state should not be waiting on Wi-Fi")
+        }
+    }
+
+    @Test
     fun `settled states are neither active nor carry a percentage`() {
         listOf(
             ContentIndexingState.Idle,

@@ -54,12 +54,15 @@ internal fun ContentSearchCard(
     isEnabled: Boolean,
     syncPercentage: Double?,
     isIndexingActive: Boolean,
+    isWaitingForUnmeteredConnection: Boolean,
     onToggle: (Boolean) -> Unit,
     onLearnMoreClick: () -> Unit
 ) {
+    // No grace period for the Wi-Fi wait: unlike the gap before the first progress event, it is a
+    // state the user put the app in, and it lasts until they change network or the setting.
     var showPreparing by remember { mutableStateOf(false) }
-    LaunchedEffect(isIndexingActive, syncPercentage) {
-        if (isIndexingActive && syncPercentage == null) {
+    LaunchedEffect(isIndexingActive, syncPercentage, isWaitingForUnmeteredConnection) {
+        if (isIndexingActive && syncPercentage == null && !isWaitingForUnmeteredConnection) {
             delay(PREPARING_DELAY_MILLIS)
             showPreparing = true
         } else {
@@ -106,6 +109,10 @@ internal fun ContentSearchCard(
                 )
 
                 val statusText = when {
+                    isWaitingForUnmeteredConnection -> stringResource(
+                        id = R.string.mail_settings_content_search_waiting_for_wifi_status
+                    )
+
                     syncPercentage != null -> stringResource(
                         id = R.string.mail_settings_content_search_syncing_status,
                         syncPercentage

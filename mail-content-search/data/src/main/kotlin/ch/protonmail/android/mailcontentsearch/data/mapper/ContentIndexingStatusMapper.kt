@@ -38,8 +38,11 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
  * worker events), so callers can filter them out of the stream.
  */
 internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
-    is SyncEvent.Started,
-    is SyncEvent.WaitingForUnmeteredConnection -> ContentIndexingState.Initializing
+    is SyncEvent.Started -> ContentIndexingState.Initializing
+
+    // Published once when the queue is parked; Rust re-emits the last Progress on resume, so this
+    // state clears itself without any prompting from us.
+    is SyncEvent.WaitingForUnmeteredConnection -> ContentIndexingState.WaitingForUnmeteredConnection
 
     is SyncEvent.Progress -> ContentIndexingState.Running(this.v1.percentage)
     is SyncEvent.Completed -> ContentIndexingState.Completed

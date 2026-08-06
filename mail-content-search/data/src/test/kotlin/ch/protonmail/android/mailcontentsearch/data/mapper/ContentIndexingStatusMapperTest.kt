@@ -63,6 +63,16 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
+    fun `maps WaitingForUnmeteredConnection event to its own state`() {
+        // Given - the queue is parked, which the settings screen reports as waiting for Wi-Fi
+        // rather than as another flavour of "preparing".
+        assertEquals(
+            ContentIndexingState.WaitingForUnmeteredConnection,
+            SyncEvent.WaitingForUnmeteredConnection.toIndexingState()
+        )
+    }
+
+    @Test
     fun `maps Progress event to Running`() {
         assertEquals(
             ContentIndexingState.Running(64.0),
@@ -108,6 +118,7 @@ internal class ContentIndexingStatusMapperTest {
     @Test
     fun `non-terminal events are reported as non-terminal`() {
         assertFalse(SyncEvent.Started.isTerminal())
+        assertFalse(SyncEvent.WaitingForUnmeteredConnection.isTerminal())
         assertFalse(SyncEvent.Progress(SyncProgress(processed = 10uL, total = 100uL, percentage = 10.0)).isTerminal())
         assertFalse(SyncEvent.Driver(SyncDriverEvent.Completed).isTerminal())
         assertFalse(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).isTerminal())

@@ -24,13 +24,17 @@ internal fun ContentIndexingState.toPercentage(): Double? = when (this) {
     is ContentIndexingState.Running -> percentage.takeIf { !isBackfillDone }
     ContentIndexingState.Idle,
     ContentIndexingState.Initializing,
+    ContentIndexingState.WaitingForUnmeteredConnection,
     ContentIndexingState.Completed,
     ContentIndexingState.Cancelled,
     ContentIndexingState.Failed -> null
 }
 
 internal fun ContentIndexingState.isActive(): Boolean = when (this) {
-    ContentIndexingState.Initializing -> true
+    ContentIndexingState.Initializing,
+    // Parked, not finished: the account still has a backfill waiting on a connection it may use.
+    ContentIndexingState.WaitingForUnmeteredConnection -> true
+
     is ContentIndexingState.Running -> !isBackfillDone
 
     ContentIndexingState.Idle,
@@ -38,6 +42,9 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Cancelled,
     ContentIndexingState.Failed -> false
 }
+
+internal fun ContentIndexingState.isWaitingForUnmeteredConnection(): Boolean =
+    this is ContentIndexingState.WaitingForUnmeteredConnection
 
 /**
  * Rust keeps the account in `Running` once the backfill has caught up - it stays subscribed for new

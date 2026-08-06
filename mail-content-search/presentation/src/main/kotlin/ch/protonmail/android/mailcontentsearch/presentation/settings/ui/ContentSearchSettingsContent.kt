@@ -61,6 +61,7 @@ internal fun ContentSearchSettingsContent(
             isEnabled = state.isContentSearchEnabled,
             syncPercentage = state.syncPercentage,
             isIndexingActive = state.isIndexingActive,
+            isWaitingForUnmeteredConnection = state.isWaitingForUnmeteredConnection,
             onToggle = actions.onContentSearchToggle,
             onLearnMoreClick = actions.onLearnMoreClick
         )

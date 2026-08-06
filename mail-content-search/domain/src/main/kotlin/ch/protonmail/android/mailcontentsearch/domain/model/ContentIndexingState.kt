@@ -21,6 +21,13 @@ package ch.protonmail.android.mailcontentsearch.domain.model
 sealed interface ContentIndexingState {
     data object Idle : ContentIndexingState
     data object Initializing : ContentIndexingState
+
+    /**
+     * Rust has parked the account's queue because the connection is metered and the user has not
+     * allowed indexing over mobile data. It resumes on its own once an unmetered connection is
+     * back, so this is a pause rather than an end.
+     */
+    data object WaitingForUnmeteredConnection : ContentIndexingState
     data class Running(val percentage: Double) : ContentIndexingState
     data object Completed : ContentIndexingState
     data object Cancelled : ContentIndexingState

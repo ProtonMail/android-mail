@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexi
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
+import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isWaitingForUnmeteredConnection
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPercentage
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -125,12 +126,19 @@ class ContentSearchSettingsViewModel @Inject constructor(
             .distinctUntilChanged()
             .flatMapLatest { enabled ->
                 if (!enabled) {
-                    flowOf(Data.IndexingProgress(percentage = null, isActive = false))
+                    flowOf(
+                        Data.IndexingProgress(
+                            percentage = null,
+                            isActive = false,
+                            isWaitingForUnmeteredConnection = false
+                        )
+                    )
                 } else {
                     observeContentSearchIndexingStatus(userId).map { indexingStatus ->
                         Data.IndexingProgress(
                             percentage = indexingStatus.toPercentage(),
-                            isActive = indexingStatus.isActive()
+                            isActive = indexingStatus.isActive(),
+                            isWaitingForUnmeteredConnection = indexingStatus.isWaitingForUnmeteredConnection()
                         )
                     }
                 }

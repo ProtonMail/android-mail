@@ -161,6 +161,44 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
+    fun `surfaces the wait for an unmetered connection instead of a stalled percentage`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // When - the user drops off Wi-Fi with mobile data indexing turned off.
+            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection
+            advanceUntilIdle()
+            val state = viewModel.state.value.asData()
+
+            // Then
+            assertTrue(state.isWaitingForUnmeteredConnection)
+            assertTrue(state.isIndexingActive)
+            assertNull(state.syncPercentage)
+        }
+
+    @Test
+    fun `clears the wait for an unmetered connection once rust resumes`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertTrue(viewModel.state.value.asData().isWaitingForUnmeteredConnection)
+
+            // When - Rust re-emits the last progress as soon as the guard is lifted.
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            advanceUntilIdle()
+            val state = viewModel.state.value.asData()
+
+            // Then
+            assertFalse(state.isWaitingForUnmeteredConnection)
+            assertEquals(42.0, state.syncPercentage)
+        }
+
+    @Test
     fun `blanks the percentage immediately when content search is disabled`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
             // Given

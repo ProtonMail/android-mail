@@ -48,7 +48,9 @@ class ContentSearchSettingsReducer @Inject constructor() {
             is ContentSearchSettingsEvent.Data.ContentSearchToggled -> copy(
                 isContentSearchEnabled = event.newValue,
                 syncPercentage = if (event.newValue) syncPercentage else null,
-                isIndexingActive = if (event.newValue) isIndexingActive else false
+                isIndexingActive = if (event.newValue) isIndexingActive else false,
+                isWaitingForUnmeteredConnection =
+                if (event.newValue) isWaitingForUnmeteredConnection else false
             )
             is ContentSearchSettingsEvent.Data.AllowMobileDataToggled -> copy(
                 isAllowMobileDataEnabled = event.newValue
@@ -56,11 +58,13 @@ class ContentSearchSettingsReducer @Inject constructor() {
             is ContentSearchSettingsEvent.Data.LocalSearchDataCleared -> copy(
                 isContentSearchEnabled = false,
                 syncPercentage = null,
-                isIndexingActive = false
+                isIndexingActive = false,
+                isWaitingForUnmeteredConnection = false
             )
             is ContentSearchSettingsEvent.Data.IndexingProgress -> copy(
                 syncPercentage = event.percentage,
-                isIndexingActive = event.isActive
+                isIndexingActive = event.isActive,
+                isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection
             )
             is ContentSearchSettingsEvent.Error.UpdateError -> this
             else -> this
