@@ -19,13 +19,33 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import ch.protonmail.android.mailsession.domain.model.AccountState
+import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
+/**
+ * The toggle is app-wide, but the flag the orchestrator actually obeys is per-account and lives in
+ * Rust. Record the app-wide intent and fan it out to every account that is currently ready; accounts
+ * that are signed out or still unlocking pick it up through [ApplyContentSearchMobileDataPreference].
+ */
 class SetAllowContentSearchOnMobileData @Inject constructor(
-    private val repository: ContentSearchPreferencesRepository
+    private val repository: ContentSearchPreferencesRepository,
+    private val contentSearchRepository: ContentSearchRepository,
+    private val userSessionRepository: UserSessionRepository
 ) {
 
     suspend operator fun invoke(value: Boolean) {
         repository.setAllowMobileData(value)
+
+        userSessionRepository.observeAccounts().first()
+            .filter { it.state == AccountState.Ready }
+            .forEach { account ->
+                contentSearchRepository.setMeteredConnectionAllowed(account.userId, value).onLeft {
+                    Timber.w("content-search: could not apply the mobile data preference to an account: $it")
+                }
+            }
     }
 }

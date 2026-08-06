@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ApplyContentSearchMobileDataPreference
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ResumeContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
@@ -45,6 +46,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class ContentSearchAutoIndexingHandler @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
     private val isContentSearchEnabled: IsContentSearchEnabled,
+    private val applyMobileDataPreference: ApplyContentSearchMobileDataPreference,
     private val settingsRepository: ContentSearchSettingsRepository,
     private val startContentIndexingSweep: StartContentIndexingSweep,
     private val resumeContentIndexingSweep: ResumeContentIndexingSweep,
@@ -82,7 +84,12 @@ class ContentSearchAutoIndexingHandler @Inject constructor(
                     }
 
                     val readyUserIds = accounts.filter { it.state == AccountState.Ready }.map { it.userId }
-                    readyUserIds.forEach { reconcileAutoEnable(it) }
+                    readyUserIds.forEach {
+                        reconcileAutoEnable(it)
+                        // Rust's per-account metered flag defaults to permissive, so a fresh login
+                        // would opt itself back in to indexing over cellular.
+                        applyMobileDataPreference(it)
+                    }
 
                     // (Re)start the sweep on first run and whenever an account newly becomes ready (fresh
                     // login or an account unlocking later), so it is picked up even if the worker already

@@ -240,4 +240,55 @@ internal class ContentSearchRepositoryImplTest {
         // Then
         assertEquals(false, result)
     }
+
+    @Test
+    fun `isMeteredConnectionAllowed returns the sync service value`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.isMeteredConnectionAllowed(wrapper) } returns true.right()
+
+        // When
+        val result = repository.isMeteredConnectionAllowed(userId)
+
+        // Then
+        assertEquals(true.right(), result)
+    }
+
+    @Test
+    fun `isMeteredConnectionAllowed propagates the sync service failure`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.isMeteredConnectionAllowed(wrapper) } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.isMeteredConnectionAllowed(userId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
+    }
+
+    @Test
+    fun `setMeteredConnectionAllowed forwards the value to the sync service`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.setAllowMeteredConnection(wrapper, false) } returns Unit.right()
+
+        // When
+        val result = repository.setMeteredConnectionAllowed(userId, false)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { syncServiceWrapper.setAllowMeteredConnection(wrapper, false) }
+    }
+
+    @Test
+    fun `setMeteredConnectionAllowed propagates the sync service failure`() = runTest(dispatcher) {
+        // Given
+        coEvery {
+            syncServiceWrapper.setAllowMeteredConnection(wrapper, true)
+        } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.setMeteredConnectionAllowed(userId, true)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
+    }
 }

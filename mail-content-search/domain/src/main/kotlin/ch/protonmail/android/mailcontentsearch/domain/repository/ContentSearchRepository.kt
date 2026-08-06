@@ -42,4 +42,14 @@ interface ContentSearchRepository {
     suspend fun getIndexingStatus(userId: UserId): ContentIndexingState
 
     suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean
+
+    /**
+     * Whether the orchestrator is allowed to index [userId] over a metered connection.
+     *
+     * Per-account state owned by Rust: it is what actually gates indexing, and it pauses and resumes
+     * the running queue on its own when flipped.
+     */
+    suspend fun isMeteredConnectionAllowed(userId: UserId): Either<DataError, Boolean>
+
+    suspend fun setMeteredConnectionAllowed(userId: UserId, allowed: Boolean): Either<DataError, Unit>
 }

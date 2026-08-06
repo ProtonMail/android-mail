@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ApplyContentSearchMobileDataPreference
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ResumeContentIndexingSweep
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
@@ -54,6 +55,7 @@ internal class ContentSearchAutoIndexingHandlerTest {
     private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
         coEvery { this@mockk.invoke(any()) } returns false.right()
     }
+    private val applyMobileDataPreference = mockk<ApplyContentSearchMobileDataPreference>(relaxUnitFun = true)
     private val settingsRepository = mockk<ContentSearchSettingsRepository> {
         coEvery { setEnabled(any(), any()) } returns Unit.right()
     }
@@ -296,9 +298,25 @@ internal class ContentSearchAutoIndexingHandlerTest {
         coVerify(exactly = 0) { resumeContentIndexingSweep() }
     }
 
+    @Test
+    fun `applies the mobile data preference to every ready account`() = runTest {
+        // Given
+        givenAccounts(flowOf(listOf(account(UserOne), account(UserTwo, AccountState.NotReady))))
+        givenRustEnabled(UserOne, enabled = true)
+        givenOptedOut(UserOne, optedOut = false)
+
+        // When
+        handler().start()
+
+        // Then
+        coVerify(exactly = 1) { applyMobileDataPreference(UserOne) }
+        coVerify(exactly = 0) { applyMobileDataPreference(UserTwo) }
+    }
+
     private fun TestScope.handler() = ContentSearchAutoIndexingHandler(
         userSessionRepository = userSessionRepository,
         isContentSearchEnabled = isContentSearchEnabled,
+        applyMobileDataPreference = applyMobileDataPreference,
         settingsRepository = settingsRepository,
         startContentIndexingSweep = startContentIndexingSweep,
         resumeContentIndexingSweep = resumeContentIndexingSweep,

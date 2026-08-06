@@ -102,6 +102,14 @@ class ContentSearchRepositoryImpl @Inject constructor(
             syncService.shouldShowMobileSheet(wrapper)
         }.flatten().getOrElse { false }
 
+    override suspend fun isMeteredConnectionAllowed(userId: UserId): Either<DataError, Boolean> =
+        executeWithUserSession(userId) { wrapper -> syncService.isMeteredConnectionAllowed(wrapper) }.flatten()
+
+    override suspend fun setMeteredConnectionAllowed(userId: UserId, allowed: Boolean): Either<DataError, Unit> =
+        executeWithUserSession(userId) { wrapper ->
+            syncService.setAllowMeteredConnection(wrapper, allowed)
+        }.flatten()
+
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()
 
