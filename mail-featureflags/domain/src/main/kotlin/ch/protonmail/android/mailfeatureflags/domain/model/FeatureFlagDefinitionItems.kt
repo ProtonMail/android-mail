@@ -217,3 +217,19 @@ data object SdkUpgradesPurchaseEnabled : FeatureFlagDefinition(
     description = "When ON, purchases upgrades through the Payments SDK instead of the legacy path.",
     defaultValue = false
 )
+
+data object PlusToUnlimitedUpsellExperiment : FeatureFlagDefinition(
+    key = "MailAndroidV7PlusToUnlimitedUpsell",
+    name = "Plus to Unlimited upsell experiment",
+    category = FeatureFlagCategory.Upselling,
+    description = "Turns the Plus to Unlimited upsell on or off. When off, no entry points are shown.",
+    defaultValue = false
+)
+
+data object PlusToUnlimitedUpsellOptOut : FeatureFlagDefinition(
+    key = "MailPlusToUnlimitedUpsellOptOut",
+    name = "Plus to Unlimited upsell opt-out",
+    category = FeatureFlagCategory.Upselling,
+    description = "Set when a user hides the Plus to Unlimited upsell. It stays hidden on all their devices.",
+    defaultValue = false
+)

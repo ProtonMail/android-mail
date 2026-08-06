@@ -24,4 +24,6 @@ import me.proton.core.domain.entity.UserId
 interface UpsellEligibilityRepository {
 
     suspend fun getEligibleUpsellPlan(userId: UserId): UpsellVariantPlan?
+
+    suspend fun getPlusToUnlimitedEligibility(userId: UserId): Boolean
 }
