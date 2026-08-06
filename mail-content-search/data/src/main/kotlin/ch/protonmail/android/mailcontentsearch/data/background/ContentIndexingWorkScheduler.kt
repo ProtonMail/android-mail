@@ -23,6 +23,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
+import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -36,18 +37,24 @@ import javax.inject.Inject
  */
 class ContentIndexingWorkScheduler @Inject constructor(
     private val enqueuer: Enqueuer
-) {
+) : ContentIndexingScheduler {
 
     /**
      * This and [restart] can both fire on one background-to-foreground trip - the lifecycle observer
-     * calls this while the worker that was holding the service calls that. They now go through the
-     * same [enqueue], so the two no longer disagree about policy and the end state is one worker
-     * either way, whichever request lands last.
+     * calls this while the worker that was holding the service calls that. Both go through the same
+     * [enqueue], so the two cannot disagree about policy and the end state is one worker either way,
+     * whichever request lands last.
      */
-    fun enqueueIfWorkPending() {
+    override fun ensureWorkerRunning() {
         enqueue()
         Timber.d("content-search: indexing worker enqueued")
     }
+
+    /**
+     * Whether a worker is executing right now, for callers deciding if one still needs enqueuing.
+     * Work parked in `ENQUEUED` does not count - see [Enqueuer.isWorkRunning].
+     */
+    suspend fun isWorkerRunning(): Boolean = enqueuer.isWorkRunning(WORKER_ID)
 
     /**
      * Replaces the running worker with a fresh one.
@@ -75,9 +82,9 @@ class ContentIndexingWorkScheduler @Inject constructor(
      * `ENQUEUED` behind an exhausted job quota would swallow every later enqueue silently, and
      * nothing else in the app ever retries.
      *
-     * Replacing costs nothing that matters: the worker drives no indexing of its own, so a
-     * replacement re-attaches to a Rust run that never stopped, and starting the orchestrator again
-     * is idempotent.
+     * Replacing costs little: the worker drives no indexing of its own, so a replacement re-attaches
+     * to a Rust run that never stopped, and starting the orchestrator again is idempotent. Not
+     * nothing, though - see the scope window in [restart].
      */
     private fun enqueue() {
         val constraints = Constraints.Builder()

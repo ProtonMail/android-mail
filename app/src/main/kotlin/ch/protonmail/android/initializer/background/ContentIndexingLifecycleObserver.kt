@@ -22,29 +22,41 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Starts the Rust indexing orchestrator on every foreground transition, and puts a foreground-service
- * worker behind it only when it reports work to do.
+ * worker behind it whenever it has something to drive.
  *
- * All the work is on `onStart`. By the time `onStop` runs the worker is already holding the service,
- * and stopping the orchestrator there would undo exactly the case this exists for - indexing while
- * the app is backgrounded.
+ * Stopping the orchestrator is deliberately not done on `onStop`: that would undo exactly the case
+ * this exists for - indexing while the app is backgrounded.
  */
 class ContentIndexingLifecycleObserver @Inject constructor(
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val startContentIndexing: StartContentIndexing,
+    private val observeContentIndexingActivity: ObserveContentIndexingActivity,
     private val workScheduler: ContentIndexingWorkScheduler,
     @AppScope private val appScope: CoroutineScope
 ) : DefaultLifecycleObserver {
 
+    private var activityWatch: Job? = null
+
+    @Volatile
+    private var isForegrounded = false
+
     override fun onStart(owner: LifecycleOwner) {
+        isForegrounded = true
         // App-scoped rather than lifecycle-scoped: start() is an actor round-trip and enqueuing the
         // worker must not be dropped if the user leaves the app again straight away.
         appScope.launch {
@@ -58,12 +70,54 @@ class ContentIndexingLifecycleObserver @Inject constructor(
                     if (summary.hasWorkPending) {
                         // Enqueued now, while still foregrounded: WorkManager will not let a
                         // background app promote a worker to a foreground service.
-                        workScheduler.enqueueIfWorkPending()
+                        workScheduler.ensureWorkerRunning()
                     } else {
-                        Timber.d("content-search: nothing pending, not enqueuing a worker")
+                        Timber.d("content-search: nothing pending, watching for work to appear")
                     }
+                    watchForIndexingToStart()
                 }
             )
         }
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        isForegrounded = false
+        stopWatching()
+    }
+
+    private fun stopWatching() {
+        activityWatch?.cancel()
+        activityWatch = null
+    }
+
+    /**
+     * Covers work that appears after the summary was taken - a new account signing in, above all.
+     * The summary is a single sample at foreground time, and the orchestrator picks up such an
+     * account on its own, so without this the first the app hears of it is the next foreground
+     * transition, by which point it has been indexing unprotected for the whole episode.
+     *
+     * Only worth doing while the app is on screen, because a worker enqueued from the background
+     * cannot be promoted to a foreground service anyway - hence the cancel in `onStop`.
+     */
+    private fun watchForIndexingToStart() {
+        stopWatching()
+        activityWatch = appScope.launch {
+            observeContentIndexingActivity()
+                .map { it is ContentIndexingActivity.Progress }
+                // Progress arrives every batch; the transition into it is the only interesting part.
+                .distinctUntilChanged()
+                .filter { it }
+                .collect {
+                    // The worker enqueued above is usually the one already handling this. Asking
+                    // WorkManager rather than tracking it here also covers a worker that has since
+                    // exited on its idle timeout.
+                    if (!workScheduler.isWorkerRunning()) {
+                        Timber.d("content-search: indexing started with no worker behind it")
+                        workScheduler.ensureWorkerRunning()
+                    }
+                }
+        }
+        // `onStart` is app-scoped, so it can land after the app has already left the screen.
+        if (!isForegrounded) stopWatching()
     }
 }

@@ -184,6 +184,42 @@ class EnqueuerTest {
     }
 
     @Test
+    fun `only running work counts as running`() = runTest {
+        // Given - work parked in ENQUEUED is the case this has to tell apart from a healthy worker.
+        val workId = "ContentIndexingWorker"
+        givenWorkManagerReturns(
+            workId,
+            MutableStateFlow(listOf(WorkInfo(UUID.randomUUID(), WorkInfo.State.ENQUEUED, emptySet(), Data.EMPTY)))
+        )
+
+        // Then
+        assertFalse(enqueuer.isWorkRunning(workId))
+    }
+
+    @Test
+    fun `work being executed is reported as running`() = runTest {
+        // Given
+        val workId = "ContentIndexingWorker"
+        givenWorkManagerReturns(
+            workId,
+            MutableStateFlow(listOf(WorkInfo(UUID.randomUUID(), WorkInfo.State.RUNNING, emptySet(), Data.EMPTY)))
+        )
+
+        // Then
+        assertTrue(enqueuer.isWorkRunning(workId))
+    }
+
+    @Test
+    fun `work that was never enqueued is not running`() = runTest {
+        // Given
+        val workId = "ContentIndexingWorker"
+        givenWorkManagerReturns(workId, MutableStateFlow(emptyList()))
+
+        // Then
+        assertFalse(enqueuer.isWorkRunning(workId))
+    }
+
+    @Test
     fun `return true when worker is enqueued`() = runTest {
         // Given
         val workId = "ClearLabelWorker-test-message-id"

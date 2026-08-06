@@ -32,6 +32,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -163,6 +164,18 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
 
     fun cancelWork(workerId: String) {
         workManager.cancelUniqueWork(workerId)
+    }
+
+    /**
+     * Whether the unique work is executing right now.
+     *
+     * Deliberately narrower than [observeWorkStatusIsEnqueuedOrRunning]: `ENQUEUED` covers both work
+     * that is about to start and work the platform has parked indefinitely, which are opposite
+     * answers to "is this being taken care of".
+     */
+    suspend fun isWorkRunning(workerId: String): Boolean {
+        val workInfos = workManager.getWorkInfosForUniqueWorkFlow(workerId).first()
+        return workInfos.any { it.state == WorkInfo.State.RUNNING }
     }
 
     fun observeWorkStatusIsEnqueuedOrRunning(workerId: String): Flow<Boolean> =
