@@ -35,6 +35,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -52,10 +53,14 @@ internal class ContentSearchRepositoryImplTest {
     private val userId = UserId("user-1")
     private val dispatcher = UnconfinedTestDispatcher()
     private val wrapper = mockk<MailUserSessionWrapper>()
-    private val syncServiceWrapper = mockk<SyncServiceWrapper>()
+    private val syncServiceWrapper = mockk<SyncServiceWrapper> {
+        // Nothing sized yet by default; individual tests override it when they need a percentage.
+        coEvery { userProgress(wrapper) } returns SyncProgress(processed = 0uL, total = 0uL, percentage = 0.0).right()
+    }
 
     private val userSessionRepository = mockk<UserSessionRepository> {
         coEvery { getUserSession(userId) } returns wrapper
+        every { observeUserSessionAvailable(userId) } returns flowOf(userId)
     }
     private val executeWithUserSession = ExecuteWithUserSession(userSessionRepository, dispatcher)
 
@@ -69,6 +74,7 @@ internal class ContentSearchRepositoryImplTest {
         executeWithUserSession = executeWithUserSession,
         mailSessionRepository = mailSessionRepository,
         syncService = syncServiceWrapper,
+        userSessionRepository = userSessionRepository,
         ioDispatcher = dispatcher
     )
 
@@ -137,6 +143,21 @@ internal class ContentSearchRepositoryImplTest {
         // Then
         assertEquals(ContentIndexingState.Initializing, result)
     }
+
+    @Test
+    fun `getIndexingStatus reports the per user percentage as soon as rust has sized the backfill`() =
+        runTest(dispatcher) {
+            // Given
+            coEvery { syncServiceWrapper.userStatus(wrapper) } returns SyncStatus.ONGOING.right()
+            coEvery { syncServiceWrapper.userProgress(wrapper) } returns
+                SyncProgress(processed = 30uL, total = 100uL, percentage = 30.0).right()
+
+            // When
+            val result = repository.getIndexingStatus(userId)
+
+            // Then
+            assertEquals(ContentIndexingState.Running(30.0), result)
+        }
 
     @Test
     fun `getIndexingStatus falls back to Idle when the session has no status`() = runTest(dispatcher) {

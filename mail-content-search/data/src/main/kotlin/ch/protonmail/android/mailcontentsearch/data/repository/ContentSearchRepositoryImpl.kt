@@ -30,14 +30,18 @@ import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRe
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
+import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
@@ -52,6 +56,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
     private val mailSessionRepository: MailSessionRepository,
     private val syncService: SyncServiceWrapper,
+    private val userSessionRepository: UserSessionRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ContentSearchRepository {
 
@@ -71,12 +76,23 @@ class ContentSearchRepositoryImpl @Inject constructor(
         executeWithUserSession(userId) { wrapper -> syncService.reset(wrapper) }.flatten()
 
     // observeForUser ends on every terminal event, so resubscribe to stay durable across worker
-    // reschedules (which stop and restart the underlying session).
-    override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> = flow {
-        while (currentCoroutineContext().isActive) {
-            emitAll(observeForUser(userId))
-        }
-    }.flowOn(ioDispatcher)
+    // reschedules (which stop and restart the underlying session). Gated on the user session so
+    // the loop terminates on logout instead of spinning on NoUserSession at the backoff rate.
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState> =
+        userSessionRepository.observeUserSessionAvailable(userId)
+            .flatMapLatest { availableUserId ->
+                if (availableUserId == null) {
+                    emptyFlow()
+                } else {
+                    flow {
+                        while (currentCoroutineContext().isActive) {
+                            emitAll(observeForUser(userId))
+                        }
+                    }
+                }
+            }
+            .flowOn(ioDispatcher)
 
     override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState =
         readIndexingState(userId) ?: ContentIndexingState.Idle
@@ -89,8 +105,14 @@ class ContentSearchRepositoryImpl @Inject constructor(
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()
 
-    private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState? =
-        syncService.userStatus(wrapper).getOrNull()?.toIndexingState(progress = null)
+    // Both reads answer while the orchestrator is stopped, so the UI gets a determinate
+    // percentage from the very first frame instead of an indefinite "preparing".
+    private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState? {
+        val status = syncService.userStatus(wrapper).getOrNull() ?: return null
+        // No totals yet means Rust has not sized the backfill: report "preparing" rather than 0%.
+        val progress = syncService.userProgress(wrapper).getOrNull()?.takeIf { it.total > 0uL }?.percentage
+        return status.toIndexingState(progress)
+    }
 
     private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
         // Subscribe before reading the snapshot: the stream has no replay, so anything

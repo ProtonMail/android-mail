@@ -26,10 +26,8 @@ import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResul
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
-import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
@@ -44,7 +42,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -63,7 +60,6 @@ internal class ContentSearchSettingsViewModelTest {
     private val userId = UserId("current-user")
 
     private val ownIndexingStatus = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
-    private val workerState = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
     private val enabledFlow = MutableStateFlow(true)
 
     private val reducer = ContentSearchSettingsReducer()
@@ -76,12 +72,6 @@ internal class ContentSearchSettingsViewModelTest {
         coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
-    private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus> {
-        coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Idle
-    }
-    private val observeContentIndexingState = mockk<ObserveContentIndexingState> {
-        every { this@mockk.invoke(userId) } returns workerState
-    }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(userId) } returns enabledFlow
     }
@@ -103,8 +93,6 @@ internal class ContentSearchSettingsViewModelTest {
         disableContentSearch = disableContentSearch,
         startContentIndexingSweep = startContentIndexingSweep,
         clearContentSearchLocalData = clearContentSearchLocalData,
-        getContentSearchIndexingStatus = getContentSearchIndexingStatus,
-        observeContentIndexingState = observeContentIndexingState,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         isContentSearchAllowedOnMobileData = isContentSearchAllowedOnMobileData,
@@ -140,9 +128,8 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `keeps the account marked complete from rust even when the worker reports idle`() = runTest {
+    fun `is not active when rust reports the account complete`() = runTest {
         // Given
-        workerState.value = ContentIndexingState.Idle
         ownIndexingStatus.value = ContentIndexingState.Completed
 
         // When
@@ -154,11 +141,10 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `is active while the worker is initializing even before rust reports progress`() =
+    fun `is active while rust reports Initializing even before it reports progress`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
             // Given
-            workerState.value = ContentIndexingState.Initializing
-            ownIndexingStatus.value = ContentIndexingState.Idle
+            ownIndexingStatus.value = ContentIndexingState.Initializing
 
             // When
             val viewModel = viewModel()
@@ -168,30 +154,6 @@ internal class ContentSearchSettingsViewModelTest {
             // Then
             assertTrue(state.isIndexingActive)
             assertNull(state.syncPercentage)
-        }
-
-    @Test
-    fun `holds the last percentage through a brief blank so it does not flash empty`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
-            val viewModel = viewModel()
-            advanceUntilIdle()
-            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
-
-            // When
-            ownIndexingStatus.value = ContentIndexingState.Cancelled
-            advanceTimeBy(500) // shorter than BlankPercentageHoldMillis
-
-            // Then
-            assertEquals(42.0, viewModel.state.value.asData().syncPercentage)
-
-            // When
-            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 50.0)
-            advanceUntilIdle()
-
-            // Then
-            assertEquals(50.0, viewModel.state.value.asData().syncPercentage)
         }
 
     @Test
@@ -212,7 +174,7 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
-    fun `clears the percentage when the blank persists beyond the hold window`() =
+    fun `clears the percentage as soon as rust stops reporting progress`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
             // Given
             ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
@@ -222,7 +184,7 @@ internal class ContentSearchSettingsViewModelTest {
 
             // When
             ownIndexingStatus.value = ContentIndexingState.Cancelled
-            advanceUntilIdle() // past BlankPercentageHoldMillis
+            advanceUntilIdle()
 
             // Then
             assertNull(viewModel.state.value.asData().syncPercentage)
@@ -251,85 +213,11 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
-    fun `is not active when the worker is initializing but rust already reports the account complete`() = runTest {
-        // Given
-        workerState.value = ContentIndexingState.Initializing
-        ownIndexingStatus.value = ContentIndexingState.Completed
-
-        // When
-        val state = viewModel().state.value.asData()
-
-        // Then
-        assertFalse(state.isIndexingActive)
-        assertNull(state.syncPercentage)
-    }
-
-    @Test
-    fun `does not show preparing for a stale initializing status when no worker is running`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            workerState.value = ContentIndexingState.Idle
-            ownIndexingStatus.value = ContentIndexingState.Initializing
-
-            // When
-            val viewModel = viewModel()
-            advanceUntilIdle()
-            val state = viewModel.state.value.asData()
-
-            // Then
-            assertFalse(state.isIndexingActive)
-            assertNull(state.syncPercentage)
-        }
-
-    @Test
-    fun `never shows preparing after completion even when toggled off and on with an active worker`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
-            ownIndexingStatus.value = ContentIndexingState.Completed
-            val viewModel = viewModel()
-            advanceUntilIdle()
-            assertFalse(viewModel.state.value.asData().isIndexingActive)
-
-            // When
-            enabledFlow.value = false
-            advanceUntilIdle()
-            workerState.value = ContentIndexingState.Initializing
-            ownIndexingStatus.value = ContentIndexingState.Initializing
-            enabledFlow.value = true
-            advanceUntilIdle()
-
-            // Then
-            val state = viewModel.state.value.asData()
-            assertFalse(state.isIndexingActive)
-            assertNull(state.syncPercentage)
-        }
-
-    @Test
-    fun `never shows preparing on reopen of an already indexed account even with an active worker`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
-            workerState.value = ContentIndexingState.Initializing
-            ownIndexingStatus.value = ContentIndexingState.Initializing
-
-            // When
-            val viewModel = viewModel()
-            advanceUntilIdle()
-
-            // Then
-            val state = viewModel.state.value.asData()
-            assertFalse(state.isIndexingActive)
-            assertNull(state.syncPercentage)
-        }
-
-    @Test
     fun `shows progress again after resetting local data on a previously completed account`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
             // Given
             coEvery { disableContentSearch(userId) } returns Unit.right()
             coEvery { clearContentSearchLocalData(userId) } returns Unit.right()
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
             ownIndexingStatus.value = ContentIndexingState.Completed
             val viewModel = viewModel()
             advanceUntilIdle()
@@ -339,37 +227,9 @@ internal class ContentSearchSettingsViewModelTest {
             viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData)
             advanceUntilIdle()
             enabledFlow.value = false // disabling content search is part of clearing the data
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Idle
             ownIndexingStatus.value = ContentIndexingState.Idle
             advanceUntilIdle()
             enabledFlow.value = true
-            workerState.value = ContentIndexingState.Initializing
-            ownIndexingStatus.value = ContentIndexingState.Initializing
-            advanceUntilIdle()
-
-            // Then
-            assertTrue(viewModel.state.value.asData().isIndexingActive)
-        }
-
-    @Test
-    fun `shows progress again after resetting local data while content search is already disabled`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            coEvery { disableContentSearch(userId) } returns Unit.right()
-            coEvery { clearContentSearchLocalData(userId) } returns Unit.right()
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
-            enabledFlow.value = false
-            ownIndexingStatus.value = ContentIndexingState.Completed
-            val viewModel = viewModel()
-            advanceUntilIdle()
-
-            // When
-            viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData)
-            advanceUntilIdle()
-            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Idle
-            ownIndexingStatus.value = ContentIndexingState.Idle
-            enabledFlow.value = true
-            workerState.value = ContentIndexingState.Initializing
             ownIndexingStatus.value = ContentIndexingState.Initializing
             advanceUntilIdle()
 

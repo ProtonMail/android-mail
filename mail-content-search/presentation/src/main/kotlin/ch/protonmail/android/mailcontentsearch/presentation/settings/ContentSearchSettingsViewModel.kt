@@ -20,14 +20,11 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
-import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
@@ -42,12 +39,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -55,7 +50,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -72,8 +67,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val disableContentSearch: DisableContentSearch,
     private val startContentIndexingSweep: StartContentIndexingSweep,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
-    private val getContentSearchIndexingStatus: GetContentSearchIndexingStatus,
-    private val observeContentIndexingState: ObserveContentIndexingState,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
@@ -87,10 +80,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val rescheduleRequests = MutableSharedFlow<Unit>(extraBufferCapacity = 8)
 
     private val actions = Channel<ContentSearchSettingsViewAction>(Channel.BUFFERED)
-
-    // Tracks whether the account is fully indexed so progress never regresses to "Preparing".
-    // Seeded from Rust status at the start of each enabled session and updated as indexing runs or completes.
-    private var isAccountIndexed = false
 
     init {
         actions.receiveAsFlow()
@@ -133,6 +122,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
         }
     )
 
+    // Rust is the single source of progress now: the status stream is seeded from the per-user
+    // snapshot, so there is nothing left to cross-reference against a worker-derived state.
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeIndexingProgress(userId: UserId) {
         observeContentSearchEnabled(userId)
@@ -141,28 +132,11 @@ class ContentSearchSettingsViewModel @Inject constructor(
                 if (!enabled) {
                     flowOf(Data.IndexingProgress(percentage = null, isActive = false))
                 } else {
-                    isAccountIndexed = getContentSearchIndexingStatus(userId) is ContentIndexingState.Completed
-                    combine(
-                        observeContentSearchIndexingStatus(userId),
-                        observeContentIndexingState(userId)
-                    ) { indexingStatus, workerState ->
-                        when (indexingStatus) {
-                            is ContentIndexingState.Completed -> isAccountIndexed = true
-                            // Concrete progress is the only signal that real re-indexing resumed.
-                            is ContentIndexingState.Running -> isAccountIndexed = false
-                            else -> Unit
-                        }
-                        val percentage = indexingStatus.toPercentage()
-                        val preparing = workerState.isActive() && !isAccountIndexed &&
-                            indexingStatus !is ContentIndexingState.Completed
+                    observeContentSearchIndexingStatus(userId).map { indexingStatus ->
                         Data.IndexingProgress(
-                            percentage = percentage,
-                            isActive = percentage != null || preparing
+                            percentage = indexingStatus.toPercentage(),
+                            isActive = indexingStatus.isActive()
                         )
-                    }.mapLatest { progress ->
-                        // Delay the "blank" state as it might be caused by a worker being briefly rescheduled.
-                        if (progress.percentage == null) delay(BlankPercentageHoldMillis.milliseconds)
-                        progress
                     }
                 }
             }
@@ -237,6 +211,5 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private companion object {
 
         const val RescheduleDebounceMillis = 500L
-        const val BlankPercentageHoldMillis = 1_000L
     }
 }
