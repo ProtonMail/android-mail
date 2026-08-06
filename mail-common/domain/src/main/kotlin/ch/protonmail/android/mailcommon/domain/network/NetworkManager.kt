@@ -22,6 +22,7 @@ import android.net.Network
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Ported from core.network.data.
@@ -30,10 +31,20 @@ import kotlinx.coroutines.flow.callbackFlow
  */
 abstract class NetworkManager {
 
-    private var observers = mutableSetOf<NetworkCallback>()
+    // Mutated from the connectivity callback thread while being iterated from collectors, so it
+    // has to tolerate concurrent modification.
+    private val observers = CopyOnWriteArraySet<NetworkCallback>()
 
     /** @return current [NetworkStatus] **/
     abstract val networkStatus: NetworkStatus
+
+    /**
+     * @return whether the active connection costs the user money.
+     *
+     * Answered independently of [networkStatus]: `Disconnected` says nothing about cost, and an
+     * unknown connection is reported as metered so callers fail safe.
+     */
+    abstract val isMetered: Boolean
 
     /** @return current active [Network] **/
     abstract val activeNetwork: Network?

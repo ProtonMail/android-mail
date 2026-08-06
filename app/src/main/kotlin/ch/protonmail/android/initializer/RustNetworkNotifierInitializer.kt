@@ -19,21 +19,17 @@
 package ch.protonmail.android.initializer
 
 import android.content.Context
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.startup.Initializer
 import ch.protonmail.android.di.NetworkManagerEntryPoint
+import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import ch.protonmail.android.mailcommon.domain.network.NetworkStatus
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.OsNetworkStatus
+import uniffi.mail_uniffi.OsNetworkType
 
 internal class RustNetworkObserverInitializer : Initializer<Unit> {
 
@@ -46,38 +42,38 @@ internal class RustNetworkObserverInitializer : Initializer<Unit> {
         val networkManager = entryPointAccessor.networkManager()
         val mailSession = entryPointAccessor.mailSession()
 
-        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            private var networkMonitoringJob: Job? = null
+        // Rust defaults to UNMETERED, which is the unsafe answer, so it has to be told the real one
+        // before anything can ask the orchestrator to start. observe() emits the current status on
+        // subscribe, so the first collection below does that - off the main thread, which matters
+        // because reading the type costs three binder calls and this runs during App Startup.
+        //
+        // Deliberately app-scoped rather than tied to ProcessLifecycleOwner: the indexing foreground
+        // service runs while the app is backgrounded, and that is exactly when Rust must not be told
+        // a stale network type.
+        entryPointAccessor.appScope().launch {
+            networkManager
+                .observe()
+                .distinctUntilChanged()
+                .collect { status ->
+                    Timber.d("NetworkStatus updated to $status")
 
-            override fun onStart(owner: LifecycleOwner) {
-                Timber.d("App foregrounded - starting NetworkStatus check")
+                    when (status) {
+                        NetworkStatus.Unmetered,
+                        NetworkStatus.Metered -> mailSession.updateOsNetworkStatus(OsNetworkStatus.ONLINE)
+                        NetworkStatus.Disconnected -> mailSession.updateOsNetworkStatus(OsNetworkStatus.OFFLINE)
+                    }
 
-                networkMonitoringJob = CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-                    networkManager
-                        .observe()
-                        .distinctUntilChanged()
-                        .collect { status ->
-                            Timber.d("NetworkStatus updated to $status")
-
-                            when (status) {
-                                NetworkStatus.Unmetered,
-                                NetworkStatus.Metered -> {
-                                    mailSession.updateOsNetworkStatus(OsNetworkStatus.ONLINE)
-                                }
-
-                                NetworkStatus.Disconnected -> {
-                                    mailSession.updateOsNetworkStatus(OsNetworkStatus.OFFLINE)
-                                }
-                            }
-                        }
+                    // Read separately from [status]: `Disconnected` is the right answer for OFFLINE
+                    // and no answer at all for "does this connection cost money".
+                    mailSession.pushNetworkType(networkManager)
                 }
-            }
+        }
+    }
 
-            override fun onStop(owner: LifecycleOwner) {
-                Timber.d("App backgrounded - pausing NetworkStatus check")
-                networkMonitoringJob?.cancel()
-            }
-        })
+    private fun MailSession.pushNetworkType(networkManager: NetworkManager) {
+        val type = if (networkManager.isMetered) OsNetworkType.METERED else OsNetworkType.UNMETERED
+        Timber.d("OsNetworkType updated to $type")
+        updateOsNetworkType(type)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = listOf(RustMailCommonInitializer::class.java)

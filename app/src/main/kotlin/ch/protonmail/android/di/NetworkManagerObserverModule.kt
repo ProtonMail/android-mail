@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.di
 
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 import uniffi.mail_uniffi.MailSession
 
 @EntryPoint
@@ -30,4 +32,7 @@ interface NetworkManagerEntryPoint {
 
     fun networkManager(): NetworkManager
     fun mailSession(): MailSession
+
+    @AppScope
+    fun appScope(): CoroutineScope
 }

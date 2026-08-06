@@ -28,6 +28,7 @@ import androidx.annotation.RequiresPermission
 import ch.protonmail.android.mailcommon.domain.network.NetworkManager
 import ch.protonmail.android.mailcommon.domain.network.NetworkStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
@@ -38,7 +39,10 @@ class NetworkManagerImpl @Inject constructor(
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    private var registered = false
+    // Compare-and-set rather than a volatile flag: register() is reached from every new collector of
+    // observe(), which is app-scoped and collected from more than one place, so two of them landing
+    // together would both pass a plain check and registerDefaultNetworkCallback would throw.
+    private val registered = AtomicBoolean(false)
 
     @Volatile
     private var _networkStatus: NetworkStatus = determineCurrentNetworkStatus()
@@ -68,11 +72,22 @@ class NetworkManagerImpl @Inject constructor(
         @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
         get() = connectivityManager.activeNetwork
 
+    /**
+     * Deliberately independent of [networkStatus]: "disconnected" is a valid status but not a
+     * valid answer to "does this connection cost the user money", and anything we cannot inspect
+     * has to be assumed to cost money.
+     */
+    override val isMetered: Boolean
+        @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+        get() {
+            val activeNetwork = connectivityManager.activeNetwork ?: return true
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return true
+            return capabilities.isMetered()
+        }
+
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     override fun register() {
-        if (!registered) {
-            registered = true
-
+        if (registered.compareAndSet(false, true)) {
             // Get current state before registering
             _networkStatus = determineCurrentNetworkStatus()
             connectivityManager.registerDefaultNetworkCallback(networkCallback)
@@ -80,8 +95,7 @@ class NetworkManagerImpl @Inject constructor(
     }
 
     override fun unregister() {
-        if (registered) {
-            registered = false
+        if (registered.compareAndSet(true, false)) {
             connectivityManager.unregisterNetworkCallback(networkCallback)
         }
     }
@@ -110,8 +124,17 @@ class NetworkManagerImpl @Inject constructor(
 
         return when {
             !hasInternet -> NetworkStatus.Disconnected
-            connectivityManager.isActiveNetworkMetered -> NetworkStatus.Metered
+            capabilities.isMetered() -> NetworkStatus.Metered
             else -> NetworkStatus.Unmetered
         }
     }
+
+    // NET_CAPABILITY_NOT_METERED describes the transport, and a VPN commonly advertises it
+    // regardless of what it tunnels over - Proton users frequently run Proton VPN, and getting
+    // this wrong means backfilling a mailbox over cellular. isActiveNetworkMetered resolves
+    // through the tunnel, so treating either signal saying "metered" as metered covers the VPN
+    // case without having to recognise the transport.
+    private fun NetworkCapabilities.isMetered(): Boolean =
+        !hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED) ||
+            connectivityManager.isActiveNetworkMetered
 }

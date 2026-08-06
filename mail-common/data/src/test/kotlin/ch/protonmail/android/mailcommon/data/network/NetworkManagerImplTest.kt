@@ -40,6 +40,8 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 @Config(minSdk = Build.VERSION_CODES.Q)
@@ -200,10 +202,73 @@ internal class NetworkManagerImplTest {
         }
     }
 
+    @Test
+    fun `isMetered is true when there is no active network`() {
+        // Given
+        setupDisconnectedNetwork()
+
+        // When
+        val result = NetworkManagerImpl(context).isMetered
+
+        // Then
+        assertTrue(result)
+    }
+
+    @Test
+    fun `isMetered is true when the capabilities cannot be read`() {
+        // Given
+        setupNetworkWithNullCapabilities()
+
+        // When
+        val result = NetworkManagerImpl(context).isMetered
+
+        // Then
+        assertTrue(result)
+    }
+
+    @Test
+    fun `isMetered is true when the transport is metered`() {
+        // Given
+        setupConnectedNetwork(isMetered = true)
+
+        // When
+        val result = NetworkManagerImpl(context).isMetered
+
+        // Then
+        assertTrue(result)
+    }
+
+    @Test
+    fun `isMetered is false on an unmetered transport`() {
+        // Given
+        setupConnectedNetwork(isMetered = false)
+
+        // When
+        val result = NetworkManagerImpl(context).isMetered
+
+        // Then
+        assertFalse(result)
+    }
+
+    @Test
+    fun `isMetered is true when the legacy connectivity answer disagrees with the capability`() {
+        // Given - the capability says unmetered, the legacy read says otherwise: fail safe. This is
+        // the VPN case too: the tunnel advertises NOT_METERED while what it runs over costs money.
+        setupConnectedNetwork()
+        every { connectivityManager.isActiveNetworkMetered } returns true
+
+        // When
+        val result = NetworkManagerImpl(context).isMetered
+
+        // Then
+        assertTrue(result)
+    }
+
     private fun setupConnectedNetwork(hasInternet: Boolean = true, isMetered: Boolean = false) {
         every { connectivityManager.activeNetwork } returns network
         every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
         every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } returns hasInternet
+        every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED) } returns !isMetered
         every { connectivityManager.isActiveNetworkMetered } returns isMetered
     }
 
