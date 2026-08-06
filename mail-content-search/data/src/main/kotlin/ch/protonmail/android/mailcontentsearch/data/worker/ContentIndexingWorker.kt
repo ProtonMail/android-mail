@@ -38,9 +38,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
@@ -91,7 +91,13 @@ class ContentIndexingWorker @AssistedInject constructor(
     @Volatile
     private var isReplacingSelf = false
 
+    @Volatile
+    private var cachedAccountLabel: Pair<UserId, String?>? = null
+
     override suspend fun doWork(): Result = try {
+        // A run attempt above the first means WorkManager rescheduled us, which is worth knowing
+        // when the worker is found sitting in ENQUEUED with every constraint met.
+        Timber.d("content-search: indexing worker running (attempt ${runAttemptCount + 1})")
         mailSessionRepository.runInRustBackground {
             coroutineScope {
                 val visibility = launch { observeAppVisibility() }
@@ -111,9 +117,22 @@ class ContentIndexingWorker @AssistedInject constructor(
         if (isReplacingSelf) {
             Timber.d("content-search: indexing worker replaced by an unpromoted one")
         } else {
-            Timber.d("content-search: indexing worker stopped ($cancellation)")
+            Timber.d("content-search: indexing worker stopped, ${stopReasonLabel()} ($cancellation)")
         }
         throw cancellation
+    }
+
+    /**
+     * Why the platform took the worker away, if it did.
+     *
+     * The one thing that separates cases which look identical from the outside: a timed-out
+     * foreground service, an exhausted job quota, a lost constraint and our own self-replacement
+     * all leave the work sitting in `ENQUEUED` afterwards.
+     */
+    private fun stopReasonLabel(): String = when {
+        !isStopped -> "not stopped by WorkManager"
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> "stopReason=$stopReason"
+        else -> "stopReason unavailable below API 31"
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -150,19 +169,26 @@ class ContentIndexingWorker @AssistedInject constructor(
      * replacement runs without a notification. Indexing does not restart with it: the orchestrator
      * lives in Rust and persists its progress, so an interrupted account resumes where it stopped.
      *
-     * Debounced, so an app that is briefly backgrounded (a permission dialog, a share sheet) does
-     * not pay for a service it will hand back a moment later.
+     * Acquiring is not debounced. A job is only exempt from JobScheduler's standby quota while the
+     * app holds a foreground service, and quota starts being charged the moment the app stops being
+     * the top activity - waiting even a couple of seconds is long enough to be stopped with
+     * STOP_REASON_QUOTA, after which the replacement will not be started until quota recovers. The
+     * same haste keeps the promotion inside the grace period for starting a service from the
+     * background on Android 12+.
+     *
+     * Releasing is debounced, so an app that is briefly backgrounded - a permission dialog, a share
+     * sheet - does not churn a worker it is about to want back.
      */
-    @OptIn(FlowPreview::class)
     private suspend fun observeAppVisibility() {
         appInBackgroundState.observe()
-            .debounce(VisibilityDebounce)
             .distinctUntilChanged()
-            .collect { isInBackground ->
+            .collectLatest { isInBackground ->
                 when {
                     isInBackground && !isPromoted -> promote()
 
                     !isInBackground && isPromoted -> {
+                        // Cancelled by collectLatest if the app leaves again within the window.
+                        delay(ForegroundReturnDebounce)
                         isReplacingSelf = true
                         Timber.d("content-search: app back on screen, dropping the indexing service")
                         workScheduler.restart()
@@ -181,9 +207,12 @@ class ContentIndexingWorker @AssistedInject constructor(
      */
     private suspend fun promote() {
         Timber.d("content-search: app backgrounded, promoting the indexing worker")
+        // Bare notification first. Resolving the account label is a session round-trip, and the job is
+        // unprotected for as long as it takes - which is all the quota controller needs to stop us. The
+        // label follows a moment later, by which point the service is already held.
         val progress = latestProgress
-        val label = progress?.activeUserId?.let { accountLabelFor(it) }
-        isPromoted = trySetForeground(label, progress?.toNotificationProgress())
+        isPromoted = trySetForeground(accountLabel = null, progress = progress?.toNotificationProgress())
+        if (isPromoted) progress?.let { refreshNotification(it) }
     }
 
     private suspend fun refreshNotification(activity: ContentIndexingActivity.Progress) {
@@ -206,9 +235,17 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
 
-    private suspend fun accountLabelFor(userId: UserId): String? = runCatching {
-        userSessionRepository.getAccount(userId)?.primaryAddress
-    }.getOrNull()
+    /**
+     * Cached for one account, because that is how many the orchestrator indexes at a time. Progress
+     * arrives every batch, and re-reading the account for each of them would put a session
+     * round-trip between the orchestrator and every notification update.
+     */
+    private suspend fun accountLabelFor(userId: UserId): String? {
+        cachedAccountLabel?.takeIf { it.first == userId }?.let { return it.second }
+        val label = runCatching { userSessionRepository.getAccount(userId)?.primaryAddress }.getOrNull()
+        cachedAccountLabel = userId to label
+        return label
+    }
 
     /** Whether the service is now held. */
     @Suppress("TooGenericExceptionCaught")
@@ -251,9 +288,9 @@ class ContentIndexingWorker @AssistedInject constructor(
         val IdleTimeout: Duration = 5.minutes
 
         /**
-         * Long enough to ride out a permission dialog or a share sheet, short enough that a user who
-         * really has left the app is covered well before the process is a candidate for death.
+         * How long the app has to stay on screen before the service is handed back. Long enough to
+         * ride out a permission dialog or a share sheet without churning the worker.
          */
-        val VisibilityDebounce: Duration = 2.seconds
+        val ForegroundReturnDebounce: Duration = 2.seconds
     }
 }

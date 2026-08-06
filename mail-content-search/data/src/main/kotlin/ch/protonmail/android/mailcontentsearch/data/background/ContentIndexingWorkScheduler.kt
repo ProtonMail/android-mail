@@ -39,17 +39,13 @@ class ContentIndexingWorkScheduler @Inject constructor(
 ) {
 
     /**
-     * KEEP, not REPLACE: a worker already holding the foreground service is doing the job, and
-     * replacing it would drop and re-acquire the FGS against the Android 15 dataSync budget.
-     *
      * This and [restart] can both fire on one background-to-foreground trip - the lifecycle observer
-     * calls this while the worker that was holding the service calls that - and they disagree on
-     * policy, so which request survives is down to timing. Either way one worker ends up running
-     * against a Rust orchestrator that does not care how many times it is asked to start, which is
-     * what makes the ordering uninteresting rather than merely unlikely to bite.
+     * calls this while the worker that was holding the service calls that. They now go through the
+     * same [enqueue], so the two no longer disagree about policy and the end state is one worker
+     * either way, whichever request lands last.
      */
     fun enqueueIfWorkPending() {
-        enqueue(ExistingWorkPolicy.KEEP)
+        enqueue()
         Timber.d("content-search: indexing worker enqueued")
     }
 
@@ -57,22 +53,33 @@ class ContentIndexingWorkScheduler @Inject constructor(
      * Replaces the running worker with a fresh one.
      *
      * The only way to give up a foreground service is to end the worker holding it, so this is how
-     * the notification is dropped when the app comes back on screen. The orchestrator itself keeps
-     * running - it lives in Rust and persists its progress - so the replacement re-attaches to a run
-     * that never stopped.
+     * the notification is dropped when the app comes back on screen.
      *
-     * Not entirely free, though: the worker holds its Rust background execution scope through
-     * `runInRustBackground`, which releases it as the old worker unwinds, and WorkManager only starts
-     * the replacement afterwards. For that window nothing holds a scope. It is a window that only
-     * opens while the app is foregrounded and therefore holds one of its own, which is why this is
-     * acceptable rather than merely unnoticed.
+     * Not free: the worker holds its Rust background execution scope through `runInRustBackground`,
+     * which releases it as the old worker unwinds, and WorkManager only starts the replacement
+     * afterwards. For that window nothing holds a scope. It is a window that only opens while the app
+     * is foregrounded and therefore holds one of its own, which is why this is acceptable rather than
+     * merely unnoticed.
      */
     fun restart() {
-        enqueue(ExistingWorkPolicy.REPLACE)
+        enqueue()
         Timber.d("content-search: indexing worker restarted")
     }
 
-    private fun enqueue(existingWorkPolicy: ExistingWorkPolicy) {
+    /**
+     * Always REPLACE.
+     *
+     * KEEP would be the cheaper answer - it leaves a worker that is already holding the foreground
+     * service alone instead of dropping and re-acquiring it against the Android 15 dataSync budget
+     * - but it also has no way to dislodge work the platform has parked. A request left sitting in
+     * `ENQUEUED` behind an exhausted job quota would swallow every later enqueue silently, and
+     * nothing else in the app ever retries.
+     *
+     * Replacing costs nothing that matters: the worker drives no indexing of its own, so a
+     * replacement re-attaches to a Rust run that never stopped, and starting the orchestrator again
+     * is idempotent.
+     */
+    private fun enqueue() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(true)
@@ -81,7 +88,7 @@ class ContentIndexingWorkScheduler @Inject constructor(
         enqueuer.enqueueUniqueWork(
             workerId = WORKER_ID,
             worker = ContentIndexingWorker::class.java,
-            existingWorkPolicy = existingWorkPolicy,
+            existingWorkPolicy = ExistingWorkPolicy.REPLACE,
             constraints = constraints
         )
     }

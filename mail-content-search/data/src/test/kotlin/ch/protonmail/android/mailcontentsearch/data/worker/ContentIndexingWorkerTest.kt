@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.MailBackgroundExecScope
@@ -212,8 +213,9 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
-    fun `shows the notification once the app is backgrounded`() = runTest {
-        // Given
+    fun `takes the service the moment the app is backgrounded`() = runTest {
+        // Given - not debounced: a job only escapes JobScheduler's standby quota while the app holds
+        // a foreground service, and quota is charged as soon as the app stops being on top.
         appInBackground.value = true
         givenActivity(
             flow {
@@ -224,7 +226,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        runCurrent()
 
         // Then - the account label is read to build the notification.
         coVerify(atLeast = 1) { userSessionRepository.getAccount(UserId("user-1")) }
@@ -237,11 +239,11 @@ internal class ContentIndexingWorkerTest {
         appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        runCurrent()
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
 
         // Then - the only way to give the foreground service back is to end this worker.
         verify(exactly = 1) { workScheduler.restart() }
@@ -256,11 +258,11 @@ internal class ContentIndexingWorkerTest {
         appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
 
         // Then
         verify(exactly = 0) { workScheduler.restart() }
@@ -274,7 +276,7 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
 
         // When - a foreground app that stays foregrounded holds no service to give back.
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
 
         // Then
         verify(exactly = 0) { workScheduler.restart() }
@@ -282,19 +284,20 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
-    fun `rides out a brief trip to the background without acquiring the service`() = runTest {
-        // Given - a permission dialog or a share sheet, not the user leaving.
+    fun `keeps the service through a brief return to the screen`() = runTest {
+        // Given - a permission dialog or a share sheet, not the user coming back to stay.
+        appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
         val work = async { worker().doWork() }
+        runCurrent()
 
         // When
-        appInBackground.value = true
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds / 2)
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.VisibilityDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds / 2)
+        appInBackground.value = true
+        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
 
-        // Then
-        coVerify(exactly = 0) { userSessionRepository.getAccount(any()) }
+        // Then - replacing the worker here would drop and re-acquire the service for nothing.
         verify(exactly = 0) { workScheduler.restart() }
         work.cancel()
     }
