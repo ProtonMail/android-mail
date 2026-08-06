@@ -18,15 +18,21 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ResumeContentIndexingSweep @Inject constructor(
-    private val scheduler: ContentIndexingScheduler,
-    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData
+/**
+ * Puts [userId] at the front of the orchestrator's queue.
+ *
+ * Used when the user turns content search on for an account: without it the account would only be
+ * picked up whenever the orchestrator next looks for a candidate.
+ */
+class StartContentIndexingForUser @Inject constructor(
+    private val repository: ContentSearchRepository
 ) {
 
-    suspend operator fun invoke(): EnqueueIndexingResult =
-        scheduler.enqueueSweep(allowMobileData = isContentSearchAllowedOnMobileData(), replaceExisting = false)
+    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = repository.startIndexingForUser(userId)
 }

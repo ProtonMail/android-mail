@@ -20,15 +20,11 @@ package ch.protonmail.android.mailcontentsearch.domain.handler
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ApplyContentSearchMobileDataPreference
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ResumeContentIndexingSweep
-import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -38,12 +34,9 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
@@ -59,15 +52,6 @@ internal class ContentSearchAutoIndexingHandlerTest {
     private val settingsRepository = mockk<ContentSearchSettingsRepository> {
         coEvery { setEnabled(any(), any()) } returns Unit.right()
     }
-    private val startContentIndexingSweep = mockk<StartContentIndexingSweep> {
-        coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
-    }
-    private val resumeContentIndexingSweep = mockk<ResumeContentIndexingSweep> {
-        coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
-    }
-    private val appInBackgroundState = mockk<AppInBackgroundState> {
-        every { observe() } returns emptyFlow()
-    }
     private var persistedKnownUserIds: Set<UserId> = emptySet()
     private val preferencesRepository = mockk<ContentSearchPreferencesRepository> {
         coEvery { hasUserOptedOut(any()) } returns false.right()
@@ -81,7 +65,7 @@ internal class ContentSearchAutoIndexingHandlerTest {
     }
 
     @Test
-    fun `enables a disabled account that has not opted out and starts the sweep`() = runTest {
+    fun `enables a disabled account that has not opted out`() = runTest {
         // Given
         givenAccounts(flowOf(listOf(account(UserOne))))
         givenRustEnabled(UserOne, enabled = false)
@@ -92,11 +76,10 @@ internal class ContentSearchAutoIndexingHandlerTest {
 
         // Then
         coVerify(exactly = 1) { settingsRepository.setEnabled(UserOne, enabled = true) }
-        coVerify(exactly = 1) { startContentIndexingSweep() }
     }
 
     @Test
-    fun `does not re-enable an already-enabled account but clears a stale opt-out and resumes the sweep`() = runTest {
+    fun `does not re-enable an already-enabled account but clears a stale opt-out`() = runTest {
         // Given
         givenAccounts(flowOf(listOf(account(UserOne))))
         givenRustEnabled(UserOne, enabled = true)
@@ -108,7 +91,6 @@ internal class ContentSearchAutoIndexingHandlerTest {
         // Then
         coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
         coVerify(exactly = 1) { preferencesRepository.clearUserOptedOut(UserOne) }
-        coVerify(exactly = 1) { startContentIndexingSweep() }
     }
 
     @Test
@@ -123,7 +105,6 @@ internal class ContentSearchAutoIndexingHandlerTest {
 
         // Then
         coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
-        coVerify(exactly = 1) { startContentIndexingSweep() }
     }
 
     @Test
@@ -136,11 +117,10 @@ internal class ContentSearchAutoIndexingHandlerTest {
 
         // Then
         coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
-        coVerify(exactly = 0) { startContentIndexingSweep() }
     }
 
     @Test
-    fun `enables a newly logged-in disabled account and restarts the sweep`() = runTest {
+    fun `enables a newly logged-in disabled account`() = runTest {
         // Given
         givenAccounts(flowOf(listOf(account(UserOne)), listOf(account(UserOne), account(UserTwo))))
         givenRustEnabled(UserOne, enabled = true)
@@ -153,27 +133,6 @@ internal class ContentSearchAutoIndexingHandlerTest {
         // Then
         coVerify(exactly = 1) { settingsRepository.setEnabled(UserTwo, enabled = true) }
         coVerify(exactly = 0) { settingsRepository.setEnabled(UserOne, any()) }
-        coVerify(exactly = 2) { startContentIndexingSweep() }
-    }
-
-    @Test
-    fun `restarts the sweep when an already-enabled account newly becomes ready`() = runTest {
-        // Given
-        givenAccounts(
-            flowOf(
-                listOf(account(UserOne)),
-                listOf(account(UserOne), account(UserTwo))
-            )
-        )
-        givenRustEnabled(UserOne, enabled = true)
-        givenRustEnabled(UserTwo, enabled = true)
-
-        // When
-        handler().start()
-
-        // Then
-        coVerify(exactly = 0) { settingsRepository.setEnabled(any(), any()) }
-        coVerify(exactly = 2) { startContentIndexingSweep() }
     }
 
     @Test
@@ -223,82 +182,6 @@ internal class ContentSearchAutoIndexingHandlerTest {
     }
 
     @Test
-    fun `does not start the sweep when there is no ready account`() = runTest {
-        // Given
-        givenAccounts(flowOf(emptyList()))
-
-        // When
-        handler().start()
-
-        // Then
-        coVerify(exactly = 0) { startContentIndexingSweep() }
-    }
-
-    @Test
-    fun `resumes the sweep when the app returns to the foreground`() = runTest {
-        // Given
-        givenAccounts(flowOf(emptyList()))
-        val appInBackground = MutableStateFlow(true)
-        every { appInBackgroundState.observe() } returns appInBackground
-
-        // When
-        handler().start()
-        appInBackground.value = false
-        advanceUntilIdle() // let the foreground-resume debounce elapse
-
-        // Then
-        coVerify(exactly = 1) { resumeContentIndexingSweep() }
-    }
-
-    @Test
-    fun `coalesces a burst of foreground flips into a single resume`() = runTest {
-        // Given
-        givenAccounts(flowOf(emptyList()))
-        val appInBackground = MutableStateFlow(true)
-        every { appInBackgroundState.observe() } returns appInBackground
-
-        // When
-        handler().start()
-        appInBackground.value = false
-        appInBackground.value = true
-        appInBackground.value = false
-        advanceUntilIdle() // debounce collapses the flips that settled within the window
-
-        // Then
-        coVerify(exactly = 1) { resumeContentIndexingSweep() }
-    }
-
-    @Test
-    fun `does not resume the sweep when a foreground flicker settles back in the background`() = runTest {
-        // Given
-        givenAccounts(flowOf(emptyList()))
-        val appInBackground = MutableStateFlow(true)
-        every { appInBackgroundState.observe() } returns appInBackground
-
-        // When
-        handler().start()
-        appInBackground.value = false
-        appInBackground.value = true
-        advanceUntilIdle() // debounce settles on the background state, which the filter drops
-
-        // Then
-        coVerify(exactly = 0) { resumeContentIndexingSweep() }
-    }
-
-    @Test
-    fun `does not resume the sweep while the app stays in the background`() = runTest {
-        // Given
-        givenAccounts(flowOf(emptyList()))
-        every { appInBackgroundState.observe() } returns MutableStateFlow(true)
-
-        // When
-        handler().start()
-
-        // Then
-        coVerify(exactly = 0) { resumeContentIndexingSweep() }
-    }
-
-    @Test
     fun `applies the mobile data preference to every ready account`() = runTest {
         // Given
         givenAccounts(flowOf(listOf(account(UserOne), account(UserTwo, AccountState.NotReady))))
@@ -318,10 +201,7 @@ internal class ContentSearchAutoIndexingHandlerTest {
         isContentSearchEnabled = isContentSearchEnabled,
         applyMobileDataPreference = applyMobileDataPreference,
         settingsRepository = settingsRepository,
-        startContentIndexingSweep = startContentIndexingSweep,
-        resumeContentIndexingSweep = resumeContentIndexingSweep,
         preferencesRepository = preferencesRepository,
-        appInBackgroundState = appInBackgroundState,
         appScope = CoroutineScope(UnconfinedTestDispatcher(testScheduler))
     )
 

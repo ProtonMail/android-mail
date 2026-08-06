@@ -16,9 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontentsearch.domain.model
+package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-sealed interface EnqueueIndexingResult {
-    data object Scheduled : EnqueueIndexingResult
-    data object AlreadySynced : EnqueueIndexingResult
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import javax.inject.Inject
+
+/**
+ * Stops the orchestrator for every account. Nothing persists the stop, so the next foreground
+ * transition legitimately resumes indexing - this pauses until the user is back, it does not opt out.
+ */
+class StopContentIndexing @Inject constructor(
+    private val repository: ContentSearchRepository
+) {
+
+    suspend operator fun invoke(): Either<DataError, Unit> = repository.stopIndexing()
 }

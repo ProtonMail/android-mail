@@ -18,195 +18,103 @@
 
 package ch.protonmail.android.mailcontentsearch.data.worker
 
-import java.util.concurrent.atomic.AtomicBoolean
 import android.app.Notification
 import android.content.Context
 import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchIndexer
-import ch.protonmail.android.mailcontentsearch.domain.usecase.FindFirstEligibleAccountToIndex
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.AccountProgress
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.runInRustBackground
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.async
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
+/**
+ * Holds a foreground service open while the Rust orchestrator indexes, and shows the progress
+ * notification. It drives nothing itself - the orchestrator picks its own accounts and their order -
+ * and exists only so the process survives being backgrounded.
+ *
+ * It therefore exits as soon as the orchestrator stops making progress: on
+ * [ContentIndexingActivity.ForwardMode], [ContentIndexingActivity.WaitingOnUsers],
+ * [ContentIndexingActivity.Stopped] or [ContentIndexingActivity.Failed], or when the watchdog fires
+ * because nothing arrived at all. Anything else would keep an indexing notification on screen for an
+ * orchestrator that has already gone quiet.
+ */
 @HiltWorker
 class ContentIndexingWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val indexer: ContentSearchIndexer,
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository,
-    private val findFirstEligibleAccountToIndex: FindFirstEligibleAccountToIndex,
-    private val observeContentSearchEnabled: ObserveContentSearchEnabled,
-    private val appInBackgroundState: AppInBackgroundState
+    private val observeContentIndexingActivity: ObserveContentIndexingActivity
 ) : CoroutineWorker(context, workerParameters) {
 
-    private val isSelfRestarting = AtomicBoolean(false)
-
-    // The account currently being indexed. Tracked so cancellation can release the right Rust
-    // session and so the account being indexed can be published via progress data.
-    @Volatile
-    private var currentUserId: UserId? = null
-
-    override suspend fun doWork(): Result {
-        val runAsForeground = inputData.getBoolean(KeyRunAsForeground, true)
-        val allowMobileData = inputData.getBoolean(KeyAllowMobileData, false)
-
-        Timber.d("ContentIndexingWorker: starting sweep (foreground=$runAsForeground)")
-
-        return mailSessionRepository.runInRustBackground {
-            coroutineScope {
-                val swapObserver = launch { observeModeSwap(runAsForeground, allowMobileData) }
-                try {
-                    runSweep(runAsForeground)
-                } catch (cancellation: CancellationException) {
-                    withContext(NonCancellable) { handleCancellation(allowMobileData) }
-                    throw cancellation
-                } finally {
-                    swapObserver.cancel()
-                }
-            }
+    override suspend fun doWork(): Result = try {
+        mailSessionRepository.runInRustBackground {
+            trySetForeground(accountLabel = null, progress = null)
+            awaitIndexingIdle()
         }
+        Result.success()
+    } catch (cancellation: CancellationException) {
+        // Includes the Android 15 FGS timeout. Deliberately no self-restart: the dataSync 6h/24h
+        // budget is app-wide and SystemForegroundService is shared with other WorkManager foreground
+        // work, so backing off and letting the next foreground transition re-enqueue is the only way
+        // not to starve the rest of the app.
+        Timber.d("content-search: indexing worker stopped ($cancellation)")
+        throw cancellation
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun awaitIndexingIdle() = coroutineScope {
+        // Consumed through a channel rather than collected, so the watchdog can bound the wait for
+        // each individual emission instead of the run as a whole.
+        val activities = observeContentIndexingActivity().produceIn(this)
+        try {
+            while (true) {
+                // receiveCatching, so an upstream that completes releases the service the same way a
+                // silent one does instead of failing the run.
+                val activity = withTimeoutOrNull(IdleTimeout) { activities.receiveCatching().getOrNull() }
+                if (activity == null) {
+                    Timber.w("content-search: no more indexing activity within $IdleTimeout, releasing the service")
+                    break
+                }
+                if (activity !is ContentIndexingActivity.Progress) {
+                    Timber.d("content-search: orchestrator went idle ($activity), releasing the service")
+                    break
+                }
+                refreshNotification(activity)
+            }
+        } finally {
+            activities.cancel()
+        }
+    }
+
+    private suspend fun refreshNotification(activity: ContentIndexingActivity.Progress) {
+        val label = activity.activeUserId?.let { accountLabelFor(it) }
+        trySetForeground(label, activity.toAccountProgress())
     }
 
     /**
-     * Index every eligible account in turn, advancing as each completes. A single worker (and a
-     * single foreground service) drives the whole sweep. An account that errors out is skipped for
-     * the remainder of this sweep so it cannot wedge the loop; it is retried on the next sweep.
-     *
-     * The sweep also reacts to the active (primary) user changing: when the user switches to an
-     * account that should be indexed first, the in-flight account is paused (its partial index is
-     * preserved) and the loop re-evaluates primary-first, so the account now in use is prioritised.
+     * Account-level progress only. `SyncOrchestratorProgress.percentage` is summed across every
+     * account's totals, so it lurches whenever an account is added or removed.
      */
-    private suspend fun runSweep(runAsForeground: Boolean): Result {
-        val skippedAccounts = mutableSetOf<UserId>()
-        while (true) {
-            val nextAccount = findFirstEligibleAccountToIndex(skip = skippedAccounts) ?: break
-            when (indexAccountWithInterruption(nextAccount, skippedAccounts = skippedAccounts, runAsForeground)) {
-                IndexOutcome.Completed -> {
-                    Timber.d("ContentIndexingWorker: sweep completed $nextAccount, advancing")
-                    skippedAccounts += nextAccount
-                }
-                IndexOutcome.Interrupted -> {
-                    Timber.d("ContentIndexingWorker: $nextAccount interrupted, pausing and re-evaluating")
-                    // preserve partial index; the account is revisited if still eligible
-                    indexer.cancel(nextAccount)
-                }
-                IndexOutcome.Failed -> {
-                    Timber.e("ContentIndexingWorker: sweep failed for $nextAccount, advancing")
-                    indexer.cancel(nextAccount)
-                    skippedAccounts += nextAccount
-                }
-            }
-        }
-        Timber.d("ContentIndexingWorker: sweep finished")
-        return Result.success()
-    }
-
-    /**
-     * Indexes [userId], racing it against changes that mean it should no longer be the account being
-     * indexed — the active user switching to a higher-priority account, or this account being
-     * disabled. Returns [IndexOutcome.Interrupted] in that case so the caller can pause and re-evaluate.
-     */
-    private suspend fun indexAccountWithInterruption(
-        userId: UserId,
-        skippedAccounts: Set<UserId>,
-        runAsForeground: Boolean
-    ): IndexOutcome {
-        return coroutineScope {
-            val indexing = async { indexAccount(userId, runAsForeground) }
-            val interruption = launch {
-                awaitInterruption(currentlyIndexing = userId, skippedAccounts = skippedAccounts) {
-                    indexing.cancel(InterruptionSignal())
-                }
-            }
-            try {
-                indexing.await().fold(
-                    ifLeft = { IndexOutcome.Failed },
-                    ifRight = { IndexOutcome.Completed }
-                )
-            } catch (signal: InterruptionSignal) {
-                Timber.d("ContentIndexingWorker: $userId interrupted (${signal.message})")
-                // Let the indexing coroutine finish tearing down its watch stream before the caller
-                // pauses Rust indexing for this account.
-                indexing.join()
-                IndexOutcome.Interrupted
-            } finally {
-                interruption.cancel()
-            }
-        }
-    }
-
-    @OptIn(FlowPreview::class)
-    private suspend fun awaitInterruption(
-        currentlyIndexing: UserId,
-        skippedAccounts: Set<UserId>,
-        onInterrupt: () -> Unit
-    ) {
-        // React to the active user changing or this account's content-search setting changing, then
-        // re-evaluate. If the account that should run next is no longer the one we are indexing
-        // (a higher-priority active account, or this account became ineligible), interrupt it.
-        // Honour the sweep's skip set so an account that already failed or completed this sweep cannot
-        // repeatedly interrupt the account currently making progress.
-        combine(
-            userSessionRepository.observePrimaryUserId().filterNotNull().distinctUntilChanged(),
-            observeContentSearchEnabled(currentlyIndexing).distinctUntilChanged()
-        ) { _, _ -> }
-            .debounce(InterruptionDebounceMillis.milliseconds)
-            .collect {
-                val topPriority = findFirstEligibleAccountToIndex(skip = skippedAccounts)
-                if (topPriority != currentlyIndexing) {
-                    Timber.d("ContentIndexingWorker: $topPriority should run instead of $currentlyIndexing")
-                    onInterrupt()
-                }
-            }
-    }
-
-    private suspend fun indexAccount(userId: UserId, runAsForeground: Boolean): Either<ContentIndexingError, Unit> {
-        currentUserId = userId
-        val accountLabel = accountLabelFor(userId)
-        Timber.d("content-search: $userId starting (progress=unknown)")
-        setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to 0.0))
-        if (runAsForeground) trySetForeground(accountLabel, progress = null)
-        return indexer.index(userId) { percent ->
-            Timber.d("content-search: $userId progress=$percent")
-            setProgress(workDataOf(KeyCurrentUserId to userId.id, KeyProgress to percent))
-            if (runAsForeground) trySetForeground(accountLabel, percent)
-        }
-    }
+    private fun ContentIndexingActivity.Progress.toAccountProgress(): AccountProgress? =
+        if (userCount > 0) AccountProgress(completed = completedUsers.toInt(), total = userCount.toInt()) else null
 
     override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
 
@@ -215,69 +123,20 @@ class ContentIndexingWorker @AssistedInject constructor(
     }.getOrNull()
 
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun trySetForeground(accountLabel: String?, progress: Double?) {
+    private suspend fun trySetForeground(accountLabel: String?, progress: AccountProgress?) {
         try {
             setForeground(buildForegroundInfo(accountLabel, progress))
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            // FGS promotion can be denied if the app is in the background on Android 12+, or if the
-            // dataSync 6h/24h budget is exhausted on Android 15+. Indexing continues in background.
-            Timber.w(e, "ContentIndexingWorker: setForeground denied, continuing in background")
+            // FGS promotion can be denied if the app is in the background on Android 12+, if
+            // POST_NOTIFICATIONS was refused, or if the dataSync budget is exhausted on Android 15+.
+            // Rust keeps indexing either way; only the notification is lost.
+            Timber.w(e, "content-search: setForeground denied, continuing without a notification")
         }
     }
 
-    @OptIn(FlowPreview::class)
-    private suspend fun observeModeSwap(runAsForeground: Boolean, allowMobileData: Boolean) {
-        appInBackgroundState.observe()
-            .debounce(ModeSwapDebounceMillis.milliseconds)
-            .distinctUntilChanged()
-            .collect { isBackground ->
-                if (isBackground != runAsForeground) {
-                    Timber.d("ContentIndexingWorker: swapping mode (foreground=$isBackground)")
-                    enqueueSelf(runAsForeground = isBackground, allowMobileData)
-                }
-            }
-    }
-
-    private suspend fun handleCancellation(allowMobileData: Boolean) {
-        val reason = currentStopReason()
-        val selfRestarting = isSelfRestarting.get()
-        when (decideCancellationAction(reason, selfRestarting)) {
-            CancellationAction.RestartInBackgroundMode -> {
-                Timber.w("ContentIndexingWorker: FGS timeout, restarting in background mode")
-                enqueueSelf(runAsForeground = false, allowMobileData)
-            }
-
-            CancellationAction.PreserveIndexerSession -> {
-                Timber.d(
-                    "ContentIndexingWorker: stopped (selfRestart=$selfRestarting, reason=$reason), indexer preserved"
-                )
-            }
-
-            CancellationAction.ReleaseIndexerSession -> {
-                Timber.d("ContentIndexingWorker: cancelled by app, releasing indexer session")
-                currentUserId?.let { indexer.cancel(it) }
-            }
-        }
-    }
-
-    private fun currentStopReason(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        stopReason
-    } else {
-        WorkInfo.STOP_REASON_NOT_STOPPED
-    }
-
-    private fun enqueueSelf(runAsForeground: Boolean, allowMobileData: Boolean) {
-        isSelfRestarting.set(true)
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            UniqueName,
-            ExistingWorkPolicy.REPLACE,
-            buildRequest(runAsForeground, allowMobileData)
-        )
-    }
-
-    private fun buildForegroundInfo(accountLabel: String?, progress: Double?): ForegroundInfo {
+    private fun buildForegroundInfo(accountLabel: String?, progress: AccountProgress?): ForegroundInfo {
         val notification = ContentIndexingNotification.build(context, accountLabel, progress)
             .build()
             .apply { flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT }
@@ -292,61 +151,12 @@ class ContentIndexingWorker @AssistedInject constructor(
         }
     }
 
-    companion object {
-
-        const val UniqueName = "content_indexing_worker"
-        const val KeyProgress = "ContentIndexingWorker.Progress"
-        const val KeyCurrentUserId = "ContentIndexingWorker.CurrentUserId"
-        const val KeyRunAsForeground = "ContentIndexingWorker.RunAsForeground"
-        const val KeyAllowMobileData = "ContentIndexingWorker.AllowMobileData"
-
-        private const val ModeSwapDebounceMillis = 2_000L
-        private const val InterruptionDebounceMillis = 500L
-
-        internal fun decideCancellationAction(stopReason: Int, isSelfRestarting: Boolean): CancellationAction = when {
-            stopReason == WorkInfo.STOP_REASON_FOREGROUND_SERVICE_TIMEOUT ||
-                stopReason == WorkInfo.STOP_REASON_TIMEOUT ->
-                CancellationAction.RestartInBackgroundMode
-
-            // Preserve the running Rust session only when a replacement worker is coming right away,
-            // for instance when swapping WiFi-only to Allow Mobile Data while data is enabled.
-            isSelfRestarting -> CancellationAction.PreserveIndexerSession
-            else -> CancellationAction.ReleaseIndexerSession
-        }
+    internal companion object {
 
         /**
-         * Builds a sweep request. The worker discovers its accounts at runtime and publishes the
-         * account it is currently indexing via progress data.
+         * An orchestrator that never publishes must not hold a foreground service forever. Generous,
+         * because a large first backfill can stay quiet for a while before the first progress event.
          */
-        fun buildRequest(runAsForeground: Boolean, allowMobileData: Boolean): OneTimeWorkRequest {
-            val networkType = if (allowMobileData) NetworkType.CONNECTED else NetworkType.UNMETERED
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(networkType)
-                .setRequiresBatteryNotLow(true)
-                .build()
-            val data = Data.Builder()
-                .putBoolean(KeyRunAsForeground, runAsForeground)
-                .putBoolean(KeyAllowMobileData, allowMobileData)
-                .build()
-            return OneTimeWorkRequestBuilder<ContentIndexingWorker>()
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build()
-        }
+        val IdleTimeout: Duration = 5.minutes
     }
 }
-
-internal enum class CancellationAction {
-    RestartInBackgroundMode,
-    PreserveIndexerSession,
-    ReleaseIndexerSession
-}
-
-internal enum class IndexOutcome {
-    Completed,
-    Interrupted,
-    Failed
-}
-
-/** Cancels the in-flight per-account index when that account should no longer be the one indexing. */
-private class InterruptionSignal : CancellationException("interrupted: another account should run")

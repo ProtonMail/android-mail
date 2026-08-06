@@ -36,8 +36,9 @@ internal class BackgroundExecutionInitializer : Initializer<Unit> {
             BackgroundExecutionEntryPoint::class.java
         )
 
-        val observer = entryPoint.lifecycleObserver()
-        ProcessLifecycleOwner.Companion.get().lifecycle.addObserver(observer)
+        val lifecycle = ProcessLifecycleOwner.Companion.get().lifecycle
+        lifecycle.addObserver(entryPoint.lifecycleObserver())
+        lifecycle.addObserver(entryPoint.contentIndexingLifecycleObserver())
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = listOf(WorkManagerInitializer::class.java)
@@ -47,5 +48,7 @@ internal class BackgroundExecutionInitializer : Initializer<Unit> {
     interface BackgroundExecutionEntryPoint {
 
         fun lifecycleObserver(): RustWorkLifecycleObserver
+
+        fun contentIndexingLifecycleObserver(): ContentIndexingLifecycleObserver
     }
 }

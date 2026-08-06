@@ -21,17 +21,46 @@ package ch.protonmail.android.mailcontentsearch.data.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import androidx.work.WorkManager
-import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StopContentIndexing
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
+/**
+ * Handles the notification's Pause action.
+ *
+ * Stopping the orchestrator is an actor round-trip that has to happen inside a Rust background
+ * scope, which is far more than [onReceive] is allowed to block for - so the work is handed to the
+ * app scope and `onReceive` returns immediately.
+ */
+@AndroidEntryPoint
 class ContentIndexingCancelReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var stopContentIndexing: StopContentIndexing
+
+    @Inject
+    lateinit var workScheduler: ContentIndexingWorkScheduler
+
+    @Inject
+    @AppScope
+    lateinit var appScope: CoroutineScope
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ActionCancel) return
 
-        Timber.d("ContentIndexingCancelReceiver: cancelling the content indexing sweep")
-        WorkManager.getInstance(context).cancelUniqueWork(ContentIndexingWorker.UniqueName)
+        Timber.d("content-search: pausing indexing from the notification")
+
+        appScope.launch {
+            stopContentIndexing().onLeft { Timber.w("content-search: could not pause indexing: $it") }
+            // The worker exits on the resulting Stopped event, but cancel it too in case the
+            // orchestrator never publishes one.
+            workScheduler.cancel()
+        }
     }
 
     companion object {

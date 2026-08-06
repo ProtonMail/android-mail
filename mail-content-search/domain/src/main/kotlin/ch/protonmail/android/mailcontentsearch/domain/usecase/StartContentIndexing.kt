@@ -18,19 +18,19 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentIndexingScheduler
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import javax.inject.Inject
 
 /**
- * Starts (or restarts) the multi-account indexing sweep, which indexes every eligible account in
- * turn under a single worker.
+ * Asks the orchestrator to start indexing every eligible account. Idempotent: an already-running
+ * orchestrator answers with its current stats rather than restarting.
  */
-class StartContentIndexingSweep @Inject constructor(
-    private val scheduler: ContentIndexingScheduler,
-    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData
+class StartContentIndexing @Inject constructor(
+    private val repository: ContentSearchRepository
 ) {
 
-    suspend operator fun invoke(): EnqueueIndexingResult =
-        scheduler.enqueueSweep(allowMobileData = isContentSearchAllowedOnMobileData())
+    suspend operator fun invoke(): Either<DataError, ContentIndexingStartSummary> = repository.startIndexing()
 }

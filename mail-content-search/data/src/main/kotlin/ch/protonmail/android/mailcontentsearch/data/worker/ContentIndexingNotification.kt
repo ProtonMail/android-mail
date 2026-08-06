@@ -35,7 +35,7 @@ internal object ContentIndexingNotification {
     fun build(
         context: Context,
         accountLabel: String?,
-        progress: Double?
+        progress: AccountProgress?
     ): NotificationCompat.Builder {
         ensureChannel(context)
         val title = context.getString(R.string.content_search_notification_title)
@@ -44,7 +44,7 @@ internal object ContentIndexingNotification {
             ?.let { "$title — $it" }
             ?: title
         val contentText = progress?.let {
-            context.getString(R.string.content_search_notification_progress, it.coerceAtLeast(0.0))
+            context.getString(R.string.content_search_notification_progress_accounts, it.completed, it.total)
         } ?: context.getString(R.string.content_search_notification_preparing)
         return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
             .setContentTitle(titleWithAccount)
@@ -52,19 +52,24 @@ internal object ContentIndexingNotification {
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            // ET-6209: switch to a determinate bar once the SDK's estimatedFraction is reliable.
-            .setProgress(0, 0, true)
+            // Determinate over accounts, not messages: the orchestrator's overall percentage is
+            // summed across every account's totals, so it jumps when an account is added or removed.
+            .setProgress(progress?.total ?: 0, progress?.completed ?: 0, progress == null)
             .addAction(
                 NotificationCompat.Action.Builder(
                     0,
-                    context.getString(R.string.content_search_notification_cancel),
+                    context.getString(R.string.content_search_notification_pause),
                     cancelPendingIntent(context)
                 ).build()
             )
     }
 
+    /** Accounts finished out of the accounts the orchestrator set out to index. */
+    data class AccountProgress(val completed: Int, val total: Int)
+
     private fun cancelPendingIntent(context: Context): PendingIntent {
-        // The sweep runs as a single unique work item, so cancelling stops the whole sweep.
+        // Stops the orchestrator for every account. Nothing persists that, so the next foreground
+        // transition resumes - hence "Pause" rather than "Cancel".
         val intent = Intent(context, ContentIndexingCancelReceiver::class.java)
             .setAction(ContentIndexingCancelReceiver.ActionCancel)
         return PendingIntent.getBroadcast(

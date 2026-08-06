@@ -28,7 +28,8 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEna
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
@@ -37,13 +38,10 @@ import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.Con
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -57,7 +55,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class ContentSearchSettingsViewModel @Inject constructor(
@@ -65,7 +62,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val isContentSearchEnabled: IsContentSearchEnabled,
     private val enableContentSearch: EnableContentSearch,
     private val disableContentSearch: DisableContentSearch,
-    private val startContentIndexingSweep: StartContentIndexingSweep,
+    private val startContentIndexingForUser: StartContentIndexingForUser,
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
@@ -76,8 +74,6 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     private val mutableState = MutableStateFlow<ContentSearchSettingsState>(ContentSearchSettingsState.Loading)
     val state: StateFlow<ContentSearchSettingsState> = mutableState.asStateFlow()
-
-    private val rescheduleRequests = MutableSharedFlow<Unit>(extraBufferCapacity = 8)
 
     private val actions = Channel<ContentSearchSettingsViewAction>(Channel.BUFFERED)
 
@@ -91,22 +87,21 @@ class ContentSearchSettingsViewModel @Inject constructor(
             if (loadInitialState(userId)) {
                 observeIndexingProgress(userId)
                 observeEnabledChanges(userId)
-                observeRescheduleRequests()
             }
         }
     }
 
-    @OptIn(FlowPreview::class)
-    private fun observeRescheduleRequests() {
-        rescheduleRequests
-            .debounce(RescheduleDebounceMillis.milliseconds)
-            .onEach {
-                if (isContentSearchCurrentlyEnabled()) startContentIndexingSweep()
-            }
-            .launchIn(viewModelScope)
+    // Gated on the SDK's availability answer: without it the toggle renders, accepts a tap and
+    // then fails against a feature Rust will not run.
+    private suspend fun loadInitialState(userId: UserId): Boolean {
+        if (!isContentSearchFeatureEnabled()) {
+            emitNewStateFor(Error.LoadingError)
+            return false
+        }
+        return readEnabledState(userId)
     }
 
-    private suspend fun loadInitialState(userId: UserId): Boolean = isContentSearchEnabled(userId).fold(
+    private suspend fun readEnabledState(userId: UserId): Boolean = isContentSearchEnabled(userId).fold(
         ifLeft = {
             emitNewStateFor(Error.LoadingError)
             false
@@ -165,10 +160,12 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private suspend fun handleToggleContentSearch(newValue: Boolean) {
         val userId = currentUserId()
         val result = if (newValue) {
-            // Enable the account first so it is eligible, then (re)start the sweep. The sweep indexes
-            // every enabled account in turn, so enabling one account never blocks another.
-            enableContentSearch(userId).onRight { startContentIndexingSweep() }
+            // Enable the account, then hand it to the orchestrator directly: otherwise it is only
+            // picked up whenever the orchestrator next goes looking for a candidate.
+            enableContentSearch(userId).onRight { startContentIndexingForUser(userId) }
         } else {
+            // No stop: it is session-wide, and `find_next_suitable_user` skips a disabled account on
+            // its own, so the other accounts keep indexing.
             disableContentSearch(userId)
         }
         result.fold(
@@ -177,10 +174,11 @@ class ContentSearchSettingsViewModel @Inject constructor(
         )
     }
 
+    // No restart: the preference is written straight into Rust, which pauses and resumes its own
+    // queue against the current network type.
     private suspend fun handleToggleAllowMobileData(newValue: Boolean) {
         emitNewStateFor(Data.AllowMobileDataToggled(newValue))
         setAllowContentSearchOnMobileData(newValue)
-        rescheduleRequests.tryEmit(Unit)
     }
 
     private suspend fun handleClearLocalData() {
@@ -201,15 +199,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     private suspend fun currentUserId(): UserId = observePrimaryUserId().filterNotNull().first()
 
-    private fun isContentSearchCurrentlyEnabled(): Boolean =
-        (mutableState.value as? ContentSearchSettingsState.Data)?.isContentSearchEnabled == true
-
     private fun emitNewStateFor(event: ContentSearchSettingsEvent) = mutableState.update {
         reducer.newStateFrom(it, event)
-    }
-
-    private companion object {
-
-        const val RescheduleDebounceMillis = 500L
     }
 }

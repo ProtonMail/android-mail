@@ -22,7 +22,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import ch.protonmail.android.mailcontentsearch.domain.model.EnqueueIndexingResult
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
@@ -31,7 +30,8 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEna
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingSweep
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -68,8 +68,11 @@ internal class ContentSearchSettingsViewModelTest {
     }
     private val enableContentSearch = mockk<EnableContentSearch>()
     private val disableContentSearch = mockk<DisableContentSearch>()
-    private val startContentIndexingSweep = mockk<StartContentIndexingSweep> {
-        coEvery { this@mockk.invoke() } returns EnqueueIndexingResult.Scheduled
+    private val startContentIndexingForUser = mockk<StartContentIndexingForUser> {
+        coEvery { this@mockk.invoke(userId) } returns Unit.right()
+    }
+    private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
+        coEvery { this@mockk.invoke() } returns true
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
@@ -91,7 +94,8 @@ internal class ContentSearchSettingsViewModelTest {
         isContentSearchEnabled = isContentSearchEnabled,
         enableContentSearch = enableContentSearch,
         disableContentSearch = disableContentSearch,
-        startContentIndexingSweep = startContentIndexingSweep,
+        startContentIndexingForUser = startContentIndexingForUser,
+        isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
         clearContentSearchLocalData = clearContentSearchLocalData,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
@@ -238,7 +242,7 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
-    fun `submit ToggleContentSearch on enables content search and starts the sweep`() = runTest {
+    fun `submit ToggleContentSearch on enables content search and hands the account to the orchestrator`() = runTest {
         // Given
         coEvery { enableContentSearch(userId) } returns Unit.right()
 
@@ -247,11 +251,11 @@ internal class ContentSearchSettingsViewModelTest {
 
         // Then
         coVerify { enableContentSearch(userId) }
-        coVerify { startContentIndexingSweep() }
+        coVerify { startContentIndexingForUser(userId) }
     }
 
     @Test
-    fun `submit ToggleContentSearch on does not start the sweep when enabling fails`() = runTest {
+    fun `submit ToggleContentSearch on does not start indexing when enabling fails`() = runTest {
         // Given
         coEvery { enableContentSearch(userId) } returns DataError.Local.Unknown.left()
 
@@ -259,7 +263,7 @@ internal class ContentSearchSettingsViewModelTest {
         viewModel().submit(ContentSearchSettingsViewAction.ToggleContentSearch(enabled = true))
 
         // Then
-        coVerify(exactly = 0) { startContentIndexingSweep() }
+        coVerify(exactly = 0) { startContentIndexingForUser(any()) }
     }
 
     @Test
@@ -306,24 +310,10 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `submit ToggleAllowMobileData persists the value and reflects it in the state`() = runTest {
-        // Given
-        coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
-
-        // When
-        val viewModel = viewModel()
-        viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled = true))
-
-        // Then
-        coVerify { setAllowContentSearchOnMobileData(true) }
-        assertTrue(viewModel.state.value.asData().isAllowMobileDataEnabled)
-    }
-
-    @Test
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun `submit ToggleAllowMobileData reschedules the sweep after the debounce while enabled`() =
+    fun `submit ToggleAllowMobileData stores the value without restarting indexing`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
+            // Given - Rust owns the metered guard and pauses or resumes its own queue.
             coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
             val viewModel = viewModel()
 
@@ -332,25 +322,8 @@ internal class ContentSearchSettingsViewModelTest {
             advanceUntilIdle()
 
             // Then
-            coVerify { startContentIndexingSweep() }
-        }
-
-    @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun `submit ToggleAllowMobileData does not reschedule the sweep when content search is disabled`() =
-        runTest(mainDispatcherRule.testDispatcher.scheduler) {
-            // Given
-            coEvery { isContentSearchEnabled(userId) } returns false.right()
-            enabledFlow.value = false
-            coEvery { setAllowContentSearchOnMobileData(true) } returns Unit
-            val viewModel = viewModel()
-
-            // When
-            viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled = true))
-            advanceUntilIdle()
-
-            // Then
-            coVerify(exactly = 0) { startContentIndexingSweep() }
+            coVerify(exactly = 1) { setAllowContentSearchOnMobileData(true) }
+            coVerify(exactly = 0) { startContentIndexingForUser(any()) }
         }
 
     @Test

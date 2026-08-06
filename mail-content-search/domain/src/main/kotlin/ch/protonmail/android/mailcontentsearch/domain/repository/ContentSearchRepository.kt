@@ -20,6 +20,8 @@ package ch.protonmail.android.mailcontentsearch.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -36,6 +38,21 @@ interface ContentSearchRepository {
     suspend fun isFeatureEnabled(): Boolean
 
     suspend fun clearLocalData(userId: UserId): Either<DataError, Unit>
+
+    /**
+     * Starts the session-wide orchestrator, which picks its own accounts and order.
+     *
+     * Idempotent - an orchestrator that is already running reports its current stats instead of
+     * restarting - so it is safe to call on every foreground transition.
+     */
+    suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary>
+
+    suspend fun startIndexingForUser(userId: UserId): Either<DataError, Unit>
+
+    /** Stops the orchestrator for every account: there is no per-account stop. */
+    suspend fun stopIndexing(): Either<DataError, Unit>
+
+    fun observeIndexingActivity(): Flow<ContentIndexingActivity>
 
     fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState>
 

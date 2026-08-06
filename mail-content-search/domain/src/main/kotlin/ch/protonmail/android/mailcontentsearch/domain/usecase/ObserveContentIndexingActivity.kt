@@ -16,15 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontentsearch.domain.repository
+package ch.protonmail.android.mailcontentsearch.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingError
-import me.proton.core.domain.entity.UserId
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-interface ContentSearchIndexer {
+class ObserveContentIndexingActivity @Inject constructor(
+    private val repository: ContentSearchRepository
+) {
 
-    suspend fun index(userId: UserId, onProgress: suspend (Double) -> Unit): Either<ContentIndexingError, Unit>
-
-    suspend fun cancel(userId: UserId)
+    operator fun invoke(): Flow<ContentIndexingActivity> = repository.observeIndexingActivity()
 }

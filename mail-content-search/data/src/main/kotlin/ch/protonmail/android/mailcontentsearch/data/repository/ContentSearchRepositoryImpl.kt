@@ -24,7 +24,11 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
+import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingActivity
+import ch.protonmail.android.mailcontentsearch.data.mapper.toStartSummary
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
@@ -34,10 +38,12 @@ import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.emptyFlow
@@ -49,6 +55,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
+import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -74,6 +81,66 @@ class ContentSearchRepositoryImpl @Inject constructor(
     // its next candidate.
     override suspend fun clearLocalData(userId: UserId): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper -> syncService.reset(wrapper) }.flatten()
+
+    override suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary> =
+        withContext(ioDispatcher) { syncService.start().map { it.toStartSummary() } }
+
+    override suspend fun startIndexingForUser(userId: UserId): Either<DataError, Unit> =
+        executeWithUserSession(userId) { wrapper -> syncService.startUser(wrapper).map { } }.flatten()
+
+    override suspend fun stopIndexing(): Either<DataError, Unit> = withContext(ioDispatcher) { syncService.stop() }
+
+    /**
+     * The orchestrator stream has no replay and ends when the session is torn down, so the caller
+     * would otherwise stop hearing about indexing after the first restart. Resubscribing keeps a
+     * long-lived collector (the worker) alive across that.
+     *
+     * Only across a stream that existed, though: a subscribe that keeps failing is not going to start
+     * answering because we asked again, and the worker collects for its whole run, so retrying without
+     * a bound would mean spinning at the backoff interval for as long as it lives.
+     */
+    override fun observeIndexingActivity(): Flow<ContentIndexingActivity> = flow {
+        var consecutiveFailures = 0
+        while (currentCoroutineContext().isActive && consecutiveFailures < MaxSubscribeFailures) {
+            val stream = syncService.subscribe().getOrElse { error ->
+                Timber.e("content-search: failed to watch the indexing orchestrator: $error")
+                null
+            }
+
+            if (stream == null) {
+                consecutiveFailures++
+                delay(ResubscribeBackoffMillis.milliseconds)
+                continue
+            }
+
+            consecutiveFailures = 0
+            emitAll(observeOrchestrator(stream))
+            // Throttled so a session that ends its stream immediately cannot spin the loop.
+            delay(ResubscribeBackoffMillis.milliseconds)
+        }
+    }.flowOn(ioDispatcher)
+
+    private fun observeOrchestrator(stream: SyncOrchestratorEventStream): Flow<ContentIndexingActivity> = callbackFlow {
+        launch {
+            while (isActive) {
+                val event = stream.next()
+                if (event == null) {
+                    Timber.w("content-search: indexing orchestrator watcher closed")
+                    close()
+                    break
+                }
+                event.toIndexingActivity()?.let {
+                    // Buffered without bound below: dropping an event here would mean dropping a
+                    // terminal one, and the worker holds the foreground service until it sees that.
+                    if (trySend(it).isFailure) Timber.w("content-search: dropped an indexing event ($it)")
+                }
+            }
+        }
+
+        awaitClose {
+            runCatching { stream.destroy() }
+        }
+    }.buffer(Channel.UNLIMITED)
 
     // observeForUser ends on every terminal event, so resubscribe to stay durable across worker
     // reschedules (which stop and restart the underlying session). Gated on the user session so
@@ -177,5 +244,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
     private companion object {
 
         const val ResubscribeBackoffMillis = 1_000L
+
+        const val MaxSubscribeFailures = 5
     }
 }
