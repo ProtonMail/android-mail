@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings.mapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 
 internal fun ContentIndexingState.toPercentage(): Double? = when (this) {
-    is ContentIndexingState.Running -> percentage
+    is ContentIndexingState.Running -> percentage.takeIf { !isBackfillDone }
     ContentIndexingState.Idle,
     ContentIndexingState.Initializing,
     ContentIndexingState.Completed,
@@ -30,8 +30,8 @@ internal fun ContentIndexingState.toPercentage(): Double? = when (this) {
 }
 
 internal fun ContentIndexingState.isActive(): Boolean = when (this) {
-    ContentIndexingState.Initializing,
-    is ContentIndexingState.Running -> true
+    ContentIndexingState.Initializing -> true
+    is ContentIndexingState.Running -> !isBackfillDone
 
     ContentIndexingState.Idle,
     ContentIndexingState.Completed,
@@ -39,12 +39,12 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Failed -> false
 }
 
-internal fun ContentIndexingState.isTerminal(): Boolean = when (this) {
-    ContentIndexingState.Idle,
-    ContentIndexingState.Completed,
-    ContentIndexingState.Cancelled,
-    ContentIndexingState.Failed -> true
+/**
+ * Rust keeps the account in `Running` once the backfill has caught up - it stays subscribed for new
+ * mail - and it does not reliably publish `Completed`. Left alone the settings screen would sit on
+ * "Preparing 100.00%", which reads as stuck rather than finished.
+ */
+private val ContentIndexingState.Running.isBackfillDone: Boolean
+    get() = percentage >= FULLY_INDEXED_PERCENTAGE
 
-    ContentIndexingState.Initializing,
-    is ContentIndexingState.Running -> false
-}
+private const val FULLY_INDEXED_PERCENTAGE = 100.0
