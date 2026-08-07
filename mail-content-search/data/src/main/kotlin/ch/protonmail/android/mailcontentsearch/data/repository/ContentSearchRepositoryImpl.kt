@@ -24,6 +24,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
+import ch.protonmail.android.mailcontentsearch.data.mapper.log
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingActivity
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartSummary
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
@@ -129,6 +130,9 @@ class ContentSearchRepositoryImpl @Inject constructor(
                     close()
                     break
                 }
+                // Logged before mapping: the events the mapper drops (a single account failing,
+                // above all) are the ones worth having in a bug report.
+                event.log()
                 event.toIndexingActivity()?.let {
                     // Buffered without bound below: dropping an event here would mean dropping a
                     // terminal one, and the worker holds the foreground service until it sees that.

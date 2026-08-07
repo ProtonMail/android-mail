@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.data.mapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import uniffi.mail_uniffi.SyncOrchestartorStartStats
 import uniffi.mail_uniffi.SyncOrchestratorEvent
 
@@ -62,4 +63,29 @@ internal fun SyncOrchestratorEvent.toIndexingActivity(): ContentIndexingActivity
     // One account failing does not end the run - the orchestrator records it and moves to the next
     // candidate, exactly as Rust's own `sync_and_wait` treats it.
     is SyncOrchestratorEvent.UserFailure -> null
+}
+
+/**
+ * Traces the orchestrator, including the events [toIndexingActivity] drops.
+ *
+ * The percentage is the orchestrator's own, summed across every account's totals, so it moves when
+ * accounts are added or removed as well as when messages are indexed. The per-account counters are
+ * printed next to it so a jump is readable rather than mysterious.
+ */
+internal fun SyncOrchestratorEvent.log() {
+    when (this) {
+        is SyncOrchestratorEvent.Started -> Timber.d("content-search: orchestrator started")
+
+        is SyncOrchestratorEvent.Progress -> Timber.d(
+            "content-search: ${v1.activeId ?: "no account"} progress=${v1.percentage}% " +
+                "(${v1.processed}/${v1.total}), accounts=${v1.completedUsers}/${v1.userCount}"
+        )
+
+        is SyncOrchestratorEvent.ForwardModeEntered -> Timber.d("content-search: $v1 entered forward mode")
+        is SyncOrchestratorEvent.WaitingOnUsers -> Timber.d("content-search: orchestrator waiting on accounts")
+        is SyncOrchestratorEvent.Stopped -> Timber.d("content-search: orchestrator stopped")
+        is SyncOrchestratorEvent.Completed -> Timber.d("content-search: orchestrator completed")
+        is SyncOrchestratorEvent.Failure -> Timber.e("content-search: orchestrator failed: $v1")
+        is SyncOrchestratorEvent.UserFailure -> Timber.w("content-search: $userId failed, moving on: $failure")
+    }
 }
