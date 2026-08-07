@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcontentsearch.data.repository
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringSetPreferencesKey
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -31,7 +30,6 @@ import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPr
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ContentSearchPreferencesRepositoryImpl @Inject constructor(
@@ -39,8 +37,6 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
     private val dataStoreProvider: ContentSearchDataStoreProvider
 ) : ContentSearchPreferencesRepository {
 
-    private val optedOutUserIdsKey = stringSetPreferencesKey("contentSearchOptedOutUserIdsPrefKey")
-    private val knownUserIdsKey = stringSetPreferencesKey("contentSearchKnownUserIdsPrefKey")
     private val bottomSheetShownKey = booleanPreferencesKey("contentSearchBottomSheetShownPrefKey")
 
     override suspend fun getAllowMobileData(): Either<PreferencesError, Boolean> =
@@ -51,31 +47,6 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
             ifLeft = { PreferencesError.left() },
             ifRight = { Unit.right() }
         )
-
-    override suspend fun hasUserOptedOut(userId: UserId): Either<PreferencesError, Boolean> =
-        dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
-            preferences.map { it[optedOutUserIdsKey].orEmpty().contains(userId.id) }
-        }.first()
-
-    override suspend fun markUserOptedOut(userId: UserId): Either<PreferencesError, Unit> =
-        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[optedOutUserIdsKey] = preferences[optedOutUserIdsKey].orEmpty() + userId.id
-        }.map { }
-
-    override suspend fun clearUserOptedOut(userId: UserId): Either<PreferencesError, Unit> =
-        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[optedOutUserIdsKey] = preferences[optedOutUserIdsKey].orEmpty() - userId.id
-        }.map { }
-
-    override suspend fun getKnownUserIds(): Either<PreferencesError, Set<UserId>> =
-        dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
-            preferences.map { it[knownUserIdsKey].orEmpty().map(::UserId).toSet() }
-        }.first()
-
-    override suspend fun saveKnownUserIds(userIds: Set<UserId>): Either<PreferencesError, Unit> =
-        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[knownUserIdsKey] = userIds.map { it.id }.toSet()
-        }.map { }
 
     override suspend fun hasShownBottomSheet(): Either<PreferencesError, Boolean> =
         dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->

@@ -21,15 +21,14 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class EnableContentSearchTest {
 
@@ -37,32 +36,27 @@ internal class EnableContentSearchTest {
     private val settingsRepository = mockk<ContentSearchSettingsRepository> {
         coEvery { setEnabled(userId, true) } returns Unit.right()
     }
-    private val preferencesRepository = mockk<ContentSearchPreferencesRepository> {
-        coEvery { clearUserOptedOut(userId) } returns Unit.right()
-    }
-    private val enableContentSearch = EnableContentSearch(settingsRepository, preferencesRepository)
+    private val enableContentSearch = EnableContentSearch(settingsRepository)
 
     @Test
-    fun `turns on the preference then clears the deliberate opt-out`() = runTest {
+    fun `turns on content search for the account`() = runTest {
         // When
-        enableContentSearch(userId)
+        val result = enableContentSearch(userId)
 
         // Then
-        coVerifyOrder {
-            settingsRepository.setEnabled(userId, true)
-            preferencesRepository.clearUserOptedOut(userId)
-        }
+        coVerify(exactly = 1) { settingsRepository.setEnabled(userId, true) }
+        assertEquals(Unit.right(), result)
     }
 
     @Test
-    fun `does not clear the opt-out when enabling fails`() = runTest {
+    fun `surfaces the failure when the flag could not be written`() = runTest {
         // Given
         coEvery { settingsRepository.setEnabled(userId, true) } returns DataError.Local.Unknown.left()
 
         // When
-        enableContentSearch(userId)
+        val result = enableContentSearch(userId)
 
         // Then
-        coVerify(exactly = 0) { preferencesRepository.clearUserOptedOut(userId) }
+        assertEquals(DataError.Local.Unknown.left(), result)
     }
 }

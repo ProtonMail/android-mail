@@ -20,7 +20,7 @@ package ch.protonmail.android.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import ch.protonmail.android.mailcontentsearch.domain.handler.ContentSearchAutoIndexingHandler
+import ch.protonmail.android.mailcontentsearch.domain.handler.ContentSearchAccountReadyHandler
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -32,7 +32,7 @@ class ContentSearchIndexingInitializer : Initializer<Unit> {
         EntryPointAccessors.fromApplication(
             context.applicationContext,
             ContentSearchIndexingEntryPoint::class.java
-        ).autoIndexingHandler().start()
+        ).accountReadyHandler().start()
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
@@ -40,6 +40,6 @@ class ContentSearchIndexingInitializer : Initializer<Unit> {
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface ContentSearchIndexingEntryPoint {
-        fun autoIndexingHandler(): ContentSearchAutoIndexingHandler
+        fun accountReadyHandler(): ContentSearchAccountReadyHandler
     }
 }

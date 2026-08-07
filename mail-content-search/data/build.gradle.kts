@@ -53,7 +53,6 @@ dependencies {
 
     implementation(libs.bundles.module.data)
     implementation(libs.androidx.hilt.work)
-    implementation(libs.androidx.lifecycle.process)
     implementation(libs.dagger.hilt.android)
     implementation(libs.proton.core.user.domain)
 

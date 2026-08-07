@@ -20,18 +20,15 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class EnableContentSearch @Inject constructor(
-    private val settingsRepository: ContentSearchSettingsRepository,
-    private val preferencesRepository: ContentSearchPreferencesRepository
+    private val settingsRepository: ContentSearchSettingsRepository
 ) {
 
-    // Enabling turns the flag on and clears any explicit opt-out, so an account the user previously
-    // disabled is treated as opted-in again. Symmetric to [DisableContentSearch], which records the opt-out.
-    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> =
-        settingsRepository.setEnabled(userId, true).onRight { preferencesRepository.clearUserOptedOut(userId) }
+    // Symmetric to [DisableContentSearch]: Rust holds the per-account flag, so flipping it there is
+    // the whole operation.
+    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = settingsRepository.setEnabled(userId, true)
 }
