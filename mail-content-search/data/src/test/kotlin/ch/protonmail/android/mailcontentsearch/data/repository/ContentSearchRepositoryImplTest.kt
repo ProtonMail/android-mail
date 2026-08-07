@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontentsearch.data.repository
 
 import app.cash.turbine.test
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -34,19 +35,25 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncEventStream
+import uniffi.mail_uniffi.SyncOrchestratorEvent
+import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.test.assertFalse
 import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.seconds
 
 internal class ContentSearchRepositoryImplTest {
 
@@ -75,7 +82,8 @@ internal class ContentSearchRepositoryImplTest {
         mailSessionRepository = mailSessionRepository,
         syncService = syncServiceWrapper,
         userSessionRepository = userSessionRepository,
-        ioDispatcher = dispatcher
+        ioDispatcher = dispatcher,
+        appScope = CoroutineScope(dispatcher)
     )
 
     @Test
@@ -169,6 +177,95 @@ internal class ContentSearchRepositoryImplTest {
 
         // Then
         assertEquals(ContentIndexingState.Idle, result)
+    }
+
+    @Test
+    fun `observeIndexingActivity opens one orchestrator stream however many collectors there are`() =
+        runTest(dispatcher) {
+            // Given - the worker and the lifecycle observer both watch, and overlap for as long as the
+            // app is on screen. A stream each would pump every event - and log it - twice.
+            val stream = mockk<SyncOrchestratorEventStream> { every { destroy() } returns Unit }
+            every { syncServiceWrapper.subscribe() } returns stream.right()
+            coEvery { stream.next() } coAnswers { awaitCancellation() }
+
+            // When
+            repository.observeIndexingActivity().test {
+                repository.observeIndexingActivity().test {
+                    // Then
+                    verify(exactly = 1) { syncServiceWrapper.subscribe() }
+                    cancelAndIgnoreRemainingEvents()
+                }
+                cancelAndIgnoreRemainingEvents()
+            }
+
+            // Then - the stream outlives a momentary gap between collectors, which is what the worker
+            // handing its foreground service to a replacement leaves behind.
+            verify(exactly = 0) { stream.destroy() }
+
+            // ...and is still given back once the last collector has been gone for longer than that.
+            advanceUntilIdle()
+            verify(exactly = 1) { stream.destroy() }
+        }
+
+    @Test
+    fun `backs off a stream that ends the moment it opens`() = runTest(dispatcher) {
+        // Given - a session with nothing to say hands back a stream that closes at once. At a flat
+        // second that is a Rust stream created and destroyed at 1 Hz for as long as anyone collects.
+        val stream = mockk<SyncOrchestratorEventStream> { every { destroy() } returns Unit }
+        every { syncServiceWrapper.subscribe() } returns stream.right()
+        coEvery { stream.next() } returns null
+
+        // When
+        repository.observeIndexingActivity().test {
+            advanceTimeBy(10.seconds)
+
+            // Then - at 0s, 1s, 3s and 7s, rather than eleven times.
+            verify(exactly = 4) { syncServiceWrapper.subscribe() }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `resubscribes at once after a stream that reported, whatever the failures before it cost`() =
+        runTest(dispatcher) {
+            // Given - three failures push the wait out to eight seconds, then a session finally
+            // answers. The stream it hands back must not sit out the interval they left behind.
+            val stream = mockk<SyncOrchestratorEventStream> { every { destroy() } returns Unit }
+            val failures: List<Either<DataError, SyncOrchestratorEventStream>> =
+                List(3) { DataError.Local.Unknown.left() }
+            every { syncServiceWrapper.subscribe() } returnsMany failures + stream.right()
+            coEvery { stream.next() } returnsMany listOf(SyncOrchestratorEvent.WaitingOnUsers, null)
+
+            // When - the three that failed asked again at 0s, 1s and 3s, and the fourth answered at 7s.
+            repository.observeIndexingActivity().test {
+                advanceTimeBy(8.seconds)
+                verify(exactly = 4) { syncServiceWrapper.subscribe() }
+
+                // Then - a second after the reporting stream ended, not the eight it inherited.
+                advanceTimeBy(1.seconds)
+                verify(exactly = 5) { syncServiceWrapper.subscribe() }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `keeps asking for the orchestrator stream however long it has been failing`() = runTest(dispatcher) {
+        // Given - a shared stream is not restarted by a collector asking again, so giving up on a run
+        // of failures would leave a collector that was already there hearing nothing for good.
+        val stream = mockk<SyncOrchestratorEventStream> { every { destroy() } returns Unit }
+        val failures: List<Either<DataError, SyncOrchestratorEventStream>> =
+            List(6) { DataError.Local.Unknown.left() }
+        every { syncServiceWrapper.subscribe() } returnsMany failures + stream.right()
+        coEvery { stream.next() } coAnswers { awaitCancellation() }
+
+        // When
+        repository.observeIndexingActivity().test {
+            advanceUntilIdle()
+
+            // Then - the six that failed, and the one that answered.
+            verify(exactly = 7) { syncServiceWrapper.subscribe() }
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test

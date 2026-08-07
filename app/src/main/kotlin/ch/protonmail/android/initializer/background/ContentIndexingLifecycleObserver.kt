@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 /**
@@ -50,7 +51,12 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     @AppScope private val appScope: CoroutineScope
 ) : DefaultLifecycleObserver {
 
-    private var activityWatch: Job? = null
+    // Atomic because the two ends of its life are on different threads: it is set from the app-scoped
+    // coroutine `onStart` launches, and cleared from the main thread in `onStop`. Swapped rather than
+    // assigned, so that two `onStart` coroutines in flight at once - the round-trip below is long
+    // enough for a second foreground transition to overtake it - cannot leave the first one's watch
+    // collecting with nobody holding a handle to cancel it.
+    private val activityWatch = AtomicReference<Job?>(null)
 
     @Volatile
     private var isForegrounded = false
@@ -86,8 +92,7 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     }
 
     private fun stopWatching() {
-        activityWatch?.cancel()
-        activityWatch = null
+        activityWatch.getAndSet(null)?.cancel()
     }
 
     /**
@@ -100,8 +105,7 @@ class ContentIndexingLifecycleObserver @Inject constructor(
      * cannot be promoted to a foreground service anyway - hence the cancel in `onStop`.
      */
     private fun watchForIndexingToStart() {
-        stopWatching()
-        activityWatch = appScope.launch {
+        val watch = appScope.launch {
             observeContentIndexingActivity()
                 .map { it is ContentIndexingActivity.Progress }
                 // Progress arrives every batch; the transition into it is the only interesting part.
@@ -116,7 +120,13 @@ class ContentIndexingLifecycleObserver @Inject constructor(
                     workScheduler.ensureWorkerRunning()
                 }
         }
-        // `onStart` is app-scoped, so it can land after the app has already left the screen.
-        if (!isForegrounded) stopWatching()
+        activityWatch.getAndSet(watch)?.cancel()
+        // `onStart` is app-scoped, so it can land after the app has already left the screen. Paired
+        // with the volatile write in `onStop`, so whichever of the two goes second sees the other:
+        // either this read finds `isForegrounded` false, or `onStop` finds the watch to cancel.
+        if (!isForegrounded) {
+            activityWatch.compareAndSet(watch, null)
+            watch.cancel()
+        }
     }
 }

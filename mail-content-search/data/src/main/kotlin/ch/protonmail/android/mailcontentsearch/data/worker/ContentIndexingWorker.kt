@@ -46,6 +46,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -99,6 +101,8 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     @Volatile
     private var cachedAccountLabel: Pair<UserId, String?>? = null
+
+    private val notificationMutex = Mutex()
 
     override suspend fun doWork(): Result = try {
         // A run attempt above the first means WorkManager rescheduled us, which is worth knowing
@@ -162,8 +166,10 @@ class ContentIndexingWorker @AssistedInject constructor(
         try {
             while (true) {
                 val timeout = if (latestProgress == null && !hasWorkPending) NoWorkTimeout else IdleTimeout
-                // receiveCatching, so an upstream that completes releases the service the same way a
-                // silent one does instead of failing the run.
+                // The wait is bounded by the watchdog and nothing else: the activity stream is shared
+                // app-wide and so never completes, which means silence is the only way this worker
+                // ever hears that indexing has stopped. receiveCatching only so a channel that does
+                // close - it is cancelled below - releases the service instead of failing the run.
                 val activity = withTimeoutOrNull(timeout) { activities.receiveCatching().getOrNull() }
                 if (activity == null) {
                     Timber.w("content-search: no indexing progress within $timeout, releasing the service")
@@ -222,12 +228,19 @@ class ContentIndexingWorker @AssistedInject constructor(
         refreshNotification()
     }
 
-    private suspend fun refreshNotification() {
+    /**
+     * Serialised, because both coroutines this worker runs get here - the visibility collector and
+     * the progress loop - and they are on the same dispatcher rather than the same thread. Two of
+     * them reading [isPromoted] as false would promote twice; two of them past that point would race
+     * to post the notification, and the one that arrived with the older snapshot could win, showing
+     * progress that goes backwards. The snapshot is read inside the lock for the same reason.
+     */
+    private suspend fun refreshNotification() = notificationMutex.withLock {
         if (!isPromoted) promoteIfWorthIt()
         // Nothing to show while the app is on screen: the settings screen already reports progress,
         // and a notification for an app the user is looking at is just noise. Same when promotion was
         // refused - there is no notification to update.
-        if (!isPromoted) return
+        if (!isPromoted) return@withLock
         val progress = latestProgress
         val label = progress?.activeUserId?.let { accountLabelFor(it) }
         trySetForeground(label, progress?.toNotificationProgress())

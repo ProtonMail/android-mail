@@ -148,6 +148,24 @@ internal class ContentIndexingLifecycleObserverTest {
     }
 
     @Test
+    fun `leaves one watch behind however many foreground trips got there first`() = runTest {
+        // Given - onStart is app-scoped, so two of them can be in flight at once and each starts a
+        // watch. The one being replaced has to go, or it collects for the rest of the process.
+        givenStartSummary(summary(completed = 1))
+        val observer = observer()
+        observer.onStart(lifecycleOwner())
+        observer.onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // When
+        activities.emit(progress())
+        advanceUntilIdle()
+
+        // Then - two from the two onStarts, and one for the progress rather than one per watch.
+        coVerify(exactly = 3) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
     fun `asks again when indexing starts after the summary was taken`() = runTest {
         // Given - nothing pending when the app came up, then an account signs in and the
         // orchestrator picks it up on its own. The worker from onStart may well have exited by now.

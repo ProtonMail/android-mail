@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.data.repository
 import arrow.core.Either
 import arrow.core.flatten
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
@@ -38,12 +39,15 @@ import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.emitAll
@@ -51,6 +55,8 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,15 +64,65 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
     private val mailSessionRepository: MailSessionRepository,
     private val syncService: SyncServiceWrapper,
     private val userSessionRepository: UserSessionRepository,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @AppScope private val appScope: CoroutineScope
 ) : ContentSearchRepository {
+
+    /**
+     * Backs [observeIndexingActivity].
+     *
+     * The orchestrator stream has no replay and ends when the session is torn down, so a caller would
+     * otherwise stop hearing about indexing after the first restart. Resubscribing keeps a long-lived
+     * collector (the worker) alive across that.
+     *
+     * A round that reports nothing backs off instead of being given up on after a few tries: giving up
+     * was affordable while each caller had a stream of its own, but [SharingStarted.WhileSubscribed]
+     * restarts a shared upstream only on the first subscriber, so a collector that was already there
+     * would hear nothing for the rest of its life. Reports nothing covers both a subscribe that failed
+     * and a stream that opened and closed without a word - the same session saying it has nothing for
+     * us, the second at the price of a Rust stream created and destroyed on every pass. The backoff
+     * resets as soon as a stream does report, so resubscribing across a session teardown stays quick.
+     *
+     * Shared, because there is more than one collector - the worker and the lifecycle observer, which
+     * overlap for as long as the app is on screen - and a Rust stream each means two event pumps
+     * reporting the same run, with every trace line logged twice.
+     *
+     * The stop timeout outlives the worker handing its foreground service to a replacement, which
+     * leaves nobody subscribed for a moment. Without it that gap would destroy the Rust stream and
+     * subscribe again, for a collector that is about to come back.
+     *
+     * Being a [SharedFlow] it never completes, so a collector cannot tell "the orchestrator is done"
+     * from "we are between subscriptions" - the worker bounds its own wait with a watchdog rather than
+     * waiting for the stream to end.
+     */
+    private val indexingActivity: SharedFlow<ContentIndexingActivity> = flow {
+        var backoff = ResubscribeBackoff
+        while (currentCoroutineContext().isActive) {
+            val stream = syncService.subscribe().getOrElse { error ->
+                Timber.e("content-search: failed to watch the indexing orchestrator: $error")
+                null
+            }
+
+            var reportedActivity = false
+            if (stream != null) emitAll(observeOrchestrator(stream).onEach { reportedActivity = true })
+
+            // Decided by this round rather than carried from the last, so a stream that reported does
+            // not first sit out the interval a run of failures before it left behind.
+            val resubscribeIn = if (reportedActivity) ResubscribeBackoff else backoff
+            delay(resubscribeIn)
+            backoff = (resubscribeIn * 2).coerceAtMost(MaxResubscribeBackoff)
+        }
+    }.flowOn(ioDispatcher)
+        .shareIn(appScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = SharingStopTimeoutMillis))
 
     // Resolved from the app session rather than a user session, so it answers before login too.
     override suspend fun isFeatureEnabled(): Boolean = withContext(ioDispatcher) {
@@ -91,35 +147,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun stopIndexing(): Either<DataError, Unit> = withContext(ioDispatcher) { syncService.stop() }
 
-    /**
-     * The orchestrator stream has no replay and ends when the session is torn down, so the caller
-     * would otherwise stop hearing about indexing after the first restart. Resubscribing keeps a
-     * long-lived collector (the worker) alive across that.
-     *
-     * Only across a stream that existed, though: a subscribe that keeps failing is not going to start
-     * answering because we asked again, and the worker collects for its whole run, so retrying without
-     * a bound would mean spinning at the backoff interval for as long as it lives.
-     */
-    override fun observeIndexingActivity(): Flow<ContentIndexingActivity> = flow {
-        var consecutiveFailures = 0
-        while (currentCoroutineContext().isActive && consecutiveFailures < MaxSubscribeFailures) {
-            val stream = syncService.subscribe().getOrElse { error ->
-                Timber.e("content-search: failed to watch the indexing orchestrator: $error")
-                null
-            }
-
-            if (stream == null) {
-                consecutiveFailures++
-                delay(ResubscribeBackoffMillis.milliseconds)
-                continue
-            }
-
-            consecutiveFailures = 0
-            emitAll(observeOrchestrator(stream))
-            // Throttled so a session that ends its stream immediately cannot spin the loop.
-            delay(ResubscribeBackoffMillis.milliseconds)
-        }
-    }.flowOn(ioDispatcher)
+    override fun observeIndexingActivity(): Flow<ContentIndexingActivity> = indexingActivity
 
     private fun observeOrchestrator(stream: SyncOrchestratorEventStream): Flow<ContentIndexingActivity> = callbackFlow {
         launch {
@@ -213,7 +241,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
         if (stream == null) {
             // Throttle the resubscribe in observeIndexingStatus so quick transitions don't make the UI flash.
-            delay(ResubscribeBackoffMillis.milliseconds)
+            delay(ResubscribeBackoff)
             close()
             return@callbackFlow
         }
@@ -224,7 +252,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
                 if (event == null) {
                     Timber.w("content-search: indexing watcher closed")
                     // Throttle the resubscribe in observeIndexingStatus so quick transitions don't make the UI flash.
-                    delay(ResubscribeBackoffMillis.milliseconds)
+                    delay(ResubscribeBackoff)
                     close()
                     break
                 }
@@ -233,7 +261,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
                 if (event.isTerminal()) {
                     // Throttle the resubscribe in observeIndexingStatus so a session that fails
                     // immediately on every subscribe can't spin the loop with no backoff.
-                    delay(ResubscribeBackoffMillis.milliseconds)
+                    delay(ResubscribeBackoff)
                     close()
                     break
                 }
@@ -247,8 +275,10 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     private companion object {
 
-        const val ResubscribeBackoffMillis = 1_000L
+        val ResubscribeBackoff: Duration = 1.seconds
 
-        const val MaxSubscribeFailures = 5
+        val MaxResubscribeBackoff: Duration = 1.minutes
+
+        const val SharingStopTimeoutMillis = 5_000L
     }
 }

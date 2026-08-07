@@ -42,8 +42,13 @@ class ContentIndexingWorkScheduler @Inject constructor(
     /**
      * This and [restart] can both fire on one background-to-foreground trip - the lifecycle observer
      * calls this while the worker that was holding the service calls that. Both go through the same
-     * [enqueue], so the two cannot disagree about policy, and the guard below means the observer's
-     * call is a no-op against a worker that is already running.
+     * [enqueue], so the two cannot disagree about policy, and the guard below usually makes the
+     * observer's call a no-op against a worker that is already running.
+     *
+     * Usually, because the guard is a sample and not a lock: a worker that starts between the check
+     * and the enqueue is replaced anyway, and so is a replacement that [restart] left sitting in
+     * `ENQUEUED`. Both cost a round of churn and neither loses work - one worker is still scheduled
+     * either way - which is the reason this is a cheap guard rather than a synchronised one.
      */
     override suspend fun ensureWorkerRunning() {
         // A worker that is already executing is observing the same orchestrator a new one would, so
