@@ -424,6 +424,13 @@ class RustConversationsQueryImpl @Inject constructor(
     private fun servableCachedItems(): List<LocalConversation>? {
         val snapshot = paginatorState?.scrollerCache?.takeIf { it.mirrorsScroller }?.snapshot ?: return null
 
+        // An empty list is not an answer, because the scroller empties this cache on its way *into* a load:
+        // reset() clears the list and reports FIRST_PAGE_LOADING_START before it fetches anything. Serving
+        // that emptiness settles the Paging refresh at the start of the load with nothing in it, so the
+        // mailbox reads as "No messages" for the whole fetch. Going to Rust leaves the refresh in flight,
+        // which is what the loading skeleton keys off. See ET-6647.
+        if (snapshot.isEmpty()) return null
+
         // Conversations are unique per id, so a repeat means the incremental updates left one behind (see
         // rememberDuplicateTolerantMailboxKeys). Rust's list is authoritative and replaces the cache when
         // it arrives, so refresh from it rather than serving the duplicate back for as long as it survives.

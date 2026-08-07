@@ -480,9 +480,10 @@ class RustConversationsQueryImplTest {
     }
 
     @Test
-    fun `serves an empty list from cache when the scroller reported the location as empty`() = runTest {
+    fun `calls reload when the scroller emptied the cache on its way into a load`() = runTest {
         // Given
         val firstPageConversations = listOf(LocalConversationTestData.OctConversation)
+        val reloadedConversations = listOf(LocalConversationTestData.SepConversation)
         val userId = UserIdSample.Primary
         val labelId = SystemLabelId.Inbox.labelId
         val firstPageKey = PageKey.DefaultPageKey(
@@ -511,7 +512,23 @@ class RustConversationsQueryImplTest {
                 }
                 Unit.right()
             }
-            coEvery { reload() } returns Unit.right()
+
+            coEvery { reload() } coAnswers {
+                launch {
+                    delay(100)
+                    callbackSlot.captured.onUpdate(
+                        ConversationScrollerUpdate.List(
+                            ConversationScrollerListUpdate.ReplaceFrom(
+                                idx = 0uL,
+                                items = reloadedConversations,
+                                scrollerId = DefaultScrollerId
+                            )
+                        )
+                    )
+                }
+                Unit.right()
+            }
+
             coEvery { filterUnread(false) } just Runs
             coEvery { changeInclude(IncludeFilter.None) } just Runs
             every { getScrollerId() } returns DefaultScrollerId
@@ -529,7 +546,7 @@ class RustConversationsQueryImplTest {
 
         // When
         rustConversationsQuery.getConversations(userId, firstPageKey)
-        // The scroller replaces its list with nothing, as it does when switching to an empty category.
+        // The scroller replaces its list with nothing, as it does on its way into an uncached first-page load.
         callbackSlot.captured.onUpdate(
             ConversationScrollerUpdate.List(
                 ConversationScrollerListUpdate.ReplaceFrom(
@@ -541,10 +558,9 @@ class RustConversationsQueryImplTest {
         )
         val allResult = rustConversationsQuery.getConversations(userId, allPageKey)
 
-        // Then
-        assertEquals(emptyList<LocalConversation>().right(), allResult)
-        // "Empty" is an answer the cache can give, so it must not wait on the scroller to repeat it.
-        coVerify(exactly = 0) { paginator.reload() }
+        // Then the refresh waits for Rust rather than settling on an emptiness that means "loading"
+        assertEquals(reloadedConversations.right(), allResult)
+        coVerify(exactly = 1) { paginator.reload() }
     }
 
     @Test
