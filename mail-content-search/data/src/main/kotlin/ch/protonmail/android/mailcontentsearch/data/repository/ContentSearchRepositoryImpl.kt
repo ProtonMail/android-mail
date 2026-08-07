@@ -33,7 +33,6 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActiv
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
-import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -70,7 +69,6 @@ import kotlin.time.Duration.Companion.seconds
 
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
-    private val mailSessionRepository: MailSessionRepository,
     private val syncService: SyncServiceWrapper,
     private val userSessionRepository: UserSessionRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -124,14 +122,13 @@ class ContentSearchRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
         .shareIn(appScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = SharingStopTimeoutMillis))
 
-    // Resolved from the app session rather than a user session, so it answers before login too.
-    override suspend fun isFeatureEnabled(): Boolean = withContext(ioDispatcher) {
-        if (!mailSessionRepository.isMailSessionInitialised()) {
-            Timber.d("content-search: availability requested before the mail session was created")
-            return@withContext false
+    // Answered by the user session, so an account without one - signed out, or still unlocking -
+    // reads as unavailable.
+    override suspend fun isFeatureEnabled(userId: UserId): Boolean =
+        executeWithUserSession(userId) { wrapper -> wrapper.isContentSearchFFEnabled() }.getOrElse { error ->
+            Timber.d("content-search: availability could not be resolved for the account: $error")
+            false
         }
-        mailSessionRepository.getMailSession().isContentSearchFFEnabled()
-    }
 
     // Only reset: stop() is global as of the sync orchestrator, so it would halt indexing for
     // every other account too. reset() already re-prepares this user and hands the orchestrator
@@ -200,14 +197,6 @@ class ContentSearchRepositoryImpl @Inject constructor(
         executeWithUserSession(userId) { wrapper ->
             syncService.shouldShowMobileSheet(wrapper)
         }.flatten().getOrElse { false }
-
-    override suspend fun isMeteredConnectionAllowed(userId: UserId): Either<DataError, Boolean> =
-        executeWithUserSession(userId) { wrapper -> syncService.isMeteredConnectionAllowed(wrapper) }.flatten()
-
-    override suspend fun setMeteredConnectionAllowed(userId: UserId, allowed: Boolean): Either<DataError, Unit> =
-        executeWithUserSession(userId) { wrapper ->
-            syncService.setAllowMeteredConnection(wrapper, allowed)
-        }.flatten()
 
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()

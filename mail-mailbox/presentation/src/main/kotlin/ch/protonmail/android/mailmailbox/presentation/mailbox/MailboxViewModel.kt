@@ -261,7 +261,7 @@ class MailboxViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
-        .mapLatest { isContentSearchFeatureEnabled() }
+        .mapLatest { isContentSearchFeatureEnabled(it) }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
@@ -731,7 +731,7 @@ class MailboxViewModel @Inject constructor(
                 observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
             }
             // Highlight matches in the opened item only when content search is on.
-            val searchQuery = if (isInSearchMode && isContentSearchFeatureEnabled()) {
+            val searchQuery = if (isInSearchMode && isContentSearchFeatureEnabled(user)) {
                 (state.value.mailboxListState as? MailboxListState.Data)?.searchState?.searchQuery.orEmpty()
             } else {
                 ""

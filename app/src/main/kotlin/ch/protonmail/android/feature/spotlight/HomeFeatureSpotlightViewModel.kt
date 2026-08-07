@@ -55,9 +55,9 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
     val state: StateFlow<FeatureSpotlightState> = observePrimaryUserId()
         .filterNotNull()
         .distinctUntilChanged()
-        .flatMapLatest {
+        .flatMapLatest { userId ->
             flow {
-                if (!isEnabled.get() || !isContentSearchFeatureEnabled()) {
+                if (!isEnabled.get() || !isContentSearchFeatureEnabled(userId)) {
                     emit(FeatureSpotlightState.Hide)
                 } else if (isRecentAppInstall()) {
                     markFeatureSpotlightSeen()

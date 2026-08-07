@@ -19,10 +19,14 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 /**
- * Whether the content search feature is available on this build for the whole app.
+ * Whether the content search feature is available on this build for [userId].
+ *
+ * The SDK answers this from the user session, so an account with no session yet - signed out, or
+ * still unlocking - reads as unavailable rather than as an app-wide "off".
  *
  * Not to be confused with [IsContentSearchEnabled], which reports whether the *user* has switched
  * content search on in settings.
@@ -31,5 +35,5 @@ class IsContentSearchFeatureEnabled @Inject constructor(
     private val contentSearchRepository: ContentSearchRepository
 ) {
 
-    suspend operator fun invoke(): Boolean = contentSearchRepository.isFeatureEnabled()
+    suspend operator fun invoke(userId: UserId): Boolean = contentSearchRepository.isFeatureEnabled(userId)
 }

@@ -38,7 +38,6 @@ import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncService
 import uniffi.mail_uniffi.SyncServiceIsEnabledResult
-import uniffi.mail_uniffi.SyncServiceIsMeteredConnectionAllowedResult
 import uniffi.mail_uniffi.SyncServiceShouldShowMobileSheetResult
 import uniffi.mail_uniffi.SyncServiceStartResult
 import uniffi.mail_uniffi.SyncServiceStartUserResult
@@ -152,24 +151,6 @@ class SyncServiceWrapper(
             when (val result = service.shouldShowMobileSheet(userSession.getRustUserSession())) {
                 is SyncServiceShouldShowMobileSheetResult.Error -> result.v1.toDataError().left()
                 is SyncServiceShouldShowMobileSheetResult.Ok -> result.v1.right()
-            }
-        }
-
-    suspend fun setAllowMeteredConnection(
-        userSession: MailUserSessionWrapper,
-        allowed: Boolean
-    ): Either<DataError, Unit> = actorCall { service ->
-        when (val result = service.setAllowMeteredConnection(userSession.getRustUserSession(), allowed)) {
-            is VoidProtonResult.Error -> result.v1.toDataError().left()
-            VoidProtonResult.Ok -> Unit.right()
-        }
-    }
-
-    suspend fun isMeteredConnectionAllowed(userSession: MailUserSessionWrapper): Either<DataError, Boolean> =
-        actorCall { service ->
-            when (val result = service.isMeteredConnectionAllowed(userSession.getRustUserSession())) {
-                is SyncServiceIsMeteredConnectionAllowedResult.Error -> result.v1.toDataError().left()
-                is SyncServiceIsMeteredConnectionAllowedResult.Ok -> result.v1.right()
             }
         }
 

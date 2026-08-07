@@ -29,13 +29,14 @@ import me.proton.core.domain.entity.UserId
 interface ContentSearchRepository {
 
     /**
-     * Whether the feature is available at all, as answered by the Rust SDK.
+     * Whether the feature is available for [userId], as answered by the Rust SDK.
      *
      * Not the plain feature flag: the SDK combines it with any additional eligibility rule, and applies
      * device-local debug overrides itself, so this must not be read through the feature flag resolver.
-     * False before the mail session exists, since nothing can be resolved that early.
+     * Answered by the user session, so it is false for an account that has no session yet - there is
+     * nobody to ask before the account is ready.
      */
-    suspend fun isFeatureEnabled(): Boolean
+    suspend fun isFeatureEnabled(userId: UserId): Boolean
 
     suspend fun clearLocalData(userId: UserId): Either<DataError, Unit>
 
@@ -59,14 +60,4 @@ interface ContentSearchRepository {
     suspend fun getIndexingStatus(userId: UserId): ContentIndexingState
 
     suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean
-
-    /**
-     * Whether the orchestrator is allowed to index [userId] over a metered connection.
-     *
-     * Per-account state owned by Rust: it is what actually gates indexing, and it pauses and resumes
-     * the running queue on its own when flipped.
-     */
-    suspend fun isMeteredConnectionAllowed(userId: UserId): Either<DataError, Boolean>
-
-    suspend fun setMeteredConnectionAllowed(userId: UserId, allowed: Boolean): Either<DataError, Unit>
 }

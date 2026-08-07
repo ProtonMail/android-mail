@@ -169,8 +169,6 @@ class MailSessionWrapper(private val mailSession: MailSession) {
      */
     fun onEnterForeground() = mailSession.onEnterForeground()
 
-    fun isContentSearchFFEnabled() = mailSession.isContentSearchFfEnabled()
-
     suspend fun sendMeasurementEvent(
         eventType: MeasurementEventType,
         asid: String,

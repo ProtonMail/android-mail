@@ -24,9 +24,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
-import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
-import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
@@ -71,15 +69,8 @@ internal class ContentSearchRepositoryImplTest {
     }
     private val executeWithUserSession = ExecuteWithUserSession(userSessionRepository, dispatcher)
 
-    private val mailSession = mockk<MailSessionWrapper>()
-    private val mailSessionRepository = mockk<MailSessionRepository> {
-        every { isMailSessionInitialised() } returns true
-        every { getMailSession() } returns mailSession
-    }
-
     private val repository = ContentSearchRepositoryImpl(
         executeWithUserSession = executeWithUserSession,
-        mailSessionRepository = mailSessionRepository,
         syncService = syncServiceWrapper,
         userSessionRepository = userSessionRepository,
         ioDispatcher = dispatcher,
@@ -87,19 +78,19 @@ internal class ContentSearchRepositoryImplTest {
     )
 
     @Test
-    fun `isFeatureEnabled reflects what the sdk reports`() = runTest(dispatcher) {
-        every { mailSession.isContentSearchFFEnabled() } returns true
+    fun `isFeatureEnabled reflects what the sdk reports for the account`() = runTest(dispatcher) {
+        every { wrapper.isContentSearchFFEnabled() } returns true
 
-        assertTrue(repository.isFeatureEnabled())
+        assertTrue(repository.isFeatureEnabled(userId))
     }
 
     @Test
-    fun `isFeatureEnabled is false before the mail session exists`() = runTest(dispatcher) {
-        every { mailSessionRepository.isMailSessionInitialised() } returns false
+    fun `isFeatureEnabled is false when the account has no session`() = runTest(dispatcher) {
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
 
-        assertFalse(repository.isFeatureEnabled())
+        assertFalse(repository.isFeatureEnabled(userId))
 
-        verify(exactly = 0) { mailSessionRepository.getMailSession() }
+        verify(exactly = 0) { wrapper.isContentSearchFFEnabled() }
     }
 
     @Test
@@ -338,54 +329,4 @@ internal class ContentSearchRepositoryImplTest {
         assertEquals(false, result)
     }
 
-    @Test
-    fun `isMeteredConnectionAllowed returns the sync service value`() = runTest(dispatcher) {
-        // Given
-        coEvery { syncServiceWrapper.isMeteredConnectionAllowed(wrapper) } returns true.right()
-
-        // When
-        val result = repository.isMeteredConnectionAllowed(userId)
-
-        // Then
-        assertEquals(true.right(), result)
-    }
-
-    @Test
-    fun `isMeteredConnectionAllowed propagates the sync service failure`() = runTest(dispatcher) {
-        // Given
-        coEvery { syncServiceWrapper.isMeteredConnectionAllowed(wrapper) } returns DataError.Local.Unknown.left()
-
-        // When
-        val result = repository.isMeteredConnectionAllowed(userId)
-
-        // Then
-        assertEquals(DataError.Local.Unknown.left(), result)
-    }
-
-    @Test
-    fun `setMeteredConnectionAllowed forwards the value to the sync service`() = runTest(dispatcher) {
-        // Given
-        coEvery { syncServiceWrapper.setAllowMeteredConnection(wrapper, false) } returns Unit.right()
-
-        // When
-        val result = repository.setMeteredConnectionAllowed(userId, false)
-
-        // Then
-        assertEquals(Unit.right(), result)
-        coVerify(exactly = 1) { syncServiceWrapper.setAllowMeteredConnection(wrapper, false) }
-    }
-
-    @Test
-    fun `setMeteredConnectionAllowed propagates the sync service failure`() = runTest(dispatcher) {
-        // Given
-        coEvery {
-            syncServiceWrapper.setAllowMeteredConnection(wrapper, true)
-        } returns DataError.Local.Unknown.left()
-
-        // When
-        val result = repository.setMeteredConnectionAllowed(userId, true)
-
-        // Then
-        assertEquals(DataError.Local.Unknown.left(), result)
-    }
 }

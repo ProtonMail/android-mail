@@ -95,7 +95,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     // Gated on the SDK's availability answer: without it the toggle renders, accepts a tap and
     // then fails against a feature Rust will not run.
     private suspend fun loadInitialState(userId: UserId): Boolean {
-        if (!isContentSearchFeatureEnabled()) {
+        if (!isContentSearchFeatureEnabled(userId)) {
             emitNewStateFor(Error.LoadingError)
             return false
         }

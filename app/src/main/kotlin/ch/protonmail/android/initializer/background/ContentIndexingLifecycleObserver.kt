@@ -26,12 +26,17 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActiv
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
@@ -44,6 +49,7 @@ import javax.inject.Inject
  * this exists for - indexing while the app is backgrounded.
  */
 class ContentIndexingLifecycleObserver @Inject constructor(
+    private val observePrimaryUserId: ObservePrimaryUserId,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val startContentIndexing: StartContentIndexing,
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
@@ -58,6 +64,14 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     // collecting with nobody holding a handle to cancel it.
     private val activityWatch = AtomicReference<Job?>(null)
 
+    /**
+     * Held for the same reason as [activityWatch], one step earlier: the account this needs is waited
+     * for, so a foreground episode spent signed out leaves the wait parked. Without a handle, every
+     * trip to the login screen would leave another one behind, and they would all resume together on
+     * the next sign-in - each starting the orchestrator and enqueuing a worker of its own.
+     */
+    private val indexingStart = AtomicReference<Job?>(null)
+
     @Volatile
     private var isForegrounded = false
 
@@ -65,30 +79,48 @@ class ContentIndexingLifecycleObserver @Inject constructor(
         isForegrounded = true
         // App-scoped rather than lifecycle-scoped: start() is an actor round-trip and enqueuing the
         // worker must not be dropped if the user leaves the app again straight away.
-        appScope.launch {
-            if (!isContentSearchFeatureEnabled()) return@launch
+        val start = appScope.launch {
+            // The SDK answers availability from a user session, so there is nobody to ask until an
+            // account is signed in. Waited for rather than sampled: the primary account is not
+            // resolved yet on a cold start, and a login happens with the app already foregrounded -
+            // in both cases the next foreground transition would otherwise be the first chance to
+            // start indexing.
+            val userId = observePrimaryUserId().filterNotNull().first()
+            // The wait can outlast the foreground episode that opened it, and `onStop` cancelling it
+            // is not enough on its own: it can already have resumed by then. A worker enqueued from
+            // the background cannot be promoted to a foreground service anyway.
+            if (!isForegrounded) return@launch
+            if (!isContentSearchFeatureEnabled(userId)) return@launch
 
-            // Pausing from the notification holds only until the user is back: starting again here is
-            // what ends it. Opting out for good is the settings toggle.
-            startContentIndexing().fold(
-                ifLeft = { Timber.w("content-search: could not start indexing: $it") },
-                ifRight = { summary ->
-                    if (!summary.hasWorkPending) {
-                        Timber.d("content-search: nothing pending, the worker will exit early")
-                    }
-                    // Enqueued whatever the summary said, and now, while still foregrounded:
-                    // WorkManager will not let a background app promote a worker to a foreground
-                    // service, so a worker started once work turns up would be too late to protect it.
-                    workScheduler.ensureWorkerRunning()
-                    watchForIndexingToStart()
-                }
-            )
+            // Uncancellable from here on, so that cancelling a wait cannot also drop a start already
+            // under way - that is the round-trip this is app-scoped for in the first place.
+            withContext(NonCancellable) { startIndexing() }
         }
+        indexingStart.getAndSet(start)?.cancel()
     }
 
     override fun onStop(owner: LifecycleOwner) {
         isForegrounded = false
+        indexingStart.getAndSet(null)?.cancel()
         stopWatching()
+    }
+
+    private suspend fun startIndexing() {
+        // Pausing from the notification holds only until the user is back: starting again here is
+        // what ends it. Opting out for good is the settings toggle.
+        startContentIndexing().fold(
+            ifLeft = { Timber.w("content-search: could not start indexing: $it") },
+            ifRight = { summary ->
+                if (!summary.hasWorkPending) {
+                    Timber.d("content-search: nothing pending, the worker will exit early")
+                }
+                // Enqueued whatever the summary said, and now, while still foregrounded:
+                // WorkManager will not let a background app promote a worker to a foreground
+                // service, so a worker started once work turns up would be too late to protect it.
+                workScheduler.ensureWorkerRunning()
+                watchForIndexingToStart()
+            }
+        )
     }
 
     private fun stopWatching() {

@@ -72,7 +72,7 @@ internal class ContentSearchSettingsViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns Unit.right()
     }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke() } returns true
+        coEvery { this@mockk.invoke(any()) } returns true
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {

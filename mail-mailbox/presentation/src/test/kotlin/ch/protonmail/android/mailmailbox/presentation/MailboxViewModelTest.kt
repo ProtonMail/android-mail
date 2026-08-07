@@ -426,7 +426,7 @@ internal class MailboxViewModelTest {
     }
 
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke() } returns false
+        coEvery { this@mockk.invoke(any()) } returns false
     }
 
     private val isContentSearchScreenFeatureEnabled = mockk<FeatureFlag<Boolean>> {
@@ -954,7 +954,7 @@ internal class MailboxViewModelTest {
         val currentUserIdFlow = MutableStateFlow(userId)
         every { observePrimaryUserId() } returns currentUserIdFlow
         // The flag resolves to different values for the two users
-        coEvery { isContentSearchFeatureEnabled() } returns false andThen true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns false andThen true
 
         mailboxViewModel.isContentSearchEnabled.test {
             // Then

@@ -32,7 +32,7 @@ import javax.inject.Inject
  * is backgrounded.
  *
  * Only network and battery constraints are set here. Whether indexing may run over a metered
- * connection is Rust's call - it holds the per-account flag and pauses its own queue - so the
+ * connection is Rust's call - it reads the app setting itself and pauses its own queue - so the
  * worker asks for `CONNECTED` and lets the orchestrator decide.
  */
 class ContentIndexingWorkScheduler @Inject constructor(

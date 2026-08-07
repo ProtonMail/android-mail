@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStart
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -37,6 +38,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -53,8 +56,11 @@ internal class ContentIndexingLifecycleObserverTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(dispatcher)
 
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
+    }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke() } returns true
+        coEvery { this@mockk.invoke(any()) } returns true
     }
     private val startContentIndexing = mockk<StartContentIndexing>()
     private val activities = MutableSharedFlow<ContentIndexingActivity>(extraBufferCapacity = 8)
@@ -121,10 +127,75 @@ internal class ContentIndexingLifecycleObserverTest {
     @Test
     fun `does nothing at all when the feature is off`() = runTest {
         // Given
-        coEvery { isContentSearchFeatureEnabled() } returns false
+        coEvery { isContentSearchFeatureEnabled(any()) } returns false
 
         // When
         observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 0) { startContentIndexing() }
+        coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `waits for an account before asking whether the feature is available`() = runTest {
+        // Given - availability is answered by a user session, so there is nobody to ask while
+        // signed out. Sampling instead of waiting would give up for the whole foreground episode.
+        val primaryUserId = MutableStateFlow<UserId?>(null)
+        every { observePrimaryUserId() } returns primaryUserId
+        givenStartSummary(summary(pending = 1))
+
+        // When
+        observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 0) { startContentIndexing() }
+
+        // When - an account signs in while the app is still on screen.
+        primaryUserId.emit(UserId("user-id"))
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 1) { startContentIndexing() }
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `leaves one wait behind however many foreground trips were spent signed out`() = runTest {
+        // Given - each trip to the login screen parks a wait for an account. Kept, they would all
+        // resume on the next sign-in and each start the orchestrator.
+        val primaryUserId = MutableStateFlow<UserId?>(null)
+        every { observePrimaryUserId() } returns primaryUserId
+        givenStartSummary(summary(pending = 1))
+        val observer = observer()
+        observer.onStart(lifecycleOwner())
+        observer.onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // When
+        primaryUserId.emit(UserId("user-id"))
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 1) { startContentIndexing() }
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `drops a wait for an account once the app has left the screen`() = runTest {
+        // Given - a worker enqueued from the background cannot be promoted to a service anyway.
+        val primaryUserId = MutableStateFlow<UserId?>(null)
+        every { observePrimaryUserId() } returns primaryUserId
+        givenStartSummary(summary(pending = 1))
+        val observer = observer()
+        observer.onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // When
+        observer.onStop(lifecycleOwner())
+        primaryUserId.emit(UserId("user-id"))
         advanceUntilIdle()
 
         // Then
@@ -240,6 +311,7 @@ internal class ContentIndexingLifecycleObserverTest {
     )
 
     private fun TestScope.observer() = ContentIndexingLifecycleObserver(
+        observePrimaryUserId = observePrimaryUserId,
         isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
         startContentIndexing = startContentIndexing,
         observeContentIndexingActivity = observeContentIndexingActivity,

@@ -58,7 +58,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when the feature flag is disabled`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
 
         val viewModel = buildViewModel()
@@ -72,7 +72,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when the bottom sheet was already shown`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns true
 
         val viewModel = buildViewModel()
@@ -86,7 +86,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when content search is not enabled for the user`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(false)
 
@@ -101,7 +101,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when should-show returns false`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
         coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns false
@@ -117,7 +117,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Show when enabled, not yet shown and should-show returns true`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
         coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
@@ -133,7 +133,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `markShown persists the bottom sheet as shown`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         val viewModel = buildViewModel()
 

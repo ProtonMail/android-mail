@@ -124,6 +124,8 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
             is MailUserSessionIsCategoryViewFfEnabledResult.Ok -> result.v1.right()
         }
 
+    fun isContentSearchFFEnabled() = userSession.isContentSearchFfEnabled()
+
     suspend fun overrideFeatureFlag(flagName: String, newValue: Boolean) =
         when (val result = userSession.overrideUserFeatureFlag(flagName = flagName, newValue = newValue)) {
             is MailUserSessionOverrideUserFeatureFlagResult.Ok -> Unit.right()

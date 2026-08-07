@@ -53,7 +53,7 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
         .filterNotNull()
         .flatMapLatest { userId ->
             flow {
-                if (!isContentSearchFeatureEnabled() || hasShownContentSearchBottomSheet()) {
+                if (!isContentSearchFeatureEnabled(userId) || hasShownContentSearchBottomSheet()) {
                     emit(ContentSearchBottomSheetState.Hide)
                     return@flow
                 }
