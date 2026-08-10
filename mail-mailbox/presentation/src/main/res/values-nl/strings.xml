@@ -99,9 +99,6 @@
   <string name="mailbox_talkback_readout_unread">Ongelezen</string>
   <string name="mailbox_talkback_readout_starred">Ster verwijderen</string>
   <string name="mailbox_talkback_readout_not_starred">Ster</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Kan de bijlage niet openen. Probeer het opnieuw.</string>
-  <string name="mailbox_attachment_download_in_progress">Huidige download moet voltooid zijn voordat u een nieuwe start.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Het bericht verwijderen is mislukt</string>

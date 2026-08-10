@@ -21,4 +21,6 @@
   <string name="file_saved">Ficheiro guardado</string>
   <string name="file_saved_fallback">Ficheiro guardado na pasta de Transferências</string>
   <string name="error_saving_file">Ocorreu um erro ao guardar o ficheiro</string>
+  <string name="attachment_download_error">Não foi possível abrir o anexo. Por favor, tente novamente.</string>
+  <string name="attachment_download_in_progress">A transferência atual deve ser concluída antes de iniciar uma nova.</string>
 </resources>

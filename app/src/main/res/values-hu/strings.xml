@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Időjárás</string>
   <string name="app_icon_name_notes">Jegyzetek</string>
   <string name="app_icon_name_calculator">Számológép</string>
+  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
   <string name="dialog_sign_out_account_title">Kijelentkezés</string>
   <string name="dialog_sign_out_account_description">A fiókjához kapcsolódó adatok ezen az eszközön maradnak, hacsak nem dönt úgy, hogy törli őket.</string>
   <string name="dialog_sign_out_account_confirm">Kijelentkezés</string>

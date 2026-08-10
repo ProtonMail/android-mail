@@ -117,9 +117,6 @@
   <string name="mailbox_talkback_readout_unread">Nieprzeczytane</string>
   <string name="mailbox_talkback_readout_starred">Usuń gwiazdkę</string>
   <string name="mailbox_talkback_readout_not_starred">Oznacz gwiazdką</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Nie udało się otworzyć załącznika. Spróbuj ponownie.</string>
-  <string name="mailbox_attachment_download_in_progress">Aktualne pobieranie musi się zakończyć przed rozpoczęciem nowego.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Nie udało się usunąć wiadomości</string>

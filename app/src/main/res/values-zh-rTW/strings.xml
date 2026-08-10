@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">天氣</string>
   <string name="app_icon_name_notes">備註</string>
   <string name="app_icon_name_calculator">計算機</string>
+  <string name="app_welcome_subtitle">加密可讓您的資料有絕對隱密。您的資料隱私權完全地掌握在自己的手中。</string>
   <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">與您帳號相關聯的資料將保留在此裝置上，除非您選取將其刪除。</string>
   <string name="dialog_sign_out_account_confirm">登出</string>

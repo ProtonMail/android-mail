@@ -117,9 +117,6 @@
   <string name="mailbox_talkback_readout_unread">Непрочитанное</string>
   <string name="mailbox_talkback_readout_starred">Снять звёздочку</string>
   <string name="mailbox_talkback_readout_not_starred">Пометить звёздочкой</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Не удалось открыть вложение. Попробуйте снова.</string>
-  <string name="mailbox_attachment_download_in_progress">Текущее скачивание должно завершиться перед началом нового.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Не удалось удалить сообщение</string>

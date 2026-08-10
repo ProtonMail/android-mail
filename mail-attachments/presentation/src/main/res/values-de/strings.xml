@@ -21,4 +21,6 @@
   <string name="file_saved">Datei gespeichert</string>
   <string name="file_saved_fallback">Datei im Ordner „Downloads“ gespeichert</string>
   <string name="error_saving_file">Beim Speichern der Datei ist ein Fehler aufgetreten</string>
+  <string name="attachment_download_error">Der Anhang konnte nicht geöffnet werden. Bitte erneut versuchen.</string>
+  <string name="attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
 </resources>

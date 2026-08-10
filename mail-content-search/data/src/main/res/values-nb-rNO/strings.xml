@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Indeksering av avansert søk</string>
   <string name="content_search_notification_channel_description">Viser fremdrift mens meldinger indekseres for avansert søk.</string>
   <string name="content_search_notification_title">Forbereder avansert søk</string>
-  <string name="content_search_notification_progress">%1$.2f%% fullført</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d accounts)</string>
   <string name="content_search_notification_preparing">Forbereder…</string>
-  <string name="content_search_notification_cancel">Avbryt</string>
+  <string name="content_search_notification_pause">Pause</string>
 </resources>

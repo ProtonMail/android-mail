@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi 신호 유실시 모바일 데이터로 계속 다운로드합니다.</string>
   <string name="mail_settings_content_search_syncing_status">준비 중 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">준비 중…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">로컬 검색 데이터 지우기</string>
   <string name="mail_settings_content_search_clear_data_description">로컬 검색 데이터를 지우면 메시지 콘텐츠 검색도 함께 비활성화됩니다. 언제든지 다시 재활성화할 수 있습니다.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">로컬 검색 데이터 비우기</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">이메일이 Wi-Fi 또는 모바일 데이터로 다운로드되고 있습니다. %1$s에서 Wi-Fi만으로 변경할 수 있습니다.</string>
   <string name="content_search_bottomsheet_settings_link">설정</string>
   <string name="content_search_bottomsheet_ok">확인</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">No results</string>
+  <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
+  <string name="content_search_placeholder_text">Search</string>
+  <string name="content_search_clear_query_content_description">Clear search query</string>
+  <string name="content_search_close_content_description">Close search</string>
+  <string name="content_search_options_content_description">Search options</string>
+  <string name="content_search_include_messages_in">Include messages in</string>
+  <string name="content_search_include_trash">Trash</string>
+  <string name="content_search_include_spam">Spam</string>
+  <string name="content_search_about_content_search">About searching\nemail content</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Recent</string>
+  <string name="content_search_clear_recent_searches">Clear</string>
+  <string name="content_search_previously_found_title">Previously found</string>
+  <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Delete permanently?</string>
+  <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
+  <string name="content_search_delete_dialog_confirm">Delete</string>
+  <string name="content_search_delete_dialog_cancel">Cancel</string>
 </resources>

@@ -33,6 +33,33 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s за першы месяц, а потым %s штомесяц</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Палепшыць да Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Больш не паказваць гэту прапанову</string>
+  <string name="upselling_stay_on_mail_plus">Застацца на Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Выберыце свой тарыфны план</string>
+  <!-- Upselling: Plus to Unlimited themed titles -->
+  <string name="upselling_pu_generic_title">Палепшыце сваю прыватнасць у інтэрнэце з Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Абараніце свой уліковы запіс ад пагроз з дапамогай Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Атрымайце неабмежаваную колькасць псеўданімаў, каб абараніць сваю ідэнтычнасць</string>
+  <string name="upselling_pu_drive_title">Атрымайце 500 ГБ для бяспечнага захоўвання файлаў і фатаграфій</string>
+  <string name="upselling_pu_vpn_browse_title">Атрымайце доступ да звышхуткага VPN з серверамі, якія знаходзяцца ў больш чым 110 краінах</string>
+  <string name="upselling_pu_vpn_streaming_title">Доступ да змесціва на сэрвісах з трансляцыямі па ўсім свеце</string>
+  <string name="upselling_pu_pass_title">Захоўвайце свае паролі ў бяспецы і ўпарадкаваным выглядзе пры дапамозе сховішч</string>
+  <string name="upselling_pu_subtitle">Атрымайце лепшае ад Proton з тарыфным планам Unlimited</string>
+  <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
+  <string name="upselling_pu_row_generic_title">Палепшыць да Unlimited</string>
+  <string name="upselling_pu_row_generic_subtitle">Палепшыце сваю прыватнасць у інтэрнэце</string>
+  <string name="upselling_pu_row_threat_protection_title">Абараніце свой уліковы запіс</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Спыніце пагрозы з дапамогай Proton Sentinel</string>
+  <string name="upselling_pu_row_aliases_title">Схавайце сваю ідэнтычнасць</string>
+  <string name="upselling_pu_row_aliases_subtitle">Атрымайце неабмежаваную колькасць псеўданімаў</string>
+  <string name="upselling_pu_row_drive_title">Павялічце сваё сховішча</string>
+  <string name="upselling_pu_row_drive_subtitle">Атрымайце 500 ГБ для захоўвання файлаў і фатаграфій</string>
+  <string name="upselling_pu_row_vpn_browse_title">Праглядайце бяспечна</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Атрымайце звышхуткі VPN у больш чым 110 краінах свету</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Разблакіруйце трансляцыі</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Доступ да змесціва па ўсім свеце</string>
+  <string name="upselling_pu_row_pass_title">Абараніце свае паролі</string>
+  <string name="upselling_pu_row_pass_subtitle">Захоўвайце паролі ў бяспецы і арганізаваным выглядзе</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Адпраўляйце групавыя лісты з лёгкасцю. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Групаванне кантактаў</string>
@@ -72,6 +99,8 @@
   <string name="upselling_comparison_table_folders_labels">Папкі і меткі</string>
   <string name="upselling_comparison_table_premium_products">Прэміяльны VPN, менеджар пароляў і воблачнае сховішча</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Неабмежаваная колькасць псеўданімаў, каб схаваць вашу ідэнтычнасць</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">Звышхуткі VPN у больш чым 110 краінах свету</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выберыце падпіску</string>
   <string name="upselling_select_plan_year">12 месяцаў</string>

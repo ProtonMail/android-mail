@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">Працягнуць</string>
   <string name="spotlight_screen_category_view_button_try">Так, упарадкаваць іх</string>
   <string name="spotlight_screen_category_view_button_dismiss">Пакінуць папярэдні выгляд паштовай скрыні</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Пошук стаў яшчэ лепшым.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Знаходзьце больш у кожным лісце</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Шукайце лісты па змесціве паведамлення, а не толькі па тэме або адпраўніку.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Прасцей дасягнуць</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Цяпер пошук знаходзіцца ўнізе экрана для зручнага выкарыстання адной рукой.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Працягвайце з таго месца, дзе спыніліся</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Хутка пераглядайце нядаўнія пошукавыя запыты. Яны захоўваюцца на вашай прыладзе для забеспячэння скразнога шыфравання.</string>
 </resources>

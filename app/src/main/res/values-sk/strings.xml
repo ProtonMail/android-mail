@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Počasie</string>
   <string name="app_icon_name_notes">Poznámky</string>
   <string name="app_icon_name_calculator">Kalkulačka</string>
+  <string name="app_welcome_subtitle">Šifrovanie uchováva vaše údaje v súkromí. Vaše údaje skutočne patria vám.</string>
   <string name="dialog_sign_out_account_title">Odhlásiť sa</string>
   <string name="dialog_sign_out_account_description">Údaje spojené s vaším účtom zostanú v tomto zariadení, pokiaľ sa nerozhodnete ich vymazať.</string>
   <string name="dialog_sign_out_account_confirm">Odhlásiť sa</string>

@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">İlerle</string>
   <string name="spotlight_screen_category_view_button_try">Evet, düzenle</string>
   <string name="spotlight_screen_category_view_button_dismiss">Gelen kutusu eskisi gibi kalsın</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Arama özelliği daha da iyileşti.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Her e-postadan daha fazlasını bulun</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">E-postaları yalnızca konu başlığına veya göndericiye göre değil, ileti içeriğine göre de bulun.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Ulaşması daha kolay</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Tek elle kolayca kullanılabilmesi için arama özelliği artık ekranın alt bölümünde yer alıyor.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Kaldığınız yerden ilerleyin</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Son aramalarınıza hızla geri dönün. Uçtan uca şifrelemeyi korumak için veriler aygıtınızda saklanır.</string>
 </resources>

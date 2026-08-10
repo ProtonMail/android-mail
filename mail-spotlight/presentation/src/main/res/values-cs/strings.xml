@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">Pokračovat</string>
   <string name="spotlight_screen_category_view_button_try">Ano, uspořádat</string>
   <string name="spotlight_screen_category_view_button_dismiss">Ponechat doručenou poštu beze změn</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Vyhledávání je teď ještě lepší.</string>
+  <string name="spotlight_screen_content_search_message_content_title">V každém e-mailu najdete ještě více informací</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Vyhledávejte e-maily podle obsahu zprávy, nejen podle předmětu nebo odesílatele.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Snadnější přístup</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Vyhledávání je nyní umístěno ve spodní části obrazovky, což usnadňuje ovládání jednou rukou.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Pokračujte tam, kde jste přestali</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Rychlý přehled posledních vyhledávání. Ukládají se do vašeho zařízení, aby bylo zachováno koncové šifrování</string>
 </resources>

@@ -21,4 +21,6 @@
   <string name="file_saved">Файл захаваны</string>
   <string name="file_saved_fallback">Файл захаваны ў папку Спампоўкі</string>
   <string name="error_saving_file">Адбылася памылка падчас захавання файла</string>
+  <string name="attachment_download_error">Немагчыма адкрыць далучэнне. Паспрабуйце яшчэ раз.</string>
+  <string name="attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
 </resources>

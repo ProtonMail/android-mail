@@ -49,6 +49,14 @@
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hola, categories.\nAdeu, distraccions.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Deixeu de distreure-us amb butlletins, actualitzacions i correus no urgents. Amb les noves categories de correu electrònic, només els missatges importants arriben a la safata d\'entrada principal.</string>
   <string name="spotlight_screen_category_view_button_continue">Continua</string>
-  <string name="spotlight_screen_category_view_button_try">Sí, organitzeu-ho</string>
-  <string name="spotlight_screen_category_view_button_dismiss">Mantenir la safata d\'entrada com abans</string>
+  <string name="spotlight_screen_category_view_button_try">Sí, organitza-ho</string>
+  <string name="spotlight_screen_category_view_button_dismiss">Mantén la bústia com abans</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">La cerca cada vegada va millor.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Trobeu-ne més a cada correu electrònic</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Trobeu correus electrònics pel contingut del missatge, no només per l\'assumpte o el remitent.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Més fàcil d\'arribar-hi</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Ara la cerca es troba a la part inferior de la pantalla per facilitar-ne l\'ús amb una sola mà.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Repreneu-ho des d\'on ho heu deixat</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Torneu a consultar ràpidament cerques recents. S\'emmagatzema al vostre dispositiu per a mantenir-ne el xifratge d\'extrem a extrem.</string>
 </resources>

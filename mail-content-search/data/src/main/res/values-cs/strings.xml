@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Indexace pokročilého vyhledávání</string>
   <string name="content_search_notification_channel_description">Zobrazuje průběh indexování zpráv pro pokročilé vyhledávání.</string>
   <string name="content_search_notification_title">Příprava pokročilého vyhledávání</string>
-  <string name="content_search_notification_progress">%1$.2f%% dokončeno</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d accounts)</string>
   <string name="content_search_notification_preparing">Příprava…</string>
-  <string name="content_search_notification_cancel">Zrušit</string>
+  <string name="content_search_notification_pause">Pause</string>
 </resources>

@@ -90,9 +90,6 @@
   <string name="mailbox_talkback_readout_unread">未读</string>
   <string name="mailbox_talkback_readout_starred">无星标</string>
   <string name="mailbox_talkback_readout_not_starred">星标</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">无法打开附件，请重试。</string>
-  <string name="mailbox_attachment_download_in_progress">当前下载必须完成后才能开始新的下载！</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">删除邮件失败</string>

@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Ak dôjde k prerušeniu pripojenia cez Wi-Fi, sťahovanie pokračuje cez mobilné dáta.</string>
   <string name="mail_settings_content_search_syncing_status">Príprava %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Príprava…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Čakám na Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Vymazať údaje z lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_description">Vymazaním údajov z lokálneho vyhľadávania sa deaktivuje vyhľadávanie v obsahu správ. Túto funkciu môžete kedykoľvek opäť zapnúť.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Vymazať údaje z lokálneho vyhľadávania</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">Emaily sa sťahujú cez Wi-Fi alebo mobilné dáta. Môžete prepnúť na režim „len Wi-Fi“ v %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">nastaveniach</string>
   <string name="content_search_bottomsheet_ok">OK</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Žiadne výsledky</string>
+  <string name="content_search_no_results_description">Skúste použiť iné kľúčové slová alebo skontrolujte pravopis.</string>
+  <string name="content_search_placeholder_text">Hľadať</string>
+  <string name="content_search_clear_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
+  <string name="content_search_close_content_description">Zavrieť vyhľadávanie</string>
+  <string name="content_search_options_content_description">Možnosti vyhľadávania</string>
+  <string name="content_search_include_messages_in">Zahrnúť správy v</string>
+  <string name="content_search_include_trash">Kôš</string>
+  <string name="content_search_include_spam">Nevyžiadaná pošta</string>
+  <string name="content_search_about_content_search">O vyhľadávaní\nv obsahu emailov</string>
+  <string name="content_search_first_run_description">Zadajte názov, predmet alebo kľúčové slovo a začnite cestu…</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Nedávne</string>
+  <string name="content_search_clear_recent_searches">Vyčistiť</string>
+  <string name="content_search_previously_found_title">Predtým nájdené</string>
+  <string name="content_search_dismiss_recent_search_content_description">Odstrániť “%1$s” z nedávnych vyhľadávaní</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Vymazať natrvalo?</string>
+  <string name="content_search_delete_dialog_message">Tieto správy budú natrvalo vymazané. Túto akciu nie je možné vrátiť späť.</string>
+  <string name="content_search_delete_dialog_confirm">Vymazať</string>
+  <string name="content_search_delete_dialog_cancel">Zrušiť</string>
 </resources>

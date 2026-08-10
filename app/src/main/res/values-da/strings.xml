@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Vejr</string>
   <string name="app_icon_name_notes">Noter</string>
   <string name="app_icon_name_calculator">Lommeregner</string>
+  <string name="app_welcome_subtitle">Kryptering holder dine data private. Dine data tilhører kun dig.</string>
   <string name="dialog_sign_out_account_title">Log ud</string>
   <string name="dialog_sign_out_account_description">De data, der er knyttet til din konto, forbliver på denne enhed, medmindre du vælger at slette dem.</string>
   <string name="dialog_sign_out_account_confirm">Log ud</string>

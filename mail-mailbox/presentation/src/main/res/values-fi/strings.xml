@@ -99,9 +99,6 @@
   <string name="mailbox_talkback_readout_unread">Lukematon</string>
   <string name="mailbox_talkback_readout_starred">Poista tähti</string>
   <string name="mailbox_talkback_readout_not_starred">Lisää tähti</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Liitteen avaaminen epäonnistui. Yritä uudelleen.</string>
-  <string name="mailbox_attachment_download_in_progress">Nykyisen latauksen on valmistuttava ennen uuden aloitusta.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Viestin poisto epäonnistui</string>

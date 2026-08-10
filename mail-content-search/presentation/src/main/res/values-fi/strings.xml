@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Lataus jatkuu mobiilidatan kautta, jos Wi-Fi-yhteys katkeaa.</string>
   <string name="mail_settings_content_search_syncing_status">Valmistellaan %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Odotetaan Wi-Fi-yhteyttä</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
   <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tyhjennä paikalliset hakutiedot</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">Sähköpostit ladataan Wi-Fi-yhteyden tai mobiilidatan kautta. Voit valita vain Wi-Fi-yhteyden kohdassa %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">asetukset</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Ei tuloksia</string>
+  <string name="content_search_no_results_description">Kokeile eri hakusanoja tai tarkista oikeinkirjoitus.</string>
+  <string name="content_search_placeholder_text">Etsi</string>
+  <string name="content_search_clear_query_content_description">Tyhjennä hakusanat</string>
+  <string name="content_search_close_content_description">Sulje haku</string>
+  <string name="content_search_options_content_description">Hakuvaihtoehdot</string>
+  <string name="content_search_include_messages_in">Include messages in</string>
+  <string name="content_search_include_trash">Roskakori</string>
+  <string name="content_search_include_spam">Roskaposti</string>
+  <string name="content_search_about_content_search">About searching\nemail content</string>
+  <string name="content_search_first_run_description">Kirjoita nimi, aihe tai avainsana aloittaaksesi matkan...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Recent</string>
+  <string name="content_search_clear_recent_searches">Tyhjennä</string>
+  <string name="content_search_previously_found_title">Aiemmin löydetyt</string>
+  <string name="content_search_dismiss_recent_search_content_description">Poista \"%1$s\" viimeisimmistä hauista</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Poistetaanko pysyvästi?</string>
+  <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
+  <string name="content_search_delete_dialog_confirm">Poista</string>
+  <string name="content_search_delete_dialog_cancel">Peruuta</string>
 </resources>

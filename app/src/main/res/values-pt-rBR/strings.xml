@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Clima</string>
   <string name="app_icon_name_notes">Notas</string>
   <string name="app_icon_name_calculator">Calculadora</string>
+  <string name="app_welcome_subtitle">Criptografia mantém seus dados privados. Seus dados pertencem a você.</string>
   <string name="dialog_sign_out_account_title">Encerrar sessão</string>
   <string name="dialog_sign_out_account_description">Os dados associados à sua conta permanecerão neste dispositivo, a menos que você opte por excluí-los.</string>
   <string name="dialog_sign_out_account_confirm">Encerrar sessão</string>

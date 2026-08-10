@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Nedlastingen fortsetter via mobildata hvis Wi-Fi-forbindelsen mistes.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Tøm lokale søkedata</string>
   <string name="mail_settings_content_search_clear_data_description">Hvis du tømmer lokale søkedata, deaktiveres søk etter meldingsinnhold. Du kan aktivere det igjen når som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tøm lokale søkedata</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-poster lastes ned over Wi-Fi eller mobildata. Du kan bytte til kun Wi-Fi i %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">innstillinger</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">No results</string>
+  <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
+  <string name="content_search_placeholder_text">Search</string>
+  <string name="content_search_clear_query_content_description">Clear search query</string>
+  <string name="content_search_close_content_description">Close search</string>
+  <string name="content_search_options_content_description">Search options</string>
+  <string name="content_search_include_messages_in">Include messages in</string>
+  <string name="content_search_include_trash">Trash</string>
+  <string name="content_search_include_spam">Spam</string>
+  <string name="content_search_about_content_search">About searching\nemail content</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Recent</string>
+  <string name="content_search_clear_recent_searches">Clear</string>
+  <string name="content_search_previously_found_title">Previously found</string>
+  <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Delete permanently?</string>
+  <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
+  <string name="content_search_delete_dialog_confirm">Delete</string>
+  <string name="content_search_delete_dialog_cancel">Cancel</string>
 </resources>

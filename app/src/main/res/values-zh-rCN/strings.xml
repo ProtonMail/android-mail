@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">天气</string>
   <string name="app_icon_name_notes">便签</string>
   <string name="app_icon_name_calculator">计算器</string>
+  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
   <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">除非您选择删除，否则与您账户关联的数据将保留在此设备上。</string>
   <string name="dialog_sign_out_account_confirm">登出</string>

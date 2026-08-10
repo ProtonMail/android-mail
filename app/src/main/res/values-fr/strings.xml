@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Météo</string>
   <string name="app_icon_name_notes">Notes</string>
   <string name="app_icon_name_calculator">Calculatrice</string>
+  <string name="app_welcome_subtitle">Le chiffrement assure la confidentialité de vos données. Vos données vous appartiennent vraiment.</string>
   <string name="dialog_sign_out_account_title">Déconnexion</string>
   <string name="dialog_sign_out_account_description">Les données associées à votre compte resteront sur cet appareil à moins que vous ne choisissiez de les supprimer.</string>
   <string name="dialog_sign_out_account_confirm">Se déconnecter</string>

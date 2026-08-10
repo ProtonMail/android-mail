@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Meteo</string>
   <string name="app_icon_name_notes">Note</string>
   <string name="app_icon_name_calculator">Calculator</string>
+  <string name="app_welcome_subtitle">Criptarea vă menține datele private. Acestea vă aparțin cu adevărat.</string>
   <string name="dialog_sign_out_account_title">Deconectare</string>
   <string name="dialog_sign_out_account_description">Datele asociate contului vor rămâne pe acest dispozitiv dacă nu selectați să le ștergeți.</string>
   <string name="dialog_sign_out_account_confirm">Deconectare</string>

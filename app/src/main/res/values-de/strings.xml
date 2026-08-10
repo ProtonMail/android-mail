@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Wetter</string>
   <string name="app_icon_name_notes">Notizen</string>
   <string name="app_icon_name_calculator">Taschenrechner</string>
+  <string name="app_welcome_subtitle">Das Verschlüsseln hält deine Daten privat. Deine Daten gehören ausschließlich dir.</string>
   <string name="dialog_sign_out_account_title">Abmelden</string>
   <string name="dialog_sign_out_account_description">Die mit Ihrem Konto verbundenen Daten bleiben auf diesem Gerät gespeichert, es sei denn, du entscheidest dich, sie zu löschen.</string>
   <string name="dialog_sign_out_account_confirm">Abmelden</string>

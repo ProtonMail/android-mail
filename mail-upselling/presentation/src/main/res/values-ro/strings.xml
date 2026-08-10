@@ -33,6 +33,33 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s pentru prima lună, apoi %s pe lună</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Treceți la Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Nu mai arăta această ofertă</string>
+  <string name="upselling_stay_on_mail_plus">Rămâneți în Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Alegeți planul</string>
+  <!-- Upselling: Plus to Unlimited themed titles -->
+  <string name="upselling_pu_generic_title">Îmbunătățiți-vă confidențialitatea online cu Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Protejați-vă contul de amenințări cu Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Obțineți aliasuri nelimitate pentru a vă proteja identitatea</string>
+  <string name="upselling_pu_drive_title">Obțineți 500 GiB pentru a stoca în siguranță fișiere și fotografii</string>
+  <string name="upselling_pu_vpn_browse_title">Obțineți acces la VPN ultrarapid cu servere în peste 110 țări</string>
+  <string name="upselling_pu_vpn_streaming_title">Accesați conținut de pe servicii de transmisie în flux la nivel global</string>
+  <string name="upselling_pu_pass_title">Păstrați-vă parolele în siguranță și organizate în seifuri</string>
+  <string name="upselling_pu_subtitle">Obțineți maximul de la Proton cu Unlimited</string>
+  <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
+  <string name="upselling_pu_row_generic_title">Treceți la Unlimited</string>
+  <string name="upselling_pu_row_generic_subtitle">Duceți-vă confidențialitatea online la un nivel superior</string>
+  <string name="upselling_pu_row_threat_protection_title">Protejați-vă contul</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Opriți amenințările cu Proton Sentinel</string>
+  <string name="upselling_pu_row_aliases_title">Ascundeți-vă identitatea</string>
+  <string name="upselling_pu_row_aliases_subtitle">Obțineți aliasuri nelimitate</string>
+  <string name="upselling_pu_row_drive_title">Măriți-vă spațiul de stocare</string>
+  <string name="upselling_pu_row_drive_subtitle">Obțineți 500 GiB pentru a stoca fișiere și fotografii</string>
+  <string name="upselling_pu_row_vpn_browse_title">Navigați în siguranță</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Obțineți VPN ultrarapid cu peste 110 țări</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Deblocați transmisiile în flux</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Accesați conținut de pretutindeni</string>
+  <string name="upselling_pu_row_pass_title">Securizați-vă parolele</string>
+  <string name="upselling_pu_row_pass_subtitle">Păstrați parolele în siguranță și organizate</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Trimiteți mesaje în grup cu ușurință. Bucurați-vă de acest lucru și de mai multe cu Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Grupați-vă contactele</string>
@@ -72,6 +99,8 @@
   <string name="upselling_comparison_table_folders_labels">Foldere și etichete</string>
   <string name="upselling_comparison_table_premium_products">VPN premium, manager de parole și stocare în cloud</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitorizare pe internetul ascuns</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Aliasuri nelimitate pentru a vă ascunde identitatea</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarapid cu peste 110 țări</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Alegere abonament</string>
   <string name="upselling_select_plan_year">12 luni</string>

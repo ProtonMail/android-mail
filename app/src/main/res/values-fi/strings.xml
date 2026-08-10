@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Sää</string>
   <string name="app_icon_name_notes">Muistiinpanot</string>
   <string name="app_icon_name_calculator">Laskin</string>
+  <string name="app_welcome_subtitle">Salaus pitää tietosi yksityisinä. Tietosi todella kuuluvat sinulle.</string>
   <string name="dialog_sign_out_account_title">Kirjaudu ulos</string>
   <string name="dialog_sign_out_account_description">Tiliisi liittyvät tiedot säilyvät tällä laitteella, ellet valitse niitä poistettavaksi.</string>
   <string name="dialog_sign_out_account_confirm">Kirjaudu ulos</string>

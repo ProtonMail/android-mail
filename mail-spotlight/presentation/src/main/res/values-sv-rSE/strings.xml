@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">Fortsätt</string>
   <string name="spotlight_screen_category_view_button_try">Ja, organisera det</string>
   <string name="spotlight_screen_category_view_button_dismiss">Behåll inkorg som förut</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Sök blev just bättre.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Hitta mer i varje e-postmeddelande</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Hitta e-postmeddelanden efter meddelandeinnehåll, inte bara ämne eller avsändare.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Lättare att nå</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Search now lives at the bottom of the screen for easy one-handed use.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Fortsätt där du slutade</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Gå snabbt igenom dina senaste sökningar. Lagras på din enhet för att bevara end-to-end-kryptering.</string>
 </resources>

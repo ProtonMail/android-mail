@@ -21,4 +21,6 @@
   <string name="file_saved">Fișierul a fost salvat.</string>
   <string name="file_saved_fallback">Fișierul s-a salvat în folderul „Descărcări”</string>
   <string name="error_saving_file">A apărut o eroare în timpul salvării fișierului.</string>
+  <string name="attachment_download_error">Nu se poate deschide atașamentul. Reîncercați.</string>
+  <string name="attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
 </resources>

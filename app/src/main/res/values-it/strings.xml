@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Meteo</string>
   <string name="app_icon_name_notes">Note</string>
   <string name="app_icon_name_calculator">Calcolatrice</string>
+  <string name="app_welcome_subtitle">La crittografia garantisce la tua privacy. I tuoi dati appartengono solamente a te.</string>
   <string name="dialog_sign_out_account_title">Esci dall\'account</string>
   <string name="dialog_sign_out_account_description">Sei sicuro di voler uscire da questo account?</string>
   <string name="dialog_sign_out_account_confirm">Esci</string>

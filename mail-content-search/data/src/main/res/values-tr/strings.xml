@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Gelişmiş arama dizinine ekleme</string>
   <string name="content_search_notification_channel_description">İletiler gelişmiş arama için dizine eklenirken ilerleme durumunu görüntüler.</string>
   <string name="content_search_notification_title">Gelişmiş arama hazırlanıyor</string>
-  <string name="content_search_notification_progress">%1$.2f[%1$.2f] tamamlandı</string>
+  <string name="content_search_notification_message_progress">%1$d[%1$i] · %2$d/%3$d ileti</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d[%1$i] · %2$d/%3$d ileti (%4$d/%5$d hesap)</string>
   <string name="content_search_notification_preparing">Hazırlanıyor…</string>
-  <string name="content_search_notification_cancel">İptal</string>
+  <string name="content_search_notification_pause">Duraklat</string>
 </resources>

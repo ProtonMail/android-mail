@@ -108,9 +108,6 @@
   <string name="mailbox_talkback_readout_unread">Necitite</string>
   <string name="mailbox_talkback_readout_starred">Fără stea</string>
   <string name="mailbox_talkback_readout_not_starred">Cu stea</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Nu se poate deschide atașamentul. Reîncercați.</string>
-  <string name="mailbox_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Mesajul nu a putut fi șters.</string>

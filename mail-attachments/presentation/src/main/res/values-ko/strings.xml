@@ -21,4 +21,6 @@
   <string name="file_saved">파일이 저장됨</string>
   <string name="file_saved_fallback">파일이 다운로드 폴더에 저장되었습니다.</string>
   <string name="error_saving_file">파일 저장 중 오류가 발생했습니다.</string>
+  <string name="attachment_download_error">Unable to open the attachment. Please try again.</string>
+  <string name="attachment_download_in_progress">Current download must complete before starting a new one.</string>
 </resources>

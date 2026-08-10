@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Väder</string>
   <string name="app_icon_name_notes">Anteckningar</string>
   <string name="app_icon_name_calculator">Kalkylator</string>
+  <string name="app_welcome_subtitle">Kryptering håller din data privat. Din data tillhör dig på riktigt.</string>
   <string name="dialog_sign_out_account_title">Logga ut</string>
   <string name="dialog_sign_out_account_description">Data associerat med ditt konto kommer att finnas kvar på denna enhet om du inte väljer att ta bort det.</string>
   <string name="dialog_sign_out_account_confirm">Logga ut</string>

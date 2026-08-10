@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Indizierung für erweiterte Suchanfragen</string>
   <string name="content_search_notification_channel_description">Zeigt den Fortschritt an, während Nachrichten für die erweiterte Suche indiziert werden.</string>
   <string name="content_search_notification_title">Erweiterte Suche wird vorbereitet</string>
-  <string name="content_search_notification_progress">%1$.2f%% abgeschlossen</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d Nachrichten</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d Nachrichten (%4$d/%5$d Konten)</string>
   <string name="content_search_notification_preparing">Wird vorbereitet …</string>
-  <string name="content_search_notification_cancel">Abbrechen</string>
+  <string name="content_search_notification_pause">Pausieren</string>
 </resources>

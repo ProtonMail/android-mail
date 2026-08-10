@@ -117,9 +117,6 @@
   <string name="mailbox_talkback_readout_unread">Непрочитані</string>
   <string name="mailbox_talkback_readout_starred">Прибрати зірочку</string>
   <string name="mailbox_talkback_readout_not_starred">Позначити зірочкою</string>
-  <!-- Attachment download -->
-  <string name="mailbox_attachment_download_error">Не вдалося відкрити вкладення. Спробуйте ще раз.</string>
-  <string name="mailbox_attachment_download_in_progress">Поточне завантаження має бути завершене, перш ніж розпочати нове.</string>
   <!--    Storage Limit Warning-->
   <!--    Storage Quota Over Warning-->
   <string name="mailbox_action_delete_failed">Не вдалося видалити повідомлення</string>

@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">Weiter</string>
   <string name="spotlight_screen_category_view_button_try">Ja, bitte organisieren</string>
   <string name="spotlight_screen_category_view_button_dismiss">Posteingang wie bisher beibehalten</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Die Suche funktioniert jetzt noch besser.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Noch mehr in jeder E-Mail entdecken</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Suche E-Mails anhand des Inhalts der Nachricht, nicht nur anhand des Betreffs oder des Absenders.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Leichter zu erreichen</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Die Suchfunktion befindet sich nun am unteren Bildschirmrand und lässt sich so bequem mit einer Hand bedienen.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Mach dort weiter, wo du aufgehört hast</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Rufe deine letzten Suchanfragen schnell wieder auf. Diese werden auf deinem Gerät gespeichert, um die Ende-zu-Ende-Verschlüsselung zu gewährleisten.</string>
 </resources>

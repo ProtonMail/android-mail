@@ -21,4 +21,6 @@
   <string name="file_saved">Το αρχείο αποθηκεύτηκε</string>
   <string name="file_saved_fallback">Το αρχείο αποθηκεύτηκε στον φάκελο Λήψεις</string>
   <string name="error_saving_file">Παρουσιάστηκε σφάλμα κατά την αποθήκευση του αρχείου</string>
+  <string name="attachment_download_error">Δεν είναι δυνατό το άνοιγμα του συνημμένου. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="attachment_download_in_progress">Η τρέχουσα λήψη πρέπει να ολοκληρωθεί πριν την έναρξη νέας.</string>
 </resources>

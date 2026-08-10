@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Ευρετηρίαση σύνθετης αναζήτησης</string>
   <string name="content_search_notification_channel_description">Εμφανίζει την πρόοδο κατά την καταχώρηση των μηνυμάτων για Σύνθετη Αναζήτηση.</string>
   <string name="content_search_notification_title">Προετοιμασία Σύνθετης Αναζήτησης</string>
-  <string name="content_search_notification_progress">%1$.2f%% ολοκληρώθηκε</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d μηνύματα</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d μηνύματα (%4$d/%5$d λογαριασμοί)</string>
   <string name="content_search_notification_preparing">Προετοιμασία…</string>
-  <string name="content_search_notification_cancel">Ακύρωση</string>
+  <string name="content_search_notification_pause">Παύση</string>
 </resources>

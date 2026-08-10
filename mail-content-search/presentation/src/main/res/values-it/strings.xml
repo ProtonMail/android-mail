@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Il download continua tramite rete dati se viene persa la connessione Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Preparazione di %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">In attesa di una rete Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Cancella i dati della ricerca locale</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">Le e-mail vengono scaricate tramite Wi-Fi o dati mobili. Puoi impostare il download solo tramite Wi-Fi in %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">impostazioni</string>
   <string name="content_search_bottomsheet_ok">OK</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Nessun risultato</string>
+  <string name="content_search_no_results_description">Prova parole chiave diverse o controlla l\'ortografia.</string>
+  <string name="content_search_placeholder_text">Cerca</string>
+  <string name="content_search_clear_query_content_description">Cancella la parola chiave</string>
+  <string name="content_search_close_content_description">Chiudi ricerca</string>
+  <string name="content_search_options_content_description">Opzioni ricerca</string>
+  <string name="content_search_include_messages_in">Includi i messaggi in</string>
+  <string name="content_search_include_trash">Cestino</string>
+  <string name="content_search_include_spam">Spam</string>
+  <string name="content_search_about_content_search">Informazioni sulla ricerca\ncontenuti email</string>
+  <string name="content_search_first_run_description">Digita un nome, un oggetto o una parola chiave per iniziare il viaggio...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Recente</string>
+  <string name="content_search_clear_recent_searches">Cancella</string>
+  <string name="content_search_previously_found_title">Precedentemente trovato</string>
+  <string name="content_search_dismiss_recent_search_content_description">Rimuovi \"%1$s\" dalle ricerche recenti</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Eliminare definitivamente?</string>
+  <string name="content_search_delete_dialog_message">Questi messaggi verranno eliminati definitivamente. Questa azione non può essere annullata.</string>
+  <string name="content_search_delete_dialog_confirm">Elimina</string>
+  <string name="content_search_delete_dialog_cancel">Annulla</string>
 </resources>

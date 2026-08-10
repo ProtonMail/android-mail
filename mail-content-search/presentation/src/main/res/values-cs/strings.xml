@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Pokud dojde k výpadku Wi-Fi, stahování pokračuje přes mobilní data.</string>
   <string name="mail_settings_content_search_syncing_status">Příprava %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Příprava…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Smazat místní data vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_description">Smazání dat z místního vyhledávání deaktivuje vyhledávání v obsahu zpráv. Tuto funkci můžete kdykoli znovu zapnout.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Smazat místní data vyhledávání</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-maily se stahují přes Wi-Fi nebo mobilní data. Nastavení stahování pouze přes Wi-Fi můžete změnit v %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">nastavení</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Žádné výsledky</string>
+  <string name="content_search_no_results_description">Zkuste zadat jiná klíčová slova nebo zkontrolujte pravopis.</string>
+  <string name="content_search_placeholder_text">Hledat</string>
+  <string name="content_search_clear_query_content_description">Vyčistit vyhledávací dotaz</string>
+  <string name="content_search_close_content_description">Zavřít hledání</string>
+  <string name="content_search_options_content_description">Možnosti hledání</string>
+  <string name="content_search_include_messages_in">Zahrnout zprávy v</string>
+  <string name="content_search_include_trash">Koš</string>
+  <string name="content_search_include_spam">Spam</string>
+  <string name="content_search_about_content_search">O vyhledávání v\nobsahu e-mailů</string>
+  <string name="content_search_first_run_description">Zadejte jméno, předmět nebo klíčové slovo a vydejte se na cestu...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Nedávné</string>
+  <string name="content_search_clear_recent_searches">Vyčistit</string>
+  <string name="content_search_previously_found_title">Dříve nalezené</string>
+  <string name="content_search_dismiss_recent_search_content_description">Odebrat “%1$s” z nedávných vyhledávání</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Trvale smazat?</string>
+  <string name="content_search_delete_dialog_message">Tyto zprávy budou trvale smazány. Tuto akci nelze vrátit zpět.</string>
+  <string name="content_search_delete_dialog_confirm">Smazat</string>
+  <string name="content_search_delete_dialog_cancel">Zrušit</string>
 </resources>

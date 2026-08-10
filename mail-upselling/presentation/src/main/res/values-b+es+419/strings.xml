@@ -33,6 +33,33 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s por el primer mes, luego %s por mes</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Actualice a Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">No volver a mostrar esta oferta</string>
+  <string name="upselling_stay_on_mail_plus">Seguir en Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Elija su plan</string>
+  <!-- Upselling: Plus to Unlimited themed titles -->
+  <string name="upselling_pu_generic_title">Lleve su privacidad en línea un paso más allá con Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Proteja su cuenta de amenazas con Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Obtenga alias ilimitados para proteger su identidad</string>
+  <string name="upselling_pu_drive_title">Obtenga 500 GB para almacenar de forma segura archivos y fotos</string>
+  <string name="upselling_pu_vpn_browse_title">Obtenga acceso a una VPN ultrarrápida con servidores en más de 110 países</string>
+  <string name="upselling_pu_vpn_streaming_title">Acceda a contenidos de servicios de streaming en todo el mundo</string>
+  <string name="upselling_pu_pass_title">Proteja sus contraseñas y organícelas en bóvedas</string>
+  <string name="upselling_pu_subtitle">Obtenga lo mejor de Proton con Unlimited</string>
+  <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
+  <string name="upselling_pu_row_generic_title">Actualice a Unlimited</string>
+  <string name="upselling_pu_row_generic_subtitle">Lleve su privacidad en línea un paso adelante</string>
+  <string name="upselling_pu_row_threat_protection_title">Proteja su cuenta</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Detenga las amenazas con Proton Sentinel</string>
+  <string name="upselling_pu_row_aliases_title">Oculte su identidad</string>
+  <string name="upselling_pu_row_aliases_subtitle">Obtenga alias ilimitados</string>
+  <string name="upselling_pu_row_drive_title">Aumente su almacenamiento</string>
+  <string name="upselling_pu_row_drive_subtitle">Obtenga 500 GB para almacenar archivos y fotos</string>
+  <string name="upselling_pu_row_vpn_browse_title">Navegue de forma segura</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Obtenga una VPN ultrarrápida con más de 110 países</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Desbloquee el streaming</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Acceda a contenido en todo el mundo</string>
+  <string name="upselling_pu_row_pass_title">Asegure sus contraseñas</string>
+  <string name="upselling_pu_row_pass_subtitle">Mantenga sus contraseñas seguras y organizadas</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envíe correos electrónicos a grupos con facilidad. Disfrute de esto y más con Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupe sus contactos</string>
@@ -72,6 +99,8 @@
   <string name="upselling_comparison_table_folders_labels">Carpetas y etiquetas</string>
   <string name="upselling_comparison_table_premium_products">VPN premium, gestor de contraseñas y almacenamiento en la nube</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitoreo de la Dark Web</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Alias ilimitados para ocultar su identidad</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarrápida con más de 110 países</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Elegir suscripción</string>
   <string name="upselling_select_plan_year">12 meses</string>

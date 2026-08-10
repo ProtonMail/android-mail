@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">Indicizzazione della ricerca avanzata</string>
   <string name="content_search_notification_channel_description">Mostra lo stato di avanzamento durante l\'indicizzazione dei messaggi per la Ricerca avanzata.</string>
   <string name="content_search_notification_title">Preparazione della ricerca avanzata</string>
-  <string name="content_search_notification_progress">%1$.2f %% completato</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messaggi</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messaggi (%4$d/%5$d account)</string>
   <string name="content_search_notification_preparing">Preparazione…</string>
-  <string name="content_search_notification_cancel">Annulla</string>
+  <string name="content_search_notification_pause">Pausa</string>
 </resources>

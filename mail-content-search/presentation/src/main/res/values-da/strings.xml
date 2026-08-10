@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$.2f%%...</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på WiFi</string>
   <string name="mail_settings_content_search_clear_data_button">Ryd lokale søgedata</string>
   <string name="mail_settings_content_search_clear_data_description">Ved at rydde lokale søgedata deaktiveres søgning i meddelelsesindhold. Du kan aktivere det igen når som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ryd lokale søgedata</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-mails downloades via Wi-Fi eller mobildata. Du kan vælge kun at bruge Wi-Fi i %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">indstillinger</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Ingen resultater</string>
+  <string name="content_search_no_results_description">Prøv andre nøgleord eller kontrollér, at du har stavet rigtigt.</string>
+  <string name="content_search_placeholder_text">Søg</string>
+  <string name="content_search_clear_query_content_description">Ryd søgeforespørgsel</string>
+  <string name="content_search_close_content_description">Luk søgning</string>
+  <string name="content_search_options_content_description">Søgemuligheder</string>
+  <string name="content_search_include_messages_in">Inkluder beskeder i</string>
+  <string name="content_search_include_trash">Papirkurv</string>
+  <string name="content_search_include_spam">Spam</string>
+  <string name="content_search_about_content_search">Om søgning\ne-mail-indhold</string>
+  <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at begynde rejsen...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Seneste</string>
+  <string name="content_search_clear_recent_searches">Ryd</string>
+  <string name="content_search_previously_found_title">Fundet tidligere</string>
+  <string name="content_search_dismiss_recent_search_content_description">Fjern \"%1$s\" fra seneste søgninger</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Slet permanent?</string>
+  <string name="content_search_delete_dialog_message">Disse beskeder slettes permanent. Handlingen kan ikke fortrydes.</string>
+  <string name="content_search_delete_dialog_confirm">Slet</string>
+  <string name="content_search_delete_dialog_cancel">Annuller</string>
 </resources>

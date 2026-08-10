@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Hava</string>
   <string name="app_icon_name_notes">Notlar</string>
   <string name="app_icon_name_calculator">Hesaplayıcı</string>
+  <string name="app_welcome_subtitle">Şifreleme, verilerinizi gizli tutar. Verileriniz tümüyle size ait kalır.</string>
   <string name="dialog_sign_out_account_title">Oturumu kapat</string>
   <string name="dialog_sign_out_account_description">Hesabınızla ilişkili veriler, silmeyi seçmediğiniz sürece bu aygıtta kalır.</string>
   <string name="dialog_sign_out_account_confirm">Oturumu kapat</string>

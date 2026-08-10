@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Clima</string>
   <string name="app_icon_name_notes">Notas</string>
   <string name="app_icon_name_calculator">Calculadora</string>
+  <string name="app_welcome_subtitle">El cifrado mantiene los datos privados. Sus datos realmente le pertenecen.</string>
   <string name="dialog_sign_out_account_title">Cerrar sesión</string>
   <string name="dialog_sign_out_account_description">La información asociada a la cuenta se mantendrá en este dispositivo a menos que la elimine.</string>
   <string name="dialog_sign_out_account_confirm">Cerrar sesión</string>

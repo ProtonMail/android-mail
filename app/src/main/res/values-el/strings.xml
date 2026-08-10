@@ -20,6 +20,7 @@
   <string name="app_icon_name_weather">Καιρός</string>
   <string name="app_icon_name_notes">Σημειώσεις</string>
   <string name="app_icon_name_calculator">Αριθμομηχανή</string>
+  <string name="app_welcome_subtitle">Η κρυπτογράφηση διατηρεί τα δεδομένα σας απόρρητα. Τα δεδομένα σας ανήκουν πραγματικά σε εσάς.</string>
   <string name="dialog_sign_out_account_title">Αποσύνδεση</string>
   <string name="dialog_sign_out_account_description">Τα δεδομένα που σχετίζονται με τον λογαριασμό σας θα παραμείνουν σε αυτήν τη συσκευή, εκτός εάν επιλέξετε να τα διαγράψετε.</string>
   <string name="dialog_sign_out_account_confirm">Αποσύνδεση</string>

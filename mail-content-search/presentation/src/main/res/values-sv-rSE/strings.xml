@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Nedladdningen fortsätter via mobil data om Wi-Fi förloras.</string>
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$.2f %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Väntar på Wi-Fi …</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-post laddas ner via Wi-Fi eller mobildata. Du kan ändra till endast Wi-Fi i %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">inställningar</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Inga resultat</string>
+  <string name="content_search_no_results_description">Prova andra nyckelord eller kontrollera din stavning.</string>
+  <string name="content_search_placeholder_text">Sök</string>
+  <string name="content_search_clear_query_content_description">Rensa sökfråga</string>
+  <string name="content_search_close_content_description">Stäng sök</string>
+  <string name="content_search_options_content_description">Sökalternativ</string>
+  <string name="content_search_include_messages_in">Inkludera meddelande i</string>
+  <string name="content_search_include_trash">Papperskorg</string>
+  <string name="content_search_include_spam">Skräppost</string>
+  <string name="content_search_about_content_search">About searching\nemail content</string>
+  <string name="content_search_first_run_description">Skriv ett namn, ämne eller nyckelord för att påbörja resan …</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Senaste</string>
+  <string name="content_search_clear_recent_searches">Rensa</string>
+  <string name="content_search_previously_found_title">Previously found</string>
+  <string name="content_search_dismiss_recent_search_content_description">Ta bort “%1$s“ från senaste sökningar</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Ta bort permanent?</string>
+  <string name="content_search_delete_dialog_message">Dessa meddelanden kommer att tas bort permanent. Denna åtgärd kan inte ångras.</string>
+  <string name="content_search_delete_dialog_confirm">Ta bort</string>
+  <string name="content_search_delete_dialog_cancel">Avbryt</string>
 </resources>

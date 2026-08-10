@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı kesilirse indirme işlemi mobil veri ile sürdürülür.</string>
   <string name="mail_settings_content_search_syncing_status">%1$.2f[%1$.2f] hazırlanıyor…</string>
   <string name="mail_settings_content_search_preparing_status">Hazırlanıyor…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi bekleniyor…</string>
   <string name="mail_settings_content_search_clear_data_button">Yerel arama verilerini sil</string>
   <string name="mail_settings_content_search_clear_data_description">Yerel arama verilerini silmek ileti içeriği aramasını kapatır. Bu özelliği istediğiniz zaman yeniden açabilirsiniz.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama verilerini temizle</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-postalar Wi-Fi ve mobil veri ile indiriliyor. %1$s bölümünden yalnızca Wi-Fi ile indirmeyi seçebilirsiniz.</string>
   <string name="content_search_bottomsheet_settings_link">Ayarlar</string>
   <string name="content_search_bottomsheet_ok">Tamam</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Herhangi bir sonuç bulunamadı</string>
+  <string name="content_search_no_results_description">Farklı anahtar sözcükler deneyin veya yazımınızı denetleyin.</string>
+  <string name="content_search_placeholder_text">Ara</string>
+  <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
+  <string name="content_search_close_content_description">Aramayı kapat</string>
+  <string name="content_search_options_content_description">Arama seçenekleri</string>
+  <string name="content_search_include_messages_in">Şuradaki iletiler eklensin</string>
+  <string name="content_search_include_trash">Çöp</string>
+  <string name="content_search_include_spam">İstenmeyen</string>
+  <string name="content_search_about_content_search">E-posta içeriğini\naramak hakkında</string>
+  <string name="content_search_first_run_description">Başlamak için bir ad, konu veya anahtar sözcük yazın…</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Son kullanılan</string>
+  <string name="content_search_clear_recent_searches">Temizle</string>
+  <string name="content_search_previously_found_title">Daha önce bulunan</string>
+  <string name="content_search_dismiss_recent_search_content_description">“%1$s” ifadesini son aramalar listesinden kaldır</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Kalıcı olarak silinsin mi?</string>
+  <string name="content_search_delete_dialog_message">Bu iletiler kalıcı olarak silinecek. Bu işlem geri alınamaz.</string>
+  <string name="content_search_delete_dialog_confirm">Sil</string>
+  <string name="content_search_delete_dialog_cancel">İptal</string>
 </resources>

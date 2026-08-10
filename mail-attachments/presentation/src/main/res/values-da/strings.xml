@@ -21,4 +21,6 @@
   <string name="file_saved">Fil gemt</string>
   <string name="file_saved_fallback">Fil gemt i Downloads-mappen.</string>
   <string name="error_saving_file">Der opstod en fejl under lagring af fil</string>
+  <string name="attachment_download_error">Vedhæftningen kunne ikke åbnes. Prøv igen.</string>
+  <string name="attachment_download_in_progress">Et igangværende download skal afsluttes før et nyt startes.</string>
 </resources>

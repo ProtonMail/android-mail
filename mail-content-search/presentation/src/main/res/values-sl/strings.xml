@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Če povezava Wi-Fi ni več na voljo, se bo prenos nadaljeval prek mobilnih podatkov.</string>
   <string name="mail_settings_content_search_syncing_status">Pripravljanje %1$.2f%% …</string>
   <string name="mail_settings_content_search_preparing_status">Priprava …</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Čakanje na Wifi …</string>
   <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>
   <string name="mail_settings_content_search_clear_data_description">Če počistite lokalne podatke iskanja, bo iskanje po vsebini sporočil onemogočeno. Kadar koli ga lahko znova omogočite.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Počisti lokalne iskalne podatke</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">E-pošta se prenaša prek Wi-Fi ali mobilnih podatkov. V %1$s lahko preklopite na izključno Wi-Fi.</string>
   <string name="content_search_bottomsheet_settings_link">nastavitve</string>
   <string name="content_search_bottomsheet_ok">V redu</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Ni rezultatov</string>
+  <string name="content_search_no_results_description">Poskusite z drugimi ključnimi besedami in preverite, ali se niste zatipkali.</string>
+  <string name="content_search_placeholder_text">Iskanje</string>
+  <string name="content_search_clear_query_content_description">Počisti iskalno poizvedbo</string>
+  <string name="content_search_close_content_description">Zapri iskanje</string>
+  <string name="content_search_options_content_description">Možnosti iskanja</string>
+  <string name="content_search_include_messages_in">Vključi sporočila v mapah</string>
+  <string name="content_search_include_trash">Smetnjak</string>
+  <string name="content_search_include_spam">Neželena pošta</string>
+  <string name="content_search_about_content_search">O iskanju po\nvsebini e-pošte</string>
+  <string name="content_search_first_run_description">Vnesite ime, zadevo ali ključno besedo, da začnete potovanje …</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Nedavno</string>
+  <string name="content_search_clear_recent_searches">Počisti</string>
+  <string name="content_search_previously_found_title">Najdeno v prešnjih iskanjih</string>
+  <string name="content_search_dismiss_recent_search_content_description">Odstrani »%1$s« iz nedavnih iskanj</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Trajno izbriši?</string>
+  <string name="content_search_delete_dialog_message">Naslednja sporočila bodo trajno izbrisana. Dejanja ni mogoče razveljaviti.</string>
+  <string name="content_search_delete_dialog_confirm">Izbriši</string>
+  <string name="content_search_delete_dialog_cancel">Prekliči</string>
 </resources>

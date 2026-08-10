@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Η λήψη συνεχίζεται μέσω δεδομένων κινητής τηλεφωνίας εάν χαθεί το Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Προετοιμασία %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Προετοιμασία…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Αναμονή για Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
   <string name="mail_settings_content_search_clear_data_description">Η διαγραφή των δεδομένων τοπικής αναζήτησης θα απενεργοποιήσει την αναζήτηση περιεχομένου μηνύματος. Μπορείτε να την ενεργοποιήσετε ξανά ανά πάσα στιγμή.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">Τα μηνύματα ηλεκτρονικού ταχυδρομείου λαμβάνονται μέσω Wi-Fi ή δεδομένων κινητής τηλεφωνίας. Μπορείτε να μεταβείτε σε Wi-Fi μόνο στο %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">ρυθμίσεις</string>
   <string name="content_search_bottomsheet_ok">Ok</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Δεν υπάρχουν αποτελέσματα</string>
+  <string name="content_search_no_results_description">Δοκιμάστε διαφορετικές λέξεις-κλειδιά ή ελέγξτε την ορθογραφία σας.</string>
+  <string name="content_search_placeholder_text">Αναζήτηση</string>
+  <string name="content_search_clear_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>
+  <string name="content_search_close_content_description">Κλείσιμο αναζήτησης</string>
+  <string name="content_search_options_content_description">Επιλογές αναζήτησης</string>
+  <string name="content_search_include_messages_in">Συμπερίληψη μηνυμάτων σε</string>
+  <string name="content_search_include_trash">Κάδος απορριμμάτων</string>
+  <string name="content_search_include_spam">Ανεπιθύμητα</string>
+  <string name="content_search_about_content_search">Σχετικά με την αναζήτηση\nπεριεχόμενου ηλεκτρονικών μηνυμάτων</string>
+  <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για να ξεκινήσετε το ταξίδι...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Πρόσφατα</string>
+  <string name="content_search_clear_recent_searches">Εκκαθάριση</string>
+  <string name="content_search_previously_found_title">Βρέθηκαν προηγουμένως</string>
+  <string name="content_search_dismiss_recent_search_content_description">Κατάργηση “%1$s” από πρόσφατες αναζητήσεις</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Οριστική διαγραφή;</string>
+  <string name="content_search_delete_dialog_message">Αυτά τα μηνύματα θα διαγραφούν οριστικά. Δεν είναι δυνατή η αναίρεση αυτής της ενέργειας.</string>
+  <string name="content_search_delete_dialog_confirm">Διαγραφή</string>
+  <string name="content_search_delete_dialog_cancel">Ακύρωση</string>
 </resources>

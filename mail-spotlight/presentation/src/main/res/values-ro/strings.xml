@@ -51,4 +51,12 @@
   <string name="spotlight_screen_category_view_button_continue">Continuare</string>
   <string name="spotlight_screen_category_view_button_try">Da, vreau organizare</string>
   <string name="spotlight_screen_category_view_button_dismiss">Păstrare mesaje ca înainte</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">Căutarea a devenit mai bună.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Găsiți mai multe în fiecare mesaj</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Găsiți e-mailuri după conținutul mesajului, nu doar după subiect si expeditor.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_title">Mai ușor de accesat</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Căutarea se află acum în partea de jos a ecranului pentru o utilizare ușoară cu o singură mână.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Continuați de unde ați rămas</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Revedeți rapid căutările recente. Stocate pe dispozitiv pentru a păstra criptarea bilaterală.</string>
 </resources>

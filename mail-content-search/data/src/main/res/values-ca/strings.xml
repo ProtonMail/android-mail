@@ -2,8 +2,9 @@
 <resources>
   <string name="content_search_notification_channel_name">Indexació de la cerca avançada</string>
   <string name="content_search_notification_channel_description">Mostra el progrés mentre s\'indexen els missatges per a la cerca avançada.</string>
-  <string name="content_search_notification_title">S\'està preparant la Cerca Avançada</string>
-  <string name="content_search_notification_progress">[%1$.2f%% completat</string>
+  <string name="content_search_notification_title">S\'està preparant la cerca avançada</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d missatges</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d missatges (%4$d/%5$d comptes)</string>
   <string name="content_search_notification_preparing">S\'està preparant…</string>
-  <string name="content_search_notification_cancel">Cancel·la</string>
+  <string name="content_search_notification_pause">Pausa</string>
 </resources>

@@ -8,6 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
   <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>
@@ -17,4 +18,26 @@
   <string name="content_search_bottomsheet_description">Лісты спампоўваюцца праз Wi-Fi або мабільныя даныя. Вы можаце пераключыцца толькі на Wi-Fi у %1$s.</string>
   <string name="content_search_bottomsheet_settings_link">наладах</string>
   <string name="content_search_bottomsheet_ok">ОК</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title">Няма вынікаў</string>
+  <string name="content_search_no_results_description">Паспрабуйце іншыя ключавыя словы або праверце правапіс.</string>
+  <string name="content_search_placeholder_text">Пошук</string>
+  <string name="content_search_clear_query_content_description">Ачысціць пошукавы запыт</string>
+  <string name="content_search_close_content_description">Закрыць пошук</string>
+  <string name="content_search_options_content_description">Параметры пошуку</string>
+  <string name="content_search_include_messages_in">Уключаць паведамленні ў</string>
+  <string name="content_search_include_trash">Сметніца</string>
+  <string name="content_search_include_spam">Спам</string>
+  <string name="content_search_about_content_search">Аб пошуку\nзмесціва ў лістах</string>
+  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пачатку падарожжа...</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Нядаўнія</string>
+  <string name="content_search_clear_recent_searches">Ачысціць</string>
+  <string name="content_search_previously_found_title">Папярэдне знойдзеныя</string>
+  <string name="content_search_dismiss_recent_search_content_description">Выдаліць “%1$s” са спіса нядаўніх пошукаў</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Выдаліць незваротна?</string>
+  <string name="content_search_delete_dialog_message">Гэтыя паведамленні будуць незваротна выдалены. Гэта дзеянне немагчыма будзе адрабіць.</string>
+  <string name="content_search_delete_dialog_confirm">Выдаліць</string>
+  <string name="content_search_delete_dialog_cancel">Скасаваць</string>
 </resources>

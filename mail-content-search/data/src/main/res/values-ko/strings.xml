@@ -3,7 +3,8 @@
   <string name="content_search_notification_channel_name">향상된 검색 색인</string>
   <string name="content_search_notification_channel_description">향상된 검색을 위해 메시지가 색인되는 동안 진행 상황을 표시합니다.</string>
   <string name="content_search_notification_title">향상된 검색 준비 중</string>
-  <string name="content_search_notification_progress">%1$.2f%% 완료</string>
+  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
+  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d accounts)</string>
   <string name="content_search_notification_preparing">준비 중…</string>
-  <string name="content_search_notification_cancel">취소</string>
+  <string name="content_search_notification_pause">Pause</string>
 </resources>
