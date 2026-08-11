@@ -90,9 +90,19 @@ internal class PlanUpgradeMapper @Inject constructor(
     fun resolveListUiModel(
         shorterCycleUiModel: PlanUpgradeInstanceUiModel,
         longerCycleUiModel: PlanUpgradeInstanceUiModel,
-        variant: PlanUpgradeVariant
+        variant: PlanUpgradeVariant,
+        entryPoint: UpsellingEntryPoint.Feature
     ): PlanUpgradeInstanceListUiModel.Data {
         return when {
+            entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited &&
+                shorterCycleUiModel is PlanUpgradeInstanceUiModel.Standard &&
+                longerCycleUiModel is PlanUpgradeInstanceUiModel.Standard -> {
+                PlanUpgradeInstanceListUiModel.Data.PlusToUnlimited(
+                    shorterCycleUiModel,
+                    longerCycleUiModel
+                )
+            }
+
             variant == PlanUpgradeVariant.SocialProof -> {
                 PlanUpgradeInstanceListUiModel.Data.SocialProof(shorterCycleUiModel, longerCycleUiModel)
             }
@@ -137,6 +147,7 @@ internal class PlanUpgradeMapper @Inject constructor(
 
     private fun UpsellingEntryPoint.supportsHeaderVariants() = when (this) {
         UpsellingEntryPoint.PostOnboarding,
+        UpsellingEntryPoint.Feature.PlusUnlimited,
         UpsellingEntryPoint.Feature.Sidebar,
         UpsellingEntryPoint.Feature.Navbar -> false // Keep social proof off for the time being
 

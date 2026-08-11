@@ -82,6 +82,7 @@ internal fun ComparisonTable(
             ComparisonTableHeaderRow(
                 variant = variant,
                 colors = colors,
+                baseColumnLabel = entitlementsUiModel.baseColumnLabel,
                 onPaidColumnPlaced = { plusCellHeaderWidth = it }
             )
 

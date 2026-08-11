@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
@@ -37,6 +38,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.RecordPlusToUnlimitedOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation
@@ -46,7 +48,9 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
+import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -67,13 +71,16 @@ internal class UpsellingViewModel @Inject constructor(
     private val upsellingContentReducer: UpsellingContentReducer,
     private val forceEventLoopRepository: EventLoopRepository,
     private val observePrimaryUserId: ObservePrimaryUserId,
+    @AppScope private val appScope: CoroutineScope,
     private val resetPlanUpgradesCache: ResetPlanUpgradesCache,
     private val appEventBroadcaster: AppEventBroadcaster,
     private val recordUpgradeAttempt: RecordUpgradeAttempt,
     private val recordUpgradeCancelledByUser: RecordUpgradeCancelledByUser,
     private val recordUpgradeError: RecordUpgradeError,
     private val recordUpgradeSuccess: RecordUpgradeSuccess,
-    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository
+    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository,
+    private val resolveActiveUpsellTheme: ResolveActiveUpsellTheme,
+    private val recordPlusToUnlimitedOptOut: RecordPlusToUnlimitedOptOut
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
@@ -102,7 +109,13 @@ internal class UpsellingViewModel @Inject constructor(
                 return@launch
             }
 
-            emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint))
+            val theme = if (entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited) {
+                resolveActiveUpsellTheme(primaryUserId.first())
+            } else {
+                null
+            }
+
+            emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint, theme))
             appEventBroadcaster.emit(AppEvent.SubscriptionPaywallShown)
 
             val currentState = mutableState.value
@@ -135,6 +148,11 @@ internal class UpsellingViewModel @Inject constructor(
 
         // Invalidate the upgrades list cache (for all user ids)
         resetPlanUpgradesCache()
+    }
+
+    fun recordDoNotShowAgain() = appScope.launch {
+        val userId = observePrimaryUserId().first() ?: return@launch
+        recordPlusToUnlimitedOptOut(userId)
     }
 
     fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
@@ -197,6 +215,7 @@ internal class UpsellingViewModel @Inject constructor(
                 UpsellEntryPoint.MAILBOX_TOP_BAR
             }
             UpsellingEntryPoint.Feature.ScheduleSend -> UpsellEntryPoint.SCHEDULE_SEND
+            UpsellingEntryPoint.Feature.PlusUnlimited -> UpsellEntryPoint.NAVBAR_UPSELL
             UpsellingEntryPoint.Feature.Sidebar -> UpsellEntryPoint.NAVBAR_UPSELL
             UpsellingEntryPoint.Feature.Snooze -> UpsellEntryPoint.SNOOZE
         }

@@ -19,10 +19,12 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Free
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Paid
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import kotlin.test.Test
@@ -75,7 +77,7 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.MailPlus)
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.MailPlus, UpsellingEntryPoint.Feature.Navbar)
 
         // Then
         assertEquals(expected, actual)
@@ -138,9 +140,27 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.Unlimited)
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.Normal.Unlimited, UpsellingEntryPoint.Feature.Navbar)
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return Plus to Unlimited comparison table entitlements for the Plus to Unlimited entry point`() {
+        // When
+        val actual = mapper.toTableUiModel(
+            PlanUpgradeVariant.Normal.Unlimited,
+            UpsellingEntryPoint.Feature.PlusUnlimited
+        )
+
+        // Then
+        assertEquals(
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = ComparisonTableEntitlements.PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            ),
+            actual
+        )
     }
 }

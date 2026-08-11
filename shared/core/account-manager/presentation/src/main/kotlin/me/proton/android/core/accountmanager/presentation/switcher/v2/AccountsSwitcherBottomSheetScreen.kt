@@ -84,13 +84,15 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 fun AccountsSwitcherBottomSheetScreen(
     modifier: Modifier = Modifier,
     onEvent: (AccountSwitchEvent) -> Unit,
-    viewModel: AccountsManagerViewModel = hiltViewModel()
+    viewModel: AccountsManagerViewModel = hiltViewModel(),
+    upsellItem: @Composable () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     AccountsSwitcherBottomSheetScreen(
         state = state,
         modifier = modifier,
-        onEvent = onEvent
+        onEvent = onEvent,
+        upsellItem = upsellItem
     )
 }
 
@@ -98,7 +100,8 @@ fun AccountsSwitcherBottomSheetScreen(
 fun AccountsSwitcherBottomSheetScreen(
     state: AccountsManagerState,
     modifier: Modifier = Modifier,
-    onEvent: (AccountSwitchEvent) -> Unit = {}
+    onEvent: (AccountSwitchEvent) -> Unit = {},
+    upsellItem: @Composable () -> Unit = {}
 ) {
     Box {
         when (state) {
@@ -116,6 +119,10 @@ fun AccountsSwitcherBottomSheetScreen(
                     )
 
                     Spacer(Modifier.size(ProtonDimens.Spacing.Large))
+
+                    Box(modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Medium)) {
+                        upsellItem()
+                    }
 
                     OtherAccountsSection(
                         signedInAccounts = state.signedInAccounts.filterNot { it is AccountListItem.Ready.Primary },

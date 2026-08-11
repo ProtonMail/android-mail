@@ -65,6 +65,7 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
+import ch.protonmail.android.mailupselling.presentation.ui.screen.PlusToUnlimitedUpsellItem
 import me.proton.android.core.devicemigration.presentation.origin.settings.SignInOnTargetDeviceItem
 import me.proton.core.domain.entity.UserId
 
@@ -136,6 +137,8 @@ fun MainSettingsScreen(
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
+
+            PlusToUnlimitedUpsellItem(onClick = actions.onPlusToUnlimitedUpsellClick)
 
             MainSettingsHeader(titleRes = string.mail_settings_preferences)
 
@@ -333,6 +336,7 @@ object MainSettingsScreen {
         val onAccountStorageClicked: () -> Unit,
         val onSignatureClicked: () -> Unit,
         val onContentSearchSettingsClick: () -> Unit,
+        val onPlusToUnlimitedUpsellClick: () -> Unit,
         val onBackClick: () -> Unit
     )
 }

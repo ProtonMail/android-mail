@@ -22,6 +22,7 @@ import java.math.BigDecimal
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
@@ -39,6 +40,7 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.Promo
 import me.proton.android.core.payment.domain.model.ProductDetailHeader
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.presentation.model.Product
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements as ComparisonTableData
 
 internal object UpsellingContentPreviewData {
 
@@ -150,10 +152,10 @@ internal object UpsellingContentPreviewData {
     )
     private val UnlimitedPlanModelYearly = PlanUpgradeInstanceUiModel.Standard(
         name = "Proton Unlimited",
-        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
-        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(4.99), currencyCode = "EUR"),
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("9.99"), currencyCode = "EUR"),
+        totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("119.88"), currencyCode = "EUR"),
         discountRate = null,
-        cycle = PlanUpgradeCycle.Monthly,
+        cycle = PlanUpgradeCycle.Yearly,
         yearlySaving = null,
         product = Product(
             planName = "Plan name",
@@ -175,6 +177,11 @@ internal object UpsellingContentPreviewData {
     val SocialProofList = PlanUpgradeInstanceListUiModel.Data.SocialProof(
         MailPlusPlanModelMonthly,
         MailPlusPlanModelYearly
+    )
+
+    val PlusToUnlimitedList = PlanUpgradeInstanceListUiModel.Data.PlusToUnlimited(
+        UnlimitedPlanModelMonthly,
+        UnlimitedPlanModelYearly
     )
 
     val PromoList = PlanUpgradeInstanceListUiModel.Data.IntroPrice(
@@ -329,4 +336,22 @@ internal object UpsellingContentPreviewData {
             list = SocialProofList
         )
     )
+
+    val PlusUnlimitedThemes = UpsellContentTheme.entries.map { theme ->
+        UpsellingScreenContentState.Data(
+            PlanUpgradeUiModel(
+                icon = PlanUpgradeIconUiModel(theme.headerDrawable),
+                title = PlanUpgradeTitleUiModel(TextUiModel.TextRes(theme.titleRes)),
+                description = PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_unlimited_description_override)
+                ),
+                entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                    items = ComparisonTableData.PlusToUnlimitedEntitlements,
+                    baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+                ),
+                variant = PlanUpgradeVariant.Normal.Unlimited,
+                list = PlusToUnlimitedList
+            )
+        )
+    }
 }

@@ -172,6 +172,7 @@ import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheet
 import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheetScreen
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.ui.screen.PlusToUnlimitedUpsellItem
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -417,7 +418,17 @@ fun MailboxScreen(
                 )
 
                 is ManageAccountSheetState -> AccountsSwitcherBottomSheetScreen(
-                    onEvent = { dismissBottomSheet { onEvent(it) } }
+                    onEvent = { dismissBottomSheet { onEvent(it) } },
+                    upsellItem = {
+                        PlusToUnlimitedUpsellItem(onClick = {
+                            dismissBottomSheet {
+                                actions.onNavigateToUpselling(
+                                    UpsellingEntryPoint.Feature.PlusUnlimited,
+                                    UpsellingVisibility.Normal.Unlimited
+                                )
+                            }
+                        })
+                    }
                 )
 
                 is SnoozeSheetState.Requested -> {

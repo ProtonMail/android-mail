@@ -67,6 +67,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -210,19 +213,23 @@ internal fun UpsellingScreenContent(
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
 
-                when (plans.description) {
-                    is PlanUpgradeDescriptionUiModel.Simple -> Text(
-                        modifier = Modifier
-                            .padding(horizontal = ProtonDimens.Spacing.Large)
-                            .padding(top = ProtonDimens.Spacing.Small),
-                        text = plans.description.text.string(),
-                        style = ProtonTheme.typography.bodyLargeNorm,
-                        fontWeight = FontWeight.Normal,
-                        color = UpsellingLayoutValues.subtitleColor,
-                        textAlign = TextAlign.Center
-                    )
+                if (plans.list is PlanUpgradeInstanceListUiModel.Data.PlusToUnlimited) {
+                    PlusUnlimitedInfoSection()
+                } else {
+                    when (plans.description) {
+                        is PlanUpgradeDescriptionUiModel.Simple -> Text(
+                            modifier = Modifier
+                                .padding(horizontal = ProtonDimens.Spacing.Large)
+                                .padding(top = ProtonDimens.Spacing.Small),
+                            text = plans.description.text.string(),
+                            style = ProtonTheme.typography.bodyLargeNorm,
+                            fontWeight = FontWeight.Normal,
+                            color = UpsellingLayoutValues.subtitleColor,
+                            textAlign = TextAlign.Center
+                        )
 
-                    PlanUpgradeDescriptionUiModel.SocialProof -> SocialProofDescription()
+                        PlanUpgradeDescriptionUiModel.SocialProof -> SocialProofDescription()
+                    }
                 }
 
                 if (state.plans.variant == PlanUpgradeVariant.SocialProof) {
@@ -328,5 +335,21 @@ private fun UpsellingContentPreview_SocialProof() {
                 onSuccess = {}
             )
         )
+    }
+}
+
+internal class PlusUnlimitedThemePreviewProvider :
+    PreviewParameterProvider<UpsellingScreenContentState.Data> {
+    override val values: Sequence<UpsellingScreenContentState.Data>
+        get() = UpsellingContentPreviewData.PlusUnlimitedThemes.asSequence()
+}
+
+@Preview(name = "Plus to Unlimited themes", device = "spec:width=412dp,height=1400dp,dpi=440")
+@Composable
+private fun UpsellingContentPreview_PlusUnlimited(
+    @PreviewParameter(PlusUnlimitedThemePreviewProvider::class) state: UpsellingScreenContentState.Data
+) {
+    ProtonTheme {
+        UpsellingScreenContent(state = state, actions = UpsellingScreen.Actions.Empty)
     }
 }

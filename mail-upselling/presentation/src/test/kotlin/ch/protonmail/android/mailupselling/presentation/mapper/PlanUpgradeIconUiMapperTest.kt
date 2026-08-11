@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import kotlin.test.Test
@@ -66,39 +67,48 @@ internal class PlanUpgradeIconUiMapperTest {
         val actual = mapOf(
             UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Folders,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Labels,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.MobileSignature,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal.Unlimited
+                variant = PlanUpgradeVariant.Normal.Unlimited,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Sidebar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Sidebar,
-                variant = PlanUpgradeVariant.IntroductoryPrice
+                variant = PlanUpgradeVariant.IntroductoryPrice,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,
-                variant = PlanUpgradeVariant.SocialProof
+                variant = PlanUpgradeVariant.SocialProof,
+                theme = null
             )
         )
 
@@ -106,5 +116,21 @@ internal class PlanUpgradeIconUiMapperTest {
         for (pair in expected) {
             assertEquals(pair.value, actual[pair.key])
         }
+    }
+
+    @Test
+    fun `should map to the theme header illustration when a theme is given`() {
+        // Given
+        val theme = UpsellContentTheme.Drive
+
+        // When
+        val actual = mapper.toUiModel(
+            upsellingEntryPoint = UpsellingEntryPoint.Feature.PlusUnlimited,
+            variant = PlanUpgradeVariant.Normal.Unlimited,
+            theme = theme
+        )
+
+        // Then
+        assertEquals(PlanUpgradeIconUiModel(theme.headerDrawable), actual)
     }
 }

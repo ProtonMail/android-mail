@@ -22,6 +22,7 @@ import java.math.BigDecimal
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceDisplayUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeTitleUiModel
@@ -77,52 +78,62 @@ internal class PlanUpgradeTitleUiMapperTest {
             UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Folders,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Labels,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.MobileSignature,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.Normal.Unlimited
+                variant = PlanUpgradeVariant.Normal.Unlimited,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Navbar to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = PlanUpgradeVariant.IntroductoryPrice
+                variant = PlanUpgradeVariant.IntroductoryPrice,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.ScheduleSend to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.ScheduleSend,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             ),
             UpsellingEntryPoint.Feature.Snooze to mapper.toUiModel(
                 initialPrice = initialPrice,
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Snooze,
-                variant = PlanUpgradeVariant.Normal.MailPlus
+                variant = PlanUpgradeVariant.Normal.MailPlus,
+                theme = null
             )
         )
 
@@ -130,6 +141,23 @@ internal class PlanUpgradeTitleUiMapperTest {
         for (pair in expected) {
             assertEquals(pair.value, actual[pair.key])
         }
+    }
+
+    @Test
+    fun `should map to the theme title when a theme is given`() {
+        // Given
+        val theme = UpsellContentTheme.Drive
+
+        // When
+        val actual = mapper.toUiModel(
+            initialPrice = initialPrice,
+            upsellingEntryPoint = UpsellingEntryPoint.Feature.PlusUnlimited,
+            variant = PlanUpgradeVariant.Normal.Unlimited,
+            theme = theme
+        )
+
+        // Then
+        assertEquals(PlanUpgradeTitleUiModel(TextUiModel(theme.titleRes)), actual)
     }
 
     private companion object {

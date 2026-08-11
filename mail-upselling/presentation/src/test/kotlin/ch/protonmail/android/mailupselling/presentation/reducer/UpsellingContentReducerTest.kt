@@ -73,11 +73,11 @@ internal class UpsellingContentReducerTest {
         // Given
         val uiModel = mockk<PlanUpgradeUiModel>()
         coEvery {
-            planUpgradeUiMapper.toUiModel(any(), any())
+            planUpgradeUiMapper.toUiModel(any(), any(), any())
         } returns uiModel.right()
 
         // When
-        val actual = reducer.newStateFrom(UpsellingScreenContentEvent.DataLoaded(mockk(), mockk()))
+        val actual = reducer.newStateFrom(UpsellingScreenContentEvent.DataLoaded(mockk(), mockk(), theme = null))
 
         // Then
         assertEquals(UpsellingScreenContentState.Data(uiModel), actual)
@@ -87,7 +87,7 @@ internal class UpsellingContentReducerTest {
     fun `should reduce to error when mapping fails`() = runTest {
         // Given
         coEvery {
-            planUpgradeUiMapper.toUiModel(any(), any())
+            planUpgradeUiMapper.toUiModel(any(), any(), any())
         } returns PlanMappingError.EmptyList.left()
 
         val expected = UpsellingScreenContentState.Error(
@@ -95,7 +95,7 @@ internal class UpsellingContentReducerTest {
         )
 
         // When
-        val actual = reducer.newStateFrom(UpsellingScreenContentEvent.DataLoaded(mockk(), mockk()))
+        val actual = reducer.newStateFrom(UpsellingScreenContentEvent.DataLoaded(mockk(), mockk(), theme = null))
 
         // Then
         assertEquals(expected, actual)

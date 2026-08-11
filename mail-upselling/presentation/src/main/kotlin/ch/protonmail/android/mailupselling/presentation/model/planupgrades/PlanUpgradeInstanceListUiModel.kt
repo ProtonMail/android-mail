@@ -39,6 +39,11 @@ sealed interface PlanUpgradeInstanceListUiModel {
             override val longerCycle: PlanUpgradeInstanceUiModel.Standard
         ) : Data(shorterCycle, longerCycle, PlanUpgradeVariant.Normal.Unlimited)
 
+        data class PlusToUnlimited(
+            override val shorterCycle: PlanUpgradeInstanceUiModel.Standard,
+            override val longerCycle: PlanUpgradeInstanceUiModel.Standard
+        ) : Data(shorterCycle, longerCycle, PlanUpgradeVariant.Normal.Unlimited)
+
         class IntroPrice(
             override val shorterCycle: PlanUpgradeInstanceUiModel,
             override val longerCycle: PlanUpgradeInstanceUiModel

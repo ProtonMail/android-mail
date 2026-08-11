@@ -36,8 +36,10 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.RecordPlusToUnlimitedOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
+import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
@@ -55,6 +57,7 @@ import io.mockk.runs
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -73,6 +76,8 @@ internal class UpsellingViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val appScope = CoroutineScope(mainDispatcherRule.testDispatcher)
+
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val observePlanUpgrades = mockk<ObservePlanUpgrades>()
     private val upsellingContentReducer = mockk<UpsellingContentReducer>()
@@ -87,6 +92,8 @@ internal class UpsellingViewModelTest {
     private val recordUpgradeError = mockk<RecordUpgradeError>(relaxUnitFun = true)
     private val recordUpgradeSuccess = mockk<RecordUpgradeSuccess>(relaxUnitFun = true)
     private val upsellRatingTriggerRepository = mockk<UpsellRatingTriggerRepository>(relaxUnitFun = true)
+    private val resolveActiveUpsellTheme = mockk<ResolveActiveUpsellTheme>(relaxed = true)
+    private val recordPlusToUnlimitedOptOut = mockk<RecordPlusToUnlimitedOptOut>(relaxUnitFun = true)
 
     @AfterTest
     fun teardown() {
@@ -158,7 +165,8 @@ internal class UpsellingViewModelTest {
             upsellingContentReducer.newStateFrom(
                 operation = UpsellingScreenContentEvent.DataLoaded(
                     plans = expectedList,
-                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar
+                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
+                    theme = null
                 )
             )
         } returns expectedModel
@@ -173,7 +181,8 @@ internal class UpsellingViewModelTest {
             upsellingContentReducer.newStateFrom(
                 UpsellingScreenContentEvent.DataLoaded(
                     plans = expectedList,
-                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar
+                    upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
+                    theme = null
                 )
             )
         }
@@ -480,12 +489,15 @@ internal class UpsellingViewModelTest {
         upsellingContentReducer,
         eventLoopRepository,
         observePrimaryUserId,
+        appScope,
         resetUpgradeCache,
         appEventBroadcaster,
         recordUpgradeAttempt,
         recordUpgradeCancelledByUser,
         recordUpgradeError,
         recordUpgradeSuccess,
-        upsellRatingTriggerRepository
+        upsellRatingTriggerRepository,
+        resolveActiveUpsellTheme,
+        recordPlusToUnlimitedOptOut
     )
 }

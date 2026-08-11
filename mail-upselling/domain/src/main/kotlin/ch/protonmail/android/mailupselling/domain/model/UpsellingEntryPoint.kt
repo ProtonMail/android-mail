@@ -37,6 +37,9 @@ sealed interface UpsellingEntryPoint {
         data object Sidebar : Feature, BlackFridaySupported, SpringPromoSupported, SummerCampaignSupported
 
         @Serializable
+        data object PlusUnlimited : Feature
+
+        @Serializable
         data object ContactGroups : Feature
 
         @Serializable

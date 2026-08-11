@@ -171,6 +171,15 @@ object UpsellingLayoutValues {
         }
     }
 
+    object PlusUnlimited {
+
+        private val separatorColor = BlueInteractionNorm.copy(alpha = 0.8f)
+
+        val separatorBrush = Brush.horizontalGradient(
+            listOf(separatorColor.copy(alpha = 0f), separatorColor, separatorColor.copy(alpha = 0f))
+        )
+    }
+
     object BlackFriday {
 
         val mainColor = Color(0xFFD8FF00)
