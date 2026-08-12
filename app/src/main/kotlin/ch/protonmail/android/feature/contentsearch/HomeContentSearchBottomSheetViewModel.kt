@@ -28,14 +28,17 @@ import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentS
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,33 +52,41 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
     private val markContentSearchBottomSheetShown: MarkContentSearchBottomSheetShown
 ) : ViewModel() {
 
-    val state: StateFlow<ContentSearchBottomSheetState> = observePrimaryUserId()
-        .filterNotNull()
-        .flatMapLatest { userId ->
-            flow {
-                if (!isContentSearchFeatureEnabled(userId) || hasShownContentSearchBottomSheet()) {
-                    emit(ContentSearchBottomSheetState.Hide)
-                    return@flow
-                }
+    // Bumped after the sheet is marked shown so the flow re-reads hasShown() and stops emitting Show.
+    // Without this the state stays Show for the whole session and the interstitial re-fires on every
+    // configuration change (rotation). See ET-6707.
+    private val refreshTrigger = MutableStateFlow(0)
 
-                emitAll(
-                    observeContentSearchEnabled(userId).map { enabled ->
-                        if (enabled && shouldShowContentSearchBottomSheet(userId)) {
-                            ContentSearchBottomSheetState.Show
-                        } else {
-                            ContentSearchBottomSheetState.Hide
-                        }
+    val state: StateFlow<ContentSearchBottomSheetState> =
+        combine(observePrimaryUserId().filterNotNull(), refreshTrigger) { userId, _ -> userId }
+            .flatMapLatest { userId ->
+                flow {
+                    if (!isContentSearchFeatureEnabled(userId) || hasShownContentSearchBottomSheet()) {
+                        emit(ContentSearchBottomSheetState.Hide)
+                        return@flow
                     }
-                )
+
+                    emitAll(
+                        observeContentSearchEnabled(userId).map { enabled ->
+                            if (enabled && shouldShowContentSearchBottomSheet(userId)) {
+                                ContentSearchBottomSheetState.Show
+                            } else {
+                                ContentSearchBottomSheetState.Hide
+                            }
+                        }
+                    )
+                }
             }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = ContentSearchBottomSheetState.Loading
-        )
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Lazily,
+                initialValue = ContentSearchBottomSheetState.Loading
+            )
 
     fun markShown() {
-        viewModelScope.launch { markContentSearchBottomSheetShown() }
+        viewModelScope.launch {
+            markContentSearchBottomSheetShown()
+            refreshTrigger.update { it + 1 }
+        }
     }
 }

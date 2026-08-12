@@ -131,6 +131,24 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     }
 
     @Test
+    fun `stops emitting Show after the sheet is marked shown so it does not re-fire on rotation`() = runTest {
+        // Given
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
+        coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
+        coEvery { mockHasShownContentSearchBottomSheet() } returnsMany listOf(false, true)
+
+        val viewModel = buildViewModel()
+
+        // When/Then
+        viewModel.state.test {
+            assertEquals(ContentSearchBottomSheetState.Show, awaitItem())
+            viewModel.markShown()
+            assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
+        }
+    }
+
+    @Test
     fun `markShown persists the bottom sheet as shown`() = runTest {
         // Given
         coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
