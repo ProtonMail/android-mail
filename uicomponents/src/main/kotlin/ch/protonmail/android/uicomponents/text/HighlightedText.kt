@@ -20,10 +20,12 @@ package ch.protonmail.android.uicomponents.text
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -67,7 +69,9 @@ fun HighlightedText(
     BasicText(
         text = annotatedString,
         maxLines = maxLines,
-        style = style,
+        // BasicText ignores LocalContentColor, so an unspecified style color would draw black
+        // Fall back to the content color like Material Text does.
+        style = style.copy(color = style.color.takeOrElse { LocalContentColor.current }),
         overflow = overflow
     )
 }
@@ -122,7 +126,7 @@ fun MultiWordHighlightedText(
             modifier = modifier,
             text = annotatedString,
             maxLines = maxLines,
-            style = style,
+            style = style.copy(color = style.color.takeOrElse { LocalContentColor.current }),
             overflow = overflow
         )
     }
