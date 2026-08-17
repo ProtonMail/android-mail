@@ -110,9 +110,7 @@ import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
-import ch.protonmail.android.mailcategory.presentation.CategorySpotlightBanner
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
-import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
@@ -310,8 +308,7 @@ fun MailboxScreen(
         onClearAllDismissed = { viewModel.submit(MailboxViewAction.ClearAllDismissed) },
         onSnooze = { viewModel.submit(MailboxViewAction.RequestSnoozeBottomSheet) },
         validateUserSession = { viewModel.submit(MailboxViewAction.ValidateUserSession) },
-        onCategoryItemClicked = { viewModel.submit(MailboxViewAction.OnCategoryItemClicked(it)) },
-        onDismissCategorySpotlight = { viewModel.submit(MailboxViewAction.DismissCategorySpotlight) }
+        onCategoryItemClicked = { viewModel.submit(MailboxViewAction.OnCategoryItemClicked(it)) }
     )
 
     val lifecycle = LocalLifecycleOwner.current
@@ -644,9 +641,6 @@ fun MailboxScreen(
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            val categorySpotlightState =
-                (mailboxState.categoryViewState as? CategoryViewState.Available.Data)?.spotlightState
-                    ?: CategorySpotlightState.Hidden
             MailboxSwipeRefresh(
                 modifier = Modifier.padding(paddingValues),
                 topBarHeight = rememberTopBarHeight.value,
@@ -659,29 +653,6 @@ fun MailboxScreen(
                 activeCategoryId = mailboxState.categoryViewState.activeCategory()?.id?.id,
                 actions = actions
             )
-
-            when (categorySpotlightState) {
-                // Floats over the top of the list (below the category menu); not part of the scrolling content.
-                is CategorySpotlightState.Shown.UnseenCategory -> {
-                    // Outside-tap dismissal: scrolling the list dismisses the spotlight for good.
-                    LaunchedEffect(lazyListState.isScrollInProgress) {
-                        if (lazyListState.isScrollInProgress) actions.onDismissCategorySpotlight()
-                    }
-                    CategorySpotlightBanner(
-                        state = categorySpotlightState,
-                        onClose = actions.onDismissCategorySpotlight,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(paddingValues)
-                            .padding(
-                                horizontal = ProtonDimens.Spacing.Large,
-                                vertical = ProtonDimens.Spacing.Small
-                            )
-                    )
-                }
-
-                CategorySpotlightState.Hidden -> Unit
-            }
 
             val bottomBarActions = remember(actions) {
                 BottomActionBar.Actions(
@@ -1395,8 +1366,7 @@ object MailboxScreen {
         val onCustomizeToolbar: () -> Unit,
         val validateUserSession: () -> Unit,
         val onShowRatingBooster: () -> Unit,
-        val onCategoryItemClicked: (CategoryItemUiModel) -> Unit,
-        val onDismissCategorySpotlight: () -> Unit
+        val onCategoryItemClicked: (CategoryItemUiModel) -> Unit
     ) {
 
         companion object {
@@ -1462,8 +1432,7 @@ object MailboxScreen {
                 onCustomizeToolbar = {},
                 validateUserSession = {},
                 onShowRatingBooster = {},
-                onCategoryItemClicked = {},
-                onDismissCategorySpotlight = {}
+                onCategoryItemClicked = {}
             )
         }
     }

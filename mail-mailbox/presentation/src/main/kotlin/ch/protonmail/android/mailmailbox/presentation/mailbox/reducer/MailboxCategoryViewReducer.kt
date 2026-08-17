@@ -19,12 +19,10 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.presentation.mapper.CategoryViewUiModelMapper
-import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import javax.inject.Inject
 
 class MailboxCategoryViewReducer @Inject constructor(
@@ -43,10 +41,7 @@ class MailboxCategoryViewReducer @Inject constructor(
                     newState is CategoryViewState.Available.Data &&
                         currentState is CategoryViewState.Available.Data ->
                         // Carry over a pending scroll reset (e.g. from a view-mode change)
-                        newState.copy(
-                            spotlightState = currentState.spotlightState,
-                            resetScrollEffect = currentState.resetScrollEffect
-                        )
+                        newState.copy(resetScrollEffect = currentState.resetScrollEffect)
 
                     // Categories just (re)appeared after returning to Inbox from another
                     // location: scroll the category bar back to the start.
@@ -54,22 +49,6 @@ class MailboxCategoryViewReducer @Inject constructor(
                         newState.copy(resetScrollEffect = Effect.of(Unit))
 
                     else -> newState
-                }
-            }
-
-            is MailboxEvent.CategorySpotlightStateChanged -> {
-                if (currentState is CategoryViewState.Available.Data) {
-                    currentState.copy(spotlightState = operation.categorySpotlightState)
-                } else {
-                    currentState
-                }
-            }
-
-            MailboxViewAction.DismissCategorySpotlight -> {
-                if (currentState is CategoryViewState.Available.Data) {
-                    currentState.copy(spotlightState = CategorySpotlightState.Hidden)
-                } else {
-                    currentState
                 }
             }
 

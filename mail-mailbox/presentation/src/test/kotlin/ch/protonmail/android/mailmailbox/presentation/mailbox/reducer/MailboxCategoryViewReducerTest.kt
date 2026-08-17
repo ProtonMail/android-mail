@@ -20,13 +20,10 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.presentation.mapper.CategoryViewUiModelMapper
-import ch.protonmail.android.mailcategory.presentation.mapper.toUiModel
-import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
-import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
+import ch.protonmail.android.mailcategory.presentation.sample.CategoryItemUiModelSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test
@@ -132,62 +129,5 @@ class MailboxCategoryViewReducerTest {
 
         // Then
         assertEquals(Unit, (actual as CategoryViewState.Available.Data).resetScrollEffect.consume())
-    }
-
-    @Test
-    fun `should preserve current spotlight when category view status changes`() {
-        // Given
-        val spotlight = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
-        val currentState = CategoryViewState.Available.Data(
-            categories = CategoryItemUiModelSample.all,
-            spotlightState = spotlight
-        )
-        val categoryViewStatus = mockk<CategoryViewStatus>()
-        every {
-            categoryViewUiModelMapper.toUiModel(categoryViewStatus)
-        } returns CategoryViewState.Available.Data(categories = CategoryItemUiModelSample.all)
-
-        // When
-        val actual = reducer.newStateFrom(
-            currentState,
-            MailboxEvent.CategoryViewStatusChanged(categoryViewStatus)
-        )
-
-        // Then
-        assertEquals(spotlight, (actual as CategoryViewState.Available.Data).spotlightState)
-    }
-
-    @Test
-    fun `should apply spotlight state changed event`() {
-        // Given
-        val currentState = CategoryViewState.Available.Data(categories = CategoryItemUiModelSample.all)
-        val spotlight = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
-
-        // When
-        val actual = reducer.newStateFrom(
-            currentState,
-            MailboxEvent.CategorySpotlightStateChanged(spotlight)
-        )
-
-        // Then
-        assertEquals(spotlight, (actual as CategoryViewState.Available.Data).spotlightState)
-    }
-
-    @Test
-    fun `should hide spotlight when dismissed`() {
-        // Given
-        val currentState = CategoryViewState.Available.Data(
-            categories = CategoryItemUiModelSample.all,
-            spotlightState = CategorySpotlightState.Shown.UnseenCategory(CategoryItemUiModelSample.social)
-        )
-
-        // When
-        val actual = reducer.newStateFrom(currentState, MailboxViewAction.DismissCategorySpotlight)
-
-        // Then
-        assertEquals(
-            CategorySpotlightState.Hidden,
-            (actual as CategoryViewState.Available.Data).spotlightState
-        )
     }
 }

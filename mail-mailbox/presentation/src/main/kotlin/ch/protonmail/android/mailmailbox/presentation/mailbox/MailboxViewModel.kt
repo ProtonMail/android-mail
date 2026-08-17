@@ -35,13 +35,10 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
 import ch.protonmail.android.mailcategory.domain.model.isDefault
-import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
-import ch.protonmail.android.mailcategory.presentation.model.CategorySpotlightState
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.model.activeCategory
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
@@ -110,7 +107,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxRed
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MoreActionsSheetStateFactory
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveCategorySpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveValidSenderAddress
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
@@ -227,8 +223,6 @@ class MailboxViewModel @Inject constructor(
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     private val setActiveCategoryLabel: SetActiveCategoryLabel,
     private val selectCategory: SelectCategory,
-    private val observeCategorySpotlightState: ObserveCategorySpotlightState,
-    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
     private val categoryViewEnabled: IsCategoryViewEnabled,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     @IsContentSearchScreenEnabled private val isContentSearchScreenFeatureEnabled: FeatureFlag<Boolean>
@@ -236,7 +230,6 @@ class MailboxViewModel @Inject constructor(
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
     private val mutableState = MutableStateFlow(initialState)
-    private val unseenSpotlightDismissed = MutableStateFlow(false)
     private val itemIdsMutex = Mutex()
     private val itemIds = mutableListOf<String>()
     private val folderColorSettings = primaryUserId.flatMapLatest {
@@ -370,15 +363,6 @@ class MailboxViewModel @Inject constructor(
                     markCategoryLabelSeen(userId, categoryLabelId)
                 }
             }
-            .launchIn(viewModelScope)
-
-        observeCategorySpotlightState(
-            categories = state
-                .map { (it.categoryViewState as? CategoryViewState.Available.Data)?.categories }
-                .distinctUntilChanged(),
-            unseenDismissed = unseenSpotlightDismissed
-        )
-            .onEach { emitNewStateFrom(MailboxEvent.CategorySpotlightStateChanged(it)) }
             .launchIn(viewModelScope)
 
         observeSelectedLabelUnreadCount()
@@ -550,16 +534,12 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ValidateUserSession -> handleValidateUserSession()
                 is MailboxViewAction.NavigateToComposer -> handleNavigateToComposer()
                 is MailboxViewAction.OnCategoryItemClicked -> handleCategoryItemClicked(viewAction)
-                is MailboxViewAction.DismissCategorySpotlight -> dismissCategorySpotlight()
             }
         }
     }
 
     private suspend fun handleCategoryItemClicked(viewAction: MailboxViewAction.OnCategoryItemClicked) {
         val categoryItem = viewAction.categoryItem
-
-        // Selecting a category tab dismisses the unseen-dot spotlight for good.
-        dismissCategorySpotlightIfShown()
 
         if (categoryItem.isActive) {
             Timber.d("Category ${categoryItem.id} is already active, ignoring click")
@@ -578,31 +558,6 @@ class MailboxViewModel @Inject constructor(
             .onRight {
                 emitNewStateFrom(MailboxEvent.CategoryChanged)
             }
-    }
-
-    private suspend fun dismissCategorySpotlight() {
-        when (currentSpotlightState()) {
-            is CategorySpotlightState.Shown.UnseenCategory -> {
-                unseenSpotlightDismissed.value = true
-                markCategorySpotlightSeen(CategorySpotlightType.UnseenCategory)
-            }
-
-            CategorySpotlightState.Hidden -> Unit
-        }
-        emitNewStateFrom(MailboxViewAction.DismissCategorySpotlight)
-    }
-
-    private fun currentSpotlightState(): CategorySpotlightState =
-        (state.value.categoryViewState as? CategoryViewState.Available.Data)?.spotlightState
-            ?: CategorySpotlightState.Hidden
-
-    private suspend fun dismissCategorySpotlightIfShown() {
-        val categoryViewState = state.value.categoryViewState
-        if (categoryViewState is CategoryViewState.Available.Data &&
-            categoryViewState.spotlightState is CategorySpotlightState.Shown
-        ) {
-            dismissCategorySpotlight()
-        }
     }
 
     private fun handleNavigateToComposer() {
