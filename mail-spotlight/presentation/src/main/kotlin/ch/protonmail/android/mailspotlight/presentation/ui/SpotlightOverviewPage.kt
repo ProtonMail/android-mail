@@ -122,6 +122,15 @@ private fun PortraitOverviewPage(
             textAlign = TextAlign.Center
         )
 
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+
+        Text(
+            text = stringResource(R.string.spotlight_screen_content_search_subtitle),
+            style = ProtonTheme.typography.bodyMedium,
+            color = ProtonTheme.colors.textWeak,
+            textAlign = TextAlign.Center
+        )
+
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge))
 
         FeatureCard(featureItems)
@@ -172,6 +181,15 @@ private fun LandscapeOverviewPage(
             Text(
                 text = stringResource(R.string.spotlight_screen_content_search_title),
                 style = ProtonTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+
+            Text(
+                text = stringResource(R.string.spotlight_screen_content_search_subtitle),
+                style = ProtonTheme.typography.bodyMedium,
+                color = ProtonTheme.colors.textWeak,
                 textAlign = TextAlign.Center
             )
 
