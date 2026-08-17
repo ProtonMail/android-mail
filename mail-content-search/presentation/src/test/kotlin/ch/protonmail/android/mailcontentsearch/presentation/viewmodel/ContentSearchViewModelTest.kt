@@ -21,44 +21,53 @@ package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
+import androidx.paging.Pager
+import androidx.paging.PagingData
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
+import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
+import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer
-import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetCurrentViewModeForLabel
-import ch.protonmail.android.mailcommon.domain.model.AllBottomBarActions
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
-import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.MailboxActionExecutor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateIncludeFilter
-import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailmessage.domain.usecase.HandleAvatarImageLoadingFailure
 import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
+import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -66,9 +75,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -77,9 +89,9 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class ContentSearchViewModelTest {
@@ -99,12 +111,21 @@ internal class ContentSearchViewModelTest {
         uri = mockk()
     )
 
-    private val pagerFactory = mockk<MailboxPagerFactory>()
+    private val searchPager = mockk<Pager<MailboxPageKey, MailboxItem>> {
+        every { flow } returns flowOf(PagingData.empty())
+    }
+    private val pagerFactory = mockk<MailboxPagerFactory> {
+        every { create(any(), any(), any(), any(), any()) } returns searchPager
+    }
     private val itemMapper = mockk<MailboxItemUiModelMapper>()
     private val observePrimaryUserId = mockk<ObservePrimaryUserIdWithValidSession> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
-    private val observeFolderColorSettings = mockk<ObserveFolderColorSettings>()
+    private val observeFolderColorSettings = mockk<ObserveFolderColorSettings> {
+        every { this@mockk.invoke(userId) } returns flowOf(
+            FolderColorSettings(useFolderColor = false, inheritParentFolderColor = false)
+        )
+    }
     private val getCurrentViewModeForLabel = mockk<GetCurrentViewModeForLabel> {
         coEvery { this@mockk.invoke(userId, any()) } returns ViewMode.NoConversationGrouping
     }
@@ -457,18 +478,149 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
-    fun `should drop a running attachment download when the query changes`() = runTest(testDispatcher) {
+    fun `should keep a running attachment download while the query is edited`() = runTest(testDispatcher) {
         val sut = viewModel()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
         sut.submit(ContentSearchViewAction.RequestAttachment(attachmentId))
         advanceUntilIdle()
 
-        // Typing is not a view action: the field's text is owned by the ViewModel, so drive it
-        // directly and let the snapshot observer see the write.
-        sut.queryState.setTextAndPlaceCursorAtEnd("invoice")
-        Snapshot.sendApplyNotifications()
+        sut.type("invoice")
+        advanceUntilIdle()
+
+        // The results the download was started from are still on screen, since typing no longer
+        // searches — so the file the user asked for is still the one they'll get.
+        assertEquals(attachmentId, sut.state.value.downloadingAttachmentId)
+    }
+
+    @Test
+    fun `should drop a running attachment download when a search is asked for`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
+        sut.submit(ContentSearchViewAction.RequestAttachment(attachmentId))
+        advanceUntilIdle()
+
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
         advanceUntilIdle()
 
         assertNull(sut.state.value.downloadingAttachmentId)
+    }
+
+    @Test
+    fun `should not search while the query is only being typed`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+
+        sut.type("invoice")
+        advanceUntilIdle()
+
+        verify(exactly = 0) { pagerFactory.create(any(), any(), any(), any(), any()) }
+        assertEquals("", sut.state.value.query)
+        assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should search the typed query when a search is asked for`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("  invoice  ")
+
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        verify {
+            pagerFactory.create(
+                userId = userId,
+                selectedMailLabelId = MailLabelId.System(SystemLabelId.AllMail.labelId),
+                type = MailboxItemType.Message,
+                searchQuery = "invoice"
+            )
+        }
+        assertEquals("invoice", sut.state.value.query)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should reload the running search in place when it is asked for again`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        // Retrying reloads the results the screen already shows, rather than building a second paginator
+        // and sending the user back to the loading skeleton.
+        assertNotNull(sut.state.value.reloadResults.consume())
+        verify(exactly = 1) { pagerFactory.create(any(), any(), any(), any(), any()) }
+        assertEquals(ContentSearchState.Phase.Loading, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should ask for a reload once when the results are invalidated`() = runTest(testDispatcher) {
+        every { observePageInvalidationEvents() } returns flowOf(PageInvalidationEvent.MessagesInvalidated())
+
+        val sut = viewModel()
+        advanceUntilIdle()
+
+        assertNotNull(sut.state.value.reloadResults.consume())
+        assertNull(sut.state.value.reloadResults.consume())
+    }
+
+    @Test
+    fun `should search a term picked from the history without waiting for the search key`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+
+        sut.submit(ContentSearchViewAction.SuggestionSelected("invoice"))
+        advanceUntilIdle()
+
+        assertEquals("invoice", sut.queryState.text.toString())
+        assertEquals("invoice", sut.state.value.query)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should go back to the idle page when the field is emptied`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.type("")
+        advanceUntilIdle()
+
+        assertEquals("", sut.state.value.query)
+        assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should go back to the idle page when the query is cleared`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.ClearQuery)
+        advanceUntilIdle()
+
+        assertEquals("", sut.queryState.text.toString())
+        assertEquals("", sut.state.value.query)
+        assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    // Typing is not a view action: the field's text is owned by the ViewModel, so drive it directly and
+    // let the snapshot observer see the write.
+    private fun ContentSearchViewModel.type(text: String) {
+        queryState.setTextAndPlaceCursorAtEnd(text)
+        Snapshot.sendApplyNotifications()
     }
 }

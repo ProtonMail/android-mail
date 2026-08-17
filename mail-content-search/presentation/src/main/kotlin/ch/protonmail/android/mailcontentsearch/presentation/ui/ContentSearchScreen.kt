@@ -40,6 +40,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -124,8 +125,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
     }
     ConsumableTextEffect(effect = state.errorMessage) { showSnackbar(SnackbarError(it)) }
 
-    LaunchedEffect(viewModel) {
-        viewModel.paginatorInvalidationEvents.collect { items.refresh() }
+    ConsumableLaunchedEffect(effect = state.reloadResults) {
+        items.refresh()
     }
 
     ContentSearchScreen(
@@ -172,6 +173,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
         ),
         actions = ContentSearchActions(
             onClose = onClose,
+            onSearch = { viewModel.submit(ContentSearchViewAction.Search) },
             onSuggestionSelected = { viewModel.submit(ContentSearchViewAction.SuggestionSelected(it)) },
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
             onToggleIncludeSpam = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpam) },
@@ -255,6 +257,9 @@ private fun ContentSearchScreen(
     snackbarHeight: Dp = 0.dp,
     consumeAutoFocus: () -> Boolean = { false }
 ) {
+    // Derived so only a change in emptiness, not every keystroke, reaches the body below.
+    val isQueryEmpty by remember(queryState) { derivedStateOf { queryState.text.isBlank() } }
+
     val bottomPadding by animateDpAsState(
         targetValue = maxOf(
             ProtonDimens.Spacing.Large,
@@ -290,6 +295,7 @@ private fun ContentSearchScreen(
                     state = state,
                     recentsState = recentsState,
                     items = items,
+                    isQueryEmpty = isQueryEmpty,
                     actions = actions,
                     recentsActions = recentsActions,
                     modifier = Modifier.weight(1f)
@@ -322,6 +328,7 @@ private fun ContentSearchBody(
     state: ContentSearchState,
     recentsState: RecentSearchesState,
     items: LazyPagingItems<ContentSearchResultUiModel>,
+    isQueryEmpty: Boolean,
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
     modifier: Modifier = Modifier
@@ -329,31 +336,14 @@ private fun ContentSearchBody(
     when (val phase = state.phase) {
         // Loading / no-results aren't scrollable, so they keep clear of the navigation bar via bottom
         // safe padding (the lists, by contrast, scroll under it). The app bar owns the top inset.
-        ContentSearchState.Phase.Idle -> when (recentsState) {
-            // Nothing yet: hold an empty page rather than flashing the first-run state and then
-            // replacing it with the history a moment later.
-            RecentSearchesState.Loading -> Box(modifier = modifier)
-
-            RecentSearchesState.Empty -> SearchMessageState(
-                iconRes = R.drawable.ic_search_empty_state,
-                description = stringResource(R.string.content_search_first_run_description),
-                modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-            )
-
-            is RecentSearchesState.Data -> RecentSearchesPage(
-                state = recentsState,
-                avatarImages = state.avatarImages,
-                downloadingAttachmentId = state.downloadingAttachmentId,
-                actions = recentsActions.copy(
-                    // Tapping a chip both bumps it in the history and re-runs its search.
-                    onTermClicked = { term ->
-                        recentsActions.onTermClicked(term)
-                        actions.onSuggestionSelected(term)
-                    }
-                ),
-                modifier = modifier
-            )
-        }
+        ContentSearchState.Phase.Idle -> ContentSearchIdlePage(
+            state = state,
+            recentsState = recentsState,
+            isQueryEmpty = isQueryEmpty,
+            actions = actions,
+            recentsActions = recentsActions,
+            modifier = modifier
+        )
 
         ContentSearchState.Phase.Loading -> Column(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
@@ -382,6 +372,53 @@ private fun ContentSearchBody(
                 modifier = modifier
             )
         }
+    }
+}
+
+/**
+ * The page shown while no search is running: the history, or the first-run state when there is none.
+ *
+ * A query typed but not yet searched holds an empty page instead — the history belongs to an empty field,
+ * and offering it under a half-typed query would only replace it the moment the user hits search.
+ */
+@Composable
+private fun ContentSearchIdlePage(
+    state: ContentSearchState,
+    recentsState: RecentSearchesState,
+    isQueryEmpty: Boolean,
+    actions: ContentSearchActions,
+    recentsActions: RecentSearchesActions,
+    modifier: Modifier = Modifier
+) {
+    if (!isQueryEmpty) {
+        Box(modifier = modifier)
+        return
+    }
+
+    when (recentsState) {
+        // Nothing yet: hold an empty page rather than flashing the first-run state and then replacing it
+        // with the history a moment later.
+        RecentSearchesState.Loading -> Box(modifier = modifier)
+
+        RecentSearchesState.Empty -> SearchMessageState(
+            iconRes = R.drawable.ic_search_empty_state,
+            description = stringResource(R.string.content_search_first_run_description),
+            modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+        )
+
+        is RecentSearchesState.Data -> RecentSearchesPage(
+            state = recentsState,
+            avatarImages = state.avatarImages,
+            downloadingAttachmentId = state.downloadingAttachmentId,
+            actions = recentsActions.copy(
+                // Tapping a chip both bumps it in the history and runs its search.
+                onTermClicked = { term ->
+                    recentsActions.onTermClicked(term)
+                    actions.onSuggestionSelected(term)
+                }
+            ),
+            modifier = modifier
+        )
     }
 }
 

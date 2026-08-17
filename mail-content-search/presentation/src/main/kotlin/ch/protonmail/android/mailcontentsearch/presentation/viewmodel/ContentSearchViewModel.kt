@@ -78,7 +78,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxM
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
-import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
@@ -87,14 +86,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
@@ -114,7 +111,7 @@ import javax.inject.Inject
 import ch.protonmail.android.maillabel.presentation.R as labelR
 import ch.protonmail.android.mailmailbox.presentation.R as mailboxR
 
-@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 @SuppressWarnings("LongParameterList", "TooManyFunctions")
 class ContentSearchViewModel @Inject constructor(
@@ -155,6 +152,8 @@ class ContentSearchViewModel @Inject constructor(
      */
     val queryState = TextFieldState(initialText = savedStateHandle.get<String>(KEY_QUERY).orEmpty())
 
+    private val submittedQuery = MutableStateFlow(savedStateHandle.get<String>(KEY_SUBMITTED_QUERY).orEmpty())
+
     private var hasAutoFocusedSearchField = false
 
     private var attachmentDownloadJob: Job? = null
@@ -162,13 +161,9 @@ class ContentSearchViewModel @Inject constructor(
     private var allMailLocalLabelId: LabelId = SystemLabelId.AllMail.labelId
     private var almostAllMailLocalLabelId: LabelId = SystemLabelId.AlmostAllMail.labelId
 
-    val paginatorInvalidationEvents: Flow<PageInvalidationEvent> = observePageInvalidationEvents()
-
     val items: Flow<PagingData<ContentSearchResultUiModel>> = combine(
         observePrimaryUserId().filterNotNull(),
-        snapshotFlow { queryState.text.toString().trim() }
-            .debounce { query -> if (query.isBlank()) 0L else DEBOUNCE_MS }
-            .distinctUntilChanged()
+        submittedQuery
     ) { userId, query -> userId to query }
         .distinctUntilChanged()
         .flatMapLatest { (userId, query) ->
@@ -176,9 +171,8 @@ class ContentSearchViewModel @Inject constructor(
                 mutableState.update { it.copy(query = "", phase = ContentSearchState.Phase.Idle) }
                 flowOf(PagingData.empty())
             } else {
-                // Advance the displayed query only now, when its search actually launches —
-                // so on-screen results/highlight don't react to keystrokes typed before the
-                // matching results exist.
+                // The displayed query is advanced here, where its search launches, so the results and
+                // their highlight always describe the same query.
                 mutableState.update { it.copy(query = query, phase = ContentSearchState.Phase.Loading) }
                 buildSearchPagingFlow(userId, query)
             }
@@ -186,15 +180,21 @@ class ContentSearchViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     init {
-        // Kept off the [items] flow so editing the query has these effects even while nothing is
-        // collecting results (the idle history page). The field's starting value isn't a change, so
-        // it must not cancel a download — dropping it also keeps a restored query from being re-saved.
-        snapshotFlow { queryState.text.toString().trim() }
+        observePageInvalidationEvents()
+            .onEach { applyOperation(ContentSearchOperation.ReloadResults) }
+            .launchIn(viewModelScope)
+
+        // Kept off the [items] flow so editing the field has these effects even while nothing is
+        // collecting results (the idle history page). The field's starting value isn't an edit, so
+        // dropping it keeps a restored query from being re-saved or read as the user emptying the field.
+        snapshotFlow { queryState.text.toString() }
             .distinctUntilChanged()
             .drop(1)
-            .onEach { query ->
-                savedStateHandle[KEY_QUERY] = query
-                cancelAttachmentDownload()
+            .onEach { text ->
+                savedStateHandle[KEY_QUERY] = text
+                // Emptying the field is the one edit that acts without the search key: it takes the
+                // screen back to the history page and drops the search that was showing behind it.
+                if (text.isBlank()) resetToIdle()
             }
             .launchIn(viewModelScope)
 
@@ -294,6 +294,7 @@ class ContentSearchViewModel @Inject constructor(
 
     fun submit(action: ContentSearchViewAction) {
         when (action) {
+            ContentSearchViewAction.Search -> submitSearch(queryState.text.toString())
             is ContentSearchViewAction.SuggestionSelected -> setQuery(action.query)
             ContentSearchViewAction.ClearQuery -> clearQuery()
             ContentSearchViewAction.ToggleIncludeSpam -> toggleInclude { it.copy(includeSpam = !it.includeSpam) }
@@ -590,19 +591,47 @@ class ContentSearchViewModel @Inject constructor(
     }
 
     /**
-     * Fills the field from a suggestion or history chip. Writing to [queryState] is all that's needed —
-     * the search is driven off the field's text, so this re-runs it like typing would.
+     * Runs the given query, which is the only way results ever change: editing the field leaves the
+     * previous results (and their highlight) alone until the user asks for the new ones.
+     *
+     * A blank query is not a search, there is nothing to look for, and the field is emptied via
+     * [clearQuery] instead.
+     */
+    private fun submitSearch(query: String) {
+        val trimmedQuery = query.trim()
+        if (trimmedQuery.isBlank()) return
+        cancelAttachmentDownload()
+        // Asking for the query that is already running reloads it rather than doing nothing, which is how
+        // the user retries a search that failed or has gone stale.
+        if (trimmedQuery == submittedQuery.value) {
+            applyOperation(ContentSearchOperation.ReloadResults)
+            return
+        }
+        savedStateHandle[KEY_SUBMITTED_QUERY] = trimmedQuery
+        submittedQuery.value = trimmedQuery
+    }
+
+    /**
+     * Fills the field from a suggestion or history chip and searches it straight away: picking a term is
+     * itself the user asking for its results, so it doesn't also need the search key.
      */
     private fun setQuery(query: String) {
         queryState.setTextAndPlaceCursorAtEnd(query)
+        submitSearch(query)
     }
 
     private fun clearQuery() {
+        resetToIdle()
+        queryState.clearText()
+    }
+
+    private fun resetToIdle() {
         cancelAttachmentDownload()
-        // Reset the phase here rather than waiting for the emptied field to travel back through the
+        savedStateHandle[KEY_SUBMITTED_QUERY] = ""
+        submittedQuery.value = ""
+        // Reset the phase here rather than waiting for the dropped query to travel back through the
         // paging flow, so the history page doesn't flash the previous results on its way in.
         mutableState.update { it.copy(query = "", phase = ContentSearchState.Phase.Idle) }
-        queryState.clearText()
     }
 
     // The row a download was started from is about to be replaced by another result set, so drop it
@@ -642,9 +671,9 @@ class ContentSearchViewModel @Inject constructor(
 
     companion object {
 
-        private const val DEBOUNCE_MS = 300L
-
         private const val KEY_QUERY = "contentSearchQuery"
+
+        private const val KEY_SUBMITTED_QUERY = "contentSearchSubmittedQuery"
 
         private val AllMailSelection = MailLabelId.System(SystemLabelId.AllMail.labelId)
 

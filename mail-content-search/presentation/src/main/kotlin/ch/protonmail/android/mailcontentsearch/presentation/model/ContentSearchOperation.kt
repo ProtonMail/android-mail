@@ -59,6 +59,8 @@ sealed interface ContentSearchOperation {
 
     data class ShowError(val message: TextUiModel) : ContentSearchOperation
 
+    data object ReloadResults : ContentSearchOperation
+
     data class AvatarImagesUpdated(val avatarImages: AvatarImagesUiModel) : ContentSearchOperation
 
     data class AttachmentDownloadStarted(val attachmentId: AttachmentIdUiModel) : ContentSearchOperation

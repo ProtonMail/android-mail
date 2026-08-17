@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 
 data class ContentSearchActions(
     val onClose: () -> Unit,
+    val onSearch: () -> Unit,
     val onSuggestionSelected: (String) -> Unit,
     val onClearQuery: () -> Unit,
     val onToggleIncludeSpam: () -> Unit,
@@ -59,6 +60,7 @@ data class ContentSearchActions(
 
         val Empty = ContentSearchActions(
             onClose = {},
+            onSearch = {},
             onSuggestionSelected = {},
             onClearQuery = {},
             onToggleIncludeSpam = {},

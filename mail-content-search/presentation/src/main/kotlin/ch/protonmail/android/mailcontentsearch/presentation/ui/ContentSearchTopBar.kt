@@ -103,9 +103,10 @@ internal fun ContentSearchTopBar(
         title = {
             SearchBarDefaults.InputField(
                 state = queryState,
-                // The search runs as the user types, so submitting has nothing left to do but get the
-                // keyboard out of the way of the results.
-                onSearch = { keyboardController?.hide() },
+                onSearch = {
+                    keyboardController?.hide()
+                    actions.onSearch()
+                },
                 // Expansion belongs to the M3 SearchBar this field is intentionally used without.
                 expanded = false,
                 onExpandedChange = {},

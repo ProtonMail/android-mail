@@ -23,9 +23,9 @@ import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDown
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import javax.inject.Inject
 
 class ContentSearchReducer @Inject constructor(
@@ -86,6 +86,8 @@ class ContentSearchReducer @Inject constructor(
                 currentState.copy(actionMessage = Effect.of(operation.actionResult))
 
             is ContentSearchOperation.ShowError -> currentState.copy(errorMessage = Effect.of(operation.message))
+
+            ContentSearchOperation.ReloadResults -> currentState.copy(reloadResults = Effect.of(Unit))
 
             is ContentSearchOperation.AvatarImagesUpdated ->
                 currentState.copy(avatarImages = operation.avatarImages)
