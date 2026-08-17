@@ -46,20 +46,20 @@
   <string name="upselling_pu_pass_title">Διατηρήστε τους κωδικούς πρόσβασής σας ασφαλείς και οργανωμένους με κρύπτες</string>
   <string name="upselling_pu_subtitle">Αποκτήστε το καλύτερο από το Proton με το Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Αναβάθμιση σε Unlimited</string>
-  <string name="upselling_pu_row_generic_subtitle">Αναβαθμίστε την ιδιωτικότητά σας στο διαδίκτυο</string>
-  <string name="upselling_pu_row_threat_protection_title">Προστατέψτε τον λογαριασμό σας</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Σταματήστε τις απειλές με το Proton Sentinel</string>
-  <string name="upselling_pu_row_aliases_title">Απόκρυψη της ταυτότητάς σας</string>
-  <string name="upselling_pu_row_aliases_subtitle">Αποκτήστε απεριόριστα ψευδώνυμα</string>
+  <string name="upselling_pu_row_generic_title">Προωθήστε την ιδιωτικότητά σας σε ένα ακόμη υψηλότερο επίπεδο</string>
+  <string name="upselling_pu_row_generic_subtitle">Ξεκλειδώστε περισσότερο αποθηκευτικό χώρο</string>
+  <string name="upselling_pu_row_threat_protection_title">Προστασία από απειλές</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Προστατέψτε τον λογαριασμό σας</string>
+  <string name="upselling_pu_row_aliases_title">Αποκτήστε απεριόριστα ψευδώνυμα</string>
+  <string name="upselling_pu_row_aliases_subtitle">Προστατέψτε την ταυτότητά σας</string>
   <string name="upselling_pu_row_drive_title">Αυξήστε τον αποθηκευτικό σας χώρο</string>
   <string name="upselling_pu_row_drive_subtitle">Αποκτήστε 500 GB για αποθήκευση αρχείων και φωτογραφιών</string>
   <string name="upselling_pu_row_vpn_browse_title">Περιηγηθείτε με ασφάλεια</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Αποκτήστε εξαιρετικά γρήγορο VPN με 110+ χώρες</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Αφαίρεση φραγής μετάδοσης</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Πρόσβαση σε περιεχόμενο παγκοσμίως</string>
-  <string name="upselling_pu_row_pass_title">Ασφαλίστε τους κωδικούς πρόσβασής σας</string>
-  <string name="upselling_pu_row_pass_subtitle">Διατηρήστε τους κωδικούς πρόσβασης ασφαλείς και οργανωμένους</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Αποκτήστε πρόσβαση σε εξαιρετικά γρήγορο VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Αφαίρεση φραγής περιεχομένου ροής</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Ελεύθερη ροή με το Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Διατηρήστε τους κωδικούς πρόσβασης ασφαλείς</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Στείλτε ομαδικά ηλεκτρονικά μηνύματα με ευκολία. Απολαύστε αυτό και πολλά άλλα με το Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Ομαδοποίηση των επαφών σας</string>

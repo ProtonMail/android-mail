@@ -8,7 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$.2f%%...</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på WiFi</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på Wi-Fi...</string>
   <string name="mail_settings_content_search_clear_data_button">Ryd lokale søgedata</string>
   <string name="mail_settings_content_search_clear_data_description">Ved at rydde lokale søgedata deaktiveres søgning i meddelelsesindhold. Du kan aktivere det igen når som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ryd lokale søgedata</string>

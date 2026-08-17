@@ -20,7 +20,7 @@
   <string name="app_icon_name_weather">날씨</string>
   <string name="app_icon_name_notes">메모</string>
   <string name="app_icon_name_calculator">계산기</string>
-  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
+  <string name="app_welcome_subtitle">암호화로 데이터를 안전하게 보호합니다. 당신의 데이터는 온전히 당신의 것이죠.</string>
   <string name="dialog_sign_out_account_title">로그아웃</string>
   <string name="dialog_sign_out_account_description">사용자 계정과 연관되어 있는 데이터가 삭제하도록 설정하지 않는 한 이 장치에 유지됩니다.</string>
   <string name="dialog_sign_out_account_confirm">로그아웃</string>

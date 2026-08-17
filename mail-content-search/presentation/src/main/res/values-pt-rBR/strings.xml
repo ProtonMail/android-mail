@@ -8,7 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">O download continua usando dados móveis caso a conexão Wi-Fi seja interrompida.</string>
   <string name="mail_settings_content_search_syncing_status">Preparando %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Aguardando por Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Limpar dados de pesquisa locais</string>

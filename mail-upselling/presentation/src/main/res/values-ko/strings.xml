@@ -33,33 +33,33 @@
   <string name="upselling_mailbox_plus_promo_renewal">첫 달 %s, 이후 매월 %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimited로 업그레이드</string>
-  <string name="upselling_do_not_show_again">Do not show this offer again</string>
-  <string name="upselling_stay_on_mail_plus">Stay on Mail Plus</string>
-  <string name="upselling_pu_choose_plan">Choose your plan</string>
+  <string name="upselling_do_not_show_again">이 제안을 다시 보지 않기</string>
+  <string name="upselling_stay_on_mail_plus">Mail Plus 유지하기</string>
+  <string name="upselling_pu_choose_plan">플랜을 선택하세요</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
-  <string name="upselling_pu_generic_title">Take your online privacy further with Proton Unlimited</string>
-  <string name="upselling_pu_threat_protection_title">Protect your account from threats with Proton Sentinel</string>
-  <string name="upselling_pu_aliases_title">Get unlimited aliases to protect your identity</string>
-  <string name="upselling_pu_drive_title">Get 500 GB to securely store files and photos</string>
-  <string name="upselling_pu_vpn_browse_title">Get access to ultrafast VPN with servers in 110+ countries</string>
-  <string name="upselling_pu_vpn_streaming_title">Access content on streaming services worldwide</string>
-  <string name="upselling_pu_pass_title">Keep your passwords safe and organized with vaults</string>
-  <string name="upselling_pu_subtitle">Get the best of Proton with Unlimited</string>
+  <string name="upselling_pu_generic_title">Proton Unlimited로 더 나은 온라인 프라이버시를 경험하세요</string>
+  <string name="upselling_pu_threat_protection_title">Proton Sentinel로 계정을 위협으로부터 보호하세요</string>
+  <string name="upselling_pu_aliases_title">신원 보호를 위한 무제한 별칭을 받아보세요</string>
+  <string name="upselling_pu_drive_title">모든 파일과 사진을 안전하게 저장할 수 있는 500 GB 스토리지를 받아보세요</string>
+  <string name="upselling_pu_vpn_browse_title">110개 이상 국가의 초고속 VPN 서버에 접근하세요</string>
+  <string name="upselling_pu_vpn_streaming_title">전세계의 스트리밍 서비스 상의 콘텐츠에 접근하세요</string>
+  <string name="upselling_pu_pass_title">회원님의 모든 비밀번호를 여러 보관함에 안전하고 체계적으로 보관하세요</string>
+  <string name="upselling_pu_subtitle">Proton Unlimited로 모든 기능을 누려보세요</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Upgrade to Unlimited</string>
-  <string name="upselling_pu_row_generic_subtitle">Take your online privacy further</string>
-  <string name="upselling_pu_row_threat_protection_title">Protect your account</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Stop threats with Proton Sentinel</string>
-  <string name="upselling_pu_row_aliases_title">Hide your identity</string>
-  <string name="upselling_pu_row_aliases_subtitle">Get unlimited aliases</string>
-  <string name="upselling_pu_row_drive_title">Increase your storage</string>
-  <string name="upselling_pu_row_drive_subtitle">Get 500 GB to store files and photos</string>
-  <string name="upselling_pu_row_vpn_browse_title">Browse securely</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Get ultrafast VPN with 110+ countries</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Access content worldwide</string>
-  <string name="upselling_pu_row_pass_title">Secure your passwords</string>
-  <string name="upselling_pu_row_pass_subtitle">Keep passwords safe and organized</string>
+  <string name="upselling_pu_row_generic_title">프라이버시의 격을 높이자</string>
+  <string name="upselling_pu_row_generic_subtitle">추가 용량 해제</string>
+  <string name="upselling_pu_row_threat_protection_title">위협으로부터 보호하자</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">계정 보호하기</string>
+  <string name="upselling_pu_row_aliases_title">별칭을 무제한으로</string>
+  <string name="upselling_pu_row_aliases_subtitle">나의 신원 보호하기</string>
+  <string name="upselling_pu_row_drive_title">저장공간 늘리기</string>
+  <string name="upselling_pu_row_drive_subtitle">모든 파일과 사진을 안전하게 저장할 수 있는 500 GB 스토리지를 받아보세요</string>
+  <string name="upselling_pu_row_vpn_browse_title">안전하게 탐색</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">초고속 VPN 이용</string>
+  <string name="upselling_pu_row_vpn_streaming_title">스트리밍 콘텐츠의 빗장을 풀자</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Proton VPN으로 자유롭게 스트리밍</string>
+  <string name="upselling_pu_row_pass_title">암호를 안전하게</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">그룹 이메일을 간편하게 보내세요. Mail Plus와 함께 이 모든 것과 그 이상을 즐기세요.</string>
   <string name="upselling_contact_groups_plus_title">연락처를 그룹화하기</string>
@@ -99,8 +99,8 @@
   <string name="upselling_comparison_table_folders_labels">폴더 및 라벨</string>
   <string name="upselling_comparison_table_premium_products">프리미엄 VPN, 패스워드 매니저 및 클라우드 저장 공간</string>
   <string name="upselling_comparison_table_dark_web_monitoring">다크 웹 모니터링</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
-  <string name="upselling_comparison_table_ultrafast_vpn">Ultrafast VPN with 110+ countries</string>
+  <string name="upselling_comparison_table_unlimited_aliases">신원 보호를 위한 무제한 별칭</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">110개 이상 국가의 초고속 VPN</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">요금제를 선택하세요</string>
   <string name="upselling_select_plan_year">12개월</string>

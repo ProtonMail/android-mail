@@ -46,20 +46,20 @@
   <string name="upselling_pu_pass_title">Захоўвайце свае паролі ў бяспецы і ўпарадкаваным выглядзе пры дапамозе сховішч</string>
   <string name="upselling_pu_subtitle">Атрымайце лепшае ад Proton з тарыфным планам Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Палепшыць да Unlimited</string>
-  <string name="upselling_pu_row_generic_subtitle">Палепшыце сваю прыватнасць у інтэрнэце</string>
-  <string name="upselling_pu_row_threat_protection_title">Абараніце свой уліковы запіс</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Спыніце пагрозы з дапамогай Proton Sentinel</string>
-  <string name="upselling_pu_row_aliases_title">Схавайце сваю ідэнтычнасць</string>
-  <string name="upselling_pu_row_aliases_subtitle">Атрымайце неабмежаваную колькасць псеўданімаў</string>
+  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
+  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
+  <string name="upselling_pu_row_threat_protection_title">Guard against threats</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Protect your account</string>
+  <string name="upselling_pu_row_aliases_title">Get unlimited aliases</string>
+  <string name="upselling_pu_row_aliases_subtitle">Protect your identity</string>
   <string name="upselling_pu_row_drive_title">Павялічце сваё сховішча</string>
   <string name="upselling_pu_row_drive_subtitle">Атрымайце 500 ГБ для захоўвання файлаў і фатаграфій</string>
   <string name="upselling_pu_row_vpn_browse_title">Праглядайце бяспечна</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Атрымайце звышхуткі VPN у больш чым 110 краінах свету</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Разблакіруйце трансляцыі</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Доступ да змесціва па ўсім свеце</string>
-  <string name="upselling_pu_row_pass_title">Абараніце свае паролі</string>
-  <string name="upselling_pu_row_pass_subtitle">Захоўвайце паролі ў бяспецы і арганізаваным выглядзе</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Keep passwords safe</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Адпраўляйце групавыя лісты з лёгкасцю. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Групаванне кантактаў</string>

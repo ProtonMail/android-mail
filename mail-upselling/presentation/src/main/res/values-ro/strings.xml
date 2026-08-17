@@ -46,20 +46,20 @@
   <string name="upselling_pu_pass_title">Păstrați-vă parolele în siguranță și organizate în seifuri</string>
   <string name="upselling_pu_subtitle">Obțineți maximul de la Proton cu Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Treceți la Unlimited</string>
-  <string name="upselling_pu_row_generic_subtitle">Duceți-vă confidențialitatea online la un nivel superior</string>
-  <string name="upselling_pu_row_threat_protection_title">Protejați-vă contul</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Opriți amenințările cu Proton Sentinel</string>
-  <string name="upselling_pu_row_aliases_title">Ascundeți-vă identitatea</string>
-  <string name="upselling_pu_row_aliases_subtitle">Obțineți aliasuri nelimitate</string>
+  <string name="upselling_pu_row_generic_title">Aprofundați-vă confidențialitatea</string>
+  <string name="upselling_pu_row_generic_subtitle">Deblocați mai mult spațiu de stocare</string>
+  <string name="upselling_pu_row_threat_protection_title">Protejați-vă împotriva amenințărilor</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Protejați-vă contul</string>
+  <string name="upselling_pu_row_aliases_title">Obțineți aliasuri nelimitate</string>
+  <string name="upselling_pu_row_aliases_subtitle">Protejați-vă identitatea</string>
   <string name="upselling_pu_row_drive_title">Măriți-vă spațiul de stocare</string>
   <string name="upselling_pu_row_drive_subtitle">Obțineți 500 GiB pentru a stoca fișiere și fotografii</string>
   <string name="upselling_pu_row_vpn_browse_title">Navigați în siguranță</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Obțineți VPN ultrarapid cu peste 110 țări</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Deblocați transmisiile în flux</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Accesați conținut de pretutindeni</string>
-  <string name="upselling_pu_row_pass_title">Securizați-vă parolele</string>
-  <string name="upselling_pu_row_pass_subtitle">Păstrați parolele în siguranță și organizate</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Obțineți acces la VPN ultrarapid</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Deblocați accesul la conținutul transmisiilor în flux</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Vizionați liber cu Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Păstrați parolele în siguranță</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Trimiteți mesaje în grup cu ușurință. Bucurați-vă de acest lucru și de mai multe cu Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Grupați-vă contactele</string>

@@ -46,20 +46,20 @@
   <string name="upselling_pu_pass_title">Mantenha suas senhas seguras e organizadas com cofres</string>
   <string name="upselling_pu_subtitle">Get the best of Proton with Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Faça upgrade para Unlimited</string>
-  <string name="upselling_pu_row_generic_subtitle">Take your online privacy further</string>
-  <string name="upselling_pu_row_threat_protection_title">Proteja sua conta</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Stop threats with Proton Sentinel</string>
-  <string name="upselling_pu_row_aliases_title">Oculte sua identidade</string>
-  <string name="upselling_pu_row_aliases_subtitle">Obtenha aliases ilimitados</string>
+  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
+  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
+  <string name="upselling_pu_row_threat_protection_title">Proteja-se contra ameaças</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Proteja sua conta</string>
+  <string name="upselling_pu_row_aliases_title">Obtenha aliases ilimitados</string>
+  <string name="upselling_pu_row_aliases_subtitle">Proteja sua identidade</string>
   <string name="upselling_pu_row_drive_title">Aumente seu armazenamento</string>
   <string name="upselling_pu_row_drive_subtitle">Obtenha 500 GB para armazenar arquivos e fotos</string>
   <string name="upselling_pu_row_vpn_browse_title">Navegue com segurança</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Obtenha VPN ultrarrápida em mais de 110 países</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Desbloquear streaming</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Acesse conteúdo em todo o mundo</string>
-  <string name="upselling_pu_row_pass_title">Proteja suas senhas</string>
-  <string name="upselling_pu_row_pass_subtitle">Keep passwords safe and organized</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Desfrute do streaming sem limites</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Mantenha as suas senhas seguras</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envie e-mails em grupo com facilidade. Aproveite isso e muito mais com o Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupar seus contatos</string>

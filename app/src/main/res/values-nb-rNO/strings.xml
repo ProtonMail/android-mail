@@ -20,7 +20,7 @@
   <string name="app_icon_name_weather">Vær</string>
   <string name="app_icon_name_notes">Notater</string>
   <string name="app_icon_name_calculator">Kalkulator</string>
-  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
+  <string name="app_welcome_subtitle">Kryptering holder dataene dine private. Dataene dine tilhører virkelig deg.</string>
   <string name="dialog_sign_out_account_title">Logg av</string>
   <string name="dialog_sign_out_account_description">Dataene som er knyttet til kontoen din, forblir på denne enheten med mindre du velger å slette dem.</string>
   <string name="dialog_sign_out_account_confirm">Logg av</string>
