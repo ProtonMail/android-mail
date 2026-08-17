@@ -23,8 +23,4 @@
     <string name="category_title_forums">Forums</string>
     <string name="category_title_newsletters">Newsletters</string>
     <string name="category_title_transactions">Transactions</string>
-
-    <string name="recategorise_bottom_sheet_title">Recategorize email</string>
-    <string name="recategorise_bottom_sheet_description">When you move an email to another category, similar messages will be categorized there in the future.</string>
-    <string name="recategorise_bottom_sheet_button">Got it</string>
 </resources>
