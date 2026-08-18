@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcontentsearch.data.worker
 
 import android.content.Context
 import ch.protonmail.android.mailcontentsearch.data.R
-import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.IndexingProgress
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -42,7 +41,7 @@ internal class ContentIndexingNotificationTest {
     @Test
     fun `the account address is shown next to the percentage`() {
         // When
-        val text = ContentIndexingNotification.contentText(context, "user@proton.me", progress())
+        val text = ContentIndexingNotification.contentText(context, "user@proton.me", percentage = 41.6)
 
         // Then
         assertEquals("user@proton.me · 42%", text)
@@ -50,9 +49,9 @@ internal class ContentIndexingNotificationTest {
     }
 
     @Test
-    fun `an unsized backfill waits rather than reporting a percentage`() {
-        // Given
-        val text = ContentIndexingNotification.contentText(context, null, progress(isSized = false))
+    fun `an account with no determinate progress waits rather than reporting a percentage`() {
+        // Given - Rust has not sized the backfill yet, which would otherwise read as a flat 0%.
+        val text = ContentIndexingNotification.contentText(context, null, percentage = null)
 
         // Then
         assertEquals("Preparing…", text)
@@ -61,7 +60,7 @@ internal class ContentIndexingNotificationTest {
     @Test
     fun `the percentage stands alone until the address is known`() {
         // Given
-        val text = ContentIndexingNotification.contentText(context, accountLabel = "  ", progress = progress())
+        val text = ContentIndexingNotification.contentText(context, accountAddress = "  ", percentage = 41.6)
 
         // Then
         assertEquals("42%", text)
@@ -70,9 +69,11 @@ internal class ContentIndexingNotificationTest {
     @Test
     fun `the percentage is clamped to what a progress bar can take`() {
         // Given - Rust revises its totals as it goes, so the percentage can overshoot.
-        assertEquals(100, progress().copy(percentage = 104.2).roundedPercentage)
-        assertEquals(0, progress().copy(percentage = -1.0).roundedPercentage)
-    }
+        ContentIndexingNotification.contentText(context, null, percentage = 104.2)
+        ContentIndexingNotification.contentText(context, null, percentage = -1.0)
 
-    private fun progress(isSized: Boolean = true) = IndexingProgress(percentage = 41.6, isSized = isSized)
+        // Then
+        verify { context.getString(R.string.content_search_notification_percentage, 100) }
+        verify { context.getString(R.string.content_search_notification_percentage, 0) }
+    }
 }

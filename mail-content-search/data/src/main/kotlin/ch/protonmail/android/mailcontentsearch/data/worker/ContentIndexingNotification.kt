@@ -36,22 +36,26 @@ internal object ContentIndexingNotification {
 
     private const val PercentageScale = 100
 
+    /**
+     * [percentage] is how far the named account's own backfill has got, or null while there is
+     * nothing determinate to report - never the orchestrator's session-wide figure, which is summed
+     * across every account and so would not match the one account this notification names.
+     */
     fun build(
         context: Context,
-        accountLabel: String?,
-        progress: IndexingProgress?
+        accountAddress: String?,
+        percentage: Double?
     ): NotificationCompat.Builder {
         ensureChannel(context)
-        val sized = progress?.takeIf { it.isSized }
         return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
             .setContentTitle(context.getString(R.string.content_search_notification_title))
-            .setContentText(contentText(context, accountLabel, progress))
+            .setContentText(contentText(context, accountAddress, percentage))
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            // Scaled to the percentage rather than the raw counts: those are message totals summed
-            // across accounts, so they can outgrow the Int the bar takes.
-            .setProgress(PercentageScale, sized?.roundedPercentage ?: 0, sized == null)
+            // Scaled to the percentage rather than the raw counts, which can outgrow the Int the bar
+            // takes.
+            .setProgress(PercentageScale, percentage?.rounded() ?: 0, percentage == null)
             .addAction(
                 NotificationCompat.Action.Builder(
                     0,
@@ -61,39 +65,24 @@ internal object ContentIndexingNotification {
             )
     }
 
-    /**
-     * The account the notification is for, next to how far the indexing has got.
-     */
+    /** The account the notification is for, next to how far its indexing has got. */
     @VisibleForTesting
     fun contentText(
         context: Context,
-        accountLabel: String?,
-        progress: IndexingProgress?
+        accountAddress: String?,
+        percentage: Double?
     ): String {
-        // A percentage of an unsized backfill is a flat "0%" rather than the wait it is.
-        val status = progress
-            ?.takeIf { it.isSized }
-            ?.let { context.getString(R.string.content_search_notification_percentage, it.roundedPercentage) }
+        val status = percentage
+            ?.let { context.getString(R.string.content_search_notification_percentage, it.rounded()) }
             ?: context.getString(R.string.content_search_notification_preparing)
-        return accountLabel
+        return accountAddress
             ?.takeIf { it.isNotBlank() }
             ?.let { context.getString(R.string.content_search_notification_progress, it, status) }
             ?: status
     }
 
-    /**
-     * How far the orchestrator has got, session-wide.
-     *
-     * [isSized] because Rust reports a total of zero messages until it has sized the backfill, and
-     * the percentage means nothing until it has.
-     */
-    data class IndexingProgress(
-        val percentage: Double,
-        val isSized: Boolean
-    ) {
-
-        val roundedPercentage: Int get() = percentage.roundToInt().coerceIn(0, PercentageScale)
-    }
+    // Rust revises its totals as it goes, so the percentage can overshoot what a bar takes.
+    private fun Double.rounded(): Int = roundToInt().coerceIn(0, PercentageScale)
 
     private fun cancelPendingIntent(context: Context): PendingIntent {
         // Stops the orchestrator for every account. Nothing persists that, so the next foreground

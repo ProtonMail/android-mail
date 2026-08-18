@@ -19,16 +19,9 @@
 package ch.protonmail.android.mailcontentsearch.presentation.settings.mapper
 
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.model.backfillPercentage
 
-internal fun ContentIndexingState.toPercentage(): Double? = when (this) {
-    is ContentIndexingState.Running -> percentage.takeIf { !isBackfillDone }
-    ContentIndexingState.Idle,
-    ContentIndexingState.Initializing,
-    ContentIndexingState.WaitingForUnmeteredConnection,
-    ContentIndexingState.Completed,
-    ContentIndexingState.Cancelled,
-    ContentIndexingState.Failed -> null
-}
+internal fun ContentIndexingState.toPercentage(): Double? = backfillPercentage
 
 internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Initializing,
@@ -52,6 +45,4 @@ internal fun ContentIndexingState.isWaitingForUnmeteredConnection(): Boolean =
  * "Preparing 100.00%", which reads as stuck rather than finished.
  */
 private val ContentIndexingState.Running.isBackfillDone: Boolean
-    get() = percentage >= FULLY_INDEXED_PERCENTAGE
-
-private const val FULLY_INDEXED_PERCENTAGE = 100.0
+    get() = backfillPercentage == null

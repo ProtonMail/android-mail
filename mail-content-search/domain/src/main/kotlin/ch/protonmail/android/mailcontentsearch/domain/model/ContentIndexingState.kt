@@ -33,3 +33,17 @@ sealed interface ContentIndexingState {
     data object Cancelled : ContentIndexingState
     data object Failed : ContentIndexingState
 }
+
+/**
+ * How far this account's backfill has got, or null when there is no determinate progress to show.
+ *
+ * Rust keeps the account in [ContentIndexingState.Running] once the backfill has caught up - it
+ * stays subscribed for new mail - and it does not reliably publish
+ * [ContentIndexingState.Completed], so a percentage at or above 100 is read as done rather than
+ * reported as "100%" forever. Shared by every surface that shows the account's progress, so the
+ * settings screen and the indexing notification cannot disagree about it.
+ */
+val ContentIndexingState.backfillPercentage: Double?
+    get() = (this as? ContentIndexingState.Running)?.percentage?.takeIf { it < FULLY_INDEXED_PERCENTAGE }
+
+private const val FULLY_INDEXED_PERCENTAGE = 100.0

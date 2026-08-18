@@ -28,9 +28,10 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
-import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotification.IndexingProgress
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.backfillPercentage
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.runInRustBackground
@@ -42,14 +43,18 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
+import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -73,6 +78,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val mailSessionRepository: MailSessionRepository,
     private val userSessionRepository: UserSessionRepository,
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
+    private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val startContentIndexing: StartContentIndexing,
     private val appInBackgroundState: AppInBackgroundState,
     private val workScheduler: ContentIndexingWorkScheduler
@@ -99,8 +105,22 @@ class ContentIndexingWorker @AssistedInject constructor(
     @Volatile
     private var isReplacingSelf = false
 
+    /**
+     * The account the orchestrator is indexing. Rust leaves it null between accounts, so the last one
+     * is kept rather than blanked: the notification would otherwise lose its subject for as long as
+     * the handover takes.
+     */
+    private val activeUserId = MutableStateFlow<UserId?>(null)
+
+    // What the notification shows: the active account and how far its own backfill has got. Held as
+    // one value so the two can never be posted out of step.
     @Volatile
-    private var cachedPrimaryAddress: String? = null
+    private var notifiedAccount: NotifiedAccount? = null
+
+    private data class NotifiedAccount(val address: String?, val percentage: Double?)
+
+    /** Cached per account, so switching back and forth does not re-read one we have already seen. */
+    private val addressCache = mutableMapOf<UserId, String?>()
 
     private val notificationMutex = Mutex()
 
@@ -111,10 +131,12 @@ class ContentIndexingWorker @AssistedInject constructor(
         mailSessionRepository.runInRustBackground {
             coroutineScope {
                 val visibility = launch { observeAppVisibility() }
+                val accountProgress = launch { observeActiveAccountProgress() }
                 try {
                     awaitIndexingIdle()
                 } finally {
                     visibility.cancel()
+                    accountProgress.cancel()
                 }
             }
         }
@@ -225,15 +247,17 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     private suspend fun refreshNotification(activity: ContentIndexingActivity.Progress) {
         latestProgress = activity
+        activity.activeUserId?.let { activeUserId.value = it }
         refreshNotification()
     }
 
     /**
-     * Serialised, because both coroutines this worker runs get here - the visibility collector and
-     * the progress loop - and they are on the same dispatcher rather than the same thread. Two of
-     * them reading [isPromoted] as false would promote twice; two of them past that point would race
-     * to post the notification, and the one that arrived with the older snapshot could win, showing
-     * progress that goes backwards. The snapshot is read inside the lock for the same reason.
+     * Serialised, because every coroutine this worker runs gets here - the visibility collector, the
+     * account status collector and the orchestrator loop - and they are on the same dispatcher rather
+     * than the same thread. Two of them reading [isPromoted] as false would promote twice; two of them
+     * past that point would race to post the notification, and the one that arrived with the older
+     * snapshot could win, showing progress that goes backwards. The snapshot is read inside the lock
+     * for the same reason.
      */
     private suspend fun refreshNotification() = notificationMutex.withLock {
         if (!isPromoted) promoteIfWorthIt()
@@ -241,8 +265,8 @@ class ContentIndexingWorker @AssistedInject constructor(
         // and a notification for an app the user is looking at is just noise. Same when promotion was
         // refused - there is no notification to update.
         if (!isPromoted) return@withLock
-        val progress = latestProgress
-        trySetForeground(primaryAddress(), progress?.toNotificationProgress())
+        val account = notifiedAccount
+        trySetForeground(account?.address, account?.percentage)
     }
 
     /**
@@ -275,46 +299,51 @@ class ContentIndexingWorker @AssistedInject constructor(
             return
         }
         Timber.d("content-search: app backgrounded, promoting the indexing worker")
-        // Bare notification first. Resolving the account label is a session round-trip, and the job
-        // is unprotected for as long as it takes - which is all the quota controller needs to stop
-        // us. The label follows a moment later, by which point the service is already held.
-        isPromoted = trySetForeground(
-            accountLabel = null,
-            progress = latestProgress?.toNotificationProgress()
-        )
+        // With whatever the account's status stream has published so far, which may be nothing at
+        // all: the job is unprotected until the service is held, and waiting on Rust for a percentage
+        // first is all the quota controller needs to stop us. An unnamed "Preparing" is replaced the
+        // moment the stream publishes, by which point the service is already held.
+        val account = notifiedAccount
+        isPromoted = trySetForeground(account?.address, account?.percentage)
     }
 
-    private fun ContentIndexingActivity.Progress.toNotificationProgress() = IndexingProgress(
-        percentage = percentage,
-        isSized = totalMessages > 0
-    )
-
-    override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
+    override suspend fun getForegroundInfo(): ForegroundInfo =
+        buildForegroundInfo(accountAddress = null, percentage = null)
 
     /**
-     * The primary account's address, which is all the notification names - never the account the
-     * orchestrator happens to be indexing, because that would tell anyone looking at the lock screen
-     * how many accounts are signed in and which.
-     *
-     * Cached once found, because progress arrives every batch and re-reading it for each of them
-     * would put a session round-trip between the orchestrator and every notification update. Only
-     * an address is cached, never the absence of one: the accounts are observed through a state flow
-     * that starts out empty, so a worker that asks before it is seeded - a rerun after the process
-     * was killed - gets nothing back, and caching that would leave the notification unnamed for the
-     * rest of its run. The next batch asks again.
+     * Feeds the notification from the active account's own indexing status - the same stream the
+     * settings screen reads, so the two cannot report different percentages for the same account.
      */
-    private suspend fun primaryAddress(): String? {
-        cachedPrimaryAddress?.let { return it }
-        return runCatching { userSessionRepository.observePrimaryAccount().first()?.primaryAddress }
-            .getOrNull()
-            ?.also { cachedPrimaryAddress = it }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun observeActiveAccountProgress() {
+        activeUserId
+            .filterNotNull()
+            .distinctUntilChanged()
+            .flatMapLatest { userId ->
+                val address = addressFor(userId)
+                observeContentSearchIndexingStatus(userId).map { state ->
+                    NotifiedAccount(address, state.backfillPercentage)
+                }
+            }
+            .distinctUntilChanged()
+            .collect { account ->
+                notifiedAccount = account
+                refreshNotification()
+            }
+    }
+
+    private suspend fun addressFor(userId: UserId): String? {
+        if (addressCache.containsKey(userId)) return addressCache[userId]
+        val address = runCatching { userSessionRepository.getAccount(userId)?.primaryAddress }.getOrNull()
+        addressCache[userId] = address
+        return address
     }
 
     /** Whether the service is now held. */
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun trySetForeground(accountLabel: String?, progress: IndexingProgress?): Boolean {
+    private suspend fun trySetForeground(accountAddress: String?, percentage: Double?): Boolean {
         return try {
-            setForeground(buildForegroundInfo(accountLabel, progress))
+            setForeground(buildForegroundInfo(accountAddress, percentage))
             true
         } catch (e: CancellationException) {
             throw e
@@ -327,8 +356,8 @@ class ContentIndexingWorker @AssistedInject constructor(
         }
     }
 
-    private fun buildForegroundInfo(accountLabel: String?, progress: IndexingProgress?): ForegroundInfo {
-        val notification = ContentIndexingNotification.build(context, accountLabel, progress)
+    private fun buildForegroundInfo(accountAddress: String?, percentage: Double?): ForegroundInfo {
+        val notification = ContentIndexingNotification.build(context, accountAddress, percentage)
             .build()
             .apply { flags = flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT }
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

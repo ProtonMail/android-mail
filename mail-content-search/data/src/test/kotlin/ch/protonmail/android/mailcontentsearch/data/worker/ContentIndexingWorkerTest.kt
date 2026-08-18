@@ -27,7 +27,9 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
@@ -69,9 +71,18 @@ internal class ContentIndexingWorkerTest {
     private val mailSessionRepository = mockk<MailSessionRepository> {
         every { getMailSession() } returns mailSession
     }
-    private val primaryAccount = MutableStateFlow<Account?>(null)
     private val userSessionRepository = mockk<UserSessionRepository> {
-        every { observePrimaryAccount() } returns primaryAccount
+        coEvery { getAccount(any()) } answers { account(firstArg()) }
+    }
+
+    // Each account's own backfill, which is what the notification reports - as opposed to the
+    // orchestrator's session-wide progress, which only decides how long the worker lives.
+    private val indexingStates = mapOf(
+        FirstUser to MutableStateFlow<ContentIndexingState>(ContentIndexingState.Initializing),
+        SecondUser to MutableStateFlow<ContentIndexingState>(ContentIndexingState.Initializing)
+    )
+    private val observeContentSearchIndexingStatus = mockk<ObserveContentSearchIndexingStatus> {
+        every { this@mockk.invoke(any()) } answers { indexingStates.getValue(firstArg()) }
     }
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity>()
     private val startContentIndexing = mockk<StartContentIndexing> {
@@ -120,6 +131,7 @@ internal class ContentIndexingWorkerTest {
         mailSessionRepository = mailSessionRepository,
         userSessionRepository = userSessionRepository,
         observeContentIndexingActivity = observeContentIndexingActivity,
+        observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         startContentIndexing = startContentIndexing,
         appInBackgroundState = appInBackgroundState,
         workScheduler = workScheduler
@@ -131,7 +143,7 @@ internal class ContentIndexingWorkerTest {
         givenActivity(
             flowOf(
                 progress(),
-                ContentIndexingActivity.ForwardMode(UserId("user-1")),
+                ContentIndexingActivity.ForwardMode(FirstUser),
                 progress()
             )
         )
@@ -290,8 +302,8 @@ internal class ContentIndexingWorkerTest {
         // When
         worker().doWork()
 
-        // Then - the account address is only ever read to build the notification.
-        verify(exactly = 0) { userSessionRepository.observePrimaryAccount() }
+        // Then
+        verify(exactly = 0) { ContentIndexingNotification.build(any(), any(), any()) }
     }
 
     @Test
@@ -310,30 +322,102 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
         runCurrent()
 
-        // Then - the account address is read to build the notification.
-        verify(atLeast = 1) { userSessionRepository.observePrimaryAccount() }
+        // Then
+        verify(atLeast = 1) { ContentIndexingNotification.build(any(), any(), any()) }
         work.cancel()
     }
 
     @Test
-    fun `keeps asking for the account address until there is one to show`() = runTest {
-        // Given - the accounts are observed through a state flow that starts out empty, so a worker
-        // that asks before it is seeded gets nothing back.
+    fun `reports the account's own progress rather than the orchestrator's`() = runTest {
+        // Given - the orchestrator's percentage is summed across every account, so it does not
+        // describe the one account the notification names. The settings screen reads the per-account
+        // stream this asserts on, and the two must agree.
+        appInBackground.value = true
+        givenActivity(
+            flow {
+                emit(progress(activeUserId = FirstUser, percentage = 12.0))
+                awaitCancellation()
+            }
+        )
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 41.6)
+        runCurrent()
+
+        // Then
+        verify { ContentIndexingNotification.build(any(), "user-1@proton.me", 41.6) }
+        verify(exactly = 0) { ContentIndexingNotification.build(any(), any(), 12.0) }
+        work.cancel()
+    }
+
+    @Test
+    fun `follows the orchestrator on to the next account`() = runTest {
+        // Given - the first account is done and Rust has moved on, so a notification still naming it
+        // would sit on a percentage that never moves again.
         appInBackground.value = true
         val activity = MutableSharedFlow<ContentIndexingActivity>()
         givenActivity(activity)
         val work = async { worker().doWork() }
         runCurrent()
-        activity.emit(progress())
+        activity.emit(progress(activeUserId = FirstUser))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 100.0)
         runCurrent()
 
-        // When - the accounts arrive and another batch is reported.
-        primaryAccount.value = mockk { every { primaryAddress } returns "user@proton.me" }
-        activity.emit(progress())
+        // When
+        activity.emit(progress(activeUserId = SecondUser))
+        indexingStates.getValue(SecondUser).value = ContentIndexingState.Running(percentage = 3.0)
         runCurrent()
 
-        // Then - the notification is named, rather than staying unnamed for the rest of the run.
-        verify { ContentIndexingNotification.build(any(), "user@proton.me", any()) }
+        // Then
+        verify { ContentIndexingNotification.build(any(), "user-2@proton.me", 3.0) }
+        work.cancel()
+    }
+
+    @Test
+    fun `keeps the account it was given while Rust hands over to the next one`() = runTest {
+        // Given - the orchestrator reports no active account between accounts, which would otherwise
+        // leave the notification without a subject for as long as the handover takes.
+        appInBackground.value = true
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 41.6)
+        runCurrent()
+
+        // When
+        activity.emit(progress(activeUserId = null))
+        runCurrent()
+
+        // Then - still the account it was last told about, rather than an unnamed notification.
+        val addresses = mutableListOf<String?>()
+        verify { ContentIndexingNotification.build(any(), captureNullable(addresses), any()) }
+        assertEquals("user-1@proton.me", addresses.last())
+        work.cancel()
+    }
+
+    @Test
+    fun `waits rather than reporting a percentage for an account that has finished`() = runTest {
+        // Given - Rust leaves a caught-up account in Running, which would otherwise sit at 100%.
+        appInBackground.value = true
+        givenActivity(
+            flow {
+                emit(progress(activeUserId = FirstUser))
+                awaitCancellation()
+            }
+        )
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 100.0)
+        runCurrent()
+
+        // Then
+        verify(exactly = 0) { ContentIndexingNotification.build(any(), any(), 100.0) }
         work.cancel()
     }
 
@@ -393,7 +477,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2 + 1)
 
         // Then - the account address is read, which only happens to build a notification.
-        verify(atLeast = 1) { userSessionRepository.observePrimaryAccount() }
+        coVerify(atLeast = 1) { userSessionRepository.getAccount(FirstUser) }
         work.cancel()
     }
 
@@ -466,20 +550,31 @@ internal class ContentIndexingWorkerTest {
         work.cancel()
     }
 
+    private fun account(userId: UserId) = mockk<Account> {
+        every { primaryAddress } returns "${userId.id}@proton.me"
+    }
+
     private fun givenActivity(flow: Flow<ContentIndexingActivity>) {
         every { observeContentIndexingActivity() } returns flow
     }
 
     private fun progress(
-        activeUserId: UserId? = UserId("user-1"),
+        activeUserId: UserId? = FirstUser,
         completedUsers: Long = 0,
-        userCount: Long = 2
+        userCount: Long = 2,
+        percentage: Double = 10.0
     ) = ContentIndexingActivity.Progress(
         activeUserId = activeUserId,
-        percentage = 10.0,
+        percentage = percentage,
         processedMessages = 10,
         totalMessages = 100,
         completedUsers = completedUsers,
         userCount = userCount
     )
+
+    private companion object {
+
+        val FirstUser = UserId("user-1")
+        val SecondUser = UserId("user-2")
+    }
 }
