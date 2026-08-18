@@ -28,6 +28,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.data.util.formatPercentage
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.backfillPercentage
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
@@ -322,7 +323,12 @@ class ContentIndexingWorker @AssistedInject constructor(
             .flatMapLatest { userId ->
                 val address = addressFor(userId)
                 observeContentSearchIndexingStatus(userId).map { state ->
-                    NotifiedAccount(address, state.backfillPercentage)
+                    val percentage = state.backfillPercentage
+                    // The account's own progress, as opposed to the orchestrator's session-wide line.
+                    Timber.d(
+                        "content-search: $userId backfill=${percentage?.let { "${it.formatPercentage()}%" } ?: state}"
+                    )
+                    NotifiedAccount(address, percentage)
                 }
             }
             .distinctUntilChanged()

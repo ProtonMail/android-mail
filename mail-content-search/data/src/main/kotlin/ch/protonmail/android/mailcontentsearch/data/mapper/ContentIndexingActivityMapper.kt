@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
+import ch.protonmail.android.mailcontentsearch.data.util.formatPercentage
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import me.proton.core.domain.entity.UserId
@@ -71,17 +72,19 @@ internal fun SyncOrchestratorEvent.toIndexingActivity(): ContentIndexingActivity
 /**
  * Traces the orchestrator, including the events [toIndexingActivity] drops.
  *
- * The percentage is the orchestrator's own, summed across every account's totals, so it moves when
- * accounts are added or removed as well as when messages are indexed. The per-account counters are
- * printed next to it so a jump is readable rather than mysterious.
+ * Every figure here is session-wide - summed across every account's totals - so the percentage moves
+ * when accounts are added or removed as well as when messages are indexed. It is labelled as such
+ * because it is not the progress of the account named next to it: for that one, see the per-account
+ * line the indexing worker logs.
  */
 internal fun SyncOrchestratorEvent.log() {
     when (this) {
         is SyncOrchestratorEvent.Started -> Timber.d("content-search: orchestrator started")
 
         is SyncOrchestratorEvent.Progress -> Timber.d(
-            "content-search: ${v1.activeId ?: "no account"} progress=${v1.percentage}% " +
-                "(${v1.processed}/${v1.total}), accounts=${v1.completedUsers}/${v1.userCount}"
+            "content-search: orchestrator overall=${v1.percentage.formatPercentage()}% " +
+                "(${v1.processed}/${v1.total} messages, ${v1.completedUsers}/${v1.userCount} accounts), " +
+                "indexing ${v1.activeId ?: "no account"}"
         )
 
         is SyncOrchestratorEvent.ForwardModeEntered -> Timber.d("content-search: $v1 entered forward mode")
