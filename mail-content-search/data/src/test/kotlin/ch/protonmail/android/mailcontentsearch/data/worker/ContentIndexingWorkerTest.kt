@@ -31,19 +31,21 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentInde
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
+import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.verify
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
+import io.mockk.verify
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -67,8 +69,9 @@ internal class ContentIndexingWorkerTest {
     private val mailSessionRepository = mockk<MailSessionRepository> {
         every { getMailSession() } returns mailSession
     }
+    private val primaryAccount = MutableStateFlow<Account?>(null)
     private val userSessionRepository = mockk<UserSessionRepository> {
-        coEvery { getAccount(any()) } returns null
+        every { observePrimaryAccount() } returns primaryAccount
     }
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity>()
     private val startContentIndexing = mockk<StartContentIndexing> {
@@ -287,8 +290,8 @@ internal class ContentIndexingWorkerTest {
         // When
         worker().doWork()
 
-        // Then - the account label is only ever read to build the notification.
-        coVerify(exactly = 0) { userSessionRepository.getAccount(any()) }
+        // Then - the account address is only ever read to build the notification.
+        verify(exactly = 0) { userSessionRepository.observePrimaryAccount() }
     }
 
     @Test
@@ -307,8 +310,30 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
         runCurrent()
 
-        // Then - the account label is read to build the notification.
-        coVerify(atLeast = 1) { userSessionRepository.getAccount(UserId("user-1")) }
+        // Then - the account address is read to build the notification.
+        verify(atLeast = 1) { userSessionRepository.observePrimaryAccount() }
+        work.cancel()
+    }
+
+    @Test
+    fun `keeps asking for the account address until there is one to show`() = runTest {
+        // Given - the accounts are observed through a state flow that starts out empty, so a worker
+        // that asks before it is seeded gets nothing back.
+        appInBackground.value = true
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress())
+        runCurrent()
+
+        // When - the accounts arrive and another batch is reported.
+        primaryAccount.value = mockk { every { primaryAddress } returns "user@proton.me" }
+        activity.emit(progress())
+        runCurrent()
+
+        // Then - the notification is named, rather than staying unnamed for the rest of the run.
+        verify { ContentIndexingNotification.build(any(), "user@proton.me", any()) }
         work.cancel()
     }
 
@@ -367,8 +392,8 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
         advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2 + 1)
 
-        // Then - the account label is read, which only happens to build a notification.
-        coVerify(atLeast = 1) { userSessionRepository.getAccount(UserId("user-1")) }
+        // Then - the account address is read, which only happens to build a notification.
+        verify(atLeast = 1) { userSessionRepository.observePrimaryAccount() }
         work.cancel()
     }
 

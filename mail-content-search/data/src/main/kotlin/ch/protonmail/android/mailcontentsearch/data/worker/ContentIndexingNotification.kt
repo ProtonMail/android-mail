@@ -23,6 +23,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
 import ch.protonmail.android.mailcommon.domain.system.NotificationChannelId
 import ch.protonmail.android.mailcontentsearch.data.R
@@ -41,19 +42,10 @@ internal object ContentIndexingNotification {
         progress: IndexingProgress?
     ): NotificationCompat.Builder {
         ensureChannel(context)
-        val title = context.getString(R.string.content_search_notification_title)
-        val titleWithAccount = accountLabel
-            ?.takeIf { it.isNotBlank() }
-            ?.let { "$title — $it" }
-            ?: title
-        // Rust reports a total of zero until it has sized the backfill, which would render as
-        // "0% · 0/0 messages" rather than as the wait it is.
-        val sized = progress?.takeIf { it.totalMessages > 0 }
-        val contentText = sized?.contentText(context)
-            ?: context.getString(R.string.content_search_notification_preparing)
+        val sized = progress?.takeIf { it.isSized }
         return NotificationCompat.Builder(context, NotificationChannelId.ContentSearch)
-            .setContentTitle(titleWithAccount)
-            .setContentText(contentText)
+            .setContentTitle(context.getString(R.string.content_search_notification_title))
+            .setContentText(contentText(context, accountLabel, progress))
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
@@ -70,38 +62,37 @@ internal object ContentIndexingNotification {
     }
 
     /**
-     * What the orchestrator has indexed so far, session-wide.
+     * The account the notification is for, next to how far the indexing has got.
+     */
+    @VisibleForTesting
+    fun contentText(
+        context: Context,
+        accountLabel: String?,
+        progress: IndexingProgress?
+    ): String {
+        // A percentage of an unsized backfill is a flat "0%" rather than the wait it is.
+        val status = progress
+            ?.takeIf { it.isSized }
+            ?.let { context.getString(R.string.content_search_notification_percentage, it.roundedPercentage) }
+            ?: context.getString(R.string.content_search_notification_preparing)
+        return accountLabel
+            ?.takeIf { it.isNotBlank() }
+            ?.let { context.getString(R.string.content_search_notification_progress, it, status) }
+            ?: status
+    }
+
+    /**
+     * How far the orchestrator has got, session-wide.
      *
-     * The message counts are summed across every account, so they are only meaningful next to the
-     * account counts - hence both are shown as soon as there is more than one account to index.
+     * [isSized] because Rust reports a total of zero messages until it has sized the backfill, and
+     * the percentage means nothing until it has.
      */
     data class IndexingProgress(
         val percentage: Double,
-        val processedMessages: Long,
-        val totalMessages: Long,
-        val completedAccounts: Int,
-        val totalAccounts: Int
+        val isSized: Boolean
     ) {
 
         val roundedPercentage: Int get() = percentage.roundToInt().coerceIn(0, PercentageScale)
-
-        fun contentText(context: Context): String = if (totalAccounts > 1) {
-            context.getString(
-                R.string.content_search_notification_message_progress_multi_account,
-                roundedPercentage,
-                processedMessages,
-                totalMessages,
-                completedAccounts,
-                totalAccounts
-            )
-        } else {
-            context.getString(
-                R.string.content_search_notification_message_progress,
-                roundedPercentage,
-                processedMessages,
-                totalMessages
-            )
-        }
     }
 
     private fun cancelPendingIntent(context: Context): PendingIntent {

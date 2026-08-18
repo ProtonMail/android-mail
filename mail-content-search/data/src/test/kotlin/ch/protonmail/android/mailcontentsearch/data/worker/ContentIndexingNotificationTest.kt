@@ -32,48 +32,39 @@ internal class ContentIndexingNotificationTest {
     // Stubbed per string so the assertions pin down which one was chosen, not merely that some
     // resource was read.
     private val context = mockk<Context> {
+        every { getString(R.string.content_search_notification_percentage, *anyVararg()) } returns "42%"
+        every { getString(R.string.content_search_notification_preparing) } returns "Preparing…"
         every {
-            getString(R.string.content_search_notification_message_progress, *anyVararg())
-        } returns "messages only"
-        every {
-            getString(R.string.content_search_notification_message_progress_multi_account, *anyVararg())
-        } returns "messages and accounts"
+            getString(R.string.content_search_notification_progress, *anyVararg())
+        } returns "user@proton.me · 42%"
     }
 
     @Test
-    fun `a single account is reported as a percentage and a message count`() {
-        // Given - the account counts would be noise: there is only ever one of them.
-        val progress = progress(totalAccounts = 1)
-
+    fun `the account address is shown next to the percentage`() {
         // When
-        val text = progress.contentText(context)
+        val text = ContentIndexingNotification.contentText(context, "user@proton.me", progress())
 
         // Then
-        assertEquals("messages only", text)
-        verify { context.getString(R.string.content_search_notification_message_progress, 42, 416L, 1000L) }
+        assertEquals("user@proton.me · 42%", text)
+        verify { context.getString(R.string.content_search_notification_progress, "user@proton.me", "42%") }
     }
 
     @Test
-    fun `several accounts get the account counts alongside the messages`() {
-        // Given - the message counts are summed across accounts, so on their own they look like
-        // one account's backfill stalling and then leaping forward.
-        val progress = progress(completedAccounts = 1, totalAccounts = 3)
-
-        // When
-        val text = progress.contentText(context)
+    fun `an unsized backfill waits rather than reporting a percentage`() {
+        // Given
+        val text = ContentIndexingNotification.contentText(context, null, progress(isSized = false))
 
         // Then
-        assertEquals("messages and accounts", text)
-        verify {
-            context.getString(
-                R.string.content_search_notification_message_progress_multi_account,
-                42,
-                416L,
-                1000L,
-                1,
-                3
-            )
-        }
+        assertEquals("Preparing…", text)
+    }
+
+    @Test
+    fun `the percentage stands alone until the address is known`() {
+        // Given
+        val text = ContentIndexingNotification.contentText(context, accountLabel = "  ", progress = progress())
+
+        // Then
+        assertEquals("42%", text)
     }
 
     @Test
@@ -83,11 +74,5 @@ internal class ContentIndexingNotificationTest {
         assertEquals(0, progress().copy(percentage = -1.0).roundedPercentage)
     }
 
-    private fun progress(completedAccounts: Int = 0, totalAccounts: Int = 1) = IndexingProgress(
-        percentage = 41.6,
-        processedMessages = 416,
-        totalMessages = 1000,
-        completedAccounts = completedAccounts,
-        totalAccounts = totalAccounts
-    )
+    private fun progress(isSized: Boolean = true) = IndexingProgress(percentage = 41.6, isSized = isSized)
 }

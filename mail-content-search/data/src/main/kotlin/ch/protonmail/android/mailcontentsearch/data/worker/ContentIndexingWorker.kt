@@ -44,12 +44,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
-import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -100,7 +100,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private var isReplacingSelf = false
 
     @Volatile
-    private var cachedAccountLabel: Pair<UserId, String?>? = null
+    private var cachedPrimaryAddress: String? = null
 
     private val notificationMutex = Mutex()
 
@@ -242,8 +242,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         // refused - there is no notification to update.
         if (!isPromoted) return@withLock
         val progress = latestProgress
-        val label = progress?.activeUserId?.let { accountLabelFor(it) }
-        trySetForeground(label, progress?.toNotificationProgress())
+        trySetForeground(primaryAddress(), progress?.toNotificationProgress())
     }
 
     /**
@@ -287,24 +286,28 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     private fun ContentIndexingActivity.Progress.toNotificationProgress() = IndexingProgress(
         percentage = percentage,
-        processedMessages = processedMessages,
-        totalMessages = totalMessages,
-        completedAccounts = completedUsers.toInt(),
-        totalAccounts = userCount.toInt()
+        isSized = totalMessages > 0
     )
 
     override suspend fun getForegroundInfo(): ForegroundInfo = buildForegroundInfo(accountLabel = null, progress = null)
 
     /**
-     * Cached for one account, because that is how many the orchestrator indexes at a time. Progress
-     * arrives every batch, and re-reading the account for each of them would put a session
-     * round-trip between the orchestrator and every notification update.
+     * The primary account's address, which is all the notification names - never the account the
+     * orchestrator happens to be indexing, because that would tell anyone looking at the lock screen
+     * how many accounts are signed in and which.
+     *
+     * Cached once found, because progress arrives every batch and re-reading it for each of them
+     * would put a session round-trip between the orchestrator and every notification update. Only
+     * an address is cached, never the absence of one: the accounts are observed through a state flow
+     * that starts out empty, so a worker that asks before it is seeded - a rerun after the process
+     * was killed - gets nothing back, and caching that would leave the notification unnamed for the
+     * rest of its run. The next batch asks again.
      */
-    private suspend fun accountLabelFor(userId: UserId): String? {
-        cachedAccountLabel?.takeIf { it.first == userId }?.let { return it.second }
-        val label = runCatching { userSessionRepository.getAccount(userId)?.primaryAddress }.getOrNull()
-        cachedAccountLabel = userId to label
-        return label
+    private suspend fun primaryAddress(): String? {
+        cachedPrimaryAddress?.let { return it }
+        return runCatching { userSessionRepository.observePrimaryAccount().first()?.primaryAddress }
+            .getOrNull()
+            ?.also { cachedPrimaryAddress = it }
     }
 
     /** Whether the service is now held. */
