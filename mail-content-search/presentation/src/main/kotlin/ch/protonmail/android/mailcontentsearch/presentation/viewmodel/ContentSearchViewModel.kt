@@ -194,7 +194,13 @@ class ContentSearchViewModel @Inject constructor(
                 savedStateHandle[KEY_QUERY] = text
                 // Emptying the field is the one edit that acts without the search key: it takes the
                 // screen back to the history page and drops the search that was showing behind it.
-                if (text.isBlank()) resetToIdle()
+                if (text.isBlank()) {
+                    resetToIdle()
+                } else if (submittedQuery.value.isBlank()) {
+                    // Typing over the history page filters the recent queries and hides the previously
+                    // found items, so a download started from one of those rows loses its row here.
+                    cancelAttachmentDownload()
+                }
             }
             .launchIn(viewModelScope)
 
@@ -304,6 +310,7 @@ class ContentSearchViewModel @Inject constructor(
             is ContentSearchViewAction.AvatarImageLoadRequested -> action.item.participantAvatar()?.let { avatar ->
                 viewModelScope.launch { loadAvatarImage(avatar.address, avatar.bimiSelector) }
             }
+
             is ContentSearchViewAction.AvatarImageLoadFailed -> action.item.participantAvatar()?.let { avatar ->
                 viewModelScope.launch { handleAvatarImageLoadingFailure(avatar.address, avatar.bimiSelector) }
             }
@@ -317,8 +324,10 @@ class ContentSearchViewModel @Inject constructor(
                     ContentSearchOperation.EnterSelectionMode(action.item)
                 }
             )
+
             is ContentSearchViewAction.ToggleItemSelection ->
                 applyOperation(ContentSearchOperation.ToggleSelection(action.item))
+
             ContentSearchViewAction.ExitSelectionMode -> applyOperation(ContentSearchOperation.ExitSelectionMode)
             is ContentSearchViewAction.ItemsRemovedFromSelection ->
                 applyOperation(ContentSearchOperation.ItemsRemovedFromSelection(action.itemIds))
@@ -626,7 +635,7 @@ class ContentSearchViewModel @Inject constructor(
     }
 
     private fun resetToIdle() {
-        cancelAttachmentDownload()
+        if (submittedQuery.value.isNotBlank()) cancelAttachmentDownload()
         savedStateHandle[KEY_SUBMITTED_QUERY] = ""
         submittedQuery.value = ""
         // Reset the phase here rather than waiting for the dropped query to travel back through the
@@ -634,8 +643,10 @@ class ContentSearchViewModel @Inject constructor(
         mutableState.update { it.copy(query = "", phase = ContentSearchState.Phase.Idle) }
     }
 
-    // The row a download was started from is about to be replaced by another result set, so drop it
-    // rather than pop a file viewer over results the user has moved on from.
+    // A download's progress is anchored to the row it started from, and finishing it opens the file, so it
+    // is dropped exactly when the list holding that row goes away.
+    //
+    // Otherwise a file viewer would pop over a screen the user has already moved on from.
     private fun cancelAttachmentDownload() {
         if (attachmentDownloadJob == null) return
         attachmentDownloadJob?.cancel()

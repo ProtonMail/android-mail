@@ -481,15 +481,53 @@ internal class ContentSearchViewModelTest {
     fun `should keep a running attachment download while the query is edited`() = runTest(testDispatcher) {
         val sut = viewModel()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
+        // Given a download started from a result row.
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
         sut.submit(ContentSearchViewAction.RequestAttachment(attachmentId))
         advanceUntilIdle()
 
-        sut.type("invoice")
+        sut.type("invoices")
         advanceUntilIdle()
 
         // The results the download was started from are still on screen, since typing no longer
         // searches — so the file the user asked for is still the one they'll get.
         assertEquals(attachmentId, sut.state.value.downloadingAttachmentId)
+    }
+
+    @Test
+    fun `should drop a running attachment download when typing hides the row it started from`() =
+        runTest(testDispatcher) {
+            val sut = viewModel()
+            coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
+            // Given
+            sut.submit(ContentSearchViewAction.RequestAttachment(attachmentId))
+            advanceUntilIdle()
+
+            // When
+            sut.type("inv")
+            advanceUntilIdle()
+
+            // Then
+            assertNull(sut.state.value.downloadingAttachmentId)
+        }
+
+    @Test
+    fun `should drop a running attachment download when the results are emptied away`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+        sut.submit(ContentSearchViewAction.RequestAttachment(attachmentId))
+        advanceUntilIdle()
+
+        // When the field is emptied, taking the results the download was started from with it.
+        sut.type("")
+        advanceUntilIdle()
+
+        assertNull(sut.state.value.downloadingAttachmentId)
     }
 
     @Test
