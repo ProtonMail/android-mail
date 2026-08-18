@@ -85,12 +85,12 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.model.SendErrorReason
 import ch.protonmail.android.mailcomposer.presentation.mapper.SendErrorReasonMapper
+import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.RawMessageDataType
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
-import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheet
 import ch.protonmail.android.mailnotifications.presentation.viewmodel.NotificationsPermissionViewModel
 import ch.protonmail.android.mailnotifications.ui.NotificationsPermissionBottomSheet
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
@@ -196,6 +196,8 @@ fun Home(
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
+    val isContentSearchMobileDataEnabled by
+    contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -591,11 +593,15 @@ fun Home(
                 }
 
                 is BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
-                    onOpenSettings = {
-                        onBottomSheetDismissed()
-                        navController.navigate(Screen.ContentSearchSettings.route)
-                    },
-                    onDismiss = onBottomSheetDismissed
+                    isMobileDataEnabled = isContentSearchMobileDataEnabled,
+                    actions = ContentSearchBottomSheet.Actions(
+                        onOpenSettings = {
+                            onBottomSheetDismissed()
+                            navController.navigate(Screen.ContentSearchSettings.route)
+                        },
+                        onDismiss = onBottomSheetDismissed,
+                        onToggleMobileData = contentSearchBottomSheetViewModel::toggleMobileData
+                    )
                 ).also {
                     preventBottomSheetDismissal = false
                 }

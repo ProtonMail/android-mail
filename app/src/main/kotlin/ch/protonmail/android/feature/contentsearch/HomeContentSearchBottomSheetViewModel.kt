@@ -21,16 +21,19 @@ package ch.protonmail.android.feature.contentsearch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcontentsearch.domain.usecase.HasShownContentSearchBottomSheet
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.MarkContentSearchBottomSheetShown
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ShouldShowContentSearchBottomSheet
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
@@ -49,13 +52,24 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val shouldShowContentSearchBottomSheet: ShouldShowContentSearchBottomSheet,
     private val hasShownContentSearchBottomSheet: HasShownContentSearchBottomSheet,
-    private val markContentSearchBottomSheetShown: MarkContentSearchBottomSheetShown
+    private val markContentSearchBottomSheetShown: MarkContentSearchBottomSheetShown,
+    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
+    private val setAllowContentSearchOnMobileData: SetAllowContentSearchOnMobileData
 ) : ViewModel() {
 
     // Bumped after the sheet is marked shown so the flow re-reads hasShown() and stops emitting Show.
     // Without this the state stays Show for the whole session and the interstitial re-fires on every
     // configuration change (rotation). See ET-6707.
     private val refreshTrigger = MutableStateFlow(0)
+
+    private val mutableIsMobileDataEnabled = MutableStateFlow(DefaultAllowMobileData)
+    val isMobileDataEnabled: StateFlow<Boolean> = mutableIsMobileDataEnabled.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            mutableIsMobileDataEnabled.value = isContentSearchAllowedOnMobileData()
+        }
+    }
 
     val state: StateFlow<ContentSearchBottomSheetState> =
         combine(observePrimaryUserId().filterNotNull(), refreshTrigger) { userId, _ -> userId }
@@ -88,5 +102,15 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
             markContentSearchBottomSheetShown()
             refreshTrigger.update { it + 1 }
         }
+    }
+
+    fun toggleMobileData(enabled: Boolean) {
+        mutableIsMobileDataEnabled.value = enabled
+        viewModelScope.launch { setAllowContentSearchOnMobileData(enabled) }
+    }
+
+    private companion object {
+
+        const val DefaultAllowMobileData = true
     }
 }

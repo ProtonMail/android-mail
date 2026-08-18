@@ -49,11 +49,12 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcontentsearch.presentation.R
+import ch.protonmail.android.mailcontentsearch.presentation.settings.ui.MobileDataCard
 
 @Composable
 fun ContentSearchBottomSheet(
-    onOpenSettings: () -> Unit,
-    onDismiss: () -> Unit,
+    isMobileDataEnabled: Boolean,
+    actions: ContentSearchBottomSheet.Actions,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -83,9 +84,17 @@ fun ContentSearchBottomSheet(
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
-        DescriptionText(onOpenSettings = onOpenSettings)
+        DescriptionText(onOpenSettings = actions.onOpenSettings)
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
+
+        MobileDataCard(
+            modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Standard),
+            isEnabled = isMobileDataEnabled,
+            onToggle = actions.onToggleMobileData
+        )
+
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
 
         ProtonTextButton(
             modifier = Modifier
@@ -95,7 +104,7 @@ fun ContentSearchBottomSheet(
                     color = ProtonTheme.colors.brandNorm,
                     shape = ProtonTheme.shapes.massive
                 ),
-            onClick = onDismiss
+            onClick = actions.onDismiss
         ) {
             Text(
                 text = stringResource(id = R.string.content_search_bottomsheet_ok),
@@ -141,13 +150,26 @@ private fun DescriptionText(modifier: Modifier = Modifier, onOpenSettings: () ->
     )
 }
 
+object ContentSearchBottomSheet {
+
+    data class Actions(
+        val onOpenSettings: () -> Unit,
+        val onDismiss: () -> Unit,
+        val onToggleMobileData: (Boolean) -> Unit
+    )
+}
+
 @AdaptivePreviews
 @Composable
 private fun PreviewContentSearchBottomSheet() {
     ProtonTheme {
         ContentSearchBottomSheet(
-            onOpenSettings = {},
-            onDismiss = {}
+            isMobileDataEnabled = true,
+            actions = ContentSearchBottomSheet.Actions(
+                onOpenSettings = {},
+                onDismiss = {},
+                onToggleMobileData = {}
+            )
         )
     }
 }
