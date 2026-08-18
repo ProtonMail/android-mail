@@ -38,12 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withLink
 import ch.protonmail.android.design.compose.component.ProtonTextButton
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -84,7 +79,7 @@ fun ContentSearchBottomSheet(
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
-        DescriptionText(onOpenSettings = actions.onOpenSettings)
+        DescriptionText()
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
 
@@ -119,31 +114,12 @@ fun ContentSearchBottomSheet(
 }
 
 @Composable
-private fun DescriptionText(modifier: Modifier = Modifier, onOpenSettings: () -> Unit) {
-    val settingsLink = stringResource(id = R.string.content_search_bottomsheet_settings_link)
-    val description = stringResource(id = R.string.content_search_bottomsheet_description, settingsLink)
-    val linkColor = ProtonTheme.colors.brandNorm
-
-    val prefix = description.substringBefore(settingsLink)
-    val suffix = description.substringAfter(settingsLink)
-
-    val annotatedString = buildAnnotatedString {
-        append(prefix)
-        withLink(
-            LinkAnnotation.Clickable(
-                tag = "content_search_bottomsheet_settings",
-                styles = TextLinkStyles(style = SpanStyle(color = linkColor)),
-                linkInteractionListener = { onOpenSettings() }
-            )
-        ) {
-            append(settingsLink)
-        }
-        append(suffix)
-    }
+private fun DescriptionText(modifier: Modifier = Modifier) {
+    val description = stringResource(id = R.string.content_search_bottomsheet_description)
 
     Text(
         modifier = modifier.fillMaxWidth(),
-        text = annotatedString,
+        text = description,
         style = ProtonTheme.typography.bodyLarge,
         color = ProtonTheme.colors.textWeak,
         textAlign = TextAlign.Center
@@ -153,7 +129,6 @@ private fun DescriptionText(modifier: Modifier = Modifier, onOpenSettings: () ->
 object ContentSearchBottomSheet {
 
     data class Actions(
-        val onOpenSettings: () -> Unit,
         val onDismiss: () -> Unit,
         val onToggleMobileData: (Boolean) -> Unit
     )
@@ -166,7 +141,6 @@ private fun PreviewContentSearchBottomSheet() {
         ContentSearchBottomSheet(
             isMobileDataEnabled = true,
             actions = ContentSearchBottomSheet.Actions(
-                onOpenSettings = {},
                 onDismiss = {},
                 onToggleMobileData = {}
             )

@@ -196,8 +196,7 @@ fun Home(
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
-    val isContentSearchMobileDataEnabled by
-    contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
+    val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -593,12 +592,8 @@ fun Home(
                 }
 
                 is BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
-                    isMobileDataEnabled = isContentSearchMobileDataEnabled,
+                    isMobileDataEnabled = isSearchMobileDataOn,
                     actions = ContentSearchBottomSheet.Actions(
-                        onOpenSettings = {
-                            onBottomSheetDismissed()
-                            navController.navigate(Screen.ContentSearchSettings.route)
-                        },
                         onDismiss = onBottomSheetDismissed,
                         onToggleMobileData = contentSearchBottomSheetViewModel::toggleMobileData
                     )
