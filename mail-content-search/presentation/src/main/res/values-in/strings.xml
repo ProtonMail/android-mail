@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Pencarian lanjutan</string>
   <string name="mail_settings_content_search_mobile_data_title">Izinkan pengunduhan via data seluler</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pengunduhan dilanjutkan melalui data seluler jika Wi-Fi terputus.</string>
-  <string name="mail_settings_content_search_syncing_status">Menyiapkan %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Menyiapkan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Bersihkan data pencarian lokal</string>

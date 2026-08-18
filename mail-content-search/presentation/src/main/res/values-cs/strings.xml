@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Pokročilé vyhledávání</string>
   <string name="mail_settings_content_search_mobile_data_title">Povolit stahování přes mobilní data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pokud dojde k výpadku Wi-Fi, stahování pokračuje přes mobilní data.</string>
-  <string name="mail_settings_content_search_syncing_status">Příprava %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Příprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Smazat místní data vyhledávání</string>

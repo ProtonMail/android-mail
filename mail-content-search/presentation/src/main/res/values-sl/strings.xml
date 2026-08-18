@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Napredno iskanje</string>
   <string name="mail_settings_content_search_mobile_data_title">Dovoli prenos prek mobilnih podatkov</string>
   <string name="mail_settings_content_search_mobile_data_hint">Če povezava Wi-Fi ni več na voljo, se bo prenos nadaljeval prek mobilnih podatkov.</string>
-  <string name="mail_settings_content_search_syncing_status">Pripravljanje %1$.2f%% …</string>
   <string name="mail_settings_content_search_preparing_status">Priprava …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakanje na Wifi …</string>
   <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>

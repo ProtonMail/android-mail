@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">향상된 검색</string>
   <string name="mail_settings_content_search_mobile_data_title">모바일 데이터로 다운로드 허용</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi 신호 유실시 모바일 데이터로 계속 다운로드합니다.</string>
-  <string name="mail_settings_content_search_syncing_status">준비 중 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">준비 중…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi를 기다리는 중...</string>
   <string name="mail_settings_content_search_clear_data_button">로컬 검색 데이터 지우기</string>

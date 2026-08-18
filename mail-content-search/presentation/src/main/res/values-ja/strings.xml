@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">高度な検索</string>
   <string name="mail_settings_content_search_mobile_data_title">モバイルデータ通信経由のダウンロードを許可</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fiが切断された場合、モバイルデータ通信経由でダウンロードを継続します。</string>
-  <string name="mail_settings_content_search_syncing_status">準備中 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">ローカル検索データを消去</string>

@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Cerca avançada</string>
   <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$.2f%%</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">S\'està esperant la Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>

@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Σύνθετη αναζήτηση</string>
   <string name="mail_settings_content_search_mobile_data_title">Να επιτρέπεται λήψη μέσω δεδομένων κινητής τηλεφωνίας</string>
   <string name="mail_settings_content_search_mobile_data_hint">Η λήψη συνεχίζεται μέσω δεδομένων κινητής τηλεφωνίας εάν χαθεί το Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Προετοιμασία %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Προετοιμασία…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Αναμονή για Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>

@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Zaawansowane wyszukiwanie</string>
   <string name="mail_settings_content_search_mobile_data_title">Zezwalaj na pobieranie przez dane mobilne</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pobieranie będzie kontynuowane przy użyciu danych mobilnych w przypadku utraty połączenia Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Przygotowywanie %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Przygotowywanie…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Wyczyść lokalne dane wyszukiwania</string>

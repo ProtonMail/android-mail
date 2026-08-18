@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Geavanceerd zoeken</string>
   <string name="mail_settings_content_search_mobile_data_title">Downloaden via mobiele gegevens toestaan</string>
   <string name="mail_settings_content_search_mobile_data_hint">Het downloaden gaat door via mobiele gegevens als de wifi-verbinding wordt verbroken.</string>
-  <string name="mail_settings_content_search_syncing_status">Voorbereiden %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Voorbereiden…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale zoekgegevens wissen</string>

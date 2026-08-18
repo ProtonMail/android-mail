@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Căutare avansată</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitere descărcare prin date mobile</string>
   <string name="mail_settings_content_search_mobile_data_hint">Descărcarea continuă prin datele mobile dacă se pierde conexiunea Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Se pregătește %1$.2f %%…</string>
   <string name="mail_settings_content_search_preparing_status">Se pregătește…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Se așteaptă Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>

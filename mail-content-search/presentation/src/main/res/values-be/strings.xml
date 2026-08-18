@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Пашыраны пошук</string>
   <string name="mail_settings_content_search_mobile_data_title">Дазволіць спампоўванне праз праз мабільныя даныя</string>
   <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
-  <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>

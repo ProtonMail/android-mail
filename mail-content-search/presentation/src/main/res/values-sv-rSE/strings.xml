@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Avancerad sök</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillåt nedladdning via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Nedladdningen fortsätter via mobil data om Wi-Fi förloras.</string>
-  <string name="mail_settings_content_search_syncing_status">Förbereder %1$.2f %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Väntar på Wi-Fi …</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>

@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Pesquisa avançada</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitir transferência via dados móveis</string>
   <string name="mail_settings_content_search_mobile_data_hint">A transferência continua através de dados móveis se a ligação Wi-Fi for perdida.</string>
-  <string name="mail_settings_content_search_syncing_status">A preparar %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">A preparar…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa local</string>

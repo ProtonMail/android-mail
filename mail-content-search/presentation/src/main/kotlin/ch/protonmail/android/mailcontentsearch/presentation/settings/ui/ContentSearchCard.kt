@@ -47,6 +47,8 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun ContentSearchCard(
@@ -63,7 +65,7 @@ internal fun ContentSearchCard(
     var showPreparing by remember { mutableStateOf(false) }
     LaunchedEffect(isIndexingActive, syncPercentage, isWaitingForUnmeteredConnection) {
         if (isIndexingActive && syncPercentage == null && !isWaitingForUnmeteredConnection) {
-            delay(PREPARING_DELAY_MILLIS)
+            delay(PREPARING_DELAY_MILLIS.milliseconds)
             showPreparing = true
         } else {
             showPreparing = false
@@ -115,7 +117,7 @@ internal fun ContentSearchCard(
 
                     syncPercentage != null -> stringResource(
                         id = R.string.mail_settings_content_search_syncing_status,
-                        syncPercentage
+                        syncPercentage.roundToInt()
                     )
 
                     showPreparing -> stringResource(

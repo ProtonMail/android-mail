@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">高级搜索</string>
   <string name="mail_settings_content_search_mobile_data_title">允许通过移动数据下载</string>
   <string name="mail_settings_content_search_mobile_data_hint">如果 Wi-Fi 信号丢失，将通过移动数据继续下载</string>
-  <string name="mail_settings_content_search_syncing_status">正在准备 %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">正在准备…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">清除本地搜索数据</string>

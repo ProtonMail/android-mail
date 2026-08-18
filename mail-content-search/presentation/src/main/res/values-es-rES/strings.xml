@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Búsqueda avanzada</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitir descarga con datos móviles</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descarga continúa con datos móviles si se pierde la conexión Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparando %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Borrar datos de búsqueda local</string>

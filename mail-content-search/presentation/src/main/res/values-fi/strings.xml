@@ -6,7 +6,6 @@
   <string name="mail_settings_content_search_toggle_title">Tarkennettu haku</string>
   <string name="mail_settings_content_search_mobile_data_title">Salli lataus mobiiliverkon kautta</string>
   <string name="mail_settings_content_search_mobile_data_hint">Lataus jatkuu mobiilidatan kautta, jos Wi-Fi-yhteys katkeaa.</string>
-  <string name="mail_settings_content_search_syncing_status">Valmistellaan %1$.2f%%…</string>
   <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Odotetaan Wi-Fi-yhteyttä</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
