@@ -177,6 +177,94 @@ internal class RecentSearchesViewModelTest {
     }
 
     @Test
+    fun `a typed query filters the terms by it and hides the previously found items`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice"), term("parcel")), items = listOf(foundItem(FirstMessageId)))
+        givenTerms(prefix = "inv", terms = listOf(term("invoice")))
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
+
+        // Then
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("invoice"), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `a typed query matching no term does not report no history`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice")), items = listOf(foundItem(FirstMessageId)))
+        givenTerms(prefix = "zz", terms = emptyList())
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("zz"))
+
+        // Then
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf(), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `dismissing the last matching term under a filter does not report no history`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice"), term("parcel")), items = emptyList())
+        givenTerms(prefix = "inv", terms = listOf(term("invoice")))
+        coEvery { dismissRecentSearchTerm(userId, "invoice") } returns Unit.right()
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
+        givenTerms(prefix = "inv", terms = emptyList())
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("invoice"))
+
+        // Then
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf(), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `emptying the search field brings the whole history back`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice")), items = listOf(foundItem(FirstMessageId)))
+        givenTerms(prefix = "inv", terms = listOf(term("invoice")))
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.QueryChanged(""))
+
+        // Then
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("invoice"), persistentListOf(uiModel(FirstMessageId))),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `re-submitting the query in force leaves the history as it is`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice")), items = emptyList())
+        givenTerms(prefix = "inv", terms = listOf(term("invoice")))
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
+
+        // Then
+        coVerify(exactly = 1) { getRecentSearchTerms(userId, "inv") }
+    }
+
+    @Test
     fun `tapping a term bumps it without recording a search open`() = runTest(dispatcher) {
         // Given
         givenHistory(terms = listOf(term("invoice")), items = emptyList())
@@ -341,6 +429,10 @@ internal class RecentSearchesViewModelTest {
             override val Main = dispatcher
         }
     )
+
+    private fun givenTerms(prefix: String, terms: List<RecentSearchTerm>) {
+        coEvery { getRecentSearchTerms(userId, prefix) } returns terms.right()
+    }
 
     private fun givenHistory(terms: List<RecentSearchTerm>, items: List<RecentFoundMailboxItem>) {
         coEvery { getRecentSearchTerms(userId) } returns terms.right()

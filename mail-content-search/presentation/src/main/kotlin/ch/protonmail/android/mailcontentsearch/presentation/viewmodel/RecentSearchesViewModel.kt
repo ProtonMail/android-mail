@@ -42,11 +42,15 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,9 +63,11 @@ import javax.inject.Inject
  * items). Both sections share one view model because a single tap couples them: opening a result
  * upserts the query *and* the item, so the two lists always have to be re-read together.
  *
- * The Rust side exposes no change stream, so the state is re-read after every mutation and whenever
- * the screen goes back to showing the history.
+ * The Rust side exposes no change stream, so the state is re-read after every mutation, whenever the
+ * screen goes back to showing the history, and whenever the search field's text changes the filter the
+ * history is read under.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 @SuppressWarnings("LongParameterList")
 class RecentSearchesViewModel @Inject constructor(
@@ -83,9 +89,23 @@ class RecentSearchesViewModel @Inject constructor(
     private val mutableState = MutableStateFlow<RecentSearchesState>(RecentSearchesState.Loading)
     val state: StateFlow<RecentSearchesState> = mutableState.asStateFlow()
 
+    /** The search field's text, which every read of the history is filtered by. */
+    private val queryPrefix = MutableStateFlow("")
+
+    init {
+        // The starting value isn't an edit — the first read is the [Refresh] the screen submits when it
+        // shows the history — and [mapLatest] keeps a read started on an earlier keystroke from landing
+        // after the one that replaced it.
+        queryPrefix
+            .drop(1)
+            .mapLatest { reload() }
+            .launchIn(viewModelScope)
+    }
+
     fun submit(action: RecentSearchesViewAction) {
         when (action) {
             RecentSearchesViewAction.Refresh -> onRefresh()
+            is RecentSearchesViewAction.QueryChanged -> onQueryChanged(action.query)
             is RecentSearchesViewAction.TermClicked -> onTermClicked(action.query)
             is RecentSearchesViewAction.TermDismissed -> onTermDismissed(action.query)
             RecentSearchesViewAction.ClearTerms -> onClearTerms()
@@ -98,6 +118,12 @@ class RecentSearchesViewModel @Inject constructor(
 
     /** Re-reads the history. Safe to submit repeatedly: it never drops back to the loading state. */
     private fun onRefresh() = reloadAfter { }
+
+    // A prefix that trims down to what is already in force leaves the history alone: the same rows would
+    // come back, and re-reading them would only make the list flicker while the user keeps typing.
+    private fun onQueryChanged(query: String) {
+        queryPrefix.value = query.trim()
+    }
 
     private fun onTermClicked(query: String) = reloadAfter { userId -> touchRecentSearchTerm(userId, query) }
 
@@ -132,27 +158,48 @@ class RecentSearchesViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = observePrimaryUserId().filterNotNull().first()
             block(userId)
-            mutableState.value = collapseIfEmpty(readHistory(userId))
+            reload()
         }
     }
 
-    private suspend fun readHistory(userId: UserId): RecentSearchesState.Data {
-        val terms = getRecentSearchTerms(userId).getOrElse { emptyList() }.map { it.query }
-        val foundItems = getRecentFoundMailboxItems(userId).getOrElse { emptyList() }
-        val folderColorSettings = observeFolderColorSettings(userId).first()
+    private suspend fun reload() {
+        val userId = observePrimaryUserId().filterNotNull().first()
+        val prefix = queryPrefix.value
+        val history = readHistory(userId, prefix)
+        // A read only publishes while the filter it ran under is still the current one, so a slower read
+        // started under an older prefix can't land on top of the one that replaced it.
+        if (queryPrefix.value == prefix) mutableState.value = collapseIfEmpty(history)
+    }
 
-        val mappedFoundItems = withContext(dispatchers.Comp) {
-            foundItems.map { found ->
-                RecentFoundItemUiModel(
-                    item = itemMapper.toUiModel(
-                        userId = userId,
-                        mailboxItem = found.item,
-                        folderColorSettings = folderColorSettings,
-                        isShowingSearchResults = true
-                    ),
-                    searchQuery = found.searchQuery,
-                    isInTrashOrSpam = found.item.isInTrashOrSpam()
-                )
+    private suspend fun readHistory(userId: UserId, prefix: String): RecentSearchesState.Data {
+        val terms = getRecentSearchTerms(userId, prefix.ifBlank { null })
+            .getOrElse { emptyList() }
+            .map { it.query }
+
+        // Previously found items (mailbox items) are only shown if the search field is empty.
+        val foundItems = if (prefix.isBlank()) {
+            getRecentFoundMailboxItems(userId).getOrElse { emptyList() }
+        } else {
+            emptyList()
+        }
+
+        val mappedFoundItems = if (foundItems.isEmpty()) {
+            emptyList()
+        } else {
+            val folderColorSettings = observeFolderColorSettings(userId).first()
+            withContext(dispatchers.Comp) {
+                foundItems.map { found ->
+                    RecentFoundItemUiModel(
+                        item = itemMapper.toUiModel(
+                            userId = userId,
+                            mailboxItem = found.item,
+                            folderColorSettings = folderColorSettings,
+                            isShowingSearchResults = true
+                        ),
+                        searchQuery = found.searchQuery,
+                        isInTrashOrSpam = found.item.isInTrashOrSpam()
+                    )
+                }
             }
         }
 
@@ -168,8 +215,18 @@ class RecentSearchesViewModel @Inject constructor(
         }
     }
 
-    // Dismissing the last entry has to fall through to the generic empty state rather than leave an
-    // empty history page behind.
+    /**
+     * Dismissing the last entry has to fall through to the generic empty state rather than leave an empty
+     * history page behind.
+     *
+     * A filter matching nothing is not that state and stays [RecentSearchesState.Data]: emptying the field
+     * makes the screen eligible for the first-run state again before the unfiltered read comes back, so a
+     * filtered miss collapsed to [RecentSearchesState.Empty] would flash it on the way out.
+     */
     private fun collapseIfEmpty(data: RecentSearchesState.Data): RecentSearchesState =
-        if (data.terms.isEmpty() && data.foundItems.isEmpty()) RecentSearchesState.Empty else data
+        if (queryPrefix.value.isBlank() && data.terms.isEmpty() && data.foundItems.isEmpty()) {
+            RecentSearchesState.Empty
+        } else {
+            data
+        }
 }

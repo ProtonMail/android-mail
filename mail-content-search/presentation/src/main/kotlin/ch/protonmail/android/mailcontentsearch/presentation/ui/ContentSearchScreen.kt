@@ -43,6 +43,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -105,6 +106,11 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
     val isIdle = state.phase is ContentSearchState.Phase.Idle
     LaunchedEffect(isIdle) {
         if (isIdle) recentsViewModel.submit(RecentSearchesViewAction.Refresh)
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { viewModel.queryState.text.toString() }
+            .collect { recentsViewModel.submit(RecentSearchesViewAction.QueryChanged(it)) }
     }
 
     ConsumableLaunchedEffect(effect = state.actionMessage) { showSnackbar(SnackbarUndo(it)) }
@@ -378,8 +384,9 @@ private fun ContentSearchBody(
 /**
  * The page shown while no search is running: the history, or the first-run state when there is none.
  *
- * A query typed but not yet searched holds an empty page instead — the history belongs to an empty field,
- * and offering it under a half-typed query would only replace it the moment the user hits search.
+ * Once the user starts typing the history narrows down to the queries that match what is in the field —
+ * the view model reads it filtered, dropping the previously found items, which belong to the queries that
+ * found them rather than to the one being typed.
  */
 @Composable
 private fun ContentSearchIdlePage(
@@ -390,21 +397,22 @@ private fun ContentSearchIdlePage(
     recentsActions: RecentSearchesActions,
     modifier: Modifier = Modifier
 ) {
-    if (!isQueryEmpty) {
-        Box(modifier = modifier)
-        return
-    }
-
     when (recentsState) {
         // Nothing yet: hold an empty page rather than flashing the first-run state and then replacing it
         // with the history a moment later.
         RecentSearchesState.Loading -> Box(modifier = modifier)
 
-        RecentSearchesState.Empty -> SearchMessageState(
-            iconRes = R.drawable.ic_search_empty_state,
-            description = stringResource(R.string.content_search_first_run_description),
-            modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-        )
+        // The first-run state invites the user to search, so it belongs to an empty field only: under a
+        // typed query with no matching history there is nothing to say, and the page stays blank.
+        RecentSearchesState.Empty -> if (isQueryEmpty) {
+            SearchMessageState(
+                iconRes = R.drawable.ic_search_empty_state,
+                description = stringResource(R.string.content_search_first_run_description),
+                modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+            )
+        } else {
+            Box(modifier = modifier)
+        }
 
         is RecentSearchesState.Data -> RecentSearchesPage(
             state = recentsState,

@@ -26,6 +26,9 @@ sealed interface RecentSearchesViewAction {
     /** Re-reads the history. Safe to submit repeatedly: it never drops back to the loading state. */
     data object Refresh : RecentSearchesViewAction
 
+    /** Used to filter out the recent search terms as the user types **/
+    data class QueryChanged(val query: String) : RecentSearchesViewAction
+
     data class TermClicked(val query: String) : RecentSearchesViewAction
 
     data class TermDismissed(val query: String) : RecentSearchesViewAction

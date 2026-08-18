@@ -32,7 +32,6 @@ sealed interface RecentSearchesState {
 
     data object Loading : RecentSearchesState
 
-    /** No history to show: either there never was any, or the user dismissed all of it. */
     data object Empty : RecentSearchesState
 
     data class Data(
