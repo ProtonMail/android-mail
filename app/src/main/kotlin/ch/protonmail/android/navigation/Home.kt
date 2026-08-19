@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalDrawerSheet
@@ -53,6 +54,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -437,6 +439,11 @@ fun Home(
         }
     )
 
+    // When the window is wider than the sheet, the sheet is capped to its max width and centered, so it never
+    // reaches the window edges. Applying horizontal insets there would offset the content towards the cutout side,
+    // as windowInsetsPadding is not position aware.
+    val isSheetWidthCapped = LocalConfiguration.current.screenWidthDp.dp > BottomSheetDefaults.SheetMaxWidth
+
     var preventBottomSheetDismissal by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
@@ -568,7 +575,9 @@ fun Home(
     ProtonModalBottomSheetLayout(
         showBottomSheet = showBottomSheet,
         sheetState = bottomSheetState,
-        contentWindowInsets = { WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal) },
+        contentWindowInsets = {
+            if (isSheetWidthCapped) WindowInsets(0) else WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+        },
         sheetContent = {
             when (val type = bottomSheetType) {
                 is BottomSheetType.NotificationsPermissions -> NotificationsPermissionBottomSheet(
