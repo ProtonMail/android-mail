@@ -23,6 +23,7 @@ import androidx.lifecycle.testing.TestLifecycleOwner
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
@@ -35,6 +36,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -68,6 +70,9 @@ internal class ContentIndexingLifecycleObserverTest {
         every { this@mockk.invoke() } returns activities
     }
     private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true)
+    private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider> {
+        every { is64Bit() } returns true
+    }
 
     @Test
     fun `starts the orchestrator and enqueues the worker when there is work pending`() = runTest {
@@ -316,8 +321,27 @@ internal class ContentIndexingLifecycleObserverTest {
         startContentIndexing = startContentIndexing,
         observeContentIndexingActivity = observeContentIndexingActivity,
         workScheduler = workScheduler,
+        deviceArchitectureProvider = deviceArchitectureProvider,
         appScope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(testScheduler))
     )
+
+    @Test
+    fun `does nothing at all on a 32-bit process`() = runTest {
+        // Given
+        every { deviceArchitectureProvider.is64Bit() } returns false
+        givenStartSummary(summary(pending = 3))
+
+        // When
+        observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 0) { observePrimaryUserId() }
+        coVerify(exactly = 0) { isContentSearchFeatureEnabled(any()) }
+        coVerify(exactly = 0) { startContentIndexing() }
+        coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
+        verify(exactly = 0) { observeContentIndexingActivity() }
+    }
 
     private fun lifecycleOwner() = TestLifecycleOwner(Lifecycle.State.CREATED, dispatcher)
 

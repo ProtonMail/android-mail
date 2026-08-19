@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.initializer.background
 
+import java.util.concurrent.atomic.AtomicReference
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
@@ -38,7 +40,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 /**
@@ -47,6 +48,8 @@ import javax.inject.Inject
  *
  * Stopping the orchestrator is deliberately not done on `onStop`: that would undo exactly the case
  * this exists for - indexing while the app is backgrounded.
+ *
+ * On a 32-bit process none of this happens at all - see [onStart].
  */
 class ContentIndexingLifecycleObserver @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
@@ -54,6 +57,7 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     private val startContentIndexing: StartContentIndexing,
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
     private val workScheduler: ContentIndexingWorkScheduler,
+    private val deviceArchitectureProvider: DeviceArchitectureProvider,
     @AppScope private val appScope: CoroutineScope
 ) : DefaultLifecycleObserver {
 
@@ -76,6 +80,8 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     private var isForegrounded = false
 
     override fun onStart(owner: LifecycleOwner) {
+        if (!deviceArchitectureProvider.is64Bit()) return
+
         isForegrounded = true
         // App-scoped rather than lifecycle-scoped: start() is an actor round-trip and enqueuing the
         // worker must not be dropped if the user leaves the app again straight away.
@@ -99,6 +105,9 @@ class ContentIndexingLifecycleObserver @Inject constructor(
         indexingStart.getAndSet(start)?.cancel()
     }
 
+    // Deliberately not guarded the way `onStart` is: this is the releasing half, and on a 32-bit
+    // process there is nothing here to release anyway - `onStart` returned before creating any of it,
+    // so all three lines are already no-ops. Guarding a release path is only ever a way to leak one.
     override fun onStop(owner: LifecycleOwner) {
         isForegrounded = false
         indexingStart.getAndSet(null)?.cancel()

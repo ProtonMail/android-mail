@@ -27,6 +27,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.data.util.formatPercentage
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
@@ -82,7 +83,8 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val startContentIndexing: StartContentIndexing,
     private val appInBackgroundState: AppInBackgroundState,
-    private val workScheduler: ContentIndexingWorkScheduler
+    private val workScheduler: ContentIndexingWorkScheduler,
+    private val deviceArchitectureProvider: DeviceArchitectureProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     // The worker has to be enqueued while the app is foregrounded - WorkManager will not promote one
@@ -125,10 +127,19 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     private val notificationMutex = Mutex()
 
-    override suspend fun doWork(): Result = try {
+    override suspend fun doWork(): Result {
         // A run attempt above the first means WorkManager rescheduled us, which is worth knowing
         // when the worker is found sitting in ENQUEUED with every constraint met.
         Timber.d("content-search: indexing worker running (attempt ${runAttemptCount + 1})")
+        // Content search is unavailable on a 32-bit process, so nothing enqueues this there.
+        if (!deviceArchitectureProvider.is64Bit()) {
+            Timber.d("content-search: indexing worker exiting, unsupported on a 32-bit process")
+            return Result.success()
+        }
+        return runIndexing()
+    }
+
+    private suspend fun runIndexing(): Result = try {
         mailSessionRepository.runInRustBackground {
             coroutineScope {
                 val visibility = launch { observeAppVisibility() }

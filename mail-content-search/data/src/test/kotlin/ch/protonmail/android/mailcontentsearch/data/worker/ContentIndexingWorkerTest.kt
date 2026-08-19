@@ -24,6 +24,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
@@ -94,6 +95,9 @@ internal class ContentIndexingWorkerTest {
         every { isAppInBackground() } answers { appInBackground.value }
     }
     private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true)
+    private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider> {
+        every { is64Bit() } returns true
+    }
 
     // Whether the platform grants the foreground service. Left to a relaxed mock the promotion always
     // fails - there is no real notification to build outside Robolectric - and the worker would then
@@ -125,6 +129,20 @@ internal class ContentIndexingWorkerTest {
         }
     }
 
+    @Test
+    fun `exits straight away on a 32-bit process`() = runTest {
+        // Given
+        every { deviceArchitectureProvider.is64Bit() } returns false
+
+        // When
+        val result = worker().doWork()
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), result)
+        coVerify(exactly = 0) { startContentIndexing() }
+        verify(exactly = 0) { observeContentIndexingActivity() }
+    }
+
     private fun worker() = ContentIndexingWorker(
         context = mockk(relaxed = true),
         workerParameters = workerParameters(),
@@ -134,7 +152,8 @@ internal class ContentIndexingWorkerTest {
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         startContentIndexing = startContentIndexing,
         appInBackgroundState = appInBackgroundState,
-        workScheduler = workScheduler
+        workScheduler = workScheduler,
+        deviceArchitectureProvider = deviceArchitectureProvider
     )
 
     @Test

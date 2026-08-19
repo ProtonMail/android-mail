@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
+import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -32,8 +33,10 @@ import javax.inject.Inject
  * content search on in settings.
  */
 class IsContentSearchFeatureEnabled @Inject constructor(
-    private val contentSearchRepository: ContentSearchRepository
+    private val contentSearchRepository: ContentSearchRepository,
+    private val deviceArchitectureProvider: DeviceArchitectureProvider
 ) {
 
-    suspend operator fun invoke(userId: UserId): Boolean = contentSearchRepository.isFeatureEnabled(userId)
+    suspend operator fun invoke(userId: UserId): Boolean =
+        deviceArchitectureProvider.is64Bit() && contentSearchRepository.isFeatureEnabled(userId)
 }
