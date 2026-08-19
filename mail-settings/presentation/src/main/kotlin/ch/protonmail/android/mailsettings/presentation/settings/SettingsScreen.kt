@@ -153,6 +153,7 @@ fun MainSettingsScreen(
                     ProtonMainSettingsItem(
                         name = stringResource(id = string.mail_settings_mailbox),
                         iconRes = R.drawable.ic_proton_envelopes,
+                        badge = { NewBadge() },
                         onClick = actions.onEmailSettingsClick
                     )
                     SettingsItemDivider()
