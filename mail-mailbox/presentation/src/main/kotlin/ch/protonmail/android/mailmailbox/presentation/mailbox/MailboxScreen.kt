@@ -191,7 +191,6 @@ fun MailboxScreen(
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
     val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
-    val isContentSearchEnabled = viewModel.isContentSearchEnabled.collectAsStateWithLifecycle().value
     val isContentSearchScreenEnabled = viewModel.isContentSearchScreenEnabled.collectAsStateWithLifecycle().value
     val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
@@ -462,7 +461,7 @@ fun MailboxScreen(
             mailboxListItems = mailboxListItems,
             actions = completeActions,
             isCategoryViewEnabled = isCategoryViewEnabled,
-            isContentSearchEnabled = isContentSearchEnabled,
+            isContentSearchScreenEnabled = isContentSearchScreenEnabled,
             snackbarHeight = snackbarHeight,
             userId = primaryUserId,
             modifier = modifier.semantics { testTagsAsResourceId = true }
@@ -475,7 +474,7 @@ fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
     isCategoryViewEnabled: Boolean = false,
-    isContentSearchEnabled: Boolean = false,
+    isContentSearchScreenEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     snackbarHeight: Dp = 0.dp,
     userId: UserId? = null,
@@ -531,9 +530,10 @@ fun MailboxScreen(
                 mailboxState.categoryViewState is CategoryViewState.Available &&
                 !isSearchMode && !isSelectionMode
 
-            // With content search enabled, collapse the top app bar once the first mailbox item has
-            // scrolled off screen.
-            val collapseTopBarOnScroll = isContentSearchEnabled && !isSelectionMode && !isSearchMode
+            // With the standalone search screen, collapse the top app bar once the first mailbox item
+            // has scrolled off screen - the search entry point has moved to the bottom bar, so the top
+            // bar no longer has to stay reachable.
+            val collapseTopBarOnScroll = isContentSearchScreenEnabled && !isSelectionMode && !isSearchMode
             val scrolledPastFirstItem by remember {
                 derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
             }
@@ -572,7 +572,7 @@ fun MailboxScreen(
                             onAccountAvatarClicked = actions.onAccountAvatarClicked,
                             onNavigateToUpselling = actions.onNavigateToUpselling
                         ),
-                        isSearchButtonVisible = !isContentSearchEnabled,
+                        isSearchButtonVisible = !isContentSearchScreenEnabled,
                         // Category view: top inset is on the Column. Otherwise the app bar owns it so
                         // it collapses together with the bar, letting the list go edge-to-edge.
                         windowInsets = if (isCategoryViewShown) {
@@ -700,7 +700,7 @@ fun MailboxScreen(
                 bottomBarActions = bottomBarActions,
                 onComposeClick = actions.navigateToComposer,
                 onSearchClick = actions.onEnterSearchMode,
-                isSearchButtonVisible = isContentSearchEnabled,
+                isSearchButtonVisible = isContentSearchScreenEnabled,
                 onUnreadFilterEnabled = actions.onEnableUnreadFilter,
                 onUnreadFilterDisabled = actions.onDisableUnreadFilter,
                 snackbarHeight = snackbarHeight,

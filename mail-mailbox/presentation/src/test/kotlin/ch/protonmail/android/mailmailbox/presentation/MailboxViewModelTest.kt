@@ -936,14 +936,14 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `isContentSearchEnabled is re-evaluated when primary user changes`() = runTest {
+    fun `isContentSearchScreenEnabled is re-evaluated when primary user changes`() = runTest {
         // Given
         val currentUserIdFlow = MutableStateFlow(userId)
         every { observePrimaryUserId() } returns currentUserIdFlow
         // The flag resolves to different values for the two users
-        coEvery { isContentSearchFeatureEnabled(any()) } returns false andThen true
+        coEvery { isContentSearchScreenFeatureEnabled.get() } returns false andThen true
 
-        mailboxViewModel.isContentSearchEnabled.test {
+        mailboxViewModel.isContentSearchScreenEnabled.test {
             // Then
             assertEquals(false, awaitItem())
 

@@ -253,11 +253,6 @@ class MailboxViewModel @Inject constructor(
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
-        .mapLatest { isContentSearchFeatureEnabled(it) }
-        .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-
     val isContentSearchScreenEnabled: StateFlow<Boolean> = primaryUserId
         .mapLatest { isContentSearchScreenFeatureEnabled.get() }
         .distinctUntilChanged()
