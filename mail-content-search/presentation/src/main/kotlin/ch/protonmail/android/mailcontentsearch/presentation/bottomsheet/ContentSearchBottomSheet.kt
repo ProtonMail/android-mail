@@ -28,14 +28,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -60,14 +57,6 @@ fun ContentSearchBottomSheet(
             .padding(horizontal = ProtonDimens.Spacing.Standard)
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
-        CircularProgressIndicator(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .size(ProtonDimens.IconSize.SemiLarge),
-            color = ProtonTheme.colors.brandNorm
-        )
-
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -102,7 +91,7 @@ fun ContentSearchBottomSheet(
             onClick = actions.onDismiss
         ) {
             Text(
-                text = stringResource(id = R.string.content_search_bottomsheet_ok),
+                text = stringResource(id = R.string.content_search_bottomsheet_continue),
                 style = ProtonTheme.typography.titleMedium,
                 color = ProtonTheme.colors.textInverted,
                 textAlign = TextAlign.Center
