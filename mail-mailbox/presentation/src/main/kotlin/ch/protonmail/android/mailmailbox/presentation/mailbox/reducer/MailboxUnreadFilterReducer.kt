@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
+import ch.protonmail.android.mailcommon.presentation.model.NullCountPolicy
+import ch.protonmail.android.mailcommon.presentation.model.ZeroCountPolicy
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -54,11 +56,11 @@ class MailboxUnreadFilterReducer @Inject constructor() {
 
     private fun UnreadFilterState.toNewStateForLabelSelected(operation: MailboxEvent.NewLabelSelected) = when (this) {
         is UnreadFilterState.Loading -> UnreadFilterState.Data(
-            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
+            unreadCount = operation.selectedLabelCount.toUnreadCountUiModel(),
             isFilterEnabled = false
         )
         is UnreadFilterState.Data -> copy(
-            unreadCount = operation.selectedLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
+            unreadCount = operation.selectedLabelCount.toUnreadCountUiModel(),
             isFilterEnabled = false
         )
     }
@@ -69,10 +71,10 @@ class MailboxUnreadFilterReducer @Inject constructor() {
         val currentLabelCount = operation.selectedLabelCount
         return when (this) {
             is UnreadFilterState.Loading -> UnreadFilterState.Data(
-                unreadCount = currentLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP),
+                unreadCount = currentLabelCount.toUnreadCountUiModel(),
                 isFilterEnabled = false
             )
-            is UnreadFilterState.Data -> copy(unreadCount = currentLabelCount.toCappedNumberUiModel(UNREAD_COUNT_CAP))
+            is UnreadFilterState.Data -> copy(unreadCount = currentLabelCount.toUnreadCountUiModel())
         }
     }
 
@@ -90,6 +92,13 @@ class MailboxUnreadFilterReducer @Inject constructor() {
             )
         }
     }
+
+    // No unread messages shows the button without a count rather than a "0"
+    private fun Int?.toUnreadCountUiModel() = toCappedNumberUiModel(
+        cap = UNREAD_COUNT_CAP,
+        nullPolicy = NullCountPolicy.Empty,
+        zeroPolicy = ZeroCountPolicy.Empty
+    )
 
     companion object {
         private const val UNREAD_COUNT_CAP = 99
