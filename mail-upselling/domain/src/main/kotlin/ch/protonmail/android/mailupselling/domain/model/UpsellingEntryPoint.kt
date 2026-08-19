@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
 sealed interface BlackFridaySupported
 sealed interface SpringPromoSupported
 sealed interface SummerCampaignSupported
+sealed interface FallPromoSupported
 
 @Serializable
 sealed interface UpsellingEntryPoint {
@@ -31,10 +32,20 @@ sealed interface UpsellingEntryPoint {
     sealed interface Feature : UpsellingEntryPoint {
 
         @Serializable
-        data object Navbar : Feature, BlackFridaySupported, SpringPromoSupported, SummerCampaignSupported
+        data object Navbar :
+            Feature,
+            BlackFridaySupported,
+            SpringPromoSupported,
+            SummerCampaignSupported,
+            FallPromoSupported
 
         @Serializable
-        data object Sidebar : Feature, BlackFridaySupported, SpringPromoSupported, SummerCampaignSupported
+        data object Sidebar :
+            Feature,
+            BlackFridaySupported,
+            SpringPromoSupported,
+            SummerCampaignSupported,
+            FallPromoSupported
 
         @Serializable
         data object ContactGroups : Feature

@@ -19,10 +19,12 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -30,19 +32,20 @@ import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.test.runTest
-import me.proton.android.core.payment.domain.model.ProductOfferDetail
-import me.proton.android.core.payment.domain.model.ProductOfferTags
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.coroutines.test.runTest
+import me.proton.android.core.payment.domain.model.ProductOfferDetail
+import me.proton.android.core.payment.domain.model.ProductOfferTags
 
 internal class ResolveUpsellingVisibilityForPlansTest {
 
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase>()
+    private val getCurrentFallPromoPhase = mockk<GetCurrentFallPromoPhase>()
     private lateinit var resolveUpsellingVisibilityForPlans: ResolveUpsellingVisibilityForPlans
 
     @BeforeTest
@@ -50,7 +53,8 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         resolveUpsellingVisibilityForPlans = ResolveUpsellingVisibilityForPlans(
             getCurrentBlackFridayPhase,
             getCurrentSpringPromoPhase,
-            getCurrentSummerCampaignPhase
+            getCurrentSummerCampaignPhase,
+            getCurrentFallPromoPhase
         )
     }
 
@@ -195,6 +199,34 @@ internal class ResolveUpsellingVisibilityForPlansTest {
     }
 
     @Test
+    fun `should return fall26 when at least one offer is tagged with fall26`() = runTest {
+        // Given
+        coEvery { getCurrentFallPromoPhase() } returns FallPromoPhase.Active.Wave1
+
+        val plans = listOf(mailMonthlyBase, mailYearlyFallPromoPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.FallPromo.Wave1, actual)
+    }
+
+    @Test
+    fun `should return fall26 when there are both fall26 and intro price offers`() = runTest {
+        // Given
+        coEvery { getCurrentFallPromoPhase() } returns FallPromoPhase.Active.Wave2
+
+        val plans = listOf(mailMonthlyIntroPrice, mailYearlyFallPromoPrice)
+
+        // When
+        val actual = resolveUpsellingVisibilityForPlans(plans)
+
+        // Then
+        assertEquals(UpsellingVisibility.Promotional.FallPromo.Wave2, actual)
+    }
+
+    @Test
     fun `should fallback to intro price if tagged as BF but there is no active phase`() = runTest {
         // Given
         val plans = listOf(mailMonthlyBF, mailYearlyIntroPrice)
@@ -250,6 +282,12 @@ internal class ResolveUpsellingVisibilityForPlansTest {
         val mailYearlySummerPrice = mailYearlyBase.copy(
             offer = mailYearlyBase.offer.copy(
                 tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.SummerCampaign.value))
+            )
+        )
+
+        val mailYearlyFallPromoPrice = mailYearlyBase.copy(
+            offer = mailYearlyBase.offer.copy(
+                tags = ProductOfferTags(setOf(PlanUpgradeSupportedTags.FallPromo.value))
             )
         )
     }

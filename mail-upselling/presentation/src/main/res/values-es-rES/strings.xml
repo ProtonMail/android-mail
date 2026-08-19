@@ -72,6 +72,9 @@
   <string name="upselling_comparison_table_folders_labels">Carpetas y etiquetas</string>
   <string name="upselling_comparison_table_premium_products">VPN prémium, gestor de contraseñas y almacenamiento en la nube</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitoreo de la Dark Web</string>
+  <string name="upselling_comparison_table_premium_access">Acceso premium a Mail, VPN, Drive, Pass y Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Alias ilimitados para ocultar tu identidad</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetas, filtros y etiquetas ilimitados</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Elegir suscripción</string>
   <string name="upselling_select_plan_year">12 meses</string>

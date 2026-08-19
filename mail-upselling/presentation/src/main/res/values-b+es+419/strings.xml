@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Ocurrió un error.</string>
   <string name="upselling_snackbar_error_no_subscriptions">No se pueden obtener las suscripciones.</string>
+  <string name="upselling_comparison_table_premium_access">Acceso premium a Mail, VPN, Drive, Pass y Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Alias ilimitados para ocultar su identidad</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetas, filtros y etiquetas ilimitados</string>
   <!-- Snackbar texts -->
 </resources>

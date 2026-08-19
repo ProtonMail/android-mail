@@ -71,7 +71,9 @@ class ProductListViewModel @Inject constructor(
                 offerToken = it.offer.token,
                 header = it.header,
                 entitlements = it.metadata.entitlements,
-                renewalText = it.getRenewalText()
+                renewalText = it.getRenewalText(),
+                amount = it.offer.current.amount,
+                currency = it.offer.current.currency
             )
         }
         emit(ProductListState.Data(list))

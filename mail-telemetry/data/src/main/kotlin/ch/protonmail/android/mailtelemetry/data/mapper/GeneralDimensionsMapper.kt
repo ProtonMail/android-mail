@@ -32,7 +32,7 @@ fun GeneralDimensions.toLocal() = LocalGeneralDimensions(
     planBeforeUpgrade = this.planBeforeUpgrade,
     modalVariant = this.modalVariant.toLocal(),
     upsellExperimentFlag = this.upsellExperimentFlag.toLocal(),
-    promoCampaign = null
+    promoCampaign = this.promoCampaign
 )
 
 fun UpsellEntryPoint.toLocal() = when (this) {

@@ -72,6 +72,9 @@
   <string name="upselling_comparison_table_folders_labels">Foldery i etykiety</string>
   <string name="upselling_comparison_table_premium_products">VPN premium, menadżer haseł i przestrzeń dyskowa w chmurze</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitoring dark web</string>
+  <string name="upselling_comparison_table_premium_access">Dostęp premium do Mail, VPN, Drive, Pass i Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Nielimitowane aliasy, aby ukryć Twoją tożsamość</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Nielimitowane foldery, filtry, etykiety</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Wybierz subskrypcję</string>
   <string name="upselling_select_plan_year">12 miesięcy</string>

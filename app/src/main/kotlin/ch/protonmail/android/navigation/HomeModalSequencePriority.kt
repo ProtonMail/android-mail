@@ -25,6 +25,7 @@ import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilitySt
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
+import ch.protonmail.android.mailupselling.presentation.model.fallpromo.FallPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.summercampaign.SummerCampaignModalState
 
@@ -36,6 +37,7 @@ sealed interface HomeInterstitialPriority {
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
+    data class FallPromo(val state: FallPromoModalState.Show) : HomeInterstitialPriority
     data object Recategorise : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
@@ -48,6 +50,7 @@ fun resolveHomeInterstitialPriority(
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
     summerCampaignState: SummerCampaignModalState,
+    fallPromoState: FallPromoModalState,
     recategoriseState: RecategoriseSpotlightState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
@@ -56,6 +59,7 @@ fun resolveHomeInterstitialPriority(
         notificationsState is NotificationsPermissionState.Loading ||
         featureSpotlightState is FeatureSpotlightState.Loading ||
         blackFridayState is BlackFridayModalState.Loading ||
+        fallPromoState is FallPromoModalState.Loading ||
         recategoriseState is RecategoriseSpotlightState.Loading
     ) {
         return HomeInterstitialPriority.Loading
@@ -69,6 +73,8 @@ fun resolveHomeInterstitialPriority(
         featureSpotlightState is FeatureSpotlightState.Show ->
             HomeInterstitialPriority.FeatureSpotlight(featureSpotlightState.userType)
         recategoriseState is RecategoriseSpotlightState.Show -> HomeInterstitialPriority.Recategorise
+        fallPromoState is FallPromoModalState.Show ->
+            HomeInterstitialPriority.FallPromo(fallPromoState)
         summerCampaignState is SummerCampaignModalState.Show ->
             HomeInterstitialPriority.SummerCampaign(summerCampaignState)
         blackFridayState is BlackFridayModalState.Show -> HomeInterstitialPriority.BlackFriday(blackFridayState)

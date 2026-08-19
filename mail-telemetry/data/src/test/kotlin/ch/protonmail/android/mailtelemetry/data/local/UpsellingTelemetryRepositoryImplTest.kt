@@ -160,7 +160,8 @@ class UpsellingTelemetryRepositoryImplTest {
             upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
             planBeforeUpgrade = "Free plan",
             modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-            upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+            upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+            promoCampaign = "fall26_wave1"
         )
         val planSpecificDimensions = PlanSpecificDimensions(
             selectedPlan = "Mail Plus",

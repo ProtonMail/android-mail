@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Došlo k chybě.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Nepodařilo se získat předplatné.</string>
+  <string name="upselling_comparison_table_premium_access">Prémiový přístup ke službám Mail, VPN, Drive, Pass a Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Neomezený počet aliasů pro skrytí vaší identity</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomezený počet složek, filtrů a štítků</string>
   <!-- Snackbar texts -->
 </resources>

@@ -32,11 +32,25 @@ buildscript {
     }
 }
 
+val kotlinVersion = libs.versions.kotlin.asProvider().get()
+
 allprojects {
     repositories {
         google()
         mavenCentral()
         mavenLocal()
+    }
+
+    // pin stdlib to the compiler version as Payments SDK pulls a newer one.
+    configurations.configureEach {
+        resolutionStrategy {
+            force(
+                "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+                "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+            )
+        }
     }
 }
 

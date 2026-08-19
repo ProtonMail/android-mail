@@ -62,6 +62,12 @@ sealed interface PlanUpgradeInstanceListUiModel {
             override val longerCycle: PlanUpgradeInstanceUiModel
         ) : Data(shorterCycle, longerCycle, summerCampaignVariant)
 
+        class FallPromo(
+            fallPromoVariant: PlanUpgradeVariant.FallPromo,
+            override val shorterCycle: PlanUpgradeInstanceUiModel,
+            override val longerCycle: PlanUpgradeInstanceUiModel
+        ) : Data(shorterCycle, longerCycle, fallPromoVariant)
+
         data class SocialProof(
             override val shorterCycle: PlanUpgradeInstanceUiModel,
             override val longerCycle: PlanUpgradeInstanceUiModel

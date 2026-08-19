@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Tilausten nouto ei onnistu.</string>
+  <string name="upselling_comparison_table_premium_access">Premium-käyttöoikeus palveluihin Mail, VPN, Drive, Pass ja Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Rajattomasti aliaksia henkilöllisyytesi piilottamiseen</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Rajattomasti kansioita, suodattimia ja tunnisteita</string>
   <!-- Snackbar texts -->
 </resources>

@@ -72,6 +72,9 @@
   <string name="upselling_comparison_table_folders_labels">Mappen en labels</string>
   <string name="upselling_comparison_table_premium_products">Premium VPN, wachtwoord manager en cloud opslag</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_premium_access">Premium toegang tot Mail, VPN, Drive, Pass en Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Onbeperkte aliassen om uw identiteit te verbergen</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Onbeperkte mappen, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonnement kiezen</string>
   <string name="upselling_select_plan_year">12 maanden</string>

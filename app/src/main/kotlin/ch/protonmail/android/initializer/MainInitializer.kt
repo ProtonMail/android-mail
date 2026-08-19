@@ -59,6 +59,8 @@ class MainInitializer : Initializer<Unit> {
                 // Rust session must be initialized before WorkManager and other dependant initializers.
                 initializeComponent(RustMailCommonInitializer::class.java)
 
+                initializeComponent(PaymentsInitializer::class.java)
+
                 initializeComponent(WorkManagerInitializer::class.java)
 
                 // Cleanup legacy app data if needed

@@ -64,7 +64,8 @@ private fun getRenewalNoticeForPromotion(planUiModel: PlanUpgradeInstanceUiModel
     val (baseText, price) = when (planUiModel) {
         is PlanUpgradeInstanceUiModel.Promotional.BlackFriday,
         is PlanUpgradeInstanceUiModel.Promotional.SpringPromo,
-        is PlanUpgradeInstanceUiModel.Promotional.SummerCampaign ->
+        is PlanUpgradeInstanceUiModel.Promotional.SummerCampaign,
+        is PlanUpgradeInstanceUiModel.Promotional.FallPromo ->
             Pair(
                 R.string.upselling_auto_renew_text_bfriday,
                 displayedPrice.secondaryPrice?.getShorthandFormat()

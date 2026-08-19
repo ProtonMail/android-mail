@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen
 
-import java.math.BigDecimal
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements as ComparisonTableEntitlementsData
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
@@ -39,6 +39,7 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.Promo
 import me.proton.android.core.payment.domain.model.ProductDetailHeader
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.presentation.model.Product
+import java.math.BigDecimal
 
 internal object UpsellingContentPreviewData {
 
@@ -57,7 +58,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
 
@@ -77,7 +80,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
 
@@ -101,7 +106,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
 
@@ -121,7 +128,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
 
@@ -145,7 +154,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
     private val UnlimitedPlanModelYearly = PlanUpgradeInstanceUiModel.Standard(
@@ -163,7 +174,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null
+            renewalText = null,
+            amount = 4_990_000L,
+            currency = "EUR"
         )
     )
 
@@ -204,7 +217,9 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Mail Plus", "12 months", "USD 35.88", "/year", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = "Auto-renews at \$47.88/year"
+            renewalText = "Auto-renews at \$155.76/year",
+            amount = 35_880_000L,
+            currency = "USD"
         )
     )
 
@@ -217,6 +232,39 @@ internal object UpsellingContentPreviewData {
         summerCampaignVariant = PlanUpgradeVariant.SummerCampaign.Wave1,
         shorterCycle = MailPlusPlanModelMonthly,
         longerCycle = SummerYearlyPromo
+    )
+
+    private val fallPromoYearlyPromoParams = PlanUpgradeInstanceUiModel.Promotional.Params(
+        name = "Proton Unlimited",
+        pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal("77.88"), currencyCode = "USD"),
+        promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("77.88"), currencyCode = "USD"),
+        renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("155.76"), currencyCode = "USD"),
+        discountRate = 50,
+        cycle = PlanUpgradeCycle.Yearly,
+        yearlySaving = null,
+        product = Product(
+            planName = "Proton Unlimited",
+            productId = "fall-promo-yearly",
+            accountId = "456",
+            cycle = 12,
+            header = ProductDetailHeader("Proton Unlimited", "12 months", "USD 77.88", "/year", false),
+            offerToken = ProductOfferToken(""),
+            entitlements = emptyList(),
+            renewalText = "Auto-renews at \$155.76/year",
+            amount = 77_880_000L,
+            currency = "USD"
+        )
+    )
+
+    private val FallPromoYearlyPromo = PlanUpgradeInstanceUiModel.Promotional(
+        promoKind = PromoKind.FallPromo,
+        params = fallPromoYearlyPromoParams
+    )
+
+    val FallPromoList = PlanUpgradeInstanceListUiModel.Data.FallPromo(
+        fallPromoVariant = PlanUpgradeVariant.FallPromo.Wave1,
+        shorterCycle = UnlimitedPlanModelMonthly,
+        longerCycle = FallPromoYearlyPromo
     )
 
     val SimpleListEntitlements = PlanUpgradeEntitlementsListUiModel.SimpleList(
@@ -234,6 +282,14 @@ internal object UpsellingContentPreviewData {
                 localResource = R.drawable.ic_upselling_gift
             )
         )
+    )
+
+    val FallPromoComparisonTableEntitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+        ComparisonTableEntitlementsData.FallPromoEntitlements
+    )
+
+    val UnlimitedComparisonTableEntitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+        ComparisonTableEntitlementsData.UnlimitedEntitlements
     )
 
     val ComparisonTableEntitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
@@ -316,6 +372,19 @@ internal object UpsellingContentPreviewData {
             entitlements = ComparisonTableEntitlements,
             variant = PlanUpgradeVariant.SummerCampaign.Wave1,
             list = SummerCampaignList
+        )
+    )
+
+    val FallPromo = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.fall_promo_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Proton Unlimited")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = FallPromoComparisonTableEntitlements,
+            variant = PlanUpgradeVariant.FallPromo.Wave1,
+            list = FallPromoList
         )
     )
 

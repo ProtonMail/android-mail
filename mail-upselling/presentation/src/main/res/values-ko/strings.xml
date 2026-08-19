@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>
   <string name="upselling_snackbar_error_no_subscriptions">구독을 가져올 수 없습니다.</string>
+  <string name="upselling_comparison_table_premium_access">Mail, VPN, Drive, Pass 및 Calendar 프리미엄 접근</string>
+  <string name="upselling_comparison_table_unlimited_aliases">신원 보호를 위한 무제한 별칭</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">무제한 폴더, 필터, 라벨</string>
   <!-- Snackbar texts -->
 </resources>

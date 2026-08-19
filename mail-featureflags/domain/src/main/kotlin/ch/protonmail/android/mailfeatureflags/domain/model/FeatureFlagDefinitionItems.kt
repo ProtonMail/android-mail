@@ -90,6 +90,22 @@ data object SummerCampaign2026Wave2Enabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object FallPromo2026Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7BackToSchool2026",
+    name = "Enable Fall Promo 26 (Wave 1)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Fall Promo 26 wave 1.",
+    defaultValue = false
+)
+
+data object FallPromo2026Wave2Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7BackToSchool2026Wave2",
+    name = "Enable Fall Promo 26 (Wave 2)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Fall Promo 26 wave 2.",
+    defaultValue = false
+)
+
 data object ComposerFormatMenu : FeatureFlagDefinition(
     key = "MailAndroidV7ComposerFormatMenu",
     name = "Composer format menu",
@@ -199,5 +215,21 @@ data object ContentSearchEnabled : FeatureFlagDefinition(
     name = "Enable Content Search",
     category = FeatureFlagCategory.Settings,
     description = "Shows the new content search entry points",
+    defaultValue = false
+)
+
+data object SdkUpgradesReadEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SdkPaymentUpgradesRead",
+    name = "Use Payments SDK for upgrades read",
+    category = FeatureFlagCategory.Upselling,
+    description = "When ON, fetches upgrade products through the Payments SDK instead of the legacy path.",
+    defaultValue = false
+)
+
+data object SdkUpgradesPurchaseEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7SdkPaymentUpgradesPurchase",
+    name = "Use Payments SDK for upgrades purchase",
+    category = FeatureFlagCategory.Upselling,
+    description = "When ON, purchases upgrades through the Payments SDK instead of the legacy path.",
     defaultValue = false
 )

@@ -76,6 +76,7 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) -> PromoKind.BlackFriday
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.SpringOffer) -> PromoKind.SpringPromo
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.SummerCampaign) -> PromoKind.SummerCampaign
+            productDetail.isTaggedWith(PlanUpgradeSupportedTags.FallPromo) -> PromoKind.FallPromo
             productDetail.isTaggedWith(PlanUpgradeSupportedTags.IntroductoryPrice) -> PromoKind.IntroPrice
             productDetail.offer.isBaseOffer -> null
             else -> null
@@ -89,7 +90,8 @@ class PlanUpgradeInstanceUiModelMapper @Inject constructor(
 
             val isSeasonalOffer = promoKind == PromoKind.SpringPromo ||
                 promoKind == PromoKind.BlackFriday ||
-                promoKind == PromoKind.SummerCampaign
+                promoKind == PromoKind.SummerCampaign ||
+                promoKind == PromoKind.FallPromo
 
             // In case of seasonal offer, discount % is based on monthly pricing, not on original same-cycle pricing.
             val discountRate = if (isSeasonalOffer && cycle == PlanUpgradeCycle.Yearly) {
@@ -133,7 +135,9 @@ internal fun ProductOfferDetail.toProduct(context: Context): Product {
         cycle = offer.current.cycle,
         header = header,
         entitlements = metadata.entitlements,
-        renewalText = getRenewalText(context)
+        renewalText = getRenewalText(context),
+        amount = offer.current.amount,
+        currency = offer.current.currency
     )
 }
 
@@ -164,6 +168,7 @@ private fun ProductOfferDetail.getRenewalText(context: Context): String? {
         offer.tags.value.contains("introductory-price") -> getIntroPricingRenewal()
         offer.tags.value.contains("spring26") -> getBlackFridayRenewal()
         offer.tags.value.contains("summer26") -> getBlackFridayRenewal()
+        offer.tags.value.contains("fall26") -> getBlackFridayRenewal()
         else -> res.getQuantityString(
             R.plurals.payment_welcome_offer_renew_other,
             offer.current.cycle,

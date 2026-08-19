@@ -54,5 +54,6 @@ dependencies {
     implementation(project(":mail-upselling:data"))
     implementation(project(":mail-upselling:domain"))
     implementation(project(":mail-upselling:presentation"))
+    implementation(project(":shared:core:payment:presentation"))
     implementation(project(":shared:core:payment-google:domain"))
 }

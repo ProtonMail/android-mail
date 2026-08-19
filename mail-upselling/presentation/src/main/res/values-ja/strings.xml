@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">エラーが発生しました。</string>
   <string name="upselling_snackbar_error_no_subscriptions">サブスクリプションを取得できませんでした。</string>
+  <string name="upselling_comparison_table_premium_access">Mail、VPN、Drive、Pass、Calendarへのプレミアムアクセス</string>
+  <string name="upselling_comparison_table_unlimited_aliases">お客様のユーザー情報を隠す無制限のエイリアス</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">無制限のフォルダー、フィルター、ラベル</string>
   <!-- Snackbar texts -->
 </resources>

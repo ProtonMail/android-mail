@@ -54,6 +54,14 @@ annotation class IsSummerCampaign2026Wave2Enabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsFallPromo2026Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsFallPromo2026Wave2Enabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsComposerFormatMenuEnabled
 
 @Qualifier
@@ -103,3 +111,11 @@ annotation class IsBgProcessingRelaxedBatteryConstraintEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsContentSearchEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSdkUpgradesReadEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsSdkUpgradesPurchaseEnabled

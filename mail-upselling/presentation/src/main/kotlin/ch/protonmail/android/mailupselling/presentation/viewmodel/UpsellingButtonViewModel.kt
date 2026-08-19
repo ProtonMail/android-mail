@@ -29,6 +29,7 @@ import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
@@ -70,7 +71,8 @@ class UpsellingButtonViewModel @AssistedInject constructor(
                     modalVariant = modalVariant,
                     upsellExperimentFlag = UpsellExperimentFlag(
                         flagName = UpsellPlanExperiment.key
-                    )
+                    ),
+                    promoCampaign = state.value.visibility.toOfferId()
                 )
             )
         }

@@ -106,5 +106,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Der opstod en fejl.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Ude af stand til at hente abonnementer.</string>
+  <string name="upselling_comparison_table_premium_access">Premium-adgang til Mail, VPN, Drive, Pass og Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Ubegrænsede aliasser til at skjule din identitet</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Ubegrænsede mapper, filtre, etiketter</string>
   <!-- Snackbar texts -->
 </resources>

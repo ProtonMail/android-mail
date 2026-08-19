@@ -33,7 +33,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductOfferList
-import me.proton.android.core.payment.domain.usecase.GetAvailableUpgrades
+import ch.protonmail.android.mailupselling.domain.sdk.SdkBackedGetAvailableUpgrades
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
 import kotlin.test.AfterTest
@@ -47,7 +47,7 @@ internal class AvailableUpgradesCacheTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val getAvailableUpgrades = mockk<GetAvailableUpgrades>()
+    private val getAvailableUpgrades = mockk<SdkBackedGetAvailableUpgrades>()
     private lateinit var cache: AvailableUpgradesCache
 
     private val userId = UserId("test-user-123")

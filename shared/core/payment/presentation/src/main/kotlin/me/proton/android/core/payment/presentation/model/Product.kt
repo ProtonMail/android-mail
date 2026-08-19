@@ -29,7 +29,9 @@ data class Product(
     val header: ProductDetailHeader,
     val offerToken: ProductOfferToken,
     val entitlements: List<ProductEntitlement>,
-    val renewalText: String?
+    val renewalText: String?,
+    val amount: Long,
+    val currency: String
 ) {
 
     companion object {
@@ -71,7 +73,9 @@ data class Product(
                     hint = ""
                 )
             ),
-            renewalText = "Welcome offer. Auto renews at CHF 129.48/year"
+            renewalText = "Welcome offer. Auto renews at CHF 129.48/year",
+            amount = 99_000_000L,
+            currency = "CHF"
         )
 
         val test_mail2022_1 = Product(
@@ -119,7 +123,9 @@ data class Product(
                     hint = ""
                 )
             ),
-            renewalText = "Welcome offer. Auto renews at CHF 5.39/month"
+            renewalText = "Welcome offer. Auto renews at CHF 5.39/month",
+            amount = 990_000L,
+            currency = "CHF"
         )
 
         val test_pass2022_1 = Product(
@@ -182,7 +188,9 @@ data class Product(
                     hint = ""
                 )
             ),
-            renewalText = "Welcome offer. Auto renews at CHF 5.39/month"
+            renewalText = "Welcome offer. Auto renews at CHF 5.39/month",
+            amount = 990_000L,
+            currency = "CHF"
         )
     }
 }

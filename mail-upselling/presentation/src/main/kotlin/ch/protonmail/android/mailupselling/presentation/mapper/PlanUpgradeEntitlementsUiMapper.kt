@@ -19,11 +19,13 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.FallPromoEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.MailPlusEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.UnlimitedEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.UnlimitedPlanVariant
 import me.proton.android.core.payment.domain.model.ProductEntitlement
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import javax.inject.Inject
@@ -36,10 +38,10 @@ class PlanUpgradeEntitlementsUiMapper @Inject constructor() {
 
     private fun mapToComparisonTable(variant: PlanUpgradeVariant) =
         PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
-            items = if (variant is PlanUpgradeVariant.Normal.Unlimited) {
-                UnlimitedEntitlements
-            } else {
-                MailPlusEntitlements
+            items = when {
+                variant is PlanUpgradeVariant.FallPromo -> FallPromoEntitlements
+                variant is UnlimitedPlanVariant -> UnlimitedEntitlements
+                else -> MailPlusEntitlements
             }
         )
 
