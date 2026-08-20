@@ -482,9 +482,8 @@ fun Home(
                     .invokeOnCompletion { showBottomSheet = true }
             }
 
-            is HomeInterstitialPriority.FeatureSpotlight -> {
-                navController.navigate(Screen.FeatureSpotlight(priority.userType))
-            }
+            // Handled by a dedicated effect below
+            is HomeInterstitialPriority.FeatureSpotlight -> Unit
 
             is HomeInterstitialPriority.BlackFriday -> {
                 blackFridayModalUpsellViewModel.recordModalSeen(priority.state.wave)
@@ -523,6 +522,17 @@ fun Home(
                         .invokeOnCompletion { showBottomSheet = false }
                 }
             }
+        }
+    }
+
+    // A notification deep-link can pop the feature spotlight off the back stack before it's seen.
+    // Re-key on the destination so it shows again when the user returns to the mailbox (ET-6768).
+    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
+        val priority = interstitialPriority
+        if (priority is HomeInterstitialPriority.FeatureSpotlight &&
+            currentDestinationRoute == Screen.Mailbox.route
+        ) {
+            navController.navigate(Screen.FeatureSpotlight(priority.userType))
         }
     }
 
