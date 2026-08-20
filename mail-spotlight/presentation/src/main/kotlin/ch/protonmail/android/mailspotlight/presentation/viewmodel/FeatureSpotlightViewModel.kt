@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
 import ch.protonmail.android.mailspotlight.presentation.R
@@ -37,6 +38,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,7 +49,8 @@ internal class FeatureSpotlightViewModel @Inject constructor(
     appInformation: AppInformation,
     private val updateCategoryView: UpdateCategoryView,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
-    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen
+    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
+    private val observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
     private val _closeScreenEvent = MutableSharedFlow<Unit>()
@@ -69,7 +73,7 @@ internal class FeatureSpotlightViewModel @Inject constructor(
     fun onTryCategories() {
         viewModelScope.launch {
             updateCategoryView(enabled = true)
-            markFeatureSpotlightSeen()
+            markFeatureSpotlightSeen(currentUserId())
             _closeScreenEvent.emit(Unit)
         }
     }
@@ -77,12 +81,14 @@ internal class FeatureSpotlightViewModel @Inject constructor(
     fun onDismissWithoutCategories() {
         viewModelScope.launch {
             updateCategoryView(enabled = false)
-            markFeatureSpotlightSeen()
+            markFeatureSpotlightSeen(currentUserId())
             // The user opted out of categories, so the Personalise recategorise sheet is irrelevant.
             markCategorySpotlightSeen(CategorySpotlightType.Personalise)
             _closeScreenEvent.emit(Unit)
         }
     }
+
+    private suspend fun currentUserId() = observePrimaryUserId().filterNotNull().first()
 
     private fun overviewFeaturesFor(userType: SpotlightUserType): ImmutableList<FeatureItem> {
         val categoriesSubtitle: Int

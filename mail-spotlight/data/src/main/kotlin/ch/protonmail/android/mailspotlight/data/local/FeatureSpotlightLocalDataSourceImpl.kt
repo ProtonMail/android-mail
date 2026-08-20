@@ -27,30 +27,47 @@ import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvide
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class FeatureSpotlightLocalDataSourceImpl @Inject constructor(
     private val dataStoreProvider: FeatureSpotlightDataStoreProvider
 ) : FeatureSpotlightLocalDataSource {
 
-    private val shouldDisplayFeatureSpotlightPrefKey = intPreferencesKey(
-        FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY
-    )
+    // The pre-7.11.3 flag, one per device and shared by all accounts. Read but never written here anymore.
+    private val legacyDevicePrefKey = intPreferencesKey(FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY)
 
-    override fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
+    override fun observe(userId: UserId): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
         dataStoreProvider.featureSpotlightDataStore.safeData.map { prefsEither ->
             prefsEither.map { prefs ->
-                val lastSeenSpotlightVersion = prefs[shouldDisplayFeatureSpotlightPrefKey] ?: DEFAULT_VALUE
-
-                val shouldShow = lastSeenSpotlightVersion < CURRENT_SPOTLIGHT_VERSION
-                FeatureSpotlightDisplay(shouldShow)
+                val legacyDeviceValue = prefs[legacyDevicePrefKey] ?: DEFAULT_VALUE
+                val perUserValue = prefs[prefKeyFor(userId)] ?: DEFAULT_VALUE
+                // Users who saw the spotlight before per-account tracking existed (pre-7.11.3) keep the
+                // old behaviour: the legacy device-wide flag suppresses it for every account.
+                val show = if (legacyDeviceValue >= CURRENT_SPOTLIGHT_VERSION) {
+                    false
+                } else {
+                    perUserValue < CURRENT_SPOTLIGHT_VERSION
+                }
+                Timber.d(
+                    "Spotlight userId=${userId.id} show=$show legacyDeviceValue=$legacyDeviceValue " +
+                        "perUserValue=$perUserValue currentVersion=$CURRENT_SPOTLIGHT_VERSION"
+                )
+                FeatureSpotlightDisplay(show)
             }
         }
 
-    override suspend fun save(): Either<PreferencesError, Unit> =
+    override suspend fun save(userId: UserId): Either<PreferencesError, Unit> =
         dataStoreProvider.featureSpotlightDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[shouldDisplayFeatureSpotlightPrefKey] = CURRENT_SPOTLIGHT_VERSION
+            // Persist per account only
+            mutablePreferences[prefKeyFor(userId)] = CURRENT_SPOTLIGHT_VERSION
         }.map { }
+
+    // Scoped per account, so the spotlight replays once for each account.
+    private fun prefKeyFor(userId: UserId) = intPreferencesKey(
+        "${userId.id}-${FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY}"
+    )
 
     private companion object {
 
@@ -58,5 +75,6 @@ class FeatureSpotlightLocalDataSourceImpl @Inject constructor(
 
         // Update this when releasing a new Feature Spotlight
         const val CURRENT_SPOTLIGHT_VERSION = FeatureSpotlightVersions.CATEGORY_VIEW
+
     }
 }

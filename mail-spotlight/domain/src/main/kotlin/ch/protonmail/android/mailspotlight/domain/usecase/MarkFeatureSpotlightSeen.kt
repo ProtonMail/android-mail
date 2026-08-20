@@ -19,11 +19,12 @@
 package ch.protonmail.android.mailspotlight.domain.usecase
 
 import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRepository
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MarkFeatureSpotlightSeen @Inject constructor(
     private val featureSpotlightRepository: FeatureSpotlightRepository
 ) {
 
-    suspend operator fun invoke() = featureSpotlightRepository.save()
+    suspend operator fun invoke(userId: UserId) = featureSpotlightRepository.save(userId)
 }

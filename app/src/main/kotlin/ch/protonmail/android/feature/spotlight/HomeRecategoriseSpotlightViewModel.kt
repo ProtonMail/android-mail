@@ -62,7 +62,7 @@ class HomeRecategoriseSpotlightViewModel @Inject constructor(
         } else {
             emitAll(
                 combine(
-                    observeFeatureSpotlightDisplay(),
+                    observeFeatureSpotlightDisplay(userId),
                     observeCategorySpotlightSeen(CategorySpotlightType.Personalise)
                 ) { displayEither, personaliseSeenEither ->
                     val featureSpotlightSeen = displayEither.getOrNull()?.show == false

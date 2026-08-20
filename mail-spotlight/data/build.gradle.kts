@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":mail-spotlight:domain"))
 
     implementation(libs.bundles.module.data)
+    implementation(libs.proton.core.domain)
 
     testImplementation(libs.bundles.test)
 }

@@ -62,28 +62,45 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
         .distinctUntilChanged()
         .flatMapLatest { userId ->
             flow {
-                if (!isEnabled.get() || !isCategoryViewEnabled(userId)) {
-                    emit(FeatureSpotlightState.Hide)
-                } else if (isRecentAppInstall()) {
-                    markFeatureSpotlightSeen()
-                    emit(FeatureSpotlightState.Hide)
-                } else {
-                    emitAll(
-                        observeFeatureSpotlightDisplay().map { preferenceEither ->
-                            preferenceEither.fold(
-                                ifLeft = { FeatureSpotlightState.Hide },
-                                // Only resolve the user type once we know the spotlight is eligible to be shown,
-                                // so we don't spin up the observation when it's hidden or another interstitial wins.
-                                ifRight = { preference ->
-                                    if (preference.show) {
-                                        FeatureSpotlightState.Show(resolveUserType())
-                                    } else {
+                val featureFlagEnabled = isEnabled.get()
+                val categoryViewEnabled = isCategoryViewEnabled(userId)
+                val recentInstall = isRecentAppInstall()
+                Timber.d(
+                    "Spotlight evaluating userId=${userId.id} featureFlagEnabled=$featureFlagEnabled " +
+                        "categoryViewEnabled=$categoryViewEnabled recentInstall=$recentInstall"
+                )
+                when {
+                    !featureFlagEnabled -> emit(FeatureSpotlightState.Hide)
+                    !categoryViewEnabled -> emit(FeatureSpotlightState.Hide)
+                    recentInstall -> {
+                        markFeatureSpotlightSeen(userId)
+                        emit(FeatureSpotlightState.Hide)
+                    }
+                    else -> {
+                        emitAll(
+                            observeFeatureSpotlightDisplay(userId).map { preferenceEither ->
+                                preferenceEither.fold(
+                                    ifLeft = {
+                                        Timber.d("Spotlight Hide: preference read failed error=$it")
                                         FeatureSpotlightState.Hide
+                                    },
+                                    // Resolve the user type only once the spotlight is eligible, so we
+                                    // don't spin up the observation when it's hidden.
+                                    ifRight = { preference ->
+                                        if (preference.show) {
+                                            Timber.d("Spotlight Show: onboarding eligible for userId=${userId.id}")
+                                            FeatureSpotlightState.Show(resolveUserType())
+                                        } else {
+                                            Timber.d(
+                                                "Spotlight Hide: already seen for userId=${userId.id}"
+                                            )
+                                            FeatureSpotlightState.Hide
+                                        }
                                     }
-                                }
-                            )
-                        }
-                    )
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -100,4 +117,5 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
         },
         ifRight = { isBusiness -> if (isBusiness) SpotlightUserType.B2B else SpotlightUserType.B2C }
     )
+
 }

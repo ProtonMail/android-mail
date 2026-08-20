@@ -26,6 +26,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
+import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -33,6 +34,7 @@ import kotlin.test.assertEquals
 
 internal class ObserveFeatureSpotlightDisplayTest {
 
+    private val userId = UserId("user-id")
     private val featureSpotlightRepository = mockk<FeatureSpotlightRepository>()
     private lateinit var observeFeatureSpotlightDisplay: ObserveFeatureSpotlightDisplay
 
@@ -50,13 +52,13 @@ internal class ObserveFeatureSpotlightDisplayTest {
     fun `invoke proxies to repository observe`() {
         // Given
         val expectedFlow = flowOf(FeatureSpotlightDisplay(true).right())
-        every { featureSpotlightRepository.observe() } returns expectedFlow
+        every { featureSpotlightRepository.observe(userId) } returns expectedFlow
 
         // When
-        val result = observeFeatureSpotlightDisplay()
+        val result = observeFeatureSpotlightDisplay(userId)
 
         // Then
-        verify(exactly = 1) { featureSpotlightRepository.observe() }
+        verify(exactly = 1) { featureSpotlightRepository.observe(userId) }
         assertEquals(expectedFlow, result)
     }
 }

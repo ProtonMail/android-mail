@@ -32,12 +32,15 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class FeatureSpotlightLocalDataSourceImplTest {
 
-    private val prefKey = intPreferencesKey(FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY)
+    private val userId = UserId("user-id")
+    private val prefKey = intPreferencesKey("${userId.id}-${FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY}")
+    private val globalKey = intPreferencesKey(FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY)
 
     private val dataStore = mockk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<FeatureSpotlightDataStoreProvider> {
@@ -52,7 +55,7 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
         every { dataStore.data } returns flowOf(preferences)
 
         // When & Then
-        localDataSource.observe().test {
+        localDataSource.observe(userId).test {
             val result = awaitItem()
             assertEquals(FeatureSpotlightDisplay(show = true).right(), result)
             awaitComplete()
@@ -66,7 +69,7 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
         every { dataStore.data } returns flowOf(preferences)
 
         // When & Then
-        localDataSource.observe().test {
+        localDataSource.observe(userId).test {
             val result = awaitItem()
             assertEquals(FeatureSpotlightDisplay(show = false).right(), result)
             awaitComplete()
@@ -80,9 +83,23 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
         every { dataStore.data } returns flowOf(emptyPreferences)
 
         // When & Then
-        localDataSource.observe().test {
+        localDataSource.observe(userId).test {
             val result = awaitItem()
             assertEquals(FeatureSpotlightDisplay(show = true).right(), result)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe returns shouldShow false when the legacy global flag is already set`() = runTest {
+        // Given a user who saw the spotlight before per-account tracking (global flag set), no per-user value
+        val preferences = preferencesOf(globalKey to FeatureSpotlightVersions.CATEGORY_VIEW)
+        every { dataStore.data } returns flowOf(preferences)
+
+        // When & Then
+        localDataSource.observe(userId).test {
+            val result = awaitItem()
+            assertEquals(FeatureSpotlightDisplay(show = false).right(), result)
             awaitComplete()
         }
     }
@@ -94,7 +111,7 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
         coEvery { dataStore.updateData(any()) } returns updatedPreferences
 
         // When
-        val result = localDataSource.save()
+        val result = localDataSource.save(userId)
 
         // Then
         assertEquals(Unit.right(), result)

@@ -25,6 +25,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -32,6 +33,7 @@ import kotlin.test.assertEquals
 
 internal class MarkFeatureSpotlightSeenTest {
 
+    private val userId = UserId("user-id")
     private val featureSpotlightRepository = mockk<FeatureSpotlightRepository>()
     private lateinit var markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 
@@ -49,13 +51,13 @@ internal class MarkFeatureSpotlightSeenTest {
     fun `invoke proxies to repository save`() = runTest {
         // Given
         val expectedResult = Unit.right()
-        coEvery { featureSpotlightRepository.save() } returns expectedResult
+        coEvery { featureSpotlightRepository.save(userId) } returns expectedResult
 
         // When
-        val result = markFeatureSpotlightSeen()
+        val result = markFeatureSpotlightSeen(userId)
 
         // Then
-        coVerify(exactly = 1) { featureSpotlightRepository.save() }
+        coVerify(exactly = 1) { featureSpotlightRepository.save(userId) }
         assertEquals(expectedResult, result)
     }
 }

@@ -29,6 +29,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -36,6 +37,7 @@ import kotlin.test.assertEquals
 
 internal class FeatureSpotlightRepositoryImplTest {
 
+    private val userId = UserId("user-id")
     private val datasource = mockk<FeatureSpotlightLocalDataSource>()
     private lateinit var repository: FeatureSpotlightRepositoryImpl
 
@@ -53,13 +55,13 @@ internal class FeatureSpotlightRepositoryImplTest {
     fun `observe proxies to local data source`() {
         // Given
         val expectedFlow = flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { datasource.observe() } returns expectedFlow
+        every { datasource.observe(userId) } returns expectedFlow
 
         // When
-        val result = repository.observe()
+        val result = repository.observe(userId)
 
         // Then
-        verify(exactly = 1) { datasource.observe() }
+        verify(exactly = 1) { datasource.observe(userId) }
         assertEquals(expectedFlow, result)
     }
 
@@ -67,13 +69,13 @@ internal class FeatureSpotlightRepositoryImplTest {
     fun `save proxies to local data source`() = runTest {
         // Given
         val expectedResult = Unit.right()
-        coEvery { datasource.save() } returns expectedResult
+        coEvery { datasource.save(userId) } returns expectedResult
 
         // When
-        val result = repository.save()
+        val result = repository.save(userId)
 
         // Then
-        coVerify(exactly = 1) { datasource.save() }
+        coVerify(exactly = 1) { datasource.save(userId) }
         assertEquals(expectedResult, result)
     }
 }

@@ -21,12 +21,12 @@ package ch.protonmail.android.mailspotlight.data.local
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-
 import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
 
 interface FeatureSpotlightLocalDataSource {
 
-    fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>>
+    fun observe(userId: UserId): Flow<Either<PreferencesError, FeatureSpotlightDisplay>>
 
-    suspend fun save(): Either<PreferencesError, Unit>
+    suspend fun save(userId: UserId): Either<PreferencesError, Unit>
 }

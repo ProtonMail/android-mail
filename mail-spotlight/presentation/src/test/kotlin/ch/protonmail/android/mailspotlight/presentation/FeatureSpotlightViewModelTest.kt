@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.domain.usecase.UpdateCategoryView
 import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
@@ -34,9 +35,12 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -52,6 +56,9 @@ internal class FeatureSpotlightViewModelTest {
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
     private val updateCategoryView = mockk<UpdateCategoryView>()
     private val markCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen>()
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
+    }
 
     @AfterTest
     fun tearDown() {
@@ -68,7 +75,8 @@ internal class FeatureSpotlightViewModelTest {
             appInformation = appInformation,
             updateCategoryView = updateCategoryView,
             markFeatureSpotlightSeen = markFeatureSpotlightSeen,
-            markCategorySpotlightSeen = markCategorySpotlightSeen
+            markCategorySpotlightSeen = markCategorySpotlightSeen,
+            observePrimaryUserId = observePrimaryUserId
         )
     }
 
@@ -172,7 +180,7 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `onTryCategories enables category view, marks seen and emits close`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        coEvery { markFeatureSpotlightSeen(any()) } returns Unit.right()
         val viewModel = buildViewModel(SpotlightUserType.B2C.name)
 
         viewModel.closeScreenEvent.test {
@@ -181,12 +189,12 @@ internal class FeatureSpotlightViewModelTest {
         }
 
         coVerify(exactly = 1) { updateCategoryView(enabled = true) }
-        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
+        coVerify(exactly = 1) { markFeatureSpotlightSeen(any()) }
     }
 
     @Test
     fun `onTryCategories does not mark the Personalise recategorise spotlight as seen`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        coEvery { markFeatureSpotlightSeen(any()) } returns Unit.right()
         val viewModel = buildViewModel(SpotlightUserType.B2C.name)
 
         viewModel.closeScreenEvent.test {
@@ -199,7 +207,7 @@ internal class FeatureSpotlightViewModelTest {
 
     @Test
     fun `onDismissWithoutCategories disables category view, marks seen and emits close`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        coEvery { markFeatureSpotlightSeen(any()) } returns Unit.right()
         val viewModel = buildViewModel(SpotlightUserType.B2C.name)
 
         viewModel.closeScreenEvent.test {
@@ -208,12 +216,12 @@ internal class FeatureSpotlightViewModelTest {
         }
 
         coVerify(exactly = 1) { updateCategoryView(enabled = false) }
-        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
+        coVerify(exactly = 1) { markFeatureSpotlightSeen(any()) }
     }
 
     @Test
     fun `onDismissWithoutCategories marks the Personalise recategorise spotlight as seen`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        coEvery { markFeatureSpotlightSeen(any()) } returns Unit.right()
         val viewModel = buildViewModel(SpotlightUserType.B2C.name)
 
         viewModel.closeScreenEvent.test {

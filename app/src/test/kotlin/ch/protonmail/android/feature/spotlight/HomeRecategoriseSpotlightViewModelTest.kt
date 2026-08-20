@@ -71,7 +71,9 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     fun `should emit Show when feature spotlight is seen and personalise is not seen`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
+        every {
+            mockObserveFeatureSpotlightDisplay(any())
+        } returns flowOf(FeatureSpotlightDisplay(show = false).right())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
         } returns flowOf(false.right())
@@ -86,7 +88,7 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     fun `should emit Hide when feature spotlight has not been seen yet`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
         } returns flowOf(false.right())
@@ -101,7 +103,9 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     fun `should emit Hide when personalise has already been seen`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
+        every {
+            mockObserveFeatureSpotlightDisplay(any())
+        } returns flowOf(FeatureSpotlightDisplay(show = false).right())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
         } returns flowOf(true.right())
@@ -116,7 +120,7 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     fun `should emit Hide when feature spotlight preference returns error`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(PreferencesError.left())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(PreferencesError.left())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
         } returns flowOf(false.right())
@@ -131,7 +135,9 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     fun `should mark personalise seen`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
+        every {
+            mockObserveFeatureSpotlightDisplay(any())
+        } returns flowOf(FeatureSpotlightDisplay(show = false).right())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
         } returns flowOf(false.right())

@@ -24,14 +24,16 @@ import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataS
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRepository
 import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class FeatureSpotlightRepositoryImpl @Inject constructor(
     private val featureSpotlightLocalDataSource: FeatureSpotlightLocalDataSource
 ) : FeatureSpotlightRepository {
 
-    override fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
-        featureSpotlightLocalDataSource.observe()
+    override fun observe(userId: UserId): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
+        featureSpotlightLocalDataSource.observe(userId)
 
-    override suspend fun save(): Either<PreferencesError, Unit> = featureSpotlightLocalDataSource.save()
+    override suspend fun save(userId: UserId): Either<PreferencesError, Unit> =
+        featureSpotlightLocalDataSource.save(userId)
 }

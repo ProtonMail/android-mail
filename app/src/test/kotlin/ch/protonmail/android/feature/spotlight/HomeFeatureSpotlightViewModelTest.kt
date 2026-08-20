@@ -53,9 +53,11 @@ internal class HomeFeatureSpotlightViewModelTest {
     private val mockFeatureFlag = mockk<FeatureFlag<Boolean>>()
     private val mockCategoryViewFlag = mockk<IsCategoryViewEnabled>()
     private val mockObserveFeatureSpotlightDisplay = mockk<ObserveFeatureSpotlightDisplay>()
-    private val mockIsRecentAppInstall = mockk<IsRecentAppInstall>()
+    private val mockIsRecentAppInstall = mockk<IsRecentAppInstall> {
+        every { this@mockk.invoke() } returns false
+    }
     private val mockMarkFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen> {
-        coEvery { this@mockk.invoke() } returns Unit.right()
+        coEvery { this@mockk.invoke(any()) } returns Unit.right()
     }
     private val mockObserveIsBusinessUser = mockk<ObserveIsBusinessUser> {
         every { this@mockk.invoke() } returns flowOf(false.right())
@@ -76,7 +78,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
         }
-        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
+        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen(any()) }
     }
 
     @Test
@@ -91,7 +93,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
         }
-        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
+        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen(any()) }
     }
 
     @Test
@@ -100,7 +102,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
@@ -109,7 +111,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
         }
-        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
+        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen(any()) }
     }
 
     @Test
@@ -118,7 +120,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every { mockObserveIsBusinessUser() } returns flowOf(true.right())
 
         val viewModel = buildViewModel()
@@ -135,7 +137,9 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
+        every {
+            mockObserveFeatureSpotlightDisplay(any())
+        } returns flowOf(FeatureSpotlightDisplay(show = false).right())
 
         val viewModel = buildViewModel()
 
@@ -152,7 +156,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(PreferencesError.left())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(PreferencesError.left())
 
         val viewModel = buildViewModel()
 
@@ -175,7 +179,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Hide, awaitItem())
         }
-        coVerify(exactly = 1) { mockMarkFeatureSpotlightSeen() }
+        coVerify(exactly = 1) { mockMarkFeatureSpotlightSeen(any()) }
     }
 
     @Test
@@ -184,7 +188,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()
@@ -193,7 +197,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         viewModel.state.test {
             assertEquals(FeatureSpotlightState.Show(SpotlightUserType.B2C), awaitItem())
         }
-        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen() }
+        coVerify(exactly = 0) { mockMarkFeatureSpotlightSeen(any()) }
     }
 
     @Test
@@ -208,7 +212,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         coEvery { mockFeatureFlag.get() } returns true
         coEvery { mockCategoryViewFlag(any()) } returnsMany listOf(false, true)
         every { mockIsRecentAppInstall() } returns false
-        every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
+        every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every { mockObserveIsBusinessUser() } returns flowOf(false.right())
 
         val viewModel = buildViewModel()

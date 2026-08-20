@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":mail-category-view:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-session:domain"))
     implementation(project(":mail-spotlight:domain"))
     implementation(project(":uicomponents"))
     implementation(project(":design-system"))
