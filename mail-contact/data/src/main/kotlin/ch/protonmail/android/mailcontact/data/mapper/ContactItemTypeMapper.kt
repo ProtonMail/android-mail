@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemType
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeContact
+import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeDevice
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeGroup
 import ch.protonmail.android.mailcontact.domain.model.ContactMetadata
 import javax.inject.Inject
@@ -37,6 +38,12 @@ class ContactItemTypeMapper @Inject constructor(
 
             is LocalContactItemTypeGroup -> {
                 contactGroupItemMapper.toContactGroup(contactItem)
+            }
+
+            // This is currently a no-op since we don't consume this mobile side
+            // but the mapping is in place for the sake of compilation.
+            is LocalContactItemTypeDevice -> {
+                contactItemMapper.toContact(contactItem)
             }
         }
     }

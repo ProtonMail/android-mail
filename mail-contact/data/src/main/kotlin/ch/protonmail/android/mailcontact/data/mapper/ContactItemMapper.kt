@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailcontact.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeContact
+import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeDevice
 import ch.protonmail.android.mailcommon.domain.model.AvatarInformation
+import ch.protonmail.android.mailcontact.domain.model.ContactEmail
+import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailcontact.domain.model.ContactMetadata
 import javax.inject.Inject
 
@@ -35,6 +38,33 @@ class ContactItemMapper @Inject constructor() {
                 initials = localContactItem.v1.avatarInformation.text,
                 color = localContactItem.v1.avatarInformation.color
             )
+        )
+    }
+
+    /**
+     * This is not being consumed at all by the clients, it's just in place to provide compatibility.
+     */
+    fun toContact(deviceContactItem: LocalContactItemTypeDevice): ContactMetadata.Contact {
+        val contactId = ContactId(deviceContactItem.v1.id)
+        val avatarInformation = AvatarInformation(
+            initials = deviceContactItem.v1.avatarInformation.text,
+            color = deviceContactItem.v1.avatarInformation.color
+        )
+
+        return ContactMetadata.Contact(
+            id = contactId,
+            name = deviceContactItem.v1.name,
+            emails = deviceContactItem.v1.emails.map { localEmail ->
+                ContactEmail(
+                    id = contactId,
+                    name = deviceContactItem.v1.name,
+                    email = localEmail,
+                    isProton = false, // Not exposed by the SDK
+                    lastUsedTime = 0L, // Not exposed by the SDK
+                    avatarInformation = avatarInformation
+                )
+            },
+            avatar = avatarInformation
         )
     }
 }

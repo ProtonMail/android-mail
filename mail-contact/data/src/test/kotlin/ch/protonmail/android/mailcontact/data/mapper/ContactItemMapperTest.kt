@@ -68,4 +68,58 @@ class ContactItemMapperTest {
         assertEquals(expectedContact, result)
     }
 
+    @Test
+    fun `should map device contact to domain model correctly`() {
+        // Given
+        val deviceContact = LocalContactTestData.deviceContact1
+        val expectedAvatar = AvatarInformation(initials = "CD", color = "#1BA3A3")
+        val expectedContact = ContactMetadata.Contact(
+            id = ContactId("device-contact-1"),
+            name = deviceContact.v1.name,
+            emails = listOf(
+                ContactEmail(
+                    id = ContactId("device-contact-1"),
+                    email = "example1@example.com",
+                    isProton = false,
+                    lastUsedTime = 0,
+                    name = deviceContact.v1.name,
+                    avatarInformation = expectedAvatar
+                ),
+                ContactEmail(
+                    id = ContactId("device-contact-1"),
+                    email = "example2@example.com",
+                    isProton = false,
+                    lastUsedTime = 0,
+                    name = deviceContact.v1.name,
+                    avatarInformation = expectedAvatar
+                )
+            ),
+            avatar = expectedAvatar
+        )
+
+        // When
+        val result = contactItemMapper.toContact(deviceContact)
+
+        // Then
+        assertEquals(expectedContact, result)
+    }
+
+    @Test
+    fun `should map device contact with no emails to domain model with empty emails`() {
+        // Given
+        val deviceContact = LocalContactTestData.deviceContactNoEmails
+        val expectedContact = ContactMetadata.Contact(
+            id = ContactId("device-contact-2"),
+            name = deviceContact.v1.name,
+            emails = emptyList(),
+            avatar = AvatarInformation(initials = "DD", color = "#A31B1B")
+        )
+
+        // When
+        val result = contactItemMapper.toContact(deviceContact)
+
+        // Then
+        assertEquals(expectedContact, result)
+    }
+
 }

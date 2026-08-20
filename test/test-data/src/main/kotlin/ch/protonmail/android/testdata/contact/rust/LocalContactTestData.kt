@@ -21,12 +21,14 @@ package ch.protonmail.android.testdata.contact.rust
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactGroupId
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactId
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeContact
+import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeDevice
 import ch.protonmail.android.mailcommon.data.mapper.LocalContactItemTypeGroup
 import ch.protonmail.android.mailcommon.data.mapper.LocalGroupedContacts
 import uniffi.mail_uniffi.AvatarInformation
 import uniffi.mail_uniffi.ContactEmailItem
 import uniffi.mail_uniffi.ContactGroupItem
 import uniffi.mail_uniffi.ContactItem
+import uniffi.mail_uniffi.DeviceContactItem
 import uniffi.mail_uniffi.Id
 
 object LocalContactTestData {
@@ -86,6 +88,32 @@ object LocalContactTestData {
                     avatarInformation = avatar2
                 )
             )
+        )
+    )
+
+    private val avatar3 = AvatarInformation(
+        text = "CD",
+        color = "#1BA3A3"
+    )
+    private const val NAME3 = "John Device"
+    val deviceContact1 = LocalContactItemTypeDevice(
+        DeviceContactItem(
+            id = "device-contact-1",
+            name = NAME3,
+            avatarInformation = avatar3,
+            emails = listOf(
+                "example1@example.com",
+                "example2@example.com"
+            )
+        )
+    )
+
+    val deviceContactNoEmails = LocalContactItemTypeDevice(
+        DeviceContactItem(
+            id = "device-contact-2",
+            name = "Dan Device",
+            avatarInformation = AvatarInformation(text = "DD", color = "#A31B1B"),
+            emails = emptyList()
         )
     )
 

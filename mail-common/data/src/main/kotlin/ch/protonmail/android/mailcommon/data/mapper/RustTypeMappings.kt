@@ -165,6 +165,7 @@ typealias LocalContactGroupId = Id
 typealias LocalContactEmail = ContactEmailItem
 typealias LocalContactItemType = ContactItemType
 typealias LocalContactItemTypeContact = ContactItemType.Contact
+typealias LocalContactItemTypeDevice = ContactItemType.Device
 typealias LocalContactItemTypeGroup = ContactItemType.Group
 typealias LocalComposerRecipient = ComposerRecipient
 typealias LocalDraftSendResult = DraftSendResult
