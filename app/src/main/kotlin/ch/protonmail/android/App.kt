@@ -39,7 +39,6 @@ import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObser
 import ch.protonmail.android.payment.di.HttpCapabilityImpl
 import ch.protonmail.android.payment.di.StoreCapabilityImpl
 import dagger.hilt.android.HiltAndroidApp
-import me.proton.android.payment.Payments
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -88,8 +87,6 @@ internal class App : Application() {
 
         benchmarkTracer.begin("proton-app-init")
 
-        initPaymentsSdk()
-
         MainInitializer.init(this)
         registerActivityLifecycleCallbacks(secureActivityLifecycleCallbacks)
 
@@ -100,13 +97,6 @@ internal class App : Application() {
         addAppOpenLifecycleObserver()
 
         benchmarkTracer.end()
-    }
-
-    private fun initPaymentsSdk() {
-        Payments
-            .registerHttp(httpCapability)
-            .registerStore(storeCapability)
-            .init(this)
     }
 
     private fun addLogsFileHandlerObserver() {
