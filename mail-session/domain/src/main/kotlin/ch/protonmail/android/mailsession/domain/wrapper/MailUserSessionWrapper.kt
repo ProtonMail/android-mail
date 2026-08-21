@@ -38,6 +38,7 @@ import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
 import uniffi.mail_uniffi.MailUserSessionIsCategoryViewFfEnabledResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
+import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
@@ -132,6 +133,11 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
                 result.v1.toDataError().left()
             }
         }
+
+    suspend fun refreshMailSettings(): Either<DataError, Unit> = when (val result = userSession.refreshMailSettings()) {
+        is MailUserSessionRefreshMailSettingsResult.Error -> result.v1.toDataError().left()
+        MailUserSessionRefreshMailSettingsResult.Ok -> Unit.right()
+    }
 
     suspend fun sendMeasurementEvent(
         eventType: MeasurementEventType,

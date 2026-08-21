@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.dagger
 import android.content.Context
 import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
+import ch.protonmail.android.mailsession.domain.repository.MailSettingsRefreshRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.data.InMemoryToolbarActionsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
@@ -120,8 +121,10 @@ object SettingsModule {
     @Singleton
     fun provideHandleCloseWebSettings(
         observePrimaryUserId: ObservePrimaryUserId,
-        eventLoopRepository: EventLoopRepository
-    ): HandleCloseWebSettings = HandleCloseWebSettings(observePrimaryUserId, eventLoopRepository)
+        eventLoopRepository: EventLoopRepository,
+        mailSettingsRefreshRepository: MailSettingsRefreshRepository
+    ): HandleCloseWebSettings =
+        HandleCloseWebSettings(observePrimaryUserId, eventLoopRepository, mailSettingsRefreshRepository)
 
     @Module
     @InstallIn(SingletonComponent::class)
