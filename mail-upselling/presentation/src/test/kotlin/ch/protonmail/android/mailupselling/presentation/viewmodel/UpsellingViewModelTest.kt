@@ -323,7 +323,8 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+                    promoCampaign = null
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -364,7 +365,8 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+                    promoCampaign = null
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -405,7 +407,8 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+                    promoCampaign = null
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
@@ -446,7 +449,8 @@ internal class UpsellingViewModelTest {
                     upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR,
                     planBeforeUpgrade = "Free plan",
                     modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+                    promoCampaign = null
                 ),
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",

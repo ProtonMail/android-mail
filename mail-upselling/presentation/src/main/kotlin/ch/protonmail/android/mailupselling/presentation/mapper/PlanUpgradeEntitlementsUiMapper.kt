@@ -21,12 +21,14 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.FallPromoEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.MailPlusEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.PlusToUnlimitedEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.UnlimitedEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.UnlimitedPlanVariant
 import me.proton.android.core.payment.domain.model.ProductEntitlement
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import javax.inject.Inject
@@ -45,7 +47,10 @@ class PlanUpgradeEntitlementsUiMapper @Inject constructor() {
                 baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
             )
 
-        variant is PlanUpgradeVariant.Normal.Unlimited ->
+        variant is PlanUpgradeVariant.FallPromo ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(FallPromoEntitlements)
+
+        variant is UnlimitedPlanVariant ->
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(UnlimitedEntitlements)
 
         else -> PlanUpgradeEntitlementsListUiModel.ComparisonTableList(MailPlusEntitlements)

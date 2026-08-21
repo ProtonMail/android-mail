@@ -27,13 +27,15 @@ internal data class PlanUpgradeUiModel(
     val list: PlanUpgradeInstanceListUiModel
 )
 
+sealed interface UnlimitedPlanVariant
+
 sealed interface PlanUpgradeVariant {
     data object IntroductoryPrice : PlanUpgradeVariant
     data object SocialProof : PlanUpgradeVariant
 
     sealed interface Normal : PlanUpgradeVariant {
         data object MailPlus : Normal
-        data object Unlimited : Normal
+        data object Unlimited : Normal, UnlimitedPlanVariant
     }
 
     sealed interface BlackFriday : PlanUpgradeVariant {
@@ -49,5 +51,10 @@ sealed interface PlanUpgradeVariant {
     sealed interface SummerCampaign : PlanUpgradeVariant {
         data object Wave1 : SummerCampaign
         data object Wave2 : SummerCampaign
+    }
+
+    sealed interface FallPromo : PlanUpgradeVariant, UnlimitedPlanVariant {
+        data object Wave1 : FallPromo
+        data object Wave2 : FallPromo
     }
 }

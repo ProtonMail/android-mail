@@ -115,6 +115,14 @@ sealed class PlanUpgradeInstanceUiModel(
             params.cycle, params.product
         )
 
+        data class FallPromo(
+            private val params: Params
+        ) : Promotional(
+            params.name, params.pricePerCycle, params.promotionalPrice,
+            params.renewalPrice, params.yearlySaving, params.discountRate,
+            params.cycle, params.product
+        )
+
         data class Params(
             val name: String,
             val pricePerCycle: PlanUpgradePriceUiModel,
@@ -133,11 +141,12 @@ sealed class PlanUpgradeInstanceUiModel(
                 PromoKind.BlackFriday -> BlackFriday(params)
                 PromoKind.SpringPromo -> SpringPromo(params)
                 PromoKind.SummerCampaign -> SummerCampaign(params)
+                PromoKind.FallPromo -> FallPromo(params)
             }
         }
     }
 }
 
 enum class PromoKind {
-    IntroPrice, BlackFriday, SpringPromo, SummerCampaign
+    IntroPrice, BlackFriday, SpringPromo, SummerCampaign, FallPromo
 }

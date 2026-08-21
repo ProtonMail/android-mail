@@ -41,12 +41,12 @@ import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.RecordPlusToUnlimitedOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
+import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
-import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -88,6 +88,9 @@ internal class UpsellingViewModel @Inject constructor(
     private val mutableState = MutableStateFlow<UpsellingScreenContentState>(Loading)
     val state = mutableState.asStateFlow()
 
+    private val currentOfferId: String?
+        get() = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant?.toOfferId()
+
     val entryPoint = savedStateHandle
         .get<String>(UpsellingEntryPointKey)
         ?.deserialize<UpsellingEntryPoint.Feature>()
@@ -118,24 +121,13 @@ internal class UpsellingViewModel @Inject constructor(
             emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint, theme))
             appEventBroadcaster.emit(AppEvent.SubscriptionPaywallShown)
 
-            val currentState = mutableState.value
-            if (currentState is UpsellingScreenContentState.Data) {
-                currentState.plans.variant.toOfferId()?.let { offerId ->
-                    appEventBroadcaster.emit(AppEvent.OfferReceived(offerId))
-                }
-            }
+            currentOfferId?.let { appEventBroadcaster.emit(AppEvent.OfferReceived(it)) }
         }
     }
 
     fun onPurchaseClicked() {
-        val currentState = mutableState.value
-        if (currentState is UpsellingScreenContentState.Data) {
-            currentState.plans.variant.toOfferId()?.let { offerId ->
-                viewModelScope.launch {
-                    appEventBroadcaster.emit(AppEvent.OfferClicked(offerId))
-                }
-            }
-        }
+        val offerId = currentOfferId ?: return
+        viewModelScope.launch { appEventBroadcaster.emit(AppEvent.OfferClicked(offerId)) }
     }
 
     fun overrideUpsellingVisibility() = viewModelScope.launch {
@@ -186,7 +178,8 @@ internal class UpsellingViewModel @Inject constructor(
                 modalVariant = upsellingTelemetryPayload.modalVariant,
                 upsellExperimentFlag = UpsellExperimentFlag(
                     flagName = UpsellPlanExperiment.key
-                )
+                ),
+                promoCampaign = currentOfferId
             ),
             PlanSpecificDimensions(
                 selectedPlan = upsellingTelemetryPayload.selectedPlan,
@@ -224,18 +217,6 @@ internal class UpsellingViewModel @Inject constructor(
     private suspend fun emitNewStateFrom(operation: UpsellingScreenContentOperation) {
         mutableState.update { upsellingContentReducer.newStateFrom(operation) }
     }
-}
-
-private fun PlanUpgradeVariant.toOfferId(): String? = when (this) {
-    is PlanUpgradeVariant.IntroductoryPrice -> "intro_price"
-    is PlanUpgradeVariant.BlackFriday.Wave1 -> "black_friday_wave1"
-    is PlanUpgradeVariant.BlackFriday.Wave2 -> "black_friday_wave2"
-    is PlanUpgradeVariant.SpringPromo.Wave1 -> "spring26_wave1"
-    is PlanUpgradeVariant.SpringPromo.Wave2 -> "spring26_wave2"
-    is PlanUpgradeVariant.SummerCampaign.Wave1 -> "summer26_wave1"
-    is PlanUpgradeVariant.SummerCampaign.Wave2 -> "summer26_wave2"
-    is PlanUpgradeVariant.Normal,
-    is PlanUpgradeVariant.SocialProof -> null
 }
 
 private const val FREE_PLAN = "Free plan"

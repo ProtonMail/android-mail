@@ -63,7 +63,7 @@ internal fun ComparisonTable(
                 .padding(top = ProtonDimens.Spacing.Small)
                 .padding(end = ProtonDimens.Spacing.Standard)
                 .background(
-                    color = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
+                    color = colors.tableHighlightColor,
                     shape = UpsellingLayoutValues.ComparisonTable.highlightBarShape
                 )
                 .width(plusCellHeaderWidth)

@@ -26,6 +26,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.isNightMode
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.BlackFriday
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.FallPromo
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.SpringPromo
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.SummerCampaign
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.coloredBorderBrush
@@ -37,8 +38,10 @@ internal data class UpsellingVariantColors(
     val checkmarkBackground: Color,
     val plusBadgeBorderBrush: Brush,
     val plusBadgeBackground: Color,
+    val plusBadgeTextColor: Color,
     val tableTextColor: Color,
     val tableDividerColor: Color,
+    val tableHighlightColor: Color,
     // Cycle card
     val cycleCardContainerColor: Color,
     val cycleCardBorderColor: Color,
@@ -57,8 +60,10 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
         checkmarkBackground = Color.White,
         plusBadgeBorderBrush = BlackFriday.borderBrush,
         plusBadgeBackground = Color.Black.copy(alpha = 0.20f),
+        plusBadgeTextColor = Color.White,
         tableTextColor = Color.White,
         tableDividerColor = Color.White.copy(alpha = 0.12f),
+        tableHighlightColor = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
         cycleCardContainerColor = Color.Black.copy(alpha = 0.2f),
         cycleCardBorderColor = Color.White,
         cycleCardTextColor = Color.White,
@@ -76,8 +81,10 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             checkmarkBackground = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30,
             plusBadgeBorderBrush = SpringPromo.borderBrush,
             plusBadgeBackground = Color.Transparent,
+            plusBadgeTextColor = accentColor,
             tableTextColor = accentColor,
             tableDividerColor = accentColor.copy(alpha = 0.12f),
+            tableHighlightColor = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
             cycleCardContainerColor = Color.Transparent,
             cycleCardBorderColor = accentColor,
             cycleCardTextColor = accentColor,
@@ -85,6 +92,28 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             cycleCardDiscountBadgeTextColor = accentColor,
             cycleCardDiscountBadgeHasShadow = true,
             autoRenewalColor = accentColor
+        )
+    }
+
+    variant is PlanUpgradeVariant.FallPromo -> {
+        val nightMode = isNightMode()
+        val textColor = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30
+        UpsellingVariantColors(
+            checkmarkTint = if (nightMode) Color.Black else Color.White,
+            checkmarkBackground = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30,
+            plusBadgeBorderBrush = FallPromo.borderBrush,
+            plusBadgeBackground = FallPromo.backgroundColor(),
+            plusBadgeTextColor = textColor,
+            tableTextColor = textColor,
+            tableDividerColor = textColor.copy(alpha = 0.12f),
+            tableHighlightColor = textColor.copy(alpha = 0.08f),
+            cycleCardContainerColor = Color.Transparent,
+            cycleCardBorderColor = textColor,
+            cycleCardTextColor = textColor,
+            cycleCardDiscountBadgeBackground = FallPromo.accentColor,
+            cycleCardDiscountBadgeTextColor = Color.White,
+            cycleCardDiscountBadgeHasShadow = false,
+            autoRenewalColor = textColor
         )
     }
 
@@ -96,8 +125,10 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             checkmarkBackground = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30,
             plusBadgeBorderBrush = SummerCampaign.borderBrush,
             plusBadgeBackground = Color.Transparent,
+            plusBadgeTextColor = textColor,
             tableTextColor = textColor,
             tableDividerColor = textColor.copy(alpha = 0.12f),
+            tableHighlightColor = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
             cycleCardContainerColor = Color.Transparent,
             cycleCardBorderColor = textColor,
             cycleCardTextColor = textColor,
@@ -113,8 +144,10 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
         checkmarkBackground = Color.White,
         plusBadgeBorderBrush = coloredBorderBrush,
         plusBadgeBackground = Color.Black.copy(alpha = 0.20f),
+        plusBadgeTextColor = Color.White,
         tableTextColor = Color.White,
         tableDividerColor = Color.White.copy(alpha = 0.12f),
+        tableHighlightColor = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
         cycleCardContainerColor = Color.Black.copy(alpha = 0.2f),
         cycleCardBorderColor = Color.White,
         cycleCardTextColor = Color.White,

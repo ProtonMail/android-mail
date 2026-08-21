@@ -21,6 +21,8 @@ package ch.protonmail.android
 import android.app.Application
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.ExperimentalComposeRuntimeApi
+import androidx.compose.ui.ComposeUiFlags
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ProcessLifecycleOwner
 import ch.protonmail.android.callbacks.SecureActivityLifecycleCallbacks
 import ch.protonmail.android.initializer.MainInitializer
@@ -75,8 +77,9 @@ internal class App : Application() {
     @Inject
     lateinit var storeCapability: StoreCapabilityImpl
 
-    @OptIn(ExperimentalComposeRuntimeApi::class)
+    @OptIn(ExperimentalComposeRuntimeApi::class, ExperimentalComposeUiApi::class)
     override fun onCreate() {
+        ComposeUiFlags.isBypassUnfocusableComposeViewEnabled = false // https://issuetracker.google.com/issues/469958424
         AppLoggers.install(this)
         super.onCreate()
 

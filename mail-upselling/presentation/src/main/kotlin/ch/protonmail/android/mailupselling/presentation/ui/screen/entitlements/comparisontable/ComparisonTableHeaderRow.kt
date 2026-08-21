@@ -54,6 +54,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.UnlimitedPlanVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingVariantColors
 import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantColors
@@ -111,10 +112,15 @@ internal fun ComparisonTableHeaderRow(
         ) {
             Row {
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
-                if (variant is PlanUpgradeVariant.Normal.Unlimited) {
-                    UnlimitedBadge()
-                } else {
-                    PlusBadge(colors = colors)
+                when {
+                    variant is PlanUpgradeVariant.FallPromo -> PlanBadge(
+                        colors = colors,
+                        labelRes = R.string.upselling_unlimited_plan,
+                        verticalPadding = ProtonDimens.Spacing.Standard
+                    )
+
+                    variant is UnlimitedPlanVariant -> UnlimitedBadge()
+                    else -> PlanBadge(colors = colors, labelRes = R.string.upselling_plus_plan)
                 }
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
             }
@@ -123,7 +129,11 @@ internal fun ComparisonTableHeaderRow(
 }
 
 @Composable
-private fun PlusBadge(colors: UpsellingVariantColors) {
+private fun PlanBadge(
+    colors: UpsellingVariantColors,
+    labelRes: Int,
+    verticalPadding: Dp = ProtonDimens.Spacing.Compact
+) {
     Surface(
         modifier = Modifier
             .border(
@@ -137,11 +147,11 @@ private fun PlusBadge(colors: UpsellingVariantColors) {
         Text(
             modifier = Modifier
                 .padding(horizontal = ProtonDimens.Spacing.Standard)
-                .padding(vertical = ProtonDimens.Spacing.Compact),
-            text = stringResource(R.string.upselling_plus_plan),
+                .padding(vertical = verticalPadding),
+            text = stringResource(labelRes),
             style = ProtonTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
-            color = colors.tableTextColor,
+            color = colors.plusBadgeTextColor,
             textAlign = TextAlign.Center,
             fontSize = UpsellingLayoutValues.ComparisonTable.titleColumnSize
         )

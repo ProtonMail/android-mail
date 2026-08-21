@@ -69,6 +69,9 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
             is PlanUpgradeVariant.SpringPromo -> UpsellingScreenContentSpringPromo(modifier, state, actions)
             is PlanUpgradeVariant.SummerCampaign ->
                 UpsellingScreenContentSummerCampaign(modifier, state, actions)
+
+            is PlanUpgradeVariant.FallPromo ->
+                UpsellingScreenContentFallPromo(modifier, state, actions)
         }
 
         is UpsellingScreenContentState.Error -> UpsellingScreenContentError(state = state, actions)

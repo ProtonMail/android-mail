@@ -21,10 +21,12 @@ package ch.protonmail.android.mailupselling.domain
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.usecase.IsEligibleForBlackFridayPromotion
@@ -39,14 +41,14 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 
 internal class ObservePlanUpgradesTest {
 
@@ -56,6 +58,7 @@ internal class ObservePlanUpgradesTest {
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val getCurrentSpringPromoPhase = mockk<GetCurrentSpringPromoPhase>()
     private val getCurrentSummerCampaignPhase = mockk<GetCurrentSummerCampaignPhase>()
+    private val getCurrentFallPromoPhase = mockk<GetCurrentFallPromoPhase>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val resolveUpsellVariant = mockk<ResolveUpsellVariant>()
 
@@ -68,12 +71,14 @@ internal class ObservePlanUpgradesTest {
         coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.None
         coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.None
         coEvery { getCurrentSummerCampaignPhase() } returns SummerCampaignPhase.None
+        coEvery { getCurrentFallPromoPhase() } returns FallPromoPhase.None
         observePlanUpgrades = ObservePlanUpgrades(
             availableUpgradesCache,
             observePrimaryUserId,
             getCurrentBlackFridayPhase,
             getCurrentSpringPromoPhase,
             getCurrentSummerCampaignPhase,
+            getCurrentFallPromoPhase,
             isEligibleForBlackFridayPromotion,
             resolveUpsellVariant
         )

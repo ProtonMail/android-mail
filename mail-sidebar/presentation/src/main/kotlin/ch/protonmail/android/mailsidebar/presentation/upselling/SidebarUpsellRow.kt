@@ -48,11 +48,11 @@ import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.R as upsellingR
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.getSidebarIcon
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
-import ch.protonmail.android.mailupselling.presentation.R as upsellingR
 
 @Composable
 fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVisibility) -> Unit) {
@@ -95,6 +95,11 @@ fun SidebarUpsellRow(modifier: Modifier = Modifier, onClick: (type: UpsellingVis
                 is UpsellingVisibility.Promotional.SummerCampaign ->
                     SidebarUpsellRowSummerCampaign(
                         onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_PLUS) }
+                    )
+
+                is UpsellingVisibility.Promotional.FallPromo ->
+                    SidebarUpsellRowFallPromo(
+                        onButtonClick = { onButtonClick(UpsellModalVariant.COMPARISON_UNLIMITED) }
                     )
 
                 is UpsellingVisibility.Promotional.IntroductoryPrice,
@@ -176,6 +181,24 @@ private fun SidebarUpsellRowSpringPromo(onButtonClick: () -> Unit, modifier: Mod
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+private fun SidebarUpsellRowFallPromo(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+    val iconModifier = Modifier
+        .width(ProtonDimens.IconSize.Default)
+        .padding(vertical = ProtonDimens.Spacing.Small)
+
+    ProtonSidebarItem(
+        modifier = modifier,
+        icon = painterResource(upsellingR.drawable.ic_upselling_fall_promo),
+        iconTint = Color.Unspecified,
+        iconModifier = iconModifier,
+        text = stringResource(R.string.drawer_upgrade_plus_special_offer),
+        textColor = ProtonTheme.colors.sidebarTextNorm,
+        onClick = onButtonClick
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
 private fun SidebarUpsellRowSummerCampaign(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val iconModifier = Modifier
         .width(ProtonDimens.IconSize.Default)
@@ -216,6 +239,15 @@ fun SidebarUpsellRowBlackFridayPreview() {
 fun SidebarUpsellRowSpringPromoPreview() {
     ProtonTheme {
         SidebarUpsellRowSpringPromo(onButtonClick = {})
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
+@Composable
+fun SidebarUpsellRowFallPromoPreview() {
+    ProtonTheme {
+        SidebarUpsellRowFallPromo(onButtonClick = {})
     }
 }
 

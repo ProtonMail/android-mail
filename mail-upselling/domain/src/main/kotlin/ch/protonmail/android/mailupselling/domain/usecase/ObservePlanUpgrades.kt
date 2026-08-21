@@ -22,6 +22,8 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySupported
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
@@ -42,6 +44,7 @@ class ObservePlanUpgrades @Inject constructor(
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
     private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
+    private val getCurrentFallPromoPhase: GetCurrentFallPromoPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
     private val resolveUpsellVariant: ResolveUpsellVariant
 ) {
@@ -67,7 +70,14 @@ class ObservePlanUpgrades @Inject constructor(
             isSummerCampaignOngoing &&
             isEligibleForBlackFridayPromotion(userId)
 
+        val flowSupportsFallPromo = entryPoint is FallPromoSupported
+        val isFallPromoOngoing = getCurrentFallPromoPhase() != FallPromoPhase.None
+        val supportsFallPromo = flowSupportsFallPromo &&
+            isFallPromoOngoing &&
+            isEligibleForBlackFridayPromotion(userId)
+
         val offersTag = when {
+            supportsFallPromo -> PlanUpgradeSupportedTags.FallPromo
             supportsSummerCampaign -> PlanUpgradeSupportedTags.SummerCampaign
             supportsSpringPromo -> PlanUpgradeSupportedTags.SpringOffer
             supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
@@ -83,16 +93,13 @@ class ObservePlanUpgrades @Inject constructor(
                 .isNotEmpty()
             if ((forceUnlimited || !hasPromoOffers) && showUnlimited) {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = null, fallbackToBaseOffer = true)
-                eligibleOffers.filterUnlimited()
+                eligibleOffers.filterForPlan(PlanUpgradeIds.UnlimitedPlanId)
             } else {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = offersTag.value)
-                eligibleOffers.filterMailPlus()
+                eligibleOffers.filterForPlan(offersTag.targetPlan)
             }
         }
     }
 
-    private fun List<ProductOfferDetail>.filterMailPlus() = filter { it.metadata.planName == PlanUpgradeIds.PlusPlanId }
-
-    private fun List<ProductOfferDetail>.filterUnlimited() =
-        filter { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
+    private fun List<ProductOfferDetail>.filterForPlan(planName: String) = filter { it.metadata.planName == planName }
 }

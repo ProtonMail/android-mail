@@ -18,18 +18,19 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
-import java.math.BigDecimal
 import android.content.Context
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
-import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
@@ -50,15 +51,16 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.unmockkAll
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import java.math.BigDecimal
 
 @RunWith(RobolectricTestRunner::class)
 internal class PlanUpgradeUiMapperTest {
@@ -78,8 +80,17 @@ internal class PlanUpgradeUiMapperTest {
         coEvery { this@mockk.invoke() } returns SummerCampaignPhase.None
     }
 
+    private val getCurrentFallPromoPhase = mockk<GetCurrentFallPromoPhase> {
+        coEvery { this@mockk.invoke() } returns FallPromoPhase.None
+    }
+
     private val planUpgradeMapper = spyk(
-        PlanUpgradeMapper(getCurrentBlackFridayPhase, getCurrentSpringPromoPhase, getCurrentSummerCampaignPhase)
+        PlanUpgradeMapper(
+            getCurrentBlackFridayPhase,
+            getCurrentSpringPromoPhase,
+            getCurrentSummerCampaignPhase,
+            getCurrentFallPromoPhase
+        )
     )
 
     private lateinit var planUpgradeUiMapper: PlanUpgradeUiMapper

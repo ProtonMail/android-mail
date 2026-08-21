@@ -186,6 +186,7 @@ fun ProtonMainSettingsItem(
     @DrawableRes iconRes: Int,
     iconColor: Color = ProtonTheme.colors.textNorm,
     isClickable: Boolean = true,
+    badge: @Composable () -> Unit = {},
     onClick: () -> Unit = {}
 ) {
     ProtonMainSettingsItem(
@@ -200,6 +201,7 @@ fun ProtonMainSettingsItem(
             )
         },
         isClickable = isClickable,
+        badge = badge,
         onClick = onClick
     )
 }
@@ -212,6 +214,7 @@ fun ProtonMainSettingsItem(
     icon: @Composable () -> Unit,
     hint: @Composable () -> Unit = {},
     isClickable: Boolean = true,
+    badge: @Composable () -> Unit = {},
     onClick: () -> Unit = {}
 ) {
     Row(
@@ -235,12 +238,20 @@ fun ProtonMainSettingsItem(
                 .semantics(mergeDescendants = true) { role = Role.Button }
                 .weight(1f)
         ) {
-            Text(
-                modifier = Modifier.clearAndSetSemantics {},
-                text = name,
-                color = nameColor,
-                style = ProtonTheme.typography.bodyLargeWeak
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Standard)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .clearAndSetSemantics {}
+                        .weight(1f, fill = false),
+                    text = name,
+                    color = nameColor,
+                    style = ProtonTheme.typography.bodyLargeWeak
+                )
+                badge()
+            }
             hint()
         }
 

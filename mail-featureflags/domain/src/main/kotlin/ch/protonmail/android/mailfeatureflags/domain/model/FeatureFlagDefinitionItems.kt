@@ -90,6 +90,22 @@ data object SummerCampaign2026Wave2Enabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object FallPromo2026Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7BackToSchool2026",
+    name = "Enable Fall Promo 26 (Wave 1)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Fall Promo 26 wave 1.",
+    defaultValue = false
+)
+
+data object FallPromo2026Wave2Enabled : FeatureFlagDefinition(
+    key = "MailAndroidV7BackToSchool2026Wave2",
+    name = "Enable Fall Promo 26 (Wave 2)",
+    category = FeatureFlagCategory.Upselling,
+    description = "Enables Fall Promo 26 wave 2.",
+    defaultValue = false
+)
+
 data object ComposerFormatMenu : FeatureFlagDefinition(
     key = "MailAndroidV7ComposerFormatMenu",
     name = "Composer format menu",

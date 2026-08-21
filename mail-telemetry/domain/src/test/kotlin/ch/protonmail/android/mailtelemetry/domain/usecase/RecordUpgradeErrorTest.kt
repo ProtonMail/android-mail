@@ -54,7 +54,8 @@ class RecordUpgradeErrorTest {
             upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
             planBeforeUpgrade = "Free plan",
             modalVariant = UpsellModalVariant.COMPARISON_PLUS,
-            upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment")
+            upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7UpsellPlanExperiment"),
+            promoCampaign = null
         )
         val planSpecificDimensions = PlanSpecificDimensions(
             selectedPlan = "Mail Plus",

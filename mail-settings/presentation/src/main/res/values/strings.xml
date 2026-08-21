@@ -29,6 +29,7 @@
     <string name="mail_settings_app">App customizations</string>
     <string name="mail_settings_content_search">Email content search</string>
     <string name="mail_settings_mailbox">Mailbox preferences</string>
+    <string name="mail_settings_new_badge">New</string>
     <string name="mail_settings_folders_labels">Folders and labels</string>
     <string name="mail_settings_spam_and_custom_filters">Spam and filters</string>
     <string name="mail_settings_privacy_and_security">Privacy and security</string>

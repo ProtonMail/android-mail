@@ -22,7 +22,8 @@ data class GeneralDimensions(
     val upsellEntryPoint: UpsellEntryPoint,
     val planBeforeUpgrade: String,
     val modalVariant: UpsellModalVariant,
-    val upsellExperimentFlag: UpsellExperimentFlag
+    val upsellExperimentFlag: UpsellExperimentFlag,
+    val promoCampaign: String?
 )
 
 data class UpsellExperimentFlag(

@@ -20,6 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySupported
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
@@ -28,6 +30,7 @@ import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
@@ -39,7 +42,8 @@ import javax.inject.Inject
 internal class PlanUpgradeMapper @Inject constructor(
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
-    private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase
+    private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
+    private val getCurrentFallPromoPhase: GetCurrentFallPromoPhase
 ) {
 
     suspend fun resolveVariant(
@@ -51,10 +55,19 @@ internal class PlanUpgradeMapper @Inject constructor(
         val currentSpringPromoPhase = getCurrentSpringPromoPhase()
         val currentBlackFridayPhase = getCurrentBlackFridayPhase()
         val currentSummerCampaignPhase = getCurrentSummerCampaignPhase()
+        val currentFallPromoPhase = getCurrentFallPromoPhase()
 
         return when {
-            // A plan can be tagged as BF + Intro OR Sp26 + intro OR summer26 + intro,
+            // A plan can be tagged as BF + Intro OR Sp26 + intro OR summer26 + intro OR fall26 + intro,
             // so the extra checks on the entryPoint/phases are required.
+            entryPoint is FallPromoSupported &&
+                currentFallPromoPhase is FallPromoPhase.Active &&
+                instances.containsTag(PlanUpgradeSupportedTags.FallPromo) ->
+                when (currentFallPromoPhase) {
+                    FallPromoPhase.Active.Wave2 -> PlanUpgradeVariant.FallPromo.Wave2
+                    FallPromoPhase.Active.Wave1 -> PlanUpgradeVariant.FallPromo.Wave1
+                }
+
             entryPoint is SummerCampaignSupported &&
                 currentSummerCampaignPhase is SummerCampaignPhase.Active &&
                 instances.containsTag(PlanUpgradeSupportedTags.SummerCampaign) ->
@@ -117,6 +130,10 @@ internal class PlanUpgradeMapper @Inject constructor(
 
             variant is PlanUpgradeVariant.SummerCampaign -> {
                 PlanUpgradeInstanceListUiModel.Data.SummerCampaign(variant, shorterCycleUiModel, longerCycleUiModel)
+            }
+
+            variant is PlanUpgradeVariant.FallPromo -> {
+                PlanUpgradeInstanceListUiModel.Data.FallPromo(variant, shorterCycleUiModel, longerCycleUiModel)
             }
 
             shorterCycleUiModel is PlanUpgradeInstanceUiModel.Promotional ||

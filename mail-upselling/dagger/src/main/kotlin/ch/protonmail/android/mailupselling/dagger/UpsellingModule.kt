@@ -20,15 +20,19 @@ package ch.protonmail.android.mailupselling.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailupselling.data.BlackFridayDataStoreProvider
+import ch.protonmail.android.mailupselling.data.FallPromoDataStoreProvider
 import ch.protonmail.android.mailupselling.data.SpringPromoDataStoreProvider
 import ch.protonmail.android.mailupselling.data.SummerCampaignDataStoreProvider
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.BlackFridayLocalDataSourceImpl
+import ch.protonmail.android.mailupselling.data.local.FallPromoLocalDataSource
+import ch.protonmail.android.mailupselling.data.local.FallPromoLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.SpringPromoLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.local.SummerCampaignLocalDataSource
 import ch.protonmail.android.mailupselling.data.local.SummerCampaignLocalDataSourceImpl
 import ch.protonmail.android.mailupselling.data.repository.BlackFridayRepositoryImpl
+import ch.protonmail.android.mailupselling.data.repository.FallPromoRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.SpringPromoRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.SummerCampaignRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellEligibilityRepositoryImpl
@@ -36,6 +40,7 @@ import ch.protonmail.android.mailupselling.data.repository.UpsellRatingTriggerRe
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
+import ch.protonmail.android.mailupselling.domain.repository.FallPromoRepository
 import ch.protonmail.android.mailupselling.domain.repository.SpringPromoRepository
 import ch.protonmail.android.mailupselling.domain.repository.SummerCampaignRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
@@ -83,6 +88,14 @@ interface UpsellingModule {
     fun provideSummerCampaignRepository(impl: SummerCampaignRepositoryImpl): SummerCampaignRepository
 
     @Binds
+    @Reusable
+    fun provideFallPromoRepository(impl: FallPromoRepositoryImpl): FallPromoRepository
+
+    @Binds
+    @Singleton
+    fun provideFallPromoDataSource(impl: FallPromoLocalDataSourceImpl): FallPromoLocalDataSource
+
+    @Binds
     @Singleton
     fun provideSummerCampaignDataSource(impl: SummerCampaignLocalDataSourceImpl): SummerCampaignLocalDataSource
 
@@ -109,6 +122,11 @@ interface UpsellingModule {
         fun provideSummerCampaignDataStoreProvider(
             @ApplicationContext context: Context
         ): SummerCampaignDataStoreProvider = SummerCampaignDataStoreProvider(context)
+
+        @Provides
+        @Singleton
+        fun provideFallPromoDataStore(@ApplicationContext context: Context): FallPromoDataStoreProvider =
+            FallPromoDataStoreProvider(context)
     }
 }
 

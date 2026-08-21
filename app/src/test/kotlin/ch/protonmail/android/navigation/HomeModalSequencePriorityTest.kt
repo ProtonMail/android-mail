@@ -25,6 +25,7 @@ import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilitySt
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
+import ch.protonmail.android.mailupselling.presentation.model.fallpromo.FallPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.summercampaign.SummerCampaignModalState
 import kotlin.test.Test
@@ -42,7 +43,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Loading,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then
@@ -59,7 +61,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then
@@ -78,7 +81,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then
@@ -98,7 +102,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then
@@ -115,7 +120,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.Show(UpsellingVisibility.Promotional.SummerCampaign.Wave1)
+            summerCampaignState = SummerCampaignModalState.Show(UpsellingVisibility.Promotional.SummerCampaign.Wave1),
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then
@@ -132,7 +138,8 @@ internal class HomeModalSequencePriorityTest {
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
-            summerCampaignState = SummerCampaignModalState.NotRequired
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
         )
 
         // Then

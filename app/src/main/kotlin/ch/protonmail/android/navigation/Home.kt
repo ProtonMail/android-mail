@@ -103,6 +103,7 @@ import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.viewmodel.BlackFridayModalUpsellViewModel
+import ch.protonmail.android.mailupselling.presentation.viewmodel.FallPromoModalUpsellViewModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.SpringPromoModalUpsellViewModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.SummerCampaignModalUpsellViewModel
 import ch.protonmail.android.navigation.deeplinks.DeepLinkNavigationEffect
@@ -156,13 +157,13 @@ import ch.protonmail.android.navigation.route.addWebSpamFilterSettings
 import ch.protonmail.android.navigation.transitions.RouteTransitions
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import io.sentry.compose.withSentryObservableEffect
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.android.core.accountmanager.presentation.manager.addAccountsManager
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountSwitchEvent
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -176,6 +177,7 @@ fun Home(
     blackFridayModalUpsellViewModel: BlackFridayModalUpsellViewModel = hiltViewModel(),
     springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
+    fallPromoModalUpsellViewModel: FallPromoModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
     contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel()
 ) {
@@ -196,6 +198,7 @@ fun Home(
     val blackFridayEligibilityState by blackFridayModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val springSaleEligibilityState by springPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
+    val fallPromoEligibilityState by fallPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
     val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
@@ -209,7 +212,8 @@ fun Home(
                 contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
-                summerCampaignEligibilityState
+                summerCampaignEligibilityState,
+                fallPromoEligibilityState
             )
         }
     }
@@ -491,9 +495,8 @@ fun Home(
                     .invokeOnCompletion { showBottomSheet = true }
             }
 
-            is HomeInterstitialPriority.FeatureSpotlight -> {
-                navController.navigate(Screen.FeatureSpotlight.route)
-            }
+            // Handled by a dedicated effect below
+            is HomeInterstitialPriority.FeatureSpotlight -> Unit
 
             is HomeInterstitialPriority.ContentSearch -> {
                 bottomSheetType = BottomSheetType.ContentSearch
@@ -522,12 +525,29 @@ fun Home(
                 )
             }
 
+            is HomeInterstitialPriority.FallPromo -> {
+                fallPromoModalUpsellViewModel.saveModalSeenTimestamp(priority.state.wave)
+                navController.navigate(
+                    Screen.FeatureUpselling(UpsellingEntryPoint.Feature.Navbar, priority.state.wave)
+                )
+            }
+
             is HomeInterstitialPriority.None -> {
                 if (showBottomSheet) {
                     scope.launch { bottomSheetState.hide() }
                         .invokeOnCompletion { showBottomSheet = false }
                 }
             }
+        }
+    }
+
+    // A notification deep-link can pop the feature spotlight off the back stack before it's seen.
+    // Re-key on the destination so it shows again when the user returns to the mailbox (ET-6768).
+    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
+        if (interstitialPriority is HomeInterstitialPriority.FeatureSpotlight &&
+            currentDestinationRoute == Screen.Mailbox.route
+        ) {
+            navController.navigate(Screen.FeatureSpotlight.route)
         }
     }
 

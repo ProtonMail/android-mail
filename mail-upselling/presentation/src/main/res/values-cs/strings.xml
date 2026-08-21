@@ -99,7 +99,6 @@
   <string name="upselling_comparison_table_folders_labels">Složky a štítky</string>
   <string name="upselling_comparison_table_premium_products">Prémiová VPN, správce hesel a cloudové úložiště</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Sledování Dark webu</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Neomezený počet aliasů pro skrytí vaší identity</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Vysokorychlostní VPN s pokrytím ve více než 110 zemích</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Zvolte předplatné</string>
@@ -135,5 +134,8 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Došlo k chybě.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Nepodařilo se získat předplatné.</string>
+  <string name="upselling_comparison_table_premium_access">Prémiový přístup ke službám Mail, VPN, Drive, Pass a Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Neomezený počet aliasů pro skrytí vaší identity</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomezený počet složek, filtrů a štítků</string>
   <!-- Snackbar texts -->
 </resources>

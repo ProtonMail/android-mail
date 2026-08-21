@@ -19,12 +19,14 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.isTaggedWith
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSummerCampaignPhase
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -34,13 +36,22 @@ import javax.inject.Inject
 class ResolveUpsellingVisibilityForPlans @Inject constructor(
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
     private val getCurrentSpringPromoPhase: GetCurrentSpringPromoPhase,
-    private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase
+    private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
+    private val getCurrentFallPromoPhase: GetCurrentFallPromoPhase
 ) {
 
     @Suppress("ReturnCount")
     suspend operator fun invoke(plans: List<ProductOfferDetail>): UpsellingVisibility {
         val instances = plans.takeIf { it.size == 2 } // We always expect 2 instances (monthly + yearly)
             ?: return UpsellingVisibility.Hidden
+
+        // Only check Fall Promo phase if offers are tagged for it
+        if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.FallPromo) }) {
+            val phase = getCurrentFallPromoPhase()
+            if (phase is FallPromoPhase.Active) {
+                return phase.toUpsellingVisibility()
+            }
+        }
 
         // Only check Summer Campaign phase if offers are tagged for it
         if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.SummerCampaign) }) {
@@ -90,6 +101,11 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
     private fun SummerCampaignPhase.Active.toUpsellingVisibility() = when (this) {
         SummerCampaignPhase.Active.Wave1 -> UpsellingVisibility.Promotional.SummerCampaign.Wave1
         SummerCampaignPhase.Active.Wave2 -> UpsellingVisibility.Promotional.SummerCampaign.Wave2
+    }
+
+    private fun FallPromoPhase.Active.toUpsellingVisibility() = when (this) {
+        FallPromoPhase.Active.Wave1 -> UpsellingVisibility.Promotional.FallPromo.Wave1
+        FallPromoPhase.Active.Wave2 -> UpsellingVisibility.Promotional.FallPromo.Wave2
     }
 
     private fun ProductOfferDetail.isUnlimitedPlan() = metadata.planName == PlanUpgradeIds.UnlimitedPlanId

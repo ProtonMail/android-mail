@@ -30,6 +30,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWav
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
@@ -55,6 +57,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchScreenEn
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
@@ -167,6 +171,18 @@ object FeatureFlagsModule {
     @IsSummerCampaign2026Wave2Enabled
     fun provideSummerCampaign2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = SummerCampaign2026Wave2Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsFallPromo2026Enabled
+    fun provideFallPromo2026Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = FallPromo2026Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsFallPromo2026Wave2Enabled
+    fun provideFallPromo2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = FallPromo2026Wave2Enabled.key, false)
 
     @Provides
     @Singleton
@@ -291,6 +307,12 @@ object FeatureFlagsModule {
     fun provideBgProcessingNewConstraintDef(): FeatureFlagDefinition = BgProcessingRelaxedBatteryConstraint
 
     @Provides
+    @Singleton
+    @IsSdkUpgradesReadEnabled
+    fun provideSdkUpgradesReadEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = SdkUpgradesReadEnabled.key, false)
+
+    @Provides
     @IntoSet
     @Singleton
     fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
@@ -305,12 +327,6 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideContentSearchScreenEnabledDef(): FeatureFlagDefinition = ContentSearchScreenEnabled
-
-    @Provides
-    @Singleton
-    @IsSdkUpgradesReadEnabled
-    fun provideSdkUpgradesReadEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = SdkUpgradesReadEnabled.key, false)
 
     @Provides
     @IntoSet

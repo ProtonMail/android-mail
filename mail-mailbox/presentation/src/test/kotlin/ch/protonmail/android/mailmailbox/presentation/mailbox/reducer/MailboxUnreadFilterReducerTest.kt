@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -82,7 +83,7 @@ internal class MailboxUnreadFilterReducerTest(
                     selectedLabelCount = null
                 ),
                 expectedState = UnreadFilterState.Data(
-                    unreadCount = DEFAULT_UNREAD_COUNT.toCappedNumberUiModel(),
+                    unreadCount = CappedNumberUiModel.Empty,
                     isFilterEnabled = false
                 )
             ),
@@ -130,6 +131,17 @@ internal class MailboxUnreadFilterReducerTest(
             TestInput(
                 currentState = UnreadFilterState.Data(
                     unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
+                    isFilterEnabled = false
+                ),
+                operation = MailboxEvent.SelectedLabelCountChanged(DEFAULT_UNREAD_COUNT),
+                expectedState = UnreadFilterState.Data(
+                    unreadCount = CappedNumberUiModel.Empty,
+                    isFilterEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = UnreadFilterState.Data(
+                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
                     isFilterEnabled = true
                 ),
                 operation = MailboxEvent.SelectedLabelCountChanged(UPDATED_UNREAD_COUNT),
@@ -176,7 +188,7 @@ internal class MailboxUnreadFilterReducerTest(
                     selectedLabelCount = null
                 ),
                 expectedState = UnreadFilterState.Data(
-                    unreadCount = DEFAULT_UNREAD_COUNT.toCappedNumberUiModel(),
+                    unreadCount = CappedNumberUiModel.Empty,
                     isFilterEnabled = false
                 )
             ),
@@ -190,7 +202,7 @@ internal class MailboxUnreadFilterReducerTest(
                     selectedLabelCount = null
                 ),
                 expectedState = UnreadFilterState.Data(
-                    unreadCount = DEFAULT_UNREAD_COUNT.toCappedNumberUiModel(),
+                    unreadCount = CappedNumberUiModel.Empty,
                     isFilterEnabled = false
                 )
             ),
