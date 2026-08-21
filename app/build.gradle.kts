@@ -267,6 +267,7 @@ dependencies {
 
     implementation(libs.play.review.core)
     implementation(libs.play.review.ext)
+    implementation(libs.play.services)
     implementation(libs.androidx.compose.animation)
 
     implementation(libs.androidx.webkit)
