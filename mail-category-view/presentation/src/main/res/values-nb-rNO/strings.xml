@@ -24,12 +24,4 @@
   <string name="category_title_forums">Forum</string>
   <string name="category_title_newsletters">Nyhetsbrev</string>
   <string name="category_title_transactions">Transaksjoner</string>
-  <string name="category_spotlight_unseen_title">Nye meldinger i %1$s</string>
-  <string name="category_spotlight_unseen_description">En blå prikk viser når en kategori har nye meldinger siden du sist sjekket den.</string>
-  <string name="category_spotlight_personalise_title">Finjuster kategoriene dine</string>
-  <string name="category_spotlight_personalise_description">Flytt en e-post til en annen kategori ved å bruke «Flytt til». Lignende e-poster vil da bli sortert der automatisk</string>
-  <string name="category_spotlight_close_content_description">Lukk</string>
-  <string name="recategorise_bottom_sheet_title">Omkategoriser e-post</string>
-  <string name="recategorise_bottom_sheet_description">Når du flytter en e-post til en annen kategori, vil lignende meldinger bli kategorisert der i fremtiden.</string>
-  <string name="recategorise_bottom_sheet_button">Skjønner</string>
 </resources>

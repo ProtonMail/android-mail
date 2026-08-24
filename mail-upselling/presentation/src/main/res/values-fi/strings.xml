@@ -99,6 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Kansiot ja tunnisteet</string>
   <string name="upselling_comparison_table_premium_products">Premium VPN, salasananhallinta ja pilvitallennustila</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Pimeän verkon valvonta</string>
+  <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Huippunopea VPN yli 110 maalla</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Valitse tilaus</string>
@@ -134,8 +137,5 @@
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Tilausten nouto ei onnistu.</string>
-  <string name="upselling_comparison_table_premium_access">Premium-käyttöoikeus palveluihin Mail, VPN, Drive, Pass ja Calendar</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Rajattomasti aliaksia henkilöllisyytesi piilottamiseen</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Rajattomasti kansioita, suodattimia ja tunnisteita</string>
   <!-- Snackbar texts -->
 </resources>

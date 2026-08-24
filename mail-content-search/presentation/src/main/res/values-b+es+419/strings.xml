@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Búsqueda avanzada</string>
+  <string name="mail_settings_content_search_header_title">Buscar contenido de correo</string>
   <string name="mail_settings_content_search_description">Para que pueda buscar por contenido de los mensajes, estos se descargarán en este dispositivo.</string>
   <string name="mail_settings_content_search_learn_more">Más información.</string>
-  <string name="mail_settings_content_search_toggle_title">Búsqueda avanzada</string>
+  <string name="mail_settings_content_search_toggle_title">Buscar contenido de correo</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitir descargas usando datos móviles</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descarga continúa con datos móviles si se pierde la señal de Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Preparando %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Esperando una conexión Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Borrar datos de búsqueda locales</string>
   <string name="mail_settings_content_search_clear_data_description">Borrar datos de búsqueda locales desactivará búsqueda por contenido de mensaje. Puede activarla nuevamente en cualquier momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Borrar datos de búsqueda locales</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Se eliminarán los datos de búsqueda de este dispositivo. Deberá descargarlos de nuevo para usar la búsqueda avanzada.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Se eliminarán los datos de búsqueda de este dispositivo. Deberá descargarlos de nuevo para buscar contenido de correo.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Borrar los datos</string>
-  <string name="content_search_bottomsheet_title">Preparando la búsqueda avanzada…</string>
-  <string name="content_search_bottomsheet_description">Los correos se están descargando por Wi-Fi o datos móviles. Puede cambiar a solo Wi-Fi en %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">ajustes</string>
-  <string name="content_search_bottomsheet_ok">Aceptar</string>
+  <string name="content_search_bottomsheet_title">Preparando la búsqueda de contenido de correo</string>
+  <string name="content_search_bottomsheet_description">Se están descargando los correos de su buzón y se preparan para ser buscados.</string>
+  <string name="content_search_bottomsheet_continue">Continuar</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Sin resultados</string>
   <string name="content_search_no_results_description">Pruebe palabras clave diferentes o compruebe su ortografía.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papelera</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Acerca de la búsqueda\npor contenido del mensaje</string>
-  <string name="content_search_first_run_description">Escriba un nombre, asunto o palabra clave para comenzar la búsqueda…</string>
+  <string name="content_search_first_run_description">Escriba un nombre, asunto o palabra clave para comenzar la búsqueda</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Reciente</string>
   <string name="content_search_clear_recent_searches">Borrar</string>

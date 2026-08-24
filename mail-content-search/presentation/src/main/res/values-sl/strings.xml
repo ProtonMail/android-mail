@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Napredno iskanje</string>
+  <string name="mail_settings_content_search_header_title">Išči po vsebini sporočila</string>
   <string name="mail_settings_content_search_description">Za iskanje po vsebini se bodo sporočila najprej prenesla na to napravo.</string>
   <string name="mail_settings_content_search_learn_more">Več o tem ...</string>
-  <string name="mail_settings_content_search_toggle_title">Napredno iskanje</string>
+  <string name="mail_settings_content_search_toggle_title">Išči po vsebini sporočila</string>
   <string name="mail_settings_content_search_mobile_data_title">Dovoli prenos prek mobilnih podatkov</string>
   <string name="mail_settings_content_search_mobile_data_hint">Če povezava Wi-Fi ni več na voljo, se bo prenos nadaljeval prek mobilnih podatkov.</string>
+  <string name="mail_settings_content_search_syncing_status">Pripravljanje %1$d%% …</string>
   <string name="mail_settings_content_search_preparing_status">Priprava …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakanje na Wifi …</string>
   <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>
   <string name="mail_settings_content_search_clear_data_description">Če počistite lokalne podatke iskanja, bo iskanje po vsebini sporočil onemogočeno. Kadar koli ga lahko znova omogočite.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Počisti lokalne iskalne podatke</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Podatki za iskanje v tej napravi bodo odstranjeni. Če želite uporabljati napredno iskanje, jih boste morali znova prenesti.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Podatki za iskanje v tej napravi bodo odstranjeni. Če želite uporabljati iskanje po vsebini sporočil, jih boste morali znova prenesti.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Počisti podatke</string>
-  <string name="content_search_bottomsheet_title">Pripravljanje naprednega iskanja …</string>
-  <string name="content_search_bottomsheet_description">E-pošta se prenaša prek Wi-Fi ali mobilnih podatkov. V %1$s lahko preklopite na izključno Wi-Fi.</string>
-  <string name="content_search_bottomsheet_settings_link">nastavitve</string>
-  <string name="content_search_bottomsheet_ok">V redu</string>
+  <string name="content_search_bottomsheet_title">Priprava iskanja po vsebini sporočil</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Nadaljuj</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Ni rezultatov</string>
   <string name="content_search_no_results_description">Poskusite z drugimi ključnimi besedami in preverite, ali se niste zatipkali.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Smetnjak</string>
   <string name="content_search_include_spam">Neželena pošta</string>
   <string name="content_search_about_content_search">O iskanju po\nvsebini e-pošte</string>
-  <string name="content_search_first_run_description">Vnesite ime, zadevo ali ključno besedo, da začnete potovanje …</string>
+  <string name="content_search_first_run_description">Vnesite ime, zadevo ali ključno besedo, da začnete iskanje</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedavno</string>
   <string name="content_search_clear_recent_searches">Počisti</string>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indeksering af avanceret søgning</string>
-  <string name="content_search_notification_channel_description">Viser fremskridt mens meddelelser indekseres til avanceret søgning.</string>
-  <string name="content_search_notification_title">Forbereder avanceret søgning</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d beskeder</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d beskeder (%4$d/%5$d konti)</string>
+  <string name="content_search_notification_channel_name">Indeksering af indholdssøgning i e-mails</string>
+  <string name="content_search_notification_channel_description">Viser fremskridt mens meddelelser indekseres til indholdssøgning i e-mails.</string>
+  <string name="content_search_notification_title">Forbereder indholdssøgning i e-mails</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">Forbereder…</string>
-  <string name="content_search_notification_pause">Pause</string>
+  <string name="content_search_notification_pause">Sæt på pause</string>
 </resources>

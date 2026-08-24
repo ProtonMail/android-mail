@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">高级搜索</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">为支持按邮件内容搜索，邮件将下载到此设备上！</string>
   <string name="mail_settings_content_search_learn_more">了解详情...</string>
-  <string name="mail_settings_content_search_toggle_title">高级搜索</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">允许通过移动数据下载</string>
   <string name="mail_settings_content_search_mobile_data_hint">如果 Wi-Fi 信号丢失，将通过移动数据继续下载</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">正在准备…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">清除本地搜索数据</string>
   <string name="mail_settings_content_search_clear_data_description">清除本地搜索数据将禁用邮件内容搜索，您可以随时重新开启。</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">清除本地搜索数据</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">此设备上的搜索数据将被移除，您需要重新下载才能使用高级搜索！</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">清除数据</string>
-  <string name="content_search_bottomsheet_title">正在准备高级搜索…</string>
-  <string name="content_search_bottomsheet_description">正在通过 Wi-Fi 或移动数据下载邮件，您可以在 %1$s 中切换为仅使用 Wi-Fi 下载！</string>
-  <string name="content_search_bottomsheet_settings_link">设置</string>
-  <string name="content_search_bottomsheet_ok">确定</string>
+  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">No results</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Trash</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
   <string name="content_search_clear_recent_searches">Clear</string>

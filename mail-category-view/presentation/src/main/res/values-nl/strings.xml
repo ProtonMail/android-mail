@@ -24,12 +24,4 @@
   <string name="category_title_forums">Forums</string>
   <string name="category_title_newsletters">Nieuwsbrieven</string>
   <string name="category_title_transactions">Transacties</string>
-  <string name="category_spotlight_unseen_title">Nieuwe berichten in %1$s</string>
-  <string name="category_spotlight_unseen_description">Een blauwe stip geeft aan wanneer een categorie nieuwe berichten heeft sinds u deze voor het laatst hebt gecontroleerd.</string>
-  <string name="category_spotlight_personalise_title">Verfijn uw categorieën</string>
-  <string name="category_spotlight_personalise_description">Verplaats een e-mail naar een andere categorie met behulp van “Verplaatsen naar”. Vergelijkbare e-mails worden dan automatisch daar gesorteerd</string>
-  <string name="category_spotlight_close_content_description">Sluiten</string>
-  <string name="recategorise_bottom_sheet_title">E-mail opnieuw categoriseren</string>
-  <string name="recategorise_bottom_sheet_description">Wanneer u een e-mail naar een andere categorie verplaatst, worden soortgelijke berichten daar in de toekomst gecategoriseerd.</string>
-  <string name="recategorise_bottom_sheet_button">Begrepen</string>
 </resources>

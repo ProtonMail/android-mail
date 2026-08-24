@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">Yksityisyys- ja suojausasetukset</string>
   <string name="mail_settings_preferences">Asetukset</string>
   <string name="mail_settings_app">Sovelluksen mukauttaminen</string>
-  <string name="mail_settings_content_search">Tarkennettu haku</string>
+  <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">Postilaatikon asetukset</string>
+  <string name="mail_settings_new_badge">New</string>
   <string name="mail_settings_folders_labels">Kansiot ja tunnisteet</string>
   <string name="mail_settings_spam_and_custom_filters">Roskaposti ja suodattimet</string>
   <string name="mail_settings_privacy_and_security">Yksityisyys ja suojaus</string>
@@ -55,7 +56,7 @@
   <string name="mail_settings_app_customization_swipe_to_next_email">Pyyhkäise seuraavaan sähköpostiin</string>
   <string name="mail_settings_app_customization_swipe_to_next_email_hint">Siirry nopeasti seuraavaan tai edelliseen viestiin saapuneet-kansiossasi.</string>
   <string name="mail_settings_app_customization_customize_toolbar">Mukauta työkalupalkkeja</string>
-  <string name="mail_settings_app_customization_email_categories">Sähköpostiluokat</string>
+  <string name="mail_settings_app_customization_email_categories">Viestikategoriat</string>
   <string name="mail_settings_app_customization_alternative_routing">Vaihtoehtoinen reititys</string>
   <string name="mail_settings_app_customization_alternative_routing_hint">Ohita palomuuri- tai verkko-ongelmat sen varalta, että Protonin sivustot on estetty.</string>
   <string name="mail_settings_app_customization_mail_experience_header">Mail-elämys</string>

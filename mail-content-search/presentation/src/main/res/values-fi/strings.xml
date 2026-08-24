@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Tarkennettu haku</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">Jotta voit tehdä hakuja viestien sisällön perusteella, viestit ladataan tälle laitteelle.</string>
   <string name="mail_settings_content_search_learn_more">Lue lisää..</string>
-  <string name="mail_settings_content_search_toggle_title">Tarkennettu haku</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">Salli lataus mobiiliverkon kautta</string>
   <string name="mail_settings_content_search_mobile_data_hint">Lataus jatkuu mobiilidatan kautta, jos Wi-Fi-yhteys katkeaa.</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Odotetaan Wi-Fi-yhteyttä</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
   <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tyhjennä paikalliset hakutiedot</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Tämän laitteen hakutiedot poistetaan. Sinun on ladattava ne uudelleen, jotta voit käyttää tarkennettua hakua.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Tyhjennä tiedot</string>
-  <string name="content_search_bottomsheet_title">Valmistellaan tarkennettua hakua…</string>
-  <string name="content_search_bottomsheet_description">Sähköpostit ladataan Wi-Fi-yhteyden tai mobiilidatan kautta. Voit valita vain Wi-Fi-yhteyden kohdassa %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">asetukset</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Ei tuloksia</string>
   <string name="content_search_no_results_description">Kokeile eri hakusanoja tai tarkista oikeinkirjoitus.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Roskakori</string>
   <string name="content_search_include_spam">Roskaposti</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Kirjoita nimi, aihe tai avainsana aloittaaksesi matkan...</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
   <string name="content_search_clear_recent_searches">Tyhjennä</string>

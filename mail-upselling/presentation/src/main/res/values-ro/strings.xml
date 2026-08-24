@@ -89,7 +89,7 @@
   <string name="upselling_comparison_table_storage">Spațiu de stocare</string>
   <string name="upselling_comparison_table_storage_value_free">1 GiB</string>
   <string name="upselling_comparison_table_storage_value_plus">15 GiB</string>
-  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GiB</string>
   <string name="upselling_comparison_table_email_addresses">Adrese de e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Domeniu personal de e-mail</string>
   <string name="upselling_comparison_table_desktop_app">Acces la aplicația desktop</string>
@@ -99,7 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Foldere și etichete</string>
   <string name="upselling_comparison_table_premium_products">VPN premium, manager de parole și stocare în cloud</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitorizare pe internetul ascuns</string>
+  <string name="upselling_comparison_table_premium_access">Acces premium la Mail, VPN, Drive, Pass și Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Aliasuri nelimitate pentru a vă ascunde identitatea</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Foldere, filtre și etichete nelimitate</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarapid cu peste 110 țări</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Alegere abonament</string>

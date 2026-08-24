@@ -80,7 +80,7 @@
   <string name="message_auth_fail_banner_text">Sähköposti ei täyttänyt sen verkkotunnuksen todennusvaatimuksia. Se voi olla väärennetty tai virheellisesti välitetty!</string>
   <string name="message_auth_fail_banner_button">Lue lisää</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">Olet poistumassa sovelluksesta avaamassa kohdetta:</string>
+  <string name="external_link_confirmation_dialog_text">Olet poistumassa sovelluksesta ja avaamassa osoitetta:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Älä kysy uudelleen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Peru</string>
   <string name="external_link_confirmation_dialog_continue_button">Jatka</string>

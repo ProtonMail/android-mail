@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indexare căutare avansată</string>
-  <string name="content_search_notification_channel_description">Arată progresul în timp ce mesajele sunt indexate pentru căutarea avansată.</string>
-  <string name="content_search_notification_title">Se pregătește căutarea avansată</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d mesaje</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d mesaje (%4$d/%5$d conturi)</string>
+  <string name="content_search_notification_channel_name">Indexare căutare în conținut mesaje</string>
+  <string name="content_search_notification_channel_description">Arată progresul în timp ce mesajele sunt indexate pentru căutarea în conținutul acestora.</string>
+  <string name="content_search_notification_title">Se pregătește căutarea în conținutul mesajelor</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d %%</string>
   <string name="content_search_notification_preparing">Se pregătește…</string>
   <string name="content_search_notification_pause">Suspendare</string>
 </resources>

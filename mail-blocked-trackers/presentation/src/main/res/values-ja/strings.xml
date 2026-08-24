@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_blocked_links_cleaned_numbers">%s個のリンクをクリーンアップし、%s個のトラッカーをブロックしました</string>
+  <string name="trackers_protection">トラッカー防止数:</string>
+  <string name="show_details">詳細を表示</string>
+  <string name="trackers_protection_no_trackers_detected">トラッカー防止数: トラッカーは検出されませんでした</string>
+  <string name="tracking_protection">トラッキング防止</string>
+  <string name="tracking_protection_description">スパイピクセル（トラッカー）またはトラッキングリンクを含むメールを受信した場合、メールの詳細にシールドアイコンが表示されます。</string>
+  <string name="tracking_protection_learn_more">もっと詳しく...</string>
+  <string name="original">オリジナル</string>
+  <string name="cleaned">クリア済み</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="other">%s 件のトラッカーをブロックしました</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="other">%s 件のリンクがクリアされました</item>
+  </plurals>
+</resources>

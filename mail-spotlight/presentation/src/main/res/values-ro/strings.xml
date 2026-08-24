@@ -44,7 +44,7 @@
   <string name="spotlight_screen_category_view_main_b2b_title">Rămâneți la curent cu\nmesajele noi și necitite</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Filtrul pentru mesajele necitite este acum mai vizibil și la îndemână, permițându-vă vedeți mai repede și să luați măsuri asupra mesajelor necitite.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">Contul de email,\norganizat automat</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Contul este acum sortat pe categorii precum Principale, Sociale, Promoții și multe altele, ceea ce facilitează reducerea dezordinii și concentrarea asupra mesajelor importante.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Contul este acum sortat pe categorii precum Principale, Rețele sociale, Promoții și multe altele, ceea ce facilitează reducerea dezordinii și concentrarea asupra mesajelor importante.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Privat prin design. Detalii</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Bun venit categorii.\nAdio distrageri.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Evitați distragerea buletinelor informative, actualizărilor și a mesajelor neurgente. Cu noile categorii pentru mesaje, doar cele importante ajung în folderul principal.</string>
@@ -53,6 +53,7 @@
   <string name="spotlight_screen_category_view_button_dismiss">Păstrare mesaje ca înainte</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Căutarea a devenit mai bună.</string>
+  <string name="spotlight_screen_content_search_subtitle">Găsiți ce doriți, fără a renunța la intimitate.</string>
   <string name="spotlight_screen_content_search_message_content_title">Găsiți mai multe în fiecare mesaj</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Găsiți e-mailuri după conținutul mesajului, nu doar după subiect si expeditor.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Mai ușor de accesat</string>

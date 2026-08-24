@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_blocked_links_cleaned_numbers">%s izleyici engellendi, %s bağlantı temizlendi</string>
+  <string name="trackers_protection">İzleyici koruması:</string>
+  <string name="show_details">Ayrıntıları görüntüle</string>
+  <string name="trackers_protection_no_trackers_detected">İzleyici koruması: Herhangi bir izleyici bulunamadı</string>
+  <string name="tracking_protection">İzleme koruması</string>
+  <string name="tracking_protection_description">Casus pikseller (izleyiciler) veya izleme bağlantıları bulunan bir e-posta alırsanız, e-posta ayrıntılarında kalkan simgesi görürsünüz.</string>
+  <string name="tracking_protection_learn_more">Ayrıntılı bilgi alın...</string>
+  <string name="original">özgün</string>
+  <string name="cleaned">Temizlendi</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="one">%s izleyici engellendi</item>
+    <item quantity="other">%s izleyici engellendi</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="one">%s bağlantı temizlendi</item>
+    <item quantity="other">%s bağlantı temizlendi</item>
+  </plurals>
+</resources>

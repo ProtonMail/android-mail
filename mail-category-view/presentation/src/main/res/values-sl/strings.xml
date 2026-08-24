@@ -24,12 +24,4 @@
   <string name="category_title_forums">Forumi</string>
   <string name="category_title_newsletters">Glasila</string>
   <string name="category_title_transactions">Transakcije</string>
-  <string name="category_spotlight_unseen_title">Nova sporočila v %1$s</string>
-  <string name="category_spotlight_unseen_description">Modra pika pomeni, da so se v tej kategoriji od vašega zadnjega ogleda pojavila nova sporočila.</string>
-  <string name="category_spotlight_personalise_title">Izpopolnite svoje kategorije</string>
-  <string name="category_spotlight_personalise_description">Premaknite e-poštno sporočilo v drugo kategorijo z možnostjo »Premakni v«. Podobna e-poštna sporočila bodo nato samodejno razvrščena tja</string>
-  <string name="category_spotlight_close_content_description">Zapri</string>
-  <string name="recategorise_bottom_sheet_title">Spremeni kategorijo e-pošte</string>
-  <string name="recategorise_bottom_sheet_description">Ko e-pošto premaknete v drugo kategorijo, bodo podobna sporočila v prihodnje razvrščena tja.</string>
-  <string name="recategorise_bottom_sheet_button">Razumem</string>
 </resources>

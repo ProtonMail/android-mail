@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Ohrani prejeto kot prej</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Iskanje je postalo še boljše.</string>
+  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
   <string name="spotlight_screen_content_search_message_content_title">Najdite več rezultatov v vsakem sporočilu</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Poiščite sporočila po vsebini, ne le po zadevi ali pošiljatelju.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Lažji doseg</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">Iskalnik vas sedaj čaka na dnu zaslona, preprosto dosegljiv z eno roko.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Nadaljujte, kjer ste ostali</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Nedavna iskanja lahko hitro ponovite. Shranjena so na vaši napravi, da se ohrani šifriranje od konca do konca.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Easily revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
 </resources>

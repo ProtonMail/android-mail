@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Индексирование для расширенного поиска</string>
-  <string name="content_search_notification_channel_description">Показывает ход индексирования сообщений для расширенного поиска.</string>
-  <string name="content_search_notification_title">Подготовка расширенного поиска</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d accounts)</string>
+  <string name="content_search_notification_channel_name">Email content search indexing</string>
+  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for email content search.</string>
+  <string name="content_search_notification_title">Preparing email content search</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">Подготовка…</string>
   <string name="content_search_notification_pause">Pause</string>
 </resources>

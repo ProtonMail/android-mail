@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_blocked_links_cleaned_numbers">%s sporere blokkert, %s koblinger renset</string>
+  <string name="trackers_protection">Sporingsbeskyttelse:</string>
+  <string name="show_details">Vis detaljer</string>
+  <string name="trackers_protection_no_trackers_detected">Sporingsbeskyttelse: ingen sporere oppdaget</string>
+  <string name="tracking_protection">Sporingsbeskyttelse</string>
+  <string name="tracking_protection_description">Hvis du mottar en e-post som inneholder spionpiksler (sporere) eller sporingskoblinger, vil du se skjoldikonet i e-postdetaljer.</string>
+  <string name="tracking_protection_learn_more">Lær mer...</string>
+  <string name="original">original</string>
+  <string name="cleaned">Renset</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="one">%s sporer blokkert</item>
+    <item quantity="other">%s sporere blokkert</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="one">%s kobling renset</item>
+    <item quantity="other">%s koblinger renset</item>
+  </plurals>
+</resources>

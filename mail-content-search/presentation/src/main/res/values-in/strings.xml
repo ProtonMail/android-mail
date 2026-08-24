@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Pencarian Lanjutan</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">Untuk mencari berdasarkan konten pesan, pesan akan diunduh di perangkat ini.</string>
   <string name="mail_settings_content_search_learn_more">Pelajari lebih lanjut..</string>
-  <string name="mail_settings_content_search_toggle_title">Pencarian lanjutan</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">Izinkan pengunduhan via data seluler</string>
   <string name="mail_settings_content_search_mobile_data_hint">Pengunduhan dilanjutkan melalui data seluler jika Wi-Fi terputus.</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Menyiapkan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Bersihkan data pencarian lokal</string>
   <string name="mail_settings_content_search_clear_data_description">Membersihkan data pencarian lokal akan menonaktifkan pencarian konten pesan. Fitur ini dapat diaktifkan kembali kapan saja.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Hapus data pencarian lokal</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Data pencarian di perangkat ini akan dihapus. Perlu mengunduh kembali untuk menggunakan Pencarian Lanjutan.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Hapus data</string>
-  <string name="content_search_bottomsheet_title">Menyiapkan Pencarian Lanjutan…</string>
-  <string name="content_search_bottomsheet_description">Email sedang diunduh melalui Wi-Fi atau data seluler. Dapat beralih ke Wi-Fi saja di %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">pengaturan</string>
-  <string name="content_search_bottomsheet_ok">Oke</string>
+  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">No results</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Trash</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
   <string name="content_search_clear_recent_searches">Clear</string>

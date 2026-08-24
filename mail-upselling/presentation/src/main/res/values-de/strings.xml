@@ -101,7 +101,7 @@
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web-Überwachung</string>
   <string name="upselling_comparison_table_premium_access">Premium-Zugang zu Mail, VPN, Drive, Pass und Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unbegrenzte Aliase, um deine Identität zu verbergen</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unbegrenzte Ordner, Filter, Kategorien</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unbegrenzte Ordner, Filter, Labels</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultraschnelles VPN mit Zugang zu mehr als 110 Ländern</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonnement wählen</string>

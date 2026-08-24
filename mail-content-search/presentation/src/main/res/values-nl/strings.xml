@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Geavanceerd Zoeken</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">Om u te laten zoeken op berichtinhoud, worden berichten gedownload op dit apparaat.</string>
   <string name="mail_settings_content_search_learn_more">Meer informatie..</string>
-  <string name="mail_settings_content_search_toggle_title">Geavanceerd zoeken</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">Downloaden via mobiele gegevens toestaan</string>
   <string name="mail_settings_content_search_mobile_data_hint">Het downloaden gaat door via mobiele gegevens als de wifi-verbinding wordt verbroken.</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Voorbereiden…</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Wachten op Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale zoekgegevens wissen</string>
   <string name="mail_settings_content_search_clear_data_description">Het wissen van lokale zoekgegevens schakelt het doorzoeken van de inhoud van berichten uit. U kunt dit op elk gewenst moment weer inschakelen.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale zoekgegevens wissen</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">De zoekgegevens op dit apparaat worden verwijderd. U moet deze opnieuw downloaden om Geavanceerd Zoeken te gebruiken.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Gegevens wissen</string>
-  <string name="content_search_bottomsheet_title">Geavanceerd Zoeken voorbereiden…</string>
-  <string name="content_search_bottomsheet_description">E-mails worden gedownload via Wi-Fi of mobiele data. U kunt alleen overschakelen naar Wi-Fi binnen %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">instellingen</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">No results</string>
-  <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
-  <string name="content_search_placeholder_text">Search</string>
-  <string name="content_search_clear_query_content_description">Clear search query</string>
-  <string name="content_search_close_content_description">Close search</string>
-  <string name="content_search_options_content_description">Search options</string>
-  <string name="content_search_include_messages_in">Include messages in</string>
-  <string name="content_search_include_trash">Trash</string>
+  <string name="content_search_no_results_title">Geen resultaten</string>
+  <string name="content_search_no_results_description">Probeer verschillende trefwoorden of controleer uw spelling.</string>
+  <string name="content_search_placeholder_text">Zoeken</string>
+  <string name="content_search_clear_query_content_description">Zoekopdracht wissen</string>
+  <string name="content_search_close_content_description">Zoekopdracht sluiten</string>
+  <string name="content_search_options_content_description">Zoekopties</string>
+  <string name="content_search_include_messages_in">Berichten opnemen in</string>
+  <string name="content_search_include_trash">Prullenbak</string>
   <string name="content_search_include_spam">Spam</string>
-  <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <string name="content_search_about_content_search">Over zoeken\ne-inhoud</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
-  <string name="content_search_clear_recent_searches">Clear</string>
-  <string name="content_search_previously_found_title">Previously found</string>
-  <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+  <string name="content_search_clear_recent_searches">Wissen</string>
+  <string name="content_search_previously_found_title">Eerder gevonden</string>
+  <string name="content_search_dismiss_recent_search_content_description">Verwijder “%1$s” uit recente zoekopdrachten</string>
   <!-- Selection mode -->
-  <string name="content_search_delete_dialog_title">Delete permanently?</string>
-  <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
-  <string name="content_search_delete_dialog_confirm">Delete</string>
-  <string name="content_search_delete_dialog_cancel">Cancel</string>
+  <string name="content_search_delete_dialog_title">Permanent verwijderen?</string>
+  <string name="content_search_delete_dialog_message">Deze berichten worden definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.</string>
+  <string name="content_search_delete_dialog_confirm">Verwijderen</string>
+  <string name="content_search_delete_dialog_cancel">Annuleren</string>
 </resources>

@@ -46,19 +46,19 @@
   <string name="upselling_pu_pass_title">Захоўвайце свае паролі ў бяспецы і ўпарадкаваным выглядзе пры дапамозе сховішч</string>
   <string name="upselling_pu_subtitle">Атрымайце лепшае ад Proton з тарыфным планам Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
-  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
-  <string name="upselling_pu_row_threat_protection_title">Guard against threats</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Protect your account</string>
-  <string name="upselling_pu_row_aliases_title">Get unlimited aliases</string>
-  <string name="upselling_pu_row_aliases_subtitle">Protect your identity</string>
+  <string name="upselling_pu_row_generic_title">Палепшыце сваю прыватнасць</string>
+  <string name="upselling_pu_row_generic_subtitle">Разблакіруйце больш месца ў сховішчы</string>
+  <string name="upselling_pu_row_threat_protection_title">Абараніце сябе ад пагроз</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Абараніце свой уліковы запіс</string>
+  <string name="upselling_pu_row_aliases_title">Атрымайце неабмежаваную колькасць псеўданімаў</string>
+  <string name="upselling_pu_row_aliases_subtitle">Абараніце сваю ідэнтычнасць</string>
   <string name="upselling_pu_row_drive_title">Павялічце сваё сховішча</string>
   <string name="upselling_pu_row_drive_subtitle">Атрымайце 500 ГБ для захоўвання файлаў і фатаграфій</string>
   <string name="upselling_pu_row_vpn_browse_title">Праглядайце бяспечна</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
-  <string name="upselling_pu_row_pass_title">Keep passwords safe</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Атрымайце доступ да звышхуткага VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Разблакіруйце змесціва трансляцыі</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Бесперашкодна глядзіце трансляцыі з Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Захоўвайце паролі ў бяспецы</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Адпраўляйце групавыя лісты з лёгкасцю. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з Mail Plus.</string>
@@ -89,7 +89,7 @@
   <string name="upselling_comparison_table_storage">Сховішча</string>
   <string name="upselling_comparison_table_storage_value_free">1 ГБ</string>
   <string name="upselling_comparison_table_storage_value_plus">15 ГБ</string>
-  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 ГБ</string>
   <string name="upselling_comparison_table_email_addresses">Адрасы электроннай пошты</string>
   <string name="upselling_comparison_table_custom_email_domain">Карыстальніцкі дамен электроннай пошты</string>
   <string name="upselling_comparison_table_desktop_app">Доступ да праграмы для камп\'ютара</string>
@@ -99,7 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Папкі і меткі</string>
   <string name="upselling_comparison_table_premium_products">Прэміяльны VPN, менеджар пароляў і воблачнае сховішча</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_premium_access">Прэміяльны доступ да Mail, VPN, Drive, Pass і Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Неабмежаваная колькасць псеўданімаў, каб схаваць вашу ідэнтычнасць</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неабмежаваная колькасць папак, фільтраў і метак</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Звышхуткі VPN у больш чым 110 краінах свету</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выберыце падпіску</string>

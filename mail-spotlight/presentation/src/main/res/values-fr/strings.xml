@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Conserver la boite de réception telle quelle</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La recherche s\'est améliorée.</string>
+  <string name="spotlight_screen_content_search_subtitle">Trouvez ce qui compte, sans renoncer à votre vie privée.</string>
   <string name="spotlight_screen_content_search_message_content_title">Parcourez efficacement vos e-mails</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Recherchez des e-mails en fonction du contenu du message, et pas seulement de l\'objet ou de l\'expéditeur.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Plus simple à atteindre</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">La fonction de recherche se trouve désormais en bas de l\'écran, ce qui facilite son utilisation à une main.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Reprenez là où vous vous étiez arrêté</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Accédez rapidement à vos recherches récentes. Elles sont enregistrées sur votre appareil afin de garantir un chiffrement de bout en bout.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Accédez facilement à vos recherches récentes. Elles sont enregistrées sur votre appareil afin de garantir un chiffrement de bout en bout.</string>
 </resources>

@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Ponechať doručenú poštu ako predtým</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Vyhľadávanie je teraz ešte lepšie.</string>
+  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
   <string name="spotlight_screen_content_search_message_content_title">V každom emaile môžete nájsť viac informácií</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Vyhľadávajte emaily podľa obsahu správy, nielen podľa predmetu alebo odosielateľa.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Ľahšie dostupné</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">Funkcia vyhľadávania sa teraz nachádza v spodnej časti obrazovky, čo umožňuje pohodlné ovládanie jednou rukou.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Pokračujte tam, kde ste skončili</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Rýchlo si znovu prezrite nedávne vyhľadávania. Ukladajú sa do vášho zariadenia, aby bolo zachované end-to-end šifrovanie.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Easily revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
 </resources>

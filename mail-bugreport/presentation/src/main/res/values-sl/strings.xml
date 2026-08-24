@@ -28,8 +28,8 @@
   <string name="report_a_problem_field_length_error">To polje mora vsebovati več kot 10 znakov</string>
   <string name="report_a_problem_expected_results_title">Pričakovani rezultati</string>
   <string name="report_a_problem_expected_results_description">Primer: Ob odprtju e-pošte bi se morala prikazati vsebina sporočila in priponke.</string>
-  <string name="report_a_problem_repro_steps_title">Koraki za ponovitev</string>
-  <string name="report_a_problem_repro_steps_description">Primer:\n1. Poiščite e-poštno sporočilo z veliko priponko (npr. videoposnetek)\n2. Odprite e-poštno sporočilo\n3. Počakajte, da se e-poštno sporočilo naloži</string>
+  <string name="report_a_problem_repro_steps_title">Koraki za ponovitev težave</string>
+  <string name="report_a_problem_repro_steps_description">Primer:\n1. Poiščite e-poštno sporočilo z veliko priponko (npr. videoposnetek).\n2. Odprite e-poštno sporočilo.\n3. Počakajte, da se e-poštno sporočilo naloži.</string>
   <string name="report_a_problem_actual_results_title">Dejanski rezultati</string>
   <string name="report_a_problem_actual_results_description">Primer: Aplikacija Mail se zruši pri odpiranju e-pošte z velikimi priponkami.</string>
   <string name="report_a_problem_leave_dialog_description_1">Ste prepričani, da želite zapustiti ta zaslon?</string>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">高级搜索索引</string>
-  <string name="content_search_notification_channel_description">显示为高级搜索建立邮件索引时的进度。</string>
-  <string name="content_search_notification_title">正在准备高级搜索</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d accounts)</string>
+  <string name="content_search_notification_channel_name">Email content search indexing</string>
+  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for email content search.</string>
+  <string name="content_search_notification_title">Preparing email content search</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">正在准备…</string>
   <string name="content_search_notification_pause">Pause</string>
 </resources>

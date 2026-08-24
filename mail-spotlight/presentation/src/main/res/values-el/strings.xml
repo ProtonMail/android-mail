@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Διατηρήστε τα εισερχόμενά σας όπως πριν</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Η αναζήτηση μόλις βελτιώθηκε.</string>
+  <string name="spotlight_screen_content_search_subtitle">Βρείτε αυτό που έχει σημασία, χωρίς να εγκαταλείψετε την ιδιωτικότητά σας.</string>
   <string name="spotlight_screen_content_search_message_content_title">Βρείτε περισσότερα σε κάθε ηλεκτρονικό μήνυμα</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Βρείτε ηλεκτρονικά μηνύματα με βάση το περιεχόμενο του μηνύματος, όχι μόνο το θέμα ή τον αποστολέα.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Ευκολότερη πρόσβαση</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">Η αναζήτηση βρίσκεται πλέον στο κάτω μέρος της οθόνης για εύκολη χρήση με το ένα χέρι.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Συνεχίστε από εκεί που σταματήσατε</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Επισκεφθείτε γρήγορα τις πρόσφατες αναζητήσεις. Αποθηκεύεται στη συσκευή σας για να διατηρηθεί η διατερματική κρυπτογράφηση.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Επισκεφτείτε εύκολα τις πρόσφατες αναζητήσεις. Αποθηκευμένο στη συσκευή σας για διατήρηση της διατερματικής κρυπτογράφησης.</string>
 </resources>

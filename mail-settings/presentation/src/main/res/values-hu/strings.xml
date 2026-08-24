@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">Adatvédelem és biztonsági beállítások</string>
   <string name="mail_settings_preferences">Beállítások</string>
   <string name="mail_settings_app">Alkalmazás testreszabása</string>
-  <string name="mail_settings_content_search">Speciális keresés</string>
+  <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">Postafiók beállítások</string>
+  <string name="mail_settings_new_badge">New</string>
   <string name="mail_settings_folders_labels">Mappák és címkék</string>
   <string name="mail_settings_spam_and_custom_filters">Levélszemét és szűrők</string>
   <string name="mail_settings_privacy_and_security">Adatvédelem és biztonság</string>

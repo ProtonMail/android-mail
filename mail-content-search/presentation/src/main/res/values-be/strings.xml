@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Пашыраны пошук</string>
+  <string name="mail_settings_content_search_header_title">Пошук па змесціве ў лісце</string>
   <string name="mail_settings_content_search_description">Паведамленні будуць спампаваныя на гэту прыладу, каб вы маглі шукаць па іх змесціве.</string>
   <string name="mail_settings_content_search_learn_more">Даведацца больш..</string>
-  <string name="mail_settings_content_search_toggle_title">Пашыраны пошук</string>
+  <string name="mail_settings_content_search_toggle_title">Пошук па змесціве ў лісце</string>
   <string name="mail_settings_content_search_mobile_data_title">Дазволіць спампоўванне праз праз мабільныя даныя</string>
   <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
+  <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Даныя пошуку на гэтай прыладзе будзе выдалены. Вам спатрэбіцца спампаваць яго яшчэ раз для выкарыстання пашыранага пошуку.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Даныя пошуку на гэтай прыладзе будуць выдалены. Вам спатрэбіцца спампаваць іх паўторна, каб шукаць па змесціве ў лісце.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ачысціць даныя</string>
-  <string name="content_search_bottomsheet_title">Падрыхтоўка пашыранага пошуку…</string>
-  <string name="content_search_bottomsheet_description">Лісты спампоўваюцца праз Wi-Fi або мабільныя даныя. Вы можаце пераключыцца толькі на Wi-Fi у %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">наладах</string>
-  <string name="content_search_bottomsheet_ok">ОК</string>
+  <string name="content_search_bottomsheet_title">Падрыхтоўка пошуку па змесціве ў лісце</string>
+  <string name="content_search_bottomsheet_description">Лісты з вашай паштовай скрыні спампоўваюцца і рыхтуюцца да пошуку.</string>
+  <string name="content_search_bottomsheet_continue">Працягнуць</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Няма вынікаў</string>
   <string name="content_search_no_results_description">Паспрабуйце іншыя ключавыя словы або праверце правапіс.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Сметніца</string>
   <string name="content_search_include_spam">Спам</string>
   <string name="content_search_about_content_search">Аб пошуку\nзмесціва ў лістах</string>
-  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пачатку падарожжа...</string>
+  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пачатку пошуку</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Нядаўнія</string>
   <string name="content_search_clear_recent_searches">Ачысціць</string>

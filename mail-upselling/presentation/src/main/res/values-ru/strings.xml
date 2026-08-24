@@ -89,7 +89,7 @@
   <string name="upselling_comparison_table_storage">Хранилище</string>
   <string name="upselling_comparison_table_storage_value_free">1 ГБ</string>
   <string name="upselling_comparison_table_storage_value_plus">15 ГБ</string>
-  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 ГБ</string>
   <string name="upselling_comparison_table_email_addresses">Адреса электронной почты</string>
   <string name="upselling_comparison_table_custom_email_domain">Пользовательский домен электронной почты</string>
   <string name="upselling_comparison_table_desktop_app">Доступ к приложению для настольных компьютеров</string>
@@ -99,9 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Папки и ярлыки</string>
   <string name="upselling_comparison_table_premium_products">Платный VPN, менеджер паролей и облачное хранилище</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Мониторинг даркнета</string>
-  <string name="upselling_comparison_table_premium_access">Платный доступ к Mail, VPN, Drive, Pass и Calendar</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Неограниченное количество псевдонимов, чтобы скрыть ваши личные данные</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неограниченное количество папок, фильтров и ярлыков</string>
+  <string name="upselling_comparison_table_premium_access">Премиум-доступ к Mail, VPN, Drive, Pass и Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Неограниченные псевдонимы для скрытия личности</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неограниченные папки, фильтры, ярлыки</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultrafast VPN with 110+ countries</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выбрать подписку</string>

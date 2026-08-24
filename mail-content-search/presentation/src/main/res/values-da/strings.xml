@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Avanceret søgning</string>
+  <string name="mail_settings_content_search_header_title">Søg i indhold i e-mails</string>
   <string name="mail_settings_content_search_description">For at du kan søge i meddelelsesindhold vil meddelelser blive downloadet på denne enhed.</string>
   <string name="mail_settings_content_search_learn_more">Få mere at vide..</string>
-  <string name="mail_settings_content_search_toggle_title">Avanceret søgning</string>
+  <string name="mail_settings_content_search_toggle_title">Søg i indhold i e-mails</string>
   <string name="mail_settings_content_search_mobile_data_title">Tillad download via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
+  <string name="mail_settings_content_search_syncing_status">Forbereder %1$d%%...</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på Wi-Fi...</string>
   <string name="mail_settings_content_search_clear_data_button">Ryd lokale søgedata</string>
   <string name="mail_settings_content_search_clear_data_description">Ved at rydde lokale søgedata deaktiveres søgning i meddelelsesindhold. Du kan aktivere det igen når som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ryd lokale søgedata</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Søgedata på denne enhed vil blive fjernet. Du bliver nødt til at downloade igen for at bruge avanceret søgning.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Søgedata på denne enhed vil blive fjernet. Du bliver nødt til at downloade det igen for at søge i indhold i e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ryd data</string>
-  <string name="content_search_bottomsheet_title">Forbereder avanceret søgning...</string>
-  <string name="content_search_bottomsheet_description">E-mails downloades via Wi-Fi eller mobildata. Du kan vælge kun at bruge Wi-Fi i %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">indstillinger</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="content_search_bottomsheet_title">Forbereder indholdssøgning i e-mails</string>
+  <string name="content_search_bottomsheet_description">E-mails fra din postkasse downloades og bliver gjort klar til søgning.</string>
+  <string name="content_search_bottomsheet_continue">Fortsæt</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Ingen resultater</string>
   <string name="content_search_no_results_description">Prøv andre nøgleord eller kontrollér, at du har stavet rigtigt.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papirkurv</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Om søgning\ne-mail-indhold</string>
-  <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at begynde rejsen...</string>
+  <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at begynde søgningen</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Seneste</string>
   <string name="content_search_clear_recent_searches">Ryd</string>

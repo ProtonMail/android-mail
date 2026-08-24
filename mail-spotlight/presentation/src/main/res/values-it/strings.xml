@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Mantieni la posta in arrivo come prima</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La ricerca è stata appena migliorata.</string>
+  <string name="spotlight_screen_content_search_subtitle">Trova ciò che conta, senza rinunciare alla tua privacy</string>
   <string name="spotlight_screen_content_search_message_content_title">Scopri di più in ogni email</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Trova le email in base al contenuto del messaggio, non solo all\'oggetto o al mittente.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Più facile da raggiungere</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">La funzione di ricerca ora si trova nella parte inferiore dello schermo per un facile utilizzo con una sola mano.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Riprendi da dove avevi interrotto</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Rivedi rapidamente le ricerche recenti. I dati vengono memorizzati sul tuo dispositivo per preservare la crittografia end-to-end.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Riapri facilmente le ricerche recenti. Memorizzate sul tuo dispositivo per preservare la crittografia end-to-end.</string>
 </resources>

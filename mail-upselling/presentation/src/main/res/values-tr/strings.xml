@@ -99,7 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Klasörler ve etiketler</string>
   <string name="upselling_comparison_table_premium_products">Ücretli VPN, parola yöneticisi ve bulut depolama alanı</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Karanlık ağ izleme</string>
+  <string name="upselling_comparison_table_premium_access">Ücretli Mail, VPN, Drive, Pass ve Calendar uygulamalarına erişim</string>
   <string name="upselling_comparison_table_unlimited_aliases">Kimliğinizi gizlemek için sınırsız sayıda takma ad</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Sınırsız sayıda klasör, süzgeç ve etiket</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110 üzerinde ülkede Ultra hızlı VPN</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonelik seçin</string>

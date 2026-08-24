@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Σύνθετη Αναζήτηση</string>
+  <string name="mail_settings_content_search_header_title">Αναζήτηση περιεχομένου ηλεκτρονικού ταχυδρομείου</string>
   <string name="mail_settings_content_search_description">Για να μπορείτε να κάνετε αναζήτηση με βάση το περιεχόμενο του μηνύματος, τα μηνύματα θα ληφθούν σε αυτήν τη συσκευή.</string>
   <string name="mail_settings_content_search_learn_more">Μάθετε περισσότερα..</string>
-  <string name="mail_settings_content_search_toggle_title">Σύνθετη αναζήτηση</string>
+  <string name="mail_settings_content_search_toggle_title">Αναζήτηση περιεχομένου ηλεκτρονικού ταχυδρομείου</string>
   <string name="mail_settings_content_search_mobile_data_title">Να επιτρέπεται λήψη μέσω δεδομένων κινητής τηλεφωνίας</string>
   <string name="mail_settings_content_search_mobile_data_hint">Η λήψη συνεχίζεται μέσω δεδομένων κινητής τηλεφωνίας εάν χαθεί το Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Προετοιμασία %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Προετοιμασία…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Αναμονή για Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
   <string name="mail_settings_content_search_clear_data_description">Η διαγραφή των δεδομένων τοπικής αναζήτησης θα απενεργοποιήσει την αναζήτηση περιεχομένου μηνύματος. Μπορείτε να την ενεργοποιήσετε ξανά ανά πάσα στιγμή.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Τα δεδομένα αναζήτησης σε αυτήν τη συσκευή θα καταργηθούν. Θα χρειαστεί να τα κατεβάσετε ξανά για να χρησιμοποιήσετε τη Σύνθετη Αναζήτηση.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Τα δεδομένα αναζήτησης σε αυτήν τη συσκευή θα καταργηθούν. Θα χρειαστεί να τα κατεβάσετε ξανά για να αναζητήσετε περιεχόμενο ηλεκτρονικού ταχυδρομείου.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Εκκαθάριση δεδομένων</string>
-  <string name="content_search_bottomsheet_title">Προετοιμασία Σύνθετης Αναζήτησης…</string>
-  <string name="content_search_bottomsheet_description">Τα μηνύματα ηλεκτρονικού ταχυδρομείου λαμβάνονται μέσω Wi-Fi ή δεδομένων κινητής τηλεφωνίας. Μπορείτε να μεταβείτε σε Wi-Fi μόνο στο %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">ρυθμίσεις</string>
-  <string name="content_search_bottomsheet_ok">Ok</string>
+  <string name="content_search_bottomsheet_title">Προετοιμασία αναζήτησης περιεχομένου ηλεκτρονικού μηνύματος</string>
+  <string name="content_search_bottomsheet_description">Τα μηνύματα ηλεκτρονικού ταχυδρομείου από το γραμματοκιβώτιό σας λαμβάνονται και προετοιμάζονται για αναζήτηση.</string>
+  <string name="content_search_bottomsheet_continue">Συνέχεια</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Δεν υπάρχουν αποτελέσματα</string>
   <string name="content_search_no_results_description">Δοκιμάστε διαφορετικές λέξεις-κλειδιά ή ελέγξτε την ορθογραφία σας.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Κάδος απορριμμάτων</string>
   <string name="content_search_include_spam">Ανεπιθύμητα</string>
   <string name="content_search_about_content_search">Σχετικά με την αναζήτηση\nπεριεχόμενου ηλεκτρονικών μηνυμάτων</string>
-  <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για να ξεκινήσετε το ταξίδι...</string>
+  <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για να ξεκινήσετε την αναζήτηση</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Πρόσφατα</string>
   <string name="content_search_clear_recent_searches">Εκκαθάριση</string>

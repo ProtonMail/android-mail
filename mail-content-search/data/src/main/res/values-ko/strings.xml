@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">향상된 검색 색인</string>
-  <string name="content_search_notification_channel_description">향상된 검색을 위해 메시지가 색인되는 동안 진행 상황을 표시합니다.</string>
-  <string name="content_search_notification_title">향상된 검색 준비 중</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d개/%3$d개 메시지</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d개/%3$d개 메시지 (%4$d개/%5$d개 계정)</string>
+  <string name="content_search_notification_channel_name">Email content search indexing</string>
+  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for email content search.</string>
+  <string name="content_search_notification_title">Preparing email content search</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">준비 중…</string>
   <string name="content_search_notification_pause">일시 중지</string>
 </resources>

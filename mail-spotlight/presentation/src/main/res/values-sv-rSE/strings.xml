@@ -53,6 +53,7 @@
   <string name="spotlight_screen_category_view_button_dismiss">Behåll inkorg som förut</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Sök blev just bättre.</string>
+  <string name="spotlight_screen_content_search_subtitle">Hitta det som är viktigt, utan att ge upp din integritet.</string>
   <string name="spotlight_screen_content_search_message_content_title">Hitta mer i varje e-postmeddelande</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Hitta e-postmeddelanden efter meddelandeinnehåll, inte bara ämne eller avsändare.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Lättare att nå</string>

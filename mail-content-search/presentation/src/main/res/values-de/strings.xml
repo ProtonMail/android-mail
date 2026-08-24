@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Erweiterte Suche</string>
+  <string name="mail_settings_content_search_header_title">E-Mail-Inhalte durchsuchen</string>
   <string name="mail_settings_content_search_description">Damit nach dem Inhalt der Nachrichten gesucht werden kann, werden die Nachrichten auf dieses Gerät heruntergeladen.</string>
   <string name="mail_settings_content_search_learn_more">Mehr erfahren …</string>
-  <string name="mail_settings_content_search_toggle_title">Erweiterte Suche</string>
+  <string name="mail_settings_content_search_toggle_title">E-Mail-Inhalte durchsuchen</string>
   <string name="mail_settings_content_search_mobile_data_title">Herunterladen über Mobilfunk zulassen</string>
   <string name="mail_settings_content_search_mobile_data_hint">Das Herunterladen wird über Mobilfunk fortgesetzt, wenn die WLAN-Verbindung unterbrochen wird.</string>
+  <string name="mail_settings_content_search_syncing_status">%1$d%% wird vorbereitet …</string>
   <string name="mail_settings_content_search_preparing_status">Wird vorbereitet …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Auf WLAN-Verbindung wird gewartet …</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale Suchdaten löschen</string>
   <string name="mail_settings_content_search_clear_data_description">Durch das Löschen der lokalen Suchdaten wird die Suche nach Nachrichteninhalten deaktiviert. Sie können diese Funktion jederzeit wieder aktivieren.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale Suchdaten löschen</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Die Suchdaten auf diesem Gerät werden gelöscht. Sie müssen erneut heruntergeladen werden, um die erweiterte Suche nutzen zu können.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Die Suchdaten auf diesem Gerät werden gelöscht. Sie müssen erneut heruntergeladen werden, um E-Mail-Inhalte durchsuchen zu können.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Daten bereinigen</string>
-  <string name="content_search_bottomsheet_title">Erweiterte Suche wird vorbereitet …</string>
-  <string name="content_search_bottomsheet_description">E-Mails werden über WLAN oder mobile Daten heruntergeladen. Du kannst in %1$s auf „Nur WLAN“ umschalten.</string>
-  <string name="content_search_bottomsheet_settings_link">Einstellungen</string>
-  <string name="content_search_bottomsheet_ok">OK</string>
+  <string name="content_search_bottomsheet_title">Suche nach E-Mail-Inhalten wird vorbereitet</string>
+  <string name="content_search_bottomsheet_description">E-Mails aus deinem Postfach werden gerade heruntergeladen und für die Suche vorbereitet.</string>
+  <string name="content_search_bottomsheet_continue">Weiter</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Keine Ergebnisse</string>
   <string name="content_search_no_results_description">Probiere andere Suchbegriffe aus oder überprüfe die Schreibweise.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papierkorb</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Informationen zur Suche\nnach E-Mail-Inhalten</string>
-  <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Reise zu beginnen ...</string>
+  <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Reise zu beginnen</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Kürzlich</string>
   <string name="content_search_clear_recent_searches">Leeren</string>

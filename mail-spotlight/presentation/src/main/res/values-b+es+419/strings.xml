@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Mantener la bandeja de entrada como antes</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La búsqueda ahora es mejor.</string>
+  <string name="spotlight_screen_content_search_subtitle">Encuentre lo que importa sin entregar su privacidad.</string>
   <string name="spotlight_screen_content_search_message_content_title">Encuentre más en cada correo</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Encuentre correos por contenido del mensaje, no solo por asunto o remitente.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Más fácil de alcanzar</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">La búsqueda ahora se encuentra al final de la pantalla para el uso con una mano.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Retome donde lo dejó</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Revise rápidamente sus búsquedas recientes. Se almacenan en su dispositivo para preservar el cifrado de extremo a extremo.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Vuelva a consultar fácilmente las búsquedas recientes. Se almacenan en su dispositivo para preservar el cifrado de extremo a extremo.</string>
 </resources>

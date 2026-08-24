@@ -53,6 +53,7 @@
   <string name="spotlight_screen_category_view_button_dismiss">Behold indbakken som før</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Søgning er nu blevet bedre</string>
+  <string name="spotlight_screen_content_search_subtitle">Find alt det vigtige uden at give op på dit privatliv.</string>
   <string name="spotlight_screen_content_search_message_content_title">Find mere i hver e-mail</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Find e-mails efter beskedindhold, ikke bare emnet eller afsenderen.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Lettere at tilgå</string>

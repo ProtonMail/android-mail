@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">進階搜尋</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">為了讓您能搜尋訊息內容，訊息將會下載至此裝置。</string>
   <string name="mail_settings_content_search_learn_more">進一步瞭解..</string>
-  <string name="mail_settings_content_search_toggle_title">進階搜尋</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">允許透過行動數據下載</string>
   <string name="mail_settings_content_search_mobile_data_hint">若中斷 Wi-Fi 連線，將繼續透過行動數據下載。</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">正在等待 Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">清除本機搜尋資料</string>
   <string name="mail_settings_content_search_clear_data_description">清除本機搜尋資料將會停用訊息內文搜尋。您可以隨時重新啟用。</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">清除本機搜尋資料</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">此裝置上的搜尋資料將會被移除。您必須重新下載才能使用進階搜尋。</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">清除資料</string>
-  <string name="content_search_bottomsheet_title">正在準備進階搜尋…</string>
-  <string name="content_search_bottomsheet_description">電子郵件正透過 Wi-Fi 或行動數據下載。您可以在 %1$s 中切換為僅使用 Wi-Fi。</string>
-  <string name="content_search_bottomsheet_settings_link">設定</string>
-  <string name="content_search_bottomsheet_ok">確定</string>
+  <string name="content_search_bottomsheet_title">正準備內文搜尋</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">找不到任何結果</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Trash</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">最近</string>
   <string name="content_search_clear_recent_searches">清除</string>

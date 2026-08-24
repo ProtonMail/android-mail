@@ -99,7 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Φάκελοι και ετικέτες</string>
   <string name="upselling_comparison_table_premium_products">Premium VPN, διαχείριση κωδικών πρόσβασης και αποθήκευση στο cloud</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
+  <string name="upselling_comparison_table_premium_access">Premium πρόσβαση σε Mail, VPN, Drive, Pass και Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Απεριόριστα ψευδώνυμα για να αποκρύψετε την ταυτότητά σας</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Απεριόριστοι φάκελοι, φίλτρα, ετικέτες</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Εξαιρετικά γρήγορο VPN με 110+ χώρες</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Επιλογή συνδρομής</string>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_blocked_links_cleaned_numbers">S’han bloquejat %s rastrejadors i s’han netejat %s enllaços</string>
+  <string name="trackers_protection">Protecció contra rastrejadors:</string>
+  <string name="show_details">Mostra els detalls</string>
+  <string name="trackers_protection_no_trackers_detected">Protecció contra rastrejadors: no s’ha detectat cap rastrejador</string>
+  <string name="tracking_protection">Protecció contra rastrejadors</string>
+  <string name="tracking_protection_description">Si rebeu un correu electrònic que contingui píxels espia (rastrejadors) o enllaços de seguiment, veureu la icona de l\"escut als detalls del correu electrònic.</string>
+  <string name="tracking_protection_learn_more">Més informació...</string>
+  <string name="original">original</string>
+  <string name="cleaned">S\'ha netejat</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="one">S\'ha bloquejat %s rastrejador</item>
+    <item quantity="other">S\'han bloquejat %s rastrejadors</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="one">S\'ha netejat %s enllaç </item>
+    <item quantity="other">S\'han netejat %s enllaços</item>
+  </plurals>
+</resources>

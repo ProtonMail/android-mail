@@ -24,12 +24,4 @@
   <string name="category_title_forums">Fora</string>
   <string name="category_title_newsletters">Newslettery</string>
   <string name="category_title_transactions">Płatności</string>
-  <string name="category_spotlight_unseen_title">Nowa wiadomość w %1$s</string>
-  <string name="category_spotlight_unseen_description">Niebieska kropka wskazuje, kiedy kategoria ma nowe wiadomości od czasu Twojego ostatniego sprawdzenia.</string>
-  <string name="category_spotlight_personalise_title">Dostosuj swoje kategorie</string>
-  <string name="category_spotlight_personalise_description">Przenieś wiadomość do innej kategorii za pomocą „Przenieś do”. Podobne wiadomości będą odtąd automatycznie tam sortowane</string>
-  <string name="category_spotlight_close_content_description">Zamknij</string>
-  <string name="recategorise_bottom_sheet_title">Zmień kategorię wiadomości</string>
-  <string name="recategorise_bottom_sheet_description">Gdy przeniesiesz wiadomość do innej kategorii, podobne wiadomości będą tam kategoryzowane w przyszłości.</string>
-  <string name="recategorise_bottom_sheet_button">Rozumiem</string>
 </resources>

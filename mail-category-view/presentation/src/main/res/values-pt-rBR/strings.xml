@@ -24,12 +24,4 @@
   <string name="category_title_forums">Fóruns</string>
   <string name="category_title_newsletters">Boletins informativos</string>
   <string name="category_title_transactions">Transações</string>
-  <string name="category_spotlight_unseen_title">Novas mensagens em %1$s</string>
-  <string name="category_spotlight_unseen_description">Um ponto azul é exibido quando uma categoria tem novas mensagens desde a última vez que você a acessou.</string>
-  <string name="category_spotlight_personalise_title">Refine suas categorias</string>
-  <string name="category_spotlight_personalise_description">Mova um e-mail para outra categoria usando “Mover para”. E-mails semelhantes serão então classificados lá automaticamente</string>
-  <string name="category_spotlight_close_content_description">Fechar</string>
-  <string name="recategorise_bottom_sheet_title">Recategorizar e-mail</string>
-  <string name="recategorise_bottom_sheet_description">Quando você mover um e-mail para outra categoria, mensagens semelhantes serão categorizadas lá no futuro.</string>
-  <string name="recategorise_bottom_sheet_button">Entendi</string>
 </resources>

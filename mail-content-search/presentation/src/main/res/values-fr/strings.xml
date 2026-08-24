@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Recherche avancée</string>
+  <string name="mail_settings_content_search_header_title">Rechercher dans le contenu des messages</string>
   <string name="mail_settings_content_search_description">Pour vous permettre d\'effectuer des recherches dans le contenu de message, les messages seront téléchargés sur cet appareil.</string>
   <string name="mail_settings_content_search_learn_more">En savoir plus..</string>
-  <string name="mail_settings_content_search_toggle_title">Recherche avancée</string>
+  <string name="mail_settings_content_search_toggle_title">Rechercher dans le contenu des messages</string>
   <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
   <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Préparation en cours de %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">En attente du Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Effacer les données locales de recherche</string>
   <string name="mail_settings_content_search_clear_data_description">La suppression des données locales de recherche désactivera la recherche dans le contenu des messages. Vous pouvez réactiver cette fonctionnalité à tout moment.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Effacer les données de recherche locales</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Les données de recherche stockées sur cet appareil seront supprimées. Vous devrez les télécharger de nouveau pour utiliser la recherche avancée.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Les données de recherche sur cet appareil seront retirées. Vous devrez les télécharger à nouveau pour effectuer des recherches dans le contenu des e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Effacer les données</string>
-  <string name="content_search_bottomsheet_title">Préparation en cours de la recherche avancée…</string>
-  <string name="content_search_bottomsheet_description">Les e-mails sont en train d\'être téléchargés via Wi-Fi ou données mobiles. Vous pouvez passer au Wi-Fi uniquement dans %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">paramètres</string>
-  <string name="content_search_bottomsheet_ok">OK</string>
+  <string name="content_search_bottomsheet_title">Préparation de la recherche dans le contenu des e-mails en cours</string>
+  <string name="content_search_bottomsheet_description">Les e-mails de votre boîte de réception sont en cours de téléchargement et de préparation afin d\'être recherchables.</string>
+  <string name="content_search_bottomsheet_continue">Continuer</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Aucun résultat</string>
   <string name="content_search_no_results_description">Essayez différents mots-clés ou vérifiez l\'orthographe.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Corbeille</string>
   <string name="content_search_include_spam">Indésirables/spam</string>
   <string name="content_search_about_content_search">À propos de la recherche \ndans le contenu des e-mails</string>
-  <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour commencer votre parcours...</string>
+  <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour commencer la recherche</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Récents</string>
   <string name="content_search_clear_recent_searches">Effacer</string>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Căutare avansată</string>
+  <string name="mail_settings_content_search_header_title">Căutare în conținut mesaje</string>
   <string name="mail_settings_content_search_description">Pentru a vă permite să căutați după conținutul mesajelor, acestea vor fi descărcate pe acest dispozitiv.</string>
   <string name="mail_settings_content_search_learn_more">Detalii…</string>
-  <string name="mail_settings_content_search_toggle_title">Căutare avansată</string>
+  <string name="mail_settings_content_search_toggle_title">Căutare în conținut mesaje</string>
   <string name="mail_settings_content_search_mobile_data_title">Permitere descărcare prin date mobile</string>
   <string name="mail_settings_content_search_mobile_data_hint">Descărcarea continuă prin datele mobile dacă se pierde conexiunea Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Se pregătește %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Se pregătește…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Se așteaptă Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>
   <string name="mail_settings_content_search_clear_data_description">Ștergerea datelor de căutare locală va dezactiva căutarea în conținutul mesajelor. O puteți reactiva oricând.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Golire date de căutare locale</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">Datele de căutare de pe acest dispozitiv vor fi eliminate. Va trebui să le descărcați din nou pentru a utiliza căutarea avansată.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Datele de căutare de pe acest dispozitiv vor fi eliminate. Va trebui să le redescărcați pentru a căuta în conținutul mesajelor.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Golire date</string>
-  <string name="content_search_bottomsheet_title">Se pregătește căutarea avansată…</string>
-  <string name="content_search_bottomsheet_description">Mesajele sunt descărcate prin Wi-Fi sau datele mobile. Puteți comuta doar prin Wi-Fi în %1$s.</string>
-  <string name="content_search_bottomsheet_settings_link">setări</string>
-  <string name="content_search_bottomsheet_ok">OK</string>
+  <string name="content_search_bottomsheet_title">Se pregătește căutarea în conținutul mesajelor</string>
+  <string name="content_search_bottomsheet_description">Sunt descărcate și pregătite pentru căutare mesajele din contul de email.</string>
+  <string name="content_search_bottomsheet_continue">Continuare</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Nu sunt rezultate</string>
   <string name="content_search_no_results_description">Încercați cuvinte cheie diferite sau verificați-vă ortografia.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Gunoi</string>
   <string name="content_search_include_spam">Nedorite</string>
   <string name="content_search_about_content_search">Despre căutarea\nîn conținutul mesajelor</string>
-  <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a începe călătoria…</string>
+  <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a începe căutarea.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recente</string>
   <string name="content_search_clear_recent_searches">Golire</string>

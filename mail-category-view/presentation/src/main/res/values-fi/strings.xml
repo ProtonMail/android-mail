@@ -17,19 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Ensisijainen</string>
-  <string name="category_title_social">Sosiaalinen</string>
-  <string name="category_title_promotions">Kampanjat</string>
+  <string name="category_title_primary">Ensisijaiset</string>
+  <string name="category_title_social">Some</string>
+  <string name="category_title_promotions">Markkinointi</string>
   <string name="category_title_updates">Päivitykset</string>
-  <string name="category_title_forums">Foorumit</string>
+  <string name="category_title_forums">Keskustelupalstat</string>
   <string name="category_title_newsletters">Uutiskirjeet</string>
-  <string name="category_title_transactions">Tapahtumat</string>
-  <string name="category_spotlight_unseen_title">Uudet viestit %1$s:ssa</string>
-  <string name="category_spotlight_unseen_description">Sininen piste osoittaa, että kategoriassa on uusia viestejä sen jälkeen, kun olet viimeksi tarkistanut sen.</string>
-  <string name="category_spotlight_personalise_title">Tarkentakaa luokkianne</string>
-  <string name="category_spotlight_personalise_description">Siirtäkää sähköposti toiseen luokkaan ”Siirrä”-toiminnolla. Samankaltaiset sähköpostit lajitellaan sinne tällöin automaattisesti</string>
-  <string name="category_spotlight_close_content_description">Sulje</string>
-  <string name="recategorise_bottom_sheet_title">Luokitelkaa sähköposti uudelleen</string>
-  <string name="recategorise_bottom_sheet_description">Kun siirrätte sähköpostin toiseen luokkaan, samankaltaiset viestit luokitellaan sinne tulevaisuudessa.</string>
-  <string name="recategorise_bottom_sheet_button">Selvä</string>
+  <string name="category_title_transactions">Asioinnit</string>
 </resources>

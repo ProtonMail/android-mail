@@ -40,12 +40,12 @@
   <string name="spotlight_screen_category_view_categories_subtitle">Автоматично сортуйте пошту за корисними категоріями.</string>
   <string name="spotlight_screen_category_view_categories_subtitle_b2b">Автоматичне сортування вхідної пошти.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">До непрочитаних легше дістатися</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">Фільтр непрочитаних листів тепер розташовано внизу вашої папки «Вхідні», завдяки чому легше дістатися до нього та перемикатися між усіма листами й непрочитаними повідомленнями.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">Ми перенесли фільтр непрочитаних у нижню частину екрана, щоби вам було простіше керувати поштою та переглядати непрочитані повідомлення.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Будьте в курсі нових та\nнепрочитаних листів</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Фільтр непрочитаного став помітнішим і тепер завжди під рукою, що дозволяє швидко переглядати пошту та опрацьовувати непрочитані листи.</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_title">Ваша папка «Вхідні»,\nупорядкована автоматично</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Вашу папку «Вхідні» тепер посортовано за такими категоріями, як «Основні», «Соцмережі», «Реклама» тощо, завдяки чому легше зменшити безлад і зосередитися на важливих листах.</string>
-  <string name="spotlight_screen_category_view_privacy_by_design">Приватність за замовчуванням. Докладніше</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">Ваша тека «Вхідні»,\nупорядкована автоматично</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Тепер вашу теку «Вхідні» відсортовано за такими категоріями, як «Основні», «Соцмережі», «Акції» тощо, що дозволяє легше позбутися безладу та зосередитися на важливих листах.</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">Приватність — це стандарт. Дізнатися більше</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Привіт, категорії.\nПрощавайте, відволікання.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Досить відволікатися на розсилки, оновлення та нетермінові листи. Завдяки новим категоріям у вашу основну теку «Вхідні» потраплятимуть лише важливі повідомлення.</string>
   <string name="spotlight_screen_category_view_button_continue">Продовжити</string>
@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">Залишити вхідні як раніше</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Search just got better.</string>
+  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
   <string name="spotlight_screen_content_search_message_content_title">Find more in every email</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Find emails by message content, not just subject or sender.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Easier to reach</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">Search now lives at the bottom of the screen for easy one-handed use.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Pick up where you left off</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Easily revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
 </resources>

@@ -30,12 +30,12 @@
   <string name="spotlight_screen_got_it">D\'acord</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Novetats al Proton Mail</string>
-  <string name="spotlight_screen_category_view_title_b2b">Descobriu les novetats\nde Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">Descobriu les novetats\ndel Proton Mail</string>
   <string name="spotlight_screen_category_view_ui_enhancements_title">Millores de la interfície</string>
   <string name="spotlight_screen_category_view_ui_enhancements_subtitle">Desplaçament fluid, disseny actualitzat i més.</string>
   <string name="spotlight_screen_category_view_unread_filter_title">Filtre de no llegits</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Ara situat a la part inferior per a un accés més fàcil.</string>
-  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nou aspecte i ubicació per un accés més fàcil.</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Nou aspecte i ubicació per a un accés més fàcil.</string>
   <string name="spotlight_screen_category_view_categories_title">Categories de correu electrònic</string>
   <string name="spotlight_screen_category_view_categories_subtitle">Classifiqueu el correu automàticament en categories útils.</string>
   <string name="spotlight_screen_category_view_categories_subtitle_b2b">Classificació automàtica del correu entrant.</string>
@@ -52,11 +52,12 @@
   <string name="spotlight_screen_category_view_button_try">Sí, organitza-ho</string>
   <string name="spotlight_screen_category_view_button_dismiss">Mantén la bústia com abans</string>
   <!-- Content Search Spotlight -->
-  <string name="spotlight_screen_content_search_title">La cerca cada vegada va millor.</string>
+  <string name="spotlight_screen_content_search_title">La cerca ha millorat</string>
+  <string name="spotlight_screen_content_search_subtitle">Trobeu allò que us importa sense renunciar a la privacitat.</string>
   <string name="spotlight_screen_content_search_message_content_title">Trobeu-ne més a cada correu electrònic</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Trobeu correus electrònics pel contingut del missatge, no només per l\'assumpte o el remitent.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Més fàcil d\'arribar-hi</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Ara la cerca es troba a la part inferior de la pantalla per facilitar-ne l\'ús amb una sola mà.</string>
-  <string name="spotlight_screen_content_search_recent_searches_title">Repreneu-ho des d\'on ho heu deixat</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Torneu a consultar ràpidament cerques recents. S\'emmagatzema al vostre dispositiu per a mantenir-ne el xifratge d\'extrem a extrem.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Ara la cerca és a la part inferior de la pantalla per a facilitar-ne l\'ús amb una sola mà</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Reprengeu-ho on ho heu deixat</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Torneu a consultar fàcilment les cerques recents. S\'emmagatzemen al vostre dispositiu per preservar el xifratge d\'extrem a extrem.</string>
 </resources>

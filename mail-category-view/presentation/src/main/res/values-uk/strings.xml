@@ -24,12 +24,4 @@
   <string name="category_title_forums">Форуми</string>
   <string name="category_title_newsletters">Розсилки</string>
   <string name="category_title_transactions">Трансакції</string>
-  <string name="category_spotlight_unseen_title">Нові повідомлення в %1$s</string>
-  <string name="category_spotlight_unseen_description">Синя крапка показує, коли в категорії з\'явилися нові повідомлення з моменту вашої останньої перевірки.</string>
-  <string name="category_spotlight_personalise_title">Уточніть свої категорії</string>
-  <string name="category_spotlight_personalise_description">Перемістіть електронний лист до іншої категорії за допомогою функції «Перемістити до». Подібні електронні листи сортуватимуться туди автоматично</string>
-  <string name="category_spotlight_close_content_description">Закрити</string>
-  <string name="recategorise_bottom_sheet_title">Змінити категорію електронного листа</string>
-  <string name="recategorise_bottom_sheet_description">Коли ви переміщуєте електронний лист до іншої категорії, подібні повідомлення надалі сортуватимуться туди.</string>
-  <string name="recategorise_bottom_sheet_button">Зрозуміло</string>
 </resources>

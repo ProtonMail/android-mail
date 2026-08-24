@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">隐私和安全设置</string>
   <string name="mail_settings_preferences">偏好设置</string>
   <string name="mail_settings_app">个性化设置</string>
-  <string name="mail_settings_content_search">高级搜索</string>
+  <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">邮箱偏好设置</string>
+  <string name="mail_settings_new_badge">New</string>
   <string name="mail_settings_folders_labels">文件夹和标签</string>
   <string name="mail_settings_spam_and_custom_filters">垃圾邮件和过滤器</string>
   <string name="mail_settings_privacy_and_security">隐私和安全</string>

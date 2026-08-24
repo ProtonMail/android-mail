@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indeksiranje naprednega iskanja</string>
-  <string name="content_search_notification_channel_description">Prikazuje napredek med indeksiranjem sporočil za napredno iskanje</string>
-  <string name="content_search_notification_title">Pripravljanje naprednega iskanja</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d sporočil</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d sporočil (%4$d/%5$d računov)</string>
+  <string name="content_search_notification_channel_name">Email content search indexing</string>
+  <string name="content_search_notification_channel_description">Prikazuje napredek med indeksiranjem sporočil za iskanje po vsebini.</string>
+  <string name="content_search_notification_title">Priprava iskanja po vsebini sporočil</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s • %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">Priprava ...</string>
   <string name="content_search_notification_pause">Začasno ustavi</string>
 </resources>

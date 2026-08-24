@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">Inställningar för integritet och säkerhet</string>
   <string name="mail_settings_preferences">Preferenser</string>
   <string name="mail_settings_app">Appanpassningar</string>
-  <string name="mail_settings_content_search">Avancerad sök</string>
+  <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">Inställningar för brevlåda</string>
+  <string name="mail_settings_new_badge">New</string>
   <string name="mail_settings_folders_labels">Mappar och etiketter</string>
   <string name="mail_settings_spam_and_custom_filters">Skräppost och filter</string>
   <string name="mail_settings_privacy_and_security">Integritet och säkerhet</string>

@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">Nastavitve zasebnosti in varnosti</string>
   <string name="mail_settings_preferences">Nastavitve</string>
   <string name="mail_settings_app">Prilagoditve aplikacije</string>
-  <string name="mail_settings_content_search">Napredno iskanje</string>
+  <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">Nastavitve poštnega predala</string>
+  <string name="mail_settings_new_badge">Novo</string>
   <string name="mail_settings_folders_labels">Mape in oznake</string>
   <string name="mail_settings_spam_and_custom_filters">Neželena pošta in filtri</string>
   <string name="mail_settings_privacy_and_security">Zasebnost in varnost</string>

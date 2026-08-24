@@ -27,8 +27,9 @@
   <string name="mail_settings_privacy_and_security_settings">Ρυθμίσεις απορρήτου και ασφάλειας</string>
   <string name="mail_settings_preferences">Προτιμήσεις</string>
   <string name="mail_settings_app">Προσαρμογές εφαρμογής</string>
-  <string name="mail_settings_content_search">Σύνθετη Αναζήτηση</string>
+  <string name="mail_settings_content_search">Αναζήτηση περιεχομένου ηλεκτρονικού ταχυδρομείου</string>
   <string name="mail_settings_mailbox">Προτιμήσεις γραμματοκιβωτίου</string>
+  <string name="mail_settings_new_badge">Νέα</string>
   <string name="mail_settings_folders_labels">Φάκελοι και ετικέτες</string>
   <string name="mail_settings_spam_and_custom_filters">Ενοχλητικά και φίλτρα</string>
   <string name="mail_settings_privacy_and_security">Απόρρητο και ασφάλεια</string>

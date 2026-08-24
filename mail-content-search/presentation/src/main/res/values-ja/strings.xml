@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">高度な検索</string>
+  <string name="mail_settings_content_search_header_title">Search email content</string>
   <string name="mail_settings_content_search_description">メッセージ内容で検索できるようにするため、メッセージはこのデバイスにダウンロードされます。</string>
   <string name="mail_settings_content_search_learn_more">より詳しく。。</string>
-  <string name="mail_settings_content_search_toggle_title">高度な検索</string>
+  <string name="mail_settings_content_search_toggle_title">Search email content</string>
   <string name="mail_settings_content_search_mobile_data_title">モバイルデータ通信経由のダウンロードを許可</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fiが切断された場合、モバイルデータ通信経由でダウンロードを継続します。</string>
+  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
   <string name="mail_settings_content_search_clear_data_button">ローカル検索データを消去</string>
   <string name="mail_settings_content_search_clear_data_description">ローカル検索データを消去すると、メッセージコンテンツ検索が無効化されます。この機能はいつでも再度有効にすることができます。</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">ローカルの検索データをクリア</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">このデバイスの検索データは削除されます。高度な検索を使用するには、再度ダウンロードする必要があります。</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">データをクリア</string>
-  <string name="content_search_bottomsheet_title">高度な検索を準備中…</string>
-  <string name="content_search_bottomsheet_description">メールはWi-Fiまたはモバイルデータ通信経由でダウンロードされています。%1$sでWi-Fi接続のみに切り替えることができます。</string>
-  <string name="content_search_bottomsheet_settings_link">設定</string>
-  <string name="content_search_bottomsheet_ok">OK</string>
+  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_continue">Continue</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">No results</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Trash</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the journey...</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
   <string name="content_search_clear_recent_searches">Clear</string>

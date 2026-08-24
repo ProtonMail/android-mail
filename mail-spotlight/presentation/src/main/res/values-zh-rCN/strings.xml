@@ -37,14 +37,14 @@
   <string name="spotlight_screen_category_view_unread_filter_subtitle">现已移至底部，方便访问。</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">全新外观与位置，更易于访问！</string>
   <string name="spotlight_screen_category_view_categories_title">邮件分类</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">自动将邮件归入有用的类别。</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">自动将邮件归入有用的分类。</string>
   <string name="spotlight_screen_category_view_categories_subtitle_b2b">自动分类收到的邮件！</string>
   <string name="spotlight_screen_category_view_main_b2c_title">未读邮件更易触达</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">未读筛选器现已移至收件箱底部，方便您在全部邮件和未读邮件之间切换。</string>
   <string name="spotlight_screen_category_view_main_b2b_title">随时掌握新邮件和未读邮件</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">未读筛选器现在更加显眼且触手可及，让您快速浏览并对未读邮件采取行动。</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">您的邮箱，\n自动整理</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">您的收件箱现按“主要”、“社交”、“促销”等类别自动归类，帮助减少杂乱，让您专注于重要邮件。</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">您的收件箱现按“主要”、“社交”、“促销”等分类自动整理，帮助减少杂乱，让您专注于重要邮件。</string>
   <string name="spotlight_screen_category_view_privacy_by_design">专为隐私打造。了解详情</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">告别分类，\n告别干扰。</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">不再被资讯、更新和非紧急邮件打扰。有了新的邮件分类功能，只有重要邮件才会进入您的主收件箱。</string>
@@ -53,10 +53,11 @@
   <string name="spotlight_screen_category_view_button_dismiss">保持收件箱原样</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Search just got better.</string>
+  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
   <string name="spotlight_screen_content_search_message_content_title">Find more in every email</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Find emails by message content, not just subject or sender.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Easier to reach</string>
   <string name="spotlight_screen_content_search_bottom_bar_subtitle">Search now lives at the bottom of the screen for easy one-handed use.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Pick up where you left off</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Easily revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
 </resources>

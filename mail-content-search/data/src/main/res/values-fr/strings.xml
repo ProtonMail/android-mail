@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Indexation pour la recherche avancée</string>
-  <string name="content_search_notification_channel_description">Affiche la progression pendant que les messages sont indexés pour la recherche avancée.</string>
-  <string name="content_search_notification_title">Préparation en cours de la recherche avancée</string>
-  <string name="content_search_notification_message_progress">%1$d%% · %2$d/%3$d messages</string>
-  <string name="content_search_notification_message_progress_multi_account">%1$d%% · %2$d/%3$d messages (%4$d/%5$d comptes)</string>
+  <string name="content_search_notification_channel_name">Indexation du contenu des e-mails pour la recherche</string>
+  <string name="content_search_notification_channel_description">Affiche la progression pendant que les messages sont indexés pour la recherche dans le contenu.</string>
+  <string name="content_search_notification_title">Préparation de la recherche dans le contenu des e-mails en cours</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d %%</string>
   <string name="content_search_notification_preparing">Préparation en cours…</string>
   <string name="content_search_notification_pause">Suspendre</string>
 </resources>

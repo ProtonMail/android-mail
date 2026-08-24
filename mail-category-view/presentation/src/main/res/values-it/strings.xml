@@ -24,12 +24,4 @@
   <string name="category_title_forums">Forum</string>
   <string name="category_title_newsletters">Newsletter</string>
   <string name="category_title_transactions">Transazioni</string>
-  <string name="category_spotlight_unseen_title">Nuovi messaggi in %1$s</string>
-  <string name="category_spotlight_unseen_description">Un pallino blu mostra quando una categoria ha nuovi messaggi dall\'ultima volta che hai controllato.</string>
-  <string name="category_spotlight_personalise_title">Affina le tue categorie</string>
-  <string name="category_spotlight_personalise_description">Sposta un\'email in un\'altra categoria usando \"Sposta in\". Le email simili verranno quindi ordinate lì automaticamente</string>
-  <string name="category_spotlight_close_content_description">Chiudi</string>
-  <string name="recategorise_bottom_sheet_title">Ricategorizza l\'email</string>
-  <string name="recategorise_bottom_sheet_description">Quando sposti un\'email in un\'altra categoria, i messaggi simili verranno categorizzati lì in futuro.</string>
-  <string name="recategorise_bottom_sheet_button">Capito</string>
 </resources>
