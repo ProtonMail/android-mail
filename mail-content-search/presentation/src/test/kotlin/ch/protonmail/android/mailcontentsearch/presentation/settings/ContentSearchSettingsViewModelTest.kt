@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
@@ -42,6 +43,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -76,6 +78,9 @@ internal class ContentSearchSettingsViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns true
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
+    private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus> {
+        coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Idle
+    }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(userId) } returns enabledFlow
     }
@@ -98,6 +103,7 @@ internal class ContentSearchSettingsViewModelTest {
         startContentIndexingForUser = startContentIndexingForUser,
         isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
         clearContentSearchLocalData = clearContentSearchLocalData,
+        getContentSearchIndexingStatus = getContentSearchIndexingStatus,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         isContentSearchAllowedOnMobileData = isContentSearchAllowedOnMobileData,
@@ -172,6 +178,35 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         coVerify { startContentIndexingForUser(userId) }
         coVerify(exactly = 0) { enableContentSearch(userId) }
+    }
+
+    @Test
+    fun `does not read the failure rust kept from before the account was disabled`() = runTest {
+        // Given
+        coEvery { isContentSearchEnabled(userId) } returns false.right()
+        enabledFlow.value = false
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertFalse(state.isIndexingFailed)
+        coVerify(exactly = 0) { getContentSearchIndexingStatus(userId) }
+    }
+
+    @Test
+    fun `asks rust for the account state when the screen opens`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertTrue(state.isIndexingFailed)
     }
 
     @Test

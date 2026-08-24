@@ -20,9 +20,11 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
@@ -67,6 +69,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val startContentIndexingForUser: StartContentIndexingForUser,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
+    private val getContentSearchIndexingStatus: GetContentSearchIndexingStatus,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
@@ -86,27 +89,25 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             val userId = currentUserId()
-            if (loadInitialState(userId)) {
-                observeIndexingProgress(userId)
-                observeEnabledChanges(userId)
-            }
+            val isEnabled = loadInitialState(userId) ?: return@launch
+            if (isEnabled) readIndexingStatus(userId)
+            observeIndexingProgress(userId)
+            observeEnabledChanges(userId)
         }
     }
 
-    // Gated on the SDK's availability answer: without it the toggle renders, accepts a tap and
-    // then fails against a feature Rust will not run.
-    private suspend fun loadInitialState(userId: UserId): Boolean {
+    private suspend fun loadInitialState(userId: UserId): Boolean? {
         if (!isContentSearchFeatureEnabled(userId)) {
             emitNewStateFor(Error.LoadingError)
-            return false
+            return null
         }
         return readEnabledState(userId)
     }
 
-    private suspend fun readEnabledState(userId: UserId): Boolean = isContentSearchEnabled(userId).fold(
+    private suspend fun readEnabledState(userId: UserId): Boolean? = isContentSearchEnabled(userId).fold(
         ifLeft = {
             emitNewStateFor(Error.LoadingError)
-            false
+            null
         },
         ifRight = { enabled ->
             emitNewStateFor(
@@ -115,12 +116,14 @@ class ContentSearchSettingsViewModel @Inject constructor(
                     isAllowMobileDataEnabled = isContentSearchAllowedOnMobileData()
                 )
             )
-            true
+            enabled
         }
     )
 
-    // Rust is the single source of progress now: the status stream is seeded from the per-user
-    // snapshot, so there is nothing left to cross-reference against a worker-derived state.
+    private suspend fun readIndexingStatus(userId: UserId) {
+        emitNewStateFor(getContentSearchIndexingStatus(userId).toIndexingProgress())
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeIndexingProgress(userId: UserId) {
         observeContentSearchEnabled(userId)
@@ -136,14 +139,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
                         )
                     )
                 } else {
-                    observeContentSearchIndexingStatus(userId).map { indexingStatus ->
-                        Data.IndexingProgress(
-                            percentage = indexingStatus.toPercentage(),
-                            isActive = indexingStatus.isActive(),
-                            isWaitingForUnmeteredConnection = indexingStatus.isWaitingForUnmeteredConnection(),
-                            isFailed = indexingStatus.isFailed()
-                        )
-                    }
+                    observeContentSearchIndexingStatus(userId).map { it.toIndexingProgress() }
                 }
             }
             .onEach { emitNewStateFor(it) }
@@ -152,6 +148,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
 
     private fun observeEnabledChanges(userId: UserId) {
         observeContentSearchEnabled(userId)
+            .distinctUntilChanged()
             .onEach { enabled -> emitNewStateFor(Data.ContentSearchToggled(enabled)) }
             .launchIn(viewModelScope)
     }
@@ -220,6 +217,13 @@ class ContentSearchSettingsViewModel @Inject constructor(
         // reset) Rust status, so the latch is never mutated from this coroutine.
         emitNewStateFor(Data.LocalSearchDataCleared)
     }
+
+    private fun ContentIndexingState.toIndexingProgress() = Data.IndexingProgress(
+        percentage = toPercentage(),
+        isActive = isActive(),
+        isWaitingForUnmeteredConnection = isWaitingForUnmeteredConnection(),
+        isFailed = isFailed()
+    )
 
     private suspend fun currentUserId(): UserId = observePrimaryUserId().filterNotNull().first()
 

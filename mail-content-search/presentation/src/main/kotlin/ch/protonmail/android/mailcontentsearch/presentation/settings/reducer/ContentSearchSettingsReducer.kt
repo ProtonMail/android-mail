@@ -45,15 +45,11 @@ class ContentSearchSettingsReducer @Inject constructor() {
         }
 
         is ContentSearchSettingsState.Data -> when (event) {
+            // Only the toggle. The indexing fields belong to IndexingProgress, which reports them
+            // for a disabled account too, and clearing them here as well wiped the failure the
+            // screen had just read: the enabled observer replays its current value on open.
             is ContentSearchSettingsEvent.Data.ContentSearchToggled -> copy(
-                isContentSearchEnabled = event.newValue,
-                syncPercentage = if (event.newValue) syncPercentage else null,
-                isIndexingActive = if (event.newValue) isIndexingActive else false,
-                isWaitingForUnmeteredConnection =
-                    if (event.newValue) isWaitingForUnmeteredConnection else false,
-                // False either way: turning the account on clears the failure Rust had recorded, and
-                // turning it off leaves nothing worth reporting.
-                isIndexingFailed = false
+                isContentSearchEnabled = event.newValue
             )
             is ContentSearchSettingsEvent.Data.AllowMobileDataToggled -> copy(
                 isAllowMobileDataEnabled = event.newValue

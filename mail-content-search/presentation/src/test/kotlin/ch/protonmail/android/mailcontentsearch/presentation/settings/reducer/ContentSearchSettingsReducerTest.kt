@@ -46,24 +46,19 @@ internal class ContentSearchSettingsReducerTest {
     }
 
     @Test
-    fun `toggling off clears indexing progress and active state`() {
+    fun `toggling leaves the indexing fields to the progress event`() {
+        // Given
         val current = ContentSearchSettingsState.Data(
             isContentSearchEnabled = true,
             isAllowMobileDataEnabled = true,
             syncPercentage = 42.0,
-            isIndexingActive = true
+            isIndexingActive = true,
+            isIndexingFailed = true
         )
 
         val result =
             reducer.newStateFrom(current, ContentSearchSettingsEvent.Data.ContentSearchToggled(newValue = false))
 
-        assertEquals(
-            current.copy(
-                isContentSearchEnabled = false,
-                syncPercentage = null,
-                isIndexingActive = false
-            ),
-            result
-        )
+        assertEquals(current.copy(isContentSearchEnabled = false), result)
     }
 }
