@@ -18,10 +18,14 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 internal class ContentSearchSettingsReducerTest {
 
@@ -60,5 +64,77 @@ internal class ContentSearchSettingsReducerTest {
             reducer.newStateFrom(current, ContentSearchSettingsEvent.Data.ContentSearchToggled(newValue = false))
 
         assertEquals(current.copy(isContentSearchEnabled = false), result)
+    }
+
+    @Test
+    fun `an accepted retry clears the failure without waiting for the stream`() {
+        // Given
+        val current = FailedState.copy(isRetryingIndexing = true)
+
+        // When
+        val result = reducer.newStateFrom(current, ContentSearchSettingsEvent.Data.IndexingRetryAccepted)
+
+        // Then
+        assertEquals(
+            current.copy(isRetryingIndexing = false, isIndexingFailed = false, isIndexingActive = true),
+            result
+        )
+    }
+
+    @Test
+    fun `a progress event overrules a retry that is still pending`() {
+        // Given
+        val current = FailedState.copy(isRetryingIndexing = true)
+
+        // When
+        val result = reducer.newStateFrom(
+            current,
+            ContentSearchSettingsEvent.Data.IndexingProgress(
+                percentage = 12.0,
+                isActive = true,
+                isWaitingForUnmeteredConnection = false,
+                isFailed = false
+            )
+        )
+
+        // Then
+        assertEquals(
+            current.copy(
+                syncPercentage = 12.0,
+                isIndexingActive = true,
+                isIndexingFailed = false,
+                isRetryingIndexing = false
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `a failed retry ends the retry and asks for a snackbar of its own`() {
+        // Given
+        val current = FailedState.copy(isRetryingIndexing = true)
+
+        // When
+        val result = reducer.newStateFrom(current, ContentSearchSettingsEvent.Error.IndexingRetryFailed)
+
+        // Then
+        val data = result as ContentSearchSettingsState.Data
+        assertTrue(data.isIndexingFailed)
+        assertFalse(data.isRetryingIndexing)
+        assertEquals(
+            TextUiModel.TextRes(R.string.mail_settings_content_search_retry_error),
+            data.updateErrorEffect.consume()
+        )
+    }
+
+    private companion object {
+
+        val FailedState = ContentSearchSettingsState.Data(
+            isContentSearchEnabled = true,
+            isAllowMobileDataEnabled = true,
+            syncPercentage = null,
+            isIndexingActive = false,
+            isIndexingFailed = true
+        )
     }
 }

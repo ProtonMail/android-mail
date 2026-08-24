@@ -63,6 +63,7 @@ internal fun ContentSearchSettingsContent(
             isIndexingActive = state.isIndexingActive,
             isWaitingForUnmeteredConnection = state.isWaitingForUnmeteredConnection,
             isIndexingFailed = state.isIndexingFailed,
+            isRetryingIndexing = state.isRetryingIndexing,
             actions = ContentSearchCardActions(
                 onToggle = actions.onContentSearchToggle,
                 onRetryClick = actions.onRetryIndexing,
@@ -150,6 +151,24 @@ private fun ContentSearchContentFailedPreview() {
                 isAllowMobileDataEnabled = true,
                 syncPercentage = 3.45,
                 isIndexingFailed = true
+            ),
+            actions = PreviewActions
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true, name = "Retrying")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Retrying dark")
+@Composable
+private fun ContentSearchContentRetryingPreview() {
+    ProtonInvertedTheme {
+        ContentSearchSettingsContent(
+            state = ContentSearchSettingsState.Data(
+                isContentSearchEnabled = true,
+                isAllowMobileDataEnabled = true,
+                syncPercentage = 3.45,
+                isIndexingFailed = true,
+                isRetryingIndexing = true
             ),
             actions = PreviewActions
         )

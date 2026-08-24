@@ -19,10 +19,13 @@
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -32,8 +35,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -42,7 +45,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
+import ch.protonmail.android.design.compose.component.ProtonSecondaryButton
 import ch.protonmail.android.design.compose.component.ProtonSettingsToggleItem
+import ch.protonmail.android.design.compose.component.protonSecondaryButtonColors
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
@@ -59,8 +64,11 @@ internal fun ContentSearchCard(
     isIndexingActive: Boolean,
     isWaitingForUnmeteredConnection: Boolean,
     isIndexingFailed: Boolean,
+    isRetryingIndexing: Boolean,
     actions: ContentSearchCardActions
 ) {
+    val showFailure = isEnabled && isIndexingFailed
+
     // No grace period for the Wi-Fi wait: unlike the gap before the first progress event, it is a
     // state the user put the app in, and it lasts until they change network or the setting.
     var showPreparing by remember { mutableStateOf(false) }
@@ -112,11 +120,8 @@ internal fun ContentSearchCard(
                 )
 
                 val statusText = when {
-                    // Ahead of everything else: the account is stopped, so the last percentage it
-                    // reached and the "preparing" placeholder are both stale.
-                    isIndexingFailed -> stringResource(
-                        id = R.string.mail_settings_content_search_failed_status
-                    )
+                    // Nothing here when the account has failed.
+                    showFailure -> null
 
                     isWaitingForUnmeteredConnection -> stringResource(
                         id = R.string.mail_settings_content_search_waiting_for_wifi_status
@@ -138,26 +143,15 @@ internal fun ContentSearchCard(
                     Text(
                         text = statusText,
                         style = ProtonTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Normal,
-                        // Unspecified rather than textNorm for the ordinary statuses, so they keep
-                        // inheriting whatever the toggle item's content colour is.
-                        color = if (isIndexingFailed) ProtonTheme.colors.notificationError else Color.Unspecified
+                        fontWeight = FontWeight.Normal
                     )
                 }
             }
 
-            // Outside the toggle item, whose content column merges its semantics for accessibility -
-            // a link in there would be announced as part of the toggle rather than as its own action.
-            //
-            // The toggle itself deliberately stays on: the account is still enabled, Rust only records
-            // the failure, and handing the account back to the orchestrator is what clears it.
-            if (isIndexingFailed) {
-                RetryText(
-                    modifier = Modifier.padding(
-                        start = ProtonDimens.Spacing.Large,
-                        end = ProtonDimens.Spacing.Large,
-                        bottom = ProtonDimens.Spacing.Medium
-                    ),
+            if (showFailure) {
+                MailDivider()
+                IndexingFailureRow(
+                    isRetrying = isRetryingIndexing,
                     onRetryClick = actions.onRetryClick
                 )
             }
@@ -172,33 +166,46 @@ internal data class ContentSearchCardActions(
 )
 
 @Composable
-private fun RetryText(modifier: Modifier = Modifier, onRetryClick: () -> Unit) {
-    val retry = stringResource(id = R.string.mail_settings_content_search_failed_retry)
-    val linkColor = ProtonTheme.colors.brandNorm
-
-    val annotatedString = buildAnnotatedString {
-        withLink(
-            LinkAnnotation.Clickable(
-                tag = "retry_indexing",
-                styles = TextLinkStyles(
-                    style = SpanStyle(
-                        color = linkColor,
-                        textDecoration = TextDecoration.None
-                    )
-                ),
-                linkInteractionListener = { onRetryClick() }
+private fun IndexingFailureRow(
+    modifier: Modifier = Modifier,
+    isRetrying: Boolean,
+    onRetryClick: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = ProtonDimens.Spacing.Large,
+                vertical = ProtonDimens.Spacing.Medium
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = R.string.mail_settings_content_search_failed_status),
+            style = ProtonTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Normal,
+            color = ProtonTheme.colors.notificationError
+        )
+        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Medium))
+        ProtonSecondaryButton(
+            onClick = onRetryClick,
+            loading = isRetrying,
+            colors = ButtonDefaults.protonSecondaryButtonColors(
+                loading = isRetrying,
+                backgroundColor = ProtonTheme.colors.backgroundInvertedNorm
             )
         ) {
-            append(retry)
+
+            if (!isRetrying) {
+                Text(
+                    text = stringResource(id = R.string.mail_settings_content_search_failed_retry),
+                    style = ProtonTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Normal
+                )
+            }
         }
     }
-
-    Text(
-        modifier = modifier,
-        text = annotatedString,
-        style = ProtonTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Normal
-    )
 }
 
 @Composable

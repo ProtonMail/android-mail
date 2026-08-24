@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
@@ -58,6 +59,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -184,15 +186,37 @@ class ContentSearchSettingsViewModel @Inject constructor(
     }
 
     /**
-     * Hands the account back to the orchestrator, which is the only way out of a failure: Rust keeps
-     * the recorded failure until something starts the account again, and never retries on its own.
-     *
-     * No optimistic state change - clearing the failure is Rust's to do, and the status stream
-     * reports it as soon as the account starts, so anticipating it here would only risk showing a
-     * retry that did not take.
+     * Hands the account back to the orchestrator, which is the only way out of a failure: Rust holds
+     * the account in a failed state until something starts it again, and never retries on its own.
      */
     private suspend fun handleRetryIndexing() {
-        startContentIndexingForUser(currentUserId()).onLeft { emitNewStateFor(Error.UpdateError) }
+        val userId = currentUserId()
+
+        emitNewStateFor(Data.IndexingRetryStarted)
+        startContentIndexingForUser(userId).fold(
+            ifLeft = { emitNewStateFor(Error.IndexingRetryFailed) },
+            ifRight = { outcome ->
+                when (outcome) {
+                    // Rust reports the account as syncing from here on and [observeIndexingProgress]
+                    // is subscribed to exactly that, but the stream takes a moment to catch up and
+                    // the card would sit on the failure meanwhile, as if the tap had done nothing.
+                    ContentIndexingStartOutcome.Started,
+                    ContentIndexingStartOutcome.AlreadyRunning -> emitNewStateFor(Data.IndexingRetryAccepted)
+
+                    // Rust cleared the recorded failure on its way to answering this, but has nothing
+                    // to publish for an account with no work left, so the stream stays silent. Read
+                    // the state back, or the card sits on a failure Rust no longer has.
+                    ContentIndexingStartOutcome.AlreadyCompleted -> readIndexingStatus(userId)
+
+                    // The one outcome that leaves the account exactly as it was, failure and all:
+                    // content search is off for it, or Rust is holding its runtime lock.
+                    ContentIndexingStartOutcome.Refused -> {
+                        Timber.w("content-search: the orchestrator refused to retry $userId")
+                        emitNewStateFor(Error.IndexingRetryFailed)
+                    }
+                }
+            }
+        )
     }
 
     // No restart: the preference is written straight into Rust, which pauses and resumes its own

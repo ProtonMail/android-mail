@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSear
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
+import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -42,6 +44,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -54,6 +57,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ContentSearchSettingsViewModelTest {
 
@@ -178,6 +182,140 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         coVerify { startContentIndexingForUser(userId) }
         coVerify(exactly = 0) { enableContentSearch(userId) }
+    }
+
+    @Test
+    fun `clears the failure when the retry finds nothing left to index`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns
+            ContentIndexingStartOutcome.AlreadyCompleted.right()
+        val viewModel = viewModel()
+        assertTrue(viewModel.state.value.asData().isIndexingFailed)
+
+        // When
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Completed
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // Then
+        assertFalse(viewModel.state.value.asData().isIndexingFailed)
+    }
+
+    @Test
+    fun `marks the retry as pending until rust answers`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } coAnswers {
+            delay(RustRoundTripMillis.milliseconds)
+            ContentIndexingStartOutcome.Started.right()
+        }
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+
+        // Then
+        assertTrue(viewModel.state.value.asData().isRetryingIndexing)
+        advanceUntilIdle()
+        assertFalse(viewModel.state.value.asData().isRetryingIndexing)
+    }
+
+    @Test
+    fun `clears the failure as soon as rust takes the account back`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns ContentIndexingStartOutcome.Started.right()
+        val viewModel = viewModel()
+        assertTrue(viewModel.state.value.asData().isIndexingFailed)
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertFalse(state.isIndexingFailed)
+        assertTrue(state.isIndexingActive)
+        assertFalse(state.isRetryingIndexing)
+    }
+
+    @Test
+    fun `clears the failure when rust was already indexing the account`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns
+            ContentIndexingStartOutcome.AlreadyRunning.right()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertFalse(state.isIndexingFailed)
+        assertTrue(state.isIndexingActive)
+    }
+
+    @Test
+    fun `lets a later progress event overrule an accepted retry`() = runTest {
+        // Given
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns ContentIndexingStartOutcome.Started.right()
+        val viewModel = viewModel()
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // When
+        ownIndexingStatus.value = ContentIndexingState.Failed
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertTrue(state.isIndexingFailed)
+        assertFalse(state.isIndexingActive)
+    }
+
+    @Test
+    fun `keeps the failure and reports an error when the retry is refused`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns ContentIndexingStartOutcome.Refused.right()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertTrue(state.isIndexingFailed)
+        assertFalse(state.isRetryingIndexing)
+        assertEquals(RetryErrorMessage, state.updateErrorEffect.consume())
+    }
+
+    @Test
+    fun `reports an error when the retry never reaches rust`() = runTest {
+        // Given
+        every { observeContentSearchIndexingStatus(userId) } returns emptyFlow()
+        coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Failed
+        coEvery { startContentIndexingForUser(userId) } returns DataError.Local.Unknown.left()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing)
+        advanceUntilIdle()
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertTrue(state.isIndexingFailed)
+        assertFalse(state.isRetryingIndexing)
+        assertEquals(RetryErrorMessage, state.updateErrorEffect.consume())
     }
 
     @Test
@@ -486,5 +624,12 @@ internal class ContentSearchSettingsViewModelTest {
     private fun ContentSearchSettingsState.asData(): ContentSearchSettingsState.Data {
         assertTrue(this is ContentSearchSettingsState.Data, "Expected WithData, was $this")
         return this
+    }
+
+    private companion object {
+
+        const val RustRoundTripMillis = 100L
+
+        val RetryErrorMessage = TextUiModel.TextRes(R.string.mail_settings_content_search_retry_error)
     }
 }

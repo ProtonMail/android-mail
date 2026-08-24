@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -31,11 +32,16 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.component.ProtonSettingsDetailsAppBar
+import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
+import ch.protonmail.android.design.compose.component.ProtonSnackbarType
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 
 @Composable
 fun ContentSearchSettingsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
@@ -71,6 +77,15 @@ private fun ContentSearchSettingsScreen(
     actions: ContentSearchSettingsScreen.Actions,
     onBackClick: () -> Unit
 ) {
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
+
+    // The card cannot carry this one: a refused retry and a setting that would not save both leave
+    // the account exactly as it was, so there is no state change to render and nothing on screen
+    // would otherwise move.
+    ConsumableTextEffect((state as? ContentSearchSettingsState.Data)?.updateErrorEffect ?: Effect.empty()) { message ->
+        snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.ERROR)
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -90,7 +105,8 @@ private fun ContentSearchSettingsScreen(
                     actions = actions
                 )
             }
-        }
+        },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) }
     )
 }
 

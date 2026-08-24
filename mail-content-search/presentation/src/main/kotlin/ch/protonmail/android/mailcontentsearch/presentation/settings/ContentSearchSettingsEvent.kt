@@ -34,10 +34,19 @@ sealed interface ContentSearchSettingsEvent : ContentSearchSettingsOperation {
             val isWaitingForUnmeteredConnection: Boolean,
             val isFailed: Boolean
         ) : Data
+
+        /** The account has been handed to the orchestrator and Rust has yet to answer. */
+        data object IndexingRetryStarted : Data
+
+        /** Rust took the account: it is indexing again, whoever started it. */
+        data object IndexingRetryAccepted : Data
     }
 
     sealed interface Error : ContentSearchSettingsEvent {
         data object LoadingError : Error
         data object UpdateError : Error
+
+        /** A retry that went nowhere, which the card cannot say on its own - nothing about it moved. */
+        data object IndexingRetryFailed : Error
     }
 }
