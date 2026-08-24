@@ -90,7 +90,7 @@ fun ProtonSnackbar(
     actionOnNewLine: Boolean = false,
     shape: Shape = ProtonTheme.shapes.medium,
     contentColor: Color = ProtonTheme.colors.textInverted,
-    actionColor: Color = ProtonTheme.colors.interactionBrandWeakPressed
+    actionColor: Color = contentColor
 ) {
     Snackbar(
         snackbarData = snackbarData,
