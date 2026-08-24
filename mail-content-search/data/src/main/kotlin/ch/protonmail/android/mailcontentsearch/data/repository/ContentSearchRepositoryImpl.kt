@@ -28,8 +28,10 @@ import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
 import ch.protonmail.android.mailcontentsearch.data.mapper.log
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingActivity
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
+import ch.protonmail.android.mailcontentsearch.data.mapper.toStartOutcome
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
@@ -139,11 +141,11 @@ class ContentSearchRepositoryImpl @Inject constructor(
     override suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary> =
         withContext(ioDispatcher) { syncService.start().map { it.toStartSummary() } }
 
-    // Hands the account back to the orchestrator, which clears the failure Rust has on record. The
-    // session-wide `startIndexing` does not: it skips accounts on record as failed rather than
-    // retrying them.
-    override suspend fun startIndexingForUser(userId: UserId): Either<DataError, Unit> =
-        executeWithUserSession(userId) { wrapper -> syncService.startUser(wrapper).map { } }.flatten()
+    override suspend fun startIndexingForUser(userId: UserId): Either<DataError, ContentIndexingStartOutcome> =
+        executeWithUserSession(userId) { wrapper ->
+            syncService.startUser(wrapper).map { it.toStartOutcome() }
+        }.flatten()
+            .onRight { outcome -> Timber.d("content-search: start for $userId answered $outcome") }
 
     override suspend fun stopIndexing(): Either<DataError, Unit> = withContext(ioDispatcher) { syncService.stop() }
 

@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -41,6 +42,11 @@ class StartContentIndexingForUser @Inject constructor(
     private val scheduler: ContentIndexingScheduler
 ) {
 
-    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> =
-        repository.startIndexingForUser(userId).onRight { scheduler.ensureWorkerRunning() }
+    suspend operator fun invoke(userId: UserId): Either<DataError, ContentIndexingStartOutcome> =
+        repository.startIndexingForUser(userId).onRight { outcome ->
+            // Only when something is actually indexing: a refused or already-complete account has
+            // nothing for a foreground service to protect, and the worker would exit on its own
+            // watchdog anyway, having shown an indexing notification for ten seconds first.
+            if (outcome.isIndexing) scheduler.ensureWorkerRunning()
+        }
 }

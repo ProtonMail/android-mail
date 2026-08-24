@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -43,15 +44,32 @@ internal class StartContentIndexingForUserTest {
     fun `puts a worker behind the account it just started`() = runTest {
         // Given - turning the toggle on is very often followed by leaving the app, and without a
         // foreground service the process is free to die on the way out.
-        coEvery { repository.startIndexingForUser(userId) } returns Unit.right()
+        coEvery {
+            repository.startIndexingForUser(userId)
+        } returns ContentIndexingStartOutcome.Started.right()
 
         // When
         val result = startContentIndexingForUser(userId)
 
         // Then
-        assertEquals(Unit.right(), result)
+        assertEquals(ContentIndexingStartOutcome.Started.right(), result)
         coVerify(exactly = 1) { repository.startIndexingForUser(userId) }
         coVerify(exactly = 1) { scheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `does not enqueue a worker for an account the orchestrator has nothing to do for`() = runTest {
+        // Given
+        coEvery {
+            repository.startIndexingForUser(userId)
+        } returns ContentIndexingStartOutcome.AlreadyCompleted.right()
+
+        // When
+        val result = startContentIndexingForUser(userId)
+
+        // Then
+        assertEquals(ContentIndexingStartOutcome.AlreadyCompleted.right(), result)
+        coVerify(exactly = 0) { scheduler.ensureWorkerRunning() }
     }
 
     @Test

@@ -24,6 +24,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
@@ -47,6 +48,7 @@ import uniffi.mail_uniffi.SyncEventStream
 import uniffi.mail_uniffi.SyncOrchestratorEvent
 import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import uniffi.mail_uniffi.SyncProgress
+import uniffi.mail_uniffi.SyncStartOutcome
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -95,6 +97,18 @@ internal class ContentSearchRepositoryImplTest {
             assertEquals(ContentIndexingActivity.WaitingOnUsers, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `startIndexingForUser reports the outcome rust answered`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.startUser(wrapper) } returns SyncStartOutcome.COMPLETED.right()
+
+        // When
+        val result = repository.startIndexingForUser(userId)
+
+        // Then
+        assertEquals(ContentIndexingStartOutcome.AlreadyCompleted.right(), result)
     }
 
     @Test

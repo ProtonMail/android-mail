@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
@@ -69,7 +70,7 @@ internal class ContentSearchSettingsViewModelTest {
     private val enableContentSearch = mockk<EnableContentSearch>()
     private val disableContentSearch = mockk<DisableContentSearch>()
     private val startContentIndexingForUser = mockk<StartContentIndexingForUser> {
-        coEvery { this@mockk.invoke(userId) } returns Unit.right()
+        coEvery { this@mockk.invoke(userId) } returns ContentIndexingStartOutcome.Started.right()
     }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
         coEvery { this@mockk.invoke(any()) } returns true

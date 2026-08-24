@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.domain.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import kotlinx.coroutines.flow.Flow
@@ -48,7 +49,11 @@ interface ContentSearchRepository {
      */
     suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary>
 
-    suspend fun startIndexingForUser(userId: UserId): Either<DataError, Unit>
+    /**
+     * Starts indexing [userId] specifically, which is the only way out of a recorded failure: Rust
+     * clears it on the way to taking the account, and never retries one on its own.
+     */
+    suspend fun startIndexingForUser(userId: UserId): Either<DataError, ContentIndexingStartOutcome>
 
     /** Stops the orchestrator for every account: there is no per-account stop. */
     suspend fun stopIndexing(): Either<DataError, Unit>

@@ -18,11 +18,20 @@
 
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
+import uniffi.mail_uniffi.SyncStartOutcome
 import uniffi.mail_uniffi.SyncStatus
 import uniffi.mail_uniffi.SyncWorkerEvent
+
+internal fun SyncStartOutcome.toStartOutcome(): ContentIndexingStartOutcome = when (this) {
+    SyncStartOutcome.STARTED -> ContentIndexingStartOutcome.Started
+    SyncStartOutcome.ONGOING -> ContentIndexingStartOutcome.AlreadyRunning
+    SyncStartOutcome.DISABLED -> ContentIndexingStartOutcome.Refused
+    SyncStartOutcome.COMPLETED -> ContentIndexingStartOutcome.AlreadyCompleted
+}
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
     SyncStatus.PENDING -> ContentIndexingState.Idle
