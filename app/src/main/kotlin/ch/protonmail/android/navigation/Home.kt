@@ -157,13 +157,13 @@ import ch.protonmail.android.navigation.route.addWebSpamFilterSettings
 import ch.protonmail.android.navigation.transitions.RouteTransitions
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import io.sentry.compose.withSentryObservableEffect
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.android.core.accountmanager.presentation.manager.addAccountsManager
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountSwitchEvent
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -623,11 +623,14 @@ fun Home(
                 is BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
                     isMobileDataEnabled = isSearchMobileDataOn,
                     actions = ContentSearchBottomSheet.Actions(
-                        onDismiss = onBottomSheetDismissed,
+                        onDismiss = {
+                            onBottomSheetDismissed()
+                            preventBottomSheetDismissal = false
+                        },
                         onToggleMobileData = contentSearchBottomSheetViewModel::toggleMobileData
                     )
                 ).also {
-                    preventBottomSheetDismissal = false
+                    preventBottomSheetDismissal = true
                 }
             }
         },
