@@ -39,6 +39,10 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.MarkMessageSendingStatusesAsSeen
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.UndoSendMessage
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -63,9 +67,11 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.unmockkStatic
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Assert.assertNull
@@ -88,6 +94,7 @@ class HomeViewModelTest {
     private val user = UserSample.Primary
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.LocalDraft
+    private val otherUserId = UserId("another-account")
 
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -118,6 +125,23 @@ class HomeViewModelTest {
         every { this@mockk.observeEventLoopErrors() } returns flowOf()
     }
 
+    private val primaryIndexingStatus = MutableSharedFlow<ContentIndexingState>(replay = 1)
+    private val otherIndexingStatus = MutableSharedFlow<ContentIndexingState>(replay = 1)
+    private val observeContentSearchIndexingStatus = mockk<ObserveContentSearchIndexingStatus> {
+        every { this@mockk.invoke(userId) } returns primaryIndexingStatus
+        every { this@mockk.invoke(otherUserId) } returns otherIndexingStatus
+    }
+
+    private val primaryContentSearchEnabled = MutableStateFlow(true)
+    private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
+        every { this@mockk.invoke(userId) } returns primaryContentSearchEnabled
+        every { this@mockk.invoke(otherUserId) } returns flowOf(true)
+    }
+
+    private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
+        coEvery { this@mockk.invoke(any()) } returns true
+    }
+
     private val formatFullDate = mockk<FormatFullDate>()
     private val intentMapper = IntentMapper()
     private val navigationEventsReducer = HomeNavigationEventsReducer()
@@ -132,6 +156,9 @@ class HomeViewModelTest {
             formatFullDate,
             cancelScheduleSendMessage,
             eventLoopErrorSignal,
+            isContentSearchFeatureEnabled,
+            observeContentSearchEnabled,
+            observeContentSearchIndexingStatus,
             observePrimaryUserId,
             newIntentObserver,
             intentMapper,
@@ -204,6 +231,7 @@ class HomeViewModelTest {
                     )
                 ),
                 navigateToEffect = Effect.empty(),
+                contentIndexingErrorEffect = Effect.empty(),
                 startedFromLauncher = false
             )
 
@@ -226,6 +254,7 @@ class HomeViewModelTest {
             val expectedItem = HomeState(
                 messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSentFinal(messageId)),
                 navigateToEffect = Effect.empty(),
+                contentIndexingErrorEffect = Effect.empty(),
                 startedFromLauncher = false
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.NoStatus(messageId))
@@ -269,6 +298,7 @@ class HomeViewModelTest {
                         )
                     ),
                     navigateToEffect = Effect.empty(),
+                    contentIndexingErrorEffect = Effect.empty(),
                     startedFromLauncher = false
                 )
 
@@ -597,4 +627,132 @@ class HomeViewModelTest {
         }
     }
 
+    @Test
+    fun `reports an indexing failure on the primary account`() = runTest {
+        // Given
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+
+        // When
+        advanceUntilIdle()
+
+        // Then
+        assertNotNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `reports the same failure once`() = runTest {
+        // Given
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        advanceUntilIdle()
+        assertNotNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+
+        // When
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `reports a failure on the account switched to`() = runTest {
+        // Given
+        val primaryUserId = MutableStateFlow<UserId?>(otherUserId)
+        every { observePrimaryUserId() } returns primaryUserId
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        otherIndexingStatus.emit(ContentIndexingState.Completed)
+        advanceUntilIdle()
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+
+        // When
+        primaryUserId.emit(userId)
+        advanceUntilIdle()
+
+        // Then
+        assertNotNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `says nothing about an indexing failure on another account`() = runTest {
+        // Given
+        primaryIndexingStatus.emit(ContentIndexingState.Running(50.0))
+        otherIndexingStatus.emit(ContentIndexingState.Failed)
+
+        // When
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `says nothing about an account with content search switched off`() = runTest {
+        // Given
+        primaryContentSearchEnabled.emit(false)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+
+        // When
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+        verify(exactly = 0) { observeContentSearchIndexingStatus(userId) }
+    }
+
+    @Test
+    fun `says nothing about an account content search is unavailable for`() = runTest {
+        // Given
+        coEvery { isContentSearchFeatureEnabled(userId) } returns false
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+
+        // When
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+        verify(exactly = 0) { observeContentSearchEnabled(userId) }
+    }
+
+    @Test
+    fun `says nothing about a failure the enable that just happened is on its way to clearing`() = runTest {
+        // Given
+        primaryContentSearchEnabled.emit(false)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        advanceUntilIdle()
+
+        // When
+        primaryContentSearchEnabled.emit(true)
+        primaryIndexingStatus.emit(ContentIndexingState.Running(0.0))
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `reports a failure that outlives the enable`() = runTest {
+        // Given
+        primaryContentSearchEnabled.emit(false)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        advanceUntilIdle()
+
+        // When
+        primaryContentSearchEnabled.emit(true)
+        advanceUntilIdle()
+
+        // Then
+        assertNotNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
+
+    @Test
+    fun `says nothing about an account that is indexing normally`() = runTest {
+        // Given
+        primaryIndexingStatus.emit(ContentIndexingState.Initializing)
+
+        // When
+        advanceUntilIdle()
+
+        // Then
+        assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
+    }
 }

@@ -40,6 +40,12 @@ internal fun ContentIndexingState.isWaitingForUnmeteredConnection(): Boolean =
     this is ContentIndexingState.WaitingForUnmeteredConnection
 
 /**
+ * Rust records a failure durably and does not retry the account on its own, so this state is sticky
+ * until the user retries or clears the local data - it is reported rather than waited out.
+ */
+internal fun ContentIndexingState.isFailed(): Boolean = this is ContentIndexingState.Failed
+
+/**
  * Rust keeps the account in `Running` once the backfill has caught up - it stays subscribed for new
  * mail - and it does not reliably publish `Completed`. Left alone the settings screen would sit on
  * "Preparing 100.00%", which reads as stuck rather than finished.

@@ -44,4 +44,6 @@
     <string name="mailbox_message_scheduled_for_sending_success">This message will be sent on %1$s</string>
     <string name="launcher_alert_duplicate_account_description">The user is already signed in</string>
     <string name="home_event_loop_error_snackbar">We couldn\'t sync your mail. Try logging out and back in again. If that doesn\'t work, please submit a bug report.</string>
+    <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+    <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

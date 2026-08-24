@@ -50,7 +50,10 @@ class ContentSearchSettingsReducer @Inject constructor() {
                 syncPercentage = if (event.newValue) syncPercentage else null,
                 isIndexingActive = if (event.newValue) isIndexingActive else false,
                 isWaitingForUnmeteredConnection =
-                if (event.newValue) isWaitingForUnmeteredConnection else false
+                    if (event.newValue) isWaitingForUnmeteredConnection else false,
+                // False either way: turning the account on clears the failure Rust had recorded, and
+                // turning it off leaves nothing worth reporting.
+                isIndexingFailed = false
             )
             is ContentSearchSettingsEvent.Data.AllowMobileDataToggled -> copy(
                 isAllowMobileDataEnabled = event.newValue
@@ -59,12 +62,14 @@ class ContentSearchSettingsReducer @Inject constructor() {
                 isContentSearchEnabled = false,
                 syncPercentage = null,
                 isIndexingActive = false,
-                isWaitingForUnmeteredConnection = false
+                isWaitingForUnmeteredConnection = false,
+                isIndexingFailed = false
             )
             is ContentSearchSettingsEvent.Data.IndexingProgress -> copy(
                 syncPercentage = event.percentage,
                 isIndexingActive = event.isActive,
-                isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection
+                isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection,
+                isIndexingFailed = event.isFailed
             )
             is ContentSearchSettingsEvent.Error.UpdateError -> this
             else -> this

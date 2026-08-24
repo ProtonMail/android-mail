@@ -32,6 +32,7 @@ sealed interface ContentSearchSettingsState {
         val isAllowMobileDataEnabled: Boolean,
         val syncPercentage: Double?,
         val isIndexingActive: Boolean = false,
-        val isWaitingForUnmeteredConnection: Boolean = false
+        val isWaitingForUnmeteredConnection: Boolean = false,
+        val isIndexingFailed: Boolean = false
     ) : ContentSearchSettingsState
 }

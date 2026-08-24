@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncStatus
+import uniffi.mail_uniffi.SyncWorkerEvent
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
     SyncStatus.PENDING -> ContentIndexingState.Idle
@@ -52,7 +53,13 @@ internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
         is SyncDriverEvent.Completed -> null
     }
 
-    is SyncEvent.Worker -> null
+    // A failing worker ends the account's sync exactly as a failing driver does - Rust records the
+    // failure and stops - so it cannot be dropped as a per-item event: the stream would then fall
+    // silent on the last percentage and never report the account as failed.
+    is SyncEvent.Worker -> when (this.v1) {
+        is SyncWorkerEvent.Failure -> ContentIndexingState.Failed
+        is SyncWorkerEvent.Processed -> null
+    }
 }
 
 internal fun SyncEvent.isTerminal(): Boolean = when (this) {
@@ -60,8 +67,8 @@ internal fun SyncEvent.isTerminal(): Boolean = when (this) {
     is SyncEvent.Stopped -> true
 
     is SyncEvent.Driver -> this.v1 is SyncDriverEvent.Failure
+    is SyncEvent.Worker -> this.v1 is SyncWorkerEvent.Failure
     is SyncEvent.Started,
     is SyncEvent.WaitingForUnmeteredConnection,
-    is SyncEvent.Progress,
-    is SyncEvent.Worker -> false
+    is SyncEvent.Progress -> false
 }

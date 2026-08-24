@@ -562,6 +562,25 @@ fun Home(
         }
     }
 
+    val contentSearchErrorString = stringResource(R.string.home_content_search_error_snackbar)
+    val contentSearchErrorActionString = stringResource(R.string.home_content_search_error_snackbar_action)
+    ConsumableLaunchedEffect(state.contentIndexingErrorEffect) {
+        if (navController.currentDestination?.route == Screen.ContentSearchSettings.route) {
+            return@ConsumableLaunchedEffect
+        }
+
+        val result = snackbarHost.showSnackbar(
+            message = contentSearchErrorString,
+            actionLabel = contentSearchErrorActionString,
+            duration = SnackbarDuration.Long,
+            type = ProtonSnackbarType.ERROR
+        )
+        when (result) {
+            SnackbarResult.ActionPerformed -> navController.navigate(Screen.ContentSearchSettings.route)
+            SnackbarResult.Dismissed -> Unit
+        }
+    }
+
     val eventHandler: (AccountSwitchEvent) -> Unit = {
         when (it) {
             is AccountSwitchEvent.OnAccountSelected -> {

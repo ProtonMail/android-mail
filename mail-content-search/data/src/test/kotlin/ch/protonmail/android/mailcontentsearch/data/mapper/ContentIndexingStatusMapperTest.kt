@@ -104,8 +104,17 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
-    fun `Worker event maps to null`() {
+    fun `Worker Processed event maps to null`() {
         assertNull(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).toIndexingState())
+    }
+
+    @Test
+    fun `maps Worker Failure event to Failed`() {
+        // Given
+        assertEquals(
+            ContentIndexingState.Failed,
+            SyncEvent.Worker(SyncWorkerEvent.Failure("name", 1u, "boom")).toIndexingState()
+        )
     }
 
     @Test
@@ -113,6 +122,7 @@ internal class ContentIndexingStatusMapperTest {
         assertTrue(SyncEvent.Completed.isTerminal())
         assertTrue(SyncEvent.Stopped.isTerminal())
         assertTrue(SyncEvent.Driver(SyncDriverEvent.Failure("boom")).isTerminal())
+        assertTrue(SyncEvent.Worker(SyncWorkerEvent.Failure("name", 1u, "boom")).isTerminal())
     }
 
     @Test

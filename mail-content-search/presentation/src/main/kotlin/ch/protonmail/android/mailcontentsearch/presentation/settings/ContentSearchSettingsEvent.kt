@@ -31,7 +31,8 @@ sealed interface ContentSearchSettingsEvent : ContentSearchSettingsOperation {
         data class IndexingProgress(
             val percentage: Double?,
             val isActive: Boolean,
-            val isWaitingForUnmeteredConnection: Boolean
+            val isWaitingForUnmeteredConnection: Boolean,
+            val isFailed: Boolean
         ) : Data
     }
 

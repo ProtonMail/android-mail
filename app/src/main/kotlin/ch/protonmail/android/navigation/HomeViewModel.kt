@@ -23,14 +23,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatFullDate
-import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.MarkMessageSendingStatusesAsSeen
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.UndoSendMessage
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
@@ -43,17 +47,30 @@ import ch.protonmail.android.navigation.model.NavigationEffect
 import ch.protonmail.android.navigation.reducer.HomeNavigationEventsReducer
 import ch.protonmail.android.navigation.share.NewIntentObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
+import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
 @HiltViewModel
@@ -66,6 +83,9 @@ class HomeViewModel @Inject constructor(
     private val formatFullDate: FormatFullDate,
     private val cancelScheduleSendMessage: CancelScheduleSendMessage,
     eventLoopErrorSignal: EventLoopErrorSignal,
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
+    private val observeContentSearchEnabled: ObserveContentSearchEnabled,
+    private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     observePrimaryUserId: ObservePrimaryUserId,
     newIntentObserver: NewIntentObserver,
     private val intentMapper: IntentMapper,
@@ -87,9 +107,42 @@ class HomeViewModel @Inject constructor(
             emitNewStateFor(it)
         }.launchIn(viewModelScope)
 
+        reportContentIndexingFailures()
+
         newIntentObserver()
             .onEach { emitNewStateForIntent(it) }
             .launchIn(viewModelScope)
+    }
+
+    /**
+     * Reports indexing failures worth telling the currently active user about.
+     *
+     * A failure is reported at most once per observation, which restarts whenever the primary user changes or content
+     * search is toggled: a still-recorded failure is therefore reported again when the user switches back.
+     */
+    private fun reportContentIndexingFailures() {
+        primaryUserId
+            .flatMapLatest { userId -> observeIndexingFailure(userId) }
+            .onEach { mutableState.update { it.copy(contentIndexingErrorEffect = Effect.of(Unit)) } }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeIndexingFailure(userId: UserId): Flow<Unit> = flow {
+        if (!isContentSearchFeatureEnabled(userId)) return@flow
+
+        emitAll(
+            observeContentSearchEnabled(userId)
+                .withIndex()
+                .flatMapLatest { (index, isEnabled) ->
+                    if (!isEnabled) return@flatMapLatest emptyFlow()
+
+                    observeContentSearchIndexingStatus(userId)
+                        .onStart { if (index > 0) delay(EnableGracePeriod) }
+                        .filterIsInstance<ContentIndexingState.Failed>()
+                        .take(1)
+                        .map { }
+                }
+        )
     }
 
     fun navigateTo(navController: NavController, navigationEffect: NavigationEffect) {
@@ -201,5 +254,12 @@ class HomeViewModel @Inject constructor(
         mutableState.update { current ->
             navigationEventsReducer.reduce(current, navIntent)
         }
+    }
+
+    private companion object {
+
+        // One actor round-trip: long enough for the start that follows an enable to clear the
+        // record, short enough that a failure outliving it is still reported without a visible wait.
+        val EnableGracePeriod: Duration = 3.seconds
     }
 }

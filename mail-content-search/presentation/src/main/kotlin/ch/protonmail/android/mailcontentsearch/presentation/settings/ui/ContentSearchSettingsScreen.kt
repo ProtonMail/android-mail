@@ -51,6 +51,7 @@ fun ContentSearchSettingsScreen(modifier: Modifier = Modifier, onBackClick: () -
             viewModel.submit(ContentSearchSettingsViewAction.ToggleAllowMobileData(enabled))
         },
         onClearLocalSearchData = { viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData) },
+        onRetryIndexing = { viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing) },
         onLearnMoreClick = { uriHandler.openUri(learnMoreLink) }
     )
 
@@ -99,6 +100,7 @@ object ContentSearchSettingsScreen {
         val onContentSearchToggle: (Boolean) -> Unit,
         val onAllowMobileDataToggle: (Boolean) -> Unit,
         val onClearLocalSearchData: () -> Unit,
+        val onRetryIndexing: () -> Unit,
         val onLearnMoreClick: () -> Unit
     )
 }
@@ -118,6 +120,7 @@ private fun ContentSearchSettingsScreenPreview() {
                 onContentSearchToggle = {},
                 onAllowMobileDataToggle = {},
                 onClearLocalSearchData = {},
+                onRetryIndexing = {},
                 onLearnMoreClick = {}
             ),
             onBackClick = {}
@@ -139,6 +142,7 @@ private fun ContentSearchSettingsScreenOnPreview() {
                 onContentSearchToggle = {},
                 onAllowMobileDataToggle = {},
                 onClearLocalSearchData = {},
+                onRetryIndexing = {},
                 onLearnMoreClick = {}
             ),
             onBackClick = {}

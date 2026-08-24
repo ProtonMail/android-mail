@@ -27,10 +27,10 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSear
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -115,6 +115,62 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         assertEquals(42.0, state.syncPercentage)
         assertTrue(state.isIndexingActive)
+    }
+
+    @Test
+    fun `reports a failed account, and keeps the toggle on`() = runTest {
+        // Given
+        ownIndexingStatus.value = ContentIndexingState.Failed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertTrue(state.isIndexingFailed)
+        assertTrue(state.isContentSearchEnabled)
+        assertFalse(state.isIndexingActive)
+        assertNull(state.syncPercentage)
+    }
+
+    @Test
+    fun `stops reporting a failure once rust starts the account again`() = runTest {
+        // Given
+        ownIndexingStatus.value = ContentIndexingState.Failed
+        val viewModel = viewModel()
+
+        // When
+        ownIndexingStatus.value = ContentIndexingState.Initializing
+
+        // Then
+        val state = viewModel.state.value.asData()
+        assertFalse(state.isIndexingFailed)
+        assertTrue(state.isIndexingActive)
+    }
+
+    @Test
+    fun `does not report a failure while content search is disabled`() = runTest {
+        // Given
+        enabledFlow.value = false
+        ownIndexingStatus.value = ContentIndexingState.Failed
+
+        // When
+        val state = viewModel().state.value.asData()
+
+        // Then
+        assertFalse(state.isIndexingFailed)
+    }
+
+    @Test
+    fun `submit RetryIndexing hands the account back to the orchestrator`() = runTest {
+        // Given
+        ownIndexingStatus.value = ContentIndexingState.Failed
+
+        // When
+        viewModel().submit(ContentSearchSettingsViewAction.RetryIndexing)
+
+        // Then
+        coVerify { startContentIndexingForUser(userId) }
+        coVerify(exactly = 0) { enableContentSearch(userId) }
     }
 
     @Test

@@ -23,6 +23,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
@@ -48,9 +49,9 @@ import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import uniffi.mail_uniffi.SyncProgress
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
-import kotlin.test.assertTrue
-import kotlin.test.assertFalse
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 
 internal class ContentSearchRepositoryImplTest {
@@ -76,6 +77,25 @@ internal class ContentSearchRepositoryImplTest {
         ioDispatcher = dispatcher,
         appScope = CoroutineScope(dispatcher)
     )
+
+    @Test
+    fun `one account failing does not end the orchestrator run`() = runTest(dispatcher) {
+        // Given
+        val stream = mockk<SyncOrchestratorEventStream> { every { destroy() } returns Unit }
+        every { syncServiceWrapper.subscribe() } returns stream.right()
+        coEvery { stream.next() } returnsMany listOf(
+            SyncOrchestratorEvent.UserFailure(userId.id, "[Driver] boom"),
+            SyncOrchestratorEvent.WaitingOnUsers,
+            null
+        )
+
+        // When
+        repository.observeIndexingActivity().test {
+            // Then
+            assertEquals(ContentIndexingActivity.WaitingOnUsers, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 
     @Test
     fun `isFeatureEnabled reflects what the sdk reports for the account`() = runTest(dispatcher) {

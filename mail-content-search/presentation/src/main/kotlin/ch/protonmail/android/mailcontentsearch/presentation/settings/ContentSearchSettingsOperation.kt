@@ -27,4 +27,6 @@ sealed interface ContentSearchSettingsViewAction : ContentSearchSettingsOperatio
     data class ToggleAllowMobileData(val enabled: Boolean) : ContentSearchSettingsViewAction
 
     data object ClearLocalData : ContentSearchSettingsViewAction
+
+    data object RetryIndexing : ContentSearchSettingsViewAction
 }

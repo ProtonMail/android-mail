@@ -62,8 +62,12 @@ internal fun ContentSearchSettingsContent(
             syncPercentage = state.syncPercentage,
             isIndexingActive = state.isIndexingActive,
             isWaitingForUnmeteredConnection = state.isWaitingForUnmeteredConnection,
-            onToggle = actions.onContentSearchToggle,
-            onLearnMoreClick = actions.onLearnMoreClick
+            isIndexingFailed = state.isIndexingFailed,
+            actions = ContentSearchCardActions(
+                onToggle = actions.onContentSearchToggle,
+                onRetryClick = actions.onRetryIndexing,
+                onLearnMoreClick = actions.onLearnMoreClick
+            )
         )
 
         AnimatedVisibility(visible = state.isContentSearchEnabled) {
@@ -135,9 +139,27 @@ private fun ContentSearchSettingsContentOnPreview() {
     }
 }
 
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true, name = "Failed")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Failed dark")
+@Composable
+private fun ContentSearchContentFailedPreview() {
+    ProtonInvertedTheme {
+        ContentSearchSettingsContent(
+            state = ContentSearchSettingsState.Data(
+                isContentSearchEnabled = true,
+                isAllowMobileDataEnabled = true,
+                syncPercentage = 3.45,
+                isIndexingFailed = true
+            ),
+            actions = PreviewActions
+        )
+    }
+}
+
 private val PreviewActions = ContentSearchSettingsScreen.Actions(
     onContentSearchToggle = {},
     onAllowMobileDataToggle = {},
     onClearLocalSearchData = {},
+    onRetryIndexing = {},
     onLearnMoreClick = {}
 )

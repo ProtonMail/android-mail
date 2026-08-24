@@ -33,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -57,8 +58,8 @@ internal fun ContentSearchCard(
     syncPercentage: Double?,
     isIndexingActive: Boolean,
     isWaitingForUnmeteredConnection: Boolean,
-    onToggle: (Boolean) -> Unit,
-    onLearnMoreClick: () -> Unit
+    isIndexingFailed: Boolean,
+    actions: ContentSearchCardActions
 ) {
     // No grace period for the Wi-Fi wait: unlike the gap before the first progress event, it is a
     // state the user put the app in, and it lasts until they change network or the setting.
@@ -91,7 +92,7 @@ internal fun ContentSearchCard(
                     fontWeight = FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
-                DescriptionText(onLearnMoreClick = onLearnMoreClick)
+                DescriptionText(onLearnMoreClick = actions.onLearnMoreClick)
             }
 
             MailDivider()
@@ -102,7 +103,7 @@ internal fun ContentSearchCard(
                     vertical = ProtonDimens.Spacing.Medium
                 ),
                 value = isEnabled,
-                onToggle = onToggle
+                onToggle = actions.onToggle
             ) {
                 Text(
                     text = stringResource(id = R.string.mail_settings_content_search_toggle_title),
@@ -111,6 +112,12 @@ internal fun ContentSearchCard(
                 )
 
                 val statusText = when {
+                    // Ahead of everything else: the account is stopped, so the last percentage it
+                    // reached and the "preparing" placeholder are both stale.
+                    isIndexingFailed -> stringResource(
+                        id = R.string.mail_settings_content_search_failed_status
+                    )
+
                     isWaitingForUnmeteredConnection -> stringResource(
                         id = R.string.mail_settings_content_search_waiting_for_wifi_status
                     )
@@ -131,12 +138,67 @@ internal fun ContentSearchCard(
                     Text(
                         text = statusText,
                         style = ProtonTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        // Unspecified rather than textNorm for the ordinary statuses, so they keep
+                        // inheriting whatever the toggle item's content colour is.
+                        color = if (isIndexingFailed) ProtonTheme.colors.notificationError else Color.Unspecified
                     )
                 }
             }
+
+            // Outside the toggle item, whose content column merges its semantics for accessibility -
+            // a link in there would be announced as part of the toggle rather than as its own action.
+            //
+            // The toggle itself deliberately stays on: the account is still enabled, Rust only records
+            // the failure, and handing the account back to the orchestrator is what clears it.
+            if (isIndexingFailed) {
+                RetryText(
+                    modifier = Modifier.padding(
+                        start = ProtonDimens.Spacing.Large,
+                        end = ProtonDimens.Spacing.Large,
+                        bottom = ProtonDimens.Spacing.Medium
+                    ),
+                    onRetryClick = actions.onRetryClick
+                )
+            }
         }
     }
+}
+
+internal data class ContentSearchCardActions(
+    val onToggle: (Boolean) -> Unit,
+    val onRetryClick: () -> Unit,
+    val onLearnMoreClick: () -> Unit
+)
+
+@Composable
+private fun RetryText(modifier: Modifier = Modifier, onRetryClick: () -> Unit) {
+    val retry = stringResource(id = R.string.mail_settings_content_search_failed_retry)
+    val linkColor = ProtonTheme.colors.brandNorm
+
+    val annotatedString = buildAnnotatedString {
+        withLink(
+            LinkAnnotation.Clickable(
+                tag = "retry_indexing",
+                styles = TextLinkStyles(
+                    style = SpanStyle(
+                        color = linkColor,
+                        textDecoration = TextDecoration.None
+                    )
+                ),
+                linkInteractionListener = { onRetryClick() }
+            )
+        ) {
+            append(retry)
+        }
+    }
+
+    Text(
+        modifier = modifier,
+        text = annotatedString,
+        style = ProtonTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Normal
+    )
 }
 
 @Composable

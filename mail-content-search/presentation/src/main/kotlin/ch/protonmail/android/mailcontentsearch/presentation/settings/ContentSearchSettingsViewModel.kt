@@ -25,14 +25,15 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSear
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
+import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isFailed
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isWaitingForUnmeteredConnection
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPercentage
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
@@ -130,7 +131,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
                         Data.IndexingProgress(
                             percentage = null,
                             isActive = false,
-                            isWaitingForUnmeteredConnection = false
+                            isWaitingForUnmeteredConnection = false,
+                            isFailed = false
                         )
                     )
                 } else {
@@ -138,7 +140,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
                         Data.IndexingProgress(
                             percentage = indexingStatus.toPercentage(),
                             isActive = indexingStatus.isActive(),
-                            isWaitingForUnmeteredConnection = indexingStatus.isWaitingForUnmeteredConnection()
+                            isWaitingForUnmeteredConnection = indexingStatus.isWaitingForUnmeteredConnection(),
+                            isFailed = indexingStatus.isFailed()
                         )
                     }
                 }
@@ -162,6 +165,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
             is ContentSearchSettingsViewAction.ToggleContentSearch -> handleToggleContentSearch(action.enabled)
             is ContentSearchSettingsViewAction.ToggleAllowMobileData -> handleToggleAllowMobileData(action.enabled)
             ContentSearchSettingsViewAction.ClearLocalData -> handleClearLocalData()
+            ContentSearchSettingsViewAction.RetryIndexing -> handleRetryIndexing()
         }
     }
 
@@ -180,6 +184,18 @@ class ContentSearchSettingsViewModel @Inject constructor(
             ifLeft = { emitNewStateFor(Error.UpdateError) },
             ifRight = { emitNewStateFor(Data.ContentSearchToggled(newValue)) }
         )
+    }
+
+    /**
+     * Hands the account back to the orchestrator, which is the only way out of a failure: Rust keeps
+     * the recorded failure until something starts the account again, and never retries on its own.
+     *
+     * No optimistic state change - clearing the failure is Rust's to do, and the status stream
+     * reports it as soon as the account starts, so anticipating it here would only risk showing a
+     * retry that did not take.
+     */
+    private suspend fun handleRetryIndexing() {
+        startContentIndexingForUser(currentUserId()).onLeft { emitNewStateFor(Error.UpdateError) }
     }
 
     // No restart: the preference is written straight into Rust, which pauses and resumes its own

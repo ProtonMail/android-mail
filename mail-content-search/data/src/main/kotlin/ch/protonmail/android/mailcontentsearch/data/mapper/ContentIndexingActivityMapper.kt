@@ -65,7 +65,8 @@ internal fun SyncOrchestratorEvent.toIndexingActivity(): ContentIndexingActivity
     is SyncOrchestratorEvent.Failure -> ContentIndexingActivity.Failed(v1)
 
     // One account failing does not end the run - the orchestrator records it and moves to the next
-    // candidate, exactly as Rust's own `sync_and_wait` treats it.
+    // candidate, exactly as Rust's own `sync_and_wait` treats it. The account is not forgotten: the
+    // ones that matter are recorded in Rust and read back from the account's own status.
     is SyncOrchestratorEvent.UserFailure -> null
 }
 

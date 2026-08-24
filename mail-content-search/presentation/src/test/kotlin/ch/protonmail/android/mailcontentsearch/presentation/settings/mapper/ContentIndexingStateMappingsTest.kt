@@ -91,6 +91,32 @@ internal class ContentIndexingStateMappingsTest {
     }
 
     @Test
+    fun `a failed account is reported as failed and nothing else`() {
+        // Given
+        val state = ContentIndexingState.Failed
+
+        // Then
+        assertTrue(state.isFailed())
+        assertFalse(state.isActive())
+        assertFalse(state.isWaitingForUnmeteredConnection())
+        assertNull(state.toPercentage())
+    }
+
+    @Test
+    fun `no other state is mistaken for a failure`() {
+        listOf(
+            ContentIndexingState.Idle,
+            ContentIndexingState.Initializing,
+            ContentIndexingState.WaitingForUnmeteredConnection,
+            ContentIndexingState.Running(percentage = 42.5),
+            ContentIndexingState.Completed,
+            ContentIndexingState.Cancelled
+        ).forEach { state ->
+            assertFalse(state.isFailed(), "$state should not be failed")
+        }
+    }
+
+    @Test
     fun `settled states are neither active nor carry a percentage`() {
         listOf(
             ContentIndexingState.Idle,

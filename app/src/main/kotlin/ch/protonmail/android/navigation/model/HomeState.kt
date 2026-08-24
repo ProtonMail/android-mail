@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 data class HomeState(
     val messageSendingStatusEffect: Effect<MessageSendingStatus>,
     val navigateToEffect: Effect<out NavigationEffect>,
+    val contentIndexingErrorEffect: Effect<Unit>,
     val startedFromLauncher: Boolean
 ) {
 
@@ -32,6 +33,7 @@ data class HomeState(
         val Initial = HomeState(
             messageSendingStatusEffect = Effect.empty(),
             navigateToEffect = Effect.empty(),
+            contentIndexingErrorEffect = Effect.empty(),
             startedFromLauncher = false
         )
     }
