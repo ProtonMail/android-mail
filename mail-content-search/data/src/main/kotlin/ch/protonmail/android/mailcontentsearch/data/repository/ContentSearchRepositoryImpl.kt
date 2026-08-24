@@ -193,8 +193,10 @@ class ContentSearchRepositoryImpl @Inject constructor(
             }
             .flowOn(ioDispatcher)
 
-    override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState =
-        readIndexingState(userId) ?: ContentIndexingState.Idle
+    override suspend fun getIndexingStatus(userId: UserId): ContentIndexingState = readIndexingState(userId) ?: run {
+        Timber.w("content-search: no session to read the indexing status of $userId from")
+        ContentIndexingState.Idle
+    }
 
     override suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean =
         executeWithUserSession(userId) { wrapper ->
@@ -204,13 +206,27 @@ class ContentSearchRepositoryImpl @Inject constructor(
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()
 
-    // Both reads answer while the orchestrator is stopped, so the UI gets a determinate
-    // percentage from the very first frame instead of an indefinite "preparing".
-    private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState? {
-        val status = syncService.userStatus(wrapper).getOrNull() ?: return null
+    /**
+     * The account's indexing state as Rust has it right now.
+     *
+     * Both reads answer while the orchestrator is stopped, so the UI gets a determinate percentage
+     * from the very first frame instead of an indefinite "preparing".
+     */
+    private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState {
+        val status = syncService.userStatus(wrapper).getOrElse { error ->
+            Timber.e("content-search: the account could not report its indexing status: $error")
+            return ContentIndexingState.Failed
+        }
+        val progress = syncService.userProgress(wrapper).getOrElse { error ->
+            if (syncService.isEnabled(wrapper).getOrElse { false }) {
+                Timber.e("content-search: the account could not report its indexing progress: $error")
+                return ContentIndexingState.Failed
+            }
+            Timber.d("content-search: no indexing progress for an account with content search off: $error")
+            null
+        }
         // No totals yet means Rust has not sized the backfill: report "preparing" rather than 0%.
-        val progress = syncService.userProgress(wrapper).getOrNull()?.takeIf { it.total > 0uL }?.percentage
-        return status.toIndexingState(progress)
+        return status.toIndexingState(progress?.takeIf { it.total > 0uL }?.percentage)
     }
 
     private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
@@ -220,7 +236,7 @@ class ContentSearchRepositoryImpl @Inject constructor(
         val stream = executeWithUserSession(userId) { wrapper ->
             val subscribeResult = syncService.subscribeUser(wrapper)
 
-            subscribeResult.onRight { currentIndexingState(wrapper)?.let { trySend(it) } }
+            subscribeResult.onRight { trySend(currentIndexingState(wrapper)) }
 
             subscribeResult
         }.flatten().fold(

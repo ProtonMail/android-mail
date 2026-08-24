@@ -179,9 +179,49 @@ internal class ContentSearchRepositoryImplTest {
         }
 
     @Test
-    fun `getIndexingStatus falls back to Idle when the session has no status`() = runTest(dispatcher) {
+    fun `getIndexingStatus reports a status rust cannot read as a failure`() = runTest(dispatcher) {
         // Given
         coEvery { syncServiceWrapper.userStatus(wrapper) } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.getIndexingStatus(userId)
+
+        // Then
+        assertEquals(ContentIndexingState.Failed, result)
+    }
+
+    @Test
+    fun `getIndexingStatus ignores an unreadable progress when the feature is off`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.userStatus(wrapper) } returns SyncStatus.PENDING.right()
+        coEvery { syncServiceWrapper.userProgress(wrapper) } returns DataError.Local.Unknown.left()
+        coEvery { syncServiceWrapper.isEnabled(wrapper) } returns false.right()
+
+        // When
+        val result = repository.getIndexingStatus(userId)
+
+        // Then
+        assertEquals(ContentIndexingState.Idle, result)
+    }
+
+    @Test
+    fun `getIndexingStatus reports an unreadable progress when the feature is on`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.userStatus(wrapper) } returns SyncStatus.PENDING.right()
+        coEvery { syncServiceWrapper.userProgress(wrapper) } returns DataError.Local.Unknown.left()
+        coEvery { syncServiceWrapper.isEnabled(wrapper) } returns true.right()
+
+        // When
+        val result = repository.getIndexingStatus(userId)
+
+        // Then
+        assertEquals(ContentIndexingState.Failed, result)
+    }
+
+    @Test
+    fun `getIndexingStatus falls back to Idle for an account with no session`() = runTest(dispatcher) {
+        // Given
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
 
         // When
         val result = repository.getIndexingStatus(userId)
