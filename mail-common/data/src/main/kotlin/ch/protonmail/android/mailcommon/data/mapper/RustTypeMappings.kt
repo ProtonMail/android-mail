@@ -81,6 +81,7 @@ import uniffi.mail_uniffi.PrivacyLock
 import uniffi.mail_uniffi.PrivacyLockColor
 import uniffi.mail_uniffi.PrivacyLockIcon
 import uniffi.mail_uniffi.PrivacyLockTooltip
+import uniffi.mail_uniffi.PurchaseFlow
 import uniffi.mail_uniffi.RemoteId
 import uniffi.mail_uniffi.RsvpAnswer
 import uniffi.mail_uniffi.RsvpAttendance
@@ -264,6 +265,7 @@ typealias LocalPrivacyLockTooltip = PrivacyLockTooltip
 typealias LocalDeviceInfoProvider = DeviceInfoProvider
 typealias LocalGeneralDimensions = GeneralDimensions
 typealias LocalPlanSpecificDimensions = PlanSpecificDimensions
+typealias LocalPurchaseFlow = PurchaseFlow
 typealias LocalUpsellEntryPoint = UpsellEntryPoint
 typealias LocalUpsellModalVariant = UpsellModalVariant
 typealias LocalUpsellExperimentFlag = UpsellExperimentFlag

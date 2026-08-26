@@ -23,11 +23,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
@@ -73,7 +76,8 @@ internal class UpsellingViewModel @Inject constructor(
     private val recordUpgradeCancelledByUser: RecordUpgradeCancelledByUser,
     private val recordUpgradeError: RecordUpgradeError,
     private val recordUpgradeSuccess: RecordUpgradeSuccess,
-    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository
+    private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository,
+    @IsSdkUpgradesPurchaseEnabled private val sdkPurchaseEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
@@ -166,7 +170,11 @@ internal class UpsellingViewModel @Inject constructor(
             PlanSpecificDimensions(
                 selectedPlan = upsellingTelemetryPayload.selectedPlan,
                 selectedCycle = upsellingTelemetryPayload.selectedCycle,
-                upsellIsPromotional = upsellingTelemetryPayload.upsellIsPromotional
+                upsellIsPromotional = upsellingTelemetryPayload.upsellIsPromotional,
+                purchaseFlow = when (sdkPurchaseEnabled.get()) {
+                    true -> PurchaseFlow.SDK
+                    false -> PurchaseFlow.LEGACY
+                }
             )
         )
     }
