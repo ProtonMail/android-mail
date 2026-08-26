@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.MarkMessageSendingStatusesAsSeen
 import ch.protonmail.android.mailcomposer.domain.usecase.QueryUnseenMessageSendingStatuses
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -47,7 +48,8 @@ class SendingStatusWorker @AssistedInject constructor(
     private val queryUnseenDraftSendResults: QueryUnseenMessageSendingStatuses,
     private val markMessageSendingStatusesAsSeen: MarkMessageSendingStatusesAsSeen,
     private val eventLoopRepository: EventLoopRepository,
-    private val appInBackgroundState: AppInBackgroundState
+    private val appInBackgroundState: AppInBackgroundState,
+    private val pendingSendTracker: PendingSendTracker
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -94,6 +96,8 @@ class SendingStatusWorker @AssistedInject constructor(
     }
 
     private suspend fun confirmMessageStatus(userId: UserId, messageStatus: MessageSendingStatus): Result {
+        // The send reached a terminal status, so it is no longer queued.
+        pendingSendTracker.onSendCompleted(messageStatus.messageId.id)
         if (appInBackgroundState.isAppInBackground()) {
             Timber.d("App is in background, marking message as seen.")
             markMessageSendingStatusesAsSeen(userId, listOf(messageStatus.messageId))

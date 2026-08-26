@@ -20,6 +20,8 @@ package ch.protonmail.android.mailsession.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailsession.data.database.getDatabaseBaseDirectory
+import ch.protonmail.android.mailsession.data.background.BackgroundExecutionWorkScheduler
+import ch.protonmail.android.mailsession.data.background.PendingSendTrackerImpl
 import ch.protonmail.android.mailsession.data.deviceinfo.AndroidDeviceInfoProvider
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserverImpl
@@ -35,6 +37,8 @@ import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.user.RustUserDataSourceImpl
 import ch.protonmail.android.mailsession.data.wrapper.SyncServiceWrapper
 import ch.protonmail.android.mailsession.domain.annotations.DatabasesBaseDirectory
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
+import ch.protonmail.android.mailsession.domain.background.SendCompletionScheduler
 import ch.protonmail.android.mailsession.domain.coroutines.EventLoopScope
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
@@ -125,5 +129,12 @@ object MailSessionModule {
         @Binds
         @Singleton
         fun bindIssueReporter(impl: SentryIssueReporter): IssueReporter
+
+        @Binds
+        fun bindSendCompletionScheduler(impl: BackgroundExecutionWorkScheduler): SendCompletionScheduler
+
+        @Binds
+        @Singleton
+        fun bindPendingSendTracker(impl: PendingSendTrackerImpl): PendingSendTracker
     }
 }

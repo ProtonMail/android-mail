@@ -71,6 +71,7 @@ import ch.protonmail.android.mailmessage.data.mapper.toMessageId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentDataError
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -108,7 +109,8 @@ class RustDraftDataSourceImpl @Inject constructor(
     private val rustDraftUndoSend: RustDraftUndoSend,
     private val enqueuer: Enqueuer,
     private val draftCache: DraftCache,
-    private val composerSignals: ComposerSignals
+    private val composerSignals: ComposerSignals,
+    private val pendingSendTracker: PendingSendTracker
 ) : RustDraftDataSource {
 
     private val mutableRecipientsUpdatedFlow = MutableSharedFlow<ValidatedRecipients>(
@@ -409,6 +411,10 @@ class RustDraftDataSourceImpl @Inject constructor(
             Timber.e("rust-draft: Trying to start sending status worker with null messageId; Failing.")
             return
         }
+
+        // Record the pending send so that, if the app is backgrounded before the queue drains (e.g.
+        // an external share closes the task), onStop can flush it with an expedited worker.
+        pendingSendTracker.onSendStarted(messageId.id)
 
         Timber.d("rust-draft: Starting sending status worker...")
         enqueuer.enqueueUniqueWork<SendingStatusWorker>(

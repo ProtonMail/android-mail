@@ -27,4 +27,5 @@ object NotificationChannelId {
     const val Email = "v7_email_channel_id"
     const val Login = "v7_login_channel_id"
     const val ContentSearch = "v7_content_search_channel_id"
+    const val Sending = "v7_sending_channel_id"
 }

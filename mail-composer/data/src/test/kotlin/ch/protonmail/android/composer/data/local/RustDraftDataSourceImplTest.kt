@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentDataError
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import ch.protonmail.android.testdata.composer.DraftRecipientTestData
@@ -101,6 +102,7 @@ class RustDraftDataSourceImplTest {
     private val rustDraftUndoSend = mockk<RustDraftUndoSend>()
     private val draftCache = mockk<DraftCache>()
     private val composerSignals = mockk<ComposerSignals>(relaxUnitFun = true)
+    private val pendingSendTracker = mockk<PendingSendTracker>(relaxUnitFun = true)
 
     private val dataSource = RustDraftDataSourceImpl(
         userSessionRepository,
@@ -110,7 +112,8 @@ class RustDraftDataSourceImplTest {
         rustDraftUndoSend,
         enqueuer,
         draftCache,
-        composerSignals
+        composerSignals,
+        pendingSendTracker
     )
 
     @Test

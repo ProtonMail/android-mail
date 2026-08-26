@@ -22,6 +22,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.testing.TestLifecycleOwner
 import ch.protonmail.android.mailsession.data.background.BackgroundExecutionWorkScheduler
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
+import ch.protonmail.android.mailsession.domain.background.SendCompletionScheduler
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -46,7 +48,14 @@ internal class RustWorkLifecycleObserverTest {
 
     private val scheduler = mockk<BackgroundExecutionWorkScheduler>()
     private val mailSessionRepository = mockk<MailSessionRepository>()
-    private val observer = RustWorkLifecycleObserver(mailSessionRepository, scheduler)
+    private val sendCompletionScheduler = mockk<SendCompletionScheduler>(relaxUnitFun = true)
+    private val pendingSendTracker = mockk<PendingSendTracker>(relaxUnitFun = true)
+    private val observer = RustWorkLifecycleObserver(
+        mailSessionRepository,
+        scheduler,
+        sendCompletionScheduler,
+        pendingSendTracker
+    )
 
     @Test
     fun `should cancel background execution and resume work when onStart is triggered`() = runTest {
@@ -70,6 +79,7 @@ internal class RustWorkLifecycleObserverTest {
         // Given
         every { scheduler.scheduleWork() } just runs
         every { mailSessionRepository.getMailSession().onExitForeground() } just runs
+        every { pendingSendTracker.hasPendingSends() } returns false
         val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.CREATED, dispatcher)
 
         // When
@@ -79,6 +89,23 @@ internal class RustWorkLifecycleObserverTest {
         // Then
         verify(exactly = 1) { scheduler.scheduleWork() }
         coVerify(exactly = 1) { mailSessionRepository.getMailSession().onExitForeground() }
+        verify(exactly = 0) { sendCompletionScheduler.scheduleSendCompletion() }
         confirmVerified(mailSessionRepository, scheduler)
+    }
+
+    @Test
+    fun `should schedule send completion on onStop when a send is pending`() = runTest {
+        // Given
+        every { scheduler.scheduleWork() } just runs
+        every { mailSessionRepository.getMailSession().onExitForeground() } just runs
+        every { pendingSendTracker.hasPendingSends() } returns true
+        val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.CREATED, dispatcher)
+
+        // When
+        observer.onStop(lifecycleOwner)
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 1) { sendCompletionScheduler.scheduleSendCompletion() }
     }
 }

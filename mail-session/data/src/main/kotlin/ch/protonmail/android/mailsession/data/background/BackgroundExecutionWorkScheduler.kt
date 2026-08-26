@@ -18,16 +18,38 @@
 
 package ch.protonmail.android.mailsession.data.background
 
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkManager
 import ch.protonmail.android.mailcommon.data.worker.CancelWorkManagerWork
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailsession.domain.background.SendCompletionScheduler
 import timber.log.Timber
 import javax.inject.Inject
 
 class BackgroundExecutionWorkScheduler @Inject constructor(
     private val enqueuer: Enqueuer,
-    private val cancelWorkManagerWork: CancelWorkManagerWork
-) {
+    private val cancelWorkManagerWork: CancelWorkManagerWork,
+    private val workManager: WorkManager
+) : SendCompletionScheduler {
+
+    /**
+     * Runs the drain immediately and expedited, so a queued send completes even after the process is
+     * reclaimed. RUN_AS_NON_EXPEDITED falls back to a regular job if the expedited quota is spent
+     */
+    override fun scheduleSendCompletion() {
+        val request = OneTimeWorkRequestBuilder<SendMessageCompletionWorker>()
+            .setConstraints(
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            )
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            .build()
+
+        workManager.enqueueUniqueWork(SEND_DRAIN_WORKER_ID, ExistingWorkPolicy.KEEP, request)
+    }
 
     fun scheduleWork() {
         enqueuer.enqueueUniqueWork(
@@ -48,5 +70,6 @@ class BackgroundExecutionWorkScheduler @Inject constructor(
 
         const val BACKGROUND_WORK_TAG = "background_work_execution"
         const val WORKER_ID = "background_work_execution_task"
+        const val SEND_DRAIN_WORKER_ID = "send_message_foreground_drain"
     }
 }

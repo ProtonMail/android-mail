@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsession.data.background
 
 import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import ch.protonmail.android.mailcommon.data.worker.CancelWorkManagerWork
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import io.mockk.coEvery
@@ -35,9 +36,11 @@ internal class BackgroundExecutionWorkSchedulerTest {
 
     private val enqueuer = mockk<Enqueuer>()
     private val cancelWorkManagerWork = mockk<CancelWorkManagerWork>()
+    private val workManager = mockk<WorkManager>()
     private val backgroundScheduler = BackgroundExecutionWorkScheduler(
         enqueuer,
-        cancelWorkManagerWork
+        cancelWorkManagerWork,
+        workManager
     )
 
     @Test

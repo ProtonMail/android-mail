@@ -23,16 +23,22 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.mailsession.data.background.BackgroundExecutionWorkScheduler
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
+import ch.protonmail.android.mailsession.domain.background.SendCompletionScheduler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 class RustWorkLifecycleObserver @Inject constructor(
     private val mailSessionRepository: MailSessionRepository,
-    private val backgroundExecutionWorkScheduler: BackgroundExecutionWorkScheduler
+    private val backgroundExecutionWorkScheduler: BackgroundExecutionWorkScheduler,
+    private val sendCompletionScheduler: SendCompletionScheduler,
+    private val pendingSendTracker: PendingSendTracker
 ) : DefaultLifecycleObserver {
 
     override fun onStart(owner: LifecycleOwner) {
+        // The queue resumes in the foreground and drains in-process, so clear the tracker for a fresh session.
+        pendingSendTracker.reset()
         owner.lifecycleScope.launch {
             backgroundExecutionWorkScheduler.cancelPendingWork()
             onRustEnterForeground()
@@ -42,6 +48,11 @@ class RustWorkLifecycleObserver @Inject constructor(
 
     override fun onStop(owner: LifecycleOwner) {
         backgroundExecutionWorkScheduler.scheduleWork()
+        // Only when a send is still in flight as we background: flush the queue with an expedited
+        // worker so it completes even if the process is reclaimed.
+        if (pendingSendTracker.hasPendingSends()) {
+            sendCompletionScheduler.scheduleSendCompletion()
+        }
         onRustExitForeground()
         Timber.d("onStop finished - schedule work called + onExitForeground")
     }
