@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmessage.data.mapper.toMessageId
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -37,6 +38,7 @@ import ch.protonmail.android.testdata.message.rust.LocalMessageIdSample
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
@@ -64,13 +66,15 @@ class RustSendingStatusDataSourceImplTest {
     private val rustQueryUnseenDraftSendResults: RustQueryUnseenDraftSendResults = mockk()
     private val rustDeleteDraftSendResult: RustDeleteDraftSendResult = mockk()
     private val rustMarkDraftSendResultAsSeen: RustMarkDraftSendResultAsSeen = mockk()
+    private val pendingSendTracker: PendingSendTracker = mockk(relaxUnitFun = true)
 
     private val dataSource = RustSendingStatusDataSourceImpl(
         userSessionRepository,
         createRustDraftSendWatcher,
         rustQueryUnseenDraftSendResults,
         rustDeleteDraftSendResult,
-        rustMarkDraftSendResultAsSeen
+        rustMarkDraftSendResultAsSeen,
+        pendingSendTracker
     )
 
     // Mock required objects
@@ -139,6 +143,39 @@ class RustSendingStatusDataSourceImplTest {
         advanceUntilIdle()
         assertEquals(1, collectedStatuses.size)
         assertEquals(testDraftSendResult.toMessageSendingStatus(), collectedStatuses.first())
+        verify(exactly = 1) { pendingSendTracker.onSendCompleted(testMessageId.id) }
+
+        flowJob.cancel()
+    }
+
+    @Test
+    fun `observeMessageSendingStatus does not clear pending send for non terminal status`() = runTest {
+        // Given
+        coEvery { userSessionRepository.getUserSession(testUserId) } returns testSession
+
+        val nonTerminalResult = LocalDraftSendResult(
+            messageId = testLocalMessageId,
+            timestamp = System.currentTimeMillis().toULong(),
+            error = DraftSendStatus.Success(0uL, 0uL),
+            origin = DraftSendResultOrigin.ATTACHMENT_UPLOAD
+        )
+
+        val callbackSlot = slot<DraftSendResultCallback>()
+        coEvery {
+            createRustDraftSendWatcher(testSession, capture(callbackSlot))
+        } answers {
+            callbackSlot.captured.onNewSendResult(listOf(nonTerminalResult))
+            draftSendResultWatcher.right()
+        }
+
+        // When
+        val flowJob = launch(mainDispatcherRule.testDispatcher) {
+            dataSource.observeMessageSendingStatus(testUserId).collect { }
+        }
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 0) { pendingSendTracker.onSendCompleted(any()) }
 
         flowJob.cancel()
     }

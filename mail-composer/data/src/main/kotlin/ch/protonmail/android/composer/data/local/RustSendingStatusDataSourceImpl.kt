@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmessage.data.mapper.toLocalMessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import kotlinx.coroutines.channels.awaitClose
@@ -47,7 +48,8 @@ class RustSendingStatusDataSourceImpl @Inject constructor(
     private val createRustDraftSendWatcher: CreateRustDraftSendWatcher,
     private val rustQueryUnseenDraftSendResults: RustQueryUnseenDraftSendResults,
     private val rustDeleteDraftSendResult: RustDeleteDraftSendResult,
-    private val rustMarkDraftSendResultAsSeen: RustMarkDraftSendResultAsSeen
+    private val rustMarkDraftSendResultAsSeen: RustMarkDraftSendResultAsSeen,
+    private val pendingSendTracker: PendingSendTracker
 ) : RustSendingStatusDataSource {
 
     override suspend fun observeMessageSendingStatus(userId: UserId): Flow<MessageSendingStatus> = callbackFlow {
@@ -61,7 +63,9 @@ class RustSendingStatusDataSourceImpl @Inject constructor(
         val draftSendResultCallback = object : DraftSendResultCallback {
             override fun onNewSendResult(details: List<LocalDraftSendResult>) {
                 for (result in details) {
-                    trySend(result.toMessageSendingStatus())
+                    val status = result.toMessageSendingStatus()
+                    clearPendingSendIfTerminal(status)
+                    trySend(status)
                 }
             }
         }
@@ -123,6 +127,19 @@ class RustSendingStatusDataSourceImpl @Inject constructor(
             },
             ifRight = { Unit.right() }
         )
+    }
+
+    private fun clearPendingSendIfTerminal(status: MessageSendingStatus) {
+        // A send result means the message is no longer queued/unsent, so drop it from the
+        // pending-send tracker right away instead of waiting for the delayed status worker (ET-6667).
+        when (status) {
+            is MessageSendingStatus.MessageSentUndoable,
+            is MessageSendingStatus.MessageSentFinal,
+            is MessageSendingStatus.SendMessageError ->
+                pendingSendTracker.onSendCompleted(status.messageId.id)
+
+            else -> Unit
+        }
     }
 
     private suspend fun <T> withValidUserSession(
