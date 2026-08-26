@@ -84,13 +84,14 @@ class ObservePlanUpgrades @Inject constructor(
             else -> PlanUpgradeSupportedTags.IntroductoryPrice
         }
 
-        val showUnlimited = resolveUpsellVariant(userId) == UpsellVariantPlan.UNLIMITED
+        val forceUnlimited = entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited
+        val showUnlimited = forceUnlimited || resolveUpsellVariant(userId) == UpsellVariantPlan.UNLIMITED
 
         // Here should be either BF **OR** Intro pricing, never fallback between 2 promo prices
         cache.observe(userId).map { upgrades ->
             val hasPromoOffers = upgrades.filterForTags(primaryTag = offersTag.value, fallbackToBaseOffer = false)
                 .isNotEmpty()
-            if (!hasPromoOffers && showUnlimited) {
+            if ((forceUnlimited || !hasPromoOffers) && showUnlimited) {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = null, fallbackToBaseOffer = true)
                 eligibleOffers.filterForPlan(PlanUpgradeIds.UnlimitedPlanId)
             } else {

@@ -37,6 +37,7 @@ import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -147,5 +148,38 @@ internal class ObservePlanUpgradesTest {
 
         // Then
         assertEquals(expectedOffers, actualPlans)
+    }
+
+    @Test
+    fun `should force unlimited plans for the plus-to-unlimited entry point without resolving the variant`() = runTest {
+        // Given
+        val mailPlusPlans = listOf(
+            UpsellingTestData.MailPlusProducts.MonthlyProductOfferList,
+            UpsellingTestData.MailPlusProducts.YearlyProductOfferList
+        )
+
+        val expectedOffers = listOf(
+            UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+            UpsellingTestData.UnlimitedMailProduct.YearlyProductDetail
+        )
+
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns false
+
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(
+            buildList {
+                addAll(mailPlusPlans)
+                add(UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferList)
+                add(UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList)
+            }
+        )
+
+        // When
+        val actualPlans = observePlanUpgrades(
+            entryPoint = UpsellingEntryPoint.Feature.PlusUnlimited
+        ).first()
+
+        // Then
+        assertEquals(expectedOffers, actualPlans)
+        coVerify(exactly = 0) { resolveUpsellVariant(userId) }
     }
 }

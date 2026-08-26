@@ -37,7 +37,8 @@ sealed interface UpsellingScreenContentOperation {
 
         data class DataLoaded(
             val plans: List<ProductOfferDetail>,
-            val upsellingEntryPoint: UpsellingEntryPoint.Feature
+            val upsellingEntryPoint: UpsellingEntryPoint.Feature,
+            val theme: UpsellContentTheme?
         ) : UpsellingScreenContentEvent
 
         sealed interface LoadingError : UpsellingScreenContentEvent {

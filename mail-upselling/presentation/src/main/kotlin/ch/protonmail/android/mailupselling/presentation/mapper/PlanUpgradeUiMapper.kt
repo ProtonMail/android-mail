@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.ProductInstances
 import javax.inject.Inject
@@ -37,7 +38,8 @@ internal class PlanUpgradeUiMapper @Inject constructor(
 
     suspend fun toUiModel(
         products: ProductInstances,
-        upsellingEntryPoint: UpsellingEntryPoint.Feature
+        upsellingEntryPoint: UpsellingEntryPoint.Feature,
+        theme: UpsellContentTheme?
     ): Either<PlanMappingError, PlanUpgradeUiModel> = either {
         if (products.instances.isEmpty()) raise(PlanMappingError.EmptyList)
 
@@ -58,12 +60,17 @@ internal class PlanUpgradeUiMapper @Inject constructor(
         )
 
         return PlanUpgradeUiModel(
-            icon = iconUiMapper.toUiModel(upsellingEntryPoint, variant),
-            title = titleUiMapper.toUiModel(shorterCycleUiModel.primaryPrice, upsellingEntryPoint, variant),
+            icon = iconUiMapper.toUiModel(upsellingEntryPoint, variant, theme),
+            title = titleUiMapper.toUiModel(shorterCycleUiModel.primaryPrice, upsellingEntryPoint, variant, theme),
             description = descriptionUiMapper.toUiModel(monthlyPlan, upsellingEntryPoint, variant),
-            entitlements = entitlementsUiMapper.toTableUiModel(variant),
+            entitlements = entitlementsUiMapper.toTableUiModel(variant, upsellingEntryPoint),
             variant = variant,
-            list = planUpgradeMapper.resolveListUiModel(shorterCycleUiModel, longerCycleUiModel, variant)
+            list = planUpgradeMapper.resolveListUiModel(
+                shorterCycleUiModel,
+                longerCycleUiModel,
+                variant,
+                upsellingEntryPoint
+            )
         ).right()
     }
 }

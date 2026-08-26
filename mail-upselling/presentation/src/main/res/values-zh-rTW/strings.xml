@@ -64,7 +64,7 @@
   <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
   <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
   <string name="upselling_comparison_table_email_addresses">電郵位址</string>
-  <string name="upselling_comparison_table_custom_email_domain">自訂電子郵件網域名稱電郵網域名稱</string>
+  <string name="upselling_comparison_table_custom_email_domain">自訂電子郵件網域名稱</string>
   <string name="upselling_comparison_table_desktop_app">存取桌面應用程式</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">無限的資料夾 / 標籤</string>
   <string name="upselling_comparison_table_priority_support">優先客戶專屬支援</string>

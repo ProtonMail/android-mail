@@ -52,6 +52,10 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
         },
         onUpgradeCancelled = { upsellingTelemetryPayload ->
             viewModel.recordUpgradeCancelledByUser(upsellingTelemetryPayload)
+        },
+        onDoNotShowAgain = {
+            viewModel.recordDoNotShowAgain()
+            upsellingActions.onDismiss()
         }
     )
 
@@ -84,7 +88,8 @@ object UpsellingScreen {
         override val onSuccess: (UpsellingTelemetryPayload) -> Unit,
         override val onUpgrade: (String) -> Unit,
         override val onDismiss: () -> Unit,
-        val onDisplayed: suspend () -> Unit
+        val onDisplayed: suspend () -> Unit,
+        val onDoNotShowAgain: () -> Unit = {}
     ) : UpsellingActions {
 
         companion object {

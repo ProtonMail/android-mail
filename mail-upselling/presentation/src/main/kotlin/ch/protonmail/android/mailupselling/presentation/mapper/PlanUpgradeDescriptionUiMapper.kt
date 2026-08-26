@@ -64,6 +64,7 @@ internal class PlanUpgradeDescriptionUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.ScheduleSend -> R.string.upselling_schedule_send_plus_description_override
             UpsellingEntryPoint.Feature.Snooze -> R.string.upselling_snooze_plus_description_override
 
+            UpsellingEntryPoint.Feature.PlusUnlimited,
             UpsellingEntryPoint.Feature.Sidebar,
             UpsellingEntryPoint.Feature.Navbar -> if (variant == PlanUpgradeVariant.IntroductoryPrice) {
                 R.string.upselling_mailbox_plus_promo_description_override

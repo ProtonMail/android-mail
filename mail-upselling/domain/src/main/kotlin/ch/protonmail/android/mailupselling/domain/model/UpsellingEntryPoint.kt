@@ -48,6 +48,9 @@ sealed interface UpsellingEntryPoint {
             FallPromoSupported
 
         @Serializable
+        data object PlusUnlimited : Feature
+
+        @Serializable
         data object ContactGroups : Feature
 
         @Serializable

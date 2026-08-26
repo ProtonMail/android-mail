@@ -52,6 +52,7 @@ internal fun UpsellingPlanButtonsFooter(
     val shouldShowSpringPromoFooter = plans is PlanUpgradeInstanceListUiModel.Data.SpringPromo
     val shouldShowSummerCampaignFooter = plans is PlanUpgradeInstanceListUiModel.Data.SummerCampaign
     val shouldShowFallPromoFooter = plans is PlanUpgradeInstanceListUiModel.Data.FallPromo
+    val shouldShowPlusToUnlimitedFooter = plans is PlanUpgradeInstanceListUiModel.Data.PlusToUnlimited
 
     Column(
         modifier.background(UpsellingLayoutValues.UpsellingPlanButtonsFooter.backgroundColor)
@@ -66,6 +67,8 @@ internal fun UpsellingPlanButtonsFooter(
         val variantColors = planUpgradeVariantColors(plans.variant)
 
         when {
+            shouldShowPlusToUnlimitedFooter -> PaymentButtonsPlusToUnlimited(plans, actions)
+
             shouldShowSpringPromoFooter -> when {
                 plans.longerCycle is PlanUpgradeInstanceUiModel.Promotional.SpringPromo &&
                     plans.variant is PlanUpgradeVariant.SpringPromo -> PaymentButtonsSeasonalPromo(

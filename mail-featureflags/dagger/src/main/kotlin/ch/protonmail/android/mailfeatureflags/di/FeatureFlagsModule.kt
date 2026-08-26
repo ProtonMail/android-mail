@@ -64,6 +64,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverri
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellExperiment
+import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.PushProcessingWithoutWorker
 import ch.protonmail.android.mailfeatureflags.domain.model.RateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.RegisterDeviceTokenWithWorker
@@ -336,4 +338,14 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideSdkUpgradesPurchaseEnabledDef(): FeatureFlagDefinition = SdkUpgradesPurchaseEnabled
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun providePlusToUnlimitedExperimentDef(): FeatureFlagDefinition = PlusToUnlimitedUpsellExperiment
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun providePlusToUnlimitedOptOutDef(): FeatureFlagDefinition = PlusToUnlimitedUpsellOptOut
 }

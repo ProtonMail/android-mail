@@ -20,15 +20,17 @@ package ch.protonmail.android.mailupselling.presentation.model.planupgrades
 
 import androidx.annotation.DrawableRes
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
 
 sealed interface PlanUpgradeEntitlementsListUiModel {
     @JvmInline
     value class SimpleList(val items: List<PlanUpgradeEntitlementListUiModel>) : PlanUpgradeEntitlementsListUiModel
 
-    @JvmInline
-    value class ComparisonTableList(val items: List<ComparisonTableEntitlementItemUiModel>) :
-        PlanUpgradeEntitlementsListUiModel
+    data class ComparisonTableList(
+        val items: List<ComparisonTableEntitlementItemUiModel>,
+        val baseColumnLabel: TextUiModel = TextUiModel.TextRes(R.string.upselling_free_plan)
+    ) : PlanUpgradeEntitlementsListUiModel
 }
 
 sealed class PlanUpgradeEntitlementListUiModel(open val text: TextUiModel) {

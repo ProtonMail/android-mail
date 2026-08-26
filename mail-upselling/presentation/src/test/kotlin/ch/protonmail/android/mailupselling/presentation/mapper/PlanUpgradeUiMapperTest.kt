@@ -121,7 +121,7 @@ internal class PlanUpgradeUiMapperTest {
         val products = ProductInstances(emptyList())
 
         // When
-        val actual = planUpgradeUiMapper.toUiModel(products, UpsellingEntryPoint.Feature.Navbar)
+        val actual = planUpgradeUiMapper.toUiModel(products, UpsellingEntryPoint.Feature.Navbar, theme = null)
 
         // Then
         assertEquals(PlanMappingError.EmptyList.left(), actual)
@@ -138,7 +138,7 @@ internal class PlanUpgradeUiMapperTest {
         )
 
         // When
-        val actual = planUpgradeUiMapper.toUiModel(products, UpsellingEntryPoint.Feature.Navbar)
+        val actual = planUpgradeUiMapper.toUiModel(products, UpsellingEntryPoint.Feature.Navbar, theme = null)
 
         // Then
         assertEquals(PlanMappingError.InvalidList.left(), actual)
@@ -193,7 +193,8 @@ internal class PlanUpgradeUiMapperTest {
         // When
         val actual = planUpgradeUiMapper.toUiModel(
             ProductInstances(listOf(shorterInstance, longerInstance)),
-            UpsellingEntryPoint.Feature.Navbar
+            UpsellingEntryPoint.Feature.Navbar,
+            theme = null
         )
 
         // Then
@@ -249,7 +250,8 @@ internal class PlanUpgradeUiMapperTest {
         // When
         val actual = planUpgradeUiMapper.toUiModel(
             ProductInstances(listOf(shorterInstance, longerInstance)),
-            UpsellingEntryPoint.Feature.Navbar
+            UpsellingEntryPoint.Feature.Navbar,
+            theme = null
         )
 
         // Then
@@ -257,11 +259,11 @@ internal class PlanUpgradeUiMapperTest {
     }
 
     private fun expectIconUiModel() {
-        every { iconUiMapper.toUiModel(any(), any()) } returns ExpectedIconUiModel
+        every { iconUiMapper.toUiModel(any(), any(), any()) } returns ExpectedIconUiModel
     }
 
     private fun expectTitleUiModel() {
-        every { titleUiMapper.toUiModel(any(), any(), any()) } returns ExpectedTitleUiModel
+        every { titleUiMapper.toUiModel(any(), any(), any(), any()) } returns ExpectedTitleUiModel
     }
 
     private fun expectTitleUiModelPromo() {
@@ -269,7 +271,8 @@ internal class PlanUpgradeUiMapperTest {
             titleUiMapper.toUiModel(
                 initialPrice = any(),
                 upsellingEntryPoint = UpsellingEntryPoint.Feature.Navbar,
-                variant = any()
+                variant = any(),
+                theme = any()
             )
         } returns
             ExpectedTitleUiModelPromo
@@ -284,7 +287,7 @@ internal class PlanUpgradeUiMapperTest {
     }
 
     private fun expectEntitlementsUiModel() {
-        every { entitlementsUiMapper.toTableUiModel(any()) } returns
+        every { entitlementsUiMapper.toTableUiModel(any(), any()) } returns
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ExpectedEntitlementsUiModel.items)
     }
 

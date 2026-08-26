@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import javax.inject.Inject
@@ -28,8 +29,11 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
 
     fun toUiModel(
         upsellingEntryPoint: UpsellingEntryPoint.Feature,
-        variant: PlanUpgradeVariant
+        variant: PlanUpgradeVariant,
+        theme: UpsellContentTheme?
     ): PlanUpgradeIconUiModel {
+
+        if (theme != null) return PlanUpgradeIconUiModel(theme.headerDrawable)
 
         val drawableRes = when (variant) {
             PlanUpgradeVariant.SocialProof -> R.drawable.ic_mail_social_proof
@@ -56,6 +60,7 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
                 UpsellingEntryPoint.Feature.ScheduleSend -> R.drawable.illustration_upselling_schedule_send
                 UpsellingEntryPoint.Feature.Snooze -> R.drawable.illustration_upselling_snooze
 
+                UpsellingEntryPoint.Feature.PlusUnlimited,
                 UpsellingEntryPoint.Feature.Sidebar,
                 UpsellingEntryPoint.Feature.Navbar -> R.drawable.illustration_upselling_mailbox
             }

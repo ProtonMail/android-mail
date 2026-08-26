@@ -41,7 +41,11 @@ internal class UpsellingContentReducer @Inject constructor(
     private suspend fun reducePlansListToNewState(
         operation: UpsellingScreenContentEvent.DataLoaded
     ): UpsellingScreenContentState {
-        val uiModel = planUpgradeUiMapper.toUiModel(ProductInstances(operation.plans), operation.upsellingEntryPoint)
+        val uiModel = planUpgradeUiMapper.toUiModel(
+            ProductInstances(operation.plans),
+            operation.upsellingEntryPoint,
+            operation.theme
+        )
 
         return uiModel.fold(
             ifLeft = {
@@ -49,9 +53,7 @@ internal class UpsellingContentReducer @Inject constructor(
                     error = Effect.of(TextUiModel.TextRes(R.string.upselling_snackbar_error_no_user_id))
                 )
             },
-            ifRight = {
-                UpsellingScreenContentState.Data(it)
-            }
+            ifRight = { UpsellingScreenContentState.Data(it) }
         )
     }
 

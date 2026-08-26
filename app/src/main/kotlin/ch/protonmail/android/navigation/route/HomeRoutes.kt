@@ -52,6 +52,8 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsettings.presentation.appsettings.AppSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
 import ch.protonmail.android.navigation.transitions.composableWithTransitions
@@ -296,6 +298,14 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                     },
                     onContentSearchSettingsClick = {
                         navController.navigate(Destination.Screen.ContentSearchSettings.route)
+                    },
+                    onPlusToUnlimitedUpsellClick = {
+                        navController.navigate(
+                            Destination.Screen.FeatureUpselling(
+                                UpsellingEntryPoint.Feature.PlusUnlimited,
+                                UpsellingVisibility.Normal.Unlimited
+                            )
+                        )
                     }
                 )
             )

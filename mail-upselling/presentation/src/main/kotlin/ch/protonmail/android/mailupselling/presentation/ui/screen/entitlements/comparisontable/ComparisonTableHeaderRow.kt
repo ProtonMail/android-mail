@@ -50,6 +50,8 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.UnlimitedPlanVariant
@@ -61,6 +63,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.planUpgradeVariantCol
 internal fun ComparisonTableHeaderRow(
     variant: PlanUpgradeVariant,
     colors: UpsellingVariantColors,
+    baseColumnLabel: TextUiModel,
     onPaidColumnPlaced: (Dp) -> Unit
 ) {
     var paidColumnWidth by remember { mutableStateOf(0.dp) }
@@ -86,7 +89,7 @@ internal fun ComparisonTableHeaderRow(
             Text(
                 modifier = Modifier
                     .align(Alignment.Center),
-                text = stringResource(R.string.upselling_free_plan),
+                text = baseColumnLabel.string(),
                 style = ProtonTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.tableTextColor,
@@ -169,7 +172,9 @@ private fun ComparisonTableHeaderRowPreview() {
     ProtonTheme {
         ComparisonTableHeaderRow(
             variant = PlanUpgradeVariant.IntroductoryPrice,
-            colors = planUpgradeVariantColors(PlanUpgradeVariant.IntroductoryPrice)
-        ) { }
+            colors = planUpgradeVariantColors(PlanUpgradeVariant.IntroductoryPrice),
+            baseColumnLabel = TextUiModel.TextRes(R.string.upselling_free_plan),
+            onPaidColumnPlaced = {}
+        )
     }
 }

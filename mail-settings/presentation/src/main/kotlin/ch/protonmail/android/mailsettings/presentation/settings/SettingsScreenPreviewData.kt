@@ -53,6 +53,7 @@ object SettingsScreenPreviewData {
         onAccountStorageClicked = {},
         onBackClick = {},
         onSignatureClicked = {},
-        onContentSearchSettingsClick = {}
+        onContentSearchSettingsClick = {},
+        onPlusToUnlimitedUpsellClick = {}
     )
 }

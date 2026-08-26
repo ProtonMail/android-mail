@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceDisplayUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
@@ -31,8 +32,11 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
     fun toUiModel(
         initialPrice: PlanUpgradePriceDisplayUiModel,
         upsellingEntryPoint: UpsellingEntryPoint.Feature,
-        variant: PlanUpgradeVariant
+        variant: PlanUpgradeVariant,
+        theme: UpsellContentTheme?
     ): PlanUpgradeTitleUiModel {
+
+        if (theme != null) return PlanUpgradeTitleUiModel(TextUiModel(theme.titleRes))
 
         if (variant == PlanUpgradeVariant.SocialProof)
             return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title_social_proof))
@@ -49,6 +53,7 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.MobileSignature -> R.string.upselling_mobile_signature_plus_title
             UpsellingEntryPoint.Feature.ScheduleSend -> R.string.upselling_schedule_send_plus_title
             UpsellingEntryPoint.Feature.Snooze -> R.string.upselling_snooze_plus_title
+            UpsellingEntryPoint.Feature.PlusUnlimited,
             UpsellingEntryPoint.Feature.Sidebar,
             UpsellingEntryPoint.Feature.Navbar -> if (variant == PlanUpgradeVariant.IntroductoryPrice) {
                 R.string.upselling_mailbox_plus_promo_title

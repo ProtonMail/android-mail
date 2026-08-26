@@ -19,8 +19,11 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.FallPromoEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.MailPlusEntitlements
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.PlusToUnlimitedEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.UnlimitedEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
@@ -34,16 +37,24 @@ class PlanUpgradeEntitlementsUiMapper @Inject constructor() {
 
     fun toOnboardingUiModel(plan: ProductOfferDetail) = mapToDefaults(plan.metadata.entitlements)
 
-    fun toTableUiModel(variant: PlanUpgradeVariant) = mapToComparisonTable(variant)
+    fun toTableUiModel(variant: PlanUpgradeVariant, entryPoint: UpsellingEntryPoint.Feature) =
+        mapToComparisonTable(variant, entryPoint)
 
-    private fun mapToComparisonTable(variant: PlanUpgradeVariant) =
-        PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
-            items = when {
-                variant is PlanUpgradeVariant.FallPromo -> FallPromoEntitlements
-                variant is UnlimitedPlanVariant -> UnlimitedEntitlements
-                else -> MailPlusEntitlements
-            }
-        )
+    private fun mapToComparisonTable(variant: PlanUpgradeVariant, entryPoint: UpsellingEntryPoint.Feature) = when {
+        entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            )
+
+        variant is PlanUpgradeVariant.FallPromo ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(FallPromoEntitlements)
+
+        variant is UnlimitedPlanVariant ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(UnlimitedEntitlements)
+
+        else -> PlanUpgradeEntitlementsListUiModel.ComparisonTableList(MailPlusEntitlements)
+    }
 
     private fun mapToDefaults(list: List<ProductEntitlement>): List<PlanUpgradeEntitlementListUiModel> {
         return list.asSequence()
