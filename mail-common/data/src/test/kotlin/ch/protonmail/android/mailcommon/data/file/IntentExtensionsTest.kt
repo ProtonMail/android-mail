@@ -40,6 +40,11 @@ class IntentExtensionsTest {
         every { scheme } returns "content"
     }
 
+    private val uriValidator = mockk<ShareUriValidator> {
+        every { isAllowed(any()) } returns true
+        every { filterAllowed(any()) } answers { firstArg() }
+    }
+
     @Before
     fun setUp() {
         mockkStatic(Uri::class)
@@ -56,7 +61,7 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = "unhandled_action")
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(IntentShareInfo.Empty, fileShareInfo)
@@ -68,7 +73,7 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_VIEW, data = null)
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(IntentShareInfo.Empty, fileShareInfo)
@@ -82,7 +87,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -94,7 +99,7 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SENDTO, data = null)
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(IntentShareInfo.Empty, fileShareInfo)
@@ -108,7 +113,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -122,7 +127,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // when
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // then
         assertEquals(expected, fileShareInfo)
@@ -134,7 +139,7 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = null)
 
         // when
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // then
         assertEquals(IntentShareInfo.Empty, fileShareInfo)
@@ -146,7 +151,7 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = null)
 
         // when
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // then
         assertEquals(IntentShareInfo.Empty, fileShareInfo)
@@ -164,7 +169,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -178,7 +183,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -198,7 +203,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -216,7 +221,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -253,7 +258,7 @@ class IntentExtensionsTest {
         )
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -276,7 +281,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(emailBody = "https://example.com")
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -298,7 +303,7 @@ class IntentExtensionsTest {
         val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getShareInfo()
+        val fileShareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(expected, fileShareInfo)
@@ -314,10 +319,108 @@ class IntentExtensionsTest {
         val intent = mockIntent(Intent.ACTION_SEND, clipData = clipData)
 
         // When
-        val shareInfo = intent.getShareInfo()
+        val shareInfo = intent.getShareInfo(uriValidator)
 
         // Then
         assertEquals(IntentShareInfo.Empty, shareInfo)
+    }
+
+    @Test
+    fun `should drop a rejected uri from intent extra stream given action is send`() {
+        // Given
+        every { uri1.toString() } returns "content://ch.protonmail.android.provider/rust_log_files/uniffi.log"
+        every { uriValidator.isAllowed(uri1) } returns false
+        val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = uri1)
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
+    }
+
+    @Test
+    fun `should drop a rejected uri from clip data given action is send`() {
+        // Given
+        every { uri1.toString() } returns "content://ch.protonmail.android.provider/cache/body_cache/body.html"
+        every { uriValidator.isAllowed(uri1) } returns false
+        val clipData = mockk<ClipData> {
+            every { itemCount } returns 1
+            every { getItemAt(0) } returns mockk { every { uri } returns uri1 }
+        }
+        val intent = mockIntent(action = Intent.ACTION_SEND, type = "image/png", clipData = clipData)
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
+    }
+
+    @Test
+    fun `should keep the recipients but drop a rejected uri given action is send`() {
+        // Given
+        every { uri1.toString() } returns "content://ch.protonmail.android.provider/rust_log_files/uniffi.log"
+        every { uriValidator.isAllowed(uri1) } returns false
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            extraStreamUri = uri1,
+            extraRecipientTo = arrayOf("attacker@example.com")
+        )
+        val expected = IntentShareInfo.Empty.copy(emailRecipientTo = listOf("attacker@example.com"))
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(expected, fileShareInfo)
+    }
+
+    @Test
+    fun `should drop only the rejected uris given action is send multiple`() {
+        // Given
+        every { uri1.toString() } returns "content://ch.protonmail.android.provider/app_log_files/log.txt"
+        every { uri2.toString() } returns "content://media/2"
+        every { uriValidator.filterAllowed(any()) } answers { firstArg<List<Uri>>().filter { it == uri2 } }
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND_MULTIPLE,
+            extraStreamUriList = arrayListOf(uri1, uri2)
+        )
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri2.toString()))
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(expected, fileShareInfo)
+    }
+
+    @Test
+    fun `should drop a rejected uri from intent data for action view`() {
+        // Given
+        every { uri1.toString() } returns "content://ch.protonmail.android.provider/logcat_files/logcat.txt"
+        every { uriValidator.filterAllowed(any()) } returns emptyList()
+        val intent = mockIntent(action = Intent.ACTION_VIEW, data = uri1)
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
+    }
+
+    @Test
+    fun `should drop a rejected uri from intent data for action sendto`() {
+        // Given
+        every { uri1.toString() } returns "file:///data/user/0/ch.protonmail.android/databases/mail.db"
+        every { uriValidator.filterAllowed(any()) } returns emptyList()
+        val intent = mockIntent(action = Intent.ACTION_SENDTO, data = uri1)
+
+        // When
+        val fileShareInfo = intent.getShareInfo(uriValidator)
+
+        // Then
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     private fun mockIntent(

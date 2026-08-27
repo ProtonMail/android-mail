@@ -25,6 +25,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.IntentExtraKeys
+import ch.protonmail.android.mailcommon.data.file.ShareUriValidator
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
@@ -143,7 +144,11 @@ class HomeViewModelTest {
     }
 
     private val formatFullDate = mockk<FormatFullDate>()
-    private val intentMapper = IntentMapper()
+    private val shareUriValidator = mockk<ShareUriValidator> {
+        every { isAllowed(any()) } returns true
+        every { filterAllowed(any()) } answers { firstArg() }
+    }
+    private val intentMapper = IntentMapper(shareUriValidator)
     private val navigationEventsReducer = HomeNavigationEventsReducer()
 
     private val homeViewModel by lazy {
@@ -338,7 +343,7 @@ class HomeViewModelTest {
         every { shareIntent.scheme } returns ""
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getShareInfo() } returns intentShareInfo
+        every { any<Intent>().getShareInfo(any()) } returns intentShareInfo
 
         every { shouldPresentPinInsertionScreen() } returns flowOf()
         every { newIntentObserver() } returns flowOf(shareIntent)
@@ -364,7 +369,7 @@ class HomeViewModelTest {
         every { shareIntent.scheme } returns ""
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getShareInfo() } returns IntentShareInfo.Empty
+        every { any<Intent>().getShareInfo(any()) } returns IntentShareInfo.Empty
 
         every { shouldPresentPinInsertionScreen() } returns flowOf()
         every { newIntentObserver() } returns flowOf(shareIntent)
@@ -401,7 +406,7 @@ class HomeViewModelTest {
             every { shareIntent.scheme } returns ""
             // Mock the extension function
             mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-            every { any<Intent>().getShareInfo() } returns intentShareInfo
+            every { any<Intent>().getShareInfo(any()) } returns intentShareInfo
 
             every { shouldPresentPinInsertionScreen() } returns flowOf()
             every { newIntentObserver() } returns flowOf(mainIntent, shareIntent)
@@ -437,7 +442,7 @@ class HomeViewModelTest {
         every { shareIntent.scheme } returns ""
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getShareInfo() } returns intentShareInfo
+        every { any<Intent>().getShareInfo(any()) } returns intentShareInfo
 
         every { shouldPresentPinInsertionScreen() } returns flowOf()
         every { newIntentObserver() } returns flowOf(mainIntent, shareIntent)

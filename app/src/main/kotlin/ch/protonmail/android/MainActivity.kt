@@ -154,8 +154,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIncomingIntent(intent: Intent) {
-        val callingPackage = referrer?.host
-        val isExternalShare = callingPackage != packageName
+        val isExternalShare = intent.hasForgedReferrer() || referrer?.host != packageName
 
         lifecycleScope.launch {
             Timber.d("Handling intent with action: ${intent.action}")
@@ -163,6 +162,14 @@ class MainActivity : AppCompatActivity() {
             newIntentObserver.onNewIntent(intent)
         }
     }
+
+    /**
+     * [getReferrer] returns the caller supplied [Intent.EXTRA_REFERRER] / [Intent.EXTRA_REFERRER_NAME] extras when
+     * they are set, so on their own they let any app claim to be us. Nothing we launch ourselves sets them, hence an
+     * intent carrying them is classified as external rather than trusted.
+     */
+    private fun Intent.hasForgedReferrer(): Boolean =
+        hasExtra(Intent.EXTRA_REFERRER) || hasExtra(Intent.EXTRA_REFERRER_NAME)
 
     private fun disableRecentAppsScreenshotPreview() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

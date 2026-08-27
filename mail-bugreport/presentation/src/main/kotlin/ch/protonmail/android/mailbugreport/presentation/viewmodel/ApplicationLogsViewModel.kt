@@ -26,6 +26,8 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailbugreport.domain.usecase.GetAggregatedEventsZipFile
 import ch.protonmail.android.mailbugreport.presentation.R
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOperation
+import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOperation.ApplicationLogsEvent.Export.SendByEmailReady
+import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOperation.ApplicationLogsEvent.Export.ShareReady
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsState
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -56,6 +58,7 @@ class ApplicationLogsViewModel @Inject constructor(
             showRustLogs = Effect.empty(),
             showLogcat = Effect.empty(),
             share = Effect.empty(),
+            sendByEmail = Effect.empty(),
             export = Effect.empty()
         )
     )
@@ -66,13 +69,15 @@ class ApplicationLogsViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 is ApplicationLogsOperation.ApplicationLogsAction.Export.ExportLogs -> exportToUri(action.uri)
-                is ApplicationLogsOperation.ApplicationLogsAction.Export.ShareLogs -> handleShare()
+                is ApplicationLogsOperation.ApplicationLogsAction.Export.ShareLogs -> handleZipRequest(::ShareReady)
+                is ApplicationLogsOperation.ApplicationLogsAction.Export.SendLogsByEmail ->
+                    handleZipRequest(::SendByEmailReady)
                 is ApplicationLogsOperation.ApplicationLogsAction.View -> handleViewAction(action)
             }
         }
     }
 
-    private suspend fun handleShare() {
+    private suspend fun handleZipRequest(onReady: (Uri) -> ApplicationLogsOperation.ApplicationLogsEvent.Export) {
         val zipFileResult = withContext(Dispatchers.IO) {
             getAggregatedEventsZipFile()
                 .mapCatching { zipFile ->
@@ -81,11 +86,7 @@ class ApplicationLogsViewModel @Inject constructor(
         }
 
         zipFileResult.fold(
-            onSuccess = { uri ->
-                emitNewStateFromEvent(
-                    ApplicationLogsOperation.ApplicationLogsEvent.Export.ShareReady(uri)
-                )
-            },
+            onSuccess = { uri -> emitNewStateFromEvent(onReady(uri)) },
             onFailure = {
                 emitNewStateFromEvent(ApplicationLogsOperation.ApplicationLogsEvent.Export.ExportError)
             }
@@ -122,6 +123,10 @@ class ApplicationLogsViewModel @Inject constructor(
         when (event) {
             is ApplicationLogsOperation.ApplicationLogsEvent.Export.ShareReady -> {
                 mutableState.update { mutableState.value.copy(share = Effect.of(event.uri)) }
+            }
+
+            is ApplicationLogsOperation.ApplicationLogsEvent.Export.SendByEmailReady -> {
+                mutableState.update { mutableState.value.copy(sendByEmail = Effect.of(event.uri)) }
             }
 
             ApplicationLogsOperation.ApplicationLogsEvent.View.AppEventsReady -> {

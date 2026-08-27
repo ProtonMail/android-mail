@@ -28,13 +28,19 @@ object IntentExtraKeys {
     const val EXTRA_EXTERNAL_SHARE = "external_share"
 }
 
-fun Intent.getShareInfo(): IntentShareInfo {
+/**
+ * Reads the shareable content out of an inbound intent.
+ *
+ * [uriValidator] rejects any attachment [Uri] the app must not dereference on the sender's behalf; see
+ * [ShareUriValidator]. Every entry point that can carry a [Uri] runs through it, as all of them are exported.
+ */
+fun Intent.getShareInfo(uriValidator: ShareUriValidator): IntentShareInfo {
 
     return when (action) {
-        Intent.ACTION_SEND -> getShareInfoForSingleSendAction()
-        Intent.ACTION_SEND_MULTIPLE -> getShareInfoForMultipleSendAction()
+        Intent.ACTION_SEND -> getShareInfoForSingleSendAction(uriValidator)
+        Intent.ACTION_SEND_MULTIPLE -> getShareInfoForMultipleSendAction(uriValidator)
         Intent.ACTION_VIEW,
-        Intent.ACTION_SENDTO -> getShareInfoForViewAndSendToAction()
+        Intent.ACTION_SENDTO -> getShareInfoForViewAndSendToAction(uriValidator)
 
         else -> {
             Timber.d("Unhandled intent action: $action")
@@ -48,11 +54,11 @@ fun Intent.isExternal(): Boolean = getBooleanExtra(IntentExtraKeys.EXTRA_EXTERNA
 
 fun Intent.isMailToIntent(): Boolean = this.scheme == MAILTO_SCHEME
 
-private fun Intent.getShareInfoForSingleSendAction(): IntentShareInfo {
+private fun Intent.getShareInfoForSingleSendAction(uriValidator: ShareUriValidator): IntentShareInfo {
     val fileUriList = if (type == MIME_TYPE_TEXT_PLAIN) {
         emptyList()
     } else {
-        getFileUriForActionSend()?.let {
+        getFileUriForActionSend(uriValidator)?.let {
             listOf(it.toString())
         } ?: emptyList()
     }
@@ -68,9 +74,9 @@ private fun Intent.getShareInfoForSingleSendAction(): IntentShareInfo {
     )
 }
 
-private fun Intent.getShareInfoForMultipleSendAction(): IntentShareInfo {
+private fun Intent.getShareInfoForMultipleSendAction(uriValidator: ShareUriValidator): IntentShareInfo {
     return IntentShareInfo(
-        attachmentUris = getFileUrisForActionSendMultiple().map { it.toString() },
+        attachmentUris = getFileUrisForActionSendMultiple(uriValidator).map { it.toString() },
         emailSubject = getSubject(),
         emailRecipientTo = getRecipientTo(),
         emailRecipientCc = getRecipientCc(),
@@ -80,9 +86,9 @@ private fun Intent.getShareInfoForMultipleSendAction(): IntentShareInfo {
     )
 }
 
-private fun Intent.getShareInfoForViewAndSendToAction(): IntentShareInfo {
+private fun Intent.getShareInfoForViewAndSendToAction(uriValidator: ShareUriValidator): IntentShareInfo {
     return IntentShareInfo(
-        attachmentUris = getFileUrisForActionViewAndSendTo().map { it.toString() },
+        attachmentUris = getFileUrisForActionViewAndSendTo(uriValidator).map { it.toString() },
         emailSubject = getSubject(),
         emailRecipientTo = getRecipientTo(),
         emailRecipientCc = getRecipientCc(),
@@ -92,19 +98,19 @@ private fun Intent.getShareInfoForViewAndSendToAction(): IntentShareInfo {
     )
 }
 
-private fun Intent.getFileUrisForActionViewAndSendTo(): List<Uri> {
+private fun Intent.getFileUrisForActionViewAndSendTo(uriValidator: ShareUriValidator): List<Uri> {
     val fileUris = mutableListOf<Uri>()
 
     data?.let { data ->
         fileUris.add(data)
     }
 
-    return fileUris
+    return uriValidator.filterAllowed(fileUris)
 }
 
-private fun Intent.getFileUriForActionSend(): Uri? {
+private fun Intent.getFileUriForActionSend(uriValidator: ShareUriValidator): Uri? {
     val clipData = clipData
-    return if (clipData != null) {
+    val fileUri = if (clipData != null) {
         clipData.getItemAt(0)?.uri
     } else {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -114,9 +120,11 @@ private fun Intent.getFileUriForActionSend(): Uri? {
             getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
         }
     }
+
+    return fileUri?.takeIf { uriValidator.isAllowed(it) }
 }
 
-private fun Intent.getFileUrisForActionSendMultiple(): List<Uri> {
+private fun Intent.getFileUrisForActionSendMultiple(uriValidator: ShareUriValidator): List<Uri> {
     val fileUris = mutableListOf<Uri>()
 
     val clipData = clipData
@@ -133,7 +141,7 @@ private fun Intent.getFileUrisForActionSendMultiple(): List<Uri> {
         }
     }
 
-    return fileUris
+    return uriValidator.filterAllowed(fileUris)
 }
 
 private fun Intent.getSubject(): String? = getStringExtra(Intent.EXTRA_SUBJECT)

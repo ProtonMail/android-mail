@@ -38,9 +38,17 @@ class CameraTempImageFileRepository @Inject constructor(
 
     override suspend fun getFile(name: String): Either<DataError, File> = withContext(ioDispatcher) {
         Either.catch {
-            fileFactory.fileFrom(FileHelper.Folder(context.cacheDir.absolutePath), FileHelper.Filename(name))
+            // Kept inside a dedicated sub directory so the FileProvider does not need a root over the whole cache.
+            // The folder itself is created by `fileFrom`.
+            val folder = File(context.cacheDir, CameraCaptureDirName)
+            fileFactory.fileFrom(FileHelper.Folder(folder.absolutePath), FileHelper.Filename(name))
         }.mapLeft {
             DataError.Local.FailedToStoreFile
         }
+    }
+
+    private companion object {
+
+        const val CameraCaptureDirName = "camera"
     }
 }

@@ -64,7 +64,7 @@ class UriHelper @Inject constructor(
             ?.use { cursor ->
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 cursor.moveToFirst()
-                cursor.getString(nameIndex)
+                cursor.getString(nameIndex)?.sanitisedAsFileName()
             }
     }
 
@@ -99,3 +99,39 @@ data class FileInformation(
     val size: Long,
     val mimeType: String
 )
+
+/**
+ * [OpenableColumns.DISPLAY_NAME] is supplied by whichever provider serves the uri, so for a shared file it is
+ * attacker controlled. It ends up as the attachment name on an outgoing message, hence path separators, traversal
+ * segments, control characters and bidi/zero width format characters are stripped before it is used.
+ */
+private fun String.sanitisedAsFileName(): String {
+    val sanitised = substringAfterLast('/')
+        .substringAfterLast('\\')
+        .replace(NON_PRINTABLE_CHARACTERS, "")
+        .trim()
+        .truncatedPreservingExtension()
+
+    return if (sanitised.isEmpty() || sanitised.all { it == '.' }) "" else sanitised
+}
+
+/**
+ * Keeps the extension when shortening an over long name, so the attachment is still presented as the kind of file
+ * it actually is. The mime type is resolved from the provider rather than from the name, so this is presentation
+ * only.
+ */
+private fun String.truncatedPreservingExtension(): String {
+    if (length <= MAX_FILE_NAME_LENGTH) return this
+
+    val extension = substringAfterLast('.', missingDelimiterValue = "")
+    if (extension.isEmpty() || extension.length > MAX_EXTENSION_LENGTH) return take(MAX_FILE_NAME_LENGTH)
+
+    val suffix = ".$extension"
+    return take(MAX_FILE_NAME_LENGTH - suffix.length) + suffix
+}
+
+private val NON_PRINTABLE_CHARACTERS = Regex("[\\p{Cc}\\p{Cf}]")
+private const val MAX_EXTENSION_LENGTH = 16
+
+private const val MAX_FILE_NAME_LENGTH = 255
+
