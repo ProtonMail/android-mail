@@ -22,8 +22,6 @@ set -e
 
 source "$(dirname "${BASH_SOURCE[0]}")/prelude.sh"
 
-CURRENT_VERSION_CODE=$(cat "$CONFIG_FILE_PATH" | grep versionCode | cut -d "=" -f 2)
-
 if [ "$CURRENT_VERSION_CODE" != "1" ]; then
   printf "versionCode is already set to '%s', skipping update.\n" $CURRENT_VERSION_CODE
   exit 0

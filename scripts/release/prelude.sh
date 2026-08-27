@@ -24,6 +24,15 @@ CONFIG_FILE_PATH="$(git rev-parse --show-toplevel)/app-configuration.properties"
 
 # Offset to align with V6 version code (prod is ~9000 ahead)
 VERSION_CODE_OFFSET=9000
-VERSION_CODE=$((CI_PIPELINE_IID + VERSION_CODE_OFFSET))
+
+CURRENT_VERSION_CODE=$(cat "$CONFIG_FILE_PATH" | grep versionCode | cut -d "=" -f 2)
+
+# A versionCode other than the '1' placeholder means it has already been pinned in the
+# configuration file, so it takes precedence over the pipeline based one.
+if [ "$CURRENT_VERSION_CODE" != "1" ]; then
+  VERSION_CODE=$CURRENT_VERSION_CODE
+else
+  VERSION_CODE=$((CI_PIPELINE_IID + VERSION_CODE_OFFSET))
+fi
 
 VERSION_NAME=$(cat $CONFIG_FILE_PATH | grep versionName | cut -d "=" -f 2 | sed 's/"//g')
