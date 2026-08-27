@@ -249,3 +249,11 @@ data object PlusToUnlimitedUpsellOptOut : FeatureFlagDefinition(
     description = "Set when a user hides the Plus to Unlimited upsell. It stays hidden on all their devices.",
     defaultValue = false
 )
+
+data object CategoryOnboardingDisableCategorize : FeatureFlagDefinition(
+    key = "CategoryOnboardingDisableCategorize",
+    name = "Disable category onboarding recategorise sheet",
+    category = FeatureFlagCategory.Mailbox,
+    description = "Hides the Recategorise onboarding bottom sheet while backend preference learning is disabled.",
+    defaultValue = false
+)

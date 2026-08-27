@@ -27,6 +27,7 @@ import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryOnboardingDisableCategorizeEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
@@ -50,6 +51,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
+import ch.protonmail.android.mailfeatureflags.domain.model.CategoryOnboardingDisableCategorize
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
@@ -94,6 +96,17 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideAutoExpandLastMessageConvoDef(): FeatureFlagDefinition = ConversationDetailAutoExpandLastMessageEnabled
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideDisableCategorizeDef(): FeatureFlagDefinition = CategoryOnboardingDisableCategorize
+
+    @Provides
+    @Singleton
+    @IsCategoryOnboardingDisableCategorizeEnabled
+    fun provideDisableCategorizeEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = CategoryOnboardingDisableCategorize.key, false)
 
     @Provides
     @Singleton

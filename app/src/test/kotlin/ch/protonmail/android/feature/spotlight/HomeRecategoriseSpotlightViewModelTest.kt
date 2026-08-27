@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcategory.domain.usecase.ObserveCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
@@ -54,6 +55,9 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     private val mockObserveCategorySpotlightSeen = mockk<ObserveCategorySpotlightSeen>()
     private val mockMarkCategorySpotlightSeen = mockk<MarkCategorySpotlightSeen> {
         coEvery { this@mockk.invoke(any()) } returns Unit.right()
+    }
+    private val mockRecategoriseOnboardingDisabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
     }
 
     @Test
@@ -132,6 +136,24 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     }
 
     @Test
+    fun `should emit Hide when recategorise onboarding is disabled by feature flag`() = runTest {
+        // Given
+        coEvery { mockCategoryViewFlag(any()) } returns true
+        coEvery { mockRecategoriseOnboardingDisabled.get() } returns true
+        every {
+            mockObserveFeatureSpotlightDisplay(any())
+        } returns flowOf(FeatureSpotlightDisplay(show = false).right())
+        every {
+            mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
+        } returns flowOf(false.right())
+
+        // When / Then
+        buildViewModel().state.test {
+            assertEquals(RecategoriseSpotlightState.Hide, awaitItem())
+        }
+    }
+
+    @Test
     fun `should mark personalise seen`() = runTest {
         // Given
         coEvery { mockCategoryViewFlag(any()) } returns true
@@ -154,6 +176,7 @@ internal class HomeRecategoriseSpotlightViewModelTest {
         observeCategorySpotlightSeen = mockObserveCategorySpotlightSeen,
         isCategoryViewEnabled = mockCategoryViewFlag,
         observePrimaryUserId = mockObservePrimaryUserId,
-        markCategorySpotlightSeen = mockMarkCategorySpotlightSeen
+        markCategorySpotlightSeen = mockMarkCategorySpotlightSeen,
+        recategoriseOnboardingDisabled = mockRecategoriseOnboardingDisabled
     )
 }

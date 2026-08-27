@@ -24,6 +24,8 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcategory.domain.model.CategorySpotlightType
 import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSeen
 import ch.protonmail.android.mailcategory.domain.usecase.ObserveCategorySpotlightSeen
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsCategoryOnboardingDisableCategorizeEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureSpotlightDisplay
@@ -52,12 +54,14 @@ class HomeRecategoriseSpotlightViewModel @Inject constructor(
     private val observeCategorySpotlightSeen: ObserveCategorySpotlightSeen,
     private val isCategoryViewEnabled: IsCategoryViewEnabled,
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen
+    private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
+    @IsCategoryOnboardingDisableCategorizeEnabled
+    private val recategoriseOnboardingDisabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
     val state: StateFlow<RecategoriseSpotlightState> = flow {
         val userId = observePrimaryUserId().filterNotNull().first()
-        if (!isCategoryViewEnabled(userId)) {
+        if (recategoriseOnboardingDisabled.get() || !isCategoryViewEnabled(userId)) {
             emit(RecategoriseSpotlightState.Hide)
         } else {
             emitAll(
