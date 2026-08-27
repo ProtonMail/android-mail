@@ -52,11 +52,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.design.compose.theme.titleMediumNorm
 import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
@@ -109,10 +109,15 @@ internal fun BottomUnreadFilterButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+            // The count and the close icon are measured first, so the label is the only thing
+            // that gives when the pill is capped by the FABs next to it.
             Text(
+                modifier = Modifier.weight(1f, fill = false),
                 text = stringResource(R.string.filter_unread_button_text),
-                style = ProtonTheme.typography.titleMediumNorm,
-                color = contentColor
+                style = ProtonTheme.typography.labelLarge,
+                color = contentColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             // Count collapses towards its trailing edge as the Close icon expands from its
@@ -130,7 +135,7 @@ internal fun BottomUnreadFilterButton(
                 ) { countText ->
                     Text(
                         text = " $countText",
-                        style = ProtonTheme.typography.titleMediumNorm,
+                        style = ProtonTheme.typography.labelMedium,
                         color = contentColor
                     )
                 }
@@ -161,7 +166,7 @@ internal fun BottomUnreadFilterButton(
                         ) { countText ->
                             Text(
                                 text = countText,
-                                style = ProtonTheme.typography.bodyLarge.copy(
+                                style = ProtonTheme.typography.labelMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
                                 color = Color.White

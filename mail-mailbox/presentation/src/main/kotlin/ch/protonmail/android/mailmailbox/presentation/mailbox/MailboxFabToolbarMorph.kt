@@ -29,11 +29,14 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -108,18 +111,30 @@ internal fun MailboxFabToolbarMorph(
     // i.e. neither selecting items nor searching.
     val isIdle = !isInSelectionMode && !isInSearch
 
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .padding(bottom = bottomPadding)
             .fillMaxWidth()
     ) {
+        // The three controls are aligned independently, so nothing stops the unread pill from
+        // growing under the FABs on locales with a long label. Cap it at whatever the FABs leave
+        // free; the label inside ellipsizes once it no longer fits.
+        val reservedForFabs = if (isSearchButtonVisible && isIdle) {
+            FabSize + SearchFabSpacing + FabSize
+        } else {
+            FabSize
+        }
+        val unreadMaxWidth = (maxWidth - reservedForFabs - UnreadFabGap).coerceAtLeast(0.dp)
+
         UnreadFilterFab(
             visible = showBottomUnreadFilter && isIdle,
             hasWindowFocus = hasWindowFocus,
             state = unreadFilterState,
             onFilterEnabled = onUnreadFilterEnabled,
             onFilterDisabled = onUnreadFilterDisabled,
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .widthIn(max = unreadMaxWidth)
         )
 
         SearchFab(
@@ -231,6 +246,7 @@ private fun SearchFab(
                     modifier = Modifier.clickable(enabled = enabled) { onClick() }
                 ) {
                     Icon(
+                        modifier = Modifier.size(ProtonDimens.IconSize.Default),
                         painter = painterResource(id = R.drawable.ic_proton_magnifier),
                         contentDescription = stringResource(
                             id = R.string.mailbox_toolbar_search_button_content_description
@@ -329,7 +345,9 @@ private fun ComposeFabToolbarMorph(
                             id = R.string.mailbox_fab_compose_button_content_description
                         ),
                         tint = ProtonTheme.colors.textNorm,
-                        modifier = Modifier.graphicsLayer { alpha = fabAlpha }
+                        modifier = Modifier
+                            .size(ProtonDimens.IconSize.Default)
+                            .graphicsLayer { alpha = fabAlpha }
                     )
 
                     // Toolbar actions – keep in composition while animating, remove once done
@@ -360,6 +378,7 @@ private fun ComposeFabToolbarMorph(
 
 private val FabSize = 56.dp
 private val SearchFabSpacing = 12.dp
+private val UnreadFabGap = 8.dp
 private val ToolbarHorizontalPadding = 12.dp
 private const val ICON_BUTTON_SIZE = 48
 private val ShadowClipGuard = 6.dp
