@@ -29,5 +29,6 @@ data class ApplicationLogsState(
     val showRustLogs: Effect<Unit>,
     val showLogcat: Effect<Unit>,
     val share: Effect<Uri>,
+    val sendByEmail: Effect<Uri>,
     val export: Effect<Uri>
 )

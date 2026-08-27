@@ -29,8 +29,12 @@ import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsScreen
 import ch.protonmail.android.mailbugreport.presentation.ui.report.BugReportScreen
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
+import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
+import ch.protonmail.android.mailcontentsearch.presentation.settings.ui.ContentSearchSettingsScreen
 import ch.protonmail.android.mailfeatureflags.presentation.ui.FeatureFlagOverridesScreen
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailpinlock.presentation.autolock.model.DialogType
 import ch.protonmail.android.mailpinlock.presentation.autolock.ui.AutoLockIntervalDialog
 import ch.protonmail.android.mailpinlock.presentation.autolock.ui.AutoLockSettingsScreen
@@ -39,7 +43,6 @@ import ch.protonmail.android.mailpinlock.presentation.pin.ui.AutoLockPinScreen
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialog
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogModeKey
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogResultKey
-import ch.protonmail.android.mailcontentsearch.presentation.settings.ui.ContentSearchSettingsScreen
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.ui.AppIconSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
@@ -399,6 +402,19 @@ internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostControl
                 onViewItemClick = { navController.navigate(Screen.ApplicationLogsView(it)) },
                 onFeatureFlagsNavigation = {
                     navController.navigate(Screen.FeatureFlagsOverrides.route)
+                },
+                // Reached from the home graph, so a user is logged in and the composer route is registered here too.
+                onComposeWithLogs = { logsUri ->
+                    val shareInfo = IntentShareInfo.Empty.copy(
+                        attachmentUris = listOf(logsUri.toString()),
+                        isExternal = false
+                    )
+                    navController.navigate(
+                        Screen.ShareFileComposer(
+                            draftAction = DraftAction.PrefillForShare(shareInfo.encode()),
+                            isExternal = false
+                        )
+                    )
                 }
             )
         )

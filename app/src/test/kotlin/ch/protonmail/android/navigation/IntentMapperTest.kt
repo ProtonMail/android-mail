@@ -22,6 +22,7 @@ import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import ch.protonmail.android.mailcommon.data.file.IntentExtraKeys
+import ch.protonmail.android.mailcommon.data.file.ShareUriValidator
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.navigation.mapper.IntentMapper
 import ch.protonmail.android.navigation.model.HomeNavigationEvent
@@ -34,7 +35,12 @@ import kotlin.test.assertTrue
 
 class IntentMapperTest {
 
-    private val mapper = IntentMapper()
+    private val shareUriValidator = mockk<ShareUriValidator> {
+        every { isAllowed(any()) } returns true
+        every { filterAllowed(any()) } answers { firstArg() }
+    }
+
+    private val mapper = IntentMapper(shareUriValidator)
 
     private val sampleShareInfoExternal = IntentShareInfo(
         attachmentUris = listOf("content://media/1"),
@@ -163,6 +169,55 @@ class IntentMapperTest {
 
         // Then
         assertTrue(result is HomeNavigationEvent.InvalidShareIntentReceived)
+    }
+
+    @Test
+    fun `map share intent without the attachment uri rejected by the validator`() {
+        // Given
+        val streamUri = mockk<Uri> {
+            every { scheme } returns "content"
+        }
+        every { streamUri.toString() } returns "content://ch.protonmail.android.provider/rust_log_files/uniffi.log"
+        every { shareUriValidator.isAllowed(streamUri) } returns false
+
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            data = null,
+            externalBoolean = true,
+            extraSubject = "Your receipt",
+            extraRecipientTo = arrayOf("attacker@example.com"),
+            extraStreamUri = streamUri
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then the composer still opens, but the file is not carried into it.
+        assertIs<HomeNavigationEvent.ExternalShareIntentReceived>(result)
+        assertEquals(emptyList(), result.shareInfo.attachmentUris)
+    }
+
+    @Test
+    fun `map share intent to an invalid share when the rejected uri was its only content`() {
+        // Given
+        val streamUri = mockk<Uri> {
+            every { scheme } returns "content"
+        }
+        every { streamUri.toString() } returns "content://ch.protonmail.android.provider/cache/body_cache/b.html"
+        every { shareUriValidator.isAllowed(streamUri) } returns false
+
+        val intent = mockIntent(
+            action = Intent.ACTION_SEND,
+            data = null,
+            externalBoolean = false,
+            extraStreamUri = streamUri
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then
+        assertIs<HomeNavigationEvent.InvalidShareIntentReceived>(result)
     }
 
     @Test

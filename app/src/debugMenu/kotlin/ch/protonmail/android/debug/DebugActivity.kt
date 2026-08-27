@@ -85,7 +85,9 @@ internal class DebugActivity : AppCompatActivity() {
                                     onViewItemClick = { navController.navigate(Screen.ApplicationLogsView(it)) },
                                     onFeatureFlagsNavigation = {
                                         navController.navigate(Screen.FeatureFlagsOverrides.route)
-                                    }
+                                    },
+                                    // Standalone debug NavHost, no composer route to navigate to.
+                                    onComposeWithLogs = null
                                 )
                             )
                         }

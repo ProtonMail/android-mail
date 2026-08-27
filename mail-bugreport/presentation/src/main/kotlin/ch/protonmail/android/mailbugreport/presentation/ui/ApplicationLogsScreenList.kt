@@ -61,6 +61,16 @@ internal fun ApplicationLogsScreenList(
             )
         }
         item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+        // Only offered from the logged in entry point.
+        actions.onSendByEmail?.let { onSendByEmail ->
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(R.string.application_events_send_by_email),
+                    onClick = onSendByEmail
+                )
+            }
+            item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+        }
         item {
             ProtonSettingsItem(
                 name = stringResource(R.string.application_events_save_to_disk),
@@ -138,6 +148,7 @@ object ApplicationLogsScreenList {
     data class Actions(
         val onExport: () -> Unit,
         val onShare: () -> Unit,
+        val onSendByEmail: (() -> Unit)?,
         val onShowAppEvents: () -> Unit,
         val onShowRustEvents: () -> Unit,
         val onShowLogcat: () -> Unit,
@@ -149,6 +160,7 @@ object ApplicationLogsScreenList {
             val Empty = Actions(
                 onExport = {},
                 onShare = {},
+                onSendByEmail = {},
                 onShowAppEvents = {},
                 onShowRustEvents = {},
                 onShowLogcat = {},

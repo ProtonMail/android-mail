@@ -31,6 +31,7 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class UriHelperTest {
 
@@ -88,6 +89,94 @@ class UriHelperTest {
     }
 
     @Test
+    fun `should strip path segments from the display name`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        every { cursor.getString(any()) } returns "../../databases/mail.db"
+
+        // When
+        val actual = uriHelper.getFileNameFromUri(uri)
+
+        // Then
+        assertEquals("mail.db", actual)
+    }
+
+    @Test
+    fun `should strip control characters from the display name`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        every { cursor.getString(any()) } returns " invoice.pdf\n "
+
+        // When
+        val actual = uriHelper.getFileNameFromUri(uri)
+
+        // Then
+        assertEquals("invoice.pdf", actual)
+    }
+
+    @Test
+    fun `should strip bidi override characters from the display name`() = runTest(testDispatcherProvider.Main) {
+        // Given a name that renders as "invoiceexe.pdf" while actually ending in .exe
+        every { cursor.getString(any()) } returns "invoice\u202Efdp.exe"
+
+        // When
+        val actual = uriHelper.getFileNameFromUri(uri)
+
+        // Then
+        assertEquals("invoicefdp.exe", actual)
+    }
+
+    @Test
+    fun `should strip zero width and format characters from the display name`() = runTest(testDispatcherProvider.Main) {
+        // Given zero width space, word joiner, BOM, arabic letter mark and soft hyphen
+        every { cursor.getString(any()) } returns "in\u200Bvo\u2060i\uFEFFc\u061Ce\u00AD.pdf"
+
+        // When
+        val actual = uriHelper.getFileNameFromUri(uri)
+
+        // Then
+        assertEquals("invoice.pdf", actual)
+    }
+
+    @Test
+    fun `should keep the extension when shortening an over long display name`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val longName = "a".repeat(400) + ".pdf"
+        every { cursor.getString(any()) } returns longName
+
+        // When
+        val actual = uriHelper.getFileNameFromUri(uri)
+
+        // Then
+        assertEquals(TestData.MaxFileNameLength, actual?.length)
+        assertTrue(actual?.endsWith(".pdf") == true)
+    }
+
+    @Test
+    fun `should shorten an over long display name that has no usable extension`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            every { cursor.getString(any()) } returns "a".repeat(400)
+
+            // When
+            val actual = uriHelper.getFileNameFromUri(uri)
+
+            // Then
+            assertEquals("a".repeat(TestData.MaxFileNameLength), actual)
+        }
+
+    @Test
+    fun `should return null when the display name only holds traversal segments`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            every { cursor.getString(any()) } returns ".."
+
+            // When
+            val actual = uriHelper.resolveFileInformation(uri, file)
+
+            // Then
+            assertNull(actual)
+        }
+
+    @Test
     fun `should return null if one of the file information is null`() = runTest(testDispatcherProvider.Main) {
         // Given
         every { cursor.getString(any()) } returns null
@@ -106,5 +195,6 @@ class UriHelperTest {
         const val FilePath = "/tmp/filepath"
         const val FileSize = 123L
         const val FileMimeType = "image/jpeg"
+        const val MaxFileNameLength = 255
     }
 }

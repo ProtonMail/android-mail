@@ -34,6 +34,7 @@
 
     <string name="application_events_header_export" translatable="false">Export</string>
     <string name="application_events_share" translatable="false">Share logs</string>
+    <string name="application_events_send_by_email" translatable="false">Send logs by email</string>
     <string name="application_events_save_to_disk" translatable="false">Save logs to disk</string>
     <string name="application_events_export_error" translatable="false">An error occurred while exporting the events</string>
 

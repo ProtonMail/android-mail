@@ -48,8 +48,9 @@ class GetAggregatedEventsZipFile @Inject constructor(
         runCatching {
             val directoriesList = buildDirectoriesList(logsExportFeatureSetting)
             val fileName = EventsFileNameHelper.generateTimestampedFilename()
-            val outputFile = File(applicationContext.cacheDir, fileName).also {
-                it.mkdirs()
+            // Kept inside a dedicated sub directory so the FileProvider does not need a root over the whole cache.
+            val outputDirectory = File(applicationContext.cacheDir, ExportDirName).apply { mkdirs() }
+            val outputFile = File(outputDirectory, fileName).also {
                 if (it.exists()) it.delete()
             }
 
@@ -92,5 +93,10 @@ class GetAggregatedEventsZipFile @Inject constructor(
             add(appLogsFileHandler.getParentPath())
             add(rustLogsFileHandler.getParentPath())
         }
+    }
+
+    private companion object {
+
+        const val ExportDirName = "export_logs"
     }
 }

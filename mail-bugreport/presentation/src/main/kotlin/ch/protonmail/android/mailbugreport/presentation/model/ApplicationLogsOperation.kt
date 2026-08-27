@@ -26,6 +26,7 @@ sealed interface ApplicationLogsOperation {
 
         sealed interface Export : ApplicationLogsAction {
             data object ShareLogs : Export
+            data object SendLogsByEmail : Export
             data class ExportLogs(val uri: Uri) : Export
         }
 
@@ -39,6 +40,7 @@ sealed interface ApplicationLogsOperation {
     sealed interface ApplicationLogsEvent : ApplicationLogsOperation {
         sealed interface Export : ApplicationLogsEvent {
             data class ShareReady(val uri: Uri) : Export
+            data class SendByEmailReady(val uri: Uri) : Export
             data object ExportError : Export
         }
 

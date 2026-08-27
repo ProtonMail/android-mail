@@ -18,13 +18,16 @@
 package ch.protonmail.android.navigation.mapper
 
 import android.content.Intent
+import ch.protonmail.android.mailcommon.data.file.ShareUriValidator
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.data.file.isMailToIntent
 import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.navigation.model.HomeNavigationEvent
 import javax.inject.Inject
 
-class IntentMapper @Inject constructor() {
+class IntentMapper @Inject constructor(
+    private val shareUriValidator: ShareUriValidator
+) {
 
     fun map(intent: Intent): HomeNavigationEvent {
         return when {
@@ -37,7 +40,7 @@ class IntentMapper @Inject constructor() {
                     return HomeNavigationEvent.MailToIntentReceived(intent)
                 }
 
-                val shareInfo = intent.getShareInfo()
+                val shareInfo = intent.getShareInfo(shareUriValidator)
                     .takeIf { it.isNotEmpty() }
                     ?: return HomeNavigationEvent.InvalidShareIntentReceived(intent)
 
