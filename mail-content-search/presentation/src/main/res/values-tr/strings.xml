@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Çöp</string>
   <string name="content_search_include_spam">İstenmeyen</string>
   <string name="content_search_about_content_search">E-posta içeriğini\naramak hakkında</string>
-  <string name="content_search_first_run_description">Aramaya başlamak için bir ad, konu veya anahtar sözcük yazın</string>
+  <string name="content_search_first_run_description">Aranacak bir ad, konu veya anahtar sözcük yazın</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Son kullanılan</string>
   <string name="content_search_clear_recent_searches">Temizle</string>

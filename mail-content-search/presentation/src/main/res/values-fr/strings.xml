@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Corbeille</string>
   <string name="content_search_include_spam">Indésirables/spam</string>
   <string name="content_search_about_content_search">À propos de la recherche \ndans le contenu des e-mails</string>
-  <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour commencer la recherche</string>
+  <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour chercher</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Récents</string>
   <string name="content_search_clear_recent_searches">Effacer</string>

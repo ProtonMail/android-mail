@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Kôš</string>
   <string name="content_search_include_spam">Nevyžiadaná pošta</string>
   <string name="content_search_about_content_search">O vyhľadávaní\nv obsahu emailov</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedávne</string>
   <string name="content_search_clear_recent_searches">Vyčistiť</string>

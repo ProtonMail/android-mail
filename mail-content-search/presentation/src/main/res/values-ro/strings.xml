@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Gunoi</string>
   <string name="content_search_include_spam">Nedorite</string>
   <string name="content_search_about_content_search">Despre căutarea\nîn conținutul mesajelor</string>
-  <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a începe căutarea.</string>
+  <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a căuta.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recente</string>
   <string name="content_search_clear_recent_searches">Golire</string>

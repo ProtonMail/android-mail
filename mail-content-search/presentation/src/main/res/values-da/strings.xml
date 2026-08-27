@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papirkurv</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Om søgning\ne-mail-indhold</string>
-  <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at begynde søgningen</string>
+  <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at søge</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Seneste</string>
   <string name="content_search_clear_recent_searches">Ryd</string>

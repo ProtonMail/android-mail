@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Сметніца</string>
   <string name="content_search_include_spam">Спам</string>
   <string name="content_search_about_content_search">Аб пошуку\nзмесціва ў лістах</string>
-  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пачатку пошуку</string>
+  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пошуку</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Нядаўнія</string>
   <string name="content_search_clear_recent_searches">Ачысціць</string>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Email content search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for email content search.</string>
-  <string name="content_search_notification_title">Preparing email content search</string>
+  <string name="content_search_notification_channel_name">이메일 콘텐츠 검색 색인 중</string>
+  <string name="content_search_notification_channel_description">콘텐츠 검색용 메시지 색인 중에 처리 과정을 보여줍니다.</string>
+  <string name="content_search_notification_title">이메일 콘텐츠 검색 준비 중</string>
   <!-- example format: test@proton.me · 10% -->
   <string name="content_search_notification_progress">%1$s · %2$s</string>
   <string name="content_search_notification_percentage">%1$d%%</string>

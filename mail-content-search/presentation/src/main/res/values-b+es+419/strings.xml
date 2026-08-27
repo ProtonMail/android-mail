@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papelera</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Acerca de la búsqueda\npor contenido del mensaje</string>
-  <string name="content_search_first_run_description">Escriba un nombre, asunto o palabra clave para comenzar la búsqueda</string>
+  <string name="content_search_first_run_description">Escriba un nombre, asunto o palabra clave para buscar</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Reciente</string>
   <string name="content_search_clear_recent_searches">Borrar</string>

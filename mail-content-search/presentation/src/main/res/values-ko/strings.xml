@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search email content</string>
+  <string name="mail_settings_content_search_header_title">이메일 콘텐츠 검색</string>
   <string name="mail_settings_content_search_description">메시지 콘텐츠 검색을 위해, 메시지가 이 기기에 다운로드됩니다.</string>
   <string name="mail_settings_content_search_learn_more">자세히 알아보기..</string>
-  <string name="mail_settings_content_search_toggle_title">Search email content</string>
+  <string name="mail_settings_content_search_toggle_title">이메일 콘텐츠 검색</string>
   <string name="mail_settings_content_search_mobile_data_title">모바일 데이터로 다운로드 허용</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi 신호 유실시 모바일 데이터로 계속 다운로드합니다.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
+  <string name="mail_settings_content_search_syncing_status">준비 중 %1$d%%...</string>
   <string name="mail_settings_content_search_preparing_status">준비 중…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi를 기다리는 중...</string>
   <string name="mail_settings_content_search_clear_data_button">로컬 검색 데이터 지우기</string>
   <string name="mail_settings_content_search_clear_data_description">로컬 검색 데이터를 지우면 메시지 콘텐츠 검색도 함께 비활성화됩니다. 언제든지 다시 재활성화할 수 있습니다.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">로컬 검색 데이터 비우기</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">이 기기에서 검색 데이터가 삭제됩니다. 이메일 콘텐츠 검색을 다시 활성화하려면 재색인이 필요합니다.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">데이터 비우기</string>
-  <string name="content_search_bottomsheet_title">Preparing email content search</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continue</string>
+  <string name="content_search_bottomsheet_title">이메일 콘텐츠 검색 준비 중</string>
+  <string name="content_search_bottomsheet_description">메일함의 이메일이 다운로드 중이며 검색이 곧 준비됩니다.</string>
+  <string name="content_search_bottomsheet_continue">계속</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">결과 없음</string>
   <string name="content_search_no_results_description">다른 검색어로 시도해 보거나 철자를 확인해 주세요.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">휴지통</string>
   <string name="content_search_include_spam">스팸함</string>
   <string name="content_search_about_content_search">이메일 콘텐츠\n검색에 관하여</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">최근</string>
   <string name="content_search_clear_recent_searches">제거</string>

@@ -99,9 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">폴더 및 라벨</string>
   <string name="upselling_comparison_table_premium_products">프리미엄 VPN, 패스워드 매니저 및 클라우드 저장 공간</string>
   <string name="upselling_comparison_table_dark_web_monitoring">다크 웹 모니터링</string>
-  <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
+  <string name="upselling_comparison_table_premium_access">Mail, VPN, Drive, Pass, 및 Calendar의 프리미엄 기능에 접근</string>
   <string name="upselling_comparison_table_unlimited_aliases">신원 보호를 위한 무제한 별칭</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">무제한 폴더 및 라벨</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110개 이상 국가의 초고속 VPN</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">요금제를 선택하세요</string>

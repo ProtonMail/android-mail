@@ -16,7 +16,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Rensa data</string>
   <string name="content_search_bottomsheet_title">Förbereder innehållssökning i e-post</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continue</string>
+  <string name="content_search_bottomsheet_continue">Fortsätt</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Inga resultat</string>
   <string name="content_search_no_results_description">Prova andra nyckelord eller kontrollera din stavning.</string>
@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papperskorg</string>
   <string name="content_search_include_spam">Skräppost</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
+  <string name="content_search_first_run_description">Skriv ett namn, ämne eller nyckelord för att söka</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Senaste</string>
   <string name="content_search_clear_recent_searches">Rensa</string>

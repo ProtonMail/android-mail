@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Κάδος απορριμμάτων</string>
   <string name="content_search_include_spam">Ανεπιθύμητα</string>
   <string name="content_search_about_content_search">Σχετικά με την αναζήτηση\nπεριεχόμενου ηλεκτρονικών μηνυμάτων</string>
-  <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για να ξεκινήσετε την αναζήτηση</string>
+  <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για την αναζήτηση</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Πρόσφατα</string>
   <string name="content_search_clear_recent_searches">Εκκαθάριση</string>

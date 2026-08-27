@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Smetnjak</string>
   <string name="content_search_include_spam">Neželena pošta</string>
   <string name="content_search_about_content_search">O iskanju po\nvsebini e-pošte</string>
-  <string name="content_search_first_run_description">Vnesite ime, zadevo ali ključno besedo, da začnete iskanje</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedavno</string>
   <string name="content_search_clear_recent_searches">Počisti</string>

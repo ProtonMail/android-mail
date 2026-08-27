@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Papierkorb</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Informationen zur Suche\nnach E-Mail-Inhalten</string>
-  <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Reise zu beginnen</string>
+  <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Suche zu beginnen</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Kürzlich</string>
   <string name="content_search_clear_recent_searches">Leeren</string>

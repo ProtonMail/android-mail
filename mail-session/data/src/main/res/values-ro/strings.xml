@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="sending_notification_channel_name">Se trimit mesajele</string>
+  <string name="sending_notification_title">Se trimite mesajul…</string>
+</resources>

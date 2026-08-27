@@ -28,7 +28,7 @@
   <string name="content_search_include_trash">Trash</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">About searching\nemail content</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to begin the search</string>
+  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent</string>
   <string name="content_search_clear_recent_searches">Clear</string>
