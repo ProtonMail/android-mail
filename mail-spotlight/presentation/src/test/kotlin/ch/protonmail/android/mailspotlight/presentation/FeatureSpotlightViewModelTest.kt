@@ -20,7 +20,6 @@ package ch.protonmail.android.mailspotlight.presentation
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
@@ -43,7 +42,6 @@ internal class FeatureSpotlightViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val appInformation = AppInformation(appVersionName = "7.7.0")
     private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
 
     @AfterTest
@@ -52,18 +50,8 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     private fun buildViewModel() = FeatureSpotlightViewModel(
-        appInformation = appInformation,
         markFeatureSpotlightSeen = markFeatureSpotlightSeen
     )
-
-    @Test
-    fun `appVersion contains correct text resource with version name`() {
-        val viewModel = buildViewModel()
-        val appVersion = viewModel.appVersion
-        val textModel = appVersion.text as TextUiModel.TextResWithArgs
-        assertEquals(R.string.spotlight_screen_version_text, textModel.value)
-        assertEquals(listOf(appInformation.appVersionName), textModel.formatArgs)
-    }
 
     @Test
     fun `overviewFeatures contains the three content search items in order`() {
@@ -71,7 +59,7 @@ internal class FeatureSpotlightViewModelTest {
         assertEquals(
             listOf(
                 FeatureItem(
-                    icon = R.drawable.ic_arrow_down_to_line,
+                    icon = R.drawable.ic_file_download,
                     title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_title),
                     description = TextUiModel.TextRes(
                         R.string.spotlight_screen_content_search_message_content_subtitle
@@ -83,7 +71,7 @@ internal class FeatureSpotlightViewModelTest {
                     description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_subtitle)
                 ),
                 FeatureItem(
-                    icon = R.drawable.ic_envelope_lines,
+                    icon = R.drawable.ic_mark_unread,
                     title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
                     description = TextUiModel.TextRes(
                         R.string.spotlight_screen_content_search_recent_searches_subtitle

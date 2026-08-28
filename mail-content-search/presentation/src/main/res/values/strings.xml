@@ -20,7 +20,7 @@
     <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
     <string name="content_search_bottomsheet_title">Preparing email content search</string>
     <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-    <string name="content_search_bottomsheet_continue">Continue</string>
+    <string name="content_search_bottomsheet_continue">Got it</string>
 
     <!-- Content search screen -->
     <string name="content_search_no_results_title">No results</string>

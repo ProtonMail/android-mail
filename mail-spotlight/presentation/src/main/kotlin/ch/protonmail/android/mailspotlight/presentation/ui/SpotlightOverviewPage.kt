@@ -62,13 +62,11 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailspotlight.presentation.R
-import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun OverviewPage(
-    appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
     modifier: Modifier = Modifier,
     onGotIt: (() -> Unit)? = null
@@ -76,18 +74,14 @@ internal fun OverviewPage(
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {
-        LandscapeOverviewPage(appVersionUiModel, featureItems, modifier, onGotIt)
+        LandscapeOverviewPage(featureItems, modifier, onGotIt)
     } else {
-        PortraitOverviewPage(appVersionUiModel, featureItems, modifier)
+        PortraitOverviewPage(featureItems, modifier)
     }
 }
 
 @Composable
-private fun PortraitOverviewPage(
-    appVersionUiModel: AppVersionUiModel,
-    featureItems: ImmutableList<FeatureItem>,
-    modifier: Modifier = Modifier
-) {
+private fun PortraitOverviewPage(featureItems: ImmutableList<FeatureItem>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -105,16 +99,7 @@ private fun PortraitOverviewPage(
             contentDescription = NO_CONTENT_DESCRIPTION
         )
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
-
-        Text(
-            text = appVersionUiModel.text.string(),
-            style = ProtonTheme.typography.titleMedium,
-            color = ProtonTheme.colors.textWeak,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
         Text(
             text = stringResource(R.string.spotlight_screen_content_search_title),
@@ -141,7 +126,6 @@ private fun PortraitOverviewPage(
 
 @Composable
 private fun LandscapeOverviewPage(
-    appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
     modifier: Modifier = Modifier,
     onGotIt: (() -> Unit)? = null
@@ -168,15 +152,6 @@ private fun LandscapeOverviewPage(
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
-
-            Text(
-                text = appVersionUiModel.text.string(),
-                style = ProtonTheme.typography.titleMedium,
-                color = ProtonTheme.colors.textWeak,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
 
             Text(
                 text = stringResource(R.string.spotlight_screen_content_search_title),
@@ -289,7 +264,6 @@ private fun OverviewPagePreview() {
     ProtonTheme {
         SpotlightGradientBackground {
             OverviewPage(
-                appVersionUiModel = SpotlightPreviewData.previewAppVersion,
                 featureItems = SpotlightPreviewData.previewFeatures
             )
         }
@@ -306,7 +280,6 @@ private fun OverviewPageLandscapePreview() {
     ProtonTheme {
         SpotlightGradientBackground {
             OverviewPage(
-                appVersionUiModel = SpotlightPreviewData.previewAppVersion,
                 featureItems = SpotlightPreviewData.previewFeatures,
                 onGotIt = {}
             )

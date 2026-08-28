@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.uicomponents.BottomNavigationBarSpacer
@@ -51,7 +50,6 @@ fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
     }
 
     FeatureSpotlightScreen(
-        appVersionUiModel = viewModel.appVersion,
         featureItems = viewModel.overviewFeatures,
         onGotIt = viewModel::onGotIt
     )
@@ -59,7 +57,6 @@ fun FeatureSpotlightScreen(onDismiss: () -> Unit) {
 
 @Composable
 internal fun FeatureSpotlightScreen(
-    appVersionUiModel: AppVersionUiModel,
     featureItems: ImmutableList<FeatureItem>,
     onGotIt: () -> Unit,
     modifier: Modifier = Modifier
@@ -79,7 +76,6 @@ internal fun FeatureSpotlightScreen(
             TopNavigationBarSpacer()
 
             OverviewPage(
-                appVersionUiModel = appVersionUiModel,
                 featureItems = featureItems,
                 modifier = Modifier.weight(1f),
                 // In landscape the action sits next to the content, as there is no room for a bottom bar.
@@ -101,7 +97,6 @@ internal fun FeatureSpotlightScreen(
 private fun FeatureSpotlightScreenPreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
-            appVersionUiModel = SpotlightPreviewData.previewAppVersion,
             featureItems = SpotlightPreviewData.previewFeatures,
             onGotIt = {}
         )
@@ -117,7 +112,6 @@ private fun FeatureSpotlightScreenPreview() {
 private fun FeatureSpotlightScreenLandscapePreview() {
     ProtonTheme {
         FeatureSpotlightScreen(
-            appVersionUiModel = SpotlightPreviewData.previewAppVersion,
             featureItems = SpotlightPreviewData.previewFeatures,
             onGotIt = {}
         )

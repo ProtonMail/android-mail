@@ -20,11 +20,9 @@ package ch.protonmail.android.mailspotlight.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.presentation.R
-import ch.protonmail.android.mailspotlight.presentation.model.AppVersionUiModel
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -36,23 +34,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class FeatureSpotlightViewModel @Inject constructor(
-    appInformation: AppInformation,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
 
     private val _closeScreenEvent = MutableSharedFlow<Unit>()
     val closeScreenEvent = _closeScreenEvent.asSharedFlow()
 
-    val appVersion: AppVersionUiModel = AppVersionUiModel(
-        text = TextUiModel.TextResWithArgs(
-            value = R.string.spotlight_screen_version_text,
-            formatArgs = listOf(appInformation.appVersionName)
-        )
-    )
-
     val overviewFeatures: ImmutableList<FeatureItem> = persistentListOf(
         FeatureItem(
-            icon = R.drawable.ic_arrow_down_to_line,
+            icon = R.drawable.ic_file_download,
             title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_title),
             description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_subtitle)
         ),
@@ -62,7 +52,7 @@ internal class FeatureSpotlightViewModel @Inject constructor(
             description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_subtitle)
         ),
         FeatureItem(
-            icon = R.drawable.ic_envelope_lines,
+            icon = R.drawable.ic_mark_unread,
             title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
             description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_subtitle)
         )

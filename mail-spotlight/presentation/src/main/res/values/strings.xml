@@ -17,7 +17,6 @@
   -->
 
 <resources>
-    <string name="spotlight_screen_version_text">Version %s</string>
     <string name="spotlight_screen_title">What’s new in Proton Mail</string>
 
     <string name="spotlight_feature_item_discreet_icon_title">Discreet icon</string>
