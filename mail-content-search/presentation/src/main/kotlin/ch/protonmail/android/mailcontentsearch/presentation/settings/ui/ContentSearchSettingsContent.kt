@@ -75,6 +75,7 @@ internal fun ContentSearchSettingsContent(
             Column {
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
                 MobileDataCard(
+                    showLeadingIcon = false,
                     isEnabled = state.isAllowMobileDataEnabled,
                     onToggle = actions.onAllowMobileDataToggle
                 )

@@ -75,6 +75,7 @@ fun ContentSearchBottomSheet(
         MobileDataCard(
             modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Standard),
             isEnabled = isMobileDataEnabled,
+            showLeadingIcon = true,
             onToggle = actions.onToggleMobileData
         )
 

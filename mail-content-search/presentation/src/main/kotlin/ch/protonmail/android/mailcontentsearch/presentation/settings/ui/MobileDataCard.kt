@@ -18,12 +18,18 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.design.compose.component.ProtonSettingsToggleItem
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -33,6 +39,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 @Composable
 internal fun MobileDataCard(
     modifier: Modifier = Modifier,
+    showLeadingIcon: Boolean,
     isEnabled: Boolean,
     onToggle: (Boolean) -> Unit
 ) {
@@ -44,12 +51,27 @@ internal fun MobileDataCard(
             containerColor = ProtonTheme.colors.backgroundInvertedSecondary
         )
     ) {
-        ProtonSettingsToggleItem(
-            modifier = Modifier.padding(ProtonDimens.Spacing.Large),
-            name = stringResource(id = R.string.mail_settings_content_search_mobile_data_title),
-            hint = stringResource(id = R.string.mail_settings_content_search_mobile_data_hint),
-            value = isEnabled,
-            onToggle = onToggle
-        )
+        Row(
+            modifier = Modifier.padding(ProtonDimens.Spacing.Large)
+        ) {
+            if (showLeadingIcon) {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                    painter = painterResource(id = R.drawable.ic_cell_tower),
+                    contentDescription = null,
+                    tint = ProtonTheme.colors.iconNorm
+                )
+
+                Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Large))
+            }
+
+            ProtonSettingsToggleItem(
+                modifier = Modifier.weight(1f),
+                name = stringResource(id = R.string.mail_settings_content_search_mobile_data_title),
+                hint = stringResource(id = R.string.mail_settings_content_search_mobile_data_hint),
+                value = isEnabled,
+                onToggle = onToggle
+            )
+        }
     }
 }

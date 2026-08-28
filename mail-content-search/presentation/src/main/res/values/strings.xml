@@ -4,8 +4,8 @@
     <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
     <string name="mail_settings_content_search_learn_more">Learn more..</string>
     <string name="mail_settings_content_search_toggle_title">Search email content</string>
-    <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-    <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
+    <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
+    <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
     <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
     <string name="mail_settings_content_search_preparing_status">Preparing…</string>
     <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
