@@ -21,6 +21,7 @@ package ch.protonmail.android
 import android.app.Application
 import androidx.compose.runtime.Composer
 import androidx.compose.runtime.ExperimentalComposeRuntimeApi
+import androidx.compose.runtime.tooling.ComposeStackTraceMode.Companion.SourceInformation
 import androidx.compose.ui.ComposeUiFlags
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -32,12 +33,9 @@ import ch.protonmail.android.logging.LogsFileHandlerLifecycleObserver
 import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
-import ch.protonmail.android.mailcrashrecord.domain.usecase.SaveMessageBodyWebViewCrash
 import ch.protonmail.android.mailevents.presentation.AppOpenLifecycleObserver
 import ch.protonmail.android.mailnotifications.domain.FirebaseMessagingTokenLifecycleObserver
 import ch.protonmail.android.mailsession.data.initializer.DatabaseLifecycleObserver
-import ch.protonmail.android.payment.di.HttpCapabilityImpl
-import ch.protonmail.android.payment.di.StoreCapabilityImpl
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Provider
@@ -67,15 +65,6 @@ internal class App : Application() {
     @Inject
     lateinit var appOpenLifecycleObserver: Provider<AppOpenLifecycleObserver>
 
-    @Inject
-    lateinit var saveMessageBodyWebViewCrash: SaveMessageBodyWebViewCrash
-
-    @Inject
-    lateinit var httpCapability: HttpCapabilityImpl
-
-    @Inject
-    lateinit var storeCapability: StoreCapabilityImpl
-
     @OptIn(ExperimentalComposeRuntimeApi::class, ExperimentalComposeUiApi::class)
     override fun onCreate() {
         ComposeUiFlags.isBypassUnfocusableComposeViewEnabled = false // https://issuetracker.google.com/issues/469958424
@@ -83,7 +72,7 @@ internal class App : Application() {
         super.onCreate()
 
         // Richer Compose-related stack traces. Does not work on prod builds, nor it is recommended to do so there.
-        Composer.setDiagnosticStackTraceEnabled(BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) Composer.setDiagnosticStackTraceMode(SourceInformation)
 
         benchmarkTracer.begin("proton-app-init")
 
