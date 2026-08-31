@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Acest mesaj va fi trimis la data de %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Utilizatorul este deja conectat</string>
   <string name="home_event_loop_error_snackbar">Nu s-a putut sincroniza contul de e-mailul. Încercați să vă reconectați. Dacă acest lucru nu funcționează, vă rugăm să trimiteți un raport eroare.</string>
+  <string name="home_content_search_error_snackbar">Căutarea în conținutul mesajelor nu a putut fi pregătită.</string>
+  <string name="home_content_search_error_snackbar_action">Revizuire</string>
 </resources>

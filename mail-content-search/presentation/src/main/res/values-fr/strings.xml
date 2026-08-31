@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Préparation en cours de %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">En attente du Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Quelque chose s\'est mal passé lors de la préparation de la recherche dans le contenu des e-mails.</string>
+  <string name="mail_settings_content_search_failed_retry">Réessayer</string>
+  <string name="mail_settings_content_search_update_error">Une erreur s\'est produite. Nous vous invitons à réessayer.</string>
+  <string name="mail_settings_content_search_retry_error">Impossible de préparer la recherche dans le contenu des e-mails.</string>
   <string name="mail_settings_content_search_clear_data_button">Effacer les données locales de recherche</string>
   <string name="mail_settings_content_search_clear_data_description">La suppression des données locales de recherche désactivera la recherche dans le contenu des messages. Vous pouvez réactiver cette fonctionnalité à tout moment.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Effacer les données de recherche locales</string>

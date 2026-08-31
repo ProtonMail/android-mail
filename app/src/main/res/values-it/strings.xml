@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Invio programmato per il %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Account aggiunto in precedenza</string>
   <string name="home_event_loop_error_snackbar">Sincronizzazione della casella di posta non riuscita. Segnala un problema se l\'errore persiste.</string>
+  <string name="home_content_search_error_snackbar">Non è stato possibile preparare la ricerca nel contenuto delle email.</string>
+  <string name="home_content_search_error_snackbar_action">Revisiona</string>
 </resources>

@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search email content</string>
+  <string name="mail_settings_content_search_header_title">Hľadať v obsahu emailu</string>
   <string name="mail_settings_content_search_description">Aby ste mohli vyhľadávať podľa obsahu správ, správy sa stiahnu do tohto zariadenia.</string>
   <string name="mail_settings_content_search_learn_more">Zistiť viac..</string>
-  <string name="mail_settings_content_search_toggle_title">Search email content</string>
+  <string name="mail_settings_content_search_toggle_title">Hľadať v obsahu emailu</string>
   <string name="mail_settings_content_search_mobile_data_title">Povoliť sťahovanie cez mobilné dáta</string>
   <string name="mail_settings_content_search_mobile_data_hint">Ak dôjde k prerušeniu pripojenia cez Wi-Fi, sťahovanie pokračuje cez mobilné dáta.</string>
-  <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
+  <string name="mail_settings_content_search_syncing_status">Príprava %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Príprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakám na Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Skúste znova</string>
+  <string name="mail_settings_content_search_update_error">Niečo sa pokazilo. Skúste to znova, prosím.</string>
+  <string name="mail_settings_content_search_retry_error">Nepodarilo sa pripraviť prehľadávanie obsahu emailov</string>
   <string name="mail_settings_content_search_clear_data_button">Vymazať údaje z lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_description">Vymazaním údajov z lokálneho vyhľadávania sa deaktivuje vyhľadávanie v obsahu správ. Túto funkciu môžete kedykoľvek opäť zapnúť.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Vymazať údaje z lokálneho vyhľadávania</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Údaje vyhľadávania na tomto zariadení budú odstránené. Pre vyhľadávanie v obsahu emailov ich budete musieť stiahnuť znova.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Vymazať údaje</string>
-  <string name="content_search_bottomsheet_title">Preparing email content search</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continue</string>
+  <string name="content_search_bottomsheet_title">Príprava prehľadávania obsahu emailov</string>
+  <string name="content_search_bottomsheet_description">Emaily z vašej schránky sa práve sťahujú a pripravujú na vyhľadávanie.</string>
+  <string name="content_search_bottomsheet_continue">Pokračovať</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Žiadne výsledky</string>
   <string name="content_search_no_results_description">Skúste použiť iné kľúčové slová alebo skontrolujte pravopis.</string>
@@ -28,7 +32,7 @@
   <string name="content_search_include_trash">Kôš</string>
   <string name="content_search_include_spam">Nevyžiadaná pošta</string>
   <string name="content_search_about_content_search">O vyhľadávaní\nv obsahu emailov</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
+  <string name="content_search_first_run_description">Do vyhľadávania zadajte názov, tému alebo kľúčové slovo</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedávne</string>
   <string name="content_search_clear_recent_searches">Vyčistiť</string>

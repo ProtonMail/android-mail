@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Προετοιμασία %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Προετοιμασία…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Αναμονή για Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Κάτι πήγε στραβά κατά την προετοιμασία της αναζήτησης περιεχομένου ηλεκτρονικού ταχυδρομείου.</string>
+  <string name="mail_settings_content_search_failed_retry">Προσπαθήστε ξανά</string>
+  <string name="mail_settings_content_search_update_error">Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά.</string>
+  <string name="mail_settings_content_search_retry_error">Δεν είναι δυνατή η προετοιμασία αναζήτησης περιεχομένου ηλεκτρονικού ταχυδρομείου.</string>
   <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
   <string name="mail_settings_content_search_clear_data_description">Η διαγραφή των δεδομένων τοπικής αναζήτησης θα απενεργοποιήσει την αναζήτηση περιεχομένου μηνύματος. Μπορείτε να την ενεργοποιήσετε ξανά ανά πάσα στιγμή.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>

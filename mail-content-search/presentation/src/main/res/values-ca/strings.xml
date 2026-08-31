@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">S\'està esperant la connexió Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Alguna cosa ha anat malament en preparar la cerca del contingut del correu electrònic.</string>
+  <string name="mail_settings_content_search_failed_retry">Torneu-ho a provar</string>
+  <string name="mail_settings_content_search_update_error">Alguna cosa ha anat malament. Torneu-ho a provar.</string>
+  <string name="mail_settings_content_search_retry_error">No es pot preparar la cerca del contingut del correu electrònic.</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
   <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Neteja les dades de cerca local</string>

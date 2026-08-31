@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">To sporočilo bo poslano %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Uporabnik je že prijavljen</string>
   <string name="home_event_loop_error_snackbar">Ni nam uspelo sinhronizirati vaše pošte. Poskusite se odjaviti in ponovno prijaviti. Če to ne deluje, oddajte prijavo napake.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Esta mensagem será enviada a %1$s</string>
   <string name="launcher_alert_duplicate_account_description">O utilizador já tem sessão iniciada</string>
   <string name="home_event_loop_error_snackbar">Não conseguimos sincronizar as suas mensagens. Tente terminar sessão e voltar a iniciá-la. Se isso não funcionar, por favor envie um relatório de erro.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

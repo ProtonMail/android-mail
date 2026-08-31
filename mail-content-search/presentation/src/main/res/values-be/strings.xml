@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Нешта пайшло не так пры падрыхтоўцы пошуку па змесціве ліста.</string>
+  <string name="mail_settings_content_search_failed_retry">Паўтарыце спробу</string>
+  <string name="mail_settings_content_search_update_error">Нешта пайшло не так. Паўтарыце спробу.</string>
+  <string name="mail_settings_content_search_retry_error">Немагчыма падрыхтаваць пошук па змесціве ліста.</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>

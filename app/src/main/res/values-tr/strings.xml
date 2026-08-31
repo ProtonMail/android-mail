@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Bu ileti %1$s zamanında gönderilecek</string>
   <string name="launcher_alert_duplicate_account_description">Kullanıcı zaten oturum açmış</string>
   <string name="home_event_loop_error_snackbar">E-postalarınız eşitlenemedi. Oturumu kapatıp yeniden açmayı deneyin. Bu işe yaramazsa, lütfen bir hata bildiriminde bulunun.</string>
+  <string name="home_content_search_error_snackbar">E-posta içeriklerini arama hazırlanamadı.</string>
+  <string name="home_content_search_error_snackbar_action">Gözden geçir</string>
 </resources>

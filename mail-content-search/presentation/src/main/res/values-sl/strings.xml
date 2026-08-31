@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Pripravljanje %1$d%% …</string>
   <string name="mail_settings_content_search_preparing_status">Priprava …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakanje na Wifi …</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Try again</string>
+  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>
   <string name="mail_settings_content_search_clear_data_description">Če počistite lokalne podatke iskanja, bo iskanje po vsebini sporočil onemogočeno. Kadar koli ga lahko znova omogočite.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Počisti lokalne iskalne podatke</string>

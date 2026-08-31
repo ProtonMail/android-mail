@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">このメッセージは %1$s に送信されます</string>
   <string name="launcher_alert_duplicate_account_description">ユーザーは既にサインインしています</string>
   <string name="home_event_loop_error_snackbar">メールの同期に失敗しました。一度ログアウトしてから再度ログインしてみてください。それでも解決しない場合は、バグ報告を送信してください。</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

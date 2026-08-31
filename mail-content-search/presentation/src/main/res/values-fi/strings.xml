@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Odotetaan Wi-Fi-yhteyttä</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Try again</string>
+  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
   <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tyhjennä paikalliset hakutiedot</string>

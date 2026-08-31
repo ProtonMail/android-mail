@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Підготовка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Try again</string>
+  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">Очистити локальні дані пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Очищення локальних даних пошуку вимкне пошук вмісту повідомлень. Ви можете ввімкнути його знову в будь-який час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Очистити локальні дані пошуку</string>

@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">邮件将于 %1$s 发送</string>
   <string name="launcher_alert_duplicate_account_description">用户已登录</string>
   <string name="home_event_loop_error_snackbar">我们无法同步您的邮件。请尝试退出并重新登录。如果问题仍未解决，请提交错误报告。</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

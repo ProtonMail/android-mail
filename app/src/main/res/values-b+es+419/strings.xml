@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Este mensaje se enviará el %1$s</string>
   <string name="launcher_alert_duplicate_account_description">El usuario ya ha iniciado sesión</string>
   <string name="home_event_loop_error_snackbar">No pudimos sincronizar su correo. Intente cerrar sesión y volver a iniciarla. Si eso no funciona, envíe un informe de errores.</string>
+  <string name="home_content_search_error_snackbar">No se pudo preparar la búsqueda de contenido de correo</string>
+  <string name="home_content_search_error_snackbar_action">Revisar</string>
 </resources>

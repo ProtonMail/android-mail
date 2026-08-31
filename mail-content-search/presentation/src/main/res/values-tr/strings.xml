@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Hazırlanıyor %1$d[%1$i]…</string>
   <string name="mail_settings_content_search_preparing_status">Hazırlanıyor…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi bekleniyor…</string>
+  <string name="mail_settings_content_search_failed_status">E-posta içerik araması hazırlanırken bir sorun çıktı.</string>
+  <string name="mail_settings_content_search_failed_retry">Yeniden dene</string>
+  <string name="mail_settings_content_search_update_error">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
+  <string name="mail_settings_content_search_retry_error">E-posta içeriği araması hazırlanamadı.</string>
   <string name="mail_settings_content_search_clear_data_button">Yerel arama verilerini sil</string>
   <string name="mail_settings_content_search_clear_data_description">Yerel arama verilerini silmek ileti içeriği aramasını kapatır. Bu özelliği istediğiniz zaman yeniden açabilirsiniz.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama verilerini temizle</string>

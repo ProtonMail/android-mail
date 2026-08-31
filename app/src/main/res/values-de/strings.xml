@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Diese Nachricht wird am %1$s gesendet</string>
   <string name="launcher_alert_duplicate_account_description">Der Benutzer ist bereits angemeldet</string>
   <string name="home_event_loop_error_snackbar">Deine E-Mails konnten nicht synchronisiert werden. Melde dich kurz ab und wieder an. Sollte das nicht helfen, sende uns bitte einen Fehlerbericht.</string>
+  <string name="home_content_search_error_snackbar">Die Suche nach Inhalten in E-Mails konnte nicht vorbereitet werden.</string>
+  <string name="home_content_search_error_snackbar_action">Überprüfen</string>
 </resources>

@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Preparazione di %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">In attesa di una rete Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Si è verificato un errore durante la preparazione della ricerca nel contenuto delle email.</string>
+  <string name="mail_settings_content_search_failed_retry">Riprova</string>
+  <string name="mail_settings_content_search_update_error">Qualcosa è andato storto. Riprova.</string>
+  <string name="mail_settings_content_search_retry_error">Impossibile preparare la ricerca nel contenuto delle email.</string>
   <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Cancella i dati della ricerca locale</string>
@@ -28,7 +32,7 @@
   <string name="content_search_include_trash">Cestino</string>
   <string name="content_search_include_spam">Spam</string>
   <string name="content_search_about_content_search">Informazioni sulla ricerca\ncontenuti email</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
+  <string name="content_search_first_run_description">Digita un nome, un oggetto o una parola chiave per cercare</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recente</string>
   <string name="content_search_clear_recent_searches">Cancella</string>

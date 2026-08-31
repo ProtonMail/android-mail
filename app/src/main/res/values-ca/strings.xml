@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Aquest missatge s\'enviarà el %1$s.</string>
   <string name="launcher_alert_duplicate_account_description">L\'usuari ja ha iniciat la sessió</string>
   <string name="home_event_loop_error_snackbar">No s\'ha pogut sincronitzar el correu. Proveu de tancar la sessió i tornar-la a iniciar. Si això no funciona, envieu un informe d\'error.</string>
+  <string name="home_content_search_error_snackbar">No s\'ha pogut preparar la cerca del contingut del correu electrònic.</string>
+  <string name="home_content_search_error_snackbar_action">Reviseu-ho</string>
 </resources>

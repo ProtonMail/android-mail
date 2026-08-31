@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Denne besked vil blive sendt %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Brugeren er allerede logget ind</string>
   <string name="home_event_loop_error_snackbar">Vi kunne ikke synkronisere din e-mail. Prøv at logge ud og ind igen og indsend en fejlrapport hvis det ikke virker.</string>
+  <string name="home_content_search_error_snackbar">Indholdssøgning i e-mails kunne ikke forberedes.</string>
+  <string name="home_content_search_error_snackbar_action">Gennemse</string>
 </resources>

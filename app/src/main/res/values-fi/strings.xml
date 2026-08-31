@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Viesti lähetetään %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Käyttäjä on jo kirjautunut</string>
   <string name="home_event_loop_error_snackbar">Emme onnistuneet sähköpostisi synkronoinnissa. Yritä kirjautua ylös ja uudestaan sisään. Jos se ei onnistu, täytä virheilmoitus.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

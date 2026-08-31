@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">%1$d%% wird vorbereitet …</string>
   <string name="mail_settings_content_search_preparing_status">Wird vorbereitet …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Auf WLAN-Verbindung wird gewartet …</string>
+  <string name="mail_settings_content_search_failed_status">Bei der Vorbereitung der Suche nach Inhalten in E-Mails ist ein Fehler aufgetreten.</string>
+  <string name="mail_settings_content_search_failed_retry">Erneut versuchen</string>
+  <string name="mail_settings_content_search_update_error">Es ist ein Fehler aufgetreten. Bitte erneut versuchen.</string>
+  <string name="mail_settings_content_search_retry_error">Die Suche nach E-Mail-Inhalten konnte nicht vorbereitet werden.</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale Suchdaten löschen</string>
   <string name="mail_settings_content_search_clear_data_description">Durch das Löschen der lokalen Suchdaten wird die Suche nach Nachrichteninhalten deaktiviert. Sie können diese Funktion jederzeit wieder aktivieren.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale Suchdaten löschen</string>

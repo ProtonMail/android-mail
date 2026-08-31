@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$d %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Väntar på Wi-Fi …</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Försök igen</string>
+  <string name="mail_settings_content_search_update_error">Något gick fel. Försök igen.</string>
+  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
@@ -32,7 +36,7 @@
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Senaste</string>
   <string name="content_search_clear_recent_searches">Rensa</string>
-  <string name="content_search_previously_found_title">Previously found</string>
+  <string name="content_search_previously_found_title">Tidigare hittat</string>
   <string name="content_search_dismiss_recent_search_content_description">Ta bort “%1$s“ från senaste sökningar</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ta bort permanent?</string>

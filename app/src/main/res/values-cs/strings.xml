@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Tato zpráva bude odeslána %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Uživatel je již přihlášen</string>
   <string name="home_event_loop_error_snackbar">Nepodařilo se nám synchronizovat váš mail. Zkuste se odhlásit a znovu přihlásit. Pokud to nepomůže, odešlete prosím chybové hlášení.</string>
+  <string name="home_content_search_error_snackbar">Vyhledávání v obsahu e-mailů nebylo možné připravit.</string>
+  <string name="home_content_search_error_snackbar_action">Zkontrolovat</string>
 </resources>

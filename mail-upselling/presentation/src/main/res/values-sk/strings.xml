@@ -99,9 +99,9 @@
   <string name="upselling_comparison_table_folders_labels">Priečinky a štítky</string>
   <string name="upselling_comparison_table_premium_products">Prémiová VPN, správca hesiel a cloudové úložisko</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitorovanie Dark Webu</string>
-  <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
+  <string name="upselling_comparison_table_premium_access">Prémiový prístup k službám Mail, VPN, Drive, Pass a Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Neobmedzené aliasy na skrytie vašej identity</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neobmedzené priečinky, filtre, štítky</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultra rýchla VPN vo viac než 110 krajinách</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Vyberte predplatné</string>

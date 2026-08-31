@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Pesan ini akan dikirim pada %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Pengguna ini telah terhubung masuk</string>
   <string name="home_event_loop_error_snackbar">Gagal menyinkronkan email. Coba keluar dan masuk kembali. Jika tidak berhasil, silakan kirim laporan bug.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>

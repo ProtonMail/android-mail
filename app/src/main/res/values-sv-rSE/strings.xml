@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Detta meddelande kommer att skickas den %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Användaren är redan inloggad</string>
   <string name="home_event_loop_error_snackbar">Vi kunde inte synkronisera din e-post. Prova logga ut och in igen. Om det inte fungerar, skicka en felrapport.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Granska</string>
 </resources>

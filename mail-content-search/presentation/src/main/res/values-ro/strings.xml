@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Se pregătește %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Se pregătește…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Se așteaptă Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">A apărut o eroare la pregătirea căutării în conținutul mesajelor.</string>
+  <string name="mail_settings_content_search_failed_retry">Reîncercare</string>
+  <string name="mail_settings_content_search_update_error">Ceva nu a funcționat bine. Reîncercați.</string>
+  <string name="mail_settings_content_search_retry_error">Nu se poate pregăti căutarea în conținutul mesajelor.</string>
   <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>
   <string name="mail_settings_content_search_clear_data_description">Ștergerea datelor de căutare locală va dezactiva căutarea în conținutul mesajelor. O puteți reactiva oricând.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Golire date de căutare locale</string>

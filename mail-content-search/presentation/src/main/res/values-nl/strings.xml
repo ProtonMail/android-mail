@@ -9,6 +9,10 @@
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Voorbereiden…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wachten op Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Try again</string>
+  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale zoekgegevens wissen</string>
   <string name="mail_settings_content_search_clear_data_description">Het wissen van lokale zoekgegevens schakelt het doorzoeken van de inhoud van berichten uit. U kunt dit op elk gewenst moment weer inschakelen.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale zoekgegevens wissen</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="sending_notification_channel_name">Sending messages</string>
-  <string name="sending_notification_title">Sending message…</string>
+  <string name="sending_notification_channel_name">Invio dei messaggi</string>
+  <string name="sending_notification_title">Invio del messaggio in corso</string>
 </resources>

@@ -43,4 +43,6 @@
   <string name="mailbox_message_scheduled_for_sending_success">Это сообщение будет отправлено %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Пользователь уже вошёл</string>
   <string name="home_event_loop_error_snackbar">Нам не удалось синхронизировать вашу почту. Попробуйте выйти из аккаунта и войти снова. Если это не поможет, пожалуйста, отправьте отчет об ошибке.</string>
+  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
+  <string name="home_content_search_error_snackbar_action">Review</string>
 </resources>
