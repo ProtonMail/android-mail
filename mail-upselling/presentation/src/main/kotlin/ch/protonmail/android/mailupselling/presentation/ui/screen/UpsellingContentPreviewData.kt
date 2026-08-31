@@ -41,7 +41,6 @@ import me.proton.android.core.payment.domain.model.ProductDetailHeader
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.presentation.model.Product
 import java.math.BigDecimal
-import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements as ComparisonTableData
 
 internal object UpsellingContentPreviewData {
 
@@ -415,7 +414,7 @@ internal object UpsellingContentPreviewData {
                     TextUiModel.TextRes(R.string.upselling_unlimited_description_override)
                 ),
                 entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
-                    items = ComparisonTableData.PlusToUnlimitedEntitlements,
+                    items = ComparisonTableEntitlementsData.PlusToUnlimitedEntitlements,
                     baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
                 ),
                 variant = PlanUpgradeVariant.Normal.Unlimited,

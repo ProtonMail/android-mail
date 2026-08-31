@@ -21,8 +21,12 @@ package ch.protonmail.android.payment.di
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.PaymentManager
+import me.proton.android.core.payment.domain.PaymentMetricsTracker
+import me.proton.android.core.payment.domain.model.PaymentObservabilityMetric.IAP_SUBSCRIBE
+import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
 import me.proton.android.payment.billing.exception.StoreBillingUnavailableException
 import me.proton.android.payment.billing.model.StoreProduct
 import me.proton.android.payment.billing.usecase.AcknowledgePurchase
@@ -35,7 +39,7 @@ import kotlin.test.assertTrue
 class StoreCapabilityImplTest {
 
     private val paymentManager = mockk<PaymentManager>()
-
+    private val metricsTracker = mockk<PaymentMetricsTracker>(relaxed = true)
     private val purchaseStoreProduct = mockk<PurchaseStoreProduct>()
     private val acknowledgePurchase = mockk<AcknowledgePurchase>()
 
@@ -43,14 +47,16 @@ class StoreCapabilityImplTest {
     private val subject = StoreCapabilityImpl(
         acknowledgePurchase = Optional.empty(),
         purchaseStoreProduct = Optional.empty(),
-        paymentManager = paymentManager
+        paymentManager = paymentManager,
+        metricsTracker = metricsTracker
     )
 
     // purchase/acknowledge use cases are present (:payment-billing-google on the classpath).
     private val subjectWithBilling = StoreCapabilityImpl(
         acknowledgePurchase = Optional.of(acknowledgePurchase),
         purchaseStoreProduct = Optional.of(purchaseStoreProduct),
-        paymentManager = paymentManager
+        paymentManager = paymentManager,
+        metricsTracker = metricsTracker
     )
 
     @Test
@@ -104,5 +110,32 @@ class StoreCapabilityImplTest {
 
         assertTrue(result.isSuccess)
         coVerify { acknowledgePurchase.invoke("order") }
+    }
+
+    @Test
+    fun `purchase tracks a successful IAP subscribe`() = runTest {
+        coEvery { purchaseStoreProduct.invoke("id", "token", null) } returns Result.success(Unit)
+
+        subjectWithBilling.purchase(productId = "id", offerToken = "token", userId = null)
+
+        verify { metricsTracker.track(IAP_SUBSCRIBE, PaymentObservabilityValue.SUCCESS) }
+    }
+
+    @Test
+    fun `purchase tracks billing unavailable as a client error`() = runTest {
+        subject.purchase(productId = "id", offerToken = "token", userId = null)
+
+        verify { metricsTracker.track(IAP_SUBSCRIBE, PaymentObservabilityValue.HTTP4XX) }
+    }
+
+    @Test
+    fun `purchase tracks an opaque store failure as unknown`() = runTest {
+        coEvery {
+            purchaseStoreProduct.invoke("id", "token", null)
+        } returns Result.failure(RuntimeException("boom"))
+
+        subjectWithBilling.purchase(productId = "id", offerToken = "token", userId = null)
+
+        verify { metricsTracker.track(IAP_SUBSCRIBE, PaymentObservabilityValue.UNKNOWN) }
     }
 }

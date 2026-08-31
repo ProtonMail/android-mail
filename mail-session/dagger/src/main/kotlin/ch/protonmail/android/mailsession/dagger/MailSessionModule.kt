@@ -32,6 +32,7 @@ import ch.protonmail.android.mailsession.data.logging.SentryIssueReporter
 import ch.protonmail.android.mailsession.data.repository.InMemoryMailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.MailSessionRepository
 import ch.protonmail.android.mailsession.data.repository.RustEventLoopRepository
+import ch.protonmail.android.mailsession.data.repository.RustMailSettingsRefreshRepository
 import ch.protonmail.android.mailsession.data.repository.UserSessionRepositoryImpl
 import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.user.RustUserDataSourceImpl
@@ -41,6 +42,7 @@ import ch.protonmail.android.mailsession.domain.background.PendingSendTracker
 import ch.protonmail.android.mailsession.domain.background.SendCompletionScheduler
 import ch.protonmail.android.mailsession.domain.coroutines.EventLoopScope
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
+import ch.protonmail.android.mailsession.domain.repository.MailSettingsRefreshRepository
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import dagger.Binds
 import dagger.Module
@@ -109,6 +111,10 @@ object MailSessionModule {
         @Binds
         @Singleton
         fun bindEventLoopRepository(impl: RustEventLoopRepository): EventLoopRepository
+
+        @Binds
+        @Singleton
+        fun bindMailSettingsRefreshRepository(impl: RustMailSettingsRefreshRepository): MailSettingsRefreshRepository
 
         @Binds
         @Singleton

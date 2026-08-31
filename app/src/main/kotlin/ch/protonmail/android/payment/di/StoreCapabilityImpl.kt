@@ -19,6 +19,10 @@
 package ch.protonmail.android.payment.di
 
 import me.proton.android.core.payment.domain.PaymentManager
+import me.proton.android.core.payment.domain.PaymentMetricsTracker
+import me.proton.android.core.payment.domain.model.PaymentObservabilityMetric.IAP_SUBSCRIBE
+import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
+import me.proton.android.payment.billing.exception.StoreBillingUnavailableException
 import me.proton.android.payment.billing.extension.invokeOrBillingUnavailable
 import me.proton.android.payment.billing.model.StoreProduct
 import me.proton.android.payment.billing.usecase.AcknowledgePurchase
@@ -32,7 +36,8 @@ import javax.inject.Singleton
 class StoreCapabilityImpl @Inject constructor(
     private val acknowledgePurchase: Optional<AcknowledgePurchase>,
     private val purchaseStoreProduct: Optional<PurchaseStoreProduct>,
-    private val paymentManager: PaymentManager
+    private val paymentManager: PaymentManager,
+    private val metricsTracker: PaymentMetricsTracker
 ) : StoreCapability {
 
     override suspend fun getProducts(ids: List<String>): Result<List<StoreProduct>> =
@@ -42,8 +47,16 @@ class StoreCapabilityImpl @Inject constructor(
         productId: String,
         offerToken: String,
         userId: String?
-    ): Result<Unit> = purchaseStoreProduct.invokeOrBillingUnavailable { it(productId, offerToken, userId) }
+    ): Result<Unit> = purchaseStoreProduct
+        .invokeOrBillingUnavailable { it(productId, offerToken, userId) }
+        .also { metricsTracker.track(IAP_SUBSCRIBE, it.toObservabilityValue()) }
 
     override suspend fun acknowledge(orderId: String): Result<Unit> =
         acknowledgePurchase.invokeOrBillingUnavailable { it(orderId) }
+
+    private fun Result<Unit>.toObservabilityValue() = when (exceptionOrNull()) {
+        null -> PaymentObservabilityValue.SUCCESS
+        is StoreBillingUnavailableException -> PaymentObservabilityValue.HTTP4XX
+        else -> PaymentObservabilityValue.UNKNOWN
+    }
 }

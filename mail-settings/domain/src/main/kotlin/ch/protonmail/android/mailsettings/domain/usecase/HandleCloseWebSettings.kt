@@ -19,18 +19,21 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
+import ch.protonmail.android.mailsession.domain.repository.MailSettingsRefreshRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class HandleCloseWebSettings @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val eventLoopRepository: EventLoopRepository
+    private val eventLoopRepository: EventLoopRepository,
+    private val mailSettingsRefreshRepository: MailSettingsRefreshRepository
 ) {
 
     suspend operator fun invoke() {
         observePrimaryUserId().firstOrNull()?.let {
             eventLoopRepository.trigger(it)
+            mailSettingsRefreshRepository.refresh(it)
         }
     }
 }

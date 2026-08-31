@@ -20,6 +20,7 @@ package ch.protonmail.android.mailtelemetry.domain.usecase
 
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
@@ -60,7 +61,8 @@ class RecordUpgradeErrorTest {
         val planSpecificDimensions = PlanSpecificDimensions(
             selectedPlan = "Mail Plus",
             selectedCycle = "Monthly",
-            upsellIsPromotional = false
+            upsellIsPromotional = false,
+            purchaseFlow = PurchaseFlow.SDK
         )
     }
 }

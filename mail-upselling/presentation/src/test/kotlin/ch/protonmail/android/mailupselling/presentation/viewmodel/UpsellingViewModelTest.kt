@@ -22,10 +22,12 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
@@ -94,6 +96,9 @@ internal class UpsellingViewModelTest {
     private val upsellRatingTriggerRepository = mockk<UpsellRatingTriggerRepository>(relaxUnitFun = true)
     private val resolveActiveUpsellTheme = mockk<ResolveActiveUpsellTheme>(relaxed = true)
     private val recordPlusToUnlimitedOptOut = mockk<RecordPlusToUnlimitedOptOut>(relaxUnitFun = true)
+    private val sdkPurchaseEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
 
     @AfterTest
     fun teardown() {
@@ -329,7 +334,8 @@ internal class UpsellingViewModelTest {
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
                     selectedCycle = "Monthly",
-                    upsellIsPromotional = false
+                    upsellIsPromotional = false,
+                    purchaseFlow = PurchaseFlow.LEGACY
                 )
             )
         }
@@ -371,7 +377,8 @@ internal class UpsellingViewModelTest {
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
                     selectedCycle = "Monthly",
-                    upsellIsPromotional = false
+                    upsellIsPromotional = false,
+                    purchaseFlow = PurchaseFlow.LEGACY
                 )
             )
         }
@@ -413,7 +420,8 @@ internal class UpsellingViewModelTest {
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
                     selectedCycle = "Monthly",
-                    upsellIsPromotional = false
+                    upsellIsPromotional = false,
+                    purchaseFlow = PurchaseFlow.LEGACY
                 )
             )
         }
@@ -455,7 +463,8 @@ internal class UpsellingViewModelTest {
                 planSpecificDimensions = PlanSpecificDimensions(
                     selectedPlan = "Mail Plus",
                     selectedCycle = "Monthly",
-                    upsellIsPromotional = false
+                    upsellIsPromotional = false,
+                    purchaseFlow = PurchaseFlow.LEGACY
                 )
             )
         }
@@ -502,6 +511,7 @@ internal class UpsellingViewModelTest {
         recordUpgradeSuccess,
         upsellRatingTriggerRepository,
         resolveActiveUpsellTheme,
-        recordPlusToUnlimitedOptOut
+        recordPlusToUnlimitedOptOut,
+        sdkPurchaseEnabled
     )
 }

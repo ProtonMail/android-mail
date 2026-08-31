@@ -21,5 +21,12 @@ package ch.protonmail.android.mailtelemetry.domain.model
 data class PlanSpecificDimensions(
     val selectedPlan: String,
     val selectedCycle: String,
-    val upsellIsPromotional: Boolean
+    val upsellIsPromotional: Boolean,
+    val purchaseFlow: PurchaseFlow?
 )
+
+enum class PurchaseFlow {
+
+    SDK,
+    LEGACY
+}

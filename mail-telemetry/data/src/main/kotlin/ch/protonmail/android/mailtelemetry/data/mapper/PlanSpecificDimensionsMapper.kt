@@ -19,10 +19,18 @@
 package ch.protonmail.android.mailtelemetry.data.mapper
 
 import ch.protonmail.android.mailcommon.data.mapper.LocalPlanSpecificDimensions
+import ch.protonmail.android.mailcommon.data.mapper.LocalPurchaseFlow
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
 
 fun PlanSpecificDimensions.toLocal() = LocalPlanSpecificDimensions(
     selectedPlan = this.selectedPlan,
     selectedCycle = this.selectedCycle,
-    upsellIsPromotional = this.upsellIsPromotional
+    upsellIsPromotional = this.upsellIsPromotional,
+    purchaseFlow = this.purchaseFlow?.toLocal()
 )
+
+fun PurchaseFlow.toLocal() = when (this) {
+    PurchaseFlow.SDK -> LocalPurchaseFlow.SDK
+    PurchaseFlow.LEGACY -> LocalPurchaseFlow.LEGACY
+}

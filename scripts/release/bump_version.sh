@@ -22,6 +22,11 @@ set -e
 
 source "$(dirname "${BASH_SOURCE[0]}")/prelude.sh"
 
+if [ "$CURRENT_VERSION_CODE" != "1" ]; then
+  printf "versionCode is already set to '%s', skipping update.\n" $CURRENT_VERSION_CODE
+  exit 0
+fi
+
 printf "Updating versionCode to '%s'...\n" $VERSION_CODE
 
 if ! sed -i.bak '/versionCode=/s~=.*$~='"$VERSION_CODE"'~' "$CONFIG_FILE_PATH"; then
