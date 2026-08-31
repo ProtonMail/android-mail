@@ -61,6 +61,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.showInDarkMode
 import ch.protonmail.android.mailmessage.presentation.ui.showInLightMode
 import ch.protonmail.android.uicomponents.keyboardVisibilityAsState
 import kotlinx.coroutines.delay
+import org.json.JSONObject
 import timber.log.Timber
 
 // Needed to allow "remember" on javascript interface
@@ -175,7 +176,7 @@ fun EditableMessageBodyWebView(
 
         ConsumableLaunchedEffect(stripInlineAttachment) { contentId ->
             Timber.d("editor-webview: requested to strip inline image from composer... $contentId")
-            wv.evaluateJavascript("stripInlineImage('$contentId');") {
+            wv.evaluateJavascript("stripInlineImage(${JSONObject.quote(contentId)});") {
                 Timber.d("editor-webview: stripped inline image with cid $contentId from webview")
             }
         }
@@ -191,7 +192,7 @@ fun EditableMessageBodyWebView(
         if (contentLoadingFinished.value) {
             ConsumableLaunchedEffect(injectInlineAttachments) { contentIds ->
                 contentIds.forEach { contentId ->
-                    wv.evaluateJavascript("injectInlineImage('$contentId');") {
+                    wv.evaluateJavascript("injectInlineImage(${JSONObject.quote(contentId)});") {
                         Timber.d("editor-webview: injected inline image with cid $contentId into webview")
                     }
                     @Suppress("MagicNumber")
