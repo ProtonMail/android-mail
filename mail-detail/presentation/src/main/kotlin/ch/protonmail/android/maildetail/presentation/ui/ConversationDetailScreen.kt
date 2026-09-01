@@ -820,12 +820,12 @@ private fun ConversationDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         when (it.openMode) {
-            AttachmentOpenMode.Download -> fileSaver(FileContent(it.name, it.uri, it.mimeType))
+            AttachmentOpenMode.Download -> fileSaver(FileContent(it.name, it.mimeType, it.userId, it.attachmentId))
             AttachmentOpenMode.Open -> {
                 if (IntentHelper.canOpenFile(context, OpenAttachmentInput(it.uri, it.mimeType))) {
                     openAttachment(OpenAttachmentInput(it.uri, it.mimeType))
                 } else {
-                    fileSaver(FileContent(it.name, it.uri, it.mimeType))
+                    fileSaver(FileContent(it.name, it.mimeType, it.userId, it.attachmentId))
                 }
             }
         }

@@ -1557,7 +1557,9 @@ internal class ConversationDetailViewModelIntegrationTest {
                 mimeType = " text/calendar",
                 uri = expectedUri,
                 openMode = openMode,
-                name = "file.txt"
+                name = "file.txt",
+                userId = userId,
+                attachmentId = AttachmentId(AttachmentMetadataSamples.Ids.ID_CALENDAR)
             ).right()
 
             val viewModel = buildConversationDetailViewModel()

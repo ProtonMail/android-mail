@@ -25,13 +25,13 @@ import android.net.Uri
 import android.provider.MediaStore
 import arrow.core.Either
 import arrow.core.raise.either
-import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.usecase.GenerateUniqueFileName
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class ExternalAttachmentsHandlerImpl @Inject constructor(
@@ -45,31 +45,41 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
         destinationUri: Uri
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
         withContext(ioDispatcher + NonCancellable) {
-            context.contentResolver.openInputStream(sourceUri)?.use { inputStream ->
-                context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
-                    inputStream.copyTo(outputStream, bufferSize = 8 * 1024)
-                }
-            } ?: raise(ExternalAttachmentErrorResult.UnableToCopy)
+            try {
+                context.contentResolver.openInputStream(sourceUri)?.use { inputStream ->
+                    context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
+                        inputStream.copyTo(outputStream, bufferSize = CopyBufferSize)
+                    }
+                } ?: raise(ExternalAttachmentErrorResult.UnableToCopy)
+            } catch (exception: IOException) {
+                // The source file lives in the app cache and can be evicted (by the OS or by the SDK)
+                // while the user is picking a destination, so a missing file is an expected failure here.
+                Timber.w(exception, "Unable to copy the file to the selected destination.")
+                raise(ExternalAttachmentErrorResult.UnableToCopy)
+            } catch (exception: SecurityException) {
+                Timber.w(exception, "Not allowed to access the source or the destination file.")
+                raise(ExternalAttachmentErrorResult.UnableToCopy)
+            }
         }
     }
 
     override suspend fun saveFileToDownloadsFolder(
-        fileContent: FileContent
+        sourceUri: Uri,
+        fileName: String,
+        mimeType: String
     ): Either<ExternalAttachmentErrorResult, Unit> = either {
         withContext(ioDispatcher + NonCancellable) {
             val values = ContentValues().apply {
-                put(MediaStore.Downloads.DISPLAY_NAME, generateUniqueFileName(fileContent.name))
-                put(MediaStore.Downloads.MIME_TYPE, fileContent.mimeType)
+                put(MediaStore.Downloads.DISPLAY_NAME, generateUniqueFileName(fileName))
+                put(MediaStore.Downloads.MIME_TYPE, mimeType)
             }
 
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
                 ?: raise(ExternalAttachmentErrorResult.UnableToCreateUri)
 
-            try {
-                copyUriToDestination(sourceUri = fileContent.uri, destinationUri = uri)
-            } catch (_: IOException) {
-                raise(ExternalAttachmentErrorResult.UnableToCopy)
-            }
+            copyUriToDestination(sourceUri = sourceUri, destinationUri = uri)
+                .onLeft { deleteQuietly(uri) }
+                .bind()
         }
     }
 
@@ -83,7 +93,11 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
                 context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
                     outputStream.write(data)
                 } ?: raise(ExternalAttachmentErrorResult.UnableToCopy)
-            } catch (_: IOException) {
+            } catch (exception: IOException) {
+                Timber.w(exception, "Unable to write the data to the selected destination.")
+                raise(ExternalAttachmentErrorResult.UnableToCopy)
+            } catch (exception: SecurityException) {
+                Timber.w(exception, "Not allowed to write to the selected destination.")
                 raise(ExternalAttachmentErrorResult.UnableToCopy)
             }
         }
@@ -101,13 +115,20 @@ class ExternalAttachmentsHandlerImpl @Inject constructor(
             }
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
                 ?: raise(ExternalAttachmentErrorResult.UnableToCreateUri)
-            try {
-                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    outputStream.write(data)
-                }
-            } catch (_: IOException) {
-                raise(ExternalAttachmentErrorResult.UnableToCopy)
-            }
+
+            saveDataToDestination(destinationUri = uri, mimeType = mimeType, data = data)
+                .onLeft { deleteQuietly(uri) }
+                .bind()
         }
+    }
+
+    private fun deleteQuietly(uri: Uri) {
+        runCatching { context.contentResolver.delete(uri, null, null) }
+            .onFailure { Timber.w(it, "Unable to delete the incomplete entry at $uri.") }
+    }
+
+    private companion object {
+
+        const val CopyBufferSize = 8 * 1024
     }
 }

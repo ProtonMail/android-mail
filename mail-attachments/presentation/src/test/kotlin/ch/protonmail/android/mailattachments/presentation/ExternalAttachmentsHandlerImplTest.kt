@@ -20,6 +20,7 @@ package ch.protonmail.android.mailattachments.presentation
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
@@ -148,6 +149,78 @@ internal class ExternalAttachmentsHandlerImplTest {
         val data = byteArrayOf(1, 2, 3, 4)
 
         every { contentResolver.openOutputStream(destinationUri) } returns null
+
+        // When
+        val actual = attachmentsHandler.saveDataToDestination(destinationUri, mimeType, data)
+
+        // Then
+        assertEquals(ExternalAttachmentErrorResult.UnableToCopy.left(), actual)
+        verify(exactly = 1) { contentResolver.openOutputStream(destinationUri) }
+        confirmVerified(contentResolver)
+    }
+
+    @Test
+    fun `copyUriToDestination should emit an Error when the source file no longer exists`() = runTest {
+        // Given
+        val sourceUri = mockk<Uri>()
+        val destinationUri = mockk<Uri>()
+        every {
+            contentResolver.openInputStream(sourceUri)
+        } throws FileNotFoundException("open failed: ENOENT (No such file or directory)")
+
+        // When
+        val actual = attachmentsHandler.copyUriToDestination(sourceUri, destinationUri)
+
+        // Then
+        assertEquals(ExternalAttachmentErrorResult.UnableToCopy.left(), actual)
+        verify(exactly = 1) { contentResolver.openInputStream(sourceUri) }
+        confirmVerified(contentResolver)
+    }
+
+    @Test
+    fun `copyUriToDestination should emit an Error when the destination is no longer writable`() = runTest {
+        // Given
+        val sourceUri = mockk<Uri>()
+        val destinationUri = mockk<Uri>()
+        val inputStream = ByteArrayInputStream("test content".toByteArray())
+
+        every { contentResolver.openInputStream(sourceUri) } returns inputStream
+        every { contentResolver.openOutputStream(destinationUri) } throws FileNotFoundException("No such file")
+
+        // When
+        val actual = attachmentsHandler.copyUriToDestination(sourceUri, destinationUri)
+
+        // Then
+        assertEquals(ExternalAttachmentErrorResult.UnableToCopy.left(), actual)
+        verify(exactly = 1) { contentResolver.openInputStream(sourceUri) }
+        verify(exactly = 1) { contentResolver.openOutputStream(destinationUri) }
+        confirmVerified(contentResolver)
+    }
+
+    @Test
+    fun `copyUriToDestination should emit an Error when access to the source is not permitted`() = runTest {
+        // Given
+        val sourceUri = mockk<Uri>()
+        val destinationUri = mockk<Uri>()
+        every { contentResolver.openInputStream(sourceUri) } throws SecurityException("Permission Denial")
+
+        // When
+        val actual = attachmentsHandler.copyUriToDestination(sourceUri, destinationUri)
+
+        // Then
+        assertEquals(ExternalAttachmentErrorResult.UnableToCopy.left(), actual)
+        verify(exactly = 1) { contentResolver.openInputStream(sourceUri) }
+        confirmVerified(contentResolver)
+    }
+
+    @Test
+    fun `saveDataToDestination should emit an Error when the destination no longer exists`() = runTest {
+        // Given
+        val destinationUri = mockk<Uri>()
+        val mimeType = "image/png"
+        val data = byteArrayOf(1, 2, 3, 4)
+
+        every { contentResolver.openOutputStream(destinationUri) } throws FileNotFoundException("No such file")
 
         // When
         val actual = attachmentsHandler.saveDataToDestination(destinationUri, mimeType, data)

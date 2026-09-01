@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailattachments.presentation.reducer
 
 import android.net.Uri
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.R
@@ -26,6 +27,7 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownlo
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import io.mockk.mockk
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -37,7 +39,9 @@ internal class AttachmentDownloadReducerTest {
         openMode = AttachmentOpenMode.Open,
         name = "invoice.pdf",
         mimeType = "application/pdf",
-        uri = mockk<Uri>()
+        uri = mockk<Uri>(),
+        userId = UserId("user-id"),
+        attachmentId = AttachmentId("attachment-1")
     )
 
     private val reducer = AttachmentDownloadReducer()

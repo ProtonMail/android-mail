@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailattachments.presentation.model
 
-import android.net.Uri
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
+import me.proton.core.domain.entity.UserId
 
 data class FileContent(
     val name: String,
-    val uri: Uri,
-    val mimeType: String
+    val mimeType: String,
+    val userId: UserId,
+    val attachmentId: AttachmentId
 )

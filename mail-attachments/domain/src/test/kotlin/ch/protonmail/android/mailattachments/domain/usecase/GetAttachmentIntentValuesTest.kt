@@ -74,7 +74,9 @@ class GetAttachmentIntentValuesTest {
                 openMode = AttachmentOpenMode.Open,
                 name = "ebook.pdf",
                 mimeType = "application/pdf",
-                uri = uri
+                uri = uri,
+                userId = userId,
+                attachmentId = id
             ).right(),
             result
         )

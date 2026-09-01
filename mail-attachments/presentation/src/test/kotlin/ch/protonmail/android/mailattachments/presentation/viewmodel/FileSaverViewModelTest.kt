@@ -22,10 +22,13 @@ import android.net.Uri
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
+import ch.protonmail.android.mailattachments.domain.usecase.GetDecryptedAttachmentUri
 import ch.protonmail.android.mailattachments.presentation.ExternalAttachmentErrorResult
 import ch.protonmail.android.mailattachments.presentation.ExternalAttachmentsHandler
 import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.model.FileSaveState
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -33,6 +36,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -42,10 +46,11 @@ internal class FileSaverViewModelTest {
 
     private lateinit var viewModel: FileSaverViewModel
     private val attachmentsHandler = mockk<ExternalAttachmentsHandler>()
+    private val getDecryptedAttachmentUri = mockk<GetDecryptedAttachmentUri>()
 
     @BeforeTest
     fun setup() {
-        viewModel = FileSaverViewModel(attachmentsHandler)
+        viewModel = FileSaverViewModel(attachmentsHandler, getDecryptedAttachmentUri)
     }
 
     @AfterTest
@@ -63,37 +68,31 @@ internal class FileSaverViewModelTest {
 
     @Test
     fun `requestSave should emit RequestingSave state with content`() = runTest {
-        // Given
-        val fileContent = FileContent(name = "test.txt", mimeType = "text/plain", uri = mockk<Uri>())
-
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.requestSave(fileContent)
+            viewModel.requestSave(SourceFileContent)
 
             val state = awaitItem()
-            assertEquals(fileContent, (state as FileSaveState.RequestingSave).content)
+            assertEquals(SourceFileContent, (state as FileSaveState.RequestingSave).content)
         }
     }
 
     @Test
     fun `markLaunchAsConsumed should transition RequestingSave to WaitingForUser`() = runTest {
-        // Given
-        val fileContent = FileContent(name = "test.txt", mimeType = "text/plain", uri = mockk<Uri>())
-
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.requestSave(fileContent)
+            viewModel.requestSave(SourceFileContent)
             val requestingState = awaitItem()
             assertTrue(requestingState is FileSaveState.RequestingSave)
 
             viewModel.markLaunchAsConsumed()
 
             val waitingState = awaitItem()
-            assertEquals(fileContent, (waitingState as FileSaveState.WaitingForUser).content)
+            assertEquals(SourceFileContent, (waitingState as FileSaveState.WaitingForUser).content)
         }
     }
 
@@ -111,64 +110,109 @@ internal class FileSaverViewModelTest {
     }
 
     @Test
-    fun `performSave should successfully save file and emit Saved state`() = runTest {
+    fun `performSave should resolve the source at save time and emit Saved state`() = runTest {
         // Given
-        val sourceUri = mockk<Uri>()
         val destinationUri = mockk<Uri>()
-
-        coEvery { attachmentsHandler.copyUriToDestination(sourceUri, destinationUri) } returns Unit.right()
+        coEvery { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) } returns SourceUri.right()
+        coEvery { attachmentsHandler.copyUriToDestination(SourceUri, destinationUri) } returns Unit.right()
 
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.performSave(destinationUri, sourceUri)
+            viewModel.moveToWaitingForUser()
+            skipItems(2)
+
+            viewModel.performSave(destinationUri)
 
             assertEquals(FileSaveState.Saving, awaitItem())
             assertEquals(FileSaveState.Saved.UserPicked, awaitItem())
         }
 
-        coVerify(exactly = 1) { attachmentsHandler.copyUriToDestination(sourceUri, destinationUri) }
+        coVerify(exactly = 1) { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) }
+        coVerify(exactly = 1) { attachmentsHandler.copyUriToDestination(SourceUri, destinationUri) }
         confirmVerified(attachmentsHandler)
+    }
+
+    @Test
+    fun `performSave should emit Error and skip the copy when the source can no longer be resolved`() = runTest {
+        // Given
+        val destinationUri = mockk<Uri>()
+        coEvery {
+            getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId)
+        } returns DataError.Local.FailedToReadFile.left()
+
+        // When + Then
+        viewModel.saveState.test {
+            assertEquals(FileSaveState.Idle, awaitItem())
+
+            viewModel.moveToWaitingForUser()
+            skipItems(2)
+
+            viewModel.performSave(destinationUri)
+
+            assertEquals(FileSaveState.Saving, awaitItem())
+            assertEquals(FileSaveState.Error(ExternalAttachmentErrorResult.SourceUnavailable), awaitItem())
+        }
+
+        coVerify(exactly = 1) { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) }
+        confirmVerified(attachmentsHandler)
+    }
+
+    @Test
+    fun `performSave should reset to Idle when no save is pending`() = runTest {
+        // When + Then
+        viewModel.saveState.test {
+            assertEquals(FileSaveState.Idle, awaitItem())
+
+            viewModel.performSave(mockk<Uri>())
+
+            expectNoEvents()
+        }
+
+        confirmVerified(attachmentsHandler, getDecryptedAttachmentUri)
     }
 
     @Test
     fun `performSave should emit Error state when unable to create uri`() = runTest {
         // Given
-        val sourceUri = mockk<Uri>()
         val destinationUri = mockk<Uri>()
-
+        coEvery { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) } returns SourceUri.right()
         coEvery {
-            attachmentsHandler.copyUriToDestination(sourceUri, destinationUri)
+            attachmentsHandler.copyUriToDestination(SourceUri, destinationUri)
         } returns ExternalAttachmentErrorResult.UnableToCreateUri.left()
 
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.performSave(destinationUri, sourceUri)
+            viewModel.moveToWaitingForUser()
+            skipItems(2)
+
+            viewModel.performSave(destinationUri)
             assertEquals(FileSaveState.Saving, awaitItem())
 
-            val errorState = awaitItem()
-            assertEquals(errorState, FileSaveState.Error(ExternalAttachmentErrorResult.UnableToCreateUri))
+            assertEquals(FileSaveState.Error(ExternalAttachmentErrorResult.UnableToCreateUri), awaitItem())
         }
     }
 
     @Test
     fun `performSave should emit Error state when an error occurs during copy`() = runTest {
         // Given
-        val sourceUri = mockk<Uri>()
         val destinationUri = mockk<Uri>()
-
+        coEvery { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) } returns SourceUri.right()
         coEvery {
-            attachmentsHandler.copyUriToDestination(sourceUri, destinationUri)
+            attachmentsHandler.copyUriToDestination(SourceUri, destinationUri)
         } returns ExternalAttachmentErrorResult.UnableToCopy.left()
 
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.performSave(destinationUri, sourceUri)
+            viewModel.moveToWaitingForUser()
+            skipItems(2)
+
+            viewModel.performSave(destinationUri)
 
             assertEquals(FileSaveState.Saving, awaitItem())
 
@@ -179,41 +223,78 @@ internal class FileSaverViewModelTest {
     }
 
     @Test
-    fun `performSaveToDownloadFolder should successfully save file and emit Saved state`() = runTest {
+    fun `performSaveToDownloadFolder should resolve the source and emit Saved state`() = runTest {
         // Given
-        val sourceUri = mockk<Uri>()
-        val fileContent = FileContent("fileName.pdf", sourceUri, "image/png")
-
-        coEvery { attachmentsHandler.saveFileToDownloadsFolder(fileContent) } returns Unit.right()
+        coEvery { getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId) } returns SourceUri.right()
+        coEvery {
+            attachmentsHandler.saveFileToDownloadsFolder(SourceUri, SourceFileContent.name, SourceFileContent.mimeType)
+        } returns Unit.right()
 
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.performSaveToDownloadFolder(fileContent)
+            viewModel.performSaveToDownloadFolder(SourceFileContent)
 
             assertEquals(FileSaveState.Saving, awaitItem())
             assertEquals(FileSaveState.Saved.FallbackLocation, awaitItem())
         }
 
-        coVerify(exactly = 1) { attachmentsHandler.saveFileToDownloadsFolder(fileContent) }
+        coVerify(exactly = 1) {
+            attachmentsHandler.saveFileToDownloadsFolder(SourceUri, SourceFileContent.name, SourceFileContent.mimeType)
+        }
         confirmVerified(attachmentsHandler)
     }
 
     @Test
-    fun `resetState should return state to Idle`() = runTest {
+    fun `performSaveToDownloadFolder should emit Error when the source can no longer be resolved`() = runTest {
         // Given
-        val fileContent = FileContent(name = "test.txt", mimeType = "text/plain", uri = mockk<Uri>())
+        coEvery {
+            getDecryptedAttachmentUri(PrimaryUserId, SourceAttachmentId)
+        } returns DataError.Local.FailedToReadFile.left()
 
         // When + Then
         viewModel.saveState.test {
             assertEquals(FileSaveState.Idle, awaitItem())
 
-            viewModel.requestSave(fileContent)
+            viewModel.performSaveToDownloadFolder(SourceFileContent)
+
+            assertEquals(FileSaveState.Saving, awaitItem())
+            assertEquals(FileSaveState.Error(ExternalAttachmentErrorResult.SourceUnavailable), awaitItem())
+        }
+
+        confirmVerified(attachmentsHandler)
+    }
+
+    @Test
+    fun `resetState should return state to Idle`() = runTest {
+        // When + Then
+        viewModel.saveState.test {
+            assertEquals(FileSaveState.Idle, awaitItem())
+
+            viewModel.requestSave(SourceFileContent)
             assertTrue(awaitItem() is FileSaveState.RequestingSave)
 
             viewModel.resetState()
             assertEquals(FileSaveState.Idle, awaitItem())
         }
+    }
+
+    private fun FileSaverViewModel.moveToWaitingForUser() {
+        requestSave(SourceFileContent)
+        markLaunchAsConsumed()
+    }
+
+    private companion object {
+
+        val PrimaryUserId = UserId("user-id")
+        val SourceAttachmentId = AttachmentId("attachment-1")
+        val SourceUri = mockk<Uri>()
+        val SourceFileContent = FileContent(
+            name = "fileName.pdf",
+            mimeType = "application/pdf",
+            userId = PrimaryUserId,
+            attachmentId = SourceAttachmentId
+        )
     }
 }

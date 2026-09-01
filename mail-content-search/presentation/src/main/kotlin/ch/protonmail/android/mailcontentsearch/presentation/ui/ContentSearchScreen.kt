@@ -126,7 +126,14 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
         if (IntentHelper.canOpenFile(context, input)) {
             openAttachment(input)
         } else {
-            saveAttachment(FileContent(intentValues.name, intentValues.uri, intentValues.mimeType))
+            saveAttachment(
+                FileContent(
+                    intentValues.name,
+                    intentValues.mimeType,
+                    intentValues.userId,
+                    intentValues.attachmentId
+                )
+            )
         }
     }
     ConsumableTextEffect(effect = state.errorMessage) { showSnackbar(SnackbarError(it)) }

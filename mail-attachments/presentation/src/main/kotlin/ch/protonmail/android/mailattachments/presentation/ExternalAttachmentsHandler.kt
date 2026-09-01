@@ -20,12 +20,16 @@ package ch.protonmail.android.mailattachments.presentation
 
 import android.net.Uri
 import arrow.core.Either
-import ch.protonmail.android.mailattachments.presentation.model.FileContent
 
 interface ExternalAttachmentsHandler {
 
     suspend fun copyUriToDestination(sourceUri: Uri, destinationUri: Uri): Either<ExternalAttachmentErrorResult, Unit>
-    suspend fun saveFileToDownloadsFolder(fileContent: FileContent): Either<ExternalAttachmentErrorResult, Unit>
+
+    suspend fun saveFileToDownloadsFolder(
+        sourceUri: Uri,
+        fileName: String,
+        mimeType: String
+    ): Either<ExternalAttachmentErrorResult, Unit>
 
     suspend fun saveDataToDestination(
         destinationUri: Uri,
@@ -43,6 +47,7 @@ interface ExternalAttachmentsHandler {
 sealed interface ExternalAttachmentErrorResult {
     data object UnableToCreateUri : ExternalAttachmentErrorResult
     data object UnableToCopy : ExternalAttachmentErrorResult
+    data object SourceUnavailable : ExternalAttachmentErrorResult
     data object UnableToLoadImage : ExternalAttachmentErrorResult
     data object UserNotFound : ExternalAttachmentErrorResult
 }

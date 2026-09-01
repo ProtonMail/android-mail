@@ -3897,7 +3897,9 @@ internal class MailboxViewModelTest {
             mimeType = "mimeType",
             openMode = openMode,
             uri = mockk(),
-            name = "file.pdf"
+            name = "file.pdf",
+            userId = userId,
+            attachmentId = attachmentId
         )
         coEvery { getAttachmentIntentValues(userId, openMode, attachmentId) } returns attachmentIntentValues.right()
 
@@ -4060,7 +4062,9 @@ internal class MailboxViewModelTest {
             mimeType = "mimeType",
             openMode = openMode,
             uri = mockk(),
-            name = "file.pdf"
+            name = "file.pdf",
+            userId = userId,
+            attachmentId = attachmentId
         )
         coEvery { getAttachmentIntentValues(userId, openMode, attachmentId) } coAnswers {
             delay(1500)
