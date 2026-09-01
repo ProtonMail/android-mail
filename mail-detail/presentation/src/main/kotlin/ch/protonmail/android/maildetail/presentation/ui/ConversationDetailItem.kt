@@ -238,8 +238,9 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     isListScrolling: Boolean = false
 ) {
     val id = uiModel.messageId
-    // we are likely scrolling back to the view in the list
-    val viewPreviouslyLoaded = remember(id) { cachedWebContentHeight != null }
+    // we are likely scrolling back to the view in the list. A cached height of 0 is a pre-render placeholder,
+    // not a real height, so treat it as not-yet-loaded - otherwise the recycle hold pins the card to 0.
+    val viewPreviouslyLoaded = remember(id) { cachedWebContentHeight != null && cachedWebContentHeight > 0 }
     val isExpanding = rememberSaveable(id) { mutableStateOf(!viewPreviouslyLoaded) }
     val isWebViewLoading = remember(id) { mutableStateOf(true) }
     val columnHeight = rememberSaveable(id) { mutableIntStateOf(0) }
@@ -419,10 +420,11 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     // reload grows back, so the card does not briefly shrink then grow. Compare like for like -
                     // the WebView measurement against its own previous height, not the full column height (which
                     // also includes chrome, so it would never match for messages with RSVP/banners/attachments and
-                    // would always fall through to the timeout). First load (no previous height) releases
-                    // immediately; the safety timeout above covers genuine shrinks.
+                    // would always fall through to the timeout). A card that was not previously loaded releases
+                    // immediately; the safety timeout above covers genuine shrinks. Use !viewPreviouslyLoaded so
+                    // this agrees with the ReLoading gate and the safety-timer arm on the same "is loaded" check.
                     val previousWebViewHeight = lastWebViewHeightPx.intValue
-                    val hasGrownBack = cachedWebContentHeight == null || measuredHeight >= previousWebViewHeight
+                    val hasGrownBack = !viewPreviouslyLoaded || measuredHeight >= previousWebViewHeight
                     if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
                     if (hasGrownBack) {
                         isWebViewLoading.value = false
