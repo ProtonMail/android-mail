@@ -60,6 +60,9 @@ internal class DebugActivity : AppCompatActivity() {
                                 },
                                 onDatabaseExportNavigation = {
                                     navController.navigate(Screen.ApplicationDebugDatabaseExport.route)
+                                },
+                                onTelemetryNavigation = {
+                                    navController.navigate(Screen.ApplicationDebugTelemetry.route)
                                 }
                             )
                         )
@@ -73,6 +76,12 @@ internal class DebugActivity : AppCompatActivity() {
 
                     composable(route = Screen.ApplicationDebugDatabaseExport.route) {
                         DatabaseExportScreen(
+                            onBackClick = { navController.navigateBack() }
+                        )
+                    }
+
+                    composable(route = Screen.ApplicationDebugTelemetry.route) {
+                        TelemetryDebugScreen(
                             onBackClick = { navController.navigateBack() }
                         )
                     }
