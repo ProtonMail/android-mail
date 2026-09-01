@@ -1251,7 +1251,8 @@ private fun MessagesContent(
                     }
                 },
                 previouslyLoadedHeight = rememberCachedHeight,
-                finishedResizing = itemFinishedResizing
+                finishedResizing = itemFinishedResizing,
+                isListScrolling = listState.isScrollInProgress
             )
         }
     }
