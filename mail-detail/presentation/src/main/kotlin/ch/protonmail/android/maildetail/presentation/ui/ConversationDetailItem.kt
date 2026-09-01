@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -84,6 +85,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
 import ch.protonmail.android.mailmessage.presentation.ui.WEB_VIEW_FIXED_MAX_HEIGHT
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
+import kotlinx.coroutines.delay
 
 @Composable
 @Suppress("LongParameterList")
@@ -241,6 +243,28 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     val isExpanding = rememberSaveable(id) { mutableStateOf(!viewPreviouslyLoaded) }
     val isWebViewLoading = remember(id) { mutableStateOf(true) }
     val columnHeight = rememberSaveable(id) { mutableIntStateOf(0) }
+    // The WebView's own last settled height (body only, no chrome). rememberSaveable so it survives the card
+    // being recycled while scrolling. Used to decide when a recycle-reload has grown back - comparing like
+    // for like against the WebView measurement, unlike columnHeight which also includes RSVP/banners/attachments.
+    val lastWebViewHeightPx = rememberSaveable(id) { mutableIntStateOf(0) }
+    // Bumped on every WebView height report (see onMessageBodyLoaded) so the safety timer below is load-aware:
+    // each report restarts the window, so it only fires after the reload has been quiet for the timeout - it
+    // never cuts off a reload that is still reporting new heights (slow device, large message, remote images).
+    val lastBodyReport = remember(id) { mutableIntStateOf(0) }
+
+    // Safety release for the recycle-reload hold in onMessageBodyLoaded: if a reload never grows back to its
+    // previous WebView height (e.g. the content genuinely shrank), stop holding after a short window so the card
+    // can never stick at a stale height. Keyed on isWebViewLoading so it arms only while a reload is in progress
+    // and cancels the moment the fast path releases; on lastBodyReport so each height report resets the window;
+    // and gated on !isListScrolling so it never releases mid-scroll (the scroll-pin holds the card meanwhile).
+    if (viewPreviouslyLoaded) {
+        LaunchedEffect(id, isWebViewLoading.value, lastBodyReport.intValue, isListScrolling) {
+            if (isWebViewLoading.value && !isListScrolling) {
+                delay(RELOAD_SETTLE_TIMEOUT_MS)
+                isWebViewLoading.value = false
+            }
+        }
+    }
 
     // play reveal animation on first load, do not play if we are expanding content or if we are scrolling back to
     // the content.
@@ -384,11 +408,25 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     onLoadImagesAfterImageProxyFailure = actions.onLoadImagesAfterImageProxyFailure,
                     onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                 ),
-                onMessageBodyLoaded = { id: MessageId, i: Int ->
+                onMessageBodyLoaded = { id: MessageId, measuredHeight: Int ->
                     // now that the webview is loaded send the more recent height so it can be cached
                     onMessageBodyLoadFinished(id, columnHeight.intValue)
                     isExpanding.value = false
-                    isWebViewLoading.value = false
+                    // Signal the safety timer that the reload is still reporting, so it resets its window.
+                    lastBodyReport.intValue++
+                    // On a recycle-reload of an already-seen card the WebView reports an intermediate
+                    // (pre-image) height before images settle. Keep holding the cached height until the
+                    // reload grows back, so the card does not briefly shrink then grow. Compare like for like -
+                    // the WebView measurement against its own previous height, not the full column height (which
+                    // also includes chrome, so it would never match for messages with RSVP/banners/attachments and
+                    // would always fall through to the timeout). First load (no previous height) releases
+                    // immediately; the safety timeout above covers genuine shrinks.
+                    val previousWebViewHeight = lastWebViewHeightPx.intValue
+                    val hasGrownBack = cachedWebContentHeight == null || measuredHeight >= previousWebViewHeight
+                    if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
+                    if (hasGrownBack) {
+                        isWebViewLoading.value = false
+                    }
                 }
             )
         }
@@ -585,6 +623,10 @@ fun Modifier.reveal(
 // drift apart.
 private const val NEAR_CAP_MARGIN_PX = 62_143
 private const val MAX_STABLE_CARD_HEIGHT_PX = WEB_VIEW_FIXED_MAX_HEIGHT - NEAR_CAP_MARGIN_PX
+
+// How long a recycled card holds its cached height while the WebView reloads before releasing regardless, so it
+// can never stick at a stale height if the reloaded content genuinely settles shorter.
+private const val RELOAD_SETTLE_TIMEOUT_MS = 1_000L
 
 sealed class ItemState {
     object Loading : ItemState()
