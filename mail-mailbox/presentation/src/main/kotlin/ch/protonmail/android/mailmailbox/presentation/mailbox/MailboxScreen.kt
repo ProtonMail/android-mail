@@ -625,7 +625,7 @@ fun MailboxScreen(
             }
 
             ConsumableLaunchedEffect(mailboxListState.displayAttachment) {
-                val fileContent = FileContent(it.name, it.uri, it.mimeType)
+                val fileContent = FileContent(it.name, it.mimeType, it.userId, it.attachmentId)
 
                 // Check on OpenMode here is always skipped - we don't have a download button in the preview.
                 if (IntentHelper.canOpenFile(context, OpenAttachmentInput(it.uri, it.mimeType))) {

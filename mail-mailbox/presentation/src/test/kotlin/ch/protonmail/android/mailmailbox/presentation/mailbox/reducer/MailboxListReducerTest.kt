@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
@@ -47,6 +48,7 @@ import ch.protonmail.android.testdata.avatar.AvatarImagesUiModelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import io.mockk.mockk
+import me.proton.core.domain.entity.UserId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -141,7 +143,9 @@ internal class MailboxListReducerTest(
             mimeType = "mimeType",
             openMode = AttachmentOpenMode.Open,
             uri = mockk(),
-            name = "file.pdf"
+            name = "file.pdf",
+            userId = UserId("user-id"),
+            attachmentId = AttachmentId(attachmentIdUiModel.value)
         )
 
         private val transitionsFromLoadingState = listOf(

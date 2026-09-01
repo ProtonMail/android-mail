@@ -49,9 +49,10 @@ fun fileSaver(
     val fileSaveLauncher = rememberLauncherForActivityResult(
         contract = CreateDocumentWithMimeType()
     ) { destinationUri: Uri? ->
-        val state = saveState
-        if (destinationUri != null && state is FileSaveState.WaitingForUser) {
-            viewModel.performSave(destinationUri, state.content.uri)
+        if (destinationUri != null) {
+            // The source is resolved by the ViewModel at this point, not when the save was requested: the file may
+            // have been evicted from the cache while the picker was open.
+            viewModel.performSave(destinationUri)
         } else {
             viewModel.resetState()
         }

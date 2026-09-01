@@ -21,6 +21,8 @@ package ch.protonmail.android.mailattachments.presentation.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailattachments.domain.usecase.GetDecryptedAttachmentUri
+import ch.protonmail.android.mailattachments.presentation.ExternalAttachmentErrorResult
 import ch.protonmail.android.mailattachments.presentation.ExternalAttachmentsHandler
 import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.model.FileSaveState
@@ -28,11 +30,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class FileSaverViewModel @Inject constructor(
-    private val externalAttachmentsHandler: ExternalAttachmentsHandler
+    private val externalAttachmentsHandler: ExternalAttachmentsHandler,
+    private val getDecryptedAttachmentUri: GetDecryptedAttachmentUri
 ) : ViewModel() {
 
     private val mutableSaveState = MutableStateFlow<FileSaveState>(FileSaveState.Idle)
@@ -42,9 +46,16 @@ class FileSaverViewModel @Inject constructor(
         mutableSaveState.value = FileSaveState.RequestingSave(content)
     }
 
-    fun performSave(destinationUri: Uri, sourceUri: Uri) {
+    fun performSave(destinationUri: Uri) {
+        val content = (mutableSaveState.value as? FileSaveState.WaitingForUser)?.content ?: run {
+            resetState()
+            return
+        }
+
         viewModelScope.launch {
             mutableSaveState.value = FileSaveState.Saving
+
+            val sourceUri = resolveSourceUri(content) ?: return@launch
 
             externalAttachmentsHandler.copyUriToDestination(sourceUri = sourceUri, destinationUri = destinationUri)
                 .onLeft { mutableSaveState.value = FileSaveState.Error(it) }
@@ -56,11 +67,36 @@ class FileSaverViewModel @Inject constructor(
         viewModelScope.launch {
             mutableSaveState.value = FileSaveState.Saving
 
-            externalAttachmentsHandler.saveFileToDownloadsFolder(fileContent)
+            val sourceUri = resolveSourceUri(fileContent) ?: return@launch
+
+            externalAttachmentsHandler.saveFileToDownloadsFolder(
+                sourceUri = sourceUri,
+                fileName = fileContent.name,
+                mimeType = fileContent.mimeType
+            )
                 .onLeft { mutableSaveState.value = FileSaveState.Error(it) }
                 .onRight { mutableSaveState.value = FileSaveState.Saved.FallbackLocation }
         }
     }
+
+    /**
+     * Resolves the source Uri at the moment of the save.
+     *
+     * The Uri resolved when the save is requested cannot be reused reliably: the user may have left the picker
+     * open for a long while and as the decrypted file lives in the app cache, it may have been evicted in the
+     * meantime. Re-resolving re-downloads it when needed and is a no-op when it is still cached.
+     *
+     * Returns `null` and moves the state to [FileSaveState.Error] when the attachment can no longer be obtained.
+     */
+    private suspend fun resolveSourceUri(content: FileContent): Uri? =
+        getDecryptedAttachmentUri(content.userId, content.attachmentId).fold(
+            ifLeft = {
+                Timber.w("Unable to resolve the attachment to save: $it")
+                mutableSaveState.value = FileSaveState.Error(ExternalAttachmentErrorResult.SourceUnavailable)
+                null
+            },
+            ifRight = { it }
+        )
 
     fun resetState() {
         mutableSaveState.value = FileSaveState.Idle

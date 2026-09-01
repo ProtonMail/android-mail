@@ -108,7 +108,9 @@ internal class ContentSearchViewModelTest {
         openMode = AttachmentOpenMode.Open,
         name = "invoice.pdf",
         mimeType = "application/pdf",
-        uri = mockk()
+        uri = mockk(),
+        userId = userId,
+        attachmentId = AttachmentId(attachmentId.value)
     )
 
     private val searchPager = mockk<Pager<MailboxPageKey, MailboxItem>> {

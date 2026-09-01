@@ -41,7 +41,9 @@ class GetAttachmentIntentValues @Inject constructor(private val attachmentReposi
             openMode = openMode,
             name = attachment.metadata.name,
             mimeType = attachment.metadata.mimeType.mime,
-            uri = attachment.fileUri
+            uri = attachment.fileUri,
+            userId = userId,
+            attachmentId = attachmentId
         )
     }
 }
