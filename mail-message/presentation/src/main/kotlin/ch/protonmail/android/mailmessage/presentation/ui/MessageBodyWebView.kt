@@ -541,7 +541,8 @@ private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
 // (Limit set in androidx.compose.ui.unit.Constraints)
-private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
+// Public so the conversation-detail scroll-pin can derive its own at-cap guard from the same value.
+const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
 
 // Safe upper bound for the WebView's physical measured height. Leaves ~2400px of headroom below
 // the 16383 GL_MAX_TEXTURE_SIZE reported by most Adreno/Mali GPUs, so the Chromium compositor

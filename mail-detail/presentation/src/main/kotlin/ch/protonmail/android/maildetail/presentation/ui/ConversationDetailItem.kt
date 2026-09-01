@@ -81,6 +81,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageThemeOptions
 import ch.protonmail.android.mailmessage.domain.model.RsvpAnswer
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.ParticipantAvatar
+import ch.protonmail.android.mailmessage.presentation.ui.WEB_VIEW_FIXED_MAX_HEIGHT
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
 
@@ -101,7 +102,9 @@ fun ConversationDetailItem(
     // we need to know when the parent view has finished resizing and scrolling as it calculates and adjusts item
     // heights. We should only reveal the expanded card once we have finished loading the parent view and
     // have calculated all the heights
-    finishedResizing: Boolean
+    finishedResizing: Boolean,
+    // true while the list is scrolling, so a settled card can hold its height and ignore transient re-measurements
+    isListScrolling: Boolean = false
 ) {
     val avatarActions = ParticipantAvatar.Actions.Empty.copy(
         onAvatarImageLoadRequested = actions.onAvatarImageLoadRequested
@@ -147,7 +150,8 @@ fun ConversationDetailItem(
                     downloadingAttachmentId = downloadingAttachmentId,
                     onMessageBodyLoadFinished = onMessageBodyLoadFinished,
                     cachedWebContentHeight = previouslyLoadedHeight,
-                    finishedResizing = finishedResizing
+                    finishedResizing = finishedResizing,
+                    isListScrolling = isListScrolling
                 )
             }
         }
@@ -227,7 +231,9 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     // we need to know when the parent view has finished resizing and scrolling as it calculates and adjusts item
     // heights. We should only reveal the expanded card once we have finished loading the parent view and
     // have calculated all the heights
-    finishedResizing: Boolean
+    finishedResizing: Boolean,
+    // true while the list is scrolling, so a settled card can hold its height and ignore transient re-measurements
+    isListScrolling: Boolean = false
 ) {
     val id = uiModel.messageId
     // we are likely scrolling back to the view in the list
@@ -311,7 +317,8 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                 .reveal(
                     id = id.id,
                     itemState = itemState,
-                    snap = viewPreviouslyLoaded
+                    snap = viewPreviouslyLoaded,
+                    isListScrolling = isListScrolling
                 )
                 .onSizeChanged {
                     columnHeight.intValue = it.height
@@ -522,7 +529,8 @@ fun Modifier.show(isVisible: Boolean, shouldAnimate: Boolean): Modifier {
 fun Modifier.reveal(
     id: String,
     itemState: ItemState,
-    snap: Boolean
+    snap: Boolean,
+    isListScrolling: Boolean
 ): Modifier {
     var lastHeightPx by rememberSaveable(id) { mutableIntStateOf(0) }
 
@@ -533,23 +541,32 @@ fun Modifier.reveal(
 
         ItemState.Expanding -> lastHeightPx
 
-        ItemState.Visible -> null
+        // Pin a settled card to its last stable height while the list is scrolling. A WebView can report a
+        // transient height during a scroll re-layout (it briefly measures at its max cap); pinning stops that
+        // from moving the layout. lastHeightPx is guarded below to exclude such unsettled measurements, so it
+        // is always a real, Constraints-representable height. Released once the scroll settles.
+        ItemState.Visible -> if (isListScrolling && lastHeightPx > 0) lastHeightPx else null
     }
 
-    // Cache height when actually visible
-    val cacheHeightModifier = if (itemState == ItemState.Visible) {
-        Modifier.onSizeChanged { size ->
-            if (size.height > 0) lastHeightPx = size.height
+    // Cache the height only when settled (visible, not scrolling), and never store an unsettled measurement:
+    // a WebView momentarily reports its max cap, which is also larger than Compose can lay out - keep the last
+    // real height instead. This keeps every held value safe to feed into requiredHeight().
+    // The modifier itself is kept stable (the settled/scrolling check is inside onSizeChanged, not around it) so
+    // the modifier chain does not change shape on every scroll edge, which would relayout the card each fling.
+    val cacheHeightModifier = Modifier.onSizeChanged { size ->
+        if (itemState == ItemState.Visible && !isListScrolling && size.height in 1 until MAX_STABLE_CARD_HEIGHT_PX) {
+            lastHeightPx = size.height
         }
-    } else {
-        Modifier
     }
 
     val animationModifier = if (snap) Modifier else Modifier.animateContentSize()
 
-    val heightModifier = when (holdHeightPx) {
-        null -> Modifier
-        else -> Modifier.requiredHeight(holdHeightPx.pxToDp())
+    val heightModifier = when {
+        holdHeightPx == null -> Modifier
+        // Final safety net: never requiredHeight an oversized value - Constraints cannot represent it and it
+        // would crash. Any such value means "not settled", so let it lay out freely this frame.
+        holdHeightPx in 0 until MAX_STABLE_CARD_HEIGHT_PX -> Modifier.requiredHeight(holdHeightPx.pxToDp())
+        else -> Modifier
     }
 
     return this
@@ -558,6 +575,16 @@ fun Modifier.reveal(
         .then(heightModifier)
         .then(cacheHeightModifier)
 }
+
+// Upper bound for a card height that may be pinned via requiredHeight. This is primarily a crash guard:
+// requiredHeight cannot represent a value at or near the Compose Constraints limit
+// (262_143 = WEB_VIEW_FIXED_MAX_HEIGHT), so any height in that band must lay out freely instead of being pinned.
+// It doubles as an at-cap transient filter only on the unrestricted WebView path, whose applied cap IS that same
+// limit; on the height-restricted path the applied cap is far lower (WEB_VIEW_SAFE_PHYSICAL_MAX_HEIGHT_PX), so
+// those measurements are real and pass through. The margin is derived from the cap so the two can never silently
+// drift apart.
+private const val NEAR_CAP_MARGIN_PX = 62_143
+private const val MAX_STABLE_CARD_HEIGHT_PX = WEB_VIEW_FIXED_MAX_HEIGHT - NEAR_CAP_MARGIN_PX
 
 sealed class ItemState {
     object Loading : ItemState()
