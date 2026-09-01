@@ -40,4 +40,42 @@
     <string name="app_debug_screen_database_export_empty" translatable="false">No databases found</string>
     <string name="app_debug_screen_database_export_saved" translatable="false">Database saved</string>
     <string name="app_debug_screen_database_export_error" translatable="false">Failed to export database</string>
+    <string name="app_debug_screen_telemetry_section_title" translatable="false">Telemetry</string>
+    <string name="app_debug_screen_telemetry_subtitle" translatable="false">Inspect recorded events</string>
+    <string name="app_debug_screen_telemetry_title" translatable="false">Telemetry debug</string>
+    <string name="app_debug_screen_telemetry_refresh" translatable="false">Refresh</string>
+    <string name="app_debug_screen_telemetry_capture_on" translatable="false">Capturing</string>
+    <string name="app_debug_screen_telemetry_capture_off" translatable="false">Capture off</string>
+    <string name="app_debug_screen_telemetry_sending_on" translatable="false">Sending</string>
+    <string name="app_debug_screen_telemetry_sending_halted" translatable="false">Sending halted</string>
+    <string name="app_debug_screen_telemetry_more_actions" translatable="false">More actions</string>
+    <string name="app_debug_screen_telemetry_clear_log" translatable="false">Clear log</string>
+    <string name="app_debug_screen_telemetry_discard_queue" translatable="false">Discard queue</string>
+    <plurals name="app_debug_screen_telemetry_events_count" translatable="false">
+        <item quantity="one">%1$d event</item>
+        <item quantity="other">%1$d events</item>
+    </plurals>
+    <plurals name="app_debug_screen_telemetry_events_count_filtered" translatable="false">
+        <item quantity="one">%1$d of %2$d event</item>
+        <item quantity="other">%1$d of %2$d events</item>
+    </plurals>
+    <string name="app_debug_screen_telemetry_search_hint" translatable="false">Search event or dimension</string>
+    <string name="app_debug_screen_telemetry_search_clear" translatable="false">Clear search</string>
+    <string name="app_debug_screen_telemetry_expand_all" translatable="false">Expand all</string>
+    <string name="app_debug_screen_telemetry_collapse_all" translatable="false">Collapse all</string>
+    <string name="app_debug_screen_telemetry_events_empty" translatable="false">No captured events. Turn capture on with the record button, then trigger some activity in the app.</string>
+    <string name="app_debug_screen_telemetry_events_no_match" translatable="false">No event matches the search.</string>
+    <string name="app_debug_screen_telemetry_event_summary" translatable="false">%1$d dims · %2$d vals</string>
+    <string name="app_debug_screen_telemetry_event_summary_hint" translatable="false">%1$d dims · %2$d vals · long press to copy</string>
+    <string name="app_debug_screen_telemetry_event_dimensions" translatable="false">Dimensions</string>
+    <string name="app_debug_screen_telemetry_event_values" translatable="false">Values</string>
+    <string name="app_debug_screen_telemetry_copy_payload" translatable="false">Copy payload</string>
+    <string name="app_debug_screen_telemetry_copy_id" translatable="false">Copy event id</string>
+    <string name="app_debug_screen_telemetry_dialog_close" translatable="false">Close</string>
+    <string name="app_debug_screen_telemetry_legend_open" translatable="false">What do these mean?</string>
+    <string name="app_debug_screen_telemetry_legend_title" translatable="false">Legend</string>
+    <string name="app_debug_screen_telemetry_legend_capture_on" translatable="false">Every recorded event is copied to a device-local log, kept for 7 days. Tap the icon to stop.</string>
+    <string name="app_debug_screen_telemetry_legend_capture_off" translatable="false">Nothing is being logged locally, so this list will not grow. Tap the icon to start capturing.</string>
+    <string name="app_debug_screen_telemetry_legend_sending_on" translatable="false">Events are delivered to the backend as usual. Tap the icon to halt delivery.</string>
+    <string name="app_debug_screen_telemetry_legend_sending_halted" translatable="false">Events are still recorded but never leave the device. Tap the icon to resume delivery.</string>
 </resources>
