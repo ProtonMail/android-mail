@@ -33,6 +33,9 @@ plugins {
     id("account-sdk-plugin")
 }
 
+/** Flavors that get the internal debug menu: its sources, resources and its dev-only dependencies. */
+val debugMenuFlavors = listOf("dev", "alpha")
+
 val accountSentryDSN: String = System.getenv("SENTRY_DSN_ACCOUNT") ?: ""
 val sentryDSN: String = System.getenv("SENTRY_DSN_MAIL") ?: ""
 
@@ -189,10 +192,10 @@ android {
         getByName("dev").res.srcDirs("src/dev/res")
         getByName("alpha").res.srcDirs("src/alpha/res")
         // Debug menu is available on dev and alpha builds, but not on prod.
-        getByName("dev").kotlin.srcDirs("src/debugMenu/kotlin")
-        getByName("alpha").kotlin.srcDirs("src/debugMenu/kotlin")
-        getByName("dev").res.srcDirs("src/debugMenu/res")
-        getByName("alpha").res.srcDirs("src/debugMenu/res")
+        debugMenuFlavors.forEach { flavor ->
+            getByName(flavor).kotlin.srcDirs("src/debugMenu/kotlin")
+            getByName(flavor).res.srcDirs("src/debugMenu/res")
+        }
     }
 }
 
@@ -261,6 +264,8 @@ dependencies {
     implementation(project(":mail-snooze"))
     implementation(project(":mail-padlocks"))
     implementation(project(":mail-telemetry"))
+    // Internal telemetry inspection: never part of a prod APK, mirroring the debugMenu source set.
+    debugMenuFlavors.forEach { flavor -> add("${flavor}Implementation", project(":mail-telemetry:debug")) }
     implementation(project(":uicomponents"))
     implementation(project(":design-system"))
     implementation(project(":presentation-compose"))
