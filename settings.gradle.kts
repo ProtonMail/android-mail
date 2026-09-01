@@ -225,6 +225,7 @@ include(":mail-crash-record:domain")
 
 include(":mail-telemetry:dagger")
 include(":mail-telemetry:data")
+include(":mail-telemetry:debug")
 include(":mail-telemetry:domain")
 
 include(":uicomponents")
