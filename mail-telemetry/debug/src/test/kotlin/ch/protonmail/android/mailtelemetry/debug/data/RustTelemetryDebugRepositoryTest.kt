@@ -20,13 +20,17 @@ package ch.protonmail.android.mailtelemetry.debug.data
 
 import arrow.core.right
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
+import ch.protonmail.android.mailsession.domain.model.Account
+import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
+import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugAccount
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugSwitches
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -39,6 +43,7 @@ import uniffi.mail_uniffi.MailUserSessionTelemetryDebugEventsResult
 import uniffi.mail_uniffi.TelemetryDebugEvent
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class RustTelemetryDebugRepositoryTest {
@@ -48,6 +53,37 @@ internal class RustTelemetryDebugRepositoryTest {
     private val executeWithUserSession = mockk<ExecuteWithUserSession>()
 
     private val repository = RustTelemetryDebugRepository(userSessionRepository, executeWithUserSession)
+
+    @Test
+    fun `should track the primary account`() = runTest {
+        // Given
+        every { userSessionRepository.observePrimaryAccount() } returns flowOf(
+            Account(
+                userId = UserId("user"),
+                name = "Test User",
+                state = AccountState.Ready,
+                primaryAddress = "test@proton.me"
+            )
+        )
+
+        // When
+        val actual = repository.observeTrackedAccount().first()
+
+        // Then
+        assertEquals(TelemetryDebugAccount(name = "Test User", email = "test@proton.me"), actual)
+    }
+
+    @Test
+    fun `should track no account when no user is logged in`() = runTest {
+        // Given
+        every { userSessionRepository.observePrimaryAccount() } returns flowOf(null)
+
+        // When
+        val actual = repository.observeTrackedAccount().first()
+
+        // Then
+        assertNull(actual)
+    }
 
     @Test
     fun `should return captured events newest first`() = runTest {

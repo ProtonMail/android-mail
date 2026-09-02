@@ -268,7 +268,6 @@ private fun TelemetryDebugContent(
     val focusManager = LocalFocusManager.current
     val listState = rememberLazyListState()
 
-    // Scrolling means the tester is done typing: drop focus so the keyboard stops hiding the log.
     LaunchedEffect(listState.isScrollInProgress) {
         if (listState.isScrollInProgress) focusManager.clearFocus()
     }
@@ -415,24 +414,41 @@ private fun TelemetryDebugListHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = if (state.events.size == state.capturedCount) {
-                    pluralStringResource(
-                        R.plurals.app_debug_screen_telemetry_events_count,
-                        state.capturedCount,
-                        state.capturedCount
+            Row(
+                modifier = Modifier.weight(1f, fill = false),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = if (state.events.size == state.capturedCount) {
+                        pluralStringResource(
+                            R.plurals.app_debug_screen_telemetry_events_count,
+                            state.capturedCount,
+                            state.capturedCount
+                        )
+                    } else {
+                        pluralStringResource(
+                            R.plurals.app_debug_screen_telemetry_events_count_filtered,
+                            state.capturedCount,
+                            state.events.size,
+                            state.capturedCount
+                        )
+                    },
+                    style = ProtonTheme.typography.bodySmall,
+                    color = ProtonTheme.colors.textWeak,
+                    maxLines = 1
+                )
+
+                state.trackedAccount?.let { account ->
+                    Text(
+                        text = stringResource(R.string.app_debug_screen_telemetry_tracked_account, account),
+                        style = ProtonTheme.typography.bodySmall,
+                        color = ProtonTheme.colors.textHint,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(start = ProtonDimens.Spacing.Small)
                     )
-                } else {
-                    pluralStringResource(
-                        R.plurals.app_debug_screen_telemetry_events_count_filtered,
-                        state.capturedCount,
-                        state.events.size,
-                        state.capturedCount
-                    )
-                },
-                style = ProtonTheme.typography.bodySmall,
-                color = ProtonTheme.colors.textWeak
-            )
+                }
+            }
             if (state.events.isNotEmpty()) {
                 Text(
                     text = stringResource(

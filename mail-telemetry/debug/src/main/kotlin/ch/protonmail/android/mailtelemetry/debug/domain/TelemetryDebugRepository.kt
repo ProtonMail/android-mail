@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailtelemetry.debug.domain
 
 import arrow.core.Either
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Device-local telemetry inspection, backed by the SDK's debug log. Only consumed by the internal
@@ -27,6 +28,8 @@ import arrow.core.Either
  * Every call requires a logged-in user session, since the log lives in the user database.
  */
 interface TelemetryDebugRepository {
+
+    fun observeTrackedAccount(): Flow<TelemetryDebugAccount?>
 
     /** The captured events, newest first. */
     suspend fun getEvents(): Either<TelemetryDebugError, List<TelemetryDebugEvent>>
