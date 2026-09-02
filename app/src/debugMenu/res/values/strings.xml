@@ -59,6 +59,7 @@
         <item quantity="one">%1$d of %2$d event</item>
         <item quantity="other">%1$d of %2$d events</item>
     </plurals>
+    <string name="app_debug_screen_telemetry_tracked_account" translatable="false">· %1$s</string>
     <string name="app_debug_screen_telemetry_search_hint" translatable="false">Search event or dimension</string>
     <string name="app_debug_screen_telemetry_search_clear" translatable="false">Clear search</string>
     <string name="app_debug_screen_telemetry_expand_all" translatable="false">Expand all</string>

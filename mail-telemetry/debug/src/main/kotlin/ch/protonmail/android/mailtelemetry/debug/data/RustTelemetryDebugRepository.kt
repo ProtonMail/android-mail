@@ -24,11 +24,14 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugAccount
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugError
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugEvent
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugRepository
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugSwitches
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionClearTelemetryDebugLogResult
 import uniffi.mail_uniffi.MailUserSessionDiscardTelemetryPendingQueueResult
@@ -40,17 +43,20 @@ import uniffi.mail_uniffi.MailUserSessionStartCapturingTelemetryDebugEventsResul
 import uniffi.mail_uniffi.MailUserSessionStopCapturingTelemetryDebugEventsResult
 import uniffi.mail_uniffi.MailUserSessionTelemetryDebugEventsResult
 import javax.inject.Inject
-import javax.inject.Singleton
 import uniffi.mail_uniffi.TelemetryDebugEvent as RustTelemetryDebugEvent
 
 /**
  * Reads and drives the SDK's telemetry debug log for the primary logged-in user.
  */
-@Singleton
 class RustTelemetryDebugRepository @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
     private val executeWithUserSession: ExecuteWithUserSession
 ) : TelemetryDebugRepository {
+
+    override fun observeTrackedAccount(): Flow<TelemetryDebugAccount?> =
+        userSessionRepository.observePrimaryAccount().map { account ->
+            account?.let { TelemetryDebugAccount(name = it.name, email = it.primaryAddress) }
+        }
 
     override suspend fun getEvents(): Either<TelemetryDebugError, List<TelemetryDebugEvent>> = onPrimarySession {
         when (val result = it.telemetryDebugEvents()) {

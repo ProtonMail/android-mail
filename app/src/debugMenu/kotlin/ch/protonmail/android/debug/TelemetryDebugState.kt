@@ -28,6 +28,8 @@ internal sealed interface TelemetryDebugState {
 
     @Stable
     data class Data(
+        /** Email of the account the log belongs to, or null while no user is logged in. */
+        val trackedAccount: String?,
         val capturing: Boolean,
         val sendingHalted: Boolean,
         val searchQuery: String,

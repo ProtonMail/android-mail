@@ -37,3 +37,6 @@ data class TelemetryDebugSwitches(val capturing: Boolean, val sendingHalted: Boo
 
 /** Failure of a telemetry debug call. The raw SDK message is kept verbatim: this is a QA tool. */
 data class TelemetryDebugError(val message: String)
+
+/** Identifies the account the debug log belongs to, so QA can tell which user they are looking at. */
+data class TelemetryDebugAccount(val name: String, val email: String)

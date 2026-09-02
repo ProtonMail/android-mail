@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.debug.TelemetryDebugViewModel.Companion.AutoRefreshIntervalMillis
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugError
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugEvent
 import ch.protonmail.android.mailtelemetry.debug.domain.TelemetryDebugRepository
@@ -65,18 +66,23 @@ internal class TelemetryDebugViewModel @Inject constructor(
         }
     }
 
-    private val snapshots = combine(autoRefreshTicks, refreshTrigger) { _, _ -> }
-        .mapLatest { readSnapshot() }
+    private val snapshots = combine(
+        autoRefreshTicks,
+        refreshTrigger,
+        repository.observeTrackedAccount()
+    ) { _, _, account -> account }
+        .mapLatest { account -> account to readSnapshot() }
 
     val state: StateFlow<TelemetryDebugState> = combine(
         snapshots,
         searchQuery,
         actionError
-    ) { snapshot, query, error ->
+    ) { (account, snapshot), query, error ->
         snapshot.fold(
             ifLeft = { TelemetryDebugState.Failed(it.message) },
             ifRight = { (switches, events) ->
                 TelemetryDebugState.Data(
+                    trackedAccount = account?.email,
                     capturing = switches.capturing,
                     sendingHalted = switches.sendingHalted,
                     searchQuery = query,
