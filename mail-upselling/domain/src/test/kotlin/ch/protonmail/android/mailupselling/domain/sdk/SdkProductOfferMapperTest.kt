@@ -23,9 +23,11 @@ import me.proton.android.core.payment.domain.model.ProductMetadata
 import me.proton.android.core.payment.domain.model.ProductOfferList
 import me.proton.android.core.payment.domain.model.ProductSelectionHeader
 import me.proton.android.payment.common.model.Entitlement as SdkEntitlement
-import me.proton.android.payment.common.model.Money
+import me.proton.android.payment.product.model.BillingCycle as SdkBillingCycle
+import me.proton.android.payment.product.model.BillingRecurrence as SdkBillingRecurrence
+import me.proton.android.payment.product.model.Money
 import me.proton.android.payment.product.model.Offer as SdkOffer
-import me.proton.android.payment.product.model.PricingPhase as SdkPricingPhase
+import me.proton.android.payment.product.model.PricingPeriod as SdkPricingPeriod
 import me.proton.android.payment.product.model.Product as SdkProduct
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -59,17 +61,33 @@ internal class SdkProductOfferMapperTest {
         planId = "mail2022",
         offers = listOf(
             SdkOffer.NonDiscounted(
-                pricingPhases = listOf(
-                    SdkPricingPhase(price = Money(100, "$1.00", "USD"), cycle = 1, period = "P1M"),
-                    SdkPricingPhase(price = Money(1200, "$12.00", "USD"), cycle = 1, period = "P1Y")
+                pricingPeriods = listOf(
+                    SdkPricingPeriod(
+                        price = Money(100, "$1.00", "USD"),
+                        cycle = SdkBillingCycle.Month(1),
+                        recurrence = SdkBillingRecurrence.Infinite
+                    ),
+                    SdkPricingPeriod(
+                        price = Money(1200, "$12.00", "USD"),
+                        cycle = SdkBillingCycle.Year(1),
+                        recurrence = SdkBillingRecurrence.Infinite
+                    )
                 ),
                 tags = emptyList(),
                 token = "base-token"
             ),
             SdkOffer.Discounted(
-                pricingPhases = listOf(
-                    SdkPricingPhase(price = Money(50, "$0.50", "USD"), cycle = 1, period = "P1M"),
-                    SdkPricingPhase(price = Money(600, "$6.00", "USD"), cycle = 1, period = "P1Y")
+                pricingPeriods = listOf(
+                    SdkPricingPeriod(
+                        price = Money(50, "$0.50", "USD"),
+                        cycle = SdkBillingCycle.Month(1),
+                        recurrence = SdkBillingRecurrence.Finite(1)
+                    ),
+                    SdkPricingPeriod(
+                        price = Money(600, "$6.00", "USD"),
+                        cycle = SdkBillingCycle.Year(1),
+                        recurrence = SdkBillingRecurrence.Finite(1)
+                    )
                 ),
                 tags = listOf("bf-promo"),
                 token = "promo-token-1"
@@ -81,9 +99,9 @@ internal class SdkProductOfferMapperTest {
                 text = "12 GB",
                 iconName = "storage",
                 title = "Storage",
-                min = 0f,
-                max = 12f,
-                current = 3f
+                min = 0,
+                max = 12,
+                current = 3
             )
         )
     )

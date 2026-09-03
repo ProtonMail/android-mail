@@ -37,7 +37,9 @@ import me.proton.android.core.payment.presentation.component.PurchaseButtonProce
 import me.proton.android.core.payment.presentation.R
 import me.proton.android.core.payment.presentation.component.PurchaseButtonState
 import me.proton.android.core.payment.presentation.model.Product
-import me.proton.android.payment.common.exception.PaymentException
+import me.proton.android.payment.exception.PaymentException
+import me.proton.android.payment.exception.PaymentExceptionCode
+import me.proton.android.payment.purchase.model.ReconciledPurchase
 import me.proton.android.payment.purchase.model.SessionState
 import me.proton.android.payment.purchase.usecase.ObserveSessionState
 import me.proton.android.payment.purchase.usecase.PurchaseProduct
@@ -92,8 +94,9 @@ internal class SdkBackedPurchaseButtonProcessorTest {
     @Test
     fun `when FF is ON a successful purchase emits Loading then Success and broadcasts the purchase`() = runTest {
         coEvery { flag.get() } returns true
-        every { observeSessionState.invoke() } returns flowOf(SessionState.Reconciling.Terminal.Success)
-        coEvery { purchaseProduct.invoke(any()) } returns
+        every { observeSessionState.invoke() } returns
+            flowOf(SessionState.Reconciling.Terminal.Success(reconciledPurchase))
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
             Result.success(SessionState.Purchasing.Terminal.ReadyToReconcile)
 
         val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
@@ -108,10 +111,12 @@ internal class SdkBackedPurchaseButtonProcessorTest {
 
     @Test
     fun `when FF is ON a reconciliation failure emits Loading then Error and does not broadcast`() = runTest {
-        val failure = SessionState.Reconciling.Terminal.Failure(PaymentException.StoreError(RuntimeException("nope")))
+        val failure = SessionState.Reconciling.Terminal.Failure(
+            PaymentException.StoreError(PaymentExceptionCode.STORE_PURCHASE, RuntimeException("nope"))
+        )
         coEvery { flag.get() } returns true
         every { observeSessionState.invoke() } returns flowOf(failure)
-        coEvery { purchaseProduct.invoke(any()) } returns
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
             Result.success(SessionState.Purchasing.Terminal.ReadyToReconcile)
 
         val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
@@ -124,7 +129,7 @@ internal class SdkBackedPurchaseButtonProcessorTest {
     fun `when FF is ON a store-phase failure emits Loading then Error`() = runTest {
         coEvery { flag.get() } returns true
         every { observeSessionState.invoke() } returns MutableSharedFlow()
-        coEvery { purchaseProduct.invoke(any()) } returns Result.failure(RuntimeException("store boom"))
+        coEvery { purchaseProduct.invoke(any(), any()) } returns Result.failure(RuntimeException("store boom"))
 
         val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
 
@@ -138,7 +143,7 @@ internal class SdkBackedPurchaseButtonProcessorTest {
             SessionState.Purchasing.Terminal.AwaitingReceipt,
             SessionState.Idle
         )
-        coEvery { purchaseProduct.invoke(any()) } returns
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
             Result.success(SessionState.Purchasing.Terminal.AwaitingReceipt)
 
         val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
@@ -150,14 +155,14 @@ internal class SdkBackedPurchaseButtonProcessorTest {
     @Test
     fun `when FF is ON a store failure on the session stream resets to Idle without broadcasting`() = runTest {
         val failure = SessionState.Purchasing.Terminal.Failure(
-            PaymentException.StoreError(RuntimeException("declined"))
+            PaymentException.StoreError(PaymentExceptionCode.STORE_PURCHASE, RuntimeException("declined"))
         )
         coEvery { flag.get() } returns true
         every { observeSessionState.invoke() } returns flowOf(
             SessionState.Purchasing.Terminal.AwaitingReceipt,
             failure
         )
-        coEvery { purchaseProduct.invoke(any()) } returns
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
             Result.success(SessionState.Purchasing.Terminal.AwaitingReceipt)
 
         val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
@@ -168,5 +173,10 @@ internal class SdkBackedPurchaseButtonProcessorTest {
 
     private companion object {
         const val ERROR_MESSAGE = "Something went wrong"
+        val reconciledPurchase = ReconciledPurchase(
+            orderId = "order-1",
+            planId = "mail2022",
+            title = "Mail Plus"
+        )
     }
 }
