@@ -280,58 +280,37 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
-    fun `should include only spam when the spam toggle is submitted`() = runTest(testDispatcher) {
+    fun `should include both scopes when the chip is activated`() = runTest(testDispatcher) {
         val sut = viewModel()
 
-        sut.submit(ContentSearchViewAction.ToggleIncludeSpam)
-        advanceUntilIdle()
-
-        assertEquals(IncludeFilter(includeSpam = true, includeTrash = false), sut.state.value.includeFilter)
-    }
-
-    @Test
-    fun `should include only trash when the trash toggle is submitted`() = runTest(testDispatcher) {
-        val sut = viewModel()
-
-        sut.submit(ContentSearchViewAction.ToggleIncludeTrash)
-        advanceUntilIdle()
-
-        assertEquals(IncludeFilter(includeSpam = false, includeTrash = true), sut.state.value.includeFilter)
-    }
-
-    @Test
-    fun `should include both scopes when both toggles are submitted`() = runTest(testDispatcher) {
-        val sut = viewModel()
-
-        sut.submit(ContentSearchViewAction.ToggleIncludeSpam)
-        sut.submit(ContentSearchViewAction.ToggleIncludeTrash)
+        sut.submit(ContentSearchViewAction.ToggleIncludeSpamTrash)
         advanceUntilIdle()
 
         assertEquals(IncludeFilter.spamAndTrash(true), sut.state.value.includeFilter)
     }
 
     @Test
-    fun `should drop a scope again when its toggle is submitted twice`() = runTest(testDispatcher) {
+    fun `should drop both scopes when the chip is submitted while enabled`() = runTest(testDispatcher) {
         val sut = viewModel()
 
-        sut.submit(ContentSearchViewAction.ToggleIncludeSpam)
-        sut.submit(ContentSearchViewAction.ToggleIncludeSpam)
+        sut.submit(ContentSearchViewAction.ToggleIncludeSpamTrash)
+        sut.submit(ContentSearchViewAction.ToggleIncludeSpamTrash)
         advanceUntilIdle()
 
         assertEquals(IncludeFilter.None, sut.state.value.includeFilter)
     }
 
     @Test
-    fun `should update live paginator filter in place when toggle is submitted`() = runTest(testDispatcher) {
+    fun `should update live paginator filter in place when chip is toggled`() = runTest(testDispatcher) {
         val sut = viewModel()
 
-        sut.submit(ContentSearchViewAction.ToggleIncludeTrash)
+        sut.submit(ContentSearchViewAction.ToggleIncludeSpamTrash)
         advanceUntilIdle()
 
         // Search results are always messages, so the message paginator's filter is mutated.
         coVerify {
             updateIncludeFilter(
-                IncludeFilter(includeSpam = false, includeTrash = true),
+                IncludeFilter.spamAndTrash(true),
                 ViewMode.NoConversationGrouping
             )
         }

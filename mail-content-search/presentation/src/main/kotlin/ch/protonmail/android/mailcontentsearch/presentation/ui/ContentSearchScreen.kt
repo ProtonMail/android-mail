@@ -191,8 +191,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
             onSearch = { viewModel.submit(ContentSearchViewAction.Search) },
             onSuggestionSelected = { viewModel.submit(ContentSearchViewAction.SuggestionSelected(it)) },
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
-            onToggleIncludeSpam = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpam) },
-            onToggleIncludeTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeTrash) },
+            onToggleIncludeSpamTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpamTrash) },
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -299,6 +298,7 @@ private fun ContentSearchScreen(
                 ContentSearchTopBar(
                     queryState = queryState,
                     includeFilter = state.includeFilter,
+                    isSearchLive = state.isSearchLive,
                     actions = actions,
                     inSelectionMode = state.inSelectionMode,
                     consumeAutoFocus = consumeAutoFocus

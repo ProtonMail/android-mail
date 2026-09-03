@@ -61,6 +61,13 @@ data class ContentSearchState(
 ) {
     val inSelectionMode: Boolean get() = selectionState.inSelectionMode
 
+    /**
+     * Whether a search is on screen — results or the loading they reload into — and so is the
+     * spam/trash chip. Loading counts so that retyping and resubmitting a query doesn't make the
+     * chip vanish and jump back as each new search spins up.
+     */
+    val isSearchLive: Boolean get() = phase != Phase.Idle
+
     sealed interface Phase {
         data object Idle : Phase
         data object Loading : Phase

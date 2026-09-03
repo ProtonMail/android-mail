@@ -21,10 +21,15 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldState
@@ -55,7 +60,10 @@ import ch.protonmail.android.design.compose.component.appbar.ProtonTopAppBar
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyLargeNorm
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcontentsearch.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ShowSpamTrashIncludeFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +71,7 @@ import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 internal fun ContentSearchTopBar(
     queryState: TextFieldState,
     includeFilter: IncludeFilter,
+    isSearchLive: Boolean,
     actions: ContentSearchActions,
     inSelectionMode: Boolean,
     modifier: Modifier = Modifier,
@@ -81,99 +90,116 @@ internal fun ContentSearchTopBar(
     // focus node exists.
     var hasRequestedFocus by remember { mutableStateOf(false) }
 
-    ProtonTopAppBar(
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
-        backgroundColor = ProtonTheme.colors.backgroundSecondary,
-        modifier = modifier.testTag(ContentSearchTopBarTestTags.RootItem),
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    keyboardController?.hide()
-                    if (inSelectionMode) actions.onExitSelectionMode() else actions.onClose()
+    Column(
+        modifier = modifier
+            .background(ProtonTheme.colors.backgroundSecondary)
+            .testTag(ContentSearchTopBarTestTags.RootItem)
+    ) {
+        ProtonTopAppBar(
+            windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
+            backgroundColor = ProtonTheme.colors.backgroundSecondary,
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+                        keyboardController?.hide()
+                        if (inSelectionMode) actions.onExitSelectionMode() else actions.onClose()
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(ProtonDimens.IconSize.Default),
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.content_search_close_content_description),
+                        tint = ProtonTheme.colors.iconNorm
+                    )
                 }
-            ) {
-                Icon(
-                    modifier = Modifier.size(ProtonDimens.IconSize.Default),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.content_search_close_content_description),
-                    tint = ProtonTheme.colors.iconNorm
+            },
+            title = {
+                SearchBarDefaults.InputField(
+                    state = queryState,
+                    onSearch = {
+                        keyboardController?.hide()
+                        actions.onSearch()
+                    },
+                    // Expansion belongs to the M3 SearchBar this field is intentionally used without.
+                    expanded = false,
+                    onExpandedChange = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
+                        .onGloballyPositioned {
+                            if (autoFocus && !hasRequestedFocus) {
+                                hasRequestedFocus = true
+                                focusRequester.requestFocus()
+                            }
+                        }
+                        .testTag(ContentSearchTopBarTestTags.SearchTextField),
+                    textStyle = ProtonTheme.typography.bodyLargeNorm,
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.content_search_placeholder_text),
+                            color = ProtonTheme.colors.textHint,
+                            style = ProtonTheme.typography.bodyLargeNorm
+                        )
+                    },
+                    trailingIcon = {
+                        AnimatedVisibility(
+                            visible = queryState.text.isNotEmpty(),
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            IconButton(
+                                modifier = Modifier.testTag(ContentSearchTopBarTestTags.ClearQueryButton),
+                                onClick = {
+                                    actions.onClearQuery()
+                                    // Clearing puts the user back at the start of a search rather than
+                                    // done with one, so hand the caret and the keyboard back — the
+                                    // keyboard is gone by now if they dismissed it to browse results.
+                                    focusRequester.requestFocus()
+                                    keyboardController?.show()
+                                }
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                                    painter = painterResource(id = R.drawable.ic_material_close),
+                                    contentDescription = stringResource(
+                                        R.string.content_search_clear_query_content_description
+                                    ),
+                                    tint = ProtonTheme.colors.iconNorm
+                                )
+                            }
+                        }
+                    },
+                    shape = RectangleShape,
+                    colors = SearchBarDefaults.inputFieldColors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedTextColor = ProtonTheme.colors.textNorm,
+                        unfocusedTextColor = ProtonTheme.colors.textNorm,
+                        cursorColor = ProtonTheme.colors.textNorm
+                    )
                 )
-            }
-        },
-        title = {
-            SearchBarDefaults.InputField(
-                state = queryState,
-                onSearch = {
-                    keyboardController?.hide()
-                    actions.onSearch()
-                },
-                // Expansion belongs to the M3 SearchBar this field is intentionally used without.
-                expanded = false,
-                onExpandedChange = {},
+            },
+            actions = {}
+        )
+        // The chip scopes the live search, so it stays up through the loading of a resubmitted
+        // query instead of flickering out and back with every new spin-up, on the same surface as
+        // the field above.
+        if (isSearchLive) {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onGloballyPositioned {
-                        if (autoFocus && !hasRequestedFocus) {
-                            hasRequestedFocus = true
-                            focusRequester.requestFocus()
-                        }
-                    }
-                    .testTag(ContentSearchTopBarTestTags.SearchTextField),
-                textStyle = ProtonTheme.typography.bodyLargeNorm,
-                placeholder = {
-                    Text(
-                        text = stringResource(R.string.content_search_placeholder_text),
-                        color = ProtonTheme.colors.textHint,
-                        style = ProtonTheme.typography.bodyLargeNorm
-                    )
-                },
-                trailingIcon = {
-                    AnimatedVisibility(
-                        visible = queryState.text.isNotEmpty(),
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        IconButton(
-                            modifier = Modifier.testTag(ContentSearchTopBarTestTags.ClearQueryButton),
-                            onClick = {
-                                actions.onClearQuery()
-                                // Clearing puts the user back at the start of a search rather than
-                                // done with one, so hand the caret and the keyboard back — the
-                                // keyboard is gone by now if they dismissed it to browse results.
-                                focusRequester.requestFocus()
-                                keyboardController?.show()
-                            }
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(ProtonDimens.IconSize.Medium),
-                                painter = painterResource(id = R.drawable.ic_material_close),
-                                contentDescription = stringResource(
-                                    R.string.content_search_clear_query_content_description
-                                ),
-                                tint = ProtonTheme.colors.iconNorm
-                            )
-                        }
-                    }
-                },
-                shape = RectangleShape,
-                colors = SearchBarDefaults.inputFieldColors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedTextColor = ProtonTheme.colors.textNorm,
-                    unfocusedTextColor = ProtonTheme.colors.textNorm,
-                    cursorColor = ProtonTheme.colors.textNorm
+                    .padding(horizontal = ProtonDimens.Spacing.Large)
+                    .padding(bottom = ProtonDimens.Spacing.Medium)
+            ) {
+                ShowSpamTrashIncludeFilter(
+                    modifier = Modifier.height(MailDimens.UnreadFilterChipHeight),
+                    state = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = includeFilter.includesAny),
+                    onFilterEnabled = actions.onToggleIncludeSpamTrash,
+                    onFilterDisabled = actions.onToggleIncludeSpamTrash
                 )
-            )
-        },
-        actions = {
-            SearchOptionsMenu(
-                includeFilter = includeFilter,
-                onToggleIncludeSpam = actions.onToggleIncludeSpam,
-                onToggleIncludeTrash = actions.onToggleIncludeTrash
-            )
+            }
         }
-    )
+    }
 }
 
 object ContentSearchTopBarTestTags {

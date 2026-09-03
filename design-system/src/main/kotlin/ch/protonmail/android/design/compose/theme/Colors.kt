@@ -250,6 +250,7 @@ class ProtonColors(
     floatyPressed: Color = ProtonPalette.Charade,
     floatyText: Color = ProtonPalette.White,
 
+    shadowWeak: Color,
     shadowSoft: Color,
     shadowRaised: Color,
     shadowLifted: Color,
@@ -447,6 +448,8 @@ class ProtonColors(
     var floatyText: Color by mutableStateOf(floatyText, structuralEqualityPolicy())
         internal set
 
+    var shadowWeak: Color by mutableStateOf(shadowWeak, structuralEqualityPolicy())
+        internal set
     var shadowSoft: Color by mutableStateOf(shadowSoft, structuralEqualityPolicy())
         internal set
     var shadowMedium: Color by mutableStateOf(shadowMedium, structuralEqualityPolicy())
@@ -567,6 +570,7 @@ class ProtonColors(
         searchHighlightBackground: Color = this.searchHighlightBackground,
         shadowRaised: Color = this.shadowRaised,
         shadowLifted: Color = this.shadowLifted,
+        shadowWeak: Color = this.shadowWeak,
         shadowSoft: Color = this.shadowSoft,
         shadowMedium: Color = this.shadowMedium,
         sidebarBackground: Color = this.sidebarBackground,
@@ -675,6 +679,7 @@ class ProtonColors(
 
         shadowRaised = shadowRaised,
         shadowLifted = shadowLifted,
+        shadowWeak = shadowWeak,
         shadowSoft = shadowSoft,
         shadowMedium = shadowMedium,
 
@@ -739,6 +744,7 @@ class ProtonColors(
             shade15 = ProtonPalette.FrostGray,
             shade10 = ProtonPalette.Porcelain,
             shade0 = Color.White,
+            shadowWeak = ProtonPalette.Charade.copy(alpha = 0.08f),
             shadowSoft = ProtonPalette.Charade.copy(alpha = 0.6f),
             shadowRaised = ProtonPalette.Charade.copy(alpha = 0.8f),
             shadowLifted = ProtonPalette.Charade.copy(alpha = 0.8f),
@@ -798,6 +804,7 @@ class ProtonColors(
             shade15 = ProtonPalette.Obsidian,
             shade10 = ProtonPalette.Swamp,
             shade0 = ProtonPalette.EerieBlack,
+            shadowWeak = Color.Black.copy(alpha = 0.24f),
             shadowSoft = Color.Black.copy(alpha = 0.8f),
             shadowMedium = Color.Black.copy(alpha = 0.16f),
             shadowRaised = Color.Black.copy(alpha = 0.8f),
@@ -1004,6 +1011,7 @@ fun ProtonColors.updateColorsFrom(other: ProtonColors) {
 
     shadowRaised = other.shadowRaised
     shadowLifted = other.shadowLifted
+    shadowWeak = other.shadowWeak
     shadowSoft = other.shadowSoft
 
     starDefault = other.starDefault
