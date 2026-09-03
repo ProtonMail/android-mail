@@ -30,9 +30,7 @@ sealed interface ContentSearchViewAction {
 
     data object ClearQuery : ContentSearchViewAction
 
-    data object ToggleIncludeSpam : ContentSearchViewAction
-
-    data object ToggleIncludeTrash : ContentSearchViewAction
+    data object ToggleIncludeSpamTrash : ContentSearchViewAction
 
     data class ResultsLoaded(val count: Int) : ContentSearchViewAction
 

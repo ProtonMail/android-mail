@@ -21,8 +21,8 @@ package ch.protonmail.android.mailpagination.domain.model
 /**
  * The locations a paginator should include on top of the ones its location already covers.
  *
- * Spam and trash are independent: the mailbox drives both together through a single chip, while
- * content search exposes one toggle per location.
+ * Both the mailbox and the standalone search screen drive spam and trash together through a single
+ * chip; [spamAndTrash] builds the filter for it.
  */
 data class IncludeFilter(
     val includeSpam: Boolean,

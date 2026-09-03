@@ -310,8 +310,7 @@ class ContentSearchViewModel @Inject constructor(
             ContentSearchViewAction.Search -> submitSearch(queryState.text.toString())
             is ContentSearchViewAction.SuggestionSelected -> setQuery(action.query)
             ContentSearchViewAction.ClearQuery -> clearQuery()
-            ContentSearchViewAction.ToggleIncludeSpam -> toggleInclude { it.copy(includeSpam = !it.includeSpam) }
-            ContentSearchViewAction.ToggleIncludeTrash -> toggleInclude { it.copy(includeTrash = !it.includeTrash) }
+            ContentSearchViewAction.ToggleIncludeSpamTrash -> toggleInclude()
             is ContentSearchViewAction.ResultsLoaded -> onResultsLoaded(action.count)
             is ContentSearchViewAction.StarAction -> handleStarAction(action)
             is ContentSearchViewAction.AvatarImageLoadRequested -> action.item.participantAvatar()?.let { avatar ->
@@ -661,10 +660,14 @@ class ContentSearchViewModel @Inject constructor(
         applyOperation(ContentSearchOperation.AttachmentDownloadCancelled)
     }
 
-    // Spam and trash are independent scopes: each menu item flips only its own flag and the whole
+    // The chip includes or excludes both scopes at once, like the mailbox filter, and the whole
     // filter is handed to the live search scroller, which re-emits the results in place.
-    private fun toggleInclude(transform: (IncludeFilter) -> IncludeFilter) {
-        val updatedFilter = transform(mutableState.value.includeFilter)
+    private fun toggleInclude() {
+        val updatedFilter = if (mutableState.value.includeFilter.includesAny) {
+            IncludeFilter.None
+        } else {
+            IncludeFilter.spamAndTrash(include = true)
+        }
         mutableState.update {
             it.copy(
                 includeFilter = updatedFilter,

@@ -30,13 +30,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import ch.protonmail.android.design.compose.modifier.drawHalo
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.design.compose.theme.bodyMediumNorm
+import ch.protonmail.android.design.compose.theme.labelLargeNorm
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 
@@ -54,6 +58,11 @@ fun ShowSpamTrashIncludeFilter(
         is ShowSpamTrashIncludeFilterState.Data.Shown -> {
             FilterChip(
                 modifier = modifier
+                    .drawHalo(
+                        color = ProtonTheme.colors.shadowWeak,
+                        blurRadiusPx = with(LocalDensity.current) { 12.dp.toPx() },
+                        shape = ProtonTheme.shapes.huge
+                    )
                     .animateContentSize(
                         animationSpec = spring(
                             stiffness = StiffnessHigh,
@@ -62,8 +71,8 @@ fun ShowSpamTrashIncludeFilter(
                         )
                     ),
                 colors = chipColors().copy(
-                    containerColor = ProtonTheme.colors.backgroundNorm,
-                    selectedContainerColor = ProtonTheme.colors.interactionBrandWeakNorm
+                    containerColor = ProtonTheme.colors.backgroundInvertedSecondary,
+                    selectedContainerColor = ProtonTheme.colors.interactionBrandDefaultPressed
                 ),
                 shape = ProtonTheme.shapes.huge,
                 border = FilterChipDefaults.filterChipBorder(
@@ -86,12 +95,15 @@ fun ShowSpamTrashIncludeFilter(
                 label = {
                     Text(
                         stringResource(R.string.include_spam_trash_text),
+                        fontWeight = FontWeight.Medium,
                         style = if (state.enabled) {
-                            ProtonTheme.typography.bodyMediumNorm.copy(
-                                color = ProtonTheme.colors.brandPlus30
+                            ProtonTheme.typography.labelLargeNorm.copy(
+                                color = ProtonTheme.colors.textInverted
                             )
                         } else {
-                            ProtonTheme.typography.bodyMediumNorm
+                            ProtonTheme.typography.labelLargeNorm.copy(
+                                color = ProtonTheme.colors.textWeak
+                            )
                         }
                     )
                 }
@@ -108,7 +120,7 @@ private fun addCloseIconForEnabledState(state: ShowSpamTrashIncludeFilterState.D
                 modifier = Modifier.size(ProtonDimens.IconSize.Medium),
                 painter = painterResource(R.drawable.ic_proton_cross_small),
                 contentDescription = null,
-                tint = ProtonTheme.colors.brandPlus30
+                tint = ProtonTheme.colors.textInverted
             )
         }
     } else {
