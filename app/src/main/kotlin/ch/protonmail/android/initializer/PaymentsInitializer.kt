@@ -36,10 +36,11 @@ class PaymentsInitializer : Initializer<Unit> {
             PaymentsInitializerEntryPoint::class.java
         )
 
-        Payments
-            .registerHttp(entryPoint.httpCapability())
-            .registerStore(entryPoint.storeCapability())
-            .init(context.applicationContext)
+        Payments(
+            context = context.applicationContext,
+            httpCapability = entryPoint.httpCapability(),
+            storeCapability = entryPoint.storeCapability()
+        )
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()

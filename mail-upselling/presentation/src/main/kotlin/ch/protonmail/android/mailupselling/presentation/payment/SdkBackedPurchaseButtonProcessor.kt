@@ -44,8 +44,6 @@ import me.proton.android.core.payment.presentation.component.PurchaseButtonProce
 import me.proton.android.core.payment.presentation.component.PurchaseButtonState
 import me.proton.android.core.payment.presentation.model.Product
 import me.proton.android.payment.billing.usecase.GetActivePurchases
-import me.proton.android.payment.purchase.extension.transacting
-import me.proton.android.payment.purchase.model.PendingPurchase
 import me.proton.android.payment.purchase.model.SessionState
 import me.proton.android.payment.purchase.usecase.ObserveSessionState
 import me.proton.android.payment.purchase.usecase.PurchaseProduct
@@ -81,13 +79,14 @@ class SdkBackedPurchaseButtonProcessor @Inject constructor(
     private suspend fun runPurchase(product: Product): PurchaseButtonState = coroutineScope {
         val outcome = async(start = CoroutineStart.UNDISPATCHED) {
             observeSessionState.get().invoke()
-                .dropWhile { !it.transacting() }
+                // the state stream replays its last value, which is Idle before a purchase starts
+                .dropWhile { it == SessionState.Idle }
                 .mapNotNull { it.toButtonState(product) }
                 .first()
         }
 
         val storeStep = purchaseProduct.get()
-            .invoke(PendingPurchase(product.productId, product.offerToken.value))
+            .invoke(productId = product.productId, offerToken = product.offerToken.value)
             .getOrElse {
                 outcome.cancel()
                 return@coroutineScope errorState()

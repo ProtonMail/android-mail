@@ -20,7 +20,9 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
@@ -31,6 +33,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -44,9 +47,13 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
     val theme: StateFlow<UpsellContentTheme?> = observePrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
-            observePlusToUnlimitedEligibility(userId).map { eligible ->
-                if (eligible) resolveActiveUpsellTheme(userId) else null
-            }
+            observePlusToUnlimitedEligibility(userId)
+                .scan<Either<DataError, Boolean>, Boolean?>(null) { lastKnown, verdict ->
+                    verdict.getOrNull() ?: lastKnown
+                }
+                .map { eligible ->
+                    if (eligible == true) resolveActiveUpsellTheme(userId) else null
+                }
         }
         .stateIn(
             scope = viewModelScope,

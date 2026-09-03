@@ -18,12 +18,16 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
+import arrow.core.Either
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import me.proton.android.core.payment.domain.usecase.GetCurrentSubscriptions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -35,26 +39,36 @@ import javax.inject.Inject
 class ObservePlusToUnlimitedEligibility @Inject constructor(
     private val upsellEligibilityRepository: UpsellEligibilityRepository,
     private val availableUpgradesCache: AvailableUpgradesCache,
+    private val getCurrentSubscriptions: GetCurrentSubscriptions,
     @IsSdkUpgradesReadEnabled private val sdkUpgradesReadEnabled: FeatureFlag<Boolean>,
     @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Boolean> = flow {
+    operator fun invoke(userId: UserId): Flow<Either<DataError, Boolean>> = flow {
         if (!sdkUpgradesReadEnabled.get() || !sdkUpgradesPurchaseEnabled.get()) {
             Timber.d("upsell: Payments SDK flags disabled, not eligible for Plus to Unlimited")
-            emit(false)
+            emit(false.right())
             return@flow
         }
 
-        if (!upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId)) {
-            emit(false)
+        val eligible = upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId)
+        if (eligible.getOrNull() != true) {
+            emit(eligible)
             return@flow
         }
 
         emitAll(
             availableUpgradesCache.observe(userId).map { upgrades ->
-                upgrades.any { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
+                val unlimitedAvailable = upgrades.any { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
+                (unlimitedAvailable && !isSubscribedToUnlimited()).right()
             }
         )
+    }
+
+    private suspend fun isSubscribedToUnlimited(): Boolean = runCatching {
+        getCurrentSubscriptions().any { it.name == PlanUpgradeIds.UnlimitedPlanId }
+    }.getOrElse {
+        Timber.d(it, "upsell: could not read the current subscriptions")
+        false
     }
 }
