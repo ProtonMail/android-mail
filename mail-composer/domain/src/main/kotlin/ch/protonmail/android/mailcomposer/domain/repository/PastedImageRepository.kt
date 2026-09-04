@@ -29,4 +29,7 @@ interface PastedImageRepository {
      * temporary file in the cache, returning the file so it can be added as an inline attachment.
      */
     suspend fun saveBase64ImageToCache(base64: String): Either<DataError, File>
+
+    /** Removes the staging directory holding pasted images. Fire-and-forget. */
+    fun clearStagingArea()
 }
