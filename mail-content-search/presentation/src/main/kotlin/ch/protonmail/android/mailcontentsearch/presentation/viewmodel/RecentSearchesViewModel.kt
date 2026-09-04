@@ -43,6 +43,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,7 +51,10 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -92,12 +96,23 @@ class RecentSearchesViewModel @Inject constructor(
     /** The search field's text, which every read of the history is filtered by. */
     private val queryPrefix = MutableStateFlow("")
 
+    /**
+     * Requests to re-read the recent terms/opened history.
+     */
+    private val reloadRequests = Channel<Unit>(Channel.CONFLATED)
+
+    /**
+     * The terms that were read but don't fit the list. Dismissing a row promotes the first of them into
+     * the slot it freed, so a run of dismissals refills the list without a read for each one.
+     */
+    private var overflowTerms: List<String> = emptyList()
+
+    /** Whether the store may hold more terms. True while the last read came back at its limit. */
+    private var mayHaveMoreTerms = false
+
     init {
-        // The starting value isn't an edit — the first read is the [Refresh] the screen submits when it
-        // shows the history — and [mapLatest] keeps a read started on an earlier keystroke from landing
-        // after the one that replaced it.
-        queryPrefix
-            .drop(1)
+        // Both triggers feed one pipeline, so only one read is ever in flight.
+        merge(queryPrefix.drop(1).map { }, reloadRequests.receiveAsFlow())
             .mapLatest { reload() }
             .launchIn(viewModelScope)
     }
@@ -117,7 +132,7 @@ class RecentSearchesViewModel @Inject constructor(
     }
 
     /** Re-reads the history. Safe to submit repeatedly: it never drops back to the loading state. */
-    private fun onRefresh() = reloadAfter { }
+    private fun onRefresh() = requestReload()
 
     // A prefix that trims down to what is already in force leaves the history alone: the same rows would
     // come back, and re-reading them would only make the list flicker while the user keeps typing.
@@ -127,14 +142,31 @@ class RecentSearchesViewModel @Inject constructor(
 
     private fun onTermClicked(query: String) = reloadAfter { userId -> touchRecentSearchTerm(userId, query) }
 
+    /**
+     * Drops the row locally so it disappears on tap, and fills the slot it freed from the buffered terms
+     * the last read left over. Only a dismissal that empties the buffer pays for a re-read.
+     */
     private fun onTermDismissed(query: String) {
-        // Drop the row locally so it disappears on tap; the reload can then pull an older query into
-        // the slot it freed.
-        updateData { it.copy(terms = it.terms.filterNot { term -> term == query }.toImmutableList()) }
-        reloadAfter { userId -> dismissRecentSearchTerm(userId, query) }
+        val remainingOverflow = overflowTerms.filterNot { term -> term == query }
+        val wasOnScreen = (mutableState.value as? RecentSearchesState.Data)?.terms?.contains(query) == true
+        val promoted = if (wasOnScreen) remainingOverflow.firstOrNull() else null
+
+        updateData { data ->
+            val kept = data.terms.filterNot { term -> term == query }
+            data.copy(terms = (kept + listOfNotNull(promoted)).toImmutableList())
+        }
+
+        overflowTerms = if (promoted != null) remainingOverflow.drop(1) else remainingOverflow
+
+        onPrimaryUser { userId ->
+            val dismissSuccessful = dismissRecentSearchTerm(userId, query).isRight()
+            if (!dismissSuccessful || overflowTerms.isEmpty() && mayHaveMoreTerms) requestReload()
+        }
     }
 
     private fun onClearTerms() {
+        overflowTerms = emptyList()
+        mayHaveMoreTerms = false
         updateData { it.copy(terms = persistentListOf()) }
         reloadAfter { userId -> clearRecentSearchTerms(userId) }
     }
@@ -154,12 +186,19 @@ class RecentSearchesViewModel @Inject constructor(
     ) = reloadAfter { userId -> recordSearchOpen(userId, query, messageId, conversationId) }
 
     /** Runs [block] against the primary user, then re-reads the history it may have changed. */
-    private fun reloadAfter(block: suspend (UserId) -> Unit) {
+    private fun reloadAfter(block: suspend (UserId) -> Unit) = onPrimaryUser { userId ->
+        block(userId)
+        requestReload()
+    }
+
+    private fun onPrimaryUser(block: suspend (UserId) -> Unit) {
         viewModelScope.launch {
-            val userId = observePrimaryUserId().filterNotNull().first()
-            block(userId)
-            reload()
+            block(observePrimaryUserId().filterNotNull().first())
         }
+    }
+
+    private fun requestReload() {
+        reloadRequests.trySend(Unit)
     }
 
     private suspend fun reload() {
@@ -168,13 +207,18 @@ class RecentSearchesViewModel @Inject constructor(
         val history = readHistory(userId, prefix)
         // A read only publishes while the filter it ran under is still the current one, so a slower read
         // started under an older prefix can't land on top of the one that replaced it.
-        if (queryPrefix.value == prefix) mutableState.value = collapseIfEmpty(history)
+        if (queryPrefix.value == prefix) {
+            overflowTerms = history.overflowTerms
+            mayHaveMoreTerms = history.mayHaveOverflowTerms
+            mutableState.value = collapseIfEmpty(history.data)
+        }
     }
 
-    private suspend fun readHistory(userId: UserId, prefix: String): RecentSearchesState.Data {
-        val terms = getRecentSearchTerms(userId, prefix.ifBlank { null })
+    private suspend fun readHistory(userId: UserId, prefix: String): History {
+        val allTerms = getRecentSearchTerms(userId, prefix.ifBlank { null }, ReadTermsLimit)
             .getOrElse { emptyList() }
             .map { it.query }
+        val terms = allTerms.take(DisplayedTermsLimit)
 
         // Previously found items (mailbox items) are only shown if the search field is empty.
         val foundItems = if (prefix.isBlank()) {
@@ -203,11 +247,21 @@ class RecentSearchesViewModel @Inject constructor(
             }
         }
 
-        return RecentSearchesState.Data(
-            terms = terms.toImmutableList(),
-            foundItems = mappedFoundItems.toImmutableList()
+        return History(
+            data = RecentSearchesState.Data(
+                terms = terms.toImmutableList(),
+                foundItems = mappedFoundItems.toImmutableList()
+            ),
+            overflowTerms = allTerms.drop(DisplayedTermsLimit),
+            mayHaveOverflowTerms = allTerms.size == ReadTermsLimit
         )
     }
+
+    private data class History(
+        val data: RecentSearchesState.Data,
+        val overflowTerms: List<String>,
+        val mayHaveOverflowTerms: Boolean
+    )
 
     private fun updateData(transform: (RecentSearchesState.Data) -> RecentSearchesState.Data) {
         mutableState.update { current ->
@@ -229,4 +283,10 @@ class RecentSearchesViewModel @Inject constructor(
         } else {
             data
         }
+
+    private companion object {
+
+        const val DisplayedTermsLimit = GetRecentSearchTerms.DefaultLimit
+        const val ReadTermsLimit = DisplayedTermsLimit * 2
+    }
 }

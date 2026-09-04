@@ -21,16 +21,18 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,42 +54,43 @@ import kotlinx.collections.immutable.persistentListOf
  * "Recent": the queries the user ran before, one per row. Tapping a row re-runs its search, the
  * trailing icon dismisses that one query, and the header action clears the whole term history.
  */
-@Composable
-internal fun RecentSearchTermsSection(
-    terms: ImmutableList<String>,
-    actions: RecentSearchesActions,
-    modifier: Modifier = Modifier
-) {
+internal fun LazyListScope.recentSearchTermsSection(terms: ImmutableList<String>, actions: RecentSearchesActions) {
     if (terms.isEmpty()) return
 
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SectionHeader(
-                text = stringResource(R.string.content_search_recent_searches_title),
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                modifier = Modifier
-                    .clickable(onClick = actions.onClearTermsClicked)
-                    .padding(
-                        horizontal = ProtonDimens.Spacing.Large,
-                        vertical = ProtonDimens.Spacing.Medium
-                    ),
-                text = stringResource(R.string.content_search_clear_recent_searches),
-                style = ProtonTheme.typography.bodyMediumWeak,
-                color = ProtonTheme.colors.textNorm
-            )
-        }
-        terms.forEach { term ->
-            RecentSearchTermRow(
-                term = term,
-                onClick = { actions.onTermClicked(term) },
-                onDismiss = { actions.onTermDismissed(term) }
-            )
-        }
+    item(key = RECENT_TERMS_HEADER_KEY) {
+        RecentSearchTermsHeader(onClearClicked = actions.onClearTermsClicked)
+    }
+    items(items = terms, key = { term -> "$RECENT_TERM_KEY_PREFIX$term" }) { term ->
+        RecentSearchTermRow(
+            term = term,
+            onClick = { actions.onTermClicked(term) },
+            onDismiss = { actions.onTermDismissed(term) },
+            modifier = Modifier.animateItem()
+        )
+    }
+}
+
+@Composable
+private fun RecentSearchTermsHeader(onClearClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SectionHeader(
+            text = stringResource(R.string.content_search_recent_searches_title),
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            modifier = Modifier
+                .clickable(onClick = onClearClicked)
+                .padding(
+                    horizontal = ProtonDimens.Spacing.Large,
+                    vertical = ProtonDimens.Spacing.Medium
+                ),
+            text = stringResource(R.string.content_search_clear_recent_searches),
+            style = ProtonTheme.typography.bodyMediumWeak,
+            color = ProtonTheme.colors.textNorm
+        )
     }
 }
 
@@ -95,10 +98,11 @@ internal fun RecentSearchTermsSection(
 private fun RecentSearchTermRow(
     term: String,
     onClick: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
@@ -163,14 +167,19 @@ internal fun SectionHeader(text: String, modifier: Modifier = Modifier) {
 
 private val DismissIconSize = 16.dp
 
+private const val RECENT_TERMS_HEADER_KEY = "recent-terms-header"
+private const val RECENT_TERM_KEY_PREFIX = "recent-term-"
+
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun RecentSearchTermsSectionPreview() {
     ProtonTheme {
-        RecentSearchTermsSection(
-            terms = persistentListOf("invoice", "flight"),
-            actions = RecentSearchesActions.Empty
-        )
+        LazyColumn {
+            recentSearchTermsSection(
+                terms = persistentListOf("invoice", "flight"),
+                actions = RecentSearchesActions.Empty
+            )
+        }
     }
 }
