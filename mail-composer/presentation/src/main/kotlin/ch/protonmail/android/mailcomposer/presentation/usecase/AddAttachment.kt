@@ -20,9 +20,12 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.content.FileProvider
 import arrow.core.Either
+import arrow.core.flatMap
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
+import ch.protonmail.android.mailcomposer.domain.repository.PastedImageRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.AddInlineAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.AddStandardAttachment
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,7 +34,8 @@ import javax.inject.Inject
 class AddAttachment @Inject constructor(
     @ApplicationContext private val applicationContext: Context,
     private val addStandardAttachment: AddStandardAttachment,
-    private val addInlineAttachment: AddInlineAttachment
+    private val addInlineAttachment: AddInlineAttachment,
+    private val pastedImageRepository: PastedImageRepository
 ) {
 
     suspend operator fun invoke(
@@ -56,6 +60,24 @@ class AddAttachment @Inject constructor(
         return addStandardAttachment(fileUri)
             .map { AddAttachmentResult.StandardAttachmentAdded }
     }
+
+    /**
+     * Adds an image pasted into the editor (received as base64) by first storing it as a temporary file, then
+     * routing it through [invoke] so it is added as an inline attachment just like a picked or captured image.
+     */
+    suspend fun fromPastedImage(
+        base64: String,
+        draftMimeType: DraftMimeType
+    ): Either<AddAttachmentError, AddAttachmentResult> = pastedImageRepository.saveBase64ImageToCache(base64)
+        .mapLeft { AddAttachmentError.Other(it) }
+        .flatMap { file ->
+            val fileUri = FileProvider.getUriForFile(
+                applicationContext,
+                "${applicationContext.packageName}.provider",
+                file
+            )
+            invoke(fileUri, draftMimeType)
+        }
 
     private fun imageMimeTypes() = listOf(
         "image/jpg",

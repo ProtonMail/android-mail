@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
+import ch.protonmail.android.mailcomposer.domain.repository.PastedImageRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.AddInlineAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.AddStandardAttachment
 import ch.protonmail.android.mailcomposer.presentation.usecase.AddAttachmentTypeTest.ExpectedAttachmentOperation.AddInlineAttachmentOp
@@ -27,11 +28,13 @@ class AddAttachmentTypeTest(
     private val context = mockk<Context>()
     private val addStandardAttachment = mockk<AddStandardAttachment>()
     private val addInlineAttachment = mockk<AddInlineAttachment>()
+    private val pastedImageRepository = mockk<PastedImageRepository>()
 
     private val addAttachment = AddAttachment(
         context,
         addStandardAttachment,
-        addInlineAttachment
+        addInlineAttachment,
+        pastedImageRepository
     )
 
     @Test

@@ -135,14 +135,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
     val discardDraftDialogState = rememberSaveable { mutableStateOf(false) }
     val showExpirationTimeDialog = rememberSaveable { mutableStateOf(false) }
 
-    val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
     val scope = rememberCoroutineScope()
-    fun showFeatureMissingSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(
-            message = featureMissingSnackbarMessage,
-            type = ProtonSnackbarType.NORM
-        )
-    }
 
     val displayBody by viewModel.displayBody.collectAsStateWithLifecycle()
     val bodyTextFieldState = viewModel.bodyTextField
@@ -426,9 +419,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
                                 viewModel.submit(ComposerAction.InlineImageActionsRequested)
                             },
                             onInlineImageAdded = { viewModel.submit(ComposerAction.AddAttachments(listOf(it))) },
-                            onInlineImagePasted = {
-                                showFeatureMissingSnackbar()
-                            }
+                            onInlineImagePasted = { viewModel.submit(ComposerAction.AddPastedInlineImage(it)) }
                         ),
                         senderEmail = mainState.sender.email,
                         draftType = mainState.draftType,
