@@ -77,6 +77,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -102,6 +103,7 @@ internal class ContentSearchViewModelTest {
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
     private val userId = UserId("user-id")
+    private val otherUserId = UserId("other-user-id")
     private val itemId = "item-id"
     private val attachmentId = AttachmentIdUiModel("1")
     private val intentValues = OpenAttachmentIntentValues(
@@ -218,6 +220,33 @@ internal class ContentSearchViewModelTest {
             dispatchers = TestDispatcherProvider(),
             savedStateHandle = SavedStateHandle()
         )
+    }
+
+    @Test
+    fun `should close the screen when the active account changes`() = runTest(testDispatcher) {
+        val primaryUserId = MutableStateFlow<UserId?>(userId)
+        every { observePrimaryUserId() } returns primaryUserId
+        val sut = viewModel()
+        advanceUntilIdle()
+        assertNull(sut.state.value.closeScreen.consume())
+
+        primaryUserId.emit(otherUserId)
+        advanceUntilIdle()
+
+        assertNotNull(sut.state.value.closeScreen.consume())
+    }
+
+    @Test
+    fun `should stay open when the active account is re-emitted unchanged`() = runTest(testDispatcher) {
+        val primaryUserId = MutableStateFlow<UserId?>(userId)
+        every { observePrimaryUserId() } returns primaryUserId
+        val sut = viewModel()
+        advanceUntilIdle()
+
+        primaryUserId.emit(userId)
+        advanceUntilIdle()
+
+        assertNull(sut.state.value.closeScreen.consume())
     }
 
     @Test

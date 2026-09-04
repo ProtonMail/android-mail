@@ -113,6 +113,8 @@ class ContentSearchReducer @Inject constructor(
             ContentSearchOperation.AttachmentDownloadCancelled -> currentState.mapAttachmentDownload {
                 attachmentDownloadReducer.downloadCancelled(it)
             }
+
+            ContentSearchOperation.ActiveAccountChanged -> currentState.copy(closeScreen = Effect.of(Unit))
         }
 
     private fun ContentSearchState.withSelection(selectionState: SelectionState) = copy(selectionState = selectionState)

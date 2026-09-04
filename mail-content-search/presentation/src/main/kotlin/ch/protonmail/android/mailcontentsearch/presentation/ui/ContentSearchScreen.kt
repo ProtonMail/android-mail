@@ -113,6 +113,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
             .collect { recentsViewModel.submit(RecentSearchesViewAction.QueryChanged(it)) }
     }
 
+    ConsumableLaunchedEffect(effect = state.closeScreen) { onClose() }
+
     ConsumableLaunchedEffect(effect = state.actionMessage) { showSnackbar(SnackbarUndo(it)) }
 
     val context = LocalContext.current

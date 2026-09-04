@@ -72,4 +72,6 @@ sealed interface ContentSearchOperation {
     data object AttachmentDownloadFailed : ContentSearchOperation
 
     data object AttachmentDownloadCancelled : ContentSearchOperation
+
+    data object ActiveAccountChanged : ContentSearchOperation
 }
