@@ -48,6 +48,7 @@ internal sealed interface ComposerAction : ComposerStateOperation {
     data object OpenCameraPicker : ComposerAction
     data object OpenFilePicker : ComposerAction
     data class AddAttachments(val uriList: List<Uri>) : ComposerAction
+    data class AddPastedInlineImage(val base64: String) : ComposerAction
     data class AddFileAttachments(val uriList: List<Uri>) : ComposerAction
     data class RemoveAttachment(val attachmentId: AttachmentId) : ComposerAction
     data class RemoveInlineAttachment(val contentId: String) : ComposerAction

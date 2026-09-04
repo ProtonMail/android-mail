@@ -6,6 +6,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AddAttachmentError
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
+import ch.protonmail.android.mailcomposer.domain.repository.PastedImageRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.AddInlineAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.AddStandardAttachment
 import io.mockk.coEvery
@@ -19,11 +20,13 @@ class AddAttachmentTest {
     private val context = mockk<Context>()
     private val addStandardAttachment = mockk<AddStandardAttachment>()
     private val addInlineAttachment = mockk<AddInlineAttachment>()
+    private val pastedImageRepository = mockk<PastedImageRepository>()
 
     private val addAttachment = AddAttachment(
         context,
         addStandardAttachment,
-        addInlineAttachment
+        addInlineAttachment,
+        pastedImageRepository
     )
 
     @Test
