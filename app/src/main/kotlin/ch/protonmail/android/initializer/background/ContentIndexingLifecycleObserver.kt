@@ -32,6 +32,7 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
@@ -147,16 +148,13 @@ class ContentIndexingLifecycleObserver @Inject constructor(
      */
     private fun watchForIndexingToStart() {
         val watch = appScope.launch {
-            observeContentIndexingActivity()
-                .map { it is ContentIndexingActivity.Progress }
-                // Progress arrives every batch; the transition into it is the only interesting part.
+            combine(
+                observeContentIndexingActivity().map { it is ContentIndexingActivity.Progress },
+                workScheduler.observeWorkerRunning()
+            ) { isProgressing, hasWorker -> isProgressing && !hasWorker }
                 .distinctUntilChanged()
                 .filter { it }
                 .collect {
-                    // Usually a no-op: the worker enqueued above is the one reporting this. It is
-                    // not when work appeared after the summary, or when a worker has since exited
-                    // on its idle timeout, and the scheduler is the one that can tell the
-                    // difference - hence the log here rather than around the call.
                     Timber.d("content-search: indexing progressing, checking there is a worker behind it")
                     workScheduler.ensureWorkerRunning()
                 }

@@ -61,7 +61,9 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ContentIndexingWorkerTest {
 
@@ -157,11 +159,11 @@ internal class ContentIndexingWorkerTest {
     )
 
     @Test
-    fun `finishes once the orchestrator enters forward mode`() = runTest {
+    fun `finishes once the orchestrator enters forward mode with every account done`() = runTest {
         // Given
         givenActivity(
             flowOf(
-                progress(),
+                progress(completedUsers = 2),
                 ContentIndexingActivity.ForwardMode(FirstUser),
                 progress()
             )
@@ -184,6 +186,281 @@ internal class ContentIndexingWorkerTest {
 
         // Then
         assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    @Test
+    fun `stays alive while the orchestrator hands over to the next account`() = runTest {
+        // Given
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(completedUsers = 1, userCount = 2))
+        runCurrent()
+
+        // When
+        activity.emit(ContentIndexingActivity.WaitingOnUsers)
+        runCurrent()
+        advanceTimeBy((ContentIndexingWorker.HandoverTimeout.inWholeMilliseconds - 1).milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        activity.emit(progress(activeUserId = SecondUser, completedUsers = 1, userCount = 2))
+        runCurrent()
+        // Back on the long timeout, rather than still counting down the handover.
+        advanceTimeBy((ContentIndexingWorker.HandoverTimeout.inWholeMilliseconds + 1).milliseconds)
+        assertTrue(work.isActive)
+        work.cancel()
+    }
+
+    @Test
+    fun `finishes when the orchestrator settles with no accounts left`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returnsMany listOf(
+            startSummary(pending = 1).right(),
+            startSummary(completed = 2).right()
+        )
+        givenActivity(
+            flow {
+                emit(progress(completedUsers = 2, userCount = 2))
+                emit(ContentIndexingActivity.WaitingOnUsers)
+                awaitCancellation()
+            }
+        )
+
+        // When
+        val result = worker().doWork()
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    @Test
+    fun `gives up on a handover the orchestrator never resolves`() = runTest {
+        // Given
+        givenActivity(
+            flow {
+                emit(progress(completedUsers = 1, userCount = 2))
+                emit(ContentIndexingActivity.WaitingOnUsers)
+                awaitCancellation()
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy((ContentIndexingWorker.HandoverTimeout.inWholeMilliseconds + 1).milliseconds)
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `releases without a handover wait when the orchestrator has nothing left`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returnsMany listOf(
+            startSummary(pending = 1).right(),
+            startSummary(completed = 2).right()
+        )
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(completedUsers = 1, userCount = 2))
+        runCurrent()
+
+        // When
+        activity.emit(ContentIndexingActivity.ForwardMode(FirstUser))
+        runCurrent()
+
+        // Then
+        assertFalse(work.isActive)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `asks the orchestrator for another account when one settles into forward mode`() = runTest {
+        // Given
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(completedUsers = 1, userCount = 2))
+        runCurrent()
+
+        // When
+        activity.emit(ContentIndexingActivity.ForwardMode(FirstUser))
+        runCurrent()
+
+        // Then
+        coVerify(exactly = 2) { startContentIndexing() }
+        assertTrue(work.isActive)
+        work.cancel()
+    }
+
+    @Test
+    fun `assumes an account is still coming when the orchestrator cannot be asked at a handover`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returnsMany listOf(
+            startSummary(pending = 1).right(),
+            DataError.Local.Unknown.left()
+        )
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(completedUsers = 1, userCount = 2))
+        runCurrent()
+
+        // When
+        activity.emit(ContentIndexingActivity.ForwardMode(FirstUser))
+        runCurrent()
+
+        // Then
+        assertTrue(work.isActive)
+        advanceTimeBy((ContentIndexingWorker.HandoverTimeout.inWholeMilliseconds + 1).milliseconds)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `keeps the notification it is showing through a handover`() = runTest {
+        // Given
+        appInBackground.value = true
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser, completedUsers = 1, userCount = 2))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 41.6)
+        runCurrent()
+
+        // When
+        activity.emit(ContentIndexingActivity.WaitingOnUsers)
+        runCurrent()
+
+        // Then
+        val percentages = mutableListOf<Double?>()
+        verify { ContentIndexingNotification.build(any(), any(), captureNullable(percentages)) }
+        assertEquals(41.6, percentages.last())
+        work.cancel()
+    }
+
+    @Test
+    fun `holds the last percentage when the outgoing account reports itself caught up`() = runTest {
+        // Given
+        appInBackground.value = true
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser, completedUsers = 1, userCount = 2))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 98.0)
+        runCurrent()
+
+        // When
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Completed
+        activity.emit(ContentIndexingActivity.WaitingOnUsers)
+        runCurrent()
+
+        // Then
+        val percentages = mutableListOf<Double?>()
+        verify { ContentIndexingNotification.build(any(), any(), captureNullable(percentages)) }
+        assertEquals(98.0, percentages.last())
+        work.cancel()
+    }
+
+    @Test
+    fun `reports the incoming account once it publishes progress of its own`() = runTest {
+        // Given
+        appInBackground.value = true
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser, completedUsers = 1, userCount = 2))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Completed
+        activity.emit(ContentIndexingActivity.WaitingOnUsers)
+        runCurrent()
+
+        // When
+        activity.emit(progress(activeUserId = SecondUser, completedUsers = 1, userCount = 2))
+        indexingStates.getValue(SecondUser).value = ContentIndexingState.Running(percentage = 3.0)
+        runCurrent()
+
+        // Then
+        verify { ContentIndexingNotification.build(any(), "user-2@proton.me", 3.0) }
+        work.cancel()
+    }
+
+    @Test
+    fun `takes the service while the orchestrator is between accounts`() = runTest {
+        // Given - an account is still to come, and standby quota is charged from the moment the app
+        // leaves the screen, so the promotion cannot wait for that account's first progress.
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser, completedUsers = 1, userCount = 2))
+        indexingStates.getValue(FirstUser).value = ContentIndexingState.Running(percentage = 62.5)
+        activity.emit(ContentIndexingActivity.ForwardMode(FirstUser))
+        runCurrent()
+
+        // When - the app leaves the screen mid-handover.
+        appInBackground.value = true
+        runCurrent()
+
+        // Then - showing the outgoing account, rather than nothing at all.
+        verify { ContentIndexingNotification.build(any(), "user-1@proton.me", 62.5) }
+        work.cancel()
+    }
+
+    @Test
+    fun `gives up when the orchestrator never answers whether it has work`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } coAnswers { awaitCancellation() }
+        givenActivity(flow { awaitCancellation() })
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy((ContentIndexingWorker.OrchestratorAskTimeout.inWholeMilliseconds + 1).milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1).milliseconds)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `takes the service once the next account actually starts indexing`() = runTest {
+        // Given
+        val activity = MutableSharedFlow<ContentIndexingActivity>()
+        givenActivity(activity)
+        val work = async { worker().doWork() }
+        runCurrent()
+        activity.emit(progress(activeUserId = FirstUser, completedUsers = 1, userCount = 2))
+        activity.emit(ContentIndexingActivity.WaitingOnUsers)
+        runCurrent()
+        appInBackground.value = true
+        runCurrent()
+
+        // When
+        activity.emit(progress(activeUserId = SecondUser, completedUsers = 1, userCount = 2))
+        runCurrent()
+
+        // Then
+        verify(atLeast = 1) { ContentIndexingNotification.build(any(), any(), any()) }
+        work.cancel()
+    }
+
+    @Test
+    fun `tells the scheduler it is leaving before it unwinds`() = runTest {
+        // Given.
+        givenActivity(flowOf(progress(completedUsers = 2), ContentIndexingActivity.Stopped))
+
+        // When
+        worker().doWork()
+
+        // Then
+        verify { workScheduler.markWorkerExiting() }
     }
 
     @Test
@@ -219,7 +496,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1).milliseconds)
 
         // Then
         assertEquals(ListenableWorker.Result.success(), work.await())
@@ -230,7 +507,7 @@ internal class ContentIndexingWorkerTest {
         // Given - a large first backfill can stay quiet for a while before the first event.
         givenActivity(
             flow {
-                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3)
+                delay((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3).milliseconds)
                 emit(progress())
                 emit(ContentIndexingActivity.Stopped)
             }
@@ -238,7 +515,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1).milliseconds)
 
         // Then
         assertEquals(ListenableWorker.Result.success(), work.await())
@@ -253,14 +530,14 @@ internal class ContentIndexingWorkerTest {
         givenActivity(
             flow {
                 emit(progress())
-                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3)
+                delay((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3).milliseconds)
                 emit(ContentIndexingActivity.Stopped)
             }
         )
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds * 3 + 1).milliseconds)
 
         // Then
         assertEquals(ListenableWorker.Result.success(), work.await())
@@ -274,11 +551,11 @@ internal class ContentIndexingWorkerTest {
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1).milliseconds)
 
         // Then - still waiting, on the long timeout.
         assertTrue(work.isActive)
-        advanceTimeBy(ContentIndexingWorker.IdleTimeout.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.IdleTimeout.inWholeMilliseconds + 1).milliseconds)
         assertEquals(ListenableWorker.Result.success(), work.await())
     }
 
@@ -298,7 +575,7 @@ internal class ContentIndexingWorkerTest {
             flow {
                 emit(progress())
                 repeat(4) {
-                    delay(ContentIndexingWorker.IdleTimeout.inWholeMilliseconds / 2)
+                    delay((ContentIndexingWorker.IdleTimeout.inWholeMilliseconds / 2).milliseconds)
                     emit(progress())
                 }
                 emit(ContentIndexingActivity.Stopped)
@@ -451,7 +728,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - it has a service to hand back, so it ends itself to do it.
         verify(exactly = 1) { workScheduler.restart() }
@@ -470,7 +747,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - nothing was ever acquired, so there is nothing to give back either.
         verify(exactly = 0) { workScheduler.restart() }
@@ -485,7 +762,7 @@ internal class ContentIndexingWorkerTest {
         coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
         givenActivity(
             flow {
-                delay(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2)
+                delay((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2).milliseconds)
                 emit(progress())
                 awaitCancellation()
             }
@@ -493,7 +770,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2 + 1)
+        advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds / 2 + 1).milliseconds)
 
         // Then - the account address is read, which only happens to build a notification.
         coVerify(atLeast = 1) { userSessionRepository.getAccount(FirstUser) }
@@ -510,7 +787,7 @@ internal class ContentIndexingWorkerTest {
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - the only way to give the foreground service back is to end this worker.
         verify(exactly = 1) { workScheduler.restart() }
@@ -525,11 +802,11 @@ internal class ContentIndexingWorkerTest {
         appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
         val work = async { worker().doWork() }
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then
         verify(exactly = 0) { workScheduler.restart() }
@@ -543,7 +820,7 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
 
         // When - a foreground app that stays foregrounded holds no service to give back.
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then
         verify(exactly = 0) { workScheduler.restart() }
@@ -560,9 +837,9 @@ internal class ContentIndexingWorkerTest {
 
         // When
         appInBackground.value = false
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds / 2)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds / 2).milliseconds)
         appInBackground.value = true
-        advanceTimeBy(ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1)
+        advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - replacing the worker here would drop and re-acquire the service for nothing.
         verify(exactly = 0) { workScheduler.restart() }
