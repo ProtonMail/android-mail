@@ -84,14 +84,6 @@ abstract class MailComposerModule {
     ): MessageExpirationTimeRepository
 
     @Binds
-    @Reusable
-    abstract fun bindsCameraTempImageRepository(impl: CameraTempImageFileRepository): CameraTempImageRepository
-
-    @Binds
-    @Reusable
-    abstract fun bindsPastedImageRepository(impl: PastedImageRepositoryImpl): PastedImageRepository
-
-    @Binds
     @ViewModelScoped
     abstract fun bindsRustAttachmentDataSource(impl: RustAttachmentDataSourceImpl): RustAttachmentDataSource
 
@@ -129,5 +121,13 @@ abstract class SendingStatusModule {
     @Binds
     @Singleton
     abstract fun bindsActiveComposerRepository(impl: ActiveComposerInMemoryRepository): ActiveComposerRepository
+
+    @Binds
+    @Reusable
+    abstract fun bindsCameraTempImageRepository(impl: CameraTempImageFileRepository): CameraTempImageRepository
+
+    @Binds
+    @Reusable
+    abstract fun bindsPastedImageRepository(impl: PastedImageRepositoryImpl): PastedImageRepository
 
 }

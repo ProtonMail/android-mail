@@ -24,17 +24,21 @@ import android.content.Context
 import android.util.Base64
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.file.FileHelper
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.PastedImageRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PastedImageRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @AppScope private val coroutineScope: CoroutineScope,
     private val fileHelper: FileHelper
 ) : PastedImageRepository {
 
@@ -49,6 +53,13 @@ class PastedImageRepositoryImpl @Inject constructor(
             ) ?: error("Failed to write pasted image to cache")
         }.mapLeft {
             DataError.Local.FailedToStoreFile
+        }
+    }
+
+    override fun clearStagingArea() {
+        coroutineScope.launch(ioDispatcher) {
+            val folder = File(context.cacheDir, PastedImagesDirName)
+            fileHelper.deleteFolder(FileHelper.Folder(folder.absolutePath))
         }
     }
 

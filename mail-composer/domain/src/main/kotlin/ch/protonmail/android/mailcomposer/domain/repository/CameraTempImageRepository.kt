@@ -24,4 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 
 interface CameraTempImageRepository {
     suspend fun getFile(name: String): Either<DataError, File>
+
+    /** Removes the staging directory holding captured camera images. Fire-and-forget. */
+    fun clearStagingArea()
 }
