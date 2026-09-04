@@ -59,15 +59,14 @@ internal fun RecentSearchesPage(
         // it needs beyond the keyboard / navigation bar.
         contentPadding = PaddingValues(bottom = maxOf(navInset, imeInset) + ProtonDimens.Spacing.Large)
     ) {
-        item(key = "recent-terms") {
-            RecentSearchTermsSection(terms = state.terms, actions = actions)
-        }
+        recentSearchTermsSection(terms = state.terms, actions = actions)
         item(key = "recent-found-items") {
             RecentFoundItemsSection(
                 items = state.foundItems,
                 avatarImages = avatarImages,
                 actions = actions,
-                downloadingAttachmentId = downloadingAttachmentId
+                downloadingAttachmentId = downloadingAttachmentId,
+                modifier = Modifier.animateItem()
             )
         }
     }

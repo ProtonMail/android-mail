@@ -52,6 +52,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -165,7 +166,7 @@ internal class RecentSearchesViewModelTest {
     @Test
     fun `a failed read is treated as no history rather than surfacing an error page`() = runTest(dispatcher) {
         // Given
-        coEvery { getRecentSearchTerms(userId) } returns DataError.Local.Unknown.left()
+        coEvery { getRecentSearchTerms(userId, null, ReadTermsLimit) } returns DataError.Local.Unknown.left()
         coEvery { getRecentFoundMailboxItems(userId) } returns DataError.Local.Unknown.left()
         val viewModel = buildViewModel()
 
@@ -261,7 +262,52 @@ internal class RecentSearchesViewModelTest {
         viewModel.submit(RecentSearchesViewAction.QueryChanged("inv"))
 
         // Then
-        coVerify(exactly = 1) { getRecentSearchTerms(userId, "inv") }
+        coVerify(exactly = 1) { getRecentSearchTerms(userId, "inv", ReadTermsLimit) }
+    }
+
+    @Test
+    fun `the term read past the end of the list is not shown`() = runTest(dispatcher) {
+        // Given
+        givenHistory(
+            terms = listOf(term("invoice"), term("parcel"), term("flight"), term("receipt")),
+            items = emptyList()
+        )
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+
+        // Then
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("invoice", "parcel", "flight"), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `dismissing a term promotes the extra term before the reload lands`() = runTest(dispatcher) {
+        // Given
+        givenHistory(
+            terms = listOf(term("invoice"), term("parcel"), term("flight"), term("receipt")),
+            items = emptyList()
+        )
+        val dismissed = CompletableDeferred<Unit>()
+        coEvery { dismissRecentSearchTerm(userId, "invoice") } coAnswers {
+            dismissed.await()
+            Unit.right()
+        }
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("invoice"))
+
+        // Then the list is already full again, without having waited for the write or the reload.
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("parcel", "flight", "receipt"), persistentListOf()),
+            viewModel.state.value
+        )
+        dismissed.complete(Unit)
     }
 
     @Test
@@ -280,22 +326,73 @@ internal class RecentSearchesViewModelTest {
     }
 
     @Test
-    fun `dismissing a term drops it and re-reads so a freed slot refills`() = runTest(dispatcher) {
+    fun `dismissing a term drops it without re-reading when the read came back short`() = runTest(dispatcher) {
         // Given
         givenHistory(terms = listOf(term("invoice"), term("parcel")), items = emptyList())
         coEvery { dismissRecentSearchTerm(userId, "invoice") } returns Unit.right()
         val viewModel = buildViewModel()
         viewModel.submit(RecentSearchesViewAction.Refresh)
-        // The reload that follows the dismiss sees the term gone and an older one promoted.
-        givenHistory(terms = listOf(term("parcel"), term("flight")), items = emptyList())
 
         // When
         viewModel.submit(RecentSearchesViewAction.TermDismissed("invoice"))
 
         // Then
         coVerify { dismissRecentSearchTerm(userId, "invoice") }
+        coVerify(exactly = 1) { getRecentSearchTerms(userId, null, ReadTermsLimit) }
         assertEquals(
-            RecentSearchesState.Data(persistentListOf("parcel", "flight"), persistentListOf()),
+            RecentSearchesState.Data(persistentListOf("parcel"), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `a run of dismissals is served from the buffer and re-reads once it runs out`() = runTest(dispatcher) {
+        // Given
+        val allTerms = listOf("invoice", "parcel", "flight", "receipt", "ticket", "refund")
+        givenHistory(terms = allTerms.map { term(it) }, items = emptyList())
+        allTerms.forEach { coEvery { dismissRecentSearchTerm(userId, it) } returns Unit.right() }
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("invoice"))
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("parcel"))
+
+        // Then
+        coVerify(exactly = 1) { getRecentSearchTerms(userId, null, ReadTermsLimit) }
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("flight", "receipt", "ticket"), persistentListOf()),
+            viewModel.state.value
+        )
+
+        // When
+        givenHistory(terms = listOf(term("receipt"), term("ticket"), term("refund")), items = emptyList())
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("flight"))
+
+        // Then
+        coVerify(exactly = 2) { getRecentSearchTerms(userId, null, ReadTermsLimit) }
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("receipt", "ticket", "refund"), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `a dismissal that fails to store re-reads so the row comes back`() = runTest(dispatcher) {
+        // Given
+        val allTerms = listOf("invoice", "parcel", "flight", "receipt", "ticket", "refund")
+        givenHistory(terms = allTerms.map { term(it) }, items = emptyList())
+        coEvery { dismissRecentSearchTerm(userId, "invoice") } returns DataError.Local.NoDataCached.left()
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.TermDismissed("invoice"))
+
+        // Then
+        coVerify(exactly = 2) { getRecentSearchTerms(userId, null, ReadTermsLimit) }
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("invoice", "parcel", "flight"), persistentListOf()),
             viewModel.state.value
         )
     }
@@ -431,11 +528,11 @@ internal class RecentSearchesViewModelTest {
     )
 
     private fun givenTerms(prefix: String, terms: List<RecentSearchTerm>) {
-        coEvery { getRecentSearchTerms(userId, prefix) } returns terms.right()
+        coEvery { getRecentSearchTerms(userId, prefix, ReadTermsLimit) } returns terms.right()
     }
 
     private fun givenHistory(terms: List<RecentSearchTerm>, items: List<RecentFoundMailboxItem>) {
-        coEvery { getRecentSearchTerms(userId) } returns terms.right()
+        coEvery { getRecentSearchTerms(userId, null, ReadTermsLimit) } returns terms.right()
         coEvery { getRecentFoundMailboxItems(userId) } returns items.right()
         items.forEach { found ->
             coEvery {
@@ -466,6 +563,9 @@ internal class RecentSearchesViewModelTest {
     private companion object {
 
         val FolderColors = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = false)
+
+        /** The history is read a whole list deeper than the list shows, to buffer dismissals. */
+        const val ReadTermsLimit = GetRecentSearchTerms.DefaultLimit * 2
 
         const val FirstMessageId = "42"
         const val SecondMessageId = "43"
