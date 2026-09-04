@@ -9,6 +9,9 @@
         name="camera_files"
         path="camera/" />
     <cache-path
+        name="pasted_image_files"
+        path="pasted_image_staging/" />
+    <cache-path
         name="attachment_files"
         path="mail-cache/attachments/" />
     <cache-path
