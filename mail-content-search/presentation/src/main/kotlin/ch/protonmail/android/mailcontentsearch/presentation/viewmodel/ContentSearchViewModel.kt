@@ -180,6 +180,13 @@ class ContentSearchViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     init {
+        observePrimaryUserId()
+            .filterNotNull()
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach { applyOperation(ContentSearchOperation.ActiveAccountChanged) }
+            .launchIn(viewModelScope)
+
         observePageInvalidationEvents()
             .onEach { applyOperation(ContentSearchOperation.ReloadResults) }
             .launchIn(viewModelScope)

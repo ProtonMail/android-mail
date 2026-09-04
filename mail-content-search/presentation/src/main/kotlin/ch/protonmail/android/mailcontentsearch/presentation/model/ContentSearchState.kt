@@ -56,7 +56,8 @@ data class ContentSearchState(
     val avatarImages: AvatarImagesUiModel,
     val downloadingAttachmentId: AttachmentIdUiModel?,
     val openAttachment: Effect<OpenAttachmentIntentValues>,
-    val errorMessage: Effect<TextUiModel>
+    val errorMessage: Effect<TextUiModel>,
+    val closeScreen: Effect<Unit>
 ) {
     val inSelectionMode: Boolean get() = selectionState.inSelectionMode
 
@@ -84,7 +85,8 @@ data class ContentSearchState(
             avatarImages = AvatarImagesUiModel.Empty,
             downloadingAttachmentId = null,
             openAttachment = Effect.empty(),
-            errorMessage = Effect.empty()
+            errorMessage = Effect.empty(),
+            closeScreen = Effect.empty()
         )
     }
 }
