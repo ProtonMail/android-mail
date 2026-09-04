@@ -53,6 +53,18 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
+    fun `reads an ONGOING account that has reached 100 percent as completed`() {
+        // Rust answers ONGOING from the outcome recorded when the sync task started and never
+        // revises it, so a finished account keeps reporting it for the life of the process.
+        assertEquals(ContentIndexingState.Completed, SyncStatus.ONGOING.toIndexingState(100.0))
+    }
+
+    @Test
+    fun `reads an ONGOING account past 100 percent as completed`() {
+        assertEquals(ContentIndexingState.Completed, SyncStatus.ONGOING.toIndexingState(104.5))
+    }
+
+    @Test
     fun `maps ONGOING status with no progress to Initializing`() {
         assertEquals(ContentIndexingState.Initializing, SyncStatus.ONGOING.toIndexingState(null))
     }
@@ -77,6 +89,14 @@ internal class ContentIndexingStatusMapperTest {
         assertEquals(
             ContentIndexingState.Running(64.0),
             SyncEvent.Progress(SyncProgress(processed = 64uL, total = 100uL, percentage = 64.0)).toIndexingState()
+        )
+    }
+
+    @Test
+    fun `maps a Progress event that reaches 100 percent to Completed`() {
+        assertEquals(
+            ContentIndexingState.Completed,
+            SyncEvent.Progress(SyncProgress(processed = 100uL, total = 100uL, percentage = 100.0)).toIndexingState()
         )
     }
 

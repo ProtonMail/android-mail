@@ -69,7 +69,10 @@ internal class ContentIndexingLifecycleObserverTest {
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity> {
         every { this@mockk.invoke() } returns activities
     }
-    private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true)
+    private val workerRunning = MutableStateFlow(false)
+    private val workScheduler = mockk<ContentIndexingWorkScheduler>(relaxUnitFun = true) {
+        every { observeWorkerRunning() } returns workerRunning
+    }
     private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider> {
         every { is64Bit() } returns true
     }
@@ -288,6 +291,42 @@ internal class ContentIndexingLifecycleObserverTest {
 
         // Then - only the one from onStart; the progress is ignored.
         coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `does not ask again while a worker is already behind the indexing`() = runTest {
+        // Given
+        givenStartSummary(summary(pending = 1))
+        observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+        workerRunning.emit(true)
+        advanceUntilIdle()
+
+        // When
+        activities.emit(progress())
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+    }
+
+    @Test
+    fun `asks again when the worker goes away while indexing carries on`() = runTest {
+        // Given
+        givenStartSummary(summary(pending = 1))
+        observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+        workerRunning.emit(true)
+        activities.emit(progress())
+        advanceUntilIdle()
+        coVerify(exactly = 1) { workScheduler.ensureWorkerRunning() }
+
+        // When
+        workerRunning.emit(false)
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 2) { workScheduler.ensureWorkerRunning() }
     }
 
     @Test

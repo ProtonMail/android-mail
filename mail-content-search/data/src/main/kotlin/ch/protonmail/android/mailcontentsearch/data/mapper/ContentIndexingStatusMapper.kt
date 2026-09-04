@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontentsearch.data.mapper
 
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.model.FULLY_INDEXED_PERCENTAGE
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncStartOutcome
@@ -35,12 +36,25 @@ internal fun SyncStartOutcome.toStartOutcome(): ContentIndexingStartOutcome = wh
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
     SyncStatus.PENDING -> ContentIndexingState.Idle
-    // No known progress yet (e.g. a fresh one-shot read before any live event arrived):
-    // Initializing rather than Running(0.0), so the UI shows a "preparing" placeholder
-    // instead of a misleading 0%.
-    SyncStatus.ONGOING -> progress?.let { ContentIndexingState.Running(it) } ?: ContentIndexingState.Initializing
+    SyncStatus.ONGOING -> progress.toRunningState()
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
     SyncStatus.FAILURE -> ContentIndexingState.Failed
+}
+
+/**
+ * What an account that Rust reports as syncing is really doing.
+ *
+ * `Ongoing` says only that a sync task is alive: Rust records it when the task starts and never
+ * revises it, so an account that has since finished its backfill and is only subscribed for new mail
+ * keeps reporting `Ongoing` for the life of the process. The progress counters can tell them apart.
+ *
+ * No progress at all means Rust has not sized the backfill yet: Initializing rather than
+ * Running(0.0), so the UI shows a "preparing" placeholder instead of a misleading 0%.
+ */
+private fun Double?.toRunningState(): ContentIndexingState = when {
+    this == null -> ContentIndexingState.Initializing
+    this >= FULLY_INDEXED_PERCENTAGE -> ContentIndexingState.Completed
+    else -> ContentIndexingState.Running(this)
 }
 
 /**
@@ -53,8 +67,7 @@ internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
     // Published once when the queue is parked; Rust re-emits the last Progress on resume, so this
     // state clears itself without any prompting from us.
     is SyncEvent.WaitingForUnmeteredConnection -> ContentIndexingState.WaitingForUnmeteredConnection
-
-    is SyncEvent.Progress -> ContentIndexingState.Running(this.v1.percentage)
+    is SyncEvent.Progress -> this.v1.percentage.toRunningState()
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled
     is SyncEvent.Driver -> when (this.v1) {

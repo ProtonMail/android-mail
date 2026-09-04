@@ -24,8 +24,10 @@ import androidx.work.NetworkType
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
 import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Owns the single foreground-service worker that keeps the Rust orchestrator running while the app
@@ -35,9 +37,14 @@ import javax.inject.Inject
  * connection is Rust's call - it reads the app setting itself and pauses its own queue - so the
  * worker asks for `CONNECTED` and lets the orchestrator decide.
  */
+@Singleton
 class ContentIndexingWorkScheduler @Inject constructor(
     private val enqueuer: Enqueuer
 ) : ContentIndexingScheduler {
+
+    // Set by a worker that has decided to end but that WorkManager still reports as `RUNNING`.
+    @Volatile
+    private var isWorkerExiting = false
 
     /**
      * This and [restart] can both fire on one background-to-foreground trip - the lifecycle observer
@@ -54,12 +61,30 @@ class ContentIndexingWorkScheduler @Inject constructor(
         // A worker that is already executing is observing the same orchestrator a new one would, so
         // replacing it would only drop and re-acquire its foreground service. Work parked in
         // `ENQUEUED` deliberately does not count - see [Enqueuer.isWorkRunning].
-        if (enqueuer.isWorkRunning(WORKER_ID)) {
+        if (enqueuer.isWorkRunning(WORKER_ID) && !isWorkerExiting) {
             Timber.d("content-search: indexing worker already running")
             return
         }
         enqueue()
         Timber.d("content-search: indexing worker enqueued")
+    }
+
+    /** Whether a worker is executing, as a stream. */
+    fun observeWorkerRunning(): Flow<Boolean> = enqueuer.observeWorkIsRunning(WORKER_ID)
+
+    /** Called by a worker as it starts, so the flag cannot outlive the worker that set it. */
+    fun markWorkerRunning() {
+        isWorkerExiting = false
+    }
+
+    /**
+     * Called by a worker once it has decided to end, before it unwinds.
+     *
+     * WorkManager reports a worker as `RUNNING` until it has finished returning, so without this
+     * [ensureWorkerRunning] declines to enqueue against one on its way out.
+     */
+    fun markWorkerExiting() {
+        isWorkerExiting = true
     }
 
     /**
@@ -93,6 +118,8 @@ class ContentIndexingWorkScheduler @Inject constructor(
      * nothing, though - see the scope window in [restart].
      */
     private fun enqueue() {
+        isWorkerExiting = false
+
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(true)

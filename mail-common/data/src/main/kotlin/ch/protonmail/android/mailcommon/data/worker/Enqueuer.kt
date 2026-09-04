@@ -173,10 +173,15 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
      * that is about to start and work the platform has parked indefinitely, which are opposite
      * answers to "is this being taken care of".
      */
-    suspend fun isWorkRunning(workerId: String): Boolean {
-        val workInfos = workManager.getWorkInfosForUniqueWorkFlow(workerId).first()
-        return workInfos.any { it.state == WorkInfo.State.RUNNING }
-    }
+    suspend fun isWorkRunning(workerId: String): Boolean = observeWorkIsRunning(workerId).first()
+
+    /**
+     * [isWorkRunning] as a stream, for callers that need to notice work going away rather than only
+     * sample it: one sample cannot tell work that is executing from work about to return.
+     */
+    fun observeWorkIsRunning(workerId: String): Flow<Boolean> = workManager
+        .getWorkInfosForUniqueWorkFlow(workerId)
+        .map { workInfos -> workInfos.any { it.state == WorkInfo.State.RUNNING } }
 
     fun observeWorkStatusIsEnqueuedOrRunning(workerId: String): Flow<Boolean> =
         workManager.getWorkInfosForUniqueWorkFlow(workerId)
