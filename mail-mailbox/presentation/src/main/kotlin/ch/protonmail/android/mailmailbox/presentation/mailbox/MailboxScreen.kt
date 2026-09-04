@@ -23,7 +23,6 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -59,11 +58,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -72,6 +70,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -486,9 +485,36 @@ fun MailboxScreen(
     val refreshErrorText = stringResource(id = R.string.mailbox_error_message_generic)
     val context = LocalContext.current
 
+    val isSelectionMode = mailboxState.mailboxListState is MailboxListState.Data.SelectionMode
+    val isSearchMode = mailboxState.topAppBarState is MailboxTopAppBarState.Data.SearchMode
+    val collapseTopBarOnScroll = isContentSearchScreenEnabled && !isSelectionMode && !isSearchMode
+    val collapsingTopBarState = rememberCollapsingTopBarState()
+    SideEffect {
+        collapsingTopBarState.enabled = collapseTopBarOnScroll
+        collapsingTopBarState.canCollapse = {
+            mailboxListItems.itemCount > 0 && lazyListState.canScrollForward
+        }
+    }
+
+    val hasMailboxItems by remember(mailboxListItems) {
+        derivedStateOf { mailboxListItems.itemCount > 0 }
+    }
+    // Bring the bar back whenever it can no longer be scrolled back into view, otherwise it would stay
+    // hidden on a list that just went empty.
+    val canScrollTopBarBack = collapseTopBarOnScroll && hasMailboxItems
+    LaunchedEffect(canScrollTopBarBack) {
+        if (!canScrollTopBarBack) collapsingTopBarState.animateExpand()
+    }
+
+    // Tapping a filter re-shows the top bar, so that the new first entries are not flush against the
+    // top edge. The scroll position is left alone.
+    val showTopBar = { scope.launch { collapsingTopBarState.animateExpand() } }
+    val onUnreadFilterEnabled = { showTopBar(); actions.onEnableUnreadFilter() }
+    val onUnreadFilterDisabled = { showTopBar(); actions.onDisableUnreadFilter() }
+
     val stickyHeaderActions = MailboxStickyHeader.Actions(
-        onUnreadFilterEnabled = actions.onEnableUnreadFilter,
-        onUnreadFilterDisabled = actions.onDisableUnreadFilter,
+        onUnreadFilterEnabled = onUnreadFilterEnabled,
+        onUnreadFilterDisabled = onUnreadFilterDisabled,
         onSpamTrashFilterEnabled = actions.onEnableSpamTrashFilter,
         onSpamTrashFilterDisabled = actions.onDisableSpamTrashFilter,
         onSelectAllClicked = actions.onSelectAllClicked,
@@ -518,31 +544,42 @@ fun MailboxScreen(
     val isInSelectionMode = mailboxState.bottomAppBarState is BottomBarState.Data.Shown
 
     Scaffold(
-        modifier = modifier.testTag(MailboxScreenTestTags.Root),
+        modifier = modifier
+            .testTag(MailboxScreenTestTags.Root)
+            .nestedScroll(collapsingTopBarState.nestedScrollConnection),
         containerColor = ProtonTheme.colors.backgroundNorm,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
         topBar = {
             val localDensity = LocalDensity.current
 
-            val isSelectionMode = mailboxState.mailboxListState is MailboxListState.Data.SelectionMode
-            val isSearchMode = mailboxState.topAppBarState is MailboxTopAppBarState.Data.SearchMode
             val isCategoryViewShown = isCategoryViewEnabled &&
                 mailboxState.categoryViewState is CategoryViewState.Available &&
                 !isSearchMode && !isSelectionMode
 
-            // With the standalone search screen, collapse the top app bar once the first mailbox item
-            // has scrolled off screen - the search entry point has moved to the bottom bar, so the top
-            // bar no longer has to stay reachable.
-            val collapseTopBarOnScroll = isContentSearchScreenEnabled && !isSelectionMode && !isSearchMode
-            val scrolledPastFirstItem by remember {
-                derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
+            val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState
+                ?: LoadingBarUiState.Hide
+
+            // Everything below the app bar. It stays pinned in category view and collapses otherwise,
+            // so nothing is left behind at the top once the bar is fully hidden.
+            val belowAppBar: @Composable () -> Unit = {
+                MailboxStickyHeader(
+                    modifier = Modifier.windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                    ),
+                    state = mailboxState,
+                    actions = stickyHeaderActions,
+                    isCategoryViewEnabled = isCategoryViewEnabled
+                )
+
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+
+                MailboxLoadingBar(
+                    state = loadingBarState,
+                    modifier = Modifier.windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                    )
+                )
             }
-            val isScrollingUp by rememberIsScrollingUp(lazyListState)
-            // Collapse while scrolling down, but bring the bar back on any upward scroll so it's
-            // reachable without returning all the way to the top in long mailboxes.
-            val showTopAppBar = !collapseTopBarOnScroll || !scrolledPastFirstItem || isScrollingUp
-            // The category pills stay pinned to the top even while the app bar is collapsed
-            val showStickyHeader = showTopAppBar || isCategoryViewShown
 
             Column(
                 modifier = Modifier
@@ -555,11 +592,14 @@ fun MailboxScreen(
                         }
                     )
                     .onGloballyPositioned { coordinates ->
-                        rememberTopBarHeight.value = with(localDensity) { coordinates.size.height.toDp() }
+                        // Report the expanded height. It is what the empty states are laid out against,
+                        // and keeping it stable avoids recomposing the list on every collapse frame.
+                        val expandedHeight = coordinates.size.height - collapsingTopBarState.appliedOffsetPx
+                        rememberTopBarHeight.value = with(localDensity) { expandedHeight.toDp() }
                     }
             ) {
 
-                AnimatedVisibility(visible = showTopAppBar) {
+                Column(modifier = Modifier.collapsingContainer(collapsingTopBarState)) {
                     MailboxTopAppBar(
                         state = mailboxState.topAppBarState,
                         actions = MailboxTopAppBar.Actions(
@@ -581,29 +621,12 @@ fun MailboxScreen(
                             WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
                         }
                     )
+
+                    // The category pills stay pinned to the top, everything above them collapses.
+                    if (!isCategoryViewShown) belowAppBar()
                 }
 
-                AnimatedVisibility(visible = showStickyHeader) {
-                    MailboxStickyHeader(
-                        modifier = Modifier.windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                        ),
-                        state = mailboxState,
-                        actions = stickyHeaderActions,
-                        isCategoryViewEnabled = isCategoryViewEnabled
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
-
-                val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState
-                    ?: LoadingBarUiState.Hide
-                MailboxLoadingBar(
-                    state = loadingBarState,
-                    modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                    )
-                )
+                if (isCategoryViewShown) belowAppBar()
             }
         }
     ) { paddingValues ->
@@ -613,6 +636,8 @@ fun MailboxScreen(
 
         if (mailboxListState is MailboxListState.Data.ViewMode) {
             ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {
+                // The bar sits above the first item, so it comes back with it.
+                launch { collapsingTopBarState.animateExpand() }
                 lazyListState.animateScrollToItem(0)
             }
 
@@ -701,8 +726,8 @@ fun MailboxScreen(
                 onComposeClick = actions.navigateToComposer,
                 onSearchClick = actions.onEnterSearchMode,
                 isSearchButtonVisible = isContentSearchScreenEnabled,
-                onUnreadFilterEnabled = actions.onEnableUnreadFilter,
-                onUnreadFilterDisabled = actions.onDisableUnreadFilter,
+                onUnreadFilterEnabled = onUnreadFilterEnabled,
+                onUnreadFilterDisabled = onUnreadFilterDisabled,
                 snackbarHeight = snackbarHeight,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -717,28 +742,6 @@ fun MailboxScreen(
         }
     }
 }
-
-/**
- * Tracks the mailbox list scroll direction, returning `true` while the user is scrolling up
- * (towards the top) and `false` while scrolling down. Used to reveal the collapsed top bar on any
- * upward scroll without having to reach the top of the list.
- */
-@Composable
-private fun rememberIsScrollingUp(listState: LazyListState): State<Boolean> =
-    produceState(initialValue = true, listState) {
-        var previousIndex = listState.firstVisibleItemIndex
-        var previousScrollOffset = listState.firstVisibleItemScrollOffset
-        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-            .collect { (index, offset) ->
-                value = if (previousIndex != index) {
-                    previousIndex > index
-                } else {
-                    previousScrollOffset >= offset
-                }
-                previousIndex = index
-                previousScrollOffset = offset
-            }
-    }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressWarnings("ComplexMethod")
