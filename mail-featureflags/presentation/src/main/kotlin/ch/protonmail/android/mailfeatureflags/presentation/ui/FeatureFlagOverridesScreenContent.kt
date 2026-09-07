@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -90,7 +91,11 @@ internal fun FeatureFlagOverridesScreenContent(
         },
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .imePadding()
+        ) {
             SearchField(value = query, onValueChange = { query = it })
 
             if (visibleItems.isEmpty()) {
@@ -227,7 +232,8 @@ private fun FeatureFlagRow(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = ProtonDimens.Spacing.Large)
+                    .padding(end = ProtonDimens.Spacing.Large),
+                verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
             ) {
                 Text(
                     text = model.name,
@@ -242,7 +248,6 @@ private fun FeatureFlagRow(
                 // Kept on its own line so a long name never has to share the row with it.
                 if (model.overridden) {
                     Text(
-                        modifier = Modifier.padding(top = ProtonDimens.Spacing.Tiny),
                         text = stringResource(R.string.feature_flag_overridden_badge),
                         color = ProtonTheme.colors.notificationWarning,
                         style = ProtonTheme.typography.bodySmall

@@ -174,7 +174,8 @@ private fun ApplicationLogsRow(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = ProtonDimens.Spacing.Large)
+                    .padding(horizontal = ProtonDimens.Spacing.Large),
+                verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
             ) {
                 Text(
                     text = stringResource(title),
