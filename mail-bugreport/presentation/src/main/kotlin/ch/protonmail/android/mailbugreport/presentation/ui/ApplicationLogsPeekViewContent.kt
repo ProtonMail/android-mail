@@ -18,15 +18,17 @@
 
 package ch.protonmail.android.mailbugreport.presentation.ui
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
@@ -35,10 +37,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.design.compose.component.appbar.ProtonTopAppBar
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -57,9 +63,18 @@ internal fun ApplicationLogsPeekViewContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
+    val horizontalScrollState = rememberScrollState()
     val context = LocalContext.current
+    val density = LocalDensity.current
+    val textMeasurer = rememberTextMeasurer()
 
     val contents = state.uiModel.fileContents
+    val lineStyle = ProtonTheme.typography.bodySmallNorm.copy(fontFamily = FontFamily.Monospace)
+
+    val contentWidth = remember(lineStyle, state.uiModel.longestLineChars) {
+        val charWidth = textMeasurer.measure(text = "0", style = lineStyle).size.width
+        with(density) { (charWidth * state.uiModel.longestLineChars).toDp() }
+    }
 
     Scaffold(
         modifier = modifier,
@@ -114,11 +129,19 @@ internal fun ApplicationLogsPeekViewContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(ProtonDimens.Spacing.Small)
-                        .animateContentSize()
                 ) {
                     // Load in chunks as the file contents could be huge and take a while to render.
                     items(state.uiModel.fileContents) { chunk ->
-                        Text(text = chunk, style = ProtonTheme.typography.bodySmallNorm)
+                        Text(
+                            // One log entry stays on one row. The row scrolls sideways instead of
+                            // wrapping, so the timestamp and tag columns line up down the file.
+                            modifier = Modifier
+                                .horizontalScroll(horizontalScrollState)
+                                .width(contentWidth),
+                            text = chunk,
+                            style = lineStyle,
+                            softWrap = false
+                        )
                     }
                 }
             }
