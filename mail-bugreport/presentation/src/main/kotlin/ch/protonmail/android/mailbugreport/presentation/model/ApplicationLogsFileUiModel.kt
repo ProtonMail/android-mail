@@ -25,5 +25,6 @@ import androidx.compose.runtime.Stable
 data class ApplicationLogsFileUiModel(
     val fileUri: Uri,
     val fileName: String,
-    val fileContents: List<String>
+    val fileContents: List<String>,
+    val longestLineChars: Int
 )

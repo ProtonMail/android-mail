@@ -103,12 +103,16 @@ class ApplicationLogsPeekViewViewModel @Inject constructor(
 
     private suspend fun File.toUiModel() = withContext(Dispatchers.IO) {
         val fileUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", this@toUiModel)
-        val chunkedContents = readLines().chunked(ChunkLines).map { it.joinToString(separator = "\n") }
-        ApplicationLogsFileUiModel(fileUri, name, chunkedContents)
+        val lines = readLines()
+        val chunkedContents = lines.chunked(ChunkLines).map { it.joinToString(separator = "\n") }
+        // A single line can be pathologically long, and Compose cannot lay out an unbounded width.
+        val longestLineChars = lines.maxOfOrNull { it.length }?.coerceAtMost(MaxLineChars) ?: 0
+        ApplicationLogsFileUiModel(fileUri, name, chunkedContents, longestLineChars)
     }
 
     private companion object {
 
         const val ChunkLines = 200
+        const val MaxLineChars = 2_000
     }
 }
