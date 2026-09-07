@@ -22,6 +22,7 @@ import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.MutatorMutex
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -40,27 +41,24 @@ import kotlin.math.roundToInt
 /**
  * Scroll-linked collapse state for the mailbox top bar.
  */
+@Stable
 internal class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
 
     /** Current vertical offset of the collapsible content, in `[-collapsibleHeightPx, 0]`. */
     var offsetPx by mutableFloatStateOf(initialOffsetPx)
         private set
 
-    /**
-     * Height of the collapsible content.
-     */
-    var collapsibleHeightPx: Float = 0f
-        private set
+    /** Height of the collapsible content. */
+    private var collapsibleHeightPx: Float = 0f
 
     /** Offset applied by the last layout pass, in pixels. Mirrors [offsetPx] outside the snapshot. */
-    var appliedOffsetPx: Int = 0
-        private set
+    private var appliedOffsetPx: Int = 0
 
-    /** Set on recomposition. When false the bar stays put and no scroll delta is consumed. */
-    var enabled: Boolean = true
+    /** When false the bar stays put and no scroll delta is consumed. */
+    private var enabled: Boolean = true
 
     /** Guards the collapse direction only. The bar can always come back. */
-    var canCollapse: () -> Boolean = { true }
+    private var canCollapse: () -> Boolean = { true }
 
     /** Serialises the settle and expand animations so they never drive the offset at the same time. */
     private val animationMutex = MutatorMutex()
@@ -87,6 +85,21 @@ internal class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
             return Velocity.Zero
         }
     }
+
+    /**
+     * Updates the inputs the scroll handling depends on. Call it from a [androidx.compose.runtime.SideEffect],
+     * so the values match the last composition without making them observable.
+     */
+    fun configure(enabled: Boolean, canCollapse: () -> Boolean) {
+        this.enabled = enabled
+        this.canCollapse = canCollapse
+    }
+
+    /**
+     * Expanded height of a container measured while the bar is partly collapsed. Callers report the
+     * height they see, this adds back what the collapse took away.
+     */
+    fun expandedHeightPx(measuredHeightPx: Int): Int = measuredHeightPx - appliedOffsetPx
 
     /** Brings a collapsed bar back, for when the user can no longer scroll it back into view. */
     suspend fun animateExpand() {

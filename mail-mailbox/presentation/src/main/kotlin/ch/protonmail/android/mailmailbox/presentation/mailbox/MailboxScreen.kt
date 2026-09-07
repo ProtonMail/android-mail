@@ -490,8 +490,7 @@ fun MailboxScreen(
     val collapseTopBarOnScroll = isContentSearchScreenEnabled && !isSelectionMode && !isSearchMode
     val collapsingTopBarState = rememberCollapsingTopBarState()
     SideEffect {
-        collapsingTopBarState.enabled = collapseTopBarOnScroll
-        collapsingTopBarState.canCollapse = {
+        collapsingTopBarState.configure(enabled = collapseTopBarOnScroll) {
             mailboxListItems.itemCount > 0 && lazyListState.canScrollForward
         }
     }
@@ -594,7 +593,7 @@ fun MailboxScreen(
                     .onGloballyPositioned { coordinates ->
                         // Report the expanded height. It is what the empty states are laid out against,
                         // and keeping it stable avoids recomposing the list on every collapse frame.
-                        val expandedHeight = coordinates.size.height - collapsingTopBarState.appliedOffsetPx
+                        val expandedHeight = collapsingTopBarState.expandedHeightPx(coordinates.size.height)
                         rememberTopBarHeight.value = with(localDensity) { expandedHeight.toDp() }
                     }
             ) {
