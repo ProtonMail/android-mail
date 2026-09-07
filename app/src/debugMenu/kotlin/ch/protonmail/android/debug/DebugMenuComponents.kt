@@ -100,7 +100,7 @@ internal fun LazyListScope.debugMenuSection(
                 ),
                 text = stringResource(title),
                 color = ProtonTheme.colors.textHint,
-                style = ProtonTheme.typography.bodySmall
+                style = ProtonTheme.typography.bodyMedium
             )
             content()
         }
@@ -134,7 +134,7 @@ internal fun DebugMenuRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                modifier = Modifier.size(ProtonDimens.IconSize.Default),
                 painter = painterResource(icon),
                 contentDescription = null,
                 tint = tint
@@ -148,20 +148,20 @@ internal fun DebugMenuRow(
                 Text(
                     text = stringResource(title),
                     color = ProtonTheme.colors.textNorm,
-                    style = ProtonTheme.typography.titleSmall
+                    style = ProtonTheme.typography.titleMedium
                 )
                 description?.let {
                     Text(
                         text = stringResource(it),
                         color = ProtonTheme.colors.textWeak,
-                        style = ProtonTheme.typography.bodySmall
+                        style = ProtonTheme.typography.bodyMedium
                     )
                 }
             }
 
             if (showChevron) {
                 Icon(
-                    modifier = Modifier.size(ProtonDimens.IconSize.Small),
+                    modifier = Modifier.size(ProtonDimens.IconSize.Medium),
                     painter = painterResource(R.drawable.ic_proton_chevron_right),
                     contentDescription = null,
                     tint = ProtonTheme.colors.iconHint

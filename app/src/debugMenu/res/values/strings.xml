@@ -27,17 +27,17 @@
     <string name="app_debug_screen_logs_description" translatable="false">Read App/SDK logs, then share or export</string>
     <string name="app_debug_screen_app_state_section_title" translatable="false">App state</string>
     <string name="app_debug_screen_app_state_subtitle" translatable="false">Reset onboarding and prompts</string>
-    <string name="app_debug_screen_app_state_description" translatable="false">Replay the one-time screens the app shows once</string>
+    <string name="app_debug_screen_app_state_description" translatable="false">Replay the one-time app screens</string>
     <string name="app_debug_screen_app_state_reset_section_title" translatable="false">One-time screens</string>
     <string name="app_debug_screen_app_state_title" translatable="false">App state</string>
     <string name="app_debug_screen_app_state_reset_onboarding_title" translatable="false">Reset onboarding</string>
-    <string name="app_debug_screen_app_state_reset_onboarding_description" translatable="false">Onboarding shows again on the next app start</string>
+    <string name="app_debug_screen_app_state_reset_onboarding_description" translatable="false">Shows again on the next app start</string>
     <string name="app_debug_screen_app_state_reset_onboarding_done" translatable="false">Onboarding reset</string>
     <string name="app_debug_screen_app_state_reset_spotlight_title" translatable="false">Reset feature spotlight</string>
-    <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">The current spotlight shows again on the next app start</string>
+    <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">Shows again on the next app start</string>
     <string name="app_debug_screen_app_state_reset_spotlight_done" translatable="false">Feature spotlight reset</string>
     <string name="app_debug_screen_app_state_reset_notifications_title" translatable="false">Reset notification prompt</string>
-    <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Clears the prompt attempts counter. The prompt only shows if notifications are disabled in the system settings</string>
+    <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Only shows if notifications are off</string>
     <string name="app_debug_screen_app_state_reset_notifications_done" translatable="false">Notification prompt reset</string>
     <string name="app_debug_screen_danger_title" translatable="false">Danger Zone</string>
     <string name="app_debug_screen_danger_subtitle" translatable="false">Crash test and miscellaneous</string>
@@ -51,7 +51,7 @@
     <string name="app_debug_screen_danger_crash_webview_description" translatable="false">Trigger a webview crash to test message limit</string>
     <string name="app_debug_screen_database_export_section_title" translatable="false">Databases</string>
     <string name="app_debug_screen_database_export_subtitle" translatable="false">Export databases</string>
-    <string name="app_debug_screen_database_export_description" translatable="false">Copy a Room database off the device</string>
+    <string name="app_debug_screen_database_export_description" translatable="false">Copy DB files off the device</string>
     <string name="app_debug_screen_database_export_title" translatable="false">Export databases</string>
     <string name="app_debug_screen_database_export_action_export" translatable="false">Export</string>
     <string name="app_debug_screen_database_export_action_save" translatable="false">Save externally</string>
@@ -60,7 +60,7 @@
     <string name="app_debug_screen_database_export_error" translatable="false">Failed to export database</string>
     <string name="app_debug_screen_telemetry_section_title" translatable="false">Telemetry</string>
     <string name="app_debug_screen_telemetry_subtitle" translatable="false">Inspect recorded events</string>
-    <string name="app_debug_screen_telemetry_description" translatable="false">Capture events locally and inspect their payload</string>
+    <string name="app_debug_screen_telemetry_description" translatable="false">Capture events and inspect payloads</string>
     <string name="app_debug_screen_telemetry_title" translatable="false">Telemetry debug</string>
     <string name="app_debug_screen_telemetry_refresh" translatable="false">Refresh</string>
     <string name="app_debug_screen_telemetry_capture_on" translatable="false">Capturing</string>
