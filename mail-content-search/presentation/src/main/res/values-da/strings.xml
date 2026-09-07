@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">For at du kan søge i meddelelsesindhold vil meddelelser blive downloadet på denne enhed.</string>
   <string name="mail_settings_content_search_learn_more">Få mere at vide..</string>
   <string name="mail_settings_content_search_toggle_title">Søg i indhold i e-mails</string>
-  <string name="mail_settings_content_search_mobile_data_title">Tillad download via mobildata</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download fortsætter via mobildata hvis Wi-Fi-forbindelsen afbrydes.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Download via mobildata</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Brug mobildata for at forsætte med at downloade hvis Wi-Fi-forbindelsen afbrydes.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$d%%...</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder...</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på Wi-Fi...</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ryd data</string>
   <string name="content_search_bottomsheet_title">Forbereder indholdssøgning i e-mails</string>
   <string name="content_search_bottomsheet_description">E-mails fra din postkasse downloades og bliver gjort klar til søgning.</string>
-  <string name="content_search_bottomsheet_continue">Fortsæt</string>
+  <string name="content_search_bottomsheet_continue">Forstået</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Ingen resultater</string>
   <string name="content_search_no_results_description">Prøv andre nøgleord eller kontrollér, at du har stavet rigtigt.</string>

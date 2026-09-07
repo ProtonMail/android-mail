@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Версія %s</string>
   <string name="spotlight_screen_title">Што новага ў Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Непрыкметны значок</string>
   <string name="spotlight_feature_item_discreet_icon_description">Пакіньце прадвызначаны значок Proton Mail або замаскіруйце яго пад які-небудзь шаблонны для большай прыватнасці.</string>

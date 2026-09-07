@@ -4,14 +4,14 @@
   <string name="mail_settings_content_search_description">Per tal que pugueu cercar al contingut dels missatges, aquests es baixaran al dispositiu.</string>
   <string name="mail_settings_content_search_learn_more">Més informació..</string>
   <string name="mail_settings_content_search_toggle_title">Cerca al contingut del correu electrònic</string>
-  <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
-  <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Descarregar mitjançant dades mòbils</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Utilitzeu les dades mòbils per continuar les descàrregues quan es perdi la connexió Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">S\'està esperant la connexió Wi-Fi…</string>
-  <string name="mail_settings_content_search_failed_status">Alguna cosa ha anat malament en preparar la cerca del contingut del correu electrònic.</string>
+  <string name="mail_settings_content_search_failed_status">S\'ha produït un error en preparar la cerca del contingut del correu electrònic.</string>
   <string name="mail_settings_content_search_failed_retry">Torneu-ho a provar</string>
-  <string name="mail_settings_content_search_update_error">Alguna cosa ha anat malament. Torneu-ho a provar.</string>
+  <string name="mail_settings_content_search_update_error">S\'ha produït un error. Torneu-ho a provar.</string>
   <string name="mail_settings_content_search_retry_error">No es pot preparar la cerca del contingut del correu electrònic.</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
   <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Neteja les dades</string>
   <string name="content_search_bottomsheet_title">S\'està preparant la cerca de contingut dels correus electrònics</string>
   <string name="content_search_bottomsheet_description">Els correus de la bústia s\'estan baixant i preparant per a la cerca.</string>
-  <string name="content_search_bottomsheet_continue">Continuar</string>
+  <string name="content_search_bottomsheet_continue">D\'acord</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Sense resultats</string>
   <string name="content_search_no_results_description">Proveu amb paraules clau diferents o comproveu l\'ortografia.</string>
@@ -32,7 +32,7 @@
   <string name="content_search_include_trash">Paperera</string>
   <string name="content_search_include_spam">Correu brossa</string>
   <string name="content_search_about_content_search">Sobre la cerca\ncontingut del correu electrònic</string>
-  <string name="content_search_first_run_description">Escriviu un nom, un assumpte o una paraula clau per començar la cerca</string>
+  <string name="content_search_first_run_description">Escriviu un nom, assumpte o paraula clau per a cercar</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recents</string>
   <string name="content_search_clear_recent_searches">Neteja</string>

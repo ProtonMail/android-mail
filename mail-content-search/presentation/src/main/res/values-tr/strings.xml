@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">İleti içeriğine göre arama yapabilmek için iletiler bu aygıta indirilecek.</string>
   <string name="mail_settings_content_search_learn_more">Ayrıntılı bilgi alın…</string>
   <string name="mail_settings_content_search_toggle_title">E-posta içeriğini ara</string>
-  <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indirmeye izin ver</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı kesilirse indirme işlemi mobil veri ile sürdürülür.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indir</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı olmadığında indirmeleri sürdürmek için mobil veriyi kullanır.</string>
   <string name="mail_settings_content_search_syncing_status">Hazırlanıyor %1$d[%1$i]…</string>
   <string name="mail_settings_content_search_preparing_status">Hazırlanıyor…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi bekleniyor…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Verileri temizle</string>
   <string name="content_search_bottomsheet_title">E-posta içerikleri araması hazırlanıyor</string>
   <string name="content_search_bottomsheet_description">E-posta kutunuzdaki gelen e-postalar indiriliyor ve aranabilmeleri için hazırlanıyor.</string>
-  <string name="content_search_bottomsheet_continue">İlerle</string>
+  <string name="content_search_bottomsheet_continue">Anladım</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Herhangi bir sonuç bulunamadı</string>
   <string name="content_search_no_results_description">Farklı anahtar sözcükler deneyin veya yazımınızı denetleyin.</string>

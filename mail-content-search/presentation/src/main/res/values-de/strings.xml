@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Damit nach dem Inhalt der Nachrichten gesucht werden kann, werden die Nachrichten auf dieses Gerät heruntergeladen.</string>
   <string name="mail_settings_content_search_learn_more">Mehr erfahren …</string>
   <string name="mail_settings_content_search_toggle_title">E-Mail-Inhalte durchsuchen</string>
-  <string name="mail_settings_content_search_mobile_data_title">Herunterladen über Mobilfunk zulassen</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Das Herunterladen wird über Mobilfunk fortgesetzt, wenn die WLAN-Verbindung unterbrochen wird.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Mit Mobilfunkdaten herunterladen</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Mobilfunkdaten verwenden, um Downloads fortzusetzen, falls die WLAN-Verbindung unterbrochen wird.</string>
   <string name="mail_settings_content_search_syncing_status">%1$d%% wird vorbereitet …</string>
   <string name="mail_settings_content_search_preparing_status">Wird vorbereitet …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Auf WLAN-Verbindung wird gewartet …</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Daten bereinigen</string>
   <string name="content_search_bottomsheet_title">Suche nach E-Mail-Inhalten wird vorbereitet</string>
   <string name="content_search_bottomsheet_description">E-Mails aus deinem Postfach werden gerade heruntergeladen und für die Suche vorbereitet.</string>
-  <string name="content_search_bottomsheet_continue">Weiter</string>
+  <string name="content_search_bottomsheet_continue">Verstanden</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Keine Ergebnisse</string>
   <string name="content_search_no_results_description">Probiere andere Suchbegriffe aus oder überprüfe die Schreibweise.</string>

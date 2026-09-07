@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Wersja %s</string>
   <string name="spotlight_screen_title">Co nowego w Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Dyskretna ikona</string>
   <string name="spotlight_feature_item_discreet_icon_description">Zachowaj domyślną ikonę Proton Mail lub zamaskuj ją przy użyciu ogólnej ikony dla większej prywatności.</string>

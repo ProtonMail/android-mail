@@ -101,8 +101,8 @@
   <string name="upselling_comparison_table_dark_web_monitoring">Monitoratge del web fosc</string>
   <string name="upselling_comparison_table_premium_access">Accés prèmium a Mail, VPN, Drive, Pass i Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Àlies il·limitats per a amagar la identitat</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetes, filtres i etiquetes, sense límit</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultraràpida amb més de 110 països</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetes, filtres i etiquetes il·limitats</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Trieu una subscripció</string>
   <string name="upselling_select_plan_year">12 mesos</string>

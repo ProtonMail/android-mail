@@ -54,9 +54,9 @@
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка падчас спраўджання вашага PIN-кода.</string>
   <string name="mail_settings_pin_insertion_error_too_short">PIN павінен быць не менш за 4 лічбы</string>
-  <string name="mail_settings_pin_verification_error_too_many">Занадта шмат спроб. Паспрабуйце яшчэ раз пазней.</string>
+  <string name="mail_settings_pin_verification_error_too_many">Занадта шмат спроб. Паўтарыце спробу пазней.</string>
   <string name="mail_settings_pin_verification_error_no_match">Няправільны PIN</string>
-  <string name="mail_settings_pin_verification_error_too_many_frequent">Занадта шмат частых спроб. Паспрабуйце пазней.</string>
+  <string name="mail_settings_pin_verification_error_too_many_frequent">Занадта шмат частых спроб. Паўтарыце спробу пазней.</string>
   <string name="mail_settings_pin_insertion_signout_text">Выйсці</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Выйсці</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Вы сапраўды хочаце выйсці?</string>
@@ -64,7 +64,7 @@
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Не</string>
   <string name="mail_settings_pin_insertion_created_success">PIN-код паспяхова створаны.</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
+  <string name="mail_settings_generic_error_message">Адбылася памылка. Паўтарыце спробу.</string>
   <string name="mail_settings_biometrics_unable_to_set">Адбылася памылка пры наладжванні біяметрычных параметраў.</string>
   <string name="mail_settings_biometrics_unable_to_unset">Адбылася памылка падчас скідання біяметрычных параметраў.</string>
   <string name="mail_settings_biometrics_unknown_lock">Адбылася памылка падчас атрымання бягучай палітыкі блакіравання.</string>

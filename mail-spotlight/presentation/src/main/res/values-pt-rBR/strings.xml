@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Versão %s</string>
   <string name="spotlight_screen_title">Novidades no Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Ícone discreto</string>
   <string name="spotlight_feature_item_discreet_icon_description">Mantenha o ícone padrão do Proton Mail ou disfarce-o com um genérico para maior privacidade.</string>
@@ -52,12 +51,12 @@
   <string name="spotlight_screen_category_view_button_try">Sim, organize</string>
   <string name="spotlight_screen_category_view_button_dismiss">Manter a caixa de entrada como antes</string>
   <!-- Content Search Spotlight -->
-  <string name="spotlight_screen_content_search_title">Search just got better.</string>
-  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
+  <string name="spotlight_screen_content_search_title">A pesquisa agora é melhor</string>
+  <string name="spotlight_screen_content_search_subtitle">Encontre o que é importante, sem abrir mão da sua privacidade.</string>
   <string name="spotlight_screen_content_search_message_content_title">Encontre mais em cada e-mail</string>
-  <string name="spotlight_screen_content_search_message_content_subtitle">Find emails by message content, not just subject or sender.</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">Encontre e-mais por conteúdo de mensagem, não apenas por assunto ou remetente.</string>
   <string name="spotlight_screen_content_search_bottom_bar_title">Mais fácil de chegar</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Search now lives at the bottom of the screen for easy one-handed use.</string>
-  <string name="spotlight_screen_content_search_recent_searches_title">Pick up where you left off</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Easily revisit recent searches. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_content_search_bottom_bar_subtitle">A função de pesquisa agora fica na parte inferior da tela, facilitando o uso com uma só mão.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">Continue de onde parou</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Revisite facilmente as pesquisas recentes. Armazenadas no seu dispositivo para preservar a criptografia de ponta a ponta.</string>
 </resources>

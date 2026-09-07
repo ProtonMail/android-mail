@@ -4,23 +4,23 @@
   <string name="mail_settings_content_search_description">Para que você possa pesquisar pelo conteúdo das mensagens, elas serão baixadas neste aparelho.</string>
   <string name="mail_settings_content_search_learn_more">Saiba mais..</string>
   <string name="mail_settings_content_search_toggle_title">Pesquisar conteúdo do e-mail</string>
-  <string name="mail_settings_content_search_mobile_data_title">Permitir download através de dados móveis</string>
-  <string name="mail_settings_content_search_mobile_data_hint">O download continua usando dados móveis caso a conexão Wi-Fi seja interrompida.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Download usando dados móveis</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparando %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Aguardando por Wi-Fi…</string>
   <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
-  <string name="mail_settings_content_search_failed_retry">Try again</string>
-  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
-  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
+  <string name="mail_settings_content_search_failed_retry">Tentar novamente</string>
+  <string name="mail_settings_content_search_update_error">Ocorreu um erro. Tente novamente.</string>
+  <string name="mail_settings_content_search_retry_error">Não foi possível preparar de pesquisa de conteúdo de e-mail</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Limpar dados</string>
-  <string name="content_search_bottomsheet_title">Preparing email content search</string>
+  <string name="content_search_bottomsheet_title">Preparando pesquisa de conteúdo de e-mail</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continuar</string>
+  <string name="content_search_bottomsheet_continue">Entendi</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Sem resultados</string>
   <string name="content_search_no_results_description">Tente usar palavras-chave diferentes ou verifique a ortografia.</string>
@@ -37,7 +37,7 @@
   <string name="content_search_recent_searches_title">Recente</string>
   <string name="content_search_clear_recent_searches">Limpar</string>
   <string name="content_search_previously_found_title">Encontrado anteriormente</string>
-  <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+  <string name="content_search_dismiss_recent_search_content_description">Remover “%1$s das pesquisas recentes</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Excluir permanentemente?</string>
   <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
