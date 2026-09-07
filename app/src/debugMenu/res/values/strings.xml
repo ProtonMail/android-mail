@@ -32,13 +32,10 @@
     <string name="app_debug_screen_app_state_title" translatable="false">App state</string>
     <string name="app_debug_screen_app_state_reset_onboarding_title" translatable="false">Reset onboarding</string>
     <string name="app_debug_screen_app_state_reset_onboarding_description" translatable="false">Shows again on the next app start</string>
-    <string name="app_debug_screen_app_state_reset_onboarding_done" translatable="false">Onboarding reset</string>
     <string name="app_debug_screen_app_state_reset_spotlight_title" translatable="false">Reset feature spotlight</string>
     <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">Shows again on the next app start</string>
-    <string name="app_debug_screen_app_state_reset_spotlight_done" translatable="false">Feature spotlight reset</string>
     <string name="app_debug_screen_app_state_reset_notifications_title" translatable="false">Reset notification prompt</string>
     <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Only shows if notifications are off</string>
-    <string name="app_debug_screen_app_state_reset_notifications_done" translatable="false">Notification prompt reset</string>
     <string name="app_debug_screen_danger_title" translatable="false">Danger Zone</string>
     <string name="app_debug_screen_danger_subtitle" translatable="false">Crash test and miscellaneous</string>
     <string name="app_debug_screen_danger_description" translatable="false">These actions crash the app on purpose</string>

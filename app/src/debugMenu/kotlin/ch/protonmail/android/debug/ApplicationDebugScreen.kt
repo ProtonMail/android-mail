@@ -36,7 +36,7 @@ internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: Appl
                 icon = R.drawable.ic_proton_window_terminal,
                 title = R.string.app_debug_screen_logs_subtitle,
                 description = R.string.app_debug_screen_logs_description,
-                showChevron = true,
+                trailing = { DebugMenuChevron() },
                 onClick = actions.onLogsNavigation
             )
         }
@@ -46,7 +46,7 @@ internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: Appl
                 icon = R.drawable.ic_proton_storage,
                 title = R.string.app_debug_screen_database_export_subtitle,
                 description = R.string.app_debug_screen_database_export_description,
-                showChevron = true,
+                trailing = { DebugMenuChevron() },
                 onClick = actions.onDatabaseExportNavigation
             )
         }
@@ -56,7 +56,7 @@ internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: Appl
                 icon = R.drawable.ic_proton_chart_line,
                 title = R.string.app_debug_screen_telemetry_subtitle,
                 description = R.string.app_debug_screen_telemetry_description,
-                showChevron = true,
+                trailing = { DebugMenuChevron() },
                 onClick = actions.onTelemetryNavigation
             )
         }
@@ -66,7 +66,7 @@ internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: Appl
                 icon = R.drawable.ic_proton_arrows_rotate,
                 title = R.string.app_debug_screen_app_state_subtitle,
                 description = R.string.app_debug_screen_app_state_description,
-                showChevron = true,
+                trailing = { DebugMenuChevron() },
                 onClick = actions.onAppStateNavigation
             )
         }
@@ -77,7 +77,7 @@ internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: Appl
                 title = R.string.app_debug_screen_danger_subtitle,
                 description = R.string.app_debug_screen_danger_description,
                 tint = ProtonTheme.colors.notificationError,
-                showChevron = true,
+                trailing = { DebugMenuChevron() },
                 onClick = actions.onDangerZoneNavigation
             )
         }
