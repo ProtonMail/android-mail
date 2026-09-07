@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Aby bylo možné vyhledávat v obsahu zpráv, e-maily se stáhnou do tohoto zařízení.</string>
   <string name="mail_settings_content_search_learn_more">Více informací..</string>
   <string name="mail_settings_content_search_toggle_title">Hledat v obsahu e-mailů</string>
-  <string name="mail_settings_content_search_mobile_data_title">Povolit stahování přes mobilní data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Pokud dojde k výpadku Wi-Fi, stahování pokračuje přes mobilní data.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Stáhnout přes mobilní data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Použít mobilní data k pokračování ve stahování v případě výpadku Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Příprava %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Příprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čekání na síť Wi-Fi…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Smazat data</string>
   <string name="content_search_bottomsheet_title">Příprava vyhledávání v obsahu e-mailů</string>
   <string name="content_search_bottomsheet_description">E-maily z vaší e-mailové schránky se právě stahují a připravují k prohledávání.</string>
-  <string name="content_search_bottomsheet_continue">Pokračovat</string>
+  <string name="content_search_bottomsheet_continue">Rozumím</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Žádné výsledky</string>
   <string name="content_search_no_results_description">Zkuste zadat jiná klíčová slova nebo zkontrolujte pravopis.</string>

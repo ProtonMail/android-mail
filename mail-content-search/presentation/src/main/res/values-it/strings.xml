@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Per consentirti di effettuare ricerche in base al contenuto dei messaggi, questi ultimi verranno scaricati su questo dispositivo.</string>
   <string name="mail_settings_content_search_learn_more">Scopri di più..</string>
   <string name="mail_settings_content_search_toggle_title">Cerca nel contenuto delle email</string>
-  <string name="mail_settings_content_search_mobile_data_title">Consenti download tramite rete dati</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Il download continua tramite rete dati se viene persa la connessione Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Scarica tramite rete mobile</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Usa la rete mobile per continuare i download quando il Wi-Fi non è disponibile</string>
   <string name="mail_settings_content_search_syncing_status">Preparazione di %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">In attesa di una rete Wi-Fi…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Cancella la cache</string>
   <string name="content_search_bottomsheet_title">Preparazione della ricerca nel contenuto dell\'email</string>
   <string name="content_search_bottomsheet_description">Le email dalla tua casella di posta vengono scaricate e preparate per la ricerca.</string>
-  <string name="content_search_bottomsheet_continue">Continua</string>
+  <string name="content_search_bottomsheet_continue">Capito</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Nessun risultato</string>
   <string name="content_search_no_results_description">Prova parole chiave diverse o controlla l\'ortografia.</string>

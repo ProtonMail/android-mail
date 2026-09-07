@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Verzió %s</string>
   <string name="spotlight_screen_title">Újdonságok a Proton Mailben</string>
   <string name="spotlight_feature_item_discreet_icon_title">Diszkrét ikon</string>
   <string name="spotlight_feature_item_discreet_icon_description">Tartsa meg az alapértelmezett Proton Mail ikont, vagy álcázza egy általánossal a nagyobb adatvédelem érdekében.</string>

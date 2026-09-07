@@ -4,12 +4,12 @@
   <string name="mail_settings_content_search_description">Aby ste mohli vyhľadávať podľa obsahu správ, správy sa stiahnu do tohto zariadenia.</string>
   <string name="mail_settings_content_search_learn_more">Zistiť viac..</string>
   <string name="mail_settings_content_search_toggle_title">Hľadať v obsahu emailu</string>
-  <string name="mail_settings_content_search_mobile_data_title">Povoliť sťahovanie cez mobilné dáta</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Ak dôjde k prerušeniu pripojenia cez Wi-Fi, sťahovanie pokračuje cez mobilné dáta.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Stiahnuť cez mobilné dáta</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Použiť mobilné dáta na pokračovanie v sťahovaní v prípade výpadku Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Príprava %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Príprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakám na Wi-Fi…</string>
-  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_status">Pri príprave vyhľadávania obsahu emailov došlo k chybe.</string>
   <string name="mail_settings_content_search_failed_retry">Skúste znova</string>
   <string name="mail_settings_content_search_update_error">Niečo sa pokazilo. Skúste to znova, prosím.</string>
   <string name="mail_settings_content_search_retry_error">Nepodarilo sa pripraviť prehľadávanie obsahu emailov</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Vymazať údaje</string>
   <string name="content_search_bottomsheet_title">Príprava prehľadávania obsahu emailov</string>
   <string name="content_search_bottomsheet_description">Emaily z vašej schránky sa práve sťahujú a pripravujú na vyhľadávanie.</string>
-  <string name="content_search_bottomsheet_continue">Pokračovať</string>
+  <string name="content_search_bottomsheet_continue">Rozumiem</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Žiadne výsledky</string>
   <string name="content_search_no_results_description">Skúste použiť iné kľúčové slová alebo skontrolujte pravopis.</string>

@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">バージョン %s</string>
   <string name="spotlight_screen_title">Proton Mailの新機能</string>
   <string name="spotlight_feature_item_discreet_icon_title">目立たないアイコン</string>
   <string name="spotlight_feature_item_discreet_icon_description">Proton Mailのデフォルトアイコンをそのまま使用するか、プライバシーを高めるために一般的なアイコンに偽装してください。</string>

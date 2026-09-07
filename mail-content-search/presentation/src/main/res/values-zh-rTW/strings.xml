@@ -4,14 +4,14 @@
   <string name="mail_settings_content_search_description">為了讓您能搜尋訊息內容，訊息將會下載至此裝置。</string>
   <string name="mail_settings_content_search_learn_more">進一步瞭解..</string>
   <string name="mail_settings_content_search_toggle_title">Search email content</string>
-  <string name="mail_settings_content_search_mobile_data_title">允許透過行動數據下載</string>
-  <string name="mail_settings_content_search_mobile_data_hint">若中斷 Wi-Fi 連線，將繼續透過行動數據下載。</string>
+  <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">正在等待 Wi-Fi…</string>
   <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
-  <string name="mail_settings_content_search_failed_retry">Try again</string>
-  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_failed_retry">重試</string>
+  <string name="mail_settings_content_search_update_error">發生問題，請再試一次。</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_clear_data_button">清除本機搜尋資料</string>
   <string name="mail_settings_content_search_clear_data_description">清除本機搜尋資料將會停用訊息內文搜尋。您可以隨時重新啟用。</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">清除資料</string>
   <string name="content_search_bottomsheet_title">正準備內文搜尋</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continue</string>
+  <string name="content_search_bottomsheet_continue">Got it</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">找不到任何結果</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>

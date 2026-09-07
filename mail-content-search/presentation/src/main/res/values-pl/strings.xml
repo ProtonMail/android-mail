@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Aby umożliwić Ci wyszukiwanie po treści wiadomości, zostaną one pobrane na to urządzenie.</string>
   <string name="mail_settings_content_search_learn_more">Dowiedz się więcej...</string>
   <string name="mail_settings_content_search_toggle_title">Search email content</string>
-  <string name="mail_settings_content_search_mobile_data_title">Zezwalaj na pobieranie przez dane mobilne</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Pobieranie będzie kontynuowane przy użyciu danych mobilnych w przypadku utraty połączenia Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Przygotowywanie…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Wyczyść dane</string>
   <string name="content_search_bottomsheet_title">Preparing email content search</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Continue</string>
+  <string name="content_search_bottomsheet_continue">Got it</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">No results</string>
   <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>

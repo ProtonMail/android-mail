@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="contact_list_title">Кантакты</string>
-  <string name="contact_list_loading_error">Памылка загрузкі кантактаў. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_list_loading_error">Памылка загрузкі кантактаў. Паўтарыце спробу пазней</string>
   <string name="no_contacts">Кантакты не знойдзены</string>
   <string name="no_contact_groups">Групы кантактаў не знойдзены</string>
   <string name="no_contacts_description">Палепшыце працу сваёй электроннай пошты стварыўшы новы кантакт або імпартуйце адзін з існуючых.</string>
@@ -47,7 +47,7 @@
   <string name="contact_delete_dialog_text">Гэты кантакт будзе выдалены з вашага спіса кантактаў.</string>
   <string name="contact_delete_dialog_cancel_button">Скасаваць</string>
   <string name="contact_delete_dialog_confirm_button">Выдаліць</string>
-  <string name="contact_details_loading_error">Памылка загрузкі кантакту. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_details_loading_error">Памылка загрузкі кантакту. Паўтарыце спробу пазней</string>
   <string name="contact_details_edit_contact_content_description">Рэдагаваць кантакт</string>
   <string name="contact_details_delete_contact_content_description">Выдаліць кантакт</string>
   <string name="contact_details_avatar_image_content_description">Аватар кантакту</string>

@@ -37,6 +37,6 @@
   <string name="report_a_problem_leave_dialog_cancel_btn">Скасаваць</string>
   <string name="report_a_problem_leave_dialog_close_btn">Закрыць</string>
   <string name="report_a_problem_success">Дзякуй, што паведамілі. Наша каманда падтрымкі кліентаў звяжацца з вамі.</string>
-  <string name="report_a_problem_generic_error">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
-  <string name="report_a_problem_offline_error">Цяпер вы па-за сеткай. Паспрабуйце яшчэ раз з падключаным інтэрнэтам.</string>
+  <string name="report_a_problem_generic_error">Адбылася памылка. Паўтарыце спробу.</string>
+  <string name="report_a_problem_offline_error">Цяпер вы па-за сеткай. Паўтарыце спробу з падключаным інтэрнэтам.</string>
 </resources>

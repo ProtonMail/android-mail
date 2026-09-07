@@ -162,7 +162,7 @@
   <string name="rsvp_widget_today">Сёння</string>
   <string name="rsvp_widget_tomorrow">Заўтра</string>
   <string name="rsvp_widget_invite_details_unavailable">Падрабязнасці запрашэння недаступны</string>
-  <string name="rsvp_widget_could_not_load">Не ўдалося загрузіць інфармацыю.\nПаспрабуйце яшчэ раз.</string>
+  <string name="rsvp_widget_could_not_load">Не ўдалося загрузіць інфармацыю.\nПаўтарыце спробу.</string>
   <string name="rsvp_widget_button_retry">Паўтарыць</string>
   <string name="rsvp_widget_error_answering">Адбылася памылка пры адказе на гэтую падзею</string>
   <string name="rsvp_widget_open_in_proton_calendar">Адкрыць у Proton Calendar</string>

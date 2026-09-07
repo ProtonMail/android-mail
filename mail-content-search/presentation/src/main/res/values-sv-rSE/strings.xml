@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">För att du ska kunna söka efter meddelandeinnehåll kommer meddelanden att laddas ner på denna enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
   <string name="mail_settings_content_search_toggle_title">Search email content</string>
-  <string name="mail_settings_content_search_mobile_data_title">Tillåt nedladdning via mobildata</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Nedladdningen fortsätter via mobil data om Wi-Fi förloras.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$d %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Väntar på Wi-Fi …</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Rensa data</string>
   <string name="content_search_bottomsheet_title">Förbereder innehållssökning i e-post</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_continue">Fortsätt</string>
+  <string name="content_search_bottomsheet_continue">Jag förstår</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Inga resultat</string>
   <string name="content_search_no_results_description">Prova andra nyckelord eller kontrollera din stavning.</string>

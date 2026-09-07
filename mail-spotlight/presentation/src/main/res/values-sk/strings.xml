@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Verzia %s</string>
   <string name="spotlight_screen_title">Čo je nové v Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Nenápadná ikona</string>
   <string name="spotlight_feature_item_discreet_icon_description">Ponechajte si predvolenú ikonu Proton Mail alebo ju zamaskujte všeobecnou pre väčšie súkromie.</string>

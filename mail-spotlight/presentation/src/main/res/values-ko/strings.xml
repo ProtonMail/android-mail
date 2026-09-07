@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">버전 %s</string>
   <string name="spotlight_screen_title">Proton Mail의 새로운 기능</string>
   <string name="spotlight_feature_item_discreet_icon_title">숨겨진 아이콘</string>
   <string name="spotlight_feature_item_discreet_icon_description">기본 Proton Mail 아이콘을 유지하거나 개인 정보 보호를 위해 일반 아이콘으로 위장하세요.</string>

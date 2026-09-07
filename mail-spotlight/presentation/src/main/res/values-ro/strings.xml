@@ -17,7 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="spotlight_screen_version_text">Versiunea %s</string>
   <string name="spotlight_screen_title">Noutăți în Proton Mail</string>
   <string name="spotlight_feature_item_discreet_icon_title">Pictogramă discretă</string>
   <string name="spotlight_feature_item_discreet_icon_description">Păstrați pictograma implicită a Proton Mail sau deghizați-o cu una generică pentru o confidențialitate sporită.</string>

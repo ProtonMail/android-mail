@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Паведамленні будуць спампаваныя на гэту прыладу, каб вы маглі шукаць па іх змесціве.</string>
   <string name="mail_settings_content_search_learn_more">Даведацца больш..</string>
   <string name="mail_settings_content_search_toggle_title">Пошук па змесціве ў лісце</string>
-  <string name="mail_settings_content_search_mobile_data_title">Дазволіць спампоўванне праз праз мабільныя даныя</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Спампоўванне з дапамогай мабільных даных</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Выкарыстоўвайце мабільныя даныя, каб працягнуць спампоўванне пры адсутнасці сеткі Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ачысціць даныя</string>
   <string name="content_search_bottomsheet_title">Падрыхтоўка пошуку па змесціве ў лісце</string>
   <string name="content_search_bottomsheet_description">Лісты з вашай паштовай скрыні спампоўваюцца і рыхтуюцца да пошуку.</string>
-  <string name="content_search_bottomsheet_continue">Працягнуць</string>
+  <string name="content_search_bottomsheet_continue">Зразумела</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Няма вынікаў</string>
   <string name="content_search_no_results_description">Паспрабуйце іншыя ключавыя словы або праверце правапіс.</string>

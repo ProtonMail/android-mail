@@ -33,7 +33,7 @@
     <item quantity="other">%s traqueurs ont été bloqués</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
-    <item quantity="one">%s liens a été nettoyé</item>
+    <item quantity="one">%s lien a été nettoyé</item>
     <item quantity="other">%s liens ont été nettoyés</item>
   </plurals>
 </resources>

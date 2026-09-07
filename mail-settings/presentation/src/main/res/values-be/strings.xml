@@ -137,8 +137,8 @@
   <string name="mail_settings_custom_toolbar_reset">Скінуць да прадвызначаных</string>
   <string name="mail_settings_custom_toolbar_reset_title">Вы сапраўды хочаце скінуць налады панэлі інструментаў?</string>
   <string name="mail_settings_custom_toolbar_reset_confirm">Пацвердзіць</string>
-  <string name="mail_settings_custom_toolbar_save_error">Немагчыма захаваць дзеянні панэлі інструментаў. Паспрабуйце яшчэ раз.</string>
-  <string name="mail_settings_custom_toolbar_read_error">Немагчыма прачытаць дзеянні панэлі інструментаў. Паспрабуйце яшчэ раз.</string>
+  <string name="mail_settings_custom_toolbar_save_error">Немагчыма захаваць дзеянні панэлі інструментаў. Паўтарыце спробу.</string>
+  <string name="mail_settings_custom_toolbar_read_error">Немагчыма прачытаць дзеянні панэлі інструментаў. Паўтарыце спробу.</string>
   <!-- Custom App Icon -->
   <string name="settings_app_icon_toolbar_title">Значок праграмы</string>
   <string name="settings_app_icon_name_default">Прадвызначаная</string>
@@ -153,5 +153,5 @@
   <string name="settings_app_icon_action_cancel">Скасаваць</string>
   <string name="settings_app_icon_change_icon">Змяніць значок</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
+  <string name="mail_settings_generic_error_message">Адбылася памылка. Паўтарыце спробу.</string>
 </resources>

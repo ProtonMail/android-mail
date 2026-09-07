@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Pour vous permettre d\'effectuer des recherches dans le contenu de message, les messages seront téléchargés sur cet appareil.</string>
   <string name="mail_settings_content_search_learn_more">En savoir plus..</string>
   <string name="mail_settings_content_search_toggle_title">Rechercher dans le contenu des messages</string>
-  <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Téléchargement via les données mobiles</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Utilisez les données mobiles pour poursuivre les téléchargements en cas de perte de connexion Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Préparation en cours de %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">En attente du Wi-Fi…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Effacer les données</string>
   <string name="content_search_bottomsheet_title">Préparation de la recherche dans le contenu des e-mails en cours</string>
   <string name="content_search_bottomsheet_description">Les e-mails de votre boîte de réception sont en cours de téléchargement et de préparation afin d\'être recherchables.</string>
-  <string name="content_search_bottomsheet_continue">Continuer</string>
+  <string name="content_search_bottomsheet_continue">J\'ai compris</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title">Aucun résultat</string>
   <string name="content_search_no_results_description">Essayez différents mots-clés ou vérifiez l\'orthographe.</string>

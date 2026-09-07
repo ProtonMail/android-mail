@@ -37,8 +37,8 @@
   <string name="auth_password">Пароль</string>
   <string name="auth_login_assistive_text">Увядзіце сваю электронную пошту Proton або імя карыстальніка.</string>
   <string name="auth_account_details">Увядзіце падрабязнасці свайго ўліковага запісу Proton.</string>
-  <string name="auth_login_error_invalid_action_cannot_unlock_keys">Праблема з уваходам. Паспрабуйце яшчэ раз.</string>
-  <string name="auth_login_error_invalid_action_invalid_credentials">Няправільныя ўліковыя даныя для ўваходу. Паспрабуйце яшчэ раз.</string>
+  <string name="auth_login_error_invalid_action_cannot_unlock_keys">Праблема з уваходам. Паўтарыце спробу.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Няправільныя ўліковыя даныя для ўваходу. Паўтарыце спробу.</string>
   <string name="auth_login_general_error">Адбылася памылка.</string>
   <string name="auth_second_factor_title">Двухфактарная аўтэнтыфікацыя</string>
   <string name="auth_second_factor_subtitle">Ваш уліковы запіс мае некалькі механізмаў канфігурацыі 2ФА. Выберыце спосаб пацвярджэння вашай ідэнтычнасці.</string>
@@ -53,7 +53,7 @@
   <string name="auth_second_factor_switch_to_totp">Выкарыстоўваць двухфактарны код</string>
   <string name="auth_second_factor_insert_security_key">Дадзены ключ бяспекі звязаны з вашым уліковым запісам Proton. </string>
   <string name="auth_second_factor_insert_security_key_link">Даведацца больш</string>
-  <string name="auth_second_factor_incorrect_code">Няправільны код. Паспрабуйце яшчэ раз.</string>
+  <string name="auth_second_factor_incorrect_code">Няправільны код. Паўтарыце спробу.</string>
   <string name="auth_two_pass_title">Разблакіруйце сваю паштовую скрыню</string>
   <string name="auth_two_pass_input_label">Пароль паштовай скрыні</string>
   <string name="auth_two_pass_unlock">Разблакіраваць</string>
@@ -97,12 +97,12 @@
   <string name="auth_signup_username_unavailable_error">Імя карыстальніка ўжо занята. Выберыце іншае імя карыстальніка.</string>
   <string name="auth_signup_recovery_email_validation_error">Збой праверкі адраса электроннай пошты</string>
   <string name="auth_signup_recovery_phone_validation_error">Збой праверкі нумара тэлефона</string>
-  <string name="auth_signup_createpassword_error_password_not_equal">Паролі не супадаюць. Паспрабуйце яшчэ раз.</string>
-  <string name="auth_signup_general_error">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
+  <string name="auth_signup_createpassword_error_password_not_equal">Паролі не супадаюць. Паўтарыце спробу.</string>
+  <string name="auth_signup_general_error">Нешта пайшло не так. Паўтарыце спробу.</string>
   <string name="auth_signup_countries_search">Пошук краіны</string>
   <string name="auth_login_error_invalid_action_cannot_setup_user">Немагчыма наладзіць карыстальніка.</string>
   <string name="auth_login_error_invalid_action_cannot_setup_address">Не атрымалася наладзіць адрас.</string>
-  <string name="auth_fido_security_keys_error">Памылка атрымання ключоў бяспекі. Паспрабуйце яшчэ раз.</string>
+  <string name="auth_fido_security_keys_error">Памылка атрымання ключоў бяспекі. Паўтарыце спробу.</string>
   <string name="auth_fido_security_keys_title">Ключы бяспекі</string>
   <string name="auth_fido_manage_security_keys_info">Скарыстайцеся вэб-праграмай Proton для кіравання, дадавання або выдалення ключоў бяспекі. %s</string>
   <string name="auth_fido_security_keys_empty_list">Адсутнічаюць зарэгістраваныя ключы бяспекі ў вашым уліковым запісе. Скарыстайцеся вэб-праграмай Proton, каб дадаць ключ бяспекі. %s</string>
@@ -116,7 +116,7 @@
     <item quantity="many">Максімальная колькасць %d бясплатных уліковых запісаў была перавышана.</item>
     <item quantity="other">Максімальная колькасць %d бясплатных уліковых запісаў была перавышана.</item>
   </plurals>
-  <string name="common_error_something_went_wrong">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
+  <string name="common_error_something_went_wrong">Нешта пайшло не так. Паўтарыце спробу.</string>
   <string name="auth_fido_config_error">Памылка атрымання захаваных ключоў.</string>
   <string name="auth_fido_reading_key_error">Памылка чытання ключа бяспекі.</string>
   <string name="auth_fido_submit_key_error">Памылка адпраўкі даных ключа.</string>
@@ -149,10 +149,10 @@
   <string name="settings_second_password_hint_new_confirm">Пацвердзіць новы другі пароль</string>
   <string name="settings_password_management_login_success">Пароль уваходу абноўлены</string>
   <string name="settings_password_management_second_success">Другі пароль абноўлены</string>
-  <string name="settings_password_invalid_2fa">Памылковы код другога фактару. Паспрабуйце яшчэ раз.</string>
+  <string name="settings_password_invalid_2fa">Памылковы код другога фактару. Паўтарыце спробу.</string>
   <string name="settings_password_error_empty">Пароль не можа быць пустым.</string>
-  <string name="settings_password_error">Няправільнае імя карыстальніка або пароль. Паспрабуйце яшчэ раз.</string>
-  <string name="settings_password_error_invalid_recovery">Няправільны код 2ФА. Паспрабуйце яшчэ раз.</string>
+  <string name="settings_password_error">Няправільнае імя карыстальніка або пароль. Паўтарыце спробу.</string>
+  <string name="settings_password_error_invalid_recovery">Няправільны код 2ФА. Паўтарыце спробу.</string>
   <string name="settings_password_error_2fa_reused">Код ужо выкарыстоўваўся. Паспрабуйце іншы код.</string>
   <string name="settings_password_general_error">Адбылася памылка.</string>
   <string name="proton_error_non_processable_actions">Адно або некалькі дзеянняў не могуць быць апрацаваны. Выйдзіце з сістэмы і яшчэ раз увайдзіце ў свой уліковы запіс.</string>
