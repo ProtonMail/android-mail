@@ -108,12 +108,6 @@ internal fun LazyListScope.debugMenuSection(
     }
 }
 
-/**
- * A single tappable row: leading icon, title, one line of hint, optional trailing chevron.
- *
- * Pass [showChevron] only when the row navigates. Rows that act in place keep the slot empty,
- * so a tap that leaves the screen can be told apart from one that does not.
- */
 @Composable
 internal fun DebugMenuRow(
     @DrawableRes icon: Int,
@@ -122,7 +116,7 @@ internal fun DebugMenuRow(
     modifier: Modifier = Modifier,
     @StringRes description: Int? = null,
     tint: Color = ProtonTheme.colors.iconWeak,
-    showChevron: Boolean = false
+    trailing: @Composable () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -161,15 +155,18 @@ internal fun DebugMenuRow(
                 }
             }
 
-            if (showChevron) {
-                Icon(
-                    modifier = Modifier.size(ProtonDimens.IconSize.Medium),
-                    painter = painterResource(R.drawable.ic_proton_chevron_right),
-                    contentDescription = null,
-                    tint = ProtonTheme.colors.iconHint
-                )
-            }
+            trailing()
         }
         HorizontalDivider(color = ProtonTheme.colors.separatorNorm)
     }
+}
+
+@Composable
+internal fun DebugMenuChevron() {
+    Icon(
+        modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+        painter = painterResource(R.drawable.ic_proton_chevron_right),
+        contentDescription = null,
+        tint = ProtonTheme.colors.iconHint
+    )
 }
