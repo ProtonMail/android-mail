@@ -64,6 +64,16 @@ internal fun ApplicationDebugScreenList(modifier: Modifier = Modifier, actions: 
         }
         item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
         item {
+            ProtonSettingsHeader(title = R.string.app_debug_screen_app_state_section_title)
+        }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(R.string.app_debug_screen_app_state_subtitle),
+                onClick = actions.onAppStateNavigation
+            )
+        }
+        item { HorizontalDivider(color = ProtonTheme.colors.separatorNorm) }
+        item {
             ProtonSettingsHeader(title = R.string.app_debug_screen_danger_title)
         }
         item {
@@ -81,7 +91,8 @@ object ApplicationDebugScreen {
         val onLogsNavigation: () -> Unit,
         val onDangerZoneNavigation: () -> Unit,
         val onDatabaseExportNavigation: () -> Unit,
-        val onTelemetryNavigation: () -> Unit
+        val onTelemetryNavigation: () -> Unit,
+        val onAppStateNavigation: () -> Unit
     ) {
 
         companion object {
@@ -91,7 +102,8 @@ object ApplicationDebugScreen {
                 onLogsNavigation = {},
                 onDangerZoneNavigation = {},
                 onDatabaseExportNavigation = {},
-                onTelemetryNavigation = {}
+                onTelemetryNavigation = {},
+                onAppStateNavigation = {}
             )
         }
     }

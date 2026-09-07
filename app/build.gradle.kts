@@ -276,6 +276,7 @@ dependencies {
     implementation(libs.androidx.compose.animation)
 
     implementation(libs.androidx.webkit)
+    implementation(libs.androidx.datastore.preferences)
 
     debugImplementation(libs.bundles.app.debug)
 

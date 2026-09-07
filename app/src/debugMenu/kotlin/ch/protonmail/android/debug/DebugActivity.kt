@@ -63,6 +63,9 @@ internal class DebugActivity : AppCompatActivity() {
                                 },
                                 onTelemetryNavigation = {
                                     navController.navigate(Screen.ApplicationDebugTelemetry.route)
+                                },
+                                onAppStateNavigation = {
+                                    navController.navigate(Screen.ApplicationDebugAppState.route)
                                 }
                             )
                         )
@@ -82,6 +85,12 @@ internal class DebugActivity : AppCompatActivity() {
 
                     composable(route = Screen.ApplicationDebugTelemetry.route) {
                         TelemetryDebugScreen(
+                            onBackClick = { navController.navigateBack() }
+                        )
+                    }
+
+                    composable(route = Screen.ApplicationDebugAppState.route) {
+                        AppStateScreen(
                             onBackClick = { navController.navigateBack() }
                         )
                     }
