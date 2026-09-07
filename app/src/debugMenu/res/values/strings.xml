@@ -24,6 +24,18 @@
     <string name="app_debug_screen" translatable="false">Debug Menu</string>
     <string name="app_debug_screen_logs_title" translatable="false">Application logs</string>
     <string name="app_debug_screen_logs_subtitle" translatable="false">View and share logs</string>
+    <string name="app_debug_screen_app_state_section_title" translatable="false">App state</string>
+    <string name="app_debug_screen_app_state_subtitle" translatable="false">Reset onboarding and prompts</string>
+    <string name="app_debug_screen_app_state_title" translatable="false">App state</string>
+    <string name="app_debug_screen_app_state_reset_onboarding_title" translatable="false">Reset onboarding</string>
+    <string name="app_debug_screen_app_state_reset_onboarding_description" translatable="false">Onboarding shows again on the next app start</string>
+    <string name="app_debug_screen_app_state_reset_onboarding_done" translatable="false">Onboarding reset</string>
+    <string name="app_debug_screen_app_state_reset_spotlight_title" translatable="false">Reset feature spotlight</string>
+    <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">The current spotlight shows again on the next app start</string>
+    <string name="app_debug_screen_app_state_reset_spotlight_done" translatable="false">Feature spotlight reset</string>
+    <string name="app_debug_screen_app_state_reset_notifications_title" translatable="false">Reset notification prompt</string>
+    <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Clears the prompt attempts counter. The prompt only shows if notifications are disabled in the system settings</string>
+    <string name="app_debug_screen_app_state_reset_notifications_done" translatable="false">Notification prompt reset</string>
     <string name="app_debug_screen_danger_title" translatable="false">Danger Zone</string>
     <string name="app_debug_screen_danger_subtitle" translatable="false">Crash test and miscellaneous</string>
     <string name="app_debug_screen_danger_crash_native_title" translatable="false">Crash the app (native)</string>
