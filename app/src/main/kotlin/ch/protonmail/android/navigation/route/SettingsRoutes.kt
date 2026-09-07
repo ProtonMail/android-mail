@@ -400,9 +400,6 @@ internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostControl
             actions = ApplicationLogsScreen.Actions(
                 onBackClick = { navController.navigateBack() },
                 onViewItemClick = { navController.navigate(Screen.ApplicationLogsView(it)) },
-                onFeatureFlagsNavigation = {
-                    navController.navigate(Screen.FeatureFlagsOverrides.route)
-                },
                 // Reached from the home graph, so a user is logged in and the composer route is registered here too.
                 onComposeWithLogs = { logsUri ->
                     val shareInfo = IntentShareInfo.Empty.copy(
