@@ -21,6 +21,7 @@ package ch.protonmail.android.debug
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -143,7 +144,8 @@ internal fun DebugMenuRow(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = ProtonDimens.Spacing.Large)
+                    .padding(horizontal = ProtonDimens.Spacing.Large),
+                verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
             ) {
                 Text(
                     text = stringResource(title),
