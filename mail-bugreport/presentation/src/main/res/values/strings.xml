@@ -41,11 +41,6 @@
     <string name="application_events_save_to_disk_hint" translatable="false">Write the zipped logs to a file</string>
     <string name="application_events_export_error" translatable="false">An error occurred while exporting the events</string>
 
-    <string name="application_events_feature_flags_title" translatable="false">Feature flags</string>
-    <string name="application_events_feature_flags_subtitle" translatable="false">Configure feature flags</string>
-    <string name="application_events_feature_flags_hint" translatable="false">Override a flag for this build</string>
-
-    <string name="application_events_version_copied" translatable="false">Version copied</string>
 
     <!-- Report a problem flow -->
     <string name="report_a_problem_title">Report a problem</string>

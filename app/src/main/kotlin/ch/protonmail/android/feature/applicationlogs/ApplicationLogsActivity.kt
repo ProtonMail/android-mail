@@ -52,7 +52,6 @@ class ApplicationLogsActivity : AppCompatActivity() {
                             actions = ApplicationLogsScreen.Actions(
                                 onBackClick = { finish() },
                                 onViewItemClick = {},
-                                onFeatureFlagsNavigation = {},
                                 // No user is logged in on this entry point (it is reachable from the login
                                 // screen) and this NavHost has no composer route, so the action is unavailable.
                                 onComposeWithLogs = null

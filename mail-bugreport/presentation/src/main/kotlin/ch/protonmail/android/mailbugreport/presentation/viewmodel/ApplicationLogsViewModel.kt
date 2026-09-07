@@ -29,7 +29,6 @@ import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOpe
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOperation.ApplicationLogsEvent.Export.SendByEmailReady
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsOperation.ApplicationLogsEvent.Export.ShareReady
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsState
-import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,13 +45,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplicationLogsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val getAggregatedEventsZipFile: GetAggregatedEventsZipFile,
-    private val appInformation: AppInformation
+    private val getAggregatedEventsZipFile: GetAggregatedEventsZipFile
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(
         ApplicationLogsState(
-            appVersion = appInformation.formattedString(),
             error = Effect.empty(),
             showApplicationLogs = Effect.empty(),
             showRustLogs = Effect.empty(),
@@ -151,5 +148,4 @@ class ApplicationLogsViewModel @Inject constructor(
         }
     }
 
-    private fun AppInformation.formattedString() = "$appVersionName ($appVersionCode) - $rustSdkVersion"
 }

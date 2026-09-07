@@ -36,15 +36,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailbugreport.presentation.R
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
-import me.proton.core.presentation.utils.showToast
 
 /**
  * The list of log actions, laid out as a flat list with one leading icon per row.
@@ -52,7 +49,6 @@ import me.proton.core.presentation.utils.showToast
 @Composable
 internal fun ApplicationLogsScreenList(
     modifier: Modifier = Modifier,
-    appVersion: String,
     isStandalone: Boolean,
     actions: ApplicationLogsScreenList.Actions
 ) {
@@ -82,10 +78,6 @@ internal fun ApplicationLogsScreenList(
                 onClick = actions.onExport
             )
         }
-
-        if (isStandalone) featureFlagsSection(actions)
-
-        item { AppVersion(appVersion) }
     }
 }
 
@@ -110,18 +102,6 @@ private fun LazyListScope.viewLogsSection(actions: ApplicationLogsScreenList.Act
             title = R.string.application_events_view_events,
             description = R.string.application_events_view_events_hint,
             onClick = actions.onShowAppEvents,
-            showChevron = true
-        )
-    }
-}
-
-private fun LazyListScope.featureFlagsSection(actions: ApplicationLogsScreenList.Actions) {
-    logsSection(R.string.application_events_feature_flags_title) {
-        ApplicationLogsRow(
-            icon = R.drawable.ic_proton_sliders,
-            title = R.string.application_events_feature_flags_subtitle,
-            description = R.string.application_events_feature_flags_hint,
-            onClick = actions.onFeatureFlagNavigation,
             showChevron = true
         )
     }
@@ -201,42 +181,6 @@ private fun ApplicationLogsRow(
     }
 }
 
-/** The version is the first thing a bug report needs, so tapping it copies it. */
-@Composable
-private fun AppVersion(appVersion: String) {
-    val context = LocalContext.current
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                context.copyTextToClipboard(
-                    label = context.getString(R.string.application_events_title),
-                    text = appVersion
-                )
-                context.showToast(context.getString(R.string.application_events_version_copied))
-            }
-            .padding(ProtonDimens.Spacing.Large),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = appVersion,
-            color = ProtonTheme.colors.textWeak,
-            style = ProtonTheme.typography.bodyMedium,
-            maxLines = 1
-        )
-        Icon(
-            modifier = Modifier
-                .padding(start = ProtonDimens.Spacing.Standard)
-                .size(ProtonDimens.IconSize.Small),
-            painter = painterResource(R.drawable.ic_proton_squares),
-            contentDescription = null,
-            tint = ProtonTheme.colors.iconHint
-        )
-    }
-}
-
 object ApplicationLogsScreenList {
     data class Actions(
         val onExport: () -> Unit,
@@ -244,8 +188,7 @@ object ApplicationLogsScreenList {
         val onSendByEmail: (() -> Unit)?,
         val onShowAppEvents: () -> Unit,
         val onShowRustEvents: () -> Unit,
-        val onShowLogcat: () -> Unit,
-        val onFeatureFlagNavigation: () -> Unit
+        val onShowLogcat: () -> Unit
     ) {
 
         companion object {
@@ -256,8 +199,7 @@ object ApplicationLogsScreenList {
                 onSendByEmail = {},
                 onShowAppEvents = {},
                 onShowRustEvents = {},
-                onShowLogcat = {},
-                onFeatureFlagNavigation = {}
+                onShowLogcat = {}
             )
         }
     }
@@ -268,7 +210,6 @@ object ApplicationLogsScreenList {
 private fun ApplicationLogsScreenPreview() {
     ProtonTheme {
         ApplicationLogsScreenList(
-            appVersion = "Proton Mail (0) - 0.7.0",
             actions = ApplicationLogsScreenList.Actions.Empty,
             isStandalone = true
         )

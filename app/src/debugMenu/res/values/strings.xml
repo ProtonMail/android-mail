@@ -36,6 +36,10 @@
     <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">Shows again on the next app start</string>
     <string name="app_debug_screen_app_state_reset_notifications_title" translatable="false">Reset notification prompt</string>
     <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Only shows if notifications are off</string>
+    <string name="app_debug_screen_feature_flags_section_title" translatable="false">Feature flags</string>
+    <string name="app_debug_screen_feature_flags_subtitle" translatable="false">Configure feature flags</string>
+    <string name="app_debug_screen_feature_flags_description" translatable="false">Override a flag for this build</string>
+    <string name="app_debug_screen_version_copied" translatable="false">Version copied</string>
     <string name="app_debug_screen_danger_title" translatable="false">Danger Zone</string>
     <string name="app_debug_screen_danger_subtitle" translatable="false">Crash test and miscellaneous</string>
     <string name="app_debug_screen_danger_description" translatable="false">These actions crash the app on purpose</string>
