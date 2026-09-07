@@ -18,47 +18,101 @@
 
 package ch.protonmail.android.debug
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.R
-import ch.protonmail.android.design.compose.component.appbar.ProtonMediumTopAppBar
+import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ApplicationDebugScreen(
-    modifier: Modifier = Modifier,
-    actions: ApplicationDebugScreen.Actions
-) {
-
-    Scaffold(
+internal fun ApplicationDebugScreen(modifier: Modifier = Modifier, actions: ApplicationDebugScreen.Actions) {
+    DebugMenuScaffold(
         modifier = modifier,
-        topBar = {
-            ProtonMediumTopAppBar(
-                title = { Text(text = stringResource(R.string.app_debug_screen)) },
-                navigationIcon = {
-                    IconButton(onClick = actions.onBackClick) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = R.string.presentation_back)
-                        )
-                    }
-                }
-            )
-        },
-        content = { paddingValues ->
-            ApplicationDebugScreenList(
-                modifier = Modifier.padding(paddingValues),
-                actions = actions
+        title = R.string.app_debug_screen,
+        onCloseClick = actions.onBackClick
+    ) {
+        debugMenuSection(title = R.string.app_debug_screen_logs_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_window_terminal,
+                title = R.string.app_debug_screen_logs_subtitle,
+                description = R.string.app_debug_screen_logs_description,
+                showChevron = true,
+                onClick = actions.onLogsNavigation
             )
         }
-    )
+
+        debugMenuSection(title = R.string.app_debug_screen_database_export_section_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_storage,
+                title = R.string.app_debug_screen_database_export_subtitle,
+                description = R.string.app_debug_screen_database_export_description,
+                showChevron = true,
+                onClick = actions.onDatabaseExportNavigation
+            )
+        }
+
+        debugMenuSection(title = R.string.app_debug_screen_telemetry_section_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_chart_line,
+                title = R.string.app_debug_screen_telemetry_subtitle,
+                description = R.string.app_debug_screen_telemetry_description,
+                showChevron = true,
+                onClick = actions.onTelemetryNavigation
+            )
+        }
+
+        debugMenuSection(title = R.string.app_debug_screen_app_state_section_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_arrows_rotate,
+                title = R.string.app_debug_screen_app_state_subtitle,
+                description = R.string.app_debug_screen_app_state_description,
+                showChevron = true,
+                onClick = actions.onAppStateNavigation
+            )
+        }
+
+        debugMenuSection(title = R.string.app_debug_screen_danger_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_exclamation_triangle_filled,
+                title = R.string.app_debug_screen_danger_subtitle,
+                description = R.string.app_debug_screen_danger_description,
+                tint = ProtonTheme.colors.notificationError,
+                showChevron = true,
+                onClick = actions.onDangerZoneNavigation
+            )
+        }
+    }
+}
+
+object ApplicationDebugScreen {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onLogsNavigation: () -> Unit,
+        val onDangerZoneNavigation: () -> Unit,
+        val onDatabaseExportNavigation: () -> Unit,
+        val onTelemetryNavigation: () -> Unit,
+        val onAppStateNavigation: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onLogsNavigation = {},
+                onDangerZoneNavigation = {},
+                onDatabaseExportNavigation = {},
+                onTelemetryNavigation = {},
+                onAppStateNavigation = {}
+            )
+        }
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun ApplicationDebugScreenPreview() {
+    ProtonTheme {
+        ApplicationDebugScreen(actions = ApplicationDebugScreen.Actions.Empty)
+    }
 }

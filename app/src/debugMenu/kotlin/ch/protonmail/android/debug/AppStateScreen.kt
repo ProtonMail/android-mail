@@ -18,29 +18,16 @@
 
 package ch.protonmail.android.debug
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.design.compose.component.ProtonSettingsItem
-import ch.protonmail.android.design.compose.component.appbar.ProtonMediumTopAppBar
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import me.proton.core.presentation.utils.showToast
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppStateScreen(
     modifier: Modifier = Modifier,
@@ -55,55 +42,41 @@ internal fun AppStateScreen(
         }
     }
 
-    Scaffold(
+    AppStateScreen(
         modifier = modifier,
-        topBar = {
-            ProtonMediumTopAppBar(
-                title = { Text(text = stringResource(R.string.app_debug_screen_app_state_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = R.string.presentation_back)
-                        )
-                    }
-                }
-            )
-        },
-        content = { paddingValues ->
-            AppStateScreen(
-                modifier = Modifier.padding(paddingValues),
-                actions = AppStateScreen.Actions(
-                    onResetOnboarding = { viewModel.resetOnboarding() },
-                    onResetFeatureSpotlight = { viewModel.resetFeatureSpotlight() },
-                    onResetNotificationPrompt = { viewModel.resetNotificationPrompt() }
-                )
-            )
-        }
+        actions = AppStateScreen.Actions(
+            onBackClick = onBackClick,
+            onResetOnboarding = { viewModel.resetOnboarding() },
+            onResetFeatureSpotlight = { viewModel.resetFeatureSpotlight() },
+            onResetNotificationPrompt = { viewModel.resetNotificationPrompt() }
+        )
     )
 }
 
 @Composable
 private fun AppStateScreen(modifier: Modifier = Modifier, actions: AppStateScreen.Actions) {
-    LazyColumn(modifier = modifier) {
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_app_state_reset_onboarding_title),
-                hint = stringResource(R.string.app_debug_screen_app_state_reset_onboarding_description),
+    DebugMenuScaffold(
+        modifier = modifier,
+        title = R.string.app_debug_screen_app_state_title,
+        onCloseClick = actions.onBackClick
+    ) {
+        debugMenuSection(title = R.string.app_debug_screen_app_state_reset_section_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_rocket,
+                title = R.string.app_debug_screen_app_state_reset_onboarding_title,
+                description = R.string.app_debug_screen_app_state_reset_onboarding_description,
                 onClick = actions.onResetOnboarding
             )
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_app_state_reset_spotlight_title),
-                hint = stringResource(R.string.app_debug_screen_app_state_reset_spotlight_description),
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_lightbulb,
+                title = R.string.app_debug_screen_app_state_reset_spotlight_title,
+                description = R.string.app_debug_screen_app_state_reset_spotlight_description,
                 onClick = actions.onResetFeatureSpotlight
             )
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_app_state_reset_notifications_title),
-                hint = stringResource(R.string.app_debug_screen_app_state_reset_notifications_description),
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_bell,
+                title = R.string.app_debug_screen_app_state_reset_notifications_title,
+                description = R.string.app_debug_screen_app_state_reset_notifications_description,
                 onClick = actions.onResetNotificationPrompt
             )
         }
@@ -119,6 +92,7 @@ private fun AppStateViewModel.ResetTarget.confirmationRes() = when (this) {
 object AppStateScreen {
 
     data class Actions(
+        val onBackClick: () -> Unit,
         val onResetOnboarding: () -> Unit,
         val onResetFeatureSpotlight: () -> Unit,
         val onResetNotificationPrompt: () -> Unit
@@ -127,6 +101,7 @@ object AppStateScreen {
         companion object {
 
             val Empty = Actions(
+                onBackClick = {},
                 onResetOnboarding = {},
                 onResetFeatureSpotlight = {},
                 onResetNotificationPrompt = {}

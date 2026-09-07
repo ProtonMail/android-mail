@@ -18,85 +18,88 @@
 
 package ch.protonmail.android.debug
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.design.compose.component.ProtonSettingsItem
-import ch.protonmail.android.design.compose.component.appbar.ProtonMediumTopAppBar
+import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DangerZoneScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     viewModel: DangerZoneViewModel = hiltViewModel()
 ) {
-    Scaffold(
+    DangerZoneScreen(
         modifier = modifier,
-        topBar = {
-            ProtonMediumTopAppBar(
-                title = { Text(text = stringResource(R.string.app_debug_screen_danger_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = R.string.presentation_back)
-                        )
-                    }
-                }
-            )
-        },
-        content = { paddingValues ->
-            DangerZoneScreen(
-                modifier = modifier.padding(paddingValues),
-                onNativeCrash = { viewModel.nativeCrashApp() },
-                onCrash = { viewModel.crashApp() },
-                onWebViewCrash = { viewModel.crashWebViewLike() }
-            )
-        }
+        actions = DangerZoneScreen.Actions(
+            onBackClick = onBackClick,
+            onNativeCrash = { viewModel.nativeCrashApp() },
+            onCrash = { viewModel.crashApp() },
+            onWebViewCrash = { viewModel.crashWebViewLike() }
+        )
     )
 }
 
 @Composable
-private fun DangerZoneScreen(
-    modifier: Modifier = Modifier,
-    onCrash: () -> Unit,
-    onNativeCrash: () -> Unit,
-    onWebViewCrash: () -> Unit
-) {
+private fun DangerZoneScreen(modifier: Modifier = Modifier, actions: DangerZoneScreen.Actions) {
+    DebugMenuScaffold(
+        modifier = modifier,
+        title = R.string.app_debug_screen_danger_title,
+        onCloseClick = actions.onBackClick
+    ) {
+        debugMenuSection(title = R.string.app_debug_screen_danger_crash_section_title) {
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_bug,
+                title = R.string.app_debug_screen_danger_crash_native_title,
+                description = R.string.app_debug_screen_danger_crash_native_description,
+                tint = ProtonTheme.colors.notificationError,
+                onClick = actions.onNativeCrash
+            )
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_bolt,
+                title = R.string.app_debug_screen_danger_crash_title,
+                description = R.string.app_debug_screen_danger_crash_description,
+                tint = ProtonTheme.colors.notificationError,
+                onClick = actions.onCrash
+            )
+            DebugMenuRow(
+                icon = R.drawable.ic_proton_window_image,
+                title = R.string.app_debug_screen_danger_crash_webview_title,
+                description = R.string.app_debug_screen_danger_crash_webview_description,
+                tint = ProtonTheme.colors.notificationError,
+                onClick = actions.onWebViewCrash
+            )
+        }
+    }
+}
 
-    LazyColumn(modifier = modifier) {
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_danger_crash_native_title),
-                hint = stringResource(R.string.app_debug_screen_danger_crash_native_description),
-                onClick = onNativeCrash
+object DangerZoneScreen {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onCrash: () -> Unit,
+        val onNativeCrash: () -> Unit,
+        val onWebViewCrash: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onCrash = {},
+                onNativeCrash = {},
+                onWebViewCrash = {}
             )
         }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_danger_crash_title),
-                hint = stringResource(R.string.app_debug_screen_danger_crash_description),
-                onClick = onCrash
-            )
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(R.string.app_debug_screen_danger_crash_webview_title),
-                hint = stringResource(R.string.app_debug_screen_danger_crash_webview_description),
-                onClick = onWebViewCrash
-            )
-        }
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun DangerZoneScreenPreview() {
+    ProtonTheme {
+        DangerZoneScreen(actions = DangerZoneScreen.Actions.Empty)
     }
 }
