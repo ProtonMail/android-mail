@@ -174,8 +174,7 @@ private fun SearchField(value: TextFieldValue, onValueChange: (TextFieldValue) -
             Icon(
                 modifier = Modifier.size(ProtonDimens.IconSize.Medium),
                 painter = painterResource(R.drawable.ic_proton_magnifier),
-                contentDescription = null,
-                tint = ProtonTheme.colors.iconHint
+                contentDescription = null
             )
         },
         trailingIcon = {
@@ -184,8 +183,7 @@ private fun SearchField(value: TextFieldValue, onValueChange: (TextFieldValue) -
                     Icon(
                         modifier = Modifier.size(ProtonDimens.IconSize.Medium),
                         painter = painterResource(R.drawable.ic_proton_cross_small),
-                        contentDescription = null,
-                        tint = ProtonTheme.colors.iconHint
+                        contentDescription = null
                     )
                 }
             }

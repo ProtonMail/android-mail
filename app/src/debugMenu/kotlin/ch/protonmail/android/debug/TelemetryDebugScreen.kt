@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -40,7 +41,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -74,6 +74,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.R
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.component.appbar.ProtonMediumTopAppBar
+import ch.protonmail.android.design.compose.component.protonOutlineTextFieldColors
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 
@@ -361,11 +362,12 @@ private fun TelemetryDebugListHeader(
                 value = state.searchQuery,
                 onValueChange = onSearchQueryChanged,
                 singleLine = true,
-                textStyle = ProtonTheme.typography.bodyMedium,
+                shape = ProtonTheme.shapes.medium,
+                colors = protonOutlineTextFieldColors(),
                 placeholder = {
                     Text(
                         text = stringResource(R.string.app_debug_screen_telemetry_search_hint),
-                        style = ProtonTheme.typography.bodyMedium,
+                        style = ProtonTheme.typography.bodyLarge,
                         color = ProtonTheme.colors.textHint,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -375,8 +377,8 @@ private fun TelemetryDebugListHeader(
                 keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Filled.Search,
-                        tint = ProtonTheme.colors.textHint,
+                        modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                        painter = painterResource(R.drawable.ic_proton_magnifier),
                         contentDescription = null
                     )
                 },
@@ -384,7 +386,8 @@ private fun TelemetryDebugListHeader(
                     if (state.searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchQueryChanged("") }) {
                             Icon(
-                                imageVector = Icons.Filled.Close,
+                                modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                                painter = painterResource(R.drawable.ic_proton_cross_small),
                                 contentDescription = stringResource(
                                     R.string.app_debug_screen_telemetry_search_clear
                                 )
