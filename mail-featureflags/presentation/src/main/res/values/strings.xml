@@ -18,6 +18,8 @@
 
 <resources>
     <string name="feature_flag_overrides_title" translatable="false">Feature flag overrides</string>
-    <string name="feature_flag_overridden_description" translatable="false">This feature flag is currently overridden.</string>
-    <string name="feature_flag_overrides_reset_button" translatable="false">Reset all overrides</string>
+    <string name="feature_flag_overridden_badge" translatable="false">Overridden</string>
+    <string name="feature_flag_overrides_reset_action" translatable="false">Reset all</string>
+    <string name="feature_flag_overrides_search_placeholder" translatable="false">Search flags</string>
+    <string name="feature_flag_overrides_no_results" translatable="false">No flag matches this search</string>
 </resources>
