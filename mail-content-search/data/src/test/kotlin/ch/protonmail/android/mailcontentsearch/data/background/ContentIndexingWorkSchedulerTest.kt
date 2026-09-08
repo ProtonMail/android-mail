@@ -18,14 +18,18 @@
 
 package ch.protonmail.android.mailcontentsearch.data.background
 
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class ContentIndexingWorkSchedulerTest {
 
@@ -33,7 +37,11 @@ internal class ContentIndexingWorkSchedulerTest {
     private val enqueuer = mockk<Enqueuer>(relaxUnitFun = true) {
         coEvery { isWorkRunning(ContentIndexingWorkScheduler.WORKER_ID) } answers { isRunning }
     }
-    private val scheduler = ContentIndexingWorkScheduler(enqueuer)
+    private var isMobileDataAllowed = true
+    private val isContentSearchAllowedOnMobileData = mockk<IsContentSearchAllowedOnMobileData> {
+        coEvery { this@mockk.invoke() } answers { isMobileDataAllowed }
+    }
+    private val scheduler = ContentIndexingWorkScheduler(enqueuer, isContentSearchAllowedOnMobileData)
 
     @Test
     fun `enqueues a worker when none is running`() = runTest {
@@ -84,6 +92,56 @@ internal class ContentIndexingWorkSchedulerTest {
 
         // Then
         verifyEnqueued(times = 0)
+    }
+
+    @Test
+    fun `lets the worker run on any connection when indexing is allowed on mobile data`() = runTest {
+        // Given
+        isMobileDataAllowed = true
+
+        // When
+        scheduler.ensureWorkerRunning()
+
+        // Then
+        assertEquals(NetworkType.CONNECTED, enqueuedConstraints().requiredNetworkType)
+    }
+
+    @Test
+    fun `holds the worker to unmetered connections when indexing is not allowed on mobile data`() = runTest {
+        // Given - Rust parks its own queue on a metered connection, but the worker would still run.
+        isMobileDataAllowed = false
+
+        // When
+        scheduler.ensureWorkerRunning()
+
+        // Then
+        assertEquals(NetworkType.UNMETERED, enqueuedConstraints().requiredNetworkType)
+    }
+
+    @Test
+    fun `replaces a running worker when the mobile data setting changes`() = runTest {
+        // Given - constraints are fixed at enqueue time, so the running worker still has the old ones.
+        isRunning = true
+
+        // When
+        scheduler.rescheduleWorker()
+
+        // Then
+        verifyEnqueued(times = 1)
+    }
+
+    private fun enqueuedConstraints(): Constraints {
+        val constraints = mutableListOf<Constraints?>()
+        verify {
+            enqueuer.enqueueUniqueWork(
+                workerId = ContentIndexingWorkScheduler.WORKER_ID,
+                worker = ContentIndexingWorker::class.java,
+                existingWorkPolicy = ExistingWorkPolicy.REPLACE,
+                constraints = captureNullable(constraints),
+                params = any()
+            )
+        }
+        return requireNotNull(constraints.last())
     }
 
     private fun verifyEnqueued(times: Int) = verify(exactly = times) {

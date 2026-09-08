@@ -18,18 +18,24 @@
 
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
+import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import javax.inject.Inject
 
 /**
  * Records the app-wide toggle. It lands in the app settings Rust itself reads, so there is nothing to
  * fan out to the individual accounts: the orchestrator picks the new value up for all of them.
+ *
+ * The worker is a separate matter. Its network constraint is fixed at enqueue time, so it has to be
+ * replaced for the new answer to reach it - see [ContentIndexingScheduler.rescheduleWorker].
  */
 class SetAllowContentSearchOnMobileData @Inject constructor(
-    private val repository: ContentSearchPreferencesRepository
+    private val repository: ContentSearchPreferencesRepository,
+    private val scheduler: ContentIndexingScheduler
 ) {
 
     suspend operator fun invoke(value: Boolean) {
         repository.setAllowMobileData(value)
+        scheduler.rescheduleWorker()
     }
 }

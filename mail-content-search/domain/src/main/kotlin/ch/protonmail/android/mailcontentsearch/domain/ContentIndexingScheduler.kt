@@ -29,4 +29,13 @@ interface ContentIndexingScheduler {
 
     /** Idempotent: a worker that is already executing is left to get on with it. */
     suspend fun ensureWorkerRunning()
+
+    /**
+     * Replaces the worker, so a change to the connection it may run on takes effect now.
+     *
+     * A worker's constraints are fixed when it is enqueued. One enqueued while indexing was allowed
+     * on mobile data keeps that permission for the rest of its life, whatever the user does with the
+     * setting afterwards.
+     */
+    suspend fun rescheduleWorker()
 }

@@ -24,6 +24,7 @@ import androidx.work.NetworkType
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingWorker
 import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,13 +34,13 @@ import javax.inject.Singleton
  * Owns the single foreground-service worker that keeps the Rust orchestrator running while the app
  * is backgrounded.
  *
- * Only network and battery constraints are set here. Whether indexing may run over a metered
- * connection is Rust's call - it reads the app setting itself and pauses its own queue - so the
- * worker asks for `CONNECTED` and lets the orchestrator decide.
+ * Only network and battery constraints are set here, and the network one follows the app's
+ * mobile data setting - see [networkType].
  */
 @Singleton
 class ContentIndexingWorkScheduler @Inject constructor(
-    private val enqueuer: Enqueuer
+    private val enqueuer: Enqueuer,
+    private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData
 ) : ContentIndexingScheduler {
 
     // Set by a worker that has decided to end but that WorkManager still reports as `RUNNING`.
@@ -99,9 +100,22 @@ class ContentIndexingWorkScheduler @Inject constructor(
      * is foregrounded and therefore holds one of its own, which is why this is acceptable rather than
      * merely unnoticed.
      */
-    fun restart() {
+    suspend fun restart() {
         enqueue()
         Timber.d("content-search: indexing worker restarted")
+    }
+
+    /**
+     * Replaces the worker so it picks up the current mobile-data setting.
+     *
+     * Turning the setting off leaves the running worker holding a `CONNECTED` constraint, which a
+     * metered connection satisfies. It would keep its foreground service and report "Preparing" for
+     * as long as its watchdog allows, while Rust - which reads the same setting - has parked the
+     * queue and publishes nothing.
+     */
+    override suspend fun rescheduleWorker() {
+        enqueue()
+        Timber.d("content-search: indexing worker rescheduled")
     }
 
     /**
@@ -117,11 +131,11 @@ class ContentIndexingWorkScheduler @Inject constructor(
      * to a Rust run that never stopped, and starting the orchestrator again is idempotent. Not
      * nothing, though - see the scope window in [restart].
      */
-    private fun enqueue() {
+    private suspend fun enqueue() {
         isWorkerExiting = false
 
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiredNetworkType(networkType())
             .setRequiresBatteryNotLow(true)
             .build()
 
@@ -132,6 +146,12 @@ class ContentIndexingWorkScheduler @Inject constructor(
             constraints = constraints
         )
     }
+
+    /**
+     * What the worker may run on, from the same app setting Rust reads.
+     */
+    private suspend fun networkType(): NetworkType =
+        if (isContentSearchAllowedOnMobileData()) NetworkType.CONNECTED else NetworkType.UNMETERED
 
     fun cancel() {
         enqueuer.cancelWork(WORKER_ID)
