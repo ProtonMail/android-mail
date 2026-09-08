@@ -213,7 +213,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     ): Boolean {
         val timeout = when {
             isHandingOver -> HandoverTimeout
-            latestProgress == null && !hasWorkPending -> NoWorkTimeout
+            latestProgress == null -> if (hasWorkPending) StartupTimeout else NoWorkTimeout
             else -> IdleTimeout
         }
         // The activity stream is shared app-wide and never completes, so silence is the only way this
@@ -471,6 +471,16 @@ class ContentIndexingWorker @AssistedInject constructor(
          * screen, but long enough to fetch an account's first batch.
          */
         val HandoverTimeout: Duration = 30.seconds
+
+        /**
+         * How long a worker the orchestrator said it had work for waits for its first progress.
+         *
+         * The orchestrator answers from its stats and can then publish nothing at all. Losing the
+         * network does that: it stops mid-account, and there is no event for it. The notification
+         * has nothing to report until the first progress, so this is how long "Preparing" can sit
+         * on screen with nothing behind it. [IdleTimeout] would make that five minutes.
+         */
+        val StartupTimeout: Duration = 1.minutes
 
         /**
          * How long a worker the orchestrator said it had no work for waits before giving up. It holds

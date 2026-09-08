@@ -553,9 +553,26 @@ internal class ContentIndexingWorkerTest {
         val work = async { worker().doWork() }
         advanceTimeBy((ContentIndexingWorker.NoWorkTimeout.inWholeMilliseconds + 1).milliseconds)
 
-        // Then - still waiting, on the long timeout.
+        // Then - still waiting, past the short timeout but not for ever.
         assertTrue(work.isActive)
-        advanceTimeBy((ContentIndexingWorker.IdleTimeout.inWholeMilliseconds + 1).milliseconds)
+        advanceTimeBy((ContentIndexingWorker.StartupTimeout.inWholeMilliseconds + 1).milliseconds)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `gives up when the orchestrator promises work and then publishes none`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returns startSummary(pending = 1).right()
+        appInBackground.value = true
+        givenActivity(flow { awaitCancellation() })
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy((ContentIndexingWorker.StartupTimeout.inWholeMilliseconds - 1).milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        advanceTimeBy(2.milliseconds)
         assertEquals(ListenableWorker.Result.success(), work.await())
     }
 
@@ -731,7 +748,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - it has a service to hand back, so it ends itself to do it.
-        verify(exactly = 1) { workScheduler.restart() }
+        coVerify(exactly = 1) { workScheduler.restart() }
         work.cancel()
     }
 
@@ -750,7 +767,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - nothing was ever acquired, so there is nothing to give back either.
-        verify(exactly = 0) { workScheduler.restart() }
+        coVerify(exactly = 0) { workScheduler.restart() }
         work.cancel()
     }
 
@@ -790,7 +807,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - the only way to give the foreground service back is to end this worker.
-        verify(exactly = 1) { workScheduler.restart() }
+        coVerify(exactly = 1) { workScheduler.restart() }
         work.cancel()
     }
 
@@ -809,7 +826,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then
-        verify(exactly = 0) { workScheduler.restart() }
+        coVerify(exactly = 0) { workScheduler.restart() }
         work.cancel()
     }
 
@@ -823,7 +840,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then
-        verify(exactly = 0) { workScheduler.restart() }
+        coVerify(exactly = 0) { workScheduler.restart() }
         work.cancel()
     }
 
@@ -842,7 +859,7 @@ internal class ContentIndexingWorkerTest {
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
         // Then - replacing the worker here would drop and re-acquire the service for nothing.
-        verify(exactly = 0) { workScheduler.restart() }
+        coVerify(exactly = 0) { workScheduler.restart() }
         work.cancel()
     }
 

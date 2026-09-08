@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.right
+import ch.protonmail.android.mailcontentsearch.domain.ContentIndexingScheduler
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -32,7 +33,9 @@ internal class SetAllowContentSearchOnMobileDataTest {
         coEvery { setAllowMobileData(any()) } returns Unit.right()
     }
 
-    private val setAllowContentSearchOnMobileData = SetAllowContentSearchOnMobileData(repository)
+    private val scheduler = mockk<ContentIndexingScheduler>(relaxUnitFun = true)
+
+    private val setAllowContentSearchOnMobileData = SetAllowContentSearchOnMobileData(repository, scheduler)
 
     @Test
     fun `delegates persisting the allow mobile data value to the repository`() = runTest {
@@ -50,5 +53,14 @@ internal class SetAllowContentSearchOnMobileDataTest {
 
         // Then
         coVerify { repository.setAllowMobileData(false) }
+    }
+
+    @Test
+    fun `replaces the worker so the new setting reaches its network constraint`() = runTest {
+        // When
+        setAllowContentSearchOnMobileData(false)
+
+        // Then
+        coVerify { scheduler.rescheduleWorker() }
     }
 }
