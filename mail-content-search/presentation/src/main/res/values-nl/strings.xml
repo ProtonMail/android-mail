@@ -8,7 +8,7 @@
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Voorbereiden…</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Wachten op Wi-Fi…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Wachten op wifi…</string>
   <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
   <string name="mail_settings_content_search_failed_retry">Try again</string>
   <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
