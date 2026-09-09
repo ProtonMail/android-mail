@@ -33,6 +33,30 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s per al primer mes, després %s al mes</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Milloreu a Proton Unlimited</string>
+  <string name="upselling_stay_on_mail_plus">Mantingueu-vos a Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Trieu un pla</string>
+  <string name="upselling_pu_generic_title">Aneu un pas més enllà en la privacitat en línia amb el Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Protegiu el compte d\'amenaces amb el Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Aconseguiu àlies il·limitats per a protegir la identitat</string>
+  <string name="upselling_pu_drive_title">Aconseguiu 500 GB per a emmagatzemar fitxers i fotos de manera segura</string>
+  <string name="upselling_pu_vpn_browse_title">Aconseguiu accés a una VPN ultraràpida amb servidors en més de 110 països</string>
+  <string name="upselling_pu_vpn_streaming_title">Accediu a continguts d\'estríming d\'arreu del món</string>
+  <string name="upselling_pu_pass_title">Mantingueu les contrasenyes segures i organitzades amb les caixes fortes</string>
+  <string name="upselling_pu_subtitle">Aconseguiu el millor del Proton amb el pla Unlimited</string>
+  <string name="upselling_pu_row_generic_title">Porta la vostra privacitat més enllà</string>
+  <string name="upselling_pu_row_generic_subtitle">Desbloquegeu més emmagatzematge</string>
+  <string name="upselling_pu_row_threat_protection_title">Protegiu-vos de les amenaces</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Protegiu el compte</string>
+  <string name="upselling_pu_row_aliases_title">Aconseguiu àlies il·limitats</string>
+  <string name="upselling_pu_row_aliases_subtitle">Protegiu la identitat</string>
+  <string name="upselling_pu_row_drive_title">Augmenteu l\'emmagatzematge</string>
+  <string name="upselling_pu_row_drive_subtitle">Aconseguiu 500 GB per a emmagatzemar fitxers i fotos</string>
+  <string name="upselling_pu_row_vpn_browse_title">Navegueu de forma segura</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Obtingueu accés a una VPN ultraràpida</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Tingueu accés als continguts en línia</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Vegeu contingut lliurement amb Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Mantingueu les contrasenyes segures</string>
+  <string name="upselling_pu_row_pass_subtitle">Mantingueu les contrasenyes segures i organitzades</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envieu correus de grup fàcilment. Trobareu això i més al Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupeu els contactes</string>
@@ -72,6 +96,8 @@
   <string name="upselling_comparison_table_folders_labels">Carpetes i etiquetes</string>
   <string name="upselling_comparison_table_premium_products">VPN prèmium, gestor de contrasenyes i emmagatzematge al núvol</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitoratge del web fosc</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Àlies il·limitats per a amagar la identitat</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN ultraràpida amb més de 110 països</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Trieu una subscripció</string>
   <string name="upselling_select_plan_year">12 mesos</string>
