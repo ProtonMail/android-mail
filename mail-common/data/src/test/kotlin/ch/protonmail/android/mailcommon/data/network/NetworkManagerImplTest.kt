@@ -24,8 +24,8 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
+import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.network.NetworkStatus
-import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -33,6 +33,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -49,13 +50,12 @@ internal class NetworkManagerImplTest {
 
     private val context = mockk<Context>()
     private val network: Network = mockk<Network>()
-    private val connectivityManager = mockk<ConnectivityManager>(relaxed = true)
-    private val networkCapabilities = mockk<NetworkCapabilities>(relaxed = true)
+    private val connectivityManager = mockk<ConnectivityManager>(relaxUnitFun = true)
+    private val networkCapabilities = mockk<NetworkCapabilities>()
     private val networkCallback = slot<ConnectivityManager.NetworkCallback>()
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
     }
 
@@ -157,7 +157,6 @@ internal class NetworkManagerImplTest {
         // Given
         setupConnectedNetwork()
         every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
-        every { connectivityManager.unregisterNetworkCallback(any<ConnectivityManager.NetworkCallback>()) } just Runs
 
         // When
         val networkManager = NetworkManagerImpl(context)
@@ -188,7 +187,6 @@ internal class NetworkManagerImplTest {
         // Given
         setupConnectedNetwork()
         every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
-        every { connectivityManager.unregisterNetworkCallback(any<ConnectivityManager.NetworkCallback>()) } just Runs
 
         // When
         val networkManager = NetworkManagerImpl(context)
@@ -264,6 +262,321 @@ internal class NetworkManagerImplTest {
         assertTrue(result)
     }
 
+    @Test
+    fun `networkStatus reads the system while nothing is registered`() {
+        // Given - constructed while the app could not see a network
+        setupDisconnectedNetwork()
+        val networkManager = NetworkManagerImpl(context)
+        assertEquals(NetworkStatus.Disconnected, networkManager.networkStatus)
+
+        // When - the network becomes visible again without any callback firing
+        setupConnectedNetwork(isMetered = true)
+
+        // Then
+        assertEquals(NetworkStatus.Metered, networkManager.networkStatus)
+    }
+
+    @Test
+    fun `networkStatus answers from the tracked state once registered`() {
+        // Given
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+        networkManager.register()
+        assertEquals(NetworkStatus.Unmetered, networkManager.networkStatus)
+
+        // When - the app is blocked, which only the callback can report
+        blockNetworkAccess()
+        networkCallback.captured.onBlockedStatusChanged(network, true)
+
+        // Then - and the answer costs no binder call beyond the one register made
+        assertEquals(NetworkStatus.Disconnected, networkManager.networkStatus)
+        verify(exactly = 1) { connectivityManager.activeNetwork }
+    }
+
+    @Test
+    fun `observe emits Disconnected when the app is blocked from the network`() = runTest {
+        // Given
+        setupConnectedNetwork(isMetered = true)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Metered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+
+            // When - Doze blocks access, so the platform stops reporting an active network
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+
+            // Then
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe emits when the app is unblocked and the system answers with null`() = runTest {
+        // Given - blocked, which is where a long Doze window leaves the app
+        setupConnectedNetwork(isMetered = true)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Metered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - the block lifts. This is the only callback the system fires on that edge, and
+            // the platform is entitled to answer a synchronous read made from inside it with null.
+            networkCallback.captured.onBlockedStatusChanged(network, false)
+
+            // Then - the network the system last described, not what the null read would say
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe reports the capabilities seen during the block, not the ones from before it`() = runTest {
+        // Given - an unmetered network the app is then blocked from
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - the default network turns metered while the app is still blocked
+            every {
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            } returns false
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            networkCallback.captured.onBlockedStatusChanged(network, false)
+
+            // Then
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe reports an unmetered network as unmetered when its capabilities arrive while blocked`() = runTest {
+        // Given - an unmetered network the app is then blocked from
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - the same unmetered network is described again while the block is on. There is
+            // no active network for isActiveNetworkMetered to describe, so it answers `true`, and
+            // corroborating the capabilities with it would turn the wifi network into a metered one.
+            every { connectivityManager.isActiveNetworkMetered } returns true
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            networkCallback.captured.onBlockedStatusChanged(network, false)
+
+            // Then
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe reports Disconnected when the held network is lost and a read still answers`() = runTest {
+        // Given - an unmetered default network
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+
+            // When - airplane mode. A read made from inside the callback is entitled to answer with
+            // the network being torn down, while isActiveNetworkMetered already has no active
+            // network to describe and answers `true`. Together they read as a live metered network.
+            every { connectivityManager.isActiveNetworkMetered } returns true
+            networkCallback.captured.onLost(network)
+
+            // Then - the network we held is gone, whatever that read produces
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe keeps the new default network when the old one is reported lost after a handover`() = runTest {
+        // Given - an unmetered default network
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+        val cellular = mockk<Network>()
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+
+            // The handover: the new default is described first, the old one reported lost after
+            every {
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            } returns false
+            every { connectivityManager.activeNetwork } returns cellular
+            every { connectivityManager.getNetworkCapabilities(cellular) } returns networkCapabilities
+            networkCallback.captured.onCapabilitiesChanged(cellular, networkCapabilities)
+            assertEquals(NetworkStatus.Metered, awaitItem())
+            networkCallback.captured.onLost(network)
+
+            // When - the app is blocked and then unblocked
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(cellular, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+            networkCallback.captured.onBlockedStatusChanged(cellular, false)
+
+            // Then - the network that is actually there, not the one the stale loss would report
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe publishes the new default network when the app was blocked on the old one`() = runTest {
+        // Given - blocked on the wifi network that is about to be switched off
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+        val cellular = mockk<Network>()
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - cellular takes over. The app is not blocked on it, and the system does not
+            // have to repeat the blocked status to say so. A read from inside the callback can
+            // still answer with nothing, because it answers for the network the app may use.
+            blockNetworkAccess()
+            every {
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            } returns false
+            networkCallback.captured.onAvailable(cellular)
+            networkCallback.captured.onCapabilitiesChanged(cellular, networkCapabilities)
+
+            // Then - the block belonged to the network that went away
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe does not emit when the block is lifted and nothing changed`() = runTest {
+        // Given
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+
+            // When
+            networkCallback.captured.onBlockedStatusChanged(network, false)
+
+            // Then
+            expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `refresh emits the current status even when it did not change`() = runTest {
+        // Given
+        setupConnectedNetwork(isMetered = false)
+        every { connectivityManager.registerDefaultNetworkCallback(any()) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+
+            // When
+            networkManager.refresh()
+
+            // Then
+            assertEquals(NetworkStatus.Unmetered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `refresh emits the status the callbacks missed`() = runTest {
+        // Given
+        setupDisconnectedNetwork()
+        every { connectivityManager.registerDefaultNetworkCallback(any()) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - the network came back without a callback reaching the app
+            setupConnectedNetwork(isMetered = true)
+            networkManager.refresh()
+
+            // Then
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `refresh clears a block the app was never told had lifted`() = runTest {
+        // Given - blocked, and the unblock callback never arrives
+        setupConnectedNetwork(isMetered = true)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Metered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - the app is opened and the read sees a network it may use again
+            setupConnectedNetwork(isMetered = true)
+            networkManager.refresh()
+
+            // Then
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
+    @Test
+    fun `refresh keeps the blocked network for the unblock edge`() = runTest {
+        // Given - blocked on a metered network
+        setupConnectedNetwork(isMetered = true)
+        every { connectivityManager.registerDefaultNetworkCallback(capture(networkCallback)) } just Runs
+        val networkManager = NetworkManagerImpl(context)
+
+        networkManager.observe().test {
+            assertEquals(NetworkStatus.Metered, awaitItem())
+            networkCallback.captured.onCapabilitiesChanged(network, networkCapabilities)
+            blockNetworkAccess()
+            networkCallback.captured.onBlockedStatusChanged(network, true)
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+
+            // When - a refresh runs while the block is still on. The read cannot tell that from a
+            // device with no network, so it may only decide what is published now.
+            networkManager.refresh()
+            assertEquals(NetworkStatus.Disconnected, awaitItem())
+            networkCallback.captured.onBlockedStatusChanged(network, false)
+
+            // Then - the network the app was blocked from, not the nothing the read saw
+            assertEquals(NetworkStatus.Metered, awaitItem())
+        }
+    }
+
     private fun setupConnectedNetwork(hasInternet: Boolean = true, isMetered: Boolean = false) {
         every { connectivityManager.activeNetwork } returns network
         every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
@@ -273,6 +586,12 @@ internal class NetworkManagerImplTest {
     }
 
     private fun setupDisconnectedNetwork() {
+        every { connectivityManager.activeNetwork } returns null
+        every { connectivityManager.getNetworkCapabilities(null) } returns null
+    }
+
+    // While the app's network access is blocked, the platform reports no active network for it.
+    private fun blockNetworkAccess() {
         every { connectivityManager.activeNetwork } returns null
         every { connectivityManager.getNetworkCapabilities(null) } returns null
     }
