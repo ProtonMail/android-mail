@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,6 +56,7 @@ internal fun ResultsList(
     selectedItemIds: Set<String>,
     avatarImages: AvatarImagesUiModel,
     downloadingAttachmentId: AttachmentIdUiModel?,
+    listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier
 ) {
     // Only opening an item needs the result wrapper (it decides which location to open from); everything
@@ -79,7 +81,6 @@ internal fun ResultsList(
 
     // Search runs as the user types, so the keyboard is only in the way once they start browsing
     // results — dismiss it as soon as the list scrolls.
-    val listState = rememberLazyListState()
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
