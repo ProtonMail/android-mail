@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,11 +35,11 @@ import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyLargeNorm
@@ -49,6 +48,7 @@ import ch.protonmail.android.design.compose.theme.titleSmallNorm
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import ch.protonmail.android.mailcommon.presentation.R as CommonR
 
 /**
  * "Recent": the queries the user ran before, one per row. Tapping a row re-runs its search, the
@@ -124,6 +124,7 @@ private fun RecentSearchTermRow(
             modifier = Modifier.weight(1f),
             text = term,
             style = ProtonTheme.typography.bodyLargeNorm,
+            color = ProtonTheme.colors.textWeak,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -134,19 +135,18 @@ private fun RecentSearchTermRow(
             // The icon stays small, but a miss on a 24dp target re-runs the search instead of removing
             // the term, so the tappable area is grown to the 48dp minimum.
             modifier = Modifier.minimumInteractiveComponentSize(),
-            shape = CircleShape,
-            color = ProtonTheme.colors.backgroundNorm
+            color = Color.Unspecified
         ) {
             Icon(
                 modifier = Modifier
                     .padding(ProtonDimens.Spacing.Small)
                     .size(DismissIconSize),
-                painter = painterResource(id = R.drawable.ic_material_close),
+                painter = painterResource(id = CommonR.drawable.ic_material_close),
                 contentDescription = stringResource(
                     R.string.content_search_dismiss_recent_search_content_description,
                     term
                 ),
-                tint = ProtonTheme.colors.iconWeak
+                tint = ProtonTheme.colors.iconHint
             )
         }
     }
@@ -165,7 +165,7 @@ internal fun SectionHeader(text: String, modifier: Modifier = Modifier) {
     )
 }
 
-private val DismissIconSize = 16.dp
+private val DismissIconSize = ProtonDimens.IconSize.Medium
 
 private const val RECENT_TERMS_HEADER_KEY = "recent-terms-header"
 private const val RECENT_TERM_KEY_PREFIX = "recent-term-"

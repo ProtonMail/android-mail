@@ -68,6 +68,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.ShowSpamTrashIncludeFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
+import ch.protonmail.android.mailcommon.presentation.R as CommonR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -179,7 +180,7 @@ internal fun ContentSearchTopBar(
                                 ) {
                                     Icon(
                                         modifier = Modifier.size(ProtonDimens.IconSize.Medium),
-                                        painter = painterResource(id = R.drawable.ic_material_close),
+                                        painter = painterResource(id = CommonR.drawable.ic_material_close),
                                         contentDescription = stringResource(
                                             R.string.content_search_clear_query_content_description
                                         ),

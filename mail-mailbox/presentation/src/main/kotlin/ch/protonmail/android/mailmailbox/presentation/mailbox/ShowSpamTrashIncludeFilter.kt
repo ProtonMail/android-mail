@@ -43,6 +43,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.labelLargeNorm
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
+import ch.protonmail.android.mailcommon.presentation.R as CommonR
 
 @Composable
 fun ShowSpamTrashIncludeFilter(
@@ -117,8 +118,8 @@ private fun addCloseIconForEnabledState(state: ShowSpamTrashIncludeFilterState.D
     return if (state.enabled) {
         {
             Icon(
-                modifier = Modifier.size(ProtonDimens.IconSize.Medium),
-                painter = painterResource(R.drawable.ic_proton_cross_small),
+                modifier = Modifier.size(ProtonDimens.IconSize.Small),
+                painter = painterResource(CommonR.drawable.ic_material_close),
                 contentDescription = null,
                 tint = ProtonTheme.colors.textInverted
             )
