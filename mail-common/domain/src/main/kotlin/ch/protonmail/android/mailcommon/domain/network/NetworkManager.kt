@@ -18,11 +18,13 @@
 
 package ch.protonmail.android.mailcommon.domain.network
 
+import java.util.concurrent.CopyOnWriteArraySet
+import android.Manifest
 import android.net.Network
+import androidx.annotation.RequiresPermission
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Ported from core.network.data.
@@ -35,7 +37,13 @@ abstract class NetworkManager {
     // has to tolerate concurrent modification.
     private val observers = CopyOnWriteArraySet<NetworkCallback>()
 
-    /** @return current [NetworkStatus] **/
+    /**
+     * @return current [NetworkStatus]
+     *
+     * Answered from what the system callbacks have reported, so reading it is cheap. It is only as
+     * fresh as the last callback the app received. [refresh] is what re-reads the system.
+     */
+    @get:RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     abstract val networkStatus: NetworkStatus
 
     /**
@@ -72,6 +80,21 @@ abstract class NetworkManager {
 
     /** Unregisters system's network state observer */
     abstract fun unregister()
+
+    /**
+     * Re-reads the current status from the system and pushes it to every collector of [observe].
+     *
+     * This is the way out of a block the app was never told had lifted. While the app's network
+     * access is blocked - Doze, App Standby, Data Saver - the platform reports no active network,
+     * and the callback for the unblock edge does not reach every device. A read that sees a usable
+     * network means the block is gone.
+     *
+     * Call it when the app returns to the foreground, and when the platform reports that a
+     * restriction changed. It emits even when the status did not change, and it reads the system
+     * synchronously, so do not call it from the main thread.
+     */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+    abstract fun refresh()
 
     protected fun notifyObservers(status: NetworkStatus) = observers.forEach { it(status) }
 
