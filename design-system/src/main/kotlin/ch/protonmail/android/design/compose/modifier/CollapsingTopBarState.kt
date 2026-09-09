@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.design.compose.modifier
 
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -39,10 +39,13 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
- * Scroll-linked collapse state for the mailbox top bar.
+ * Scroll-linked collapse state for a top bar.
+ *
+ * The bar follows the scroll one to one: it gives way as the content scrolls down and comes back as
+ * it scrolls up, then settles to the nearest end state when the gesture ends.
  */
 @Stable
-internal class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
+class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
 
     /** Current vertical offset of the collapsible content, in `[-collapsibleHeightPx, 0]`. */
     var offsetPx by mutableFloatStateOf(initialOffsetPx)
@@ -110,7 +113,7 @@ internal class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
     }
 
     /** Called from [collapsingContainer] on every layout pass. Writes plain fields only. */
-    fun onLayout(collapsibleHeightPx: Float, appliedOffsetPx: Int) {
+    internal fun onLayout(collapsibleHeightPx: Float, appliedOffsetPx: Int) {
         this.collapsibleHeightPx = collapsibleHeightPx
         this.appliedOffsetPx = appliedOffsetPx
     }
@@ -148,14 +151,14 @@ internal class CollapsingTopBarState(initialOffsetPx: Float = 0f) {
 }
 
 @Composable
-internal fun rememberCollapsingTopBarState(): CollapsingTopBarState =
+fun rememberCollapsingTopBarState(): CollapsingTopBarState =
     rememberSaveable(saver = CollapsingTopBarState.Saver) { CollapsingTopBarState() }
 
 /**
  * Shifts the content up by [CollapsingTopBarState.offsetPx] and shrinks the space it takes by the
  * same amount, so whatever sits below it moves in step with the collapse.
  */
-internal fun Modifier.collapsingContainer(state: CollapsingTopBarState) = this
+fun Modifier.collapsingContainer(state: CollapsingTopBarState) = this
     .clipToBounds()
     .layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)

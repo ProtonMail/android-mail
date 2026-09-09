@@ -36,16 +36,20 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +61,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import ch.protonmail.android.design.compose.modifier.rememberCollapsingTopBarState
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailattachments.presentation.IntentHelper
@@ -274,6 +279,29 @@ private fun ContentSearchScreen(
     // Derived so only a change in emptiness, not every keystroke, reaches the body below.
     val isQueryEmpty by remember(queryState) { derivedStateOf { queryState.text.isBlank() } }
 
+    // The list currently under the top bar, if there is one. Each page keeps its own scroll position,
+    // and the skeleton and the empty states don't scroll at all.
+    val resultsListState = rememberLazyListState()
+    val recentsListState = rememberLazyListState()
+    val scrollingList = when (val phase = state.phase) {
+        ContentSearchState.Phase.Idle -> recentsListState.takeIf { recentsState is RecentSearchesState.Data }
+        ContentSearchState.Phase.Loading -> null
+        is ContentSearchState.Phase.Results -> resultsListState.takeIf { phase.count > 0 }
+    }
+
+    val collapsingTopBarState = rememberCollapsingTopBarState()
+    SideEffect {
+        // Selection mode pins the bar: its back button is the way out of it.
+        collapsingTopBarState.configure(enabled = !state.inSelectionMode) {
+            scrollingList?.canScrollForward == true
+        }
+    }
+    // Bring the bar back whenever what sits under it changes. A page that just appeared, or one that
+    // can't scroll, has no way to scroll a hidden bar back into view.
+    LaunchedEffect(scrollingList, state.inSelectionMode) {
+        collapsingTopBarState.animateExpand()
+    }
+
     val bottomPadding by animateDpAsState(
         targetValue = maxOf(
             ProtonDimens.Spacing.Large,
@@ -293,6 +321,7 @@ private fun ContentSearchScreen(
                 .fillMaxSize()
                 .background(ProtonTheme.colors.backgroundNorm)
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                .nestedScroll(collapsingTopBarState.nestedScrollConnection)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 ContentSearchTopBar(
@@ -301,6 +330,7 @@ private fun ContentSearchScreen(
                     isSearchLive = state.isSearchLive,
                     actions = actions,
                     inSelectionMode = state.inSelectionMode,
+                    collapsingState = collapsingTopBarState,
                     consumeAutoFocus = consumeAutoFocus
                 )
 
@@ -313,6 +343,8 @@ private fun ContentSearchScreen(
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
                     recentsActions = recentsActions,
+                    resultsListState = resultsListState,
+                    recentsListState = recentsListState,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -346,6 +378,8 @@ private fun ContentSearchBody(
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
+    resultsListState: LazyListState,
+    recentsListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
     when (val phase = state.phase) {
@@ -357,6 +391,7 @@ private fun ContentSearchBody(
             isQueryEmpty = isQueryEmpty,
             actions = actions,
             recentsActions = recentsActions,
+            listState = recentsListState,
             modifier = modifier
         )
 
@@ -384,6 +419,7 @@ private fun ContentSearchBody(
                 },
                 avatarImages = state.avatarImages,
                 downloadingAttachmentId = state.downloadingAttachmentId,
+                listState = resultsListState,
                 modifier = modifier
             )
         }
@@ -404,6 +440,7 @@ private fun ContentSearchIdlePage(
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
+    listState: LazyListState,
     modifier: Modifier = Modifier
 ) {
     when (recentsState) {
@@ -434,6 +471,7 @@ private fun ContentSearchIdlePage(
                     actions.onSuggestionSelected(term)
                 }
             ),
+            listState = listState,
             modifier = modifier
         )
     }

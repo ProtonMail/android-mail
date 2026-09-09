@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -57,6 +58,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.design.compose.component.appbar.ProtonTopAppBar
+import ch.protonmail.android.design.compose.modifier.CollapsingTopBarState
+import ch.protonmail.android.design.compose.modifier.collapsingContainer
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyLargeNorm
@@ -74,6 +77,7 @@ internal fun ContentSearchTopBar(
     isSearchLive: Boolean,
     actions: ContentSearchActions,
     inSelectionMode: Boolean,
+    collapsingState: CollapsingTopBarState,
     modifier: Modifier = Modifier,
     consumeAutoFocus: () -> Boolean = { false }
 ) {
@@ -93,94 +97,110 @@ internal fun ContentSearchTopBar(
     Column(
         modifier = modifier
             .background(ProtonTheme.colors.backgroundSecondary)
+            // The chip row stays put while the field collapses, so the inset moves here whenever the
+            // row is shown. Without it the chips would end up under the status bar.
+            .then(
+                if (isSearchLive) {
+                    Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
+                } else {
+                    Modifier
+                }
+            )
             .testTag(ContentSearchTopBarTestTags.RootItem)
     ) {
-        ProtonTopAppBar(
-            windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
-            backgroundColor = ProtonTheme.colors.backgroundSecondary,
-            navigationIcon = {
-                IconButton(
-                    onClick = {
-                        keyboardController?.hide()
-                        if (inSelectionMode) actions.onExitSelectionMode() else actions.onClose()
-                    }
-                ) {
-                    Icon(
-                        modifier = Modifier.size(ProtonDimens.IconSize.Default),
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.content_search_close_content_description),
-                        tint = ProtonTheme.colors.iconNorm
-                    )
-                }
-            },
-            title = {
-                SearchBarDefaults.InputField(
-                    state = queryState,
-                    onSearch = {
-                        keyboardController?.hide()
-                        actions.onSearch()
-                    },
-                    // Expansion belongs to the M3 SearchBar this field is intentionally used without.
-                    expanded = false,
-                    onExpandedChange = {},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester)
-                        .onGloballyPositioned {
-                            if (autoFocus && !hasRequestedFocus) {
-                                hasRequestedFocus = true
-                                focusRequester.requestFocus()
-                            }
+        // Only the field and the back button collapse. The chip row below them is pinned.
+        Column(modifier = Modifier.collapsingContainer(collapsingState)) {
+            ProtonTopAppBar(
+                windowInsets = if (isSearchLive) {
+                    WindowInsets(0, 0, 0, 0)
+                } else {
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                },
+                backgroundColor = ProtonTheme.colors.backgroundSecondary,
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            keyboardController?.hide()
+                            if (inSelectionMode) actions.onExitSelectionMode() else actions.onClose()
                         }
-                        .testTag(ContentSearchTopBarTestTags.SearchTextField),
-                    textStyle = ProtonTheme.typography.bodyLargeNorm,
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.content_search_placeholder_text),
-                            color = ProtonTheme.colors.textHint,
-                            style = ProtonTheme.typography.bodyLargeNorm
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(ProtonDimens.IconSize.Default),
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.content_search_close_content_description),
+                            tint = ProtonTheme.colors.iconNorm
                         )
-                    },
-                    trailingIcon = {
-                        AnimatedVisibility(
-                            visible = queryState.text.isNotEmpty(),
-                            enter = fadeIn(),
-                            exit = fadeOut()
-                        ) {
-                            IconButton(
-                                modifier = Modifier.testTag(ContentSearchTopBarTestTags.ClearQueryButton),
-                                onClick = {
-                                    actions.onClearQuery()
-                                    // Clearing puts the user back at the start of a search rather than
-                                    // done with one, so hand the caret and the keyboard back — the
-                                    // keyboard is gone by now if they dismissed it to browse results.
+                    }
+                },
+                title = {
+                    SearchBarDefaults.InputField(
+                        state = queryState,
+                        onSearch = {
+                            keyboardController?.hide()
+                            actions.onSearch()
+                        },
+                        // Expansion belongs to the M3 SearchBar this field is intentionally used without.
+                        expanded = false,
+                        onExpandedChange = {},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester)
+                            .onGloballyPositioned {
+                                if (autoFocus && !hasRequestedFocus) {
+                                    hasRequestedFocus = true
                                     focusRequester.requestFocus()
-                                    keyboardController?.show()
                                 }
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(ProtonDimens.IconSize.Medium),
-                                    painter = painterResource(id = R.drawable.ic_material_close),
-                                    contentDescription = stringResource(
-                                        R.string.content_search_clear_query_content_description
-                                    ),
-                                    tint = ProtonTheme.colors.iconNorm
-                                )
                             }
-                        }
-                    },
-                    shape = RectangleShape,
-                    colors = SearchBarDefaults.inputFieldColors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedTextColor = ProtonTheme.colors.textNorm,
-                        unfocusedTextColor = ProtonTheme.colors.textNorm,
-                        cursorColor = ProtonTheme.colors.textNorm
+                            .testTag(ContentSearchTopBarTestTags.SearchTextField),
+                        textStyle = ProtonTheme.typography.bodyLargeNorm,
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.content_search_placeholder_text),
+                                color = ProtonTheme.colors.textHint,
+                                style = ProtonTheme.typography.bodyLargeNorm
+                            )
+                        },
+                        trailingIcon = {
+                            AnimatedVisibility(
+                                visible = queryState.text.isNotEmpty(),
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                IconButton(
+                                    modifier = Modifier.testTag(ContentSearchTopBarTestTags.ClearQueryButton),
+                                    onClick = {
+                                        actions.onClearQuery()
+                                        // Clearing puts the user back at the start of a search rather than
+                                        // done with one, so hand the caret and the keyboard back — the
+                                        // keyboard is gone by now if they dismissed it to browse results.
+                                        focusRequester.requestFocus()
+                                        keyboardController?.show()
+                                    }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(ProtonDimens.IconSize.Medium),
+                                        painter = painterResource(id = R.drawable.ic_material_close),
+                                        contentDescription = stringResource(
+                                            R.string.content_search_clear_query_content_description
+                                        ),
+                                        tint = ProtonTheme.colors.iconNorm
+                                    )
+                                }
+                            }
+                        },
+                        shape = RectangleShape,
+                        colors = SearchBarDefaults.inputFieldColors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedTextColor = ProtonTheme.colors.textNorm,
+                            unfocusedTextColor = ProtonTheme.colors.textNorm,
+                            cursorColor = ProtonTheme.colors.textNorm
+                        )
                     )
-                )
-            },
-            actions = {}
-        )
+                },
+                actions = {}
+            )
+        }
         // The chip scopes the live search, so it stays up through the loading of a resubmitted
         // query instead of flickering out and back with every new spin-up, on the same surface as
         // the field above.
