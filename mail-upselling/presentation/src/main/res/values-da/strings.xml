@@ -33,6 +33,30 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s for den 1. måned, derefter %s pr. måned</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Opgrader til Proton Unlimited</string>
+  <string name="upselling_stay_on_mail_plus">Bliv på Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Vælg dit abonnement</string>
+  <string name="upselling_pu_generic_title">Opgrader dit digitale privatliv yderligere med Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Beskyt din konto mod trusler med Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Få ubegrænsede aliasser til at beskytte din identitet</string>
+  <string name="upselling_pu_drive_title">Få 500 GB til sikkert at lagre dine filer og fotos</string>
+  <string name="upselling_pu_vpn_browse_title">Få adgang til en lynhurtig VPN med servere i 110+ lande</string>
+  <string name="upselling_pu_vpn_streaming_title">Få adgang til indhold på streamingtjenester fra hele verden</string>
+  <string name="upselling_pu_pass_title">Opbevar dine adgangskoder sikkert og organiseret i bokse</string>
+  <string name="upselling_pu_subtitle">Få mest ud af Proton med Unlimited</string>
+  <string name="upselling_pu_row_generic_title">Opgrader dit privatliv yderligere</string>
+  <string name="upselling_pu_row_generic_subtitle">Lås op for mere lagerplads</string>
+  <string name="upselling_pu_row_threat_protection_title">Beskyt mod trusler</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Beskyt din konto</string>
+  <string name="upselling_pu_row_aliases_title">Få ubegrænsede aliasser</string>
+  <string name="upselling_pu_row_aliases_subtitle">Beskyt din identitet</string>
+  <string name="upselling_pu_row_drive_title">Forøg din lagerplads</string>
+  <string name="upselling_pu_row_drive_subtitle">Få 500 GB til at lagre dine filer og fotos</string>
+  <string name="upselling_pu_row_vpn_browse_title">Browse sikkert</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Få adgang til en lynhurtig VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Omgå blokeringer af streaming-indhold</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream frit med Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Beskyt dine adgangskoder</string>
+  <string name="upselling_pu_row_pass_subtitle">Keep passwords safe and organized</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Send nemt gruppe-e-mails. Nyd godt af dette og mere med Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Gruppér dine kontakter</string>
@@ -108,6 +132,7 @@
   <string name="upselling_snackbar_error_no_subscriptions">Ude af stand til at hente abonnementer.</string>
   <string name="upselling_comparison_table_premium_access">Premium-adgang til Mail, VPN, Drive, Pass og Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Ubegrænsede aliasser til at skjule din identitet</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">Lynhurtig VPN med 110+ lande</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Ubegrænsede mapper, filtre, etiketter</string>
   <!-- Snackbar texts -->
 </resources>

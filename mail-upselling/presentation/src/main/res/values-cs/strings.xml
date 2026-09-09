@@ -33,6 +33,30 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s za 1. měsíc, poté %s měsíčně</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Přejděte na Proton Unlimited</string>
+  <string name="upselling_stay_on_mail_plus">Ponechat Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Vyberte svůj tarif</string>
+  <string name="upselling_pu_generic_title">Zvyšte úroveň svého online soukromí s Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Chraňte svůj účet před hrozbami pomocí programu Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Získejte neomezený počet aliasů a chraňte tak svou identitu</string>
+  <string name="upselling_pu_drive_title">Získejte 500 GB pro bezpečné uložení souborů a fotek</string>
+  <string name="upselling_pu_vpn_browse_title">Získejte přístup k nejrychlejším serverům VPN ve více než 110 zemích</string>
+  <string name="upselling_pu_vpn_streaming_title">Přístup k obsahu streamovacích služeb po celém světě</string>
+  <string name="upselling_pu_pass_title">Uchovávejte svá hesla v bezpečí a uspořádaná v trezorech</string>
+  <string name="upselling_pu_subtitle">Využijte Proton na maximum s tarifem Unlimited</string>
+  <string name="upselling_pu_row_generic_title">Zvyšte úroveň svého soukromí</string>
+  <string name="upselling_pu_row_generic_subtitle">Odemkněte větší úložiště</string>
+  <string name="upselling_pu_row_threat_protection_title">Chraňte se před hrozbami</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Chraňte svůj účet</string>
+  <string name="upselling_pu_row_aliases_title">Získejte neomezený počet aliasů</string>
+  <string name="upselling_pu_row_aliases_subtitle">Chraňte svou identitu</string>
+  <string name="upselling_pu_row_drive_title">Navyšte své úložiště</string>
+  <string name="upselling_pu_row_drive_subtitle">Získejte 500 GB pro uložení souborů a fotek</string>
+  <string name="upselling_pu_row_vpn_browse_title">Bezpečné prohlížení</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Získejte přístup k nejrychlejší VPN</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Odblokujte streamování obsahu</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Streamujte bez omezení s Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Udržujte hesla v bezpečí</string>
+  <string name="upselling_pu_row_pass_subtitle">Uchovávejte hesla v bezpečí a přehledně uspořádaná</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Snadné odesílání skupinových e-mailů. To a mnohem více si můžete užít s aplikací Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Seskupujte své kontakty</string>
@@ -108,6 +132,7 @@
   <string name="upselling_snackbar_error_no_subscriptions">Nepodařilo se získat předplatné.</string>
   <string name="upselling_comparison_table_premium_access">Prémiový přístup ke službám Mail, VPN, Drive, Pass a Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Neomezený počet aliasů pro skrytí vaší identity</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">Vysokorychlostní VPN s pokrytím ve více než 110 zemích</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomezený počet složek, filtrů a štítků</string>
   <!-- Snackbar texts -->
 </resources>

@@ -33,6 +33,30 @@
   <string name="upselling_mailbox_plus_promo_renewal">İlk ay için %s, sonraki aylar için %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimited tarifesine yükseltin</string>
+  <string name="upselling_stay_on_mail_plus">Mail Plus tarifesinde kalın</string>
+  <string name="upselling_pu_choose_plan">Tarifenizi seçin</string>
+  <string name="upselling_pu_generic_title">Proton Unlimited ile çevrim içi gizliliğinizi bir adım öteye taşıyın</string>
+  <string name="upselling_pu_threat_protection_title">Proton Sentinel ile hesabınızı tehditlere karşı koruyun</string>
+  <string name="upselling_pu_aliases_title">Kimliğinizi korumak için sınırsız sayıda takma ad edinin</string>
+  <string name="upselling_pu_drive_title">Dosyaları ve fotoğrafları güvenle depolamak için 500 GB edinin</string>
+  <string name="upselling_pu_vpn_browse_title">110 üzerinde ülkede bulunan sunucular ile ultra hızlı VPN kullanın</string>
+  <string name="upselling_pu_vpn_streaming_title">Tüm dünyadaki yayın akışı hizmetlerinin içeriklerine erişin</string>
+  <string name="upselling_pu_pass_title">Parolalarınızı kasalarda güvende ve düzenli tutun</string>
+  <string name="upselling_pu_subtitle">Unlimited tarifesi ile en iyi Proton özelliklerini edinin</string>
+  <string name="upselling_pu_row_generic_title">Gizliliğinizi bir adım öteye taşıyın</string>
+  <string name="upselling_pu_row_generic_subtitle">Daha fazla depolama alanı elde edin</string>
+  <string name="upselling_pu_row_threat_protection_title">Tehditlere karşı koruma</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Hesabınızı koruyun</string>
+  <string name="upselling_pu_row_aliases_title">Sınırsız sayıda takma ad edinin</string>
+  <string name="upselling_pu_row_aliases_subtitle">Kimliğinizi koruyun</string>
+  <string name="upselling_pu_row_drive_title">Depolama alanınızı artırın</string>
+  <string name="upselling_pu_row_drive_subtitle">Dosyalarınızı ve fotoğraflarınızı depolamak için 500 GB alan edinin</string>
+  <string name="upselling_pu_row_vpn_browse_title">Güvenli bir şekilde gezinin</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Ultra hızlı VPN edinin</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Yayın akışı içeriğinin engellemesini kaldırın</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Proton VPN ile yayın akışlarını sınırlama olmadan izleyin</string>
+  <string name="upselling_pu_row_pass_title">Parolalarınızı güvende tutun</string>
+  <string name="upselling_pu_row_pass_subtitle">Parolalarınızı güvenli ve düzenli bir şekilde saklayın</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Grup e-postalarını kolayca gönderin. Mail Plus ile bunun gibi diğer özelliklerin tadını çıkarın.</string>
   <string name="upselling_contact_groups_plus_title">Kişilerinizi gruplayın</string>
@@ -72,6 +96,8 @@
   <string name="upselling_comparison_table_folders_labels">Klasörler ve etiketler</string>
   <string name="upselling_comparison_table_premium_products">Ücretli VPN, parola yöneticisi ve bulut depolama alanı</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Karanlık ağ izleme</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Kimliğinizi gizlemek için sınırsız sayıda takma ad</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">110 üzerinde ülkede Ultra hızlı VPN</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonelik seçin</string>
   <string name="upselling_select_plan_year">12 ay</string>
