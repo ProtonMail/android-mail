@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcategory.presentation.design.activeCategoryColor
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.asDisplayText
 import ch.protonmail.android.mailcommon.presentation.model.isEmpty
@@ -217,7 +218,7 @@ private fun pillItemExit(shrinkTowards: Alignment.Horizontal) =
         )
 
 private const val PILL_ANIMATION_DURATION_MS = 200
-private val UnreadHeight = 56.dp
+private val UnreadHeight = MailDimens.FloatingControlHeight
 private val CategoryUnreadBadgeHeight = 30.dp
 private val CategoryUnreadBadgeMinWidth = 30.dp
 

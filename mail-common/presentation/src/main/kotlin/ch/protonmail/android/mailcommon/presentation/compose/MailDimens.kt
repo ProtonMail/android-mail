@@ -133,6 +133,10 @@ object MailDimens {
 
     val MailboxFabRadius = 32.dp
 
+    // Shared by every floating bottom control: the compose and search FABs, the unread filter pill
+    // and the selection toolbar. They sit on the same row, so they must agree on a height.
+    val FloatingControlHeight = 48.dp
+
     // Material3's Snackbar wraps itself in a 12.dp margin on every side (see Snackbar.kt), so a
     // measured snackbar host is 24.dp taller than the snackbar you actually see.
     val SnackbarOuterMargin = 12.dp
