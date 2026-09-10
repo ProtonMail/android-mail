@@ -158,6 +158,9 @@ class ContentSearchViewModel @Inject constructor(
 
     private var attachmentDownloadJob: Job? = null
 
+    /** The ids last reported by the results list, used to spot the ones that leave it. */
+    private var displayedItemIds: List<String> = emptyList()
+
     private var allMailLocalLabelId: LabelId = SystemLabelId.AllMail.labelId
     private var almostAllMailLocalLabelId: LabelId = SystemLabelId.AlmostAllMail.labelId
 
@@ -335,8 +338,7 @@ class ContentSearchViewModel @Inject constructor(
                 applyOperation(ContentSearchOperation.ToggleSelection(action.item))
 
             ContentSearchViewAction.ExitSelectionMode -> applyOperation(ContentSearchOperation.ExitSelectionMode)
-            is ContentSearchViewAction.ItemsRemovedFromSelection ->
-                applyOperation(ContentSearchOperation.ItemsRemovedFromSelection(action.itemIds))
+            is ContentSearchViewAction.ItemsChanged -> handleItemsChanged(action.itemIds)
 
             ContentSearchViewAction.MarkAsRead -> handleMarkAsRead()
             ContentSearchViewAction.MarkAsUnread -> handleMarkAsUnread()
@@ -677,6 +679,25 @@ class ContentSearchViewModel @Inject constructor(
 
         viewModelScope.launch {
             updateIncludeFilter(updatedFilter, MessageViewMode)
+        }
+    }
+
+    /**
+     * Drops from the selection every item that has left the results list (mirrors Mailbox).
+     *
+     * This allows de-selecting items if the user has Spam/Trash items selected and then turns off
+     * the "Include Spam/Trash" option.
+     */
+    private fun handleItemsChanged(itemIds: List<String>) {
+        val removedIds = displayedItemIds.filterNot { it in itemIds }
+        displayedItemIds = itemIds
+        if (removedIds.isEmpty()) return
+
+        val removedFromSelection = mutableState.value.selectionState.selectedItems
+            .map { it.id }
+            .filter { it in removedIds }
+        if (removedFromSelection.isNotEmpty()) {
+            applyOperation(ContentSearchOperation.ItemsRemovedFromSelection(removedFromSelection))
         }
     }
 
