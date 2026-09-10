@@ -106,6 +106,10 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
         }
     }
 
+    LaunchedEffect(items.itemSnapshotList) {
+        viewModel.submit(ContentSearchViewAction.ItemsChanged(items.itemSnapshotList.items.map { it.id }))
+    }
+
     // The history has no change stream, so re-read it every time the screen falls back to the idle
     // page — on open, and again after the user clears a query (possibly having opened a result).
     val isIdle = state.phase is ContentSearchState.Phase.Idle

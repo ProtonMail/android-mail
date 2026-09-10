@@ -49,7 +49,7 @@ sealed interface ContentSearchViewAction {
 
     data object ExitSelectionMode : ContentSearchViewAction
 
-    data class ItemsRemovedFromSelection(val itemIds: List<String>) : ContentSearchViewAction
+    data class ItemsChanged(val itemIds: List<String>) : ContentSearchViewAction
 
     // Bottom toolbar actions on the current selection
     data object MarkAsRead : ContentSearchViewAction

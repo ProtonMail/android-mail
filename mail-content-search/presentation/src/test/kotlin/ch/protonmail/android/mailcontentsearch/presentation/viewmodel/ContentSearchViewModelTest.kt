@@ -340,6 +340,34 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
+    fun `should deselect items that left the results list`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val kept = selectableItem(id = "kept")
+        val removed = selectableItem(id = "removed")
+        sut.submit(ContentSearchViewAction.ItemsChanged(listOf("kept", "removed")))
+        sut.submit(ContentSearchViewAction.ItemLongClicked(kept))
+        sut.submit(ContentSearchViewAction.ToggleItemSelection(removed))
+
+        sut.submit(ContentSearchViewAction.ItemsChanged(listOf("kept")))
+        advanceUntilIdle()
+
+        assertTrue(sut.state.value.inSelectionMode)
+        assertEquals(setOf("kept"), sut.state.value.selectionState.selectedItems.map { it.id }.toSet())
+    }
+
+    @Test
+    fun `should keep the selection when the results list only gains items`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        sut.submit(ContentSearchViewAction.ItemsChanged(listOf(itemId)))
+        sut.submit(ContentSearchViewAction.ItemLongClicked(selectableItem()))
+
+        sut.submit(ContentSearchViewAction.ItemsChanged(listOf(itemId, "another")))
+        advanceUntilIdle()
+
+        assertEquals(setOf(itemId), sut.state.value.selectionState.selectedItems.map { it.id }.toSet())
+    }
+
+    @Test
     fun `should mark selection as read and keep selecting`() = runTest(testDispatcher) {
         val sut = viewModel()
         sut.submit(ContentSearchViewAction.ItemLongClicked(selectableItem(isRead = false)))
