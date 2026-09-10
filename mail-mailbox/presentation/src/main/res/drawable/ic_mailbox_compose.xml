@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M14.1918 2.90088V4.6001H5.25134C4.06393 4.6001 3.10095 5.56308 3.10095 6.75049V18.7485C3.10095 19.9359 4.06393 20.8989 5.25134 20.8989H17.0853C18.2726 20.8987 19.2347 19.9358 19.2347 18.7485V9.80908H20.9349V18.7485C20.9349 20.8747 19.2115 22.5989 17.0853 22.5991H5.25134C3.12505 22.5991 1.40173 20.8748 1.40173 18.7485V6.75049C1.40173 4.62419 3.12505 2.90088 5.25134 2.90088H14.1918ZM18.6429 1.86865C19.2677 1.24414 20.2809 1.24415 20.9056 1.86865L22.1332 3.09717C22.7578 3.72202 22.758 4.73508 22.1332 5.35986L12.2513 15.2417C11.8131 15.6798 11.2534 15.9762 10.6449 16.0933L8.48962 16.5083C7.89935 16.6218 7.38116 16.1034 7.49451 15.5132L7.90857 13.3569C8.02569 12.7486 8.32306 12.1896 8.76111 11.7515L18.6429 1.86865ZM9.96326 12.9526C9.76542 13.1505 9.63141 13.4035 9.57849 13.6782L9.39978 14.6011L10.3236 14.4243C10.5984 14.3715 10.8513 14.2374 11.0492 14.0396L20.8607 4.22803L19.7738 3.14111L9.96326 12.9526Z"
+      android:fillColor="#0F0F0F"
+      android:strokeColor="#000000"
+      android:strokeWidth="0.2"
+      android:strokeLineCap="round" />
+</vector>

@@ -247,7 +247,7 @@ private fun SearchFab(
                 ) {
                     Icon(
                         modifier = Modifier.size(ProtonDimens.IconSize.Default),
-                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                        painter = painterResource(id = R.drawable.ic_mailbox_search),
                         contentDescription = stringResource(
                             id = R.string.mailbox_toolbar_search_button_content_description
                         ),
@@ -340,7 +340,7 @@ private fun ComposeFabToolbarMorph(
                 ) {
                     // FAB icon
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                        painter = painterResource(id = R.drawable.ic_mailbox_compose),
                         contentDescription = stringResource(
                             id = R.string.mailbox_fab_compose_button_content_description
                         ),
@@ -376,7 +376,7 @@ private fun ComposeFabToolbarMorph(
     }
 }
 
-private val FabSize = 56.dp
+private val FabSize = MailDimens.FloatingControlHeight
 private val SearchFabSpacing = 12.dp
 private val UnreadFabGap = 8.dp
 private val ToolbarHorizontalPadding = 12.dp

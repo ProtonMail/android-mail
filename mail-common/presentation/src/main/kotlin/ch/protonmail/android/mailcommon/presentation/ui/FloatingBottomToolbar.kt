@@ -40,10 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
@@ -84,7 +84,7 @@ fun FloatingBottomToolbar(
 
     Surface(
         modifier = modifier
-            .height(FloatingToolbarHeight)
+            .height(MailDimens.FloatingControlHeight)
             .protonFloatingButtonShadow(alpha = contentAlpha),
         shape = RoundedCornerShape(percent = 50),
         color = surfaceColor
@@ -143,5 +143,4 @@ fun FloatingToolbarActionIcons(
     }
 }
 
-private val FloatingToolbarHeight = 56.dp
 private const val ANIMATION_DURATION = 250
