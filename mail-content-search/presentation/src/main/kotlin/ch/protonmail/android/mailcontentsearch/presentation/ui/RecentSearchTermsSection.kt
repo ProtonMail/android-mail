@@ -25,13 +25,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,14 +82,14 @@ private fun RecentSearchTermsHeader(onClearClicked: () -> Unit, modifier: Modifi
         )
         Text(
             modifier = Modifier
+                .padding(end = ProtonDimens.Spacing.Large)
                 .clickable(onClick = onClearClicked)
-                .padding(
-                    horizontal = ProtonDimens.Spacing.Large,
-                    vertical = ProtonDimens.Spacing.Medium
-                ),
+                .padding(vertical = ProtonDimens.Spacing.Standard),
             text = stringResource(R.string.content_search_clear_recent_searches),
             style = ProtonTheme.typography.bodyMediumWeak,
-            color = ProtonTheme.colors.textNorm
+            color = ProtonTheme.colors.textHint,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -105,18 +105,13 @@ private fun RecentSearchTermRow(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(
-                start = ProtonDimens.Spacing.Large,
-                end = ProtonDimens.Spacing.MediumLight,
-                top = ProtonDimens.Spacing.Medium,
-                bottom = ProtonDimens.Spacing.Medium
-            ),
-        horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Standard),
+            .padding(start = ProtonDimens.Spacing.Large, end = RowEndPadding),
+        horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Large),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.size(ProtonDimens.IconSize.Default),
-            painter = painterResource(id = R.drawable.ic_material_schedule),
+            painter = painterResource(id = R.drawable.ic_material_history),
             contentDescription = null,
             tint = ProtonTheme.colors.iconWeak
         )
@@ -132,14 +127,12 @@ private fun RecentSearchTermRow(
         // query, so the icon has to swallow the tap.
         Surface(
             onClick = onDismiss,
-            // The icon stays small, but a miss on a 24dp target re-runs the search instead of removing
-            // the term, so the tappable area is grown to the 48dp minimum.
-            modifier = Modifier.minimumInteractiveComponentSize(),
+            modifier = Modifier.size(DismissTouchTargetSize),
             color = Color.Unspecified
         ) {
             Icon(
                 modifier = Modifier
-                    .padding(ProtonDimens.Spacing.Small)
+                    .wrapContentSize()
                     .size(DismissIconSize),
                 painter = painterResource(id = CommonR.drawable.ic_material_close),
                 contentDescription = stringResource(
@@ -155,17 +148,21 @@ private fun RecentSearchTermRow(
 @Composable
 internal fun SectionHeader(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(
-            horizontal = ProtonDimens.Spacing.Large,
-            vertical = ProtonDimens.Spacing.Medium
-        ),
+        modifier = modifier
+            .padding(start = ProtonDimens.Spacing.Large)
+            .padding(vertical = ProtonDimens.Spacing.Medium),
         text = text,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.titleSmallNorm,
-        color = ProtonTheme.colors.textWeak
+        color = ProtonTheme.colors.textNorm
     )
 }
 
 private val DismissIconSize = ProtonDimens.IconSize.Medium
+private val DismissTouchTargetSize = ProtonDimens.Spacing.Massive
+
+private val RowEndPadding = ProtonDimens.Spacing.Large - (DismissTouchTargetSize - DismissIconSize) / 2
 
 private const val RECENT_TERMS_HEADER_KEY = "recent-terms-header"
 private const val RECENT_TERM_KEY_PREFIX = "recent-term-"

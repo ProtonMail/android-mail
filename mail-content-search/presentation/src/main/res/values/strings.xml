@@ -31,8 +31,8 @@
     <string name="content_search_learn_more_link" translatable="false">https://proton.me/support/search#mobile</string>
     <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
     <!-- Search history -->
-    <string name="content_search_recent_searches_title">Recent</string>
-    <string name="content_search_clear_recent_searches">Clear</string>
+    <string name="content_search_recent_searches_title">Recent mail searches</string>
+    <string name="content_search_clear_recent_searches">Clear all</string>
     <string name="content_search_previously_found_title">Previously found</string>
     <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
     <!-- Selection mode -->
