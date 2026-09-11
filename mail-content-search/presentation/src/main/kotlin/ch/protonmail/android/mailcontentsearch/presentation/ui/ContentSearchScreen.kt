@@ -79,9 +79,11 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
+import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchViewModel
+import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.IndexingProgressViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.RecentSearchesViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxSkeletonLoading
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
@@ -96,8 +98,10 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
     val snackbarHeight = actions.snackbarHeight
     val viewModel: ContentSearchViewModel = hiltViewModel()
     val recentsViewModel: RecentSearchesViewModel = hiltViewModel()
+    val indexingViewModel: IndexingProgressViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val recentsState by recentsViewModel.state.collectAsStateWithLifecycle()
+    val indexingState by indexingViewModel.state.collectAsStateWithLifecycle()
     val items = viewModel.items.collectAsLazyPagingItems()
 
     LaunchedEffect(items.itemCount, items.loadState.refresh) {
@@ -156,6 +160,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
     ContentSearchScreen(
         state = state,
         recentsState = recentsState,
+        indexingState = indexingState,
         items = items,
         queryState = viewModel.queryState,
         snackbarHeight = snackbarHeight(),
@@ -201,6 +206,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
             onSuggestionSelected = { viewModel.submit(ContentSearchViewAction.SuggestionSelected(it)) },
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
             onToggleIncludeSpamTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpamTrash) },
+            onSeeIndexingDetails = actions.onSeeIndexingDetails,
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -273,6 +279,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
 private fun ContentSearchScreen(
     state: ContentSearchState,
     recentsState: RecentSearchesState,
+    indexingState: IndexingProgressState,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     queryState: TextFieldState,
     actions: ContentSearchActions,
@@ -343,6 +350,7 @@ private fun ContentSearchScreen(
                 ContentSearchBody(
                     state = state,
                     recentsState = recentsState,
+                    indexingState = indexingState,
                     items = items,
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
@@ -378,6 +386,7 @@ private fun ContentSearchScreen(
 private fun ContentSearchBody(
     state: ContentSearchState,
     recentsState: RecentSearchesState,
+    indexingState: IndexingProgressState,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
@@ -389,15 +398,21 @@ private fun ContentSearchBody(
     when (val phase = state.phase) {
         // Loading / no-results aren't scrollable, so they keep clear of the navigation bar via bottom
         // safe padding (the lists, by contrast, scroll under it). The app bar owns the top inset.
-        ContentSearchState.Phase.Idle -> ContentSearchIdlePage(
-            state = state,
-            recentsState = recentsState,
-            isQueryEmpty = isQueryEmpty,
-            actions = actions,
-            recentsActions = recentsActions,
-            listState = recentsListState,
+        ContentSearchState.Phase.Idle -> PageWithIndexingBanner(
+            indexingState = indexingState,
+            onSeeDetailsClick = actions.onSeeIndexingDetails,
             modifier = modifier
-        )
+        ) { pageModifier ->
+            ContentSearchIdlePage(
+                state = state,
+                recentsState = recentsState,
+                isQueryEmpty = isQueryEmpty,
+                actions = actions,
+                recentsActions = recentsActions,
+                listState = recentsListState,
+                modifier = pageModifier
+            )
+        }
 
         ContentSearchState.Phase.Loading -> Column(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
@@ -406,12 +421,18 @@ private fun ContentSearchBody(
         }
 
         is ContentSearchState.Phase.Results -> if (phase.count == 0) {
-            SearchMessageState(
-                iconRes = R.drawable.ic_search_empty_result,
-                title = stringResource(R.string.content_search_no_results_title),
-                description = stringResource(R.string.content_search_no_results_description),
-                modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-            )
+            PageWithIndexingBanner(
+                indexingState = indexingState,
+                onSeeDetailsClick = actions.onSeeIndexingDetails,
+                modifier = modifier
+            ) { pageModifier ->
+                SearchMessageState(
+                    iconRes = R.drawable.ic_search_empty_result,
+                    title = stringResource(R.string.content_search_no_results_title),
+                    description = stringResource(R.string.content_search_no_results_description),
+                    modifier = pageModifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                )
+            }
         } else {
             ResultsList(
                 items = items,
@@ -427,6 +448,31 @@ private fun ContentSearchBody(
                 modifier = modifier
             )
         }
+    }
+}
+
+/**
+ * Puts the indexing banner, when there is one to show, directly under the top bar and above [page].
+ *
+ * The banner belongs to the pages with nothing to read, so it never competes with a list of results.
+ */
+@Composable
+private fun PageWithIndexingBanner(
+    indexingState: IndexingProgressState,
+    onSeeDetailsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    page: @Composable (Modifier) -> Unit
+) {
+    Column(modifier = modifier) {
+        if (indexingState is IndexingProgressState.Visible) {
+            IndexingProgressBanner(
+                state = indexingState,
+                onSeeDetailsClick = onSeeDetailsClick,
+                modifier = Modifier.padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
+            )
+        }
+
+        page(Modifier.weight(1f))
     }
 }
 
@@ -489,6 +535,7 @@ private fun ContentSearchScreenFirstRunPreview() {
         ContentSearchScreen(
             state = ContentSearchState.Initial,
             recentsState = RecentSearchesState.Empty,
+            indexingState = IndexingProgressState.Visible(percentage = 30),
             items = flowOf(PagingData.empty<ContentSearchResultUiModel>()).collectAsLazyPagingItems(),
             queryState = rememberTextFieldState(),
             actions = ContentSearchActions.Empty,
@@ -512,6 +559,7 @@ private fun ContentSearchScreenResultsPreview() {
                 phase = ContentSearchState.Phase.Results(count = results.size)
             ),
             recentsState = RecentSearchesState.Empty,
+            indexingState = IndexingProgressState.Hidden,
             items = flowOf(PagingData.from(results)).collectAsLazyPagingItems(),
             queryState = rememberTextFieldState(initialText = "weather"),
             actions = ContentSearchActions.Empty,

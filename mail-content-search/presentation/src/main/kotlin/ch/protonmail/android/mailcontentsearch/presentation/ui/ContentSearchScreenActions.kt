@@ -44,6 +44,7 @@ data class OpenSearchResultRequest(
 data class ContentSearchScreenActions(
     val onClose: () -> Unit,
     val onOpenItem: (request: OpenSearchResultRequest) -> Unit,
+    val onSeeIndexingDetails: () -> Unit,
     val showSnackbar: (SnackbarType) -> Unit,
     val snackbarHeight: () -> Dp = { 0.dp }
 )
