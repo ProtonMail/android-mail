@@ -399,7 +399,7 @@ internal class ContentSearchSettingsViewModelTest {
             advanceUntilIdle()
 
             // When - the user drops off Wi-Fi with mobile data indexing turned off.
-            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection
+            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection()
             advanceUntilIdle()
             val state = viewModel.state.value.asData()
 
@@ -413,7 +413,7 @@ internal class ContentSearchSettingsViewModelTest {
     fun `clears the wait for an unmetered connection once rust resumes`() =
         runTest(mainDispatcherRule.testDispatcher.scheduler) {
             // Given
-            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection
+            ownIndexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection()
             val viewModel = viewModel()
             advanceUntilIdle()
             assertTrue(viewModel.state.value.asData().isWaitingForUnmeteredConnection)

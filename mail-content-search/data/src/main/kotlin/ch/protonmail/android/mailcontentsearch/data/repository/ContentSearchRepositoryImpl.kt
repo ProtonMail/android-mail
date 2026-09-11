@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.data.repository
 import arrow.core.Either
 import arrow.core.flatten
 import arrow.core.getOrElse
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -63,6 +64,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
+import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncOrchestratorEventStream
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -149,6 +151,15 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun stopIndexing(): Either<DataError, Unit> = withContext(ioDispatcher) { syncService.stop() }
 
+    // Not exposed by the SDK yet
+    override suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit> {
+        Timber.d("content-search: pause requested for $userId, but the SDK has no pause yet")
+        return Unit.right()
+    }
+
+    // Not exposed by the SDK yet
+    override suspend fun getIndexSizeBytes(userId: UserId): Long? = null
+
     override fun observeIndexingActivity(): Flow<ContentIndexingActivity> = indexingActivity
 
     private fun observeOrchestrator(stream: SyncOrchestratorEventStream): Flow<ContentIndexingActivity> = callbackFlow {
@@ -231,6 +242,16 @@ class ContentSearchRepositoryImpl @Inject constructor(
         return status.toIndexingState(progress?.takeIf { it.total > 0uL }?.percentage)
     }
 
+    /**
+     * How far [userId]'s backfill had got, or null when Rust cannot say.
+     *
+     * Read when the queue parks. That event carries no progress, so without this the settings card
+     * would drop to 0% while the account waits for Wi-Fi. A failed read only costs the percentage.
+     */
+    private suspend fun readParkedPercentage(userId: UserId): Double? = executeWithUserSession(userId) { wrapper ->
+        syncService.userProgress(wrapper).getOrNull()?.takeIf { it.total > 0uL }?.percentage
+    }.getOrNull()
+
     private fun observeForUser(userId: UserId): Flow<ContentIndexingState> = callbackFlow {
         // Subscribe before reading the snapshot: the stream has no replay, so anything
         // published between the snapshot read and subscribe() would otherwise be lost
@@ -267,7 +288,9 @@ class ContentSearchRepositoryImpl @Inject constructor(
                     break
                 }
 
-                event.toIndexingState()?.let { trySend(it) }
+                val parked = (event as? SyncEvent.WaitingForUnmeteredConnection)
+                    ?.let { readParkedPercentage(userId) }
+                event.toIndexingState(parked)?.let { trySend(it) }
                 if (event.isTerminal()) {
                     // Throttle the resubscribe in observeIndexingStatus so a session that fails
                     // immediately on every subscribe can't spin the loop with no backoff.
