@@ -446,6 +446,9 @@ internal fun NavGraphBuilder.addContentSearchScreen(
                 showSnackbar = showSnackbar,
                 snackbarHeight = snackbarHeight,
                 onClose = { navController.navigateBack() },
+                onSeeIndexingDetails = {
+                    navController.navigate(Destination.Screen.ContentSearchSettings.route)
+                },
                 onOpenItem = { request ->
                     val destination = when (request.shouldOpenInComposer) {
                         true -> Destination.Screen.EditDraftComposer(request.messageId)
