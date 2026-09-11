@@ -28,6 +28,14 @@ import kotlin.test.assertTrue
 internal class ContentIndexingStateMappingsTest {
 
     @Test
+    fun `only a completed account reads as completed`() {
+        // Then
+        assertTrue(ContentIndexingState.Completed.isCompleted())
+        assertFalse(ContentIndexingState.Running(percentage = 100.0).isCompleted())
+        assertFalse(ContentIndexingState.Idle.isCompleted())
+    }
+
+    @Test
     fun `an account mid-backfill reports its percentage and counts as active`() {
         // Given
         val state = ContentIndexingState.Running(percentage = 42.5)

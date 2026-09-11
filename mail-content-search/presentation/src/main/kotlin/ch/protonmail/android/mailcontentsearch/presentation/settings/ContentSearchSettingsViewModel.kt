@@ -25,17 +25,20 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexSize
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
+import ch.protonmail.android.mailcontentsearch.domain.usecase.PauseContentIndexing
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Data
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent.Error
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
+import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isCompleted
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isFailed
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isWaitingForUnmeteredConnection
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPercentage
@@ -72,6 +75,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val clearContentSearchLocalData: ClearContentSearchLocalData,
     private val getContentSearchIndexingStatus: GetContentSearchIndexingStatus,
+    private val getContentSearchIndexSize: GetContentSearchIndexSize,
+    private val pauseContentIndexing: PauseContentIndexing,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
@@ -93,6 +98,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
             val userId = currentUserId()
             val isEnabled = loadInitialState(userId) ?: return@launch
             if (isEnabled) readIndexingStatus(userId)
+            readIndexSize(userId)
             observeIndexingProgress(userId)
             observeEnabledChanges(userId)
         }
@@ -126,6 +132,12 @@ class ContentSearchSettingsViewModel @Inject constructor(
         emitNewStateFor(getContentSearchIndexingStatus(userId).toIndexingProgress())
     }
 
+    // Read once per screen, not observed: the index only grows as messages are indexed, and a size
+    // ticking up while the user reads it is noise.
+    private suspend fun readIndexSize(userId: UserId) {
+        emitNewStateFor(Data.IndexSizeLoaded(getContentSearchIndexSize(userId)))
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeIndexingProgress(userId: UserId) {
         observeContentSearchEnabled(userId)
@@ -136,6 +148,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
                         Data.IndexingProgress(
                             percentage = null,
                             isActive = false,
+                            isCompleted = false,
                             isWaitingForUnmeteredConnection = false,
                             isFailed = false
                         )
@@ -165,7 +178,20 @@ class ContentSearchSettingsViewModel @Inject constructor(
             is ContentSearchSettingsViewAction.ToggleAllowMobileData -> handleToggleAllowMobileData(action.enabled)
             ContentSearchSettingsViewAction.ClearLocalData -> handleClearLocalData()
             ContentSearchSettingsViewAction.RetryIndexing -> handleRetryIndexing()
+            ContentSearchSettingsViewAction.PauseIndexing -> handlePauseIndexing()
+            ContentSearchSettingsViewAction.ResumeIndexing -> handleRetryIndexing()
         }
+    }
+
+    /**
+     * Pauses the account's backfill.
+     */
+    private suspend fun handlePauseIndexing() {
+        val userId = currentUserId()
+        pauseContentIndexing(userId).fold(
+            ifLeft = { emitNewStateFor(Error.UpdateError) },
+            ifRight = { emitNewStateFor(Data.IndexingPaused) }
+        )
     }
 
     private suspend fun handleToggleContentSearch(newValue: Boolean) {
@@ -245,6 +271,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     private fun ContentIndexingState.toIndexingProgress() = Data.IndexingProgress(
         percentage = toPercentage(),
         isActive = isActive(),
+        isCompleted = isCompleted(),
         isWaitingForUnmeteredConnection = isWaitingForUnmeteredConnection(),
         isFailed = isFailed()
     )
