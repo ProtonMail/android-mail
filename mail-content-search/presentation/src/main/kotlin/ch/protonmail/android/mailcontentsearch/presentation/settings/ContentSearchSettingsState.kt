@@ -34,9 +34,12 @@ sealed interface ContentSearchSettingsState {
         val isAllowMobileDataEnabled: Boolean,
         val syncPercentage: Double?,
         val isIndexingActive: Boolean = false,
+        val isIndexingCompleted: Boolean = false,
+        val isIndexingPaused: Boolean = false,
         val isWaitingForUnmeteredConnection: Boolean = false,
         val isIndexingFailed: Boolean = false,
         val isRetryingIndexing: Boolean = false,
+        val indexSizeBytes: Long? = null,
         val updateErrorEffect: Effect<TextUiModel> = Effect.empty()
     ) : ContentSearchSettingsState
 }

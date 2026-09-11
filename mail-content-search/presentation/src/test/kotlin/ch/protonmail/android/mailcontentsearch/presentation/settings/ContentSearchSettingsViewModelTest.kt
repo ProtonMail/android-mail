@@ -27,12 +27,14 @@ import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearContentSearchLocalData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DisableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexSize
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
+import ch.protonmail.android.mailcontentsearch.domain.usecase.PauseContentIndexing
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.R
@@ -85,6 +87,12 @@ internal class ContentSearchSettingsViewModelTest {
     private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus> {
         coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Idle
     }
+    private val getContentSearchIndexSize = mockk<GetContentSearchIndexSize> {
+        coEvery { this@mockk.invoke(userId) } returns null
+    }
+    private val pauseContentIndexing = mockk<PauseContentIndexing> {
+        coEvery { this@mockk.invoke(userId) } returns Unit.right()
+    }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(userId) } returns enabledFlow
     }
@@ -108,6 +116,8 @@ internal class ContentSearchSettingsViewModelTest {
         isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
         clearContentSearchLocalData = clearContentSearchLocalData,
         getContentSearchIndexingStatus = getContentSearchIndexingStatus,
+        getContentSearchIndexSize = getContentSearchIndexSize,
+        pauseContentIndexing = pauseContentIndexing,
         observeContentSearchEnabled = observeContentSearchEnabled,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         isContentSearchAllowedOnMobileData = isContentSearchAllowedOnMobileData,
@@ -619,6 +629,65 @@ internal class ContentSearchSettingsViewModelTest {
         // Then
         coVerify { disableContentSearch(userId) }
         coVerify(exactly = 0) { clearContentSearchLocalData(userId) }
+    }
+
+    @Test
+    fun `submit PauseIndexing pauses the account`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing)
+        advanceUntilIdle()
+
+        // Then
+        coVerify(exactly = 1) { pauseContentIndexing(userId) }
+        assertTrue(viewModel.state.value.asData().isIndexingPaused)
+    }
+
+    @Test
+    fun `a pause that fails leaves the card as it was`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
+        // Given - nothing reports a pause back, so a card moved ahead of the answer never recovers.
+        coEvery { pauseContentIndexing(userId) } returns DataError.Local.Unknown.left()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing)
+        advanceUntilIdle()
+
+        // Then
+        assertFalse(viewModel.state.value.asData().isIndexingPaused)
+    }
+
+    @Test
+    fun `submit ResumeIndexing hands the account back to the orchestrator`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { startContentIndexingForUser(userId) } returns ContentIndexingStartOutcome.Started.right()
+            val viewModel = viewModel()
+            viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing)
+            advanceUntilIdle()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ResumeIndexing)
+            advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 1) { startContentIndexingForUser(userId) }
+            assertFalse(viewModel.state.value.asData().isIndexingPaused)
+        }
+
+    @Test
+    fun `reads the index size once the screen opens`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
+        // Given
+        coEvery { getContentSearchIndexSize(userId) } returns 1_024L
+
+        // When
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(1_024L, viewModel.state.value.asData().indexSizeBytes)
     }
 
     private fun ContentSearchSettingsState.asData(): ContentSearchSettingsState.Data {

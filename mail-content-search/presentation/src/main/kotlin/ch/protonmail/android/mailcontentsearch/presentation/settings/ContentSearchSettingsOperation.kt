@@ -29,4 +29,8 @@ sealed interface ContentSearchSettingsViewAction : ContentSearchSettingsOperatio
     data object ClearLocalData : ContentSearchSettingsViewAction
 
     data object RetryIndexing : ContentSearchSettingsViewAction
+
+    data object PauseIndexing : ContentSearchSettingsViewAction
+
+    data object ResumeIndexing : ContentSearchSettingsViewAction
 }

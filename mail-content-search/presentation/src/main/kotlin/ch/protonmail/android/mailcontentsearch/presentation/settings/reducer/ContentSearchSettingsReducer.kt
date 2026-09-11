@@ -47,54 +47,72 @@ class ContentSearchSettingsReducer @Inject constructor() {
             else -> this
         }
 
-        is ContentSearchSettingsState.Data -> when (event) {
-            // Only the toggle. The indexing fields belong to IndexingProgress, which reports them
-            // for a disabled account too, and clearing them here as well wiped the failure the
-            // screen had just read: the enabled observer replays its current value on open.
-            is ContentSearchSettingsEvent.Data.ContentSearchToggled -> copy(
-                isContentSearchEnabled = event.newValue
-            )
-            is ContentSearchSettingsEvent.Data.AllowMobileDataToggled -> copy(
-                isAllowMobileDataEnabled = event.newValue
-            )
-            is ContentSearchSettingsEvent.Data.LocalSearchDataCleared -> copy(
-                isContentSearchEnabled = false,
-                syncPercentage = null,
-                isIndexingActive = false,
-                isWaitingForUnmeteredConnection = false,
-                isIndexingFailed = false
-            )
-            // Supersedes an in-flight retry: Rust reporting where the account stands is a better
-            // answer than the one the button is still waiting for.
-            is ContentSearchSettingsEvent.Data.IndexingProgress -> copy(
-                syncPercentage = event.percentage,
-                isIndexingActive = event.isActive,
-                isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection,
-                isIndexingFailed = event.isFailed,
-                isRetryingIndexing = false
-            )
-            is ContentSearchSettingsEvent.Data.IndexingRetryStarted -> copy(isRetryingIndexing = true)
+        is ContentSearchSettingsState.Data -> toNewStateFromDataOperation(event)
 
-            is ContentSearchSettingsEvent.Data.IndexingRetryAccepted -> copy(
-                isRetryingIndexing = false,
-                isIndexingFailed = false,
-                isIndexingActive = true
-            )
-            is ContentSearchSettingsEvent.Error.UpdateError -> copy(
-                isRetryingIndexing = false,
-                updateErrorEffect = Effect.of(
-                    TextUiModel.TextRes(R.string.mail_settings_content_search_update_error)
-                )
-            )
-            is ContentSearchSettingsEvent.Error.IndexingRetryFailed -> copy(
-                isRetryingIndexing = false,
-                updateErrorEffect = Effect.of(
-                    TextUiModel.TextRes(R.string.mail_settings_content_search_retry_error)
-                )
-            )
-            else -> this
-        }
+        else -> this
+    }
 
+    private fun ContentSearchSettingsState.Data.toNewStateFromDataOperation(
+        event: ContentSearchSettingsOperation
+    ): ContentSearchSettingsState = when (event) {
+        // Only the toggle. The indexing fields belong to IndexingProgress, which reports them
+        // for a disabled account too, and clearing them here as well wiped the failure the
+        // screen had just read: the enabled observer replays its current value on open.
+        is ContentSearchSettingsEvent.Data.ContentSearchToggled -> copy(
+            isContentSearchEnabled = event.newValue,
+            // Nothing is paused for an account that is off, and turning it back on starts it again.
+            isIndexingPaused = false
+        )
+        is ContentSearchSettingsEvent.Data.AllowMobileDataToggled -> copy(
+            isAllowMobileDataEnabled = event.newValue
+        )
+        is ContentSearchSettingsEvent.Data.LocalSearchDataCleared -> copy(
+            isContentSearchEnabled = false,
+            syncPercentage = null,
+            isIndexingActive = false,
+            isIndexingCompleted = false,
+            isIndexingPaused = false,
+            isWaitingForUnmeteredConnection = false,
+            isIndexingFailed = false,
+            indexSizeBytes = null
+        )
+        // Supersedes an in-flight retry: Rust reporting where the account stands is a better
+        // answer than the one the button is still waiting for.
+        is ContentSearchSettingsEvent.Data.IndexingProgress -> copy(
+            syncPercentage = event.percentage,
+            isIndexingActive = event.isActive,
+            isIndexingCompleted = event.isCompleted,
+            isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection,
+            isIndexingFailed = event.isFailed,
+            isRetryingIndexing = false,
+            // Otherwise left alone: the pause is not real yet, so Rust keeps reporting a running
+            // backfill and would clear the flag on the very next event. A finished account is the
+            // one case where there is provably nothing left to be paused.
+            isIndexingPaused = isIndexingPaused && !event.isCompleted
+        )
+        // Set only here, for the same reason.
+        is ContentSearchSettingsEvent.Data.IndexingPaused -> copy(isIndexingPaused = true)
+        is ContentSearchSettingsEvent.Data.IndexSizeLoaded -> copy(indexSizeBytes = event.bytes)
+        is ContentSearchSettingsEvent.Data.IndexingRetryStarted -> copy(isRetryingIndexing = true)
+
+        is ContentSearchSettingsEvent.Data.IndexingRetryAccepted -> copy(
+            isRetryingIndexing = false,
+            isIndexingFailed = false,
+            isIndexingPaused = false,
+            isIndexingActive = true
+        )
+        is ContentSearchSettingsEvent.Error.UpdateError -> copy(
+            isRetryingIndexing = false,
+            updateErrorEffect = Effect.of(
+                TextUiModel.TextRes(R.string.mail_settings_content_search_update_error)
+            )
+        )
+        is ContentSearchSettingsEvent.Error.IndexingRetryFailed -> copy(
+            isRetryingIndexing = false,
+            updateErrorEffect = Effect.of(
+                TextUiModel.TextRes(R.string.mail_settings_content_search_retry_error)
+            )
+        )
         else -> this
     }
 }

@@ -39,6 +39,8 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Failed -> false
 }
 
+internal fun ContentIndexingState.isCompleted(): Boolean = this is ContentIndexingState.Completed
+
 internal fun ContentIndexingState.isWaitingForUnmeteredConnection(): Boolean =
     this is ContentIndexingState.WaitingForUnmeteredConnection
 
