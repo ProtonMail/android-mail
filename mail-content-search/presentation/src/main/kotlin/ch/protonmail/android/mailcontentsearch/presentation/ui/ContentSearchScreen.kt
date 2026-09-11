@@ -45,12 +45,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -402,7 +406,7 @@ private fun ContentSearchBody(
             indexingState = indexingState,
             onSeeDetailsClick = actions.onSeeIndexingDetails,
             modifier = modifier
-        ) { pageModifier ->
+        ) { pageModifier, bannerHeight ->
             ContentSearchIdlePage(
                 state = state,
                 recentsState = recentsState,
@@ -410,7 +414,8 @@ private fun ContentSearchBody(
                 actions = actions,
                 recentsActions = recentsActions,
                 listState = recentsListState,
-                modifier = pageModifier
+                modifier = pageModifier,
+                firstRunBottomPadding = bannerHeight
             )
         }
 
@@ -425,12 +430,14 @@ private fun ContentSearchBody(
                 indexingState = indexingState,
                 onSeeDetailsClick = actions.onSeeIndexingDetails,
                 modifier = modifier
-            ) { pageModifier ->
+            ) { pageModifier, bannerHeight ->
                 SearchMessageState(
                     iconRes = R.drawable.ic_search_empty_result,
                     title = stringResource(R.string.content_search_no_results_title),
                     description = stringResource(R.string.content_search_no_results_description),
-                    modifier = pageModifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                    modifier = pageModifier
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                        .padding(bottom = bannerHeight)
                 )
             }
         } else {
@@ -455,24 +462,33 @@ private fun ContentSearchBody(
  * Puts the indexing banner, when there is one to show, directly under the top bar and above [page].
  *
  * The banner belongs to the pages with nothing to read, so it never competes with a list of results.
+ *
+ * [page] is handed the banner's height as well as its modifier. A page that centres its content
+ * should apply that height as bottom padding, so the content stays on the middle of the screen
+ * instead of being pushed down by the banner. A page that fills its space should ignore it.
  */
 @Composable
 private fun PageWithIndexingBanner(
     indexingState: IndexingProgressState,
     onSeeDetailsClick: () -> Unit,
     modifier: Modifier = Modifier,
-    page: @Composable (Modifier) -> Unit
+    page: @Composable (pageModifier: Modifier, bannerHeight: Dp) -> Unit
 ) {
+    val density = LocalDensity.current
+    var bannerHeight by remember { mutableStateOf(0.dp) }
+
     Column(modifier = modifier) {
         if (indexingState is IndexingProgressState.Visible) {
             IndexingProgressBanner(
                 state = indexingState,
                 onSeeDetailsClick = onSeeDetailsClick,
-                modifier = Modifier.padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
+                modifier = Modifier
+                    .onSizeChanged { bannerHeight = with(density) { it.height.toDp() } }
+                    .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
             )
         }
 
-        page(Modifier.weight(1f))
+        page(Modifier.weight(1f), if (indexingState is IndexingProgressState.Visible) bannerHeight else 0.dp)
     }
 }
 
@@ -491,7 +507,8 @@ private fun ContentSearchIdlePage(
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
     listState: LazyListState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    firstRunBottomPadding: Dp = 0.dp
 ) {
     when (recentsState) {
         // Nothing yet: hold an empty page rather than flashing the first-run state and then replacing it
@@ -504,7 +521,9 @@ private fun ContentSearchIdlePage(
             SearchMessageState(
                 iconRes = R.drawable.ic_search_empty_state,
                 description = stringResource(R.string.content_search_first_run_description),
-                modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                modifier = modifier
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                    .padding(bottom = firstRunBottomPadding)
             )
         } else {
             Box(modifier = modifier)
