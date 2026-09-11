@@ -18,8 +18,11 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
+import android.content.res.Configuration
+import android.text.format.Formatter
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -27,13 +30,27 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.design.compose.theme.ProtonDimens
+import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcontentsearch.presentation.R
 
+/**
+ * What content search occupies on this device, and the way to get it back.
+ *
+ * The size row is dropped when [indexSizeBytes] is null, which is every build until the SDK
+ * exposes the index size.
+ */
 @Composable
-internal fun ClearSearchDataCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun OnThisDeviceCard(
+    indexSizeBytes: Long?,
+    onClearDataClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = ProtonTheme.shapes.extraLarge,
@@ -42,10 +59,15 @@ internal fun ClearSearchDataCard(modifier: Modifier = Modifier, onClick: () -> U
             containerColor = ProtonTheme.colors.backgroundInvertedSecondary
         )
     ) {
+        if (indexSizeBytes != null) {
+            IndexSizeRow(sizeBytes = indexSizeBytes)
+            MailDivider()
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onClick)
+                .clickable(onClick = onClearDataClick)
                 .padding(ProtonDimens.Spacing.Large)
         ) {
             Text(
@@ -54,5 +76,36 @@ internal fun ClearSearchDataCard(modifier: Modifier = Modifier, onClick: () -> U
                 color = ProtonTheme.colors.notificationError
             )
         }
+    }
+}
+
+@Composable
+private fun IndexSizeRow(sizeBytes: Long, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(ProtonDimens.Spacing.Large)
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(id = R.string.mail_settings_content_search_index_size),
+            style = ProtonTheme.typography.bodyLarge
+        )
+        Text(
+            text = Formatter.formatShortFileSize(context, sizeBytes),
+            style = ProtonTheme.typography.bodyLarge,
+            color = ProtonTheme.colors.textWeak
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun OnThisDeviceCardPreview() {
+    ProtonInvertedTheme {
+        OnThisDeviceCard(indexSizeBytes = 1_288_490_188L, onClearDataClick = {})
     }
 }
