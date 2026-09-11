@@ -26,8 +26,11 @@ sealed interface ContentIndexingState {
      * Rust has parked the account's queue because the connection is metered and the user has not
      * allowed indexing over mobile data. It resumes on its own once an unmetered connection is
      * back, so this is a pause rather than an end.
+     *
+     * [percentage] is how far the backfill had got when it parked. The event itself carries no
+     * progress, so it is read separately. Null when Rust has not sized the backfill yet.
      */
-    data object WaitingForUnmeteredConnection : ContentIndexingState
+    data class WaitingForUnmeteredConnection(val percentage: Double? = null) : ContentIndexingState
     data class Running(val percentage: Double) : ContentIndexingState
     data object Completed : ContentIndexingState
     data object Cancelled : ContentIndexingState
@@ -44,7 +47,11 @@ sealed interface ContentIndexingState {
  * than reported as "100%" forever.
  */
 val ContentIndexingState.backfillPercentage: Double?
-    get() = (this as? ContentIndexingState.Running)?.percentage?.takeIf { it < FULLY_INDEXED_PERCENTAGE }
+    get() = when (this) {
+        is ContentIndexingState.Running -> percentage
+        is ContentIndexingState.WaitingForUnmeteredConnection -> percentage
+        else -> null
+    }?.takeIf { it < FULLY_INDEXED_PERCENTAGE }
 
 /** The point at which an account's backfill has nothing left to do. */
 const val FULLY_INDEXED_PERCENTAGE = 100.0

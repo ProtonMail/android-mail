@@ -144,7 +144,7 @@ internal class IndexingProgressViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        indexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection
+        indexingStatus.value = ContentIndexingState.WaitingForUnmeteredConnection()
 
         // Then
         assertEquals(IndexingProgressState.Visible(percentage = 42), viewModel.state.value)

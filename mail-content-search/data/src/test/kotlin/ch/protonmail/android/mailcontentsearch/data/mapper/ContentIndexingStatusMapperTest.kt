@@ -79,8 +79,18 @@ internal class ContentIndexingStatusMapperTest {
         // Given - the queue is parked, which the settings screen reports as waiting for Wi-Fi
         // rather than as another flavour of "preparing".
         assertEquals(
-            ContentIndexingState.WaitingForUnmeteredConnection,
-            SyncEvent.WaitingForUnmeteredConnection.toIndexingState()
+            SyncEvent.WaitingForUnmeteredConnection.toIndexingState(),
+            ContentIndexingState.WaitingForUnmeteredConnection()
+        )
+    }
+
+    @Test
+    fun `a parked event carries the percentage it was handed`() {
+        // Given - the event has no progress of its own, so the caller reads it separately and
+        // passes it in. Without it the settings card would drop to zero while waiting for Wi-Fi.
+        assertEquals(
+            SyncEvent.WaitingForUnmeteredConnection.toIndexingState(parkedPercentage = 42.5),
+            ContentIndexingState.WaitingForUnmeteredConnection(percentage = 42.5)
         )
     }
 

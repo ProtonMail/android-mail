@@ -53,6 +53,7 @@ import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 
@@ -109,6 +110,25 @@ internal class ContentSearchRepositoryImplTest {
 
         // Then
         assertEquals(ContentIndexingStartOutcome.AlreadyCompleted.right(), result)
+    }
+
+    @Test
+    fun `pausing reports success without asking rust, which has no pause yet`() = runTest(dispatcher) {
+        // When
+        val result = repository.pauseIndexing(userId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 0) { syncServiceWrapper.stop() }
+    }
+
+    @Test
+    fun `the index size cannot be read while the sdk does not expose it`() = runTest(dispatcher) {
+        // When
+        val result = repository.getIndexSizeBytes(userId)
+
+        // Then
+        assertNull(result)
     }
 
     @Test

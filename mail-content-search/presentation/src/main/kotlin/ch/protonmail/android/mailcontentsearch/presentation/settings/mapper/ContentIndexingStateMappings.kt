@@ -26,7 +26,7 @@ internal fun ContentIndexingState.toPercentage(): Double? = backfillPercentage
 internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Initializing,
     // Parked, not finished: the account still has a backfill waiting on a connection it may use.
-    ContentIndexingState.WaitingForUnmeteredConnection -> true
+    is ContentIndexingState.WaitingForUnmeteredConnection -> true
 
     // A caught-up account is mapped to Completed upstream, so this is normally a live backfill. Still
     // asked of [backfillPercentage] rather than trusting that: left alone the screen would sit on

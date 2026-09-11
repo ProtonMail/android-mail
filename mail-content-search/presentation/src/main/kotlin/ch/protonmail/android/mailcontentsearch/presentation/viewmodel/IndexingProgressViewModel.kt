@@ -108,7 +108,7 @@ class IndexingProgressViewModel @Inject constructor(
 
             // Paused, idle, cancelled, failed: nothing to report that the settings screen does not say
             // better. A banner already on screen freezes at its last percentage rather than vanishing.
-            ContentIndexingState.WaitingForUnmeteredConnection,
+            is ContentIndexingState.WaitingForUnmeteredConnection,
             ContentIndexingState.Idle,
             ContentIndexingState.Cancelled,
             ContentIndexingState.Failed -> this

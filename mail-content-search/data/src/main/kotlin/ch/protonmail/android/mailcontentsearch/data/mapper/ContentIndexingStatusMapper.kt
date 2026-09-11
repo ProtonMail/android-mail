@@ -61,12 +61,14 @@ private fun Double?.toRunningState(): ContentIndexingState = when {
  * Returns null for events that don't map to a UI-visible state change (e.g. per-item
  * worker events), so callers can filter them out of the stream.
  */
-internal fun SyncEvent.toIndexingState(): ContentIndexingState? = when (this) {
+internal fun SyncEvent.toIndexingState(parkedPercentage: Double? = null): ContentIndexingState? = when (this) {
     is SyncEvent.Started -> ContentIndexingState.Initializing
 
     // Published once when the queue is parked; Rust re-emits the last Progress on resume, so this
     // state clears itself without any prompting from us.
-    is SyncEvent.WaitingForUnmeteredConnection -> ContentIndexingState.WaitingForUnmeteredConnection
+    // [parkedPercentage] has to be supplied: the event carries no progress of its own.
+    is SyncEvent.WaitingForUnmeteredConnection ->
+        ContentIndexingState.WaitingForUnmeteredConnection(parkedPercentage)
     is SyncEvent.Progress -> this.v1.percentage.toRunningState()
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled

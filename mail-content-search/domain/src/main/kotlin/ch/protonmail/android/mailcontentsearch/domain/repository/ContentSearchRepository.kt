@@ -58,6 +58,21 @@ interface ContentSearchRepository {
     /** Stops the orchestrator for every account: there is no per-account stop. */
     suspend fun stopIndexing(): Either<DataError, Unit>
 
+    /**
+     * Pauses [userId]'s backfill, keeping everything already indexed.
+     *
+     * The SDK does not expose a pause yet, so this reports success without asking Rust. Nothing
+     * actually stops until it does.
+     */
+    suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit>
+
+    /**
+     * The size of [userId]'s local index in bytes, or null when it cannot be read.
+     *
+     * The SDK does not expose the index size yet, so this answers null for now.
+     */
+    suspend fun getIndexSizeBytes(userId: UserId): Long?
+
     fun observeIndexingActivity(): Flow<ContentIndexingActivity>
 
     fun observeIndexingStatus(userId: UserId): Flow<ContentIndexingState>
