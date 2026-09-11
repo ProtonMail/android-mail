@@ -59,4 +59,5 @@ dependencies {
 
     compileOnly(libs.paparazzi)
     implementation(project(":design-system"))
+    api(project(":presentation-vendored"))
 }
