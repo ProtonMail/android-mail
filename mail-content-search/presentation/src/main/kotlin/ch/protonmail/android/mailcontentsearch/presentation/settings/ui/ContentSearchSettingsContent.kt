@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
 import android.content.res.Configuration
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,10 +32,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
@@ -45,11 +49,17 @@ import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSear
 
 @Composable
 internal fun ContentSearchSettingsContent(
-    modifier: Modifier = Modifier,
     state: ContentSearchSettingsState.Data,
-    actions: ContentSearchSettingsScreen.Actions
+    actions: ContentSearchSettingsScreen.Actions,
+    modifier: Modifier = Modifier
 ) {
     var showClearDataDialog by rememberSaveable { mutableStateOf(false) }
+
+    // The indexing section stays composed while it collapses, and by then the progress observer has
+    // already blanked the percentage for the disabled account. Drawing the last state it was shown
+    // with keeps it from flashing 0% on the way out.
+    var lastEnabledState by remember { mutableStateOf(state) }
+    if (state.isContentSearchEnabled) lastEnabledState = state
 
     Column(
         modifier = modifier
@@ -59,32 +69,41 @@ internal fun ContentSearchSettingsContent(
     ) {
         ContentSearchCard(
             isEnabled = state.isContentSearchEnabled,
-            syncPercentage = state.syncPercentage,
-            isIndexingActive = state.isIndexingActive,
-            isWaitingForUnmeteredConnection = state.isWaitingForUnmeteredConnection,
-            isIndexingFailed = state.isIndexingFailed,
-            isRetryingIndexing = state.isRetryingIndexing,
             actions = ContentSearchCardActions(
                 onToggle = actions.onContentSearchToggle,
-                onRetryClick = actions.onRetryIndexing,
                 onLearnMoreClick = actions.onLearnMoreClick
             )
         )
 
         AnimatedVisibility(visible = state.isContentSearchEnabled) {
             Column {
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
+                SectionHeader(title = R.string.mail_settings_content_search_indexing_section)
+
+                IndexingCard(
+                    state = lastEnabledState,
+                    actions = IndexingCardActions(
+                        onPause = actions.onPauseIndexing,
+                        onResume = actions.onResumeIndexing,
+                        onRetry = actions.onRetryIndexing
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+
                 MobileDataCard(
                     showLeadingIcon = false,
-                    isEnabled = state.isAllowMobileDataEnabled,
+                    isEnabled = lastEnabledState.isAllowMobileDataEnabled,
                     onToggle = actions.onAllowMobileDataToggle
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
+        SectionHeader(title = R.string.mail_settings_content_search_on_this_device_section)
 
-        ClearSearchDataCard(onClick = { showClearDataDialog = true })
+        OnThisDeviceCard(
+            indexSizeBytes = state.indexSizeBytes,
+            onClearDataClick = { showClearDataDialog = true }
+        )
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
@@ -107,6 +126,20 @@ internal fun ContentSearchSettingsContent(
             }
         )
     }
+}
+
+@Composable
+private fun SectionHeader(@StringRes title: Int, modifier: Modifier = Modifier) {
+    Text(
+        modifier = modifier
+            .semantics { heading() }
+            .padding(
+                top = ProtonDimens.Spacing.ExtraLarge,
+                bottom = ProtonDimens.Spacing.Large
+            ),
+        text = stringResource(id = title),
+        style = ProtonTheme.typography.titleMedium
+    )
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true, name = "Disabled")
@@ -134,7 +167,26 @@ private fun ContentSearchSettingsContentOnPreview() {
             state = ContentSearchSettingsState.Data(
                 isContentSearchEnabled = true,
                 isAllowMobileDataEnabled = true,
-                syncPercentage = 3.45
+                syncPercentage = 30.0,
+                isIndexingActive = true,
+                indexSizeBytes = 1_288_490_188L
+            ),
+            actions = PreviewActions
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true, name = "Up to date")
+@Composable
+private fun ContentSearchContentUpToDatePreview() {
+    ProtonInvertedTheme {
+        ContentSearchSettingsContent(
+            state = ContentSearchSettingsState.Data(
+                isContentSearchEnabled = true,
+                isAllowMobileDataEnabled = true,
+                syncPercentage = null,
+                isIndexingCompleted = true,
+                indexSizeBytes = 1_288_490_188L
             ),
             actions = PreviewActions
         )
@@ -150,26 +202,8 @@ private fun ContentSearchContentFailedPreview() {
             state = ContentSearchSettingsState.Data(
                 isContentSearchEnabled = true,
                 isAllowMobileDataEnabled = true,
-                syncPercentage = 3.45,
+                syncPercentage = 30.0,
                 isIndexingFailed = true
-            ),
-            actions = PreviewActions
-        )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true, name = "Retrying")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Retrying dark")
-@Composable
-private fun ContentSearchContentRetryingPreview() {
-    ProtonInvertedTheme {
-        ContentSearchSettingsContent(
-            state = ContentSearchSettingsState.Data(
-                isContentSearchEnabled = true,
-                isAllowMobileDataEnabled = true,
-                syncPercentage = 3.45,
-                isIndexingFailed = true,
-                isRetryingIndexing = true
             ),
             actions = PreviewActions
         )
@@ -181,5 +215,7 @@ private val PreviewActions = ContentSearchSettingsScreen.Actions(
     onAllowMobileDataToggle = {},
     onClearLocalSearchData = {},
     onRetryIndexing = {},
+    onPauseIndexing = {},
+    onResumeIndexing = {},
     onLearnMoreClick = {}
 )

@@ -58,6 +58,8 @@ fun ContentSearchSettingsScreen(modifier: Modifier = Modifier, onBackClick: () -
         },
         onClearLocalSearchData = { viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData) },
         onRetryIndexing = { viewModel.submit(ContentSearchSettingsViewAction.RetryIndexing) },
+        onPauseIndexing = { viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing) },
+        onResumeIndexing = { viewModel.submit(ContentSearchSettingsViewAction.ResumeIndexing) },
         onLearnMoreClick = { uriHandler.openUri(learnMoreLink) }
     )
 
@@ -100,9 +102,9 @@ private fun ContentSearchSettingsScreen(
                 is ContentSearchSettingsState.Loading -> ProtonCenteredProgress()
                 is ContentSearchSettingsState.LoadingError -> Unit
                 is ContentSearchSettingsState.Data -> ContentSearchSettingsContent(
-                    modifier = Modifier.padding(paddingValues),
                     state = state,
-                    actions = actions
+                    actions = actions,
+                    modifier = Modifier.padding(paddingValues)
                 )
             }
         },
@@ -117,6 +119,8 @@ object ContentSearchSettingsScreen {
         val onAllowMobileDataToggle: (Boolean) -> Unit,
         val onClearLocalSearchData: () -> Unit,
         val onRetryIndexing: () -> Unit,
+        val onPauseIndexing: () -> Unit,
+        val onResumeIndexing: () -> Unit,
         val onLearnMoreClick: () -> Unit
     )
 }
@@ -137,6 +141,8 @@ private fun ContentSearchSettingsScreenPreview() {
                 onAllowMobileDataToggle = {},
                 onClearLocalSearchData = {},
                 onRetryIndexing = {},
+                onPauseIndexing = {},
+                onResumeIndexing = {},
                 onLearnMoreClick = {}
             ),
             onBackClick = {}
@@ -159,6 +165,8 @@ private fun ContentSearchSettingsScreenOnPreview() {
                 onAllowMobileDataToggle = {},
                 onClearLocalSearchData = {},
                 onRetryIndexing = {},
+                onPauseIndexing = {},
+                onResumeIndexing = {},
                 onLearnMoreClick = {}
             ),
             onBackClick = {}
