@@ -231,6 +231,7 @@ include(":mail-telemetry:domain")
 include(":uicomponents")
 include(":design-system")
 include(":presentation-compose")
+include(":presentation-vendored")
 
 include(":test:annotations")
 include(":test:network-mocks")
