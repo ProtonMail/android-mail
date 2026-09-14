@@ -62,7 +62,7 @@ internal class ContentIndexingLifecycleObserverTest {
         every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
     }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke(any()) } returns true
+        coEvery { this@mockk.invoke() } returns true
     }
     private val startContentIndexing = mockk<StartContentIndexing>()
     private val activities = MutableSharedFlow<ContentIndexingActivity>(extraBufferCapacity = 8)
@@ -135,7 +135,7 @@ internal class ContentIndexingLifecycleObserverTest {
     @Test
     fun `does nothing at all when the feature is off`() = runTest {
         // Given
-        coEvery { isContentSearchFeatureEnabled(any()) } returns false
+        coEvery { isContentSearchFeatureEnabled() } returns false
 
         // When
         observer().onStart(lifecycleOwner())
@@ -376,7 +376,7 @@ internal class ContentIndexingLifecycleObserverTest {
 
         // Then
         verify(exactly = 0) { observePrimaryUserId() }
-        coVerify(exactly = 0) { isContentSearchFeatureEnabled(any()) }
+        coVerify(exactly = 0) { isContentSearchFeatureEnabled() }
         coVerify(exactly = 0) { startContentIndexing() }
         coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
         verify(exactly = 0) { observeContentIndexingActivity() }

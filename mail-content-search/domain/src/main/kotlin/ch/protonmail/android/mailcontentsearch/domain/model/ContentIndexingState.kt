@@ -32,6 +32,15 @@ sealed interface ContentIndexingState {
      */
     data class WaitingForUnmeteredConnection(val percentage: Double? = null) : ContentIndexingState
     data class Running(val percentage: Double) : ContentIndexingState
+
+    /**
+     * The user has paused the account's backfill. Rust records the choice, so it outlives the
+     * process and only a start clears it.
+     *
+     * [percentage] is how far the backfill had got when it stopped. The event carries no progress,
+     * so it is read separately. Null when Rust has not sized the backfill yet.
+     */
+    data class Paused(val percentage: Double? = null) : ContentIndexingState
     data object Completed : ContentIndexingState
     data object Cancelled : ContentIndexingState
     data object Failed : ContentIndexingState
@@ -50,6 +59,7 @@ val ContentIndexingState.backfillPercentage: Double?
     get() = when (this) {
         is ContentIndexingState.Running -> percentage
         is ContentIndexingState.WaitingForUnmeteredConnection -> percentage
+        is ContentIndexingState.Paused -> percentage
         else -> null
     }?.takeIf { it < FULLY_INDEXED_PERCENTAGE }
 

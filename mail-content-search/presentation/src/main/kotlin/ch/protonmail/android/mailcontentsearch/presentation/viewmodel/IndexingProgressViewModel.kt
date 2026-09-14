@@ -78,7 +78,7 @@ class IndexingProgressViewModel @Inject constructor(
     private fun observeBannerFor(userId: UserId): Flow<IndexingProgressState> = observeContentSearchEnabled(userId)
         .distinctUntilChanged()
         .flatMapLatest { enabled ->
-            if (enabled && isContentSearchFeatureEnabled(userId)) {
+            if (enabled && isContentSearchFeatureEnabled()) {
                 observeContentSearchIndexingStatus(userId)
             } else {
                 flowOf(null)
@@ -109,6 +109,7 @@ class IndexingProgressViewModel @Inject constructor(
             // Paused, idle, cancelled, failed: nothing to report that the settings screen does not say
             // better. A banner already on screen freezes at its last percentage rather than vanishing.
             is ContentIndexingState.WaitingForUnmeteredConnection,
+            is ContentIndexingState.Paused,
             ContentIndexingState.Idle,
             ContentIndexingState.Cancelled,
             ContentIndexingState.Failed -> this

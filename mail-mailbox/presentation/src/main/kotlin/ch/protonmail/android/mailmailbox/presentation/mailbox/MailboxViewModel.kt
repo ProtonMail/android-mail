@@ -681,7 +681,7 @@ class MailboxViewModel @Inject constructor(
                 observeSelectedLabelWithCategory().firstOrNull()?.categoryLabelId
             }
             // Highlight matches in the opened item only when content search is on.
-            val searchQuery = if (isInSearchMode && isContentSearchFeatureEnabled(user)) {
+            val searchQuery = if (isInSearchMode && isContentSearchFeatureEnabled()) {
                 (state.value.mailboxListState as? MailboxListState.Data)?.searchState?.searchQuery.orEmpty()
             } else {
                 ""

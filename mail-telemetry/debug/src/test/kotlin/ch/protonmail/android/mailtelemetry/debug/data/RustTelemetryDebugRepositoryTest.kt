@@ -178,7 +178,8 @@ internal class RustTelemetryDebugRepositoryTest {
         measurementGroup = "mail.any",
         event = "event_name",
         values = mapOf("count" to 1.0),
-        dimensions = mapOf("origin" to "test")
+        dimensions = mapOf("origin" to "test"),
+        createdAt = 0UL
     )
 
     private companion object {

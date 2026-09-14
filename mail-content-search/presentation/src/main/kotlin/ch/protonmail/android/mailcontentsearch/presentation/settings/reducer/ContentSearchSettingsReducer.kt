@@ -83,15 +83,10 @@ class ContentSearchSettingsReducer @Inject constructor() {
             isIndexingActive = event.isActive,
             isIndexingCompleted = event.isCompleted,
             isWaitingForUnmeteredConnection = event.isWaitingForUnmeteredConnection,
+            isIndexingPaused = event.isPaused,
             isIndexingFailed = event.isFailed,
-            isRetryingIndexing = false,
-            // Otherwise left alone: the pause is not real yet, so Rust keeps reporting a running
-            // backfill and would clear the flag on the very next event. A finished account is the
-            // one case where there is provably nothing left to be paused.
-            isIndexingPaused = isIndexingPaused && !event.isCompleted
+            isRetryingIndexing = false
         )
-        // Set only here, for the same reason.
-        is ContentSearchSettingsEvent.Data.IndexingPaused -> copy(isIndexingPaused = true)
         is ContentSearchSettingsEvent.Data.IndexSizeLoaded -> copy(indexSizeBytes = event.bytes)
         is ContentSearchSettingsEvent.Data.IndexingRetryStarted -> copy(isRetryingIndexing = true)
 

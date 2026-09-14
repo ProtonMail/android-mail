@@ -32,6 +32,7 @@ internal fun SyncStartOutcome.toStartOutcome(): ContentIndexingStartOutcome = wh
     SyncStartOutcome.ONGOING -> ContentIndexingStartOutcome.AlreadyRunning
     SyncStartOutcome.DISABLED -> ContentIndexingStartOutcome.Refused
     SyncStartOutcome.COMPLETED -> ContentIndexingStartOutcome.AlreadyCompleted
+    SyncStartOutcome.PAUSED -> ContentIndexingStartOutcome.Paused
 }
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
@@ -39,6 +40,7 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
     SyncStatus.ONGOING -> progress.toRunningState()
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
     SyncStatus.FAILURE -> ContentIndexingState.Failed
+    SyncStatus.PAUSED -> ContentIndexingState.Paused(progress)
 }
 
 /**
@@ -61,15 +63,20 @@ private fun Double?.toRunningState(): ContentIndexingState = when {
  * Returns null for events that don't map to a UI-visible state change (e.g. per-item
  * worker events), so callers can filter them out of the stream.
  */
-internal fun SyncEvent.toIndexingState(parkedPercentage: Double? = null): ContentIndexingState? = when (this) {
+internal fun SyncEvent.toIndexingState(stalledPercentage: Double? = null): ContentIndexingState? = when (this) {
     is SyncEvent.Started -> ContentIndexingState.Initializing
 
     // Published once when the queue is parked; Rust re-emits the last Progress on resume, so this
     // state clears itself without any prompting from us.
-    // [parkedPercentage] has to be supplied: the event carries no progress of its own.
+    // [stalledPercentage] has to be supplied: the event carries no progress of its own.
     is SyncEvent.WaitingForUnmeteredConnection ->
-        ContentIndexingState.WaitingForUnmeteredConnection(parkedPercentage)
+        ContentIndexingState.WaitingForUnmeteredConnection(stalledPercentage)
     is SyncEvent.Progress -> this.v1.percentage.toRunningState()
+
+    // Published when the user pauses the account. Rust keeps the pause across restarts, so this
+    // state only clears when something starts the account again.
+    // [stalledPercentage] has to be supplied here too: the event carries no progress of its own.
+    is SyncEvent.Paused -> ContentIndexingState.Paused(stalledPercentage)
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled
     is SyncEvent.Driver -> when (this.v1) {
@@ -88,7 +95,11 @@ internal fun SyncEvent.toIndexingState(parkedPercentage: Double? = null): Conten
 
 internal fun SyncEvent.isTerminal(): Boolean = when (this) {
     is SyncEvent.Completed,
-    is SyncEvent.Stopped -> true
+    is SyncEvent.Stopped,
+
+    // Rust stops the account's sync on a pause and remembers it, so no further event is coming
+    // until the account is started again.
+    is SyncEvent.Paused -> true
 
     is SyncEvent.Driver -> this.v1 is SyncDriverEvent.Failure
     is SyncEvent.Worker -> this.v1 is SyncWorkerEvent.Failure
