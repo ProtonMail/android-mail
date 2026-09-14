@@ -79,7 +79,11 @@ internal fun FeatureSpotlightScreen(
                 featureItems = featureItems,
                 modifier = Modifier.weight(1f),
                 // In landscape the action sits next to the content, as there is no room for a bottom bar.
-                onGotIt = if (isLandscape) onGotIt else null
+                inlineActions = if (isLandscape) {
+                    { SpotlightBottomBar(onGotIt = onGotIt) }
+                } else {
+                    null
+                }
             )
         }
 

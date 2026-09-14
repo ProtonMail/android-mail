@@ -59,19 +59,19 @@ internal class FeatureSpotlightViewModelTest {
         assertEquals(
             listOf(
                 FeatureItem(
-                    icon = R.drawable.ic_file_download,
+                    icon = R.drawable.ic_magnifier,
                     title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_message_content_title),
                     description = TextUiModel.TextRes(
                         R.string.spotlight_screen_content_search_message_content_subtitle
                     )
                 ),
                 FeatureItem(
-                    icon = R.drawable.ic_magnifier,
-                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_title),
-                    description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_bottom_bar_subtitle)
+                    icon = R.drawable.ic_lock,
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_encryption_title),
+                    description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_encryption_subtitle)
                 ),
                 FeatureItem(
-                    icon = R.drawable.ic_mark_unread,
+                    icon = R.drawable.ic_letter,
                     title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
                     description = TextUiModel.TextRes(
                         R.string.spotlight_screen_content_search_recent_searches_subtitle
