@@ -542,17 +542,6 @@ fun Home(
         RecategoriseBottomSheet(onDismiss = { recategoriseSpotlightViewModel.markPersonaliseSeen() })
     }
 
-    val eventLoopErrorString = stringResource(R.string.home_event_loop_error_snackbar)
-    LaunchedEffect(Unit) {
-        viewModel.eventLoopErrors.collect { error ->
-            snackbarHost.showSnackbar(
-                message = eventLoopErrorString,
-                duration = SnackbarDuration.Long,
-                type = ProtonSnackbarType.ERROR
-            )
-        }
-    }
-
     val eventHandler: (AccountSwitchEvent) -> Unit = {
         when (it) {
             is AccountSwitchEvent.OnAccountSelected -> {
