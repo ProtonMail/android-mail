@@ -24,6 +24,8 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
+import ch.protonmail.android.mailspotlight.presentation.model.HowItWorksStep
+import ch.protonmail.android.mailspotlight.presentation.model.contentSearchHowItWorksSteps
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -37,8 +39,8 @@ internal class FeatureSpotlightViewModel @Inject constructor(
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen
 ) : ViewModel() {
 
-    private val _closeScreenEvent = MutableSharedFlow<Unit>()
-    val closeScreenEvent = _closeScreenEvent.asSharedFlow()
+    private val mutableDismissEvent = MutableSharedFlow<FeatureSpotlightViewAction>()
+    val dismissEvent = mutableDismissEvent.asSharedFlow()
 
     val overviewFeatures: ImmutableList<FeatureItem> = persistentListOf(
         FeatureItem(
@@ -58,10 +60,18 @@ internal class FeatureSpotlightViewModel @Inject constructor(
         )
     )
 
-    fun onGotIt() {
+    val howItWorksSteps: ImmutableList<HowItWorksStep> = contentSearchHowItWorksSteps
+
+    /**
+     * Marks the spotlight seen and reports which action closed it.
+     *
+     * Note: Content search is never turned on here. [FeatureSpotlightViewAction.TurnOn] only hands over
+     * to the enabling bottomsheet.
+     */
+    fun submit(action: FeatureSpotlightViewAction) {
         viewModelScope.launch {
             markFeatureSpotlightSeen()
-            _closeScreenEvent.emit(Unit)
+            mutableDismissEvent.emit(action)
         }
     }
 }
