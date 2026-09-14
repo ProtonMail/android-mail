@@ -23,6 +23,8 @@ import androidx.navigation.compose.composable
 import ch.protonmail.android.mailspotlight.presentation.ui.FeatureSpotlightScreen
 import ch.protonmail.android.navigation.model.Destination
 
-internal fun NavGraphBuilder.addFeatureSpotlight(onBack: () -> Unit) {
-    composable(Destination.Screen.FeatureSpotlight.route) { FeatureSpotlightScreen(onBack) }
+internal fun NavGraphBuilder.addFeatureSpotlight(onBack: () -> Unit, onTurnOn: () -> Unit) {
+    composable(Destination.Screen.FeatureSpotlight.route) {
+        FeatureSpotlightScreen(onDismiss = onBack, onTurnOn = onTurnOn)
+    }
 }
