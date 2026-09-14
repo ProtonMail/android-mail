@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Ara</string>
   <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
   <string name="content_search_close_content_description">Aramayı kapat</string>
-  <string name="content_search_options_content_description">Arama seçenekleri</string>
-  <string name="content_search_include_messages_in">Şuradaki iletiler eklensin</string>
-  <string name="content_search_include_trash">Çöp</string>
-  <string name="content_search_include_spam">İstenmeyen</string>
-  <string name="content_search_about_content_search">E-posta içeriğini\naramak hakkında</string>
   <string name="content_search_first_run_description">Aranacak bir ad, konu veya anahtar sözcük yazın</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Son kullanılan</string>
-  <string name="content_search_clear_recent_searches">Temizle</string>
+  <string name="content_search_recent_searches_title">Son e-posta aramaları</string>
+  <string name="content_search_clear_recent_searches">Tümünü temizle</string>
   <string name="content_search_previously_found_title">Daha önce bulunan</string>
   <string name="content_search_dismiss_recent_search_content_description">“%1$s” ifadesini son aramalar listesinden kaldır</string>
   <!-- Selection mode -->

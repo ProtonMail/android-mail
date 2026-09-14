@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Søg</string>
   <string name="content_search_clear_query_content_description">Ryd søgeforespørgsel</string>
   <string name="content_search_close_content_description">Luk søgning</string>
-  <string name="content_search_options_content_description">Søgemuligheder</string>
-  <string name="content_search_include_messages_in">Inkluder beskeder i</string>
-  <string name="content_search_include_trash">Papirkurv</string>
-  <string name="content_search_include_spam">Spam</string>
-  <string name="content_search_about_content_search">Om søgning\ne-mail-indhold</string>
   <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at søge</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Seneste</string>
-  <string name="content_search_clear_recent_searches">Ryd</string>
+  <string name="content_search_recent_searches_title">Seneste søgninger i mails</string>
+  <string name="content_search_clear_recent_searches">Ryd alle</string>
   <string name="content_search_previously_found_title">Fundet tidligere</string>
   <string name="content_search_dismiss_recent_search_content_description">Fjern \"%1$s\" fra seneste søgninger</string>
   <!-- Selection mode -->

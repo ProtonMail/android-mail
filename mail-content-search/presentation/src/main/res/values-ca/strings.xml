@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Cerca</string>
   <string name="content_search_clear_query_content_description">Neteja la consulta de cerca</string>
   <string name="content_search_close_content_description">Tanca la cerca</string>
-  <string name="content_search_options_content_description">Opcions de cerca</string>
-  <string name="content_search_include_messages_in">Inclou els missatges a</string>
-  <string name="content_search_include_trash">Paperera</string>
-  <string name="content_search_include_spam">Correu brossa</string>
-  <string name="content_search_about_content_search">Sobre la cerca\ncontingut del correu electrònic</string>
   <string name="content_search_first_run_description">Escriviu un nom, assumpte o paraula clau per a cercar</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recents</string>
-  <string name="content_search_clear_recent_searches">Neteja</string>
+  <string name="content_search_recent_searches_title">Cerques de correu recents</string>
+  <string name="content_search_clear_recent_searches">Netejar-ho tot</string>
   <string name="content_search_previously_found_title">Trobats anteriorment</string>
   <string name="content_search_dismiss_recent_search_content_description">Suprimeix «%1$s» de les cerques recents</string>
   <!-- Selection mode -->

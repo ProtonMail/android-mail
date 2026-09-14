@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Căutare</string>
   <string name="content_search_clear_query_content_description">Golire text căutat</string>
   <string name="content_search_close_content_description">Închidere căutare</string>
-  <string name="content_search_options_content_description">Opțiuni căutare</string>
-  <string name="content_search_include_messages_in">Includere mesaje în</string>
-  <string name="content_search_include_trash">Gunoi</string>
-  <string name="content_search_include_spam">Nedorite</string>
-  <string name="content_search_about_content_search">Despre căutarea\nîn conținutul mesajelor</string>
   <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a căuta.</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recente</string>
-  <string name="content_search_clear_recent_searches">Golire</string>
+  <string name="content_search_recent_searches_title">Căutări recente în mesaje</string>
+  <string name="content_search_clear_recent_searches">Golire tot</string>
   <string name="content_search_previously_found_title">Găsite anterior</string>
   <string name="content_search_dismiss_recent_search_content_description">Eliminare „%1$s” din căutările recente.</string>
   <!-- Selection mode -->

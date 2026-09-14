@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Søk</string>
   <string name="content_search_clear_query_content_description">Nullstill søk</string>
   <string name="content_search_close_content_description">Lukk søk</string>
-  <string name="content_search_options_content_description">Alternativer for søk</string>
-  <string name="content_search_include_messages_in">Inkluder meldinger i</string>
-  <string name="content_search_include_trash">Papirkurv</string>
-  <string name="content_search_include_spam">Søppelpost</string>
-  <string name="content_search_about_content_search">Om søking\ne-postinnhold</string>
   <string name="content_search_first_run_description">Skriv inn et navn, emne eller nøkkelord for å søke</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Nylig</string>
-  <string name="content_search_clear_recent_searches">Tøm</string>
+  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Tidligere funnet</string>
   <string name="content_search_dismiss_recent_search_content_description">Fjern \"%1$s\" fra nylige søk</string>
   <!-- Selection mode -->

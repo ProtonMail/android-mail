@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Hľadať</string>
   <string name="content_search_clear_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
   <string name="content_search_close_content_description">Zavrieť vyhľadávanie</string>
-  <string name="content_search_options_content_description">Možnosti vyhľadávania</string>
-  <string name="content_search_include_messages_in">Zahrnúť správy v</string>
-  <string name="content_search_include_trash">Kôš</string>
-  <string name="content_search_include_spam">Nevyžiadaná pošta</string>
-  <string name="content_search_about_content_search">O vyhľadávaní\nv obsahu emailov</string>
   <string name="content_search_first_run_description">Do vyhľadávania zadajte názov, tému alebo kľúčové slovo</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Nedávne</string>
-  <string name="content_search_clear_recent_searches">Vyčistiť</string>
+  <string name="content_search_recent_searches_title">Nedávne vyhľadávania mailov</string>
+  <string name="content_search_clear_recent_searches">Vyčistiť všetko</string>
   <string name="content_search_previously_found_title">Predtým nájdené</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrániť “%1$s” z nedávnych vyhľadávaní</string>
   <!-- Selection mode -->

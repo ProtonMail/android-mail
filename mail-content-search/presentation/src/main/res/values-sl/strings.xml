@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Iskanje</string>
   <string name="content_search_clear_query_content_description">Počisti iskalno poizvedbo</string>
   <string name="content_search_close_content_description">Zapri iskanje</string>
-  <string name="content_search_options_content_description">Možnosti iskanja</string>
-  <string name="content_search_include_messages_in">Vključi sporočila v mapah</string>
-  <string name="content_search_include_trash">Smetnjak</string>
-  <string name="content_search_include_spam">Neželena pošta</string>
-  <string name="content_search_about_content_search">O iskanju po\nvsebini e-pošte</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Nedavno</string>
-  <string name="content_search_clear_recent_searches">Počisti</string>
+  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Najdeno v prešnjih iskanjih</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrani »%1$s« iz nedavnih iskanj</string>
   <!-- Selection mode -->
