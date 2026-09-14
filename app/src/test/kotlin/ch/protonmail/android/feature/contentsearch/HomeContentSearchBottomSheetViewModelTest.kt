@@ -66,7 +66,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when the feature flag is disabled`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
+        coEvery { mockIsContentSearchFeatureEnabled() } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
 
         val viewModel = buildViewModel()
@@ -80,7 +80,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when the bottom sheet was already shown`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns true
 
         val viewModel = buildViewModel()
@@ -94,7 +94,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when content search is not enabled for the user`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(false)
 
@@ -109,7 +109,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Hide when should-show returns false`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
         coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns false
@@ -125,7 +125,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should emit Show when enabled, not yet shown and should-show returns true`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
         coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
@@ -141,7 +141,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `stops emitting Show after the sheet is marked shown so it does not re-fire on rotation`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
+        coEvery { mockIsContentSearchFeatureEnabled() } returns true
         coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
         coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
         coEvery { mockHasShownContentSearchBottomSheet() } returnsMany listOf(false, true)
@@ -159,7 +159,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `markShown persists the bottom sheet as shown`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
+        coEvery { mockIsContentSearchFeatureEnabled() } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         val viewModel = buildViewModel()
 
@@ -173,7 +173,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `should seed the mobile data toggle from the stored preference`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
+        coEvery { mockIsContentSearchFeatureEnabled() } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockIsContentSearchAllowedOnMobileData() } returns false
 
@@ -189,7 +189,7 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     @Test
     fun `toggleMobileData persists the new value and reflects it immediately`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
+        coEvery { mockIsContentSearchFeatureEnabled() } returns false
         coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockIsContentSearchAllowedOnMobileData() } returns true
         val viewModel = buildViewModel()

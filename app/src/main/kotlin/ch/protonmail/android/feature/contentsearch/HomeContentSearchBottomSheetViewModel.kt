@@ -75,7 +75,7 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
         combine(observePrimaryUserId().filterNotNull(), refreshTrigger) { userId, _ -> userId }
             .flatMapLatest { userId ->
                 flow {
-                    if (!isContentSearchFeatureEnabled(userId) || hasShownContentSearchBottomSheet()) {
+                    if (!isContentSearchFeatureEnabled() || hasShownContentSearchBottomSheet()) {
                         emit(ContentSearchBottomSheetState.Hide)
                         return@flow
                     }

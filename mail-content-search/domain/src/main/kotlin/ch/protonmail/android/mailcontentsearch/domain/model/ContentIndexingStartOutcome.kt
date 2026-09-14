@@ -29,7 +29,10 @@ enum class ContentIndexingStartOutcome {
     Refused,
 
     /** Nothing left to index for the account. */
-    AlreadyCompleted;
+    AlreadyCompleted,
+
+    /** The user has paused indexing for the account. */
+    Paused;
 
     /** Whether indexing is running for the account as a result, whoever started it. */
     val isIndexing: Boolean get() = this == Started || this == AlreadyRunning

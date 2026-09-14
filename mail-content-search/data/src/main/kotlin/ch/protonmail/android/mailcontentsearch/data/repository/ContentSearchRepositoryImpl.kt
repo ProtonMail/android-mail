@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontentsearch.data.repository
 import arrow.core.Either
 import arrow.core.flatten
 import arrow.core.getOrElse
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -126,14 +125,6 @@ class ContentSearchRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
         .shareIn(appScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = SharingStopTimeoutMillis))
 
-    // Answered by the user session, so an account without one - signed out, or still unlocking -
-    // reads as unavailable.
-    override suspend fun isFeatureEnabled(userId: UserId): Boolean =
-        executeWithUserSession(userId) { wrapper -> wrapper.isContentSearchFFEnabled() }.getOrElse { error ->
-            Timber.d("content-search: availability could not be resolved for the account: $error")
-            false
-        }
-
     // Only reset: stop() is global as of the sync orchestrator, so it would halt indexing for
     // every other account too. reset() already re-prepares this user and hands the orchestrator
     // its next candidate.
@@ -151,11 +142,8 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun stopIndexing(): Either<DataError, Unit> = withContext(ioDispatcher) { syncService.stop() }
 
-    // Not exposed by the SDK yet
-    override suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit> {
-        Timber.d("content-search: pause requested for $userId, but the SDK has no pause yet")
-        return Unit.right()
-    }
+    override suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit> =
+        executeWithUserSession(userId) { wrapper -> syncService.pauseUser(wrapper) }.flatten()
 
     // Not exposed by the SDK yet
     override suspend fun getIndexSizeBytes(userId: UserId): Long? = null
@@ -245,10 +233,11 @@ class ContentSearchRepositoryImpl @Inject constructor(
     /**
      * How far [userId]'s backfill had got, or null when Rust cannot say.
      *
-     * Read when the queue parks. That event carries no progress, so without this the settings card
-     * would drop to 0% while the account waits for Wi-Fi. A failed read only costs the percentage.
+     * Read when the backfill stops short - the queue parks, or the user pauses. Neither event carries
+     * progress, so without this the settings card would drop to 0% while the account sits there. A
+     * failed read only costs the percentage.
      */
-    private suspend fun readParkedPercentage(userId: UserId): Double? = executeWithUserSession(userId) { wrapper ->
+    private suspend fun readStalledPercentage(userId: UserId): Double? = executeWithUserSession(userId) { wrapper ->
         syncService.userProgress(wrapper).getOrNull()?.takeIf { it.total > 0uL }?.percentage
     }.getOrNull()
 
@@ -288,9 +277,12 @@ class ContentSearchRepositoryImpl @Inject constructor(
                     break
                 }
 
-                val parked = (event as? SyncEvent.WaitingForUnmeteredConnection)
-                    ?.let { readParkedPercentage(userId) }
-                event.toIndexingState(parked)?.let { trySend(it) }
+                val stalled = when (event) {
+                    is SyncEvent.WaitingForUnmeteredConnection,
+                    is SyncEvent.Paused -> readStalledPercentage(userId)
+                    else -> null
+                }
+                event.toIndexingState(stalled)?.let { trySend(it) }
                 if (event.isTerminal()) {
                     // Throttle the resubscribe in observeIndexingStatus so a session that fails
                     // immediately on every subscribe can't spin the loop with no backoff.

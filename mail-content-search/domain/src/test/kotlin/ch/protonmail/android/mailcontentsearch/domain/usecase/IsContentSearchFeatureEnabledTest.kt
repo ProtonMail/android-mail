@@ -19,13 +19,12 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
-import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -33,50 +32,49 @@ import kotlin.test.assertTrue
 
 internal class IsContentSearchFeatureEnabledTest {
 
-    private val userId = UserId("user-1")
-    private val repository = mockk<ContentSearchRepository>()
+    private val contentSearchFlag = mockk<FeatureFlag<Boolean>>()
     private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider>()
     private val isContentSearchFeatureEnabled = IsContentSearchFeatureEnabled(
-        repository,
+        contentSearchFlag,
         deviceArchitectureProvider
     )
 
     @Test
-    fun `returns the availability reported for the account on a 64-bit process`() = runTest {
+    fun `returns the flag value on a 64-bit process`() = runTest {
         // Given
         every { deviceArchitectureProvider.is64Bit() } returns true
-        coEvery { repository.isFeatureEnabled(userId) } returns true
+        coEvery { contentSearchFlag.get() } returns true
 
         // When
-        val result = isContentSearchFeatureEnabled(userId)
+        val result = isContentSearchFeatureEnabled()
 
         // Then
         assertTrue(result)
     }
 
     @Test
-    fun `returns false when the account reports the feature unavailable`() = runTest {
+    fun `returns false when the flag is off`() = runTest {
         // Given
         every { deviceArchitectureProvider.is64Bit() } returns true
-        coEvery { repository.isFeatureEnabled(userId) } returns false
+        coEvery { contentSearchFlag.get() } returns false
 
         // When
-        val result = isContentSearchFeatureEnabled(userId)
+        val result = isContentSearchFeatureEnabled()
 
         // Then
         assertFalse(result)
     }
 
     @Test
-    fun `returns false without asking the account on a 32-bit process`() = runTest {
+    fun `returns false without reading the flag on a 32-bit process`() = runTest {
         // Given
         every { deviceArchitectureProvider.is64Bit() } returns false
 
         // When
-        val result = isContentSearchFeatureEnabled(userId)
+        val result = isContentSearchFeatureEnabled()
 
         // Then
         assertEquals(false, result)
-        coVerify(exactly = 0) { repository.isFeatureEnabled(any()) }
+        coVerify(exactly = 0) { contentSearchFlag.get() }
     }
 }

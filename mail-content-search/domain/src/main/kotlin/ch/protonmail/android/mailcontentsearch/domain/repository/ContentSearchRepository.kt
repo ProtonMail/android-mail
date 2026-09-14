@@ -29,16 +29,6 @@ import me.proton.core.domain.entity.UserId
 
 interface ContentSearchRepository {
 
-    /**
-     * Whether the feature is available for [userId], as answered by the Rust SDK.
-     *
-     * Not the plain feature flag: the SDK combines it with any additional eligibility rule, and applies
-     * device-local debug overrides itself, so this must not be read through the feature flag resolver.
-     * Answered by the user session, so it is false for an account that has no session yet - there is
-     * nobody to ask before the account is ready.
-     */
-    suspend fun isFeatureEnabled(userId: UserId): Boolean
-
     suspend fun clearLocalData(userId: UserId): Either<DataError, Unit>
 
     /**
@@ -61,8 +51,7 @@ interface ContentSearchRepository {
     /**
      * Pauses [userId]'s backfill, keeping everything already indexed.
      *
-     * The SDK does not expose a pause yet, so this reports success without asking Rust. Nothing
-     * actually stops until it does.
+     * Rust records the pause, so it outlives the process. Only [startIndexingForUser] clears it.
      */
     suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit>
 

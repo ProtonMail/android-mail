@@ -28,6 +28,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
@@ -311,6 +312,12 @@ object FeatureFlagsModule {
     @IsSdkUpgradesReadEnabled
     fun provideSdkUpgradesReadEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = SdkUpgradesReadEnabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsContentSearchFeatureEnabled
+    fun provideContentSearchFeatureEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = ContentSearchEnabled.key, ContentSearchEnabled.defaultValue)
 
     @Provides
     @IntoSet

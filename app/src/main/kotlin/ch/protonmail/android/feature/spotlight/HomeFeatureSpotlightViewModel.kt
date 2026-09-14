@@ -57,7 +57,7 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
         .distinctUntilChanged()
         .flatMapLatest { userId ->
             flow {
-                if (!isEnabled.get() || !isContentSearchFeatureEnabled(userId)) {
+                if (!isEnabled.get() || !isContentSearchFeatureEnabled()) {
                     emit(FeatureSpotlightState.Hide)
                 } else if (isRecentAppInstall()) {
                     markFeatureSpotlightSeen()

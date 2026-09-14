@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSear
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isActive
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isCompleted
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isFailed
+import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isPaused
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.isWaitingForUnmeteredConnection
 import ch.protonmail.android.mailcontentsearch.presentation.settings.mapper.toPercentage
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
@@ -105,7 +106,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     }
 
     private suspend fun loadInitialState(userId: UserId): Boolean? {
-        if (!isContentSearchFeatureEnabled(userId)) {
+        if (!isContentSearchFeatureEnabled()) {
             emitNewStateFor(Error.LoadingError)
             return null
         }
@@ -128,9 +129,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
         }
     )
 
-    private suspend fun readIndexingStatus(userId: UserId) {
-        emitNewStateFor(getContentSearchIndexingStatus(userId).toIndexingProgress())
-    }
+    private suspend fun readIndexingStatus(userId: UserId): ContentIndexingState =
+        getContentSearchIndexingStatus(userId).also { emitNewStateFor(it.toIndexingProgress()) }
 
     // Read once per screen, not observed: the index only grows as messages are indexed, and a size
     // ticking up while the user reads it is noise.
@@ -150,6 +150,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
                             isActive = false,
                             isCompleted = false,
                             isWaitingForUnmeteredConnection = false,
+                            isPaused = false,
                             isFailed = false
                         )
                     )
@@ -190,7 +191,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
         val userId = currentUserId()
         pauseContentIndexing(userId).fold(
             ifLeft = { emitNewStateFor(Error.UpdateError) },
-            ifRight = { emitNewStateFor(Data.IndexingPaused) }
+            ifRight = { readIndexingStatus(userId) }
         )
     }
 
@@ -234,9 +235,9 @@ class ContentSearchSettingsViewModel @Inject constructor(
                     // the state back, or the card sits on a failure Rust no longer has.
                     ContentIndexingStartOutcome.AlreadyCompleted -> readIndexingStatus(userId)
 
-                    // The one outcome that leaves the account exactly as it was, failure and all:
-                    // content search is off for it, or Rust is holding its runtime lock.
-                    ContentIndexingStartOutcome.Refused -> {
+                    // A start clears a pause, so Paused is not expected here either.
+                    ContentIndexingStartOutcome.Refused,
+                    ContentIndexingStartOutcome.Paused -> {
                         Timber.w("content-search: the orchestrator refused to retry $userId")
                         emitNewStateFor(Error.IndexingRetryFailed)
                     }
@@ -273,6 +274,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
         isActive = isActive(),
         isCompleted = isCompleted(),
         isWaitingForUnmeteredConnection = isWaitingForUnmeteredConnection(),
+        isPaused = isPaused(),
         isFailed = isFailed()
     )
 

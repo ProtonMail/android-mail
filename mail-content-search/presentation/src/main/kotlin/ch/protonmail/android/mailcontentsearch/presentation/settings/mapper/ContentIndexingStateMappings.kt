@@ -33,6 +33,7 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     // "Preparing 100.00%", which reads as stuck.
     is ContentIndexingState.Running -> backfillPercentage != null
 
+    is ContentIndexingState.Paused,
     ContentIndexingState.Idle,
     ContentIndexingState.Completed,
     ContentIndexingState.Cancelled,
@@ -40,6 +41,8 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
 }
 
 internal fun ContentIndexingState.isCompleted(): Boolean = this is ContentIndexingState.Completed
+
+internal fun ContentIndexingState.isPaused(): Boolean = this is ContentIndexingState.Paused
 
 internal fun ContentIndexingState.isWaitingForUnmeteredConnection(): Boolean =
     this is ContentIndexingState.WaitingForUnmeteredConnection

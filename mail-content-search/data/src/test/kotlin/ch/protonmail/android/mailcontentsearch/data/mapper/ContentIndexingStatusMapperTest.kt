@@ -43,6 +43,21 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
+    fun `maps PAUSED status to Paused, keeping the progress the account had reached`() {
+        assertEquals(ContentIndexingState.Paused(42.5), SyncStatus.PAUSED.toIndexingState(42.5))
+    }
+
+    @Test
+    fun `a pause event carries the percentage it was handed`() {
+        // Given - the event has no progress of its own, so the caller reads it separately and passes
+        // it in. Without it the settings card would drop to zero on a pause.
+        assertEquals(
+            ContentIndexingState.Paused(42.5),
+            SyncEvent.Paused.toIndexingState(stalledPercentage = 42.5)
+        )
+    }
+
+    @Test
     fun `maps FAILURE status to Failed`() {
         assertEquals(ContentIndexingState.Failed, SyncStatus.FAILURE.toIndexingState(null))
     }
@@ -89,7 +104,7 @@ internal class ContentIndexingStatusMapperTest {
         // Given - the event has no progress of its own, so the caller reads it separately and
         // passes it in. Without it the settings card would drop to zero while waiting for Wi-Fi.
         assertEquals(
-            SyncEvent.WaitingForUnmeteredConnection.toIndexingState(parkedPercentage = 42.5),
+            SyncEvent.WaitingForUnmeteredConnection.toIndexingState(stalledPercentage = 42.5),
             ContentIndexingState.WaitingForUnmeteredConnection(percentage = 42.5)
         )
     }
@@ -151,6 +166,7 @@ internal class ContentIndexingStatusMapperTest {
     fun `terminal events are reported as terminal`() {
         assertTrue(SyncEvent.Completed.isTerminal())
         assertTrue(SyncEvent.Stopped.isTerminal())
+        assertTrue(SyncEvent.Paused.isTerminal())
         assertTrue(SyncEvent.Driver(SyncDriverEvent.Failure("boom")).isTerminal())
         assertTrue(SyncEvent.Worker(SyncWorkerEvent.Failure("name", 1u, "boom")).isTerminal())
     }

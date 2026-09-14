@@ -97,7 +97,7 @@ class ContentIndexingLifecycleObserver @Inject constructor(
             // is not enough on its own: it can already have resumed by then. A worker enqueued from
             // the background cannot be promoted to a foreground service anyway.
             if (!isForegrounded) return@launch
-            if (!isContentSearchFeatureEnabled(userId)) return@launch
+            if (!isContentSearchFeatureEnabled()) return@launch
 
             // Uncancellable from here on, so that cancelling a wait cannot also drop a start already
             // under way - that is the round-trip this is app-scoped for in the first place.

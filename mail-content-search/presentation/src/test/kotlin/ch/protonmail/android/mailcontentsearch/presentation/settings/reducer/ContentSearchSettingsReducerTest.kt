@@ -83,9 +83,18 @@ internal class ContentSearchSettingsReducerTest {
     }
 
     @Test
-    fun `a pause stays put while rust keeps reporting a running backfill`() {
-        // Given - the SDK has no pause yet, so progress keeps arriving after the user asked for one.
-        val paused = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexingPaused)
+    fun `a pause is taken from the progress event, which is the only thing that reports one`() {
+        // When
+        val result = reducer.newStateFrom(EnabledState, PausedProgress)
+
+        // Then
+        assertTrue(result.asData().isIndexingPaused)
+    }
+
+    @Test
+    fun `a running backfill clears the pause`() {
+        // Given
+        val paused = reducer.newStateFrom(EnabledState, PausedProgress)
 
         // When
         val result = reducer.newStateFrom(
@@ -95,18 +104,19 @@ internal class ContentSearchSettingsReducerTest {
                 isActive = true,
                 isCompleted = false,
                 isWaitingForUnmeteredConnection = false,
+                isPaused = false,
                 isFailed = false
             )
         )
 
         // Then
-        assertTrue(result.asData().isIndexingPaused)
+        assertFalse(result.asData().isIndexingPaused)
     }
 
     @Test
     fun `switching the account off clears the pause with it`() {
         // Given
-        val paused = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexingPaused)
+        val paused = reducer.newStateFrom(EnabledState, PausedProgress)
 
         // When - nothing is paused for an account that is off, and turning it on starts it again.
         val result = reducer.newStateFrom(
@@ -119,30 +129,9 @@ internal class ContentSearchSettingsReducerTest {
     }
 
     @Test
-    fun `an account that finishes drops the pause, having nothing left to pause`() {
-        // Given - resuming a finished account reports completion, never a retry acceptance.
-        val paused = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexingPaused)
-
-        // When
-        val result = reducer.newStateFrom(
-            paused,
-            ContentSearchSettingsEvent.Data.IndexingProgress(
-                percentage = null,
-                isActive = false,
-                isCompleted = true,
-                isWaitingForUnmeteredConnection = false,
-                isFailed = false
-            )
-        )
-
-        // Then
-        assertFalse(result.asData().isIndexingPaused)
-    }
-
-    @Test
     fun `resuming clears the pause`() {
         // Given
-        val paused = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexingPaused)
+        val paused = reducer.newStateFrom(EnabledState, PausedProgress)
 
         // When
         val result = reducer.newStateFrom(paused, ContentSearchSettingsEvent.Data.IndexingRetryAccepted)
@@ -161,6 +150,7 @@ internal class ContentSearchSettingsReducerTest {
                 isActive = false,
                 isCompleted = true,
                 isWaitingForUnmeteredConnection = false,
+                isPaused = false,
                 isFailed = false
             )
         )
@@ -203,6 +193,7 @@ internal class ContentSearchSettingsReducerTest {
                 isActive = true,
                 isCompleted = false,
                 isWaitingForUnmeteredConnection = false,
+                isPaused = false,
                 isFailed = false
             )
         )
@@ -248,6 +239,15 @@ internal class ContentSearchSettingsReducerTest {
         )
     }
 }
+
+private val PausedProgress = ContentSearchSettingsEvent.Data.IndexingProgress(
+    percentage = 30.0,
+    isActive = false,
+    isCompleted = false,
+    isWaitingForUnmeteredConnection = false,
+    isPaused = true,
+    isFailed = false
+)
 
 private val EnabledState = ContentSearchSettingsState.Data(
     isContentSearchEnabled = true,

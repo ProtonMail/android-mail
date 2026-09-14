@@ -422,7 +422,7 @@ internal class MailboxViewModelTest {
     }
 
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke(any()) } returns false
+        coEvery { this@mockk.invoke() } returns false
     }
 
     private val isContentSearchScreenFeatureEnabled = mockk<FeatureFlag<Boolean>> {

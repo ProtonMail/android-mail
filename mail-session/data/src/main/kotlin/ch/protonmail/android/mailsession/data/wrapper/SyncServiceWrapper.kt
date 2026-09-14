@@ -108,6 +108,13 @@ class SyncServiceWrapper(
             }
         }
 
+    suspend fun pauseUser(userSession: MailUserSessionWrapper): Either<DataError, Unit> = actorCall { service ->
+        when (val result = service.pauseUser(userSession.getRustUserSession())) {
+            is VoidProtonResult.Error -> result.v1.toDataError().left()
+            VoidProtonResult.Ok -> Unit.right()
+        }
+    }
+
     suspend fun isEnabled(userSession: MailUserSessionWrapper): Either<DataError, Boolean> = actorCall { service ->
         when (val result = service.isEnabled(userSession.getRustUserSession())) {
             is SyncServiceIsEnabledResult.Error -> result.v1.toDataError().left()

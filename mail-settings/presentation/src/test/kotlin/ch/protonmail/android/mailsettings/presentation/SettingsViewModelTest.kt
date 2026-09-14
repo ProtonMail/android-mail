@@ -82,7 +82,7 @@ class SettingsViewModelTest {
     private val accountInformationMapper = AccountInformationMapper(ColorMapper())
 
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke(any()) } returns true
+        coEvery { this@mockk.invoke() } returns true
     }
 
     private lateinit var viewModel: SettingsViewModel

@@ -71,6 +71,7 @@ internal class ContentSearchSettingsViewModelTest {
     private val ownIndexingStatus = MutableStateFlow<ContentIndexingState>(ContentIndexingState.Idle)
     private val enabledFlow = MutableStateFlow(true)
 
+    private val scheduler get() = mainDispatcherRule.testDispatcher.scheduler
     private val reducer = ContentSearchSettingsReducer()
     private val isContentSearchEnabled = mockk<IsContentSearchEnabled> {
         coEvery { this@mockk.invoke(userId) } returns true.right()
@@ -81,11 +82,11 @@ internal class ContentSearchSettingsViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns ContentIndexingStartOutcome.Started.right()
     }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke(any()) } returns true
+        coEvery { this@mockk.invoke() } returns true
     }
     private val clearContentSearchLocalData = mockk<ClearContentSearchLocalData>()
     private val getContentSearchIndexingStatus = mockk<GetContentSearchIndexingStatus> {
-        coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Idle
+        coEvery { this@mockk.invoke(userId) } returns ContentIndexingState.Running(30.0)
     }
     private val getContentSearchIndexSize = mockk<GetContentSearchIndexSize> {
         coEvery { this@mockk.invoke(userId) } returns null
@@ -632,22 +633,24 @@ internal class ContentSearchSettingsViewModelTest {
     }
 
     @Test
-    fun `submit PauseIndexing pauses the account`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
-        // Given
-        val viewModel = viewModel()
+    fun `submit PauseIndexing pauses the account and reads the state back`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given - Rust owns the pause, so the card only shows one it has read back.
+            coEvery { getContentSearchIndexingStatus(userId) } returns ContentIndexingState.Paused(42.5)
+            val viewModel = viewModel()
 
-        // When
-        viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing)
-        advanceUntilIdle()
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.PauseIndexing)
+            advanceUntilIdle()
 
-        // Then
-        coVerify(exactly = 1) { pauseContentIndexing(userId) }
-        assertTrue(viewModel.state.value.asData().isIndexingPaused)
-    }
+            // Then
+            coVerify(exactly = 1) { pauseContentIndexing(userId) }
+            assertTrue(viewModel.state.value.asData().isIndexingPaused)
+        }
 
     @Test
     fun `a pause that fails leaves the card as it was`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
-        // Given - nothing reports a pause back, so a card moved ahead of the answer never recovers.
+        // Given
         coEvery { pauseContentIndexing(userId) } returns DataError.Local.Unknown.left()
         val viewModel = viewModel()
 

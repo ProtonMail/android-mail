@@ -52,9 +52,7 @@ import uniffi.mail_uniffi.SyncStartOutcome
 import uniffi.mail_uniffi.SyncStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNull
-import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 
 internal class ContentSearchRepositoryImplTest {
@@ -113,13 +111,29 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `pausing reports success without asking rust, which has no pause yet`() = runTest(dispatcher) {
+    fun `pausing pauses the account rather than the whole orchestrator`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.pauseUser(wrapper) } returns Unit.right()
+
         // When
         val result = repository.pauseIndexing(userId)
 
         // Then
         assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { syncServiceWrapper.pauseUser(wrapper) }
         coVerify(exactly = 0) { syncServiceWrapper.stop() }
+    }
+
+    @Test
+    fun `a pause that rust refuses is reported as an error`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.pauseUser(wrapper) } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = repository.pauseIndexing(userId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
     }
 
     @Test
@@ -129,22 +143,6 @@ internal class ContentSearchRepositoryImplTest {
 
         // Then
         assertNull(result)
-    }
-
-    @Test
-    fun `isFeatureEnabled reflects what the sdk reports for the account`() = runTest(dispatcher) {
-        every { wrapper.isContentSearchFFEnabled() } returns true
-
-        assertTrue(repository.isFeatureEnabled(userId))
-    }
-
-    @Test
-    fun `isFeatureEnabled is false when the account has no session`() = runTest(dispatcher) {
-        coEvery { userSessionRepository.getUserSession(userId) } returns null
-
-        assertFalse(repository.isFeatureEnabled(userId))
-
-        verify(exactly = 0) { wrapper.isContentSearchFFEnabled() }
     }
 
     @Test

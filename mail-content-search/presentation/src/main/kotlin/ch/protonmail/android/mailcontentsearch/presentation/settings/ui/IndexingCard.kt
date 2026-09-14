@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
+import java.util.Locale
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -33,6 +34,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,7 +42,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.design.compose.component.ProtonSecondaryButton
 import ch.protonmail.android.design.compose.component.protonSecondaryButtonColors
@@ -56,8 +58,6 @@ import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
-import java.util.Locale
-import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * How far this account's index has got, and the one control over it.
@@ -194,8 +194,8 @@ private fun IndexingStatusRow(status: IndexingCardStatus, modifier: Modifier = M
 /**
  * The card's status, and the action offered for it.
  *
- * Only [Failed] has a working action today. The SDK has no pause, so a tap on pause or resume would
- * change the card and leave the backfill running. The buttons are shown but disabled until it does.
+ * [UpToDate] is the one status with nothing to offer: an account with no backfill left cannot be
+ * paused. Its button is shown but disabled, so the card keeps the same shape throughout.
  */
 private enum class IndexingCardStatus(
     @param:StringRes val label: Int,
@@ -213,19 +213,19 @@ private enum class IndexingCardStatus(
         label = R.string.mail_settings_content_search_indexing_paused,
         actionLabel = R.string.mail_settings_content_search_indexing_resume,
         icon = null,
-        isActionEnabled = false
+        isActionEnabled = true
     ),
     WaitingForWifi(
         label = R.string.mail_settings_content_search_waiting_for_wifi_status,
         actionLabel = R.string.mail_settings_content_search_indexing_pause,
         icon = R.drawable.ic_sync,
-        isActionEnabled = false
+        isActionEnabled = true
     ),
     InProgress(
         label = R.string.mail_settings_content_search_indexing_in_progress,
         actionLabel = R.string.mail_settings_content_search_indexing_pause,
         icon = R.drawable.ic_sync,
-        isActionEnabled = false
+        isActionEnabled = true
     ),
     UpToDate(
         label = R.string.mail_settings_content_search_indexing_up_to_date,
@@ -246,8 +246,8 @@ private fun ContentSearchSettingsState.Data.toIndexingCardStatus(): IndexingCard
     isIndexingFailed -> IndexingCardStatus.Failed
     isIndexingPaused -> IndexingCardStatus.Paused
     isWaitingForUnmeteredConnection -> IndexingCardStatus.WaitingForWifi
-    isIndexingActive -> IndexingCardStatus.InProgress
-    else -> IndexingCardStatus.UpToDate
+    isIndexingCompleted -> IndexingCardStatus.UpToDate
+    else -> IndexingCardStatus.InProgress
 }
 
 private fun ContentSearchSettingsState.Data.displayPercentage(): Double = when {
