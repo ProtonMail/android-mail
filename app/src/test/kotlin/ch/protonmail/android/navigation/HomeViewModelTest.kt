@@ -49,7 +49,6 @@ import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
 import ch.protonmail.android.mailpinlock.domain.usecase.ShouldPresentPinInsertionScreen
-import ch.protonmail.android.mailsession.domain.eventloop.EventLoopErrorSignal
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.navigation.mapper.IntentMapper
 import ch.protonmail.android.navigation.model.Destination
@@ -122,10 +121,6 @@ class HomeViewModelTest {
     private val cancelScheduleSendMessage = mockk<CancelScheduleSendMessage>(relaxUnitFun = true)
     private val markMessageSendingStatusesAsSeen = mockk<MarkMessageSendingStatusesAsSeen>(relaxUnitFun = true)
 
-    private val eventLoopErrorSignal = mockk<EventLoopErrorSignal> {
-        every { this@mockk.observeEventLoopErrors() } returns flowOf()
-    }
-
     private val primaryIndexingStatus = MutableSharedFlow<ContentIndexingState>(replay = 1)
     private val otherIndexingStatus = MutableSharedFlow<ContentIndexingState>(replay = 1)
     private val observeContentSearchIndexingStatus = mockk<ObserveContentSearchIndexingStatus> {
@@ -160,7 +155,6 @@ class HomeViewModelTest {
             markMessageSendingStatusesAsSeen,
             formatFullDate,
             cancelScheduleSendMessage,
-            eventLoopErrorSignal,
             isContentSearchFeatureEnabled,
             observeContentSearchEnabled,
             observeContentSearchIndexingStatus,
