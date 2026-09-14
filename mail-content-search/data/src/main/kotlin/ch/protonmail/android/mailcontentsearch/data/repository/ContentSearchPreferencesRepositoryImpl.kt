@@ -18,26 +18,18 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.data.mapper.safeData
-import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPreferencesRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ContentSearchPreferencesRepositoryImpl @Inject constructor(
-    private val appSettingsRepository: AppSettingsRepository,
-    private val dataStoreProvider: ContentSearchDataStoreProvider
+    private val appSettingsRepository: AppSettingsRepository
 ) : ContentSearchPreferencesRepository {
-
-    private val bottomSheetShownKey = booleanPreferencesKey("contentSearchBottomSheetShownPrefKey")
 
     override suspend fun getAllowMobileData(): Either<PreferencesError, Boolean> =
         appSettingsRepository.observeAppSettings().first().useMobileDataForContentSearchIndexing.enabled.right()
@@ -47,14 +39,4 @@ class ContentSearchPreferencesRepositoryImpl @Inject constructor(
             ifLeft = { PreferencesError.left() },
             ifRight = { Unit.right() }
         )
-
-    override suspend fun hasShownBottomSheet(): Either<PreferencesError, Boolean> =
-        dataStoreProvider.contentSearchDataStore.safeData.map { preferences ->
-            preferences.map { it[bottomSheetShownKey] ?: false }
-        }.first()
-
-    override suspend fun markBottomSheetShown(): Either<PreferencesError, Unit> =
-        dataStoreProvider.contentSearchDataStore.safeEdit { preferences ->
-            preferences[bottomSheetShownKey] = true
-        }.map { }
 }

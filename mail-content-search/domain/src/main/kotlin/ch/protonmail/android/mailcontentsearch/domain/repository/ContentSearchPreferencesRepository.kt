@@ -26,11 +26,4 @@ interface ContentSearchPreferencesRepository {
     suspend fun getAllowMobileData(): Either<PreferencesError, Boolean>
 
     suspend fun setAllowMobileData(value: Boolean): Either<PreferencesError, Unit>
-
-    /**
-     * Whether the "Getting emails ready" content-search bottomsheet has already been shown once.
-     */
-    suspend fun hasShownBottomSheet(): Either<PreferencesError, Boolean>
-
-    suspend fun markBottomSheetShown(): Either<PreferencesError, Unit>
 }

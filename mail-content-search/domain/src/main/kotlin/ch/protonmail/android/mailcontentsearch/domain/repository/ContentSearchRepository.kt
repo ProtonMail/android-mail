@@ -68,5 +68,4 @@ interface ContentSearchRepository {
 
     suspend fun getIndexingStatus(userId: UserId): ContentIndexingState
 
-    suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean
 }
