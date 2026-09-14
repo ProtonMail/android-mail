@@ -20,9 +20,9 @@ package ch.protonmail.android.feature.spotlight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
