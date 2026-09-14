@@ -21,7 +21,7 @@ package ch.protonmail.android.mailspotlight.presentation.model
 import androidx.compose.runtime.Stable
 
 @Stable
-data class SpotlightActions(
+internal data class SpotlightActions(
     val onContinue: () -> Unit,
     val onTurnOn: () -> Unit,
     val onNotNow: () -> Unit

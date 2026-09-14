@@ -72,4 +72,13 @@
     <string name="spotlight_screen_content_search_button_continue">Continue</string>
     <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
     <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+
+    <!-- How email content search works -->
+    <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
+    <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
+    <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
+    <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
+    <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
+    <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
+    <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
 </resources>
