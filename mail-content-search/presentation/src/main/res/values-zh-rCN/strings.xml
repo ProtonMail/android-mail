@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Search</string>
   <string name="content_search_clear_query_content_description">Clear search query</string>
   <string name="content_search_close_content_description">Close search</string>
-  <string name="content_search_options_content_description">Search options</string>
-  <string name="content_search_include_messages_in">Include messages in</string>
-  <string name="content_search_include_trash">Trash</string>
-  <string name="content_search_include_spam">Spam</string>
-  <string name="content_search_about_content_search">About searching\nemail content</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recent</string>
-  <string name="content_search_clear_recent_searches">Clear</string>
+  <string name="content_search_recent_searches_title">最近邮件搜索</string>
+  <string name="content_search_clear_recent_searches">全部清除</string>
   <string name="content_search_previously_found_title">Previously found</string>
   <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
   <!-- Selection mode -->

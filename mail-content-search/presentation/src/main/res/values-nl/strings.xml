@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Zoeken</string>
   <string name="content_search_clear_query_content_description">Zoekopdracht wissen</string>
   <string name="content_search_close_content_description">Zoekopdracht sluiten</string>
-  <string name="content_search_options_content_description">Zoekopties</string>
-  <string name="content_search_include_messages_in">Berichten opnemen in</string>
-  <string name="content_search_include_trash">Prullenbak</string>
-  <string name="content_search_include_spam">Spam</string>
-  <string name="content_search_about_content_search">Over zoeken\ne-inhoud</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recent</string>
-  <string name="content_search_clear_recent_searches">Wissen</string>
+  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Eerder gevonden</string>
   <string name="content_search_dismiss_recent_search_content_description">Verwijder “%1$s” uit recente zoekopdrachten</string>
   <!-- Selection mode -->

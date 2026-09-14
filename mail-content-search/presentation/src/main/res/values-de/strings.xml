@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">Suchen</string>
   <string name="content_search_clear_query_content_description">Suchanfrage löschen</string>
   <string name="content_search_close_content_description">Suche schließen</string>
-  <string name="content_search_options_content_description">Suchoptionen</string>
-  <string name="content_search_include_messages_in">Nachrichten einbeziehen aus</string>
-  <string name="content_search_include_trash">Papierkorb</string>
-  <string name="content_search_include_spam">Spam</string>
-  <string name="content_search_about_content_search">Informationen zur Suche\nnach E-Mail-Inhalten</string>
   <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Suche zu beginnen</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Kürzlich</string>
-  <string name="content_search_clear_recent_searches">Leeren</string>
+  <string name="content_search_recent_searches_title">Letzte E-Mail-Suchanfragen</string>
+  <string name="content_search_clear_recent_searches">Alle entfernen</string>
   <string name="content_search_previously_found_title">Zuvor gefunden</string>
   <string name="content_search_dismiss_recent_search_content_description">%1$s aus kürzlichen Suchanfragen entfernen</string>
   <!-- Selection mode -->

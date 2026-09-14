@@ -27,15 +27,10 @@
   <string name="content_search_placeholder_text">검색</string>
   <string name="content_search_clear_query_content_description">검색 쿼리 삭제</string>
   <string name="content_search_close_content_description">검색 닫기</string>
-  <string name="content_search_options_content_description">검색 옵션</string>
-  <string name="content_search_include_messages_in">다음 메시지 포함:</string>
-  <string name="content_search_include_trash">휴지통</string>
-  <string name="content_search_include_spam">스팸함</string>
-  <string name="content_search_about_content_search">이메일 콘텐츠\n검색에 관하여</string>
   <string name="content_search_first_run_description">검색을 시작하려면 이름, 제목 및 키워드를 입력해 주세요</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">최근</string>
-  <string name="content_search_clear_recent_searches">제거</string>
+  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">기존에 발견됨</string>
   <string name="content_search_dismiss_recent_search_content_description">최근 검색 기록에서 \"%1$s\" 삭제</string>
   <!-- Selection mode -->
