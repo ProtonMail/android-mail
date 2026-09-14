@@ -18,12 +18,10 @@
 
 package ch.protonmail.android.mailsession.data.eventloop
 
-import ch.protonmail.android.mailsession.domain.eventloop.EventLoopErrorSignal
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.CapturingSlot
-import io.mockk.Runs
 import io.mockk.called
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -31,7 +29,6 @@ import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
@@ -56,17 +53,14 @@ internal class RustEventLoopErrorObserverTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var userSessionRepository: UserSessionRepository
-    private lateinit var eventLoopErrorFlow: EventLoopErrorSignal
     private lateinit var observer: RustEventLoopErrorObserver
 
     @BeforeTest
     fun setup() {
         userSessionRepository = mockk(relaxed = true)
-        eventLoopErrorFlow = mockk(relaxed = true)
 
         observer = RustEventLoopErrorObserver(
             userSessionRepository,
-            eventLoopErrorFlow,
             mainDispatcherRule.testDispatcher
         )
     }
@@ -97,7 +91,6 @@ internal class RustEventLoopErrorObserverTest {
         // Then
         assert(callbackSlot.isCaptured)
         coVerify { userSessionRepository.getUserSession(userId) }
-        confirmVerified(eventLoopErrorFlow)
     }
 
     @Test
@@ -115,7 +108,7 @@ internal class RustEventLoopErrorObserverTest {
             userSessionRepository.observePrimaryUserId()
             userSessionRepository.getUserSession(userId)
         }
-        confirmVerified(eventLoopErrorFlow, userSessionRepository)
+        confirmVerified(userSessionRepository)
     }
 
     @Test
@@ -135,7 +128,7 @@ internal class RustEventLoopErrorObserverTest {
 
         // Then
         verify(exactly = 1) { mockUserSession.observeEventLoopErrors(any()) }
-        confirmVerified(mockUserSession, eventLoopErrorFlow)
+        confirmVerified(mockUserSession)
     }
 
     @Test
@@ -165,14 +158,13 @@ internal class RustEventLoopErrorObserverTest {
     }
 
     @Test
-    fun `eventLoopErrorCallback submits error to flow`() = runTest {
+    fun `given an event loop error, when the callback is invoked, then it is handled without crashing`() = runTest {
         // Given
         val error = mockk<EventError>()
         val capturedCallback = slot<EventLoopErrorObserver>()
 
         setupMockUserSessionWithCallbackCapture(userId, capturedCallback)
         every { userSessionRepository.observePrimaryUserId() } returns flowOf(userId)
-        coEvery { eventLoopErrorFlow.submit(any()) } just Runs
 
         // When
         observer.start()
@@ -181,8 +173,9 @@ internal class RustEventLoopErrorObserverTest {
         advanceUntilIdle()
 
         // Then
-        coVerify(exactly = 1) { eventLoopErrorFlow.submit(error) }
-        confirmVerified(eventLoopErrorFlow)
+        // The error is logged for diagnostics and swallowed, never surfaced to the user; reaching here
+        // without the callback throwing is the assertion.
+        assert(capturedCallback.isCaptured)
     }
 
     @Test

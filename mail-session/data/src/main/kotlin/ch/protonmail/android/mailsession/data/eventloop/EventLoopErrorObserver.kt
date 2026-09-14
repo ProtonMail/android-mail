@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailsession.data.eventloop
 
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
-import ch.protonmail.android.mailsession.domain.eventloop.EventLoopErrorSignal
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +37,6 @@ import javax.inject.Inject
 
 class RustEventLoopErrorObserver @Inject constructor(
     private val userSessionRepository: UserSessionRepository,
-    private val eventLoopErrorFlow: EventLoopErrorSignal,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
@@ -62,9 +60,10 @@ class RustEventLoopErrorObserver @Inject constructor(
                     }
 
                     val callback = object : EventLoopErrorObserver {
+                        // Event loop (sync) errors are logged for diagnostics only, never surfaced to the
+                        // user: they are usually transient and recover on their own (ET-6943).
                         override suspend fun onEventLoopError(error: EventError) {
-                            eventLoopErrorFlow.submit(error)
-                            Timber.d("event-loop-observer: error $error")
+                            Timber.w("event-loop-observer: error $error")
                         }
                     }
 
