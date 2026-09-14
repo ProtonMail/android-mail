@@ -21,6 +21,7 @@ package ch.protonmail.android.mailspotlight.presentation.ui
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.presentation.R
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
+import ch.protonmail.android.mailspotlight.presentation.model.HowItWorksStep
 import kotlinx.collections.immutable.toImmutableList
 
 internal object SpotlightPreviewData {
@@ -40,6 +41,21 @@ internal object SpotlightPreviewData {
             icon = R.drawable.ic_letter,
             title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_title),
             description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_recent_searches_subtitle)
+        )
+    ).toImmutableList()
+
+    val previewHowItWorksSteps = listOf(
+        HowItWorksStep(
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_download_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_download_subtitle)
+        ),
+        HowItWorksStep(
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_index_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_index_subtitle)
+        ),
+        HowItWorksStep(
+            title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_search_now_title),
+            description = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_search_now_subtitle)
         )
     ).toImmutableList()
 }
