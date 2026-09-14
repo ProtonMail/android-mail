@@ -18,13 +18,10 @@
 
 package ch.protonmail.android.mailcontentsearch.data.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AllowMobileDataForContentSearchIndexing
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
@@ -42,11 +39,7 @@ import kotlin.test.assertTrue
 internal class ContentSearchPreferencesRepositoryImplTest {
 
     private val appSettingsRepository = mockk<AppSettingsRepository>()
-    private val dataStore = mockk<DataStore<Preferences>>()
-    private val dataStoreProvider = mockk<ContentSearchDataStoreProvider> {
-        every { contentSearchDataStore } returns dataStore
-    }
-    private val repository = ContentSearchPreferencesRepositoryImpl(appSettingsRepository, dataStoreProvider)
+    private val repository = ContentSearchPreferencesRepositoryImpl(appSettingsRepository)
 
     @Test
     fun `returns the allow mobile data value stored in the rust app settings`() = runTest {
@@ -103,48 +96,6 @@ internal class ContentSearchPreferencesRepositoryImplTest {
 
         // Then
         assertEquals(PreferencesError.left(), result)
-    }
-
-    @Test
-    fun `reports the bottom sheet as not shown when nothing is stored`() = runTest {
-        // Given
-        val preferences = mockk<Preferences> {
-            every { get(any<Preferences.Key<Boolean>>()) } returns null
-        }
-        every { dataStore.data } returns flowOf(preferences)
-
-        // When
-        val result = repository.hasShownBottomSheet()
-
-        // Then
-        assertFalse(result.getOrNull()!!)
-    }
-
-    @Test
-    fun `reports the bottom sheet as shown when the flag is stored`() = runTest {
-        // Given
-        val preferences = mockk<Preferences> {
-            every { get(any<Preferences.Key<Boolean>>()) } returns true
-        }
-        every { dataStore.data } returns flowOf(preferences)
-
-        // When
-        val result = repository.hasShownBottomSheet()
-
-        // Then
-        assertTrue(result.getOrNull()!!)
-    }
-
-    @Test
-    fun `persists the bottom sheet shown flag through the data store`() = runTest {
-        // Given
-        coEvery { dataStore.updateData(any()) } returns mockk()
-
-        // When
-        repository.markBottomSheetShown()
-
-        // Then
-        coVerify { dataStore.updateData(any()) }
     }
 
 }

@@ -397,28 +397,4 @@ internal class ContentSearchRepositoryImplTest {
         coVerify(atLeast = 2) { syncServiceWrapper.subscribeUser(wrapper) }
     }
 
-    @Test
-    fun `shouldShowMobileBottomSheet returns the sync service value`() = runTest(dispatcher) {
-        // Given
-        coEvery { syncServiceWrapper.shouldShowMobileSheet(wrapper) } returns true.right()
-
-        // When
-        val result = repository.shouldShowMobileBottomSheet(userId)
-
-        // Then
-        assertEquals(true, result)
-    }
-
-    @Test
-    fun `shouldShowMobileBottomSheet falls back to false when the sync service call fails`() = runTest(dispatcher) {
-        // Given
-        coEvery { syncServiceWrapper.shouldShowMobileSheet(wrapper) } returns DataError.Local.Unknown.left()
-
-        // When
-        val result = repository.shouldShowMobileBottomSheet(userId)
-
-        // Then
-        assertEquals(false, result)
-    }
-
 }

@@ -199,11 +199,6 @@ class ContentSearchRepositoryImpl @Inject constructor(
         ContentIndexingState.Idle
     }
 
-    override suspend fun shouldShowMobileBottomSheet(userId: UserId): Boolean =
-        executeWithUserSession(userId) { wrapper ->
-            syncService.shouldShowMobileSheet(wrapper)
-        }.flatten().getOrElse { false }
-
     private suspend fun readIndexingState(userId: UserId): ContentIndexingState? =
         executeWithUserSession(userId) { wrapper -> currentIndexingState(wrapper) }.getOrNull()
 
