@@ -73,6 +73,7 @@ import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
 import ch.protonmail.android.design.compose.component.ProtonSnackbarType
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -467,7 +468,7 @@ fun Home(
                     }
 
                     BottomSheetType.ContentSearch -> {
-                        contentSearchBottomSheetViewModel.markShown()
+                        contentSearchBottomSheetViewModel.submit(HomeContentSearchBottomSheetViewAction.Dismiss)
                     }
                 }
 
@@ -628,14 +629,21 @@ fun Home(
                     preventBottomSheetDismissal = true
                 }
 
-                is BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
+                BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
                     isMobileDataEnabled = isSearchMobileDataOn,
                     actions = ContentSearchBottomSheet.Actions(
                         onDismiss = {
+                            contentSearchBottomSheetViewModel.submit(
+                                HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser
+                            )
                             onBottomSheetDismissed()
                             preventBottomSheetDismissal = false
                         },
-                        onToggleMobileData = contentSearchBottomSheetViewModel::toggleMobileData
+                        onToggleMobileData = { enabled ->
+                            contentSearchBottomSheetViewModel.submit(
+                                HomeContentSearchBottomSheetViewAction.ToggleMobileData(enabled)
+                            )
+                        }
                     )
                 ).also {
                     preventBottomSheetDismissal = true
@@ -916,7 +924,15 @@ fun Home(
                                 onError = { message -> scope.launch { showErrorSnackbar(message) } }
                             )
                         )
-                        addFeatureSpotlight(onBack = { navController.navigateBack() })
+                        addFeatureSpotlight(
+                            onBack = { navController.navigateBack() },
+                            onTurnOn = {
+                                navController.navigateBack()
+                                contentSearchBottomSheetViewModel.submit(
+                                    HomeContentSearchBottomSheetViewAction.RequestToEnable
+                                )
+                            }
+                        )
                     }
                 }
 

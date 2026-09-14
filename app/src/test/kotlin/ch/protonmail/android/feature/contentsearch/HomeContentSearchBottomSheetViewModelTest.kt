@@ -20,13 +20,11 @@ package ch.protonmail.android.feature.contentsearch
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailcontentsearch.domain.usecase.HasShownContentSearchBottomSheet
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
+import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
-import ch.protonmail.android.mailcontentsearch.domain.usecase.MarkContentSearchBottomSheetShown
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
-import ch.protonmail.android.mailcontentsearch.domain.usecase.ShouldShowContentSearchBottomSheet
+import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -49,132 +47,59 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     private val mockObservePrimaryUserId = mockk<ObservePrimaryUserId> {
         coEvery { this@mockk.invoke() } returns flowOf(userId)
     }
-    private val mockIsContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled>()
-    private val mockObserveContentSearchEnabled = mockk<ObserveContentSearchEnabled>()
-    private val mockShouldShowContentSearchBottomSheet = mockk<ShouldShowContentSearchBottomSheet>()
-    private val mockHasShownContentSearchBottomSheet = mockk<HasShownContentSearchBottomSheet>()
-    private val mockMarkContentSearchBottomSheetShown = mockk<MarkContentSearchBottomSheetShown> {
-        coEvery { this@mockk.invoke() } returns Unit.right()
-    }
     private val mockIsContentSearchAllowedOnMobileData = mockk<IsContentSearchAllowedOnMobileData> {
         coEvery { this@mockk.invoke() } returns true
     }
     private val mockSetAllowContentSearchOnMobileData = mockk<SetAllowContentSearchOnMobileData>(
         relaxUnitFun = true
     )
+    private val mockEnableContentSearch = mockk<EnableContentSearch> {
+        coEvery { this@mockk.invoke(userId) } returns Unit.right()
+    }
+    private val mockStartContentIndexingForUser = mockk<StartContentIndexingForUser> {
+        coEvery { this@mockk.invoke(userId) } returns ContentIndexingStartOutcome.Started.right()
+    }
 
     @Test
-    fun `should emit Hide when the feature flag is disabled`() = runTest {
+    fun `should start hidden so it does not hold up the other home interstitials`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
+        val viewModel = buildViewModel()
 
+        // When/Then
+        assertEquals(ContentSearchBottomSheetState.Hide, viewModel.state.value)
+    }
+
+    @Test
+    fun `should show the sheet on an enable request`() = runTest {
+        // Given
         val viewModel = buildViewModel()
 
         // When/Then
         viewModel.state.test {
             assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
-        }
-    }
-
-    @Test
-    fun `should emit Hide when the bottom sheet was already shown`() = runTest {
-        // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
-        coEvery { mockHasShownContentSearchBottomSheet() } returns true
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
-            assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
-        }
-    }
-
-    @Test
-    fun `should emit Hide when content search is not enabled for the user`() = runTest {
-        // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
-        coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(false)
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
-            assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
-        }
-    }
-
-    @Test
-    fun `should emit Hide when should-show returns false`() = runTest {
-        // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
-        coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
-        coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns false
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
-            assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
-        }
-    }
-
-    @Test
-    fun `should emit Show when enabled, not yet shown and should-show returns true`() = runTest {
-        // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
-        coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
-        coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
-
-        val viewModel = buildViewModel()
-
-        // When/Then
-        viewModel.state.test {
+            viewModel.submit(HomeContentSearchBottomSheetViewAction.RequestToEnable)
             assertEquals(ContentSearchBottomSheetState.Show, awaitItem())
         }
     }
 
     @Test
-    fun `stops emitting Show after the sheet is marked shown so it does not re-fire on rotation`() = runTest {
+    fun `should stop offering the sheet once it has been dismissed`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
-        coEvery { mockObserveContentSearchEnabled(userId) } returns flowOf(true)
-        coEvery { mockShouldShowContentSearchBottomSheet(userId) } returns true
-        coEvery { mockHasShownContentSearchBottomSheet() } returnsMany listOf(false, true)
-
         val viewModel = buildViewModel()
 
         // When/Then
         viewModel.state.test {
+            assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
+            viewModel.submit(HomeContentSearchBottomSheetViewAction.RequestToEnable)
             assertEquals(ContentSearchBottomSheetState.Show, awaitItem())
-            viewModel.markShown()
+            viewModel.submit(HomeContentSearchBottomSheetViewAction.Dismiss)
             assertEquals(ContentSearchBottomSheetState.Hide, awaitItem())
         }
-    }
-
-    @Test
-    fun `markShown persists the bottom sheet as shown`() = runTest {
-        // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
-        val viewModel = buildViewModel()
-
-        // When
-        viewModel.markShown()
-
-        // Then
-        coVerify { mockMarkContentSearchBottomSheetShown() }
     }
 
     @Test
     fun `should seed the mobile data toggle from the stored preference`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockIsContentSearchAllowedOnMobileData() } returns false
 
         // When
@@ -187,17 +112,15 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     }
 
     @Test
-    fun `toggleMobileData persists the new value and reflects it immediately`() = runTest {
+    fun `toggling mobile data persists the new value and reflects it immediately`() = runTest {
         // Given
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
-        coEvery { mockHasShownContentSearchBottomSheet() } returns false
         coEvery { mockIsContentSearchAllowedOnMobileData() } returns true
         val viewModel = buildViewModel()
 
         // When
         viewModel.isMobileDataEnabled.test {
             assertEquals(true, awaitItem())
-            viewModel.toggleMobileData(false)
+            viewModel.submit(HomeContentSearchBottomSheetViewAction.ToggleMobileData(enabled = false))
 
             // Then
             assertEquals(false, awaitItem())
@@ -205,14 +128,24 @@ internal class HomeContentSearchBottomSheetViewModelTest {
         coVerify { mockSetAllowContentSearchOnMobileData(false) }
     }
 
+    @Test
+    fun `enabling for the primary user enables the account and starts indexing`() = runTest {
+        // Given
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.submit(HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser)
+
+        // Then
+        coVerify(exactly = 1) { mockEnableContentSearch(userId) }
+        coVerify(exactly = 1) { mockStartContentIndexingForUser(userId) }
+    }
+
     private fun buildViewModel() = HomeContentSearchBottomSheetViewModel(
         observePrimaryUserId = mockObservePrimaryUserId,
-        isContentSearchFeatureEnabled = mockIsContentSearchFeatureEnabled,
-        observeContentSearchEnabled = mockObserveContentSearchEnabled,
-        shouldShowContentSearchBottomSheet = mockShouldShowContentSearchBottomSheet,
-        hasShownContentSearchBottomSheet = mockHasShownContentSearchBottomSheet,
-        markContentSearchBottomSheetShown = mockMarkContentSearchBottomSheetShown,
         isContentSearchAllowedOnMobileData = mockIsContentSearchAllowedOnMobileData,
-        setAllowContentSearchOnMobileData = mockSetAllowContentSearchOnMobileData
+        setAllowContentSearchOnMobileData = mockSetAllowContentSearchOnMobileData,
+        enableContentSearch = mockEnableContentSearch,
+        startContentIndexingForUser = mockStartContentIndexingForUser
     )
 }
