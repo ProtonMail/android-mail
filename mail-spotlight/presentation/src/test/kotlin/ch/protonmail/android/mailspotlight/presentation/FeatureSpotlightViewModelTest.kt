@@ -23,20 +23,20 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
+import ch.protonmail.android.mailspotlight.presentation.model.HowItWorksStep
+import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewAction
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.AfterTest
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class FeatureSpotlightViewModelTest {
 
     @get:Rule
@@ -83,13 +83,56 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `onGotIt marks the spotlight as seen and emits close`() = runTest {
+    fun `howItWorksSteps contains the three steps in order`() {
+        val viewModel = buildViewModel()
+        assertEquals(
+            listOf(
+                HowItWorksStep(
+                    title = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_how_it_works_download_title
+                    ),
+                    description = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_how_it_works_download_subtitle
+                    )
+                ),
+                HowItWorksStep(
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_index_title),
+                    description = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_how_it_works_index_subtitle
+                    )
+                ),
+                HowItWorksStep(
+                    title = TextUiModel.TextRes(R.string.spotlight_screen_content_search_how_it_works_search_now_title),
+                    description = TextUiModel.TextRes(
+                        R.string.spotlight_screen_content_search_how_it_works_search_now_subtitle
+                    )
+                )
+            ),
+            viewModel.howItWorksSteps
+        )
+    }
+
+    @Test
+    fun `submitting turn on marks the spotlight as seen and reports turn on`() = runTest {
         coEvery { markFeatureSpotlightSeen() } returns Unit.right()
         val viewModel = buildViewModel()
 
-        viewModel.closeScreenEvent.test {
-            viewModel.onGotIt()
-            assertEquals(Unit, awaitItem())
+        viewModel.dismissEvent.test {
+            viewModel.submit(FeatureSpotlightViewAction.TurnOn)
+            assertEquals(FeatureSpotlightViewAction.TurnOn, awaitItem())
+        }
+
+        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
+    }
+
+    @Test
+    fun `submitting not now marks the spotlight as seen and reports not now`() = runTest {
+        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+        val viewModel = buildViewModel()
+
+        viewModel.dismissEvent.test {
+            viewModel.submit(FeatureSpotlightViewAction.NotNow)
+            assertEquals(FeatureSpotlightViewAction.NotNow, awaitItem())
         }
 
         coVerify(exactly = 1) { markFeatureSpotlightSeen() }

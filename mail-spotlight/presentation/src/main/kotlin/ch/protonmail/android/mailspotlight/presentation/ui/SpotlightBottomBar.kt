@@ -88,19 +88,6 @@ internal fun SpotlightBottomBar(actions: SpotlightActions, modifier: Modifier = 
 }
 
 @Composable
-internal fun SpotlightBottomBar(onGotIt: () -> Unit, modifier: Modifier = Modifier) {
-    PrimaryButton(
-        text = stringResource(R.string.spotlight_screen_got_it),
-        onClick = onGotIt,
-        modifier = modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .padding(horizontal = ProtonDimens.Spacing.Large)
-            .padding(bottom = ProtonDimens.Spacing.Large)
-    )
-}
-
-@Composable
 private fun LastPageActions(actions: SpotlightActions, isLandscape: Boolean) {
     val turnOn: @Composable (Modifier) -> Unit = { buttonModifier ->
         PrimaryButton(
