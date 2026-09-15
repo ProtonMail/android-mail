@@ -207,7 +207,8 @@ private fun StepRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(ProtonDimens.Spacing.Large),
+            .padding(horizontal = ProtonDimens.Spacing.Large)
+            .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Large),
         verticalAlignment = Alignment.Top
     ) {

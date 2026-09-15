@@ -108,7 +108,7 @@ private fun PortraitOverviewPage(featureItems: ImmutableList<FeatureItem>, modif
 
             WhatsNewPill()
 
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
 
             Text(
                 text = stringResource(R.string.spotlight_screen_content_search_title),
@@ -217,7 +217,8 @@ private fun FeatureRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(ProtonDimens.Spacing.Large),
+            .padding(horizontal = ProtonDimens.Spacing.Large)
+            .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Large),
         verticalAlignment = Alignment.Top
     ) {
