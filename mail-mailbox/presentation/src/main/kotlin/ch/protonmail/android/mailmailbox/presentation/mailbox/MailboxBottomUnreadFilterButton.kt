@@ -219,8 +219,8 @@ private fun pillItemExit(shrinkTowards: Alignment.Horizontal) =
 
 private const val PILL_ANIMATION_DURATION_MS = 200
 private val UnreadHeight = MailDimens.FloatingControlHeight
-private val CategoryUnreadBadgeHeight = 30.dp
-private val CategoryUnreadBadgeMinWidth = 30.dp
+private val CategoryUnreadBadgeHeight = 28.dp
+private val CategoryUnreadBadgeMinWidth = 28.dp
 
 @Preview(showBackground = true)
 @Composable
