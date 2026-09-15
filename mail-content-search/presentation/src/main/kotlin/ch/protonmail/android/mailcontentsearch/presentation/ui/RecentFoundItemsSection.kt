@@ -20,11 +20,13 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.R
@@ -63,7 +65,10 @@ internal fun RecentFoundItemsSection(
     }
 
     Column(modifier = modifier) {
-        SectionHeader(text = stringResource(R.string.content_search_previously_found_title))
+        SectionHeader(
+            text = stringResource(R.string.content_search_previously_found_title),
+            modifier = Modifier.padding(top = ProtonDimens.Spacing.Standard)
+        )
         items.forEach { found ->
             MailboxItem(
                 item = found.item,
