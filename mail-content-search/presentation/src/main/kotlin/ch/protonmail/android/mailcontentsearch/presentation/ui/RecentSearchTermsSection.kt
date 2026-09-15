@@ -73,7 +73,9 @@ internal fun LazyListScope.recentSearchTermsSection(terms: ImmutableList<String>
 @Composable
 private fun RecentSearchTermsHeader(onClearClicked: () -> Unit, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = ProtonDimens.Spacing.Standard),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SectionHeader(
