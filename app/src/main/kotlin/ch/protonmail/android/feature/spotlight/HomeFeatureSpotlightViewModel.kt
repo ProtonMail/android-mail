@@ -20,6 +20,8 @@ package ch.protonmail.android.feature.spotlight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
@@ -34,10 +36,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,7 +52,8 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val isRecentAppInstall: IsRecentAppInstall,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
-    observePrimaryUserId: ObservePrimaryUserId
+    private val dismissContentSearchPrompt: DismissContentSearchPrompt,
+    private val observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
     // Re-evaluate on primary user change, so the spotlight is only considered once a user is signed in.
@@ -85,4 +90,17 @@ class HomeFeatureSpotlightViewModel @Inject constructor(
             started = SharingStarted.Lazily,
             initialValue = FeatureSpotlightState.Loading
         )
+
+    /**
+     * Records that the primary account has answered the offer to turn content search on.
+     *
+     * The spotlight is that offer, and Turn on and Not now both answer it. The search screen reads
+     * the same flag, so it does not repeat the offer in its banner. The flag is per account: an
+     * account added later never saw this spotlight, so it still gets the banner.
+     */
+    fun onSpotlightAnswered() {
+        viewModelScope.launch {
+            dismissContentSearchPrompt(observePrimaryUserId().filterNotNull().first(), ContentSearchPrompt.SetUpOffer)
+        }
+    }
 }

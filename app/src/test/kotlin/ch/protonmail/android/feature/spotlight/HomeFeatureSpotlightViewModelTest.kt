@@ -23,6 +23,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
@@ -57,6 +59,9 @@ internal class HomeFeatureSpotlightViewModelTest {
     }
     private val mockObservePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
+    }
+    private val mockDismissContentSearchPrompt = mockk<DismissContentSearchPrompt> {
+        coEvery { this@mockk.invoke(any(), any()) } returns Unit.right()
     }
 
     @Test
@@ -178,12 +183,25 @@ internal class HomeFeatureSpotlightViewModelTest {
         }
     }
 
+    @Test
+    fun `should record the answer for the primary user when the spotlight is answered`() = runTest {
+        // Given
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.onSpotlightAnswered()
+
+        // Then
+        coVerify(exactly = 1) { mockDismissContentSearchPrompt(UserId("user-id"), ContentSearchPrompt.SetUpOffer) }
+    }
+
     private fun buildViewModel() = HomeFeatureSpotlightViewModel(
         observeFeatureSpotlightDisplay = mockObserveFeatureSpotlightDisplay,
         isEnabled = mockFeatureFlag,
         isContentSearchFeatureEnabled = mockIsContentSearchFeatureEnabled,
         isRecentAppInstall = mockIsRecentAppInstall,
         markFeatureSpotlightSeen = mockMarkFeatureSpotlightSeen,
+        dismissContentSearchPrompt = mockDismissContentSearchPrompt,
         observePrimaryUserId = mockObservePrimaryUserId
     )
 }

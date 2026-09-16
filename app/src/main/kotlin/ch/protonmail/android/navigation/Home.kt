@@ -926,8 +926,14 @@ fun Home(
                             )
                         )
                         addFeatureSpotlight(
-                            onBack = { navController.navigateBack() },
+                            // Either answer to the spotlight is an answer to the offer of content
+                            // search, so the search screen stops making it in its banner.
+                            onBack = {
+                                featureSpotlightViewModel.onSpotlightAnswered()
+                                navController.navigateBack()
+                            },
                             onTurnOn = {
+                                featureSpotlightViewModel.onSpotlightAnswered()
                                 navController.navigateBack()
                                 contentSearchBottomSheetViewModel.submit(
                                     HomeContentSearchBottomSheetViewAction.RequestToEnable
