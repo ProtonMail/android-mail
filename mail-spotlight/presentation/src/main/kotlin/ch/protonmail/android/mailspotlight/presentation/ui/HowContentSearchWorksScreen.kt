@@ -42,11 +42,25 @@ import kotlinx.collections.immutable.ImmutableList
  * That is the whole difference from the carousel's second page. See [LocalSpotlightCarousel].
  */
 @Composable
-internal fun HowContentSearchWorksScreen(
+fun HowContentSearchWorksScreen(
     onTurnOn: () -> Unit,
     onNotNow: () -> Unit,
-    modifier: Modifier = Modifier,
-    steps: ImmutableList<HowItWorksStep> = contentSearchHowItWorksSteps
+    modifier: Modifier = Modifier
+) {
+    HowContentSearchWorksScreen(
+        steps = contentSearchHowItWorksSteps,
+        onTurnOn = onTurnOn,
+        onNotNow = onNotNow,
+        modifier = modifier
+    )
+}
+
+@Composable
+internal fun HowContentSearchWorksScreen(
+    steps: ImmutableList<HowItWorksStep>,
+    onTurnOn: () -> Unit,
+    onNotNow: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val actions = SpotlightActions(onContinue = {}, onTurnOn = onTurnOn, onNotNow = onNotNow)
