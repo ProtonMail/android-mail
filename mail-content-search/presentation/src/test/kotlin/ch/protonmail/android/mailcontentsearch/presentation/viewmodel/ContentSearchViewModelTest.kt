@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer
@@ -139,6 +140,11 @@ internal class ContentSearchViewModelTest {
     private val observePageInvalidationEvents = mockk<ObservePageInvalidationEvents> {
         every { this@mockk.invoke() } returns emptyFlow()
     }
+    private val savedStateHandle = SavedStateHandle()
+    private val contentSearchEnabled = MutableStateFlow(true)
+    private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
+        every { this@mockk.invoke(any()) } returns contentSearchEnabled
+    }
     // The executor owns the conversation-vs-message fork and is covered by its own test, so the
     // view model is asserted against it rather than through it to the individual use cases.
     private val mailboxActionExecutor = mockk<MailboxActionExecutor> {
@@ -203,6 +209,7 @@ internal class ContentSearchViewModelTest {
             getCurrentViewModeForLabel = getCurrentViewModeForLabel,
             findLocalSystemLabelId = findLocalSystemLabelId,
             observePageInvalidationEvents = observePageInvalidationEvents,
+            observeContentSearchEnabled = observeContentSearchEnabled,
             mailboxActionExecutor = mailboxActionExecutor,
             bottomBarStateFactory = bottomBarStateFactory,
             getBottomSheetActions = getBottomSheetActions,
@@ -218,7 +225,7 @@ internal class ContentSearchViewModelTest {
             handleAvatarImageLoadingFailure = handleAvatarImageLoadingFailure,
             avatarImageUiModelMapper = avatarImageUiModelMapper,
             dispatchers = TestDispatcherProvider(),
-            savedStateHandle = SavedStateHandle()
+            savedStateHandle = savedStateHandle
         )
     }
 
@@ -690,6 +697,55 @@ internal class ContentSearchViewModelTest {
         assertEquals("", sut.queryState.text.toString())
         assertEquals("", sut.state.value.query)
         assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should go back to the idle page as soon as the set-up page asks to turn content search on`() =
+        runTest(testDispatcher) {
+            val sut = viewModel()
+            val collectingItems = launch { sut.items.collect() }
+            sut.type("invoice")
+            sut.submit(ContentSearchViewAction.Search)
+            advanceUntilIdle()
+
+            sut.submit(ContentSearchViewAction.TurnOnContentSearchRequested)
+            advanceUntilIdle()
+
+            assertEquals("", sut.queryState.text.toString())
+            assertEquals("", sut.state.value.query)
+            assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+            collectingItems.cancel()
+        }
+
+    @Test
+    fun `should go back to the idle page when content search is turned on`() = runTest(testDispatcher) {
+        contentSearchEnabled.value = false
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        contentSearchEnabled.value = true
+        advanceUntilIdle()
+
+        assertEquals("", sut.queryState.text.toString())
+        assertEquals("", sut.state.value.query)
+        assertEquals(ContentSearchState.Phase.Idle, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should keep the results when content search was already on`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        assertEquals("invoice", sut.state.value.query)
         collectingItems.cancel()
     }
 

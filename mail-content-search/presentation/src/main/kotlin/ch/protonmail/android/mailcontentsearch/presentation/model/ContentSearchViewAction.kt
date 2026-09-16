@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.model
 
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
+import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 
 sealed interface ContentSearchViewAction {
@@ -31,6 +32,9 @@ sealed interface ContentSearchViewAction {
     data object ClearQuery : ContentSearchViewAction
 
     data object ToggleIncludeSpamTrash : ContentSearchViewAction
+
+    /** The set-up page asked to turn content search on. See [TURN_ON_CONTENT_SEARCH_KEY]. */
+    data object TurnOnContentSearchRequested : ContentSearchViewAction
 
     data class ResultsLoaded(val count: Int) : ContentSearchViewAction
 

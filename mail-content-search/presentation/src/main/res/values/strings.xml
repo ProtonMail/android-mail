@@ -33,8 +33,11 @@
     <string name="content_search_bottomsheet_continue">Got it</string>
 
     <!-- Content search screen -->
-    <string name="content_search_no_results_title">No results</string>
+    <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
     <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
+    <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
+    <string name="content_search_no_results_learn_more">Learn more</string>
+    <string name="content_search_no_results_set_up_action">Set up content search</string>
     <string name="content_search_placeholder_text">Search</string>
     <string name="content_search_clear_query_content_description">Clear search query</string>
     <string name="content_search_close_content_description">Close search</string>

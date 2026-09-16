@@ -19,8 +19,10 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -31,6 +33,8 @@ import ch.protonmail.android.design.compose.navigation.get
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
+import ch.protonmail.android.feature.contentsearch.ContentSearchEnableSheetHost
+import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
@@ -440,32 +444,47 @@ internal fun NavGraphBuilder.addContentSearchScreen(
     showSnackbar: (type: SnackbarType) -> Unit,
     snackbarHeight: () -> Dp = { 0.dp }
 ) {
-    composableWithTransitions(route = Destination.Screen.ContentSearch.route) {
-        ContentSearchScreen(
-            ContentSearchScreenActions(
-                showSnackbar = showSnackbar,
-                snackbarHeight = snackbarHeight,
-                onClose = { navController.navigateBack() },
-                onSeeIndexingDetails = {
-                    navController.navigate(Destination.Screen.ContentSearchSettings.route)
-                },
-                onOpenItem = { request ->
-                    val destination = when (request.shouldOpenInComposer) {
-                        true -> Destination.Screen.EditDraftComposer(request.messageId)
-                        false -> Destination.Screen.Conversation(
-                            conversationId = request.conversationId,
-                            scrollToMessageId = request.messageId,
-                            openedFromLocation = request.openedFromLocation,
-                            openedFromCategory = null,
-                            locationViewModeIsConversation = request.isConversationGrouping,
-                            entryPoint = ConversationDetailEntryPoint.Mailbox,
-                            searchQuery = request.searchQuery
-                        )
+    composableWithTransitions(route = Destination.Screen.ContentSearch.route) { entry ->
+        // The set-up page leaves its request here on the way out, so the sheet comes up over the
+        // results, once that page is gone.
+        val turnOnRequested by entry.savedStateHandle
+            .getStateFlow(TURN_ON_CONTENT_SEARCH_KEY, false)
+            .collectAsStateWithLifecycle()
+
+        ContentSearchEnableSheetHost(
+            showRequested = turnOnRequested,
+            onDismissed = { entry.savedStateHandle[TURN_ON_CONTENT_SEARCH_KEY] = false }
+        ) {
+            ContentSearchScreen(
+                ContentSearchScreenActions(
+                    showSnackbar = showSnackbar,
+                    snackbarHeight = snackbarHeight,
+                    onClose = { navController.navigateBack() },
+                    onSeeIndexingDetails = {
+                        navController.navigate(Destination.Screen.ContentSearchSettings.route)
+                    },
+                    onSetUpContentSearch = {
+                        navController.navigate(Destination.Screen.ContentSearchSetUp.route)
+                    },
+                    onOpenItem = { request ->
+                        val destination = when (request.shouldOpenInComposer) {
+                            true -> Destination.Screen.EditDraftComposer(request.messageId)
+                            false -> Destination.Screen.Conversation(
+                                conversationId = request.conversationId,
+                                scrollToMessageId = request.messageId,
+                                openedFromLocation = request.openedFromLocation,
+                                openedFromCategory = null,
+                                locationViewModeIsConversation = request.isConversationGrouping,
+                                entryPoint = ConversationDetailEntryPoint.Mailbox,
+                                searchQuery = request.searchQuery
+                            )
+                        }
+                        navController.navigate(destination)
                     }
-                    navController.navigate(destination)
-                }
+                ),
+                turnOnContentSearchRequested = turnOnRequested
             )
-        )
+        }
     }
 }
 

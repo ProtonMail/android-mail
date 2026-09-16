@@ -41,10 +41,20 @@ data class OpenSearchResultRequest(
     val shouldOpenInComposer: Boolean
 )
 
+/**
+ * Key the set-up page leaves on the search screen's back stack entry to ask for content search to be
+ * turned on.
+ *
+ * The screen reacts to it twice over: it resets itself, so the results found without content search
+ * don't sit there as if they were the answer, and it puts up the sheet that does the turning on.
+ */
+const val TURN_ON_CONTENT_SEARCH_KEY = "turnOnContentSearch"
+
 data class ContentSearchScreenActions(
     val onClose: () -> Unit,
     val onOpenItem: (request: OpenSearchResultRequest) -> Unit,
     val onSeeIndexingDetails: () -> Unit,
+    val onSetUpContentSearch: () -> Unit,
     val showSnackbar: (SnackbarType) -> Unit,
     val snackbarHeight: () -> Dp = { 0.dp }
 )
