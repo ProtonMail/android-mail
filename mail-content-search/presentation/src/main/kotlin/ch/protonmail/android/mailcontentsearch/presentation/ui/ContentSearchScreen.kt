@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
@@ -122,6 +123,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     val recentsState by recentsViewModel.state.collectAsStateWithLifecycle()
     val indexingState by indexingViewModel.state.collectAsStateWithLifecycle()
     val canSetUpContentSearch by setUpPromptViewModel.canSetUpContentSearch.collectAsStateWithLifecycle()
+    val showSetUpBanner by setUpPromptViewModel.showSetUpBanner.collectAsStateWithLifecycle()
     val items = viewModel.items.collectAsLazyPagingItems()
 
     LaunchedEffect(turnOnContentSearchRequested) {
@@ -186,11 +188,14 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     val uriHandler = LocalUriHandler.current
     val learnMoreLink = stringResource(id = R.string.content_search_learn_more_link)
 
+    val dismissSetUpBannerIfShown = { if (showSetUpBanner) setUpPromptViewModel.dismissSetUpBanner() }
+
     ContentSearchScreen(
         state = state,
         recentsState = recentsState,
         indexingState = indexingState,
         canSetUpContentSearch = canSetUpContentSearch,
+        showSetUpBanner = showSetUpBanner,
         items = items,
         queryState = viewModel.queryState,
         snackbarHeight = snackbarHeight(),
@@ -232,13 +237,26 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
         ),
         actions = ContentSearchActions(
             onClose = onClose,
-            onSearch = { viewModel.submit(ContentSearchViewAction.Search) },
-            onSuggestionSelected = { viewModel.submit(ContentSearchViewAction.SuggestionSelected(it)) },
+            // Searching answers the offer as much as the banner's own buttons do: the user has seen
+            // it and moved on, so record the dismissal and stop asking.
+            onSearch = {
+                dismissSetUpBannerIfShown()
+                viewModel.submit(ContentSearchViewAction.Search)
+            },
+            onSuggestionSelected = {
+                dismissSetUpBannerIfShown()
+                viewModel.submit(ContentSearchViewAction.SuggestionSelected(it))
+            },
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
             onToggleIncludeSpamTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpamTrash) },
             onSeeIndexingDetails = actions.onSeeIndexingDetails,
             onLearnMoreAboutContentSearch = { uriHandler.openUri(learnMoreLink) },
             onSetUpContentSearch = actions.onSetUpContentSearch,
+            onSetUpFromBanner = {
+                setUpPromptViewModel.dismissSetUpBanner()
+                actions.onSetUpContentSearch()
+            },
+            onDismissSetUpBanner = { setUpPromptViewModel.dismissSetUpBanner() },
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -317,6 +335,7 @@ private fun ContentSearchScreen(
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
     canSetUpContentSearch: Boolean = false,
+    showSetUpBanner: Boolean = false,
     snackbarHeight: Dp = 0.dp,
     consumeAutoFocus: () -> Boolean = { false }
 ) {
@@ -385,6 +404,7 @@ private fun ContentSearchScreen(
                     recentsState = recentsState,
                     indexingState = indexingState,
                     canSetUpContentSearch = canSetUpContentSearch,
+                    showSetUpBanner = showSetUpBanner,
                     items = items,
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
@@ -422,6 +442,7 @@ private fun ContentSearchBody(
     recentsState: RecentSearchesState,
     indexingState: IndexingProgressState,
     canSetUpContentSearch: Boolean,
+    showSetUpBanner: Boolean,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
@@ -438,16 +459,36 @@ private fun ContentSearchBody(
             onSeeDetailsClick = actions.onSeeIndexingDetails,
             modifier = modifier
         ) { pageModifier, bannerHeight ->
-            ContentSearchIdlePage(
-                state = state,
-                recentsState = recentsState,
-                isQueryEmpty = isQueryEmpty,
-                actions = actions,
-                recentsActions = recentsActions,
-                listState = recentsListState,
-                modifier = pageModifier,
-                firstRunBottomPadding = bannerHeight
-            )
+            val imeInsets = WindowInsets.ime
+
+            Box(modifier = pageModifier) {
+                ContentSearchIdlePage(
+                    state = state,
+                    recentsState = recentsState,
+                    isQueryEmpty = isQueryEmpty,
+                    actions = actions,
+                    recentsActions = recentsActions,
+                    listState = recentsListState,
+                    modifier = Modifier.fillMaxSize(),
+                    firstRunBottomPadding = bannerHeight
+                )
+
+                // An overlay just under the search bar, so the first-run state stays centred in
+                // the same place whether or not the offer is showing. Only over an empty page: an
+                // overlay covers the search history, which is what the user came to tap.
+                if (showSetUpBanner && recentsState is RecentSearchesState.Empty) {
+                    ContentSearchSetUpBanner(
+                        actions = ContentSearchSetUpBannerActions(
+                            onTurnOn = actions.onSetUpFromBanner,
+                            onNotNow = actions.onDismissSetUpBanner,
+                            onLearnMore = actions.onLearnMoreAboutContentSearch
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .droppedWhenItDoesNotFit(imeInsets)
+                    )
+                }
+            }
         }
 
         ContentSearchState.Phase.Loading -> Column(
@@ -557,6 +598,24 @@ private fun PageWithIndexingBanner(
 }
 
 /**
+ * Drops the banner when the page has no room for it, instead of letting it run off the page.
+ *
+ * The keyboard and a large font scale both take room away, and the banner grows with the font scale
+ * at the same time. Measuring it against what the page actually has beats guessing a minimum
+ * height. The window is edge to edge, so the keyboard's inset comes off the page height by hand.
+ */
+private fun Modifier.droppedWhenItDoesNotFit(imeInsets: WindowInsets) = layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    val uncovered = (constraints.maxHeight - imeInsets.getBottom(this)).coerceAtLeast(0)
+    val room = (uncovered * MAX_BANNER_PAGE_FRACTION).roundToInt()
+    val fits = placeable.height <= room
+
+    layout(width = if (fits) placeable.width else 0, height = if (fits) placeable.height else 0) {
+        if (fits) placeable.place(0, 0)
+    }
+}
+
+/**
  * Drops [this] when the room left is shorter than its content needs.
  *
  * The first-run state is centred artwork that cannot shrink. A centred child that does not fit is
@@ -569,6 +628,10 @@ private fun Modifier.droppedWhenThereIsNoRoom() = layout { measurable, constrain
     val placeable = measurable.measure(constraints)
     layout(placeable.width, placeable.height) { placeable.place(0, 0) }
 }
+
+// How much of the page a banner may take before it is dropped. It is an overlay, so anything it
+// covers is out of reach while it is up.
+private const val MAX_BANNER_PAGE_FRACTION = 0.75f
 
 /**
  * The page shown while no search is running: the history, or the first-run state when there is none.

@@ -19,10 +19,15 @@
 package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchPromptDismissed
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
+import arrow.core.right
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -49,6 +54,12 @@ internal class ContentSearchSetUpPromptViewModelTest {
         every { this@mockk() } returns flowOf(userId)
     }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled>()
+    private val observeContentSearchPromptDismissed = mockk<ObserveContentSearchPromptDismissed> {
+        every { this@mockk(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
+    }
+    private val dismissContentSearchPrompt = mockk<DismissContentSearchPrompt> {
+        coEvery { this@mockk(userId, ContentSearchPrompt.SetUpOffer) } returns Unit.right()
+    }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled>()
 
     @BeforeTest
@@ -101,9 +112,66 @@ internal class ContentSearchSetUpPromptViewModelTest {
         }
     }
 
+    @Test
+    fun `shows the banner when the account has not answered the offer yet`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().showSetUpBanner.test {
+            // Then
+            assertEquals(true, awaitItem())
+        }
+    }
+
+    @Test
+    fun `hides the banner once the account has answered the offer`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(true)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().showSetUpBanner.test {
+            // Then
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `hides the banner when content search is already on`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(true)
+        every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().showSetUpBanner.test {
+            // Then
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `records the answer for the primary account when the banner is dismissed`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().dismissSetUpBanner()
+
+        // Then
+        coVerify { dismissContentSearchPrompt(userId, ContentSearchPrompt.SetUpOffer) }
+    }
+
     private fun viewModel() = ContentSearchSetUpPromptViewModel(
         observePrimaryUserId = observePrimaryUserId,
         observeContentSearchEnabled = observeContentSearchEnabled,
+        observeContentSearchPromptDismissed = observeContentSearchPromptDismissed,
+        dismissContentSearchPrompt = dismissContentSearchPrompt,
         isContentSearchFeatureEnabled = isContentSearchFeatureEnabled
     )
 }

@@ -20,40 +20,79 @@ package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchPromptDismissed
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Whether the search screen may offer to set content search up for the primary account.
+ * Whether, and how, the search screen may offer to set content search up for the primary account.
  *
  * Content search already on, unavailable on this build, or unavailable on a 32-bit device all read
  * as nothing to offer.
+ *
+ * The empty results always carry the offer. The banner only carries it until the account answers,
+ * here or from the feature spotlight.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ContentSearchSetUpPromptViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserIdWithValidSession,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
+    private val observeContentSearchPromptDismissed: ObserveContentSearchPromptDismissed,
+    private val dismissContentSearchPrompt: DismissContentSearchPrompt,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled
 ) : ViewModel() {
 
-    val canSetUpContentSearch: StateFlow<Boolean> = observePrimaryUserId()
+    private val primaryUserId = observePrimaryUserId()
         .filterNotNull()
         .distinctUntilChanged()
+
+    val canSetUpContentSearch: StateFlow<Boolean> = primaryUserId
         .flatMapLatest { userId -> observeContentSearchEnabled(userId) }
         .distinctUntilChanged()
         .map { isEnabled -> !isEnabled && isContentSearchFeatureEnabled() }
         .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), false)
+
+    val showSetUpBanner: StateFlow<Boolean> = primaryUserId
+        .flatMapLatest { userId ->
+            combine(
+                observeContentSearchEnabled(userId),
+                observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer)
+            ) { isEnabled, isDismissed ->
+                !isEnabled && !isDismissed && isContentSearchFeatureEnabled()
+            }
+        }
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), false)
+
+    /**
+     * Records that the primary account has answered the offer, so the banner stops asking.
+     *
+     * Both of the banner's actions answer it. Turning content search on from the empty results does
+     * not: that offer has no dismissal to remember.
+     */
+    fun dismissSetUpBanner() {
+        viewModelScope.launch {
+            dismissContentSearchPrompt(primaryUserId.first(), ContentSearchPrompt.SetUpOffer)
+        }
+    }
 }
+
+private const val SUBSCRIPTION_TIMEOUT_MILLIS = 5_000L
