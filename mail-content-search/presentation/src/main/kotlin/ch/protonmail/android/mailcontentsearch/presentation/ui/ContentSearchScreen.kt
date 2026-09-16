@@ -124,6 +124,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     val indexingState by indexingViewModel.state.collectAsStateWithLifecycle()
     val canSetUpContentSearch by setUpPromptViewModel.canSetUpContentSearch.collectAsStateWithLifecycle()
     val showSetUpBanner by setUpPromptViewModel.showSetUpBanner.collectAsStateWithLifecycle()
+    val showIndexingComplete by indexingViewModel.showIndexingComplete.collectAsStateWithLifecycle()
     val items = viewModel.items.collectAsLazyPagingItems()
 
     LaunchedEffect(turnOnContentSearchRequested) {
@@ -196,6 +197,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
         indexingState = indexingState,
         canSetUpContentSearch = canSetUpContentSearch,
         showSetUpBanner = showSetUpBanner,
+        showIndexingComplete = showIndexingComplete,
         items = items,
         queryState = viewModel.queryState,
         snackbarHeight = snackbarHeight(),
@@ -257,6 +259,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
                 actions.onSetUpContentSearch()
             },
             onDismissSetUpBanner = { setUpPromptViewModel.dismissSetUpBanner() },
+            onDismissIndexingComplete = { indexingViewModel.dismissIndexingComplete() },
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -336,6 +339,7 @@ private fun ContentSearchScreen(
     recentsActions: RecentSearchesActions,
     canSetUpContentSearch: Boolean = false,
     showSetUpBanner: Boolean = false,
+    showIndexingComplete: Boolean = false,
     snackbarHeight: Dp = 0.dp,
     consumeAutoFocus: () -> Boolean = { false }
 ) {
@@ -405,6 +409,7 @@ private fun ContentSearchScreen(
                     indexingState = indexingState,
                     canSetUpContentSearch = canSetUpContentSearch,
                     showSetUpBanner = showSetUpBanner,
+                    showIndexingComplete = showIndexingComplete,
                     items = items,
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
@@ -443,6 +448,7 @@ private fun ContentSearchBody(
     indexingState: IndexingProgressState,
     canSetUpContentSearch: Boolean,
     showSetUpBanner: Boolean,
+    showIndexingComplete: Boolean,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
@@ -483,6 +489,17 @@ private fun ContentSearchBody(
                             onNotNow = actions.onDismissSetUpBanner,
                             onLearnMore = actions.onLearnMoreAboutContentSearch
                         ),
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .droppedWhenItDoesNotFit(imeInsets)
+                    )
+                }
+
+                // The note about indexing being done sits over the history too. It is one button,
+                // and tapping it is what stops the note coming back, so it is not in the way for long.
+                if (showIndexingComplete) {
+                    ContentSearchIndexingCompleteBanner(
+                        onGotIt = actions.onDismissIndexingComplete,
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .droppedWhenItDoesNotFit(imeInsets)
