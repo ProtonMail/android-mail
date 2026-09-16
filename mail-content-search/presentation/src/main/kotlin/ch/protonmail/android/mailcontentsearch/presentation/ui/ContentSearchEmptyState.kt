@@ -35,15 +35,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonSecondaryButton
@@ -72,7 +66,10 @@ internal fun ContentSearchNoResultsState(
         iconRes = R.drawable.ic_search_empty_result,
         title = stringResource(R.string.content_search_no_results_title_for_query, query),
         description = if (canSetUpContentSearch) {
-            setUpDescription(onLearnMoreClick = actions.onLearnMore)
+            withLearnMoreLink(
+                description = stringResource(R.string.content_search_no_results_set_up_description),
+                onLearnMoreClick = actions.onLearnMore
+            )
         } else {
             AnnotatedString(stringResource(R.string.content_search_no_results_description))
         },
@@ -92,30 +89,6 @@ internal data class ContentSearchNoResultsActions(
     val onLearnMore: () -> Unit,
     val onSetUpContentSearch: () -> Unit
 )
-
-/** The invitation to turn content search on, with "Learn more" linking to the support page. */
-@Composable
-private fun setUpDescription(onLearnMoreClick: () -> Unit): AnnotatedString {
-    val description = stringResource(R.string.content_search_no_results_set_up_description)
-    val learnMore = stringResource(R.string.content_search_no_results_learn_more)
-    val linkColor = ProtonTheme.colors.textAccent
-
-    return buildAnnotatedString {
-        append(description)
-        append(" ")
-        withLink(
-            LinkAnnotation.Clickable(
-                tag = "learn_more",
-                styles = TextLinkStyles(
-                    style = SpanStyle(color = linkColor, textDecoration = TextDecoration.None)
-                ),
-                linkInteractionListener = { onLearnMoreClick() }
-            )
-        ) {
-            append(learnMore)
-        }
-    }
-}
 
 @Composable
 private fun SetUpContentSearchButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
