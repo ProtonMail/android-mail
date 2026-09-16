@@ -125,6 +125,7 @@ import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addContentSearchScreen
+import ch.protonmail.android.navigation.route.addContentSearchSetUp
 import ch.protonmail.android.navigation.route.addContentSearchSettings
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addCustomizeToolbarSettings
@@ -933,6 +934,7 @@ fun Home(
                                 )
                             }
                         )
+                        addContentSearchSetUp(navController)
                     }
                 }
 

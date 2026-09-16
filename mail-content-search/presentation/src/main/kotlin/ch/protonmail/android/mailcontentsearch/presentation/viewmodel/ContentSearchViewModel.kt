@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
@@ -122,6 +123,7 @@ class ContentSearchViewModel @Inject constructor(
     private val getCurrentViewModeForLabel: GetCurrentViewModeForLabel,
     private val findLocalSystemLabelId: FindLocalSystemLabelId,
     private val observePageInvalidationEvents: ObservePageInvalidationEvents,
+    private val observeContentSearchEnabled: ObserveContentSearchEnabled,
     private val mailboxActionExecutor: MailboxActionExecutor,
     private val bottomBarStateFactory: BottomBarStateFactory,
     private val getBottomSheetActions: GetBottomSheetActions,
@@ -192,6 +194,15 @@ class ContentSearchViewModel @Inject constructor(
 
         observePageInvalidationEvents()
             .onEach { applyOperation(ContentSearchOperation.ReloadResults) }
+            .launchIn(viewModelScope)
+
+        observePrimaryUserId()
+            .filterNotNull()
+            .distinctUntilChanged()
+            .flatMapLatest { userId -> observeContentSearchEnabled(userId) }
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach { isEnabled -> if (isEnabled) clearQuery() }
             .launchIn(viewModelScope)
 
         // Kept off the [items] flow so editing the field has these effects even while nothing is
@@ -313,6 +324,9 @@ class ContentSearchViewModel @Inject constructor(
             ContentSearchViewAction.Search -> submitSearch(queryState.text.toString())
             is ContentSearchViewAction.SuggestionSelected -> setQuery(action.query)
             ContentSearchViewAction.ClearQuery -> clearQuery()
+            // Resetting here, rather than once content search is actually on, puts the idle page
+            // behind the sheet that turns it on instead of results the user is about to lose.
+            ContentSearchViewAction.TurnOnContentSearchRequested -> clearQuery()
             ContentSearchViewAction.ToggleIncludeSpamTrash -> toggleInclude()
             is ContentSearchViewAction.ResultsLoaded -> onResultsLoaded(action.count)
             is ContentSearchViewAction.StarAction -> handleStarAction(action)

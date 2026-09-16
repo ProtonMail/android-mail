@@ -254,6 +254,8 @@ sealed class Destination(val route: String) {
         }
 
         object FeatureSpotlight : Destination("featureSpotlight")
+
+        object ContentSearchSetUp : Destination("contentSearch/setUp")
     }
 
     object Dialog {

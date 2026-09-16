@@ -55,6 +55,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -86,6 +87,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchV
 import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesViewAction
+import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchSetUpPromptViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.IndexingProgressViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.RecentSearchesViewModel
@@ -94,8 +96,15 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.flowOf
 
+/**
+ * The search screen.
+ *
+ * [turnOnContentSearchRequested] carries the set-up page's request back in, as the view model cannot
+ * read it itself. Its own [androidx.lifecycle.SavedStateHandle] is a different instance from the one
+ * on the navigation entry the set-up page writes to. See [TURN_ON_CONTENT_SEARCH_KEY].
+ */
 @Composable
-fun ContentSearchScreen(actions: ContentSearchScreenActions) {
+fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearchRequested: Boolean = false) {
     val onClose = actions.onClose
     val onOpenItem = actions.onOpenItem
     val showSnackbar = actions.showSnackbar
@@ -103,10 +112,18 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
     val viewModel: ContentSearchViewModel = hiltViewModel()
     val recentsViewModel: RecentSearchesViewModel = hiltViewModel()
     val indexingViewModel: IndexingProgressViewModel = hiltViewModel()
+    val setUpPromptViewModel: ContentSearchSetUpPromptViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val recentsState by recentsViewModel.state.collectAsStateWithLifecycle()
     val indexingState by indexingViewModel.state.collectAsStateWithLifecycle()
+    val canSetUpContentSearch by setUpPromptViewModel.canSetUpContentSearch.collectAsStateWithLifecycle()
     val items = viewModel.items.collectAsLazyPagingItems()
+
+    LaunchedEffect(turnOnContentSearchRequested) {
+        if (turnOnContentSearchRequested) {
+            viewModel.submit(ContentSearchViewAction.TurnOnContentSearchRequested)
+        }
+    }
 
     LaunchedEffect(items.itemCount, items.loadState.refresh) {
         if (items.loadState.refresh is LoadState.NotLoading) {
@@ -161,10 +178,14 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
         items.refresh()
     }
 
+    val uriHandler = LocalUriHandler.current
+    val learnMoreLink = stringResource(id = R.string.content_search_learn_more_link)
+
     ContentSearchScreen(
         state = state,
         recentsState = recentsState,
         indexingState = indexingState,
+        canSetUpContentSearch = canSetUpContentSearch,
         items = items,
         queryState = viewModel.queryState,
         snackbarHeight = snackbarHeight(),
@@ -211,6 +232,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions) {
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
             onToggleIncludeSpamTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpamTrash) },
             onSeeIndexingDetails = actions.onSeeIndexingDetails,
+            onLearnMoreAboutContentSearch = { uriHandler.openUri(learnMoreLink) },
+            onSetUpContentSearch = actions.onSetUpContentSearch,
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -288,6 +311,7 @@ private fun ContentSearchScreen(
     queryState: TextFieldState,
     actions: ContentSearchActions,
     recentsActions: RecentSearchesActions,
+    canSetUpContentSearch: Boolean = false,
     snackbarHeight: Dp = 0.dp,
     consumeAutoFocus: () -> Boolean = { false }
 ) {
@@ -355,6 +379,7 @@ private fun ContentSearchScreen(
                     state = state,
                     recentsState = recentsState,
                     indexingState = indexingState,
+                    canSetUpContentSearch = canSetUpContentSearch,
                     items = items,
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
@@ -391,6 +416,7 @@ private fun ContentSearchBody(
     state: ContentSearchState,
     recentsState: RecentSearchesState,
     indexingState: IndexingProgressState,
+    canSetUpContentSearch: Boolean,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
@@ -431,10 +457,13 @@ private fun ContentSearchBody(
                 onSeeDetailsClick = actions.onSeeIndexingDetails,
                 modifier = modifier
             ) { pageModifier, bannerHeight ->
-                SearchMessageState(
-                    iconRes = R.drawable.ic_search_empty_result,
-                    title = stringResource(R.string.content_search_no_results_title),
-                    description = stringResource(R.string.content_search_no_results_description),
+                ContentSearchNoResultsState(
+                    query = state.query,
+                    canSetUpContentSearch = canSetUpContentSearch,
+                    actions = ContentSearchNoResultsActions(
+                        onLearnMore = actions.onLearnMoreAboutContentSearch,
+                        onSetUpContentSearch = actions.onSetUpContentSearch
+                    ),
                     modifier = pageModifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
                         .padding(bottom = bannerHeight)
