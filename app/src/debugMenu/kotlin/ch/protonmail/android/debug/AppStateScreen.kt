@@ -18,29 +18,37 @@
 
 package ch.protonmail.android.debug
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.R
+import ch.protonmail.android.debug.AppStateViewModel.DebugAccount
+import ch.protonmail.android.debug.AppStateViewModel.Reset
 import ch.protonmail.android.debug.AppStateViewModel.ResetTarget
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import kotlinx.coroutines.delay
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import me.proton.core.domain.entity.UserId
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.delay
 
 @Composable
 internal fun AppStateScreen(
@@ -48,29 +56,33 @@ internal fun AppStateScreen(
     onBackClick: () -> Unit,
     viewModel: AppStateViewModel = hiltViewModel()
 ) {
-    val resetCounts = remember { mutableStateMapOf<ResetTarget, Int>() }
+    val resetCounts = remember { mutableStateMapOf<Reset, Int>() }
+    val accounts by viewModel.accounts.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
-        viewModel.resets.collect { target ->
-            resetCounts[target] = (resetCounts[target] ?: 0) + 1
+        viewModel.resets.collect { reset ->
+            resetCounts[reset] = (resetCounts[reset] ?: 0) + 1
         }
     }
 
     AppStateScreen(
         modifier = modifier,
         resetCounts = resetCounts,
+        accounts = accounts,
         actions = AppStateScreen.Actions(
             onBackClick = onBackClick,
             onResetOnboarding = { viewModel.resetOnboarding() },
             onResetFeatureSpotlight = { viewModel.resetFeatureSpotlight() },
-            onResetNotificationPrompt = { viewModel.resetNotificationPrompt() }
+            onResetNotificationPrompt = { viewModel.resetNotificationPrompt() },
+            onResetContentSearchPrompt = { userId, prompt -> viewModel.resetContentSearchPrompt(userId, prompt) }
         )
     )
 }
 
 @Composable
 private fun AppStateScreen(
-    resetCounts: Map<ResetTarget, Int>,
+    resetCounts: Map<Reset, Int>,
+    accounts: List<DebugAccount>,
     actions: AppStateScreen.Actions,
     modifier: Modifier = Modifier
 ) {
@@ -84,24 +96,60 @@ private fun AppStateScreen(
                 icon = R.drawable.ic_proton_rocket,
                 title = R.string.app_debug_screen_app_state_reset_onboarding_title,
                 description = R.string.app_debug_screen_app_state_reset_onboarding_description,
-                trailing = { ResetConfirmation(resetCounts[ResetTarget.Onboarding] ?: 0) },
+                trailing = { ResetConfirmation(resetCounts[Reset(ResetTarget.Onboarding)] ?: 0) },
                 onClick = actions.onResetOnboarding
             )
             DebugMenuRow(
                 icon = R.drawable.ic_proton_lightbulb,
                 title = R.string.app_debug_screen_app_state_reset_spotlight_title,
                 description = R.string.app_debug_screen_app_state_reset_spotlight_description,
-                trailing = { ResetConfirmation(resetCounts[ResetTarget.FeatureSpotlight] ?: 0) },
+                trailing = { ResetConfirmation(resetCounts[Reset(ResetTarget.FeatureSpotlight)] ?: 0) },
                 onClick = actions.onResetFeatureSpotlight
             )
             DebugMenuRow(
                 icon = R.drawable.ic_proton_bell,
                 title = R.string.app_debug_screen_app_state_reset_notifications_title,
                 description = R.string.app_debug_screen_app_state_reset_notifications_description,
-                trailing = { ResetConfirmation(resetCounts[ResetTarget.NotificationPrompt] ?: 0) },
+                trailing = { ResetConfirmation(resetCounts[Reset(ResetTarget.NotificationPrompt)] ?: 0) },
                 onClick = actions.onResetNotificationPrompt
             )
         }
+
+        // One group per banner, with a row per account: each account answers each banner for itself.
+        contentSearchPromptSection(
+            title = R.string.app_debug_screen_app_state_reset_cs_intro_banner,
+            prompt = ContentSearchPrompt.SetUpOffer,
+            accounts = accounts,
+            resetCounts = resetCounts,
+            onReset = actions.onResetContentSearchPrompt
+        )
+        contentSearchPromptSection(
+            title = R.string.app_debug_screen_app_state_reset_cs_done_banner,
+            prompt = ContentSearchPrompt.IndexingComplete,
+            accounts = accounts,
+            resetCounts = resetCounts,
+            onReset = actions.onResetContentSearchPrompt
+        )
+    }
+}
+
+/** The accounts whose answer to one of the search screen's banners can be cleared. */
+private fun LazyListScope.contentSearchPromptSection(
+    @StringRes title: Int,
+    prompt: ContentSearchPrompt,
+    accounts: List<DebugAccount>,
+    resetCounts: Map<Reset, Int>,
+    onReset: (UserId, ContentSearchPrompt) -> Unit
+) = debugMenuSection(title = title) {
+    accounts.forEach { account ->
+        DebugMenuRow(
+            icon = R.drawable.ic_proton_magnifier,
+            title = account.label,
+            trailing = {
+                ResetConfirmation(resetCounts[Reset(ResetTarget.ContentSearchPrompt, account.userId, prompt)] ?: 0)
+            },
+            onClick = { onReset(account.userId, prompt) }
+        )
     }
 }
 
@@ -141,7 +189,8 @@ object AppStateScreen {
         val onBackClick: () -> Unit,
         val onResetOnboarding: () -> Unit,
         val onResetFeatureSpotlight: () -> Unit,
-        val onResetNotificationPrompt: () -> Unit
+        val onResetNotificationPrompt: () -> Unit,
+        val onResetContentSearchPrompt: (UserId, ContentSearchPrompt) -> Unit
     ) {
 
         companion object {
@@ -150,7 +199,8 @@ object AppStateScreen {
                 onBackClick = {},
                 onResetOnboarding = {},
                 onResetFeatureSpotlight = {},
-                onResetNotificationPrompt = {}
+                onResetNotificationPrompt = {},
+                onResetContentSearchPrompt = { _, _ -> }
             )
         }
     }
@@ -161,7 +211,8 @@ object AppStateScreen {
 private fun AppStateScreenPreview() {
     ProtonTheme {
         AppStateScreen(
-            resetCounts = mapOf(ResetTarget.Onboarding to 1),
+            resetCounts = mapOf(Reset(ResetTarget.Onboarding) to 1),
+            accounts = listOf(DebugAccount(UserId("user-id"), "user@proton.me")),
             actions = AppStateScreen.Actions.Empty
         )
     }

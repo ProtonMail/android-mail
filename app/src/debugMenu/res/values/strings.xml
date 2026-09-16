@@ -36,6 +36,8 @@
     <string name="app_debug_screen_app_state_reset_spotlight_description" translatable="false">Shows again on the next app start</string>
     <string name="app_debug_screen_app_state_reset_notifications_title" translatable="false">Reset notification prompt</string>
     <string name="app_debug_screen_app_state_reset_notifications_description" translatable="false">Only shows if notifications are off</string>
+    <string name="app_debug_screen_app_state_reset_cs_intro_banner" translatable="false">Content search banner intro</string>
+    <string name="app_debug_screen_app_state_reset_cs_done_banner" translatable="false">Content search banner complete</string>
     <string name="app_debug_screen_feature_flags_section_title" translatable="false">Feature flags</string>
     <string name="app_debug_screen_feature_flags_subtitle" translatable="false">Configure feature flags</string>
     <string name="app_debug_screen_feature_flags_description" translatable="false">Override a flag for this build</string>
