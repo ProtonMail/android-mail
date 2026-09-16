@@ -21,22 +21,31 @@ package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchPromptDismissed
 import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 import kotlin.math.floor
@@ -54,8 +63,21 @@ class IndexingProgressViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserIdWithValidSession,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
-    private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus
+    private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
+    private val observeContentSearchPromptDismissed: ObserveContentSearchPromptDismissed,
+    private val dismissContentSearchPrompt: DismissContentSearchPrompt
 ) : ViewModel() {
+
+    private val mutableIndexingComplete = MutableStateFlow(false)
+
+    /**
+     * Whether to tell the primary account that its indexing is done.
+     *
+     * Read once, when the screen opens, and never again while it is open. Indexing that finishes
+     * under the user's eyes leaves the progress banner at 100%, and this is shown on the next visit
+     * instead of appearing on its own.
+     */
+    val showIndexingComplete: StateFlow<Boolean> = mutableIndexingComplete.asStateFlow()
 
     /**
      * Kept eagerly subscribed for the ViewModel's whole life, so the banner's latch survives the
@@ -67,6 +89,54 @@ class IndexingProgressViewModel @Inject constructor(
         .flatMapLatest { userId -> observeBannerFor(userId) }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, IndexingProgressState.Hidden)
+
+    init {
+        viewModelScope.launch {
+            val userId = observePrimaryUserId().filterNotNull().first()
+            mutableIndexingComplete.value = hasIndexingToAnnounce(userId)
+        }
+    }
+
+    /**
+     * Whether this account has finished indexing without being told yet.
+     *
+     * The cheap answers come first, and each one that rules the note out ends the read. Only an
+     * account that has content search on and has not been told needs its indexing status, which is
+     * the one source here that can go quiet.
+     */
+    private suspend fun hasIndexingToAnnounce(userId: UserId): Boolean {
+        if (!isContentSearchFeatureEnabled()) return false
+        if (!observeContentSearchEnabled(userId).first()) return false
+        if (observeContentSearchPromptDismissed(userId, ContentSearchPrompt.IndexingComplete).first()) return false
+
+        return readIndexingStatus(userId) == ContentIndexingState.Completed
+    }
+
+    /**
+     * The account's indexing status, or null if it does not arrive in time.
+     *
+     * The status flow is not guaranteed to emit: the repository resubscribes on a backoff for as long
+     * as the account's session cannot be read, and hands back an empty flow while the account is not
+     * ready. Waiting on it would leave the note undecided for the whole visit, with nothing to
+     * retry it.
+     *
+     * Giving up costs nothing. Nothing is recorded as answered, so the note is offered again on the
+     * next visit.
+     */
+    private suspend fun readIndexingStatus(userId: UserId): ContentIndexingState? = withTimeoutOrNull(
+        STATUS_READ_TIMEOUT_MILLIS
+    ) {
+        observeContentSearchIndexingStatus(userId).firstOrNull()
+    }
+
+    /** Takes the note away for good: the account is told once and never again. */
+    fun dismissIndexingComplete() {
+        mutableIndexingComplete.value = false
+        viewModelScope.launch {
+            val userId = observePrimaryUserId().filterNotNull().first()
+            dismissContentSearchPrompt(userId, ContentSearchPrompt.IndexingComplete)
+        }
+    }
 
     /**
      * The banner for one account, latched so it survives that account finishing its indexing.
@@ -121,5 +191,9 @@ class IndexingProgressViewModel @Inject constructor(
     private companion object {
 
         val FullyIndexed = IndexingProgressState.Visible(percentage = 100)
+
+        // Long enough for a healthy read, short enough that a broken one does not keep the note
+        // undecided for noticeably long.
+        const val STATUS_READ_TIMEOUT_MILLIS = 2_000L
     }
 }
