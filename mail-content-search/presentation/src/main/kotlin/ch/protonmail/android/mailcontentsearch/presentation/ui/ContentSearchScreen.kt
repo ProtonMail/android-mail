@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -52,6 +53,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -95,6 +99,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxSkeletonLoa
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.flowOf
+import kotlin.math.roundToInt
 
 /**
  * The search screen.
@@ -505,20 +510,64 @@ private fun PageWithIndexingBanner(
 ) {
     val density = LocalDensity.current
     var bannerHeight by remember { mutableStateOf(0.dp) }
+    val isBannerVisible = indexingState is IndexingProgressState.Visible
+
+    // Held on to so the banner still has a percentage to show while it animates out.
+    var lastVisibleState by remember { mutableStateOf<IndexingProgressState.Visible?>(null) }
+    if (indexingState is IndexingProgressState.Visible) lastVisibleState = indexingState
+
+    // Turning content search on from this screen brings the banner up at once, which reads as a
+    // flash. The banner fades in and slides out from under the top bar instead.
+    //
+    // One fraction drives the room the banner takes, its opacity and the padding the page keeps for
+    // it. Animating the height and the padding separately gives the page two springs pulling on its
+    // top and bottom edges, and the centred content below stutters as they drift apart.
+    val revealed by animateFloatAsState(
+        targetValue = if (isBannerVisible) 1f else 0f,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "indexingBannerReveal"
+    )
 
     Column(modifier = modifier) {
-        if (indexingState is IndexingProgressState.Visible) {
-            IndexingProgressBanner(
-                state = indexingState,
-                onSeeDetailsClick = onSeeDetailsClick,
-                modifier = Modifier
-                    .onSizeChanged { bannerHeight = with(density) { it.height.toDp() } }
-                    .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
-            )
+        Box(
+            modifier = Modifier
+                .clipToBounds()
+                // Reports a fraction of the banner's height, keeping the banner itself at full size
+                // and anchored to the bottom, so it slides down out of the top bar.
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints)
+                    val height = (placeable.height * revealed).roundToInt()
+                    layout(placeable.width, height) { placeable.place(0, height - placeable.height) }
+                }
+        ) {
+            lastVisibleState?.let { visibleState ->
+                IndexingProgressBanner(
+                    state = visibleState,
+                    onSeeDetailsClick = onSeeDetailsClick,
+                    modifier = Modifier
+                        .graphicsLayer { alpha = revealed }
+                        .onSizeChanged { bannerHeight = with(density) { it.height.toDp() } }
+                        .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
+                )
+            }
         }
 
-        page(Modifier.weight(1f), if (indexingState is IndexingProgressState.Visible) bannerHeight else 0.dp)
+        page(Modifier.weight(1f), bannerHeight * revealed)
     }
+}
+
+/**
+ * Drops [this] when the room left is shorter than its content needs.
+ *
+ * The first-run state is centred artwork that cannot shrink. A centred child that does not fit is
+ * laid out past the top of its box, over the indexing banner.
+ */
+private fun Modifier.droppedWhenThereIsNoRoom() = layout { measurable, constraints ->
+    val needed = measurable.minIntrinsicHeight(constraints.maxWidth)
+    if (needed > constraints.maxHeight) return@layout layout(0, 0) {}
+
+    val placeable = measurable.measure(constraints)
+    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
 }
 
 /**
@@ -550,9 +599,12 @@ private fun ContentSearchIdlePage(
             SearchMessageState(
                 iconRes = R.drawable.ic_search_empty_state,
                 description = stringResource(R.string.content_search_first_run_description),
+                // Keeps clear of the keyboard, which is up as soon as the screen opens with no
+                // banner to read. Left under it, the artwork all but touches its top edge.
                 modifier = modifier
                     .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
                     .padding(bottom = firstRunBottomPadding)
+                    .droppedWhenThereIsNoRoom()
             )
         } else {
             Box(modifier = modifier)
