@@ -117,6 +117,26 @@ internal fun DebugMenuRow(
     @StringRes description: Int? = null,
     tint: Color = ProtonTheme.colors.iconWeak,
     trailing: @Composable () -> Unit = {}
+) = DebugMenuRow(
+    icon = icon,
+    title = stringResource(title),
+    onClick = onClick,
+    modifier = modifier,
+    description = description?.let { stringResource(it) },
+    tint = tint,
+    trailing = trailing
+)
+
+/** The same row with runtime text, for entries that are not known at build time. */
+@Composable
+internal fun DebugMenuRow(
+    @DrawableRes icon: Int,
+    title: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    description: String? = null,
+    tint: Color = ProtonTheme.colors.iconWeak,
+    trailing: @Composable () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -142,13 +162,13 @@ internal fun DebugMenuRow(
                 verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
             ) {
                 Text(
-                    text = stringResource(title),
+                    text = title,
                     color = ProtonTheme.colors.textNorm,
                     style = ProtonTheme.typography.titleMedium
                 )
                 description?.let {
                     Text(
-                        text = stringResource(it),
+                        text = it,
                         color = ProtonTheme.colors.textWeak,
                         style = ProtonTheme.typography.bodyMedium
                     )
