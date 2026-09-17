@@ -33,6 +33,7 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -109,6 +110,20 @@ internal class ContentSearchSetUpPromptViewModelTest {
         viewModel().canSetUpContentSearch.test {
             // Then
             assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `leaves the banner undecided until the account's answer has been read`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns emptyFlow()
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().showSetUpBanner.test {
+            // Then
+            assertEquals(null, awaitItem())
         }
     }
 

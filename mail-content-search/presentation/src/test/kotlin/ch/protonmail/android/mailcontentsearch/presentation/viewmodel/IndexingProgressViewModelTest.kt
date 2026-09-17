@@ -310,6 +310,19 @@ internal class IndexingProgressViewModelTest {
     }
 
     @Test
+    fun `should settle on nothing to tell when the primary account never arrives`() = runTest(dispatcher) {
+        // Given no account with a valid session, so the read has nothing to start from.
+        every { observePrimaryUserId() } returns MutableSharedFlow()
+
+        // When
+        val viewModel = buildViewModel()
+        advanceTimeBy(statusReadTimeout)
+
+        // Then the screen has an answer, rather than holding the search field's focus forever.
+        assertEquals(false, viewModel.showIndexingComplete.value)
+    }
+
+    @Test
     fun `should not read the indexing status of an account that has already been told`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.IndexingComplete) } returns flowOf(true)

@@ -68,16 +68,19 @@ class IndexingProgressViewModel @Inject constructor(
     private val dismissContentSearchPrompt: DismissContentSearchPrompt
 ) : ViewModel() {
 
-    private val mutableIndexingComplete = MutableStateFlow(false)
+    private val mutableIndexingComplete = MutableStateFlow<Boolean?>(null)
 
     /**
-     * Whether to tell the primary account that its indexing is done.
+     * Whether to tell the primary account that its indexing is done, or null until that is known.
      *
      * Read once, when the screen opens, and never again while it is open. Indexing that finishes
      * under the user's eyes leaves the progress banner at 100%, and this is shown on the next visit
      * instead of appearing on its own.
+     *
+     * The screen waits for the answer before it focuses the search field. Reading null as "nothing
+     * to tell" would raise the keyboard, and then the note would come up behind it.
      */
-    val showIndexingComplete: StateFlow<Boolean> = mutableIndexingComplete.asStateFlow()
+    val showIndexingComplete: StateFlow<Boolean?> = mutableIndexingComplete.asStateFlow()
 
     /**
      * Kept eagerly subscribed for the ViewModel's whole life, so the banner's latch survives the
@@ -92,41 +95,37 @@ class IndexingProgressViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val userId = observePrimaryUserId().filterNotNull().first()
-            mutableIndexingComplete.value = hasIndexingToAnnounce(userId)
+            mutableIndexingComplete.value = readNoteToShow() ?: false
         }
+    }
+
+    /**
+     * Whether to show the note, or null if the read does not finish in time.
+     *
+     * Bounded as a whole, not one source at a time. Neither the primary account nor the indexing
+     * status is guaranteed to arrive, and waiting on either would leave [showIndexingComplete]
+     * null. The screen holds the search field's focus back until that has an answer, so the
+     * keyboard would never come up.
+     *
+     * Giving up costs nothing. Nothing is recorded as answered, so the note is offered again on the
+     * next visit.
+     */
+    private suspend fun readNoteToShow(): Boolean? = withTimeoutOrNull(READ_TIMEOUT_MILLIS) {
+        hasIndexingToAnnounce(observePrimaryUserId().filterNotNull().first())
     }
 
     /**
      * Whether this account has finished indexing without being told yet.
      *
      * The cheap answers come first, and each one that rules the note out ends the read. Only an
-     * account that has content search on and has not been told needs its indexing status, which is
-     * the one source here that can go quiet.
+     * account that has content search on and has not been told needs its indexing status.
      */
     private suspend fun hasIndexingToAnnounce(userId: UserId): Boolean {
         if (!isContentSearchFeatureEnabled()) return false
         if (!observeContentSearchEnabled(userId).first()) return false
         if (observeContentSearchPromptDismissed(userId, ContentSearchPrompt.IndexingComplete).first()) return false
 
-        return readIndexingStatus(userId) == ContentIndexingState.Completed
-    }
-
-    /**
-     * The account's indexing status, or null if it does not arrive in time.
-     *
-     * The status flow is not guaranteed to emit: the repository resubscribes on a backoff for as long
-     * as the account's session cannot be read, and hands back an empty flow while the account is not
-     * ready. Waiting on it would leave the note undecided for the whole visit, with nothing to
-     * retry it.
-     *
-     * Giving up costs nothing. Nothing is recorded as answered, so the note is offered again on the
-     * next visit.
-     */
-    private suspend fun readIndexingStatus(userId: UserId): ContentIndexingState? = withTimeoutOrNull(
-        STATUS_READ_TIMEOUT_MILLIS
-    ) {
-        observeContentSearchIndexingStatus(userId).firstOrNull()
+        return observeContentSearchIndexingStatus(userId).firstOrNull() == ContentIndexingState.Completed
     }
 
     /** Takes the note away for good: the account is told once and never again. */
@@ -192,8 +191,8 @@ class IndexingProgressViewModel @Inject constructor(
 
         val FullyIndexed = IndexingProgressState.Visible(percentage = 100)
 
-        // Long enough for a healthy read, short enough that a broken one does not keep the note
-        // undecided for noticeably long.
-        const val STATUS_READ_TIMEOUT_MILLIS = 2_000L
+        // Long enough for a healthy read, short enough that a broken one does not hold the keyboard
+        // back for noticeably long.
+        const val READ_TIMEOUT_MILLIS = 2_000L
     }
 }

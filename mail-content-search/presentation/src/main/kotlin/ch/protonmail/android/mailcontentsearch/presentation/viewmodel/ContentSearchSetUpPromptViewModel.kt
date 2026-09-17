@@ -70,7 +70,13 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), false)
 
-    val showSetUpBanner: StateFlow<Boolean> = primaryUserId
+    /**
+     * Whether to show the banner, or null until the account's answer has been read.
+     *
+     * The screen waits for that answer before it focuses the search field. Reading null as "no
+     * banner" would raise the keyboard, and then the banner would come up behind it.
+     */
+    val showSetUpBanner: StateFlow<Boolean?> = primaryUserId
         .flatMapLatest { userId ->
             combine(
                 observeContentSearchEnabled(userId),
@@ -80,7 +86,7 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
             }
         }
         .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), false)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), null)
 
     /**
      * Records that the primary account has answered the offer, so the banner stops asking.

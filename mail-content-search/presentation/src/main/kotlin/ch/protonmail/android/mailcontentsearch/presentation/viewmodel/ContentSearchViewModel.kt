@@ -311,9 +311,12 @@ class ContentSearchViewModel @Inject constructor(
     }
 
     /**
-     * Whether the search field should take focus, and so raise the keyboard, right now. True only the
-     * first time the screen is shown: coming back from a message, leaving selection mode or rotating all
-     * re-create the field, and re-focusing then would cover the results the user came back to read.
+     * Whether the search field still has its first focus to take. True only once: coming back from a
+     * message, leaving selection mode or rotating all re-create the field, and re-focusing then would
+     * cover the results the user came back to read.
+     *
+     * The screen decides when to spend it. With no banner to show that is on open; with one, it is
+     * when the banner is dismissed.
      *
      * Kept here rather than in the composition because navigating to a message tears the screen's
      * composition (and any `remember`) down, while this ViewModel outlives it on the back stack.
