@@ -42,9 +42,9 @@ internal fun SpotlightGradientBackground(modifier: Modifier = Modifier, content:
 @Composable
 private fun lightGradient() = Brush.verticalGradient(
     colorStops = arrayOf(
-        GRADIENT_STOP_BRAND_NORM to ProtonTheme.colors.brandNorm.copy(alpha = GRADIENT_ALPHA),
-        GRADIENT_STOP_BRAND_MINUS_10 to ProtonTheme.colors.brandMinus10.copy(alpha = GRADIENT_ALPHA),
-        GRADIENT_STOP_BRAND_MINUS_20 to ProtonTheme.colors.brandMinus20.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_FIRST to LightGradientPurple400.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_SECOND to LightGradientIris200.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_THIRD to LightGradientIris150.copy(alpha = GRADIENT_ALPHA),
         GRADIENT_STOP_BACKGROUND_NORM to ProtonTheme.colors.backgroundNorm.copy(alpha = GRADIENT_ALPHA)
     )
 )
@@ -52,25 +52,23 @@ private fun lightGradient() = Brush.verticalGradient(
 @Composable
 private fun darkGradient() = Brush.verticalGradient(
     colorStops = arrayOf(
-        DARK_GRADIENT_STOP_MAGENTA to DarkGradientMagenta.copy(alpha = DARK_GRADIENT_ALPHA),
-        DARK_GRADIENT_STOP_VIOLET to DarkGradientViolet.copy(alpha = DARK_GRADIENT_ALPHA),
-        DARK_GRADIENT_STOP_IRIS to DarkGradientIris.copy(alpha = DARK_GRADIENT_ALPHA),
-        DARK_GRADIENT_STOP_BACKGROUND_NORM to ProtonTheme.colors.backgroundNorm.copy(alpha = DARK_GRADIENT_ALPHA)
+        GRADIENT_STOP_FIRST to DarkGradientMagenta.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_SECOND to DarkGradientViolet.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_THIRD to DarkGradientIris.copy(alpha = GRADIENT_ALPHA),
+        GRADIENT_STOP_BACKGROUND_NORM to ProtonTheme.colors.backgroundNorm.copy(alpha = GRADIENT_ALPHA)
     )
 )
 
-private const val GRADIENT_STOP_BRAND_NORM = 0f
-private const val GRADIENT_STOP_BRAND_MINUS_10 = 0.16f
-private const val GRADIENT_STOP_BRAND_MINUS_20 = 0.48f
-private const val GRADIENT_STOP_BACKGROUND_NORM = 0.72f
-private const val GRADIENT_ALPHA = 0.24f
+private const val GRADIENT_STOP_FIRST = 0f
+private const val GRADIENT_STOP_SECOND = 0.2383f
+private const val GRADIENT_STOP_THIRD = 0.3348f
+private const val GRADIENT_STOP_BACKGROUND_NORM = 0.5913f
+private const val GRADIENT_ALPHA = 0.3f
+
+private val LightGradientPurple400 = Color(0xFFB767F4)
+private val LightGradientIris200 = Color(0xFFB9BEFA)
+private val LightGradientIris150 = Color(0xFFD4D9FB)
 
 private val DarkGradientMagenta = Color(0xFF8112A9)
 private val DarkGradientViolet = Color(0xFF5117C1)
 private val DarkGradientIris = Color(0xFF370F83)
-
-private const val DARK_GRADIENT_STOP_MAGENTA = 0f
-private const val DARK_GRADIENT_STOP_VIOLET = 0.2383f
-private const val DARK_GRADIENT_STOP_IRIS = 0.3348f
-private const val DARK_GRADIENT_STOP_BACKGROUND_NORM = 0.5913f
-private const val DARK_GRADIENT_ALPHA = 0.3f
