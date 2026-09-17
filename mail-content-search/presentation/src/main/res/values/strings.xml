@@ -28,9 +28,9 @@
     <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
     <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
     <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
-    <string name="content_search_bottomsheet_title">Preparing email content search</string>
-    <string name="content_search_bottomsheet_description">Emails from your mailbox are being downloaded and prepared to be searched.</string>
-    <string name="content_search_bottomsheet_continue">Got it</string>
+    <string name="content_search_bottomsheet_title">Mobile data usage</string>
+    <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+    <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
 
     <!-- Content search screen -->
     <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
