@@ -138,13 +138,15 @@ internal fun IndexingCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+            if (status != IndexingCardStatus.UpToDate) {
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
-            Text(
-                text = stringResource(id = R.string.mail_settings_content_search_indexing_description),
-                style = ProtonTheme.typography.bodyMedium,
-                color = ProtonTheme.colors.textWeak
-            )
+                Text(
+                    text = stringResource(id = R.string.mail_settings_content_search_indexing_description),
+                    style = ProtonTheme.typography.bodyMedium,
+                    color = ProtonTheme.colors.textWeak
+                )
+            }
         }
     }
 }
@@ -256,7 +258,11 @@ private fun ContentSearchSettingsState.Data.displayPercentage(): Double = when {
     else -> 0.0
 }
 
-private fun Double.formatPercentage(): String = String.format(Locale.getDefault(), "%.2f", this)
+private fun Double.formatPercentage(): String = if (this == this.toLong().toDouble()) {
+    this.toLong().toString()
+} else {
+    String.format(Locale.getDefault(), "%.2f", this)
+}
 
 private const val FULL_PERCENTAGE = 100.0
 
