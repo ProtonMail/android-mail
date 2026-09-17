@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexi
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,6 +52,11 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
     private val mutableIsMobileDataEnabled = MutableStateFlow(DefaultAllowMobileData)
     val isMobileDataEnabled: StateFlow<Boolean> = mutableIsMobileDataEnabled.asStateFlow()
 
+    // Persisting the mobile-data toggle and enabling content search both run in their own
+    // launch, so enabling can otherwise race ahead of a toggle that has not hit disk yet and
+    // enqueue indexing with the stale constraint. Track the write so enabling can join it first.
+    private var mobileDataWriteJob: Job? = null
+
     init {
         viewModelScope.launch {
             mutableIsMobileDataEnabled.value = isContentSearchAllowedOnMobileData()
@@ -72,6 +78,8 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
 
     private fun enableContentSearchForPrimaryUser() {
         viewModelScope.launch {
+            mobileDataWriteJob?.join()
+
             val userId = observePrimaryUserId().filterNotNull().first()
             enableContentSearch(userId)
                 .onRight { startContentIndexingForUser(userId) }
@@ -81,7 +89,7 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
 
     private fun toggleMobileData(enabled: Boolean) {
         mutableIsMobileDataEnabled.value = enabled
-        viewModelScope.launch { setAllowContentSearchOnMobileData(enabled) }
+        mobileDataWriteJob = viewModelScope.launch { setAllowContentSearchOnMobileData(enabled) }
     }
 
     private companion object {
