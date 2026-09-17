@@ -189,19 +189,57 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     val uriHandler = LocalUriHandler.current
     val learnMoreLink = stringResource(id = R.string.content_search_learn_more_link)
 
-    val dismissSetUpBannerIfShown = { if (showSetUpBanner) setUpPromptViewModel.dismissSetUpBanner() }
+    // A banner the page had no room for. It is laid out at no size, so it is not on screen and must
+    // not hold the keyboard back. Reported from the layout, which is where the room is known.
+    var isBannerDropped by remember { mutableStateOf(false) }
+
+    // Both banners report here, and the one that reported last may already be gone. Cleared when
+    // either changes, so the next banner is not read as dropped before it has been laid out once.
+    LaunchedEffect(showSetUpBanner, showIndexingComplete) { isBannerDropped = false }
+
+    // Whether a banner is on screen, or null until every answer is in. The set-up offer and the note
+    // about indexing each have one to give, and the set-up offer also needs the history to be read:
+    // it is only shown over an empty page.
+    val isBannerShown: Boolean? = when {
+        showSetUpBanner == null || showIndexingComplete == null -> null
+        recentsState is RecentSearchesState.Loading -> null
+        isBannerDropped -> false
+        showIndexingComplete == true -> true
+        else -> showSetUpBanner == true && recentsState is RecentSearchesState.Empty
+    }
+
+    val searchFieldFocusRequests = remember { SearchFieldFocusRequests() }
+    val focusSearchFieldOnce = {
+        if (viewModel.consumeSearchFieldAutoFocus()) searchFieldFocusRequests.request()
+    }
+
+    // Searching answers the offer as much as the banner's own buttons do: the user has seen it and
+    // moved on. It spends the focus hand-over too, unused. The field is already the user's, and
+    // leaving it unspent would raise the keyboard over the results once the answer lands.
+    val answerOfferBySearching = {
+        if (showSetUpBanner == true) setUpPromptViewModel.dismissSetUpBanner()
+        viewModel.consumeSearchFieldAutoFocus()
+    }
+
+    // The keyboard waits for the banners: one on screen would end up behind it. Whoever leaves last
+    // hands the field its focus, here when there was nothing to show and from the banner's own
+    // dismissal otherwise.
+    LaunchedEffect(isBannerShown) {
+        if (isBannerShown == false) focusSearchFieldOnce()
+    }
 
     ContentSearchScreen(
         state = state,
         recentsState = recentsState,
         indexingState = indexingState,
         canSetUpContentSearch = canSetUpContentSearch,
-        showSetUpBanner = showSetUpBanner,
-        showIndexingComplete = showIndexingComplete,
+        showSetUpBanner = showSetUpBanner == true,
+        showIndexingComplete = showIndexingComplete == true,
+        onBannerDropped = { isBannerDropped = it },
         items = items,
         queryState = viewModel.queryState,
         snackbarHeight = snackbarHeight(),
-        consumeAutoFocus = viewModel::consumeSearchFieldAutoFocus,
+        searchFieldFocusRequests = searchFieldFocusRequests,
         recentsActions = RecentSearchesActions(
             // Only bumps the query in the history; the search itself is re-run by the screen, which
             // owns the search field's text.
@@ -239,14 +277,12 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
         ),
         actions = ContentSearchActions(
             onClose = onClose,
-            // Searching answers the offer as much as the banner's own buttons do: the user has seen
-            // it and moved on, so record the dismissal and stop asking.
             onSearch = {
-                dismissSetUpBannerIfShown()
+                answerOfferBySearching()
                 viewModel.submit(ContentSearchViewAction.Search)
             },
             onSuggestionSelected = {
-                dismissSetUpBannerIfShown()
+                answerOfferBySearching()
                 viewModel.submit(ContentSearchViewAction.SuggestionSelected(it))
             },
             onClearQuery = { viewModel.submit(ContentSearchViewAction.ClearQuery) },
@@ -258,8 +294,16 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
                 setUpPromptViewModel.dismissSetUpBanner()
                 actions.onSetUpContentSearch()
             },
-            onDismissSetUpBanner = { setUpPromptViewModel.dismissSetUpBanner() },
-            onDismissIndexingComplete = { indexingViewModel.dismissIndexingComplete() },
+            // Taking a banner away is the moment the user is done reading and ready to type, so the
+            // field takes the focus the banner was holding back.
+            onDismissSetUpBanner = {
+                setUpPromptViewModel.dismissSetUpBanner()
+                focusSearchFieldOnce()
+            },
+            onDismissIndexingComplete = {
+                indexingViewModel.dismissIndexingComplete()
+                focusSearchFieldOnce()
+            },
             onItemClicked = { result ->
                 val item = result.item
                 if (state.inSelectionMode) {
@@ -340,8 +384,9 @@ private fun ContentSearchScreen(
     canSetUpContentSearch: Boolean = false,
     showSetUpBanner: Boolean = false,
     showIndexingComplete: Boolean = false,
+    onBannerDropped: (Boolean) -> Unit = {},
     snackbarHeight: Dp = 0.dp,
-    consumeAutoFocus: () -> Boolean = { false }
+    searchFieldFocusRequests: SearchFieldFocusRequests = remember { SearchFieldFocusRequests() }
 ) {
     // Derived so only a change in emptiness, not every keystroke, reaches the body below.
     val isQueryEmpty by remember(queryState) { derivedStateOf { queryState.text.isBlank() } }
@@ -398,7 +443,7 @@ private fun ContentSearchScreen(
                     actions = actions,
                     inSelectionMode = state.inSelectionMode,
                     collapsingState = collapsingTopBarState,
-                    consumeAutoFocus = consumeAutoFocus
+                    focusRequests = searchFieldFocusRequests
                 )
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
@@ -410,6 +455,7 @@ private fun ContentSearchScreen(
                     canSetUpContentSearch = canSetUpContentSearch,
                     showSetUpBanner = showSetUpBanner,
                     showIndexingComplete = showIndexingComplete,
+                    onBannerDropped = onBannerDropped,
                     items = items,
                     isQueryEmpty = isQueryEmpty,
                     actions = actions,
@@ -449,6 +495,7 @@ private fun ContentSearchBody(
     canSetUpContentSearch: Boolean,
     showSetUpBanner: Boolean,
     showIndexingComplete: Boolean,
+    onBannerDropped: (Boolean) -> Unit,
     items: LazyPagingItems<ContentSearchResultUiModel>,
     isQueryEmpty: Boolean,
     actions: ContentSearchActions,
@@ -491,7 +538,7 @@ private fun ContentSearchBody(
                         ),
                         modifier = Modifier
                             .align(Alignment.TopCenter)
-                            .droppedWhenItDoesNotFit(imeInsets)
+                            .droppedWhenItDoesNotFit(imeInsets, onBannerDropped)
                     )
                 }
 
@@ -502,7 +549,7 @@ private fun ContentSearchBody(
                         onGotIt = actions.onDismissIndexingComplete,
                         modifier = Modifier
                             .align(Alignment.TopCenter)
-                            .droppedWhenItDoesNotFit(imeInsets)
+                            .droppedWhenItDoesNotFit(imeInsets, onBannerDropped)
                     )
                 }
             }
@@ -620,17 +667,22 @@ private fun PageWithIndexingBanner(
  * The keyboard and a large font scale both take room away, and the banner grows with the font scale
  * at the same time. Measuring it against what the page actually has beats guessing a minimum
  * height. The window is edge to edge, so the keyboard's inset comes off the page height by hand.
+ *
+ * [onDropped] reports the outcome. A dropped banner is not on screen, so the screen must not treat
+ * it as one that is still holding the keyboard back.
  */
-private fun Modifier.droppedWhenItDoesNotFit(imeInsets: WindowInsets) = layout { measurable, constraints ->
-    val placeable = measurable.measure(constraints)
-    val uncovered = (constraints.maxHeight - imeInsets.getBottom(this)).coerceAtLeast(0)
-    val room = (uncovered * MAX_BANNER_PAGE_FRACTION).roundToInt()
-    val fits = placeable.height <= room
+private fun Modifier.droppedWhenItDoesNotFit(imeInsets: WindowInsets, onDropped: (Boolean) -> Unit) =
+    layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val uncovered = (constraints.maxHeight - imeInsets.getBottom(this)).coerceAtLeast(0)
+        val room = (uncovered * MAX_BANNER_PAGE_FRACTION).roundToInt()
+        val fits = placeable.height <= room
 
-    layout(width = if (fits) placeable.width else 0, height = if (fits) placeable.height else 0) {
-        if (fits) placeable.place(0, 0)
+        layout(width = if (fits) placeable.width else 0, height = if (fits) placeable.height else 0) {
+            onDropped(!fits)
+            if (fits) placeable.place(0, 0)
+        }
     }
-}
 
 /**
  * Drops [this] when the room left is shorter than its content needs.

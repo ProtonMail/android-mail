@@ -43,7 +43,9 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -80,20 +82,25 @@ internal fun ContentSearchTopBar(
     inSelectionMode: Boolean,
     collapsingState: CollapsingTopBarState,
     modifier: Modifier = Modifier,
-    consumeAutoFocus: () -> Boolean = { false }
+    focusRequests: SearchFieldFocusRequests = remember { SearchFieldFocusRequests() }
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    // Consuming is a side effect (it clears a one-shot flag elsewhere), so it belongs in an effect,
-    // not in the remember calculation — composition can run speculatively or be abandoned, which
-    // would burn the flag without ever requesting focus.
-    var autoFocus by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        autoFocus = consumeAutoFocus()
+    // A request that arrives before the field has been placed has to wait: requesting focus on a
+    // node that does not exist yet throws.
+    var isFieldPlaced by remember { mutableStateOf(false) }
+    var isFocusPending by remember { mutableStateOf(false) }
+
+    val takeFocus = {
+        isFocusPending = false
+        focusRequester.requestFocus()
+        keyboardController?.show()
     }
-    // Requested once the field has been placed rather than from an effect, which can run before the
-    // focus node exists.
-    var hasRequestedFocus by remember { mutableStateOf(false) }
+
+    LaunchedEffect(focusRequests.count) {
+        if (focusRequests.count == 0) return@LaunchedEffect
+        if (isFieldPlaced) takeFocus() else isFocusPending = true
+    }
 
     Column(
         modifier = modifier
@@ -147,10 +154,8 @@ internal fun ContentSearchTopBar(
                             .fillMaxWidth()
                             .focusRequester(focusRequester)
                             .onGloballyPositioned {
-                                if (autoFocus && !hasRequestedFocus) {
-                                    hasRequestedFocus = true
-                                    focusRequester.requestFocus()
-                                }
+                                isFieldPlaced = true
+                                if (isFocusPending) takeFocus()
                             }
                             .testTag(ContentSearchTopBarTestTags.SearchTextField),
                         textStyle = ProtonTheme.typography.bodyLargeNorm,
@@ -220,6 +225,23 @@ internal fun ContentSearchTopBar(
                 )
             }
         }
+    }
+}
+
+/**
+ * Asks the search field for focus, from outside the top bar that owns it.
+ *
+ * The screen decides when the field should take the caret and raise the keyboard, but the
+ * [FocusRequester] belongs with the field. Each [request] is one hand-over.
+ */
+@Stable
+internal class SearchFieldFocusRequests {
+
+    var count by mutableIntStateOf(0)
+        private set
+
+    fun request() {
+        count++
     }
 }
 
