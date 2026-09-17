@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.design.compose.component.ProtonTextButton
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -62,6 +63,7 @@ fun ContentSearchBottomSheet(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.content_search_bottomsheet_title),
             style = ProtonTheme.typography.titleLarge,
+            fontWeight = FontWeight.Medium,
             color = ProtonTheme.colors.textNorm,
             textAlign = TextAlign.Center
         )
@@ -92,7 +94,7 @@ fun ContentSearchBottomSheet(
             onClick = actions.onDismiss
         ) {
             Text(
-                text = stringResource(id = R.string.content_search_bottomsheet_continue),
+                text = stringResource(id = R.string.content_search_bottomsheet_start_indexing),
                 style = ProtonTheme.typography.titleMedium,
                 color = ProtonTheme.colors.textInverted,
                 textAlign = TextAlign.Center
