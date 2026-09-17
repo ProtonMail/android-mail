@@ -26,9 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.vendored.material3.LinearWavyProgressIndicator
+import ch.protonmail.android.vendored.material3.WavyProgressIndicatorDefaults
 
 /**
  * The Material 3 determinate linear wavy progress indicator, in Proton colours.
@@ -38,19 +40,22 @@ import ch.protonmail.android.vendored.material3.LinearWavyProgressIndicator
  *
  * @param progress the fraction done, from 0 to 1. Read in a lambda so progress updates redraw
  * without recomposing the caller.
+ * @param waveSpeed how fast the wave travels. Zero freezes it in place, still wavy but not moving.
  */
 @Composable
 fun ProtonWavyProgressIndicator(
     progress: () -> Float,
     modifier: Modifier = Modifier,
     color: Color = ProtonTheme.colors.textAccent,
-    trackColor: Color = ProtonTheme.colors.interactionBrandWeakNorm
+    trackColor: Color = ProtonTheme.colors.interactionBrandWeakNorm,
+    waveSpeed: Dp = WavyProgressIndicatorDefaults.LinearDeterminateWavelength
 ) {
     LinearWavyProgressIndicator(
         progress = progress,
         modifier = modifier,
         color = color,
-        trackColor = trackColor
+        trackColor = trackColor,
+        waveSpeed = waveSpeed
     )
 }
 

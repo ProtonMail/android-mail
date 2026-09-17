@@ -53,9 +53,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
@@ -615,11 +615,11 @@ private fun PageWithIndexingBanner(
 ) {
     val density = LocalDensity.current
     var bannerHeight by remember { mutableStateOf(0.dp) }
-    val isBannerVisible = indexingState is IndexingProgressState.Visible
+    val isBannerVisible = indexingState is IndexingProgressState.Ongoing
 
     // Held on to so the banner still has a percentage to show while it animates out.
-    var lastVisibleState by remember { mutableStateOf<IndexingProgressState.Visible?>(null) }
-    if (indexingState is IndexingProgressState.Visible) lastVisibleState = indexingState
+    var lastVisibleState by remember { mutableStateOf<IndexingProgressState.Ongoing?>(null) }
+    if (indexingState is IndexingProgressState.Ongoing) lastVisibleState = indexingState
 
     // Turning content search on from this screen brings the banner up at once, which reads as a
     // flash. The banner fades in and slides out from under the top bar instead.

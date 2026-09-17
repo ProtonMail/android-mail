@@ -24,7 +24,14 @@ import androidx.compose.runtime.Stable
 @Stable
 sealed interface IndexingProgressState {
 
+    sealed interface Ongoing : IndexingProgressState {
+
+        val percentage: Int
+    }
+
     data object Hidden : IndexingProgressState
 
-    data class Visible(val percentage: Int) : IndexingProgressState
+    data class Visible(override val percentage: Int) : Ongoing
+
+    data class Error(override val percentage: Int) : Ongoing
 }
