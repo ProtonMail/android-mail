@@ -57,7 +57,8 @@
     <string name="content_search_previously_found_title">Previously found</string>
     <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
     <!-- Indexing progress -->
-    <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+    <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
+    <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
     <string name="content_search_indexing_see_details">See details</string>
     <!-- Selection mode -->
     <string name="content_search_delete_dialog_title">Delete permanently?</string>
