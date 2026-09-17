@@ -26,6 +26,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -40,7 +41,11 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -60,6 +65,7 @@ import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Enabled
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarAppVersionItem
+import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarApplicationLogsItem
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarLazy
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarReportBugItem
@@ -146,6 +152,8 @@ fun Sidebar(
     actions: Sidebar.Actions
 ) {
     val hazeState = rememberHazeState()
+    var logoTaps by rememberSaveable { mutableIntStateOf(0) }
+
     Box(
         modifier
             .background(ProtonTheme.colors.sidebarBackground)
@@ -153,7 +161,11 @@ fun Sidebar(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
             )
     ) {
-        SidebarHeader(modifier = Modifier.zIndex(1f), hazeState)
+        SidebarHeader(
+            modifier = Modifier.zIndex(1f),
+            hazeState = hazeState,
+            onLogoClick = { logoTaps++ }
+        )
 
         ProtonSidebarLazy(
             modifier = modifier
@@ -196,6 +208,10 @@ fun Sidebar(
 
             item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
 
+            if (logoTaps >= APP_LOGS_ENTRY_TAP_THRESHOLD) {
+                item { ProtonSidebarApplicationLogsItem(onClick = actions.onApplicationLogs) }
+            }
+
             item { VerticalSpacer(height = ProtonDimens.Spacing.ExtraLarge) }
 
             item { SidebarDivider() }
@@ -222,7 +238,11 @@ fun Sidebar(
 }
 
 @Composable
-private fun SidebarHeader(modifier: Modifier = Modifier, hazeState: HazeState) {
+private fun SidebarHeader(
+    hazeState: HazeState,
+    modifier: Modifier = Modifier,
+    onLogoClick: () -> Unit = {}
+) {
     Box(
         modifier = modifier
             .height(ProtonDimens.sideBarHeaderHeight)
@@ -240,16 +260,20 @@ private fun SidebarHeader(modifier: Modifier = Modifier, hazeState: HazeState) {
             .fillMaxWidth()
     ) {
         Image(
-            modifier = Modifier.padding(
-                start = ProtonDimens.Spacing.ExtraLarge,
-                bottom = ProtonDimens.Spacing.Small,
-                top = ProtonDimens.Spacing.Jumbo
-            ),
+            modifier = Modifier
+                .padding(
+                    start = ProtonDimens.Spacing.ExtraLarge,
+                    bottom = ProtonDimens.Spacing.Small,
+                    top = ProtonDimens.Spacing.Jumbo
+                )
+                .clickable(null, null, onClick = onLogoClick),
             painter = painterResource(R.drawable.proton_mail_logo),
             contentDescription = null
         )
     }
 }
+
+private const val APP_LOGS_ENTRY_TAP_THRESHOLD = 5
 
 @Composable
 private fun SidebarDivider() {
@@ -285,6 +309,7 @@ object Sidebar {
         val onSubscription: () -> Unit,
         val onContacts: () -> Unit,
         val onReportBug: () -> Unit,
+        val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit
     ) {
 
@@ -296,6 +321,7 @@ object Sidebar {
                 onSubscription = {},
                 onContacts = {},
                 onReportBug = {},
+                onApplicationLogs = {},
                 onUpselling = { _, _ -> }
             )
         }
@@ -308,6 +334,7 @@ object Sidebar {
         val onSubscription: () -> Unit,
         val onContacts: () -> Unit,
         val onReportBug: () -> Unit,
+        val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit
     ) {
 
@@ -334,6 +361,10 @@ object Sidebar {
                 onReportBug()
                 close()
             },
+            onApplicationLogs = {
+                onApplicationLogs()
+                close()
+            },
             onUpselling = { entryPoint, type ->
                 onUpselling(entryPoint, type)
                 close()
@@ -349,6 +380,7 @@ object Sidebar {
                 onSubscription = {},
                 onContacts = {},
                 onReportBug = {},
+                onApplicationLogs = {},
                 onUpselling = { _, _ -> }
             )
         }

@@ -946,6 +946,7 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onSubscription = launcherActions.onSubscription,
         onContacts = { navController.navigate(Screen.Contacts.route) },
         onReportBug = { navController.navigate(Screen.BugReporting.route) },
+        onApplicationLogs = { navController.navigate(Screen.ApplicationLogs.route) },
         onUpselling = { entryPoint, type -> navController.navigate(Screen.FeatureUpselling(entryPoint, type)) }
     )
 

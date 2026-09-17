@@ -129,6 +129,22 @@ fun ProtonSidebarReportBugItem(
 }
 
 @Composable
+fun ProtonSidebarApplicationLogsItem(
+    modifier: Modifier = Modifier,
+    isClickable: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    ProtonSidebarItem(
+        text = R.string.drawer_title_application_logs,
+        icon = R.drawable.ic_proton_code,
+        modifier = modifier,
+        onClick = onClick,
+        isClickable = isClickable,
+        isSelected = false
+    )
+}
+
+@Composable
 fun ProtonSidebarItem(
     @DrawableRes icon: Int,
     @StringRes text: Int,
