@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -46,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -87,7 +89,7 @@ private fun PortraitHowItWorksPage(steps: ImmutableList<HowItWorksStep>, modifie
         SpotlightPageHeader {
             IllustrationPlaceholder(
                 modifier = Modifier
-                    .height(SpotlightIllustrationHeight)
+                    .height(PORTRAIT_ILLUSTRATION_HEIGHT)
                     .weight(1f, fill = false)
             )
 
@@ -162,8 +164,11 @@ private fun Title() {
 
 @Composable
 private fun IllustrationPlaceholder(modifier: Modifier = Modifier) {
-    // Missing asset, to be included
-    Spacer(modifier = modifier)
+    Image(
+        painter = painterResource(id = R.drawable.spotlight_content_search_preview),
+        contentDescription = null,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -237,7 +242,8 @@ private fun StepRow(
     }
 }
 
-private val LANDSCAPE_ILLUSTRATION_HEIGHT = 120.dp
+private val PORTRAIT_ILLUSTRATION_HEIGHT = 168.dp
+private val LANDSCAPE_ILLUSTRATION_HEIGHT = 135.dp
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
