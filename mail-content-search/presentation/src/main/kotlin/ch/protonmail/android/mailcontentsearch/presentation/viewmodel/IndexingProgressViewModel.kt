@@ -49,13 +49,14 @@ import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 import kotlin.math.floor
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * The indexing progress the search screen shows for the primary account.
  *
  * The banner is only for an account whose backfill is actually running. Content search switched off
  * by the user, unavailable on this build, or unavailable on a 32-bit device all read as nothing to
- * show. Failures are not reported here: the settings screen owns them.
+ * show.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -110,7 +111,7 @@ class IndexingProgressViewModel @Inject constructor(
      * Giving up costs nothing. Nothing is recorded as answered, so the note is offered again on the
      * next visit.
      */
-    private suspend fun readNoteToShow(): Boolean? = withTimeoutOrNull(READ_TIMEOUT_MILLIS) {
+    private suspend fun readNoteToShow(): Boolean? = withTimeoutOrNull(READ_TIMEOUT_MILLIS.milliseconds) {
         hasIndexingToAnnounce(observePrimaryUserId().filterNotNull().first())
     }
 
@@ -165,7 +166,7 @@ class IndexingProgressViewModel @Inject constructor(
      * fully indexed.
      */
     private fun IndexingProgressState.nextFrom(indexingState: ContentIndexingState?): IndexingProgressState {
-        val isVisible = this is IndexingProgressState.Visible
+        val lastPercentage = (this as? IndexingProgressState.Ongoing)?.percentage
         return when (indexingState) {
             null -> IndexingProgressState.Hidden
 
@@ -173,15 +174,17 @@ class IndexingProgressViewModel @Inject constructor(
 
             is ContentIndexingState.Running -> IndexingProgressState.Visible(indexingState.percentage.toBanner())
 
-            ContentIndexingState.Completed -> if (isVisible) FullyIndexed else IndexingProgressState.Hidden
+            ContentIndexingState.Completed -> if (lastPercentage != null) FullyIndexed else IndexingProgressState.Hidden
 
-            // Paused, idle, cancelled, failed: nothing to report that the settings screen does not say
-            // better. A banner already on screen freezes at its last percentage rather than vanishing.
+            ContentIndexingState.Failed ->
+                lastPercentage?.let { IndexingProgressState.Error(it) } ?: IndexingProgressState.Hidden
+
+            // Paused, idle, cancelled: nothing to report that the settings screen does not say better.
+            // A banner already on screen freezes at its last percentage rather than vanishing.
             is ContentIndexingState.WaitingForUnmeteredConnection,
             is ContentIndexingState.Paused,
             ContentIndexingState.Idle,
-            ContentIndexingState.Cancelled,
-            ContentIndexingState.Failed -> this
+            ContentIndexingState.Cancelled -> this
         }
     }
 

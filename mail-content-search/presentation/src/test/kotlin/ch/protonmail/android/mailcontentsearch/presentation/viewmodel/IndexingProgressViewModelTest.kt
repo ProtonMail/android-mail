@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.viewmodel
 
+import arrow.core.right
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
@@ -27,7 +28,6 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSear
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchPromptDismissed
 import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
-import arrow.core.right
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -166,6 +166,31 @@ internal class IndexingProgressViewModelTest {
 
         // Then
         assertEquals(IndexingProgressState.Visible(percentage = 42), viewModel.state.value)
+    }
+
+    @Test
+    fun `turns into an error frozen at the last percentage when the backfill fails`() = runTest(dispatcher) {
+        // Given
+        indexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+        val viewModel = buildViewModel()
+
+        // When
+        indexingStatus.value = ContentIndexingState.Failed
+
+        // Then
+        assertEquals(IndexingProgressState.Error(percentage = 42), viewModel.state.value)
+    }
+
+    @Test
+    fun `shows nothing when the backfill fails before any progress was shown`() = runTest(dispatcher) {
+        // Given
+        indexingStatus.value = ContentIndexingState.Failed
+
+        // When
+        val viewModel = buildViewModel()
+
+        // Then
+        assertEquals(IndexingProgressState.Hidden, viewModel.state.value)
     }
 
     @Test

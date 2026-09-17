@@ -40,6 +40,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonWavyProgressIndicator
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -55,10 +56,31 @@ import ch.protonmail.android.vendored.material3.WavyProgressIndicatorDefaults
  */
 @Composable
 internal fun IndexingProgressBanner(
-    state: IndexingProgressState.Visible,
+    state: IndexingProgressState.Ongoing,
     onSeeDetailsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isError = state is IndexingProgressState.Error
+    val accentColor = if (isError) ProtonTheme.colors.notificationError else ProtonTheme.colors.textAccent
+    val trackColor = if (isError) {
+        ProtonTheme.colors.notificationError100
+    } else {
+        ProtonTheme.colors.interactionBrandWeakNorm
+    }
+    // One string per variant, rather than a label and a percentage glued together, so a translator
+    // can move the two parts and pick their own separator. The spoken one drops the bullet, which
+    // TalkBack would otherwise read out.
+    val label = if (isError) {
+        R.string.content_search_indexing_interrupted
+    } else {
+        R.string.content_search_indexing_progress
+    }
+    val spokenLabel = if (isError) {
+        R.string.content_search_indexing_interrupted_content_description
+    } else {
+        R.string.content_search_indexing_progress_content_description
+    }
+
     // Animated so each progress report slides the boundary along instead of snapping it.
     val progress by animateFloatAsState(
         targetValue = state.percentage / PERCENTAGE_SCALE,
@@ -74,6 +96,9 @@ internal fun IndexingProgressBanner(
     ) {
         ProtonWavyProgressIndicator(
             progress = { progress },
+            color = accentColor,
+            trackColor = trackColor,
+            waveSpeed = if (isError) 0.dp else WavyProgressIndicatorDefaults.LinearDeterminateWavelength,
             // The text below carries the percentage, so the bar itself is not worth announcing twice.
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,18 +107,12 @@ internal fun IndexingProgressBanner(
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
-        // One string, rather than a label and a percentage glued together, so a translator can move
-        // the two parts and pick their own separator. The spoken one drops the bullet, which
-        // TalkBack would otherwise read out.
-        val spokenProgress = stringResource(
-            R.string.content_search_indexing_progress_content_description,
-            state.percentage
-        )
+        val spokenProgress = stringResource(spokenLabel, state.percentage)
 
         Text(
-            text = stringResource(R.string.content_search_indexing_progress, state.percentage),
+            text = stringResource(label, state.percentage),
             style = ProtonTheme.typography.bodyMedium,
-            color = ProtonTheme.colors.textAccent,
+            color = accentColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.semantics { contentDescription = spokenProgress }
         )
@@ -103,7 +122,7 @@ internal fun IndexingProgressBanner(
         Text(
             text = stringResource(R.string.content_search_indexing_see_details),
             style = ProtonTheme.typography.bodyMedium,
-            color = ProtonTheme.colors.textAccent,
+            color = accentColor,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable(
@@ -126,6 +145,18 @@ private fun IndexingProgressBannerPreview() {
     ProtonTheme {
         IndexingProgressBanner(
             state = IndexingProgressState.Visible(percentage = 30),
+            onSeeDetailsClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun IndexingProgressBannerErrorPreview() {
+    ProtonTheme {
+        IndexingProgressBanner(
+            state = IndexingProgressState.Error(percentage = 30),
             onSeeDetailsClick = {}
         )
     }
