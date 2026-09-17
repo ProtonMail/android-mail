@@ -102,6 +102,9 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.flowOf
 import kotlin.math.roundToInt
 
+// Below this length, results may be incomplete, so the results list shows a hint about it.
+private const val MIN_QUERY_LENGTH_FOR_FULL_RESULTS = 3
+
 /**
  * The search screen.
  *
@@ -590,6 +593,7 @@ private fun ContentSearchBody(
                 },
                 avatarImages = state.avatarImages,
                 downloadingAttachmentId = state.downloadingAttachmentId,
+                showMinQueryLengthNotice = state.query.trim().length < MIN_QUERY_LENGTH_FOR_FULL_RESULTS,
                 listState = resultsListState,
                 modifier = modifier
             )
