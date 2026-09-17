@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,17 +30,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.design.compose.component.ProtonWavyProgressIndicator
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.design.compose.theme.bodyMediumWeak
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.vendored.material3.WavyProgressIndicatorDefaults
@@ -79,10 +82,20 @@ internal fun IndexingProgressBanner(
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
+        // One string, rather than a label and a percentage glued together, so a translator can move
+        // the two parts and pick their own separator. The spoken one drops the bullet, which
+        // TalkBack would otherwise read out.
+        val spokenProgress = stringResource(
+            R.string.content_search_indexing_progress_content_description,
+            state.percentage
+        )
+
         Text(
             text = stringResource(R.string.content_search_indexing_progress, state.percentage),
-            style = ProtonTheme.typography.bodyMediumWeak,
-            textAlign = TextAlign.Center
+            style = ProtonTheme.typography.bodyMedium,
+            color = ProtonTheme.colors.textAccent,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.semantics { contentDescription = spokenProgress }
         )
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
@@ -93,7 +106,12 @@ internal fun IndexingProgressBanner(
             color = ProtonTheme.colors.textAccent,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .clickable(role = Role.Button, onClick = onSeeDetailsClick)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    role = Role.Button,
+                    onClick = onSeeDetailsClick
+                )
                 .padding(ProtonDimens.Spacing.Small)
         )
     }
