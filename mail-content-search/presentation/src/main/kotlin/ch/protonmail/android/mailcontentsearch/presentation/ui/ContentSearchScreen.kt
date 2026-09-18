@@ -57,7 +57,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
@@ -513,6 +512,10 @@ private fun ContentSearchBody(
         ContentSearchState.Phase.Idle -> PageWithIndexingBanner(
             indexingState = indexingState,
             onSeeDetailsClick = actions.onSeeIndexingDetails,
+            // The history is the only idle page that scrolls, and there the banner is the list's
+            // first row. Pinned above a landscape list it would hold a good part of the page for
+            // the whole scroll.
+            isBannerPinned = recentsState !is RecentSearchesState.Data,
             modifier = modifier
         ) { pageModifier, bannerHeight ->
             val imeInsets = WindowInsets.ime
@@ -526,7 +529,13 @@ private fun ContentSearchBody(
                     recentsActions = recentsActions,
                     listState = recentsListState,
                     modifier = Modifier.fillMaxSize(),
-                    firstRunBottomPadding = bannerHeight
+                    bannerHeight = bannerHeight,
+                    indexingBanner = {
+                        IndexingBanner(
+                            indexingState = indexingState,
+                            onSeeDetailsClick = actions.onSeeIndexingDetails
+                        )
+                    }
                 )
 
                 // An overlay just under the search bar, so the first-run state stays centred in
@@ -577,9 +586,9 @@ private fun ContentSearchBody(
                         onLearnMore = actions.onLearnMoreAboutContentSearch,
                         onSetUpContentSearch = actions.onSetUpContentSearch
                     ),
+                    bannerHeight = bannerHeight,
                     modifier = pageModifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-                        .padding(bottom = bannerHeight)
                 )
             }
         } else {
@@ -607,61 +616,87 @@ private fun ContentSearchBody(
  * The banner belongs to the pages with nothing to read, so it never competes with a list of results.
  *
  * [page] is handed the banner's height as well as its modifier. A page that centres its content
- * should apply that height as bottom padding, so the content stays on the middle of the screen
- * instead of being pushed down by the banner. A page that fills its space should ignore it.
+ * should pass that height on to it, so the content stays on the middle of the screen instead of
+ * being pushed down by the banner. A page that fills its space should ignore it.
+ *
+ * [isBannerPinned] is false for a page that scrolls the banner itself. The slot above the page is
+ * then left empty and the reported height stays zero.
  */
 @Composable
 private fun PageWithIndexingBanner(
     indexingState: IndexingProgressState,
     onSeeDetailsClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isBannerPinned: Boolean = true,
     page: @Composable (pageModifier: Modifier, bannerHeight: Dp) -> Unit
 ) {
-    val density = LocalDensity.current
     var bannerHeight by remember { mutableStateOf(0.dp) }
-    val isBannerVisible = indexingState is IndexingProgressState.Ongoing
+
+    Column(modifier = modifier) {
+        if (isBannerPinned) {
+            IndexingBanner(
+                indexingState = indexingState,
+                onSeeDetailsClick = onSeeDetailsClick,
+                onHeightChanged = { bannerHeight = it }
+            )
+        }
+
+        page(Modifier.weight(1f), if (isBannerPinned) bannerHeight else 0.dp)
+    }
+}
+
+/**
+ * The indexing banner, or nothing at all while there is no progress to report.
+ *
+ * It fades in and slides out from behind whatever sits above it. Brought up at once it reads as a
+ * flash.
+ *
+ * One fraction drives the room it takes, its opacity and the height it reports. Animating the
+ * height and a page's padding separately gives that page two springs pulling on opposite edges, and
+ * centred content stutters as they drift apart.
+ *
+ * [onHeightChanged] reports the room the banner takes right now, mid-animation included.
+ */
+@Composable
+private fun IndexingBanner(
+    indexingState: IndexingProgressState,
+    onSeeDetailsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    onHeightChanged: (Dp) -> Unit = {}
+) {
+    val density = LocalDensity.current
 
     // Held on to so the banner still has a percentage to show while it animates out.
     var lastVisibleState by remember { mutableStateOf<IndexingProgressState.Ongoing?>(null) }
     if (indexingState is IndexingProgressState.Ongoing) lastVisibleState = indexingState
 
-    // Turning content search on from this screen brings the banner up at once, which reads as a
-    // flash. The banner fades in and slides out from under the top bar instead.
-    //
-    // One fraction drives the room the banner takes, its opacity and the padding the page keeps for
-    // it. Animating the height and the padding separately gives the page two springs pulling on its
-    // top and bottom edges, and the centred content below stutters as they drift apart.
     val revealed by animateFloatAsState(
-        targetValue = if (isBannerVisible) 1f else 0f,
+        targetValue = if (indexingState is IndexingProgressState.Ongoing) 1f else 0f,
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "indexingBannerReveal"
     )
 
-    Column(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .clipToBounds()
-                // Reports a fraction of the banner's height, keeping the banner itself at full size
-                // and anchored to the bottom, so it slides down out of the top bar.
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    val height = (placeable.height * revealed).roundToInt()
-                    layout(placeable.width, height) { placeable.place(0, height - placeable.height) }
-                }
-        ) {
-            lastVisibleState?.let { visibleState ->
-                IndexingProgressBanner(
-                    state = visibleState,
-                    onSeeDetailsClick = onSeeDetailsClick,
-                    modifier = Modifier
-                        .graphicsLayer { alpha = revealed }
-                        .onSizeChanged { bannerHeight = with(density) { it.height.toDp() } }
-                        .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
-                )
+    Box(
+        modifier = modifier
+            .clipToBounds()
+            // Takes a fraction of the banner's height, keeping the banner itself at full size and
+            // anchored to the bottom, so it slides down from behind the row above it.
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints)
+                val height = (placeable.height * revealed).roundToInt()
+                onHeightChanged(with(density) { height.toDp() })
+                layout(placeable.width, height) { placeable.place(0, height - placeable.height) }
             }
+    ) {
+        lastVisibleState?.let { visibleState ->
+            IndexingProgressBanner(
+                state = visibleState,
+                onSeeDetailsClick = onSeeDetailsClick,
+                modifier = Modifier
+                    .graphicsLayer { alpha = revealed }
+                    .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Large)
+            )
         }
-
-        page(Modifier.weight(1f), bannerHeight * revealed)
     }
 }
 
@@ -712,6 +747,9 @@ private const val MAX_BANNER_PAGE_FRACTION = 0.75f
  * Once the user starts typing the history narrows down to the queries that match what is in the field —
  * the view model reads it filtered, dropping the previously found items, which belong to the queries that
  * found them rather than to the one being typed.
+ *
+ * [indexingBanner] rides the history list as its first row. The pages without a list don't show it,
+ * the screen pins it above them instead.
  */
 @Composable
 private fun ContentSearchIdlePage(
@@ -722,7 +760,8 @@ private fun ContentSearchIdlePage(
     recentsActions: RecentSearchesActions,
     listState: LazyListState,
     modifier: Modifier = Modifier,
-    firstRunBottomPadding: Dp = 0.dp
+    bannerHeight: Dp = 0.dp,
+    indexingBanner: (@Composable () -> Unit)? = null
 ) {
     when (recentsState) {
         // Nothing yet: hold an empty page rather than flashing the first-run state and then replacing it
@@ -735,11 +774,11 @@ private fun ContentSearchIdlePage(
             SearchMessageState(
                 iconRes = R.drawable.ic_search_empty_state,
                 description = stringResource(R.string.content_search_first_run_description),
+                bannerHeight = bannerHeight,
                 // Keeps clear of the keyboard, which is up as soon as the screen opens with no
                 // banner to read. Left under it, the artwork all but touches its top edge.
                 modifier = modifier
                     .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-                    .padding(bottom = firstRunBottomPadding)
                     .droppedWhenThereIsNoRoom()
             )
         } else {
@@ -758,6 +797,7 @@ private fun ContentSearchIdlePage(
                 }
             ),
             listState = listState,
+            header = indexingBanner,
             modifier = modifier
         )
     }

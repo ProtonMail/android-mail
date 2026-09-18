@@ -21,10 +21,10 @@ package ch.protonmail.android.mailcontentsearch.presentation.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +32,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.IntrinsicMeasurable
+import androidx.compose.ui.layout.IntrinsicMeasureScope
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -39,6 +46,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonSecondaryButton
 import ch.protonmail.android.design.compose.component.protonSecondaryButtonColors
@@ -60,9 +69,11 @@ internal fun ContentSearchNoResultsState(
     query: String,
     canSetUpContentSearch: Boolean,
     actions: ContentSearchNoResultsActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    bannerHeight: Dp = 0.dp
 ) {
     SearchMessageState(
+        bannerHeight = bannerHeight,
         iconRes = R.drawable.ic_search_empty_result,
         title = stringResource(R.string.content_search_no_results_title_for_query, query),
         description = if (canSetUpContentSearch) {
@@ -110,6 +121,8 @@ private fun SetUpContentSearchButton(onClick: () -> Unit, modifier: Modifier = M
     }
 }
 
+// Centred in the body the group reads as low, as the body starts under the search bar and its filter
+// chip. This lifts it back to the screen's optical centre.
 private val OpticalCentreLift = 64.dp
 
 @Composable
@@ -117,14 +130,22 @@ internal fun SearchMessageState(
     @DrawableRes iconRes: Int,
     description: String,
     modifier: Modifier = Modifier,
-    title: String? = null
+    title: String? = null,
+    bannerHeight: Dp = 0.dp
 ) = SearchMessageState(
     iconRes = iconRes,
     description = AnnotatedString(description),
     modifier = modifier,
-    title = title
+    title = title,
+    bannerHeight = bannerHeight
 )
 
+/**
+ * A centred icon, title and message, with an optional action under them.
+ *
+ * [bannerHeight] is the room the indexing banner takes above this state. It is added to the lift, so
+ * the group stays on the screen's centre instead of being pushed below it.
+ */
 @Composable
 internal fun SearchMessageState(
     @DrawableRes iconRes: Int,
@@ -132,43 +153,109 @@ internal fun SearchMessageState(
     modifier: Modifier = Modifier,
     title: String? = null,
     descriptionStyle: TextStyle = ProtonTheme.typography.bodyLargeWeak,
+    bannerHeight: Dp = 0.dp,
     action: (@Composable () -> Unit)? = null
 ) {
-    Column(
+    CentredMessage(
+        lift = OpticalCentreLift + bannerHeight,
         modifier = modifier
             .fillMaxSize()
-            // Centred in the body the group reads as low, as the body starts under the search bar
-            // and its filter chip. This lifts it back to the screen's optical centre.
-            .padding(bottom = OpticalCentreLift)
             .padding(horizontal = ProtonDimens.Spacing.ExtraLarge),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        artwork = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+            }
+        }
     ) {
-        Image(
-            painter = painterResource(id = iconRes),
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
-        if (title != null) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (title != null) {
+                Text(
+                    text = title,
+                    style = ProtonTheme.typography.bodyLargeNorm,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
+            }
             Text(
-                text = title,
-                style = ProtonTheme.typography.bodyLargeNorm,
-                fontWeight = FontWeight.Medium,
+                text = description,
+                style = descriptionStyle,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
-        }
-        Text(
-            text = description,
-            style = descriptionStyle,
-            textAlign = TextAlign.Center
-        )
-        if (action != null) {
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
-            action()
+            if (action != null) {
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+                action()
+            }
         }
     }
 }
+
+/**
+ * Lays [message] on the vertical centre, with [artwork] above it and [lift] worth of room kept free
+ * below it, as long as there is room for all three.
+ *
+ * A short page - a phone in landscape, with the indexing banner up - gives them up in order: first
+ * the lift, then the artwork, and the words last. The words are what the user came to read.
+ *
+ * A message too tall even on its own starts at the top edge and runs off the bottom. Running off the
+ * top would put it under the search bar.
+ */
+@Composable
+private fun CentredMessage(
+    artwork: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    lift: Dp = 0.dp,
+    message: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = {
+            artwork()
+            message()
+        },
+        measurePolicy = object : MeasurePolicy {
+
+            override fun MeasureScope.measure(measurables: List<Measurable>, constraints: Constraints): MeasureResult {
+                val loose = constraints.copy(minHeight = 0)
+                val artwork = measurables[ARTWORK].measure(loose)
+                val message = measurables[MESSAGE].measure(loose)
+
+                // An unbounded box can't run short, and has no centre to lay the group on either.
+                val room = if (constraints.hasBoundedHeight) constraints.maxHeight else Int.MAX_VALUE
+                val showArtwork = artwork.height + message.height <= room
+
+                val groupHeight = message.height + if (showArtwork) artwork.height else 0
+                val liftHeight = lift.roundToPx().takeIf { groupHeight + it <= room } ?: 0
+
+                val height = if (constraints.hasBoundedHeight) constraints.maxHeight else groupHeight
+                val top = ((height - liftHeight - groupHeight) / 2).coerceAtLeast(0)
+
+                return layout(constraints.maxWidth, height) {
+                    if (showArtwork) artwork.place(0, top)
+                    message.place(0, top + if (showArtwork) artwork.height else 0)
+                }
+            }
+
+            // Only the message is reported, since the lift and the artwork are both given up before
+            // the group is allowed to outgrow its box.
+            override fun IntrinsicMeasureScope.minIntrinsicHeight(measurables: List<IntrinsicMeasurable>, width: Int) =
+                measurables[MESSAGE].minIntrinsicHeight(width)
+        }
+    )
+}
+
+private const val ARTWORK = 0
+private const val MESSAGE = 1
 
 @Preview(name = "No results", showBackground = true)
 @Preview(name = "No results \u00b7 dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
@@ -179,6 +266,21 @@ private fun NoResultsStatePreview() {
             query = "weather",
             canSetUpContentSearch = false,
             actions = ContentSearchNoResultsActions(onLearnMore = {}, onSetUpContentSearch = {})
+        )
+    }
+}
+
+// The room a landscape page has left under the indexing banner. Neither the lift nor the artwork
+// fits, so the message is all that is laid out.
+@Preview(name = "No results, short page", showBackground = true, widthDp = 720, heightDp = 190)
+@Composable
+private fun NoResultsStateOnShortPagePreview() {
+    ProtonTheme {
+        ContentSearchNoResultsState(
+            query = "weather",
+            canSetUpContentSearch = false,
+            actions = ContentSearchNoResultsActions(onLearnMore = {}, onSetUpContentSearch = {}),
+            bannerHeight = 130.dp
         )
     }
 }
