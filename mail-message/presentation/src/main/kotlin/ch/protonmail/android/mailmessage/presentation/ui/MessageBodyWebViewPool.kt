@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.ui
 
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.compose.runtime.staticCompositionLocalOf
 import timber.log.Timber
 
@@ -48,6 +49,15 @@ class MessageBodyWebViewPool(
     // accessOrder = true makes iteration order least-recently-accessed first, so the eldest entry to evict
     // is always the first one.
     private val entries = object : LinkedHashMap<String, Entry>(0, LOAD_FACTOR, true) {}
+
+    /** A point-in-time view of the pool, for diagnostics/telemetry (e.g. on renderer death). */
+    data class Snapshot(val size: Int, val attached: Int, val detached: Int, val maxSize: Int)
+
+    /** Snapshots the current pool: total held, attached (visible) vs detached (cached), and the cap. */
+    fun snapshot(): Snapshot {
+        val attached = entries.values.count { it.webView.parent != null }
+        return Snapshot(size = entries.size, attached = attached, detached = entries.size - attached, maxSize = maxSize)
+    }
 
     /**
      * Returns the pooled WebView for [key], creating one with [create] on a miss. Acquiring counts as an
@@ -119,12 +129,53 @@ class MessageBodyWebViewPool(
         }
     }
 
+    /**
+     * Reacts to the shared renderer process dying (via WebViewClient.onRenderProcessGone). Every WebView in
+     * the app is backed by that single renderer, so once it is gone the entire pool is defunct - none of the
+     * cached views can be re-attached or reused. An OS kill (the usual cause, [deadView] not having crashed)
+     * is also the strongest memory-pressure signal we still get on Android 14+, where the foreground
+     * TRIM_MEMORY_RUNNING_* callbacks no longer fire. So this releases the whole cache rather than dropping a
+     * single view: it destroys every pooled WebView and empties the pool, freeing memory immediately.
+     * [deadView] is destroyed too even if it was never pooled (the legacy, non-pooled path).
+     *
+     * The currently attached (visible) message is destroyed here as well - it is dead too - and recovers by
+     * building a fresh WebView on its next composition.
+     */
+    fun onRenderProcessGone(deadView: WebView) {
+        // Act only if this exact dead view is still pooled. A renderer death fires one callback per affected
+        // WebView; the first purges the whole pool (all cached views share the dead renderer). Later/stale
+        // callbacks - and any for a replacement acquired since - find their view gone and no-op, so the handler
+        // is idempotent and can't destroy a replacement.
+        if (entries.values.none { it.webView === deadView }) return
+        entries.values.forEach { destroy(it.webView) }
+        entries.clear()
+    }
+
     /** Destroys every pooled WebView. Call when the conversation screen leaves composition. */
     fun clear() {
         val size = entries.size
         entries.values.forEach { destroy(it.webView) }
         entries.clear()
         if (size > 0) Timber.d("WebViewPool: clear size=%d", size)
+    }
+
+    /**
+     * Destroys off-screen WebViews down to at most [floor], on system memory pressure. The weight budget is
+     * only an estimate and the decoded-image cost lives in the renderer process we cannot measure, so this
+     * honours the real `onTrimMemory` signal. Least-recently-used first; attached (visible) views are never
+     * destroyed, so [floor] may not be reached if that many bodies are on screen.
+     */
+    fun trimToFloor(floor: Int) {
+        if (entries.size <= floor) return
+        // entries iterates least-recently-accessed first (accessOrder), so the oldest detached views go first.
+        val detachedLruFirst = entries.entries.filter { it.value.webView.parent == null }
+        val toEvict = (entries.size - floor).coerceAtMost(detachedLruFirst.size)
+        if (toEvict <= 0) return
+        detachedLruFirst.take(toEvict).forEach { entry ->
+            entries.remove(entry.key)
+            destroy(entry.value.webView)
+        }
+        Timber.d("WebViewPool: trim floor=%d destroyed=%d size=%d", floor, toEvict, entries.size)
     }
 
     private fun evictIfNeeded(protectedKey: String) {

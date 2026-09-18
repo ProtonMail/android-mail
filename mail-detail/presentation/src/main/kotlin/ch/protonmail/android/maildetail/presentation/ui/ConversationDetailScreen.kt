@@ -18,7 +18,9 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.app.ActivityManager
+import android.content.ComponentCallbacks2
 import android.content.Context
+import android.content.res.Configuration
 import android.net.Uri
 import android.view.MotionEvent
 import android.widget.Toast
@@ -1060,6 +1062,30 @@ private fun MessagesContent(
         onDispose { webViewPool?.clear() }
     }
 
+    // Best-effort backstop, NOT the primary safety: the weight budget and the absolute instance cap
+    // (POOL_MAX_INSTANCES) bound live WebViews up front, which is what keeps foreground memory in check. This
+    // only drops off-screen retained WebViews when the system signals pressure. Note the foreground
+    // TRIM_MEMORY_RUNNING_* levels are no longer delivered on Android 14+ (API 34), so on modern devices this
+    // fires mainly on UI-hidden / backgrounded trims (still >= TRIM_MEMORY_RUNNING_LOW) rather than live
+    // foreground pressure - hence "backstop". Attached (visible) bodies are never touched.
+    val trimContext = LocalContext.current
+    DisposableEffect(webViewPool, trimContext) {
+        val pool = webViewPool
+        val callbacks = object : ComponentCallbacks2 {
+            override fun onTrimMemory(level: Int) {
+                if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) pool?.trimToFloor(WEBVIEW_POOL_TRIM_FLOOR)
+            }
+
+            override fun onConfigurationChanged(newConfig: Configuration) = Unit
+
+            override fun onLowMemory() {
+                pool?.trimToFloor(WEBVIEW_POOL_TRIM_FLOOR)
+            }
+        }
+        trimContext.registerComponentCallbacks(callbacks)
+        onDispose { trimContext.unregisterComponentCallbacks(callbacks) }
+    }
+
     // Keep the expanded messages nearest the viewport alive within a RAM-scaled weight budget and destroy the
     // rest: distance (pixels from the viewport edges) ranks them nearest-first, and each message's weight
     // (MessageBodyWeight - light/medium/heavy/huge) is charged against the budget, so a few heavy bodies or
@@ -1452,6 +1478,8 @@ private const val POOL_LRU_HEADROOM = 2
 // allowance (budget + headroom) so it never clips the low/mid tiers, and bounds the high tier - and any future
 // budget increase - from accumulating a large number of live views.
 private const val POOL_MAX_INSTANCES = 12
+// Under system memory pressure, trim the pool down to at most this many bodies (off-screen ones destroyed).
+private const val WEBVIEW_POOL_TRIM_FLOOR = 1
 
 object ConversationDetail {
 
