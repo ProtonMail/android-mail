@@ -46,6 +46,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentList
+import ch.protonmail.android.mailmessage.presentation.ui.LocalMessageBodyWebViewPool
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import ch.protonmail.android.mailmessage.presentation.ui.ZoomableWebView
 import timber.log.Timber
@@ -114,12 +115,20 @@ fun MessageBody(
     }
 
     if (hasWebView) {
-        val webViewCache = remember(messageBodyUiModel.messageId) {
+        val messageId = messageBodyUiModel.messageId
+        // When a pool is in scope (conversation list) the WebView is acquired from it and kept alive across
+        // recycling; otherwise fall back to a per-composable WebView created and destroyed with the item.
+        val pool = LocalMessageBodyWebViewPool.current
+        val webViewCache = remember(messageId) {
             mutableStateOf<ZoomableWebView?>(null)
         }
 
-        val stableOnBuildWebView = remember(messageBodyUiModel.messageId) {
-            onBuildWebView(webViewCache)
+        val stableOnBuildWebView = remember(messageId, pool) {
+            if (pool != null) {
+                { context: Context -> pool.acquire(messageId.id) { ZoomableWebView(context) } }
+            } else {
+                onBuildWebView(webViewCache)
+            }
         }
 
         MessageBodyWebView(
@@ -136,6 +145,7 @@ fun MessageBody(
                 onViewEntireMessageClicked = actions.onViewEntireMessageClicked
             ),
             onBuildWebView = stableOnBuildWebView,
+            pool = pool,
             onMessageBodyLoaded = onMessageBodyLoaded
         )
     } else {
