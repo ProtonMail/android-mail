@@ -24,6 +24,7 @@ import android.net.Uri
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -202,6 +203,31 @@ fun MessageBodyWebView(
             override fun onPageCommitVisible(view: WebView?, url: String?) {
                 super.onPageCommitVisible(view, url)
                 contentLoaded.value = true
+            }
+
+            // The renderer process - shared by every WebView in the app - has died, OOM-killed to reclaim
+            // memory (the usual cause) or crashed. Every pooled view is backed by it and is now defunct, and an
+            // OS kill is itself a strong memory-pressure signal - stronger than what onTrimMemory still gives us
+            // on Android 14+. So treat it like severe pressure: release the whole cache, not just this view.
+            // Returning true keeps the host app process alive - the default, false, tears the app down with the
+            // renderer, which pooling makes likelier by holding more WebViews on the one renderer.
+            override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+                // Telemetry: forwarded to Sentry by SentryTimberIntegration (min event level = WARNING). Logged
+                // before the purge so poolSize reflects how many WebViews were alive when the renderer died;
+                // crashed=false means an OS/OOM kill. Fires once per affected view - Sentry groups by template.
+                Timber.w(
+                    "WebView renderer gone: crashed=%s priorityAtExit=%s pooled=%s pool=%s",
+                    detail?.didCrash(), detail?.rendererPriorityAtExit(), pool != null, pool?.snapshot()
+                )
+                view?.let { dead ->
+                    if (pool != null) {
+                        pool.onRenderProcessGone(dead)
+                    } else {
+                        (dead.parent as? ViewGroup)?.removeView(dead)
+                        dead.destroy()
+                    }
+                }
+                return true
             }
         }
     }
