@@ -47,6 +47,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 /**
  * The idle page shown when the user has search history: recent queries, then previously found items.
+ *
+ * [header] is laid out as the first row of the list, so it scrolls away with it.
  */
 @Composable
 internal fun RecentSearchesPage(
@@ -55,6 +57,7 @@ internal fun RecentSearchesPage(
     actions: RecentSearchesActions,
     downloadingAttachmentId: AttachmentIdUiModel?,
     listState: LazyListState = rememberLazyListState(),
+    header: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     // When the keyboard is open its inset already covers the nav bar, so take whichever is larger.
@@ -77,6 +80,9 @@ internal fun RecentSearchesPage(
         // it needs beyond the keyboard / navigation bar.
         contentPadding = PaddingValues(bottom = maxOf(navInset, imeInset) + ProtonDimens.Spacing.Large)
     ) {
+        if (header != null) {
+            item(key = "recents-header") { header() }
+        }
         recentSearchTermsSection(terms = state.terms, actions = actions)
         item(key = "recent-found-items") {
             RecentFoundItemsSection(
