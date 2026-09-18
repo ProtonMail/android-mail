@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream
 import android.content.Context
 import android.net.Uri
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -108,6 +109,9 @@ fun MessageBodyWebView(
     onBuildWebView: (Context) -> ZoomableWebView,
     shouldAllowViewingEntireMessage: Boolean = true,
     fillContainerHeight: Boolean = false,
+    // When non-null, the WebView is owned by this pool: it is kept alive across recycling instead of being
+    // destroyed on dispose, and its content is not reloaded when it is re-attached with the same content.
+    pool: MessageBodyWebViewPool? = null,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
@@ -192,18 +196,11 @@ fun MessageBodyWebView(
                 }
             }
 
-            // Kept only for logging/debugging.
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                Timber.d("message-webview: onPageFinished")
-            }
-
             // Using onPageCommitVisible improves perceived loading time since
             // onPageFinished fires much later (after most resources load), delaying
             // when the WebView can be shown.
             override fun onPageCommitVisible(view: WebView?, url: String?) {
                 super.onPageCommitVisible(view, url)
-                Timber.d("message-webview: onPageCommitVisible")
                 contentLoaded.value = true
             }
         }
@@ -217,12 +214,26 @@ fun MessageBodyWebView(
 
     val shouldRestrictHeight = messageBodyUiModel.shouldRestrictWebViewHeight && shouldAllowViewingEntireMessage
 
+    // Identifies the exact content currently in the WebView. If a pooled WebView already holds this
+    // signature, re-attaching it must not reload - that reload is the blank-and-repaint we are removing.
+    val contentSignature = remember(messageBodyUiModel.messageBody, messageBodyUiModel.viewModePreference) {
+        "${messageBodyUiModel.messageBody.hashCode()}:${messageBodyUiModel.viewModePreference}"
+    }
+
     LaunchedEffect(
         messageId,
         messageBodyUiModel.messageBody,
         messageBodyUiModel.viewModePreference
     ) {
-        Timber.d("message-webview: setting initial value on webview ${webView.hashCode()} ($messageId)")
+        if (pool != null && pool.loadedSignature(messageId.id) == contentSignature) {
+            // Re-attached from the pool with identical content: skip the load. Mark it ready so the height
+            // and reveal paths proceed without waiting for an onPageCommitVisible that will never come.
+            Timber.d("WebViewPool: reattach key=%s (skip reload)", messageId.id)
+            contentLoaded.value = true
+            onMessageBodyLoaded(messageId, lastMeasuredWebViewHeight)
+            return@LaunchedEffect
+        }
+
         when (val body = messageBodyUiModel.messageBody) {
             is MessageBodyContent.Text -> {
                 webView.loadDataWithBaseURL(null, body.value, MimeType.Html.value, "utf-8", null)
@@ -231,6 +242,7 @@ fun MessageBodyWebView(
                 webView.loadUrl(localBodyUrl(messageId))
             }
         }
+        pool?.markLoaded(messageId.id, contentSignature)
     }
 
     LaunchedEffect(messageId) {
@@ -252,7 +264,13 @@ fun MessageBodyWebView(
 
     DisposableEffect(messageId) {
         onDispose {
-            webViewCleanup(webView, messageId)
+            if (pool != null) {
+                // Keep the rendered WebView alive in the pool; only detach it from this FrameLayout so it can
+                // be re-parented on scroll-back. The pool destroys it on eviction or when the screen leaves.
+                (webView.parent as? ViewGroup)?.removeView(webView)
+            } else {
+                webViewCleanup(webView, messageId)
+            }
         }
     }
 
@@ -268,6 +286,10 @@ fun MessageBodyWebView(
         Box(modifier = if (fillContainerHeight) Modifier.fillMaxSize() else Modifier) {
             AndroidView(
                 factory = { context ->
+                    val staleParent = webView.parent as? ViewGroup
+                    // Defensive: a pooled view may still be attached to a FrameLayout whose dispose hasn't run
+                    // yet; addView would throw "already has a parent". Detach first so re-parenting is safe.
+                    staleParent?.removeView(webView)
                     FrameLayout(context).apply {
                         addView(
                             webView,
@@ -444,10 +466,15 @@ private fun configureOnTouchListener(webView: ZoomableWebView) {
     }
 }
 
+// WebView teardown following Google's "Manage and diagnose WebView memory": detach from the parent so the
+// view tree can't pin the host Activity, stop in-flight loading, blank the current page and clear its history
+// to drop the live DOM, then destroy.
 private fun webViewCleanup(webView: WebView, messageId: MessageId) {
     runCatching {
+        (webView.parent as? ViewGroup)?.removeView(webView)
         webView.stopLoading()
-        webView.loadUrl("about:blank")
+        // No loadUrl("about:blank") before destroy: that async navigation's loadingStateChanged callback lands
+        // on the already-destroyed view. destroy() frees it; blanking is for a WebView being kept alive.
         webView.destroy()
     }.onFailure { e ->
         Timber.e(e, "Failed to clean up webView: $messageId")
