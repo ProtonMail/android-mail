@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La cerca ha millorat</string>
   <string name="spotlight_screen_content_search_subtitle">Trobeu allò que us importa sense renunciar a la privacitat.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Trobeu-ne més a cada correu electrònic</string>
+  <string name="spotlight_screen_content_search_message_content_title">Ara es poden cercar totes les paraules</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Trobeu correus electrònics pel contingut del missatge, no només per l\'assumpte o el remitent.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">Més fàcil d\'arribar-hi</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Ara la cerca és a la part inferior de la pantalla per a facilitar-ne l\'ús amb una sola mà</string>
+  <string name="spotlight_screen_content_search_encryption_title">Continuarà xifrat d\'extrem a extrem</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">La indexació es fa al vostre dispositiu, xifrada amb la vostra clau. No s\'envia res a Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Reprengeu-ho on ho heu deixat</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Torneu a consultar fàcilment les cerques recents. S\'emmagatzemen al vostre dispositiu per preservar el xifratge d\'extrem a extrem.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Torneu a consultar ràpidament les cerques i els resultats recents. Es desen al vostre dispositiu per mantenir el xifratge d\'extrem a extrem.</string>
+  <string name="spotlight_screen_whats_new_pill">Novetats</string>
+  <string name="spotlight_screen_content_search_button_continue">Continuar</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Activar-ho</string>
+  <string name="spotlight_screen_content_search_button_not_now">Ara no</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">Com funciona la cerca del contingut</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Els vostres correus electrònics es descarreguen en aquest telèfon.</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Per cercar al contingut del correu electrònic, Proton Mail se\'n baixa una còpia de manera segura en aquest dispositiu.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">S\'ha creat un índex privat al dispositiu</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Es crea un índex de cerca lleuger localment al vostre dispositiu. Penseu-hi com un mapa per trobar els missatges que esteu cercant.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Ho indexarem en segon pla</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">La indexació dels vostres correus trigarà una estona, però podreu continuar utilitzant el correu com de costum mentre treballem en segon pla.</string>
 </resources>

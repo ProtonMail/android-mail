@@ -42,7 +42,6 @@
   <string name="mailbox_message_scheduling_offline">Frakoblet: melding satt i planleggingskø</string>
   <string name="mailbox_message_scheduled_for_sending_success">Denne meldingen vil bli sendt %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Brukeren er allerede logget på</string>
-  <string name="home_event_loop_error_snackbar">Vi kunne ikke synkronisere e-posten din. Prøv å logge av og på igjen. Hvis det ikke fungerer, send inn en feilrapport.</string>
   <string name="home_content_search_error_snackbar">Kunne ikke forberede søk etter e-postinnhold.</string>
   <string name="home_content_search_error_snackbar_action">Gjennomgå</string>
 </resources>

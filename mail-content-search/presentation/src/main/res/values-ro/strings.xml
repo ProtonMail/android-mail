@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Reîncercare</string>
   <string name="mail_settings_content_search_update_error">Ceva nu a funcționat bine. Reîncercați.</string>
   <string name="mail_settings_content_search_retry_error">Nu se poate pregăti căutarea în conținutul mesajelor.</string>
+  <string name="mail_settings_content_search_indexing_section">Se indexează</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s %%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">În derulare</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Actualizat</string>
+  <string name="mail_settings_content_search_indexing_paused">Suspendat</string>
+  <string name="mail_settings_content_search_indexing_pause">Pauză</string>
+  <string name="mail_settings_content_search_indexing_resume">Reluare</string>
+  <string name="mail_settings_content_search_indexing_description">Mesajele recente sunt indexate primele. Toate mesajele indexate pot fi căutate în timp ce procesul de indexare este în desfășurare.</string>
+  <string name="mail_settings_content_search_on_this_device_section">Pe acest dispozitiv</string>
+  <string name="mail_settings_content_search_index_size">Mărime index</string>
   <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>
   <string name="mail_settings_content_search_clear_data_description">Ștergerea datelor de căutare locală va dezactiva căutarea în conținutul mesajelor. O puteți reactiva oricând.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Golire date de căutare locale</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Golire tot</string>
   <string name="content_search_previously_found_title">Găsite anterior</string>
   <string name="content_search_dismiss_recent_search_content_description">Eliminare „%1$s” din căutările recente.</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Încă se indexează mesajele - %1$d %%.</string>
+  <string name="content_search_indexing_see_details">Afișare detalii</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ștergeți permanent?</string>
   <string name="content_search_delete_dialog_message">Acest mesaj va fi șters permanent. Această acțiune nu poate fi inversată.</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search email content</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">Jotta voit tehdä hakuja viestien sisällön perusteella, viestit ladataan tälle laitteelle.</string>
   <string name="mail_settings_content_search_learn_more">Lue lisää..</string>
-  <string name="mail_settings_content_search_toggle_title">Search email content</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Try again</string>
   <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
   <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tyhjennä paikalliset hakutiedot</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Aiemmin löydetyt</string>
   <string name="content_search_dismiss_recent_search_content_description">Poista \"%1$s\" viimeisimmistä hauista</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">See details</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Poistetaanko pysyvästi?</string>
   <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>

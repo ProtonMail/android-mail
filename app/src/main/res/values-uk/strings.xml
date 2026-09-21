@@ -20,7 +20,7 @@
   <string name="app_icon_name_weather">Погода</string>
   <string name="app_icon_name_notes">Нотатки</string>
   <string name="app_icon_name_calculator">Калькулятор</string>
-  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
+  <string name="app_welcome_subtitle">Шифрування зберігає ваші дані приватними. Ваші дані справді належать вам.</string>
   <string name="dialog_sign_out_account_title">Вийти</string>
   <string name="dialog_sign_out_account_description">Дані, пов’язані з вашим обліковим записом, залишаться на цьому пристрої, якщо ви не вирішите їх видалити.</string>
   <string name="dialog_sign_out_account_confirm">Вийти</string>
@@ -42,7 +42,6 @@
   <string name="mailbox_message_scheduling_offline">Ви поза мережею: повідомлення в черзі на планування</string>
   <string name="mailbox_message_scheduled_for_sending_success">Це повідомлення буде надіслано %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Користувач уже ввійшов</string>
-  <string name="home_event_loop_error_snackbar">Не вдалося синхронізувати вашу пошту. Спробуйте вийти з облікового запису та ввійти знову. Якщо це не допоможе, надішліть звіт про помилку.</string>
-  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
-  <string name="home_content_search_error_snackbar_action">Review</string>
+  <string name="home_content_search_error_snackbar">Не вдалося підготувати пошук вмістом пошти.</string>
+  <string name="home_content_search_error_snackbar_action">Огляд</string>
 </resources>

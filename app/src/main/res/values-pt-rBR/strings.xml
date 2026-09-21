@@ -42,7 +42,6 @@
   <string name="mailbox_message_scheduling_offline">Off-line: mensagem na fila para agendamento</string>
   <string name="mailbox_message_scheduled_for_sending_success">Esta mensagem será enviada em %1$s</string>
   <string name="launcher_alert_duplicate_account_description">O usuário já iniciou sessão</string>
-  <string name="home_event_loop_error_snackbar">Não foi possível sincronizar seu e-mail. Tente sair e entrar novamente. Se isso não funcionar, envie um relatório de erro.</string>
   <string name="home_content_search_error_snackbar">A pesquisa de conteúdo de e-mail não pode ser preparada</string>
   <string name="home_content_search_error_snackbar_action">Revisar</string>
 </resources>

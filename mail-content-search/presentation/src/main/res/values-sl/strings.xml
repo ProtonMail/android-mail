@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Išči po vsebini sporočila</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">Za iskanje po vsebini se bodo sporočila najprej prenesla na to napravo.</string>
   <string name="mail_settings_content_search_learn_more">Več o tem ...</string>
-  <string name="mail_settings_content_search_toggle_title">Išči po vsebini sporočila</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Pripravljanje %1$d%% …</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Try again</string>
   <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Počisti lokalne iskalne podatke</string>
   <string name="mail_settings_content_search_clear_data_description">Če počistite lokalne podatke iskanja, bo iskanje po vsebini sporočil onemogočeno. Kadar koli ga lahko znova omogočite.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Počisti lokalne iskalne podatke</string>
@@ -29,10 +39,13 @@
   <string name="content_search_close_content_description">Zapri iskanje</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recent mail searches</string>
-  <string name="content_search_clear_recent_searches">Clear all</string>
-  <string name="content_search_previously_found_title">Najdeno v prešnjih iskanjih</string>
+  <string name="content_search_recent_searches_title">Nedavna iskanja e-pošte</string>
+  <string name="content_search_clear_recent_searches">Počisti vse</string>
+  <string name="content_search_previously_found_title">Najdeno v prejšnjih iskanjih</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrani »%1$s« iz nedavnih iskanj</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Vaša e-pošta se še vedno indeksira - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Prikaži podrobnosti</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Trajno izbriši?</string>
   <string name="content_search_delete_dialog_message">Naslednja sporočila bodo trajno izbrisana. Dejanja ni mogoče razveljaviti.</string>

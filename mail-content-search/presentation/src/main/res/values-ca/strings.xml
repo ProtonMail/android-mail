@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Cerca al contingut del correu electrònic</string>
+  <string name="mail_settings_content_search_header_title">Cerca de contingut del correu electrònic</string>
   <string name="mail_settings_content_search_description">Per tal que pugueu cercar al contingut dels missatges, aquests es baixaran al dispositiu.</string>
   <string name="mail_settings_content_search_learn_more">Més informació..</string>
-  <string name="mail_settings_content_search_toggle_title">Cerca al contingut del correu electrònic</string>
+  <string name="mail_settings_content_search_toggle_title">Cerca de contingut del correu electrònic</string>
   <string name="mail_settings_content_search_mobile_data_title">Descarregar mitjançant dades mòbils</string>
   <string name="mail_settings_content_search_mobile_data_hint">Utilitzeu les dades mòbils per continuar les descàrregues quan es perdi la connexió Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Torneu-ho a provar</string>
   <string name="mail_settings_content_search_update_error">S\'ha produït un error. Torneu-ho a provar.</string>
   <string name="mail_settings_content_search_retry_error">No es pot preparar la cerca del contingut del correu electrònic.</string>
+  <string name="mail_settings_content_search_indexing_section">S\'està indexant</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">En curs</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Actualitzat</string>
+  <string name="mail_settings_content_search_indexing_paused">En pausa</string>
+  <string name="mail_settings_content_search_indexing_pause">Pausa</string>
+  <string name="mail_settings_content_search_indexing_resume">Reprendre-ho</string>
+  <string name="mail_settings_content_search_indexing_description">Els correus electrònics recents s\'indexen primer. Mentre s\'està indexant es pot cercar a tots els missatges indexats.</string>
+  <string name="mail_settings_content_search_on_this_device_section">En aquest dispositiu</string>
+  <string name="mail_settings_content_search_index_size">Mida de l\'índex</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
   <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Neteja les dades de cerca local</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Netejar-ho tot</string>
   <string name="content_search_previously_found_title">Trobats anteriorment</string>
   <string name="content_search_dismiss_recent_search_content_description">Suprimeix «%1$s» de les cerques recents</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">El vostre correu encara s\'està indexant: %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Veure els detalls</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Voleu eliminar-ho permanentment?</string>
   <string name="content_search_delete_dialog_message">Aquests missatges s\'eliminaran permanentment. Aquesta acció no es pot desfer.</string>

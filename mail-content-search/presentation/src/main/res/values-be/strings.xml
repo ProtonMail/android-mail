@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Пошук па змесціве ў лісце</string>
+  <string name="mail_settings_content_search_header_title">Шукаць па змесціве ў лісце</string>
   <string name="mail_settings_content_search_description">Паведамленні будуць спампаваныя на гэту прыладу, каб вы маглі шукаць па іх змесціве.</string>
   <string name="mail_settings_content_search_learn_more">Даведацца больш..</string>
-  <string name="mail_settings_content_search_toggle_title">Пошук па змесціве ў лісце</string>
+  <string name="mail_settings_content_search_toggle_title">Шукаць па змесціве ў лісце</string>
   <string name="mail_settings_content_search_mobile_data_title">Спампоўванне з дапамогай мабільных даных</string>
   <string name="mail_settings_content_search_mobile_data_hint">Выкарыстоўвайце мабільныя даныя, каб працягнуць спампоўванне пры адсутнасці сеткі Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Паўтарыце спробу</string>
   <string name="mail_settings_content_search_update_error">Нешта пайшло не так. Паўтарыце спробу.</string>
   <string name="mail_settings_content_search_retry_error">Немагчыма падрыхтаваць пошук па змесціве ліста.</string>
+  <string name="mail_settings_content_search_indexing_section">Індэксацыя</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Выконваецца</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">У актуальным стане</string>
+  <string name="mail_settings_content_search_indexing_paused">Прыпынена</string>
+  <string name="mail_settings_content_search_indexing_pause">Прыпыніць</string>
+  <string name="mail_settings_content_search_indexing_resume">Узнавіць</string>
+  <string name="mail_settings_content_search_indexing_description">Нядаўнія лісты будуць праіндэксаваны першымі. Усе праіндэксаваныя паведамленні даступны для пошуку, пакуль ідзе індэксацыя.</string>
+  <string name="mail_settings_content_search_on_this_device_section">На гэтай прыладзе</string>
+  <string name="mail_settings_content_search_index_size">Памер індэксу</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Ачысціць усе</string>
   <string name="content_search_previously_found_title">Папярэдне знойдзеныя</string>
   <string name="content_search_dismiss_recent_search_content_description">Выдаліць “%1$s” са спіса нядаўніх пошукаў</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Ваша пошта ўсё яшчэ індэксуецца - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Паглядзець падрабязнасці</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Выдаліць незваротна?</string>
   <string name="content_search_delete_dialog_message">Гэтыя паведамленні будуць незваротна выдалены. Гэта дзеянне немагчыма будзе адрабіць.</string>

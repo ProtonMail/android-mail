@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La recherche s\'est améliorée.</string>
   <string name="spotlight_screen_content_search_subtitle">Trouvez ce qui compte, sans renoncer à votre vie privée.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Parcourez efficacement vos e-mails</string>
+  <string name="spotlight_screen_content_search_message_content_title">Recherchez et retrouvez chaque mot</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Recherchez des e-mails en fonction du contenu du message, et pas seulement de l\'objet ou de l\'expéditeur.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">Plus simple à atteindre</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">La fonction de recherche se trouve désormais en bas de l\'écran, ce qui facilite son utilisation à une main.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Toujours chiffré de bout en bout</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">L\'indexation s\'effectue sur votre appareil, de manière chiffrée à l\'aide de votre clé. Aucune donnée n\'est transmise à Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Reprenez là où vous vous étiez arrêté</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Accédez facilement à vos recherches récentes. Elles sont enregistrées sur votre appareil afin de garantir un chiffrement de bout en bout.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Accédez rapidement à vos recherches et résultats récents. Elles sont enregistrées sur votre appareil afin de garantir un chiffrement de bout en bout.</string>
+  <string name="spotlight_screen_whats_new_pill">Nouveautés</string>
+  <string name="spotlight_screen_content_search_button_continue">Continuer</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Activer</string>
+  <string name="spotlight_screen_content_search_button_not_now">Plus tard</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">Comment fonctionne la recherche dans le contenu</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Vos e-mails sont téléchargés sur ce téléphone</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Pour effectuer une recherche dans le contenu de vos e-mails, Proton Mail télécharge en toute sécurité une copie sur cet appareil.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Un index privé est créé sur l\'appareil</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Un index de recherche léger est créé localement sur votre appareil. Considérez-le comme un outil qui vous permet de retrouver les messages que vous recherchez.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">L\'indexation se fera en arrière-plan</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">L\'indexation de vos e-mails prendra un certain temps, mais vous pouvez continuer d\'utiliser votre messagerie comme d\'habitude pendant que nous travaillons en arrière-plan.</string>
 </resources>
