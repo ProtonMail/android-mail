@@ -737,6 +737,32 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
+    fun `should keep the query when the account switched to already has content search on`() = runTest(testDispatcher) {
+        val primaryUserId = MutableStateFlow<UserId?>(userId)
+        every { observePrimaryUserId() } returns primaryUserId
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        every { observeContentSearchEnabled(otherUserId) } returns flowOf(true)
+        // The switch rebuilds the paging flow for the account switched to.
+        every { observeFolderColorSettings(otherUserId) } returns flowOf(
+            FolderColorSettings(useFolderColor = false, inheritParentFolderColor = false)
+        )
+        coEvery { getCurrentViewModeForLabel(otherUserId, any()) } returns ViewMode.NoConversationGrouping
+        coEvery { findLocalSystemLabelId(otherUserId, any()) } returns null
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        primaryUserId.emit(otherUserId)
+        advanceUntilIdle()
+
+        assertEquals("invoice", sut.queryState.text.toString())
+        assertEquals("invoice", sut.state.value.query)
+        collectingItems.cancel()
+    }
+
+    @Test
     fun `should keep the results when content search was already on`() = runTest(testDispatcher) {
         val sut = viewModel()
         val collectingItems = launch { sut.items.collect() }
