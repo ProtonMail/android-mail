@@ -189,7 +189,6 @@ fun MailboxScreen(
     snackbarHeight: Dp = 0.dp
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
-    val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
     val isContentSearchEnabled = viewModel.isContentSearchEnabled.collectAsStateWithLifecycle().value
     val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
@@ -454,7 +453,6 @@ fun MailboxScreen(
             mailboxState = mailboxState,
             mailboxListItems = mailboxListItems,
             actions = completeActions,
-            isCategoryViewEnabled = isCategoryViewEnabled,
             isContentSearchEnabled = isContentSearchEnabled,
             snackbarHeight = snackbarHeight,
             userId = primaryUserId,
@@ -467,7 +465,6 @@ fun MailboxScreen(
 fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
-    isCategoryViewEnabled: Boolean = false,
     isContentSearchEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     snackbarHeight: Dp = 0.dp,
@@ -546,8 +543,7 @@ fun MailboxScreen(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                     ),
                     state = mailboxState,
-                    actions = stickyHeaderActions,
-                    isCategoryViewEnabled = isCategoryViewEnabled
+                    actions = stickyHeaderActions
                 )
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
@@ -676,7 +672,6 @@ fun MailboxScreen(
             MailboxFabToolbarMorph(
                 isInSelectionMode = isInSelectionMode,
                 isInSearch = isInSearch,
-                showBottomUnreadFilter = isCategoryViewEnabled,
                 unreadFilterState = mailboxState.unreadFilterState,
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,

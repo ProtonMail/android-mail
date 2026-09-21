@@ -165,7 +165,6 @@ private fun AppSettingsScreenContent(
 
                 MailExperienceSettingsItem(
                     swipeToNextEmail = state.settings.swipeNextEnabled,
-                    isEmailCategoriesEnabled = state.settings.isEmailCategoriesEnabled,
                     onIntent = onIntent,
                     actions = actions
                 )
@@ -380,7 +379,6 @@ private fun UseCombinedContactsSettingsItem(
 private fun MailExperienceSettingsItem(
     modifier: Modifier = Modifier,
     swipeToNextEmail: Boolean,
-    isEmailCategoriesEnabled: Boolean,
     actions: AppSettingsScreen.Actions,
     onIntent: (AppSettingsAction) -> Unit
 ) {
@@ -415,21 +413,19 @@ private fun MailExperienceSettingsItem(
                 }
             )
 
-            if (isEmailCategoriesEnabled) {
-                SettingsItemDivider()
+            SettingsItemDivider()
 
-                ProtonAppSettingsItemNorm(
-                    name = stringResource(id = R.string.mail_settings_app_customization_email_categories),
-                    onClick = { actions.onEmailCategoriesClick() },
-                    icon = {
-                        ProtonMainSettingsIcon(
-                            iconRes = R.drawable.ic_proton_chevron_right,
-                            contentDescription = "",
-                            tint = ProtonTheme.colors.iconHint
-                        )
-                    }
-                )
-            }
+            ProtonAppSettingsItemNorm(
+                name = stringResource(id = R.string.mail_settings_app_customization_email_categories),
+                onClick = { actions.onEmailCategoriesClick() },
+                icon = {
+                    ProtonMainSettingsIcon(
+                        iconRes = R.drawable.ic_proton_chevron_right,
+                        contentDescription = "",
+                        tint = ProtonTheme.colors.iconHint
+                    )
+                }
+            )
         }
     }
 }

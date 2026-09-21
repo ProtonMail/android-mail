@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.repository.AppSettingsRepository
 import ch.protonmail.android.mailsettings.presentation.appsettings.usecase.GetAppIconDescription
@@ -41,19 +40,16 @@ internal class AppSettingsViewModel @Inject constructor(
     val appSettingsRepository: AppSettingsRepository,
     val getNotificationsEnabled: GetNotificationsEnabled,
     val getAppIconDescription: GetAppIconDescription,
-    val observePrimaryUserId: ObservePrimaryUserId,
-    private val isCategoryViewEnabled: IsCategoryViewEnabled
+    val observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
     val state = appSettingsRepository.observeAppSettings().map { appSettings ->
         val notificationsEnabled = getNotificationsEnabled()
         val appIconDescription = getAppIconDescription()
-        val userId = observePrimaryUserId().firstOrNull()
         val uiModel = AppSettingsUiModelMapper.toUiModel(
             appSettings = appSettings,
             notificationsEnabled = notificationsEnabled,
-            appIconDescription = appIconDescription,
-            isEmailCategoriesEnabled = userId != null && isCategoryViewEnabled(userId)
+            appIconDescription = appIconDescription
         )
         AppSettingsState.Data(settings = uiModel)
     }

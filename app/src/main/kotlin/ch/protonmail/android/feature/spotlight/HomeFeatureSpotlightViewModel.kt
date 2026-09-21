@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.usecase.IsRecentAppInstall
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
@@ -48,30 +47,25 @@ import javax.inject.Inject
 class HomeFeatureSpotlightViewModel @Inject constructor(
     observeFeatureSpotlightDisplay: ObserveFeatureSpotlightDisplay,
     @IsFeatureSpotlightEnabled private val isEnabled: FeatureFlag<Boolean>,
-    // Temporarily couple the 2 FFs as the new feature spotlight depends on the Category View impl in 7.10+
-    private val isCategoryViewEnabled: IsCategoryViewEnabled,
     private val isRecentAppInstall: IsRecentAppInstall,
     private val markFeatureSpotlightSeen: MarkFeatureSpotlightSeen,
     private val observeIsBusinessUser: ObserveIsBusinessUser,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
-    // Re-evaluate on primary user change: this is currently needed only for category view.
     val state: StateFlow<FeatureSpotlightState> = observePrimaryUserId()
         .filterNotNull()
         .distinctUntilChanged()
         .flatMapLatest { userId ->
             flow {
                 val featureFlagEnabled = isEnabled.get()
-                val categoryViewEnabled = isCategoryViewEnabled(userId)
                 val recentInstall = isRecentAppInstall()
                 Timber.d(
                     "Spotlight evaluating userId=${userId.id} featureFlagEnabled=$featureFlagEnabled " +
-                        "categoryViewEnabled=$categoryViewEnabled recentInstall=$recentInstall"
+                        "recentInstall=$recentInstall"
                 )
                 when {
                     !featureFlagEnabled -> emit(FeatureSpotlightState.Hide)
-                    !categoryViewEnabled -> emit(FeatureSpotlightState.Hide)
                     recentInstall -> {
                         markFeatureSpotlightSeen(userId)
                         emit(FeatureSpotlightState.Hide)

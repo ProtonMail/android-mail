@@ -145,7 +145,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSh
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.HasValidUserSession
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -254,7 +253,6 @@ class MailboxViewModel @Inject constructor(
     private val selectCategory: SelectCategory,
     private val observeCategorySpotlightState: ObserveCategorySpotlightState,
     private val markCategorySpotlightSeen: MarkCategorySpotlightSeen,
-    private val categoryViewEnabled: IsCategoryViewEnabled,
     @IsContentSearchEnabled private val contentSearchSettingsEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -278,11 +276,6 @@ class MailboxViewModel @Inject constructor(
     val primaryUserIdState: StateFlow<UserId?> = primaryUserId
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
-
-    val isCategoryViewEnabled: StateFlow<Boolean> = primaryUserId
-        .mapLatest { categoryViewEnabled(it) }
-        .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val isContentSearchEnabled: StateFlow<Boolean> = primaryUserId
         .mapLatest { contentSearchSettingsEnabled.get() }

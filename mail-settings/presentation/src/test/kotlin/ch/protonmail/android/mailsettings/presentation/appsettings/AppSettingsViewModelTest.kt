@@ -22,7 +22,6 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeNextPreference
@@ -69,10 +68,6 @@ internal class AppSettingsViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val isCategoryViewEnabled = mockk<IsCategoryViewEnabled> {
-        coEvery { this@mockk.invoke(any()) } returns true
-    }
-
     private lateinit var viewModel: AppSettingsViewModel
 
     @Before
@@ -81,8 +76,7 @@ internal class AppSettingsViewModelTest {
             appSettingsRepository,
             getNotificationsEnabled,
             getAppIconDescription,
-            observePrimaryUserId,
-            isCategoryViewEnabled
+            observePrimaryUserId
         )
     }
 
@@ -107,7 +101,6 @@ internal class AppSettingsViewModelTest {
             val expected = AppSettingsUiModel(
                 autoLockEnabled = false,
                 alternativeRoutingEnabled = true,
-                isEmailCategoriesEnabled = true,
                 customLanguage = null,
                 deviceContactsEnabled = true,
                 theme = TextUiModel.TextRes(R.string.mail_settings_system_default),
