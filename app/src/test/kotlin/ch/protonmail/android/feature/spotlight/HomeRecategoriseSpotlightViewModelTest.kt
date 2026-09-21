@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcategory.domain.usecase.MarkCategorySpotlightSe
 import ch.protonmail.android.mailcategory.domain.usecase.ObserveCategorySpotlightSeen
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
-import ch.protonmail.android.mailsession.domain.usecase.IsCategoryViewEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureSpotlightDisplay
@@ -47,7 +46,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val mockCategoryViewFlag = mockk<IsCategoryViewEnabled>()
     private val mockObserveFeatureSpotlightDisplay = mockk<ObserveFeatureSpotlightDisplay>()
     private val mockObservePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserId("user-id"))
@@ -61,20 +59,8 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     }
 
     @Test
-    fun `should emit Hide when category view flag is disabled`() = runTest {
-        // Given
-        coEvery { mockCategoryViewFlag(any()) } returns false
-
-        // When / Then
-        buildViewModel().state.test {
-            assertEquals(RecategoriseSpotlightState.Hide, awaitItem())
-        }
-    }
-
-    @Test
     fun `should emit Show when feature spotlight is seen and personalise is not seen`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         every {
             mockObserveFeatureSpotlightDisplay(any())
         } returns flowOf(FeatureSpotlightDisplay(show = false).right())
@@ -91,7 +77,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @Test
     fun `should emit Hide when feature spotlight has not been seen yet`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(FeatureSpotlightDisplay(show = true).right())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
@@ -106,7 +91,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @Test
     fun `should emit Hide when personalise has already been seen`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         every {
             mockObserveFeatureSpotlightDisplay(any())
         } returns flowOf(FeatureSpotlightDisplay(show = false).right())
@@ -123,7 +107,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @Test
     fun `should emit Hide when feature spotlight preference returns error`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         every { mockObserveFeatureSpotlightDisplay(any()) } returns flowOf(PreferencesError.left())
         every {
             mockObserveCategorySpotlightSeen(CategorySpotlightType.Personalise)
@@ -138,7 +121,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @Test
     fun `should emit Hide when recategorise onboarding is disabled by feature flag`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         coEvery { mockRecategoriseOnboardingDisabled.get() } returns true
         every {
             mockObserveFeatureSpotlightDisplay(any())
@@ -156,7 +138,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     @Test
     fun `should mark personalise seen`() = runTest {
         // Given
-        coEvery { mockCategoryViewFlag(any()) } returns true
         every {
             mockObserveFeatureSpotlightDisplay(any())
         } returns flowOf(FeatureSpotlightDisplay(show = false).right())
@@ -174,7 +155,6 @@ internal class HomeRecategoriseSpotlightViewModelTest {
     private fun buildViewModel() = HomeRecategoriseSpotlightViewModel(
         observeFeatureSpotlightDisplay = mockObserveFeatureSpotlightDisplay,
         observeCategorySpotlightSeen = mockObserveCategorySpotlightSeen,
-        isCategoryViewEnabled = mockCategoryViewFlag,
         observePrimaryUserId = mockObservePrimaryUserId,
         markCategorySpotlightSeen = mockMarkCategorySpotlightSeen,
         recategoriseOnboardingDisabled = mockRecategoriseOnboardingDisabled

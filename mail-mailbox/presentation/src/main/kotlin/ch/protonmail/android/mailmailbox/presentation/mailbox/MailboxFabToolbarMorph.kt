@@ -76,7 +76,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 internal fun MailboxFabToolbarMorph(
     isInSelectionMode: Boolean,
     isInSearch: Boolean,
-    showBottomUnreadFilter: Boolean,
     unreadFilterState: UnreadFilterState,
     bottomBarState: BottomBarState,
     bottomBarActions: BottomActionBar.Actions,
@@ -114,7 +113,7 @@ internal fun MailboxFabToolbarMorph(
             .fillMaxWidth()
     ) {
         UnreadFilterFab(
-            visible = showBottomUnreadFilter && isIdle,
+            visible = isIdle,
             hasWindowFocus = hasWindowFocus,
             state = unreadFilterState,
             onFilterEnabled = onUnreadFilterEnabled,
