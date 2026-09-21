@@ -28,6 +28,13 @@ internal object SpotlightColors {
     val cardBorder: Color
         @Composable get() = if (ProtonTheme.colors.isDark) DarkBorderStrong else LightIris150
 
+    val cardBorderFade: Color
+        @Composable get() = if (ProtonTheme.colors.isDark) {
+            ProtonTheme.colors.backgroundNorm
+        } else {
+            cardBorder.copy(alpha = 0f)
+        }
+
     /** The square behind a feature icon or a step number: iris-100, backgroundDeep on dark. */
     val badgeBackground: Color
         @Composable get() = if (ProtonTheme.colors.isDark) ProtonTheme.colors.backgroundDeep else LightIris100

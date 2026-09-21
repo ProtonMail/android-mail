@@ -201,7 +201,7 @@ private fun FeatureCard(featureItems: ImmutableList<FeatureItem>) {
             if (index < featureItems.lastIndex) {
                 HorizontalDivider(
                     modifier = Modifier.padding(start = ProtonDimens.Spacing.Jumbo),
-                    color = ProtonTheme.colors.separatorNorm
+                    color = ProtonTheme.colors.borderNorm
                 )
             }
         }

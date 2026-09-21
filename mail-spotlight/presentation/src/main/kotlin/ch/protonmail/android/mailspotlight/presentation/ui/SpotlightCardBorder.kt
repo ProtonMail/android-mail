@@ -36,9 +36,6 @@ internal val spotlightCardShape: CornerBasedShape
 
 /**
  * The hairline border on the spotlight cards, fading out towards the bottom of the card.
- *
- * The gradient runs top to bottom and reaches full transparency at 60% of the card's height, so the
- * lower half of the card has no visible outline at all.
  */
 @Composable
 internal fun Modifier.spotlightCardBorder(): Modifier = border(
@@ -46,7 +43,7 @@ internal fun Modifier.spotlightCardBorder(): Modifier = border(
     brush = Brush.verticalGradient(
         colorStops = arrayOf(
             CARD_BORDER_STOP_VISIBLE to SpotlightColors.cardBorder,
-            CARD_BORDER_STOP_TRANSPARENT to SpotlightColors.cardBorder.copy(alpha = 0f)
+            CARD_BORDER_STOP_FADED to SpotlightColors.cardBorderFade
         )
     ),
     shape = spotlightCardShape
@@ -55,4 +52,4 @@ internal fun Modifier.spotlightCardBorder(): Modifier = border(
 private val CardBorderWidth = 1.dp
 
 private const val CARD_BORDER_STOP_VISIBLE = 0.0007f
-private const val CARD_BORDER_STOP_TRANSPARENT = 0.5983f
+private const val CARD_BORDER_STOP_FADED = 0.85f

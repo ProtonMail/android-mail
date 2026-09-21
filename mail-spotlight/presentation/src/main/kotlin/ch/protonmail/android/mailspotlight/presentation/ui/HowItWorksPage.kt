@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailspotlight.presentation.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +37,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -191,7 +191,7 @@ private fun StepsCard(steps: ImmutableList<HowItWorksStep>, modifier: Modifier =
             if (index < steps.lastIndex) {
                 HorizontalDivider(
                     modifier = Modifier.padding(start = ProtonDimens.Spacing.Jumbo),
-                    color = ProtonTheme.colors.separatorNorm
+                    color = ProtonTheme.colors.borderNorm
                 )
             }
         }
