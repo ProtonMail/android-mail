@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search email content</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">För att du ska kunna söka efter meddelandeinnehåll kommer meddelanden att laddas ner på denna enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
-  <string name="mail_settings_content_search_toggle_title">Search email content</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$d %% …</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Försök igen</string>
   <string name="mail_settings_content_search_update_error">Något gick fel. Försök igen.</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexerar</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s %%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Pågår</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Återuppta</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">På denna enhet</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Rensa allt</string>
   <string name="content_search_previously_found_title">Tidigare hittat</string>
   <string name="content_search_dismiss_recent_search_content_description">Ta bort “%1$s“ från senaste sökningar</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Se detaljer</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ta bort permanent?</string>
   <string name="content_search_delete_dialog_message">Dessa meddelanden kommer att tas bort permanent. Denna åtgärd kan inte ångras.</string>

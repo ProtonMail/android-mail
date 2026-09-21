@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Search email content</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">為了讓您能搜尋訊息內容，訊息將會下載至此裝置。</string>
   <string name="mail_settings_content_search_learn_more">進一步瞭解..</string>
-  <string name="mail_settings_content_search_toggle_title">Search email content</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">重試</string>
   <string name="mail_settings_content_search_update_error">發生問題，請再試一次。</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">清除本機搜尋資料</string>
   <string name="mail_settings_content_search_clear_data_description">清除本機搜尋資料將會停用訊息內文搜尋。您可以隨時重新啟用。</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">清除本機搜尋資料</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">清除所有</string>
   <string name="content_search_previously_found_title">Previously found</string>
   <string name="content_search_dismiss_recent_search_content_description">Remove “%1$s” from recent searches</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">顯示詳細資料</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Delete permanently?</string>
   <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>

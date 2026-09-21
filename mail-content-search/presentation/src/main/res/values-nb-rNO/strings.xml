@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Søk i e-postinnhold</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">For at du skal kunne søke etter meldingsinnhold, lastes meldinger ned på denne enheten.</string>
   <string name="mail_settings_content_search_learn_more">Lær mer..</string>
-  <string name="mail_settings_content_search_toggle_title">Søk i e-postinnhold</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Last ned med mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Bruk mobildata for å fortsette nedlastingene når Wi-Fi-nettverket er borte.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Prøv igjen</string>
   <string name="mail_settings_content_search_update_error">Noe gikk galt. Forsøk igjen.</string>
   <string name="mail_settings_content_search_retry_error">Kunne ikke forberede søk etter e-postinnhold.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Tøm lokale søkedata</string>
   <string name="mail_settings_content_search_clear_data_description">Hvis du tømmer lokale søkedata, deaktiveres søk etter meldingsinnhold. Du kan aktivere det igjen når som helst.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Tøm lokale søkedata</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Tidligere funnet</string>
   <string name="content_search_dismiss_recent_search_content_description">Fjern \"%1$s\" fra nylige søk</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">See details</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Slette permanent?</string>
   <string name="content_search_delete_dialog_message">Disse meldingene vil bli slettet permanent. Denne handlingen kan ikke angres.</string>

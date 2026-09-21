@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">E-posta içeriğini ara</string>
+  <string name="mail_settings_content_search_header_title">E-posta içeriği arama</string>
   <string name="mail_settings_content_search_description">İleti içeriğine göre arama yapabilmek için iletiler bu aygıta indirilecek.</string>
   <string name="mail_settings_content_search_learn_more">Ayrıntılı bilgi alın…</string>
-  <string name="mail_settings_content_search_toggle_title">E-posta içeriğini ara</string>
+  <string name="mail_settings_content_search_toggle_title">E-posta içeriği arama</string>
   <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indir</string>
   <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı olmadığında indirmeleri sürdürmek için mobil veriyi kullanır.</string>
   <string name="mail_settings_content_search_syncing_status">Hazırlanıyor %1$d[%1$i]…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Yeniden dene</string>
   <string name="mail_settings_content_search_update_error">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="mail_settings_content_search_retry_error">E-posta içeriği araması hazırlanamadı.</string>
+  <string name="mail_settings_content_search_indexing_section">Dizin oluşturuluyor</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s[%1$s]</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Sürüyor</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Güncel</string>
+  <string name="mail_settings_content_search_indexing_paused">Duraklatıldı</string>
+  <string name="mail_settings_content_search_indexing_pause">Duraklat</string>
+  <string name="mail_settings_content_search_indexing_resume">Sürdür</string>
+  <string name="mail_settings_content_search_indexing_description">İlk olarak son gelen e-postalar dizine eklenir. Dizin oluşturma işlemi sürerken dizine eklenmiş tüm iletiler aranabilir.</string>
+  <string name="mail_settings_content_search_on_this_device_section">Bu aygıtta</string>
+  <string name="mail_settings_content_search_index_size">Dizin boyutu</string>
   <string name="mail_settings_content_search_clear_data_button">Yerel arama verilerini sil</string>
   <string name="mail_settings_content_search_clear_data_description">Yerel arama verilerini silmek ileti içeriği aramasını kapatır. Bu özelliği istediğiniz zaman yeniden açabilirsiniz.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama verilerini temizle</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Tümünü temizle</string>
   <string name="content_search_previously_found_title">Daha önce bulunan</string>
   <string name="content_search_dismiss_recent_search_content_description">“%1$s” ifadesini son aramalar listesinden kaldır</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">E-postalarınızın dizine eklenmesi sürüyor - %1$d[%1$i].</string>
+  <string name="content_search_indexing_see_details">Ayrıntıları görüntüle</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Kalıcı olarak silinsin mi?</string>
   <string name="content_search_delete_dialog_message">Bu iletiler kalıcı olarak silinecek. Bu işlem geri alınamaz.</string>

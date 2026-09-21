@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Hľadať v obsahu emailu</string>
+  <string name="mail_settings_content_search_header_title">Vyhľadávanie v obsahu emailov</string>
   <string name="mail_settings_content_search_description">Aby ste mohli vyhľadávať podľa obsahu správ, správy sa stiahnu do tohto zariadenia.</string>
   <string name="mail_settings_content_search_learn_more">Zistiť viac..</string>
-  <string name="mail_settings_content_search_toggle_title">Hľadať v obsahu emailu</string>
+  <string name="mail_settings_content_search_toggle_title">Vyhľadávanie v obsahu emailov</string>
   <string name="mail_settings_content_search_mobile_data_title">Stiahnuť cez mobilné dáta</string>
   <string name="mail_settings_content_search_mobile_data_hint">Použiť mobilné dáta na pokračovanie v sťahovaní v prípade výpadku Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Príprava %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Skúste znova</string>
   <string name="mail_settings_content_search_update_error">Niečo sa pokazilo. Skúste to znova, prosím.</string>
   <string name="mail_settings_content_search_retry_error">Nepodarilo sa pripraviť prehľadávanie obsahu emailov</string>
+  <string name="mail_settings_content_search_indexing_section">Indexovanie</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Prebieha</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Aktuálny</string>
+  <string name="mail_settings_content_search_indexing_paused">Pozastavené</string>
+  <string name="mail_settings_content_search_indexing_pause">Pozastaviť</string>
+  <string name="mail_settings_content_search_indexing_resume">Pokračovať</string>
+  <string name="mail_settings_content_search_indexing_description">Najnovšie emaily sa indexujú ako prvé. Všetky indexované správy je možné vyhľadávať už počas prebiehajúceho indexovania.</string>
+  <string name="mail_settings_content_search_on_this_device_section">V tomto zariadení</string>
+  <string name="mail_settings_content_search_index_size">Veľkosť indexu</string>
   <string name="mail_settings_content_search_clear_data_button">Vymazať údaje z lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_description">Vymazaním údajov z lokálneho vyhľadávania sa deaktivuje vyhľadávanie v obsahu správ. Túto funkciu môžete kedykoľvek opäť zapnúť.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Vymazať údaje z lokálneho vyhľadávania</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Vyčistiť všetko</string>
   <string name="content_search_previously_found_title">Predtým nájdené</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrániť “%1$s” z nedávnych vyhľadávaní</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Vaša pošta sa stále indexuje – %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Zobraziť podrobnosti</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Vymazať natrvalo?</string>
   <string name="content_search_delete_dialog_message">Tieto správy budú natrvalo vymazané. Túto akciu nie je možné vrátiť späť.</string>

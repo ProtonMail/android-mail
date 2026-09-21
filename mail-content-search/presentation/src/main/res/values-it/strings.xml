@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Cerca nel contenuto delle email</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">Per consentirti di effettuare ricerche in base al contenuto dei messaggi, questi ultimi verranno scaricati su questo dispositivo.</string>
   <string name="mail_settings_content_search_learn_more">Scopri di più..</string>
-  <string name="mail_settings_content_search_toggle_title">Cerca nel contenuto delle email</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Scarica tramite rete mobile</string>
   <string name="mail_settings_content_search_mobile_data_hint">Usa la rete mobile per continuare i download quando il Wi-Fi non è disponibile</string>
   <string name="mail_settings_content_search_syncing_status">Preparazione di %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Riprova</string>
   <string name="mail_settings_content_search_update_error">Qualcosa è andato storto. Riprova.</string>
   <string name="mail_settings_content_search_retry_error">Impossibile preparare la ricerca nel contenuto delle email.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Cancella i dati della ricerca locale</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Clear all</string>
   <string name="content_search_previously_found_title">Precedentemente trovato</string>
   <string name="content_search_dismiss_recent_search_content_description">Rimuovi \"%1$s\" dalle ricerche recenti</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">See details</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Eliminare definitivamente?</string>
   <string name="content_search_delete_dialog_message">Questi messaggi verranno eliminati definitivamente. Questa azione non può essere annullata.</string>

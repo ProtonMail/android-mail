@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Pesquisar conteúdo do e-mail</string>
+  <string name="mail_settings_content_search_header_title">Pesquisa em conteúdo de e-mail</string>
   <string name="mail_settings_content_search_description">Para que você possa pesquisar pelo conteúdo das mensagens, elas serão baixadas neste aparelho.</string>
   <string name="mail_settings_content_search_learn_more">Saiba mais..</string>
-  <string name="mail_settings_content_search_toggle_title">Pesquisar conteúdo do e-mail</string>
+  <string name="mail_settings_content_search_toggle_title">Pesquisa em conteúdo de e-mail</string>
   <string name="mail_settings_content_search_mobile_data_title">Download usando dados móveis</string>
   <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Preparando %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Tentar novamente</string>
   <string name="mail_settings_content_search_update_error">Ocorreu um erro. Tente novamente.</string>
   <string name="mail_settings_content_search_retry_error">Não foi possível preparar de pesquisa de conteúdo de e-mail</string>
+  <string name="mail_settings_content_search_indexing_section">Indexando</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Em progresso</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Atualizado</string>
+  <string name="mail_settings_content_search_indexing_paused">Pausado</string>
+  <string name="mail_settings_content_search_indexing_pause">Pausar</string>
+  <string name="mail_settings_content_search_indexing_resume">Retomar</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Tamanho do índice</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Limpar dados de pesquisa locais</string>
@@ -27,12 +37,15 @@
   <string name="content_search_placeholder_text">Pesquisar</string>
   <string name="content_search_clear_query_content_description">Limpar consulta de pesquisa</string>
   <string name="content_search_close_content_description">Fechar pesquisa</string>
-  <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
+  <string name="content_search_first_run_description">Digite um nome, assunto ou palavra-chave para pesquisar</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recent mail searches</string>
-  <string name="content_search_clear_recent_searches">Clear all</string>
+  <string name="content_search_recent_searches_title">Pesquisas de e-mais recentes</string>
+  <string name="content_search_clear_recent_searches">Limpar tudo</string>
   <string name="content_search_previously_found_title">Encontrado anteriormente</string>
   <string name="content_search_dismiss_recent_search_content_description">Remover “%1$s das pesquisas recentes</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Your mail is still being indexed - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Ver detalhes</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Excluir permanentemente?</string>
   <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>

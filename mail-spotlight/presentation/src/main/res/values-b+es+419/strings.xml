@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La búsqueda ahora es mejor.</string>
   <string name="spotlight_screen_content_search_subtitle">Encuentre lo que importa sin entregar su privacidad.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Encuentre más en cada correo</string>
+  <string name="spotlight_screen_content_search_message_content_title">Cada palabra ahora buscable</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Encuentre correos por contenido del mensaje, no solo por asunto o remitente.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">Más fácil de alcanzar</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">La búsqueda ahora se encuentra al final de la pantalla para el uso con una mano.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Aún con cifrado de extremo a extremo</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">La indexación ocurre en su dispositivo cifrada con su clave. Nada es enviado a Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Retome donde lo dejó</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Vuelva a consultar fácilmente las búsquedas recientes. Se almacenan en su dispositivo para preservar el cifrado de extremo a extremo.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Revise rápidamente sus búsquedas recientes y resultados. Se almacenan en su dispositivo para preservar el cifrado de extremo a extremo.</string>
+  <string name="spotlight_screen_whats_new_pill">Novedades</string>
+  <string name="spotlight_screen_content_search_button_continue">Continuar</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Activar</string>
+  <string name="spotlight_screen_content_search_button_not_now">Ahora no</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">Cómo funciona la búsqueda de contenido</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Sus correos descargados en este teléfono</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Para buscar el contenido de su correo, Protnon Mail descarga con seguridad una copia en este dispositivo.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Se crea un índice privado en el dispositivo</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Un índice de búsqueda ligero es creado en su dispositivo. Piénselo como un mapa para encontrar los mensajes que busca.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Indexaremos en segundo plano</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexar sus correos tomará algún tiempo pero puede seguir usando su correo mientras trabajamos en segundo plano.</string>
 </resources>

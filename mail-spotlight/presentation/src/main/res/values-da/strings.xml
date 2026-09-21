@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Søgning er nu blevet bedre</string>
   <string name="spotlight_screen_content_search_subtitle">Find alt det vigtige uden at give op på dit privatliv.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Find mere i hver e-mail</string>
+  <string name="spotlight_screen_content_search_message_content_title">Søg efter hvert et ord</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Find e-mails efter beskedindhold, ikke bare emnet eller afsenderen.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">Lettere at tilgå</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Søgning bor nu i bunden af skærmen, så det lettere kan tilgås med én hånd.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Stadig end-to-end krypteret</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Indekseringen sker på din enhed, krypteret med din nøgle. Intet bliver sendt til Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Fortsæt fra hvor du slap</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Find dine seneste søgninger hurtigt. Opbevaret på din enhed for at beholde end-to-end-kryptering.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Find dine seneste søgninger og resultater hurtigt. Opbevaret på din enhed for at beholde end-to-end-kryptering.</string>
+  <string name="spotlight_screen_whats_new_pill">Nyheder</string>
+  <string name="spotlight_screen_content_search_button_continue">Fortsæt</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Slå til</string>
+  <string name="spotlight_screen_content_search_button_not_now">Ikke nu</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">Sådan fungerer indholdssøgning</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Dine e-mails bliver downloadet til denne telefon</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Proton Mail downloader sikkert en kopi til denne enhed, så at du kan søge efter indhold i dine e-mails.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Et privat indeks bygges på enheden</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Et leightweight søgeindeks bliver oprettet på din enhed. Tænk på det som en oversigt over de beskeder du leder efter.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Vi indekserer i baggrunden</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Det vil tage noget tid at indeksere dine e-mails, men du kan fortsætte med at bruge din e-mail som du plejer, mens der arbejdes i baggrunden.</string>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Αναζήτηση περιεχομένου ηλεκτρονικού ταχυδρομείου</string>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">Για να μπορείτε να κάνετε αναζήτηση με βάση το περιεχόμενο του μηνύματος, τα μηνύματα θα ληφθούν σε αυτήν τη συσκευή.</string>
   <string name="mail_settings_content_search_learn_more">Μάθετε περισσότερα..</string>
-  <string name="mail_settings_content_search_toggle_title">Αναζήτηση περιεχομένου ηλεκτρονικού ταχυδρομείου</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Λήψη χρησιμοποιώντας δεδομένα κινητής τηλεφωνίας</string>
   <string name="mail_settings_content_search_mobile_data_hint">Χρησιμοποιήστε δεδομένα κινητής τηλεφωνίας για να συνεχίσετε τις λήψεις όταν διακοπεί η σύνδεση Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Προετοιμασία %1$d%%…</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Προσπαθήστε ξανά</string>
   <string name="mail_settings_content_search_update_error">Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="mail_settings_content_search_retry_error">Δεν είναι δυνατή η προετοιμασία αναζήτησης περιεχομένου ηλεκτρονικού ταχυδρομείου.</string>
+  <string name="mail_settings_content_search_indexing_section">Δημιουργία ευρετηρίου</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">Σε εξέλιξη</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Ενημερωμένο</string>
+  <string name="mail_settings_content_search_indexing_paused">Σε παύση</string>
+  <string name="mail_settings_content_search_indexing_pause">Παύση</string>
+  <string name="mail_settings_content_search_indexing_resume">Συνέχιση</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">Σε αυτή τη συσκευή</string>
+  <string name="mail_settings_content_search_index_size">Μέγεθος ευρετηρίου</string>
   <string name="mail_settings_content_search_clear_data_button">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
   <string name="mail_settings_content_search_clear_data_description">Η διαγραφή των δεδομένων τοπικής αναζήτησης θα απενεργοποιήσει την αναζήτηση περιεχομένου μηνύματος. Μπορείτε να την ενεργοποιήσετε ξανά ανά πάσα στιγμή.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Εκκαθάριση δεδομένων τοπικής αναζήτησης</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Εκκαθάριση όλων</string>
   <string name="content_search_previously_found_title">Βρέθηκαν προηγουμένως</string>
   <string name="content_search_dismiss_recent_search_content_description">Κατάργηση “%1$s” από πρόσφατες αναζητήσεις</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Η αλληλογραφία σας εξακολουθεί να καταχωρείται στο ευρετήριο - %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Προβολή λεπτομερειών</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Οριστική διαγραφή;</string>
   <string name="content_search_delete_dialog_message">Αυτά τα μηνύματα θα διαγραφούν οριστικά. Δεν είναι δυνατή η αναίρεση αυτής της ενέργειας.</string>

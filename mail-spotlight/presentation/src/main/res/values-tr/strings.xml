@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Arama özelliği daha da iyileşti.</string>
   <string name="spotlight_screen_content_search_subtitle">Gizliliğinizden vazgeçmeden neyin önemli olduğunu bulun.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Her e-postadan daha fazlasını bulun</string>
+  <string name="spotlight_screen_content_search_message_content_title">Her bir sözcük artık aranabilir</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">E-postaları yalnızca konu başlığına veya göndericiye göre değil, ileti içeriğine göre de bulun.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">Ulaşması daha kolay</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">Tek elle kolayca kullanılabilmesi için arama özelliği artık ekranın alt bölümünde yer alıyor.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Uçtan uca şifrelenmiş olarak kalır</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Dizin oluşturma işlemi aygıtınızda yapılır ve verileriniz kendi anahtarınızla şifrelenir. Proton üzerine hiçbir şey gönderilmez.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Kaldığınız yerden ilerleyin</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Son aramalarınıza kolayca geri dönün. Uçtan uca şifrelemeyi korumak için veriler aygıtınızda saklanır.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Son aramalarınızı ve sonuçlarınızı hızla yeniden görüntüleyin. Uçtan uca şifrelemenin korunması için aygıtınızda tutulur.</string>
+  <string name="spotlight_screen_whats_new_pill">Yenilikler</string>
+  <string name="spotlight_screen_content_search_button_continue">İlerle</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Aç</string>
+  <string name="spotlight_screen_content_search_button_not_now">Şimdi değil</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">E-posta içeriği araması nasıl çalışır</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">E-postalarınız bu telefona indiriliyor</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Proton Mail, içeriklerinde arama yapabilmek için e-postalarınızı güvenli bir şekilde bu aygıta indirir.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Aygıt üzerinde gizliliği korunan bir dizin oluşturulur</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Aygıtınızda yerel olarak hafif bir arama dizini oluşturulur. Bunu aradığınız iletileri bulmak için bir harita olarak düşünebilirsiniz.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Dizin oluşturma işlemi arka planda yapılacak</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">E-postalarınızın dizine eklenmesi biraz zaman alacak ancak bu işlem arka planda yapılırken siz e-postalarınızı her zamanki gibi kullanmayı sürdürebilirsiniz.</string>
 </resources>

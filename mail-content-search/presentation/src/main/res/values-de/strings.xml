@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">E-Mail-Inhalte durchsuchen</string>
+  <string name="mail_settings_content_search_header_title">Suchen nach Inhalten in E-Mails</string>
   <string name="mail_settings_content_search_description">Damit nach dem Inhalt der Nachrichten gesucht werden kann, werden die Nachrichten auf dieses Gerät heruntergeladen.</string>
   <string name="mail_settings_content_search_learn_more">Mehr erfahren …</string>
-  <string name="mail_settings_content_search_toggle_title">E-Mail-Inhalte durchsuchen</string>
+  <string name="mail_settings_content_search_toggle_title">Suchen nach Inhalten in E-Mails</string>
   <string name="mail_settings_content_search_mobile_data_title">Mit Mobilfunkdaten herunterladen</string>
   <string name="mail_settings_content_search_mobile_data_hint">Mobilfunkdaten verwenden, um Downloads fortzusetzen, falls die WLAN-Verbindung unterbrochen wird.</string>
   <string name="mail_settings_content_search_syncing_status">%1$d%% wird vorbereitet …</string>
@@ -13,6 +13,16 @@
   <string name="mail_settings_content_search_failed_retry">Erneut versuchen</string>
   <string name="mail_settings_content_search_update_error">Es ist ein Fehler aufgetreten. Bitte erneut versuchen.</string>
   <string name="mail_settings_content_search_retry_error">Die Suche nach E-Mail-Inhalten konnte nicht vorbereitet werden.</string>
+  <string name="mail_settings_content_search_indexing_section">Wird indiziert</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In Bearbeitung</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Alles aktuell</string>
+  <string name="mail_settings_content_search_indexing_paused">Pausiert</string>
+  <string name="mail_settings_content_search_indexing_pause">Pausieren</string>
+  <string name="mail_settings_content_search_indexing_resume">Fortsetzen</string>
+  <string name="mail_settings_content_search_indexing_description">Die neuesten E-Mails werden zuerst indiziert. Alle indizierten Nachrichten können bereits während des Indizierungsvorgangs durchsucht werden.</string>
+  <string name="mail_settings_content_search_on_this_device_section">Auf diesem Gerät</string>
+  <string name="mail_settings_content_search_index_size">Größe des Index</string>
   <string name="mail_settings_content_search_clear_data_button">Lokale Suchdaten löschen</string>
   <string name="mail_settings_content_search_clear_data_description">Durch das Löschen der lokalen Suchdaten wird die Suche nach Nachrichteninhalten deaktiviert. Sie können diese Funktion jederzeit wieder aktivieren.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale Suchdaten löschen</string>
@@ -33,6 +43,9 @@
   <string name="content_search_clear_recent_searches">Alle entfernen</string>
   <string name="content_search_previously_found_title">Zuvor gefunden</string>
   <string name="content_search_dismiss_recent_search_content_description">%1$s aus kürzlichen Suchanfragen entfernen</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Deine E-Mails werden noch indiziert – %1$d%%.</string>
+  <string name="content_search_indexing_see_details">Details anzeigen</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Dauerhaft löschen?</string>
   <string name="content_search_delete_dialog_message">Diese Nachrichten werden dauerhaft gelöscht. Dieser Vorgang kann nicht widerrufen werden.</string>

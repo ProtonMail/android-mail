@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="content_search_notification_channel_name">Email content search indexing</string>
-  <string name="content_search_notification_channel_description">Shows progress while messages are indexed for email content search.</string>
-  <string name="content_search_notification_title">Preparing email content search</string>
+  <string name="content_search_notification_channel_name">Індексація пошуку вмісту пошти</string>
+  <string name="content_search_notification_channel_description">Показує хід індексації повідомлень для пошуку вмісту пошти.</string>
+  <string name="content_search_notification_title">Підготовка пошуку вмісту пошти</string>
   <!-- example format: test@proton.me · 10% -->
   <string name="content_search_notification_progress">%1$s · %2$s</string>
   <string name="content_search_notification_percentage">%1$d%%</string>
   <string name="content_search_notification_preparing">Підготовка…</string>
-  <string name="content_search_notification_pause">Pause</string>
+  <string name="content_search_notification_pause">Призупинити</string>
 </resources>

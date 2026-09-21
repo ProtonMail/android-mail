@@ -53,10 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">더 나은 검색을 경험하세요.</string>
   <string name="spotlight_screen_content_search_subtitle">프라이버시를 잃지 않고도 중요한 것만 콕 찍어 검색할 수 있습니다.</string>
-  <string name="spotlight_screen_content_search_message_content_title">모든 이메일에서 더 많이 검색하기</string>
+  <string name="spotlight_screen_content_search_message_content_title">모든 단어, 이제 검색 한 번으로.</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">재목이나 보낸 사람뿐만 아니라 메시지 내용으로도 이메일을 찾을 수 있습니다.</string>
-  <string name="spotlight_screen_content_search_bottom_bar_title">더 쉬워진 접근</string>
-  <string name="spotlight_screen_content_search_bottom_bar_subtitle">검색이 이제 화면 하단으로 이동되어 한 손으로 쉽게 사용할 수 있습니다.</string>
+  <string name="spotlight_screen_content_search_encryption_title">처음부터 끝까지 종단간 암호화됨</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">색인은 사용자의 키로 암호화되어 기기에 저장됩니다. Proton에 전송되는 항목은 없습니다.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">하던 작업에서 이어서 시작하세요</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">최근 검색 기록을 빠르게 다시 확인할 수 있습니다. 종단간 암호화 유지를 위해 데이터는 기기에 안전하게 저장됩니다.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">최근 검색 기록과 결과를 빠르게 다시 확인할 수 있습니다. 종단간 암호화 유지를 위해 데이터는 기기에 안전하게 저장됩니다.</string>
+  <string name="spotlight_screen_whats_new_pill">새로운 소식</string>
+  <string name="spotlight_screen_content_search_button_continue">계속</string>
+  <string name="spotlight_screen_content_search_button_turn_on">켜기</string>
+  <string name="spotlight_screen_content_search_button_not_now">다음에</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">이메일 콘텐츠 검색 작동 방식</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">이 휴대폰에 이메일이 다운로드됩니다</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">이메일 콘텐츠 검색을 사용하려면 Proton Mail이 사용자의 기기에 복사본을 다운로드해야 합니다.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">기기 내장형 비공개 색인</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">기기에 가벼운 검색 색인을 로컬로 생성할 수 있어요. 원하는 메시지를 찾기 위한 지도라고 봐도 무방해요.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">백그라운드에서 계속 색인됩니다</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">이메일 색인은 시간이 조금 걸릴 수 있으나 계속 평소와 같이 메일을 사용할 수 있습니다.</string>
 </resources>
