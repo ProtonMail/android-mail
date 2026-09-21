@@ -199,9 +199,14 @@ class ContentSearchViewModel @Inject constructor(
         observePrimaryUserId()
             .filterNotNull()
             .distinctUntilChanged()
-            .flatMapLatest { userId -> observeContentSearchEnabled(userId) }
-            .distinctUntilChanged()
-            .drop(1)
+            // Dropped per account, not once for the whole stream. Switching to an account that
+            // already has content search on is not that account turning it on, and clearing the
+            // query for it would take the field away from the user.
+            .flatMapLatest { userId ->
+                observeContentSearchEnabled(userId)
+                    .distinctUntilChanged()
+                    .drop(1)
+            }
             .onEach { isEnabled -> if (isEnabled) clearQuery() }
             .launchIn(viewModelScope)
 
