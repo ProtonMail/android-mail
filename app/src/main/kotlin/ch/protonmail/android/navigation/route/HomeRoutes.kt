@@ -19,7 +19,11 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -447,13 +451,27 @@ internal fun NavGraphBuilder.addContentSearchScreen(
     composableWithTransitions(route = Destination.Screen.ContentSearch.route) { entry ->
         // The set-up page leaves its request here on the way out, so the sheet comes up over the
         // results, once that page is gone.
-        val turnOnRequested by entry.savedStateHandle
+        val navRequest by entry.savedStateHandle
             .getStateFlow(TURN_ON_CONTENT_SEARCH_KEY, false)
             .collectAsStateWithLifecycle()
 
+        // The request is a one-shot, so it comes off the entry as soon as it is read. Left there it
+        // would only be cleared by the sheet closing, and a second Turn on would write true over a
+        // true that was never taken away.
+        //
+        // Held here rather than consumed by either reader. Both the sheet and the screen below it
+        // act on this request, and they have to see the same value.
+        var turnOnRequested by remember { mutableStateOf(false) }
+        LaunchedEffect(navRequest) {
+            if (navRequest) {
+                turnOnRequested = true
+                entry.savedStateHandle[TURN_ON_CONTENT_SEARCH_KEY] = false
+            }
+        }
+
         ContentSearchEnableSheetHost(
             showRequested = turnOnRequested,
-            onDismissed = { entry.savedStateHandle[TURN_ON_CONTENT_SEARCH_KEY] = false }
+            onDismissed = { turnOnRequested = false }
         ) {
             ContentSearchScreen(
                 ContentSearchScreenActions(
