@@ -37,12 +37,14 @@ import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
+import uniffi.mail_uniffi.MailUserSessionPlusToUnlimitedEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.SenderImageSize
 import uniffi.mail_uniffi.UpdateCategoryViewResult
+import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
 
@@ -113,6 +115,15 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
     }
 
     fun observeEventLoopErrors(callback: EventLoopErrorObserver) = userSession.observeEventLoopErrors(callback)
+
+    suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, Boolean> =
+        when (val result = userSession.plusToUnlimitedEligibility(flag)) {
+            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok -> result.v1.right()
+            is MailUserSessionPlusToUnlimitedEligibilityResult.Error -> {
+                Timber.e("MailUserSession Plus to Unlimited eligibility:: ${result.v1}")
+                result.v1.toDataError().left()
+            }
+        }
 
     suspend fun overrideFeatureFlag(flagName: String, newValue: Boolean) =
         when (val result = userSession.overrideUserFeatureFlag(flagName = flagName, newValue = newValue)) {
