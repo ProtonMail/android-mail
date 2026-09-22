@@ -60,6 +60,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import uniffi.mail_uniffi.Message
 import uniffi.mail_uniffi.MessageScrollerListUpdate
@@ -576,6 +577,49 @@ class RustMessageListQueryImplTest {
 
         // Then
         assertEquals(expectedMessages.right(), actual)
+    }
+
+    @Test
+    fun `Search - reads the items count from the paginator for that keyword`() = runTest {
+        // Given
+        val key = PageKey.PageKeyForSearch(keyword = "invoice")
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+        coEvery { paginator.totalItemsCount() } returns 300L.right()
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustSearchPaginator(mailbox, "invoice", capture(callback))
+        } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, key)
+
+        // When
+        val actual = rustMessageListQuery.getTotalItemsCount(userId, key)
+
+        // Then
+        assertEquals(300L.right(), actual)
+    }
+
+    @Test
+    fun `Search - reads no items count while another paginator is the active one`() = runTest {
+        // Given the mailbox has taken the shared paginator over from the search
+        val searchKey = PageKey.PageKeyForSearch(keyword = "invoice")
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+        coEvery { paginator.totalItemsCount() } returns 300L.right()
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery {
+            createRustMessagesPaginator(mailbox, any(), capture(callback))
+        } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey(labelId = inboxLabelId))
+
+        // When
+        val actual = rustMessageListQuery.getTotalItemsCount(userId, searchKey)
+
+        // Then the mailbox count is not handed to the search screen
+        assertNull(actual)
+        coVerify(exactly = 0) { paginator.totalItemsCount() }
     }
 
     @Test

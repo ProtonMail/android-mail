@@ -39,6 +39,8 @@ interface RustMessageListQuery {
 
     suspend fun supportsIncludeFilter(): Boolean
 
+    suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 
     suspend fun updateIncludeFilter(filter: IncludeFilter)

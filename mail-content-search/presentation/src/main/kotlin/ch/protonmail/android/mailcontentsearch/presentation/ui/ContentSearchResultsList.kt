@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
@@ -73,6 +74,7 @@ internal fun ResultsList(
     avatarImages: AvatarImagesUiModel,
     downloadingAttachmentId: AttachmentIdUiModel?,
     showMinQueryLengthNotice: Boolean,
+    totalCount: Int?,
     listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier
 ) {
@@ -112,7 +114,10 @@ internal fun ResultsList(
         contentPadding = PaddingValues(bottom = bottomInset + bottomClearance)
     ) {
         item {
-            ResultsListHeader(showMinQueryLengthNotice = showMinQueryLengthNotice)
+            ResultsListHeader(
+                showMinQueryLengthNotice = showMinQueryLengthNotice,
+                totalCount = totalCount
+            )
         }
 
         items(
@@ -140,7 +145,11 @@ internal fun ResultsList(
 }
 
 @Composable
-private fun ResultsListHeader(showMinQueryLengthNotice: Boolean, modifier: Modifier = Modifier) {
+private fun ResultsListHeader(
+    showMinQueryLengthNotice: Boolean,
+    totalCount: Int?,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(
             horizontal = ProtonDimens.Spacing.Large,
@@ -148,7 +157,15 @@ private fun ResultsListHeader(showMinQueryLengthNotice: Boolean, modifier: Modif
         )
     ) {
         Text(
-            text = stringResource(R.string.content_search_results_title),
+            text = if (totalCount == null) {
+                stringResource(R.string.content_search_results_title)
+            } else {
+                pluralStringResource(
+                    R.plurals.content_search_results_title_with_count,
+                    totalCount,
+                    totalCount
+                )
+            },
             style = ProtonTheme.typography.titleSmallNorm
         )
 

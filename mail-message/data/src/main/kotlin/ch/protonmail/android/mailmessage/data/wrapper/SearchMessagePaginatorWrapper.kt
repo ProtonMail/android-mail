@@ -35,6 +35,7 @@ import uniffi.mail_uniffi.SearchScrollerCursorResult
 import uniffi.mail_uniffi.SearchScrollerFetchMoreResult
 import uniffi.mail_uniffi.SearchScrollerGetItemsResult
 import uniffi.mail_uniffi.SearchScrollerSupportsIncludeFilterResult
+import uniffi.mail_uniffi.SearchScrollerTotalResult
 
 class SearchMessagePaginatorWrapper(
     private val rustPaginator: SearchScroller
@@ -57,6 +58,11 @@ class SearchMessagePaginatorWrapper(
     override suspend fun reload(): Either<PaginationError, Unit> = when (val result = rustPaginator.getItems()) {
         is SearchScrollerGetItemsResult.Error -> result.v1.toPaginationError().left()
         is SearchScrollerGetItemsResult.Ok -> Unit.right()
+    }
+
+    override suspend fun totalItemsCount(): Either<PaginationError, Long> = when (val result = rustPaginator.total()) {
+        is SearchScrollerTotalResult.Error -> result.v1.toPaginationError().left()
+        is SearchScrollerTotalResult.Ok -> result.v1.toLong().right()
     }
 
     override suspend fun getCursor(anchorItemId: LocalItemId): Either<PaginationError, MailMessageCursorWrapper> =

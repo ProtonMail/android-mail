@@ -71,7 +71,13 @@ data class ContentSearchState(
     sealed interface Phase {
         data object Idle : Phase
         data object Loading : Phase
-        data class Results(val count: Int) : Phase
+
+        /**
+         * [count] is how many rows the paging list holds, so it decides whether there is a list to
+         * show at all. [totalCount] is how many results the search has in all, which is what the
+         * header displays. It is null until Rust has answered, and again whenever it cannot.
+         */
+        data class Results(val count: Int, val totalCount: Int? = null) : Phase
     }
 
     companion object {

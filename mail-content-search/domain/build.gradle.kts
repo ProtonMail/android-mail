@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":mail-featureflags:domain"))
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-session:domain"))
 
     testImplementation(libs.bundles.test)

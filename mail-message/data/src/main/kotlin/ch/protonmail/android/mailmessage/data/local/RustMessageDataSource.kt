@@ -56,6 +56,8 @@ interface RustMessageDataSource {
 
     suspend fun supportsIncludeFilter(): Boolean
 
+    suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+
     suspend fun getMessage(userId: UserId, messageId: LocalMessageId): Either<DataError, LocalMessageMetadata>
     suspend fun getMessage(userId: UserId, messageId: RemoteMessageId): Either<DataError, LocalMessageMetadata>
 
