@@ -144,13 +144,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.getHighlightText
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.hasClearableOperations
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
@@ -159,7 +155,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.SwipeableIte
 import ch.protonmail.android.mailmailbox.presentation.mailbox.swipe.getAccessibilityActionsForTalkback
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
-import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiStatesInSearch
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ManageAccountSheetState
@@ -191,7 +186,6 @@ fun MailboxScreen(
     snackbarHeight: Dp = 0.dp
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
-    val isContentSearchScreenEnabled = viewModel.isContentSearchScreenEnabled.collectAsStateWithLifecycle().value
     val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
@@ -285,22 +279,6 @@ fun MailboxScreen(
         },
         onSwipeLabelAs = { itemId -> viewModel.submit(MailboxViewAction.SwipeLabelAsAction(itemId)) },
         onSwipeMoveTo = { itemId -> viewModel.submit(MailboxViewAction.SwipeMoveToAction(itemId)) },
-        onEnterSearchMode = {
-            // The standalone search screen replaces the in-mailbox search mode entirely, so the two
-            // paths are exclusive rather than layered.
-            if (isContentSearchScreenEnabled) {
-                actions.onNavigateToContentSearch()
-            } else {
-                actions.onEnterSearchMode()
-                viewModel.submit(MailboxViewAction.EnterSearchMode)
-            }
-        },
-        onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
-        onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
-        onExitSearchMode = {
-            actions.onExitSearchMode()
-            viewModel.submit(MailboxViewAction.ExitSearchMode)
-        },
         onAttachmentClicked = { viewModel.submit(MailboxViewAction.RequestAttachment(it)) },
         onClearAll = { viewModel.submit(MailboxViewAction.ClearAll) },
         onClearAllConfirmed = { viewModel.submit(MailboxViewAction.ClearAllConfirmed) },
@@ -460,7 +438,6 @@ fun MailboxScreen(
             mailboxState = mailboxState,
             mailboxListItems = mailboxListItems,
             actions = completeActions,
-            isContentSearchScreenEnabled = isContentSearchScreenEnabled,
             snackbarHeight = snackbarHeight,
             userId = primaryUserId,
             modifier = modifier.semantics { testTagsAsResourceId = true }
@@ -472,7 +449,6 @@ fun MailboxScreen(
 fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
-    isContentSearchScreenEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     snackbarHeight: Dp = 0.dp,
     userId: UserId? = null,
@@ -485,8 +461,7 @@ fun MailboxScreen(
     val context = LocalContext.current
 
     val isSelectionMode = mailboxState.mailboxListState is MailboxListState.Data.SelectionMode
-    val isSearchMode = mailboxState.topAppBarState is MailboxTopAppBarState.Data.SearchMode
-    val collapseTopBarOnScroll = isContentSearchScreenEnabled && !isSelectionMode && !isSearchMode
+    val collapseTopBarOnScroll = !isSelectionMode
     val collapsingTopBarState = rememberCollapsingTopBarState()
     SideEffect {
         collapsingTopBarState.configure(enabled = collapseTopBarOnScroll) {
@@ -548,8 +523,8 @@ fun MailboxScreen(
         topBar = {
             val localDensity = LocalDensity.current
 
-            val isCategoryViewShown = mailboxState.categoryViewState is CategoryViewState.Available &&
-                !isSearchMode && !isSelectionMode
+            val isCategoryViewShown =
+                mailboxState.categoryViewState is CategoryViewState.Available && !isSelectionMode
 
             val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState
                 ?: LoadingBarUiState.Hide
@@ -599,14 +574,10 @@ fun MailboxScreen(
                         actions = MailboxTopAppBar.Actions(
                             onOpenMenu = actions.openDrawerMenu,
                             onExitSelectionMode = { actions.onExitSelectionMode() },
-                            onExitSearchMode = { actions.onExitSearchMode() },
                             onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
-                            onEnterSearchMode = { actions.onEnterSearchMode() },
-                            onSearch = { query -> actions.onSearchQuery(query) },
                             onAccountAvatarClicked = actions.onAccountAvatarClicked,
                             onNavigateToUpselling = actions.onNavigateToUpselling
                         ),
-                        isSearchButtonVisible = !isContentSearchScreenEnabled,
                         // Category view: top inset is on the Column. Otherwise the app bar owns it so
                         // it collapses together with the bar, letting the list go edge-to-edge.
                         windowInsets = if (isCategoryViewShown) {
@@ -705,20 +676,13 @@ fun MailboxScreen(
                 )
             }
 
-            val isInSearch = (mailboxState.mailboxListState as? MailboxListState.Data)
-                ?.searchState
-                ?.isInSearch()
-                ?: false
-
             MailboxFabToolbarMorph(
                 isInSelectionMode = isInSelectionMode,
-                isInSearch = isInSearch,
                 unreadFilterState = mailboxState.unreadFilterState,
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,
                 onComposeClick = actions.navigateToComposer,
-                onSearchClick = actions.onEnterSearchMode,
-                isSearchButtonVisible = isContentSearchScreenEnabled,
+                onSearchClick = actions.onNavigateToContentSearch,
                 onUnreadFilterEnabled = onUnreadFilterEnabled,
                 onUnreadFilterDisabled = onUnreadFilterDisabled,
                 snackbarHeight = snackbarHeight,
@@ -754,9 +718,6 @@ private fun MailboxSwipeRefresh(
     // We need to show the Pull To Refresh indicator at top at correct times, which are first time we fetch data from
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
     val refreshOngoing = (state as? MailboxListState.Data.ViewMode)?.refreshOngoing ?: false
-    val searchMode = (state as? MailboxListState.Data)?.searchState?.searchMode ?: MailboxSearchMode.None
-
-    var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
     // Latch the category-switch skeleton from the first-page load start until Paging actually presents
     // the new list. The scroller start/end can fire faster than the conflated StateFlow delivers, so we
@@ -780,7 +741,6 @@ private fun MailboxSwipeRefresh(
         when {
             state is MailboxListState.Loading -> MailboxScreenState.Loading
             state is MailboxListState.CouldNotLoadUserSession -> MailboxScreenState.CouldNotLoadUserSession
-            searchMode.isInSearch() -> items.mapToUiStatesInSearch(searchMode, lastViewState)
             showCategorySkeleton -> MailboxScreenState.Loading
             else -> items.mapToUiStates(refreshOngoing)
         }
@@ -793,8 +753,7 @@ private fun MailboxSwipeRefresh(
         MailboxLocation(
             userId = userId,
             labelId = it.currentMailLabel.id.labelId.id,
-            categoryId = activeCategoryId,
-            isInSearch = searchMode.isInSearch()
+            categoryId = activeCategoryId
         )
     }
     val settledViewLatch = remember { SettledViewLatch() }
@@ -803,22 +762,6 @@ private fun MailboxSwipeRefresh(
         location = location,
         isPagerReloading = showCategorySkeleton || isRefreshLoading
     )
-
-    BackHandler(
-        state is MailboxListState.Data.ViewMode && searchMode.isInSearch()
-    ) {
-        actions.onExitSearchMode()
-    }
-
-    if (searchMode.isInSearch()) {
-        LaunchedEffect(currentViewState) {
-            if (searchMode == MailboxSearchMode.NewSearchLoading &&
-                currentViewState !is MailboxScreenState.SearchLoading
-            ) {
-                actions.onSearchResult()
-            }
-        }
-    }
 
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -880,17 +823,7 @@ private fun MailboxSwipeRefresh(
                 MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
-            is MailboxScreenState.NewSearch -> {}
-
-            is MailboxScreenState.SearchNoData -> SearchNoResult(topBarHeight)
-
-            is MailboxScreenState.SearchLoading -> ProtonCenteredProgress(
-                modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
-            )
-
             is MailboxScreenState.CouldNotLoadUserSession,
-            is MailboxScreenState.SearchLoadingWithData,
-            is MailboxScreenState.SearchData,
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
@@ -999,7 +932,7 @@ private fun MailboxItemsList(
             }
     ) {
         item {
-            if (state.hasClearableOperations()) {
+            if (state is MailboxListState.Data.ViewMode) {
                 ClearAllOperationBanner(
                     actions = ClearAllOperationBanner.Actions(
                         onUpselling = { type ->
@@ -1022,12 +955,9 @@ private fun MailboxItemsList(
                 val listDataState = state as MailboxListState.Data
                 val swipeActionsUiModel = listDataState.swipeActions
                 val isSelectionMode = listDataState is MailboxListState.Data.SelectionMode
-                val isInSearch = listDataState is MailboxListState.Data.ViewMode &&
-                    listDataState.searchState.isInSearch()
 
                 val swipingEnabled = swipeActionsUiModel?.isSwipingEnabled == true &&
                     !isSelectionMode &&
-                    !isInSearch &&
                     !isOpenDrawerGesture
 
                 val swipeActions = generateSwipeActions(items, actions, item)
@@ -1067,8 +997,7 @@ private fun MailboxItemsList(
 
                             else -> false
                         },
-                        accessibilitySwipeActions = accessibilitySwipeActions.orEmpty().toImmutableList(),
-                        highlightText = state.getHighlightText()
+                        accessibilitySwipeActions = accessibilitySwipeActions.orEmpty().toImmutableList()
                     )
                 }
             }
@@ -1168,43 +1097,6 @@ private fun AppendError(
         ) {
             Text(text = stringResource(id = commonString.retry))
         }
-    }
-}
-
-
-@Composable
-private fun SearchNoResult(topBarHeight: Dp) {
-    MailboxStaticContent(topBarHeight = topBarHeight) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(
-                    bottom = ProtonDimens.Spacing.Standard
-                ),
-            painter = painterResource(id = R.drawable.search_no_results),
-            contentDescription = NO_CONTENT_DESCRIPTION
-        )
-        Spacer(
-            modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge)
-        )
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.mailbox_search_no_results_title),
-            textAlign = TextAlign.Center,
-            style = ProtonTheme.typography.titleLargeNorm,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(
-            modifier = Modifier.height(ProtonDimens.Spacing.MediumLight)
-        )
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.mailbox_search_no_results_explanation),
-            textAlign = TextAlign.Center,
-            style = ProtonTheme.typography.bodyLargeWeak
-        )
     }
 }
 
@@ -1348,11 +1240,7 @@ object MailboxScreen {
         val onSwipeStar: (String, Boolean) -> Unit,
         val onSwipeLabelAs: (LabelAsItemId) -> Unit,
         val onSwipeMoveTo: (MoveToItemId) -> Unit,
-        val onEnterSearchMode: () -> Unit,
         val onNavigateToContentSearch: () -> Unit,
-        val onSearchQuery: (String) -> Unit,
-        val onSearchResult: () -> Unit,
-        val onExitSearchMode: () -> Unit,
         val onAccountAvatarClicked: () -> Unit,
         val onNavigateToUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
         val onClearAll: () -> Unit,
@@ -1411,11 +1299,7 @@ object MailboxScreen {
                 onSwipeStar = { _, _ -> },
                 onSwipeLabelAs = { _ -> },
                 onSwipeMoveTo = { _ -> },
-                onExitSearchMode = {},
-                onEnterSearchMode = {},
                 onNavigateToContentSearch = {},
-                onSearchQuery = {},
-                onSearchResult = {},
                 onAccountAvatarClicked = {},
                 showMissingFeature = {},
                 onAttachmentClicked = {},
@@ -1486,14 +1370,6 @@ private fun MailboxEmptyPreview() {
             unreadFilterState = UnreadFilterState.Data(CappedNumberUiModel.Zero, false),
             topBarHeight = 0.dp
         )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Composable
-private fun SearchNoResultPreview() {
-    ProtonTheme {
-        SearchNoResult(topBarHeight = 0.dp)
     }
 }
 

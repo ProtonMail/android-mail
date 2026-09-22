@@ -21,12 +21,8 @@ package ch.protonmail.android.uitest.screen.mailbox
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsFocused
-import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.R
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -67,21 +63,6 @@ internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
     }
 
     @Test
-    fun actionsAreShownInDefaultMode() {
-        setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
-
-        composeTestRule
-            .onSearchIconButton()
-            .assertIsDisplayed()
-            .assertHasClickAction()
-
-        composeTestRule
-            .onComposeIconButton()
-            .assertIsDisplayed()
-            .assertHasClickAction()
-    }
-
-    @Test
     fun backIconIsShownInSelectionMode() {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
@@ -106,107 +87,6 @@ internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun actionsAreHiddenInSelectionMode() {
-        setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
-
-        composeTestRule
-            .onSearchIconButton()
-            .assertDoesNotExist()
-
-        composeTestRule
-            .onComposeIconButton()
-            .assertDoesNotExist()
-    }
-
-    @Test
-    fun exitSearchModeButtonShownInSearchMode() {
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "query")
-
-        composeTestRule
-            .onExitSearchIconButton()
-            .assertIsDisplayed()
-            .assertHasClickAction()
-
-    }
-
-    @Test
-    fun clearSearchQueryButtonShownInSearchModeWhenQueryEntered() {
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "query")
-
-        composeTestRule
-            .onClearSearchQueryIconButton()
-            .assertIsDisplayed()
-            .assertHasClickAction()
-    }
-
-    @Test
-    fun clearSearchQueryButtonHiddenInSearchModeWhenQueryIsEmpty() {
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "")
-
-        composeTestRule
-            .onClearSearchQueryIconButton()
-            .assertDoesNotExist()
-    }
-
-    @Test
-    fun searchTextFieldShouldHaveFocusWhenSearchModeStarted() {
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "")
-
-        composeTestRule
-            .onNodeWithText("")
-            .assertIsDisplayed()
-            .assertIsFocused()
-    }
-
-    @Test
-    fun searchTextFieldShouldNotHaveFocusWhenSearchModeStartedWithExistingQuery() {
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "search query")
-
-        composeTestRule
-            .onNodeWithText("search query")
-            .assertIsDisplayed()
-            .assertIsNotFocused()
-    }
-
-    @Test
-    fun clearSearchQueryButtonClearsSearchTextField() {
-        // Given
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "non-empty query")
-        composeTestRule
-            .onNodeWithText("non-empty query")
-            .assertIsDisplayed()
-
-        // When
-        composeTestRule
-            .onClearSearchQueryIconButton()
-            .performClick()
-
-        // Then
-        composeTestRule
-            .onNodeWithText("")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun clearSearchQueryButtonBecomeVisibleAfterEnteringQuery() {
-        // Given
-        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "")
-        composeTestRule
-            .onClearSearchQueryIconButton()
-            .assertDoesNotExist()
-
-        // When
-        composeTestRule
-            .onNodeWithText("")
-            .performTextInput("some query")
-
-        // Then
-        composeTestRule
-            .onClearSearchQueryIconButton()
-            .assertIsDisplayed()
-    }
-
     private fun setupScreenWithState(state: Data) {
         composeTestRule.setContent {
             ProtonTheme {
@@ -215,12 +95,9 @@ internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = {},
                         onExitSelectionMode = {},
-                        onExitSearchMode = {},
                         onTitleClick = {},
-                        onEnterSearchMode = {},
-                        onSearch = {},
                         onAccountAvatarClicked = {},
-                        onNavigateToUpselling = { _, _ -> },
+                        onNavigateToUpselling = { _, _ -> }
                     )
                 )
             }
@@ -243,33 +120,11 @@ internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
         setupScreenWithState(state)
     }
 
-    private fun setupScreenWithSearchMode(currentMailLabel: MailLabel, searchQuery: String) {
-        val state = Data.SearchMode(
-            currentLabelName = currentMailLabel.text(),
-            primaryAvatarItem = null,
-            searchQuery = searchQuery
-        )
-        setupScreenWithState(state)
-    }
-
     private fun SemanticsNodeInteractionsProvider.onHamburgerIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_menu_button_content_description))
 
     private fun SemanticsNodeInteractionsProvider.onExitSelectionModeIconButton() = onNodeWithContentDescription(
         context.getString(R.string.mailbox_toolbar_exit_selection_mode_button_content_description)
-    )
-
-    private fun SemanticsNodeInteractionsProvider.onSearchIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_search_button_content_description))
-
-    private fun SemanticsNodeInteractionsProvider.onComposeIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.mailbox_fab_compose_button_content_description))
-
-    private fun SemanticsNodeInteractionsProvider.onExitSearchIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_exit_search_mode_content_description))
-
-    private fun SemanticsNodeInteractionsProvider.onClearSearchQueryIconButton() = onNodeWithContentDescription(
-        context.getString(R.string.mailbox_toolbar_searchview_clear_search_query_content_description)
     )
 
     private companion object TestData {

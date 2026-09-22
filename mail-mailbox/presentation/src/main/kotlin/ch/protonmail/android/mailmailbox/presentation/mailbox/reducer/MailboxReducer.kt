@@ -30,8 +30,8 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState.Enabled
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState.Disabled
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState.Enabled
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -122,7 +122,6 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.EnterSelectionMode -> BottomBarEvent.ShowBottomSheet
                 is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
                 is MailboxEvent.DeleteConfirmed,
-                is MailboxViewAction.ExitSearchMode,
                 is MailboxEvent.MoveToConfirmed,
                 is MailboxEvent.LabelAsConfirmed,
                 is MailboxViewAction.MoveToArchive,

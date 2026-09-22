@@ -192,7 +192,6 @@ fun Home(
     // floating controls so multi-line snackbars never overlap them.
     var snackbarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
-    val isDrawerSwipeGestureEnabled = remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle(HomeState.Initial)
     val onboardingEligibilityState by onboardingStepViewModel.onboardingEligibilityState.collectAsStateWithLifecycle()
@@ -674,7 +673,7 @@ fun Home(
 
             },
             scrimColor = ProtonTheme.colors.blenderNorm,
-            gesturesEnabled = currentDestinationRoute == Screen.Mailbox.route && isDrawerSwipeGestureEnabled.value
+            gesturesEnabled = currentDestinationRoute == Screen.Mailbox.route
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Scaffold(
@@ -799,7 +798,6 @@ fun Home(
                         addMailbox(
                             navController,
                             openDrawerMenu = { scope.launch { drawerState.open() } },
-                            setDrawerEnabled = { isDrawerSwipeGestureEnabled.value = it },
                             showSnackbar = { showSnackbar(it) },
                             onEvent = eventHandler,
                             showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },

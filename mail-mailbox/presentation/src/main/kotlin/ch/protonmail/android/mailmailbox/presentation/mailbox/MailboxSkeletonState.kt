@@ -32,8 +32,8 @@ import kotlin.time.Duration.Companion.milliseconds
  * Decides when the mailbox loading skeleton is shown.
  *
  * The mailbox reloads for two very different reasons and only one of them warrants a skeleton:
- * - **Navigation** — a different account, label, category or search mode. The list on screen no longer
- *   belongs where the user is, so a skeleton is the honest thing to render.
+ * - **Navigation** — a different account, label or category. The list on screen no longer belongs
+ *   where the user is, so a skeleton is the honest thing to render.
  * - **In-place reload** — an unread / spam-trash filter toggle or a pull-to-refresh on the list the user
  *   is already looking at. Replacing it with a skeleton reads as a flash; the thin top loading bar
  *   already signals the activity.
@@ -50,14 +50,13 @@ import kotlin.time.Duration.Companion.milliseconds
  * Identifies the list currently on screen. Any change means the user navigated somewhere else, so the
  * items Paging is holding no longer belong to where they are.
  *
- * All four parts matter: switching account keeps the same label and category, entering search keeps
- * both as well, and either one leaves the previous list on screen until Paging catches up.
+ * All three parts matter: switching account keeps the same label and category, and either one leaves
+ * the previous list on screen until Paging catches up.
  */
 internal data class MailboxLocation(
     val userId: UserId?,
     val labelId: String,
-    val categoryId: String?,
-    val isInSearch: Boolean
+    val categoryId: String?
 )
 
 /**
@@ -118,8 +117,8 @@ internal class CategorySkeletonLatch {
  * in between `rawView` is still rendering the *previous* location's items. Treating that as settled is
  * what would suppress the skeleton for the very navigation it is meant to cover, re-opening ET-6553.
  *
- * Only [MailboxScreenState.Empty] and [MailboxScreenState.SearchNoData] are ever held across a reload.
- * They render no list content, so holding them is safe; every other state either wraps the live
+ * Only [MailboxScreenState.Empty] is ever held across a reload.
+ * It renders no list content, so holding it is safe; every other state either wraps the live
  * [androidx.paging.compose.LazyPagingItems] — which would draw an empty list once the reload cleared it —
  * or is an error the user needs to see.
  */
@@ -157,8 +156,7 @@ internal class SettledViewLatch {
         return rawView
     }
 
-    private fun MailboxScreenState.rendersNoListContent() =
-        this is MailboxScreenState.Empty || this is MailboxScreenState.SearchNoData
+    private fun MailboxScreenState.rendersNoListContent() = this is MailboxScreenState.Empty
 }
 
 /**

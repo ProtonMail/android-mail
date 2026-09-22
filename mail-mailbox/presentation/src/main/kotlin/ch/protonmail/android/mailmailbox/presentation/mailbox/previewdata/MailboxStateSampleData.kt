@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetState
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -38,8 +39,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxComposerNavigationState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailcommon.presentation.model.SelectionState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
@@ -96,8 +95,6 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchState = MailboxSearchStateSampleData.NotSearching,
-            shouldShowFab = true,
             avatarImagesUiModel = AvatarImagesUiModel.Empty
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
@@ -140,8 +137,6 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchState = MailboxSearchStateSampleData.NotSearching,
-            shouldShowFab = true,
             avatarImagesUiModel = AvatarImagesUiModel.Empty
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
@@ -181,8 +176,7 @@ object MailboxStateSampleData {
         currentMailLabel: MailLabel = inboxDynamicLabel,
         bottomSheetState: BottomSheetState? = null,
         error: Effect<TextUiModel> = Effect.empty(),
-        showRatingBooster: Effect<Unit> = Effect.empty(),
-        searchState: MailboxSearchState = MailboxSearchState.NotSearching
+        showRatingBooster: Effect<Unit> = Effect.empty()
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
@@ -193,8 +187,6 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchState = searchState,
-            shouldShowFab = false,
             avatarImagesUiModel = AvatarImagesUiModel.Empty,
             areAllItemsSelected = false,
             refreshOngoing = false,

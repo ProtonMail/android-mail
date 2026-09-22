@@ -114,10 +114,6 @@ annotation class IsContentSearchFeatureEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IsContentSearchScreenEnabled
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class IsSdkUpgradesReadEnabled
 
 @Qualifier

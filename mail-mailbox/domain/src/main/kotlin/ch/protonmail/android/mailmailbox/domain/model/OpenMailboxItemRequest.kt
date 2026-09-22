@@ -27,6 +27,5 @@ data class OpenMailboxItemRequest(
     val subItemId: MailboxItemId? = null,
     val openedFromLocation: LabelId,
     val openedFromCategory: CategoryLabelId? = null,
-    val locationViewModeIsConversation: Boolean = true,
-    val searchQuery: String = ""
+    val locationViewModeIsConversation: Boolean = true
 )

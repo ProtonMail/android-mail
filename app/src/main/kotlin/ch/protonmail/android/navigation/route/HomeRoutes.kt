@@ -38,7 +38,6 @@ import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.feature.contentsearch.ContentSearchEnableSheetHost
-import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
@@ -51,6 +50,7 @@ import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactList
 import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearchScreen
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreen
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreenActions
+import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -97,7 +97,6 @@ internal fun NavGraphBuilder.addConversationDetail(
 internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
     openDrawerMenu: () -> Unit,
-    setDrawerEnabled: (Boolean) -> Unit,
     onEvent: (AccountSwitchEvent) -> Unit,
     showSnackbar: (type: SnackbarType) -> Unit,
     showFeatureMissingSnackbar: () -> Unit,
@@ -121,8 +120,7 @@ internal fun NavGraphBuilder.addMailbox(
                             openedFromLocation = request.openedFromLocation,
                             openedFromCategory = request.openedFromCategory,
                             locationViewModeIsConversation = request.locationViewModeIsConversation,
-                            entryPoint = ConversationDetailEntryPoint.Mailbox,
-                            searchQuery = request.searchQuery
+                            entryPoint = ConversationDetailEntryPoint.Mailbox
                         )
                     }
                     navController.navigate(destination)
@@ -139,14 +137,8 @@ internal fun NavGraphBuilder.addMailbox(
                     navController.navigate(Destination.Screen.FeatureUpselling(entryPoint, type))
                 },
                 showMissingFeature = showFeatureMissingSnackbar,
-                onEnterSearchMode = {
-                    setDrawerEnabled(false)
-                },
                 onNavigateToContentSearch = {
                     navController.navigate(Destination.Screen.ContentSearch.route)
-                },
-                onExitSearchMode = {
-                    setDrawerEnabled(true)
                 },
                 onCustomizeToolbar = {
                     navController.navigate(Destination.Screen.EditToolbarScreen(ToolbarType.List))

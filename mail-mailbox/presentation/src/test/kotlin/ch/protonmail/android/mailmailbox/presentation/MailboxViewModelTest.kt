@@ -49,7 +49,6 @@ import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.model.toCappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
-import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.IsExpandableLocation
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
@@ -58,7 +57,6 @@ import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.TerminateConversationPaginator
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -113,7 +111,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -416,14 +413,6 @@ internal class MailboxViewModelTest {
     private val updateUnreadFilter = mockk<UpdateUnreadFilter>()
     private val updateIncludeFilter = mockk<UpdateIncludeFilter>()
 
-    private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke() } returns false
-    }
-
-    private val isContentSearchScreenFeatureEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { get() } returns false
-    }
-
     val categoryViewStatusFlow = MutableSharedFlow<CategoryViewStatus>()
     private val observeCategoryViewStatus = mockk<ObserveCategoryViewStatus> {
         coEvery {
@@ -489,8 +478,6 @@ internal class MailboxViewModelTest {
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
             setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
-            isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
-            isContentSearchScreenFeatureEnabled = isContentSearchScreenFeatureEnabled,
             observeCategoryViewStatus = observeCategoryViewStatus
         )
     }
@@ -501,6 +488,7 @@ internal class MailboxViewModelTest {
         mockkStatic(Log::class)
         mockkStatic(Color::parseColor)
         every { Log.isLoggable(any(), any()) } returns false
+        expectPagerMock()
     }
 
     @AfterTest
@@ -749,8 +737,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -767,8 +753,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = expectedSwipeActions,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -829,8 +813,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -847,8 +829,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = expectedSwipeActions,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -901,29 +881,6 @@ internal class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
-
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `isContentSearchScreenEnabled is re-evaluated when primary user changes`() = runTest {
-        // Given
-        val currentUserIdFlow = MutableStateFlow(userId)
-        every { observePrimaryUserId() } returns currentUserIdFlow
-        // The flag resolves to different values for the two users
-        coEvery { isContentSearchScreenFeatureEnabled.get() } returns false andThen true
-
-        mailboxViewModel.isContentSearchScreenEnabled.test {
-            // Then
-            assertEquals(false, awaitItem())
-
-            // When
-            currentUserIdFlow.emit(userId1)
-            advanceUntilIdle()
-
-            // Then
-            assertEquals(true, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -1239,47 +1196,7 @@ internal class MailboxViewModelTest {
         }
 
     @Test
-    fun `when deselect all is submitted while in search mode, exit selection mode is triggered`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel
-        val initialState = createMailboxDataState()
-        val selectionState = MailboxStateSampleData.createSelectionMode(
-            listOf(item),
-            searchState = MailboxSearchStateSampleData.NewSearch
-        )
-        expectedTrashSpamFilterStateChange(initialState)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, selectionState)
-        returnExpectedStateForBottomBarEvent(expectedState = selectionState)
-        every {
-            mailboxReducer.newStateFrom(
-                selectionState,
-                MailboxViewAction.ExitSelectionMode
-            )
-        } returns initialState
-        expectPagerMock()
-
-        // When + Then
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
-            assertEquals(selectionState, awaitItem())
-
-            mailboxViewModel.submit(MailboxViewAction.DeselectAll)
-
-            assertEquals(initialState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(
-                    currentState = selectionState,
-                    operation = MailboxViewAction.ExitSelectionMode
-                )
-            }
-        }
-    }
-
-    @Test
-    fun `when deselect all is submitted outside of search mode, all items are deselected only`() = runTest {
+    fun `when deselect all is submitted, all items are deselected`() = runTest {
         // Given
         val item = readMailboxItemUiModel
         val initialState = createMailboxDataState()
@@ -1674,70 +1591,6 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `given search mode with non-empty query, when mapping items, then items are mapped as search results`() =
-        runTest {
-            // Given
-            val folderColorSettings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = true)
-            val searchState = createMailboxDataState().copy(
-                mailboxListState = (createMailboxDataState().mailboxListState as MailboxListState.Data.ViewMode).copy(
-                    searchState = MailboxSearchStateSampleData.SearchData,
-                    shouldShowFab = false
-                )
-            )
-            coEvery {
-                mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, true)
-            } returns unreadMailboxItemUiModel
-            expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
-            every { mailboxReducer.newStateFrom(any(), any()) } returns searchState
-            val differ = MailboxAsyncPagingDataDiffer.differ
-
-            // When
-            mailboxViewModel.items.test {
-                awaitItem()
-                val pagingData = awaitItem()
-                differ.submitData(pagingData)
-
-                // Then
-                coVerify {
-                    mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, true)
-                }
-                cancelAndIgnoreRemainingEvents()
-            }
-        }
-
-    @Test
-    fun `given search mode with empty query, when mapping items, then items are not mapped as search results`() =
-        runTest {
-            // Given
-            val folderColorSettings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = true)
-            val searchState = createMailboxDataState().copy(
-                mailboxListState = (createMailboxDataState().mailboxListState as MailboxListState.Data.ViewMode).copy(
-                    searchState = MailboxSearchStateSampleData.NewSearch,
-                    shouldShowFab = false
-                )
-            )
-            coEvery {
-                mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, false)
-            } returns unreadMailboxItemUiModel
-            expectPagerMock(pagingDataFlow = flowOf(PagingData.from(listOf(unreadMailboxItem))))
-            every { mailboxReducer.newStateFrom(any(), any()) } returns searchState
-            val differ = MailboxAsyncPagingDataDiffer.differ
-
-            // When
-            mailboxViewModel.items.test {
-                awaitItem()
-                val pagingData = awaitItem()
-                differ.submitData(pagingData)
-
-                // Then
-                coVerify {
-                    mailboxItemMapper.toUiModel(userId, unreadMailboxItem, folderColorSettings, false)
-                }
-                cancelAndIgnoreRemainingEvents()
-            }
-        }
-
-    @Test
     fun `mailbox items are not mapped again in the same page when folder color change`() = runTest {
         // See ET-2929: avoid updating the MailboxItems when the page is not re-created (eg. folder color update)
         // this is needed to respect paging lib's immutable pages requirement.
@@ -1834,7 +1687,7 @@ internal class MailboxViewModelTest {
                 intermediateState,
                 MailboxEvent.ItemClicked.ItemDetailsOpened(
                     item, labelId,
-                    false, item.id, null, ""
+                    false, item.id, null
                 )
             )
         } returns expectedState
@@ -1893,8 +1746,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -1926,8 +1777,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshOngoing = false,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -1959,8 +1808,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = true,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             )
@@ -2016,7 +1863,7 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 intermediateState,
-                MailboxEvent.ItemClicked.ItemDetailsOpened(item, labelId, true, null, null, "")
+                MailboxEvent.ItemClicked.ItemDetailsOpened(item, labelId, true, null, null)
             )
         } returns expectedState
         expectPagerMock()
@@ -2243,8 +2090,7 @@ internal class MailboxViewModelTest {
                     contextLabel = labelId,
                     viewModeIsConversationGrouping = false,
                     subitemId = null,
-                    openedFromCategory = null,
-                    searchQuery = ""
+                    openedFromCategory = null
                 )
             )
         } returns createMailboxDataState(
@@ -3607,8 +3453,6 @@ internal class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshOngoing = false,
                 swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                 loadingBarState = LoadingBarUiState.Hide
             ),
@@ -3621,143 +3465,6 @@ internal class MailboxViewModelTest {
             ),
             showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Hidden
         )
-    }
-
-    @Test
-    fun `when enter search mode action is submitted, search mode is updated and emitted`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Inbox.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.allMailSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.of(Unit),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NewSearch,
-                shouldShowFab = false,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxViewAction.EnterSearchMode
-            )
-        } returns expectedState
-        expectPagerMock()
-
-        // When
-        mailboxViewModel.submit(MailboxViewAction.EnterSearchMode)
-        mailboxViewModel.state.test {
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
-    }
-
-    @Test
-    fun `when exit search mode action is submitted, search mode is updated and emitted`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Inbox.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.inboxSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.of(Unit),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NotSearching,
-                shouldShowFab = true,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxViewAction.ExitSearchMode
-            )
-        } returns expectedState
-        expectPagerMock()
-
-        // When
-        mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
-        mailboxViewModel.state.test {
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
-    }
-
-    @Test
-    fun `when search query action is submitted, search mode is updated and emitted`() = runTest {
-        // Given
-        val queryText = "query"
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.inboxSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.of(Unit),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.SearchLoading,
-                shouldShowFab = false,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxViewAction.SearchQuery(queryText)
-            )
-        } returns expectedState
-        expectPagerMock()
-
-        // When
-        mailboxViewModel.submit(MailboxViewAction.SearchQuery(queryText))
-        mailboxViewModel.state.test {
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
-    }
-
-    @Test
-    fun `when search result action is submitted, search mode is updated and emitted`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.inboxSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.of(Unit),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.SearchData,
-                shouldShowFab = true,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxViewAction.SearchResult
-            )
-        } returns expectedState
-        expectPagerMock()
-
-        // When
-        mailboxViewModel.submit(MailboxViewAction.SearchResult)
-        mailboxViewModel.state.test {
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
     }
 
     @Test
@@ -4306,102 +4013,7 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `when item clicked in search mode with spam trash filter enabled then origin is AllMail label`() = runTest {
-        // Given
-        val item = buildMailboxUiModelItem(id = "id", type = Message)
-        val searchModeState = createSearchModeState(
-            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = true)
-        )
-        val allMailLabelId = MailLabelTestData.allMailSystemLabel.id
-
-        every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
-        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        expectViewModeForCurrentLocation(NoConversationGrouping)
-        expectPagerMock()
-
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
-            advanceUntilIdle()
-
-            // Then
-            coVerify { findLocalSystemLabelId(userId, SystemLabelId.AllMail) }
-            verify {
-                mailboxReducer.newStateFrom(
-                    any(),
-                    MailboxEvent.ItemClicked.ItemDetailsOpened(
-                        item,
-                        allMailLabelId.labelId,
-                        false,
-                        item.id,
-                        null,
-                        ""
-                    )
-                )
-            }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when item clicked in search mode with spam trash filter hidden then origin is AllMail`() = runTest {
-        // Given
-        val item = buildMailboxUiModelItem(id = "id", type = Message)
-        val searchModeState = createSearchModeState(
-            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Hidden
-        )
-        val allMailLabelId = MailLabelTestData.allMailSystemLabel.id
-
-        every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
-        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        expectViewModeForCurrentLocation(NoConversationGrouping)
-        expectPagerMock()
-
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
-            advanceUntilIdle()
-
-            // Then
-            coVerify { findLocalSystemLabelId(userId, SystemLabelId.AllMail) }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when item clicked in search mode with spam trash filter disabled then origin is AlmostAllMail`() = runTest {
-        // Given
-        val item = buildMailboxUiModelItem(id = "id", type = Message)
-        val searchModeState = createSearchModeState(
-            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = false)
-        )
-        val almostAllMailLabelId = MailLabelTestData.almostAllMailSystemLabel.id
-
-        every { mailboxReducer.newStateFrom(any(), any()) } returns searchModeState
-        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) } returns almostAllMailLabelId
-        expectViewModeForCurrentLocation(NoConversationGrouping)
-        expectPagerMock()
-
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
-            advanceUntilIdle()
-
-            // Then
-            coVerify { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) }
-            coVerify(exactly = 0) { findLocalSystemLabelId(userId, SystemLabelId.AllMail) }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when item clicked not in search mode with spam trash filter enabled then origin is AllMail`() = runTest {
+    fun `when item clicked with spam trash filter enabled then origin is AllMail`() = runTest {
         // Given
         val item = buildMailboxUiModelItem(id = "id", type = Message)
         val stateWithFilterEnabled = createMailboxDataState().copy(
@@ -4428,38 +4040,7 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `when move to requested in search mode, destinations use search-aware label`() = runTest {
-        // Given
-        val item = buildMailboxUiModelItem(id = "id", type = Message)
-        val baseSelection = MailboxStateSampleData.createSelectionMode(listOf(item))
-        val searchSelectionState = baseSelection.copy(
-            mailboxListState = (baseSelection.mailboxListState as MailboxListState.Data.SelectionMode).copy(
-                searchState = MailboxSearchStateSampleData.SearchData
-            ),
-            showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = false)
-        )
-        val almostAllMailLabelId = MailLabelTestData.almostAllMailSystemLabel.id
-
-        every { mailboxReducer.newStateFrom(any(), any()) } returns searchSelectionState
-        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) } returns almostAllMailLabelId
-        expectViewModeForCurrentLocation(NoConversationGrouping)
-        expectPagerMock()
-
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
-            advanceUntilIdle()
-
-            // Then
-            coVerify { findLocalSystemLabelId(userId, SystemLabelId.AlmostAllMail) }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when item clicked not in search mode with spam trash filter disabled then origin is currentlabel`() = runTest {
+    fun `when item clicked with spam trash filter disabled then origin is the current label`() = runTest {
         // Given
         val item = buildMailboxUiModelItem(id = "id", type = Message)
         val currentLabelId = initialLocationMailLabelId.labelId
@@ -4473,7 +4054,7 @@ internal class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 any(),
-                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null, "")
+                MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
             )
         } returns intermediateState
 
@@ -4491,7 +4072,7 @@ internal class MailboxViewModelTest {
             verify {
                 mailboxReducer.newStateFrom(
                     any(),
-                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null, "")
+                    MailboxEvent.ItemClicked.ItemDetailsOpened(item, currentLabelId, false, item.id, null)
                 )
             }
             cancelAndIgnoreRemainingEvents()
@@ -4499,50 +4080,7 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `when item clicked in search mode then the selected category is not opened from`() = runTest {
-        // Given
-        val item = buildMailboxUiModelItem(id = "id", type = Message)
-        val selectedCategory = CategoryLabelTestData.social.id
-        val allMailLabelId = MailLabelTestData.allMailSystemLabel.id
-
-        every { observeSelectedLabelWithCategory() } returns MutableStateFlow(
-            MailLabelIdWithCategory(initialLocationMailLabelId, selectedCategory)
-        )
-        every { mailboxReducer.newStateFrom(any(), any()) } returns createSearchModeState(
-            spamTrashFilterState = ShowSpamTrashIncludeFilterState.Data.Shown(enabled = true)
-        )
-        coEvery { findLocalSystemLabelId(userId, SystemLabelId.AllMail) } returns allMailLabelId
-        expectViewModeForCurrentLocation(NoConversationGrouping)
-        expectPagerMock()
-
-        mailboxViewModel.state.test {
-            awaitItem()
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
-            advanceUntilIdle()
-
-            // Then the category is dropped, as it belongs to the location we searched from and not
-            // to the search-aware label the item is opened from.
-            verify {
-                mailboxReducer.newStateFrom(
-                    any(),
-                    MailboxEvent.ItemClicked.ItemDetailsOpened(
-                        item,
-                        allMailLabelId.labelId,
-                        false,
-                        item.id,
-                        null,
-                        ""
-                    )
-                )
-            }
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when item clicked not in search mode then the selected category is opened from`() = runTest {
+    fun `when item clicked, the selected category is opened from`() = runTest {
         // Given
         val item = buildMailboxUiModelItem(id = "id", type = Message)
         val selectedCategory = CategoryLabelTestData.social.id
@@ -4573,8 +4111,7 @@ internal class MailboxViewModelTest {
                         currentLabelId,
                         false,
                         item.id,
-                        selectedCategory,
-                        ""
+                        selectedCategory
                     )
                 )
             }
@@ -4655,59 +4192,23 @@ internal class MailboxViewModelTest {
     }
 
     @Test
-    fun `given in search mode, when category view status has a default active category, reset is skipped`() = runTest {
+    fun `when category view status has a default active category, reset is invoked`() = runTest {
         // Given
-        val searchState = MailboxStateSampleData.Inbox.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.allMailSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.of(Unit),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.NewSearch,
-                shouldShowFab = false,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            )
-        )
         val defaultActiveStatus = CategoryViewStatus.Available(
             categories = listOf(CategoryLabelTestData.primary)
         )
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxViewAction.EnterSearchMode)
-        } returns searchState
-        expectPagerMock()
-        mailboxViewModel.submit(MailboxViewAction.EnterSearchMode)
-        advanceUntilIdle()
 
         // When
-        categoryViewStatusFlow.emit(defaultActiveStatus)
-        advanceUntilIdle()
+        mailboxViewModel.state.test {
+            awaitItem()
+            categoryViewStatusFlow.emit(defaultActiveStatus)
+            advanceUntilIdle()
 
-        // Then
-        verify(exactly = 0) { selectMailLabelId.resetSelectedCategory() }
-    }
-
-    @Test
-    fun `given not in search mode, when category view status has a default active category, reset is invoked`() =
-        runTest {
-            // Given
-            val defaultActiveStatus = CategoryViewStatus.Available(
-                categories = listOf(CategoryLabelTestData.primary)
-            )
-
-            // When
-            mailboxViewModel.state.test {
-                awaitItem()
-                categoryViewStatusFlow.emit(defaultActiveStatus)
-                advanceUntilIdle()
-
-                // Then
-                verify(exactly = 1) { selectMailLabelId.resetSelectedCategory() }
-                cancelAndIgnoreRemainingEvents()
-            }
+            // Then
+            verify(exactly = 1) { selectMailLabelId.resetSelectedCategory() }
+            cancelAndIgnoreRemainingEvents()
         }
+    }
 
     @Test
     fun `when inactive category item is clicked, active category is changed`() = runTest {
@@ -5010,26 +4511,6 @@ internal class MailboxViewModelTest {
         currentMailLabel = MailLabelTestData.trashSystemLabel,
         bottomSheetState = BottomSheetState(expectedBottomSheetContent)
     )
-
-    private fun createSearchModeState(
-        spamTrashFilterState: ShowSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Data.Hidden
-    ): MailboxState {
-        return MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabelTestData.allMailSystemLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                refreshErrorEffect = Effect.empty(),
-                refreshOngoing = false,
-                swipeActions = null,
-                searchState = MailboxSearchStateSampleData.SearchData,
-                shouldShowFab = false,
-                avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
-                loadingBarState = LoadingBarUiState.Hide
-            ),
-            showSpamTrashIncludeFilterState = spamTrashFilterState
-        )
-    }
 
     private fun expectPagerMock(
         user: UserId = userId,

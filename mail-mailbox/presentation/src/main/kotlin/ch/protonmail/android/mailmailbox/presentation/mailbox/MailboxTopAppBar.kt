@@ -19,12 +19,10 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -35,7 +33,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -54,7 +51,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingMailButton
-import ch.protonmail.android.uicomponents.SearchView
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
 import me.proton.android.core.accountmanager.presentation.switcher.v1.AccountAvatar
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -64,7 +60,6 @@ fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
     actions: MailboxTopAppBar.Actions,
-    isSearchButtonVisible: Boolean = true,
     windowInsets: WindowInsets = WindowInsets.safeDrawing.only(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
@@ -93,131 +88,48 @@ fun MailboxTopAppBar(
             shouldShowActions = false,
             accountAvatarItem = state.primaryAvatarItem
         )
-
-        is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
-            navigationIconRes = R.drawable.ic_arrow_left,
-            navigationIconContentDescription = stringResource(
-                id = R.string.mailbox_toolbar_exit_search_mode_content_description
-            ),
-            shouldShowActions = false,
-            searchQuery = state.searchQuery
-        )
     }
 
     val onNavigationIconClick = when (state) {
         is MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> actions.onOpenMenu
         is MailboxTopAppBarState.Data.SelectionMode -> actions.onExitSelectionMode
-        is MailboxTopAppBarState.Data.SearchMode -> actions.onExitSearchMode
     }
-
-    Crossfade(targetState = state, label = "") { topBarState ->
-
-        if (topBarState is MailboxTopAppBarState.Data.SearchMode) {
-            TopAppBarInSearchMode(
-                modifier = modifier,
-                uiModel = uiModel,
-                actions = actions,
-                windowInsets = windowInsets
-            )
-        } else {
-            ProtonTopAppBar(
-                modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
-                windowInsets = windowInsets,
-                title = {
-                    Text(
-                        modifier = Modifier
-                            .testTag(MailboxTopAppBarTestTags.LocationLabel)
-                            .clickable(onClick = actions.onTitleClick),
-                        text = uiModel.title,
-                        style = ProtonTheme.typography.titleLargeMedium,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
-                },
-                navigationIcon = {
-                    if (state !is MailboxTopAppBarState.Loading) {
-                        NavigationIcon(
-                            uiModel = uiModel,
-                            onNavigationIconClick = onNavigationIconClick
-                        )
-                    }
-                },
-                actions = {
-                    if (uiModel.shouldShowActions) {
-                        UpsellingMailButton(onClick = { type ->
-                            actions.onNavigateToUpselling(UpsellingEntryPoint.Feature.Navbar, type)
-                        })
-                        if (isSearchButtonVisible) {
-                            IconButton(
-                                modifier = Modifier
-                                    .size(ProtonDimens.DefaultButtonMinHeight)
-                                    .testTag(MailboxTopAppBarTestTags.SearchButton),
-                                onClick = actions.onEnterSearchMode
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                                    contentDescription = stringResource(
-                                        id = R.string.mailbox_toolbar_search_button_content_description
-                                    )
-                                )
-                            }
-                        }
-                        Spacer(Modifier.size(ProtonDimens.Spacing.ModeratelyLarge))
-                        AccountAvatar(
-                            accountItem = uiModel.accountAvatarItem,
-                            onClick = actions.onAccountAvatarClicked
-                        )
-                        Spacer(Modifier.size(ProtonDimens.Spacing.Large))
-                    }
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun TopAppBarInSearchMode(
-    modifier: Modifier = Modifier,
-    uiModel: UiModel,
-    actions: MailboxTopAppBar.Actions,
-    windowInsets: WindowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-) {
-
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     ProtonTopAppBar(
         modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
         windowInsets = windowInsets,
         title = {
-            SearchView(
-                SearchView.Parameters(
-                    initialSearchValue = uiModel.searchQuery,
-                    searchPlaceholderText = R.string.mailbox_search_placeholder_text,
-                    closeButtonContentDescription =
-                    R.string.mailbox_toolbar_searchview_clear_search_query_content_description
-                ),
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag(MailboxTopAppBarTestTags.SearchView),
-                actions = SearchView.Actions(
-                    onClearSearchQuery = {},
-                    onSearchQuerySubmit = actions.onSearch,
-                    onSearchQueryChanged = {}
-                )
+                    .testTag(MailboxTopAppBarTestTags.LocationLabel)
+                    .clickable(onClick = actions.onTitleClick),
+                text = uiModel.title,
+                style = ProtonTheme.typography.titleLargeMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
         },
         navigationIcon = {
-            NavigationIcon(
-                uiModel = uiModel,
-                onNavigationIconClick = {
-                    keyboardController?.hide()
-                    actions.onExitSearchMode()
-                }
-            )
+            if (state !is MailboxTopAppBarState.Loading) {
+                NavigationIcon(
+                    uiModel = uiModel,
+                    onNavigationIconClick = onNavigationIconClick
+                )
+            }
         },
-        actions = {}
+        actions = {
+            if (uiModel.shouldShowActions) {
+                UpsellingMailButton(onClick = { type ->
+                    actions.onNavigateToUpselling(UpsellingEntryPoint.Feature.Navbar, type)
+                })
+                Spacer(Modifier.size(ProtonDimens.Spacing.ModeratelyLarge))
+                AccountAvatar(
+                    accountItem = uiModel.accountAvatarItem,
+                    onClick = actions.onAccountAvatarClicked
+                )
+                Spacer(Modifier.size(ProtonDimens.Spacing.Large))
+            }
+        }
     )
 }
 
@@ -253,10 +165,7 @@ object MailboxTopAppBar {
     data class Actions(
         val onOpenMenu: () -> Unit,
         val onExitSelectionMode: () -> Unit,
-        val onExitSearchMode: () -> Unit,
         val onTitleClick: () -> Unit,
-        val onEnterSearchMode: () -> Unit,
-        val onSearch: (query: String) -> Unit,
         val onAccountAvatarClicked: () -> Unit,
         val onNavigateToUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit
     )
@@ -268,7 +177,6 @@ private data class UiModel(
     val navigationIconContentDescription: String,
     val shouldShowActions: Boolean,
     val notificationDotVisible: Boolean = false,
-    val searchQuery: String = EMPTY_STRING,
     val accountAvatarItem: CoreAccountAvatarItem?
 ) {
 
@@ -294,10 +202,7 @@ fun LoadingMailboxTopAppBarPreview() {
         actions = MailboxTopAppBar.Actions(
             onOpenMenu = {},
             onExitSelectionMode = {},
-            onExitSearchMode = {},
             onTitleClick = {},
-            onEnterSearchMode = {},
-            onSearch = {},
             onAccountAvatarClicked = {},
             onNavigateToUpselling = { _, _ -> }
         )
@@ -319,10 +224,7 @@ fun MailboxTopAppBarPreview() {
         actions = MailboxTopAppBar.Actions(
             onOpenMenu = {},
             onExitSelectionMode = {},
-            onExitSearchMode = {},
             onTitleClick = {},
-            onEnterSearchMode = {},
-            onSearch = {},
             onAccountAvatarClicked = {},
             onNavigateToUpselling = { _, _ -> }
         )
@@ -334,7 +236,5 @@ object MailboxTopAppBarTestTags {
     const val RootItem = "TopAppBarRootItem"
     const val NavigationButton = "NavigationButton"
     const val LocationLabel = "LocationLabel"
-    const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"
-    const val SearchView = "SearchView"
 }

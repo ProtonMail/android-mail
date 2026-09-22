@@ -40,11 +40,5 @@ sealed interface MailboxTopAppBarState {
             override val primaryAvatarItem: CoreAccountAvatarItem?,
             val selectedCount: Int
         ) : Data
-
-        data class SearchMode(
-            override val currentLabelName: TextUiModel,
-            override val primaryAvatarItem: CoreAccountAvatarItem?,
-            val searchQuery: String
-        ) : Data
     }
 }

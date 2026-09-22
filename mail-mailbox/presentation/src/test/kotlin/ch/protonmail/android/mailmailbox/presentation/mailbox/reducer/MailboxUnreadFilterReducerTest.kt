@@ -308,22 +308,6 @@ internal class MailboxUnreadFilterReducerTest(
                     isFilterEnabled = false,
                     activeCategory = null
                 )
-            ),
-            TestInput(
-                currentState = UnreadFilterState.Data(
-                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
-                    isFilterEnabled = true
-                ),
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = UnreadFilterState.Data(
-                    unreadCount = INITIAL_UNREAD_COUNT.toCappedNumberUiModel(),
-                    isFilterEnabled = false
-                )
-            ),
-            TestInput(
-                currentState = UnreadFilterState.Loading,
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = UnreadFilterState.Loading
             )
         )
 

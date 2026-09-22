@@ -41,7 +41,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
 import ch.protonmail.android.test.annotations.suite.RegressionTest
@@ -94,8 +93,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshOngoing = false,
             swipeActions = null,
-            searchState = MailboxSearchStateSampleData.NotSearching,
-            shouldShowFab = true,
             avatarImagesUiModel = AvatarImagesUiModel.Empty,
             paginatorInvalidationEffect = Effect.empty(),
             loadingBarState = LoadingBarUiState.Hide,
@@ -122,8 +119,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshOngoing = false,
             swipeActions = null,
-            searchState = MailboxSearchStateSampleData.NotSearching,
-            shouldShowFab = true,
             avatarImagesUiModel = AvatarImagesUiModel.Empty,
             paginatorInvalidationEffect = Effect.empty(),
             loadingBarState = LoadingBarUiState.Hide,
@@ -169,8 +164,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     paginatorInvalidationEffect = Effect.empty(),
                     loadingBarState = LoadingBarUiState.Hide,

@@ -29,7 +29,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWav
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchFeatureEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Wave2Enabled
@@ -54,7 +53,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBa
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchScreenEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
@@ -323,17 +321,6 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
-
-    @Provides
-    @Singleton
-    @IsContentSearchScreenEnabled
-    fun provideContentSearchScreenEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = ContentSearchScreenEnabled.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideContentSearchScreenEnabledDef(): FeatureFlagDefinition = ContentSearchScreenEnabled
 
     @Provides
     @IntoSet
