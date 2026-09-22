@@ -369,6 +369,10 @@ internal class ConversationDetailViewModelTest {
         coEvery { this@mockk.get() } returns true
     }
 
+    private val isMessageWebViewPoolEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns true
+    }
+
     private val applyWebViewDarkModeFallback = mockk<ApplyWebViewDarkModeFallback> {
         every { this@mockk(any()) } answers { firstArg() }
     }
@@ -440,6 +444,7 @@ internal class ConversationDetailViewModelTest {
             searchQuery = "",
             isAutoExpandEnabled = isAutoExpandEnabled,
             isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
+            isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
             applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
         )
 
