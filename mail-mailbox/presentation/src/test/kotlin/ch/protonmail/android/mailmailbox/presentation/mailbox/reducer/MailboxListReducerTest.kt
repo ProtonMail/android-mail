@@ -25,6 +25,7 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiMo
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
 import ch.protonmail.android.maillabel.domain.model.ViewMode
 import ch.protonmail.android.maillabel.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
@@ -33,13 +34,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUi
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
-import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
-import ch.protonmail.android.mailcommon.presentation.model.SelectionState.SelectedMailItem as SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
@@ -54,6 +51,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 import ch.protonmail.android.mailattachments.presentation.R as attachmentsR
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState.SelectedMailItem as SelectedMailboxItem
 
 @RunWith(Parameterized::class)
 internal class MailboxListReducerTest(
@@ -78,63 +76,16 @@ internal class MailboxListReducerTest(
 
     companion object {
 
-        private val listStateWithSearchModeNone = MailboxListState.Data.ViewMode(
+        private val inboxViewModeListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabelTestData.inboxSystemLabel,
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshOngoing = false,
             swipeActions = null,
-            searchState = MailboxSearchStateSampleData.NotSearching,
-            shouldShowFab = true,
             avatarImagesUiModel = AvatarImagesUiModel.Empty,
             loadingBarState = LoadingBarUiState.Hide
         )
-        private val listStateWithSearchModeNewSearch = listStateWithSearchModeNone.copy(
-            searchState = MailboxSearchStateSampleData.NewSearch,
-            shouldShowFab = false,
-            avatarImagesUiModel = AvatarImagesUiModel.Empty,
-            loadingBarState = LoadingBarUiState.Hide
-        )
-        private val listStateWithSearchModeNewSearchLoading = listStateWithSearchModeNone.copy(
-            searchState = MailboxSearchStateSampleData.SearchLoading,
-            shouldShowFab = false,
-            avatarImagesUiModel = AvatarImagesUiModel.Empty,
-            loadingBarState = LoadingBarUiState.Hide
-        )
-        private val listStateWithSearchModeSearchData = listStateWithSearchModeNone.copy(
-            searchState = MailboxSearchStateSampleData.SearchData,
-            shouldShowFab = false,
-            avatarImagesUiModel = AvatarImagesUiModel.Empty,
-            loadingBarState = LoadingBarUiState.Hide
-        )
-
-        private val listStateWithSearchSelectionMode = MailboxListState.Data.SelectionMode(
-            currentMailLabel = MailLabelTestData.inboxSystemLabel,
-            selectedMailboxItems = setOf(
-                SelectedMailboxItem(
-                    id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
-                    isRead = true,
-                    isStarred = false
-                )
-            ),
-            swipeActions = null,
-            searchState = MailboxSearchStateSampleData.SearchData,
-            shouldShowFab = false,
-            avatarImagesUiModel = AvatarImagesUiModel.Empty,
-            areAllItemsSelected = false,
-            refreshOngoing = false,
-            loadingBarState = LoadingBarUiState.Hide
-        )
-
-        private val listStateSearchSelectionInCustomFolder = listStateWithSearchSelectionMode.copy(
-            currentMailLabel = MailLabelTestData.customLabelOne
-        )
-
-        private val listStateSearchDataInCustomFolder = listStateWithSearchModeSearchData.copy(
-            currentMailLabel = MailLabelTestData.customLabelOne
-        )
-
         private const val UNREAD_COUNT = 42
 
         private val attachmentIdUiModel = AttachmentIdUiModel("attachment-id")
@@ -160,8 +111,6 @@ internal class MailboxListReducerTest(
                     refreshOngoing = false,
                     swipeActions = null,
 
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -176,8 +125,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -192,8 +139,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -208,8 +153,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -224,8 +167,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -240,8 +181,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -256,8 +195,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -272,8 +209,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -285,8 +220,7 @@ internal class MailboxListReducerTest(
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null,
-                    searchQuery = ""
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -297,8 +231,7 @@ internal class MailboxListReducerTest(
                     contextLabel = LabelIdSample.RustLabel3,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null,
-                    searchQuery = ""
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Loading
             ),
@@ -316,26 +249,6 @@ internal class MailboxListReducerTest(
                 currentState = MailboxListState.Loading,
                 operation = MailboxViewAction.Refresh,
                 expectedState = MailboxListState.Loading
-            ),
-            TestInput(
-                currentState = MailboxListState.Loading,
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = MailboxListState.Loading
-            ),
-            TestInput(
-                currentState = MailboxListState.Loading,
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = MailboxListState.Loading
-            ),
-            TestInput(
-                currentState = MailboxListState.Loading,
-                operation = MailboxViewAction.SearchQuery("query"),
-                expectedState = MailboxListState.Loading
-            ),
-            TestInput(
-                currentState = MailboxListState.Loading,
-                operation = MailboxViewAction.SearchResult,
-                expectedState = MailboxListState.Loading
             )
         )
 
@@ -348,8 +261,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -361,8 +272,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -375,8 +284,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -388,8 +295,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -402,8 +307,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -415,8 +318,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -429,8 +330,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -439,8 +338,7 @@ internal class MailboxListReducerTest(
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null,
-                    searchQuery = ""
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
@@ -455,8 +353,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -469,8 +365,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -479,8 +373,7 @@ internal class MailboxListReducerTest(
                     contextLabel = MailLabelTestData.customLabelOne.id.labelId,
                     viewModeIsConversationGrouping = true,
                     subitemId = null,
-                    openedFromCategory = null,
-                    searchQuery = ""
+                    openedFromCategory = null
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
@@ -497,8 +390,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -511,8 +402,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -533,8 +422,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -547,8 +434,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -568,8 +453,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -582,8 +465,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -595,8 +476,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -609,8 +488,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = true,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -622,8 +499,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.of(Unit),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -636,8 +511,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -649,8 +522,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -663,8 +534,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -676,8 +545,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = true,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -690,8 +557,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -706,8 +571,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -722,8 +585,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -735,8 +596,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     downloadingAttachmentId = null,
@@ -751,8 +610,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -764,8 +621,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     downloadingAttachmentId = null,
@@ -782,8 +637,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -795,8 +648,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     downloadingAttachmentId = attachmentIdUiModel
@@ -813,8 +664,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -828,8 +677,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -845,8 +692,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -870,8 +715,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -889,8 +732,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -903,8 +744,6 @@ internal class MailboxListReducerTest(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = setOf(),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -922,8 +761,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -940,8 +777,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -959,8 +794,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -977,8 +810,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -996,8 +827,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1011,8 +840,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1028,8 +855,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1043,8 +868,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1060,8 +883,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1075,8 +896,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1092,8 +911,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = true,
@@ -1106,8 +923,6 @@ internal class MailboxListReducerTest(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1125,8 +940,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1143,8 +956,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1162,8 +973,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1180,8 +989,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1199,8 +1006,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1217,8 +1022,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1236,8 +1039,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1251,8 +1052,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1268,8 +1067,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = false,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1283,8 +1080,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1297,8 +1092,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -1318,8 +1111,6 @@ internal class MailboxListReducerTest(
                         start = SwipeUiModelSampleData.Trash,
                         end = SwipeUiModelSampleData.Archive
                     ),
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 )
@@ -1332,8 +1123,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -1347,74 +1136,15 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = false,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModelTestData.SampleData1,
                     loadingBarState = LoadingBarUiState.Hide
                 )
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeNone,
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = listStateWithSearchModeNewSearch
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeNewSearch,
-                operation = MailboxViewAction.SearchQuery(MailboxSearchStateSampleData.QueryString),
-                expectedState = listStateWithSearchModeNewSearchLoading
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeNewSearchLoading,
-                operation = MailboxViewAction.SearchResult,
-                expectedState = listStateWithSearchModeSearchData
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeSearchData,
-                operation = MailboxViewAction.SearchQuery(MailboxSearchStateSampleData.QueryString),
-                expectedState = listStateWithSearchModeSearchData
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeNewSearch,
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = listStateWithSearchModeNone
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeNewSearchLoading,
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = listStateWithSearchModeNone
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeSearchData,
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = listStateWithSearchModeNone
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeSearchData,
-                operation = MailboxViewAction.SearchQuery(MailboxSearchStateSampleData.QueryString),
-                expectedState = listStateWithSearchModeSearchData
-            ),
-            TestInput(
-                currentState = listStateWithSearchModeSearchData,
-                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = listStateWithSearchSelectionMode
-            ),
-            TestInput(
-                currentState = listStateWithSearchSelectionMode,
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = listStateWithSearchModeSearchData
-            ),
-            TestInput(
-                currentState = listStateSearchSelectionInCustomFolder,
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = listStateSearchDataInCustomFolder
             ),
             TestInput(
                 currentState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1441,8 +1171,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = true,
@@ -1454,8 +1182,6 @@ internal class MailboxListReducerTest(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1482,8 +1208,6 @@ internal class MailboxListReducerTest(
                         }
                     },
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = true,
@@ -1505,8 +1229,6 @@ internal class MailboxListReducerTest(
                         }
                     },
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1533,8 +1255,6 @@ internal class MailboxListReducerTest(
                         }
                     },
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = true,
@@ -1557,8 +1277,6 @@ internal class MailboxListReducerTest(
                         )
                     ),
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = true,
@@ -1569,8 +1287,6 @@ internal class MailboxListReducerTest(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
                     swipeActions = null,
-                    searchState = MailboxSearchState.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide,
                     areAllItemsSelected = false,
@@ -1585,8 +1301,6 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshOngoing = true,
                     swipeActions = null,
-                    searchState = MailboxSearchStateSampleData.NotSearching,
-                    shouldShowFab = true,
                     avatarImagesUiModel = AvatarImagesUiModel.Empty,
                     loadingBarState = LoadingBarUiState.Hide
                 ),
@@ -1594,28 +1308,28 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.CouldNotLoadUserSession
             ),
             TestInput(
-                currentState = listStateWithSearchModeNone,
+                currentState = inboxViewModeListState,
                 operation = MailboxEvent.LoadingBarStateUpdated(
                     LoadingBarUiState.Show(cycleDurationMs = 1500)
                 ),
-                expectedState = listStateWithSearchModeNone.copy(
+                expectedState = inboxViewModeListState.copy(
                     loadingBarState = LoadingBarUiState.Show(cycleDurationMs = 1500)
                 )
             ),
             TestInput(
-                currentState = listStateWithSearchModeNone,
+                currentState = inboxViewModeListState,
                 operation = MailboxEvent.FirstPageLoadingChanged(isLoading = true),
-                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 1)
+                expectedState = inboxViewModeListState.copy(firstPageLoadingStartCount = 1)
             ),
             TestInput(
-                currentState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 5),
+                currentState = inboxViewModeListState.copy(firstPageLoadingStartCount = 5),
                 operation = MailboxEvent.FirstPageLoadingChanged(isLoading = true),
-                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 6)
+                expectedState = inboxViewModeListState.copy(firstPageLoadingStartCount = 6)
             ),
             TestInput(
-                currentState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 3),
+                currentState = inboxViewModeListState.copy(firstPageLoadingStartCount = 3),
                 operation = MailboxEvent.FirstPageLoadingChanged(isLoading = false),
-                expectedState = listStateWithSearchModeNone.copy(firstPageLoadingStartCount = 3)
+                expectedState = inboxViewModeListState.copy(firstPageLoadingStartCount = 3)
             ),
             TestInput(
                 currentState = MailboxListState.Loading,

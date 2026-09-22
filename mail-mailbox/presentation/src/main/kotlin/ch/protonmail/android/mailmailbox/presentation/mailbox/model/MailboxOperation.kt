@@ -89,11 +89,6 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     ) : MailboxViewAction
 
     object NavigateToComposer : MailboxViewAction
-    object EnterSearchMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingUnreadFilter
-    data class SearchQuery(val query: String) : MailboxViewAction, AffectingMailboxList, AffectingTopAppBar
-    object SearchResult : MailboxViewAction, AffectingMailboxList
-    object ExitSearchMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
-
     object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
     data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction
 
@@ -331,8 +326,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
             val contextLabel: LabelId,
             val viewModeIsConversationGrouping: Boolean,
             val subitemId: String?,
-            val openedFromCategory: CategoryLabelId?,
-            val searchQuery: String
+            val openedFromCategory: CategoryLabelId?
         ) : ItemClicked, AffectingMailboxList
 
         data class OpenComposer(

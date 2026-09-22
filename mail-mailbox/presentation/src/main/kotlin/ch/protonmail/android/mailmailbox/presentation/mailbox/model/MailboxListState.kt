@@ -36,8 +36,6 @@ sealed interface MailboxListState {
 
         val currentMailLabel: MailLabel
         val swipeActions: SwipeActionsUiModel?
-        val searchState: MailboxSearchState
-        val shouldShowFab: Boolean
         val avatarImagesUiModel: AvatarImagesUiModel
         val paginatorInvalidationEffect: Effect<PageInvalidationEvent>
         val refreshOngoing: Boolean
@@ -56,8 +54,6 @@ sealed interface MailboxListState {
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
-            override val searchState: MailboxSearchState,
-            override val shouldShowFab: Boolean,
             override val avatarImagesUiModel: AvatarImagesUiModel,
             override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
@@ -77,8 +73,6 @@ sealed interface MailboxListState {
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
-            override val searchState: MailboxSearchState,
-            override val shouldShowFab: Boolean,
             override val avatarImagesUiModel: AvatarImagesUiModel,
             override val paginatorInvalidationEffect: Effect<PageInvalidationEvent> = Effect.empty(),
             override val refreshOngoing: Boolean,
@@ -91,14 +85,4 @@ sealed interface MailboxListState {
 
     data object Loading : MailboxListState
     data object CouldNotLoadUserSession : MailboxListState
-}
-
-fun MailboxListState.hasClearableOperations() = this is MailboxListState.Data.ViewMode && !this.searchState.isInSearch()
-
-fun MailboxListState.getHighlightText(): String {
-    return if (this is MailboxListState.Data && this.searchState.isInSearch()) {
-        this.searchState.searchQuery
-    } else {
-        ""
-    }
 }

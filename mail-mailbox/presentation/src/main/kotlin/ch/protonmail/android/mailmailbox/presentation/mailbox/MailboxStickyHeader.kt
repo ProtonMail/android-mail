@@ -38,7 +38,6 @@ import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
 
 @Composable
@@ -53,7 +52,6 @@ fun MailboxStickyHeader(
 
     val isCategoryViewVisible =
         state.categoryViewState is CategoryViewState.Available &&
-            state.topAppBarState !is MailboxTopAppBarState.Data.SearchMode &&
             state.mailboxListState !is MailboxListState.Data.SelectionMode
 
     val horizontalPadding = if (isCategoryViewVisible) {
@@ -99,48 +97,21 @@ fun MailboxStickyHeader(
             )
         } else {
             Row {
-                if (state.topAppBarState is MailboxTopAppBarState.Data.SearchMode) {
-                    SearchModeStickyHeader(
-                        searchState = state.topAppBarState,
-                        showSpamTrashFilterState = state.showSpamTrashIncludeFilterState,
-                        onEnabled = actions.onSpamTrashFilterEnabled,
-                        onDisabled = actions.onSpamTrashFilterDisabled
+                if (state.categoryViewState is CategoryViewState.Available) {
+                    StickyHeaderWithCategoryView(
+                        categoryViewState = state.categoryViewState,
+                        lazyListState = categoryListState,
+                        onCategoryItemClicked = actions.onCategoryItemClicked
                     )
                 } else {
-                    if (state.categoryViewState is CategoryViewState.Available) {
-                        StickyHeaderWithCategoryView(
-                            categoryViewState = state.categoryViewState,
-                            lazyListState = categoryListState,
-                            onCategoryItemClicked = actions.onCategoryItemClicked
-                        )
-                    } else {
-                        DefaultModeStickyHeader(
-                            spamTrashFilterState = state.showSpamTrashIncludeFilterState,
-                            onSpamTrashEnabled = actions.onSpamTrashFilterEnabled,
-                            onSpamTrashDisabled = actions.onSpamTrashFilterDisabled
-                        )
-                    }
+                    DefaultModeStickyHeader(
+                        spamTrashFilterState = state.showSpamTrashIncludeFilterState,
+                        onSpamTrashEnabled = actions.onSpamTrashFilterEnabled,
+                        onSpamTrashDisabled = actions.onSpamTrashFilterDisabled
+                    )
                 }
             }
         }
-    }
-}
-
-@Suppress("UnusedReceiverParameter")
-@Composable
-private fun RowScope.SearchModeStickyHeader(
-    searchState: MailboxTopAppBarState.Data.SearchMode,
-    showSpamTrashFilterState: ShowSpamTrashIncludeFilterState,
-    onEnabled: () -> Unit,
-    onDisabled: () -> Unit
-) {
-    if (searchState.searchQuery.isNotEmpty()) {
-        ShowSpamTrashIncludeFilter(
-            modifier = Modifier.height(MailDimens.UnreadFilterChipHeight),
-            state = showSpamTrashFilterState,
-            onFilterEnabled = onEnabled,
-            onFilterDisabled = onDisabled
-        )
     }
 }
 

@@ -40,7 +40,6 @@ class MailboxUnreadFilterReducer @Inject constructor() {
             is MailboxEvent.CategoryViewStatusChanged -> currentState.toNewStateForCategoryViewStatusChanged(operation)
             MailboxViewAction.DisableUnreadFilter -> currentState.toNewStateForFilterDisabled()
             MailboxViewAction.EnableUnreadFilter -> currentState.toNewStateForFilterEnabled()
-            MailboxViewAction.EnterSearchMode -> currentState.toNewStateForFilterDisabled()
         }
     }
 

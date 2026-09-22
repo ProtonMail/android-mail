@@ -29,7 +29,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
-import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -86,16 +85,6 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), null)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = MailboxTopAppBarState.Loading
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = MailboxTopAppBarState.Loading
             )
         )
 
@@ -123,20 +112,6 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), avatarItem),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text(), avatarItem)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), avatarItem),
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), avatarItem),
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), avatarItem)
             )
         )
 
@@ -288,32 +263,6 @@ internal class MailboxTopAppBarReducerTest(
                     avatarItem,
                     selectedCount = 42
                 ),
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = SelectionMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    selectedCount = 42
-                )
-            ),
-            TestInput(
-                currentState = SelectionMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    selectedCount = 42
-                ),
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = SelectionMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    selectedCount = 42
-                )
-            ),
-            TestInput(
-                currentState = SelectionMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    selectedCount = 42
-                ),
                 operation = MailboxEvent.AllItemsSelected(
                     mutableListOf<MailboxItemUiModel>().apply {
                         for (i in 0..200) {
@@ -334,91 +283,13 @@ internal class MailboxTopAppBarReducerTest(
             )
         )
 
-        private val transitionsFromSearchModeState = listOf(
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxViewAction.EnterSearchMode,
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    avatarItem,
-                    searchQuery = EMPTY_STRING
-                ),
-                operation = MailboxViewAction.ExitSearchMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), avatarItem)
-            )
-        )
-
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> {
             return (
                 transitionsFromLoadingState +
                     transitionsFromDefaultModeState +
-                    transitionsFromSelectionModeState +
-                    transitionsFromSearchModeState
+                    transitionsFromSelectionModeState
                 )
                 .map { testInput ->
                     val testName = """

@@ -34,8 +34,7 @@ class SettledViewLatchTest {
     private val inbox = MailboxLocation(
         userId = UserId("user-1"),
         labelId = "0",
-        categoryId = "category-primary",
-        isInSearch = false
+        categoryId = "category-primary"
     )
 
     @Test
@@ -69,22 +68,6 @@ class SettledViewLatchTest {
 
         // Then
         assertEquals(MailboxScreenState.Empty, result)
-    }
-
-    @Test
-    fun `should keep the no-results state instead of flashing a skeleton on an in-place reload`() {
-        // Given
-        settle(MailboxScreenState.SearchNoData, inbox.copy(isInSearch = true))
-
-        // When
-        val result = latch.update(
-            MailboxScreenState.Loading,
-            inbox.copy(isInSearch = true),
-            isPagerReloading = true
-        )
-
-        // Then
-        assertEquals(MailboxScreenState.SearchNoData, result)
     }
 
     @Test
@@ -125,19 +108,6 @@ class SettledViewLatchTest {
         // When
         val otherAccount = inbox.copy(userId = UserId("user-2"))
         val result = latch.update(MailboxScreenState.Loading, otherAccount, isPagerReloading = true)
-
-        // Then
-        assertEquals(MailboxScreenState.Loading, result)
-    }
-
-    @Test
-    fun `should show the skeleton when entering search on the same label and category`() {
-        // Given
-        settle(MailboxScreenState.Empty, inbox)
-
-        // When
-        val searching = inbox.copy(isInSearch = true)
-        val result = latch.update(MailboxScreenState.Loading, searching, isPagerReloading = true)
 
         // Then
         assertEquals(MailboxScreenState.Loading, result)

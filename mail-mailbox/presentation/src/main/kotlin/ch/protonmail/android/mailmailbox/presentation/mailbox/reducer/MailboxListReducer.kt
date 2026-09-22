@@ -18,20 +18,18 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownloadState
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownloadState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmessage.domain.model.AvatarImageStates
 import ch.protonmail.android.mailmessage.presentation.mapper.AvatarImageUiModelMapper
@@ -84,10 +82,6 @@ class MailboxListReducer @Inject constructor(
             is MailboxViewAction.MarkAsUnread -> reduceMarkAsUnread(currentState)
             is MailboxViewAction.Star -> reduceStar(currentState)
             is MailboxViewAction.UnStar -> reduceUnStar(currentState)
-            is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
-            is MailboxViewAction.SearchQuery -> reduceSearchQuery(operation, currentState)
-            is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
-            is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.AvatarImageStatesUpdated -> reduceAvatarImageStatesUpdated(operation, currentState)
             is MailboxEvent.AttachmentDownloadStartedEvent -> currentState.mapAttachmentDownload {
                 attachmentDownloadReducer.downloadStarted(it, operation.attachmentId)
@@ -191,74 +185,6 @@ class MailboxListReducer @Inject constructor(
         )
     }
 
-    private fun reduceEnterSearchMode(currentState: MailboxListState): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchState = MailboxSearchState(
-                    searchMode = MailboxSearchMode.NewSearch,
-                    searchQuery = ""
-                ),
-                shouldShowFab = false
-            )
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceSearchQuery(
-        operation: MailboxViewAction.SearchQuery,
-        currentState: MailboxListState
-    ): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode ->
-                if (currentState.searchState.searchMode == MailboxSearchMode.NewSearch)
-                    currentState.copy(
-                        searchState = currentState.searchState.copy(
-                            searchQuery = operation.query,
-                            searchMode = MailboxSearchMode.NewSearchLoading
-                        )
-                    )
-                else
-                    currentState.copy(
-                        searchState = currentState.searchState.copy(
-                            searchQuery = operation.query,
-                            searchMode = MailboxSearchMode.SearchData
-                        )
-                    )
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceSearchResult(currentState: MailboxListState): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchState = currentState.searchState.copy(
-                    searchMode = MailboxSearchMode.SearchData
-                )
-            )
-
-            else -> currentState
-        }
-    }
-
-    private fun reduceExitSearchMode(currentState: MailboxListState): MailboxListState {
-        return when (currentState) {
-            is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchState = MailboxSearchState.NotSearching,
-                shouldShowFab = true
-            )
-
-            is MailboxListState.Data.SelectionMode -> reduceExitSelectionMode(
-                currentState.copy(
-                    searchState = MailboxSearchState.NotSearching
-                )
-            )
-
-            else -> currentState
-        }
-    }
-
     private fun reduceSelectedLabelChanged(
         operation: MailboxEvent.SelectedLabelChanged,
         currentState: MailboxListState
@@ -274,8 +200,6 @@ class MailboxListReducer @Inject constructor(
                 refreshOngoing = false,
                 loadingBarState = LoadingBarUiState.Hide,
                 swipeActions = null,
-                searchState = MailboxSearchState.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModel.Empty,
 
                 displayAttachment = Effect.empty(),
@@ -308,8 +232,6 @@ class MailboxListReducer @Inject constructor(
                 refreshOngoing = false,
                 loadingBarState = LoadingBarUiState.Hide,
                 swipeActions = null,
-                searchState = MailboxSearchState.NotSearching,
-                shouldShowFab = true,
                 avatarImagesUiModel = AvatarImagesUiModel.Empty,
 
                 displayAttachment = Effect.empty(),
@@ -363,8 +285,7 @@ class MailboxListReducer @Inject constructor(
             subItemId = operation.subitemId?.let { MailboxItemId(operation.subitemId) },
             openedFromLocation = currentLocation,
             openedFromCategory = operation.openedFromCategory,
-            locationViewModeIsConversation = operation.viewModeIsConversationGrouping,
-            searchQuery = operation.searchQuery
+            locationViewModeIsConversation = operation.viewModeIsConversationGrouping
         )
 
         return when (currentState) {
@@ -430,8 +351,6 @@ class MailboxListReducer @Inject constructor(
             refreshOngoing = currentState.refreshOngoing,
             loadingBarState = currentState.loadingBarState,
             swipeActions = currentState.swipeActions,
-            searchState = currentState.searchState,
-            shouldShowFab = !currentState.searchState.isInSearch(),
             avatarImagesUiModel = currentState.avatarImagesUiModel,
             displayAttachment = Effect.empty(),
             displayAttachmentError = Effect.empty()
@@ -514,9 +433,7 @@ private fun MailboxListState.Data.ViewMode.toSelectionMode(selection: SelectionS
         currentMailLabel = currentMailLabel,
         selectedMailboxItems = selection.selectedItems,
         swipeActions = swipeActions,
-        searchState = searchState,
         avatarImagesUiModel = avatarImagesUiModel,
-        shouldShowFab = false,
         areAllItemsSelected = selection.areAllItemsSelected,
         refreshOngoing = refreshOngoing,
         loadingBarState = loadingBarState
