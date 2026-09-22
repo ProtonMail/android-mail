@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import arrow.core.nonEmptyListOf
+import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -180,6 +181,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     currentLabelName = systemLabel.text(),
                     primaryAvatarItem = null
                 ),
+                categoryViewState = CategoryViewState.NotAvailable,
                 unreadFilterState = UnreadFilterState.Loading,
                 showSpamTrashIncludeFilterState = ShowSpamTrashIncludeFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(

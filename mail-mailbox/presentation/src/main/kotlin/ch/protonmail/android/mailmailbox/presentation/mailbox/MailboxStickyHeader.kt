@@ -188,8 +188,6 @@ private fun RowScope.StickyHeaderWithCategoryView(
 
 object MailboxStickyHeader {
     data class Actions(
-        val onUnreadFilterEnabled: () -> Unit,
-        val onUnreadFilterDisabled: () -> Unit,
         val onSpamTrashFilterEnabled: () -> Unit,
         val onSpamTrashFilterDisabled: () -> Unit,
         val onSelectAllClicked: () -> Unit,
@@ -200,8 +198,6 @@ object MailboxStickyHeader {
         companion object {
 
             val Empty = Actions(
-                onUnreadFilterEnabled = {},
-                onUnreadFilterDisabled = {},
                 onSpamTrashFilterEnabled = {},
                 onSpamTrashFilterDisabled = {},
                 onSelectAllClicked = {},

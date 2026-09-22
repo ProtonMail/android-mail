@@ -511,8 +511,6 @@ fun MailboxScreen(
     val onUnreadFilterDisabled = { showTopBar(); actions.onDisableUnreadFilter() }
 
     val stickyHeaderActions = MailboxStickyHeader.Actions(
-        onUnreadFilterEnabled = onUnreadFilterEnabled,
-        onUnreadFilterDisabled = onUnreadFilterDisabled,
         onSpamTrashFilterEnabled = actions.onEnableSpamTrashFilter,
         onSpamTrashFilterDisabled = actions.onDisableSpamTrashFilter,
         onSelectAllClicked = actions.onSelectAllClicked,
