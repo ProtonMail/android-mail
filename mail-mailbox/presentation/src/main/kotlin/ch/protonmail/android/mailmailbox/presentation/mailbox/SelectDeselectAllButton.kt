@@ -48,7 +48,7 @@ fun SelectDeselectAllButton(
     }
 
     FilterChip(
-        modifier = modifier.testTag(UnreadItemsFilterTestTags.UnreadFilterChip),
+        modifier = modifier.testTag(SelectDeselectAllButtonTestTags.SelectDeselectAllChip),
         colors = chipColors().copy(
             containerColor = ProtonTheme.colors.backgroundNorm,
             selectedContainerColor = ProtonTheme.colors.interactionWeakPressed
@@ -98,6 +98,11 @@ object SelectDeselectAllButton {
         val onSelectAllClicked: () -> Unit,
         val onDeselectAllClicked: () -> Unit
     )
+}
+
+object SelectDeselectAllButtonTestTags {
+
+    const val SelectDeselectAllChip = "SelectDeselectAllChip"
 }
 
 @Preview

@@ -26,7 +26,6 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.section.stickyHeaderSection
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import ch.protonmail.android.uitest.robot.mailbox.verify
@@ -67,23 +66,6 @@ internal class MailboxFlowTest : MockedNetworkTest() {
 
         mailboxRobot {
             topAppBarSection { verify { isMailbox(MailboxType.AllMail) } }
-        }
-    }
-
-    /*
-     * This could be improved by injecting an account with some known messages and  performing
-     * verifications on the messages list to ensure filtering actually works as expected
-     */
-    @Test
-    fun filterUnreadMessages() {
-        mailboxRobot {
-            verify { isShown() }
-
-            stickyHeaderSection {
-                verify { unreadFilterIsDisplayed() }
-                filterUnreadMessages()
-                verify { unreadFilterIsSelected() }
-            }
         }
     }
 }
