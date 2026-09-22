@@ -24,7 +24,7 @@ import dagger.Lazy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import me.proton.android.payment.capability.HttpCapability
-import me.proton.android.payment.model.HttpResponse
+import me.proton.android.payment.capability.model.HttpResponse
 import uniffi.mail_uniffi.MailUserSessionPaymentsHttpGetResult
 import uniffi.mail_uniffi.MailUserSessionPaymentsHttpPostResult
 import uniffi.mail_uniffi.PaymentsHttpResponse

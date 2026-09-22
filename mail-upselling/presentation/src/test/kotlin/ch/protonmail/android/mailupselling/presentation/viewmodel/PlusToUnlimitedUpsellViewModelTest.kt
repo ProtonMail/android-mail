@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
@@ -64,7 +67,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
     @Test
     fun `resolves the active theme when the user is eligible`() = runTest {
         // Given
-        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns flowOf(true)
+        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns flowOf(true.right())
 
         // When / Then
         viewModel().theme.test {
@@ -75,11 +78,24 @@ internal class PlusToUnlimitedUpsellViewModelTest {
     @Test
     fun `has no theme when the user is not eligible`() = runTest {
         // Given
-        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns flowOf(false)
+        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns flowOf(false.right())
 
         // When / Then
         viewModel().theme.test {
             assertEquals(null, awaitItem())
+        }
+    }
+
+    @Test
+    fun `keeps the last known verdict when the eligibility check fails`() = runTest {
+        // Given
+        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns
+            flowOf(true.right(), DataError.Local.Unknown.left())
+
+        // When / Then
+        viewModel().theme.test {
+            assertEquals(UpsellContentTheme.Drive, awaitItem())
+            expectNoEvents()
         }
     }
 }

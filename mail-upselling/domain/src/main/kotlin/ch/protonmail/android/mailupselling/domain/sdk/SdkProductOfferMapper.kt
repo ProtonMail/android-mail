@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailupselling.domain.sdk
 
 import javax.inject.Inject
-import kotlinx.datetime.DateTimePeriod
 import me.proton.android.core.payment.domain.model.ProductEntitlement
 import me.proton.android.core.payment.domain.model.ProductMetadata
 import me.proton.android.core.payment.domain.model.ProductOffer
@@ -29,8 +28,9 @@ import me.proton.android.core.payment.domain.model.ProductOfferTags
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.domain.model.ProductSelectionHeader
 import me.proton.android.payment.common.model.Entitlement as SdkEntitlement
+import me.proton.android.payment.product.model.BillingCycle as SdkBillingCycle
 import me.proton.android.payment.product.model.Offer as SdkOffer
-import me.proton.android.payment.product.model.PricingPhase as SdkPricingPhase
+import me.proton.android.payment.product.model.PricingPeriod as SdkPricingPeriod
 import me.proton.android.payment.product.model.Product as SdkProduct
 
 class SdkProductOfferMapper @Inject constructor() {
@@ -69,18 +69,25 @@ class SdkProductOfferMapper @Inject constructor() {
         isBaseOffer = this is SdkOffer.NonDiscounted,
         tags = ProductOfferTags(tags.toSet()),
         token = ProductOfferToken(token),
-        current = pricingPhases.first().toPrice(productId, customerId),
-        renew = pricingPhases.last().toPrice(productId, customerId)
+        current = pricingPeriods.first().toPrice(productId, customerId),
+        renew = pricingPeriods.last().toPrice(productId, customerId)
     )
 
-    private fun SdkPricingPhase.toPrice(productId: String, customerId: String) = ProductOfferPrice(
+    private fun SdkPricingPeriod.toPrice(productId: String, customerId: String) = ProductOfferPrice(
         productId = productId,
         customerId = customerId,
-        cycle = DateTimePeriod.parse(period).let { it.months + it.years * MONTHS_PER_YEAR },
+        cycle = cycle.toMonths(),
         amount = price.amount,
         currency = price.currency,
         formatted = price.formattedAmount
     )
+
+    private fun SdkBillingCycle.toMonths(): Int = when (this) {
+        is SdkBillingCycle.Month -> count
+        is SdkBillingCycle.Year -> count * MONTHS_PER_YEAR
+        is SdkBillingCycle.Day,
+        is SdkBillingCycle.Week -> 0
+    }
 
     private fun SdkEntitlement.toProductEntitlement(): ProductEntitlement = when (this) {
         is SdkEntitlement.Description -> ProductEntitlement.Description(
