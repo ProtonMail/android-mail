@@ -401,6 +401,9 @@ internal class ConversationDetailViewModelIntegrationTest {
     private val isWebViewDarkModeFallbackEnabled = mockk<FeatureFlag<Boolean>> {
         coEvery { this@mockk.get() } returns true
     }
+    private val isMessageWebViewPoolEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns true
+    }
 
     // endregion
 
@@ -2524,6 +2527,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         searchQuery = "",
         isAutoExpandEnabled = isAutoExpandEnabled,
         isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
+        isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
         applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
     )
 
