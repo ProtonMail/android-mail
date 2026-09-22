@@ -36,6 +36,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026W
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageWebViewPoolEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
@@ -56,6 +57,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailMessageWebViewPoolEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Enabled
@@ -125,6 +127,17 @@ object FeatureFlagsModule {
     @Singleton
     fun provideWebViewDarkModeFallbackDefinition(): FeatureFlagDefinition =
         ConversationDetailWebViewDarkModeFallbackEnabled
+
+    @Provides
+    @Singleton
+    @IsMessageWebViewPoolEnabled
+    fun provideMessageWebViewPoolEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(ConversationDetailMessageWebViewPoolEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMessageWebViewPoolDefinition(): FeatureFlagDefinition = ConversationDetailMessageWebViewPoolEnabled
 
     @Provides
     @IntoSet

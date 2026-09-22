@@ -132,6 +132,7 @@ import ch.protonmail.android.maildetail.presentation.ui.dialog.EditScheduleSendD
 import ch.protonmail.android.maildetail.presentation.ui.dialog.MarkAsLegitimateDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsLastMessageAutoExpandEnabled
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsMessageWebViewPoolEnabled
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheet
@@ -209,6 +210,7 @@ fun ConversationDetailScreen(
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val isSingleMessageMode = viewModel.isSingleMessageModeEnabled
     val isLastMessageAutoExpandEnabled by viewModel.autoExpandLastMessageEnabled.collectAsStateWithLifecycle()
+    val isMessageWebViewPoolEnabled by viewModel.messageWebViewPoolEnabled.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
     val currentAppTheme = if (isSystemInDarkTheme())
         MessageTheme.Dark
@@ -561,7 +563,10 @@ fun ConversationDetailScreen(
             }
         }
     ) {
-        CompositionLocalProvider(LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled) {
+        CompositionLocalProvider(
+            LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled,
+            LocalIsMessageWebViewPoolEnabled provides isMessageWebViewPoolEnabled
+        ) {
             ConversationDetailScreen(
                 modifier = modifier,
                 state = state,
@@ -1426,8 +1431,9 @@ private fun expandedWeights(
  */
 @Composable
 private fun rememberWebViewPoolConfig(): WebViewPoolConfig {
+    val featureEnabled = LocalIsMessageWebViewPoolEnabled.current
     val context = LocalContext.current
-    return remember(context) {
+    return remember(context, featureEnabled) {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val totalRamGb = ActivityManager.MemoryInfo()
             .also { activityManager.getMemoryInfo(it) }
@@ -1438,7 +1444,14 @@ private fun rememberWebViewPoolConfig(): WebViewPoolConfig {
             totalRamGb < POOL_HIGH_RAM_GB -> POOL_WEIGHT_BUDGET_MID_RAM
             else -> POOL_WEIGHT_BUDGET_HIGH_RAM
         }
-        WebViewPoolConfig(enabled = budget > 0, budget = budget)
+        // Off unless the feature flag is on AND the device RAM tier qualifies.
+        val config = WebViewPoolConfig(enabled = featureEnabled && budget > 0, budget = budget)
+        when {
+            config.enabled -> Timber.d("WebViewPool: enabled budget=%d ram=%.1fGB", config.budget, totalRamGb)
+            !featureEnabled -> Timber.d("WebViewPool: disabled (flag off)")
+            else -> Timber.d("WebViewPool: disabled (low RAM %.1fGB)", totalRamGb)
+        }
+        config
     }
 }
 

@@ -100,6 +100,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.ObservePrimaryUserA
 import ch.protonmail.android.maildetail.presentation.usecase.print.PrintConfiguration
 import ch.protonmail.android.maildetail.presentation.usecase.print.PrintMessage
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageWebViewPoolEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.extension.isOutbox
@@ -243,6 +244,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val resolveSystemLabelId: ResolveSystemLabelId,
     @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>,
     @IsWebViewDarkModeFallbackEnabled private val isWebViewDarkModeFallbackEnabled: FeatureFlag<Boolean>,
+    @IsMessageWebViewPoolEnabled private val isMessageWebViewPoolEnabled: FeatureFlag<Boolean>,
     private val applyWebViewDarkModeFallback: ApplyWebViewDarkModeFallback
 ) : ViewModel() {
 
@@ -289,6 +291,14 @@ class ConversationDetailViewModel @AssistedInject constructor(
 
     val autoExpandLastMessageEnabled: StateFlow<Boolean> = flow {
         emit(isAutoExpandEnabled.get())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = false
+    )
+
+    val messageWebViewPoolEnabled: StateFlow<Boolean> = flow {
+        emit(isMessageWebViewPoolEnabled.get())
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
