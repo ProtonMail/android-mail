@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.payment.di
 
-import me.proton.android.core.payment.domain.PaymentManager
 import me.proton.android.core.payment.domain.PaymentMetricsTracker
 import me.proton.android.core.payment.domain.model.PaymentObservabilityMetric.IAP_SUBSCRIBE
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
@@ -26,6 +25,7 @@ import me.proton.android.payment.billing.exception.StoreBillingUnavailableExcept
 import me.proton.android.payment.billing.extension.invokeOrBillingUnavailable
 import me.proton.android.payment.billing.model.StoreProduct
 import me.proton.android.payment.billing.usecase.AcknowledgePurchase
+import me.proton.android.payment.billing.usecase.GetStoreProducts
 import me.proton.android.payment.billing.usecase.PurchaseStoreProduct
 import me.proton.android.payment.capability.StoreCapability
 import java.util.Optional
@@ -34,14 +34,14 @@ import javax.inject.Singleton
 
 @Singleton
 class StoreCapabilityImpl @Inject constructor(
+    private val getStoreProducts: Optional<GetStoreProducts>,
     private val acknowledgePurchase: Optional<AcknowledgePurchase>,
     private val purchaseStoreProduct: Optional<PurchaseStoreProduct>,
-    private val paymentManager: PaymentManager,
     private val metricsTracker: PaymentMetricsTracker
 ) : StoreCapability {
 
     override suspend fun getProducts(ids: List<String>): Result<List<StoreProduct>> =
-        runCatching { paymentManager.getSdkStoreProducts(ids) }
+        getStoreProducts.invokeOrBillingUnavailable { it(ids) }
 
     override suspend fun purchase(
         productId: String,
