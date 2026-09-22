@@ -603,6 +603,7 @@ private fun ContentSearchBody(
                 avatarImages = state.avatarImages,
                 downloadingAttachmentId = state.downloadingAttachmentId,
                 showMinQueryLengthNotice = state.query.trim().length < MIN_QUERY_LENGTH_FOR_FULL_RESULTS,
+                totalCount = phase.totalCount,
                 listState = resultsListState,
                 modifier = modifier
             )

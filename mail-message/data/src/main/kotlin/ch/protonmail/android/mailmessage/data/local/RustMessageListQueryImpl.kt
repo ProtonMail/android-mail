@@ -225,6 +225,30 @@ class RustMessageListQueryImpl @Inject constructor(
 
     override suspend fun supportsIncludeFilter() = paginatorState?.paginatorWrapper?.supportsIncludeFilter() == true
 
+    override suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>? {
+        val requested = pageKey.toPageDescriptor(userId)
+        return paginatorMutex.withLock {
+            val state = paginatorState
+            when {
+                state == null -> {
+                    Timber.d("rust-message-query: No active paginator to read the items count from")
+                    null
+                }
+
+                state.pageDescriptor != requested -> {
+                    Timber.d(
+                        "rust-message-query: Active paginator cannot answer the items count. active=%s requested=%s",
+                        state.pageDescriptor,
+                        requested
+                    )
+                    null
+                }
+
+                else -> state.paginatorWrapper.totalItemsCount()
+            }
+        }
+    }
+
     override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
         paginatorState?.paginatorWrapper?.changeCategoryView(categoryLabelId) ?: run {
             Timber.w("rust-message-query: No paginator to change category view")

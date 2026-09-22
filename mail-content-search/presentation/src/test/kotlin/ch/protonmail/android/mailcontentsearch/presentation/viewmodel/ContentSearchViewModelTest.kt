@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
@@ -145,6 +146,10 @@ internal class ContentSearchViewModelTest {
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(any()) } returns contentSearchEnabled
     }
+    private val searchResultsTotal = MutableStateFlow<Int?>(null)
+    private val getSearchResultsTotal = mockk<GetSearchResultsTotal> {
+        coEvery { this@mockk.invoke(any(), any()) } answers { searchResultsTotal.value }
+    }
     // The executor owns the conversation-vs-message fork and is covered by its own test, so the
     // view model is asserted against it rather than through it to the individual use cases.
     private val mailboxActionExecutor = mockk<MailboxActionExecutor> {
@@ -210,6 +215,7 @@ internal class ContentSearchViewModelTest {
             findLocalSystemLabelId = findLocalSystemLabelId,
             observePageInvalidationEvents = observePageInvalidationEvents,
             observeContentSearchEnabled = observeContentSearchEnabled,
+            getSearchResultsTotal = getSearchResultsTotal,
             mailboxActionExecutor = mailboxActionExecutor,
             bottomBarStateFactory = bottomBarStateFactory,
             getBottomSheetActions = getBottomSheetActions,
@@ -640,6 +646,43 @@ internal class ContentSearchViewModelTest {
         assertNotNull(sut.state.value.reloadResults.consume())
         verify(exactly = 1) { pagerFactory.create(any(), any(), any(), any(), any()) }
         assertEquals(ContentSearchState.Phase.Loading, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should show the total reported by the search, not the number of items paged in`() = runTest(testDispatcher) {
+        searchResultsTotal.value = 300
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.ResultsLoaded(50))
+        advanceUntilIdle()
+
+        assertEquals(ContentSearchState.Phase.Results(count = 50, totalCount = 300), sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should keep the previous total while the next one is read`() = runTest(testDispatcher) {
+        searchResultsTotal.value = 300
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+        sut.submit(ContentSearchViewAction.ResultsLoaded(50))
+        advanceUntilIdle()
+
+        // Rust has no answer this time, so the header holds the count it was showing rather than
+        // dropping it for the page that just loaded.
+        searchResultsTotal.value = null
+        sut.submit(ContentSearchViewAction.ResultsLoaded(100))
+        advanceUntilIdle()
+
+        assertEquals(ContentSearchState.Phase.Results(count = 100, totalCount = 300), sut.state.value.phase)
         collectingItems.cancel()
     }
 

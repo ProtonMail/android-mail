@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
@@ -124,6 +125,7 @@ class ContentSearchViewModel @Inject constructor(
     private val findLocalSystemLabelId: FindLocalSystemLabelId,
     private val observePageInvalidationEvents: ObservePageInvalidationEvents,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
+    private val getSearchResultsTotal: GetSearchResultsTotal,
     private val mailboxActionExecutor: MailboxActionExecutor,
     private val bottomBarStateFactory: BottomBarStateFactory,
     private val getBottomSheetActions: GetBottomSheetActions,
@@ -159,6 +161,8 @@ class ContentSearchViewModel @Inject constructor(
     private var hasAutoFocusedSearchField = false
 
     private var attachmentDownloadJob: Job? = null
+
+    private var resultsTotalJob: Job? = null
 
     /** The ids last reported by the results list, used to spot the ones that leave it. */
     private var displayedItemIds: List<String> = emptyList()
@@ -727,9 +731,41 @@ class ContentSearchViewModel @Inject constructor(
         mutableState.update { current ->
             val phase = when {
                 current.query.isBlank() -> ContentSearchState.Phase.Idle
-                else -> ContentSearchState.Phase.Results(count = count)
+                // The previous total is carried over so the header keeps its number while the next
+                // read runs, instead of dropping it on every page.
+                else -> ContentSearchState.Phase.Results(
+                    count = count,
+                    totalCount = (current.phase as? ContentSearchState.Phase.Results)?.totalCount
+                )
             }
             current.copy(phase = phase)
+        }
+        refreshResultsTotal()
+    }
+
+    /**
+     * Reads how many results the search has in all, which the paging list cannot say.
+     *
+     * Read again on every page rather than once, because the number grows while the background
+     * remote sync appends to a search the local index answered first.
+     *
+     * The keyword is named on the way down, so a count only comes back while that search is the
+     * one paging. The mailbox shares the paginator it would otherwise be read from.
+     */
+    private fun refreshResultsTotal() {
+        val keyword = submittedQuery.value
+        if (keyword.isBlank()) return
+        resultsTotalJob?.cancel()
+        resultsTotalJob = viewModelScope.launch {
+            val userId = observePrimaryUserId().filterNotNull().first()
+            val total = getSearchResultsTotal(userId, keyword) ?: return@launch
+            mutableState.update { current ->
+                // The search may have moved on while Rust was answering, and its count does not
+                // describe the list on screen.
+                val phase = current.phase as? ContentSearchState.Phase.Results
+                if (phase == null || submittedQuery.value != keyword) return@update current
+                current.copy(phase = phase.copy(totalCount = total))
+            }
         }
     }
 

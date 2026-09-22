@@ -36,6 +36,7 @@ import uniffi.mail_uniffi.MessageScrollerCursorResult
 import uniffi.mail_uniffi.MessageScrollerFetchMoreResult
 import uniffi.mail_uniffi.MessageScrollerGetItemsResult
 import uniffi.mail_uniffi.MessageScrollerSupportsIncludeFilterResult
+import uniffi.mail_uniffi.MessageScrollerTotalResult
 import uniffi.mail_uniffi.ReadFilter
 
 class MailboxMessagePaginatorWrapper(
@@ -59,6 +60,11 @@ class MailboxMessagePaginatorWrapper(
     override suspend fun reload(): Either<PaginationError, Unit> = when (val result = rustPaginator.getItems()) {
         is MessageScrollerGetItemsResult.Error -> result.v1.toPaginationError().left()
         is MessageScrollerGetItemsResult.Ok -> Unit.right()
+    }
+
+    override suspend fun totalItemsCount(): Either<PaginationError, Long> = when (val result = rustPaginator.total()) {
+        is MessageScrollerTotalResult.Error -> result.v1.toPaginationError().left()
+        is MessageScrollerTotalResult.Ok -> result.v1.toLong().right()
     }
 
     override suspend fun getCursor(anchorItemId: LocalItemId) = when (
