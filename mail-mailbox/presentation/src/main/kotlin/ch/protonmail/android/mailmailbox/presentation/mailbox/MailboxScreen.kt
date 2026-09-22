@@ -191,7 +191,6 @@ fun MailboxScreen(
     snackbarHeight: Dp = 0.dp
 ) {
     val mailboxState = viewModel.state.collectAsStateWithLifecycle().value
-    val isCategoryViewEnabled = viewModel.isCategoryViewEnabled.collectAsStateWithLifecycle().value
     val isContentSearchScreenEnabled = viewModel.isContentSearchScreenEnabled.collectAsStateWithLifecycle().value
     val primaryUserId = viewModel.primaryUserIdState.collectAsStateWithLifecycle().value
 
@@ -461,7 +460,6 @@ fun MailboxScreen(
             mailboxState = mailboxState,
             mailboxListItems = mailboxListItems,
             actions = completeActions,
-            isCategoryViewEnabled = isCategoryViewEnabled,
             isContentSearchScreenEnabled = isContentSearchScreenEnabled,
             snackbarHeight = snackbarHeight,
             userId = primaryUserId,
@@ -474,7 +472,6 @@ fun MailboxScreen(
 fun MailboxScreen(
     mailboxState: MailboxState,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
-    isCategoryViewEnabled: Boolean = false,
     isContentSearchScreenEnabled: Boolean = false,
     actions: MailboxScreen.Actions,
     snackbarHeight: Dp = 0.dp,
@@ -553,8 +550,7 @@ fun MailboxScreen(
         topBar = {
             val localDensity = LocalDensity.current
 
-            val isCategoryViewShown = isCategoryViewEnabled &&
-                mailboxState.categoryViewState is CategoryViewState.Available &&
+            val isCategoryViewShown = mailboxState.categoryViewState is CategoryViewState.Available &&
                 !isSearchMode && !isSelectionMode
 
             val loadingBarState = (mailboxState.mailboxListState as? MailboxListState.Data)?.loadingBarState
@@ -568,8 +564,7 @@ fun MailboxScreen(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                     ),
                     state = mailboxState,
-                    actions = stickyHeaderActions,
-                    isCategoryViewEnabled = isCategoryViewEnabled
+                    actions = stickyHeaderActions
                 )
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
@@ -720,7 +715,6 @@ fun MailboxScreen(
             MailboxFabToolbarMorph(
                 isInSelectionMode = isInSelectionMode,
                 isInSearch = isInSearch,
-                showBottomUnreadFilter = isCategoryViewEnabled,
                 unreadFilterState = mailboxState.unreadFilterState,
                 bottomBarState = mailboxState.bottomAppBarState,
                 bottomBarActions = bottomBarActions,

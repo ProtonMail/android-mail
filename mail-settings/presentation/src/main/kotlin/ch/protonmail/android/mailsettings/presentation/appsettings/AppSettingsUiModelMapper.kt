@@ -28,13 +28,11 @@ internal object AppSettingsUiModelMapper {
     fun toUiModel(
         appSettings: AppSettings,
         notificationsEnabled: Boolean,
-        appIconDescription: TextUiModel,
-        isEmailCategoriesEnabled: Boolean
+        appIconDescription: TextUiModel
     ): AppSettingsUiModel {
         return AppSettingsUiModel(
             autoLockEnabled = appSettings.hasAutoLock,
             alternativeRoutingEnabled = appSettings.hasAlternativeRouting,
-            isEmailCategoriesEnabled = isEmailCategoriesEnabled,
             customLanguage = appSettings.customAppLanguage,
             theme = appSettings.theme.toTextUiModel(),
             deviceContactsEnabled = appSettings.hasCombinedContactsEnabled,
