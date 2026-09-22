@@ -146,6 +146,14 @@ data object RestrictMessageWebViewHeight : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object ConversationDetailMessageWebViewPoolEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7MessageWebViewPool",
+    name = "Conversation WebView pooling",
+    category = FeatureFlagCategory.Details,
+    description = "Reuse message WebViews when scrolling back in a conversation to reduce reloads and blank content.",
+    defaultValue = false
+)
+
 data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     key = "RatingAndroidMail",
     name = "Show rating booster",

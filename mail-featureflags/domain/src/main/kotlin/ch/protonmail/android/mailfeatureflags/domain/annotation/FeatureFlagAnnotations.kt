@@ -78,6 +78,10 @@ annotation class IsWebViewDarkModeFallbackEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsMessageWebViewPoolEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsInjectCssOverrideEnabled
 
 @Qualifier
