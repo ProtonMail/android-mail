@@ -36,7 +36,6 @@ import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
-import uniffi.mail_uniffi.MailUserSessionIsCategoryViewFfEnabledResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
@@ -114,16 +113,6 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
     }
 
     fun observeEventLoopErrors(callback: EventLoopErrorObserver) = userSession.observeEventLoopErrors(callback)
-
-    fun isCategoryViewEnabled(): Either<DataError, Boolean> =
-        when (val result = userSession.isCategoryViewFfEnabled()) {
-            is MailUserSessionIsCategoryViewFfEnabledResult.Error -> {
-                Timber.d("MailUserSession CV flag check error:: ${result.v1}")
-                result.v1.toDataError().left()
-            }
-
-            is MailUserSessionIsCategoryViewFfEnabledResult.Ok -> result.v1.right()
-        }
 
     suspend fun overrideFeatureFlag(flagName: String, newValue: Boolean) =
         when (val result = userSession.overrideUserFeatureFlag(flagName = flagName, newValue = newValue)) {

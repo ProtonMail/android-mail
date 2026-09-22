@@ -40,22 +40,19 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ShowSpamTrashIncludeFilterState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
 @Composable
 fun MailboxStickyHeader(
     modifier: Modifier = Modifier,
     state: MailboxState,
-    actions: MailboxStickyHeader.Actions,
-    isCategoryViewEnabled: Boolean
+    actions: MailboxStickyHeader.Actions
 ) {
     // Hoisted here so the category bar scroll position survives
     // the category view leaving composition
     val categoryListState = rememberLazyListState()
 
     val isCategoryViewVisible =
-        isCategoryViewEnabled &&
-            state.categoryViewState is CategoryViewState.Available &&
+        state.categoryViewState is CategoryViewState.Available &&
             state.topAppBarState !is MailboxTopAppBarState.Data.SearchMode &&
             state.mailboxListState !is MailboxListState.Data.SelectionMode
 
@@ -110,7 +107,7 @@ fun MailboxStickyHeader(
                         onDisabled = actions.onSpamTrashFilterDisabled
                     )
                 } else {
-                    if (isCategoryViewEnabled && state.categoryViewState is CategoryViewState.Available) {
+                    if (state.categoryViewState is CategoryViewState.Available) {
                         StickyHeaderWithCategoryView(
                             categoryViewState = state.categoryViewState,
                             lazyListState = categoryListState,
@@ -118,11 +115,7 @@ fun MailboxStickyHeader(
                         )
                     } else {
                         DefaultModeStickyHeader(
-                            isCategoryViewEnabled = isCategoryViewEnabled,
-                            unreadFilterState = state.unreadFilterState,
                             spamTrashFilterState = state.showSpamTrashIncludeFilterState,
-                            onReadEnabled = actions.onUnreadFilterEnabled,
-                            onReadDisabled = actions.onUnreadFilterDisabled,
                             onSpamTrashEnabled = actions.onSpamTrashFilterEnabled,
                             onSpamTrashDisabled = actions.onSpamTrashFilterDisabled
                         )
@@ -154,25 +147,10 @@ private fun RowScope.SearchModeStickyHeader(
 @Suppress("UnusedReceiverParameter", "UseComposableActions")
 @Composable
 private fun RowScope.DefaultModeStickyHeader(
-    isCategoryViewEnabled: Boolean,
-    unreadFilterState: UnreadFilterState,
     spamTrashFilterState: ShowSpamTrashIncludeFilterState,
-    onReadEnabled: () -> Unit,
-    onReadDisabled: () -> Unit,
     onSpamTrashEnabled: () -> Unit,
     onSpamTrashDisabled: () -> Unit
 ) {
-    if (!isCategoryViewEnabled) {
-        UnreadItemsFilter(
-            modifier = Modifier.height(MailDimens.UnreadFilterChipHeight),
-            state = unreadFilterState,
-            onFilterEnabled = onReadEnabled,
-            onFilterDisabled = onReadDisabled
-        )
-
-        Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Standard))
-    }
-
     ShowSpamTrashIncludeFilter(
         modifier = Modifier.height(MailDimens.UnreadFilterChipHeight),
         state = spamTrashFilterState,
