@@ -40,8 +40,6 @@ import me.proton.android.core.payment.google.data.extension.getProductDetails
 import me.proton.android.core.payment.google.data.extension.getProductPurchasesAsync
 import me.proton.android.core.payment.google.data.extension.withConnection
 import me.proton.android.core.payment.google.data.model.toProductPriceOffer
-import me.proton.android.core.payment.google.data.model.toStoreProduct
-import me.proton.android.payment.billing.model.StoreProduct
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -97,10 +95,6 @@ class PaymentManagerImpl @Inject constructor(
                 }
             }.orEmpty()
         }
-
-    override suspend fun getSdkStoreProducts(ids: List<String>): List<StoreProduct> = newClient().withConnection {
-        getProductDetails(ids).getOrThrow()?.mapNotNull { it.toStoreProduct() }.orEmpty()
-    }
 
     override suspend fun getStorePurchases(): List<Purchase> = newClient().withConnection {
         purchaseStoreListener.purchases

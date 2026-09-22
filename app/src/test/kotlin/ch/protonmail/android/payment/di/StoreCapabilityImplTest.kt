@@ -23,13 +23,13 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import me.proton.android.core.payment.domain.PaymentManager
 import me.proton.android.core.payment.domain.PaymentMetricsTracker
 import me.proton.android.core.payment.domain.model.PaymentObservabilityMetric.IAP_SUBSCRIBE
 import me.proton.android.core.payment.domain.model.PaymentObservabilityValue
 import me.proton.android.payment.billing.exception.StoreBillingUnavailableException
 import me.proton.android.payment.billing.model.StoreProduct
 import me.proton.android.payment.billing.usecase.AcknowledgePurchase
+import me.proton.android.payment.billing.usecase.GetStoreProducts
 import me.proton.android.payment.billing.usecase.PurchaseStoreProduct
 import java.util.Optional
 import kotlin.test.Test
@@ -38,44 +38,52 @@ import kotlin.test.assertTrue
 
 class StoreCapabilityImplTest {
 
-    private val paymentManager = mockk<PaymentManager>()
+    private val getStoreProducts = mockk<GetStoreProducts>()
     private val metricsTracker = mockk<PaymentMetricsTracker>(relaxed = true)
     private val purchaseStoreProduct = mockk<PurchaseStoreProduct>()
     private val acknowledgePurchase = mockk<AcknowledgePurchase>()
 
-    // purchase/acknowledge use cases are absent (no :payment-billing-google).
+    // SDK billing use cases are absent (no :payment-billing-google).
     private val subject = StoreCapabilityImpl(
+        getStoreProducts = Optional.empty(),
         acknowledgePurchase = Optional.empty(),
         purchaseStoreProduct = Optional.empty(),
-        paymentManager = paymentManager,
         metricsTracker = metricsTracker
     )
 
-    // purchase/acknowledge use cases are present (:payment-billing-google on the classpath).
+    // SDK billing use cases are present (:payment-billing-google on the classpath).
     private val subjectWithBilling = StoreCapabilityImpl(
+        getStoreProducts = Optional.of(getStoreProducts),
         acknowledgePurchase = Optional.of(acknowledgePurchase),
         purchaseStoreProduct = Optional.of(purchaseStoreProduct),
-        paymentManager = paymentManager,
         metricsTracker = metricsTracker
     )
 
     @Test
-    fun `getProducts returns SDK store products from legacy billing`() = runTest {
+    fun `getProducts delegates to GetStoreProducts when billing is available`() = runTest {
         val products = listOf<StoreProduct>(mockk(), mockk())
-        coEvery { paymentManager.getSdkStoreProducts(listOf("a", "b")) } returns products
+        coEvery { getStoreProducts.invoke(listOf("a", "b")) } returns Result.success(products)
 
-        val result = subject.getProducts(listOf("a", "b"))
+        val result = subjectWithBilling.getProducts(listOf("a", "b"))
 
         assertEquals(products, result.getOrNull())
+        coVerify { getStoreProducts.invoke(listOf("a", "b")) }
     }
 
     @Test
-    fun `getProducts wraps a thrown error in a failure result`() = runTest {
-        coEvery { paymentManager.getSdkStoreProducts(any()) } throws RuntimeException("boom")
+    fun `getProducts propagates a failure from GetStoreProducts`() = runTest {
+        coEvery { getStoreProducts.invoke(any()) } returns Result.failure(RuntimeException("boom"))
 
-        val result = subject.getProducts(listOf("a"))
+        val result = subjectWithBilling.getProducts(listOf("a"))
 
         assertTrue(result.isFailure)
+    }
+
+    @Test
+    fun `getProducts reports billing unavailable while the SDK billing module is absent`() = runTest {
+        val result = subject.getProducts(listOf("a", "b"))
+
+        assertTrue(result.exceptionOrNull() is StoreBillingUnavailableException)
     }
 
     @Test
