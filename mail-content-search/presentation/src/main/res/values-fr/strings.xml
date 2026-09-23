@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Effacer les données de recherche locales</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Les données de recherche sur cet appareil seront retirées. Vous devrez les télécharger à nouveau pour effectuer des recherches dans le contenu des e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Effacer les données</string>
-  <string name="content_search_bottomsheet_title">Préparation de la recherche dans le contenu des e-mails en cours</string>
-  <string name="content_search_bottomsheet_description">Les e-mails de votre boîte de réception sont en cours de téléchargement et de préparation afin d\'être recherchables.</string>
-  <string name="content_search_bottomsheet_continue">J\'ai compris</string>
+  <string name="content_search_bottomsheet_title">Consommation de données mobiles</string>
+  <string name="content_search_bottomsheet_description">Les e-mails de votre messagerie seront téléchargés et préparés pour pouvoir faire l\'objet d\'une recherche.</string>
+  <string name="content_search_bottomsheet_start_indexing">Lancer l\'indexation</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Aucun résultat</string>
+  <string name="content_search_no_results_title_for_query">Aucun résultat pour « %1$s »</string>
   <string name="content_search_no_results_description">Essayez différents mots-clés ou vérifiez l\'orthographe.</string>
+  <string name="content_search_no_results_set_up_description">Activez la recherche dans le contenu pour chercher aussi dans les messages.</string>
+  <string name="content_search_no_results_learn_more">En savoir plus..</string>
+  <string name="content_search_no_results_set_up_action">Configurer la recherche dans le contenu</string>
+  <string name="content_search_set_up_banner_title">Recherchez aussi dans les messages</string>
+  <string name="content_search_set_up_banner_description">Trouvez des mots et des phrases dans vos messages, et pas seulement sur les expéditeurs ou les objets.</string>
+  <string name="content_search_set_up_banner_turn_on">Configurer maintenant</string>
+  <string name="content_search_set_up_banner_not_now">Plus tard</string>
+  <string name="content_search_indexing_complete_banner_title">Terminé !</string>
+  <string name="content_search_indexing_complete_banner_description">Vous pouvez désormais rechercher des mots à l\'intérieur de vos messages, et pas seulement les expéditeurs et les objets.</string>
+  <string name="content_search_indexing_complete_banner_got_it">J\'ai compris</string>
   <string name="content_search_placeholder_text">Rechercher</string>
   <string name="content_search_clear_query_content_description">Effacer la recherche</string>
   <string name="content_search_close_content_description">Fermer la recherche</string>
   <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour chercher</string>
+  <string name="content_search_results_title">Résultats</string>
+  <string name="content_search_min_query_length_notice">Saisissez 3 caractères minimum pour voir tous les résultats.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recherches récentes dans les e-mails</string>
   <string name="content_search_clear_recent_searches">Tout effacer</string>
   <string name="content_search_previously_found_title">Trouvé précédemment</string>
   <string name="content_search_dismiss_recent_search_content_description">Retirer « %1$s » des recherches récentes</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Votre e-mail est toujours en cours d’indexation - %1$d %%.</string>
+  <string name="content_search_indexing_progress">Indexation des messages • %1$d %%</string>
+  <string name="content_search_indexing_interrupted">Indexation interrompue • %1$d %%</string>
+  <string name="content_search_indexing_progress_content_description">Indexation des messages, %1$d %%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexation interrompue, %1$d %%</string>
   <string name="content_search_indexing_see_details">Voir les détails</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Supprimer définitivement ?</string>

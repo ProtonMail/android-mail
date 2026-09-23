@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Ryd lokale søgedata</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Søgedata på denne enhed vil blive fjernet. Du bliver nødt til at downloade det igen for at søge i indhold i e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ryd data</string>
-  <string name="content_search_bottomsheet_title">Forbereder indholdssøgning i e-mails</string>
-  <string name="content_search_bottomsheet_description">E-mails fra din postkasse downloades og bliver gjort klar til søgning.</string>
-  <string name="content_search_bottomsheet_continue">Forstået</string>
+  <string name="content_search_bottomsheet_title">Forbrug af mobildata</string>
+  <string name="content_search_bottomsheet_description">E-mails fra din postkasse bliver downloadet og gjort klar til søgning.</string>
+  <string name="content_search_bottomsheet_start_indexing">Start indeksering</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Ingen resultater</string>
+  <string name="content_search_no_results_title_for_query">Ingen resultater for \"%1$s\"</string>
   <string name="content_search_no_results_description">Prøv andre nøgleord eller kontrollér, at du har stavet rigtigt.</string>
+  <string name="content_search_no_results_set_up_description">Aktivér indholdssøgning for også at kunne søge i beskederne.</string>
+  <string name="content_search_no_results_learn_more">Få mere at vide..</string>
+  <string name="content_search_no_results_set_up_action">Indstil indholdsøgning</string>
+  <string name="content_search_set_up_banner_title">Søg også inde i e-mails</string>
+  <string name="content_search_set_up_banner_description">Find ord og sætninger i dine e-mails, ikke kun i afsendere og emner.</string>
+  <string name="content_search_set_up_banner_turn_on">Konfigurer nu</string>
+  <string name="content_search_set_up_banner_not_now">Ikke nu</string>
+  <string name="content_search_indexing_complete_banner_title">Færdig!</string>
+  <string name="content_search_indexing_complete_banner_description">Du kan nu søge efter ord i alle dine e-mails, ikke kun i afsendere og emner.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Forstået</string>
   <string name="content_search_placeholder_text">Søg</string>
   <string name="content_search_clear_query_content_description">Ryd søgeforespørgsel</string>
   <string name="content_search_close_content_description">Luk søgning</string>
   <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at søge</string>
+  <string name="content_search_results_title">Resultater</string>
+  <string name="content_search_min_query_length_notice">Indtast 3 eller flere tegn for at se alle resultater.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Seneste søgninger i mails</string>
   <string name="content_search_clear_recent_searches">Ryd alle</string>
   <string name="content_search_previously_found_title">Fundet tidligere</string>
   <string name="content_search_dismiss_recent_search_content_description">Fjern \"%1$s\" fra seneste søgninger</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Din mail indekseres stadig - %1$d%%.</string>
+  <string name="content_search_indexing_progress">Indekserer e-mails • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indeksering afbrudt • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indekserer e-mails, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indeksering afbrudt, %1$d%%</string>
   <string name="content_search_indexing_see_details">Se detaljer</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Slet permanent?</string>

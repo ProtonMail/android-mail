@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">로컬 검색 데이터 비우기</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">이 기기에서 검색 데이터가 삭제됩니다. 이메일 콘텐츠 검색을 다시 활성화하려면 재색인이 필요합니다.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">데이터 비우기</string>
-  <string name="content_search_bottomsheet_title">이메일 콘텐츠 검색 준비 중</string>
-  <string name="content_search_bottomsheet_description">메일함의 이메일이 다운로드 중이며 검색이 곧 준비됩니다.</string>
-  <string name="content_search_bottomsheet_continue">확인</string>
+  <string name="content_search_bottomsheet_title">Mobile data usage</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">결과 없음</string>
+  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
   <string name="content_search_no_results_description">다른 검색어로 시도해 보거나 철자를 확인해 주세요.</string>
+  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
+  <string name="content_search_no_results_learn_more">Learn more..</string>
+  <string name="content_search_no_results_set_up_action">Set up content search</string>
+  <string name="content_search_set_up_banner_title">Search inside emails too</string>
+  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_turn_on">Set up now</string>
+  <string name="content_search_set_up_banner_not_now">Not now</string>
+  <string name="content_search_indexing_complete_banner_title">All done!</string>
+  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
   <string name="content_search_placeholder_text">검색</string>
   <string name="content_search_clear_query_content_description">검색 쿼리 삭제</string>
   <string name="content_search_close_content_description">검색 닫기</string>
   <string name="content_search_first_run_description">검색을 시작하려면 이름, 제목 및 키워드를 입력해 주세요</string>
+  <string name="content_search_results_title">Results</string>
+  <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">최근 메일 검색</string>
   <string name="content_search_clear_recent_searches">모두 지우기</string>
   <string name="content_search_previously_found_title">기존에 발견됨</string>
   <string name="content_search_dismiss_recent_search_content_description">최근 검색 기록에서 \"%1$s\" 삭제</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">메일이 아직 색인 중입니다. - %1$d%%</string>
+  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
   <string name="content_search_indexing_see_details">세부 정보 보기</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">영구적으로 삭제하시겠습니까?</string>
