@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.presentation.settings
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontentsearch.presentation.settings.model.IndexSizeUiModel
 
 @Stable
 sealed interface ContentSearchSettingsState {
@@ -39,7 +40,7 @@ sealed interface ContentSearchSettingsState {
         val isWaitingForUnmeteredConnection: Boolean = false,
         val isIndexingFailed: Boolean = false,
         val isRetryingIndexing: Boolean = false,
-        val indexSizeBytes: Long? = null,
+        val indexSize: IndexSizeUiModel = IndexSizeUiModel.Loading,
         val updateErrorEffect: Effect<TextUiModel> = Effect.empty()
     ) : ContentSearchSettingsState
 }

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsOperation
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
+import ch.protonmail.android.mailcontentsearch.presentation.settings.model.IndexSizeUiModel
 import javax.inject.Inject
 
 class ContentSearchSettingsReducer @Inject constructor() {
@@ -74,7 +75,7 @@ class ContentSearchSettingsReducer @Inject constructor() {
             isIndexingPaused = false,
             isWaitingForUnmeteredConnection = false,
             isIndexingFailed = false,
-            indexSizeBytes = null
+            indexSize = IndexSizeUiModel.Loading
         )
         // Supersedes an in-flight retry: Rust reporting where the account stands is a better
         // answer than the one the button is still waiting for.
@@ -87,7 +88,9 @@ class ContentSearchSettingsReducer @Inject constructor() {
             isIndexingFailed = event.isFailed,
             isRetryingIndexing = false
         )
-        is ContentSearchSettingsEvent.Data.IndexSizeLoaded -> copy(indexSizeBytes = event.bytes)
+        is ContentSearchSettingsEvent.Data.IndexSizeLoaded -> copy(
+            indexSize = event.bytes?.let(IndexSizeUiModel::Loaded) ?: IndexSizeUiModel.Unavailable
+        )
         is ContentSearchSettingsEvent.Data.IndexingRetryStarted -> copy(isRetryingIndexing = true)
 
         is ContentSearchSettingsEvent.Data.IndexingRetryAccepted -> copy(
