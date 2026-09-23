@@ -99,7 +99,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
             val userId = currentUserId()
             val isEnabled = loadInitialState(userId) ?: return@launch
             if (isEnabled) readIndexingStatus(userId)
-            readIndexSize(userId)
+            launch { readIndexSize(userId) }
             observeIndexingProgress(userId)
             observeEnabledChanges(userId)
         }
@@ -133,7 +133,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
         getContentSearchIndexingStatus(userId).also { emitNewStateFor(it.toIndexingProgress()) }
 
     // Read once per screen, not observed: the index only grows as messages are indexed, and a size
-    // ticking up while the user reads it is noise.
+    // ticking up while the user reads it is noise. Launched on its own so the observers do not wait for it.
     private suspend fun readIndexSize(userId: UserId) {
         emitNewStateFor(Data.IndexSizeLoaded(getContentSearchIndexSize(userId)))
     }
@@ -267,6 +267,8 @@ class ContentSearchSettingsViewModel @Inject constructor(
         // account is re-enabled, observeIndexingProgress re-seeds isAccountIndexed from the (now
         // reset) Rust status, so the latch is never mutated from this coroutine.
         emitNewStateFor(Data.LocalSearchDataCleared)
+        // Rust may keep some of the index after a reset, so ask it rather than assume zero.
+        viewModelScope.launch { readIndexSize(userId) }
     }
 
     private fun ContentIndexingState.toIndexingProgress() = Data.IndexingProgress(

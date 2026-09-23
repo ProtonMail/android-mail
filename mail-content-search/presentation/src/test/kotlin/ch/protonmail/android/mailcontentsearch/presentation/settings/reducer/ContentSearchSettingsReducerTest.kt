@@ -22,10 +22,10 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsEvent
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
+import ch.protonmail.android.mailcontentsearch.presentation.settings.model.IndexSizeUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class ContentSearchSettingsReducerTest {
@@ -165,11 +165,20 @@ internal class ContentSearchSettingsReducerTest {
         val result = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexSizeLoaded(1_024L))
 
         // Then
-        assertEquals(1_024L, result.asData().indexSizeBytes)
+        assertEquals(IndexSizeUiModel.Loaded(1_024L), result.asData().indexSize)
     }
 
     @Test
-    fun `clearing the local data drops the index size with it`() {
+    fun `an index size rust cannot read hides the row`() {
+        // When
+        val result = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexSizeLoaded(null))
+
+        // Then
+        assertEquals(IndexSizeUiModel.Unavailable, result.asData().indexSize)
+    }
+
+    @Test
+    fun `clearing the local data measures the index size again`() {
         // Given
         val withSize = reducer.newStateFrom(EnabledState, ContentSearchSettingsEvent.Data.IndexSizeLoaded(1_024L))
 
@@ -177,7 +186,7 @@ internal class ContentSearchSettingsReducerTest {
         val result = reducer.newStateFrom(withSize, ContentSearchSettingsEvent.Data.LocalSearchDataCleared)
 
         // Then
-        assertNull(result.asData().indexSizeBytes)
+        assertEquals(IndexSizeUiModel.Loading, result.asData().indexSize)
     }
 
     @Test

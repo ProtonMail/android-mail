@@ -46,6 +46,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyMediumWeak
 import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
+import ch.protonmail.android.mailcontentsearch.presentation.settings.model.IndexSizeUiModel
 
 @Composable
 internal fun ContentSearchSettingsContent(
@@ -101,7 +102,7 @@ internal fun ContentSearchSettingsContent(
         SectionHeader(title = R.string.mail_settings_content_search_on_this_device_section)
 
         OnThisDeviceCard(
-            indexSizeBytes = state.indexSizeBytes,
+            indexSize = state.indexSize,
             onClearDataClick = { showClearDataDialog = true }
         )
 
@@ -169,7 +170,7 @@ private fun ContentSearchSettingsContentOnPreview() {
                 isAllowMobileDataEnabled = true,
                 syncPercentage = 30.0,
                 isIndexingActive = true,
-                indexSizeBytes = 1_288_490_188L
+                indexSize = IndexSizeUiModel.Loaded(bytes = 1_288_490_188L)
             ),
             actions = PreviewActions
         )
@@ -186,7 +187,7 @@ private fun ContentSearchContentUpToDatePreview() {
                 isAllowMobileDataEnabled = true,
                 syncPercentage = null,
                 isIndexingCompleted = true,
-                indexSizeBytes = 1_288_490_188L
+                indexSize = IndexSizeUiModel.Loaded(bytes = 1_288_490_188L)
             ),
             actions = PreviewActions
         )

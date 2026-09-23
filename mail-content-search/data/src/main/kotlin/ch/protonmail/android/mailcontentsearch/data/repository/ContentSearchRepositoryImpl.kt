@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingActivity
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartOutcome
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartSummary
+import ch.protonmail.android.mailcontentsearch.data.usecase.CreateSearchIndex
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
@@ -73,6 +74,7 @@ import kotlin.time.Duration.Companion.seconds
 class ContentSearchRepositoryImpl @Inject constructor(
     private val executeWithUserSession: ExecuteWithUserSession,
     private val syncService: SyncServiceWrapper,
+    private val createSearchIndex: CreateSearchIndex,
     private val userSessionRepository: UserSessionRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @AppScope private val appScope: CoroutineScope
@@ -145,8 +147,14 @@ class ContentSearchRepositoryImpl @Inject constructor(
     override suspend fun pauseIndexing(userId: UserId): Either<DataError, Unit> =
         executeWithUserSession(userId) { wrapper -> syncService.pauseUser(wrapper) }.flatten()
 
-    // Not exposed by the SDK yet
-    override suspend fun getIndexSizeBytes(userId: UserId): Long? = null
+    // Rust sums the stored blobs, not the whole database file. It walks the table, so it is not free.
+    override suspend fun getIndexSizeBytes(userId: UserId): Long? = executeWithUserSession(userId) { wrapper ->
+        createSearchIndex(wrapper).stats()
+    }.flatten()
+        .onLeft { error -> Timber.e("content-search: could not read the index size of $userId: $error") }
+        .getOrNull()
+        ?.compressedBytes
+        ?.toLong()
 
     override fun observeIndexingActivity(): Flow<ContentIndexingActivity> = indexingActivity
 

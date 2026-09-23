@@ -23,6 +23,8 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.data.usecase.CreateSearchIndex
+import ch.protonmail.android.mailcontentsearch.data.wrapper.SearchIndexWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
@@ -43,6 +45,7 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import uniffi.mail_uniffi.SearchIndexStats
 import uniffi.mail_uniffi.SyncEvent
 import uniffi.mail_uniffi.SyncEventStream
 import uniffi.mail_uniffi.SyncOrchestratorEvent
@@ -70,10 +73,15 @@ internal class ContentSearchRepositoryImplTest {
         every { observeUserSessionAvailable(userId) } returns flowOf(userId)
     }
     private val executeWithUserSession = ExecuteWithUserSession(userSessionRepository, dispatcher)
+    private val searchIndex = mockk<SearchIndexWrapper>()
+    private val createSearchIndex = mockk<CreateSearchIndex> {
+        every { this@mockk(wrapper) } returns searchIndex
+    }
 
     private val repository = ContentSearchRepositoryImpl(
         executeWithUserSession = executeWithUserSession,
         syncService = syncServiceWrapper,
+        createSearchIndex = createSearchIndex,
         userSessionRepository = userSessionRepository,
         ioDispatcher = dispatcher,
         appScope = CoroutineScope(dispatcher)
@@ -137,7 +145,37 @@ internal class ContentSearchRepositoryImplTest {
     }
 
     @Test
-    fun `the index size cannot be read while the sdk does not expose it`() = runTest(dispatcher) {
+    fun `the index size is the compressed size rust reports`() = runTest(dispatcher) {
+        // Given
+        coEvery { searchIndex.stats() } returns SearchIndexStats(
+            indexedMessageCount = 42uL,
+            compressedBytes = 1_288_490_188uL
+        ).right()
+
+        // When
+        val result = repository.getIndexSizeBytes(userId)
+
+        // Then
+        assertEquals(1_288_490_188L, result)
+    }
+
+    @Test
+    fun `the index size is unknown for an account content search is unavailable for`() = runTest(dispatcher) {
+        // Given
+        coEvery { searchIndex.stats() } returns null.right()
+
+        // When
+        val result = repository.getIndexSizeBytes(userId)
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `the index size is unknown when rust fails to read it`() = runTest(dispatcher) {
+        // Given
+        coEvery { searchIndex.stats() } returns DataError.Local.Unknown.left()
+
         // When
         val result = repository.getIndexSizeBytes(userId)
 

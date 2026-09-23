@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.PauseContentIndexi
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexingForUser
 import ch.protonmail.android.mailcontentsearch.presentation.R
+import ch.protonmail.android.mailcontentsearch.presentation.settings.model.IndexSizeUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.settings.reducer.ContentSearchSettingsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -45,6 +46,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -521,6 +523,25 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
+    fun `reads the index size again after clearing local data`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            coEvery { disableContentSearch(userId) } returns Unit.right()
+            coEvery { clearContentSearchLocalData(userId) } returns Unit.right()
+            coEvery { getContentSearchIndexSize(userId) } returnsMany listOf(1_024L, 0L)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ClearLocalData)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(IndexSizeUiModel.Loaded(0L), viewModel.state.value.asData().indexSize)
+            coVerify(exactly = 2) { getContentSearchIndexSize(userId) }
+        }
+
+    @Test
     fun `submit ToggleContentSearch on enables content search and hands the account to the orchestrator`() = runTest {
         // Given
         coEvery { enableContentSearch(userId) } returns Unit.right()
@@ -690,8 +711,31 @@ internal class ContentSearchSettingsViewModelTest {
         advanceUntilIdle()
 
         // Then
-        assertEquals(1_024L, viewModel.state.value.asData().indexSizeBytes)
+        assertEquals(IndexSizeUiModel.Loaded(1_024L), viewModel.state.value.asData().indexSize)
     }
+
+    @Test
+    fun `indexing progress shows while the index size is still being read`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            val sizeRead = CompletableDeferred<Long?>()
+            coEvery { getContentSearchIndexSize(userId) } coAnswers { sizeRead.await() }
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // When
+            ownIndexingStatus.value = ContentIndexingState.Running(percentage = 42.0)
+            advanceUntilIdle()
+
+            // Then
+            val state = viewModel.state.value.asData()
+            assertEquals(42.0, state.syncPercentage)
+            assertEquals(IndexSizeUiModel.Loading, state.indexSize)
+
+            sizeRead.complete(1_024L)
+            advanceUntilIdle()
+            assertEquals(IndexSizeUiModel.Loaded(1_024L), viewModel.state.value.asData().indexSize)
+        }
 
     private fun ContentSearchSettingsState.asData(): ContentSearchSettingsState.Data {
         assertTrue(this is ContentSearchSettingsState.Data, "Expected WithData, was $this")

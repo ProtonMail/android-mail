@@ -58,7 +58,7 @@ interface ContentSearchRepository {
     /**
      * The size of [userId]'s local index in bytes, or null when it cannot be read.
      *
-     * The SDK does not expose the index size yet, so this answers null for now.
+     * Null also covers an account that content search is unavailable for.
      */
     suspend fun getIndexSizeBytes(userId: UserId): Long?
 
