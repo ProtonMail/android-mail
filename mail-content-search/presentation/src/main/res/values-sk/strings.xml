@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Vymazať údaje z lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Údaje vyhľadávania na tomto zariadení budú odstránené. Pre vyhľadávanie v obsahu emailov ich budete musieť stiahnuť znova.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Vymazať údaje</string>
-  <string name="content_search_bottomsheet_title">Príprava prehľadávania obsahu emailov</string>
-  <string name="content_search_bottomsheet_description">Emaily z vašej schránky sa práve sťahujú a pripravujú na vyhľadávanie.</string>
-  <string name="content_search_bottomsheet_continue">Rozumiem</string>
+  <string name="content_search_bottomsheet_title">Spotreba mobilných dát</string>
+  <string name="content_search_bottomsheet_description">Emaily z vašej schránky budú stiahnuté a pripravené na vyhľadávanie.</string>
+  <string name="content_search_bottomsheet_start_indexing">Spustiť indexovanie</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Žiadne výsledky</string>
+  <string name="content_search_no_results_title_for_query">Žiadne výsledky pre \"%1$s\"</string>
   <string name="content_search_no_results_description">Skúste použiť iné kľúčové slová alebo skontrolujte pravopis.</string>
+  <string name="content_search_no_results_set_up_description">Zapnite vyhľadávanie obsahu, aby ste mohli prehľadávať aj obsah správ.</string>
+  <string name="content_search_no_results_learn_more">Zistiť viac..</string>
+  <string name="content_search_no_results_set_up_action">Nastaviť vyhľadávanie v obsahu</string>
+  <string name="content_search_set_up_banner_title">Vyhľadávajte aj v obsahu emailov</string>
+  <string name="content_search_set_up_banner_description">Vyhľadávajte slová a frázy priamo v emailoch, nielen v menách odosielateľov a predmetoch správ.</string>
+  <string name="content_search_set_up_banner_turn_on">Nastaviť teraz</string>
+  <string name="content_search_set_up_banner_not_now">Teraz nie</string>
+  <string name="content_search_indexing_complete_banner_title">Hotovo!</string>
+  <string name="content_search_indexing_complete_banner_description">Teraz môžete vyhľadávať slová vo všetkých svojich emailoch, nielen v adresách odosielateľov a predmetoch.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Rozumiem</string>
   <string name="content_search_placeholder_text">Hľadať</string>
   <string name="content_search_clear_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
   <string name="content_search_close_content_description">Zavrieť vyhľadávanie</string>
   <string name="content_search_first_run_description">Do vyhľadávania zadajte názov, tému alebo kľúčové slovo</string>
+  <string name="content_search_results_title">Výsledky</string>
+  <string name="content_search_min_query_length_notice">Pre zobrazenie všetkých výsledkov zadajte 3 alebo viac znakov.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedávne vyhľadávania mailov</string>
   <string name="content_search_clear_recent_searches">Vyčistiť všetko</string>
   <string name="content_search_previously_found_title">Predtým nájdené</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrániť “%1$s” z nedávnych vyhľadávaní</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Vaša pošta sa stále indexuje – %1$d%%.</string>
+  <string name="content_search_indexing_progress">Indexovanie emailov • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indexovanie prerušené • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indexovanie emailov, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexovanie prerušené, %1$d%%</string>
   <string name="content_search_indexing_see_details">Zobraziť podrobnosti</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Vymazať natrvalo?</string>

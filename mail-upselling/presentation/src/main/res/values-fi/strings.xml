@@ -37,28 +37,28 @@
   <string name="upselling_stay_on_mail_plus">Jatka Mail Plussan käyttöä</string>
   <string name="upselling_pu_choose_plan">Valitse tilauksesi</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
-  <string name="upselling_pu_generic_title">Take your online privacy further with Proton Unlimited</string>
+  <string name="upselling_pu_generic_title">Vie verkkoyksityisyyttäsi pidemmälle Proton Unlimitedilla</string>
   <string name="upselling_pu_threat_protection_title">Suojaa tilisi uhilta Proton Sentinelillä</string>
-  <string name="upselling_pu_aliases_title">Get unlimited aliases to protect your identity</string>
+  <string name="upselling_pu_aliases_title">Hanki rajattomasti aliaksia ja suojaa henkilöllisyytesi</string>
   <string name="upselling_pu_drive_title">Hanki 500 Gt turvallista tallennustilaa tiedostoillesi ja kuvillesi</string>
   <string name="upselling_pu_vpn_browse_title">Hanki huippunopea VPN, jolla on palvelimia yli 110 maassa</string>
   <string name="upselling_pu_vpn_streaming_title">Maailmanlaajuinen pääsy suoratoistopalveluihin</string>
-  <string name="upselling_pu_pass_title">Keep your passwords safe and organized with vaults</string>
+  <string name="upselling_pu_pass_title">Pidä salasanasi turvassa ja järjestettynä holvien avulla</string>
   <string name="upselling_pu_subtitle">Saat Protonin parhaat Unlimitedilla</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
-  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
-  <string name="upselling_pu_row_threat_protection_title">Guard against threats</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Protect your account</string>
-  <string name="upselling_pu_row_aliases_title">Get unlimited aliases</string>
-  <string name="upselling_pu_row_aliases_subtitle">Protect your identity</string>
+  <string name="upselling_pu_row_generic_title">Vie yksityisyyttäsi pidemmälle</string>
+  <string name="upselling_pu_row_generic_subtitle">Hanki lisää tallennustilaa</string>
+  <string name="upselling_pu_row_threat_protection_title">Suojaudu uhilta</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Suojaa tilisi</string>
+  <string name="upselling_pu_row_aliases_title">Hanki rajattomasti aliaksia</string>
+  <string name="upselling_pu_row_aliases_subtitle">Suojaa henkilöllisyytesi</string>
   <string name="upselling_pu_row_drive_title">Lisää tallennustilaasi</string>
   <string name="upselling_pu_row_drive_subtitle">Hanki 500 Gt tallennustilaa tiedostoille ja kuville</string>
   <string name="upselling_pu_row_vpn_browse_title">Selaa turvallisesti</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
-  <string name="upselling_pu_row_pass_title">Keep passwords safe</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Pääset käyttämään huippunopeaa VPN:ää</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Poista suoratoistosisällön esto</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Suoratoista vapaasti Proton VPN:llä</string>
+  <string name="upselling_pu_row_pass_title">Pidä salasanat turvassa</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Lähetä ryhmäsähköpostiviestejä vaivattomasti. Nauti tästä ja muusta Mail Plus -palvelulla.</string>

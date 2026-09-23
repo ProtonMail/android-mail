@@ -34,31 +34,31 @@
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Váltson Proton Unlimited csomagra</string>
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
-  <string name="upselling_stay_on_mail_plus">Stay on Mail Plus</string>
-  <string name="upselling_pu_choose_plan">Choose your plan</string>
+  <string name="upselling_stay_on_mail_plus">Maradjon a Mail Plus csomagnál</string>
+  <string name="upselling_pu_choose_plan">Csomag kiválasztása</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
-  <string name="upselling_pu_generic_title">Take your online privacy further with Proton Unlimited</string>
-  <string name="upselling_pu_threat_protection_title">Protect your account from threats with Proton Sentinel</string>
-  <string name="upselling_pu_aliases_title">Get unlimited aliases to protect your identity</string>
-  <string name="upselling_pu_drive_title">Get 500 GB to securely store files and photos</string>
-  <string name="upselling_pu_vpn_browse_title">Get access to ultrafast VPN with servers in 110+ countries</string>
-  <string name="upselling_pu_vpn_streaming_title">Access content on streaming services worldwide</string>
-  <string name="upselling_pu_pass_title">Keep your passwords safe and organized with vaults</string>
-  <string name="upselling_pu_subtitle">Get the best of Proton with Unlimited</string>
+  <string name="upselling_pu_generic_title">Bővítse tovább online adatvédelmét a Proton Unlimiteddel</string>
+  <string name="upselling_pu_threat_protection_title">Védje fiókját a fenyegetésektől a Proton Sentinel segítségével</string>
+  <string name="upselling_pu_aliases_title">Szerezzen korlátlan számú e-mail álnevet személyazonossága védelmére</string>
+  <string name="upselling_pu_drive_title">Kapjon 500 GB-ot fájlok és fényképek biztonságos tárolásához</string>
+  <string name="upselling_pu_vpn_browse_title">Hozzáférés ultragyors VPN-hez 110+ országban elérhető szerverekkel</string>
+  <string name="upselling_pu_vpn_streaming_title">Tartalom elérése videós szolgáltatásokon világszerte</string>
+  <string name="upselling_pu_pass_title">Tartsa jelszavait biztonságban és rendszerezve tárolókban</string>
+  <string name="upselling_pu_subtitle">Hozza ki a legtöbbet a Protonból az Unlimiteddel</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
-  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
-  <string name="upselling_pu_row_threat_protection_title">Guard against threats</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Protect your account</string>
-  <string name="upselling_pu_row_aliases_title">Get unlimited aliases</string>
-  <string name="upselling_pu_row_aliases_subtitle">Protect your identity</string>
-  <string name="upselling_pu_row_drive_title">Increase your storage</string>
-  <string name="upselling_pu_row_drive_subtitle">Get 500 GB to store files and photos</string>
-  <string name="upselling_pu_row_vpn_browse_title">Browse securely</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
-  <string name="upselling_pu_row_pass_title">Keep passwords safe</string>
+  <string name="upselling_pu_row_generic_title">Bővítse tovább adatvédelmét</string>
+  <string name="upselling_pu_row_generic_subtitle">Szerezzen több tárhelyet</string>
+  <string name="upselling_pu_row_threat_protection_title">Védekezés a fenyegetések ellen</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Védje fiókját</string>
+  <string name="upselling_pu_row_aliases_title">Szerezzen korlátlan számú e-mail álnevet</string>
+  <string name="upselling_pu_row_aliases_subtitle">Védje meg személyazonosságát</string>
+  <string name="upselling_pu_row_drive_title">Növelje a tárhelyét</string>
+  <string name="upselling_pu_row_drive_subtitle">Kapjon 500 GB-ot fájlok és fényképek tárolásához</string>
+  <string name="upselling_pu_row_vpn_browse_title">Biztonságosan böngésszen</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Hozzáférés ultragyors VPN-hez</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Videós tartalmak blokkolásának feloldása</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Videózzon szabadon a Proton VPN-nel</string>
+  <string name="upselling_pu_row_pass_title">Tartsa biztonságban a jelszavakat</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Küldjön csoportos e-maileket könnyedén. Élvezze ezt és még sok mást a Mail Plus csomaggal.</string>
@@ -101,7 +101,7 @@
   <string name="upselling_comparison_table_dark_web_monitoring">Dark web figyelés</string>
   <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
-  <string name="upselling_comparison_table_ultrafast_vpn">Ultrafast VPN with 110+ countries</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">Ultragyors VPN 110+ országban</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Előfizetés kiválasztása</string>

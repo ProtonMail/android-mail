@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Lokale Suchdaten löschen</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Die Suchdaten auf diesem Gerät werden gelöscht. Sie müssen erneut heruntergeladen werden, um E-Mail-Inhalte durchsuchen zu können.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Daten bereinigen</string>
-  <string name="content_search_bottomsheet_title">Suche nach E-Mail-Inhalten wird vorbereitet</string>
-  <string name="content_search_bottomsheet_description">E-Mails aus deinem Postfach werden gerade heruntergeladen und für die Suche vorbereitet.</string>
-  <string name="content_search_bottomsheet_continue">Verstanden</string>
+  <string name="content_search_bottomsheet_title">Mobile Datennutzung</string>
+  <string name="content_search_bottomsheet_description">E-Mails aus deinem Postfach werden heruntergeladen und für die Suche vorbereitet.</string>
+  <string name="content_search_bottomsheet_start_indexing">Indizierung starten</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Keine Ergebnisse</string>
+  <string name="content_search_no_results_title_for_query">Keine Ergebnisse für „%1$s“</string>
   <string name="content_search_no_results_description">Probiere andere Suchbegriffe aus oder überprüfe die Schreibweise.</string>
+  <string name="content_search_no_results_set_up_description">Aktiviere die Inhaltssuche, um auch den Inhalt von Nachrichten durchsuchen zu können.</string>
+  <string name="content_search_no_results_learn_more">Mehr erfahren …</string>
+  <string name="content_search_no_results_set_up_action">Inhaltssuche einrichten</string>
+  <string name="content_search_set_up_banner_title">Auch in E-Mails suchen</string>
+  <string name="content_search_set_up_banner_description">Finde Wörter und Ausdrücke in Ihren E-Mails – nicht nur E-Mail-Absender und Betreffzeilen.</string>
+  <string name="content_search_set_up_banner_turn_on">Jetzt einrichten</string>
+  <string name="content_search_set_up_banner_not_now">Jetzt nicht</string>
+  <string name="content_search_indexing_complete_banner_title">Fertig!</string>
+  <string name="content_search_indexing_complete_banner_description">Du kannst nun in allen deinen E-Mails nach Wörtern suchen, nicht nur in den Absendern und Betreffzeilen.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Verstanden</string>
   <string name="content_search_placeholder_text">Suchen</string>
   <string name="content_search_clear_query_content_description">Suchanfrage löschen</string>
   <string name="content_search_close_content_description">Suche schließen</string>
   <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Suche zu beginnen</string>
+  <string name="content_search_results_title">Ergebnisse</string>
+  <string name="content_search_min_query_length_notice">Geben Sie mindestens 3 Zeichen ein, um alle Ergebnisse anzuzeigen.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Letzte E-Mail-Suchanfragen</string>
   <string name="content_search_clear_recent_searches">Alle entfernen</string>
   <string name="content_search_previously_found_title">Zuvor gefunden</string>
   <string name="content_search_dismiss_recent_search_content_description">%1$s aus kürzlichen Suchanfragen entfernen</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Deine E-Mails werden noch indiziert – %1$d%%.</string>
+  <string name="content_search_indexing_progress">E-Mails werden indizieren • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indizierung wurde unterbrochen • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">E-Mails werden indizieren • %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indizierung wurde unterbrochen • %1$d%%</string>
   <string name="content_search_indexing_see_details">Details anzeigen</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Dauerhaft löschen?</string>

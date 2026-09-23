@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama verilerini temizle</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Bu aygıt üzerindeki arama verileri kaldırılacak. Gelişmiş e-posta içeriğini arama özelliğini kullanabilmek için verileri yeniden indirmeniz gerekecek.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Verileri temizle</string>
-  <string name="content_search_bottomsheet_title">E-posta içerikleri araması hazırlanıyor</string>
-  <string name="content_search_bottomsheet_description">E-posta kutunuzdaki gelen e-postalar indiriliyor ve aranabilmeleri için hazırlanıyor.</string>
-  <string name="content_search_bottomsheet_continue">Anladım</string>
+  <string name="content_search_bottomsheet_title">Mobil veri kullanımı</string>
+  <string name="content_search_bottomsheet_description">E-posta kutunuzdaki e-postalar indirilecek ve aranabilmeleri için hazırlanacak.</string>
+  <string name="content_search_bottomsheet_start_indexing">Dizin oluşturmayı başlat</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Herhangi bir sonuç bulunamadı</string>
+  <string name="content_search_no_results_title_for_query">\"%1$s\" için bir sonuç yok</string>
   <string name="content_search_no_results_description">Farklı anahtar sözcükler deneyin veya yazımınızı denetleyin.</string>
+  <string name="content_search_no_results_set_up_description">İletilerin içeriklerinin de aranması için içerik aramasını açın.</string>
+  <string name="content_search_no_results_learn_more">Ayrıntılı bilgi alın…</string>
+  <string name="content_search_no_results_set_up_action">İçerik aramayı kurun</string>
+  <string name="content_search_set_up_banner_title">E-postaların içerikleri de aranabilsin</string>
+  <string name="content_search_set_up_banner_description">E-postalarınızda yalnızca göndericileri ve konuları değil, içindeki sözcükleri ve ifadeleri de bulun.</string>
+  <string name="content_search_set_up_banner_turn_on">Şimdi kur</string>
+  <string name="content_search_set_up_banner_not_now">Şimdi değil</string>
+  <string name="content_search_indexing_complete_banner_title">Her şey tamam!</string>
+  <string name="content_search_indexing_complete_banner_description">Şimdi yalnızca göndericileri ve konuları değil, tüm e-postalarınızın içindeki sözcükleri de arayabilirsiniz.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Anladım</string>
   <string name="content_search_placeholder_text">Ara</string>
   <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
   <string name="content_search_close_content_description">Aramayı kapat</string>
   <string name="content_search_first_run_description">Aranacak bir ad, konu veya anahtar sözcük yazın</string>
+  <string name="content_search_results_title">Sonuçlar</string>
+  <string name="content_search_min_query_length_notice">Tüm sonuçları görmek için 3 veya daha fazla karakter yazın.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Son e-posta aramaları</string>
   <string name="content_search_clear_recent_searches">Tümünü temizle</string>
   <string name="content_search_previously_found_title">Daha önce bulunan</string>
   <string name="content_search_dismiss_recent_search_content_description">“%1$s” ifadesini son aramalar listesinden kaldır</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">E-postalarınızın dizine eklenmesi sürüyor - %1$d[%1$i].</string>
+  <string name="content_search_indexing_progress">E-posta dizini hazırlanıyor • %1$d[%1$i]</string>
+  <string name="content_search_indexing_interrupted">Dizin oluşturma duraklatıldı • %1$d[%1$i]</string>
+  <string name="content_search_indexing_progress_content_description">E-posta dizini hazırlanıyor, %1$d[%1$i]</string>
+  <string name="content_search_indexing_interrupted_content_description">Dizin oluşturma duraklatıldı • %1$d[%1$i]</string>
   <string name="content_search_indexing_see_details">Ayrıntıları görüntüle</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Kalıcı olarak silinsin mi?</string>

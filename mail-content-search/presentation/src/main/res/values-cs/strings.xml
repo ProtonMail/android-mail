@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Smazat místní data vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Data pro vyhledávání budou z tohoto zařízení smazána. Chcete-li prohledávat obsah e-mailů, budete je muset stáhnout znovu.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Smazat data</string>
-  <string name="content_search_bottomsheet_title">Příprava vyhledávání v obsahu e-mailů</string>
-  <string name="content_search_bottomsheet_description">E-maily z vaší e-mailové schránky se právě stahují a připravují k prohledávání.</string>
-  <string name="content_search_bottomsheet_continue">Rozumím</string>
+  <string name="content_search_bottomsheet_title">Mobile data usage</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Žádné výsledky</string>
+  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
   <string name="content_search_no_results_description">Zkuste zadat jiná klíčová slova nebo zkontrolujte pravopis.</string>
+  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
+  <string name="content_search_no_results_learn_more">Learn more..</string>
+  <string name="content_search_no_results_set_up_action">Set up content search</string>
+  <string name="content_search_set_up_banner_title">Search inside emails too</string>
+  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_turn_on">Set up now</string>
+  <string name="content_search_set_up_banner_not_now">Not now</string>
+  <string name="content_search_indexing_complete_banner_title">All done!</string>
+  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
   <string name="content_search_placeholder_text">Hledat</string>
   <string name="content_search_clear_query_content_description">Vyčistit vyhledávací dotaz</string>
   <string name="content_search_close_content_description">Zavřít hledání</string>
   <string name="content_search_first_run_description">Zadejte jméno, předmět nebo klíčové slovo k vyhledání</string>
+  <string name="content_search_results_title">Results</string>
+  <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Poslední vyhledávání v e-mailech</string>
   <string name="content_search_clear_recent_searches">Vyčistit vše</string>
   <string name="content_search_previously_found_title">Dříve nalezené</string>
   <string name="content_search_dismiss_recent_search_content_description">Odebrat “%1$s” z nedávných vyhledávání</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Váš e-mail se stále indexuje - %1$d%%.</string>
+  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
   <string name="content_search_indexing_see_details">Zobrazit detaily</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Trvale smazat?</string>

@@ -42,7 +42,7 @@
   <string name="upselling_pu_aliases_title">Skaffa obegränsade alias för att skydda din identitet</string>
   <string name="upselling_pu_drive_title">Skaffa 500 GB för att säkert lagra filer och foton</string>
   <string name="upselling_pu_vpn_browse_title">Skaffa åtkomst till ultrasnabb VPN med servrar i fler än 110 länder</string>
-  <string name="upselling_pu_vpn_streaming_title">Access content on streaming services worldwide</string>
+  <string name="upselling_pu_vpn_streaming_title">Få åtkomst till innehåll på streamingtjänster globalt</string>
   <string name="upselling_pu_pass_title">Håll dina lösenord säkra och organiserade med valv</string>
   <string name="upselling_pu_subtitle">Få det bästa av Proton med Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
@@ -56,7 +56,7 @@
   <string name="upselling_pu_row_drive_subtitle">Skaffa 500 GB för att lagra filer och foton</string>
   <string name="upselling_pu_row_vpn_browse_title">Surfa säkert</string>
   <string name="upselling_pu_row_vpn_browse_subtitle">Få åtkomst till ultrasnabb VPN</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Avblockera streaminginnehåll</string>
   <string name="upselling_pu_row_vpn_streaming_subtitle">Streama fritt med Proton VPN</string>
   <string name="upselling_pu_row_pass_title">Håll lösenord säkra</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>

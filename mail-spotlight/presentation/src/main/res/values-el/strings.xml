@@ -53,22 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Η αναζήτηση μόλις βελτιώθηκε.</string>
   <string name="spotlight_screen_content_search_subtitle">Βρείτε αυτό που έχει σημασία, χωρίς να εγκαταλείψετε την ιδιωτικότητά σας.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_message_content_title">Κάθε λέξη, πλέον αναζητήσιμη</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Βρείτε ηλεκτρονικά μηνύματα με βάση το περιεχόμενο του μηνύματος, όχι μόνο το θέμα ή τον αποστολέα.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Ακόμα διατερματικά κρυπτογραφημένο</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Η ευρετηρίαση πραγματοποιείται στη συσκευή σας, κρυπτογραφημένη με το κλειδί σας. Δεν αποστέλλεται τίποτα στην Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Συνεχίστε από εκεί που σταματήσατε</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Δείτε ξανά γρήγορα πρόσφατες αναζητήσεις και αποτελέσματα. Αποθηκεύονται στη συσκευή σας για τη διατήρηση της διατερματικής κρυπτογράφησης.</string>
   <string name="spotlight_screen_whats_new_pill">Τι νέο υπάρχει</string>
   <string name="spotlight_screen_content_search_button_continue">Συνέχεια</string>
   <string name="spotlight_screen_content_search_button_turn_on">Ενεργοποίηση</string>
   <string name="spotlight_screen_content_search_button_not_now">Όχι τώρα</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">Πώς λειτουργεί η αναζήτηση περιεχομένου</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Τα μηνύματα ηλεκτρονικού ταχυδρομείου σας κατεβαίνουν σε αυτό το τηλέφωνο</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Για την αναζήτηση στο περιεχόμενο των μηνυμάτων ηλεκτρονικού ταχυδρομείου σας, το Proton Mail κατεβάζει με ασφάλεια ένα αντίγραφο στη συσκευή αυτή.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Ένα ιδιωτικό ευρετήριο δημιουργείται στη συσκευή.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Ένα ελαφρύ ευρετήριο αναζήτησης δημιουργείται τοπικά στη συσκευή σας. Φανταστείτε το σαν έναν χάρτη για να βρίσκετε τα μηνύματα που αναζητάτε.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Θα πραγματοποιήσουμε την ευρετηρίαση στο παρασκήνιο.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Η ευρετηρίαση των μηνυμάτων ηλεκτρονικού ταχυδρομείου σας θα διαρκέσει κάποιο χρονικό διάστημα, αλλά μπορείτε να συνεχίσετε να χρησιμοποιείτε την αλληλογραφία σας κανονικά, όσο εμείς εργαζόμαστε στο παρασκήνιο.</string>
 </resources>

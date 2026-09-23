@@ -28,23 +28,38 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Golire date de căutare locale</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Datele de căutare de pe acest dispozitiv vor fi eliminate. Va trebui să le redescărcați pentru a căuta în conținutul mesajelor.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Golire date</string>
-  <string name="content_search_bottomsheet_title">Se pregătește căutarea în conținutul mesajelor</string>
-  <string name="content_search_bottomsheet_description">Sunt descărcate și pregătite pentru căutare mesajele din contul de email.</string>
-  <string name="content_search_bottomsheet_continue">Am înțeles</string>
+  <string name="content_search_bottomsheet_title">Utilizare date mobile</string>
+  <string name="content_search_bottomsheet_description">Vor fi descărcate și pregătite pentru căutare mesajele din contul de e-mail.</string>
+  <string name="content_search_bottomsheet_start_indexing">Pornire indexare</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title">Nu sunt rezultate</string>
+  <string name="content_search_no_results_title_for_query">Nu există rezultate pentru „%1$s”</string>
   <string name="content_search_no_results_description">Încercați cuvinte cheie diferite sau verificați-vă ortografia.</string>
+  <string name="content_search_no_results_set_up_description">Activați căutarea în conținut pe a căuta și în conținutul mesajelor.</string>
+  <string name="content_search_no_results_learn_more">Detalii…</string>
+  <string name="content_search_no_results_set_up_action">Setare căutare în conținut</string>
+  <string name="content_search_set_up_banner_title">Căutare și în conținutul mesajelor</string>
+  <string name="content_search_set_up_banner_description">Găsiți cuvinte și expresii în interiorul mesajelor, nu doar în expeditori și subiecte.</string>
+  <string name="content_search_set_up_banner_turn_on">Setare acum</string>
+  <string name="content_search_set_up_banner_not_now">Nu acum</string>
+  <string name="content_search_indexing_complete_banner_title">Totul e gata!</string>
+  <string name="content_search_indexing_complete_banner_description">Acum puteți căuta cuvinte în toate e-mailurile, nu doar în numele expeditorilor și în subiecte.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Am înțeles</string>
   <string name="content_search_placeholder_text">Căutare</string>
   <string name="content_search_clear_query_content_description">Golire text căutat</string>
   <string name="content_search_close_content_description">Închidere căutare</string>
   <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a căuta.</string>
+  <string name="content_search_results_title">Rezultate</string>
+  <string name="content_search_min_query_length_notice">Pentru a vedea rezultate, scrieți trei sau mai multe caractere.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Căutări recente în mesaje</string>
   <string name="content_search_clear_recent_searches">Golire tot</string>
   <string name="content_search_previously_found_title">Găsite anterior</string>
   <string name="content_search_dismiss_recent_search_content_description">Eliminare „%1$s” din căutările recente.</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Încă se indexează mesajele - %1$d %%.</string>
+  <string name="content_search_indexing_progress">Se indexează mesajele • %1$d %%</string>
+  <string name="content_search_indexing_interrupted">Indexare întreruptă • %1$d %%</string>
+  <string name="content_search_indexing_progress_content_description">Se indexează mesajele, %1$d %%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexare întreruptă, %1$d %%</string>
   <string name="content_search_indexing_see_details">Afișare detalii</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ștergeți permanent?</string>

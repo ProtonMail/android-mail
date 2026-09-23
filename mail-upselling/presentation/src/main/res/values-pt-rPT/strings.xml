@@ -34,31 +34,31 @@
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Atualizar para o Proton Unlimited</string>
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
-  <string name="upselling_stay_on_mail_plus">Stay on Mail Plus</string>
-  <string name="upselling_pu_choose_plan">Choose your plan</string>
+  <string name="upselling_stay_on_mail_plus">Continuar no Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Escolha o seu plano</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
-  <string name="upselling_pu_generic_title">Take your online privacy further with Proton Unlimited</string>
-  <string name="upselling_pu_threat_protection_title">Protect your account from threats with Proton Sentinel</string>
-  <string name="upselling_pu_aliases_title">Get unlimited aliases to protect your identity</string>
-  <string name="upselling_pu_drive_title">Get 500 GB to securely store files and photos</string>
-  <string name="upselling_pu_vpn_browse_title">Get access to ultrafast VPN with servers in 110+ countries</string>
-  <string name="upselling_pu_vpn_streaming_title">Access content on streaming services worldwide</string>
-  <string name="upselling_pu_pass_title">Keep your passwords safe and organized with vaults</string>
-  <string name="upselling_pu_subtitle">Get the best of Proton with Unlimited</string>
+  <string name="upselling_pu_generic_title">Leve a sua privacidade online mais longe com o Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Proteja a sua conta de ameaças com o Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Obtenha aliases ilimitados para proteger a sua identidade</string>
+  <string name="upselling_pu_drive_title">Obtenha 500 GB para armazenar ficheiros e fotos com segurança</string>
+  <string name="upselling_pu_vpn_browse_title">Aceda a uma VPN ultra-rápida com servidores em mais de 110 países</string>
+  <string name="upselling_pu_vpn_streaming_title">Aceda a conteúdos de serviços de streaming em todo o mundo</string>
+  <string name="upselling_pu_pass_title">Mantenha as suas palavras-passe seguras e organizadas com cofres</string>
+  <string name="upselling_pu_subtitle">Obtenha o melhor do Proton com o Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Take your privacy further</string>
-  <string name="upselling_pu_row_generic_subtitle">Unlock more storage</string>
-  <string name="upselling_pu_row_threat_protection_title">Guard against threats</string>
-  <string name="upselling_pu_row_threat_protection_subtitle">Protect your account</string>
-  <string name="upselling_pu_row_aliases_title">Get unlimited aliases</string>
-  <string name="upselling_pu_row_aliases_subtitle">Protect your identity</string>
-  <string name="upselling_pu_row_drive_title">Increase your storage</string>
-  <string name="upselling_pu_row_drive_subtitle">Get 500 GB to store files and photos</string>
-  <string name="upselling_pu_row_vpn_browse_title">Browse securely</string>
-  <string name="upselling_pu_row_vpn_browse_subtitle">Get access to ultrafast VPN</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Unblock streaming content</string>
-  <string name="upselling_pu_row_vpn_streaming_subtitle">Stream freely with Proton VPN</string>
-  <string name="upselling_pu_row_pass_title">Keep passwords safe</string>
+  <string name="upselling_pu_row_generic_title">Leve a sua privacidade mais longe</string>
+  <string name="upselling_pu_row_generic_subtitle">Desbloqueie mais armazenamento</string>
+  <string name="upselling_pu_row_threat_protection_title">Proteja-se contra ameaças</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Proteja a sua conta</string>
+  <string name="upselling_pu_row_aliases_title">Obtenha aliases ilimitados</string>
+  <string name="upselling_pu_row_aliases_subtitle">Proteja a sua identidade</string>
+  <string name="upselling_pu_row_drive_title">Aumente o seu armazenamento</string>
+  <string name="upselling_pu_row_drive_subtitle">Obtenha 500 GB para armazenar ficheiros e fotos</string>
+  <string name="upselling_pu_row_vpn_browse_title">Navega em segurança</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Aceda a uma VPN ultra-rápida</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Desfrute do streaming sem limites</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Veja em streaming sem limites com o Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Mantenha as suas palavras-passe seguras</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Envie e-mails de grupo com facilidade. Desfrute disto e de muito mais com o Mail Plus.</string>
@@ -101,7 +101,7 @@
   <string name="upselling_comparison_table_dark_web_monitoring">Monitorização da Dark Web</string>
   <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
-  <string name="upselling_comparison_table_ultrafast_vpn">Ultrafast VPN with 110+ countries</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN ultra-rápida com mais de 110 países</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Escolha a subscrição</string>
