@@ -136,7 +136,7 @@ internal fun BottomUnreadFilterButton(
                 ) { countText ->
                     Text(
                         text = " $countText",
-                        style = ProtonTheme.typography.labelMedium,
+                        style = ProtonTheme.typography.labelLarge,
                         color = contentColor
                     )
                 }
