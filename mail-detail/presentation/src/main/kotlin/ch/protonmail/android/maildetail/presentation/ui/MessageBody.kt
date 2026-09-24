@@ -58,6 +58,9 @@ fun MessageBody(
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
     downloadingAttachmentId: AttachmentId? = null,
+    // The body's last settled height in px, forwarded so a pooled WebView re-attached on scroll-back reports
+    // its real height immediately instead of a transient 0.
+    cachedWebViewHeightPx: Int = 0,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
@@ -146,6 +149,7 @@ fun MessageBody(
             ),
             onBuildWebView = stableOnBuildWebView,
             pool = pool,
+            cachedWebViewHeightPx = cachedWebViewHeightPx,
             onMessageBodyLoaded = onMessageBodyLoaded
         )
     } else {

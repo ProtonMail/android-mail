@@ -113,6 +113,10 @@ fun MessageBodyWebView(
     // When non-null, the WebView is owned by this pool: it is kept alive across recycling instead of being
     // destroyed on dispose, and its content is not reloaded when it is re-attached with the same content.
     pool: MessageBodyWebViewPool? = null,
+    // The body's last settled height in px, if known. Seeds the measured-height state so a pooled WebView
+    // re-attached on scroll-back reports its real height immediately (this composable is recreated on
+    // re-attach, resetting the state) instead of a transient 0 that would stall the instant reveal.
+    cachedWebViewHeightPx: Int = 0,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
@@ -127,7 +131,7 @@ fun MessageBodyWebView(
     // During loading phase, WebView size can change multiple times. It may both
     // increase and decrease in size. We will track measured heights and loading state to decide
     // on the final height when it's loaded.
-    var lastMeasuredWebViewHeight by remember(messageId) { mutableIntStateOf(0) }
+    var lastMeasuredWebViewHeight by remember(messageId) { mutableIntStateOf(cachedWebViewHeightPx) }
 
     val actions = webViewActions.copy(
         onMessageBodyLinkLongClicked = {
