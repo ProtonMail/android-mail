@@ -47,6 +47,11 @@ class ContentSearchPromptRepositoryImpl @Inject constructor(
             prefs[dismissedKey(userId, prompt)] = true
         }.map { }
 
+    override suspend fun reset(userId: UserId, prompt: ContentSearchPrompt): Either<PreferencesError, Unit> =
+        dataStoreProvider.contentSearchDataStore.safeEdit { prefs ->
+            prefs.remove(dismissedKey(userId, prompt))
+        }.map { }
+
     companion object {
 
         private const val DISMISSED_KEY_PREFIX = "contentSearchPromptDismissed_"

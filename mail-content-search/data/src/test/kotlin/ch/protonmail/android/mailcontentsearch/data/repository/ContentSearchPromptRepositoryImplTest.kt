@@ -114,6 +114,25 @@ internal class ContentSearchPromptRepositoryImplTest {
     }
 
     @Test
+    fun `should forget the answer under the account's own key on reset`() = runTest {
+        // Given
+        val mutablePreferences = mockk<MutablePreferences> {
+            every { remove(dismissedKey) } returns true
+        }
+        val transform = slot<suspend (Preferences) -> Preferences>()
+        every { preferences.toMutablePreferences() } returns mutablePreferences
+        coEvery { dataStore.updateData(capture(transform)) } returns preferences
+
+        // When
+        val result = repository.reset(userId, prompt)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        transform.captured(preferences)
+        verify { mutablePreferences.remove(dismissedKey) }
+    }
+
+    @Test
     fun `should keep each banner's answer under its own key`() = runTest {
         // Given
         val otherKey = booleanPreferencesKey("contentSearchPromptDismissed_IndexingComplete_user-1")

@@ -35,4 +35,7 @@ interface ContentSearchPromptRepository {
     fun observeDismissed(userId: UserId, prompt: ContentSearchPrompt): Flow<Either<PreferencesError, Boolean>>
 
     suspend fun dismiss(userId: UserId, prompt: ContentSearchPrompt): Either<PreferencesError, Unit>
+
+    /** Forgets the account's answer, so the message is shown again. */
+    suspend fun reset(userId: UserId, prompt: ContentSearchPrompt): Either<PreferencesError, Unit>
 }
