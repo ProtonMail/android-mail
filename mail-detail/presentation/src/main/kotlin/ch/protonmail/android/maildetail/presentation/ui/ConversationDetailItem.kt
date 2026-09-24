@@ -431,6 +431,9 @@ private fun ColumnScope.ConversationDetailExpandedItem(
             MessageBody(
                 messageBodyUiModel = uiModel.messageBodyUiModel,
                 downloadingAttachmentId = downloadingAttachmentId,
+                // The body's own last settled height survives recycling here, so a pooled WebView re-attached on
+                // scroll-back reports it immediately rather than a transient 0.
+                cachedWebViewHeightPx = lastWebViewHeightPx.intValue,
                 actions = MessageBody.Actions(
                     onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                     onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
