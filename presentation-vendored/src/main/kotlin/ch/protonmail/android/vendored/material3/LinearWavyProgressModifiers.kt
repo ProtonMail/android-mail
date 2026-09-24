@@ -20,6 +20,9 @@
  *
  * The indeterminate variant is left out. Everything else is the upstream code with the package and
  * imports adjusted. See [LinearWavyProgressIndicator] for why this is vendored.
+ *
+ * One fix is ours, marked "ET-7001" in updateAmplitudeAnimation. Check it when replacing this
+ * file with the M3 release.
  */
 
 package ch.protonmail.android.vendored.material3
@@ -311,6 +314,9 @@ private abstract class BaseLinearWavyProgressNode(
                             DecreasingAmplitudeAnimationSpec
                         }
                     )
+                    // ET-7001: upstream drops a target that changes while this runs.
+                    // Re-reading the target here lets a jump from 0 to 1 still end flat.
+                    invalidateDrawCache()
                 }
         }
     }
