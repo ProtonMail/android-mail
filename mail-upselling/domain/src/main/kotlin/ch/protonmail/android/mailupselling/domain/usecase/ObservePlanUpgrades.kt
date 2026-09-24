@@ -96,7 +96,8 @@ class ObservePlanUpgrades @Inject constructor(
                 eligibleOffers.filterForPlan(PlanUpgradeIds.UnlimitedPlanId)
             } else {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = offersTag.value)
-                eligibleOffers.filterForPlan(offersTag.targetPlan)
+                val targetPlan = if (hasPromoOffers) offersTag.targetPlan else PlanUpgradeIds.PlusPlanId
+                eligibleOffers.filterForPlan(targetPlan)
             }
         }
     }

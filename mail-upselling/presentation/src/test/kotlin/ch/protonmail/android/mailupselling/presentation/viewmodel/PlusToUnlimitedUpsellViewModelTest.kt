@@ -23,12 +23,22 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
+import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
+import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,10 +63,19 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         every { this@mockk(UserIdTestData.userId) } returns UpsellContentTheme.Drive
     }
 
+    private val resolvePlanBeforeUpgrade = mockk<ResolvePlanBeforeUpgrade> {
+        coEvery { this@mockk() } returns "mail2022"
+    }
+    private val recordUpsellButtonTapped = mockk<RecordUpsellButtonTapped> {
+        coEvery { this@mockk(any(), any()) } just Runs
+    }
+
     private fun viewModel() = PlusToUnlimitedUpsellViewModel(
         observePrimaryUserId,
         observePlusToUnlimitedEligibility,
-        resolveActiveUpsellTheme
+        resolveActiveUpsellTheme,
+        resolvePlanBeforeUpgrade,
+        recordUpsellButtonTapped
     )
 
     @AfterTest
@@ -96,6 +115,33 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         viewModel().theme.test {
             assertEquals(UpsellContentTheme.Drive, awaitItem())
             expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `records the upsell button tap with the plus to unlimited dimensions`() = runTest {
+        // Given
+        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns flowOf(true.right())
+        val viewModel = viewModel()
+
+        // When
+        viewModel.theme.test {
+            awaitItem()
+            viewModel.recordUpsellButtonTapped()
+        }
+
+        // Then
+        coVerify {
+            recordUpsellButtonTapped(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
+                    planBeforeUpgrade = "mail2022",
+                    modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7PlusToUnlimitedUpsell"),
+                    promoCampaign = "drive"
+                )
+            )
         }
     }
 }

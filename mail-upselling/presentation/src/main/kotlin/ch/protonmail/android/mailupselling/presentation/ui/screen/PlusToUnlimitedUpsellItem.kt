@@ -53,7 +53,10 @@ fun PlusToUnlimitedUpsellItem(modifier: Modifier = Modifier, onClick: () -> Unit
     PlusToUnlimitedUpsellItem(
         theme = theme ?: return,
         modifier = modifier,
-        onClick = onClick
+        onClick = {
+            viewModel.recordUpsellButtonTapped()
+            onClick()
+        }
     )
 }
 
