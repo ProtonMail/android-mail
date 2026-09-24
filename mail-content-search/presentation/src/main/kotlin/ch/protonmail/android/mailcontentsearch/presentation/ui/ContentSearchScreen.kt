@@ -302,7 +302,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
             onLearnMoreAboutContentSearch = { uriHandler.openUri(learnMoreLink) },
             onSetUpContentSearch = actions.onSetUpContentSearch,
             onSetUpFromBanner = {
-                setUpPromptViewModel.dismissSetUpBanner()
+                setUpPromptViewModel.setAsideSetUpBanner()
                 actions.onSetUpContentSearch()
             },
             // Taking a banner away is the moment the user is done reading and ready to type, so the

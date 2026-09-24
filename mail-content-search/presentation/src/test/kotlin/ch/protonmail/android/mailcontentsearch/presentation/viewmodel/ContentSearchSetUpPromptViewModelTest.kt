@@ -182,6 +182,39 @@ internal class ContentSearchSetUpPromptViewModelTest {
         coVerify { dismissContentSearchPrompt(userId, ContentSearchPrompt.SetUpOffer) }
     }
 
+    @Test
+    fun `hides the banner without recording an answer when it is set aside`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+        val viewModel = viewModel()
+
+        viewModel.showSetUpBanner.test {
+            assertEquals(true, awaitItem())
+
+            // When
+            viewModel.setAsideSetUpBanner()
+
+            // Then
+            assertEquals(false, awaitItem())
+        }
+        coVerify(exactly = 0) { dismissContentSearchPrompt(any(), any()) }
+    }
+
+    @Test
+    fun `records the answer for the primary account when set-up is declined`() = runTest(dispatcher) {
+        // Given
+        every { observeContentSearchEnabled(userId) } returns flowOf(false)
+        coEvery { isContentSearchFeatureEnabled() } returns true
+
+        // When
+        viewModel().declineSetUp()
+
+        // Then
+        coVerify(exactly = 1) { dismissContentSearchPrompt(userId, ContentSearchPrompt.SetUpOffer) }
+    }
+
     private fun viewModel() = ContentSearchSetUpPromptViewModel(
         observePrimaryUserId = observePrimaryUserId,
         observeContentSearchEnabled = observeContentSearchEnabled,

@@ -21,6 +21,7 @@ package ch.protonmail.android.navigation.route
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import ch.protonmail.android.mailcontentsearch.presentation.ui.DECLINE_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailspotlight.presentation.ui.HowContentSearchWorksScreen
@@ -31,6 +32,7 @@ import ch.protonmail.android.navigation.model.Destination
  *
  * "Turn on" leaves the page and asks the screen underneath for the content search sheet, so the
  * sheet comes up over the search results rather than over this page.
+ * "Not now" leaves a note for the screen underneath too, so it can stop showing its set-up banner.
  */
 internal fun NavGraphBuilder.addContentSearchSetUp(navController: NavHostController) {
     composable(Destination.Screen.ContentSearchSetUp.route) {
@@ -39,7 +41,10 @@ internal fun NavGraphBuilder.addContentSearchSetUp(navController: NavHostControl
                 navController.previousBackStackEntry?.savedStateHandle?.set(TURN_ON_CONTENT_SEARCH_KEY, true)
                 navController.navigateBack()
             },
-            onNotNow = { navController.navigateBack() }
+            onNotNow = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(DECLINE_CONTENT_SEARCH_KEY, true)
+                navController.navigateBack()
+            }
         )
     }
 }

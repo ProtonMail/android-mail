@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSear
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -63,6 +64,8 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
         .filterNotNull()
         .distinctUntilChanged()
 
+    private val isSetUpBannerSetAside = MutableStateFlow(false)
+
     val canSetUpContentSearch: StateFlow<Boolean> = primaryUserId
         .flatMapLatest { userId -> observeContentSearchEnabled(userId) }
         .distinctUntilChanged()
@@ -80,9 +83,10 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
         .flatMapLatest { userId ->
             combine(
                 observeContentSearchEnabled(userId),
-                observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer)
-            ) { isEnabled, isDismissed ->
-                !isEnabled && !isDismissed && isContentSearchFeatureEnabled()
+                observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer),
+                isSetUpBannerSetAside
+            ) { isEnabled, isDismissed, isSetAside ->
+                !isEnabled && !isDismissed && !isSetAside && isContentSearchFeatureEnabled()
             }
         }
         .distinctUntilChanged()
@@ -91,14 +95,31 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
     /**
      * Records that the primary account has answered the offer, so the banner stops asking.
      *
-     * Both of the banner's actions answer it. Turning content search on from the empty results does
-     * not: that offer has no dismissal to remember.
+     * The banner's close button answers it. So does searching.
+     * Its set-up button does not. See [setAsideSetUpBanner].
      */
     fun dismissSetUpBanner() {
         viewModelScope.launch {
             dismissContentSearchPrompt(primaryUserId.first(), ContentSearchPrompt.SetUpOffer)
         }
     }
+
+    /**
+     * Hides the banner while the user goes through set-up, without recording an answer.
+     *
+     * The answer is only recorded when the user confirms on the content search sheet. If set-up is
+     * cut short, for example by a notification or the app being killed, the banner comes back.
+     */
+    fun setAsideSetUpBanner() {
+        isSetUpBannerSetAside.value = true
+    }
+
+    /**
+     * Records the answer when the user declines set-up.
+     *
+     * This applies however the user reached set-up, from the banner or from the empty results.
+     */
+    fun declineSetUp() = dismissSetUpBanner()
 }
 
 private const val SUBSCRIPTION_TIMEOUT_MILLIS = 5_000L

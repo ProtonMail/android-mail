@@ -20,6 +20,8 @@ package ch.protonmail.android.feature.contentsearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
@@ -43,7 +45,8 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
     private val isContentSearchAllowedOnMobileData: IsContentSearchAllowedOnMobileData,
     private val setAllowContentSearchOnMobileData: SetAllowContentSearchOnMobileData,
     private val enableContentSearch: EnableContentSearch,
-    private val startContentIndexingForUser: StartContentIndexingForUser
+    private val startContentIndexingForUser: StartContentIndexingForUser,
+    private val dismissContentSearchPrompt: DismissContentSearchPrompt
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<ContentSearchBottomSheetState>(ContentSearchBottomSheetState.Hide)
@@ -82,7 +85,12 @@ class HomeContentSearchBottomSheetViewModel @Inject constructor(
 
             val userId = observePrimaryUserId().filterNotNull().first()
             enableContentSearch(userId)
-                .onRight { startContentIndexingForUser(userId) }
+                .onRight {
+                    startContentIndexingForUser(userId)
+                    // The search screen's set-up banner only hides itself for now when tapped.
+                    // Confirming here is what answers it for good.
+                    dismissContentSearchPrompt(userId, ContentSearchPrompt.SetUpOffer)
+                }
                 .onLeft { Timber.e("content-search: could not enable from the spotlight sheet for $userId") }
         }
     }
