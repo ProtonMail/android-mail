@@ -112,8 +112,6 @@ private fun LandscapeHowItWorksPage(
     modifier: Modifier = Modifier,
     inlineActions: (@Composable () -> Unit)? = null
 ) {
-    // The card is the only half that scrolls. The illustration, the title and the actions stay put,
-    // so the actions cannot be scrolled out of reach.
     Row(
         modifier = modifier
             .fillMaxSize()
@@ -122,24 +120,14 @@ private fun LandscapeHowItWorksPage(
             .padding(vertical = ProtonDimens.Spacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
+        LandscapeSpotlightHeader(
+            illustration = { IllustrationPlaceholder(modifier = Modifier.height(LANDSCAPE_ILLUSTRATION_HEIGHT)) },
+            inlineActions = inlineActions,
             modifier = Modifier
                 .weight(1f)
-                .padding(end = ProtonDimens.Spacing.Large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(end = ProtonDimens.Spacing.Large)
         ) {
-            IllustrationPlaceholder(modifier = Modifier.height(LANDSCAPE_ILLUSTRATION_HEIGHT))
-
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
-
             Title()
-
-            if (inlineActions != null) {
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
-
-                inlineActions()
-            }
         }
 
         Column(

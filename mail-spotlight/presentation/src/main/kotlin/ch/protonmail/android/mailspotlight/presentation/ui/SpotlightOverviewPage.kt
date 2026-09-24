@@ -131,8 +131,6 @@ private fun LandscapeOverviewPage(
     modifier: Modifier = Modifier,
     inlineActions: (@Composable () -> Unit)? = null
 ) {
-    // The card is the only half that scrolls. The illustration, the title and the actions stay put,
-    // so the actions cannot be scrolled out of reach.
     Row(
         modifier = modifier
             .fillMaxSize()
@@ -141,22 +139,20 @@ private fun LandscapeOverviewPage(
             .padding(vertical = ProtonDimens.Spacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
+        LandscapeSpotlightHeader(
+            illustration = {
+                Image(
+                    painter = painterResource(id = R.drawable.spotlight_celebration),
+                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.heightIn(max = LANDSCAPE_ILLUSTRATION_MAX_HEIGHT)
+                )
+            },
+            inlineActions = inlineActions,
             modifier = Modifier
                 .weight(1f)
-                .padding(end = ProtonDimens.Spacing.Large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(end = ProtonDimens.Spacing.Large)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.spotlight_celebration),
-                contentDescription = NO_CONTENT_DESCRIPTION,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.heightIn(max = LANDSCAPE_ILLUSTRATION_MAX_HEIGHT)
-            )
-
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
-
             WhatsNewPill()
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
@@ -166,12 +162,6 @@ private fun LandscapeOverviewPage(
                 style = ProtonTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-
-            if (inlineActions != null) {
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
-
-                inlineActions()
-            }
         }
 
         Column(
