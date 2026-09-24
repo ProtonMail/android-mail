@@ -17,10 +17,6 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
-import android.app.ActivityManager
-import android.content.ComponentCallbacks2
-import android.content.Context
-import android.content.res.Configuration
 import android.net.Uri
 import android.view.MotionEvent
 import android.widget.Toast
@@ -44,7 +40,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListLayoutInfo
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -153,8 +148,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.SnoozeSheetState
 import ch.protonmail.android.mailmessage.presentation.ui.LocalMessageBodyWebViewPool
-import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewPool
-import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWeight
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.ContactActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.DetailMoreActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.messageBodyImageSaver
@@ -1049,72 +1042,16 @@ private fun MessagesContent(
     val listState = rememberLazyListState()
     val loadedItemsHeight = remember(conversationId) { mutableStateMapOf<String, Int>() }
 
-    // Keeps a small number of message-body WebViews alive across LazyColumn recycling, so scrolling back to a
-    // message re-attaches its already-rendered WebView instead of rebuilding and reloading it (ET-6844). Tied
-    // to this conversation: destroyed when the screen leaves composition or the conversation changes.
-    // Pooling trades memory for smoothness, so only enable it where there is RAM to spare, and scale how
-    // many WebViews are kept by device RAM. Below the threshold the pool is null, which falls back to the
-    // legacy destroy-on-recycle - the safe choice on the low-memory devices most prone to WebView OOMs.
-    val webViewPoolConfig = rememberWebViewPoolConfig()
-    val webViewPool = remember(conversationId, webViewPoolConfig.enabled) {
-        if (webViewPoolConfig.enabled) {
-            MessageBodyWebViewPool(
-                maxSize = minOf(webViewPoolConfig.budget + POOL_LRU_HEADROOM, POOL_MAX_INSTANCES)
-            )
-        } else {
-            null
-        }
-    }
-    DisposableEffect(webViewPool) {
-        onDispose { webViewPool?.clear() }
-    }
-
-    // Best-effort backstop, NOT the primary safety: the weight budget and the absolute instance cap
-    // (POOL_MAX_INSTANCES) bound live WebViews up front, which is what keeps foreground memory in check. This
-    // only drops off-screen retained WebViews when the system signals pressure. Note the foreground
-    // TRIM_MEMORY_RUNNING_* levels are no longer delivered on Android 14+ (API 34), so on modern devices this
-    // fires mainly on UI-hidden / backgrounded trims (still >= TRIM_MEMORY_RUNNING_LOW) rather than live
-    // foreground pressure - hence "backstop". Attached (visible) bodies are never touched.
-    val trimContext = LocalContext.current
-    DisposableEffect(webViewPool, trimContext) {
-        val pool = webViewPool
-        val callbacks = object : ComponentCallbacks2 {
-            override fun onTrimMemory(level: Int) {
-                if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) pool?.trimToFloor(WEBVIEW_POOL_TRIM_FLOOR)
-            }
-
-            override fun onConfigurationChanged(newConfig: Configuration) = Unit
-
-            override fun onLowMemory() {
-                pool?.trimToFloor(WEBVIEW_POOL_TRIM_FLOOR)
-            }
-        }
-        trimContext.registerComponentCallbacks(callbacks)
-        onDispose { trimContext.unregisterComponentCallbacks(callbacks) }
-    }
-
-    // Keep the expanded messages nearest the viewport alive within a RAM-scaled weight budget and destroy the
-    // rest: distance (pixels from the viewport edges) ranks them nearest-first, and each message's weight
-    // (MessageBodyWeight - light/medium/heavy/huge) is charged against the budget, so a few heavy bodies or
-    // many light ones are kept for the same memory. Collapsed messages are never candidates. Bounds live
-    // WebViews for memory while biasing retention to what the user is about to scroll back to (ET-6844).
-    val messageHeaderCount = 1 + if (hiddenMessagesBannerState is HiddenMessagesBannerState.Shown) 1 else 0
-    val collapsedHeightEstimatePx = with(LocalDensity.current) { CollapsedHeightEstimate.roundToPx() }
-    LaunchedEffect(webViewPool, uiModels, messageHeaderCount, collapsedHeightEstimatePx) {
-        val pool = webViewPool ?: return@LaunchedEffect
-        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-            .collect {
-                val layoutInfo = listState.layoutInfo
-                if (layoutInfo.visibleItemsInfo.isEmpty()) return@collect
-                pool.evictByWeight(
-                    distanceByKey = expandedDistances(
-                        uiModels, messageHeaderCount, layoutInfo, loadedItemsHeight, collapsedHeightEstimatePx
-                    ),
-                    weightByKey = expandedWeights(uiModels, loadedItemsHeight),
-                    budget = webViewPoolConfig.budget
-                )
-            }
-    }
+    // Keeps a small number of message-body WebViews alive across recycling so scrolling back re-attaches an
+    // already-rendered WebView instead of rebuilding and reloading it (ET-6844); null when pooling is off for
+    // this device. See rememberConversationMessageWebViewPool for the retention and memory-pressure policy.
+    val webViewPool = rememberConversationMessageWebViewPool(
+        conversationId = conversationId,
+        uiModels = uiModels,
+        listState = listState,
+        loadedItemsHeight = loadedItemsHeight,
+        hiddenMessagesBannerState = hiddenMessagesBannerState
+    )
 
     // Map of item heights in LazyColumn (Row index -> height)
     // We will use this map to calculate total height of first non-draft message + any draft messages below it
@@ -1342,159 +1279,6 @@ private fun MessagesContent(
         }
     }
 }
-
-/**
- * Each expanded message's pixel distance from the viewport edges (0 when any part of it is on screen),
- * keyed by message id. Off-screen items are placed by walking [loadedItemsHeight] (expanded message
- * heights, already in px) and [collapsedHeightEstimatePx] out from the nearest visible item, so the
- * distance follows real pixels - a single tall expanded message counts for a whole screen, several small
- * ones barely count. The estimate only has to be accurate near the threshold; far items are evicted
- * regardless of a rough figure.
- */
-private fun expandedDistances(
-    uiModels: ImmutableList<ConversationDetailMessageUiModel>,
-    messageHeaderCount: Int,
-    layoutInfo: LazyListLayoutInfo,
-    loadedItemsHeight: Map<String, Int>,
-    collapsedHeightEstimatePx: Int
-): Map<String, Int> {
-    val visible = layoutInfo.visibleItemsInfo
-    if (visible.isEmpty()) return emptyMap()
-
-    val first = visible.first()
-    val last = visible.last()
-    val viewportTop = layoutInfo.viewportStartOffset
-    val viewportBottom = layoutInfo.viewportEndOffset
-    val viewportHeight = viewportBottom - viewportTop
-    val visibleByIndex = visible.associateBy { it.index }
-
-    fun heightOf(lazyIndex: Int): Int {
-        visibleByIndex[lazyIndex]?.let { return it.size }
-        return when (val ui = uiModels.getOrNull(lazyIndex - messageHeaderCount)) {
-            null -> collapsedHeightEstimatePx // subject header or hidden-messages banner
-            is ConversationDetailMessageUiModel.Expanded ->
-                loadedItemsHeight[ui.messageId.id] ?: viewportHeight
-            else -> collapsedHeightEstimatePx
-        }
-    }
-
-    val distances = mutableMapOf<String, Int>()
-    uiModels.forEachIndexed { messageIndex, ui ->
-        if (ui !is ConversationDetailMessageUiModel.Expanded) return@forEachIndexed
-        val lazyIndex = messageIndex + messageHeaderCount
-
-        val distance = when {
-            lazyIndex in first.index..last.index -> 0 // on screen
-
-            lazyIndex < first.index -> {
-                var between = 0
-                for (idx in lazyIndex + 1 until first.index) between += heightOf(idx)
-                val itemBottom = first.offset - between
-                (viewportTop - itemBottom).coerceAtLeast(0)
-            }
-
-            else -> {
-                var between = 0
-                for (idx in last.index + 1 until lazyIndex) between += heightOf(idx)
-                val itemTop = last.offset + last.size + between
-                (itemTop - viewportBottom).coerceAtLeast(0)
-            }
-        }
-        distances[ui.messageId.id] = distance
-    }
-    return distances
-}
-
-// Rough height for a collapsed message / the subject header when estimating an off-screen item's distance.
-private val CollapsedHeightEstimate = 72.dp
-
-/** Whether message-body WebViews are pooled on this device, and the retention weight budget if so. */
-private data class WebViewPoolConfig(val enabled: Boolean, val budget: Int)
-
-/**
- * Each expanded message's coarse memory-cost weight (see [MessageBodyWeight]), keyed by message id, for the
- * pool's weight-budget eviction. Uses the body's rendered height ([loadedItemsHeight], 0 if not measured yet)
- * as one classification input.
- */
-private fun expandedWeights(
-    uiModels: ImmutableList<ConversationDetailMessageUiModel>,
-    loadedItemsHeight: Map<String, Int>
-): Map<String, Int> = uiModels
-    .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
-    .associate { ui ->
-        val heightPx = loadedItemsHeight[ui.messageId.id] ?: 0
-        ui.messageId.id to MessageBodyWeight.of(ui.messageBodyUiModel.messageBody, heightPx).cost
-    }
-
-/**
- * Pooling policy for this device: disabled (legacy destroy-on-recycle) on low-RAM devices, otherwise enabled
- * with a RAM-scaled weight budget. Retaining WebViews costs memory, and the low-memory devices that would
- * benefit most from fewer reloads are exactly the ones that OOM from holding them, so they opt out.
- */
-@Composable
-private fun rememberWebViewPoolConfig(): WebViewPoolConfig {
-    val featureEnabled = LocalIsMessageWebViewPoolEnabled.current
-    val context = LocalContext.current
-    return remember(context, featureEnabled) {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val totalRamGb = ActivityManager.MemoryInfo()
-            .also { activityManager.getMemoryInfo(it) }
-            .totalMem / BYTES_PER_GB
-        val budget = when {
-            activityManager.isLowRamDevice || totalRamGb < POOL_MIN_RAM_GB -> 0
-            totalRamGb < POOL_MID_RAM_GB -> POOL_WEIGHT_BUDGET_LOW_RAM
-            totalRamGb < POOL_HIGH_RAM_GB -> POOL_WEIGHT_BUDGET_MID_RAM
-            else -> POOL_WEIGHT_BUDGET_HIGH_RAM
-        }
-        // Off unless the feature flag is on AND the device RAM tier qualifies.
-        val config = WebViewPoolConfig(enabled = featureEnabled && budget > 0, budget = budget)
-        when {
-            config.enabled -> Timber.d("WebViewPool: enabled budget=%d ram=%.1fGB", config.budget, totalRamGb)
-            !featureEnabled -> Timber.d("WebViewPool: disabled (flag off)")
-            else -> Timber.d("WebViewPool: disabled (low RAM %.1fGB)", totalRamGb)
-        }
-        config
-    }
-}
-
-private const val BYTES_PER_GB = 1024.0 * 1024.0 * 1024.0
-// totalMem reports below the nominal spec (kernel/GPU carve-out), so a device reads ~0.2-0.5 GB under its
-// marketing size (a "6 GB" phone reads ~5.5-5.8 GB); the tier cutoffs sit below the round numbers to match.
-private const val POOL_MIN_RAM_GB = 3.5 // below this (or a low-RAM device): no pool, destroy on recycle
-private const val POOL_MID_RAM_GB = 5.5
-private const val POOL_HIGH_RAM_GB = 7.5
-// Retention budget in MessageBodyWeight cost units (Light=1 .. Huge=8), scaled by device RAM. A thread of
-// light bodies keeps ~budget of them; a heavy or huge body eats several units, so the number kept shrinks as
-// the content gets heavier and memory tracks weight instead of headcount.
-//
-// Measured renderer footprint (dumpsys meminfo, single shared renderer process, on the test emulators):
-//   - baseline with one light body visible:            ~60-75 MB
-//   - each additional RETAINED (off-screen) body:      ~+10 MB for a tall body, ~+1-2 MB for a light one
-//                                                       (Chromium purges an off-screen body's decoded images,
-//                                                        so it holds ~its DOM, not a second full render)
-//   - the one VISIBLE body dominates the peak:          a ~20k px tall body renders at ~120-130 MB; a light
-//                                                       body adds ~10-15 MB over baseline
-//   => peak renderer ~= baseline + one visible body + ~10 MB x (retained bodies)
-// So raising the budget to keep one more tall body cost only ~10 MB of peak (keep-1 ~160 MB -> keep-2 ~170 MB),
-// which is why the budgets are generous relative to a naive "N x visible cost" estimate.
-//
-// Sized as multiples of the Huge cost so each tier keeps one more tall body than the one below - low 1, mid 2,
-// high 3. Light-mail retention is additionally bounded by POOL_MAX_INSTANCES.
-private const val POOL_WEIGHT_BUDGET_LOW_RAM = 8 // 3.5 GB up to 5.5 GB: keep 1 tall body
-private const val POOL_WEIGHT_BUDGET_MID_RAM = 16 // 5.5 GB up to 7.5 GB: keep 2 tall bodies
-private const val POOL_WEIGHT_BUDGET_HIGH_RAM = 24 // 7.5 GB and above: keep 3 tall bodies
-// Headroom for the pool's LRU safety cap above the budget, absorbing transient over-composition during a fast
-// expand-all or fling before weight-budget eviction settles the live set.
-private const val POOL_LRU_HEADROOM = 2
-// Absolute ceiling on live WebViews, independent of the weight budget. Even a light body's WebView is not free
-// - it holds a renderer document, a view tree and native buffers - so instance count is its own memory axis,
-// separate from the weight budget. This caps it at roughly the useful scroll-back window (a screenful-plus of
-// messages); retaining more has diminishing returns and only adds pressure. Set to the mid tier's full
-// allowance (budget + headroom) so it never clips the low/mid tiers, and bounds the high tier - and any future
-// budget increase - from accumulating a large number of live views.
-private const val POOL_MAX_INSTANCES = 12
-// Under system memory pressure, trim the pool down to at most this many bodies (off-screen ones destroyed).
-private const val WEBVIEW_POOL_TRIM_FLOOR = 1
 
 object ConversationDetail {
 
