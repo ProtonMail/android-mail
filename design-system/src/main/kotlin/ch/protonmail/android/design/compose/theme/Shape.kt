@@ -41,7 +41,7 @@ data class ProtonShapes(
         bottomEnd = 0.dp
     ),
 
-    val conversation: Shape = RoundedCornerShape(
+    val conversation: CornerBasedShape = RoundedCornerShape(
         topStart = ProtonDimens.ExtraLargeCornerRadius,
         topEnd = ProtonDimens.ExtraLargeCornerRadius,
         bottomStart = 0.dp,
