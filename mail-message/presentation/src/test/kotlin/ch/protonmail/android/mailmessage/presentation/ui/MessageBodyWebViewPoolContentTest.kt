@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmessage.presentation.ui
 
 import android.view.ViewGroup
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -26,15 +28,16 @@ import io.mockk.verify
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 
 /**
- * Unit tests for [MessageBodyWebViewPool]'s content-signature bookkeeping (the reuse-skip guard), the
+ * Unit tests for [MessageBodyWebViewPool]'s loaded-content bookkeeping (the reuse-skip guard), the
  * attached/detached ownership model that decides which entries are evictable, and the diagnostic snapshot.
  *
  * A ZoomableWebView is mocked; its `parent` decides attached (visible) vs detached (off-screen, evictable).
  */
-class MessageBodyWebViewPoolSignatureTest {
+class MessageBodyWebViewPoolContentTest {
 
     @AfterTest
     fun tearDown() = unmockkAll()
@@ -45,10 +48,13 @@ class MessageBodyWebViewPoolSignatureTest {
         return webView
     }
 
-    // region content signature
+    private fun content(value: String) =
+        MessageBodyWebViewPool.LoadedContent(MessageBodyContent.Text(value), ViewModePreference.ThemeDefault)
+
+    // region loaded content
 
     @Test
-    fun `given a freshly acquired key, then its loaded signature is null`() {
+    fun `given a freshly acquired key, then its loaded content is null`() {
         // Given
         val pool = MessageBodyWebViewPool(maxSize = 10)
 
@@ -56,62 +62,75 @@ class MessageBodyWebViewPoolSignatureTest {
         pool.acquire("a") { webView() }
 
         // Then
-        assertNull(pool.loadedSignature("a"))
+        assertNull(pool.loadedContent("a"))
     }
 
     @Test
-    fun `given a key marked loaded, then its loaded signature is returned`() {
+    fun `given a key marked loaded, then its loaded content is returned`() {
         // Given
         val pool = MessageBodyWebViewPool(maxSize = 10)
         pool.acquire("a") { webView() }
 
         // When
-        pool.markLoaded("a", "sig-A")
+        pool.markLoaded("a", content("A"))
 
         // Then
-        assertEquals("sig-A", pool.loadedSignature("a"))
+        assertEquals(content("A"), pool.loadedContent("a"))
     }
 
     @Test
-    fun `given a loaded key re-acquired, then the signature survives so reuse can skip the reload`() {
+    fun `given the same body in different view modes, then the loaded content differs so reuse reloads`() {
+        // Given
+        val body = MessageBodyContent.Text("A")
+
+        // When
+        val light = MessageBodyWebViewPool.LoadedContent(body, ViewModePreference.LightMode)
+        val dark = MessageBodyWebViewPool.LoadedContent(body, ViewModePreference.DarkMode)
+
+        // Then
+        assertNotEquals(light, dark)
+    }
+
+    @Test
+    fun `given a loaded key re-acquired, then the content survives so reuse can skip the reload`() {
         // Given
         val pool = MessageBodyWebViewPool(maxSize = 10)
         pool.acquire("a") { webView() }
-        pool.markLoaded("a", "sig-A")
+        pool.markLoaded("a", content("A"))
 
         // When
         pool.acquire("a") { webView() }
 
         // Then
-        assertEquals("sig-A", pool.loadedSignature("a"))
+        assertEquals(content("A"), pool.loadedContent("a"))
     }
 
     @Test
-    fun `given a key destroyed by renderer death and re-acquired, then its signature is reset to null`() {
+    fun `given a key destroyed by renderer death and re-acquired, then its content is reset to null`() {
         // Given
         val pool = MessageBodyWebViewPool(maxSize = 10)
         val first = webView()
         pool.acquire("a") { first }
-        pool.markLoaded("a", "sig-A")
+        pool.markLoaded("a", content("A"))
 
         // When
         pool.onRenderProcessGone(first)
         pool.acquire("a") { webView() }
 
         // Then
-        assertNull(pool.loadedSignature("a"))
+        assertNull(pool.loadedContent("a"))
     }
 
     @Test
-    fun `given markLoaded for an absent key, then it is a no-op and the signature stays null`() {
+    fun `given markLoaded for an absent key, then it is a no-op and the content stays null`() {
         // Given
         val pool = MessageBodyWebViewPool(maxSize = 10)
 
         // When
-        pool.markLoaded("missing", "sig-A")
+        pool.markLoaded("missing", content("A"))
 
         // Then
-        assertNull(pool.loadedSignature("missing"))
+        assertNull(pool.loadedContent("missing"))
     }
 
     // endregion

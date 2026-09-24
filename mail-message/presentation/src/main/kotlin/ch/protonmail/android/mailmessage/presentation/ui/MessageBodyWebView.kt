@@ -240,10 +240,13 @@ fun MessageBodyWebView(
 
     val shouldRestrictHeight = messageBodyUiModel.shouldRestrictWebViewHeight && shouldAllowViewingEntireMessage
 
-    // Identifies the exact content currently in the WebView. If a pooled WebView already holds this
-    // signature, re-attaching it must not reload - that reload is the blank-and-repaint we are removing.
-    val contentSignature = remember(messageBodyUiModel.messageBody, messageBodyUiModel.viewModePreference) {
-        "${messageBodyUiModel.messageBody.hashCode()}:${messageBodyUiModel.viewModePreference}"
+    // The exact content the WebView should hold. If a pooled WebView already holds this content, re-attaching
+    // it must not reload - that reload is the blank-and-repaint we are removing.
+    val loadedContent = remember(messageBodyUiModel.messageBody, messageBodyUiModel.viewModePreference) {
+        MessageBodyWebViewPool.LoadedContent(
+            messageBodyUiModel.messageBody,
+            messageBodyUiModel.viewModePreference
+        )
     }
 
     LaunchedEffect(
@@ -251,7 +254,7 @@ fun MessageBodyWebView(
         messageBodyUiModel.messageBody,
         messageBodyUiModel.viewModePreference
     ) {
-        if (pool != null && pool.loadedSignature(messageId.id) == contentSignature) {
+        if (pool != null && pool.loadedContent(messageId.id) == loadedContent) {
             // Re-attached from the pool with identical content: skip the load. Mark it ready so the height
             // and reveal paths proceed without waiting for an onPageCommitVisible that will never come.
             Timber.d("WebViewPool: reattach key=%s (skip reload)", messageId.id)
@@ -268,7 +271,7 @@ fun MessageBodyWebView(
                 webView.loadUrl(localBodyUrl(messageId))
             }
         }
-        pool?.markLoaded(messageId.id, contentSignature)
+        pool?.markLoaded(messageId.id, loadedContent)
     }
 
     LaunchedEffect(messageId) {
