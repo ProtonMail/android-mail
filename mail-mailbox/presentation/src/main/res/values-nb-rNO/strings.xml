@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Avslutt valgmodus</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meny</string>
   <string name="mailbox_toolbar_search_button_content_description">Søk</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Avslutt søkemodus</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Nullstill søk</string>
   <string name="filter_unread_button_text">Ulest</string>
   <string name="include_spam_trash_text">Inkluder søppelpost/papirkurv</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Melding flyttet til papirkurven</string>
   <string name="mailbox_action_archive_message">Melding flyttet til arkivet</string>
   <string name="mailbox_action_spam_message">Melding flyttet til søppelpost</string>
-  <string name="mailbox_search_placeholder_text">Søk i meldinger</string>
-  <string name="mailbox_search_no_results_title">Ingen treff</string>
-  <string name="mailbox_search_no_results_explanation">Du kan enten oppdatere søket eller nullstille det.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Samtalen flyttet til %s</item>
     <item quantity="other">Samtaler flyttet til %s</item>

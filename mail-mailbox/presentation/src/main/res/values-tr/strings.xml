@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Seçim kipinden çık</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Arama</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Arama kipinden çık</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Arama sorgusunu temizle</string>
   <string name="filter_unread_button_text">Okunmamış</string>
   <string name="include_spam_trash_text">İstenmeyen/Çöp katılsın</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">İleti çöpe atıldı</string>
   <string name="mailbox_action_archive_message">İleti arşive taşındı</string>
   <string name="mailbox_action_spam_message">İleti İstenmeyen kutusuna taşındı</string>
-  <string name="mailbox_search_placeholder_text">İleti arama</string>
-  <string name="mailbox_search_no_results_title">Herhangi bir eşleşme yok</string>
-  <string name="mailbox_search_no_results_explanation">Arama sorgunuzu güncelleyebilir ya da temizleyebilirsiniz.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Yazışma %s klasörüne taşındı</item>
     <item quantity="other">Yazışmalar %s klasörüne taşındı</item>

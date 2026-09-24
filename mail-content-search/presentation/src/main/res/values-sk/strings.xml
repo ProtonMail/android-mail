@@ -49,6 +49,12 @@
   <string name="content_search_close_content_description">Zavrieť vyhľadávanie</string>
   <string name="content_search_first_run_description">Do vyhľadávania zadajte názov, tému alebo kľúčové slovo</string>
   <string name="content_search_results_title">Výsledky</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d výsledok</item>
+    <item quantity="few">%1$d výsledky</item>
+    <item quantity="many">%1$d výsledkov</item>
+    <item quantity="other">%1$d výsledkov</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Pre zobrazenie všetkých výsledkov zadajte 3 alebo viac znakov.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Nedávne vyhľadávania mailov</string>

@@ -49,6 +49,10 @@
   <string name="content_search_close_content_description">Suche schließen</string>
   <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Suche zu beginnen</string>
   <string name="content_search_results_title">Ergebnisse</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d Ergebnis</item>
+    <item quantity="other">%1$d Ergebnisse</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Geben Sie mindestens 3 Zeichen ein, um alle Ergebnisse anzuzeigen.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Letzte E-Mail-Suchanfragen</string>

@@ -49,6 +49,10 @@
   <string name="content_search_close_content_description">Luk søgning</string>
   <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at søge</string>
   <string name="content_search_results_title">Resultater</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d Resultat</item>
+    <item quantity="other">%1$d Resultater</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Indtast 3 eller flere tegn for at se alle resultater.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Seneste søgninger i mails</string>

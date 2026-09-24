@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Auswahlmodus beenden</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Suche</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Suchmodus beenden</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Suchanfrage löschen</string>
   <string name="filter_unread_button_text">Ungelesen</string>
   <string name="include_spam_trash_text">Spam/Papierkorb einschließen</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Nachricht in den Papierkorb verschoben</string>
   <string name="mailbox_action_archive_message">Nachricht ins Archiv verschoben</string>
   <string name="mailbox_action_spam_message">Nachricht in Spam verschoben</string>
-  <string name="mailbox_search_placeholder_text">Nachrichten durchsuchen</string>
-  <string name="mailbox_search_no_results_title">Keine Treffer</string>
-  <string name="mailbox_search_no_results_explanation">Du kannst deine Suchanfrage entweder aktualisieren oder löschen.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Unterhaltung nach „%s“ verschoben</item>
     <item quantity="other">Unterhaltungen nach „%s“ verschoben</item>

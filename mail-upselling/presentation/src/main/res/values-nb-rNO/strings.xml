@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Ikke vis dette tilbudet igjen</string>
   <string name="upselling_stay_on_mail_plus">Behold Mail Plus</string>
   <string name="upselling_pu_choose_plan">Velg abonnementet ditt</string>
+  <string name="upselling_pu_whats_included">Hva som er inkludert</string>
+  <string name="upselling_pu_cta">Skaff deg Proton Unlimited</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Ta personvernet ditt videre med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Beskytt kontoen mot trusler med Proton Sentinel</string>

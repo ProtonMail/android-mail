@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Poistu valintatilasta</string>
   <string name="mailbox_toolbar_menu_button_content_description">Valikko</string>
   <string name="mailbox_toolbar_search_button_content_description">Haku</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Poistu hakutilasta</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Tyhjennä hakusanat</string>
   <string name="filter_unread_button_text">Lukemattomat</string>
   <string name="include_spam_trash_text">Sisällytä roskaposti/roskakori</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Viesti siirrettiin roskakoriin</string>
   <string name="mailbox_action_archive_message">Viesti siirrettiin arkistoon</string>
   <string name="mailbox_action_spam_message">Viesti siirretiin roskapostiin</string>
-  <string name="mailbox_search_placeholder_text">Etsi viestejä</string>
-  <string name="mailbox_search_no_results_title">Ei tuloksia</string>
-  <string name="mailbox_search_no_results_explanation">Voit joko päivittää hakusi tai tyhjentää sen.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Keskustelu siirrettiin kohteeseen %s</item>
     <item quantity="other">Keskustelut siirretty kohteeseen %s</item>

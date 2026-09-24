@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Älä näytä tätä tarjousta uudelleen</string>
   <string name="upselling_stay_on_mail_plus">Jatka Mail Plussan käyttöä</string>
   <string name="upselling_pu_choose_plan">Valitse tilauksesi</string>
+  <string name="upselling_pu_whats_included">Sisältää</string>
+  <string name="upselling_pu_cta">Hanki Proton Unlimited</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Vie verkkoyksityisyyttäsi pidemmälle Proton Unlimitedilla</string>
   <string name="upselling_pu_threat_protection_title">Suojaa tilisi uhilta Proton Sentinelillä</string>

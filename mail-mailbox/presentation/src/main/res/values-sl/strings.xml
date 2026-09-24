@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Zapusti način izbire</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meni</string>
   <string name="mailbox_toolbar_search_button_content_description">Iskanje</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Zapustite način iskanja</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Počisti iskalno poizvedbo</string>
   <string name="filter_unread_button_text">Neprebrano</string>
   <string name="include_spam_trash_text">Vključi neželeno pošto in smetnjak</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -88,9 +86,6 @@
   <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
   <string name="mailbox_action_archive_message">Sporočilo premaknjeno v arhiv</string>
   <string name="mailbox_action_spam_message">Sporočilo premaknjeno v neželeno pošto.</string>
-  <string name="mailbox_search_placeholder_text">Išči sporočila</string>
-  <string name="mailbox_search_no_results_title">Ni ujemanj</string>
-  <string name="mailbox_search_no_results_explanation">Iskalno poizvedbo lahko spremenite ali jo izbrišete.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Pogovor je premaknjen v %s</item>
     <item quantity="two">Pogovora sta premaknjena v %s</item>

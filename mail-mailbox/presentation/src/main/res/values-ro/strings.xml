@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din mod selectare</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
   <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Ieșire din mod căutare</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Golire text căutat</string>
   <string name="filter_unread_button_text">Necitite</string>
   <string name="include_spam_trash_text">Includere mesaje din Nedorite/Gunoi</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -81,9 +79,6 @@
   <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi»</string>
   <string name="mailbox_action_archive_message">Mesajul a fost mutat în «Arhivă».</string>
   <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>
-  <string name="mailbox_search_placeholder_text">Căutare mesaje</string>
-  <string name="mailbox_search_no_results_title">Nicio potrivire</string>
-  <string name="mailbox_search_no_results_explanation">Puteți actualiza interogarea de căutare sau să o goliți.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Conversația a fost mutată în «%s».</item>
     <item quantity="few">Conversațiile au fost mutate în «%s».</item>

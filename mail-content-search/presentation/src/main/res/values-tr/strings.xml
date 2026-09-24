@@ -49,6 +49,10 @@
   <string name="content_search_close_content_description">Aramayı kapat</string>
   <string name="content_search_first_run_description">Aranacak bir ad, konu veya anahtar sözcük yazın</string>
   <string name="content_search_results_title">Sonuçlar</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d sonuç</item>
+    <item quantity="other">%1$d sonuç</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Tüm sonuçları görmek için 3 veya daha fazla karakter yazın.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Son e-posta aramaları</string>

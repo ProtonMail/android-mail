@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
   <string name="upselling_stay_on_mail_plus">继续使用 Mail Plus</string>
   <string name="upselling_pu_choose_plan">选择您的套餐</string>
+  <string name="upselling_pu_whats_included">包含内容</string>
+  <string name="upselling_pu_cta">开通 Proton Unlimited</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">使用 Proton Unlimited，进一步提升在线隐私</string>
   <string name="upselling_pu_threat_protection_title">使用 Proton Sentinel 保护您的帐户免受威胁</string>

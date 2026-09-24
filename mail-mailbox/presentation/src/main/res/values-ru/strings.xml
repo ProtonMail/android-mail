@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выход из режима выбора</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Выйти из режима поиска</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
   <string name="filter_unread_button_text">Непрочитанные</string>
   <string name="include_spam_trash_text">Включая спам/корзину</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -88,9 +86,6 @@
   <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
   <string name="mailbox_action_archive_message">Сообщение перемещено в архив</string>
   <string name="mailbox_action_spam_message">Сообщение перемещено в спам</string>
-  <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
-  <string name="mailbox_search_no_results_title">Совпадений не найдено</string>
-  <string name="mailbox_search_no_results_explanation">Вы можете изменить свой поисковый запрос либо удалить его.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Цепочка писем перемещена в %s</item>
     <item quantity="few">Цепочки писем перемещены в %s</item>

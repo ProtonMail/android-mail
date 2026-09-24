@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">退出選取模式</string>
   <string name="mailbox_toolbar_menu_button_content_description">選單</string>
   <string name="mailbox_toolbar_search_button_content_description">搜尋</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜尋模式</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜尋欄</string>
   <string name="filter_unread_button_text">未讀</string>
   <string name="include_spam_trash_text">包含垃圾郵件/垃圾桶</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -67,9 +65,6 @@
   <string name="mailbox_action_trash_message">郵件已移至垃圾桶</string>
   <string name="mailbox_action_archive_message">郵件已移至封存</string>
   <string name="mailbox_action_spam_message">郵件已移至垃圾郵件</string>
-  <string name="mailbox_search_placeholder_text">搜尋訊息</string>
-  <string name="mailbox_search_no_results_title">無相符項目</string>
-  <string name="mailbox_search_no_results_explanation">您可以更新您的搜尋內容或清除。</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="other">對話已移至 %s</item>
   </plurals>

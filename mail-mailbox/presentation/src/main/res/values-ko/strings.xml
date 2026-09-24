@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">선택 모드 나가기</string>
   <string name="mailbox_toolbar_menu_button_content_description">메뉴</string>
   <string name="mailbox_toolbar_search_button_content_description">검색</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">검색 모드 나가기</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">검색 쿼리 삭제</string>
   <string name="filter_unread_button_text">읽지 않음</string>
   <string name="include_spam_trash_text">스팸 및 휴지통 포함</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -67,9 +65,6 @@
   <string name="mailbox_action_trash_message">메시지가 휴지통으로 이동되었습니다</string>
   <string name="mailbox_action_archive_message">메시지가 보관함으로 이동되었습니다</string>
   <string name="mailbox_action_spam_message">메시지가 스팸함으로 이동되었습니다</string>
-  <string name="mailbox_search_placeholder_text">메시지 검색</string>
-  <string name="mailbox_search_no_results_title">일치하는 항목 없음</string>
-  <string name="mailbox_search_no_results_explanation">검색 쿼리를 업데이트 및 삭제할 수 있습니다.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="other">대화가 %s(으)로 이동함</item>
   </plurals>

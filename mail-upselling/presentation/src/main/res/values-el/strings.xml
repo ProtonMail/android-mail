@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Να μην εμφανιστεί ξανά αυτή η προσφορά</string>
   <string name="upselling_stay_on_mail_plus">Μείνετε στο Mail Plus</string>
   <string name="upselling_pu_choose_plan">Επιλέξτε το πλάνο σας</string>
+  <string name="upselling_pu_whats_included">Τι περιλαμβάνεται</string>
+  <string name="upselling_pu_cta">Αποκτήστε το Proton Unlimited</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Αναβαθμίστε την ιδιωτικότητά σας στο διαδίκτυο με το Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Προστατέψτε τον λογαριασμό σας από απειλές με το Proton Sentinel</string>
