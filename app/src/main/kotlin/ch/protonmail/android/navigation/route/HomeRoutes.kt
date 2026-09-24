@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -50,7 +51,9 @@ import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactList
 import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearchScreen
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreen
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreenActions
+import ch.protonmail.android.mailcontentsearch.presentation.ui.DECLINE_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
+import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchSetUpPromptViewModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -458,6 +461,18 @@ internal fun NavGraphBuilder.addContentSearchScreen(
             if (navRequest) {
                 turnOnRequested = true
                 entry.savedStateHandle[TURN_ON_CONTENT_SEARCH_KEY] = false
+            }
+        }
+
+        // Same instance as the screen's own, as both are scoped to this back stack entry.
+        val setUpPromptViewModel: ContentSearchSetUpPromptViewModel = hiltViewModel()
+        val declineRequest by entry.savedStateHandle
+            .getStateFlow(DECLINE_CONTENT_SEARCH_KEY, false)
+            .collectAsStateWithLifecycle()
+        LaunchedEffect(declineRequest) {
+            if (declineRequest) {
+                setUpPromptViewModel.declineSetUp()
+                entry.savedStateHandle[DECLINE_CONTENT_SEARCH_KEY] = false
             }
         }
 

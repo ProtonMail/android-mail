@@ -19,8 +19,12 @@
 package ch.protonmail.android.feature.contentsearch
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.EnableContentSearch
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchAllowedOnMobileData
 import ch.protonmail.android.mailcontentsearch.domain.usecase.SetAllowContentSearchOnMobileData
@@ -58,6 +62,9 @@ internal class HomeContentSearchBottomSheetViewModelTest {
     }
     private val mockStartContentIndexingForUser = mockk<StartContentIndexingForUser> {
         coEvery { this@mockk.invoke(userId) } returns ContentIndexingStartOutcome.Started.right()
+    }
+    private val mockDismissContentSearchPrompt = mockk<DismissContentSearchPrompt> {
+        coEvery { this@mockk.invoke(userId, ContentSearchPrompt.SetUpOffer) } returns Unit.right()
     }
 
     @Test
@@ -141,11 +148,37 @@ internal class HomeContentSearchBottomSheetViewModelTest {
         coVerify(exactly = 1) { mockStartContentIndexingForUser(userId) }
     }
 
+    @Test
+    fun `enabling for the primary user answers the search screen's set-up offer`() = runTest {
+        // Given
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.submit(HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser)
+
+        // Then
+        coVerify(exactly = 1) { mockDismissContentSearchPrompt(userId, ContentSearchPrompt.SetUpOffer) }
+    }
+
+    @Test
+    fun `failing to enable leaves the set-up offer unanswered`() = runTest {
+        // Given
+        coEvery { mockEnableContentSearch(userId) } returns DataError.Local.Unknown.left()
+        val viewModel = buildViewModel()
+
+        // When
+        viewModel.submit(HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser)
+
+        // Then
+        coVerify(exactly = 0) { mockDismissContentSearchPrompt(any(), any()) }
+    }
+
     private fun buildViewModel() = HomeContentSearchBottomSheetViewModel(
         observePrimaryUserId = mockObservePrimaryUserId,
         isContentSearchAllowedOnMobileData = mockIsContentSearchAllowedOnMobileData,
         setAllowContentSearchOnMobileData = mockSetAllowContentSearchOnMobileData,
         enableContentSearch = mockEnableContentSearch,
-        startContentIndexingForUser = mockStartContentIndexingForUser
+        startContentIndexingForUser = mockStartContentIndexingForUser,
+        dismissContentSearchPrompt = mockDismissContentSearchPrompt
     )
 }

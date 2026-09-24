@@ -50,6 +50,13 @@ data class OpenSearchResultRequest(
  */
 const val TURN_ON_CONTENT_SEARCH_KEY = "turnOnContentSearch"
 
+/**
+ * Key the set-up page leaves on the search screen's back stack entry when the user taps "Not now".
+ *
+ * It answers the set-up banner for good.
+ */
+const val DECLINE_CONTENT_SEARCH_KEY = "declineContentSearch"
+
 data class ContentSearchScreenActions(
     val onClose: () -> Unit,
     val onOpenItem: (request: OpenSearchResultRequest) -> Unit,
