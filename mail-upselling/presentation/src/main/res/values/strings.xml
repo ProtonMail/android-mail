@@ -40,6 +40,8 @@
     <string name="upselling_do_not_show_again">Do not show this offer again</string>
     <string name="upselling_stay_on_mail_plus">Stay on Mail Plus</string>
     <string name="upselling_pu_choose_plan">Choose your plan</string>
+    <string name="upselling_pu_whats_included">What\'s included</string>
+    <string name="upselling_pu_cta">Get Proton Unlimited</string>
 
     <!-- Upselling: Plus to Unlimited themed titles -->
     <string name="upselling_pu_generic_title">Take your online privacy further with Proton Unlimited</string>

@@ -185,6 +185,8 @@ object UpsellingLayoutValues {
 
     object PlusUnlimited {
 
+        val highlightBarShape = RoundedCornerShape(16.dp)
+
         private val separatorColor = BlueInteractionNorm.copy(alpha = 0.8f)
 
         val separatorBrush = Brush.horizontalGradient(

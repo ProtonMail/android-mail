@@ -158,7 +158,9 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
         assertEquals(
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
                 items = ComparisonTableEntitlements.PlusToUnlimitedEntitlements,
-                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan),
+                titleLabel = TextUiModel.TextRes(R.string.upselling_pu_whats_included),
+                paidColumnLabel = TextUiModel.TextRes(R.string.upselling_unlimited_plan)
             ),
             actual
         )
