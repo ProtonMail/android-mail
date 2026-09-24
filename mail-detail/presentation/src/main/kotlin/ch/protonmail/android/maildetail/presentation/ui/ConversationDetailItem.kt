@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
@@ -46,13 +47,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.theme.ProtonDimens
@@ -112,6 +120,11 @@ fun ConversationDetailItem(
         onAvatarImageLoadRequested = actions.onAvatarImageLoadRequested
     )
     val cardShape = if (isLastMessage) ProtonTheme.shapes.large else ProtonTheme.shapes.conversation
+    val cardClipShape = if (isLastMessage) {
+        ProtonTheme.shapes.large
+    } else {
+        TopRoundedClipShape(ProtonTheme.shapes.conversation)
+    }
     // The bottom padding exists so the next card can overlap into it via the -32.dp stacking arrangement. The last
     // card has nothing stacked below it, so it only needs the header Row's own vertical padding - otherwise it shows
     // a large empty gap at the bottom.
@@ -119,7 +132,7 @@ fun ConversationDetailItem(
 
     when (uiModel) {
         is Collapsed -> {
-            ConversationDetailCard(shape = cardShape, modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, clipShape = cardClipShape, modifier = modifier) {
                 ConversationDetailCollapsedMessageHeader(
                     uiModel = uiModel,
                     avatarActions = avatarActions,
@@ -136,7 +149,7 @@ fun ConversationDetailItem(
         }
 
         is Expanding -> {
-            ConversationDetailCard(shape = cardShape, modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, clipShape = cardClipShape, modifier = modifier) {
                 ConversationDetailExpandingItem(
                     uiModel = uiModel,
                     avatarActions = avatarActions
@@ -145,7 +158,7 @@ fun ConversationDetailItem(
         }
 
         is Expanded -> {
-            ConversationDetailCard(shape = cardShape, modifier = modifier) {
+            ConversationDetailCard(shape = cardShape, clipShape = cardClipShape, modifier = modifier) {
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
@@ -160,9 +173,20 @@ fun ConversationDetailItem(
     }
 }
 
+/**
+ * Draws the card border and shadow with [shape], and clips the content with [clipShape].
+ *
+ * The two shapes differ on purpose. Compose hit-tests a clipped layer against its outline. A round rect with mixed
+ * radii (rounded top, square bottom) becomes a path outline. Path hit-testing drops taps on tall layers, so the
+ * bottom of a long message and its Reply/Forward buttons stop responding (google issue 429387112 / ET-4775).
+ *
+ * The shadow does not clip, so it can keep the path outline. The seam corners stay square and transparent, so
+ * stacked cards keep a continuous vertical border.
+ */
 @Composable
 private fun ConversationDetailCard(
     shape: Shape,
+    clipShape: Shape,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -174,12 +198,6 @@ private fun ConversationDetailCard(
                 color = ProtonTheme.colors.borderNorm,
                 shape = shape
             )
-            // The .shadow() modifier both draws the shadow and clips the card to `shape` (clip defaults to true for a
-            // non-zero elevation). Clipping here - rather than via the ElevatedCard `shape` param - is deliberate:
-            // a non-uniform shape (rounded top, square bottom) on the Card itself breaks touch handling on long
-            // messages (Reply/Reply all become unresponsive, google issue 429387112 / ET-4775). A modifier-level clip
-            // leaves the seam corners square AND transparent, so stacked cards keep a continuous vertical border
-            // (this replaces the old opaque-background Box hack that painted over the previous card's border).
             .shadow(
                 elevation = if (isSystemInDarkTheme()) {
                     ProtonDimens.ShadowElevation.Raised
@@ -187,9 +205,11 @@ private fun ConversationDetailCard(
                     ProtonDimens.ShadowElevation.Lifted
                 },
                 shape = shape,
+                clip = false,
                 ambientColor = ProtonTheme.colors.shadowSoft,
                 spotColor = ProtonTheme.colors.shadowSoft
-            ),
+            )
+            .clip(clipShape),
         shape = RectangleShape,
         colors = CardDefaults.elevatedCardColors(
             containerColor = ProtonTheme.colors.backgroundNorm
@@ -202,6 +222,33 @@ private fun ConversationDetailCard(
         ),
         content = content
     )
+}
+
+/**
+ * Clips to rounded top corners and square bottom corners, while keeping a simple round rect outline.
+ *
+ * The radius is the top-start radius of [shape], so the clip always matches the border and shadow.
+ * All four radii are equal, which keeps Compose on the round rect hit-test instead of the path hit-test.
+ * The bottom edge sits one radius below the layout bounds, so the bottom corners fall outside the card.
+ */
+private data class TopRoundedClipShape(private val shape: CornerBasedShape) : Shape {
+
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        val radius = shape.topStart.toPx(size, density)
+        return Outline.Rounded(
+            RoundRect(
+                left = 0f,
+                top = 0f,
+                right = size.width,
+                bottom = size.height + radius,
+                cornerRadius = CornerRadius(radius)
+            )
+        )
+    }
 }
 
 @Composable
