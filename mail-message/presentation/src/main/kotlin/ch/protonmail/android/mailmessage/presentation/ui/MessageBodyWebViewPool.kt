@@ -21,6 +21,8 @@ package ch.protonmail.android.mailmessage.presentation.ui
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.compose.runtime.staticCompositionLocalOf
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyContent
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import timber.log.Timber
 
 /**
@@ -44,7 +46,13 @@ class MessageBodyWebViewPool(
     private val maxSize: Int = DEFAULT_MAX_SIZE
 ) {
 
-    private data class Entry(val webView: ZoomableWebView, val loadedSignature: String?)
+    private data class Entry(val webView: ZoomableWebView, val loadedContent: LoadedContent?)
+
+    /**
+     * The message content a pooled WebView currently holds. Compared by value on re-attach: if it matches the
+     * content about to be shown, the load is skipped (that reload is the blank-and-repaint the pool removes).
+     */
+    data class LoadedContent(val body: MessageBodyContent, val viewModePreference: ViewModePreference)
 
     // accessOrder = true makes iteration order least-recently-accessed first, so the eldest entry to evict
     // is always the first one.
@@ -67,19 +75,19 @@ class MessageBodyWebViewPool(
         entries[key]?.let { return it.webView }
 
         val webView = create()
-        entries[key] = Entry(webView, loadedSignature = null)
+        entries[key] = Entry(webView, loadedContent = null)
         evictIfNeeded(protectedKey = key)
         Timber.d("WebViewPool: create key=%s size=%d/%d", key, entries.size, maxSize)
         return webView
     }
 
-    /** The content signature last loaded into [key]'s WebView, or null if it has never been loaded. */
-    fun loadedSignature(key: String): String? = entries[key]?.loadedSignature
+    /** The content last loaded into [key]'s WebView, or null if it has never been loaded. */
+    fun loadedContent(key: String): LoadedContent? = entries[key]?.loadedContent
 
-    /** Records that [key]'s WebView now holds the content described by [signature]. */
-    fun markLoaded(key: String, signature: String) {
+    /** Records that [key]'s WebView now holds the given [content]. */
+    fun markLoaded(key: String, content: LoadedContent) {
         val existing = entries[key] ?: return
-        entries[key] = existing.copy(loadedSignature = signature)
+        entries[key] = existing.copy(loadedContent = content)
     }
 
     /**
