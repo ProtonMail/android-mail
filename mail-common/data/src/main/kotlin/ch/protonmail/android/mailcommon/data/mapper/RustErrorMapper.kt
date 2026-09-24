@@ -28,6 +28,7 @@ import uniffi.mail_uniffi.ProtonError
 import uniffi.mail_uniffi.SearchRecentsError
 import uniffi.mail_uniffi.SessionReason
 import uniffi.mail_uniffi.UserSessionError
+import uniffi.mail_uniffi_common.UserApiServiceError
 
 fun UserSessionError.toDataError(): DataError = when (this) {
     is UserSessionError.Other -> this.v1.toDataError()
@@ -69,9 +70,17 @@ fun SearchRecentsError.toDataError(): DataError = when (this) {
 fun ProtonError.toDataError(): DataError = when (this) {
     is ProtonError.Network -> DataError.Remote.NoNetwork
     is ProtonError.OtherReason -> this.toDataError()
-    is ProtonError.ServerError -> DataError.Remote.ServerError
+    is ProtonError.ServerError -> this.toDataError()
     is ProtonError.Unexpected -> DataError.Local.Unknown
     is ProtonError.NonProcessableActions -> DataError.Local.UnsupportedOperation
+}
+
+// Keeps the 4xx errors that mean the request itself was rejected, so callers can tell them apart
+// from the server failing.
+fun ProtonError.ServerError.toDataError() = when (this.v1) {
+    is UserApiServiceError.BadRequest -> DataError.Remote.BadRequest
+    is UserApiServiceError.UnprocessableEntity -> DataError.Remote.UnprocessableEntity
+    else -> DataError.Remote.ServerError
 }
 
 fun ProtonError.OtherReason.toDataError() = when (val error = this.v1) {

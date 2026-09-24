@@ -78,6 +78,9 @@ data class ContentSearchState(
          * header displays. It is null until Rust has answered, and again whenever it cannot.
          */
         data class Results(val count: Int, val totalCount: Int? = null) : Phase
+
+        /** The search could not run. The user can retry it. */
+        data object Failed : Phase
     }
 
     companion object {

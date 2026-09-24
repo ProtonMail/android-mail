@@ -67,6 +67,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -683,6 +684,54 @@ internal class ContentSearchViewModelTest {
         advanceUntilIdle()
 
         assertEquals(ContentSearchState.Phase.Results(count = 100, totalCount = 300), sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should show no results when the server rejects the query`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("%%%")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.SearchFailed(PaginationError.Other(DataError.Remote.BadRequest)))
+        advanceUntilIdle()
+
+        assertEquals(ContentSearchState.Phase.Results(count = 0), sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should show the failed state when the search fails for another reason`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.SearchFailed(PaginationError.Other(DataError.Remote.ServerError)))
+        advanceUntilIdle()
+
+        assertEquals(ContentSearchState.Phase.Failed, sut.state.value.phase)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should reload and go back to loading when a failed search is run again`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+        sut.submit(ContentSearchViewAction.SearchFailed(PaginationError.Offline))
+        advanceUntilIdle()
+
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+
+        assertNotNull(sut.state.value.reloadResults.consume())
+        assertEquals(ContentSearchState.Phase.Loading, sut.state.value.phase)
         collectingItems.cancel()
     }
 

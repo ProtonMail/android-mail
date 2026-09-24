@@ -22,6 +22,7 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiMo
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 
 sealed interface ContentSearchViewAction {
 
@@ -37,6 +38,9 @@ sealed interface ContentSearchViewAction {
     data object TurnOnContentSearchRequested : ContentSearchViewAction
 
     data class ResultsLoaded(val count: Int) : ContentSearchViewAction
+
+    /** [error] is null when the failure did not come from the paginator. */
+    data class SearchFailed(val error: PaginationError?) : ContentSearchViewAction
 
     data class StarAction(val itemId: String, val isStarred: Boolean) : ContentSearchViewAction
 
