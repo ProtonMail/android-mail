@@ -88,7 +88,10 @@ internal fun ContentSearchNoResultsState(
         descriptionStyle = ProtonTheme.typography.bodyLargeHint,
         action = if (canSetUpContentSearch) {
             {
-                SetUpContentSearchButton(onClick = actions.onSetUpContentSearch)
+                PillButton(
+                    text = stringResource(R.string.content_search_no_results_set_up_action),
+                    onClick = actions.onSetUpContentSearch
+                )
             }
         } else {
             null
@@ -101,8 +104,32 @@ internal data class ContentSearchNoResultsActions(
     val onSetUpContentSearch: () -> Unit
 )
 
+/** The state shown when a search could not run, with a way to run it again. */
 @Composable
-private fun SetUpContentSearchButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun ContentSearchFailedState(
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+    bannerHeight: Dp = 0.dp
+) {
+    SearchMessageState(
+        bannerHeight = bannerHeight,
+        iconRes = R.drawable.ic_search_empty_result,
+        title = stringResource(R.string.content_search_failed_title),
+        description = AnnotatedString(stringResource(R.string.content_search_failed_description)),
+        modifier = modifier,
+        descriptionStyle = ProtonTheme.typography.bodyLargeHint,
+        action = {
+            PillButton(text = stringResource(R.string.content_search_failed_retry), onClick = onRetry)
+        }
+    )
+}
+
+@Composable
+private fun PillButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     // The button owns its shape rather than drawing a rounded background behind it, so the ripple
     // is clipped to the pill instead of spilling into a rectangle.
     ProtonSecondaryButton(
@@ -115,7 +142,7 @@ private fun SetUpContentSearchButton(onClick: () -> Unit, modifier: Modifier = M
         )
     ) {
         Text(
-            text = stringResource(R.string.content_search_no_results_set_up_action),
+            text = text,
             style = ProtonTheme.typography.labelLarge
         )
     }
@@ -295,5 +322,14 @@ private fun NoResultsStateWithSetUpPreview() {
             canSetUpContentSearch = true,
             actions = ContentSearchNoResultsActions(onLearnMore = {}, onSetUpContentSearch = {})
         )
+    }
+}
+
+@Preview(name = "Search failed", showBackground = true)
+@Preview(name = "Search failed \u00b7 dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun FailedStatePreview() {
+    ProtonTheme {
+        ContentSearchFailedState(onRetry = {})
     }
 }

@@ -20,12 +20,14 @@ package ch.protonmail.android.mailcontentsearch.presentation.reducer
 
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentDownloadState
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import javax.inject.Inject
 
 class ContentSearchReducer @Inject constructor(
@@ -87,7 +89,8 @@ class ContentSearchReducer @Inject constructor(
 
             is ContentSearchOperation.ShowError -> currentState.copy(errorMessage = Effect.of(operation.message))
 
-            ContentSearchOperation.ReloadResults -> currentState.copy(reloadResults = Effect.of(Unit))
+            ContentSearchOperation.ReloadResults -> currentState.reloaded()
+            is ContentSearchOperation.SearchFailed -> currentState.withFailedSearch(operation.error)
 
             is ContentSearchOperation.AvatarImagesUpdated ->
                 currentState.copy(avatarImages = operation.avatarImages)
@@ -138,3 +141,24 @@ private fun ContentSearchState.withAttachmentDownload(state: AttachmentDownloadS
     openAttachment = state.openAttachment,
     errorMessage = state.error
 )
+
+// Reloading a failed search shows the loading page, as the failure no longer describes what is on screen.
+private fun ContentSearchState.reloaded() = copy(
+    reloadResults = Effect.of(Unit),
+    phase = if (phase == ContentSearchState.Phase.Failed) ContentSearchState.Phase.Loading else phase
+)
+
+// A rejected query shows as no results, as retrying it cannot help. Other failures offer a retry.
+private fun ContentSearchState.withFailedSearch(error: PaginationError?) = copy(
+    phase = if (error.isQueryRejected()) {
+        ContentSearchState.Phase.Results(count = 0)
+    } else {
+        ContentSearchState.Phase.Failed
+    }
+)
+
+// The server answers a query it cannot parse, such as one made only of symbols, with a bad request.
+private fun PaginationError?.isQueryRejected(): Boolean {
+    val dataError = (this as? PaginationError.Other)?.error
+    return dataError == DataError.Remote.BadRequest || dataError == DataError.Remote.UnprocessableEntity
+}

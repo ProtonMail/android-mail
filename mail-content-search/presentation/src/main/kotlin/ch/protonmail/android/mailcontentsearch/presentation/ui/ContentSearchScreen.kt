@@ -96,9 +96,11 @@ import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSea
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.IndexingProgressViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.RecentSearchesViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxSkeletonLoading
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.PaginationErrorException
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.flowOf
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 // Below this length, results may be incomplete, so the results list shows a hint about it.
@@ -136,8 +138,15 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     }
 
     LaunchedEffect(items.itemCount, items.loadState.refresh) {
-        if (items.loadState.refresh is LoadState.NotLoading) {
-            viewModel.submit(ContentSearchViewAction.ResultsLoaded(items.itemCount))
+        when (val refresh = items.loadState.refresh) {
+            is LoadState.NotLoading -> viewModel.submit(ContentSearchViewAction.ResultsLoaded(items.itemCount))
+            is LoadState.Error -> {
+                Timber.w(refresh.error, "Content search: results failed to load")
+                val error = (refresh.error as? PaginationErrorException)?.error
+                viewModel.submit(ContentSearchViewAction.SearchFailed(error))
+            }
+
+            is LoadState.Loading -> Unit
         }
     }
 
@@ -399,7 +408,8 @@ private fun ContentSearchScreen(
     val recentsListState = rememberLazyListState()
     val scrollingList = when (val phase = state.phase) {
         ContentSearchState.Phase.Idle -> recentsListState.takeIf { recentsState is RecentSearchesState.Data }
-        ContentSearchState.Phase.Loading -> null
+        ContentSearchState.Phase.Loading,
+        ContentSearchState.Phase.Failed -> null
         is ContentSearchState.Phase.Results -> resultsListState.takeIf { phase.count > 0 }
     }
 
@@ -571,6 +581,20 @@ private fun ContentSearchBody(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
         ) {
             MailboxSkeletonLoading()
+        }
+
+        ContentSearchState.Phase.Failed -> PageWithIndexingBanner(
+            indexingState = indexingState,
+            onSeeDetailsClick = actions.onSeeIndexingDetails,
+            modifier = modifier
+        ) { pageModifier, bannerHeight ->
+            // Searching the same query again reloads it, so the retry is the search action.
+            ContentSearchFailedState(
+                onRetry = actions.onSearch,
+                bannerHeight = bannerHeight,
+                modifier = pageModifier
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+            )
         }
 
         is ContentSearchState.Phase.Results -> if (phase.count == 0) {

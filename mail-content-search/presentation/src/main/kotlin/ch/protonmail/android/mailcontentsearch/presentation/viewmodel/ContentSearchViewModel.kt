@@ -341,6 +341,7 @@ class ContentSearchViewModel @Inject constructor(
             ContentSearchViewAction.TurnOnContentSearchRequested -> clearQuery()
             ContentSearchViewAction.ToggleIncludeSpamTrash -> toggleInclude()
             is ContentSearchViewAction.ResultsLoaded -> onResultsLoaded(action.count)
+            is ContentSearchViewAction.SearchFailed -> applyOperation(ContentSearchOperation.SearchFailed(action.error))
             is ContentSearchViewAction.StarAction -> handleStarAction(action)
             is ContentSearchViewAction.AvatarImageLoadRequested -> action.item.participantAvatar()?.let { avatar ->
                 viewModelScope.launch { loadAvatarImage(avatar.address, avatar.bimiSelector) }

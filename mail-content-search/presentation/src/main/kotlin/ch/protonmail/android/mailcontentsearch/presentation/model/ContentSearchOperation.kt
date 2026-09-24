@@ -25,11 +25,12 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmessage.presentation.model.AvatarImagesUiModel
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 
 /**
- * Pure state transitions for content-search selection mode and the bottom action toolbar,
- * applied by [ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer].
- * Search-driving transitions (query/phase) remain in the view model as they are paging-coupled.
+ * Pure state transitions for content-search selection mode, the bottom action toolbar and a failed
+ * search, applied by [ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer].
+ * Starting a search and reading its results remain in the view model, as they are paging-coupled.
  */
 sealed interface ContentSearchOperation {
 
@@ -60,6 +61,9 @@ sealed interface ContentSearchOperation {
     data class ShowError(val message: TextUiModel) : ContentSearchOperation
 
     data object ReloadResults : ContentSearchOperation
+
+    /** [error] is null when the failure did not come from the paginator. */
+    data class SearchFailed(val error: PaginationError?) : ContentSearchOperation
 
     data class AvatarImagesUpdated(val avatarImages: AvatarImagesUiModel) : ContentSearchOperation
 
