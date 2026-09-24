@@ -26,6 +26,7 @@ import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellExperiment
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -43,8 +44,10 @@ import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTrigger
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.domain.usecase.RecordPlusToUnlimitedOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
+import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
 import ch.protonmail.android.mailupselling.presentation.UpsellingContentReducer
 import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
+import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
@@ -54,6 +57,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScree
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -85,6 +89,7 @@ internal class UpsellingViewModel @Inject constructor(
     private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository,
     private val resolveActiveUpsellTheme: ResolveActiveUpsellTheme,
     private val recordPlusToUnlimitedOptOut: RecordPlusToUnlimitedOptOut,
+    private val resolvePlanBeforeUpgrade: ResolvePlanBeforeUpgrade,
     @IsSdkUpgradesPurchaseEnabled private val sdkPurchaseEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -93,8 +98,18 @@ internal class UpsellingViewModel @Inject constructor(
     private val mutableState = MutableStateFlow<UpsellingScreenContentState>(Loading)
     val state = mutableState.asStateFlow()
 
+    private var activeTheme: UpsellContentTheme? = null
+    private val planBeforeUpgrade = viewModelScope.async { resolvePlanBeforeUpgrade() }
+
     private val currentOfferId: String?
         get() = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant?.toOfferId()
+
+    private val experimentFlagKey
+        get() = if (entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited) {
+            PlusToUnlimitedUpsellExperiment.key
+        } else {
+            UpsellPlanExperiment.key
+        }
 
     val entryPoint = savedStateHandle
         .get<String>(UpsellingEntryPointKey)
@@ -122,6 +137,7 @@ internal class UpsellingViewModel @Inject constructor(
             } else {
                 null
             }
+            activeTheme = theme
 
             emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint, theme))
             appEventBroadcaster.emit(AppEvent.SubscriptionPaywallShown)
@@ -179,12 +195,12 @@ internal class UpsellingViewModel @Inject constructor(
                     upsellingTelemetryPayload.isIntroOffer,
                     upsellingTelemetryPayload.upsellIsPromotional
                 ),
-                planBeforeUpgrade = FREE_PLAN,
+                planBeforeUpgrade = planBeforeUpgrade.await(),
                 modalVariant = upsellingTelemetryPayload.modalVariant,
                 upsellExperimentFlag = UpsellExperimentFlag(
-                    flagName = UpsellPlanExperiment.key
+                    flagName = experimentFlagKey
                 ),
-                promoCampaign = currentOfferId
+                promoCampaign = currentOfferId ?: activeTheme?.telemetryId
             ),
             PlanSpecificDimensions(
                 selectedPlan = upsellingTelemetryPayload.selectedPlan,
@@ -227,5 +243,3 @@ internal class UpsellingViewModel @Inject constructor(
         mutableState.update { upsellingContentReducer.newStateFrom(operation) }
     }
 }
-
-private const val FREE_PLAN = "Free plan"
