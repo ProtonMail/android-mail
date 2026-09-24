@@ -29,7 +29,9 @@ sealed interface PlanUpgradeEntitlementsListUiModel {
 
     data class ComparisonTableList(
         val items: List<ComparisonTableEntitlementItemUiModel>,
-        val baseColumnLabel: TextUiModel = TextUiModel.TextRes(R.string.upselling_free_plan)
+        val baseColumnLabel: TextUiModel = TextUiModel.TextRes(R.string.upselling_free_plan),
+        val titleLabel: TextUiModel? = null,
+        val paidColumnLabel: TextUiModel? = null
     ) : PlanUpgradeEntitlementsListUiModel
 }
 
