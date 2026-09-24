@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Вийти з режиму вибору</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Вийти з режиму пошуку</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
   <string name="filter_unread_button_text">Непрочитані</string>
   <string name="include_spam_trash_text">Включити Спам / Смітник</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -88,9 +86,6 @@
   <string name="mailbox_action_trash_message">Повідомлення переміщено до смітника</string>
   <string name="mailbox_action_archive_message">Повідомлення переміщено до архіву</string>
   <string name="mailbox_action_spam_message">Повідомлення переміщено до спаму</string>
-  <string name="mailbox_search_placeholder_text">Пошук повідомлень</string>
-  <string name="mailbox_search_no_results_title">Немає збігів</string>
-  <string name="mailbox_search_no_results_explanation">Ви можете оновити пошуковий запит або очистити його.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Розмову переміщено до %s</item>
     <item quantity="few">Розмови переміщено до %s</item>

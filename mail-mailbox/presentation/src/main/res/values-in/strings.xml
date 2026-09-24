@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Keluar mode pemilihan</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cari</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Keluar dari mode pencarian</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Hapus kueri pencarian</string>
   <string name="filter_unread_button_text">Belum dibaca</string>
   <string name="include_spam_trash_text">Sertakan Spam/Sampah</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -67,9 +65,6 @@
   <string name="mailbox_action_trash_message">Pesan dipindahkan ke sampah</string>
   <string name="mailbox_action_archive_message">Pesan dipindahkan ke arsip</string>
   <string name="mailbox_action_spam_message">Pesan dipindahkan ke spam</string>
-  <string name="mailbox_search_placeholder_text">Cari pesan</string>
-  <string name="mailbox_search_no_results_title">Tidak ada kecocokan</string>
-  <string name="mailbox_search_no_results_explanation">Anda dapat memperbarui atau menghapus kueri pencarian Anda.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="other">Percakapan dipindahkan ke %s</item>
   </plurals>

@@ -49,6 +49,11 @@
   <string name="content_search_close_content_description">Închidere căutare</string>
   <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a căuta.</string>
   <string name="content_search_results_title">Rezultate</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">Rezultate: %1$d</item>
+    <item quantity="few">Rezultate: %1$d</item>
+    <item quantity="other">Rezultate: %1$d</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Pentru a vedea rezultate, scrieți trei sau mai multe caractere.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Căutări recente în mesaje</string>

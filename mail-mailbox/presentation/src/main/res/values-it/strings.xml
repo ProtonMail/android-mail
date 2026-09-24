@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Chiudi la modalità di selezione</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Chiudi la modalità di ricerca</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
   <string name="filter_unread_button_text">Non letto</string>
   <string name="include_spam_trash_text">Includi spam/cestino</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Messaggio spostato nel cestino</string>
   <string name="mailbox_action_archive_message">Messaggio spostato nell\'archivio</string>
   <string name="mailbox_action_spam_message">Messaggio spostato in spam</string>
-  <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
-  <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
-  <string name="mailbox_search_no_results_explanation">Prova con una ricerca diversa</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Conversazione spostata in %s</item>
     <item quantity="other">Conversazioni spostate in %s</item>

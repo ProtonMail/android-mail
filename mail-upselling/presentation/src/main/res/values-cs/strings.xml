@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Tuto nabídku již nezobrazovat</string>
   <string name="upselling_stay_on_mail_plus">Ponechat Mail Plus</string>
   <string name="upselling_pu_choose_plan">Vyberte svůj tarif</string>
+  <string name="upselling_pu_whats_included">Co je v ceně</string>
+  <string name="upselling_pu_cta">Získejte Proton Unlimited</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Zvyšte úroveň svého online soukromí s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chraňte svůj účet před hrozbami pomocí programu Proton Sentinel</string>

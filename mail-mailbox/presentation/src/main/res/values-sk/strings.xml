@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Opustiť režim vyhľadávania</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
   <string name="filter_unread_button_text">Neprečítané</string>
   <string name="include_spam_trash_text">Zahrnúť Spam/Kôš</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -88,9 +86,6 @@
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
   <string name="mailbox_action_archive_message">Správa presunutá do archívu</string>
   <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
-  <string name="mailbox_search_placeholder_text">Vyhľadať správy</string>
-  <string name="mailbox_search_no_results_title">Žiadne zhody</string>
-  <string name="mailbox_search_no_results_explanation">Vyhľadávací dotaz môžete upraviť alebo vymazať.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Konverzácia presunutá do %s</item>
     <item quantity="few">Konverzácie presunuté do %s</item>

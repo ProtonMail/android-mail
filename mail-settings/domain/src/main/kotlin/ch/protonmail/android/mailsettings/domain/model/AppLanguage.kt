@@ -48,8 +48,10 @@ enum class AppLanguage(val langName: String, val langTag: String) {
     SPANISH("Español (España)", "es-ES"),
     SPANISH_LATIN_AMERICA("Español (Latinoamérica)", "es-419"),
     SWEDISH("Svenska", "sv-SE"),
+    THAI("ไทย", "th"),
     TURKISH("Türkçe", "tr"),
-    UKRAINIAN("Українська", "uk");
+    UKRAINIAN("Українська", "uk"),
+    VIETNAMESE("Tiếng Việt", "vi");
 
     companion object {
         private val map = entries.associateBy { it.langTag }

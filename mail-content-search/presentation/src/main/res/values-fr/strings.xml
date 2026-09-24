@@ -49,6 +49,10 @@
   <string name="content_search_close_content_description">Fermer la recherche</string>
   <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour chercher</string>
   <string name="content_search_results_title">Résultats</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d Résultat</item>
+    <item quantity="other">%1$d Résultats</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Saisissez 3 caractères minimum pour voir tous les résultats.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recherches récentes dans les e-mails</string>

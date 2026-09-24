@@ -49,6 +49,9 @@
   <string name="content_search_close_content_description">Close search</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
   <string name="content_search_results_title">Results</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="other">%1$d Results</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">最近搜尋電郵記錄</string>

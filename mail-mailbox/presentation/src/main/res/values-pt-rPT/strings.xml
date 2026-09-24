@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Sair do modo de pesquisa</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Limpar pesquisa</string>
   <string name="filter_unread_button_text">Não lidas</string>
   <string name="include_spam_trash_text">Incluir Spam/Lixo</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
   <string name="mailbox_action_archive_message">Mensagem movida para o arquivo</string>
   <string name="mailbox_action_spam_message">Mensagem movida para spam</string>
-  <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
-  <string name="mailbox_search_no_results_title">Sem correspondências</string>
-  <string name="mailbox_search_no_results_explanation">Pode atualizar a sua consulta de pesquisa ou limpá-la.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">A conversa foi movida para %s.</item>
     <item quantity="other">Conversas movidas para %s</item>

@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">選択モードを終了</string>
   <string name="mailbox_toolbar_menu_button_content_description">メニュー</string>
   <string name="mailbox_toolbar_search_button_content_description">検索</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">検索モードを終了</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">検索クエリを消去</string>
   <string name="filter_unread_button_text">未読</string>
   <string name="include_spam_trash_text">迷惑メール/ごみ箱も含める</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -67,9 +65,6 @@
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動しました</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
   <string name="mailbox_action_spam_message">メッセージを迷惑メールに移動しました</string>
-  <string name="mailbox_search_placeholder_text">メッセージを検索</string>
-  <string name="mailbox_search_no_results_title">一致するものがありません</string>
-  <string name="mailbox_search_no_results_explanation">検索クエリを更新するか、消去することができます。</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="other">会話を%sに移動しました</item>
   </plurals>

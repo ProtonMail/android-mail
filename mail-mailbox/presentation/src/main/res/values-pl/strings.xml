@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Wyjdź z trybu zaznaczania</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Szukaj</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Wyjdź z trybu wyszukiwania</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Wyczyść zapytanie</string>
   <string name="filter_unread_button_text">Nieprzeczytane</string>
   <string name="include_spam_trash_text">Uwzględnij spam/Kosz</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -88,9 +86,6 @@
   <string name="mailbox_action_trash_message">Wiadomość została przeniesiona do kosza</string>
   <string name="mailbox_action_archive_message">Wiadomość została przeniesiona do archiwum</string>
   <string name="mailbox_action_spam_message">Wiadomość została przeniesiona do spamu</string>
-  <string name="mailbox_search_placeholder_text">Szukaj wiadomości</string>
-  <string name="mailbox_search_no_results_title">Brak wyników</string>
-  <string name="mailbox_search_no_results_explanation">Możesz zaktualizować zapytanie lub wyczyścić je.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Wątek został przeniesiony do folderu %s</item>
     <item quantity="few">Wątki zostały przeniesione do folderu %s</item>

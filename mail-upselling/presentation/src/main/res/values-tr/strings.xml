@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Bu teklif bir daha görüntülenmesin</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus tarifesinde kalın</string>
   <string name="upselling_pu_choose_plan">Tarifenizi seçin</string>
+  <string name="upselling_pu_whats_included">Neler bulunuyor</string>
+  <string name="upselling_pu_cta">Proton Unlimited edinin</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimited ile çevrim içi gizliliğinizi bir adım öteye taşıyın</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinel ile hesabınızı tehditlere karşı koruyun</string>

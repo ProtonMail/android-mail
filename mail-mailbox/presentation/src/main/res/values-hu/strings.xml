@@ -21,8 +21,6 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Kiválasztás módból kilépés</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Kilépés keresés módból</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Kereső kifejezés törlése</string>
   <string name="filter_unread_button_text">Olvasatlan</string>
   <string name="include_spam_trash_text">A levélszemétből és lomtárból is</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -74,9 +72,6 @@
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
   <string name="mailbox_action_spam_message">Üzenet áthelyezve a levélszemétbe</string>
-  <string name="mailbox_search_placeholder_text">Üzenetek keresése</string>
-  <string name="mailbox_search_no_results_title">Nincs egyezés</string>
-  <string name="mailbox_search_no_results_explanation">A keresési lekérdezését frissítheti vagy törölheti.</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">A beszélgetés átkerült a %s mappába</item>
     <item quantity="other">Beszélgetések áthelyezve ide: %s</item>

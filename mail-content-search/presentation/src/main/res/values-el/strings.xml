@@ -49,6 +49,10 @@
   <string name="content_search_close_content_description">Κλείσιμο αναζήτησης</string>
   <string name="content_search_first_run_description">Πληκτρολογήστε ένα όνομα, ένα θέμα ή μια λέξη-κλειδί για την αναζήτηση</string>
   <string name="content_search_results_title">Αποτελέσματα</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="one">%1$d Αποτέλεσμα</item>
+    <item quantity="other">%1$d Αποτελέσματα</item>
+  </plurals>
   <string name="content_search_min_query_length_notice">Πληκτρολογήστε 3 ή περισσότερους χαρακτήρες για να δείτε όλα τα αποτελέσματα.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Πρόσφατες αναζητήσεις αλληλογραφίας</string>

@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
   <string name="upselling_stay_on_mail_plus">Maradjon a Mail Plus csomagnál</string>
   <string name="upselling_pu_choose_plan">Csomag kiválasztása</string>
+  <string name="upselling_pu_whats_included">Mit tartalmaz?</string>
+  <string name="upselling_pu_cta">Szerezze meg a Proton Unlimitedet</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Bővítse tovább online adatvédelmét a Proton Unlimiteddel</string>
   <string name="upselling_pu_threat_protection_title">Védje fiókját a fenyegetésektől a Proton Sentinel segítségével</string>

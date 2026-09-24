@@ -36,6 +36,8 @@
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus を使い続ける</string>
   <string name="upselling_pu_choose_plan">プランを選択</string>
+  <string name="upselling_pu_whats_included">含まれるもの</string>
+  <string name="upselling_pu_cta">Proton Unlimitedを入手</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimitedでオンラインプライバシーをさらに強化</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinelでアカウントを脅威から保護する</string>
