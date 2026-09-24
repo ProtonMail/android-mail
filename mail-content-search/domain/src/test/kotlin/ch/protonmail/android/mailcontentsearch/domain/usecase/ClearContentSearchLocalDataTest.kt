@@ -21,6 +21,9 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPromptRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,7 +37,10 @@ internal class ClearContentSearchLocalDataTest {
 
     private val userId = UserId("user-1")
     private val repository = mockk<ContentSearchRepository>()
-    private val clearContentSearchLocalData = ClearContentSearchLocalData(repository)
+    private val promptRepository = mockk<ContentSearchPromptRepository> {
+        coEvery { reset(userId, ContentSearchPrompt.IndexingComplete) } returns Unit.right()
+    }
+    private val clearContentSearchLocalData = ClearContentSearchLocalData(repository, promptRepository)
 
     @Test
     fun `delegates clearing the local data to the repository`() = runTest {
@@ -60,5 +66,42 @@ internal class ClearContentSearchLocalDataTest {
 
         // Then
         assertEquals(error.left(), result)
+    }
+
+    @Test
+    fun `resets the indexing complete note once the local data is cleared`() = runTest {
+        // Given
+        coEvery { repository.clearLocalData(userId) } returns Unit.right()
+
+        // When
+        clearContentSearchLocalData(userId)
+
+        // Then
+        coVerify(exactly = 1) { promptRepository.reset(userId, ContentSearchPrompt.IndexingComplete) }
+    }
+
+    @Test
+    fun `keeps the indexing complete note when the local data could not be cleared`() = runTest {
+        // Given
+        coEvery { repository.clearLocalData(userId) } returns DataError.Local.Unknown.left()
+
+        // When
+        clearContentSearchLocalData(userId)
+
+        // Then
+        coVerify(exactly = 0) { promptRepository.reset(any(), any()) }
+    }
+
+    @Test
+    fun `still succeeds when the indexing complete note could not be reset`() = runTest {
+        // Given
+        coEvery { repository.clearLocalData(userId) } returns Unit.right()
+        coEvery { promptRepository.reset(userId, ContentSearchPrompt.IndexingComplete) } returns PreferencesError.left()
+
+        // When
+        val result = clearContentSearchLocalData(userId)
+
+        // Then
+        assertEquals(Unit.right(), result)
     }
 }

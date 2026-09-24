@@ -20,13 +20,27 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchPromptRepository
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRepository
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
+/**
+ * Wipes the account's index and forgets that it was told indexing is done.
+ *
+ * The next indexing run then ends with the "indexing complete" note again.
+ * Failing to forget the note is only logged, as the index is already gone by then.
+ */
 class ClearContentSearchLocalData @Inject constructor(
-    private val repository: ContentSearchRepository
+    private val repository: ContentSearchRepository,
+    private val promptRepository: ContentSearchPromptRepository
 ) {
 
     suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = repository.clearLocalData(userId)
+        .onRight {
+            promptRepository.reset(userId, ContentSearchPrompt.IndexingComplete)
+                .onLeft { Timber.w("content-search: could not reset the indexing complete note for $userId") }
+        }
 }
