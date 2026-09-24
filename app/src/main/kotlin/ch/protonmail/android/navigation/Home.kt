@@ -478,6 +478,26 @@ fun Home(
             }
     }
 
+    // Dismissing the content search sheet opts the user in, so every dismissal path starts indexing.
+    val onContentSearchSheetDismissed: () -> Unit = {
+        contentSearchBottomSheetViewModel.submit(HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser)
+        onBottomSheetDismissed()
+        preventBottomSheetDismissal = false
+    }
+
+    // A notification deep-link navigates away while the sheet stays on top of the new screen.
+    // Treat leaving the mailbox as a dismissal so the sheet closes and indexing still starts.
+    // The sheet state is a key because showBottomSheet only turns true once the show animation ends.
+    // The deep-link can land before that.
+    LaunchedEffect(currentDestinationRoute, showBottomSheet, bottomSheetType) {
+        if (showBottomSheet &&
+            bottomSheetType == BottomSheetType.ContentSearch &&
+            currentDestinationRoute != Screen.Mailbox.route
+        ) {
+            onContentSearchSheetDismissed()
+        }
+    }
+
     LaunchedEffect(interstitialPriority) {
         // Home is a wrapper, so we can't rely on navigation here
         if (navController.currentDestination?.route != Screen.Mailbox.route) return@LaunchedEffect
@@ -632,13 +652,7 @@ fun Home(
                 BottomSheetType.ContentSearch -> ContentSearchBottomSheet(
                     isMobileDataEnabled = isSearchMobileDataOn,
                     actions = ContentSearchBottomSheet.Actions(
-                        onDismiss = {
-                            contentSearchBottomSheetViewModel.submit(
-                                HomeContentSearchBottomSheetViewAction.EnableForPrimaryUser
-                            )
-                            onBottomSheetDismissed()
-                            preventBottomSheetDismissal = false
-                        },
+                        onDismiss = onContentSearchSheetDismissed,
                         onToggleMobileData = { enabled ->
                             contentSearchBottomSheetViewModel.submit(
                                 HomeContentSearchBottomSheetViewAction.ToggleMobileData(enabled)
