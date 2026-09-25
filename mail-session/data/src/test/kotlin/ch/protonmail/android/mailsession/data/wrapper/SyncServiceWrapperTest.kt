@@ -175,7 +175,8 @@ internal class SyncServiceWrapperTest {
             disabled = 0uL,
             failed = 0uL,
             ongoing = 1uL,
-            total = 4uL
+            total = 4uL,
+            preparing = 0uL
         )
     }
 }
