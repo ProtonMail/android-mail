@@ -44,8 +44,10 @@ class AppLanguageTest {
         assertEquals("ro", AppLanguage.ROMANIAN.langTag)
         assertEquals("ru", AppLanguage.RUSSIAN.langTag)
         assertEquals("sv-SE", AppLanguage.SWEDISH.langTag)
+        assertEquals("th", AppLanguage.THAI.langTag)
         assertEquals("tr", AppLanguage.TURKISH.langTag)
         assertEquals("uk", AppLanguage.UKRAINIAN.langTag)
+        assertEquals("vi", AppLanguage.VIETNAMESE.langTag)
         assertEquals("zh-TW", AppLanguage.CHINESE_TRADITIONAL.langTag)
         assertEquals("zh-CN", AppLanguage.CHINESE_SIMPLIFIED.langTag)
     }

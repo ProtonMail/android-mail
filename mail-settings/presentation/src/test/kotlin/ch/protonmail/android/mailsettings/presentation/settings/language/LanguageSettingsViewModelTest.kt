@@ -162,8 +162,10 @@ class LanguageSettingsViewModelTest {
         UserSelectedLanguage(AppLanguage.SPANISH),
         UserSelectedLanguage(AppLanguage.SPANISH_LATIN_AMERICA),
         UserSelectedLanguage(AppLanguage.SWEDISH),
+        UserSelectedLanguage(AppLanguage.THAI),
         UserSelectedLanguage(AppLanguage.TURKISH),
-        UserSelectedLanguage(AppLanguage.UKRAINIAN)
+        UserSelectedLanguage(AppLanguage.UKRAINIAN),
+        UserSelectedLanguage(AppLanguage.VIETNAMESE)
     )
 
     private suspend fun ReceiveTurbine<LanguageSettingsState>.initialStateEmitted() {
