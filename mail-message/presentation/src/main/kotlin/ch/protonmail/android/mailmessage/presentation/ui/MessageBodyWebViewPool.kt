@@ -46,7 +46,14 @@ class MessageBodyWebViewPool(
     private val maxSize: Int = DEFAULT_MAX_SIZE
 ) {
 
-    private data class Entry(val webView: ZoomableWebView, val loadedContent: LoadedContent?)
+    private data class Entry(
+        val webView: ZoomableWebView,
+        val loadedContent: LoadedContent?,
+        // True while a load/reload is in flight. A body whose remote images are still loading must not be
+        // destroyed: the in-flight loadingStateChanged callback would then land on the freed WebView
+        // ("call on a destroyed WebView").
+        val isLoading: Boolean = false
+    )
 
     /**
      * The message content a pooled WebView currently holds. Compared by value on re-attach: if it matches the
@@ -77,7 +84,7 @@ class MessageBodyWebViewPool(
         val webView = create()
         entries[key] = Entry(webView, loadedContent = null)
         evictIfNeeded(protectedKey = key)
-        Timber.d("WebViewPool: create key=%s size=%d/%d", key, entries.size, maxSize)
+        Timber.d("WebViewPool: create key=%s size=%d", key, entries.size)
         return webView
     }
 
@@ -90,6 +97,12 @@ class MessageBodyWebViewPool(
         entries[key] = existing.copy(loadedContent = content)
     }
 
+    /** Records whether [key]'s WebView currently has a load in flight, so it is not evicted mid-load. */
+    fun markLoading(key: String, loading: Boolean) {
+        val existing = entries[key] ?: return
+        entries[key] = existing.copy(isLoading = loading)
+    }
+
     /**
      * Keeps the expanded messages nearest the viewport alive within a memory [budget] and destroys the rest.
      * [distanceByKey] holds exactly the currently expanded messages, mapped to each one's pixel distance from
@@ -98,13 +111,17 @@ class MessageBodyWebViewPool(
      * cumulative weight stays within [budget], so a few heavy bodies OR many light ones are retained for the
      * same memory. The nearest message is always kept even if it alone exceeds the budget. Only expanded
      * messages are keep candidates - a key absent from [distanceByKey] is a collapsed message whose body no
-     * longer renders, so it is never retained (collapsing every message drains the pool to zero). Only
-     * *detached* (off-screen) WebViews are destroyed; attached (visible) ones are never touched.
+     * longer renders, so it is never retained (collapsing every message drains the pool to zero). The
+     * [retainNearestCount] nearest expanded bodies - the one on screen and its immediate neighbours - are always
+     * kept, on top of the budget, so scrolling between two long messages never destroys and reloads them. Only
+     * *detached* (off-screen) WebViews are destroyed; attached (visible) ones, and any with a load still in
+     * flight, are never touched.
      */
     fun evictByWeight(
         distanceByKey: Map<String, Int>,
         weightByKey: Map<String, Int>,
-        budget: Int
+        budget: Int,
+        retainNearestCount: Int
     ) {
         if (entries.isEmpty()) return
         val ordered = entries.keys
@@ -113,26 +130,37 @@ class MessageBodyWebViewPool(
 
         val keep = mutableSetOf<String>()
         var used = 0
-        for (key in ordered) {
+        ordered.forEachIndexed { index, key ->
             val cost = weightByKey[key] ?: DEFAULT_WEIGHT
-            // Keep this body if it fits; keep scanning rather than break, so a farther cheaper body can still
-            // fit after a heavy one. keep.isEmpty() also keeps the nearest when a body alone exceeds the budget
-            // - a dormant guard today (max weight <= min budget), live only if a body's cost ever exceeds it.
-            if (keep.isEmpty() || used + cost <= budget) {
+            // Always keep the nearest few expanded bodies - the one on screen and its immediate neighbours - so
+            // scrolling between long messages never destroys and reloads them. This is by rank, not pixels: a
+            // single long body is already taller than the viewport, so a pixel window would never span a
+            // neighbour. Beyond those, keep a body if it fits the weight budget; keep scanning rather than break
+            // so a farther cheaper body still fits after a heavy one. keep.isEmpty() keeps the nearest when a
+            // body alone exceeds the budget.
+            val withinRetained = index < retainNearestCount
+            if (withinRetained || keep.isEmpty() || used + cost <= budget) {
                 keep += key
                 used += cost
             }
         }
 
-        val toDestroy = entries.entries.filter { (key, entry) -> key !in keep && entry.webView.parent == null }
+        val toDestroy = entries.entries.filter { (key, entry) ->
+            key !in keep && entry.webView.parent == null && !entry.isLoading
+        }
         toDestroy.forEach { entry ->
             entries.remove(entry.key)
             destroy(entry.value.webView)
         }
         if (toDestroy.isNotEmpty()) {
+            // Each destroyed key with the weight and viewport-distance that made it lose out; used/free show how
+            // full the weight budget was, which is what triggers eviction (distinct from the maxSize cap).
+            val destroyed = toDestroy.map { (key, _) ->
+                "$key(w${weightByKey[key] ?: DEFAULT_WEIGHT},d${distanceByKey[key] ?: -1})"
+            }
             Timber.d(
-                "WebViewPool: evict destroyed=%d kept=%d budget=%d size=%d",
-                toDestroy.size, keep.size, budget, entries.size
+                "WebViewPool: evict destroyed=%s kept=%s used=%d free=%d size=%d",
+                destroyed, keep, used, (budget - used).coerceAtLeast(0), entries.size
             )
         }
     }
