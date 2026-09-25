@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Proton Unlimited로 업그레이드</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus 유지하기</string>
   <string name="upselling_pu_choose_plan">플랜을 선택하세요</string>
+  <string name="upselling_pu_whats_included">포함된 항목</string>
+  <string name="upselling_pu_cta">Proton Unlimited로 업그레이드</string>
   <string name="upselling_pu_generic_title">Proton Unlimited로 더 나은 온라인 프라이버시를 경험하세요</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinel로 계정을 위협으로부터 보호하세요</string>
   <string name="upselling_pu_aliases_title">신원 보호를 위한 무제한 별칭을 받아보세요</string>

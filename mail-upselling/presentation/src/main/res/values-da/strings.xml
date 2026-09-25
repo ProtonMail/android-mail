@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Opgrader til Proton Unlimited</string>
   <string name="upselling_stay_on_mail_plus">Bliv på Mail Plus</string>
   <string name="upselling_pu_choose_plan">Vælg dit abonnement</string>
+  <string name="upselling_pu_whats_included">Hvad der er inkluderet</string>
+  <string name="upselling_pu_cta">Få Proton Unlimited</string>
   <string name="upselling_pu_generic_title">Opgrader dit digitale privatliv yderligere med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Beskyt din konto mod trusler med Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Få ubegrænsede aliasser til at beskytte din identitet</string>

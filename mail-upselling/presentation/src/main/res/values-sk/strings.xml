@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Navýšiť na Proton Unlimited</string>
   <string name="upselling_stay_on_mail_plus">Zostať na Mail Plus</string>
   <string name="upselling_pu_choose_plan">Vyberte svoj plán</string>
+  <string name="upselling_pu_whats_included">Čo obsahuje</string>
+  <string name="upselling_pu_cta">Získajte Proton Unlimited</string>
   <string name="upselling_pu_generic_title">Zvýšte úroveň svojho súkromia na internete s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chráňte svoj účet pred hrozbami s Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Získajte neobmedzený počet aliasov na ochranu vašej identity</string>

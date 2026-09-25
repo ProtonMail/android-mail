@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Treceți la Proton Unlimited</string>
   <string name="upselling_stay_on_mail_plus">Rămâneți în Mail Plus</string>
   <string name="upselling_pu_choose_plan">Alegeți planul</string>
+  <string name="upselling_pu_whats_included">Ce este inclus</string>
+  <string name="upselling_pu_cta">Luați Proton Unlimited</string>
   <string name="upselling_pu_generic_title">Îmbunătățiți-vă confidențialitatea online cu Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Protejați-vă contul de amenințări cu Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Obțineți aliasuri nelimitate pentru a vă proteja identitatea</string>
@@ -86,7 +88,7 @@
   <string name="upselling_comparison_table_storage">Spațiu de stocare</string>
   <string name="upselling_comparison_table_storage_value_free">1 GiB</string>
   <string name="upselling_comparison_table_storage_value_plus">15 GiB</string>
-  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GiB</string>
   <string name="upselling_comparison_table_email_addresses">Adrese de e-mail</string>
   <string name="upselling_comparison_table_custom_email_domain">Domeniu personal de e-mail</string>
   <string name="upselling_comparison_table_desktop_app">Acces la aplicația desktop</string>
