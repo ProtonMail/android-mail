@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Палепшыць да Proton Unlimited</string>
   <string name="upselling_stay_on_mail_plus">Застацца на Mail Plus</string>
   <string name="upselling_pu_choose_plan">Выберыце свой тарыфны план</string>
+  <string name="upselling_pu_whats_included">Што ўключана</string>
+  <string name="upselling_pu_cta">Атрымаць Proton Unlimited</string>
   <string name="upselling_pu_generic_title">Палепшыце сваю прыватнасць у інтэрнэце з Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Абараніце свой уліковы запіс ад пагроз з дапамогай Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Атрымайце неабмежаваную колькасць псеўданімаў, каб абараніць сваю ідэнтычнасць</string>
@@ -86,7 +88,7 @@
   <string name="upselling_comparison_table_storage">Сховішча</string>
   <string name="upselling_comparison_table_storage_value_free">1 ГБ</string>
   <string name="upselling_comparison_table_storage_value_plus">15 ГБ</string>
-  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 ГБ</string>
   <string name="upselling_comparison_table_email_addresses">Адрасы электроннай пошты</string>
   <string name="upselling_comparison_table_custom_email_domain">Карыстальніцкі дамен электроннай пошты</string>
   <string name="upselling_comparison_table_desktop_app">Доступ да праграмы для камп\'ютара</string>

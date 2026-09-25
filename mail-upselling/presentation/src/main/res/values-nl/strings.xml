@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Upgrade naar Proton Unlimited</string>
   <string name="upselling_stay_on_mail_plus">Blijf bij Mail Plus</string>
   <string name="upselling_pu_choose_plan">Kies uw abonnement</string>
+  <string name="upselling_pu_whats_included">Wat is inbegrepen</string>
+  <string name="upselling_pu_cta">Kies Proton Unlimited</string>
   <string name="upselling_pu_generic_title">Verbeter uw online privacy verder met Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Bescherm uw account tegen bedreigingen met Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Krijg onbeperkte aliassen om uw identiteit te beschermen</string>
@@ -97,7 +99,7 @@
   <string name="upselling_comparison_table_premium_products">Premium VPN, wachtwoord manager en cloud opslag</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Dark Web Monitoring</string>
   <string name="upselling_comparison_table_premium_access">Premium toegang tot Mail, VPN, Drive, Pass en Calendar</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Onbeperkte aliassen om uw identiteit te verbergen</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Onbeperkt aliassen om je identiteit te verbergen</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultrasnelle VPN in 110+ landen</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Onbeperkte mappen, filters, labels</string>
   <!-- Rectangular plan buttons -->

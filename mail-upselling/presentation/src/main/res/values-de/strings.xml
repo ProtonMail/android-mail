@@ -35,6 +35,8 @@
   <string name="upselling_unlimited_title">Auf Proton Unlimited umsteigen</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus weiterhin nutzen</string>
   <string name="upselling_pu_choose_plan">Abonnement wählen</string>
+  <string name="upselling_pu_whats_included">Was ist enthalten?</string>
+  <string name="upselling_pu_cta">Proton Unlimited holen</string>
   <string name="upselling_pu_generic_title">Sichere deine Privatsphäre im Internet noch besser mit Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Schütze dein Konto vor Bedrohungen mit dem Hochsicherheitsprogramm „Proton Sentinel“</string>
   <string name="upselling_pu_aliases_title">Sichere dir unbegrenzt viele Aliase, um deine Identität zu schützen</string>
