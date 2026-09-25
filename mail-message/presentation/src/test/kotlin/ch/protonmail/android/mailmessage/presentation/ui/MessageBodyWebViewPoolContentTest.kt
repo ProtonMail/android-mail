@@ -150,7 +150,8 @@ class MessageBodyWebViewPoolContentTest {
         pool.evictByWeight(
             distanceByKey = mapOf("near" to 0, "far" to 500),
             weightByKey = mapOf("near" to 1, "far" to 8),
-            budget = 1
+            budget = 1,
+            retainNearestCount = 0
         )
 
         // Then
@@ -186,7 +187,7 @@ class MessageBodyWebViewPoolContentTest {
         pool.acquire("b") { b }
 
         // When
-        pool.evictByWeight(distanceByKey = emptyMap(), weightByKey = emptyMap(), budget = 8)
+        pool.evictByWeight(distanceByKey = emptyMap(), weightByKey = emptyMap(), budget = 8, retainNearestCount = 0)
 
         // Then
         verify(exactly = 1) { a.destroy() }
