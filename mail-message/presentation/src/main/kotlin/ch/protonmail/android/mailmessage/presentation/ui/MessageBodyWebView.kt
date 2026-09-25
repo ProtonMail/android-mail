@@ -209,6 +209,14 @@ fun MessageBodyWebView(
                 contentLoaded.value = true
             }
 
+            // The full load (including remote images) has finished, so the pooled entry is no longer in
+            // flight and may be evicted. Clearing here - not in onPageCommitVisible, which fires before
+            // images - keeps a still-loading body from being destroyed mid-load.
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                pool?.markLoading(messageId.id, false)
+            }
+
             // The renderer process - shared by every WebView in the app - has died, OOM-killed to reclaim
             // memory (the usual cause) or crashed. Every pooled view is backed by it and is now defunct, and an
             // OS kill is itself a strong memory-pressure signal - stronger than what onTrimMemory still gives us
@@ -239,6 +247,7 @@ fun MessageBodyWebView(
     val webView = remember(messageId) { onBuildWebView(context) }
 
     ConsumableLaunchedEffect(messageBodyUiModel.reloadMessageEffect) {
+        pool?.markLoading(messageId.id, true)
         webView.reload()
     }
 
@@ -267,6 +276,7 @@ fun MessageBodyWebView(
             return@LaunchedEffect
         }
 
+        pool?.markLoading(messageId.id, true)
         when (val body = messageBodyUiModel.messageBody) {
             is MessageBodyContent.Text -> {
                 webView.loadDataWithBaseURL(null, body.value, MimeType.Html.value, "utf-8", null)

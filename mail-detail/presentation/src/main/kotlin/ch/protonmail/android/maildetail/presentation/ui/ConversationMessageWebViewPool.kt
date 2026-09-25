@@ -64,11 +64,7 @@ internal fun rememberConversationMessageWebViewPool(
 ): MessageBodyWebViewPool? {
     val config = rememberWebViewPoolConfig()
     val pool = remember(conversationId, config.enabled) {
-        if (config.enabled) {
-            MessageBodyWebViewPool(maxSize = minOf(config.budget + POOL_LRU_HEADROOM, POOL_MAX_INSTANCES))
-        } else {
-            null
-        }
+        if (config.enabled) MessageBodyWebViewPool(maxSize = config.maxSize) else null
     }
     DisposableEffect(pool) {
         onDispose { pool?.clear() }
@@ -115,7 +111,11 @@ internal fun rememberConversationMessageWebViewPool(
                         uiModels, messageHeaderCount, layoutInfo, loadedItemsHeight, collapsedHeightEstimatePx
                     ),
                     weightByKey = expandedWeights(uiModels, loadedItemsHeight),
-                    budget = config.budget
+                    budget = config.budget,
+                    // Keep the nearest few expanded bodies (current + neighbours) by rank, not pixels: a long
+                    // body is taller than the viewport, so a pixel window would not span a neighbour, and the
+                    // ones being scrolled through must not be destroyed and reloaded (blank/jump - ET-6844).
+                    retainNearestCount = config.retainNearest
                 )
             }
     }
@@ -200,8 +200,16 @@ private fun expandedWeights(
         ui.messageId.id to MessageBodyWeight.of(ui.messageBodyUiModel.messageBody, heightPx).cost
     }
 
-/** Whether message-body WebViews are pooled on this device, and the retention weight budget if so. */
-private data class WebViewPoolConfig(val enabled: Boolean, val budget: Int)
+/**
+ * Whether message-body WebViews are pooled on this device, and if so the retention weight budget, the number of
+ * nearest expanded bodies always kept, and the hard instance cap.
+ */
+private data class WebViewPoolConfig(
+    val enabled: Boolean,
+    val budget: Int,
+    val retainNearest: Int,
+    val maxSize: Int
+)
 
 /**
  * Pooling policy for this device: disabled (legacy destroy-on-recycle) on low-RAM devices, otherwise enabled
@@ -223,10 +231,27 @@ private fun rememberWebViewPoolConfig(): WebViewPoolConfig {
             totalRamGb < POOL_HIGH_RAM_GB -> POOL_WEIGHT_BUDGET_MID_RAM
             else -> POOL_WEIGHT_BUDGET_HIGH_RAM
         }
+        // Nearest expanded bodies always kept regardless of the weight budget (current + neighbours), so
+        // scrolling between long messages hits a retained body instead of a reload. Scaled by RAM tier, capped
+        // lower on low-RAM to bound the extra Huge bodies held there.
+        val retainNearest = when {
+            activityManager.isLowRamDevice || totalRamGb < POOL_MIN_RAM_GB -> 0
+            totalRamGb < POOL_MID_RAM_GB -> POOL_RETAIN_NEAREST_LOW_RAM
+            totalRamGb < POOL_HIGH_RAM_GB -> POOL_RETAIN_NEAREST_MID_RAM
+            else -> POOL_RETAIN_NEAREST_HIGH_RAM
+        }
         // Off unless the feature flag is on AND the device RAM tier qualifies.
-        val config = WebViewPoolConfig(enabled = featureEnabled && budget > 0, budget = budget)
+        val config = WebViewPoolConfig(
+            enabled = featureEnabled && budget > 0,
+            budget = budget,
+            retainNearest = retainNearest,
+            maxSize = minOf(budget + POOL_LRU_HEADROOM, POOL_MAX_INSTANCES)
+        )
         when {
-            config.enabled -> Timber.d("WebViewPool: enabled budget=%d ram=%.1fGB", config.budget, totalRamGb)
+            config.enabled -> Timber.d(
+                "WebViewPool: config budget=%d retainNearest=%d maxSize=%d ram=%.1fGB",
+                config.budget, config.retainNearest, config.maxSize, totalRamGb
+            )
             !featureEnabled -> Timber.d("WebViewPool: disabled (flag off)")
             else -> Timber.d("WebViewPool: disabled (low RAM %.1fGB)", totalRamGb)
         }
@@ -263,6 +288,13 @@ private const val POOL_HIGH_RAM_GB = 7.5
 private const val POOL_WEIGHT_BUDGET_LOW_RAM = 8 // 3.5 GB up to 5.5 GB: keep 1 tall body
 private const val POOL_WEIGHT_BUDGET_MID_RAM = 16 // 5.5 GB up to 7.5 GB: keep 2 tall bodies
 private const val POOL_WEIGHT_BUDGET_HIGH_RAM = 24 // 7.5 GB and above: keep 3 tall bodies
+// Nearest expanded bodies always kept by rank (current + neighbours), regardless of weight, so scrolling one
+// message at a time always lands on a retained body. A long body is taller than the viewport, so a pixel window
+// cannot span a neighbour - this is the count that actually stops the blank/reload. Capped lower on low-RAM to
+// bound the extra Huge bodies held (each ~+10 MB); mid/high can afford more of the scroll-back window.
+private const val POOL_RETAIN_NEAREST_LOW_RAM = 2 // current + 1 neighbour
+private const val POOL_RETAIN_NEAREST_MID_RAM = 3 // current + 1 each side
+private const val POOL_RETAIN_NEAREST_HIGH_RAM = 4
 // Headroom for the pool's LRU safety cap above the budget, absorbing transient over-composition during a fast
 // expand-all or fling before weight-budget eviction settles the live set.
 private const val POOL_LRU_HEADROOM = 2

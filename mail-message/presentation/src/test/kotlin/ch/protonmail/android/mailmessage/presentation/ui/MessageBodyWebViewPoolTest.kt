@@ -57,7 +57,8 @@ class MessageBodyWebViewPoolTest {
         pool.evictByWeight(
             distanceByKey = mapOf("a" to 0, "b" to 100, "c" to 200, "d" to 300),
             weightByKey = mapOf("a" to 4, "b" to 8, "c" to 1, "d" to 1),
-            budget = 8
+            budget = 8,
+            retainNearestCount = 0
         )
 
         // Then
@@ -78,7 +79,8 @@ class MessageBodyWebViewPoolTest {
         pool.evictByWeight(
             distanceByKey = mapOf("near" to 0, "far" to 100),
             weightByKey = mapOf("near" to 4, "far" to 4),
-            budget = 4
+            budget = 4,
+            retainNearestCount = 0
         )
 
         // Then
@@ -101,7 +103,8 @@ class MessageBodyWebViewPoolTest {
         pool.evictByWeight(
             distanceByKey = mapOf("near" to 0, "visible" to 100, "off" to 200),
             weightByKey = mapOf("near" to 1, "visible" to 8, "off" to 8),
-            budget = 1
+            budget = 1,
+            retainNearestCount = 0
         )
 
         // Then
@@ -118,10 +121,77 @@ class MessageBodyWebViewPoolTest {
         pool.acquire("nearest") { nearest }
 
         // When
-        pool.evictByWeight(mapOf("nearest" to 0), mapOf("nearest" to 8), budget = 6)
+        pool.evictByWeight(mapOf("nearest" to 0), mapOf("nearest" to 8), budget = 6, retainNearestCount = 0)
 
         // Then
         verify(exactly = 0) { nearest.destroy() }
+    }
+
+    @Test
+    fun `given an adjacent body within the retained rank, when evicting, then it is kept beyond the budget`() {
+        // Given
+        val pool = MessageBodyWebViewPool(maxSize = 10)
+        val onScreen = webView()
+        val adjacent = webView()
+        pool.acquire("onScreen") { onScreen }
+        pool.acquire("adjacent") { adjacent }
+
+        // When - budget funds one Huge body, but the two nearest are always retained by rank
+        pool.evictByWeight(
+            distanceByKey = mapOf("onScreen" to 0, "adjacent" to 500),
+            weightByKey = mapOf("onScreen" to 8, "adjacent" to 8),
+            budget = 8,
+            retainNearestCount = 2
+        )
+
+        // Then - both survive: the adjacent one is retained despite exceeding the budget
+        verify(exactly = 0) { onScreen.destroy() }
+        verify(exactly = 0) { adjacent.destroy() }
+    }
+
+    @Test
+    fun `given a body outside the retained rank with a load in flight, when evicting, then it is not destroyed`() {
+        // Given
+        val pool = MessageBodyWebViewPool(maxSize = 10)
+        val nearest = webView()
+        val loadingFar = webView()
+        pool.acquire("nearest") { nearest }
+        pool.acquire("far") { loadingFar }
+        pool.markLoading("far", true)
+
+        // When
+        pool.evictByWeight(
+            distanceByKey = mapOf("nearest" to 0, "far" to 5000),
+            weightByKey = mapOf("nearest" to 8, "far" to 8),
+            budget = 8,
+            retainNearestCount = 0
+        )
+
+        // Then - the still-loading far body is spared until its load finishes
+        verify(exactly = 0) { loadingFar.destroy() }
+    }
+
+    @Test
+    fun `given a load marked finished, when evicting a far over-budget body, then it is destroyed`() {
+        // Given
+        val pool = MessageBodyWebViewPool(maxSize = 10)
+        val nearest = webView()
+        val far = webView()
+        pool.acquire("nearest") { nearest }
+        pool.acquire("far") { far }
+        pool.markLoading("far", true)
+        pool.markLoading("far", false)
+
+        // When
+        pool.evictByWeight(
+            distanceByKey = mapOf("nearest" to 0, "far" to 5000),
+            weightByKey = mapOf("nearest" to 8, "far" to 8),
+            budget = 8,
+            retainNearestCount = 0
+        )
+
+        // Then
+        verify(exactly = 1) { far.destroy() }
     }
 
     // endregion
