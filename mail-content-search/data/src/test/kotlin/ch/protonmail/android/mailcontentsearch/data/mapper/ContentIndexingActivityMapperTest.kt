@@ -40,7 +40,8 @@ internal class ContentIndexingActivityMapperTest {
             disabled = 3uL,
             failed = 4uL,
             ongoing = 5uL,
-            total = 15uL
+            total = 15uL,
+            preparing = 0uL
         )
 
         // When
@@ -70,7 +71,8 @@ internal class ContentIndexingActivityMapperTest {
             disabled = 1uL,
             failed = 1uL,
             ongoing = 0uL,
-            total = 4uL
+            total = 4uL,
+            preparing = 0uL
         )
 
         // Then
@@ -176,7 +178,8 @@ internal class ContentIndexingActivityMapperTest {
         disabled = 0uL,
         failed = 0uL,
         ongoing = ongoing,
-        total = pending + ongoing
+        total = pending + ongoing,
+        preparing = 0uL
     )
 
     private fun progress(
