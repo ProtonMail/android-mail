@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mailbox_fab_compose_button_content_description">เขียนข้อความใหม่</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">ออกจากโหมดตัวเลือก</string>
+  <string name="mailbox_toolbar_menu_button_content_description">เมนู</string>
+  <string name="mailbox_toolbar_search_button_content_description">ค้นหา</string>
+  <string name="filter_unread_button_text">ยังไม่ได้อ่าน</string>
+  <string name="include_spam_trash_text">รวมสแปม/ถังขยะ</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="other">เลือก %d รายการ</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(ไม่มีผู้รับ)</string>
+  <string name="mailbox_default_sender">(ไม่มีผู้ส่ง)</string>
+  <string name="mailbox_error_message_offline">กำลังออฟไลน์อยู่ ไม่สามารถเรียกรายการได้</string>
+  <string name="mailbox_error_message_generic">การเรียกข้อมูลกล่องจดหมายล้มเหลว</string>
+  <string name="mailbox_error_message_user_session">ไม่สามารถโหลดเซสชันได้  โปรดตรวจสอบการเชื่อมต่อและลองอีกครั้ง</string>
+  <string name="mailbox_error_message_unexpected">เกิดข้อผิดพลาดที่ไม่คาดคิด</string>
+  <string name="mailbox_is_empty_title">ไม่มีข้อความ</string>
+  <string name="trash_is_empty_title">ไม่มีอะไรในถังขยะ</string>
+  <string name="mailbox_is_empty_description">ดูเหมือนว่าจะจัดการครบถ้วนแล้วในขณะนี้</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">ยังไม่มีข้อความที่ยังไม่ได้อ่าน</string>
+  <string name="mailbox_is_empty_folder_description">โฟลเดอร์นี้ว่างเปล่า</string>
+  <string name="mailbox_is_empty_spam_description">โฟลเดอร์สแปมของคุณว่างเปล่า</string>
+  <string name="mailbox_is_empty_trash_description">ตรงนี้ดูว่างเปล่า</string>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="other">ลบ %d บทสนทนา</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="other">ลบ %d ข้อความ</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="other">คุณแน่ใจหรือไม่ว่าต้องการลบบทสนทนาอย่างถาวร ?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="other">แน่ใจหรือไม่ว่าต้องการลบข้อความเหล่านี้อย่างถาวร</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="other">%d ข้อความถูกลบถาวร</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="other">%d บทสนทนาถูกลบถาวร</item>
+  </plurals>
+  <string name="mailbox_action_label_messages_failed">การดำเนินการป้ายกำกับล้มเหลว</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">การเรียกข้อมูลป้ายกำกับล้มเหลว</string>
+  <string name="mailbox_action_failed_retrieving_colors">การเรียกข้อมูลการตั้งค่าสีล้มเหลว</string>
+  <string name="mailbox_action_no_sender_addresses">ไม่มีที่อยู่ที่มีสิทธิ์ในการส่ง</string>
+  <string name="mailbox_action_move_messages_failed">การย้ายล้มเหลว</string>
+  <string name="mailbox_action_trash_message">ย้ายข้อความไปยังถังขยะแล้ว</string>
+  <string name="mailbox_action_archive_message">ย้ายข้อความไปยังที่เก็บถาวรแล้ว</string>
+  <string name="mailbox_action_spam_message">ย้ายข้อความไปยังสแปมแล้ว</string>
+  <plurals name="mailbox_action_move_conversation">
+    <item quantity="other">ย้ายบทสนทนาไปยัง %s แล้ว</item>
+  </plurals>
+  <plurals name="mailbox_action_move_message">
+    <item quantity="other">ย้ายข้อความไปยัง %s แล้ว</item>
+  </plurals>
+  <string name="mailbox_action_button_clear_trash">ล้างถังขยะ</string>
+  <string name="mailbox_action_button_clear_spam">ล้างสแปม</string>
+  <string name="mailbox_action_clear_trash_spam_upsell_banner_text">อัปเกรดเพื่อลบข้อความที่อยู่ในถังขยะหรือสแปมที่เกินกว่า 30 วันโดยอัตโนมัติ</string>
+  <string name="mailbox_action_clear_trash_spam_upsell_cta">อัปเกรดเพื่อลบอัตโนมัติ</string>
+  <string name="mailbox_action_auto_delete_on_clear_trash_spam_banner_text">ข้อความที่อยู่ในถังขยะและสแปมเกินกว่า 30 วันจะถูกลบโดยอัตโนมัติ</string>
+  <string name="mailbox_action_auto_delete_off_clear_trash_spam_banner_text">ปิดใช้งานการลบอัตโนมัติ ข้อความในถังขยะและสแปมจะยังคงอยู่จนกว่าจะดำเนินการลบด้วยตนเอง</string>
+  <string name="mailbox_action_clear_trash_dialog_title">ล้างโฟลเดอร์ถังขยะ</string>
+  <string name="mailbox_action_clear_spam_dialog_title">ล้างโฟลเดอร์สแปม</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">แน่ใจหรือไม่ว่าต้องการลบข้อความทั้งหมดในโฟลเดอร์ถังขยะอย่างถาวร</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">แน่ใจหรือไม่ว่าต้องการลบข้อความทั้งหมดในโฟลเดอร์สแปมอย่างถาวร</string>
+  <string name="mailbox_action_maximum_selection_reached">"เลือกครบจำนวนสูงสุดที่กำหนดแล้ว"</string>
+  <string name="mailbox_talkback_readout_unread">ยังไม่ได้อ่าน</string>
+  <string name="mailbox_talkback_readout_starred">เลิกติดดาว</string>
+  <string name="mailbox_talkback_readout_not_starred">ติดดาว</string>
+  <!--    Storage Limit Warning-->
+  <!--    Storage Quota Over Warning-->
+  <string name="mailbox_action_delete_failed">ลบข้อความไม่สำเร็จ</string>
+  <string name="mailbox_action_change_category_failed">เปลี่ยนหมวดหมู่ที่ใช้งานอยู่ไม่สำเร็จ</string>
+  <string name="select_all">เลือกทั้งหมด</string>
+  <string name="deselect_all">ยกเลิกการเลือกทั้งหมด</string>
+  <!--    Expiry messages-->
+  <plurals name="expires_in_days">
+    <item quantity="other">หมดอายุในอีก %d วัน</item>
+  </plurals>
+  <plurals name="expires_in_hours">
+    <item quantity="other">หมดอายุในอีก %d ชั่วโมง</item>
+  </plurals>
+  <plurals name="expires_in_minutes">
+    <item quantity="other">หมดอายุในอีก %d นาที</item>
+  </plurals>
+  <string name="expires_in_less_than_a_minute">หมดอายุในเวลาไม่ถึงหนึ่งนาที</string>
+  <string name="schedule_send_tomorrow">พรุ่งนี้ %1$s</string>
+  <string name="schedule_send_today">วันนี้ %1$s</string>
+  <!--    Snooze messages-->
+</resources>

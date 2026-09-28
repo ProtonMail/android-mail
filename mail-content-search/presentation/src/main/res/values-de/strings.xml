@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Aktiviere die Inhaltssuche, um auch den Inhalt von Nachrichten durchsuchen zu können.</string>
   <string name="content_search_no_results_learn_more">Mehr erfahren …</string>
   <string name="content_search_no_results_set_up_action">Inhaltssuche einrichten</string>
+  <string name="content_search_failed_title">Suche fehlgeschlagen</string>
+  <string name="content_search_failed_description">Es ist ein Fehler aufgetreten. Bitte erneut versuchen.</string>
+  <string name="content_search_failed_retry">Erneut versuchen</string>
   <string name="content_search_set_up_banner_title">Auch in E-Mails suchen</string>
   <string name="content_search_set_up_banner_description">Finde Wörter und Ausdrücke in Ihren E-Mails – nicht nur E-Mail-Absender und Betreffzeilen.</string>
   <string name="content_search_set_up_banner_turn_on">Jetzt einrichten</string>

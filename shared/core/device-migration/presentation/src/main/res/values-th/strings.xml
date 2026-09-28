@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and ProtonCore.
+  ~
+  ~ ProtonCore is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonCore is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="edm_code_not_recognized">ไม่รู้จักรหัสนี้ โปรดลองอีกครั้ง</string>
+  <string name="edm_code_verifying">กำลังตรวจสอบ…</string>
+  <string name="edm_missing_camera_permission_headline">อนุญาตให้เข้าถึงกล้อง</string>
+  <string name="edm_missing_camera_permission_body">ในการเข้าสู่ระบบด้วยคิวอาร์โค้ด จำเป็นต้องอนุญาตให้ %1$s เข้าถึงกล้อง โดยสามารถทำได้ในการตั้งค่าอุปกรณ์</string>
+  <string name="edm_missing_camera_permission_footer">ควบคุมได้เสมอ: สามารถเปลี่ยนการตั้งค่านี้ได้ทุกเมื่อในการตั้งค่าอุปกรณ์</string>
+  <string name="edm_missing_camera_permission_settings">การตั้งค่า</string>
+  <string name="intro_origin_sign_in_title">เข้าสู่ระบบบนอุปกรณ์อื่น</string>
+  <string name="intro_origin_sign_in_subtitle">วิธีเข้าสู่ระบบด้วยคิวอาร์โค้ด</string>
+  <string name="intro_origin_sign_in_hint_1">1. เปิดแอป Proton ใดก็ได้บนอุปกรณ์ที่ต้องการเข้าสู่ระบบ</string>
+  <string name="intro_origin_sign_in_hint_2">2. บนหน้าจอเข้าสู่ระบบ เลือก <b>ลืมรหัสผ่าน</b> หรือ <b>มีปัญหาในการเข้าสู่ระบบใช่หรือไม่</b> (ในแอปมือถือ เลือก <b>ความช่วยเหลือ</b>)</string>
+  <string name="intro_origin_sign_in_hint_3">3. เลือก <b>เข้าสู่ระบบด้วยคิวอาร์โค้ด</b> คิวอาร์โค้ดจะปรากฏขึ้น</string>
+  <string name="intro_origin_sign_in_hint_4">4. บนอุปกรณ์นี้ กด <b>สแกนคิวอาร์โค้ด</b> แล้วสแกนรหัส</string>
+  <string name="intro_origin_sign_in_tips">เคล็ดลับความปลอดภัย</string>
+  <string name="intro_origin_sign_in_tip_1">ระวังข้อความที่มีคิวอาร์โค้ด โปรดสแกนรหัสจากแหล่งที่เชื่อถือได้เท่านั้น</string>
+  <string name="intro_origin_sign_in_tip_2">Proton จะไม่ติดต่อคุณโดยไม่คาดคิดเพื่อขอให้เข้าสู่ระบบด้วยคิวอาร์โค้ด</string>
+  <string name="intro_origin_sign_in_tip_3">Proton จะไม่ขอให้สแกนคิวอาร์โค้ดที่ไม่ได้มาจาก <b>https://proton.me</b> หรือแอป Proton อย่างเป็นทางการเด็ดขาด</string>
+  <string name="intro_origin_sign_in_begin">สแกนคิวอาร์โค้ด</string>
+  <string name="intro_origin_biometrics_title">ปลดล็อกอุปกรณ์เพื่อดำเนินการต่อ</string>
+  <string name="manual_code_input_title">ป้อนรหัสด้วยตนเอง</string>
+  <string name="manual_code_input_description">หากต้องการเข้าถึงรหัสของอุปกรณ์ที่ต้องการเข้าสู่ระบบ ให้แตะปุ่ม <b>เข้าสู่ระบบด้วยคิวอาร์โค้ด</b> ในเมนูช่วยเหลือของหน้าจอเข้าสู่ระบบ แล้วแตะ <b>ป้อนรหัสด้วยตนเอง</b></string>
+  <string name="manual_code_input_code_label">รหัส</string>
+  <string name="manual_code_input_clear_code">ล้าง</string>
+  <string name="manual_code_input_submit">ดำเนินการต่อ</string>
+  <string name="origin_success_signed_in">เข้าถึงการแชร์แล้ว</string>
+  <string name="origin_success_ack">กลับไปที่การตั้งค่า</string>
+  <string name="qr_code_scan_hint">จัดตำแหน่งคิวอาร์โค้ดให้อยู่ในกรอบสี่เหลี่ยม</string>
+  <string name="qr_code_scan_enter_manually">ป้อนรหัสด้วยตนเอง</string>
+  <string name="target_sign_in_title">เข้าสู่ระบบด้วยคิวอาร์โค้ด</string>
+  <string name="target_sign_in_scan_code">วิธีเข้าสู่ระบบโดยใช้อุปกรณ์อื่น</string>
+  <string name="target_sign_in_instruction_1">1. ใช้อุปกรณ์อื่นที่ลงชื่อเข้าใช้บัญชี Proton ไว้แล้ว</string>
+  <string name="target_sign_in_instruction_2">2. ใช้อุปกรณ์นั้นเปิดแอป Proton ใดก็ได้แล้วเลือก <b>การตั้งค่า</b></string>
+  <string name="target_sign_in_instruction_3">3. เลือก <b>เข้าสู่ระบบบนอุปกรณ์อื่น → สแกนคิวอาร์โค้ด</b></string>
+  <string name="target_sign_in_instruction_4">4. สแกนรหัสเพื่อเข้าสู่ระบบ</string>
+  <string name="target_sign_in_error_title">ไม่สามารถลงชื่อเข้าใช้ได้</string>
+  <string name="target_sign_in_retryable_error">ลองสร้างคิวอาร์โค้ดใหม่</string>
+  <string name="target_sign_in_error_new_qr">สร้างคิวอาร์โค้ด</string>
+  <string name="target_sign_in_error_back_to_signin">กลับไปที่การเข้าสู่ระบบ</string>
+  <string name="target_sign_in_learn_more">เรียนรู้เพิ่มเติม</string>
+  <string name="proton_error_non_processable_actions">ไม่สามารถประมวลผลการดำเนินการอย่างน้อยหนึ่งรายการได้ โปรดออกจากระบบและเข้าสู่ระบบบัญชีอีกครั้ง</string>
+</resources>

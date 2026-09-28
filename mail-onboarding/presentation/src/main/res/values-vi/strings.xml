@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  New Onboarding 1  -->
+  <string name="onboarding_welcome_title">Chào mừng bạn đến với Proton Mail, nơi quyền riêng tư luôn được đảm bảo theo mặc định</string>
+  <string name="onboarding_welcome_description">Trải nghiệm thư đã mã hóa, ít thư rác hơn, bảo vệ chống lừa đảo và chặn trình theo dõi. Chào mừng bạn đến với thế giới quyền riêng tư.</string>
+  <!--  New Onboarding 2  -->
+  <string name="onboarding_rebuilt_title">Tập trung trong tầm tay</string>
+  <string name="onboarding_rebuilt_description">Rút ngắn thời gian sắp xếp để dành nhiều thời gian hơn cho công việc. Hộp thư đến được thiết kế dễ điều hướng hơn, giúp bạn nhanh chóng tiếp cận những gì quan trọng.</string>
+  <!--  New Onboarding 3  -->
+  <string name="onboarding_feedback_title">Duy trì kết nối, ngay cả khi ngoại tuyến</string>
+  <string name="onboarding_feedback_description">Đọc, viết và quản lý email ở mọi nơi. Mọi thứ được tự động đồng bộ ngay khi bạn trực tuyến trở lại.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Tiếp</string>
+  <string name="onboarding_get_started">Bắt đầu</string>
+  <string name="onboarding_illustration_content_description">Minh họa chỉ dẫn</string>
+</resources>

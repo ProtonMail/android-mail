@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_button_item_content_description">ปุ่มอัปเกรด</string>
+  <string name="upselling_close_button_content_description">ปุ่มปิด</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">เพื่อปลดล็อกพื้นที่จัดเก็บและคุณสมบัติพรีเมียมเพิ่มเติม</string>
+  <string name="upselling_mailbox_plus_title">อัปเกรดเป็น Mail Plus</string>
+  <!-- Upselling: Social Proof -->
+  <string name="upselling_mailbox_plus_title_social_proof">เริ่มต้นใช้งาน Mail Plus</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">รับสิ่งที่ดีที่สุดของ Mail ด้วยข้อเสนอนี้ที่มีเวลาจำกัด</string>
+  <string name="upselling_mailbox_plus_promo_title">ทดลองใช้ Mail Plus ในราคา %s</string>
+  <string name="upselling_mailbox_plus_promo_cta">รับ 1 เดือนในราคา %s</string>
+  <string name="upselling_mailbox_plus_promo_skip">ข้ามข้อเสนอ</string>
+  <string name="upselling_mailbox_plus_promo_renewal">%s สำหรับเดือนที่ 1 จากนั้น %s ต่อเดือน</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">อัปเกรดเป็น Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">ไม่ต้องแสดงข้อเสนอนี้อีก</string>
+  <string name="upselling_stay_on_mail_plus">ใช้ Mail Plus ต่อไป</string>
+  <string name="upselling_pu_choose_plan">เลือกแผน</string>
+  <string name="upselling_pu_whats_included">มีอะไรบ้าง</string>
+  <string name="upselling_pu_cta">รับ Proton Unlimited</string>
+  <!-- Upselling: Plus to Unlimited themed titles -->
+  <string name="upselling_pu_generic_title">ยกระดับความเป็นส่วนตัวออนไลน์ไปอีกขั้นด้วย Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">ปกป้องบัญชีจากภัยคุกคามด้วย Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">สร้างอีเมลแฝงได้ไม่จำกัด เพื่อปกป้องข้อมูลระบุตัวตน</string>
+  <string name="upselling_pu_drive_title">รับ 500 GB เพื่อจัดเก็บไฟล์และรูปภาพอย่างปลอดภัย</string>
+  <string name="upselling_pu_vpn_browse_title">เข้าถึง VPN ความเร็วสูงพิเศษด้วยเซิร์ฟเวอร์ในกว่า 110 ประเทศ</string>
+  <string name="upselling_pu_vpn_streaming_title">เข้าถึงเนื้อหาในบริการการสตรีมทั่วโลก</string>
+  <string name="upselling_pu_pass_title">เก็บรักษาและจัดการรหัสผ่านให้ปลอดภัยด้วยห้องนิรภัย</string>
+  <string name="upselling_pu_subtitle">รับสิ่งที่ดีที่สุดจาก Proton ด้วยแผน Unlimited</string>
+  <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
+  <string name="upselling_pu_row_generic_title">ยกระดับความเป็นส่วนตัวของคุณไปอีกขั้น</string>
+  <string name="upselling_pu_row_generic_subtitle">ปลดล็อกพื้นที่จัดเก็บเพิ่มขึ้น</string>
+  <string name="upselling_pu_row_threat_protection_title">ป้องกันภัยคุกคาม</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">ปกป้องบัญชีของคุณ</string>
+  <string name="upselling_pu_row_aliases_title">สร้างอีเมลแฝงได้ไม่จำกัด</string>
+  <string name="upselling_pu_row_aliases_subtitle">ปกป้องข้อมูลระบุตัวตนของคุณ</string>
+  <string name="upselling_pu_row_drive_title">เพิ่มพื้นที่จัดเก็บ</string>
+  <string name="upselling_pu_row_drive_subtitle">รับ 500 GB เพื่อจัดเก็บไฟล์และรูปภาพ</string>
+  <string name="upselling_pu_row_vpn_browse_title">ท่องเว็บอย่างปลอดภัย</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">เข้าถึง VPN ความเร็วสูงสุด</string>
+  <string name="upselling_pu_row_vpn_streaming_title">ปลดล็อกเนื้อหาการสตรีม</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">สตรีมอย่างอิสระด้วย Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">เก็บรหัสผ่านให้ปลอดภัย</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">ส่งอีเมลกลุ่มได้อย่างง่ายดาย เพลิดเพลินกับฟีเจอร์นี้และอีกมากมายด้วย Mail Plus</string>
+  <string name="upselling_contact_groups_plus_title">จัดกลุ่มผู้ติดต่อ</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">สร้างทุกสิ่งที่ต้องการเพื่อจัดระเบียบให้เป็นระบบ พร้อมใช้งานฟีเจอร์นี้และอีกมากมายด้วย Mail Plus </string>
+  <string name="upselling_labels_plus_title">ต้องการป้ายกำกับหรือโฟลเดอร์เพิ่มหรือไม่</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">สร้างทุกสิ่งที่จำเป็นเพื่อจัดระเบียบให้เป็นระบบ พร้อมรับฟีเจอร์นี้และอีกมากมายด้วย Mail </string>
+  <string name="upselling_folders_plus_title">ต้องการป้ายกำกับหรือโฟลเดอร์เพิ่มหรือไม่</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">ปรับแต่งลายเซ็นมือถือในแบบที่ต้องการ เพลิดเพลินกับฟีเจอร์นี้และอีกมากมายด้วย Mail Plus</string>
+  <string name="upselling_mobile_signature_plus_title">ปรับแต่งลายเซ็น</string>
+  <!-- Upselling: Auto Delete -->
+  <string name="upselling_auto_delete_plus_description_override">ลบสแปมและถังขยะโดยอัตโนมัติหลัง 30 วัน พร้อมใช้งานฟีเจอร์นี้และอีกมากมายด้วย Mail Plus</string>
+  <string name="upselling_auto_delete_plus_title">ล้างถังขยะอัตโนมัติ</string>
+  <!-- Upselling: Schedule Send -->
+  <string name="upselling_schedule_send_plus_description_override">กำหนดเวลาส่งอีเมลได้ตามต้องการ เพลิดเพลินกับฟีเจอร์นี้และอีกมากมายด้วย Mail Plus</string>
+  <string name="upselling_schedule_send_plus_title">ตั้งเวลาตอนนี้ ส่งทีหลัง</string>
+  <!-- Upselling: Snooze -->
+  <string name="upselling_snooze_plus_description_override">ปิดเสียงเตือนชั่วคราว — และจัดส่งในภายหลัง เพลิดเพลินกับฟีเจอร์นี้และอีกมากมายด้วย Mail Plus</string>
+  <string name="upselling_snooze_plus_title">ไม่สะดวกใช้อีเมลตอนนี้ใช่ไหม</string>
+  <!-- Upselling - Misc buttons -->
+  <string name="upselling_button_hint">อัปเกรดเพื่อความยืดหยุ่นเต็มรูปแบบ</string>
+  <string name="upselling_upgrade_plan_generic">ต้องสมัครสมาชิก Proton Mail แบบชำระเงินเพื่อเข้าถึงคุณสมบัตินี้</string>
+  <!-- Onboarding Upselling -->
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">พื้นที่จัดเก็บ</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_email_addresses">ที่อยู่อีเมล</string>
+  <string name="upselling_comparison_table_custom_email_domain">โดเมนอีเมลแบบกำหนดเอง</string>
+  <string name="upselling_comparison_table_desktop_app">เข้าถึงแอปเดสก์ท็อป</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">โฟลเดอร์และป้ายกำกับไม่จำกัด</string>
+  <string name="upselling_comparison_table_priority_support">ฝ่ายสนับสนุนลูกค้าพิเศษ</string>
+  <string name="upselling_comparison_table_aliases">ซ่อนนามแฝงอีเมล</string>
+  <string name="upselling_comparison_table_folders_labels">โฟลเดอร์และป้ายกำกับ</string>
+  <string name="upselling_comparison_table_premium_products">VPN พรีเมียม โปรแกรมจัดการรหัสผ่าน และพื้นที่จัดเก็บข้อมูลบนคลาวด์</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">การตรวจสอบดาร์กเว็บ</string>
+  <string name="upselling_comparison_table_premium_access">เข้าถึง Mail, VPN, Drive, Pass และ Calendar แบบพรีเมียม</string>
+  <string name="upselling_comparison_table_unlimited_aliases">อีเมลแฝงไม่จำกัด เพื่อปกป้องข้อมูลระบุตัวตน</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN ความเร็วสูงพิเศษที่มีมากกว่า 110 ประเทศ</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">โฟลเดอร์ ตัวกรอง และป้ายกำกับไม่จำกัด</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">เลือกการสมัครสมาชิก</string>
+  <string name="upselling_select_plan_year">12 เดือน</string>
+  <string name="upselling_select_plan_month">1 เดือน</string>
+  <!-- Onboarding upsell -->
+  <string name="upselling_onboarding_choose_plan">เลือกแผน</string>
+  <string name="upselling_onboarding_choose_plan_monthly">รายเดือน</string>
+  <string name="upselling_onboarding_choose_plan_yearly">รายปี</string>
+  <string name="upselling_onboarding_best_value">คุ้มค่าที่สุด</string>
+  <string name="upselling_onboarding_yearly_savings">ชำระรายปีและประหยัด %s</string>
+  <string name="upselling_onboarding_entitlements_show_more">แสดงเพิ่มเติม</string>
+  <string name="upselling_onboarding_entitlements_show_less">แสดงน้อยลง</string>
+  <string name="upselling_onboarding_button_continue_free">ดำเนินการต่อด้วย Free plan</string>
+  <string name="upselling_onboarding_autorenew">เรียกเก็บเงินที่ %s ทุกๆ %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %s ทุกๆ %s</string>
+  <string name="upselling_onboarding_autorenew_month">เดือน</string>
+  <string name="upselling_onboarding_autorenew_year">12 เดือน</string>
+  <string name="upselling_onboarding_free_entitlement_storage">พื้นที่จัดเก็บ 1 GB</string>
+  <string name="upselling_onboarding_free_entitlement_mail">1 ที่อยู่อีเมล</string>
+  <!-- Other UI Items -->
+  <string name="upselling_unlimited_description_override">เพื่อปลดล็อกพื้นที่จัดเก็บและคุณสมบัติพรีเมียมเพิ่มเติม</string>
+  <string name="upselling_auto_renew_text">ต่ออายุอัตโนมัติในราคาและข้อกำหนดเดิมเว้นแต่จะยกเลิก</string>
+  <string name="upselling_auto_renew_text_promo">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %s%s เว้นแต่จะยกเลิก</string>
+  <string name="upselling_auto_renew_text_bfriday">ส่วนลดอ้างอิงจากราคามาตรฐานรายเดือน ต่ออายุอัตโนมัติที่ %s%s จนกว่าจะยกเลิก</string>
+  <string name="upselling_auto_renew_text_promo_short">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %s%s</string>
+  <string name="upselling_auto_renew_text_standard">ต่ออายุอัตโนมัติที่ %s%s เว้นแต่จะยกเลิก</string>
+  <string name="upselling_social_proof_reviews">กว่า 2k รีวิว</string>
+  <string name="upselling_description_social_proof">อัปเกรดเพื่อสัมผัสประสบการณ์ที่ผู้สมัครสมาชิกหลายล้านคนต่างชื่นชม</string>
+  <string name="upselling_month">/เดือน</string>
+  <string name="upselling_month_only">เพียง %s /เดือน</string>
+  <string name="upselling_year">/ปี</string>
+  <!-- Errors -->
+  <string name="upselling_snackbar_error_no_user_id">เกิดข้อผิดพลาด</string>
+  <string name="upselling_snackbar_error_no_subscriptions">ไม่สามารถดึงข้อมูลการสมัครสมาชิกได้</string>
+  <!-- Snackbar texts -->
+</resources>

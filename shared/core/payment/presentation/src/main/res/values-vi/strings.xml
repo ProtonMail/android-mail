@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="payment_error_title">Đã xảy ra lỗi</string>
+  <string name="payment_error_description">Chúng tôi không thể tải trang này. Vui lòng làm mới trang hoặc kiểm tra kết nối internet của bạn.</string>
+  <string name="proton_error_non_processable_actions">Không thể xử lý một hoặc nhiều hành động. Vui lòng đăng xuất rồi đăng nhập lại vào tài khoản.</string>
+  <string name="payment_purchase_button_get">Tải %1$s</string>
+  <string name="payment_purchase_button_subscribed">Đã đăng ký %1$s</string>
+  <string name="payment_purchase_button_product_not_found">Không tìm thấy sản phẩm trong Cửa hàng</string>
+  <string name="payment_pay_monthly">Thanh toán hàng tháng</string>
+  <string name="payment_pay_annually">Thanh toán hàng năm</string>
+  <string name="payment_pay_biennially">Thanh toán mỗi 2 năm</string>
+  <plurals name="payment_pay_other">
+    <item quantity="other">Thanh toán cho %d tháng</item>
+  </plurals>
+  <string name="payment_bf_renew_monthly">Mức giảm giá được tính dựa trên mức giá tiêu chuẩn theo tháng. Gói sẽ tự động gia hạn ở mức %1$s/tháng</string>
+  <string name="payment_bf_renew_annually">Mức giảm giá được tính dựa trên mức giá tiêu chuẩn theo tháng. Gói sẽ tự động gia hạn ở mức %1$s/năm</string>
+  <string name="payment_welcome_offer_renew_monthly">Ưu đãi chào mừng. Tự động gia hạn với mức %1$s/tháng</string>
+  <string name="payment_welcome_offer_renew_annually">Ưu đãi chào mừng. Tự động gia hạn với mức %1$s/năm</string>
+  <string name="payment_welcome_offer_renew_biennially">Ưu đãi chào mừng. Tự động gia hạn ở mức %1$s mỗi 2 năm</string>
+  <plurals name="payment_welcome_offer_renew_other">
+    <item quantity="other">Ưu đãi chào mừng. Tự động gia hạn ở mức %1$s mỗi %2$s tháng</item>
+  </plurals>
+  <string name="payment_subscription_title">Gói đăng ký</string>
+  <string name="payment_subscription_upgrade_your_plan">Nâng cấp gói</string>
+  <string name="payment_subscription_renew_auto_renew_on">Gói của bạn sẽ tự động gia hạn vào %1$s.</string>
+  <string name="payment_subscription_managed_by_google">Gói đăng ký của bạn được quản lý bởi Google Play.</string>
+  <string name="payment_subscription_managed_by_apple">Gói đăng ký của bạn được quản lý bởi Apple Store.</string>
+  <string name="payment_subscription_managed_by_other">Không thể quản lý gói đăng ký trên ứng dụng di động.</string>
+  <string name="payment_subscription_restricted_access_title">Truy cập bị hạn chế</string>
+  <string name="payment_subscription_restricted_access_description">Rất tiếc, bạn không có quyền truy cập vào trang này. Hãy liên hệ với quản trị viên nếu đây là sự cố.</string>
+</resources>

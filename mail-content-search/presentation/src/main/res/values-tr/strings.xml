@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">İletilerin içeriklerinin de aranması için içerik aramasını açın.</string>
   <string name="content_search_no_results_learn_more">Ayrıntılı bilgi alın…</string>
   <string name="content_search_no_results_set_up_action">İçerik aramayı kurun</string>
+  <string name="content_search_failed_title">Arama yapılamadı</string>
+  <string name="content_search_failed_description">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
+  <string name="content_search_failed_retry">Yeniden dene</string>
   <string name="content_search_set_up_banner_title">E-postaların içerikleri de aranabilsin</string>
   <string name="content_search_set_up_banner_description">E-postalarınızda yalnızca göndericileri ve konuları değil, içindeki sözcükleri ve ifadeleri de bulun.</string>
   <string name="content_search_set_up_banner_turn_on">Şimdi kur</string>

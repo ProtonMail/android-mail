@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Grace period - info -->
+  <string name="account_recovery_grace_period_info_title">Đã yêu cầu đặt lại mật khẩu</string>
+  <plurals name="account_recovery_grace_period_info_subtitle">
+    <item quantity="other">Có yêu cầu đặt lại mật khẩu cho <b>%1$s</b>. Bạn có thể đổi mật khẩu trong vòng %2$d giờ.\n\nNếu bạn không thực hiện yêu cầu này, hãy hủy ngay.</item>
+  </plurals>
+  <!-- Grace period - cancellation form -->
+  <string name="account_recovery_cancel_title">Hủy đặt lại mật khẩu?</string>
+  <string name="account_recovery_cancel_subtitle">Nhập mật khẩu để hủy.</string>
+  <string name="account_recovery_cancel_password_label">Mật khẩu hiện tại</string>
+  <string name="account_recovery_cancel_password_placeholder">Mật khẩu</string>
+  <string name="account_recovery_cancel_now">Hủy đặt lại mật khẩu</string>
+  <string name="account_recovery_cancel_back">Quay lại</string>
+  <!-- Account recovery cancelled -->
+  <string name="account_recovery_cancelled_title">Đã hủy đặt lại mật khẩu</string>
+  <string name="account_recovery_cancelled_subtitle">Nếu bạn chưa bao giờ yêu cầu đổi mật khẩu, tài khoản của bạn có thể đang gặp nguy hiểm.\n\nHãy đổi mật khẩu để bảo vệ tài khoản.</string>
+  <!-- Password change period -->
+  <string name="account_recovery_password_started_title">Hiện có yêu cầu đặt lại mật khẩu</string>
+  <string name="account_recovery_password_started_subtitle">Để đặt lại mật khẩu, hãy quay lại thiết bị, ứng dụng hoặc trình duyệt mà bạn đã dùng để gửi yêu cầu.\n\nBạn sẽ cần thực hiện việc này trước %s.\n\nNếu bạn không yêu cầu đặt lại mật khẩu, hãy hủy yêu cầu ngay.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Bây giờ bạn có thể đặt lại mật khẩu.\n\nBạn sẽ cần làm việc này trước %s.\n\nNếu bạn không yêu cầu đặt lại mật khẩu, hãy hủy yêu cầu ngay.</string>
+  <!-- Recovery window ended -->
+  <string name="account_recovery_window_ended_title">Yêu cầu đặt lại mật khẩu đã hết hạn</string>
+  <string name="account_recovery_window_ended_subtitle">Bạn sẽ cần yêu cầu lại việc đặt lại mật khẩu cho %s.</string>
+  <!-- Other -->
+  <string name="account_recovery_cancel">Hủy yêu cầu</string>
+  <string name="account_recovery_dismiss">Đã hiểu</string>
+  <string name="account_recovery_reset">Đặt lại mật khẩu</string>
+  <!-- Account Recovery Info -->
+  <string name="account_recovery_info_grace_title">Đã yêu cầu đặt lại mật khẩu</string>
+  <string name="account_recovery_info_grace_subtitle">Bạn có thể đặt lại mật khẩu trong %1s.</string>
+  <string name="account_recovery_info_grace_description">Để đảm bảo bạn chính là người đang đặt lại mật khẩu, chúng tôi sẽ chờ 72 giờ trước khi chấp nhận các yêu cầu.\n\nNếu bạn không yêu cầu đặt lại mật khẩu, hãy hủy yêu cầu này ngay.</string>
+  <string name="account_recovery_info_cancelled_title">Đã hủy yêu cầu đặt lại mật khẩu</string>
+  <string name="account_recovery_info_cancelled_subtitle">Yêu cầu đặt lại mật khẩu đã được thực hiện vào %1s.</string>
+  <string name="account_recovery_info_cancelled_description">Nếu bạn không nhận ra yêu câu này, có thể một người khác đã có quyền truy cập vào Tài khoản Proton của bạn.\n\nHãy bảo mật tài khoản ngay.</string>
+  <string name="account_recovery_info_insecure_title">Hiện có yêu cầu đặt lại mật khẩu</string>
+  <string name="account_recovery_info_insecure_subtitle">Bạn hiện đã có thể đặt lại mật khẩu. Bạn có thể đặt lại mật khẩu cho tới %1s.</string>
+  <string name="account_recovery_info_insecure_description">Bạn không đưa ra yêu cầu này?\n\nNếu bạn không yêu cầu đặt lại mật khẩu, hãy hủy yêu cầu này ngay.</string>
+  <!-- Password Reset Dialog -->
+  <string name="account_recovery_reset_dialog_title">Đặt lại mật khẩu?</string>
+  <string name="account_recovery_reset_dialog_text">"Vì lý do bảo mật, bạn sẽ phải chờ 72 giờ trước khi có thể đổi mật khẩu cho %1s.\n\nNếu bạn đã thiết lập phương thức khôi phục, hãy thử khôi phục tài khoản. Hành động này sẽ giúp bạn đổi mật khẩu ngay lập tức."</string>
+  <string name="account_recovery_reset_dialog_action_request_reset">Yêu cầu đặt lại mật khẩu</string>
+  <string name="account_recovery_reset_dialog_action_use_recovery">Sử dụng phương thức khôi phục</string>
+  <string name="account_recovery_reset_dialog_action_use_recovery_hint">Đổi mật khẩu trên trình duyệt web mà không cần phải chờ qua giai đoạn bảo mật.</string>
+  <string name="account_recovery_reset_dialog_action_request_reset_success">Đã yêu cầu đặt lại mật khẩu</string>
+</resources>

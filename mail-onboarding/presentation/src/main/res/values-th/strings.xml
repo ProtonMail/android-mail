@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  New Onboarding 1  -->
+  <string name="onboarding_welcome_title">ยินดีต้อนรับสู่ Proton Mail ที่ความเป็นส่วนตัวคือค่าเริ่มต้น</string>
+  <string name="onboarding_welcome_description">เพลิดเพลินกับข้อความที่เข้ารหัส สแปมที่น้อยลง การป้องกันฟิชชิ่ง และการบล็อกตัวติดตาม ยินดีต้อนรับสู่ความเป็นส่วนตัว</string>
+  <!--  New Onboarding 2  -->
+  <string name="onboarding_rebuilt_title">โฟกัสสิ่งสำคัญได้ง่ายเพียงปลายนิ้ว</string>
+  <string name="onboarding_rebuilt_description">ใช้เวลาน้อยลงในการจัดระเบียบ และมีเวลาทำสิ่งต่างๆ มากขึ้น กล่องขาเข้าได้รับการออกแบบมาให้ใช้งานได้ง่ายขึ้น เพื่อให้เข้าถึงสิ่งสำคัญได้เร็วขึ้น</string>
+  <!--  New Onboarding 3  -->
+  <string name="onboarding_feedback_title">เชื่อมต่อได้เสมอแม้ขณะออฟไลน์</string>
+  <string name="onboarding_feedback_description">อ่าน เขียน และจัดการอีเมลได้จากทุกที่ ทุกสิ่งจะซิงค์โดยอัตโนมัติทันทีที่กลับมาออนไลน์</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">ถัดไป</string>
+  <string name="onboarding_get_started">เริ่มต้น​ใช้งาน​</string>
+  <string name="onboarding_illustration_content_description">ภาพประกอบขั้นตอนการเริ่มต้นใช้งาน</string>
+</resources>

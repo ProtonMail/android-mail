@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">รายชื่อ</string>
+  <string name="contact_list_loading_error">เกิดข้อผิดพลาดในการโหลดรายชื่อติดต่อ โปรดลองอีกครั้งในภายหลัง</string>
+  <string name="no_contacts">ไม่พบรายชื่อผู้ติดต่อ</string>
+  <string name="no_contact_groups">ไม่พบกลุ่มผู้ติดต่อ</string>
+  <string name="no_contacts_description">ปรับปรุงประสบการณ์การใช้งานอีเมลด้วยการสร้างรายชื่อติดต่อใหม่หรือนำเข้ารายชื่อติดต่อที่มีอยู่</string>
+  <string name="no_contact_groups_description">ปรับปรุงประสบการณ์การใช้งานอีเมลด้วยการสร้างกลุ่มผู้ติดต่อใหม่</string>
+  <string name="no_contact_email">ไม่พบที่อยู่อีเมล</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="other">สมาชิก %1$d ราย</item>
+  </plurals>
+  <string name="search_contacts_description">ค้นหารายชื่อผู้ติดต่อ</string>
+  <string name="contact_search_no_results">ไม่พบผลการค้นหา</string>
+  <string name="contact_search_placeholder">ค้นหารายชื่อผู้ติดต่อหรือกลุ่ม</string>
+  <string name="contact_search_content_description">ค้นหารายชื่อผู้ติดต่อหรือกลุ่ม</string>
+  <string name="contact_search_arrow_back_content_description">ย้อนกลับไปยังรายชื่อผู้ติดต่อ</string>
+  <string name="add_contact">เพิ่มรายชื่อผู้ติดต่อ</string>
+  <string name="add_contact_group">เพิ่มกลุ่มผู้ติดต่อ</string>
+  <string name="add_contact_content_description">เพิ่มรายชื่อผู้ติดต่อ</string>
+  <string name="new_contact">รายชื่อผู้ติดต่อใหม่</string>
+  <string name="new_group">กลุ่มใหม่</string>
+  <string name="import_contact">อัปโหลดรายชื่อผู้ติดต่อจากอุปกรณ์</string>
+  <string name="contact_deleted">ลบรายชื่อผู้ติดต่อแล้ว</string>
+  <string name="contact_delete_dialog_title">ลบ %1$s หรือไม่</string>
+  <string name="contact_delete_dialog_text">รายชื่อผู้ติดต่อนี้จะถูกลบออกจากรายการรายชื่อผู้ติดต่อ</string>
+  <string name="contact_delete_dialog_cancel_button">ยกเลิก</string>
+  <string name="contact_delete_dialog_confirm_button">ลบ</string>
+  <string name="contact_details_loading_error">เกิดข้อผิดพลาดในการโหลดรายชื่อผู้ติดต่อ โปรดลองอีกครั้งในภายหลัง</string>
+  <string name="contact_details_edit_contact_content_description">แก้ไขรายชื่อผู้ติดต่อ</string>
+  <string name="contact_details_delete_contact_content_description">ลบรายชื่อผู้ติดต่อ</string>
+  <string name="contact_details_avatar_image_content_description">รูปประจำตัวรายชื่อผู้ติดต่อ</string>
+  <string name="contact_type_email">อีเมล</string>
+  <string name="contact_type_phone">โทรศัพท์</string>
+  <string name="contact_type_home">หน้าหลัก</string>
+  <string name="contact_type_work">ที่ทำงาน</string>
+  <string name="contact_type_mobile">มือถือ</string>
+  <string name="contact_type_fax">แฟ็กซ์</string>
+  <string name="contact_type_pager">เพจเจอร์</string>
+  <string name="contact_type_address">ที่อยู่</string>
+  <string name="contact_type_text">ข้อความ</string>
+  <string name="contact_type_text_phone">โทรศัพท์ส่งข้อความ</string>
+  <string name="contact_type_video">วิดีโอ</string>
+  <string name="contact_type_voice">เสียง</string>
+  <string name="contact_property_birthday">วันเกิด</string>
+  <string name="contact_property_note">หมายเหตุ</string>
+  <string name="contact_property_organization">องค์กร</string>
+  <string name="contact_property_anniversary">วันครบรอบ</string>
+  <string name="contact_property_title">ชื่อหัวข้อ</string>
+  <string name="contact_property_role">บทบาท</string>
+  <string name="contact_property_member">สมาชิก</string>
+  <string name="contact_property_url">URL</string>
+  <string name="contact_property_gender">เพศ</string>
+  <string name="contact_property_language">ภาษา</string>
+  <string name="contact_property_time_zone">เขตเวลา</string>
+  <string name="contact_gender_female">เพศหญิง</string>
+  <string name="contact_gender_male">เพศชาย</string>
+  <string name="contact_gender_none">ไม่มี</string>
+  <string name="contact_gender_not_applicable">ไม่เกี่ยวข้อง</string>
+  <string name="contact_gender_other">อื่นๆ</string>
+  <string name="contact_gender_unknown">ไม่ทราบ</string>
+  <string name="contact_details_missing_date">ไม่มีข้อมูลวันที่</string>
+  <string name="contact_details_quick_action_message">ข้อความ</string>
+  <string name="contact_details_quick_action_call">โทร</string>
+  <string name="contact_details_quick_action_share">แชร์</string>
+  <string name="contact_details_action_copy_label">คัดลอก</string>
+  <string name="contact_details_action_message_label">ข้อความ</string>
+  <string name="contact_details_action_call_label">โทร</string>
+  <string name="contact_details_action_open_url_label">เปิด URL</string>
+  <string name="contact_group_details_send_message_action">ส่งข้อความกลุ่ม</string>
+  <plurals name="contact_group_details_number_of_contacts">
+    <item quantity="other">ผู้ติดต่อ %1$d ราย</item>
+  </plurals>
+  <string name="contact_bottom_sheet_redirect_to_web_title">พร้อมใช้งานบนเว็บ</string>
+  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">ปิด</string>
+  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">การสร้างรายชื่อติดต่อหรือกลุ่มในแอปยังไม่พร้อมใช้งาน ขณะนี้สามารถสร้างในเว็บแอปได้และข้อมูลจะซิงค์มายังอุปกรณ์</string>
+  <string name="edit_contact_bottom_sheet_redirect_to_web_description">การแก้ไขรายชื่อติดต่อหรือกลุ่มในแอปยังไม่พร้อมใช้งาน ขณะนี้สามารถแก้ไขในเว็บแอปได้และการเปลี่ยนแปลงจะซิงค์มายังอุปกรณ์</string>
+  <string name="contact_bottom_sheet_redirect_to_web_button">ดำเนินการต่อบนเว็บ</string>
+</resources>

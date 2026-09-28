@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_protection">Bảo vệ chống theo dõi:</string>
+  <string name="show_details">Hiển thị chi tiết</string>
+  <string name="trackers_protection_no_trackers_detected">Bảo vệ chống theo dõi: không phát hiện thấy trình theo dõi</string>
+  <string name="tracking_protection">Bảo vệ chống theo dõi</string>
+  <string name="tracking_protection_description">Chúng tôi chủ động bảo vệ bạn khỏi bị theo dõi. Tại đây, bạn có thể xem các pixel gián điệp đã bị chặn và các liên kết theo dõi đã được dọn sạch trong thư này.</string>
+  <string name="tracking_protection_learn_more">Tìm hiểu thêm</string>
+  <string name="original">Ban đầu</string>
+  <string name="cleaned">Đã dọn sạch</string>
+  <string name="open_link">Mở liên kết</string>
+  <string name="action_close_dialog_button">Đóng</string>
+  <string name="got_it">Đã hiểu</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="other">Đã chặn %s trình theo dõi</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="other">Đã dọn sạch %s liên kết</item>
+  </plurals>
+</resources>

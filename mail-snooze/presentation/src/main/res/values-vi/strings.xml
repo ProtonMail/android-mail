@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Snooze Bottom Sheet -->
+  <string name="snooze_sheet_option_next_week">Tuần sau</string>
+  <string name="snooze_sheet_option_later_this_week">Thời điểm sau trong tuần này</string>
+  <string name="snooze_sheet_option_tomorrow">Ngày mai</string>
+  <string name="snooze_sheet_option_this_weekend">Cuối tuần này</string>
+  <string name="snooze_sheet_option_custom">Tùy chỉnh</string>
+  <string name="snooze_sheet_option_custom_detail">Chọn ngày và giờ</string>
+  <string name="snooze_sheet_snooze_title">Tạm ẩn cho đến</string>
+  <string name="snooze_sheet_option_unsnooze">Bỏ tạm ẩn</string>
+  <string name="snooze_sheet_error_unable_to_snooze">Rất tiếc, đã xảy ra lỗi không xác định khi tạm ẩn cuộc hội thoại này</string>
+  <string name="snooze_sheet_error_unable_to_unsnooze">Đã xảy ra lỗi không xác định khi bỏ tạm ẩn cuộc hội thoại</string>
+  <string name="snooze_sheet_error_in_the_past">Thời gian tạm ẩn nằm trong quá khứ</string>
+  <string name="snooze_sheet_success">Tạm ẩn cho đến %s</string>
+  <string name="unsnooze_sheet_success">Cuộc hội thoại không còn bị tạm ẩn</string>
+  <string name="snooze_picker_content_description">Tạm ẩn thư</string>
+  <string name="snooze_picker_button_title">Lưu</string>
+  <string name="snooze_custom_upsell_title">Tùy chỉnh ngày và giờ</string>
+  <string name="snooze_custom_upsell_title_short">Tùy chỉnh</string>
+  <string name="snooze_custom_upsell_hint_short">Nâng cấp để truy cập</string>
+</resources>

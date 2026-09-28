@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="open_with">Mở bằng…</string>
+  <string name="file_saved">Đã lưu tệp</string>
+  <string name="file_saved_fallback">Đã lưu tệp vào thư mục Tải xuống</string>
+  <string name="error_saving_file">Đã xảy ra lỗi trong quá trình lưu tệp</string>
+  <string name="attachment_download_error">Không thể mở tập tin đính kèm. Vui lòng thử lại.</string>
+  <string name="attachment_download_in_progress">Quá trình tải xuống hiện tại phải hoàn tất trước khi bắt đầu lượt tải mới.</string>
+</resources>

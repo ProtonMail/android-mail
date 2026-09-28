@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Grace period - info -->
+  <string name="account_recovery_grace_period_info_title">ส่งคำขอรีเซ็ตรหัสผ่านแล้ว</string>
+  <plurals name="account_recovery_grace_period_info_subtitle">
+    <item quantity="other">มีการร้องขอให้รีเซ็ตรหัสผ่านสำหรับ <b>%1$s</b> สามารถเปลี่ยนรหัสผ่านได้ในอีก %2$d ชั่วโมง\n\nหากไม่ได้ทำรายการนี้ ให้ยกเลิกทันที</item>
+  </plurals>
+  <!-- Grace period - cancellation form -->
+  <string name="account_recovery_cancel_title">ยกเลิกการรีเซ็ตรหัสผ่านหรือไม่</string>
+  <string name="account_recovery_cancel_subtitle">ป้อนรหัสผ่านเพื่อยกเลิก</string>
+  <string name="account_recovery_cancel_password_label">รหัสผ่านปัจจุบัน</string>
+  <string name="account_recovery_cancel_password_placeholder">รหัสผ่าน</string>
+  <string name="account_recovery_cancel_now">ยกเลิกการรีเซ็ตรหัสผ่าน</string>
+  <string name="account_recovery_cancel_back">กลับ</string>
+  <!-- Account recovery cancelled -->
+  <string name="account_recovery_cancelled_title">ยกเลิกการรีเซ็ตรหัสผ่านแล้ว</string>
+  <string name="account_recovery_cancelled_subtitle">หากไม่เคยขอเปลี่ยนรหัสผ่าน บัญชีอาจมีความเสี่ยง\n\nรักษาความปลอดภัยของบัญชีด้วยการเปลี่ยนรหัสผ่าน</string>
+  <!-- Password change period -->
+  <string name="account_recovery_password_started_title">การรีเซ็ตรหัสผ่านพร้อมใช้งาน</string>
+  <string name="account_recovery_password_started_subtitle">หากต้องการรีเซ็ตรหัสผ่าน ให้กลับไปที่อุปกรณ์ แอป หรือเบราว์เซอร์ที่ใช้ขอรีเซ็ตรหัสผ่าน\n\nจำเป็นต้องดำเนินการก่อน %s\n\nหากไม่ได้ขอรีเซ็ตรหัสผ่าน ให้ยกเลิกคำขอนี้ทันที</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">สามารถรีเซ็ตรหัสผ่านได้แล้วในขณะนี้\n\nจำเป็นต้องดำเนินการก่อน %s\n\nหากไม่ได้ขอรีเซ็ตรหัสผ่าน ให้ยกเลิกคำขอนี้ทันที</string>
+  <!-- Recovery window ended -->
+  <string name="account_recovery_window_ended_title">การรีเซ็ตรหัสผ่านหมดอายุแล้ว</string>
+  <string name="account_recovery_window_ended_subtitle">จำเป็นต้องขอรีเซ็ตรหัสผ่านใหม่สำหรับ %s</string>
+  <!-- Other -->
+  <string name="account_recovery_cancel">ยกเลิกคำร้องขอ</string>
+  <string name="account_recovery_dismiss">รับทราบ</string>
+  <string name="account_recovery_reset">รีเซ็ตรหัสผ่าน</string>
+  <!-- Account Recovery Info -->
+  <string name="account_recovery_info_grace_title">ส่งคำขอรีเซ็ตรหัสผ่านแล้ว</string>
+  <string name="account_recovery_info_grace_subtitle">สามารถรีเซ็ตรหัสผ่านได้ใน %1s</string>
+  <string name="account_recovery_info_grace_description">เพื่อให้แน่ใจว่าเป็นเจ้าของบัญชีที่พยายามรีเซ็ตรหัสผ่าน จะต้องรอ 72 ชั่วโมงก่อนอนุมัติคำขอ\n\nหากไม่ได้ขอรีเซ็ตรหัสผ่าน ให้ยกเลิกคำขอนี้ทันที</string>
+  <string name="account_recovery_info_cancelled_title">ยกเลิกการรีเซ็ตรหัสผ่านแล้ว</string>
+  <string name="account_recovery_info_cancelled_subtitle">มีการทำรายการขอรีเซ็ตรหัสผ่านเมื่อ %1s</string>
+  <string name="account_recovery_info_cancelled_description">หากไม่ทราบเรื่องคำขอนี้ อาจหมายความว่าบุคคลอื่นสามารถเข้าถึงบัญชี Proton นี้\n\nรักษาความปลอดภัยให้บัญชีทันที</string>
+  <string name="account_recovery_info_insecure_title">การรีเซ็ตรหัสผ่านพร้อมใช้งาน</string>
+  <string name="account_recovery_info_insecure_subtitle">สามารถรีเซ็ตรหัสผ่านได้แล้ว การรีเซ็ตรหัสผ่านใช้ได้ถึง %1s</string>
+  <string name="account_recovery_info_insecure_description">ไม่ได้ทำรายการนี้ใช่หรือไม่\n\nหากไม่ได้ขอรีเซ็ตรหัสผ่าน ให้ยกเลิกคำขอนี้ทันที</string>
+  <!-- Password Reset Dialog -->
+  <string name="account_recovery_reset_dialog_title">รีเซ็ตรหัสผ่านหรือไม่</string>
+  <string name="account_recovery_reset_dialog_text">"เพื่อเหตุผลด้านความปลอดภัย จำเป็นต้องรอ 72 ชั่วโมงก่อนจะสามารถเปลี่ยนรหัสผ่านสำหรับ %1s ได้\n\nหากตั้งค่าวิธีกู้คืนบัญชีไว้แล้ว ให้ลองกู้คืนบัญชีแทน ซึ่งวิธีนี้จะช่วยให้เปลี่ยนรหัสผ่านได้ทันที"</string>
+  <string name="account_recovery_reset_dialog_action_request_reset">ขอรีเซ็ตรหัสผ่าน</string>
+  <string name="account_recovery_reset_dialog_action_use_recovery">ใช้วิธีการกู้คืน</string>
+  <string name="account_recovery_reset_dialog_action_use_recovery_hint">เปลี่ยนรหัสผ่านในเว็บเบราว์เซอร์โดยไม่ต้องรอให้ครบระยะเวลาความปลอดภัย</string>
+  <string name="account_recovery_reset_dialog_action_request_reset_success">ส่งคำขอรีเซ็ตรหัสผ่านแล้ว</string>
+</resources>

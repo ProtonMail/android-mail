@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">การตั้งค่า</string>
+  <string name="mail_settings_toolbar_button_content_description">ย้อนกลับ</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">การตั้งค่าบัญชี</string>
+  <string name="mail_settings_email_settings">การตั้งค่าอีเมล</string>
+  <string name="mail_settings_email_signature_settings">ลายเซ็นอีเมล</string>
+  <string name="mail_settings_folder_and_label_settings">การตั้งค่าโฟลเดอร์และป้ายกำกับ</string>
+  <string name="mail_settings_privacy_and_security_settings">การตั้งค่าความเป็นส่วนตัวและความปลอดภัย</string>
+  <string name="mail_settings_preferences">การตั้งค่าส่วนตัว</string>
+  <string name="mail_settings_app">การปรับแต่งแอป</string>
+  <string name="mail_settings_content_search">ค้นหาเนื้อหาในอีเมล</string>
+  <string name="mail_settings_mailbox">การตั้งค่าส่วนตัวกล่องจดหมาย</string>
+  <string name="mail_settings_new_badge">ใหม่</string>
+  <string name="mail_settings_folders_labels">โฟลเดอร์และป้ายกำกับ</string>
+  <string name="mail_settings_spam_and_custom_filters">สแปมและตัวกรอง</string>
+  <string name="mail_settings_privacy_and_security">ความเป็นส่วนตัวและความปลอดภัย</string>
+  <string name="mail_settings_fido_keys">คีย์ความปลอดภัย</string>
+  <string name="mail_settings_change_password">การจัดการรหัสผ่าน</string>
+  <string name="mail_settings_signature">ลายเซ็น</string>
+  <string name="mail_settings_storage_quota">%1$d%% จาก %2$s</string>
+  <string name="mail_settings_theme">ธีม</string>
+  <string name="mail_settings_app_icon">ไอคอนแอป</string>
+  <string name="mail_settings_alternative_routing">เราติ้งสำรอง</string>
+  <string name="mail_settings_app_language">ภาษาของแอป</string>
+  <string name="mail_settings_app_language_sys_default">ค่าเริ่มต้นของระบบ</string>
+  <string name="mail_settings_combined_contacts">รวมข้อมูลรายชื่อติดต่อแล้ว</string>
+  <string name="mail_settings_swipe_actions">การปัด</string>
+  <string name="mail_settings_combined_contacts_hint">เปิดฟีเจอร์นี้เพื่อป้อนที่อยู่อีเมลอัตโนมัติ โดยใช้รายชื่อผู้ติดต่อจากทุกบัญชีที่คุณได้ลงชื่อเข้าใช้ไว้</string>
+  <!-- App customization settings-->
+  <string name="mail_settings_app_customization_title">การปรับแต่งแอป</string>
+  <string name="mail_settings_app_customization_notification">การแจ้งเตือน</string>
+  <string name="mail_settings_app_customization_language">ภาษา</string>
+  <string name="mail_settings_app_customization_appearance">การแสดงผล</string>
+  <string name="mail_settings_app_customization_protection">การล็อกแอป</string>
+  <string name="mail_settings_app_customization_protection_enabled_description">เปิดใช้งานการล็อกอัตโนมัติแล้ว</string>
+  <string name="mail_settings_app_customization_protection_disabled_description">ปิดใช้งานการล็อกอัตโนมัติแล้ว</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email">ปัดเพื่อไปยังอีเมลถัดไป</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email_hint">เลื่อนไปยังข้อความถัดไปหรือก่อนหน้าในกล่องขาเข้าได้อย่างรวดเร็ว</string>
+  <string name="mail_settings_app_customization_customize_toolbar">ปรับแต่งแถบเครื่องมือ</string>
+  <string name="mail_settings_app_customization_email_categories">หมวดหมู่อีเมล</string>
+  <string name="mail_settings_app_customization_alternative_routing">เราติ้งสำรอง</string>
+  <string name="mail_settings_app_customization_alternative_routing_hint">ข้ามไฟร์วอลล์หรือปัญหาเครือข่ายในกรณีที่ไซต์ Proton ถูกบล็อก</string>
+  <string name="mail_settings_app_customization_mail_experience_header">ประสบการณ์การใช้งานอีเมล</string>
+  <string name="mail_settings_app_customization_advanced_header">ขั้นสูง</string>
+  <string name="mail_settings_app_customization_signature_header">ลายเซ็น</string>
+  <string name="mail_settings_app_customization_email_signature_header">ลายเซ็นอีเมล</string>
+  <string name="mail_settings_app_customization_mobile_signature_header">ลายเซ็นมือถือ</string>
+  <string name="mail_settings_app_customization_email_signature_explanation">ลายเซ็นอีเมลที่เพิ่มลงในอีเมลทั้งหมดที่ส่งโดยอัตโนมัติ</string>
+  <string name="mail_settings_app_customization_mobile_signature_explanation">ลายเซ็นเพิ่มเติมที่เพิ่มลงในอีเมลที่ส่งจากอุปกรณ์นี้</string>
+  <string name="mail_settings_app_customization_mobile_signature_on">เปิด</string>
+  <string name="mail_settings_app_customization_mobile_signature_off">ปิด</string>
+  <string name="mail_settings_app_customization_mobile_signature_enable">เปิดใช้งานลายเซ็น</string>
+  <string name="mail_settings_app_customization_mobile_signature_edit">แก้ไขลายเซ็น</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">ระบบ</string>
+  <string name="mail_settings_theme_light">สว่าง</string>
+  <string name="mail_settings_theme_dark">มืด</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">ไม่มีข้อมูล</string>
+  <string name="mail_settings_account">บัญชี</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy">ความเป็นส่วนตัว</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">แสดงข้อมูลทางไกลโดยอัตโนมัติ</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">แสดงรูปภาพที่ฝังไว้โดยอัตโนมัติ</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">ป้องกันการจับภาพหน้าจอ</string>
+  <string name="mail_settings_privacy_request_link_confirmation">ขอรับลิ้งก์เพื่อการยืนยัน</string>
+  <string name="mail_settings_privacy_background_sync">การซิงค์เบื้องหลัง</string>
+  <string name="mail_settings_privacy_background_sync_description">หากเปิดใช้งานตัวเลือกนี้ แอปจะซิงค์กับเซิร์ฟเวอร์เบื้องหลัง การปิดใช้งานคุณสมบัตินี้จะปิดใช้งานการแจ้งเตือนแบบพุชด้วย</string>
+  <string name="mail_settings_privacy_error_updating">เกิดข้อผิดพลาดในการอัปเดตการตั้งค่า</string>
+  <string name="mail_settings_privacy_error_loading">เกิดข้อผิดพลาดในการโหลดการตั้งค่า</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">การปัด</string>
+  <string name="mail_settings_swipe_actions_subtitle">โปรดตั้งการปัดเพื่อเข้าถึงการดำเนินการที่ใช้งานมากที่สุด</string>
+  <string name="mail_settings_swipe_right_name">ซ้ายไปขวา</string>
+  <string name="mail_settings_swipe_left_name">ขวาไปซ้าย</string>
+  <string name="mail_settings_swipe_action_none_title">ไม่ได้ตั้งค่าไว้</string>
+  <string name="mail_settings_swipe_action_archive_title">ที่เก็บถาวร</string>
+  <string name="mail_settings_swipe_action_read_title">ยังไม่ได้อ่าน</string>
+  <string name="mail_settings_swipe_action_spam_title">สแปม</string>
+  <string name="mail_settings_swipe_action_star_title">ติดดาว</string>
+  <string name="mail_settings_swipe_action_trash_title">ถังขยะ</string>
+  <string name="mail_settings_swipe_action_label_as_title">เพิ่มป้ายกำกับเป็น…</string>
+  <string name="mail_settings_swipe_action_move_to_title">ย้ายไปยัง…</string>
+  <string name="mail_settings_swipe_action_none_description">ไม่มี</string>
+  <string name="mail_settings_swipe_action_archive_description">ย้ายไปที่เก็บถาวร</string>
+  <string name="mail_settings_swipe_action_read_description">ทำเครื่องหมายว่ายังไม่ได้อ่าน/อ่านแล้ว</string>
+  <string name="mail_settings_swipe_action_spam_description">ย้ายไปยังสแปม</string>
+  <string name="mail_settings_swipe_action_star_description">ติดดาว/เลิกติดดาว</string>
+  <string name="mail_settings_swipe_action_trash_description">ย้ายไปยังถังขยะ</string>
+  <string name="mail_settings_swipe_action_label_as_description">เพิ่มป้ายกำกับเป็น…</string>
+  <string name="mail_settings_swipe_action_move_to_description">ย้ายไปยัง…</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">การแจ้งเตือนแบบพุช</string>
+  <string name="mail_settings_notifications_extended_notifications_title">การแจ้งเตือนแบบขยาย</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">เปิดฟีเจอร์นี้เพื่อแสดงชื่อของผู้ส่งอีเมลในการแจ้งเตือนแบบพุช</string>
+  <string name="mail_settings_notifications_notifications_settings">การตั้งค่าการแจ้งเตือน</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">ไปที่การตั้งค่าการแจ้งเตือนระบบ</string>
+  <string name="mail_settings_notifications_update_error">เกิดข้อผิดพลาดในการอัปเดตการตั้งค่า</string>
+  <string name="mail_settings_notifications_loading_error">เกิดข้อผิดพลาดในการโหลดการตั้งค่า</string>
+  <string name="notifications_on">เปิด</string>
+  <string name="notifications_off">ปิด</string>
+  <!-- Customize Toolbar -->
+  <string name="mail_settings_custom_toolbar_title">ปรับแต่งแถบเครื่องมือ</string>
+  <string name="mail_settings_custom_toolbar_list_view_title">แถบเครื่องมือรายการ</string>
+  <string name="mail_settings_custom_toolbar_list_view_description">แถบเครื่องมือนี้จะปรากฏขึ้นเมื่อเลือกหลายข้อความในรายการ (เช่น กล่องขาเข้า, ถังขยะ เป็นต้น)</string>
+  <string name="mail_settings_custom_toolbar_message_view_title">แถบเครื่องมือข้อความ</string>
+  <string name="mail_settings_custom_toolbar_message_view_description">แถบเครื่องมือนี้จะยังคงแสดงอยู่ขณะอ่านข้อความ</string>
+  <string name="mail_settings_custom_toolbar_conversation_view_title">แถบเครื่องมือบทสนทนา</string>
+  <string name="mail_settings_custom_toolbar_conversation_view_description">แถบเครื่องมือนี้จะยังคงแสดงอยู่ขณะอ่านข้อความ</string>
+  <string name="mail_settings_custom_toolbar_edit_actions">แก้ไขการดำเนินการ</string>
+  <string name="mail_settings_custom_toolbar_set_actions">การดำเนินการแถบเครื่องมือ</string>
+  <string name="mail_settings_custom_toolbar_remaining_actions">การดำเนินการที่มี</string>
+  <string name="mail_settings_custom_toolbar_nav_title_list">แก้ไขแถบเครื่องมือรายการ</string>
+  <string name="mail_settings_custom_toolbar_nav_title_convo">แถบเครื่องมือบทสนทนา</string>
+  <string name="mail_settings_custom_toolbar_nav_title_message">แถบเครื่องมือข้อความ</string>
+  <string name="mail_settings_custom_toolbar_nav_button_save">บันทึก</string>
+  <string name="mail_settings_custom_toolbar_header">แถบเครื่องมือมีได้ 1–5 การดำเนินการ และไม่สามารถลบการดำเนินการสุดท้ายที่เหลืออยู่ออกได้</string>
+  <string name="mail_settings_custom_toolbar_reset">รีเซ็ตเป็นค่าเริ่มต้น</string>
+  <string name="mail_settings_custom_toolbar_reset_title">ต้องการรีเซ็ตการตั้งค่าแถบเครื่องมือหรือไม่</string>
+  <string name="mail_settings_custom_toolbar_reset_confirm">ยืนยัน</string>
+  <string name="mail_settings_custom_toolbar_save_error">ไม่สามารถบันทึกการดำเนินการแถบเครื่องมือได้ โปรดลองอีกครั้ง</string>
+  <string name="mail_settings_custom_toolbar_read_error">ไม่สามารถอ่านการดำเนินการแถบเครื่องมือได้ โปรดลองอีกครั้ง</string>
+  <!-- Custom App Icon -->
+  <string name="settings_app_icon_toolbar_title">ไอคอนแอป</string>
+  <string name="settings_app_icon_name_default">ค่าเริ่มต้น</string>
+  <string name="settings_app_icon_name_discreet">ไม่เปิดเผย</string>
+  <string name="settings_app_icon_title_default">ไอคอนแอป - ค่าเริ่มต้น</string>
+  <string name="settings_app_icon_title_discreet">ไอคอนแอป - ไม่เปิดเผย</string>
+  <string name="settings_app_icon_description">ใช้ไอคอน Proton Mail เริ่มต้นต่อไป หรือเปลี่ยนเป็นไอคอนแบบไม่เปิดเผยเพื่อความเป็นส่วนตัวที่มากยิ่งขึ้น\nทั้งนี้ การแจ้งเตือนจะยังคงแสดงชื่อและไอคอน Proton Mail เสมอ</string>
+  <string name="settings_app_icon_learn_more">เรียนรู้เพิ่มเติม…</string>
+  <string name="settings_app_icon_discreet_toggle">ไอคอนแอปแบบไม่เปิดเผย</string>
+  <string name="settings_app_icon_confirmation_title">เปลี่ยนไอคอนแอปหรือไม่</string>
+  <string name="settings_app_icon_confirmation_details">การดำเนินการนี้จะปิดแอป Proton Mail และล้างการแจ้งเตือนทั้งหมด\n\nหากต้องการเปิด Proton Mail อีกครั้ง เพียงแตะไอคอนแอปใหม่</string>
+  <string name="settings_app_icon_action_cancel">ยกเลิก</string>
+  <string name="settings_app_icon_change_icon">เปลี่ยนไอคอน</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">เกิดข้อผิดพลาด โปรดลองอีกครั้ง</string>
+</resources>

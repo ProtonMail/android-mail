@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Уключыце пошук па змесціве, каб шукаць таксама ўнутры паведамленняў.</string>
   <string name="content_search_no_results_learn_more">Даведацца больш...</string>
   <string name="content_search_no_results_set_up_action">Наладзіць пошук па змесціве</string>
+  <string name="content_search_failed_title">Не ўдалося знайсці</string>
+  <string name="content_search_failed_description">Нешта пайшло не так. Паўтарыце спробу.</string>
+  <string name="content_search_failed_retry">Паўтарыце спробу</string>
   <string name="content_search_set_up_banner_title">Таксама даступны пошук унутры ліста</string>
   <string name="content_search_set_up_banner_description">Пошук слоў і фраз унутры ліста, а не толькі па адпраўніку і тэме.</string>
   <string name="content_search_set_up_banner_turn_on">Наладзіць</string>

@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
   <string name="content_search_no_results_learn_more">Learn more..</string>
   <string name="content_search_no_results_set_up_action">Set up content search</string>
+  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_retry">Try again</string>
   <string name="content_search_set_up_banner_title">Search inside emails too</string>
   <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
   <string name="content_search_set_up_banner_turn_on">Set up now</string>

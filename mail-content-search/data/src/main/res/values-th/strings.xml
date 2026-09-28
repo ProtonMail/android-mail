@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="content_search_notification_channel_name">การจัดทำดัชนีการค้นหาเนื้อหาอีเมล</string>
+  <string name="content_search_notification_channel_description">แสดงความคืบหน้าขณะจัดทำดัชนีข้อความสำหรับการค้นหาเนื้อหาอีเมล</string>
+  <string name="content_search_notification_title">กำลังเตรียมการค้นหาเนื้อหาอีเมล</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
+  <string name="content_search_notification_preparing">กำลังเตรียมการ…</string>
+  <string name="content_search_notification_pause">หยุดชั่วคราว</string>
+</resources>

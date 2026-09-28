@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">จาก:</string>
+  <string name="to_prefix">ถึง:</string>
+  <string name="cc_prefix">สำเนา:</string>
+  <string name="bcc_prefix">สำเนาลับ:</string>
+  <string name="subject_prefix">หัวเรื่อง: </string>
+  <string name="compose_message_placeholder">เขียนอีเมล</string>
+  <string name="close_composer_content_description">ปิดหน้าต่างสำหรับเขียน</string>
+  <string name="send_button_title">ส่ง</string>
+  <string name="composer_expand_recipients_button">แสดงผู้รับอื่นๆ</string>
+  <string name="composer_error_invalid_email">ที่อยู่อีเมลไม่ถูกต้องหรือไม่พบข้อมูล</string>
+  <string name="composer_change_sender_paid_feature">อัปเกรดเป็นแผนแบบชำระเงินเพื่อเปลี่ยนที่อยู่ผู้ส่ง</string>
+  <string name="composer_error_duplicate_recipient">ลบผู้รับ (ราย) ที่ซ้ำกันออกแล้ว</string>
+  <string name="composer_error_store_draft_address_disabled">ไม่สามารถบันทึกฉบับร่างได้ - ที่อยู่ผู้ส่งนี้ถูกปิดใช้งาน</string>
+  <string name="composer_error_store_draft_address_pk_missing">ไม่สามารถบันทึกฉบับร่างได้ - ที่อยู่ผู้ส่งนี้ไม่มีคีย์หลัก</string>
+  <string name="composer_error_store_draft_attachment_too_large">ไม่สามารถบันทึกฉบับร่างได้ - ขนาดไฟล์แนบเกินขีดจำกัด</string>
+  <string name="composer_error_store_draft_too_many_attachments">ไม่สามารถบันทึกฉบับร่างได้ - ถึงขีดจำกัดไฟล์แนบแล้ว</string>
+  <string name="composer_error_store_draft_duplicate_recipient">ไม่สามารถบันทึกฉบับร่างได้ - มีผู้รับซ้ำกันอย่างน้อยหนึ่งราย</string>
+  <string name="composer_error_store_draft_recipient_group_name">ไม่สามารถบันทึกฉบับร่างได้ - ชื่อกลุ่มผู้รับไม่ถูกต้อง</string>
+  <string name="composer_error_store_draft_invalid_recipient">ไม่สามารถบันทึกฉบับร่างได้ - ผู้รับไม่ถูกต้อง</string>
+  <string name="composer_error_store_draft_message_not_a_draft">ไม่สามารถบันทึกฉบับร่างได้ - ข้อความนี้ไม่ใช่ฉบับร่าง</string>
+  <string name="composer_error_store_draft_generic">ไม่สามารถบันทึกฉบับร่างได้ - เกิดข้อผิดพลาดทั่วไป</string>
+  <string name="composer_error_create_draft">เกิดข้อผิดพลาดบางประการ ไม่สามารถสร้างฉบับร่างใหม่ได้</string>
+  <string name="composer_error_loading_draft">เนื้อหาของฉบับร่างนี้ไม่พร้อมใช้งานในขณะนี้ ไม่สามารถแก้ไขได้</string>
+  <string name="composer_action_clear_formatting">ล้างการจัดรูปแบบ</string>
+  <string name="composer_add_attachments_content_description">เพิ่มไฟล์แนบ</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">นำเข้าจาก…</string>
+  <string name="composer_add_attachments_bottom_sheet_from_photos">จากคลังรูปภาพ</string>
+  <string name="composer_add_attachments_bottom_sheet_from_camera">ถ่ายรูปใหม่</string>
+  <string name="composer_error_loading_parent_message">ไม่สามารถโหลดข้อมูลของข้อความได้</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">ตกลง</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">ถึงขีดจำกัดไฟล์แนบแล้ว</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">ขนาดไฟล์แนบต้องไม่เกิน %1$s</string>
+  <string name="composer_attachment_encryption_failed_message">การเข้ารหัสลับไฟล์แนบไม่สำเร็จ ไฟล์แนบทั้งหมดถูกลบออกเพื่อความปลอดภัย</string>
+  <string name="composer_too_many_attachments_error">จำนวนไฟล์แนบเกินขีดจำกัดสูงสุด (100) แล้ว</string>
+  <string name="composer_delete_attachment_error">เกิดข้อผิดพลาดที่ไม่คาดคิดขณะลบไฟล์แนบ</string>
+  <string name="composer_unexpected_attachments_error">เกิดข้อผิดพลาดที่ไม่คาดคิดเกี่ยวกับไฟล์แนบ</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">ไม่สามารถบันทึกไฟล์แนบได้ โปรดตรวจสอบพื้นที่จัดเก็บแล้วลองอีกครั้ง</string>
+  <string name="composer_storage_quota_exceeded_error">พื้นที่จัดเก็บเต็ม โปรดเพิ่มพื้นที่ว่างหรืออัปเกรดเพื่อเพิ่มพื้นที่จัดเก็บ</string>
+  <string name="composer_attach_capture_from_camera_error">ไม่สามารถถ่ายภาพเพื่อแนบไฟล์จากกล้องได้ในขณะนี้</string>
+  <string name="composer_warning_local_data_shown">โหลดเวอร์ชันล่าสุดของฉบับร่างนี้ไม่สำเร็จ การเปลี่ยนแปลงใดๆ จะเขียนทับเนื้อหาที่มีอยู่</string>
+  <string name="composer_button_add_password">เพิ่มรหัสผ่าน</string>
+  <string name="composer_button_discard_draft">ละทิ้งฉบับร่าง</string>
+  <string name="composer_button_set_expiration">ตั้งเวลาหมดอายุ</string>
+  <string name="composer_expiration_time_bottom_sheet_title">กำหนดเวลาหมดอายุของข้อความ</string>
+  <string name="composer_bottom_bar_expiration_time_none">ไม่มีวันหมดอายุ</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">หลังจาก 1 ชั่วโมง</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">หลังจาก 1 วัน</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">หลังจาก 3 วัน</string>
+  <string name="composer_bottom_bar_expiration_time_custom">ในวันที่ระบุ</string>
+  <string name="composer_error_setting_expiration_time">ตั้งเวลาหมดอายุไม่สำเร็จ</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">เพิ่มรหัสผ่านเพื่อใช้ฟีเจอร์กำหนดวันหมดอายุ</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">ยกเลิก</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">ส่งเลย</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">เพิ่มการป้องกันด้วยรหัสผ่าน</string>
+  <string name="composer_send_expiring_message_to_external_may_fail">ไม่สามารถยืนยันได้ว่าผู้รับทั้งหมดใช้ Proton Mail เนื่องจากการหมดอายุของข้อความรองรับเฉพาะที่อยู่ Proton เท่านั้น ในกรณีนี้ แนะนำให้เพิ่มรหัสผ่านแทน</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">ผู้รับบางราย (%1$s) ไม่รองรับการหมดอายุโดยค่าเริ่มต้น เพิ่มรหัสผ่านเพื่อเปิดใช้งานการหมดอายุสำหรับผู้รับที่ไม่ได้ใช้ Proton Mail</string>
+  <string name="composer_send_expiring_message_to_external_will_fail_for_all">ไม่มีผู้รับรายใดรองรับการหมดอายุโดยค่าเริ่มต้น เพิ่มรหัสผ่านเพื่อเปิดใช้งานการหมดอายุสำหรับผู้รับที่ไม่ได้ใช้ Proton Mail</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">การแจ้งเตือนส่งข้อความ</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">การส่งข้อความจาก @pm.me เป็นคุณสมบัติแบบชำระเงิน ข้อความจะถูกส่งจากที่อยู่เริ่มต้น</string>
+  <string name="composer_sender_changed_original_address_disabled">ที่อยู่ผู้ส่งที่เลือกไว้ถูกปิดใช้งาน ข้อความจะถูกส่งจากที่อยู่เริ่มต้น</string>
+  <string name="composer_sender_changed_dialog_confirm_button">ตกลง</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">เขียน</string>
+  <string name="composer_send_without_subject_dialog_text">ส่งข้อความโดยไม่มีหัวเรื่องหรือไม่</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">ใช่</string>
+  <string name="composer_send_without_subject_dialog_reject_button">ไม่</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">เกิดข้อผิดพลาดในการส่ง</string>
+  <string name="message_sending_error_dialog_button_dismiss">ปิด</string>
+  <string name="message_sending_error_dialog_text_error">ไม่สามารถส่งอีเมลไปยังที่อยู่ที่ป้อนได้เนื่องจากเหตุผลต่อไปนี้:</string>
+  <string name="set_message_password_title">ตั้งรหัสผ่าน</string>
+  <string name="set_message_password_info_message">ตั้งรหัสผ่านเพื่อเข้ารหัสข้อความนี้สำหรับผู้รับที่ไม่ได้ใช้ Proton Mail</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">เรียนรู้เพิ่มเติม</a></string>
+  <string name="set_message_password_label">รหัสผ่านข้อความ</string>
+  <string name="set_message_password_label_hint">คำใบ้รหัสผ่าน (ไม่บังคับ)</string>
+  <string name="set_message_password_supporting_text">ต้องมีอย่างน้อย 8 อักขระ</string>
+  <string name="set_message_password_supporting_error_text">รหัสผ่านต้องมีความยาวระหว่าง 8 ถึง 21 อักขระ</string>
+  <string name="set_message_password_button_show">แสดงรหัสผ่าน</string>
+  <string name="set_message_password_button_hide">ซ่อนรหัสผ่าน</string>
+  <string name="set_message_password_button_save_changes">บันทึก</string>
+  <string name="set_message_password_button_remove_password">ลบรหัสผ่านออก</string>
+  <string name="composer_recipient_suggestion_device">แสดงรายชื่อผู้ติดต่อจากอุปกรณ์</string>
+  <!-- Discard draft dialog -->
+  <string name="discard_draft_dialog_title">ละทิ้งข้อความนี้หรือไม่</string>
+  <string name="discard_draft_dialog_text">ฉบับร่างจะไม่ถูกบันทึก</string>
+  <string name="discard_draft_dialog_confirm_button">ละทิ้ง</string>
+  <string name="discard_draft_dialog_dismiss_button">ยกเลิก</string>
+  <string name="discard_draft_error">เกิดข้อผิดพลาดในการละทิ้งฉบับร่าง</string>
+  <string name="composer_remove_inline_image">ลบออก</string>
+  <string name="composer_send_as_attachment">ส่งเป็นไฟล์แนบ</string>
+  <string name="composer_remove_recipient_action_item">ลบออก</string>
+  <string name="composer_copy_recipient_action_item">คัดลอก</string>
+  <string name="schedule_send_content_description">กำหนดเวลาส่ง</string>
+  <string name="composer_error_retrieving_schedule_send_options">สร้างเวลาสำหรับ \"กำหนดเวลาส่ง\" ไม่สำเร็จ</string>
+  <string name="composer_schedule_send_content_description">กำหนดเวลาส่ง</string>
+  <string name="composer_schedule_send_tomorrow_title">พรุ่งนี้</string>
+  <string name="composer_schedule_send_monday_title">วันจันทร์</string>
+  <string name="composer_schedule_send_custom_title">กำหนดเอง</string>
+  <string name="composer_schedule_send_custom_upsell_title">วันที่และเวลาแบบกำหนดเอง</string>
+  <string name="composer_schedule_send_custom_description">เลือกเวลาและวันที่</string>
+  <string name="composer_schedule_send_previously_set">ตั้งค่าไว้ก่อนหน้านี้</string>
+  <string name="composer_change_sender_title">จาก</string>
+  <string name="composer_error_change_sender_failed_getting_addresses">ไม่สามารถเปลี่ยนผู้ส่งได้เนื่องจากดึงที่อยู่ของผู้ใช้ไม่สำเร็จ โปรดลองอีกครั้ง</string>
+  <string name="composer_change_sender_invalid_address">ไม่สามารถใช้ที่อยู่ที่เลือกในการส่งได้</string>
+  <string name="composer_change_sender_unexpected_failure">เกิดข้อผิดพลาดขณะเปลี่ยนผู้ส่ง โปรดลองอีกครั้ง</string>
+  <string name="composer_change_sender_error_refreshing_body">การรีเฟรชเนื้อหาหลังจากเปลี่ยนผู้ส่งไม่สำเร็จ ลายเซ็นอาจไม่เป็นปัจจุบัน</string>
+  <string name="composer_loading_attachments_error">โหลดไฟล์แนบไม่สำเร็จ</string>
+  <string name="composer_attachment_upload_error_retry">อัปโหลดไฟล์แนบบางส่วนไม่สำเร็จ โปรดลองอีกครั้ง</string>
+  <string name="composer_external_encryption_unexpected_error">เกิดข้อผิดพลาดที่ไม่คาดคิด %s โปรดลองอีกครั้ง</string>
+  <string name="composer_sender_changed_original_address_cannot_send">ไม่สามารถใช้ที่อยู่ที่เลือกในการส่งได้ ข้อความจะถูกส่งจากที่อยู่เริ่มต้น</string>
+  <string name="composer_expiration_time_bottom_sheet_description">ตั้งค่าเวลาลบข้อความจากกล่องขาเข้าของผู้รับและโฟลเดอร์ส่งแล้ว หากต้องการให้ข้อความหมดอายุสำหรับผู้ใช้ที่ไม่ได้ใช้ Proton ให้เพิ่มรหัสผ่าน</string>
+  <string name="expiration_time_set_time_and_date">ตั้งเวลาและวันที่</string>
+  <string name="composer_expiration_set_expiration">ตั้งการหมดอายุ</string>
+  <string name="composer_expiration_pick_time_title">ตั้งเวลา</string>
+  <string name="composer_expiration_time_custom_time_on">เมื่อ %1$s</string>
+  <string name="composer_error_send_draft_generic">เกิดข้อผิดพลาดที่ไม่คาดคิดในการส่งข้อความนี้ โปรดลองอีกครั้ง</string>
+  <string name="composer_error_send_draft_invalid_sender">ที่อยู่อีเมลถูกปิดใช้งานหรือไม่ถูกต้อง โปรดตรวจสอบว่าที่อยู่นั้นถูกต้องและใช้งานได้อยู่</string>
+  <string name="composer_error_send_draft_external_password_decrypt_error">ถอดรหัสรหัสผ่านสำหรับการเข้ารหัสลับภายนอกไม่สำเร็จ</string>
+  <string name="composer_error_send_draft_already_sent">ข้อความถูกส่งแล้ว</string>
+  <string name="composer_error_send_draft_message_does_not_exist">ไม่พบฉบับร่าง อาจส่งหรือละทิ้งข้อความนั้นไปแล้ว</string>
+  <string name="composer_error_send_draft_message_too_large">ข้อความมีขนาดใหญ่เกินกว่าจะส่งได้ โปรดลดขนาดไฟล์แนบ</string>
+  <string name="composer_error_send_draft_attachments_error">ไฟล์แนบสูญหาย โปรดอัปโหลดอีกครั้ง</string>
+  <string name="composer_error_send_draft_attachments_conversion_error">ไม่สามารถแปลงไฟล์แนบได้ โปรดอัปโหลดอีกครั้ง</string>
+  <string name="composer_error_send_draft_invalid_recipient">ผู้รับบางรายไม่ถูกต้อง โปรดตรวจสอบผู้รับแล้วลองอีกครั้ง</string>
+  <string name="composer_error_send_draft_schedule_send_error">เวลาส่งที่กำหนดไว้ผ่านไปแล้ว ไปที่ฉบับร่างเพื่อส่งหรือกำหนดเวลาใหม่</string>
+  <string name="composer_error_send_draft_expiration_time_too_soon">เวลาหมดอายุของข้อความเร็วเกินไป</string>
+  <string name="composer_error_send_draft_package_error">เกิดปัญหาในการส่งข้อความ โปรดลองอีกครั้ง</string>
+  <string name="composer_error_send_draft_attachment_too_large">ไม่สามารถส่งฉบับร่างได้ - ขนาดไฟล์แนบเกินขีดจำกัด</string>
+  <string name="composer_error_send_draft_too_many_attachments">ไม่สามารถส่งฉบับร่างได้ - ถึงขีดจำกัดไฟล์แนบแล้ว</string>
+  <string name="composer_error_send_draft_attachments_crypto_error">ไม่สามารถส่งฉบับร่างได้ - การเข้ารหัสลับไฟล์แนบไม่สำเร็จ</string>
+  <string name="composer_expiration_time_learn_more">เรียนรู้เพิ่มเติม</string>
+  <string name="composer_enter_recipient_content_description">ป้อนผู้รับ</string>
+  <string name="composer_sender_address_description">เลือกที่อยู่ผู้ส่ง</string>
+  <string name="composer_encryption_info_learn_more">เรียนรู้เพิ่มเติม</string>
+</resources>

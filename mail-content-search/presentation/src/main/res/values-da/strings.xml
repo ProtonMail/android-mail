@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Aktivér indholdssøgning for også at kunne søge i beskederne.</string>
   <string name="content_search_no_results_learn_more">Få mere at vide..</string>
   <string name="content_search_no_results_set_up_action">Indstil indholdsøgning</string>
+  <string name="content_search_failed_title">Søgning mislykkedes</string>
+  <string name="content_search_failed_description">Noget gik galt. Prøv igen.</string>
+  <string name="content_search_failed_retry">Prøv igen</string>
   <string name="content_search_set_up_banner_title">Søg også inde i e-mails</string>
   <string name="content_search_set_up_banner_description">Find ord og sætninger i dine e-mails, ikke kun i afsendere og emner.</string>
   <string name="content_search_set_up_banner_turn_on">Konfigurer nu</string>

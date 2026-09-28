@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 Proton AG
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="app_name_mail">Proton Mail</string>
+  <string name="login_help_title">Chúng tôi có thể giúp gì cho bạn?</string>
+  <string name="login_help_forgot_username">Quên tên người dùng</string>
+  <string name="login_help_forgot_password">Quên mật khẩu</string>
+  <string name="login_help_other_issues">Sự cố đăng nhập khác</string>
+  <string name="login_help_contact_needed">Bạn vẫn cần trợ giúp? Hãy liên hệ trực tiếp với chúng tôi.</string>
+  <string name="login_help_customer_support">Hỗ trợ khách hàng</string>
+  <string name="login_help_sign_in_with_qr_code">Đăng nhập bằng mã QR</string>
+  <string name="welcome_subtitle_mail">Riêng tư. Bảo mật. Thuận tiện. Email được mã hóa mang đến cho bạn toàn quyền kiểm soát dữ liệu cá nhân.</string>
+  <string name="welcome_sign_in">Đăng nhập</string>
+  <string name="welcome_sign_up">Tạo tài khoản</string>
+  <string name="welcome_proton_privacy_by_default">Proton - Privacy by default</string>
+  <string name="auth_login">Đăng nhập</string>
+  <string name="auth_login_close">Đóng</string>
+  <string name="auth_login_help">Trợ giúp</string>
+  <string name="auth_sign_in">Đăng nhập</string>
+  <string name="auth_login_username">Tên người dùng hoặc email</string>
+  <string name="auth_email">Email</string>
+  <string name="auth_password">Mật khẩu</string>
+  <string name="auth_login_assistive_text">Vui lòng nhập email hoặc tên người dùng Proton của bạn.</string>
+  <string name="auth_account_details">Nhập thông tin Tài khoản Proton của bạn.</string>
+  <string name="auth_login_error_invalid_action_cannot_unlock_keys">Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">Thông tin đăng nhập không chính xác. Vui lòng thử lại.</string>
+  <string name="auth_login_general_error">Đã xảy ra lỗi.</string>
+  <string name="auth_second_factor_title">Xác thực hai yếu tố</string>
+  <string name="auth_second_factor_subtitle">Tài khoản của bạn được thiết lập nhiều phương thức 2FA. Vui lòng chọn cách bạn muốn xác minh danh tính.</string>
+  <string name="auth_second_factor_tab_security_key">Khóa bảo mật</string>
+  <string name="auth_second_factor_tab_otp">Mã dùng 1 lần</string>
+  <string name="auth_second_factor_authenticate">Xác thực</string>
+  <string name="auth_second_factor_totp_input_help">Nhập mã gồm 6 chữ số.</string>
+  <string name="auth_second_factor_totp_input_label">Mã xác thực hai yếu tố</string>
+  <string name="auth_second_factor_recovery_help">Nhập mã khôi phục gồm 8 ký tự.</string>
+  <string name="auth_second_factor_recovery_label">Mã khôi phục</string>
+  <string name="auth_second_factor_switch_to_recovery">Dùng mã khôi phục</string>
+  <string name="auth_second_factor_switch_to_totp">Dùng mã xác thực hai yếu tố</string>
+  <string name="auth_second_factor_insert_security_key">Cung cấp khóa bảo mật đã liên kết với Tài khoản Proton của bạn. </string>
+  <string name="auth_second_factor_insert_security_key_link">Tìm hiểu thêm</string>
+  <string name="auth_second_factor_incorrect_code">Mã không chính xác. Vui lòng thử lại.</string>
+  <string name="auth_two_pass_title">Mở khóa hộp thư của bạn</string>
+  <string name="auth_two_pass_input_label">Mật khẩu hộp thư</string>
+  <string name="auth_two_pass_unlock">Mở khóa</string>
+  <string name="auth_two_pass_forgot_password">Quên mật khẩu</string>
+  <string name="auth_two_pass_input_empty">Mật khẩu không được để trống</string>
+  <string name="auth_signup_title">Tạo Tài khoản Proton</string>
+  <string name="auth_signup_subtitle">Một tài khoản cho tất cả dịch vụ của Proton</string>
+  <string name="auth_signup_next">Tiếp tục</string>
+  <string name="auth_signup_username">Tên người dùng</string>
+  <string name="auth_signup_create_password">Tạo mật khẩu</string>
+  <string name="auth_signup_password">Mật khẩu</string>
+  <string name="auth_signup_repeat_password">Nhập lại mật khẩu</string>
+  <string name="auth_signup_terms_privacy_conditions_footer">Khi nhấp vào Tiếp tục, bạn đồng ý với %1$s và %2$s của Proton</string>
+  <string name="auth_signup_terms_learn_more">Điều khoản và điều kiện</string>
+  <string name="auth_signup_privacy_policy_learn_more">Chính sách quyền riêng tư</string>
+  <string name="auth_signup_internal_footnote">Bạn cần có địa chỉ Proton để sử dụng Proton Mail và Proton Calendar</string>
+  <string name="auth_signup_use_current_email">Sử dụng địa chỉ email hiện có</string>
+  <string name="auth_signup_get_encrypted_email">Nhận địa chỉ email đã mã hoá mới</string>
+  <string name="auth_signup_external_footnote">Với địa chỉ Proton, bạn có thể sử dụng mọi dịch vụ của Proton</string>
+  <string name="auth_signup_recovery_skip">Bỏ qua</string>
+  <string name="auth_signup_recovery_title">Thiết lập phương thức khôi phục (không bắt buộc)</string>
+  <string name="auth_signup_recovery_subtitle">Nếu bạn bị khoá tài khoản, chúng tôi sẽ gửi hướng dẫn khôi phục đến email hoặc số điện thoại này.</string>
+  <string name="auth_signup_recovery_select_country">Chọn quốc gia</string>
+  <string name="auth_signup_phone_placeholder">X XX XXXXXXX</string>
+  <string name="auth_signup_skip_recovery_title">Bỏ qua phương thức khôi phục?</string>
+  <string name="auth_signup_skip_recovery_description">Phương thức khôi phục sẽ giúp bạn truy cập vào tài khoản trong trường hợp quên mật khẩu hoặc bị khóa tài khoản.</string>
+  <string name="auth_signup_skip_recovery">Bỏ qua</string>
+  <string name="auth_signup_set_recovery">Thiết lập phương thức khôi phục</string>
+  <string name="auth_signup_your_account_is_being_setup">Đang tạo tài khoản của bạn…</string>
+  <string name="auth_signup_please_wait">Quá trình này thường mất khoảng một phút.</string>
+  <string name="auth_signup_congratulations_subtitle">Tài khoản Proton của bạn đã được tạo thành công.\nHãy thoải mái tận hưởng thế giới riêng tư.</string>
+  <string name="auth_signup_congratulations_title">Chúc mừng!</string>
+  <string name="auth_signup_start_using_proton">Bắt đầu dùng Proton</string>
+  <string name="auth_signup_validation_password">Mật khẩu không được để trống.</string>
+  <string name="auth_signup_validation_passwords_do_not_match">Mật khẩu không khớp.</string>
+  <string name="auth_signup_validation_password_input_invalid">Đầu vào mật khẩu không hợp lệ.</string>
+  <string name="auth_signup_validation_username">Vui lòng nhập tên người dùng</string>
+  <string name="auth_signup_validation_email">Email không được để trống.</string>
+  <string name="auth_signup_validation_username_input_invalid">Đầu vào tên người dùng không hợp lệ.</string>
+  <string name="auth_signup_validation_email_input_invalid">Đầu vào tên người dùng không hợp lệ.</string>
+  <string name="auth_signup_username_unavailable_error">Tên người dùng đã được sử dụng. Hãy chọn tên người dùng khác.</string>
+  <string name="auth_signup_recovery_email_validation_error">Xác thực email không thành công</string>
+  <string name="auth_signup_recovery_phone_validation_error">Xác thực số điện thoại không thành công</string>
+  <string name="auth_signup_createpassword_error_password_not_equal">Mật khẩu không khớp. Vui lòng thử lại.</string>
+  <string name="auth_signup_general_error">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+  <string name="auth_signup_countries_search">Tìm quốc gia</string>
+  <string name="auth_login_error_invalid_action_cannot_setup_user">Không thể thiết lập người dùng.</string>
+  <string name="auth_login_error_invalid_action_cannot_setup_address">Không thể thiết lập địa chỉ.</string>
+  <string name="auth_fido_security_keys_error">Đã xảy ra lỗi khi tìm nạp khóa bảo mật, vui lòng thử lại.</string>
+  <string name="auth_fido_security_keys_title">Khóa bảo mật</string>
+  <string name="auth_fido_manage_security_keys_info">Để quản lý, thêm hoặc xóa khóa bảo mật, vui lòng dùng ứng dụng web Proton. %s</string>
+  <string name="auth_fido_security_keys_empty_list">Tài khoản của bạn không đăng ký khóa bảo mật nào. Để thêm khóa bảo mật, hãy dùng ứng dụng web Proton. %s</string>
+  <string name="auth_fido_security_keys_registered">Đây là những khoá bảo mật đã đăng ký với tài khoản của bạn.</string>
+  <string name="auth_fido_manage_security_keys">Quản lý khóa bảo mật</string>
+  <string name="auth_fido_add_security_key">Thêm khóa bảo mật</string>
+  <string name="auth_fido_security_keys_learn_more">Tìm hiểu thêm</string>
+  <plurals name="auth_user_check_max_free_error">
+    <item quantity="other">Đã vượt quá số lượng tối đa %d tài khoản miễn phí.</item>
+  </plurals>
+  <string name="common_error_something_went_wrong">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+  <string name="auth_fido_config_error">Đã xảy ra lỗi khi truy xuất khóa đã lưu.</string>
+  <string name="auth_fido_reading_key_error">Đã xảy ra lỗi khi đọc khóa bảo mật.</string>
+  <string name="auth_fido_submit_key_error">Đã xảy ra lỗi khi gửi dữ liệu khóa.</string>
+  <string name="auth_fido_authenticating_in_progress">Xác thực bằng khóa bảo mật.</string>
+  <string name="auth_fido_security_key">Khóa bảo mật</string>
+  <plurals name="password_validator_min_length_error">
+    <item quantity="other">Mật khẩu phải chứa ít nhất %1$s ký tự</item>
+  </plurals>
+  <plurals name="password_validator_min_length_requirement">
+    <item quantity="other">Ít nhất %1$s ký tự</item>
+  </plurals>
+  <string name="settings_password_management_title">Đổi mật khẩu</string>
+  <string name="settings_save_second_password">Lưu mật khẩu thứ hai mới</string>
+  <string name="settings_save_main_password">Lưu mật khẩu chính mới</string>
+  <string name="settings_password_management_tab_main_password">Mật khẩu chính</string>
+  <string name="settings_password_management_tab_second_password">Mật khẩu thứ hai</string>
+  <string name="settings_password_management_change_password_note">Để đổi một trong hai mật khẩu, bạn cần biết mật khẩu chính.\u0020</string>
+  <string name="settings_password_management_forgot_main_password">Quên mật khẩu chính?</string>
+  <string name="settings_main_password_hint_current">Mật khẩu chính hiện tại</string>
+  <string name="settings_main_password_hint_new">Mật khẩu chính mới</string>
+  <string name="settings_main_password_hint_new_confirm">Xác nhận mật khẩu chính mới</string>
+  <string name="settings_second_password_hint_current_main_password">Mật khẩu chính hiện tại</string>
+  <string name="settings_second_password_hint_new">Mật khẩu thứ hai mới</string>
+  <string name="settings_second_password_hint_new_confirm">Xác nhận mật khẩu thứ hai mới</string>
+  <string name="settings_password_management_login_success">Đã cập nhật mật khẩu đăng nhập</string>
+  <string name="settings_password_management_second_success">Đã cập nhật mật khẩu thứ hai</string>
+  <string name="settings_password_invalid_2fa">Mã xác thực hai yếu tố không hợp lệ. Vui lòng thử lại.</string>
+  <string name="settings_password_error_empty">Mật khẩu không được để trống.</string>
+  <string name="settings_password_error">Tên người dùng hoặc mật khẩu không chính xác. Vui lòng thử lại.</string>
+  <string name="settings_password_error_invalid_recovery">Mã 2FA không chính xác. Vui lòng thử lại.</string>
+  <string name="settings_password_error_2fa_reused">Mã đã được sử dụng. Hãy thử mã khác.</string>
+  <string name="settings_password_general_error">Đã xảy ra lỗi.</string>
+  <string name="proton_error_non_processable_actions">Không thể xử lý một hoặc nhiều hành động. Vui lòng đăng xuất rồi đăng nhập lại vào tài khoản.</string>
+</resources>

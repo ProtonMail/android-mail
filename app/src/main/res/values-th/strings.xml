@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="app_icon_name_weather">สภาพอากาศ</string>
+  <string name="app_icon_name_notes">บันทึก</string>
+  <string name="app_icon_name_calculator">เครื่องคิดเลข</string>
+  <string name="app_welcome_subtitle">การเข้ารหัสลับเก็บรักษาข้อมูลให้เป็นส่วนตัว ข้อมูลเป็นของคุณอย่างแท้จริง</string>
+  <string name="dialog_sign_out_account_title">ออกจากระบบ</string>
+  <string name="dialog_sign_out_account_description">ข้อมูลที่เกี่ยวข้องกับบัญชีจะยังคงอยู่ในอุปกรณ์นี้ เว้นแต่จะเลือกลบข้อมูล</string>
+  <string name="dialog_sign_out_account_confirm">ออกจากระบบ</string>
+  <string name="dialog_sign_out_account_cancel">ยกเลิก</string>
+  <string name="dialog_remove_account_title">ลบบัญชีหรือไม่</string>
+  <string name="dialog_remove_account_description">ลบข้อมูลที่เกี่ยวข้องทั้งหมดออก</string>
+  <string name="dialog_remove_account_confirm">ลบออก</string>
+  <string name="dialog_remove_account_cancel">ยกเลิก</string>
+  <string name="feature_coming_soon">คุณสมบัติใหม่เร็วๆ นี้…</string>
+  <string name="mailbox_draft_saved">ได้บันทึกฉบับร่างแล้ว</string>
+  <string name="mailbox_draft_discard">ละทิ้ง</string>
+  <string name="mailbox_draft_discarded">ละทิ้งฉบับร่างแล้ว</string>
+  <string name="mailbox_message_sending">กำลังส่งข้อความ...</string>
+  <string name="mailbox_message_sending_offline">ออฟไลน์: ข้อความอยู่ในคิวเพื่อส่ง</string>
+  <string name="mailbox_message_sending_success">ส่งข้อความแล้ว</string>
+  <string name="mailbox_message_sending_error_action">ไปยังฉบับร่าง</string>
+  <string name="notification_switched_account">สลับไปยังบัญชี %s แล้ว</string>
+  <string name="mailbox_message_scheduling">กำลังจัดกำหนดการข้อความ…</string>
+  <string name="mailbox_message_scheduling_offline">ออฟไลน์: ข้อความอยู่ในคิวเพื่อจัดกำหนดการ</string>
+  <string name="mailbox_message_scheduled_for_sending_success">ข้อความนี้จะถูกส่งในวันที่ %1$s</string>
+  <string name="launcher_alert_duplicate_account_description">ผู้ใช้เข้าสู่ระบบแล้ว</string>
+  <string name="home_content_search_error_snackbar">ไม่สามารถเตรียมการค้นหาเนื้อหาอีเมลได้</string>
+  <string name="home_content_search_error_snackbar_action">ตรวจทาน</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Report a problem flow -->
+  <string name="report_a_problem_title">Báo cáo vấn đề</string>
+  <string name="report_a_problem_submit_button">Gửi</string>
+  <string name="report_a_problem_disclaimer_e2ee">Báo cáo không được mã hóa đầu cuối.\nKhông bao gồm thông tin nhạy cảm.</string>
+  <string name="report_a_problem_include_errors_title">Bao gồm nhật ký</string>
+  <string name="report_a_problem_include_errors_description">Nhật ký hiển thị tất cả hành động dẫn đến lỗi.\nChúng tôi chỉ sử dụng nhật ký để giúp khắc phục lỗi.</string>
+  <string name="report_a_problem_summary_title">Tóm tắt (bắt buộc)</string>
+  <string name="report_a_problem_summary_description">Ví dụ: Ứng dụng Mail bị sập khi mở email có tập tin đính kèm lớn.</string>
+  <string name="report_a_problem_field_length_error">Trường này phải có nhiều hơn 10 ký tự</string>
+  <string name="report_a_problem_expected_results_title">Kết quả được kỳ vọng</string>
+  <string name="report_a_problem_expected_results_description">Ví dụ: Mở email sẽ hiển thị nội dung thư và tập tin đính kèm.</string>
+  <string name="report_a_problem_repro_steps_title">Các bước tái hiện</string>
+  <string name="report_a_problem_repro_steps_description">Ví dụ:\n1. Tìm email có tập tin đính kèm lớn (vd: video)\n2. Mở email\n3. Chờ email tải</string>
+  <string name="report_a_problem_actual_results_title">Kết quả thực tế</string>
+  <string name="report_a_problem_actual_results_description">Ví dụ: Ứng dụng Mail bị sập khi mở email có tập tin đính kèm lớn.</string>
+  <string name="report_a_problem_leave_dialog_description_1">Bạn có chắc chắn muốn rời khỏi màn hình này?</string>
+  <string name="report_a_problem_leave_dialog_description_2">Mọi thông tin đã nhập sẽ bị mất.</string>
+  <string name="report_a_problem_leave_dialog_cancel_btn">Hủy</string>
+  <string name="report_a_problem_leave_dialog_close_btn">Đóng</string>
+  <string name="report_a_problem_success">Cảm ơn bạn đã báo cáo, bộ phận hỗ trợ khách hàng sẽ sớm liên hệ với bạn.</string>
+  <string name="report_a_problem_generic_error">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+  <string name="report_a_problem_offline_error">Bạn hiện đang ngoại tuyến. Vui lòng thử lại khi có kết nối mạng.</string>
+</resources>

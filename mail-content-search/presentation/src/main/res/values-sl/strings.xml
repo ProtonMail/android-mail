@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
   <string name="content_search_no_results_learn_more">Več o tem ...</string>
   <string name="content_search_no_results_set_up_action">Nastavi iskanje po vsebini</string>
+  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_retry">Try again</string>
   <string name="content_search_set_up_banner_title">Iščite tudi znotraj sporočil</string>
   <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
   <string name="content_search_set_up_banner_turn_on">Nastavi zdaj</string>

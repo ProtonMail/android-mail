@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="padlocks_stored_with_zero_access_encryption_summary">Được lưu trữ với mã hóa không truy cập</string>
+  <string name="padlocks_proton_send_e2ee">Đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_send_e2ee_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_send_e2ee_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient">Đã mã hóa đầu cuối với người nhận đã xác minh</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_send_sign_only">Email đã ký PGP</string>
+  <string name="padlocks_proton_send_sign_only_description">Bạn đã %s email này, chứng minh với người nhận rằng email là xác thực và không bị can thiệp.</string>
+  <string name="padlocks_proton_send_sign_only_description_link_text">ký kỹ thuật số</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description">Bạn đã %s email này, chứng minh với người nhận rằng email là xác thực và không bị can thiệp.</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">ký kỹ thuật số</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled_description">Người nhận này đã vô hiệu hóa mã hóa đầu cuối trên tài khoản.</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_receive_e2ee">Đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_receive_e2ee_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_receive_e2ee_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient">Đã mã hóa đầu cuối từ người gửi đã xác minh</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed">Đã mã hóa đầu cuối nhưng xác minh thất bại</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể mã hóa. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature">Đã mã hóa đầu cuối nhưng xác minh thất bại</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed">Email đã ký PGP nhưng xác minh thất bại</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient">Email đã ký PGP từ người gửi đã xác minh</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton_description">Email được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_zero_access">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_zero_access_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_zero_access_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_e2ee_verified_recipients">Đã mã hóa đầu cuối với người nhận đã xác minh</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients">Đã mã hóa không truy cập với người nhận đã xác minh</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients_description_link">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_e2ee">Đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_sent_e2ee_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_sent_e2ee_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient">Đã mã hóa không truy cập với người nhận đã xác minh</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient">Đã mã hóa đầu cuối PGP với người nhận đã xác minh</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient">Đã mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed">Email đã ký PGP</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">Đã mã hóa đầu cuối PGP</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Email này đã mã hóa đầu cuối trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Đã mã hóa đầu cuối với người nhận đã xác minh</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Email này được %s trên thiết bị của người gửi và chỉ người nhận có thể giải mã. Proton không thể xem nội dung của email này, bất kể lúc nào.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">đã mã hóa đầu cuối</string>
+  <string name="padlocks_proton_sent_recipient_e2ee">Đã mã hóa đầu cuối</string>
+  <!-- Additional descriptions -->
+  <string name="padlocks_proton_always_e2ee">Email trao đổi giữa các người dùng Proton được tự động mã hóa đầu cuối.</string>
+  <string name="padlocks_non_encrypted_copy">Tuy nhiên, người gửi hoặc người nhận không sử dụng Proton Mail có thể có bản sao không được mã hóa được lưu trữ trên máy chủ email của họ.</string>
+  <string name="padlocks_sender_verified_contact">Người gửi là %s có khóa mã hóa mà bạn tin cậy.</string>
+  <string name="padlocks_sender_verified_contact_link_text">liên hệ đã xác minh</string>
+  <string name="padlocks_sender_verification_failed">%s. Vui lòng xác nhận tính xác thực của email với liên hệ của bạn.</string>
+  <string name="padlocks_sender_verification_failed_link_text">xác minh người gửi không thành công</string>
+  <string name="padlocks_sender_verification_failed_no_signature">%s vì chưa có chữ ký. Vui lòng xác nhận tính xác thực của email với liên hệ của bạn.</string>
+  <string name="padlocks_sender_verification_failed_no_signature_link_text">xác minh người gửi không thành công</string>
+  <string name="padlocks_recipient_verified_contact">Người nhận là %s có khóa mã hóa mà bạn tin cậy.</string>
+  <string name="padlocks_recipient_verified_contact_link_text">liên hệ đã xác minh</string>
+  <string name="padlocks_recipients_verified_contacts">Người nhận là %s có khóa mã hóa mà bạn tin cậy.</string>
+  <string name="padlocks_recipients_verified_contacts_link_text">liên hệ đã xác minh</string>
+  <string name="padlocks_zero_access_addendum">Email này được lưu trữ trên các máy chủ Proton bằng %s. Cả Proton và mọi người khác đều không thể đọc.</string>
+  <string name="padlocks_zero_access_addendum_link_text">mã hóa không truy cập</string>
+  <string name="padlocks_show_details">Hiển thị chi tiết</string>
+  <string name="padlocks_close_button_text">Hiểu rồi</string>
+  <!-- Links -->
+</resources>

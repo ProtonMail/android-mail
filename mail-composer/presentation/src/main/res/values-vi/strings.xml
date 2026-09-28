@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">Từ:</string>
+  <string name="to_prefix">Đến:</string>
+  <string name="cc_prefix">Cc:</string>
+  <string name="bcc_prefix">Bcc:</string>
+  <string name="subject_prefix">Tiêu đề: </string>
+  <string name="compose_message_placeholder">Soạn thư</string>
+  <string name="close_composer_content_description">Đóng trình soạn thảo</string>
+  <string name="send_button_title">Gửi</string>
+  <string name="composer_expand_recipients_button">Hiển thị người nhận khác</string>
+  <string name="composer_error_invalid_email">Địa chỉ email không hợp lệ hoặc không tồn tại</string>
+  <string name="composer_change_sender_paid_feature">Nâng cấp lên gói trả phí để thay đổi địa chỉ người gửi</string>
+  <string name="composer_error_duplicate_recipient">Đã xóa người nhận trùng lặp</string>
+  <string name="composer_error_store_draft_address_disabled">Không thể lưu thư nháp - Địa chỉ người gửi này đã bị vô hiệu hóa</string>
+  <string name="composer_error_store_draft_address_pk_missing">Không thể lưu thư nháp - Địa chỉ người gửi này không có khóa chính</string>
+  <string name="composer_error_store_draft_attachment_too_large">Không thể lưu thư nháp - Tập tin đính kèm vượt quá giới hạn kích thước</string>
+  <string name="composer_error_store_draft_too_many_attachments">Không thể lưu thư nháp - Đã đạt giới hạn số tập tin đính kèm</string>
+  <string name="composer_error_store_draft_duplicate_recipient">Không thể lưu thư nháp - Một hoặc nhiều người nhận bị trùng lặp</string>
+  <string name="composer_error_store_draft_recipient_group_name">Không thể lưu thư nháp - Tên nhóm người nhận không hợp lệ</string>
+  <string name="composer_error_store_draft_invalid_recipient">Không thể lưu thư nháp - (Các) người nhận không hợp lệ</string>
+  <string name="composer_error_store_draft_message_not_a_draft">Không thể lưu thư nháp - Thư này không phải là thư nháp</string>
+  <string name="composer_error_store_draft_generic">Không thể lưu thư nháp - Đã xảy ra lỗi chung</string>
+  <string name="composer_error_create_draft">Đã xảy ra sự cố. Không thể tạo thư nháp mới.</string>
+  <string name="composer_error_loading_draft">Nội dung của thư nháp này hiện không khả dụng, không thể chỉnh sửa.</string>
+  <string name="composer_action_clear_formatting">Xóa định dạng</string>
+  <string name="composer_add_attachments_content_description">Thêm tập tin đính kèm</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Nhập từ…</string>
+  <string name="composer_add_attachments_bottom_sheet_from_photos">Từ thư viện ảnh</string>
+  <string name="composer_add_attachments_bottom_sheet_from_camera">Chụp ảnh mới</string>
+  <string name="composer_error_loading_parent_message">Không thể tải thông tin của thư</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Đã đạt đến giới hạn tập tin đính kèm</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Giới hạn kích thước cho tập tin đính kèm là %1$s</string>
+  <string name="composer_attachment_encryption_failed_message">Mã hóa tập tin đính kèm không thành công. Tất cả tập tin đính kèm đã bị xóa vì lý do bảo mật.</string>
+  <string name="composer_too_many_attachments_error">Đã vượt quá số lượng tập tin đính kèm tối đa (100).</string>
+  <string name="composer_delete_attachment_error">Đã xảy ra lỗi không mong muốn khi xóa tập tin đính kèm.</string>
+  <string name="composer_unexpected_attachments_error">Đã xảy ra lỗi không mong muốn liên quan đến tập tin đính kèm.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Không thể lưu tập tin đính kèm. Hãy kiểm tra dung lượng lưu trữ rồi thử lại.</string>
+  <string name="composer_storage_quota_exceeded_error">Dung lượng lưu trữ đã đầy. Vui lòng giải phóng dung lượng hoặc nâng cấp để thêm dung lượng.</string>
+  <string name="composer_attach_capture_from_camera_error">Hiện không thể dùng camera chụp tập tin đính kèm</string>
+  <string name="composer_warning_local_data_shown">Không tải được phiên bản mới nhất của bản nháp này. Mọi thay đổi đều sẽ ghi đè lên nội dung của bản nháp.</string>
+  <string name="composer_button_add_password">Thêm mật khẩu</string>
+  <string name="composer_button_discard_draft">Hủy bỏ thư nháp</string>
+  <string name="composer_button_set_expiration">Đặt thời gian hết hạn</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Thời hạn thư</string>
+  <string name="composer_bottom_bar_expiration_time_none">Không bao giờ hết hạn</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">Sau 1 giờ</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">Sau 1 ngày</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">Sau 3 ngày</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Vào ngày cụ thể</string>
+  <string name="composer_error_setting_expiration_time">Thiết lập thời gian hết hạn không thành công</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Thêm mật khẩu để dùng tính năng Hết hạn</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Hủy bỏ</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Vẫn gửi</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Thêm bảo vệ bằng mật khẩu</string>
+  <string name="composer_send_expiring_message_to_external_may_fail">Chúng tôi không thể xác nhận tất cả người nhận đều sử dụng Proton Mail. Chỉ địa chỉ Proton mới hỗ trợ tính năng hết hạn thư. Trong trường hợp này, bạn nên thêm mật khẩu.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Một số người nhận (%1$s) không hỗ trợ tính năng hết hạn theo mặc định. Thêm mật khẩu để kích hoạt hết hạn đối với người nhận không dùng Proton Mail.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail_for_all">Không có người nhận nào hỗ trợ tính năng hết hạn theo mặc định. Thêm mật khẩu để kích hoạt hết hạn đối với người nhận không dùng Proton Mail.</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Chú ý gửi</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Gửi thư từ @pm.me là một tính năng trả phí. Thư sẽ được gửi từ địa chỉ mặc định của bạn.</string>
+  <string name="composer_sender_changed_original_address_disabled">Địa chỉ người gửi đã chọn bị vô hiệu hóa. Thư của bạn sẽ được gửi từ địa chỉ mặc định của bạn.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Soạn</string>
+  <string name="composer_send_without_subject_dialog_text">Gửi thư mà không có tiêu đề?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Có</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Không</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Lỗi khi gửi</string>
+  <string name="message_sending_error_dialog_button_dismiss">Đóng</string>
+  <string name="message_sending_error_dialog_text_error">Không thể gửi email của bạn đến địa chỉ được nhập vì lý do sau:</string>
+  <string name="set_message_password_title">Đặt mật khẩu</string>
+  <string name="set_message_password_info_message">Đặt mật khẩu để mã hóa thư này cho người nhận không dùng Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Tìm hiểu thêm</a></string>
+  <string name="set_message_password_label">Mật khẩu thư</string>
+  <string name="set_message_password_label_hint">Gợi ý mật khẩu (tùy chọn)</string>
+  <string name="set_message_password_supporting_text">Yêu cầu tối thiểu 8 ký tự.</string>
+  <string name="set_message_password_supporting_error_text">Mật khẩu phải có độ dài từ 8 đến 21 ký tự</string>
+  <string name="set_message_password_button_show">Hiển thị mật khẩu</string>
+  <string name="set_message_password_button_hide">Ẩn mật khẩu</string>
+  <string name="set_message_password_button_save_changes">Lưu</string>
+  <string name="set_message_password_button_remove_password">Xóa mật khẩu</string>
+  <string name="composer_recipient_suggestion_device">Hiển thị danh bạ thiết bị</string>
+  <!-- Discard draft dialog -->
+  <string name="discard_draft_dialog_title">Hủy bỏ thư này?</string>
+  <string name="discard_draft_dialog_text">Thư nháp sẽ không được lưu</string>
+  <string name="discard_draft_dialog_confirm_button">Hủy bỏ</string>
+  <string name="discard_draft_dialog_dismiss_button">Hủy</string>
+  <string name="discard_draft_error">Đã xảy ra lỗi khi hủy bỏ thư nháp</string>
+  <string name="composer_remove_inline_image">Xóa</string>
+  <string name="composer_send_as_attachment">Gửi dưới dạng tập tin đính kèm</string>
+  <string name="composer_remove_recipient_action_item">Xóa</string>
+  <string name="composer_copy_recipient_action_item">Sao chép</string>
+  <string name="schedule_send_content_description">Lên lịch gửi</string>
+  <string name="composer_error_retrieving_schedule_send_options">Không thể tạo danh sách thời gian cho \"lên lịch gửi\"</string>
+  <string name="composer_schedule_send_content_description">Lên lịch gửi</string>
+  <string name="composer_schedule_send_tomorrow_title">Ngày mai</string>
+  <string name="composer_schedule_send_monday_title">Thứ Hai</string>
+  <string name="composer_schedule_send_custom_title">Tùy chỉnh</string>
+  <string name="composer_schedule_send_custom_upsell_title">Tùy chỉnh ngày và giờ</string>
+  <string name="composer_schedule_send_custom_description">Chọn ngày và giờ</string>
+  <string name="composer_schedule_send_previously_set">Đã thiết lập trước đó</string>
+  <string name="composer_change_sender_title">Từ</string>
+  <string name="composer_error_change_sender_failed_getting_addresses">Không thể thay đổi người gửi do lấy địa chỉ người dùng thất bại. Hãy thử lại.</string>
+  <string name="composer_change_sender_invalid_address">Không thể dùng địa chỉ đã chọn để gửi thư</string>
+  <string name="composer_change_sender_unexpected_failure">Đã xảy ra lỗi khi thay đổi người gửi. Vui lòng thử lại.</string>
+  <string name="composer_change_sender_error_refreshing_body">Không thể làm mới nội dung sau khi thay đổi người gửi. Chữ ký có thể đã cũ.</string>
+  <string name="composer_loading_attachments_error">Không thể tải tập tin đính kèm</string>
+  <string name="composer_attachment_upload_error_retry">Không thể tải lên một số tập tin đính kèm. Vui lòng thử lại.</string>
+  <string name="composer_external_encryption_unexpected_error">Đã xảy ra lỗi không mong muốn %s. Hãy thử lại.</string>
+  <string name="composer_sender_changed_original_address_cannot_send">Không thể dùng địa chỉ đã chọn để gửi thư. Thư sẽ được gửi từ địa chỉ mặc định.</string>
+  <string name="composer_expiration_time_bottom_sheet_description">Thiết lập thời điểm xóa thư khỏi hộp thư đến của người nhận và thư mục Đã gửi của bạn. Để kích hoạt tính năng hết hạn thư cho người không dùng Proton, hãy thêm mật khẩu.</string>
+  <string name="expiration_time_set_time_and_date">Đặt ngày và giờ</string>
+  <string name="composer_expiration_set_expiration">Đặt thời hạn hết hạn</string>
+  <string name="composer_expiration_pick_time_title">Đặt giờ</string>
+  <string name="composer_expiration_time_custom_time_on">Vào %1$s</string>
+  <string name="composer_error_send_draft_generic">Đã xảy ra lỗi không mong muốn khi gửi thư này. Vui lòng thử lại.</string>
+  <string name="composer_error_send_draft_invalid_sender">Địa chỉ email bị vô hiệu hóa hoặc không hợp lệ. Hãy kiểm tra đảm bảo địa chỉ hợp lệ và đang hoạt động.</string>
+  <string name="composer_error_send_draft_external_password_decrypt_error">Không thể giải mã mật khẩu mã hóa bên ngoài</string>
+  <string name="composer_error_send_draft_already_sent">Thư đã được gửi</string>
+  <string name="composer_error_send_draft_message_does_not_exist">Không tìm thấy thư nháp. Có thể bạn đã gửi hoặc hủy bỏ thư nháp.</string>
+  <string name="composer_error_send_draft_message_too_large">Thư quá lớn để gửi. Vui lòng giảm kích thước tập tin đính kèm.</string>
+  <string name="composer_error_send_draft_attachments_error">Thiếu tập tin đính kèm. Vui lòng tải lên lại.</string>
+  <string name="composer_error_send_draft_attachments_conversion_error">Không thể chuyển đổi tập tin đính kèm. Vui lòng tải lên lại.</string>
+  <string name="composer_error_send_draft_invalid_recipient">Một số người nhận không hợp lệ, vui lòng kiểm tra người nhận rồi thử lại.</string>
+  <string name="composer_error_send_draft_schedule_send_error">Thời gian gửi theo lịch đã qua. Đi đến Thư nháp để gửi hoặc lên lịch lại.</string>
+  <string name="composer_error_send_draft_expiration_time_too_soon">Thời gian hết hạn thư quá sớm.</string>
+  <string name="composer_error_send_draft_package_error">Đã xảy ra sự cố khi gửi thư. Vui lòng thử lại.</string>
+  <string name="composer_error_send_draft_attachment_too_large">Không thể gửi thư nháp - Tập tin đính kèm vượt quá giới hạn kích thước</string>
+  <string name="composer_error_send_draft_too_many_attachments">Không thể gửi thư nháp - Đã đạt giới hạn số tập tin đính kèm</string>
+  <string name="composer_error_send_draft_attachments_crypto_error">Không thể gửi thư nháp - Mã hóa tập tin đính kèm không thành công.</string>
+  <string name="composer_expiration_time_learn_more">Tìm hiểu thêm</string>
+  <string name="composer_enter_recipient_content_description">Nhập người nhận</string>
+  <string name="composer_sender_address_description">Chọn địa chỉ người gửi</string>
+  <string name="composer_encryption_info_learn_more">Tìm hiểu thêm</string>
+</resources>

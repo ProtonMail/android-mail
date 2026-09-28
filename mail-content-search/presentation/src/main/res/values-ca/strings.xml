@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Cerca de contingut del correu electrònic</string>
+  <string name="mail_settings_content_search_header_title">Cerca al contingut dels correus electrònics</string>
   <string name="mail_settings_content_search_description">Per tal que pugueu cercar al contingut dels missatges, aquests es baixaran al dispositiu.</string>
   <string name="mail_settings_content_search_learn_more">Més informació..</string>
-  <string name="mail_settings_content_search_toggle_title">Cerca de contingut del correu electrònic</string>
+  <string name="mail_settings_content_search_toggle_title">Cerca al contingut dels correus electrònics</string>
   <string name="mail_settings_content_search_mobile_data_title">Descarregar mitjançant dades mòbils</string>
   <string name="mail_settings_content_search_mobile_data_hint">Utilitzeu les dades mòbils per continuar les descàrregues quan es perdi la connexió Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
@@ -20,7 +20,7 @@
   <string name="mail_settings_content_search_indexing_paused">En pausa</string>
   <string name="mail_settings_content_search_indexing_pause">Pausa</string>
   <string name="mail_settings_content_search_indexing_resume">Reprendre-ho</string>
-  <string name="mail_settings_content_search_indexing_description">Els correus electrònics recents s\'indexen primer. Mentre s\'està indexant es pot cercar a tots els missatges indexats.</string>
+  <string name="mail_settings_content_search_indexing_description">Els correus electrònics recents s\'indexen primer. Es pot cercar en tots els missatges indexats mentre s\'estan indexant.</string>
   <string name="mail_settings_content_search_on_this_device_section">En aquest dispositiu</string>
   <string name="mail_settings_content_search_index_size">Mida de l\'índex</string>
   <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
@@ -29,21 +29,24 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Se suprimiran les dades de cerca d\'aquest dispositiu. Haureu de tornar-les a baixar per a cercar al contingut del correu electrònic.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Neteja les dades</string>
   <string name="content_search_bottomsheet_title">Ús de dades mòbils</string>
-  <string name="content_search_bottomsheet_description">Es descarregaran els correus de la bústia i es prepararan perquè hi cerqueu.</string>
-  <string name="content_search_bottomsheet_start_indexing">Iniciar la indexació</string>
+  <string name="content_search_bottomsheet_description">Els correus electrònics de la bústia es descarregaran i es prepararan per a poder-hi cercar.</string>
+  <string name="content_search_bottomsheet_start_indexing">Inicia la indexació</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title_for_query">No hi ha resultats per \"%1$s\"</string>
+  <string name="content_search_no_results_title_for_query">No s\'han trobat resultats per a \"%1$s\"</string>
   <string name="content_search_no_results_description">Proveu amb paraules clau diferents o comproveu l\'ortografia.</string>
   <string name="content_search_no_results_set_up_description">Activeu la cerca de contingut per buscar també dins dels missatges.</string>
-  <string name="content_search_no_results_learn_more">Per saber-ne més..</string>
+  <string name="content_search_no_results_learn_more">Més informació...</string>
   <string name="content_search_no_results_set_up_action">Configureu la cerca de contingut</string>
-  <string name="content_search_set_up_banner_title">Cercar també dins els correus electrònics</string>
-  <string name="content_search_set_up_banner_description">Trobeu paraules i frases dins dels correus, no només remitents i assumptes.</string>
+  <string name="content_search_failed_title">Hi ha hagut un error en la cerca</string>
+  <string name="content_search_failed_description">Alguna cosa ha anat malament. Torneu-ho a provar.</string>
+  <string name="content_search_failed_retry">Torneu-ho a provar</string>
+  <string name="content_search_set_up_banner_title">Cerqueu també dins dels correus electrònics</string>
+  <string name="content_search_set_up_banner_description">Trobeu paraules i frases dins dels correus electrònics, no només remitents i assumptes.</string>
   <string name="content_search_set_up_banner_turn_on">Configureu-ho ara</string>
   <string name="content_search_set_up_banner_not_now">Ara no</string>
   <string name="content_search_indexing_complete_banner_title">Tot fet!</string>
   <string name="content_search_indexing_complete_banner_description">Ara podeu cercar paraules dins de tots els correus, no només en els remitents i els assumptes.</string>
-  <string name="content_search_indexing_complete_banner_got_it">Entesos</string>
+  <string name="content_search_indexing_complete_banner_got_it">D\'acord</string>
   <string name="content_search_placeholder_text">Cerca</string>
   <string name="content_search_clear_query_content_description">Neteja la consulta de cerca</string>
   <string name="content_search_close_content_description">Tanca la cerca</string>
@@ -51,7 +54,7 @@
   <string name="content_search_results_title">Resultats</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
-    <item quantity="other">%1$d Resultats</item>
+    <item quantity="other">%1$d resultats</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Escriviu 3 caràcters o més per veure tots els resultats.</string>
   <!-- Search history -->

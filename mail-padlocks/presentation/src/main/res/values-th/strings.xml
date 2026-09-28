@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="padlocks_stored_with_zero_access_encryption_summary">จัดเก็บด้วยการเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_send_e2ee">การเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_send_e2ee_description">อีเมลนี้ %s บนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_send_e2ee_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient">การเข้ารหัสลับจากต้นทางถึงปลายทางไปยังผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient_description">อีเมลนี้ %s บนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_send_sign_only">อีเมลที่ลงนามด้วย PGP</string>
+  <string name="padlocks_proton_send_sign_only_description">คุณได้%sอีเมลนี้ เพื่อพิสูจน์ให้ผู้รับเห็นว่าอีเมลของคุณเป็นของจริงและไม่ได้ถูกแทรกแซง</string>
+  <string name="padlocks_proton_send_sign_only_description_link_text">ลงชื่อแบบดิจิทัล</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description">คุณได้%sอีเมลนี้ เพื่อพิสูจน์ให้ผู้รับเห็นว่าอีเมลของคุณเป็นของจริงและไม่ได้ถูกแทรกแซง</string>
+  <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">ลงชื่อแบบดิจิทัล</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled_description">ผู้รับรายนี้ปิดใช้งานการเข้ารหัสลับจากต้นทางถึงปลายทางในบัญชีของตน</string>
+  <string name="padlocks_proton_send_zero_access_encryption_disabled_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_receive_e2ee">ที่เข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_receive_e2ee_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_receive_e2ee_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient">ที่เข้ารหัสลับจากต้นทางถึงปลายทางจากผู้ส่งที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_receive_e2ee_verified_recipient_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed">ที่เข้ารหัสลับจากต้นทางถึงปลายทางโดยการตรวจสอบล้มเหลว</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่งและสามารถเข้ารหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature">ที่เข้ารหัสลับจากต้นทางถึงปลายทางโดยการตรวจสอบล้มเหลว</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed">อีเมลที่ลงนามด้วย PGP แต่การยืนยันไม่สำเร็จ</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient">อีเมลที่ลงนามด้วย PGP จากผู้ส่งที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_receive_sign_only_verified_recipient_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton_description">อีเมลจัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_zero_access_sent_by_proton_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_zero_access">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_zero_access_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_zero_access_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_e2ee_verified_recipients">ที่เข้ารหัสลับจากต้นทางถึงปลายทางส่งถึงผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients">เข้ารหัสลับแบบไม่มีการเข้าถึงพร้อมผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_sent_proton_verified_recipients_description_link">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_e2ee">ที่เข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_e2ee_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่งและสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_sent_e2ee_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient">เข้ารหัสลับแบบไม่มีการเข้าถึงพร้อมผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_verified_recipient_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient">PGP ที่เข้ารหัสลับจากต้นทางถึงปลายทางส่งถึงผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่งและสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient">เข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_proton_sent_recipient_proton_pgp_verified_recipient_description_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_proton_sent_recipient_pgp_signed">อีเมลที่ลงนามด้วย PGP</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient">PGP ที่เข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">อีเมลนี้ถูกเข้ารหัสลับจากต้นทางถึงปลายทางบนอุปกรณ์ของผู้ส่งและสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">ที่เข้ารหัสลับจากต้นทางถึงปลายทางส่งถึงผู้รับที่ได้รับการตรวจสอบแล้ว</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">อีเมลนี้%sบนอุปกรณ์ของผู้ส่ง และสามารถถอดรหัสได้โดยผู้รับเท่านั้น Proton ไม่สามารถดูเนื้อหาอีเมลได้ไม่ว่าเวลาใดก็ตาม</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">ถูกเข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <string name="padlocks_proton_sent_recipient_e2ee">ที่เข้ารหัสลับจากต้นทางถึงปลายทาง</string>
+  <!-- Additional descriptions -->
+  <string name="padlocks_proton_always_e2ee">อีเมลที่แลกเปลี่ยนระหว่างผู้ใช้ Proton จะถูกเข้ารหัสลับจากต้นทางถึงปลายทางโดยอัตโนมัติ</string>
+  <string name="padlocks_non_encrypted_copy">อย่างไรก็ตาม ผู้ส่งหรือผู้รับที่ไม่ได้ใช้ Proton Mail อาจมีสำเนาที่ไม่ได้เข้ารหัสจัดเก็บอยู่บนเซิร์ฟเวอร์อีเมลของตนได้</string>
+  <string name="padlocks_sender_verified_contact">ผู้ส่งเป็น %s ซึ่งเป็นผู้ที่มีคีย์เข้ารหัสที่คุณเชื่อถือแล้ว</string>
+  <string name="padlocks_sender_verified_contact_link_text">ผู้ติดต่อที่ได้รับการตรวจสอบ</string>
+  <string name="padlocks_sender_verification_failed">%s โปรดยืนยันความถูกต้องของอีเมลกับผู้ติดต่อของคุณ</string>
+  <string name="padlocks_sender_verification_failed_link_text">การตรวจสอบยืนยันผู้ส่งล้มเหลว</string>
+  <string name="padlocks_sender_verification_failed_no_signature">%s เนื่องจากไม่ได้ลงชื่อ โปรดยืนยันความถูกต้องของอีเมลกับผู้ติดต่อของคุณ</string>
+  <string name="padlocks_sender_verification_failed_no_signature_link_text">การตรวจสอบยืนยันผู้ส่งล้มเหลว</string>
+  <string name="padlocks_recipient_verified_contact">ผู้รับเป็น %s ซึ่งเป็นผู้ที่มีคีย์เข้ารหัสที่คุณเชื่อถือแล้ว</string>
+  <string name="padlocks_recipient_verified_contact_link_text">ผู้ติดต่อที่ได้รับการตรวจสอบ</string>
+  <string name="padlocks_recipients_verified_contacts">ผู้รับเป็น %s ซึ่งเป็นผู้ที่มีคีย์เข้ารหัสที่คุณเชื่อถือแล้ว</string>
+  <string name="padlocks_recipients_verified_contacts_link_text">ผู้ติดต่อที่ได้รับการตรวจสอบ</string>
+  <string name="padlocks_zero_access_addendum">อีเมลนี้จัดเก็บอยู่บนเซิร์ฟเวอร์ของ Proton โดยมี %s และไม่ว่า Proton หรือบุคคลอื่นก็ไม่สามารถอ่านอีเมลนี้ได้</string>
+  <string name="padlocks_zero_access_addendum_link_text">การเข้ารหัสลับแบบไม่มีการเข้าถึง</string>
+  <string name="padlocks_show_details">แสดงรายละเอียด</string>
+  <string name="padlocks_close_button_text">เข้าใจแล้ว</string>
+  <!-- Links -->
+</resources>

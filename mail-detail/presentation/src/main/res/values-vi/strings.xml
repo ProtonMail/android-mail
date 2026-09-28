@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_conversation">Tải cuộc hội thoại thất bại</string>
+  <string name="detail_error_loading_messages">Tải thư thất bại</string>
+  <plurals name="message_count_label_text">
+    <item quantity="other">%d thư</item>
+  </plurals>
+  <string name="quick_reply_button_content_description">Trả lời</string>
+  <string name="quick_reply_all_button_content_description">Trả lời tất cả</string>
+  <string name="more_button_content_description">Xem thêm</string>
+  <string name="from">Từ:</string>
+  <string name="to">Đến:</string>
+  <string name="cc">Cc:</string>
+  <string name="bcc">Bcc:</string>
+  <string name="date">Ngày:</string>
+  <plurals name="attachment">
+    <item quantity="other">%d Tập tin đính kèm</item>
+  </plurals>
+  <string name="undisclosed_recipients">…</string>
+  <string name="collapsed_header_draft">(Thư nháp)</string>
+  <string name="error_mark_as_read_failed">Không thể đánh dấu là đã đọc. Vui lòng thử lại.</string>
+  <string name="error_mark_as_unread_failed">Đánh dấu chưa đọc thất bại. Vui lòng thử lại.</string>
+  <string name="error_star_operation_failed">Gắn sao không thành công. Vui lòng thử lại.</string>
+  <string name="error_unstar_operation_failed">Bỏ gắn sao không thành công. Vui lòng thử lại.</string>
+  <string name="error_move_to_trash_failed">Chuyển tới thùng rác không thành công. Vui lòng thử lại.</string>
+  <string name="message_moved_to">Đã chuyển thư vào %s</string>
+  <string name="message_moved_to_archive">Đã chuyển thư vào Lưu trữ</string>
+  <string name="error_move_to_archive_failed">Không thể chuyển vào lưu trữ. Hãy thử lại.</string>
+  <string name="error_move_to_spam_failed">Không thể chuyển vào thư rác. Hãy thử lại.</string>
+  <string name="message_moved_to_selected_destination">Đã chuyển thư vào %1$s</string>
+  <string name="error_move_message_failed">Không thể chuyển thư. Vui lòng thử lại.</string>
+  <string name="conversation_moved_to_trash">Đã chuyển cuộc hội thoại vào Thùng rác</string>
+  <string name="conversation_moved_to_inbox">Đã chuyển cuộc hội thoại vào Hộp thư đến</string>
+  <string name="conversation_moved_to_selected_destination">Đã chuyển cuộc hội thoại vào %1$s</string>
+  <string name="conversation_moved_to_spam">Đã chuyển cuộc hội thoại vào Thư rác</string>
+  <string name="conversation_moved_to_archive">Đã chuyển cuộc hội thoại vào Lưu trữ</string>
+  <string name="error_print_message">Không thể in thư. Vui lòng thử lại.</string>
+  <string name="error_move_conversation_failed">Không thể chuyển cuộc hội thoại. Hãy thử lại.</string>
+  <string name="error_offline_loading_message">Bạn đang ngoại tuyến. Cần kết nối mạng để xem nội dung của thư này.</string>
+  <string name="error_get_attachment_failed">Lỗi lấy tập tin đính kèm.</string>
+  <string name="error_attachment_download_in_progress">Quá trình tải xuống hiện tại phải hoàn tất thì mới có thể bắt đầu lượt tải xuống mới.</string>
+  <string name="error_get_attachment_not_enough_memory">Không thể lấy tập tin đính kèm do không đủ bộ nhớ</string>
+  <string name="error_relabel_message_failed">Không thể gắn nhãn lại cho thư. Vui lòng thử lại</string>
+  <string name="decryption_error">Giải mã thư thất bại.</string>
+  <string name="detail_error_retrieving_message_body">Không thể truy xuất thư</string>
+  <string name="message_body_error_no_webview">Bạn cần phải có ứng dụng WebView để xem được nội dung thư.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Tự động tải hình ảnh được nhúng đang tắt. Bạn có thể thay đổi trong cài đặt.</string>
+  <string name="message_body_remote_content_banner_text">Tự động tải hình ảnh bên ngoài đang tắt. Bạn có thể thay đổi trong cài đặt.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Tự động tải hình ảnh được nhúng và nội dung bên ngoài đang tắt. Bạn có thể thay đổi trong cài đặt.</string>
+  <string name="message_body_images_failed_to_load_banner_text">Không thể tải một số hình ảnh do tính năng bảo vệ khỏi trình theo dõi.</string>
+  <string name="message_body_images_failed_to_load_banner_button">Tải hình ảnh</string>
+  <string name="message_phishing_banner_text">Hệ thống hoặc bạn đã đánh dấu thư này là đáng ngờ. Nếu bạn tin rằng thư này an toàn, hãy đánh dấu là hợp lệ.</string>
+  <string name="message_phishing_banner_mark_as_legitimate_button">Đánh dấu là hợp lệ</string>
+  <string name="message_spam_banner_text">Hệ thống hoặc bạn đã đánh dấu thư này là Thư rác.</string>
+  <string name="message_spam_banner_not_spam_button">Không phải thư rác</string>
+  <string name="message_blocked_sender_banner_text">Người gửi này đã bị chặn trước đây.</string>
+  <string name="message_blocked_sender_button_text">Bỏ chặn</string>
+  <string name="message_expiration_banner_text">Thư này sẽ hết hạn sau %1$s</string>
+  <string name="message_auto_delete_banner_text">Thư này sẽ tự động xóa sau %1$s</string>
+  <string name="message_auth_fail_banner_text">Email này không đáp ứng các yêu cầu xác thực của miền. Có thể thư đã bị giả mạo hoặc chuyển tiếp không đúng cách!</string>
+  <string name="message_auth_fail_banner_button">Tìm hiểu thêm</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Bạn sắp thoát ứng dụng và chuyển hướng tới:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Không hỏi lại</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Hủy bỏ</string>
+  <string name="external_link_confirmation_dialog_continue_button">Tiếp tục</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Cảnh báo: trang web bị nghi ngờ giả mạo</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Liên kết này dẫn đến một trang web có thể đang cố đánh cắp thông tin cá nhân của bạn, chẳng hạn như mật khẩu và thông tin thẻ tín dụng.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Vì lý do bảo mật, không nên tiếp tục.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Quay lại (khuyến nghị)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Bỏ qua cảnh báo và tiếp tục</string>
+  <!-- Mark as legitimate confirmation dialog -->
+  <string name="mark_as_legitimate_phishing_dialog_title">Xác nhận đánh dấu là hợp lệ</string>
+  <string name="mark_as_legitimate_phishing_dialog_message">Thành thật xin lỗi. Đây có thể là sai sót từ phía chúng tôi. Vui lòng xác nhận nếu bạn muốn đánh dấu email này là hợp lệ.</string>
+  <string name="mark_as_legitimate_spam_dialog_title">Xác nhận không phải thư rác</string>
+  <string name="mark_as_legitimate_spam_dialog_message">Thành thật xin lỗi. Đây có thể là sai sót từ phía chúng tôi. Vui lòng xác nhận email này không phải Thư rác.</string>
+  <!-- Delete message dialog -->
+  <string name="message_delete_dialog_title">Xóa thư</string>
+  <string name="message_delete_dialog_message">Bạn có chắc muốn xóa vĩnh viễn thư này không?</string>
+  <string name="message_deleted">Đã xóa thư</string>
+  <string name="error_delete_message_failed">Xóa thư thất bại</string>
+  <string name="error_delete_conversation_failed">Xóa cuộc hội thoại thất bại</string>
+  <string name="conversation_delete_dialog_title">Xóa cuộc hội thoại</string>
+  <string name="conversation_delete_dialog_message">Bạn có chắc chắn muốn xóa vĩnh viễn cuộc hội thoại này không?</string>
+  <string name="conversation_deleted">Đã xóa cuộc hội thoại</string>
+  <string name="message_body_load_remote_content_button_text">Tải nội dung từ xa</string>
+  <string name="message_body_load_embedded_images_button_text">Tải hình ảnh được nhúng</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Tải nội dung từ xa và nội dung được nhúng</string>
+  <string name="message_report_phishing_dialog_title">Xác nhận báo cáo lừa đảo</string>
+  <string name="message_report_phishing_dialog_message">Báo cáo một thư là lừa đảo sẽ gửi thư đó đến chúng tôi, để chúng tôi có thể phân tích và cải thiện các bộ lọc của mình. Điều này có nghĩa là chúng tôi sẽ có thể xem toàn bộ nội dung của thư.</string>
+  <string name="message_report_phishing_dialog_confim_button">Xác nhận</string>
+  <string name="message_report_phishing_dialog_cancel_button">Hủy</string>
+  <string name="trashed_messages_banner">Hiển thị các thư đã bị chuyển vào thùng rác trong cuộc hội thoại này.</string>
+  <string name="non_trashed_messages_banner">Hiển thị các thư chưa bị chuyển vào thùng rác trong cuộc hội thoại này.</string>
+  <string name="recipient_me">tôi</string>
+  <string name="message_details_header_from">Từ</string>
+  <string name="message_details_header_to">Tới</string>
+  <string name="message_details_header_cc">Cc</string>
+  <string name="message_details_header_bcc">Bcc</string>
+  <string name="schedule_message_sent_at_banner_title">Thư này sẽ được gửi</string>
+  <string name="schedule_message_edit_message_button">Chỉnh sửa thư</string>
+  <string name="schedule_send_tomorrow">ngày mai lúc %1$s</string>
+  <string name="error_cancel_schedule_send_failed">Không thể hủy thời gian gửi thư đã lên lịch</string>
+  <string name="offline_error_cancel_schedule_send_failed">Không thể hủy thư đã lên lịch gửi khi ngoại tuyến</string>
+  <string name="message_cancel_schedule_send_dialog_confim_button">Chỉnh sửa thư nháp</string>
+  <string name="message_cancel_schedule_send_dialog_cancel_button">Hủy</string>
+  <string name="message_cancel_schedule_send_dialog_title">Chỉnh sửa và lên lịch lại</string>
+  <string name="message_cancel_schedule_send_dialog_message">Thư này sẽ được chuyển vào Thư nháp để chỉnh sửa. Bạn sẽ cần phải lên lịch lại thời gian gửi.</string>
+  <!-- RSVP widget -->
+  <string name="rsvp_widget_no_title">(không có tiêu đề)</string>
+  <string name="rsvp_widget_attendance_optional">(Không bắt buộc tham dự)</string>
+  <string name="rsvp_widget_attending">Bạn có tham dự không?</string>
+  <string name="rsvp_widget_yes">Có</string>
+  <string name="rsvp_widget_maybe">Có thể</string>
+  <string name="rsvp_widget_no">Không</string>
+  <string name="rsvp_widget_yes_long">Có, tôi sẽ tham dự</string>
+  <string name="rsvp_widget_maybe_long">Có thể tôi sẽ tham dự</string>
+  <string name="rsvp_widget_no_long">Không, tôi sẽ không tham dự</string>
+  <string name="rsvp_widget_organizer">(Người tổ chức)</string>
+  <string name="rsvp_widget_you">Bạn</string>
+  <plurals name="rsvp_widget_participants">
+    <item quantity="other">%1$d người tham dự</item>
+  </plurals>
+  <string name="rsvp_widget_happening_now">Đang diễn ra <b>ngay lúc này</b></string>
+  <string name="rsvp_widget_event_ended">Sự kiện <b>đã kết thúc</b></string>
+  <string name="rsvp_widget_event_cancelled">Sự kiện <b>đã bị hủy</b></string>
+  <string name="rsvp_widget_invite_outdated">Lời mời này đã hết hạn</string>
+  <string name="rsvp_widget_event_cancelled_invite_outdated">Sự kiện đã bị hủy. Lời mời này đã hết hạn.</string>
+  <string name="rsvp_widget_offline_invite_outdated">Bạn đang ngoại tuyến. Thông tin hiển thị có thể đã hết hạn.</string>
+  <string name="rsvp_widget_address_is_incorrect">Không thể sử dụng địa chỉ của bạn để trả lời. Vui lòng cập nhật thông tin tài khoản.</string>
+  <string name="rsvp_widget_user_is_organizer">Bạn là người tổ chức.</string>
+  <string name="rsvp_widget_user_is_not_invited">Bạn không thể phản hồi lời mời sự kiện nếu hiện không có tên trong danh sách người tham dự.</string>
+  <string name="rsvp_widget_event_does_not_exist">Bạn không thể trả lời do sự kiện này không có trong lịch của bạn.</string>
+  <string name="rsvp_widget_today">Hôm nay</string>
+  <string name="rsvp_widget_tomorrow">Ngày mai</string>
+  <string name="rsvp_widget_invite_details_unavailable">Chi tiết lời mời không khả dụng</string>
+  <string name="rsvp_widget_could_not_load">Chúng tôi không thể tải thông tin.\nVui lòng thử lại.</string>
+  <string name="rsvp_widget_button_retry">Thử lại</string>
+  <string name="rsvp_widget_error_answering">Đã xảy ra lỗi khi phản hồi sự kiện này</string>
+  <string name="rsvp_widget_open_in_proton_calendar">Mở trong Proton Calendar</string>
+  <string name="rsvp_widget_failed_to_open_in_proton_calendar">Không thể mở trong Proton Calendar</string>
+  <string name="rsvp_widget_copy_address">Sao chép địa chỉ</string>
+  <string name="rsvp_widget_message">Thư</string>
+  <string name="snooze_message_snoozed_until_banner_title">Tạm ẩn cho đến</string>
+  <string name="snooze_message_unsnooze_banner_button">Bỏ tạm ẩn</string>
+  <string name="unsubscribe_newsletter_banner_message">Thư này được gửi từ danh sách gửi thư.</string>
+  <string name="unsubscribe_newsletter_banner_button">Hủy đăng ký</string>
+  <string name="unsubscribe_newsletter_dialog_text">Bạn có chắc chắn muốn hủy đăng ký không? Bạn sẽ không còn nhận được email từ danh sách gửi thư này nữa.</string>
+  <string name="unsubscribe_newsletter_dialog_cancel">Hủy</string>
+  <string name="unsubscribe_newsletter_dialog_confirm">Hủy đăng ký</string>
+  <string name="already_unsubscribed_banner_message">Bạn đã hủy đăng ký khỏi danh sách gửi thư này.</string>
+  <string name="error_unsubscribe_newsletter">Không thể hủy đăng ký nhận bản tin</string>
+  <string name="detail_error_loading_single_message">Không thể tải thư</string>
+  <!-- Raw message data screen -->
+  <string name="raw_message_data_headers_title">Tiêu đề thư</string>
+  <string name="raw_message_data_html_title">HTML của thư</string>
+  <string name="raw_message_data_close_button_content_description">Đóng</string>
+  <string name="raw_message_data_more_button_content_description">Xem thêm</string>
+  <string name="raw_message_data_download_action">Tải xuống</string>
+  <string name="raw_message_data_copy_action">Sao chép</string>
+  <string name="raw_message_data_learn_more_action">Tìm hiểu thêm</string>
+  <string name="raw_message_data_error">Đã xảy ra lỗi khi tải dữ liệu</string>
+  <string name="raw_message_data_successful_download">Tải xuống hoàn tất</string>
+  <string name="raw_message_data_failed_download">Tải xuống thất bại</string>
+</resources>
