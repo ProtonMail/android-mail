@@ -33,7 +33,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -143,6 +145,7 @@ internal fun ContentSearchTopBar(
                 title = {
                     SearchBarDefaults.InputField(
                         state = queryState,
+                        inputTransformation = QueryLengthLimit,
                         onSearch = {
                             keyboardController?.hide()
                             actions.onSearch()
@@ -225,6 +228,17 @@ internal fun ContentSearchTopBar(
                 )
             }
         }
+    }
+}
+
+// No real search term gets close to this. A longer paste is cut down to fit rather than rejected,
+// which is what the built-in maxLength would do. The cut steps back one character rather than
+// split an emoji in half.
+private const val MAX_QUERY_LENGTH = 255
+private val QueryLengthLimit = InputTransformation {
+    if (length > MAX_QUERY_LENGTH) {
+        val end = if (charAt(MAX_QUERY_LENGTH - 1).isHighSurrogate()) MAX_QUERY_LENGTH - 1 else MAX_QUERY_LENGTH
+        delete(end, length)
     }
 }
 
