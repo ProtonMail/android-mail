@@ -158,7 +158,8 @@ class ContentSearchViewModel @Inject constructor(
 
     private val submittedQuery = MutableStateFlow(savedStateHandle.get<String>(KEY_SUBMITTED_QUERY).orEmpty())
 
-    private var hasAutoFocusedSearchField = false
+    /** When the search field takes its focus on its own. Outlives the screen's composition. */
+    val searchFieldFocus = SearchFieldFocusHandOver()
 
     private var attachmentDownloadJob: Job? = null
 
@@ -312,23 +313,6 @@ class ContentSearchViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    /**
-     * Whether the search field still has its first focus to take. True only once: coming back from a
-     * message, leaving selection mode or rotating all re-create the field, and re-focusing then would
-     * cover the results the user came back to read.
-     *
-     * The screen decides when to spend it. With no banner to show that is on open; with one, it is
-     * when the banner is dismissed.
-     *
-     * Kept here rather than in the composition because navigating to a message tears the screen's
-     * composition (and any `remember`) down, while this ViewModel outlives it on the back stack.
-     */
-    fun consumeSearchFieldAutoFocus(): Boolean {
-        if (hasAutoFocusedSearchField) return false
-        hasAutoFocusedSearchField = true
-        return true
     }
 
     fun submit(action: ContentSearchViewAction) {

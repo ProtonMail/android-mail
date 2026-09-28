@@ -464,6 +464,11 @@ internal fun NavGraphBuilder.addContentSearchScreen(
             }
         }
 
+        // The entry's value is readable on the first frame back, while the copy above lands a frame
+        // later. The screen decides on that first frame whether to raise the keyboard, so it has to
+        // see the request by then. Otherwise the keyboard comes up and the sheet pushes it down.
+        val isTurnOnRequested = turnOnRequested || navRequest
+
         // Same instance as the screen's own, as both are scoped to this back stack entry.
         val setUpPromptViewModel: ContentSearchSetUpPromptViewModel = hiltViewModel()
         val declineRequest by entry.savedStateHandle
@@ -477,7 +482,7 @@ internal fun NavGraphBuilder.addContentSearchScreen(
         }
 
         ContentSearchEnableSheetHost(
-            showRequested = turnOnRequested,
+            showRequested = isTurnOnRequested,
             onDismissed = { turnOnRequested = false }
         ) {
             ContentSearchScreen(
@@ -507,7 +512,7 @@ internal fun NavGraphBuilder.addContentSearchScreen(
                         navController.navigate(destination)
                     }
                 ),
-                turnOnContentSearchRequested = turnOnRequested
+                turnOnContentSearchRequested = isTurnOnRequested
             )
         }
     }

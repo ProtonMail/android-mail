@@ -520,16 +520,6 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
-    fun `should grant the search field auto focus only once`() = runTest(testDispatcher) {
-        val sut = viewModel()
-
-        // Re-entering the bar on the way back from a message or from selection mode asks again, and
-        // must not raise the keyboard over the results the user came back to read.
-        assertTrue(sut.consumeSearchFieldAutoFocus())
-        assertFalse(sut.consumeSearchFieldAutoFocus())
-    }
-
-    @Test
     fun `should keep a running attachment download while the query is edited`() = runTest(testDispatcher) {
         val sut = viewModel()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } coAnswers { awaitCancellation() }
