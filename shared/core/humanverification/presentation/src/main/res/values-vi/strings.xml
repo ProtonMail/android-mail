@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 Proton AG
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="human_verification_help_title">Bạn cần trợ giúp về xác minh con người?</string>
+  <string name="human_verification_title">Xác minh con người</string>
+  <string name="human_verification_request_invite_title">Yêu cầu lời mời</string>
+  <string name="human_verification_request_invite_description">Nếu bạn gặp khó khăn khi tạo tài khoản, vui lòng yêu cầu lời mời và chúng tôi sẽ phản hồi trong vòng 1 ngày làm việc.</string>
+  <string name="human_verification_visit_help_center_title">Truy cập Trung tâm trợ giúp</string>
+  <string name="human_verification_visit_help_center_description">Tìm hiểu thêm về xác minh con người và lý do chúng tôi yêu cầu điều này.</string>
+  <string name="human_verification_help">Trợ giúp</string>
+  <string name="human_verification_general_error">Đã xảy ra lỗi xác minh.</string>
+</resources>

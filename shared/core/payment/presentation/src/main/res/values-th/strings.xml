@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="payment_error_title">มีบางอย่างผิดพลาด</string>
+  <string name="payment_error_description">ไม่สามารถโหลดหน้านี้ได้ โปรดรีเฟรชหน้าเว็บหรือตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</string>
+  <string name="proton_error_non_processable_actions">ไม่สามารถประมวลผลการดำเนินการอย่างน้อยหนึ่งรายการได้ โปรดออกจากระบบและเข้าสู่ระบบบัญชีอีกครั้ง</string>
+  <string name="payment_purchase_button_get">รับ %1$s</string>
+  <string name="payment_purchase_button_subscribed">สมัครรับข้อมูล %1$s แล้ว</string>
+  <string name="payment_purchase_button_product_not_found">ไม่พบผลิตภัณฑ์ในร้านค้า</string>
+  <string name="payment_pay_monthly">ชำระรายเดือน</string>
+  <string name="payment_pay_annually">ชำระรายปี</string>
+  <string name="payment_pay_biennially">ชำระทุก 2 ปี</string>
+  <plurals name="payment_pay_other">
+    <item quantity="other">ชำระสำหรับ %d เดือน</item>
+  </plurals>
+  <string name="payment_bf_renew_monthly">ส่วนลดคำนวณจากราคามาตรฐานรายเดือน ต่ออายุอัตโนมัติที่ %1$s/เดือน</string>
+  <string name="payment_bf_renew_annually">ส่วนลดคำนวณจากราคามาตรฐานรายเดือน ต่ออายุอัตโนมัติที่ %1$s/ปี</string>
+  <string name="payment_welcome_offer_renew_monthly">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s/เดือน</string>
+  <string name="payment_welcome_offer_renew_annually">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s/ปี</string>
+  <string name="payment_welcome_offer_renew_biennially">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s ทุก 2 ปี</string>
+  <plurals name="payment_welcome_offer_renew_other">
+    <item quantity="other">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s ทุก %2$s เดือน</item>
+  </plurals>
+  <string name="payment_subscription_title">การสมัครสมาชิก</string>
+  <string name="payment_subscription_upgrade_your_plan">อัปเกรดแผน</string>
+  <string name="payment_subscription_renew_auto_renew_on">แผนจะต่ออายุอัตโนมัติเมื่อ %1$s</string>
+  <string name="payment_subscription_managed_by_google">การสมัครสมาชิกได้รับการจัดการโดย Google Play</string>
+  <string name="payment_subscription_managed_by_apple">การสมัครสมาชิกได้รับการจัดการโดย Apple Store</string>
+  <string name="payment_subscription_managed_by_other">ไม่สามารถจัดการการสมัครสมาชิกภายในแอปมือถือได้</string>
+  <string name="payment_subscription_restricted_access_title">จำกัดการเข้าถึง</string>
+  <string name="payment_subscription_restricted_access_description">ขออภัย ไม่มีสิทธิ์เข้าถึงหน้านี้ โปรดติดต่อผู้ดูแลระบบหากไม่ควรเกิดเหตุการณ์นี้</string>
+</resources>

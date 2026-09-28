@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="account_switcher_manage_account">Quản lý tài khoản</string>
+  <string name="account_switcher_talkback_title">Quản lý tài khoản: tài khoản hiện tại</string>
+  <string name="account_switcher_sign_out">Đăng xuất</string>
+  <string name="account_switcher_sign_in">Đăng nhập</string>
+  <string name="account_switcher_remove">Xóa</string>
+  <string name="account_switcher_remove_from_device">Xóa khỏi thiết bị này</string>
+  <string name="account_switcher_switch_to">Chuyển sang</string>
+  <string name="manage_accounts_title">Quản lý các tài khoản</string>
+  <string name="manage_accounts_add_account">Thêm tài khoản</string>
+  <string name="manage_accounts_switch_to">Chuyển sang</string>
+  <string name="manage_accounts_switch_to_signed_in_content_desc">Chuyển sang tài khoản đã đăng nhập</string>
+  <string name="manage_accounts_switch_to_signed_out_content_desc">Chuyển sang tài khoản đã đăng xuất</string>
+  <string name="primary_account_avatar_camera_content_description">Camera cạnh ảnh đại diện tài khoản</string>
+  <string name="manage_accounts_on_device">Quản lý các tài khoản trên thiết bị này</string>
+  <string name="add_another_account">Thêm tài khoản khác</string>
+  <string name="account_switcher_no_initials">N/A</string>
+  <string name="manage_accounts_options">Tùy chọn</string>
+</resources>

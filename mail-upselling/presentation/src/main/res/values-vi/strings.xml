@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Nút nâng cấp</string>
+  <string name="upselling_close_button_content_description">Nút đóng</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">Để mở khóa thêm dung lượng lưu trữ và nhiều tính năng cao cấp.</string>
+  <string name="upselling_mailbox_plus_title">Nâng cấp lên Mail Plus</string>
+  <!-- Upselling: Social Proof -->
+  <string name="upselling_mailbox_plus_title_social_proof">Bắt đầu dùng Mail Plus</string>
+  <!-- Upselling: Mailbox Promo -->
+  <string name="upselling_mailbox_plus_promo_description_override">Trải nghiệm trọn vẹn Mail với ưu đãi có thời hạn này</string>
+  <string name="upselling_mailbox_plus_promo_title">Thử Mail Plus với %s</string>
+  <string name="upselling_mailbox_plus_promo_cta">Nhận 1 tháng với %s</string>
+  <string name="upselling_mailbox_plus_promo_skip">Bỏ qua ưu đãi</string>
+  <string name="upselling_mailbox_plus_promo_renewal">%s cho tháng đầu tiên, sau đó là %s mỗi tháng</string>
+  <!-- Upselling: Unlimited -->
+  <string name="upselling_unlimited_title">Nâng cấp lên Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Không hiển thị lại ưu đãi này</string>
+  <string name="upselling_stay_on_mail_plus">Tiếp tục dùng Mail Plus</string>
+  <string name="upselling_pu_choose_plan">Chọn gói</string>
+  <string name="upselling_pu_whats_included">Bao gồm những gì</string>
+  <string name="upselling_pu_cta">Mua Proton Unlimited</string>
+  <!-- Upselling: Plus to Unlimited themed titles -->
+  <string name="upselling_pu_generic_title">Tăng cường bảo mật quyền riêng tư trực tuyến với Proton Unlimited</string>
+  <string name="upselling_pu_threat_protection_title">Bảo vệ tài khoản khỏi các mối đe dọa với Proton Sentinel</string>
+  <string name="upselling_pu_aliases_title">Nhận không giới hạn biệt danh để bảo vệ danh tính</string>
+  <string name="upselling_pu_drive_title">Nhận 500 GB để lưu trữ tệp và ảnh một cách an toàn</string>
+  <string name="upselling_pu_vpn_browse_title">Truy cập VPN siêu nhanh với các máy chủ tại hơn 110 quốc gia</string>
+  <string name="upselling_pu_vpn_streaming_title">Truy cập nội dung của các dịch vụ phát trực tuyến trên toàn thế giới</string>
+  <string name="upselling_pu_pass_title">Giữ mật khẩu an toàn và ngăn nắp nhờ kho</string>
+  <string name="upselling_pu_subtitle">Trải nghiệm trọn vẹn Proton với Unlimited</string>
+  <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
+  <string name="upselling_pu_row_generic_title">Nâng tầm quyền riêng tư của bạn</string>
+  <string name="upselling_pu_row_generic_subtitle">Mở khóa thêm dung lượng lưu trữ</string>
+  <string name="upselling_pu_row_threat_protection_title">Bảo vệ trước các mối đe dọa</string>
+  <string name="upselling_pu_row_threat_protection_subtitle">Bảo vệ tài khoản</string>
+  <string name="upselling_pu_row_aliases_title">Nhận không giới hạn biệt danh</string>
+  <string name="upselling_pu_row_aliases_subtitle">Bảo vệ danh tính</string>
+  <string name="upselling_pu_row_drive_title">Tăng dung lượng lưu trữ</string>
+  <string name="upselling_pu_row_drive_subtitle">Nhận 500 GB để lưu trữ tệp và ảnh</string>
+  <string name="upselling_pu_row_vpn_browse_title">Duyệt web an toàn</string>
+  <string name="upselling_pu_row_vpn_browse_subtitle">Truy cập VPN siêu nhanh</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Bỏ chặn nội dung phát trực tuyến</string>
+  <string name="upselling_pu_row_vpn_streaming_subtitle">Tự do phát trực tuyến với Proton VPN</string>
+  <string name="upselling_pu_row_pass_title">Bảo vệ mật khẩu an toàn</string>
+  <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Dễ dàng gửi email nhóm. Trải nghiệm tính năng này và nhiều hơn thế với Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Nhóm các liên hệ của bạn</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Tạo mọi thứ cần thiết để luôn ngăn nắp. Sở hữu tính năng này và nhiều hơn thế với Mail Plus. </string>
+  <string name="upselling_labels_plus_title">Cần thêm nhãn hoặc thư mục?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Tạo mọi thứ cần thiết để luôn ngăn nắp. Sở hữu tính năng này và nhiều hơn thế với Mail Plus. </string>
+  <string name="upselling_folders_plus_title">Cần thêm nhãn hoặc thư mục?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Cá nhân hóa chữ ký trên di động. Trải nghiệm tính năng này và nhiều hơn thế với Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Cá nhân hóa chữ ký</string>
+  <!-- Upselling: Auto Delete -->
+  <string name="upselling_auto_delete_plus_description_override">Xóa thư rác và Thùng rác sau 30 ngày. Sở hữu tính năng này và nhiều hơn thế với Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Tự động xóa sạch thùng rác</string>
+  <!-- Upselling: Schedule Send -->
+  <string name="upselling_schedule_send_plus_description_override">Tùy chỉnh thời gian gửi email. Trải nghiệm tính năng này và nhiều hơn thế với Mail Plus.</string>
+  <string name="upselling_schedule_send_plus_title">Lên lịch ngay, gửi sau</string>
+  <!-- Upselling: Snooze -->
+  <string name="upselling_snooze_plus_description_override">Tạm ẩn và gửi sau. Trải nghiệm tính năng này và nhiều hơn thế với Mail Plus.</string>
+  <string name="upselling_snooze_plus_title">Gửi email này lúc này chưa phù hợp?</string>
+  <!-- Upselling - Misc buttons -->
+  <string name="upselling_button_hint">Nâng cấp để có sự linh hoạt tối đa</string>
+  <string name="upselling_upgrade_plan_generic">Bạn cần có gói đăng ký Proton Mail trả phí để truy cập vào tính năng này</string>
+  <!-- Onboarding Upselling -->
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Dung lượng lưu trữ</string>
+  <string name="upselling_comparison_table_storage_value_free">1 GB</string>
+  <string name="upselling_comparison_table_storage_value_plus">15 GB</string>
+  <string name="upselling_comparison_table_storage_value_unlimited">500 GB</string>
+  <string name="upselling_comparison_table_email_addresses">Địa chỉ email</string>
+  <string name="upselling_comparison_table_custom_email_domain">Tên miền email tùy chỉnh</string>
+  <string name="upselling_comparison_table_desktop_app">Truy cập ứng dụng máy tính để bàn</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Không giới hạn thư mục và nhãn</string>
+  <string name="upselling_comparison_table_priority_support">Hỗ trợ khách hàng ưu tiên</string>
+  <string name="upselling_comparison_table_aliases">Biệt danh Hide My Email</string>
+  <string name="upselling_comparison_table_folders_labels">Thư mục và nhãn</string>
+  <string name="upselling_comparison_table_premium_products">VPN cao cấp, trình quản lý mật khẩu và lưu trữ đám mây</string>
+  <string name="upselling_comparison_table_dark_web_monitoring">Giám sát Dark Web</string>
+  <string name="upselling_comparison_table_premium_access">Truy cập đặc biệt vào Mail, VPN, Drive, Pass và Calendar</string>
+  <string name="upselling_comparison_table_unlimited_aliases">Không giới hạn biệt danh để ẩn danh tính</string>
+  <string name="upselling_comparison_table_ultrafast_vpn">VPN siêu nhanh với hơn 110 quốc gia</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Không giới hạn thư mục, bộ lọc và nhãn</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Chọn gói đăng ký</string>
+  <string name="upselling_select_plan_year">12 tháng</string>
+  <string name="upselling_select_plan_month">1 tháng</string>
+  <!-- Onboarding upsell -->
+  <string name="upselling_onboarding_choose_plan">Chọn gói</string>
+  <string name="upselling_onboarding_choose_plan_monthly">Hàng tháng</string>
+  <string name="upselling_onboarding_choose_plan_yearly">Hàng năm</string>
+  <string name="upselling_onboarding_best_value">Giá tốt nhất</string>
+  <string name="upselling_onboarding_yearly_savings">Thanh toán hàng năm và tiết kiệm %s</string>
+  <string name="upselling_onboarding_entitlements_show_more">Hiển thị thêm</string>
+  <string name="upselling_onboarding_entitlements_show_less">Ẩn bớt</string>
+  <string name="upselling_onboarding_button_continue_free">Tiếp tục với Free plan</string>
+  <string name="upselling_onboarding_autorenew">Tính phí %s mỗi %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">Ưu đãi chào mừng. Tự động gia hạn ở mức %s mỗi %s</string>
+  <string name="upselling_onboarding_autorenew_month">tháng</string>
+  <string name="upselling_onboarding_autorenew_year">12 tháng</string>
+  <string name="upselling_onboarding_free_entitlement_storage">1 GB dung lượng lưu trữ</string>
+  <string name="upselling_onboarding_free_entitlement_mail">1 địa chỉ email</string>
+  <!-- Other UI Items -->
+  <string name="upselling_unlimited_description_override">Để mở khóa thêm dung lượng lưu trữ và nhiều tính năng cao cấp.</string>
+  <string name="upselling_auto_renew_text">Tự động gia hạn với cùng mức giá và điều khoản trừ khi bị hủy</string>
+  <string name="upselling_auto_renew_text_promo">Ưu đãi chào mừng. Tự động gia hạn ở mức %s%s trừ khi bị hủy</string>
+  <string name="upselling_auto_renew_text_bfriday">Mức giảm giá được tính dựa trên mức giá tiêu chuẩn theo tháng. Gói sẽ tự động gia hạn ở mức %s%s cho đến khi bị hủy.</string>
+  <string name="upselling_auto_renew_text_promo_short">Ưu đãi chào mừng. Tự động gia hạn ở mức %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Tự động gia hạn ở mức %s%s trừ khi bị hủy.</string>
+  <string name="upselling_social_proof_reviews">2k+ ĐÁNH GIÁ</string>
+  <string name="upselling_description_social_proof">Nâng cấp lên trải nghiệm được hàng triệu người đăng ký đánh giá cao.</string>
+  <string name="upselling_month">/tháng</string>
+  <string name="upselling_month_only">chỉ %s /tháng</string>
+  <string name="upselling_year">/năm</string>
+  <!-- Errors -->
+  <string name="upselling_snackbar_error_no_user_id">Đã xảy ra lỗi.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Không thể lấy thông tin gói đăng ký.</string>
+  <!-- Snackbar texts -->
+</resources>

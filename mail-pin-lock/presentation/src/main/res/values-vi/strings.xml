@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Auto lock -->
+  <string name="mail_pinlock_settings_title">Khóa ứng dụng</string>
+  <string name="mail_pinlock_settings_no_lock">Không khóa</string>
+  <string name="mail_pinlock_settings_with_pin">Bảo mật bằng mã PIN</string>
+  <string name="mail_pinlock_settings_with_biometrics">Bảo mật bằng sinh trắc học</string>
+  <string name="mail_pinlock_settings_logout_disclaimer">Tất cả cài đặt khóa ứng dụng, bao gồm PIN, sẽ đặt lại khi bạn đăng xuất khỏi ứng dụng.</string>
+  <string name="mail_pinlock_settings_new_pin_topbar">Đặt mã PIN mới</string>
+  <string name="mail_pinlock_settings_new_pin_title">Mã PIN mới</string>
+  <string name="mail_pinlock_settings_new_pin_description">Nhập mã PIN có độ dài từ 4 đến 21 chữ số</string>
+  <string name="mail_pinlock_settings_confirm_pin_topbar">Xác nhận mã PIN</string>
+  <string name="mail_pinlock_settings_confirm_pin_title">Nhập lại mã PIN</string>
+  <string name="mail_pinlock_settings_confirm_pin_description">Nhập lại mã PIN để đảm bảo chính xác</string>
+  <string name="mail_pinlock_settings_verify_pin_topbar">Nhập mã PIN của bạn</string>
+  <string name="mail_pinlock_settings_verify_pin_title">Nhập mã PIN của bạn</string>
+  <string name="mail_pinlock_settings_verify_pin_description">Xác nhận danh tính để tiếp tục</string>
+  <string name="mail_pinlock_settings_change_pin_description">Thay đổi mã PIN</string>
+  <string name="mail_pinlock_settings_change_interval_title">Tự động khóa</string>
+  <string name="mail_pinlock_settings_autolock_immediately">Ngay lập tức</string>
+  <string name="mail_pinlock_settings_autolock_never">Không bao giờ</string>
+  <string name="mail_pinlock_settings_autolock_description_one_minute">Sau 1 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_two_minutes">Sau 2 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_five_minutes">Sau 5 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_ten_minutes">Sau 10 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_fifteen_minutes">Sau 15 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_thirty_minutes">Sau 30 phút</string>
+  <string name="mail_pinlock_settings_autolock_description_sixty_minutes">Sau 60 phút</string>
+  <string name="mail_settings_pin_insertion_confirm_button">Xác nhận</string>
+  <string name="mail_settings_pin_insertion_next_button">Tiếp tục</string>
+  <string name="mail_settings_pin_insertion_error_no_match">Mã PIN không khớp.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
+    <item quantity="other">Còn lại %s lần thử trước khi đăng xuất.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Có lỗi xác minh mã PIN của bạn.</string>
+  <string name="mail_settings_pin_insertion_error_too_short">Mã PIN phải có ít nhất 4 chữ số</string>
+  <string name="mail_settings_pin_verification_error_too_many">Quá nhiều lần thử. Vui lòng thử lại sau.</string>
+  <string name="mail_settings_pin_verification_error_no_match">Mã PIN không chính xác</string>
+  <string name="mail_settings_pin_verification_error_too_many_frequent">Thử quá nhiều lần liên tục. Vui lòng thử lại sau.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Đăng xuất</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Đăng xuất</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Bạn có chắc muốn đăng xuất không?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Có</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Không</string>
+  <string name="mail_settings_pin_insertion_created_success">Đã tạo mã PIN thành công.</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Đã có lỗi xảy ra. Hãy thử lại.</string>
+  <string name="mail_settings_biometrics_unable_to_set">Đã xảy ra lỗi khi thiết lập tùy chọn Sinh trắc học.</string>
+  <string name="mail_settings_biometrics_unable_to_unset">Đã xảy ra lỗi khi đặt lại tùy chọn Sinh trắc học.</string>
+  <string name="mail_settings_biometrics_unknown_lock">Đã xảy ra lỗi khi tìm nạp chính sách khóa hiện tại.</string>
+  <!-- Auto lock dialog -->
+  <string name="mail_settings_pin_lock_dialog_title">Xác nhận mã PIN</string>
+  <string name="mail_settings_pin_lock_dialog_subtitle">Vì lý do bảo mật, vui lòng nhập mã PIN hiện tại để tiếp tục.</string>
+  <string name="mail_settings_pin_lock_dialog_button_next">Tiếp tục</string>
+  <string name="mail_settings_pin_lock_dialog_button_cancel">Hủy</string>
+  <!-- Biometrics unlock -->
+  <string name="mail_settings_biometrics_title_confirm">Xác nhận thao tác</string>
+  <string name="mail_settings_biometrics_subtitle_default">Sử dụng dấu vân tay để xác nhận thao tác</string>
+  <string name="mail_settings_biometrics_button_negative">Hủy</string>
+  <string name="mail_settings_biometrics_title_app_locked">Ứng dụng đã bị khóa</string>
+  <string name="mail_settings_biometrics_subtitle_app_locked">Mở khóa bằng thông tin sinh trắc học của bạn</string>
+</resources>

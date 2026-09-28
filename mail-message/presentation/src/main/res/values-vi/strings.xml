@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <plurals name="selected_count_title">
+    <item quantity="other">Đã chọn %d</item>
+  </plurals>
+  <plurals name="attachment_count_label">
+    <item quantity="other">%d tập tin đính kèm</item>
+  </plurals>
+  <string name="attachments">tập tin đính kèm</string>
+  <string name="attachment_type_description">Tập tin %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Lưu trữ</string>
+  <string name="attachment_type_image">Hình ảnh</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Âm thanh</string>
+  <string name="attachment_type_unknown">Không xác định</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Văn bản</string>
+  <string name="attachment_type_spreadsheet">Bảng tính</string>
+  <string name="attachment_type_presentation">Bản trình bày</string>
+  <string name="attachment_type_calendar">Calendar</string>
+  <string name="attachment_type_code">Mã</string>
+  <string name="attachment_type_font">Phông chữ</string>
+  <string name="attachment_type_key">Khóa</string>
+  <string name="attachment_type_keynote">Keynote</string>
+  <string name="attachment_type_numbers">Numbers</string>
+  <string name="attachment_type_pages">Pages</string>
+  <string name="attachment_type_word">Word</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Di chuyển tới...</string>
+  <string name="bottom_sheet_archive_action">Cũng lưu trữ?</string>
+  <string name="bottom_sheet_label_as_title">Gắn nhãn</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Sao chép liên kết</string>
+  <string name="message_link_long_click_copy_description">Văn bản đã sao chép từ Proton Mail</string>
+  <string name="message_link_long_click_share">Chia sẻ liên kết</string>
+  <string name="message_link_long_click_share_via">Chia sẻ liên kết qua</string>
+  <!-- Message body image actions -->
+  <string name="message_image_long_click_download">Tải xuống hình ảnh</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Sao chép địa chỉ</string>
+  <string name="contact_actions_copy_address_description">Sao chép địa chỉ liên hệ</string>
+  <string name="contact_actions_copy_address_performed">Đã sao chép địa chỉ vào bộ nhớ tạm</string>
+  <string name="contact_actions_copy_name">Sao chép tên</string>
+  <string name="contact_actions_copy_name_description">Sao chép tên liên hệ</string>
+  <string name="contact_actions_copy_name_performed">Đã sao chép tên vào bộ nhớ tạm</string>
+  <string name="contact_actions_new_message">Thư mới</string>
+  <string name="contact_actions_new_message_description">Bắt đầu soạn thư mới cho liên hệ này</string>
+  <string name="contact_actions_add_contact">Thêm liên hệ</string>
+  <string name="contact_actions_add_contact_description">Lưu người nhận này làm liên hệ</string>
+  <string name="contact_actions_block_contact">Chặn liên hệ này</string>
+  <string name="contact_actions_block_contact_description">Chặn liên hệ này</string>
+  <string name="contact_actions_block_contact_dialog_text">Email từ <xliff:g id="email">%1$s</xliff:g> sẽ không còn được gửi đến nữa và sẽ bị xóa vĩnh viễn. Bạn có thể quản lý các địa chỉ email bị chặn trong mục cài đặt.</string>
+  <string name="contact_actions_block_contact_dialog_button_block">Chặn</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">Hủy</string>
+  <string name="contact_actions_unblock_contact">Bỏ chặn liên hệ này</string>
+  <string name="contact_actions_unblock_contact_description">Bỏ chặn liên hệ này</string>
+  <string name="contact_actions_block_address">Chặn địa chỉ này</string>
+  <string name="contact_actions_block_address_description">Chặn địa chỉ này</string>
+  <string name="contact_actions_unblock_address">Bỏ chặn địa chỉ này</string>
+  <string name="contact_actions_unblock_address_description">Bỏ chặn địa chỉ này</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">Xem toàn bộ thư</string>
+</resources>

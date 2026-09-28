@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="app_icon_name_weather">Thời tiết</string>
+  <string name="app_icon_name_notes">Ghi chú</string>
+  <string name="app_icon_name_calculator">Máy tính</string>
+  <string name="app_welcome_subtitle">Mã hóa giúp dữ liệu luôn riêng tư. Dữ liệu của bạn thực sự thuộc về bạn.</string>
+  <string name="dialog_sign_out_account_title">Đăng xuất</string>
+  <string name="dialog_sign_out_account_description">Dữ liệu liên quan đến tài khoản của bạn sẽ được giữ nguyên trên thiết bị này trừ khi bạn chọn xóa.</string>
+  <string name="dialog_sign_out_account_confirm">Đăng xuất</string>
+  <string name="dialog_sign_out_account_cancel">Hủy</string>
+  <string name="dialog_remove_account_title">Xóa tài khoản?</string>
+  <string name="dialog_remove_account_description">Xóa tất cả dữ liệu liên quan</string>
+  <string name="dialog_remove_account_confirm">Xóa</string>
+  <string name="dialog_remove_account_cancel">Hủy</string>
+  <string name="feature_coming_soon">Tính năng sắp ra mắt…</string>
+  <string name="mailbox_draft_saved">Đã lưu thư nháp</string>
+  <string name="mailbox_draft_discard">Hủy</string>
+  <string name="mailbox_draft_discarded">Đã hủy bỏ thư nháp</string>
+  <string name="mailbox_message_sending">Đang gửi thư…</string>
+  <string name="mailbox_message_sending_offline">Ngoại tuyến: thư đã được đưa vào hàng chờ để gửi đi</string>
+  <string name="mailbox_message_sending_success">Đã gửi thư</string>
+  <string name="mailbox_message_sending_error_action">Đi tới Thư nháp</string>
+  <string name="notification_switched_account">Chuyển sang tài khoản %s</string>
+  <string name="mailbox_message_scheduling">Đang lên lịch gửi thư…</string>
+  <string name="mailbox_message_scheduling_offline">Ngoại tuyến: thư đã được đưa vào hàng chờ để lên lịch gửi</string>
+  <string name="mailbox_message_scheduled_for_sending_success">Thư này sẽ được gửi vào %1$s</string>
+  <string name="launcher_alert_duplicate_account_description">Người dùng đã đăng nhập</string>
+  <string name="home_content_search_error_snackbar">Không thể chuẩn bị tìm kiếm nội dung email.</string>
+  <string name="home_content_search_error_snackbar_action">Xem xét</string>
+</resources>

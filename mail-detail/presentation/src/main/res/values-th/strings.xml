@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_conversation">โหลดบทสนทนาไม่สำเร็จ</string>
+  <string name="detail_error_loading_messages">โหลดข้อความไม่สำเร็จ</string>
+  <plurals name="message_count_label_text">
+    <item quantity="other">%d ข้อความ</item>
+  </plurals>
+  <string name="quick_reply_button_content_description">ตอบกลับ</string>
+  <string name="quick_reply_all_button_content_description">ตอบกลับทั้งหมด</string>
+  <string name="more_button_content_description">เพิ่มเติม</string>
+  <string name="from">จาก:</string>
+  <string name="to">ถึง:</string>
+  <string name="cc">สำเนา:</string>
+  <string name="bcc">สำเนาลับ:</string>
+  <string name="date">วันที่:</string>
+  <plurals name="attachment">
+    <item quantity="other">%d ไฟล์แนบ</item>
+  </plurals>
+  <string name="undisclosed_recipients">…</string>
+  <string name="collapsed_header_draft">(ฉบับร่าง)</string>
+  <string name="error_mark_as_read_failed">การทำเครื่องหมายว่าอ่านแล้วล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_mark_as_unread_failed">การทำเครื่องหมายว่ายังไม่ได้อ่านล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_star_operation_failed">การติดดาวล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_unstar_operation_failed">การลบดาวออกล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_move_to_trash_failed">การย้ายไปถังขยะล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="message_moved_to">ย้ายข้อความไปยัง %s แล้ว</string>
+  <string name="message_moved_to_archive">ย้ายข้อความไปยังที่เก็บถาวรแล้ว</string>
+  <string name="error_move_to_archive_failed">การย้ายไปยังที่เก็บถาวรล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_move_to_spam_failed">การย้ายไปยังสแปมล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="message_moved_to_selected_destination">ย้ายข้อความไปยัง %1$s แล้ว</string>
+  <string name="error_move_message_failed">การย้ายข้อความล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="conversation_moved_to_trash">ย้ายบทสนทนาไปยังถังขยะแล้ว</string>
+  <string name="conversation_moved_to_inbox">ย้ายบทสนทนาไปยังกล่องขาเข้าแล้ว</string>
+  <string name="conversation_moved_to_selected_destination">ย้ายบทสนทนาไปยัง %1$s แล้ว</string>
+  <string name="conversation_moved_to_spam">ย้ายบทสนทนาไปยังสแปมแล้ว</string>
+  <string name="conversation_moved_to_archive">ย้ายบทสนทนาไปยังที่เก็บถาวรแล้ว</string>
+  <string name="error_print_message">ไม่สามารถพิมพ์ข้อความได้ โปรดลองอีกครั้ง</string>
+  <string name="error_move_conversation_failed">การย้ายบทสนทนาล้มเหลว โปรดลองอีกครั้ง</string>
+  <string name="error_offline_loading_message">ขณะนี้ออฟไลน์อยู่ จำเป็นต้องมีการเชื่อมต่ออินเทอร์เน็ตเพื่อแสดงเนื้อหาของข้อความนี้</string>
+  <string name="error_get_attachment_failed">ดึงข้อมูลไฟล์แนบไม่สำเร็จ</string>
+  <string name="error_attachment_download_in_progress">การดาวน์โหลดปัจจุบันต้องเสร็จสิ้นก่อนที่จะเริ่มการดาวน์โหลดใหม่</string>
+  <string name="error_get_attachment_not_enough_memory">ดึงข้อมูลไฟล์แนบไม่สำเร็จเนื่องจากหน่วยความจำไม่เพียงพอ</string>
+  <string name="error_relabel_message_failed">เปลี่ยนป้ายกำกับข้อความไม่สำเร็จ โปรดลองอีกครั้ง</string>
+  <string name="decryption_error">การถอดรหัสข้อความล้มเหลว</string>
+  <string name="detail_error_retrieving_message_body">ไม่สามารถดึงข้อมูลข้อความได้</string>
+  <string name="message_body_error_no_webview">จำเป็นต้องติดตั้ง WebView เพื่อดูเนื้อหาของข้อความนี้</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">การโหลดรูปภาพที่ฝังไว้โดยอัตโนมัติถูกปิดอยู่ สามารถเปลี่ยนการตั้งค่านี้ได้ในการตั้งค่า</string>
+  <string name="message_body_remote_content_banner_text">การโหลดข้อมูลทางไกลโดยอัตโนมัติถูกปิดอยู่ สามารถเปลี่ยนการตั้งค่านี้ได้ในการตั้งค่า</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">การโหลดรูปภาพที่ฝังไว้และข้อมูลทางไกลโดยอัตโนมัติถูกปิดอยู่ สามารถเปลี่ยนการตั้งค่านี้ได้ในการตั้งค่า</string>
+  <string name="message_body_images_failed_to_load_banner_text">ไม่สามารถโหลดรูปภาพบางส่วนได้เนื่องจากการป้องกันตัวติดตาม</string>
+  <string name="message_body_images_failed_to_load_banner_button">โหลดรูปภาพ</string>
+  <string name="message_phishing_banner_text">ข้อความนี้ถูกตั้งค่าสถานะว่าน่าสงสัยโดยระบบหรือโดยผู้ใช้ หากเชื่อว่าปลอดภัย โปรดทำเครื่องหมายว่าปลอดภัย</string>
+  <string name="message_phishing_banner_mark_as_legitimate_button">ทำเครื่องหมายว่าปลอดภัย</string>
+  <string name="message_spam_banner_text">ข้อความนี้ถูกตั้งค่าสถานะว่าเป็นสแปมโดยระบบหรือโดยผู้ใช้</string>
+  <string name="message_spam_banner_not_spam_button">ไม่ใช่สแปม</string>
+  <string name="message_blocked_sender_banner_text">ผู้ส่งรายนี้เคยถูกบล็อกมาก่อน</string>
+  <string name="message_blocked_sender_button_text">เลิกบล็อก</string>
+  <string name="message_expiration_banner_text">ข้อความนี้จะหมดอายุใน %1$s</string>
+  <string name="message_auto_delete_banner_text">ข้อความนี้จะถูกลบโดยอัตโนมัติในอีก %1$s</string>
+  <string name="message_auth_fail_banner_text">อีเมลนี้ไม่ผ่านข้อกำหนดการยืนยันตัวตนของโดเมน อาจเป็นอีเมลที่ถูกสวมรอยหรือส่งต่ออย่างไม่ถูกต้อง</string>
+  <string name="message_auth_fail_banner_button">เรียนรู้เพิ่มเติม</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">กำลังจะออกจากแอปเพื่อไปยัง:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">อย่าถามอีกครั้ง</string>
+  <string name="external_link_confirmation_dialog_cancel_button">ยกเลิก</string>
+  <string name="external_link_confirmation_dialog_continue_button">ดำเนินการต่อ</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">คำเตือน: เป็นเว็บไซต์ปลอมที่น่าสงสัย</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">ลิงก์นี้นำไปสู่เว็บไซต์ที่อาจพยายามขโมยข้อมูล เช่น รหัสผ่านและรายละเอียดบัตรเครดิต</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">เพื่อความปลอดภัย โปรดอย่าดำเนินการต่อ</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">(แนะนำให้) ย้อนกลับ</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">เพิกเฉยคำเตือนและดำเนินการต่อ</string>
+  <!-- Mark as legitimate confirmation dialog -->
+  <string name="mark_as_legitimate_phishing_dialog_title">ยืนยันการทำเครื่องหมายว่าปลอดภัย</string>
+  <string name="mark_as_legitimate_phishing_dialog_message">ขออภัยในความไม่สะดวก อาจเกิดจากความผิดพลาดของระบบ โปรดยืนยันหากต้องการทำเครื่องหมายอีเมลนี้ว่าปลอดภัย</string>
+  <string name="mark_as_legitimate_spam_dialog_title">ยืนยันว่าไม่ใช่สแปม</string>
+  <string name="mark_as_legitimate_spam_dialog_message">ขออภัยในความไม่สะดวก อาจเกิดจากความผิดพลาดของระบบ โปรดยืนยันว่าอีเมลนี้ไม่ใช่สแปม</string>
+  <!-- Delete message dialog -->
+  <string name="message_delete_dialog_title">ลบข้อความ</string>
+  <string name="message_delete_dialog_message">แน่ใจหรือไม่ว่าต้องการลบข้อความนี้อย่างถาวร</string>
+  <string name="message_deleted">ลบข้อความแล้ว</string>
+  <string name="error_delete_message_failed">ลบข้อความไม่สำเร็จ</string>
+  <string name="error_delete_conversation_failed">ลบบทสนทนาไม่สำเร็จ</string>
+  <string name="conversation_delete_dialog_title">ลบการสนทนา</string>
+  <string name="conversation_delete_dialog_message">แน่ใจหรือไม่ว่าต้องการลบบทสนทนานี้อย่างถาวร</string>
+  <string name="conversation_deleted">ลบบทสนทนาแล้ว</string>
+  <string name="message_body_load_remote_content_button_text">โหลดข้อมูลทางไกล</string>
+  <string name="message_body_load_embedded_images_button_text">โหลดรูปภาพที่ฝังไว้</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">โหลดข้อมูลทางไกลและเนื้อหาที่ฝังไว้</string>
+  <string name="message_report_phishing_dialog_title">ยืนยันรายงานการฟิชชิ่งฟิชชิ่ง</string>
+  <string name="message_report_phishing_dialog_message">การรายงานที่เกี่ยวกับข้อความฟิชชิ่งนั้นจะส่งข้อความนี้ถึงเรา ซึ่งเราจะสามารถทำการตรวจสอบข้อความนั้นและปรับปรุงตัวกรองต่างๆ ของเรา นั่นหมายความว่า เราจะเห็นเนื้อหาทั้งหมดในข้อความนั้น</string>
+  <string name="message_report_phishing_dialog_confim_button">ยืนยัน</string>
+  <string name="message_report_phishing_dialog_cancel_button">ยกเลิก</string>
+  <string name="trashed_messages_banner">แสดงข้อความในถังขยะในบทสนทนานี้</string>
+  <string name="non_trashed_messages_banner">แสดงข้อความที่ไม่อยู่ในถังขยะในบทสนทนานี้</string>
+  <string name="recipient_me">ฉัน</string>
+  <string name="message_details_header_from">จาก</string>
+  <string name="message_details_header_to">ถึง</string>
+  <string name="message_details_header_cc">สำเนา</string>
+  <string name="message_details_header_bcc">สำเนาลับ</string>
+  <string name="schedule_message_sent_at_banner_title">ข้อความนี้จะถูกส่ง</string>
+  <string name="schedule_message_edit_message_button">แก้ไขข้อความ</string>
+  <string name="schedule_send_tomorrow">พรุ่งนี้ เวลา %1$s</string>
+  <string name="error_cancel_schedule_send_failed">ไม่สามารถยกเลิกเวลาส่งที่กำหนดไว้สำหรับข้อความนี้ได้</string>
+  <string name="offline_error_cancel_schedule_send_failed">ไม่สามารถยกเลิกข้อความที่ตั้งเวลาส่งไว้ขณะออฟไลน์ได้</string>
+  <string name="message_cancel_schedule_send_dialog_confim_button">แก้ไขฉบับร่าง</string>
+  <string name="message_cancel_schedule_send_dialog_cancel_button">ยกเลิก</string>
+  <string name="message_cancel_schedule_send_dialog_title">แก้ไขและกำหนดเวลาใหม่</string>
+  <string name="message_cancel_schedule_send_dialog_message">ข้อความนี้จะถูกย้ายไปยังฉบับร่างเพื่อทำการแก้ไข โดยจะต้องกำหนดเวลาการส่งใหม่อีกครั้ง</string>
+  <!-- RSVP widget -->
+  <string name="rsvp_widget_no_title">(ไม่มีชื่อเรื่อง)</string>
+  <string name="rsvp_widget_attendance_optional">(ไม่บังคับการเข้าร่วม)</string>
+  <string name="rsvp_widget_attending">เข้าร่วมหรือไม่</string>
+  <string name="rsvp_widget_yes">ใช่</string>
+  <string name="rsvp_widget_maybe">อาจจะ</string>
+  <string name="rsvp_widget_no">ไม่</string>
+  <string name="rsvp_widget_yes_long">ใช่ จะเข้าร่วม</string>
+  <string name="rsvp_widget_maybe_long">อาจจะเข้าร่วม</string>
+  <string name="rsvp_widget_no_long">ไม่ จะไม่เข้าร่วม</string>
+  <string name="rsvp_widget_organizer">(ผู้จัด)</string>
+  <string name="rsvp_widget_you">คุณ</string>
+  <plurals name="rsvp_widget_participants">
+    <item quantity="other">ผู้เข้าร่วม %1$d คน</item>
+  </plurals>
+  <string name="rsvp_widget_happening_now">กำลังเกิดขึ้น <b>ขณะนี้</b></string>
+  <string name="rsvp_widget_event_ended">กิจกรรม <b>สิ้นสุดแล้ว</b></string>
+  <string name="rsvp_widget_event_cancelled">กิจกรรม <b>ถูกยกเลิก</b></string>
+  <string name="rsvp_widget_invite_outdated">คำเชิญนี้หมดอายุแล้ว</string>
+  <string name="rsvp_widget_event_cancelled_invite_outdated">ยกเลิกกิจกรรมแล้ว คำเชิญนี้หมดอายุแล้ว</string>
+  <string name="rsvp_widget_offline_invite_outdated">ออฟไลน์อยู่ ข้อมูลที่แสดงอาจไม่เป็นปัจจุบัน</string>
+  <string name="rsvp_widget_address_is_incorrect">ไม่สามารถใช้ที่อยู่นี้เพื่อตอบกลับได้ โปรดอัปเดตข้อมูลบัญชี</string>
+  <string name="rsvp_widget_user_is_organizer">คุณเป็นผู้จัด</string>
+  <string name="rsvp_widget_user_is_not_invited">ไม่สามารถตอบกลับคำเชิญเข้าร่วมกิจกรรมได้หากไม่มีชื่ออยู่ในรายชื่อผู้เข้าร่วมในขณะนี้</string>
+  <string name="rsvp_widget_event_does_not_exist">กิจกรรมนี้ไม่ได้อยู่ในปฏิทิน จึงไม่สามารถตอบกลับได้</string>
+  <string name="rsvp_widget_today">วันนี้</string>
+  <string name="rsvp_widget_tomorrow">พรุ่งนี้</string>
+  <string name="rsvp_widget_invite_details_unavailable">ไม่มีรายละเอียดคำเชิญ</string>
+  <string name="rsvp_widget_could_not_load">ไม่สามารถโหลดข้อมูลได้\nโปรดลองอีกครั้ง</string>
+  <string name="rsvp_widget_button_retry">ลองอีกครั้ง</string>
+  <string name="rsvp_widget_error_answering">เกิดข้อผิดพลาดขณะตอบรับกิจกรรมนี้</string>
+  <string name="rsvp_widget_open_in_proton_calendar">เปิดใน Proton Calendar</string>
+  <string name="rsvp_widget_failed_to_open_in_proton_calendar">ไม่สามารถเปิดใน Proton Calendar ได้</string>
+  <string name="rsvp_widget_copy_address">คัดลอกที่อยู่</string>
+  <string name="rsvp_widget_message">ข้อความ</string>
+  <string name="snooze_message_snoozed_until_banner_title">ปิดเสียงเตือนชั่วคราวจนถึง</string>
+  <string name="snooze_message_unsnooze_banner_button">เลิกปิดเสียงเตือนชั่วคราว</string>
+  <string name="unsubscribe_newsletter_banner_message">ข้อความนี้มาจากรายชื่อผู้รับจดหมาย</string>
+  <string name="unsubscribe_newsletter_banner_button">ยกเลิกการเป็นสมาชิก</string>
+  <string name="unsubscribe_newsletter_dialog_text">แน่ใจหรือไม่ว่าต้องการยกเลิกการเป็นสมาชิก คุณจะไม่ได้รับอีเมลจากรายชื่อผู้รับจดหมายนี้อีกต่อไป</string>
+  <string name="unsubscribe_newsletter_dialog_cancel">ยกเลิก</string>
+  <string name="unsubscribe_newsletter_dialog_confirm">ยกเลิกการเป็นสมาชิก</string>
+  <string name="already_unsubscribed_banner_message">ยกเลิกการเป็นสมาชิกจากรายชื่อผู้รับจดหมายนี้แล้ว</string>
+  <string name="error_unsubscribe_newsletter">ไม่สามารถยกเลิกการสมัครรับจดหมายข่าวได้</string>
+  <string name="detail_error_loading_single_message">ไม่สามารถโหลดข้อความได้</string>
+  <!-- Raw message data screen -->
+  <string name="raw_message_data_headers_title">ส่วนหัวของข้อความ</string>
+  <string name="raw_message_data_html_title">HTML ของข้อความ</string>
+  <string name="raw_message_data_close_button_content_description">ปิด</string>
+  <string name="raw_message_data_more_button_content_description">เพิ่มเติม</string>
+  <string name="raw_message_data_download_action">ดาวน์โหลด</string>
+  <string name="raw_message_data_copy_action">คัดลอก</string>
+  <string name="raw_message_data_learn_more_action">เรียนรู้เพิ่มเติม</string>
+  <string name="raw_message_data_error">เกิดข้อผิดพลาดในการโหลดข้อมูล</string>
+  <string name="raw_message_data_successful_download">ดาวน์โหลดเสร็จสิ้น</string>
+  <string name="raw_message_data_failed_download">ดาวน์โหลดไม่สำเร็จ</string>
+</resources>

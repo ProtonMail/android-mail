@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="content_search_notification_channel_name">Lập chỉ mục tìm kiếm nội dung email</string>
+  <string name="content_search_notification_channel_description">Hiển thị tiến trình trong khi các thư được lập chỉ mục để tìm kiếm nội dung email.</string>
+  <string name="content_search_notification_title">Chuẩn bị tìm kiếm nội dung email</string>
+  <!-- example format: test@proton.me · 10% -->
+  <string name="content_search_notification_progress">%1$s · %2$s</string>
+  <string name="content_search_notification_percentage">%1$d%%</string>
+  <string name="content_search_notification_preparing">Đang chuẩn bị…</string>
+  <string name="content_search_notification_pause">Tạm dừng</string>
+</resources>

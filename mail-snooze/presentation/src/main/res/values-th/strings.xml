@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Snooze Bottom Sheet -->
+  <string name="snooze_sheet_option_next_week">สัปดาห์ถัดไป</string>
+  <string name="snooze_sheet_option_later_this_week">ปลายสัปดาห์นี้</string>
+  <string name="snooze_sheet_option_tomorrow">พรุ่งนี้</string>
+  <string name="snooze_sheet_option_this_weekend">สุดสัปดาห์นี้</string>
+  <string name="snooze_sheet_option_custom">กำหนดเอง</string>
+  <string name="snooze_sheet_option_custom_detail">เลือกวันที่และเวลา</string>
+  <string name="snooze_sheet_snooze_title">ปิดเสียงเตือนชั่วคราวจนถึง</string>
+  <string name="snooze_sheet_option_unsnooze">ยกเลิกการปิดเสียงเตือนชั่วคราว</string>
+  <string name="snooze_sheet_error_unable_to_snooze">ขออภัย เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุขณะปิดเสียงเตือนบทสนทนานี้ชั่วคราว</string>
+  <string name="snooze_sheet_error_unable_to_unsnooze">เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุขณะยกเลิกการปิดเสียงเตือนบทสนทนาชั่วคราว</string>
+  <string name="snooze_sheet_error_in_the_past">เวลาปิดเสียงเตือนชั่วคราวเป็นเวลาในอดีต</string>
+  <string name="snooze_sheet_success">ปิดเสียงเตือนชั่วคราวจนถึง %s</string>
+  <string name="unsnooze_sheet_success">บทสนทนาไม่ได้ถูกปิดเสียงเตือนชั่วคราวอีกต่อไป</string>
+  <string name="snooze_picker_content_description">ปิดเสียงเตือนข้อความชั่วคราว</string>
+  <string name="snooze_picker_button_title">บันทึก</string>
+  <string name="snooze_custom_upsell_title">กำหนดวันที่และเวลาเอง</string>
+  <string name="snooze_custom_upsell_title_short">กำหนดเอง</string>
+  <string name="snooze_custom_upsell_hint_short">อัปเกรดเพื่อเข้าถึง</string>
+</resources>

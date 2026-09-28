@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">Hộp thư đến</string>
+  <string name="label_title_drafts">Thư nháp</string>
+  <string name="label_title_sent">Đã gửi</string>
+  <string name="label_title_starred">Được gắn sao</string>
+  <string name="label_title_archive">Lưu trữ</string>
+  <string name="label_title_spam">Thư rác</string>
+  <string name="label_title_trash">Thùng rác</string>
+  <string name="label_title_outbox">Hộp thư đi</string>
+  <string name="label_title_all_mail">Tất cả thư</string>
+  <string name="label_title_all_scheduled">Đã lên lịch</string>
+  <string name="label_title_snoozed">Đã tạm ẩn</string>
+  <string name="label_title_create_label">Tạo nhãn</string>
+  <string name="label_title_create_folder">Tạo thư mục</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Chuyển đến…</string>
+  <string name="bottom_sheet_save_action">Lưu</string>
+  <string name="bottom_sheet_archive_action">Cũng lưu trữ?</string>
+  <string name="bottom_sheet_label_as_title">Gắn nhãn</string>
+  <string name="bottom_sheet_label_as_error_fetch">Không thể tìm nạp nhãn.</string>
+  <string name="bottom_sheet_move_to_error_fetch">Không thể tìm nạp thư mục.</string>
+  <string name="bottom_sheet_label_as_error_apply">Không thể áp dụng nhãn.</string>
+  <string name="bottom_sheet_move_to_action_error">Không thể di chuyển.</string>
+  <string name="bottom_sheet_move_to_category_no_change">Sẽ không có thay đổi nào được thực hiện đối với các email đã chọn</string>
+  <string name="move_to_category_action_message">Đã chuyển đến %s. Các thư tương tự sẽ được phân loại tại đó trong tương lai.</string>
+</resources>

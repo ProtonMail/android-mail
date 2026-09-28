@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Cài đặt</string>
+  <string name="mail_settings_toolbar_button_content_description">Quay lại</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Cài đặt tài khoản</string>
+  <string name="mail_settings_email_settings">Cài đặt email</string>
+  <string name="mail_settings_email_signature_settings">Chữ ký email</string>
+  <string name="mail_settings_folder_and_label_settings">Cài đặt thư mục và nhãn</string>
+  <string name="mail_settings_privacy_and_security_settings">Cài đặt quyền riêng tư và bảo mật</string>
+  <string name="mail_settings_preferences">Tùy chọn</string>
+  <string name="mail_settings_app">Tùy chỉnh ứng dụng</string>
+  <string name="mail_settings_content_search">Tìm kiếm nội dung email</string>
+  <string name="mail_settings_mailbox">Tùy chọn hộp thư</string>
+  <string name="mail_settings_new_badge">Mới</string>
+  <string name="mail_settings_folders_labels">Thư mục và nhãn</string>
+  <string name="mail_settings_spam_and_custom_filters">Thư rác và bộ lọc</string>
+  <string name="mail_settings_privacy_and_security">Quyền riêng tư và bảo mật</string>
+  <string name="mail_settings_fido_keys">Khóa bảo mật</string>
+  <string name="mail_settings_change_password">Quản lý mật khẩu</string>
+  <string name="mail_settings_signature">Chữ ký</string>
+  <string name="mail_settings_storage_quota">%1$d%% trên %2$s</string>
+  <string name="mail_settings_theme">Chủ đề</string>
+  <string name="mail_settings_app_icon">Biểu tượng ứng dụng</string>
+  <string name="mail_settings_alternative_routing">Định tuyến thay thế</string>
+  <string name="mail_settings_app_language">Ngôn ngữ ứng dụng</string>
+  <string name="mail_settings_app_language_sys_default">Mặc định hệ thống</string>
+  <string name="mail_settings_combined_contacts">Liên hệ kết hợp</string>
+  <string name="mail_settings_swipe_actions">Hành động vuốt</string>
+  <string name="mail_settings_combined_contacts_hint">Bật tính năng này để tự động hoàn thành địa chỉ email bằng cách sử dụng liên hệ từ tất cả các tài khoản đã đăng nhập của bạn.</string>
+  <!-- App customization settings-->
+  <string name="mail_settings_app_customization_title">Tùy chỉnh ứng dụng</string>
+  <string name="mail_settings_app_customization_notification">Thông báo</string>
+  <string name="mail_settings_app_customization_language">Ngôn ngữ</string>
+  <string name="mail_settings_app_customization_appearance">Giao diện</string>
+  <string name="mail_settings_app_customization_protection">Khóa ứng dụng</string>
+  <string name="mail_settings_app_customization_protection_enabled_description">Đã kích hoạt tự động khóa</string>
+  <string name="mail_settings_app_customization_protection_disabled_description">Đã tắt tự động khóa</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email">Vuốt sang email kế tiếp</string>
+  <string name="mail_settings_app_customization_swipe_to_next_email_hint">Di chuyển nhanh đến thư kế tiếp hoặc trước đó trong hộp thư đến.</string>
+  <string name="mail_settings_app_customization_customize_toolbar">Tùy chỉnh thanh công cụ</string>
+  <string name="mail_settings_app_customization_email_categories">Danh mục email</string>
+  <string name="mail_settings_app_customization_alternative_routing">Định tuyến thay thế</string>
+  <string name="mail_settings_app_customization_alternative_routing_hint">Vượt qua tường lửa hoặc sự cố mạng trong trường hợp các trang Proton bị chặn.</string>
+  <string name="mail_settings_app_customization_mail_experience_header">Trải nghiệm email</string>
+  <string name="mail_settings_app_customization_advanced_header">Nâng cao</string>
+  <string name="mail_settings_app_customization_signature_header">Chữ ký</string>
+  <string name="mail_settings_app_customization_email_signature_header">Chữ ký email</string>
+  <string name="mail_settings_app_customization_mobile_signature_header">Chữ ký trên di động</string>
+  <string name="mail_settings_app_customization_email_signature_explanation">Chữ ký email được tự động thêm vào tất cả email gửi đi.</string>
+  <string name="mail_settings_app_customization_mobile_signature_explanation">Chữ ký bổ sung được thêm vào các email gửi từ thiết bị này.</string>
+  <string name="mail_settings_app_customization_mobile_signature_on">Bật</string>
+  <string name="mail_settings_app_customization_mobile_signature_off">Tắt</string>
+  <string name="mail_settings_app_customization_mobile_signature_enable">Bật chữ ký</string>
+  <string name="mail_settings_app_customization_mobile_signature_edit">Chỉnh sửa chữ ký</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Hệ thống</string>
+  <string name="mail_settings_theme_light">Sáng</string>
+  <string name="mail_settings_theme_dark">Tối</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Không có thông tin khả dụng</string>
+  <string name="mail_settings_account">Tài khoản</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy">Riêng tư</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Tự động hiển thị nội dung từ xa</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Tự động hiển thị hình ảnh được nhúng</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Ngăn chụp màn hình</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Yêu cầu xác nhận liên kết</string>
+  <string name="mail_settings_privacy_background_sync">Đồng bộ hóa nền</string>
+  <string name="mail_settings_privacy_background_sync_description">Nếu tùy chọn này được bật, ứng dụng sẽ đồng bộ hóa với máy chủ trong nền. Tắt tính năng này sẽ đồng thời tắt thông báo đẩy.</string>
+  <string name="mail_settings_privacy_error_updating">Lỗi khi cập nhật cài đặt</string>
+  <string name="mail_settings_privacy_error_loading">Lỗi khi tải cài đặt</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Hành động vuốt</string>
+  <string name="mail_settings_swipe_actions_subtitle">Thiết lập cử chỉ vuốt để truy cập các thao tác dùng thường xuyên nhất.</string>
+  <string name="mail_settings_swipe_right_name">Trái sang phải</string>
+  <string name="mail_settings_swipe_left_name">Phải sang trái</string>
+  <string name="mail_settings_swipe_action_none_title">Không đặt</string>
+  <string name="mail_settings_swipe_action_archive_title">Lưu trữ</string>
+  <string name="mail_settings_swipe_action_read_title">Chưa đọc</string>
+  <string name="mail_settings_swipe_action_spam_title">Thư rác</string>
+  <string name="mail_settings_swipe_action_star_title">Gắn sao</string>
+  <string name="mail_settings_swipe_action_trash_title">Thùng rác</string>
+  <string name="mail_settings_swipe_action_label_as_title">Gắn nhãn là...</string>
+  <string name="mail_settings_swipe_action_move_to_title">Di chuyển đến...</string>
+  <string name="mail_settings_swipe_action_none_description">Không</string>
+  <string name="mail_settings_swipe_action_archive_description">Chuyển tới kho lưu trữ</string>
+  <string name="mail_settings_swipe_action_read_description">Đánh dấu đã đọc/chưa đọc</string>
+  <string name="mail_settings_swipe_action_spam_description">Chuyển tới hộp thư rác</string>
+  <string name="mail_settings_swipe_action_star_description">Gắn sao/Bỏ gắn sao</string>
+  <string name="mail_settings_swipe_action_trash_description">Chuyển tới thùng rác</string>
+  <string name="mail_settings_swipe_action_label_as_description">Gắn nhãn là...</string>
+  <string name="mail_settings_swipe_action_move_to_description">Di chuyển đến...</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Thông báo đẩy</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Thông báo mở rộng</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Bật tính năng này để xem người gửi của email trong thông báo đẩy.</string>
+  <string name="mail_settings_notifications_notifications_settings">Cài đặt thông báo</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Chuyển tới cài đặt thông báo hệ thống</string>
+  <string name="mail_settings_notifications_update_error">Lỗi khi cập nhật cài đặt</string>
+  <string name="mail_settings_notifications_loading_error">Lỗi khi tải cài đặt</string>
+  <string name="notifications_on">Bật</string>
+  <string name="notifications_off">Tắt</string>
+  <!-- Customize Toolbar -->
+  <string name="mail_settings_custom_toolbar_title">Tùy chỉnh thanh công cụ</string>
+  <string name="mail_settings_custom_toolbar_list_view_title">Thanh công cụ danh sách</string>
+  <string name="mail_settings_custom_toolbar_list_view_description">Thanh công cụ này xuất hiện khi bạn chọn nhiều thư trong danh sách (ví dụ: Hộp thư đến, Thùng rác, v.v.)</string>
+  <string name="mail_settings_custom_toolbar_message_view_title">Thanh công cụ thư</string>
+  <string name="mail_settings_custom_toolbar_message_view_description">Thanh công cụ này vẫn sẽ hiển thị trong khi đọc thư</string>
+  <string name="mail_settings_custom_toolbar_conversation_view_title">Thanh công cụ hội thoại</string>
+  <string name="mail_settings_custom_toolbar_conversation_view_description">Thanh công cụ này vẫn sẽ hiển thị trong khi đọc thư</string>
+  <string name="mail_settings_custom_toolbar_edit_actions">Chỉnh sửa hành động</string>
+  <string name="mail_settings_custom_toolbar_set_actions">Hành động trên thanh công cụ</string>
+  <string name="mail_settings_custom_toolbar_remaining_actions">Hành động sẵn có</string>
+  <string name="mail_settings_custom_toolbar_nav_title_list">Thanh công cụ chỉnh sửa danh sách</string>
+  <string name="mail_settings_custom_toolbar_nav_title_convo">Thanh công cụ hội thoại</string>
+  <string name="mail_settings_custom_toolbar_nav_title_message">Thanh công cụ thư</string>
+  <string name="mail_settings_custom_toolbar_nav_button_save">Lưu</string>
+  <string name="mail_settings_custom_toolbar_header">Thanh công cụ có thể có 1–5 hành động. Bạn không thể xóa hành động cuối cùng còn lại.</string>
+  <string name="mail_settings_custom_toolbar_reset">Đặt lại về mặc định</string>
+  <string name="mail_settings_custom_toolbar_reset_title">Bạn có muốn đặt lại cài đặt thanh công cụ không?</string>
+  <string name="mail_settings_custom_toolbar_reset_confirm">Xác nhận</string>
+  <string name="mail_settings_custom_toolbar_save_error">Không thể lưu hành động trên thanh công cụ. Vui lòng thử lại.</string>
+  <string name="mail_settings_custom_toolbar_read_error">Không thể đọc hành động trên thanh công cụ. Vui lòng thử lại.</string>
+  <!-- Custom App Icon -->
+  <string name="settings_app_icon_toolbar_title">Biểu tượng ứng dụng</string>
+  <string name="settings_app_icon_name_default">Mặc định</string>
+  <string name="settings_app_icon_name_discreet">Kín đáo</string>
+  <string name="settings_app_icon_title_default">Biểu tượng ứng dụng - mặc định</string>
+  <string name="settings_app_icon_title_discreet">Biểu tượng ứng dụng - kín đáo</string>
+  <string name="settings_app_icon_description">Giữ biểu tượng Proton Mail mặc định hoặc ngụy trang bằng biểu tượng kín đáo hơn để tăng cường quyền riêng tư.\nThông báo sẽ luôn hiển thị tên và biểu tượng Proton Mail.</string>
+  <string name="settings_app_icon_learn_more">Tìm hiểu thêm…</string>
+  <string name="settings_app_icon_discreet_toggle">Biểu tượng ứng dụng kín đáo</string>
+  <string name="settings_app_icon_confirmation_title">Thay đổi biểu tượng ứng dụng?</string>
+  <string name="settings_app_icon_confirmation_details">Thực hiện thao tác này sẽ đóng ứng dụng Proton Mail và bỏ qua tất cả thông báo.\n\nĐể khởi động lại Proton Mail, chỉ cần chạm vào biểu tượng ứng dụng mới.</string>
+  <string name="settings_app_icon_action_cancel">Hủy</string>
+  <string name="settings_app_icon_change_icon">Thay đổi biểu tượng</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Đã có lỗi xảy ra. Hãy thử lại.</string>
+</resources>

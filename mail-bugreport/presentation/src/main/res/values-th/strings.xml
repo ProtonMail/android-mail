@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Report a problem flow -->
+  <string name="report_a_problem_title">แจ้งปัญหา</string>
+  <string name="report_a_problem_submit_button">ส่ง</string>
+  <string name="report_a_problem_disclaimer_e2ee">รายงานไม่ได้เข้ารหัสลับจากต้นทางถึงปลายทาง\nโปรดอย่าระบุข้อมูลที่ละเอียดอ่อน</string>
+  <string name="report_a_problem_include_errors_title">รวมบันทึก</string>
+  <string name="report_a_problem_include_errors_description">บันทึกจะแสดงการดำเนินการทั้งหมดที่นำไปสู่ข้อผิดพลาด\nจะนำไปใช้เพื่อช่วยแก้ไขบั๊กเท่านั้น</string>
+  <string name="report_a_problem_summary_title">ข้อมูลสรุป (จำเป็น)</string>
+  <string name="report_a_problem_summary_description">ตัวอย่าง: แอป Mail ขัดข้องเมื่อเปิดอีเมลที่มีไฟล์แนบขนาดใหญ่</string>
+  <string name="report_a_problem_field_length_error">ช่องข้อมูลนี้ต้องมีมากกว่า 10 ตัวอักษร</string>
+  <string name="report_a_problem_expected_results_title">ผลลัพธ์ที่คาดหวัง</string>
+  <string name="report_a_problem_expected_results_description">ตัวอย่าง: การเปิดอีเมลควรแสดงเนื้อหาข้อความและไฟล์แนบ</string>
+  <string name="report_a_problem_repro_steps_title">ขั้นตอนจำลองปัญหา</string>
+  <string name="report_a_problem_repro_steps_description">ตัวอย่าง:\n1. ค้นหาอีเมลที่มีไฟล์แนบขนาดใหญ่ (เช่น วิดีโอ)\n2. เปิดอีเมล\n3. รอให้อีเมลโหลด</string>
+  <string name="report_a_problem_actual_results_title">ผลลัพธ์ที่เกิดขึ้นจริง</string>
+  <string name="report_a_problem_actual_results_description">ตัวอย่าง: แอป Mail ขัดข้องเมื่อเปิดอีเมลที่มีไฟล์แนบขนาดใหญ่</string>
+  <string name="report_a_problem_leave_dialog_description_1">แน่ใจหรือไม่ว่าต้องการออกจากหน้าจอนี้</string>
+  <string name="report_a_problem_leave_dialog_description_2">ข้อมูลใดๆ ที่ป้อนไว้จะสูญหาย</string>
+  <string name="report_a_problem_leave_dialog_cancel_btn">ยกเลิก</string>
+  <string name="report_a_problem_leave_dialog_close_btn">ปิด</string>
+  <string name="report_a_problem_success">ขอขอบคุณสำหรับรายงาน ฝ่ายสนับสนุนลูกค้าจะติดต่อกลับ</string>
+  <string name="report_a_problem_generic_error">เกิดข้อผิดพลาด โปรดลองอีกครั้ง</string>
+  <string name="report_a_problem_offline_error">ขณะนี้อยู่ในสถานะออฟไลน์ โปรดลองอีกครั้งเมื่อมีการเชื่อมต่ออินเทอร์เน็ต</string>
+</resources>

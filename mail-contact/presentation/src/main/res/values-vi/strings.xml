@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Danh bạ</string>
+  <string name="contact_list_loading_error">Lỗi khi tải danh bạ, vui lòng thử lại sau</string>
+  <string name="no_contacts">Không tìm thấy liên hệ</string>
+  <string name="no_contact_groups">Không tìm thấy nhóm liên hệ</string>
+  <string name="no_contacts_description">Cải thiện trải nghiệm email của bạn bằng cách tạo một liên hệ mới hoặc nhập các liên hệ hiện có.</string>
+  <string name="no_contact_groups_description">Cải thiện trải nghiệm email của bạn bằng cách tạo một nhóm liên hệ mới.</string>
+  <string name="no_contact_email">Không có địa chỉ email</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="other">%1$d thành viên</item>
+  </plurals>
+  <string name="search_contacts_description">Tìm kiếm liên hệ</string>
+  <string name="contact_search_no_results">Không tìm thấy kết quả nào.</string>
+  <string name="contact_search_placeholder">Tìm liên hệ hoặc nhóm</string>
+  <string name="contact_search_content_description">Tìm liên hệ hoặc nhóm</string>
+  <string name="contact_search_arrow_back_content_description">Trở lại liên hệ</string>
+  <string name="add_contact">Thêm liên hệ</string>
+  <string name="add_contact_group">Thêm nhóm liên hệ</string>
+  <string name="add_contact_content_description">Thêm liên hệ</string>
+  <string name="new_contact">Liên lạc mới</string>
+  <string name="new_group">Nhóm mới</string>
+  <string name="import_contact">Tải lên danh bạ của thiết bị</string>
+  <string name="contact_deleted">Đã xóa liên hệ</string>
+  <string name="contact_delete_dialog_title">Xóa %1$s?</string>
+  <string name="contact_delete_dialog_text">Liên hệ này sẽ bị xóa khỏi danh sách liên hệ của bạn.</string>
+  <string name="contact_delete_dialog_cancel_button">Hủy</string>
+  <string name="contact_delete_dialog_confirm_button">Xóa</string>
+  <string name="contact_details_loading_error">Lỗi khi tải liên hệ, vui lòng thử lại sau</string>
+  <string name="contact_details_edit_contact_content_description">Chỉnh sửa liên hệ</string>
+  <string name="contact_details_delete_contact_content_description">Xóa liên hệ</string>
+  <string name="contact_details_avatar_image_content_description">Ảnh đại diện của liên hệ</string>
+  <string name="contact_type_email">Email</string>
+  <string name="contact_type_phone">Điện thoại</string>
+  <string name="contact_type_home">Nhà riêng</string>
+  <string name="contact_type_work">Cơ quan</string>
+  <string name="contact_type_mobile">Di động</string>
+  <string name="contact_type_fax">Fax</string>
+  <string name="contact_type_pager">Máy nhắn tin</string>
+  <string name="contact_type_address">Địa chỉ</string>
+  <string name="contact_type_text">Văn bản</string>
+  <string name="contact_type_text_phone">Điện thoại văn bản</string>
+  <string name="contact_type_video">Video</string>
+  <string name="contact_type_voice">Giọng nói</string>
+  <string name="contact_property_birthday">Ngày sinh</string>
+  <string name="contact_property_note">Ghi chú</string>
+  <string name="contact_property_organization">Tổ chức</string>
+  <string name="contact_property_anniversary">Kỷ niệm</string>
+  <string name="contact_property_title">Tiêu đề</string>
+  <string name="contact_property_role">Vai trò</string>
+  <string name="contact_property_member">Thành viên</string>
+  <string name="contact_property_url">URL</string>
+  <string name="contact_property_gender">Giới tính</string>
+  <string name="contact_property_language">Ngôn ngữ</string>
+  <string name="contact_property_time_zone">Múi giờ</string>
+  <string name="contact_gender_female">Nữ</string>
+  <string name="contact_gender_male">Nam</string>
+  <string name="contact_gender_none">Không</string>
+  <string name="contact_gender_not_applicable">Không áp dụng</string>
+  <string name="contact_gender_other">Khác</string>
+  <string name="contact_gender_unknown">Không xác định</string>
+  <string name="contact_details_missing_date">Thiếu ngày</string>
+  <string name="contact_details_quick_action_message">Thư</string>
+  <string name="contact_details_quick_action_call">Gọi</string>
+  <string name="contact_details_quick_action_share">Chia sẻ</string>
+  <string name="contact_details_action_copy_label">Sao chép</string>
+  <string name="contact_details_action_message_label">Thư</string>
+  <string name="contact_details_action_call_label">Gọi</string>
+  <string name="contact_details_action_open_url_label">Mở URL</string>
+  <string name="contact_group_details_send_message_action">Gửi thư nhóm</string>
+  <plurals name="contact_group_details_number_of_contacts">
+    <item quantity="other">%1$d liên hệ</item>
+  </plurals>
+  <string name="contact_bottom_sheet_redirect_to_web_title">Khả dụng trên web</string>
+  <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">Bỏ qua</string>
+  <string name="add_contact_bottom_sheet_redirect_to_web_descrption">Hiện tại ứng dụng chưa hỗ trợ tạo liên hệ hoặc nhóm. Bạn có thể thực hiện thao tác tạo trên ứng dụng web, và các thay đổi sẽ đồng bộ về thiết bị của bạn.</string>
+  <string name="edit_contact_bottom_sheet_redirect_to_web_description">Hiện tại ứng dụng chưa hỗ trợ chỉnh sửa liên hệ hoặc nhóm. Bạn có thể thực hiện thao tác chỉnh sửa trên ứng dụng web, và các thay đổi sẽ đồng bộ về thiết bị của bạn.</string>
+  <string name="contact_bottom_sheet_redirect_to_web_button">Tiếp tục trên web</string>
+</resources>

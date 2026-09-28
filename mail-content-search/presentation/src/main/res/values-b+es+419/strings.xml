@@ -28,42 +28,45 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Borrar datos de búsqueda locales</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Se eliminarán los datos de búsqueda de este dispositivo. Deberá descargarlos de nuevo para buscar contenido de correo.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Borrar los datos</string>
-  <string name="content_search_bottomsheet_title">Mobile data usage</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
+  <string name="content_search_bottomsheet_title">Uso de datos móviles</string>
+  <string name="content_search_bottomsheet_description">Se descargarán y prepararán los correos de su buzón para ser buscados.</string>
+  <string name="content_search_bottomsheet_start_indexing">Iniciar la indexación</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
+  <string name="content_search_no_results_title_for_query">No hay resultados para «%1$s»</string>
   <string name="content_search_no_results_description">Pruebe palabras clave diferentes o compruebe su ortografía.</string>
-  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
-  <string name="content_search_no_results_learn_more">Learn more..</string>
-  <string name="content_search_no_results_set_up_action">Set up content search</string>
-  <string name="content_search_set_up_banner_title">Search inside emails too</string>
-  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
-  <string name="content_search_set_up_banner_turn_on">Set up now</string>
-  <string name="content_search_set_up_banner_not_now">Not now</string>
-  <string name="content_search_indexing_complete_banner_title">All done!</string>
-  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
-  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
+  <string name="content_search_no_results_set_up_description">Active la búsqueda de contenido para buscar dentro de los mensajes también.</string>
+  <string name="content_search_no_results_learn_more">Más información...</string>
+  <string name="content_search_no_results_set_up_action">Configurar búsqueda contenido</string>
+  <string name="content_search_failed_title">Falló la búsqueda</string>
+  <string name="content_search_failed_description">Algo salió mal. Intente de nuevo.</string>
+  <string name="content_search_failed_retry">Volver a intentar</string>
+  <string name="content_search_set_up_banner_title">Busque dentro de los correos también</string>
+  <string name="content_search_set_up_banner_description">Encuentre palabras y frases dentro de sus correos, no solo remitentes y asuntos.</string>
+  <string name="content_search_set_up_banner_turn_on">Configurar ahora</string>
+  <string name="content_search_set_up_banner_not_now">Ahora no</string>
+  <string name="content_search_indexing_complete_banner_title">¡Todo listo!</string>
+  <string name="content_search_indexing_complete_banner_description">Ahora puede buscar palabras dentro de sus correos, no solo remitentes y asuntos.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Entendido</string>
   <string name="content_search_placeholder_text">Buscar</string>
   <string name="content_search_clear_query_content_description">Borrar la consulta de búsqueda</string>
   <string name="content_search_close_content_description">Cerrar la búsqueda</string>
   <string name="content_search_first_run_description">Escriba un nombre, asunto o palabra clave para buscar</string>
-  <string name="content_search_results_title">Results</string>
+  <string name="content_search_results_title">Resultados</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="one">%1$d Result</item>
-    <item quantity="other">%1$d Results</item>
+    <item quantity="one">%1$d resultado</item>
+    <item quantity="other">%1$d resultados</item>
   </plurals>
-  <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
+  <string name="content_search_min_query_length_notice">Escriba tres o más caracteres para ver todos los resultados.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Búsquedas de correo recientes</string>
   <string name="content_search_clear_recent_searches">Borrar todo</string>
   <string name="content_search_previously_found_title">Encontrado anteriormente</string>
   <string name="content_search_dismiss_recent_search_content_description">Eliminar «%1$s» de las búsquedas recientes</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
-  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
-  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
-  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
+  <string name="content_search_indexing_progress">Indexando el correo • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indexación interrumpida • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indexando el correo, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexación interrumpida, %1$d%%</string>
   <string name="content_search_indexing_see_details">Ver detalles</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">¿Eliminar permanentemente?</string>

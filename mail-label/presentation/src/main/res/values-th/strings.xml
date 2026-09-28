@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">กล่องขาเข้า</string>
+  <string name="label_title_drafts">ฉบับร่าง</string>
+  <string name="label_title_sent">ส่งแล้ว</string>
+  <string name="label_title_starred">ที่ติดดาวไว้</string>
+  <string name="label_title_archive">ที่เก็บถาวร</string>
+  <string name="label_title_spam">สแปม</string>
+  <string name="label_title_trash">ถังขยะ</string>
+  <string name="label_title_outbox">กล่องขาออก</string>
+  <string name="label_title_all_mail">จดหมายทั้งหมด</string>
+  <string name="label_title_all_scheduled">กำหนดการ</string>
+  <string name="label_title_snoozed">เลื่อนการแจ้งเตือนแล้ว</string>
+  <string name="label_title_create_label">สร้างป้ายกำกับ</string>
+  <string name="label_title_create_folder">สร้างโฟลเดอร์</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">ย้ายไปยัง…</string>
+  <string name="bottom_sheet_save_action">บันทึก</string>
+  <string name="bottom_sheet_archive_action">เก็บถาวรด้วยหรือไม่</string>
+  <string name="bottom_sheet_label_as_title">เพิ่มป้ายกำกับเป็น</string>
+  <string name="bottom_sheet_label_as_error_fetch">ดึงข้อมูลป้ายกำกับล้มเหลว</string>
+  <string name="bottom_sheet_move_to_error_fetch">ดึงข้อมูลโฟลเดอร์ล้มเหลว</string>
+  <string name="bottom_sheet_label_as_error_apply">นำป้ายกำกับไปใช้ล้มเหลว</string>
+  <string name="bottom_sheet_move_to_action_error">การดำเนินการย้ายล้มเหลว</string>
+  <string name="bottom_sheet_move_to_category_no_change">จะไม่มีการเปลี่ยนแปลงใดๆ กับอีเมลที่เลือก</string>
+  <string name="move_to_category_action_message">ย้ายไปยัง %s แล้ว ข้อความที่คล้ายกันจะถูกจัดหมวดหมู่ที่นั่นในอนาคต</string>
+</resources>

@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Activați căutarea în conținut pe a căuta și în conținutul mesajelor.</string>
   <string name="content_search_no_results_learn_more">Detalii…</string>
   <string name="content_search_no_results_set_up_action">Setare căutare în conținut</string>
+  <string name="content_search_failed_title">Căutare eșuată</string>
+  <string name="content_search_failed_description">Ceva nu a funcționat bine. Reîncercați.</string>
+  <string name="content_search_failed_retry">Reîncercare</string>
   <string name="content_search_set_up_banner_title">Căutare și în conținutul mesajelor</string>
   <string name="content_search_set_up_banner_description">Găsiți cuvinte și expresii în interiorul mesajelor, nu doar în expeditori și subiecte.</string>
   <string name="content_search_set_up_banner_turn_on">Setare acum</string>

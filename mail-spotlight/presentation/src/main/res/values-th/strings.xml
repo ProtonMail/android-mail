@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="spotlight_screen_title">มีอะไรใหม่ใน Proton Mail</string>
+  <string name="spotlight_feature_item_discreet_icon_title">ไอคอนแบบไม่เปิดเผย</string>
+  <string name="spotlight_feature_item_discreet_icon_description">ใช้ไอคอน Proton Mail ค่าเริ่มต้น หรือเปลี่ยนเป็นไอคอนทั่วไปเพื่อเพิ่มความเป็นส่วนตัว</string>
+  <string name="spotlight_feature_item_tracking_protection_title">การป้องกันการติดตาม</string>
+  <string name="spotlight_feature_item_tracking_protection_description">ดูว่าใครพยายามติดตามด้วยพิกเซลที่ซ่อนอยู่และลิงก์ติดตาม รวมถึงจำนวนครั้งที่ถูกบล็อก</string>
+  <string name="spotlight_feature_item_encryption_locks_title">แม่กุญแจการเข้ารหัสลับ</string>
+  <string name="spotlight_feature_item_encryption_locks_description">ใช้ไอคอนรูปแม่กุญแจเพื่อระบุและตรวจสอบประเภทของการเข้ารหัสลับที่ใช้ปกป้องข้อความ</string>
+  <string name="spotlight_feature_item_headers_html_title">ดูส่วนหัวและ HTML</string>
+  <string name="spotlight_feature_item_headers_html_description">ตรวจสอบข้อความที่น่าสงสัยเพื่อยืนยันความถูกต้องและค้นหาองค์ประกอบการติดตามที่ซ่อนอยู่</string>
+  <string name="spotlight_screen_got_it">รับทราบ</string>
+  <!-- Category View Spotlight -->
+  <string name="spotlight_screen_category_view_title">มีอะไรใหม่ใน Proton Mail</string>
+  <string name="spotlight_screen_category_view_title_b2b">ค้นพบสิ่งใหม่\nใน Proton Mail</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_title">การปรับปรุง UI</string>
+  <string name="spotlight_screen_category_view_ui_enhancements_subtitle">เลื่อนดูได้ลื่นไหลยิ่งขึ้น พร้อมดีไซน์ใหม่และอีกมากมาย</string>
+  <string name="spotlight_screen_category_view_unread_filter_title">ตัวกรองที่ยังไม่ได้อ่าน</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle">ตอนนี้อยู่ด้านล่างเพื่อให้เข้าถึงได้ง่ายขึ้น</string>
+  <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">รูปลักษณ์และตำแหน่งใหม่เพื่อให้เข้าถึงได้ง่ายขึ้น</string>
+  <string name="spotlight_screen_category_view_categories_title">หมวดหมู่อีเมล</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">จัดเรียงเมลลงในหมวดหมู่ที่เป็นประโยชน์โดยอัตโนมัติ</string>
+  <string name="spotlight_screen_category_view_categories_subtitle_b2b">จัดเรียงเมลขาเข้าโดยอัตโนมัติ</string>
+  <string name="spotlight_screen_category_view_main_b2c_title">เข้าถึงส่วนที่ยังไม่ได้อ่านได้ง่ายขึ้น</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">ตอนนี้ตัวกรองที่ยังไม่ได้อ่านอยู่ด้านล่างของกล่องขาเข้า ทำให้เข้าถึงและสลับไปมาระหว่างอีเมลทั้งหมดและข้อความที่ยังไม่ได้อ่านได้ง่ายขึ้น</string>
+  <string name="spotlight_screen_category_view_main_b2b_title">ไม่พลาดอีเมลใหม่และ\nอีเมลที่ยังไม่ได้อ่าน</string>
+  <string name="spotlight_screen_category_view_main_b2b_subtitle">ตอนนี้ตัวกรองที่ยังไม่ได้อ่านสามารถมองเห็นได้ง่ายขึ้นและอยู่ใกล้แค่เอื้อม ช่วยให้สแกนและจัดการกับอีเมลที่ยังไม่ได้อ่านได้อย่างรวดเร็ว</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_title">จัดระเบียบกล่องขาเข้า\nโดยอัตโนมัติ</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">ตอนนี้กล่องขาเข้าได้รับการจัดเรียงเป็นหมวดหมู่ต่างๆ เช่น อีเมลหลัก โซเชียล โปรโมชัน และอื่นๆ ช่วยลดความความยุ่งเหยิงและโฟกัสกับอีเมลสำคัญได้ง่ายขึ้น</string>
+  <string name="spotlight_screen_category_view_privacy_by_design">เป็นส่วนตัวโดยการออกแบบ เรียนรู้เพิ่มเติม</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_title">ต้อนรับการจัดหมวดหมู่\nบอกลาความวุ่นวาย</string>
+  <string name="spotlight_screen_category_view_secondary_b2b_subtitle">ไม่ต้องเสียสมาธิกับจดหมายข่าว การอัปเดต และอีเมลที่ไม่เร่งด่วน ด้วยหมวดหมู่อีเมลใหม่ เฉพาะข้อความสำคัญเท่านั้นที่จะเข้ามาในกล่องขาเข้าหลัก</string>
+  <string name="spotlight_screen_category_view_button_continue">ดำเนินการต่อ</string>
+  <string name="spotlight_screen_category_view_button_try">ใช่ จัดระเบียบเลย</string>
+  <string name="spotlight_screen_category_view_button_dismiss">ใช้กล่องขาเข้าเหมือนเดิม</string>
+  <!-- Content Search Spotlight -->
+  <string name="spotlight_screen_content_search_title">การค้นหาดียิ่งขึ้นกว่าเดิม</string>
+  <string name="spotlight_screen_content_search_subtitle">ค้นหาสิ่งที่สำคัญโดยไม่ต้องเสียความเป็นส่วนตัว</string>
+  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">ค้นหาอีเมลตามเนื้อหาข้อความ ไม่ใช่แค่หัวเรื่องหรือผู้ส่ง</string>
+  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">ดำเนินการต่อจากที่ค้างไว้</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_whats_new_pill">What’s new</string>
+  <string name="spotlight_screen_content_search_button_continue">Continue</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
+  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <!-- How email content search works -->
+  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+</resources>

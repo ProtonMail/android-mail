@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_contacts">Danh bạ</string>
+  <string name="drawer_title_bug_report">Báo cáo sự cố</string>
+  <string name="drawer_item_create_label">Tạo nhãn</string>
+  <string name="drawer_item_create_folder">Tạo thư mục</string>
+  <string name="drawer_upgrade_plus">Nâng cấp lên Mail Plus</string>
+  <string name="drawer_upgrade_unlimited">Nâng cấp lên Unlimited</string>
+  <string name="drawer_upgrade_plus_black_friday">Khuyến mãi Black Friday</string>
+  <string name="drawer_upgrade_plus_spring_sale">Khuyến mãi mùa xuân</string>
+  <string name="drawer_upgrade_plus_summer_sale">Khuyến mãi mùa hè</string>
+  <string name="drawer_upgrade_plus_special_offer">ƯU ĐÃI ĐẶC BIỆT</string>
+</resources>

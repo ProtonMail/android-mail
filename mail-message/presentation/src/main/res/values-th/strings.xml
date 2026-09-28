@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <plurals name="selected_count_title">
+    <item quantity="other">เลือกแล้ว %d</item>
+  </plurals>
+  <plurals name="attachment_count_label">
+    <item quantity="other">%d ไฟล์แนบ</item>
+  </plurals>
+  <string name="attachments">ไฟล์แนบ</string>
+  <string name="attachment_type_description">ไฟล์ %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">ที่เก็บถาวร</string>
+  <string name="attachment_type_image">รูปภาพ</string>
+  <string name="attachment_type_video">วิดีโอ</string>
+  <string name="attachment_type_audio">เสียง</string>
+  <string name="attachment_type_unknown">ไม่ทราบข้อมูล</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">ข้อความ</string>
+  <string name="attachment_type_spreadsheet">ตารางคำนวณ</string>
+  <string name="attachment_type_presentation">งานนำเสนอ</string>
+  <string name="attachment_type_calendar">ปฏิทิน</string>
+  <string name="attachment_type_code">รหัส</string>
+  <string name="attachment_type_font">แบบอักษร</string>
+  <string name="attachment_type_key">กุญแจ</string>
+  <string name="attachment_type_keynote">Keynote</string>
+  <string name="attachment_type_numbers">Numbers</string>
+  <string name="attachment_type_pages">Pages</string>
+  <string name="attachment_type_word">Word</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">ย้ายไปยัง...</string>
+  <string name="bottom_sheet_archive_action">เก็บถาวรด้วยหรือไม่</string>
+  <string name="bottom_sheet_label_as_title">เพิ่มป้ายกำกับเป็น</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">คัดลอกลิงก์</string>
+  <string name="message_link_long_click_copy_description">คัดลอกข้อความจาก Proton Mail แล้ว</string>
+  <string name="message_link_long_click_share">แชร์​ลิงก์</string>
+  <string name="message_link_long_click_share_via">แชร์ลิงก์ผ่าน</string>
+  <!-- Message body image actions -->
+  <string name="message_image_long_click_download">ดาวน์โหลดรูปภาพ</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">คัดลอกที่อยู่</string>
+  <string name="contact_actions_copy_address_description">คัดลอกที่อยู่ผู้ติดต่อ</string>
+  <string name="contact_actions_copy_address_performed">คัดลอกที่อยู่ไปยังคลิปบอร์ดแล้ว</string>
+  <string name="contact_actions_copy_name">ทำสำเนาชื่อ</string>
+  <string name="contact_actions_copy_name_description">คัดลอกรายชื่อผู้ติดต่อ</string>
+  <string name="contact_actions_copy_name_performed">คัดลอกชื่อไปยังคลิปบอร์ดแล้ว</string>
+  <string name="contact_actions_new_message">ข้อความใหม่</string>
+  <string name="contact_actions_new_message_description">เริ่มเขียนข้อความใหม่สำหรับผู้ติดต่อนี้</string>
+  <string name="contact_actions_add_contact">เพิ่มรายชื่อผู้ติดต่อ</string>
+  <string name="contact_actions_add_contact_description">บันทึกผู้รับนี้เป็นผู้ติดต่อ</string>
+  <string name="contact_actions_block_contact">บล็อกผู้ติดต่อนี้</string>
+  <string name="contact_actions_block_contact_description">บล็อกผู้ติดต่อนี้</string>
+  <string name="contact_actions_block_contact_dialog_text">อีเมลจาก <xliff:g id="email">%1$s</xliff:g> จะไม่ถูกส่งอีกต่อไปและจะถูกลบอย่างถาวร สามารถจัดการที่อยู่อีเมลที่ถูกบล็อกได้ในการตั้งค่า</string>
+  <string name="contact_actions_block_contact_dialog_button_block">บล็อก</string>
+  <string name="contact_actions_block_contact_dialog_button_cancel">ยกเลิก</string>
+  <string name="contact_actions_unblock_contact">เลิกบล็อกผู้ติดต่อนี้</string>
+  <string name="contact_actions_unblock_contact_description">เลิกบล็อกผู้ติดต่อนี้</string>
+  <string name="contact_actions_block_address">บล็อกที่อยู่นี้</string>
+  <string name="contact_actions_block_address_description">บล็อกที่อยู่นี้</string>
+  <string name="contact_actions_unblock_address">เลิกบล็อกที่อยู่นี้</string>
+  <string name="contact_actions_unblock_address_description">เลิกบล็อกที่อยู่นี้</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">ดูข้อความทั้งหมด</string>
+</resources>

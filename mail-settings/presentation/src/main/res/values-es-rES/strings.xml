@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mail_settings_settings">Configuración</string>
+  <string name="mail_settings_settings">Ajustes</string>
   <string name="mail_settings_toolbar_button_content_description">Atrás</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Configuración de la cuenta</string>

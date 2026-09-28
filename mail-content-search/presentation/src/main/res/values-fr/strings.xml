@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Activez la recherche dans le contenu pour chercher aussi dans les messages.</string>
   <string name="content_search_no_results_learn_more">En savoir plus..</string>
   <string name="content_search_no_results_set_up_action">Configurer la recherche dans le contenu</string>
+  <string name="content_search_failed_title">La recherche n\'a pas abouti</string>
+  <string name="content_search_failed_description">Une erreur s\'est produite. Nous vous invitons à réessayer.</string>
+  <string name="content_search_failed_retry">Réessayer</string>
   <string name="content_search_set_up_banner_title">Recherchez aussi dans les messages</string>
   <string name="content_search_set_up_banner_description">Trouvez des mots et des phrases dans vos messages, et pas seulement sur les expéditeurs ou les objets.</string>
   <string name="content_search_set_up_banner_turn_on">Configurer maintenant</string>

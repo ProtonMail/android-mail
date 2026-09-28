@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">Ενεργοποιήστε την αναζήτηση περιεχομένου για να αναζητήσετε και μέσα στα μηνύματα.</string>
   <string name="content_search_no_results_learn_more">Μάθετε περισσότερα..</string>
   <string name="content_search_no_results_set_up_action">Ρύθμιση αναζήτησης περιεχομένου</string>
+  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_retry">Try again</string>
   <string name="content_search_set_up_banner_title">Αναζήτηση και στα ηλεκτρονικά μηνύματα</string>
   <string name="content_search_set_up_banner_description">Βρείτε λέξεις και φράσεις μέσα στα μηνύματα ηλεκτρονικού ταχυδρομείου σας, όχι μόνο τους αποστολείς και τα θέματα.</string>
   <string name="content_search_set_up_banner_turn_on">Ρυθμίστε το τώρα</string>

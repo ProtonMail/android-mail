@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="mail_settings_content_search_header_title">Email content search</string>
+  <string name="mail_settings_content_search_description">Để cho phép tìm kiếm theo nội dung thư, thư sẽ được tải xuống thiết bị này.</string>
+  <string name="mail_settings_content_search_learn_more">Tìm hiểu thêm..</string>
+  <string name="mail_settings_content_search_toggle_title">Email content search</string>
+  <string name="mail_settings_content_search_mobile_data_title">Tải xuống bằng dữ liệu di động</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Sử dụng dữ liệu di động để tiếp tục tải xuống khi mất Wi-Fi.</string>
+  <string name="mail_settings_content_search_syncing_status">Đang chuẩn bị %1$d%%…</string>
+  <string name="mail_settings_content_search_preparing_status">Đang chuẩn bị…</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Đang chờ Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Đã xảy ra lỗi khi chuẩn bị tìm kiếm nội dung email.</string>
+  <string name="mail_settings_content_search_failed_retry">Thử lại</string>
+  <string name="mail_settings_content_search_update_error">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+  <string name="mail_settings_content_search_retry_error">Không thể chuẩn bị tìm kiếm nội dung email.</string>
+  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
+  <string name="mail_settings_content_search_indexing_paused">Paused</string>
+  <string name="mail_settings_content_search_indexing_pause">Pause</string>
+  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_index_size">Index size</string>
+  <string name="mail_settings_content_search_clear_data_button">Xóa dữ liệu tìm kiếm cục bộ</string>
+  <string name="mail_settings_content_search_clear_data_description">Việc xóa dữ liệu tìm kiếm cục bộ sẽ vô hiệu hóa tính năng tìm kiếm nội dung thư. Bạn có thể bật lại bất kỳ lúc nào.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Xóa dữ liệu tìm kiếm cục bộ</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Dữ liệu tìm kiếm trên thiết bị này sẽ bị xóa. Bạn sẽ cần tải xuống lại để tìm kiếm nội dung email.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_confirm">Xóa dữ liệu</string>
+  <string name="content_search_bottomsheet_title">Mobile data usage</string>
+  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
+  <!-- Content search screen -->
+  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
+  <string name="content_search_no_results_description">Hãy thử từ khóa khác hoặc kiểm tra chính tả.</string>
+  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
+  <string name="content_search_no_results_learn_more">Learn more..</string>
+  <string name="content_search_no_results_set_up_action">Set up content search</string>
+  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_retry">Try again</string>
+  <string name="content_search_set_up_banner_title">Search inside emails too</string>
+  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_turn_on">Set up now</string>
+  <string name="content_search_set_up_banner_not_now">Not now</string>
+  <string name="content_search_indexing_complete_banner_title">All done!</string>
+  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
+  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
+  <string name="content_search_placeholder_text">Tìm kiếm</string>
+  <string name="content_search_clear_query_content_description">Xóa truy vấn tìm kiếm</string>
+  <string name="content_search_close_content_description">Đóng tìm kiếm</string>
+  <string name="content_search_first_run_description">Nhập tên, chủ đề hoặc từ khóa để tìm kiếm</string>
+  <string name="content_search_results_title">Results</string>
+  <plurals name="content_search_results_title_with_count">
+    <item quantity="other">%1$d Results</item>
+  </plurals>
+  <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
+  <!-- Search history -->
+  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_clear_recent_searches">Clear all</string>
+  <string name="content_search_previously_found_title">Đã tìm thấy trước đó</string>
+  <string name="content_search_dismiss_recent_search_content_description">Xóa “%1$s” khỏi các tìm kiếm gần đây</string>
+  <!-- Indexing progress -->
+  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
+  <string name="content_search_indexing_see_details">See details</string>
+  <!-- Selection mode -->
+  <string name="content_search_delete_dialog_title">Xóa vĩnh viễn?</string>
+  <string name="content_search_delete_dialog_message">Các thư này sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</string>
+  <string name="content_search_delete_dialog_confirm">Xóa</string>
+  <string name="content_search_delete_dialog_cancel">Hủy</string>
+</resources>

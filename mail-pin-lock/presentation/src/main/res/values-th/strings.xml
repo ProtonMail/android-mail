@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Auto lock -->
+  <string name="mail_pinlock_settings_title">การล็อกแอป</string>
+  <string name="mail_pinlock_settings_no_lock">ไม่ต้องล็อก</string>
+  <string name="mail_pinlock_settings_with_pin">ป้องกันด้วย PIN</string>
+  <string name="mail_pinlock_settings_with_biometrics">ป้องกันด้วยไบโอเมตริก</string>
+  <string name="mail_pinlock_settings_logout_disclaimer">การตั้งค่าการล็อกแอปทั้งหมด รวมถึง PIN จะถูกรีเซ็ตเมื่อออกจากระบบแอป</string>
+  <string name="mail_pinlock_settings_new_pin_topbar">ตั้ง PIN ใหม่</string>
+  <string name="mail_pinlock_settings_new_pin_title">PIN ใหม่</string>
+  <string name="mail_pinlock_settings_new_pin_description">ป้อน PIN ที่มีความยาวระหว่าง 4 ถึง 21 หลัก</string>
+  <string name="mail_pinlock_settings_confirm_pin_topbar">ยืนยัน PIN</string>
+  <string name="mail_pinlock_settings_confirm_pin_title">ป้อน PIN อีกครั้ง</string>
+  <string name="mail_pinlock_settings_confirm_pin_description">ป้อน PIN อีกครั้งเพื่อให้แน่ใจว่าถูกต้อง</string>
+  <string name="mail_pinlock_settings_verify_pin_topbar">ป้อน PIN</string>
+  <string name="mail_pinlock_settings_verify_pin_title">ป้อน PIN</string>
+  <string name="mail_pinlock_settings_verify_pin_description">ยืนยันตัวตนเพื่อดำเนินการต่อ</string>
+  <string name="mail_pinlock_settings_change_pin_description">เปลี่ยน PIN</string>
+  <string name="mail_pinlock_settings_change_interval_title">ล็อกอัตโนมัติ</string>
+  <string name="mail_pinlock_settings_autolock_immediately">ทันที</string>
+  <string name="mail_pinlock_settings_autolock_never">ไม่เลย</string>
+  <string name="mail_pinlock_settings_autolock_description_one_minute">หลัง 1 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_two_minutes">หลัง 2 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_five_minutes">หลัง 5 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_ten_minutes">หลัง 10 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_fifteen_minutes">หลัง 15 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_thirty_minutes">หลัง 30 นาที</string>
+  <string name="mail_pinlock_settings_autolock_description_sixty_minutes">หลัง 60 นาที</string>
+  <string name="mail_settings_pin_insertion_confirm_button">ยืนยัน</string>
+  <string name="mail_settings_pin_insertion_next_button">ถัดไป</string>
+  <string name="mail_settings_pin_insertion_error_no_match">รหัส PIN ไม่ตรงกัน</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
+    <item quantity="other">ลองได้อีก %s ครั้งก่อนออกจากระบบ</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">เกิดข้อผิดพลาดในการตรวจสอบรหัส PIN</string>
+  <string name="mail_settings_pin_insertion_error_too_short">PIN ต้องมีอย่างน้อย 4 หลัก</string>
+  <string name="mail_settings_pin_verification_error_too_many">พยายามเกินจำนวนครั้งที่กำหนด โปรดลองใหม่อีกครั้งในภายหลัง</string>
+  <string name="mail_settings_pin_verification_error_no_match">PIN ไม่ถูกต้อง</string>
+  <string name="mail_settings_pin_verification_error_too_many_frequent">พยายามถี่เกินไป โปรดลองใหม่อีกครั้งในภายหลัง</string>
+  <string name="mail_settings_pin_insertion_signout_text">ออกจากระบบ</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">ออกจากระบบ</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">คุณแน่ใจหรือไม่ว่าต้องการลงชื่อออก</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">ใช่</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">ไม่</string>
+  <string name="mail_settings_pin_insertion_created_success">สร้างรหัส PIN สำเร็จแล้ว</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">เกิดข้อผิดพลาด โปรดลองอีกครั้ง</string>
+  <string name="mail_settings_biometrics_unable_to_set">เกิดข้อผิดพลาดขณะตั้งค่าส่วนตัวไบโอเมตริก</string>
+  <string name="mail_settings_biometrics_unable_to_unset">เกิดข้อผิดพลาดขณะรีเซ็ตการตั้งค่าส่วนตัวไบโอเมตริก</string>
+  <string name="mail_settings_biometrics_unknown_lock">เกิดข้อผิดพลาดขณะดึงข้อมูลนโยบายการล็อกปัจจุบัน</string>
+  <!-- Auto lock dialog -->
+  <string name="mail_settings_pin_lock_dialog_title">ยืนยัน PIN</string>
+  <string name="mail_settings_pin_lock_dialog_subtitle">เพื่อความปลอดภัย ป้อน PIN ปัจจุบันเพื่อดำเนินการต่อ</string>
+  <string name="mail_settings_pin_lock_dialog_button_next">ถัดไป</string>
+  <string name="mail_settings_pin_lock_dialog_button_cancel">ยกเลิก</string>
+  <!-- Biometrics unlock -->
+  <string name="mail_settings_biometrics_title_confirm">ยืนยันการดำเนินการ</string>
+  <string name="mail_settings_biometrics_subtitle_default">ใช้ลายนิ้วมือเพื่อยืนยันการดำเนินการ</string>
+  <string name="mail_settings_biometrics_button_negative">ยกเลิก</string>
+  <string name="mail_settings_biometrics_title_app_locked">แอปถูกล็อก</string>
+  <string name="mail_settings_biometrics_subtitle_app_locked">ปลดล็อกโดยใช้ข้อมูลยืนยันตัวตนไบโอเมตริก</string>
+</resources>

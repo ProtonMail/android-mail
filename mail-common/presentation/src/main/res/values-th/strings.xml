@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">หมดอายุแล้ว</string>
+  <string name="expiration_days_arg">%d วัน</string>
+  <string name="expiration_hours_arg">%d ชม.</string>
+  <string name="expiration_minutes_arg">%d นาที</string>
+  <string name="retry">ลองอีกครั้ง</string>
+  <string name="x_error_not_logged_in">ยังไม่ได้เข้าสู่ระบบ</string>
+  <string name="action_customize_toolbar_description">ปรับแต่งแถบเครื่องมือ</string>
+  <string name="action_customize_toolbar_content_description">ปรับแต่งแถบเครื่องมือ</string>
+  <string name="action_reply">ตอบกลับ</string>
+  <string name="action_reply_all">ตอบกลับทั้งหมด</string>
+  <string name="action_forward">ส่ง​ต่อ</string>
+  <string name="action_reply_description">ตอบกลับ</string>
+  <string name="action_reply_to_description">ตอบกลับ %s</string>
+  <string name="action_reply_all_description">ตอบกลับทั้งหมด</string>
+  <string name="action_forward_description">ส่ง​ต่อ</string>
+  <string name="action_mark_read_description">ทำเครื่องหมายว่าอ่านแล้ว</string>
+  <string name="action_mark_unread_description">ทำเครื่องหมายว่ายังไม่ได้อ่าน</string>
+  <string name="action_star_description">ติดดาว</string>
+  <string name="action_unstar_description">เลิกติดดาว</string>
+  <string name="action_label_description">เพิ่มป้ายกำกับเป็น</string>
+  <string name="action_move_description">ย้ายไปยัง</string>
+  <string name="action_inbox_description">ย้ายไปที่กล่องขาเข้า</string>
+  <string name="action_trash_description">ย้ายไปยังถังขยะ</string>
+  <string name="action_delete_description">ลบ</string>
+  <string name="action_archive_description">ที่เก็บถาวร</string>
+  <string name="action_spam_description">ย้ายไปยังสแปม</string>
+  <string name="action_view_in_light_mode_description">ดูข้อความในโหมดสว่าง</string>
+  <string name="action_view_in_dark_mode_description">ดูข้อความในโหมดมืด</string>
+  <string name="action_print_description">พิมพ์</string>
+  <string name="action_view_headers_description">ดูส่วนหัว</string>
+  <string name="action_view_html_description">ดูแบบ HTML</string>
+  <string name="action_report_phishing_description">รายงานฟิชชิ่ง</string>
+  <string name="action_remind_description">เตือนฉัน</string>
+  <string name="action_save_pdf_description">บันทึกเป็น PDF</string>
+  <string name="action_sender_emails_description">ตั้งค่าการดำเนินการสำหรับอีเมลในอนาคตจากผู้ส่งรายนี้</string>
+  <string name="action_save_attachments_description">บันทึกไฟล์แนบ</string>
+  <string name="action_more_description">เพิ่มเติม</string>
+  <string name="action_pin_description">ปักหมุด</string>
+  <string name="action_unpin_description">เลิกปักหมุด</string>
+  <string name="action_reply_content_description">ตอบกลับ</string>
+  <string name="action_reply_all_content_description">ตอบกลับทั้งหมด</string>
+  <string name="action_forward_content_description">ส่ง​ต่อ</string>
+  <string name="action_mark_read_content_description">ทำเครื่องหมายว่าอ่านแล้ว</string>
+  <string name="action_mark_unread_content_description">ทำเครื่องหมายว่ายังไม่อ่าน</string>
+  <string name="action_star_content_description">ติดดาว</string>
+  <string name="action_unstar_content_description">เลิกติดดาว</string>
+  <string name="action_label_content_description">เพิ่มป้ายกำกับเป็น</string>
+  <string name="action_move_content_description">ย้ายไปยัง</string>
+  <string name="action_trash_content_description">ถังขยะ</string>
+  <string name="action_delete_content_description">ลบ</string>
+  <string name="action_archive_content_description">ที่เก็บถาวร</string>
+  <string name="action_spam_content_description">สแปม</string>
+  <string name="action_inbox_content_description">กล่องขาเข้า</string>
+  <string name="action_pin_content_description">ปักหมุด</string>
+  <string name="action_unpin_content_description">เลิกปักหมุด</string>
+  <string name="action_view_in_light_mode_content_description">ดูข้อความในโหมดสว่าง</string>
+  <string name="action_view_in_dark_mode_content_description">ดูข้อความในโหมดมืด</string>
+  <string name="action_print_content_description">พิมพ์</string>
+  <string name="action_view_headers_content_description">ดูส่วนหัว</string>
+  <string name="action_view_html_content_description">ดูแบบ HTML</string>
+  <string name="action_report_phishing_content_description">รายงานฟิชชิ่ง</string>
+  <string name="action_remind_content_description">เตือนฉัน</string>
+  <string name="action_save_pdf_content_description">บันทึกเป็น PDF</string>
+  <string name="action_sender_emails_content_description">ตั้งค่าการดำเนินการสำหรับอีเมลในอนาคตจากผู้ส่งรายนี้</string>
+  <string name="action_save_attachments_content_description">บันทึกไฟล์แนบ</string>
+  <string name="action_more_content_description">เพิ่มเติม</string>
+  <string name="action_snooze_content_description">ปิดเสียงเตือนชั่วคราว</string>
+  <string name="action_snooze_description">ปิดเสียงเตือนชั่วคราว</string>
+  <string name="common_error_loading_actions">โหลดการกระทำไม่สำเร็จ</string>
+  <string name="yesterday">เมื่อวาน</string>
+  <!-- notification channels -->
+  <string name="email_notification_channel_name">อีเมล</string>
+  <string name="login_notification_channel_name">การแจ้งเตือนการเข้าสู่ระบบ</string>
+  <string name="email_notification_channel_description">การแจ้งเตือนอีเมลขาเข้า</string>
+  <string name="login_notification_channel_description">การแจ้งเตือนการเข้าสู่ระบบใหม่</string>
+  <string name="auth_badge_official">ทางการ</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">ไม่พบแอปที่รองรับการดำเนินการนี้</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">ยกเลิก</string>
+  <string name="mailbox_action_delete_dialog_button_delete">ลบ</string>
+  <string name="picker_dialog_cancel">ยกเลิก</string>
+  <string name="color_purple">สีม่วง</string>
+  <string name="color_enzian">สีเอ็นเซียน</string>
+  <string name="color_pink">สีชมพู</string>
+  <string name="color_plum">สีพลัม</string>
+  <string name="color_strawberry">สีสตรอว์เบอร์รี</string>
+  <string name="color_cerise">สีเซอรีส</string>
+  <string name="color_carrot">สีแครอท</string>
+  <string name="color_copper">สีทองแดง</string>
+  <string name="color_sahara">สีซาฮารา</string>
+  <string name="color_soil">สีดิน</string>
+  <string name="color_slate_blue">สีสเลตบลู</string>
+  <string name="color_cobalt">สีโคบอลต์</string>
+  <string name="color_pacific">สีแปซิฟิก</string>
+  <string name="color_ocean">สีโอเชียน</string>
+  <string name="color_reef">สีรีฟ</string>
+  <string name="color_pine">สีไพน์</string>
+  <string name="color_fern">สีเฟิร์น</string>
+  <string name="color_forest">สีฟอเรสต์</string>
+  <string name="color_olive">สีโอลีฟ</string>
+  <string name="color_pickle">สีพิกเคิล</string>
+  <string name="undo_button_label">เลิกทำ</string>
+  <string name="undo_success_message">ยกเลิกการดำเนินการแล้ว</string>
+  <string name="undo_failure_message">ยกเลิกการดำเนินการไม่สำเร็จ</string>
+  <string name="feature_coming_soon">คุณสมบัติใหม่เร็วๆ นี้…</string>
+  <string name="cancelling_scheduled_send_message">กำลังยกเลิก…</string>
+  <!-- date time picker -->
+  <string name="time_picker_custom_time_label">เวลา</string>
+  <string name="time_picker_custom_date_label">วันที่</string>
+  <string name="time_picker_send_dialog_ok">ตกลง</string>
+  <string name="time_picker_enter_time">ป้อนเวลา</string>
+</resources>

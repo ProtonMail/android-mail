@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and ProtonCore.
+  ~
+  ~ ProtonCore is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonCore is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="edm_code_not_recognized">Không nhận diện được mã. Hãy thử lại.</string>
+  <string name="edm_code_verifying">Đang xác minh…</string>
+  <string name="edm_missing_camera_permission_headline">Cho phép truy cập camera</string>
+  <string name="edm_missing_camera_permission_body">Để đăng nhập bằng mã QR, bạn sẽ cần cho phép %1$s truy cập vào camera. Bạn có thể thực hiện việc này trong cài đặt thiết bị.</string>
+  <string name="edm_missing_camera_permission_footer">Bạn luôn nắm quyền kiểm soát: Bạn có thể thay đổi điều này bất kỳ lúc nào trong phần cài đặt thiết bị.</string>
+  <string name="edm_missing_camera_permission_settings">Cài đặt</string>
+  <string name="intro_origin_sign_in_title">Đăng nhập trên thiết bị khác</string>
+  <string name="intro_origin_sign_in_subtitle">Cách đăng nhập bằng mã QR</string>
+  <string name="intro_origin_sign_in_hint_1">1. Mở ứng dụng Proton bất kỳ trên thiết bị muốn đăng nhập.</string>
+  <string name="intro_origin_sign_in_hint_2">2. Trên màn hình đăng nhập, chọn <b>Quên mật khẩu</b> hoặc <b>Gặp sự cố khi đăng nhập?</b> (trên ứng dụng di động, chọn <b>Trợ giúp</b>).</string>
+  <string name="intro_origin_sign_in_hint_3">3. Chọn <b>Đăng nhập bằng mã QR</b>. Mã QR sẽ xuất hiện.</string>
+  <string name="intro_origin_sign_in_hint_4">4. Trên thiết bị này, nhấn <b>Quét mã QR</b> và quét mã.</string>
+  <string name="intro_origin_sign_in_tips">Mẹo bảo mật</string>
+  <string name="intro_origin_sign_in_tip_1">Cẩn trọng với các thư có mã QR. Chỉ quét mã nếu bạn tin tưởng nguồn gửi.</string>
+  <string name="intro_origin_sign_in_tip_2">Proton sẽ không bao giờ liên hệ đột xuất để yêu cầu bạn đăng nhập bằng mã QR.</string>
+  <string name="intro_origin_sign_in_tip_3">Proton sẽ không bao giờ yêu cầu bạn quét mã QR nằm ngoài <b>https://proton.me</b> hoặc ứng dụng chính thức của Proton.</string>
+  <string name="intro_origin_sign_in_begin">Quét mã QR</string>
+  <string name="intro_origin_biometrics_title">Mở khóa thiết bị để tiếp tục</string>
+  <string name="manual_code_input_title">Nhập mã thủ công</string>
+  <string name="manual_code_input_description">Để truy cập mã của thiết bị muốn đăng nhập, chạm vào nút <b>Đăng nhập bằng mã QR</b> trong menu trợ giúp của màn hình đăng nhập, sau đó chạm vào <b>Nhập khóa thủ công</b>.</string>
+  <string name="manual_code_input_code_label">Mã</string>
+  <string name="manual_code_input_clear_code">Xóa</string>
+  <string name="manual_code_input_submit">Tiếp tục</string>
+  <string name="origin_success_signed_in">Đã chia sẻ quyền truy cập</string>
+  <string name="origin_success_ack">Quay lại cài đặt</string>
+  <string name="qr_code_scan_hint">Đặt mã QR vào trong hình vuông</string>
+  <string name="qr_code_scan_enter_manually">Nhập mã thủ công</string>
+  <string name="target_sign_in_title">Đăng nhập bằng mã QR</string>
+  <string name="target_sign_in_scan_code">Cách đăng nhập bằng thiết bị khác</string>
+  <string name="target_sign_in_instruction_1">1. Sử dụng một thiết bị khác đã đăng nhập vào Tài khoản Proton</string>
+  <string name="target_sign_in_instruction_2">2. Trên thiết bị đó, mở ứng dụng Proton bất kỳ và chọn <b>Cài đặt</b></string>
+  <string name="target_sign_in_instruction_3">3. Chọn <b>Đăng nhập trên thiết bị khác → Quét mã QR</b></string>
+  <string name="target_sign_in_instruction_4">4. Quét mã để đăng nhập</string>
+  <string name="target_sign_in_error_title">Không thể đăng nhập</string>
+  <string name="target_sign_in_retryable_error">Thử tạo mã QR mới.</string>
+  <string name="target_sign_in_error_new_qr">Tạo mã QR</string>
+  <string name="target_sign_in_error_back_to_signin">Quay lại đăng nhập</string>
+  <string name="target_sign_in_learn_more">Tìm hiểu thêm</string>
+  <string name="proton_error_non_processable_actions">Không thể xử lý một hoặc nhiều hành động. Vui lòng đăng xuất rồi đăng nhập lại vào tài khoản.</string>
+</resources>

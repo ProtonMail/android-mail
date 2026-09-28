@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">Đã hết hạn</string>
+  <string name="expiration_days_arg">%d ngày</string>
+  <string name="expiration_hours_arg">%d giờ</string>
+  <string name="expiration_minutes_arg">%d phút</string>
+  <string name="retry">Thử lại</string>
+  <string name="x_error_not_logged_in">Chưa đăng nhập</string>
+  <string name="action_customize_toolbar_description">Tùy chỉnh thanh công cụ</string>
+  <string name="action_customize_toolbar_content_description">Tùy chỉnh thanh công cụ</string>
+  <string name="action_reply">Trả lời</string>
+  <string name="action_reply_all">Trả lời tất cả</string>
+  <string name="action_forward">Chuyển tiếp</string>
+  <string name="action_reply_description">Trả lời</string>
+  <string name="action_reply_to_description">Trả lời %s</string>
+  <string name="action_reply_all_description">Trả lời tất cả</string>
+  <string name="action_forward_description">Chuyển tiếp</string>
+  <string name="action_mark_read_description">Đánh dấu là đã đọc</string>
+  <string name="action_mark_unread_description">Đánh dấu là chưa đọc</string>
+  <string name="action_star_description">Gắn sao</string>
+  <string name="action_unstar_description">Bỏ gắn sao</string>
+  <string name="action_label_description">Gắn nhãn</string>
+  <string name="action_move_description">Chuyển đến</string>
+  <string name="action_inbox_description">Chuyển đến hộp thư đến</string>
+  <string name="action_trash_description">Chuyển vào thùng rác</string>
+  <string name="action_delete_description">Xóa</string>
+  <string name="action_archive_description">Lưu trữ</string>
+  <string name="action_spam_description">Chuyển tới hộp thư rác</string>
+  <string name="action_view_in_light_mode_description">Xem thư trong giao diện sáng</string>
+  <string name="action_view_in_dark_mode_description">Xem thư trong giao diện tối</string>
+  <string name="action_print_description">In</string>
+  <string name="action_view_headers_description">Xem tiêu đề</string>
+  <string name="action_view_html_description">Xem HTML</string>
+  <string name="action_report_phishing_description">Báo cáo lừa đảo</string>
+  <string name="action_remind_description">Nhắc tôi</string>
+  <string name="action_save_pdf_description">Lưu dưới dạng PDF</string>
+  <string name="action_sender_emails_description">Thiết lập hành động cho các email trong tương lai từ người gửi này</string>
+  <string name="action_save_attachments_description">Lưu tập tin đính kèm</string>
+  <string name="action_more_description">Thêm</string>
+  <string name="action_pin_description">Ghim</string>
+  <string name="action_unpin_description">Bỏ ghim</string>
+  <string name="action_reply_content_description">Trả lời</string>
+  <string name="action_reply_all_content_description">Trả lời tất cả</string>
+  <string name="action_forward_content_description">Chuyển tiếp</string>
+  <string name="action_mark_read_content_description">Đánh dấu đã đọc</string>
+  <string name="action_mark_unread_content_description">Đánh dấu chưa đọc</string>
+  <string name="action_star_content_description">Gắn sao</string>
+  <string name="action_unstar_content_description">Bỏ gắn sao</string>
+  <string name="action_label_content_description">Gắn nhãn</string>
+  <string name="action_move_content_description">Chuyển đến</string>
+  <string name="action_trash_content_description">Thùng rác</string>
+  <string name="action_delete_content_description">Xóa</string>
+  <string name="action_archive_content_description">Lưu trữ</string>
+  <string name="action_spam_content_description">Thư rác</string>
+  <string name="action_inbox_content_description">Hộp thư đến</string>
+  <string name="action_pin_content_description">Ghim</string>
+  <string name="action_unpin_content_description">Bỏ ghim</string>
+  <string name="action_view_in_light_mode_content_description">Xem thư trong giao diện sáng</string>
+  <string name="action_view_in_dark_mode_content_description">Xem thư trong giao diện tối</string>
+  <string name="action_print_content_description">In</string>
+  <string name="action_view_headers_content_description">Xem tiêu đề</string>
+  <string name="action_view_html_content_description">Xem HTML</string>
+  <string name="action_report_phishing_content_description">Báo cáo lừa đảo</string>
+  <string name="action_remind_content_description">Nhắc tôi</string>
+  <string name="action_save_pdf_content_description">Lưu dưới dạng PDF</string>
+  <string name="action_sender_emails_content_description">Thiết lập hành động cho các email trong tương lai từ người gửi này</string>
+  <string name="action_save_attachments_content_description">Lưu tập tin đính kèm</string>
+  <string name="action_more_content_description">Thêm</string>
+  <string name="action_snooze_content_description">Tạm ẩn</string>
+  <string name="action_snooze_description">Tạm ẩn</string>
+  <string name="common_error_loading_actions">Không thể tải hành động</string>
+  <string name="yesterday">Hôm qua</string>
+  <!-- notification channels -->
+  <string name="email_notification_channel_name">Email</string>
+  <string name="login_notification_channel_name">Cảnh báo đăng nhập</string>
+  <string name="email_notification_channel_description">Thông báo email đến</string>
+  <string name="login_notification_channel_description">Thông báo phiên đăng nhập mới</string>
+  <string name="auth_badge_official">Chính thức</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Không tìm thấy ứng dụng nào để xử lý hành động này</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Hủy</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Xóa</string>
+  <string name="picker_dialog_cancel">Hủy</string>
+  <string name="color_purple">Tím</string>
+  <string name="color_enzian">Xanh enzian</string>
+  <string name="color_pink">Hồng</string>
+  <string name="color_plum">Mận</string>
+  <string name="color_strawberry">Dâu tây</string>
+  <string name="color_cerise">Anh đào</string>
+  <string name="color_carrot">Cà rốt</string>
+  <string name="color_copper">Đồng</string>
+  <string name="color_sahara">Vàng sahara</string>
+  <string name="color_soil">Đất</string>
+  <string name="color_slate_blue">Xanh đá phiến</string>
+  <string name="color_cobalt">Xanh coban</string>
+  <string name="color_pacific">Xanh Pacific</string>
+  <string name="color_ocean">Đại dương</string>
+  <string name="color_reef">San hô</string>
+  <string name="color_pine">Cây thông</string>
+  <string name="color_fern">Dương xỉ</string>
+  <string name="color_forest">Rừng</string>
+  <string name="color_olive">Ô liu</string>
+  <string name="color_pickle">Dưa muối</string>
+  <string name="undo_button_label">Hoàn tác</string>
+  <string name="undo_success_message">Đã thu hồi hành động</string>
+  <string name="undo_failure_message">Thu hồi hành động thất bại</string>
+  <string name="feature_coming_soon">Tính năng sắp ra mắt…</string>
+  <string name="cancelling_scheduled_send_message">Đang hủy…</string>
+  <!-- date time picker -->
+  <string name="time_picker_custom_time_label">Thời gian</string>
+  <string name="time_picker_custom_date_label">Ngày</string>
+  <string name="time_picker_send_dialog_ok">Ok</string>
+  <string name="time_picker_enter_time">Nhập thời gian</string>
+</resources>

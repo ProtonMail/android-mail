@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="trackers_protection">การปกป้องจากการติดตาม:</string>
+  <string name="show_details">แสดงรายละเอียด</string>
+  <string name="trackers_protection_no_trackers_detected">การปกป้องจากการติดตาม: ไม่พบตัวติดตาม</string>
+  <string name="tracking_protection">การป้องกันการติดตาม</string>
+  <string name="tracking_protection_description">ปกป้องจากการติดตามอย่างต่อเนื่อง ที่นี่คุณสามารถดูพิกเซลติดตามที่บล็อกไว้และลิงก์ติดตามที่ล้างแล้วในข้อความนี้ได้</string>
+  <string name="tracking_protection_learn_more">เรียนรู้เพิ่มเติม</string>
+  <string name="original">ต้นฉบับ</string>
+  <string name="cleaned">ล้างแล้ว</string>
+  <string name="open_link">เปิดลิงก์</string>
+  <string name="action_close_dialog_button">ปิด</string>
+  <string name="got_it">รับทราบ</string>
+  <plurals name="number_of_blocked_trackers">
+    <item quantity="other">บล็อกตัวติดตาม %s รายการ</item>
+  </plurals>
+  <plurals name="number_of_cleaned_links">
+    <item quantity="other">ล้างลิงก์ %s รายการ</item>
+  </plurals>
+</resources>

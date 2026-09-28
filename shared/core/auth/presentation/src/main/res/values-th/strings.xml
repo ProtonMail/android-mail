@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 Proton AG
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="app_name_mail">Proton Mail</string>
+  <string name="login_help_title">มีอะไรให้ช่วยเหลือหรือไม่</string>
+  <string name="login_help_forgot_username">ลืมชื่อผู้ใช้</string>
+  <string name="login_help_forgot_password">ลืมรหัสผ่าน</string>
+  <string name="login_help_other_issues">ปัญหาการเข้าสู่ระบบอื่นๆ</string>
+  <string name="login_help_contact_needed">ยังต้องการความช่วยเหลือหรือไม่ ติดต่อเราได้โดยตรง</string>
+  <string name="login_help_customer_support">ฝ่ายสนับสนุนลูกค้า</string>
+  <string name="login_help_sign_in_with_qr_code">เข้าสู่ระบบด้วยคิวอาร์โค้ด</string>
+  <string name="welcome_subtitle_mail">ความเป็นส่วนตัว ความปลอดภัย ความสะดวกสบาย อีเมลที่เข้ารหัสลับที่ช่วยให้ควบคุมข้อมูลส่วนบุคคลได้อย่างเต็มที่</string>
+  <string name="welcome_sign_in">เข้าสู่ระบบ</string>
+  <string name="welcome_sign_up">สร้างบัญชี</string>
+  <string name="welcome_proton_privacy_by_default">Proton - Privacy by default</string>
+  <string name="auth_login">เข้าสู่ระบบ</string>
+  <string name="auth_login_close">ปิด</string>
+  <string name="auth_login_help">ช่วยเหลือ</string>
+  <string name="auth_sign_in">เข้าสู่ระบบ</string>
+  <string name="auth_login_username">ชื่อผู้ใช้หรืออีเมล</string>
+  <string name="auth_email">อีเมล</string>
+  <string name="auth_password">รหัสผ่าน</string>
+  <string name="auth_login_assistive_text">โปรดป้อนอีเมล Proton หรือชื่อผู้ใช้</string>
+  <string name="auth_account_details">ป้อนรายละเอียดบัญชี Proton</string>
+  <string name="auth_login_error_invalid_action_cannot_unlock_keys">เกิดปัญหาในการเข้าสู่ระบบ โปรดลองอีกครั้ง</string>
+  <string name="auth_login_error_invalid_action_invalid_credentials">ข้อมูลยืนยันตัวตนการเข้าสู่ระบบไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+  <string name="auth_login_general_error">เกิดข้อผิดพลาด</string>
+  <string name="auth_second_factor_title">การยืนยันตัวตนผ่านสองขั้นตอน</string>
+  <string name="auth_second_factor_subtitle">บัญชีมีการกำหนดค่ากลไก 2FA ไว้หลายแบบ โปรดเลือกวิธีที่ต้องการยืนยันตัวตน</string>
+  <string name="auth_second_factor_tab_security_key">คีย์ความปลอดภัย</string>
+  <string name="auth_second_factor_tab_otp">รหัสผ่านใช้ครั้งเดียว</string>
+  <string name="auth_second_factor_authenticate">ยืนยันตัวตน</string>
+  <string name="auth_second_factor_totp_input_help">ป้อนรหัส 6 หลัก</string>
+  <string name="auth_second_factor_totp_input_label">รหัสยืนยันตัวตนสองขั้นตอน</string>
+  <string name="auth_second_factor_recovery_help">ป้อนรหัสกู้คืน 8 ตัวอักษร</string>
+  <string name="auth_second_factor_recovery_label">รหัสกู้คืน</string>
+  <string name="auth_second_factor_switch_to_recovery">ใช้รหัสกู้คืน</string>
+  <string name="auth_second_factor_switch_to_totp">ใช้รหัสยืนยันตัวตนสองขั้นตอน</string>
+  <string name="auth_second_factor_insert_security_key">แสดงคีย์ความปลอดภัยที่ผูกกับบัญชี Proton </string>
+  <string name="auth_second_factor_insert_security_key_link">เรียนรู้เพิ่มเติม</string>
+  <string name="auth_second_factor_incorrect_code">รหัสไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+  <string name="auth_two_pass_title">ปลดล็อกกล่องจดหมาย</string>
+  <string name="auth_two_pass_input_label">รหัสผ่านของกล่องจดหมาย</string>
+  <string name="auth_two_pass_unlock">ปลดล็อก</string>
+  <string name="auth_two_pass_forgot_password">ลืมรหัสผ่าน</string>
+  <string name="auth_two_pass_input_empty">รหัสผ่านต้องไม่ว่างเปล่า</string>
+  <string name="auth_signup_title">สร้างบัญชี Proton</string>
+  <string name="auth_signup_subtitle">หนึ่งบัญชีสำหรับทุกบริการของ Proton</string>
+  <string name="auth_signup_next">ถัดไป</string>
+  <string name="auth_signup_username">ชื่อผู้ใช้</string>
+  <string name="auth_signup_create_password">สร้างรหัสผ่าน</string>
+  <string name="auth_signup_password">รหัสผ่าน</string>
+  <string name="auth_signup_repeat_password">ยืนยันรหัสผ่าน</string>
+  <string name="auth_signup_terms_privacy_conditions_footer">เมื่อคลิกถัดไป ถือว่ายอมรับ %1$s และ %2$s ของ Proton</string>
+  <string name="auth_signup_terms_learn_more">ข้อกำหนดและเงื่อนไข</string>
+  <string name="auth_signup_privacy_policy_learn_more">นโยบายความเป็นส่วนตัว</string>
+  <string name="auth_signup_internal_footnote">ต้องมีที่อยู่ Proton เพื่อใช้งาน Proton Mail และ Proton Calendar</string>
+  <string name="auth_signup_use_current_email">ใช้อีเมลปัจจุบันแทน</string>
+  <string name="auth_signup_get_encrypted_email">รับที่อยู่อีเมลที่เข้ารหัสลับใหม่</string>
+  <string name="auth_signup_external_footnote">ด้วยที่อยู่ Proton สามารถใช้บริการ Proton ได้ทั้งหมด</string>
+  <string name="auth_signup_recovery_skip">ข้าม</string>
+  <string name="auth_signup_recovery_title">ตั้งค่าวิธีการกู้คืน (ไม่บังคับ)</string>
+  <string name="auth_signup_recovery_subtitle">จะส่งคำแนะนำในการกู้คืนไปยังอีเมลหรือเบอร์โทรศัพท์นี้ หากคุณไม่สามารถเข้าสู่บัญชีได้</string>
+  <string name="auth_signup_recovery_select_country">เลือกประเทศ</string>
+  <string name="auth_signup_phone_placeholder">XX XXX XX XX</string>
+  <string name="auth_signup_skip_recovery_title">ข้ามวิธีการกู้คืนหรือไม่</string>
+  <string name="auth_signup_skip_recovery_description">วิธีการกู้คืนจะช่วยให้เข้าถึงบัญชีได้ในกรณีที่ลืมรหัสผ่านหรือไม่สามารถเข้าสู่บัญชีได้</string>
+  <string name="auth_signup_skip_recovery">ข้าม</string>
+  <string name="auth_signup_set_recovery">ตั้งค่าวิธีการกู้คืน</string>
+  <string name="auth_signup_your_account_is_being_setup">กำลังสร้างบัญชี…</string>
+  <string name="auth_signup_please_wait">โดยปกติจะใช้เวลาไม่เกินหนึ่งนาที</string>
+  <string name="auth_signup_congratulations_subtitle">สร้างบัญชี Proton สำเร็จแล้ว\nเพลิดเพลินกับโลกแห่งความเป็นส่วนตัว</string>
+  <string name="auth_signup_congratulations_title">ยินดีด้วย!</string>
+  <string name="auth_signup_start_using_proton">เริ่มใช้งาน Proton</string>
+  <string name="auth_signup_validation_password">รหัสผ่านต้องไม่ว่างเปล่า</string>
+  <string name="auth_signup_validation_passwords_do_not_match">รหัสผ่านไม่ตรงกัน</string>
+  <string name="auth_signup_validation_password_input_invalid">การป้อนข้อมูลรหัสผ่านไม่ถูกต้อง</string>
+  <string name="auth_signup_validation_username">โปรดป้อนชื่อผู้ใช้</string>
+  <string name="auth_signup_validation_email">อีเมลต้องไม่ว่างเปล่า</string>
+  <string name="auth_signup_validation_username_input_invalid">การป้อนข้อมูลชื่อผู้ใช้ไม่ถูกต้อง</string>
+  <string name="auth_signup_validation_email_input_invalid">การป้อนข้อมูลชื่อผู้ใช้ไม่ถูกต้อง</string>
+  <string name="auth_signup_username_unavailable_error">ชื่อผู้ใช้นี้มีผู้ใช้แล้ว โปรดเลือกชื่อผู้ใช้อื่น</string>
+  <string name="auth_signup_recovery_email_validation_error">การตรวจสอบความถูกต้องของอีเมลไม่สำเร็จ</string>
+  <string name="auth_signup_recovery_phone_validation_error">การตรวจสอบความถูกต้องของเบอร์โทรศัพท์ไม่สำเร็จ</string>
+  <string name="auth_signup_createpassword_error_password_not_equal">รหัสผ่านไม่ตรงกัน โปรดลองอีกครั้ง</string>
+  <string name="auth_signup_general_error">เกิดข้อผิดพลาดบางประการ โปรดลองอีกครั้ง</string>
+  <string name="auth_signup_countries_search">ค้นหาประเทศ</string>
+  <string name="auth_login_error_invalid_action_cannot_setup_user">ไม่สามารถตั้งค่าผู้ใช้ได้</string>
+  <string name="auth_login_error_invalid_action_cannot_setup_address">ไม่สามารถตั้งค่าที่อยู่ได้</string>
+  <string name="auth_fido_security_keys_error">เกิดข้อผิดพลาดในการดึงข้อมูลคีย์ความปลอดภัย โปรดลองอีกครั้ง</string>
+  <string name="auth_fido_security_keys_title">คีย์ความปลอดภัย</string>
+  <string name="auth_fido_manage_security_keys_info">หากต้องการจัดการ เพิ่ม หรือลบออกคีย์ความปลอดภัย โปรดใช้เว็บแอปพลิเคชั่น Proton %s</string>
+  <string name="auth_fido_security_keys_empty_list">ไม่มีคีย์ความปลอดภัยที่ลงทะเบียนไว้ในบัญชี หากต้องการเพิ่มคีย์ความปลอดภัย โปรดใช้เว็บแอปพลิเคชั่น Proton %s</string>
+  <string name="auth_fido_security_keys_registered">นี่คือคีย์ความปลอดภัยที่ลงทะเบียนไว้ในบัญชี</string>
+  <string name="auth_fido_manage_security_keys">จัดการคีย์ความปลอดภัย</string>
+  <string name="auth_fido_add_security_key">เพิ่มคีย์ความปลอดภัย</string>
+  <string name="auth_fido_security_keys_learn_more">เรียนรู้เพิ่มเติม</string>
+  <plurals name="auth_user_check_max_free_error">
+    <item quantity="other">เกินจำนวนบัญชีฟรีสูงสุด %d บัญชีแล้ว</item>
+  </plurals>
+  <string name="common_error_something_went_wrong">เกิดข้อผิดพลาดบางประการ โปรดลองอีกครั้ง</string>
+  <string name="auth_fido_config_error">เกิดข้อผิดพลาดในการดึงข้อมูลคีย์ที่จัดเก็บไว้</string>
+  <string name="auth_fido_reading_key_error">เกิดข้อผิดพลาดในการอ่านคีย์ความปลอดภัย</string>
+  <string name="auth_fido_submit_key_error">เกิดข้อผิดพลาดในการส่งข้อมูลคีย์</string>
+  <string name="auth_fido_authenticating_in_progress">กำลังยืนยันตัวตนด้วยคีย์ความปลอดภัย</string>
+  <string name="auth_fido_security_key">คีย์ความปลอดภัย</string>
+  <plurals name="password_validator_min_length_error">
+    <item quantity="other">รหัสผ่านต้องมีอย่างน้อย %1$s ตัวอักษร</item>
+  </plurals>
+  <plurals name="password_validator_min_length_requirement">
+    <item quantity="other">อย่างน้อย %1$s ตัวอักษร</item>
+  </plurals>
+  <string name="settings_password_management_title">เปลี่ยนรหัสผ่าน</string>
+  <string name="settings_save_second_password">บันทึกรหัสผ่านที่สองใหม่</string>
+  <string name="settings_save_main_password">บันทึกรหัสผ่านหลักใหม่</string>
+  <string name="settings_password_management_tab_main_password">รหัสผ่านหลัก</string>
+  <string name="settings_password_management_tab_second_password">รหัสผ่านที่สอง</string>
+  <string name="settings_password_management_change_password_note">ในการเปลี่ยนรหัสผ่าน จำเป็นต้องทราบรหัสผ่านหลัก\u0020</string>
+  <string name="settings_password_management_forgot_main_password">ลืมรหัสผ่านหลักใช่หรือไม่</string>
+  <string name="settings_main_password_hint_current">รหัสผ่านหลักปัจจุบัน</string>
+  <string name="settings_main_password_hint_new">รหัสผ่านหลักใหม่</string>
+  <string name="settings_main_password_hint_new_confirm">ยืนยันรหัสผ่านหลักใหม่</string>
+  <string name="settings_second_password_hint_current_main_password">รหัสผ่านหลักปัจจุบัน</string>
+  <string name="settings_second_password_hint_new">รหัสผ่านที่สองใหม่</string>
+  <string name="settings_second_password_hint_new_confirm">ยืนยันรหัสผ่านที่สองใหม่</string>
+  <string name="settings_password_management_login_success">อัปเดตรหัสผ่านเพื่อเข้าสู่ระบบแล้ว</string>
+  <string name="settings_password_management_second_success">อัปเดตรหัสผ่านที่สองแล้ว</string>
+  <string name="settings_password_invalid_2fa">รหัสยืนยันตัวตนสองขั้นตอนไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+  <string name="settings_password_error_empty">รหัสผ่านต้องไม่ว่างเปล่า</string>
+  <string name="settings_password_error">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+  <string name="settings_password_error_invalid_recovery">รหัส 2FA ไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+  <string name="settings_password_error_2fa_reused">รหัสนี้ถูกใช้ไปแล้ว โปรดลองใช้รหัสอื่น</string>
+  <string name="settings_password_general_error">เกิดข้อผิดพลาด</string>
+  <string name="proton_error_non_processable_actions">ไม่สามารถประมวลผลการดำเนินการอย่างน้อยหนึ่งรายการได้ โปรดออกจากระบบและเข้าสู่ระบบบัญชีอีกครั้ง</string>
+</resources>

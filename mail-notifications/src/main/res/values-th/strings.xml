@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="notification_summary_text_new_messages">ข้อความใหม่</string>
+  <string name="notification_summary_text_new_login_alerts">การแจ้งเตือนการเข้าสู่ระบบใหม่</string>
+  <string name="notification_title_text_new_message_fallback">ข้อความใหม่</string>
+  <string name="notification_actions_archive_description">ที่เก็บถาวร</string>
+  <string name="notification_actions_trash_description">ขยะ</string>
+  <string name="notification_actions_mark_as_read_description">ทำเครื่องหมายว่าอ่านแล้ว</string>
+  <!-- Push notification permissions BS -->
+  <string name="notification_permissions_bottomsheet_first_time_title">ไม่พลาดทุกอีเมล</string>
+  <string name="notification_permissions_bottomsheet_first_time_subtitle">การแจ้งเตือนช่วยให้ติดตามกล่องขาเข้าได้ตลอดเวลาโดยไม่ต้องเปิดแอปตรวจสอบ</string>
+  <string name="notification_permissions_bottomsheet_second_time_title">ต้องการติดตามข่าวสารล่าสุดหรือไม่</string>
+  <string name="notification_permissions_bottomsheet_second_time_subtitle">เปิดการแจ้งเตือนเพื่อรับทราบเมื่อได้รับการตอบกลับอีเมล</string>
+  <string name="notification_permissions_bottomsheet_enable">เปิดใช้งานการแจ้งเตือนแบบพุช</string>
+  <string name="notification_permissions_bottomsheet_dismiss">ปิด</string>
+</resources>

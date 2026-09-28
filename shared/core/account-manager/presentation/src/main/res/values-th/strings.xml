@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="account_switcher_manage_account">จัดการบัญชี</string>
+  <string name="account_switcher_talkback_title">จัดการบัญชี: บัญชีปัจจุบัน</string>
+  <string name="account_switcher_sign_out">ออกจากระบบ</string>
+  <string name="account_switcher_sign_in">เข้าสู่ระบบ</string>
+  <string name="account_switcher_remove">ลบออก</string>
+  <string name="account_switcher_remove_from_device">ลบออกจากอุปกรณ์นี้</string>
+  <string name="account_switcher_switch_to">สลับไปยัง</string>
+  <string name="manage_accounts_title">จัดการบัญชี</string>
+  <string name="manage_accounts_add_account">เพิ่มบัญชี</string>
+  <string name="manage_accounts_switch_to">สลับไปยัง</string>
+  <string name="manage_accounts_switch_to_signed_in_content_desc">สลับไปยังบัญชีที่เข้าสู่ระบบแล้ว</string>
+  <string name="manage_accounts_switch_to_signed_out_content_desc">สลับไปยังบัญชีที่ออกจากระบบแล้ว</string>
+  <string name="primary_account_avatar_camera_content_description">กล้องสำหรับรูปประจำตัวบัญชี</string>
+  <string name="manage_accounts_on_device">จัดการบัญชีในอุปกรณ์นี้</string>
+  <string name="add_another_account">เพิ่มบัญชีอื่น</string>
+  <string name="account_switcher_no_initials">N/A</string>
+  <string name="manage_accounts_options">ตัวเลือก</string>
+</resources>

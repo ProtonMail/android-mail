@@ -37,6 +37,9 @@
   <string name="content_search_no_results_set_up_description">메시지 내용 또한 검색하려면 콘텐츠 검색을 활성화하세요.</string>
   <string name="content_search_no_results_learn_more">자세히 알아보기...</string>
   <string name="content_search_no_results_set_up_action">콘텐츠 검색 설정</string>
+  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_retry">Try again</string>
   <string name="content_search_set_up_banner_title">이메일 내용까지도 검색하기</string>
   <string name="content_search_set_up_banner_description">보낸 사람이나 제목 뿐 아니라 이메일 속 단어나 구문까지 찾아보세요.</string>
   <string name="content_search_set_up_banner_turn_on">지금 설정하기</string>
