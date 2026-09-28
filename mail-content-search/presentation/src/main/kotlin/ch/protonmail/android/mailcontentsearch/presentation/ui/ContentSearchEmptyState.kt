@@ -43,8 +43,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
@@ -75,7 +76,8 @@ internal fun ContentSearchNoResultsState(
     SearchMessageState(
         bannerHeight = bannerHeight,
         iconRes = R.drawable.ic_search_empty_result,
-        title = stringResource(R.string.content_search_no_results_title_for_query, query),
+        title = stringResource(R.string.content_search_no_results_title_for_query, query.shortenedForTitle()),
+        titleMaxLines = NO_RESULTS_TITLE_MAX_LINES,
         description = if (canSetUpContentSearch) {
             withLearnMoreLink(
                 description = stringResource(R.string.content_search_no_results_set_up_description),
@@ -97,6 +99,19 @@ internal fun ContentSearchNoResultsState(
             null
         }
     )
+}
+
+// Three lines of a phone-width title. Cutting the query itself keeps the closing quote on screen.
+// The line limit is a backstop for narrow screens and large fonts, where the tail can still be cut.
+private const val NO_RESULTS_TITLE_MAX_QUERY_LENGTH = 80
+private const val NO_RESULTS_TITLE_MAX_LINES = 3
+
+// The cut steps back one character rather than split an emoji in half.
+private fun String.shortenedForTitle(): String {
+    if (length <= NO_RESULTS_TITLE_MAX_QUERY_LENGTH) return this
+    val max = NO_RESULTS_TITLE_MAX_QUERY_LENGTH
+    val end = if (this[max - 1].isHighSurrogate()) max - 1 else max
+    return take(end).trimEnd() + "\u2026"
 }
 
 internal data class ContentSearchNoResultsActions(
@@ -179,6 +194,7 @@ internal fun SearchMessageState(
     description: AnnotatedString,
     modifier: Modifier = Modifier,
     title: String? = null,
+    titleMaxLines: Int = Int.MAX_VALUE,
     descriptionStyle: TextStyle = ProtonTheme.typography.bodyLargeWeak,
     bannerHeight: Dp = 0.dp,
     action: (@Composable () -> Unit)? = null
@@ -210,7 +226,9 @@ internal fun SearchMessageState(
                     text = title,
                     style = ProtonTheme.typography.bodyLargeNorm,
                     fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    maxLines = titleMaxLines,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))
             }
