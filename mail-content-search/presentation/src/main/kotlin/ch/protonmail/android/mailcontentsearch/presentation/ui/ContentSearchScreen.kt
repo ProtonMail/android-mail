@@ -59,6 +59,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -221,7 +222,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
 
     val searchFieldFocusRequests = remember { SearchFieldFocusRequests() }
     val focusSearchFieldOnce = {
-        if (viewModel.consumeSearchFieldAutoFocus()) searchFieldFocusRequests.request()
+        if (viewModel.searchFieldFocus.consumeAutoFocus()) searchFieldFocusRequests.request()
     }
 
     // Searching answers the offer as much as the banner's own buttons do: the user has seen it and
@@ -229,7 +230,26 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
     // leaving it unspent would raise the keyboard over the results once the answer lands.
     val answerOfferBySearching = {
         if (showSetUpBanner == true) setUpPromptViewModel.dismissSetUpBanner()
-        viewModel.consumeSearchFieldAutoFocus()
+        viewModel.searchFieldFocus.consumeAutoFocus()
+    }
+
+    // The set-up page can come back with the content search sheet to show. A focused field would raise
+    // the keyboard on the way back, and the sheet would push it straight down again. So the field lets
+    // go of its focus before leaving, and takes it back once nothing is in the way.
+    val focusManager = LocalFocusManager.current
+    val leaveForSetUp = {
+        viewModel.searchFieldFocus.leaveForSetUp()
+        focusManager.clearFocus()
+        actions.onSetUpContentSearch()
+    }
+
+    // Runs when the screen comes back from the set-up page, and again when the sheet closes. The
+    // turn-on request is already set on the first frame back, so the keyboard never comes up under
+    // the sheet. Coming back with Not now or the back button focuses the field straight away.
+    LaunchedEffect(turnOnContentSearchRequested) {
+        if (!turnOnContentSearchRequested && viewModel.searchFieldFocus.consumeSetUpReturn()) {
+            searchFieldFocusRequests.request()
+        }
     }
 
     // The keyboard waits for the banners: one on screen would end up behind it. Whoever leaves last
@@ -300,10 +320,10 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
             onToggleIncludeSpamTrash = { viewModel.submit(ContentSearchViewAction.ToggleIncludeSpamTrash) },
             onSeeIndexingDetails = actions.onSeeIndexingDetails,
             onLearnMoreAboutContentSearch = { uriHandler.openUri(learnMoreLink) },
-            onSetUpContentSearch = actions.onSetUpContentSearch,
+            onSetUpContentSearch = leaveForSetUp,
             onSetUpFromBanner = {
                 setUpPromptViewModel.setAsideSetUpBanner()
-                actions.onSetUpContentSearch()
+                leaveForSetUp()
             },
             // Taking a banner away is the moment the user is done reading and ready to type, so the
             // field takes the focus the banner was holding back.
