@@ -178,9 +178,9 @@ class ContentSearchSettingsViewModel @Inject constructor(
             is ContentSearchSettingsViewAction.ToggleContentSearch -> handleToggleContentSearch(action.enabled)
             is ContentSearchSettingsViewAction.ToggleAllowMobileData -> handleToggleAllowMobileData(action.enabled)
             ContentSearchSettingsViewAction.ClearLocalData -> handleClearLocalData()
-            ContentSearchSettingsViewAction.RetryIndexing -> handleRetryIndexing()
+            ContentSearchSettingsViewAction.RetryIndexing -> handleRetryIndexing(showLoading = true)
             ContentSearchSettingsViewAction.PauseIndexing -> handlePauseIndexing()
-            ContentSearchSettingsViewAction.ResumeIndexing -> handleRetryIndexing()
+            ContentSearchSettingsViewAction.ResumeIndexing -> handleRetryIndexing(showLoading = false)
         }
     }
 
@@ -215,11 +215,13 @@ class ContentSearchSettingsViewModel @Inject constructor(
     /**
      * Hands the account back to the orchestrator, which is the only way out of a failure: Rust holds
      * the account in a failed state until something starts it again, and never retries on its own.
+     *
+     * Resume skips the loading state. Its start call returns at once, so the spinner only flashed.
      */
-    private suspend fun handleRetryIndexing() {
+    private suspend fun handleRetryIndexing(showLoading: Boolean) {
         val userId = currentUserId()
 
-        emitNewStateFor(Data.IndexingRetryStarted)
+        if (showLoading) emitNewStateFor(Data.IndexingRetryStarted)
         startContentIndexingForUser(userId).fold(
             ifLeft = { emitNewStateFor(Error.IndexingRetryFailed) },
             ifRight = { outcome ->
