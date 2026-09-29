@@ -25,12 +25,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.AutoLockUnlockSignal
 import ch.protonmail.android.mailpinlock.domain.AutoLockCheckPendingState
+import ch.protonmail.android.mailpinlock.domain.AutoLockRepository
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.usecase.CreateLaunchIntent
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,6 +44,9 @@ internal class LockScreenActivity : AppCompatActivity() {
 
     @Inject
     lateinit var autoLockCheckPendingState: AutoLockCheckPendingState
+
+    @Inject
+    lateinit var autoLockRepository: AutoLockRepository
 
     @Inject
     lateinit var createLaunchIntent: CreateLaunchIntent
@@ -54,13 +60,14 @@ internal class LockScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        Timber.d("auto-lock: Lock screen created")
 
         initializeLockState()
         setupBackPressBlocking()
         observeUnlockSignal()
 
         setContent {
-            LockScreenContent(onClose = { this@LockScreenActivity.finish() })
+            LockScreenContent(onClose = { closeWithoutUnlockSignal() })
         }
     }
 
@@ -84,6 +91,26 @@ internal class LockScreenActivity : AppCompatActivity() {
                     launchMainActivity()
                 }
 
+                finish()
+            }
+        }
+    }
+
+    /**
+     * The lock screen can be closed without an unlock (e.g. app settings failing to load, or back pressed while
+     * the PIN screen is loading). Only reveal what is underneath when the session is actually unlocked,
+     * otherwise close the app so the next launch goes through the lock screen again.
+     */
+    private fun closeWithoutUnlockSignal() {
+        if (isFinishing) return
+
+        lifecycleScope.launch {
+            val isStillLocked = autoLockRepository.shouldAutoLock().getOrElse { true }
+
+            if (isStillLocked) {
+                Timber.d("auto-lock: Lock screen closed while still locked, closing the app")
+                finishAffinity()
+            } else {
                 finish()
             }
         }

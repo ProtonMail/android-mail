@@ -19,10 +19,12 @@
 package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailpinlock.domain.AutoLockCheckPendingState
 import ch.protonmail.android.mailpinlock.domain.usecase.ShouldPresentPinInsertionScreen
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.test.runTest
@@ -30,6 +32,7 @@ import kotlin.test.Test
 
 internal class LauncherRouterViewModelTest {
 
+    private val autoLockCheckPendingState = AutoLockCheckPendingState()
     private val shouldPresentPinInsertionScreen: ShouldPresentPinInsertionScreen = mockk()
 
     @Test
@@ -37,7 +40,7 @@ internal class LauncherRouterViewModelTest {
         // Given
         val channel = Channel<Boolean>(Channel.UNLIMITED)
         every { shouldPresentPinInsertionScreen() } returns channel.receiveAsFlow()
-        val viewModel = LauncherRouterViewModel(shouldPresentPinInsertionScreen)
+        val viewModel = LauncherRouterViewModel(autoLockCheckPendingState, shouldPresentPinInsertionScreen)
 
         // When + Then
         viewModel.showLockScreenEvent.test {
@@ -52,7 +55,7 @@ internal class LauncherRouterViewModelTest {
         // Given
         val channel = Channel<Boolean>(Channel.UNLIMITED)
         every { shouldPresentPinInsertionScreen() } returns channel.receiveAsFlow()
-        val viewModel = LauncherRouterViewModel(shouldPresentPinInsertionScreen)
+        val viewModel = LauncherRouterViewModel(autoLockCheckPendingState, shouldPresentPinInsertionScreen)
 
         // When + Then
         viewModel.showLockScreenEvent.test {
@@ -70,7 +73,7 @@ internal class LauncherRouterViewModelTest {
         every { shouldPresentPinInsertionScreen() } returns immediateFlow
 
         // When
-        val viewModel = LauncherRouterViewModel(shouldPresentPinInsertionScreen)
+        val viewModel = LauncherRouterViewModel(autoLockCheckPendingState, shouldPresentPinInsertionScreen)
 
         // Then
         viewModel.showLockScreenEvent.test {
@@ -78,4 +81,20 @@ internal class LauncherRouterViewModelTest {
             ensureAllEventsConsumed()
         }
     }
+
+    @Test
+    fun `given the main screen is recreated, when the router is created, then the auto lock is checked again`() =
+        runTest {
+            // Given
+            every { shouldPresentPinInsertionScreen() } returns emptyFlow()
+
+            // When
+            LauncherRouterViewModel(autoLockCheckPendingState, shouldPresentPinInsertionScreen)
+
+            // Then
+            autoLockCheckPendingState.autoLockCheckEvents.test {
+                awaitItem()
+                ensureAllEventsConsumed()
+            }
+        }
 }
