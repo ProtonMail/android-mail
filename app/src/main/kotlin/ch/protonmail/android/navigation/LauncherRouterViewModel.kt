@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailpinlock.domain.AutoLockCheckPendingState
 import ch.protonmail.android.mailpinlock.domain.usecase.ShouldPresentPinInsertionScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -30,6 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class LauncherRouterViewModel @Inject constructor(
+    autoLockCheckPendingState: AutoLockCheckPendingState,
     shouldPresentPinInsertionScreen: ShouldPresentPinInsertionScreen
 ) : ViewModel() {
 
@@ -37,6 +39,12 @@ internal class LauncherRouterViewModel @Inject constructor(
     val showLockScreenEvent = showLockScreenChannel.receiveAsFlow()
 
     init {
+        // AutoLockInitializer only requests a check when the app returns from background. A new MainActivity
+        // can be created while the app is still considered in foreground (e.g. relaunched right after the lock
+        // screen closed the app), so each new instance requests its own check. Requested before collecting,
+        // so it is conflated with a check that is already pending.
+        autoLockCheckPendingState.triggerAutoLockCheck()
+
         shouldPresentPinInsertionScreen()
             .onEach { shouldShow ->
                 if (shouldShow) {
