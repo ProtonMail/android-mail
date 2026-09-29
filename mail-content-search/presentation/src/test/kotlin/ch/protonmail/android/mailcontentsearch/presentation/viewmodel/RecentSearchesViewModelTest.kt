@@ -419,7 +419,7 @@ internal class RecentSearchesViewModelTest {
     fun `clear drops every term but keeps the previously found items`() = runTest(dispatcher) {
         // Given
         givenHistory(terms = listOf(term("invoice"), term("parcel")), items = listOf(foundItem(FirstMessageId)))
-        coEvery { clearRecentSearchTerms(userId) } returns Unit
+        coEvery { clearRecentSearchTerms(userId) } returns Unit.right()
         val viewModel = buildViewModel()
         viewModel.submit(RecentSearchesViewAction.Refresh)
         givenHistory(terms = emptyList(), items = listOf(foundItem(FirstMessageId)))

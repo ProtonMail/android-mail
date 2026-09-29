@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcontentsearch.domain.model.RecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchRecentsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -29,6 +28,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class ClearRecentSearchTermsTest {
 
@@ -37,49 +37,27 @@ internal class ClearRecentSearchTermsTest {
     private val clearRecentSearchTerms = ClearRecentSearchTerms(repository)
 
     @Test
-    fun `dismisses every remembered query, not just the ones the UI shows`() = runTest {
+    fun `clears the whole term history with a single bulk call`() = runTest {
         // Given
-        coEvery { repository.getRecentSearchTerms(userId, null, ClearRecentSearchTerms.WholeHistoryLimit) } returns
-            listOf(term("invoice"), term("parcel"), term("flight")).right()
-        coEvery { repository.dismissSearchTerm(userId, any()) } returns Unit.right()
+        coEvery { repository.dismissAllSearchTerms(userId) } returns Unit.right()
 
         // When
-        clearRecentSearchTerms(userId)
+        val result = clearRecentSearchTerms(userId)
 
         // Then
-        coVerify { repository.dismissSearchTerm(userId, "invoice") }
-        coVerify { repository.dismissSearchTerm(userId, "parcel") }
-        coVerify { repository.dismissSearchTerm(userId, "flight") }
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { repository.dismissAllSearchTerms(userId) }
     }
 
     @Test
-    fun `keeps dismissing the rest when one dismiss fails`() = runTest {
+    fun `surfaces a failure from the repository`() = runTest {
         // Given
-        coEvery { repository.getRecentSearchTerms(userId, null, ClearRecentSearchTerms.WholeHistoryLimit) } returns
-            listOf(term("invoice"), term("parcel"), term("flight")).right()
-        coEvery { repository.dismissSearchTerm(userId, "invoice") } returns DataError.Local.Unknown.left()
-        coEvery { repository.dismissSearchTerm(userId, "parcel") } returns Unit.right()
-        coEvery { repository.dismissSearchTerm(userId, "flight") } returns Unit.right()
+        coEvery { repository.dismissAllSearchTerms(userId) } returns DataError.Local.Unknown.left()
 
         // When
-        clearRecentSearchTerms(userId)
+        val result = clearRecentSearchTerms(userId)
 
         // Then
-        coVerify { repository.dismissSearchTerm(userId, "parcel") }
-        coVerify { repository.dismissSearchTerm(userId, "flight") }
+        assertEquals(DataError.Local.Unknown.left(), result)
     }
-
-    @Test
-    fun `dismisses nothing when the term history cannot be read`() = runTest {
-        // Given
-        coEvery { repository.getRecentSearchTerms(userId, null, any()) } returns DataError.Local.Unknown.left()
-
-        // When
-        clearRecentSearchTerms(userId)
-
-        // Then
-        coVerify(exactly = 0) { repository.dismissSearchTerm(any(), any()) }
-    }
-
-    private fun term(query: String) = RecentSearchTerm(query = query, lastUsedAt = 1_700_000_000L)
 }
