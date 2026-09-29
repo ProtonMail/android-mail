@@ -189,6 +189,10 @@ include(":mail-padlocks:data")
 include(":mail-padlocks:domain")
 include(":mail-padlocks:presentation")
 
+include(":mail-nps:dagger")
+include(":mail-nps:data")
+include(":mail-nps:domain")
+
 include(":mail-sidebar:dagger")
 include(":mail-sidebar:data")
 include(":mail-sidebar:domain")
