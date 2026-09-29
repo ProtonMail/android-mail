@@ -51,6 +51,9 @@ class SearchRecentsWrapper(private val userSession: MailUserSession) {
     suspend fun dismissRecentSearchTerm(query: String): Either<DataError, Unit> =
         userSession.dismissRecentSearchTerm(query).toEither()
 
+    suspend fun dismissAllRecentSearchTerms(): Either<DataError, Unit> =
+        userSession.dismissAllRecentSearchTerms().toEither()
+
     suspend fun recentFoundItems(limit: UInt): Either<DataError, List<LocalRecentFoundItem>> =
         when (val result = userSession.recentFoundItems(limit)) {
             is MailUserSessionRecentFoundItemsResult.Error -> result.v1.toDataError().left()

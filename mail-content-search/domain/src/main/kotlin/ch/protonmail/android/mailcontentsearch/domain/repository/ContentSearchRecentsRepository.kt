@@ -44,6 +44,8 @@ interface ContentSearchRecentsRepository {
 
     suspend fun dismissSearchTerm(userId: UserId, query: String): Either<DataError, Unit>
 
+    suspend fun dismissAllSearchTerms(userId: UserId): Either<DataError, Unit>
+
     suspend fun touchFoundItem(userId: UserId, messageId: MessageId): Either<DataError, Unit>
 
     suspend fun dismissFoundItem(userId: UserId, messageId: MessageId): Either<DataError, Unit>
