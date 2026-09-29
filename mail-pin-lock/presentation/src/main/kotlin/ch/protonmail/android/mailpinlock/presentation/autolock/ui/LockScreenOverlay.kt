@@ -44,6 +44,7 @@ import ch.protonmail.android.mailpinlock.presentation.autolock.model.AutoLockOve
 import ch.protonmail.android.mailpinlock.presentation.autolock.viewmodel.LockScreenViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun LockScreenOverlay(
@@ -99,6 +100,7 @@ private fun LockScreenBiometricsPrompt(onClose: () -> Unit, onCloseAll: () -> Un
     LaunchedEffect(authenticationTrigger) {
         biometricAuthenticator.authenticate(
             onAuthenticationError = { errorCode, _ ->
+                Timber.d("auto-lock: Biometric authentication error, code=$errorCode")
                 when (errorCode) {
                     // Tapped outside - re-prompt after short delay
                     BiometricPrompt.ERROR_USER_CANCELED -> {
