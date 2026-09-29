@@ -43,6 +43,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRegisterDevice
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsFeedbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
@@ -74,6 +75,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.RegisterDeviceTokenWi
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesReadEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.NpsFeedbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
@@ -258,6 +260,17 @@ object FeatureFlagsModule {
     @IsShowRatingBoosterEnabled
     fun provideIsShowRatingBoosterEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = ShowRatingBoosterEnabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsNpsFeedbackEnabled
+    fun provideIsNpsFeedbackEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = NpsFeedbackEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideNpsFeedbackEnabledDef(): FeatureFlagDefinition = NpsFeedbackEnabled
 
     @Provides
     @Singleton
