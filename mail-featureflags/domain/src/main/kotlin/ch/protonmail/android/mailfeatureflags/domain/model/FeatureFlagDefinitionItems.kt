@@ -162,6 +162,14 @@ data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object NpsFeedbackEnabled : FeatureFlagDefinition(
+    key = "NPSFeedbackAndroidMail",
+    name = "Show NPS survey",
+    category = FeatureFlagCategory.Rating,
+    description = "Show the NPS survey bottom sheet. The backend turns it off once the survey is answered.",
+    defaultValue = false
+)
+
 data object RateOnUpsellEnabled : FeatureFlagDefinition(
     key = "MailAndroidV7RateOnUpsell",
     name = "Rate on upsell",

@@ -94,6 +94,10 @@ annotation class IsShowRatingBoosterEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsNpsFeedbackEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsRateOnUpsellEnabled
 
 @Qualifier
