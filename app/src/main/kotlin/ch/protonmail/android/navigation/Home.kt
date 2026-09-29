@@ -68,6 +68,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
+import ch.protonmail.android.design.compose.component.ProtonModalBottomSheetDefaults
 import ch.protonmail.android.design.compose.component.ProtonModalBottomSheetLayout
 import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
 import ch.protonmail.android.design.compose.component.ProtonSnackbarType
@@ -96,6 +97,13 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailnotifications.presentation.viewmodel.NotificationsPermissionViewModel
 import ch.protonmail.android.mailnotifications.ui.NotificationsPermissionBottomSheet
+import ch.protonmail.android.mailnps.presentation.R as NpsR
+import ch.protonmail.android.mailnps.presentation.model.NpsDisplayState
+import ch.protonmail.android.mailnps.presentation.model.NpsEligibilityState
+import ch.protonmail.android.mailnps.presentation.model.NpsOperation.NpsAction
+import ch.protonmail.android.mailnps.presentation.ui.NpsBottomSheet
+import ch.protonmail.android.mailnps.presentation.ui.NpsBottomSheetContent
+import ch.protonmail.android.mailnps.presentation.viewmodel.NpsViewModel
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepViewModel
 import ch.protonmail.android.mailsession.data.mapper.toUserId
@@ -181,7 +189,8 @@ fun Home(
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
     fallPromoModalUpsellViewModel: FallPromoModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
-    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel()
+    contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel(),
+    npsViewModel: NpsViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -203,6 +212,20 @@ fun Home(
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
     val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
+    val npsState by npsViewModel.state.collectAsStateWithLifecycle()
+    val npsEligibilityState by npsViewModel.eligibility.collectAsStateWithLifecycle()
+    // Eligibility comes from the backend flag, which is only refreshed after an answer is recorded.
+    // Keep the survey hidden for the rest of the session once it has been dismissed or answered.
+    var npsHandledThisSession by rememberSaveable { mutableStateOf(false) }
+    // The survey is only offered once the user comes back from the message reader to the mailbox.
+    var npsTriggered by rememberSaveable { mutableStateOf(false) }
+    var previousDestinationRoute by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(currentDestinationRoute) {
+        if (isReturnToMailboxFromReader(previousDestinationRoute, currentDestinationRoute)) {
+            npsTriggered = true
+        }
+        previousDestinationRoute = currentDestinationRoute
+    }
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -214,7 +237,15 @@ fun Home(
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
                 summerCampaignEligibilityState,
-                fallPromoEligibilityState
+                fallPromoEligibilityState,
+                npsDisplayState = if (
+                    npsTriggered && !npsHandledThisSession &&
+                    npsEligibilityState is NpsEligibilityState.Show
+                ) {
+                    NpsDisplayState.Show
+                } else {
+                    NpsDisplayState.Hide
+                }
             )
         }
     }
@@ -226,6 +257,7 @@ fun Home(
     }
 
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
+    val npsThankYouMessage = stringResource(id = NpsR.string.nps_thank_you)
     fun showFeatureMissingSnackbar() {
         scope.launch {
             snackbarHost.showSnackbar(message = featureMissingSnackbarMessage, type = ProtonSnackbarType.NORM)
@@ -470,6 +502,11 @@ fun Home(
                     BottomSheetType.ContentSearch -> {
                         contentSearchBottomSheetViewModel.submit(HomeContentSearchBottomSheetViewAction.Dismiss)
                     }
+
+                    BottomSheetType.Nps -> {
+                        npsViewModel.submit(NpsAction.SheetDismissed)
+                        npsHandledThisSession = true
+                    }
                 }
 
                 if (!bottomSheetState.isVisible) {
@@ -498,6 +535,14 @@ fun Home(
         }
     }
 
+    // The NPS ViewModel drives its own dismissal (X / Share): close the sheet and, on submit, thank the user.
+    ConsumableLaunchedEffect(npsState.dismiss) {
+        onBottomSheetDismissed()
+    }
+    ConsumableLaunchedEffect(npsState.showThankYou) {
+        showNormalSnackbar(npsThankYouMessage)
+    }
+
     LaunchedEffect(interstitialPriority) {
         // Home is a wrapper, so we can't rely on navigation here
         if (navController.currentDestination?.route != Screen.Mailbox.route) return@LaunchedEffect
@@ -521,6 +566,12 @@ fun Home(
 
             is HomeInterstitialPriority.ContentSearch -> {
                 bottomSheetType = BottomSheetType.ContentSearch
+                scope.launch { bottomSheetState.show() }
+                    .invokeOnCompletion { showBottomSheet = true }
+            }
+
+            is HomeInterstitialPriority.Nps -> {
+                bottomSheetType = BottomSheetType.Nps
                 scope.launch { bottomSheetState.show() }
                     .invokeOnCompletion { showBottomSheet = true }
             }
@@ -621,12 +672,18 @@ fun Home(
         }
     }
 
+    // The NPS sheet draws its gradient and drag handle itself, over the whole sheet.
+    val isNpsSheet = bottomSheetType is BottomSheetType.Nps
+
     ProtonModalBottomSheetLayout(
         showBottomSheet = showBottomSheet,
         sheetState = bottomSheetState,
         contentWindowInsets = {
             if (isSheetWidthCapped) WindowInsets(0) else WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
         },
+        shape = if (isNpsSheet) NpsBottomSheet.Shape else ProtonTheme.shapes.bottomSheet,
+        containerColor = if (isNpsSheet) Color.Transparent else ProtonTheme.colors.backgroundInvertedNorm,
+        dragHandle = if (isNpsSheet) null else ProtonModalBottomSheetDefaults.DragHandle,
         sheetContent = {
             when (val type = bottomSheetType) {
                 is BottomSheetType.NotificationsPermissions -> NotificationsPermissionBottomSheet(
@@ -661,6 +718,17 @@ fun Home(
                     )
                 ).also {
                     preventBottomSheetDismissal = true
+                }
+
+                is BottomSheetType.Nps -> NpsBottomSheetContent(
+                    state = npsState,
+                    actions = NpsBottomSheet.Actions(
+                        onScoreSelected = { npsViewModel.submit(NpsAction.ScoreSelected(it)) },
+                        onCommentChanged = { npsViewModel.submit(NpsAction.CommentChanged(it)) },
+                        onShareClicked = { npsViewModel.submit(NpsAction.ShareClicked) }
+                    )
+                ).also {
+                    preventBottomSheetDismissal = false
                 }
             }
         },
@@ -990,5 +1058,6 @@ private sealed interface BottomSheetType {
     data object Onboarding : BottomSheetType
     data class NotificationsPermissions(val permissionsState: NotificationsPermissionStateType) : BottomSheetType
     data object ContentSearch : BottomSheetType
+    data object Nps : BottomSheetType
 }
 
