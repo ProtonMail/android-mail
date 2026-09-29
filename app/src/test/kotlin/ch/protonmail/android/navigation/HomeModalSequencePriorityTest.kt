@@ -21,6 +21,7 @@ package ch.protonmail.android.navigation
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
+import ch.protonmail.android.mailnps.presentation.model.NpsDisplayState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -44,7 +45,8 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.NotRequired,
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
@@ -62,7 +64,8 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.NotRequired,
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
@@ -82,7 +85,8 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.NotRequired,
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
@@ -103,7 +107,8 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.NotRequired,
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
@@ -121,7 +126,8 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.Show(UpsellingVisibility.Promotional.SummerCampaign.Wave1),
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
@@ -139,10 +145,49 @@ internal class HomeModalSequencePriorityTest {
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
             summerCampaignState = SummerCampaignModalState.NotRequired,
-            fallPromoState = FallPromoModalState.NotRequired
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Hide
         )
 
         // Then
         assertEquals(HomeInterstitialPriority.None, result)
+    }
+
+    @Test
+    fun `resolves to nps when it is eligible and nothing else applies`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.NotRequired,
+            notificationsState = NotificationsPermissionState.Granted,
+            featureSpotlightState = FeatureSpotlightState.Hide,
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Show
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.Nps, result)
+    }
+
+    @Test
+    fun `resolves to content search over nps`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.NotRequired,
+            notificationsState = NotificationsPermissionState.Granted,
+            featureSpotlightState = FeatureSpotlightState.Hide,
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired,
+            npsDisplayState = NpsDisplayState.Show
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.ContentSearch, result)
     }
 }
