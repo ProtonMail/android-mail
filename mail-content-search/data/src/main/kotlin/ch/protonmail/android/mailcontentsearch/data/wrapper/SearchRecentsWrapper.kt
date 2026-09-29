@@ -63,6 +63,9 @@ class SearchRecentsWrapper(private val userSession: MailUserSession) {
     suspend fun dismissRecentFoundItem(messageId: LocalMessageId): Either<DataError, Unit> =
         userSession.dismissRecentFoundItem(messageId).toEither()
 
+    suspend fun dismissAllRecentFoundItems(): Either<DataError, Unit> =
+        userSession.dismissAllRecentFoundItems().toEither()
+
     suspend fun recordSearchOpen(
         query: String,
         messageId: LocalMessageId,

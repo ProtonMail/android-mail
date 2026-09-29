@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.RecentFoundMailboxItem
 import ch.protonmail.android.mailcontentsearch.domain.model.RecentSearchTerm
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentFoundItems
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentSearchTerms
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentFoundMailboxItems
@@ -85,6 +86,7 @@ internal class RecentSearchesViewModelTest {
     private val dismissRecentSearchTerm = mockk<DismissRecentSearchTerm>()
     private val clearRecentSearchTerms = mockk<ClearRecentSearchTerms>()
     private val touchRecentFoundItem = mockk<TouchRecentFoundItem>()
+    private val clearRecentFoundItems = mockk<ClearRecentFoundItems>()
     private val recordSearchOpen = mockk<RecordSearchOpen>()
     private val starMessages = mockk<StarMessages>()
     private val unStarMessages = mockk<UnStarMessages>()
@@ -434,6 +436,42 @@ internal class RecentSearchesViewModelTest {
     }
 
     @Test
+    fun `clearing found items drops every found item but keeps the terms`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = listOf(term("invoice")), items = listOf(foundItem(FirstMessageId)))
+        coEvery { clearRecentFoundItems(userId) } returns Unit.right()
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+        givenHistory(terms = listOf(term("invoice")), items = emptyList())
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.ClearFoundItems)
+
+        // Then
+        coVerify { clearRecentFoundItems(userId) }
+        assertEquals(
+            RecentSearchesState.Data(persistentListOf("invoice"), persistentListOf()),
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `clearing the found items when no terms remain falls through to the empty state`() = runTest(dispatcher) {
+        // Given
+        givenHistory(terms = emptyList(), items = listOf(foundItem(FirstMessageId)))
+        coEvery { clearRecentFoundItems(userId) } returns Unit.right()
+        val viewModel = buildViewModel()
+        viewModel.submit(RecentSearchesViewAction.Refresh)
+        givenHistory(terms = emptyList(), items = emptyList())
+
+        // When
+        viewModel.submit(RecentSearchesViewAction.ClearFoundItems)
+
+        // Then
+        assertEquals(RecentSearchesState.Empty, viewModel.state.value)
+    }
+
+    @Test
     fun `re-opening a found item bumps it instead of recording a new search open`() = runTest(dispatcher) {
         // Given
         givenHistory(terms = emptyList(), items = listOf(foundItem(FirstMessageId)))
@@ -516,6 +554,7 @@ internal class RecentSearchesViewModelTest {
         dismissRecentSearchTerm = dismissRecentSearchTerm,
         clearRecentSearchTerms = clearRecentSearchTerms,
         touchRecentFoundItem = touchRecentFoundItem,
+        clearRecentFoundItems = clearRecentFoundItems,
         recordSearchOpen = recordSearchOpen,
         starMessages = starMessages,
         unStarMessages = unStarMessages,

@@ -39,6 +39,8 @@ sealed interface RecentSearchesViewAction {
 
     data class FoundItemStarClicked(val item: RecentFoundItemUiModel) : RecentSearchesViewAction
 
+    data object ClearFoundItems : RecentSearchesViewAction
+
     /** A live search result was opened: records both the query and the item it was found by. */
     data class SearchResultOpened(
         val query: String,
