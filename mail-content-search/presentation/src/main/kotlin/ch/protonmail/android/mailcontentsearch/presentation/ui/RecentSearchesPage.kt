@@ -102,6 +102,7 @@ data class RecentSearchesActions(
     val onClearTermsClicked: () -> Unit,
     val onFoundItemClicked: (RecentFoundItemUiModel) -> Unit,
     val onFoundItemStarClicked: (RecentFoundItemUiModel) -> Unit,
+    val onClearFoundItemsClicked: () -> Unit,
     // Sender images are owned by the search view model, since one global store feeds both lists.
     val onAvatarImageLoadRequested: (MailboxItemUiModel) -> Unit,
     val onAvatarImageLoadFailed: (MailboxItemUiModel) -> Unit,
@@ -118,6 +119,7 @@ data class RecentSearchesActions(
             onClearTermsClicked = {},
             onFoundItemClicked = {},
             onFoundItemStarClicked = {},
+            onClearFoundItemsClicked = {},
             onAvatarImageLoadRequested = {},
             onAvatarImageLoadFailed = {},
             onAttachmentClicked = {}

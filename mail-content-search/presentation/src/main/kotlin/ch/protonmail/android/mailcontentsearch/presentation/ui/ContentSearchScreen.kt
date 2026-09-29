@@ -300,6 +300,7 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
                 )
             },
             onFoundItemStarClicked = { recentsViewModel.submit(RecentSearchesViewAction.FoundItemStarClicked(it)) },
+            onClearFoundItemsClicked = { recentsViewModel.submit(RecentSearchesViewAction.ClearFoundItems) },
             onAvatarImageLoadRequested = {
                 viewModel.submit(ContentSearchViewAction.AvatarImageLoadRequested(it))
             },

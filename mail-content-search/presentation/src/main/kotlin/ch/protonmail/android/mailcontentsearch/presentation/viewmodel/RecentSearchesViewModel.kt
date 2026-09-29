@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentFoundItems
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ClearRecentSearchTerms
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissRecentSearchTerm
 import ch.protonmail.android.mailcontentsearch.domain.usecase.GetRecentFoundMailboxItems
@@ -83,6 +84,7 @@ class RecentSearchesViewModel @Inject constructor(
     private val dismissRecentSearchTerm: DismissRecentSearchTerm,
     private val clearRecentSearchTerms: ClearRecentSearchTerms,
     private val touchRecentFoundItem: TouchRecentFoundItem,
+    private val clearRecentFoundItems: ClearRecentFoundItems,
     private val recordSearchOpen: RecordSearchOpen,
     private val starMessages: StarMessages,
     private val unStarMessages: UnStarMessages,
@@ -126,6 +128,7 @@ class RecentSearchesViewModel @Inject constructor(
             RecentSearchesViewAction.ClearTerms -> onClearTerms()
             is RecentSearchesViewAction.FoundItemClicked -> onFoundItemClicked(action.item)
             is RecentSearchesViewAction.FoundItemStarClicked -> onFoundItemStarClicked(action.item)
+            RecentSearchesViewAction.ClearFoundItems -> onClearFoundItems()
             is RecentSearchesViewAction.SearchResultOpened ->
                 onSearchResultOpened(action.query, action.messageId, action.conversationId)
         }
@@ -177,6 +180,11 @@ class RecentSearchesViewModel @Inject constructor(
     private fun onFoundItemStarClicked(item: RecentFoundItemUiModel) = reloadAfter { userId ->
         val messageIds = listOf(item.messageId)
         if (item.item.isStarred) unStarMessages(userId, messageIds) else starMessages(userId, messageIds)
+    }
+
+    private fun onClearFoundItems() {
+        updateData { it.copy(foundItems = persistentListOf()) }
+        reloadAfter { userId -> clearRecentFoundItems(userId) }
     }
 
     private fun onSearchResultOpened(

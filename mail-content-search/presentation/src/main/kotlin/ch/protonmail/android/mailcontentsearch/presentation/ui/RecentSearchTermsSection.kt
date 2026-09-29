@@ -58,7 +58,10 @@ internal fun LazyListScope.recentSearchTermsSection(terms: ImmutableList<String>
     if (terms.isEmpty()) return
 
     item(key = RECENT_TERMS_HEADER_KEY) {
-        RecentSearchTermsHeader(onClearClicked = actions.onClearTermsClicked)
+        ClearableSectionHeader(
+            text = stringResource(R.string.content_search_recent_searches_title),
+            onClearClicked = actions.onClearTermsClicked
+        )
     }
     items(items = terms, key = { term -> "$RECENT_TERM_KEY_PREFIX$term" }) { term ->
         RecentSearchTermRow(
@@ -70,8 +73,13 @@ internal fun LazyListScope.recentSearchTermsSection(terms: ImmutableList<String>
     }
 }
 
+/** A section title with a trailing "Clear all" action. */
 @Composable
-private fun RecentSearchTermsHeader(onClearClicked: () -> Unit, modifier: Modifier = Modifier) {
+internal fun ClearableSectionHeader(
+    text: String,
+    onClearClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -79,7 +87,7 @@ private fun RecentSearchTermsHeader(onClearClicked: () -> Unit, modifier: Modifi
         verticalAlignment = Alignment.CenterVertically
     ) {
         SectionHeader(
-            text = stringResource(R.string.content_search_recent_searches_title),
+            text = text,
             modifier = Modifier.weight(1f)
         )
         Text(

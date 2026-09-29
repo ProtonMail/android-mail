@@ -48,6 +48,8 @@ interface ContentSearchRecentsRepository {
 
     suspend fun dismissFoundItem(userId: UserId, messageId: MessageId): Either<DataError, Unit>
 
+    suspend fun dismissAllFoundItems(userId: UserId): Either<DataError, Unit>
+
     suspend fun recordSearchOpen(
         userId: UserId,
         query: String,
