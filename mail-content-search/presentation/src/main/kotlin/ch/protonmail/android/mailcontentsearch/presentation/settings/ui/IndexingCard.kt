@@ -25,6 +25,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -51,7 +52,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.design.compose.component.ProtonSecondaryButton
+import androidx.compose.ui.unit.dp
+import ch.protonmail.android.design.compose.component.ProtonButton
 import ch.protonmail.android.design.compose.component.protonSecondaryButtonColors
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
@@ -114,18 +116,24 @@ internal fun IndexingCard(
 
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Huge))
 
-                ProtonSecondaryButton(
+                ProtonButton(
                     onClick = { actions.forStatus(status)() },
                     enabled = status.isActionEnabled,
                     loading = state.isRetryingIndexing,
+                    elevation = null,
                     shape = CircleShape,
+                    border = if (status.isActionEnabled || state.isRetryingIndexing) {
+                        BorderStroke(width = 1.dp, color = ProtonTheme.colors.borderNorm)
+                    } else {
+                        null
+                    },
                     contentPadding = PaddingValues(
                         horizontal = ProtonDimens.Spacing.Large,
                         vertical = ProtonDimens.Spacing.Standard
                     ),
                     colors = ButtonDefaults.protonSecondaryButtonColors(
                         loading = state.isRetryingIndexing,
-                        backgroundColor = ProtonTheme.colors.backgroundInvertedDeep
+                        backgroundColor = ProtonTheme.colors.interactionWeakNorm
                     )
                 ) {
                     if (!state.isRetryingIndexing) {

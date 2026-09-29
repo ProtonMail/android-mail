@@ -702,6 +702,26 @@ internal class ContentSearchSettingsViewModelTest {
         }
 
     @Test
+    fun `submit ResumeIndexing does not show the retry loading state`() =
+        runTest(mainDispatcherRule.testDispatcher.scheduler) {
+            // Given
+            val viewModel = viewModel()
+            var wasLoadingDuringStart = true
+            coEvery { startContentIndexingForUser(userId) } answers {
+                wasLoadingDuringStart = viewModel.state.value.asData().isRetryingIndexing
+                ContentIndexingStartOutcome.Started.right()
+            }
+            advanceUntilIdle()
+
+            // When
+            viewModel.submit(ContentSearchSettingsViewAction.ResumeIndexing)
+            advanceUntilIdle()
+
+            // Then
+            assertFalse(wasLoadingDuringStart)
+        }
+
+    @Test
     fun `reads the index size once the screen opens`() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
         // Given
         coEvery { getContentSearchIndexSize(userId) } returns 1_024L
