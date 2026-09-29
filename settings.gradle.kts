@@ -192,6 +192,7 @@ include(":mail-padlocks:presentation")
 include(":mail-nps:dagger")
 include(":mail-nps:data")
 include(":mail-nps:domain")
+include(":mail-nps:presentation")
 
 include(":mail-sidebar:dagger")
 include(":mail-sidebar:data")

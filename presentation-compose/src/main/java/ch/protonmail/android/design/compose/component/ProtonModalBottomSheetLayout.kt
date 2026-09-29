@@ -29,6 +29,8 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -46,6 +48,10 @@ fun ProtonModalBottomSheetLayout(
     contentWindowInsets: @Composable () -> WindowInsets = {
         WindowInsets.systemBars.only(WindowInsetsSides.Top)
     },
+    shape: Shape = ProtonTheme.shapes.bottomSheet,
+    containerColor: Color = ProtonTheme.colors.backgroundInvertedNorm,
+    // Null when the sheet content draws its own handle, e.g. to show it on a custom background.
+    dragHandle: (@Composable () -> Unit)? = ProtonModalBottomSheetDefaults.DragHandle,
     content: @Composable () -> Unit
 ) {
     content()
@@ -54,21 +60,27 @@ fun ProtonModalBottomSheetLayout(
         ModalBottomSheet(
             onDismissRequest = onDismissed,
             sheetState = sheetState,
-            shape = ProtonTheme.shapes.bottomSheet,
-            containerColor = ProtonTheme.colors.backgroundInvertedNorm,
+            shape = shape,
+            containerColor = containerColor,
             contentColor = ProtonTheme.colors.textNorm,
-            dragHandle = {
-                BottomSheetDefaults.DragHandle(
-                    modifier = Modifier.semantics {
-                        this.role = Role.Companion.Image
-                        this.contentDescription = ""
-                    },
-                    color = ProtonTheme.colors.iconHint
-                )
-            },
+            dragHandle = dragHandle,
             content = sheetContent,
             contentWindowInsets = contentWindowInsets,
             properties = ModalBottomSheetProperties(shouldDismissOnBackPress = dismissOnBack)
+        )
+    }
+}
+
+object ProtonModalBottomSheetDefaults {
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    val DragHandle: @Composable () -> Unit = {
+        BottomSheetDefaults.DragHandle(
+            modifier = Modifier.semantics {
+                this.role = Role.Companion.Image
+                this.contentDescription = ""
+            },
+            color = ProtonTheme.colors.iconHint
         )
     }
 }
