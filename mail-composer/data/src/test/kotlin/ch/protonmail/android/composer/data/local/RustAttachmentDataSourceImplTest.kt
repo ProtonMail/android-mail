@@ -91,8 +91,9 @@ internal class RustAttachmentDataSourceImplTest {
             id = Id(1UL)
         )
 
+        // The draft attachment id is used, as Rust removes draft attachments by it.
         val expectedMetadataWithState = AttachmentMetadataWithState(
-            attachmentMetadata = attachment.toAttachmentMetadata(),
+            attachmentMetadata = attachment.toAttachmentMetadata().copy(attachmentId = AttachmentId("1")),
             attachmentState = AttachmentState.Uploaded
         )
 
