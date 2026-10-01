@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.mapper
 
+import ch.protonmail.android.mailattachments.data.mapper.toAttachmentId
 import ch.protonmail.android.mailattachments.data.mapper.toAttachmentMetadata
 import ch.protonmail.android.mailattachments.data.mapper.toAttachmentState
 import ch.protonmail.android.mailattachments.domain.model.AttachmentMetadataWithState
@@ -25,5 +26,6 @@ import uniffi.mail_uniffi.DraftAttachment
 
 fun DraftAttachment.toAttachmentMetaDataWithState(): AttachmentMetadataWithState = AttachmentMetadataWithState(
     attachmentState = this.state.toAttachmentState(),
-    attachmentMetadata = this.attachment.toAttachmentMetadata()
+    // Rust removes draft attachments by the stable draft attachment id, not the uploaded attachment id.
+    attachmentMetadata = this.attachment.toAttachmentMetadata().copy(attachmentId = this.id.toAttachmentId())
 )
