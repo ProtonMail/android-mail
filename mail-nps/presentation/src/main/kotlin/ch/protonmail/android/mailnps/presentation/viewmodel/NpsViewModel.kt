@@ -67,6 +67,7 @@ class NpsViewModel @Inject constructor(
         .flatMapLatest {
             flow {
                 val isEnabled = isNpsFeedbackEnabled.get()
+                Timber.d("nps: NPSFeedbackAndroidMail = $isEnabled")
                 emit(if (isEnabled) NpsEligibilityState.Show else NpsEligibilityState.Hide)
             }
         }
@@ -88,6 +89,7 @@ class NpsViewModel @Inject constructor(
 
     private fun onShare() = viewModelScope.launch {
         val score = mutableState.value.selectedScore ?: return@launch
+        Timber.d("nps: share clicked, score = ${score.value}")
         // The survey is closed either way: a failure is not actionable for the user.
         submitNpsFeedback(primaryUserId.first(), score, mutableState.value.comment)
             .onLeft { Timber.e("nps: recording the score failed: $it") }
@@ -96,7 +98,11 @@ class NpsViewModel @Inject constructor(
 
     private fun onSheetDismissed() = viewModelScope.launch {
         // Closing the sheet after sharing is not a dismissal.
-        if (mutableState.value.isAnswered) return@launch
+        if (mutableState.value.isAnswered) {
+            Timber.d("nps: sheet closed after sharing, no dismissal recorded")
+            return@launch
+        }
+        Timber.d("nps: sheet dismissed")
         dismissNps(primaryUserId.first())
             .onLeft { Timber.e("nps: recording the dismissal failed: $it") }
         emitNewStateFrom(NpsEvent.Dismissed)

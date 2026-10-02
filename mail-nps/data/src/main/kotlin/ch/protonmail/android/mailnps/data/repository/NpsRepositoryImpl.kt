@@ -28,6 +28,7 @@ import ch.protonmail.android.mailnps.domain.model.NpsScore
 import ch.protonmail.android.mailnps.domain.repository.NpsRepository
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import uniffi.mail_uniffi.MailUserSessionDismissNpsResult
 import uniffi.mail_uniffi.MailUserSessionRecordNpsScoreResult
 import javax.inject.Inject
@@ -41,16 +42,18 @@ class NpsRepositoryImpl @Inject constructor(
         score: NpsScore,
         comment: String?
     ): Either<DataError, Unit> = executeWithUserSession(userId) { session ->
+        Timber.d("nps: calling recordNpsScore, score = ${score.value}, has comment = ${comment != null}")
         when (val result = session.getRustUserSession().recordNpsScore(score.value.toLong(), comment)) {
             is MailUserSessionRecordNpsScoreResult.Ok -> Unit.right()
             is MailUserSessionRecordNpsScoreResult.Error -> result.v1.toDataError().left()
         }
-    }.flatten()
+    }.flatten().also { Timber.d("nps: recordNpsScore result = $it") }
 
     override suspend fun dismiss(userId: UserId): Either<DataError, Unit> = executeWithUserSession(userId) { session ->
+        Timber.d("nps: calling dismissNps")
         when (val result = session.getRustUserSession().dismissNps()) {
             is MailUserSessionDismissNpsResult.Ok -> Unit.right()
             is MailUserSessionDismissNpsResult.Error -> result.v1.toDataError().left()
         }
-    }.flatten()
+    }.flatten().also { Timber.d("nps: dismissNps result = $it") }
 }
