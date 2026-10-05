@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailnps.presentation.viewmodel
 
 import app.cash.turbine.test
+import arrow.core.Either
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnps.domain.model.NpsScore
 import ch.protonmail.android.mailnps.domain.usecase.DismissNps
@@ -34,6 +36,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -41,6 +44,7 @@ import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -137,6 +141,56 @@ internal class NpsViewModelTest {
 
         // Then
         coVerify(exactly = 0) { dismissNps(any()) }
+    }
+
+    @Test
+    fun `given a score is being sent, when Share is tapped again, then it is recorded once`() = runTest {
+        // Given
+        val response = CompletableDeferred<Either<DataError, Unit>>()
+        coEvery { submitNpsFeedback(userId, NpsScore(SCORE), any()) } coAnswers { response.await() }
+        val viewModel = viewModel()
+        viewModel.submit(NpsAction.ScoreSelected(NpsScore(SCORE)))
+        viewModel.submit(NpsAction.ShareClicked)
+
+        // When
+        viewModel.submit(NpsAction.ShareClicked)
+        response.complete(Unit.right())
+
+        // Then
+        coVerify(exactly = 1) { submitNpsFeedback(userId, NpsScore(SCORE), any()) }
+    }
+
+    @Test
+    fun `given a score is being sent, when the sheet is dismissed, then no dismissal is recorded`() = runTest {
+        // Given
+        val response = CompletableDeferred<Either<DataError, Unit>>()
+        coEvery { submitNpsFeedback(userId, NpsScore(SCORE), any()) } coAnswers { response.await() }
+        val viewModel = viewModel()
+        viewModel.submit(NpsAction.ScoreSelected(NpsScore(SCORE)))
+        viewModel.submit(NpsAction.ShareClicked)
+
+        // When
+        viewModel.submit(NpsAction.SheetDismissed)
+        response.complete(Unit.right())
+
+        // Then
+        coVerify(exactly = 0) { dismissNps(any()) }
+    }
+
+    @Test
+    fun `given a selected score, when Share is tapped, then the Share button is disabled right away`() = runTest {
+        // Given
+        val response = CompletableDeferred<Either<DataError, Unit>>()
+        coEvery { submitNpsFeedback(userId, NpsScore(SCORE), any()) } coAnswers { response.await() }
+        val viewModel = viewModel()
+        viewModel.submit(NpsAction.ScoreSelected(NpsScore(SCORE)))
+
+        // When
+        viewModel.submit(NpsAction.ShareClicked)
+
+        // Then
+        assertFalse(viewModel.state.value.isShareEnabled)
+        response.complete(Unit.right())
     }
 
     @Test

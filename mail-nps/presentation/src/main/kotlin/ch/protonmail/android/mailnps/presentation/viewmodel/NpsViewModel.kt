@@ -87,25 +87,36 @@ class NpsViewModel @Inject constructor(
         }
     }
 
-    private fun onShare() = viewModelScope.launch {
-        val score = mutableState.value.selectedScore ?: return@launch
+    private fun onShare() {
+        val current = mutableState.value
+        val score = current.selectedScore ?: return
+        if (current.isAnswered) {
+            Timber.d("nps: share ignored, the survey is already answered")
+            return
+        }
         Timber.d("nps: share clicked, score = ${score.value}")
-        // The survey is closed either way: a failure is not actionable for the user.
-        submitNpsFeedback(primaryUserId.first(), score, mutableState.value.comment)
-            .onLeft { Timber.e("nps: recording the score failed: $it") }
-        emitNewStateFrom(NpsEvent.Submitted)
+        emitNewStateFrom(NpsAction.ShareClicked)
+        viewModelScope.launch {
+            // The survey is closed either way: a failure is not actionable for the user.
+            submitNpsFeedback(primaryUserId.first(), score, current.comment)
+                .onLeft { Timber.e("nps: recording the score failed: $it") }
+            emitNewStateFrom(NpsEvent.Submitted)
+        }
     }
 
-    private fun onSheetDismissed() = viewModelScope.launch {
+    private fun onSheetDismissed() {
         // Closing the sheet after sharing is not a dismissal.
         if (mutableState.value.isAnswered) {
             Timber.d("nps: sheet closed after sharing, no dismissal recorded")
-            return@launch
+            return
         }
         Timber.d("nps: sheet dismissed")
-        dismissNps(primaryUserId.first())
-            .onLeft { Timber.e("nps: recording the dismissal failed: $it") }
-        emitNewStateFrom(NpsEvent.Dismissed)
+        emitNewStateFrom(NpsAction.SheetDismissed)
+        viewModelScope.launch {
+            dismissNps(primaryUserId.first())
+                .onLeft { Timber.e("nps: recording the dismissal failed: $it") }
+            emitNewStateFrom(NpsEvent.Dismissed)
+        }
     }
 
     private fun emitNewStateFrom(operation: NpsOperation) {
