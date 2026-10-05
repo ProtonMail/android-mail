@@ -41,5 +41,6 @@ data class MailboxState(
     val composerNavigationState: MailboxComposerNavigationState,
     val actionResult: Effect<ActionResult>,
     val error: Effect<TextUiModel>,
-    val showRatingBooster: Effect<Unit>
+    val showRatingBooster: Effect<Unit>,
+    val showNps: Effect<Unit>
 )

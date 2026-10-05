@@ -98,8 +98,6 @@ import ch.protonmail.android.mailnotifications.presentation.model.NotificationsP
 import ch.protonmail.android.mailnotifications.presentation.viewmodel.NotificationsPermissionViewModel
 import ch.protonmail.android.mailnotifications.ui.NotificationsPermissionBottomSheet
 import ch.protonmail.android.mailnps.presentation.R as NpsR
-import ch.protonmail.android.mailnps.presentation.model.NpsDisplayState
-import ch.protonmail.android.mailnps.presentation.model.NpsEligibilityState
 import ch.protonmail.android.mailnps.presentation.model.NpsOperation.NpsAction
 import ch.protonmail.android.mailnps.presentation.ui.NpsBottomSheet
 import ch.protonmail.android.mailnps.presentation.ui.NpsBottomSheetContent
@@ -213,19 +211,6 @@ fun Home(
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
     val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
     val npsState by npsViewModel.state.collectAsStateWithLifecycle()
-    val npsEligibilityState by npsViewModel.eligibility.collectAsStateWithLifecycle()
-    // Eligibility comes from the backend flag, which is only refreshed after an answer is recorded.
-    // Keep the survey hidden for the rest of the session once it has been dismissed or answered.
-    var npsHandledThisSession by rememberSaveable { mutableStateOf(false) }
-    // The survey is only offered once the user comes back from the message reader to the mailbox.
-    var npsTriggered by rememberSaveable { mutableStateOf(false) }
-    var previousDestinationRoute by remember { mutableStateOf<String?>(null) }
-    LaunchedEffect(currentDestinationRoute) {
-        if (isReturnToMailboxFromReader(previousDestinationRoute, currentDestinationRoute)) {
-            npsTriggered = true
-        }
-        previousDestinationRoute = currentDestinationRoute
-    }
 
     val interstitialPriority by remember {
         derivedStateOf {
@@ -237,15 +222,7 @@ fun Home(
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
                 summerCampaignEligibilityState,
-                fallPromoEligibilityState,
-                npsDisplayState = if (
-                    npsTriggered && !npsHandledThisSession &&
-                    npsEligibilityState is NpsEligibilityState.Show
-                ) {
-                    NpsDisplayState.Show
-                } else {
-                    NpsDisplayState.Hide
-                }
+                fallPromoEligibilityState
             )
         }
     }
@@ -503,10 +480,7 @@ fun Home(
                         contentSearchBottomSheetViewModel.submit(HomeContentSearchBottomSheetViewAction.Dismiss)
                     }
 
-                    BottomSheetType.Nps -> {
-                        npsViewModel.submit(NpsAction.SheetDismissed)
-                        npsHandledThisSession = true
-                    }
+                    BottomSheetType.Nps -> npsViewModel.submit(NpsAction.SheetDismissed)
                 }
 
                 if (!bottomSheetState.isVisible) {
@@ -535,7 +509,17 @@ fun Home(
         }
     }
 
-    // The NPS ViewModel drives its own dismissal (X / Share): close the sheet and, on submit, thank the user.
+    // Offered by the mailbox once the user is back from the message reader, unless another sheet is open.
+    fun showNpsSurvey() {
+        if (bottomSheetState.isVisible) return
+        bottomSheetType = BottomSheetType.Nps
+        // The sheet can be swiped away, and a previous sheet may have blocked that.
+        preventBottomSheetDismissal = false
+        // ModalBottomSheet slides itself in when it enters the composition, so no show() beforehand.
+        showBottomSheet = true
+    }
+
+    // The NPS ViewModel closes the sheet after Share and thanks the user.
     ConsumableLaunchedEffect(npsState.dismiss) {
         onBottomSheetDismissed()
     }
@@ -566,12 +550,6 @@ fun Home(
 
             is HomeInterstitialPriority.ContentSearch -> {
                 bottomSheetType = BottomSheetType.ContentSearch
-                scope.launch { bottomSheetState.show() }
-                    .invokeOnCompletion { showBottomSheet = true }
-            }
-
-            is HomeInterstitialPriority.Nps -> {
-                bottomSheetType = BottomSheetType.Nps
                 scope.launch { bottomSheetState.show() }
                     .invokeOnCompletion { showBottomSheet = true }
             }
@@ -884,6 +862,7 @@ fun Home(
                             onEvent = eventHandler,
                             showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
                             onShowRatingBooster = activityActions.launchRatingBooster,
+                            onShowNps = { showNpsSurvey() },
                             snackbarHeight = { snackbarHeight }
                         )
                         addContentSearchScreen(

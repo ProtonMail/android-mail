@@ -317,6 +317,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data object ShowRatingBooster : MailboxEvent
 
+    data object ShowNps : MailboxEvent
+
     sealed interface ItemClicked : MailboxEvent {
 
         val item: MailboxItemUiModel

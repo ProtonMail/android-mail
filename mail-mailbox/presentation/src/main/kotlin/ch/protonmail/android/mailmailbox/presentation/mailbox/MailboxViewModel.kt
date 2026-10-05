@@ -108,6 +108,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveVal
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowNps
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateIncludeFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -159,6 +160,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -216,6 +218,7 @@ class MailboxViewModel @Inject constructor(
     private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
+    private val shouldShowNps: ShouldShowNps,
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     private val setActiveCategoryLabel: SetActiveCategoryLabel,
     private val selectCategory: SelectCategory
@@ -407,6 +410,13 @@ class MailboxViewModel @Inject constructor(
                 recordRatingBoosterTriggered()
                 emitNewStateFrom(MailboxEvent.ShowRatingBooster)
             }
+            .launchIn(viewModelScope)
+
+        // Offered once per session: the flag only turns off with a later refresh, after the response is sent.
+        primaryUserId.flatMapLatest { shouldShowNps() }
+            .filter { it }
+            .take(1)
+            .onEach { emitNewStateFrom(MailboxEvent.ShowNps) }
             .launchIn(viewModelScope)
     }
 
@@ -1496,7 +1506,8 @@ class MailboxViewModel @Inject constructor(
             actionResult = Effect.empty(),
             composerNavigationState = MailboxComposerNavigationState.Enabled(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            showNps = Effect.empty()
         )
     }
 }

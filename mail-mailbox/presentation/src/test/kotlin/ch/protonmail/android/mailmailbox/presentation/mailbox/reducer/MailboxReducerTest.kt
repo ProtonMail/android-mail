@@ -229,7 +229,8 @@ internal class MailboxReducerTest(
             bottomSheetState = null,
             composerNavigationState = MailboxComposerNavigationState.Enabled(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            showNps = Effect.empty()
         )
 
         private val actions = listOf(
@@ -670,6 +671,18 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = false,
                 shouldReduceClearAllDialog = false,
                 showRatingBooster = Effect.of(Unit)
+            ),
+            TestInput(
+                MailboxEvent.ShowNps,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceSpamTrashFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceClearAllDialog = false
             ),
             TestInput(
                 MailboxEvent.ClearAll(SpamOrTrash.Spam),

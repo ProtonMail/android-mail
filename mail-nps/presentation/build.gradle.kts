@@ -67,7 +67,6 @@ dependencies {
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
-    implementation(project(":mail-featureflags:domain"))
     implementation(project(":mail-nps:domain"))
     implementation(project(":mail-session:domain"))
     implementation(project(":uicomponents"))

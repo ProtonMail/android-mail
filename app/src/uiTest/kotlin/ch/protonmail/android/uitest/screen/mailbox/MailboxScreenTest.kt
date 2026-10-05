@@ -187,7 +187,8 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 actionResult = Effect.empty(),
                 composerNavigationState = MailboxComposerNavigationState.Enabled(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                showNps = Effect.empty()
             )
         }
 

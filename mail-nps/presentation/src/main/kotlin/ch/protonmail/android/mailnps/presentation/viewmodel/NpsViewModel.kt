@@ -20,11 +20,8 @@ package ch.protonmail.android.mailnps.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsFeedbackEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnps.domain.usecase.DismissNps
 import ch.protonmail.android.mailnps.domain.usecase.SubmitNpsFeedback
-import ch.protonmail.android.mailnps.presentation.model.NpsEligibilityState
 import ch.protonmail.android.mailnps.presentation.model.NpsOperation
 import ch.protonmail.android.mailnps.presentation.model.NpsOperation.NpsAction
 import ch.protonmail.android.mailnps.presentation.model.NpsOperation.NpsEvent
@@ -33,15 +30,10 @@ import ch.protonmail.android.mailnps.presentation.reducer.NpsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -52,7 +44,6 @@ class NpsViewModel @Inject constructor(
     private val submitNpsFeedback: SubmitNpsFeedback,
     private val dismissNps: DismissNps,
     private val reducer: NpsReducer,
-    @IsNpsFeedbackEnabled private val isNpsFeedbackEnabled: FeatureFlag<Boolean>,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -60,22 +51,6 @@ class NpsViewModel @Inject constructor(
 
     private val mutableState = MutableStateFlow(NpsState.Initial)
     val state: StateFlow<NpsState> = mutableState.asStateFlow()
-
-    // Re-evaluated on primary user change, so the survey is only considered once a user is signed in.
-    val eligibility: StateFlow<NpsEligibilityState> = primaryUserId
-        .distinctUntilChanged()
-        .flatMapLatest {
-            flow {
-                val isEnabled = isNpsFeedbackEnabled.get()
-                Timber.d("nps: NPSFeedbackAndroidMail = $isEnabled")
-                emit(if (isEnabled) NpsEligibilityState.Show else NpsEligibilityState.Hide)
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = NpsEligibilityState.Loading
-        )
 
     fun submit(action: NpsAction) {
         when (action) {
